@@ -19,3 +19,4 @@ Open `index.html` in a browser. No build step is required.
   proficiencies. The `proficiencyScale` table maps letter grades to HP, MP and
   status base/scale numbers. These values are kept separately for race and job
   (e.g. `raceHpScale` and `jobHpScale`) alongside level-based placeholders.
+- Job traits and abilities are stored in separate `jobTraits.js` and `jobAbilities.js` modules. Each job object references these so the job list stays concise.

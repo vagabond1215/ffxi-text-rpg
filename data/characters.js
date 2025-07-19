@@ -135,6 +135,7 @@ characters.forEach(ch => updateDerivedStats(ch));
 export function createNewCharacter() {
   const race = raceNames[Math.floor(Math.random() * raceNames.length)];
   const job = jobNames[Math.floor(Math.random() * jobNames.length)];
+  const jobInfo = jobs.find(j => j.name === job);
   const character = {
     name: `Adventurer ${characters.length + 1}`,
     race,
@@ -145,8 +146,8 @@ export function createNewCharacter() {
     mp: 30,
     tp: 0,
     skills: [],
-    traits: [],
-    abilities: [],
+    traits: jobInfo?.traits ? [...jobInfo.traits] : [],
+    abilities: jobInfo?.abilities ? [...jobInfo.abilities] : [],
     jobs: { [job]: 1 },
     gil: 0,
     combatSkills: {},
