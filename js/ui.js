@@ -1,13 +1,11 @@
 import {
     characters,
     activeCharacter,
-    jobNames,
     raceNames,
     baseJobNames,
     jobs,
     createCharacterObject,
     createNewCharacter,
-    clearSavedCharacters,
     saveCharacterSlot,
     loadCharacterSlot,
     deleteCharacterSlot
@@ -27,46 +25,80 @@ export function renderMainMenu() {
         renderCharacterMenu(container);
     });
 
-    const randomBtn = document.createElement('button');
-    randomBtn.textContent = 'Random Race & Job';
-    randomBtn.addEventListener('click', () => {
-        const race = raceNames[Math.floor(Math.random() * raceNames.length)];
-        const job = jobNames[Math.floor(Math.random() * jobNames.length)];
-        displayRandomSelection(container, race, job);
-    });
-
     const adventureBtn = document.createElement('button');
     adventureBtn.textContent = 'Adventure';
     adventureBtn.addEventListener('click', () => {
         renderPlayUI(container);
     });
 
-    const clearBtn = document.createElement('button');
-    clearBtn.textContent = 'Clear Data';
-    clearBtn.addEventListener('click', () => {
-        clearSavedCharacters();
-        const newMenu = renderMainMenu();
-        container.replaceWith(newMenu);
-    });
-
     menu.appendChild(charactersBtn);
-    menu.appendChild(randomBtn);
     menu.appendChild(adventureBtn);
-    menu.appendChild(clearBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
 
     if (activeCharacter) {
-        const profile = document.createElement('p');
+        const profile = document.createElement('div');
         profile.id = 'active-profile';
-        profile.textContent = `${activeCharacter.name} - ${activeCharacter.race} ${activeCharacter.sex} ${activeCharacter.job} Lv.${activeCharacter.level} HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
-        container.appendChild(profile);
-    }
 
-    const display = document.createElement('p');
-    display.id = 'random-display';
-    container.appendChild(display);
+        const line1 = document.createElement('div');
+        line1.textContent = `${activeCharacter.name} ${activeCharacter.sex} ${activeCharacter.race}`;
+        const line2 = document.createElement('div');
+
+        const subJob = Object.keys(activeCharacter.jobs || {}).find(j => j !== activeCharacter.job);
+        const subLvl = subJob ? activeCharacter.jobs[subJob] : 0;
+        let jobText = `${activeCharacter.job} Lv.${activeCharacter.level}`;
+        if (subJob) {
+            jobText = `${activeCharacter.job}/${subJob} ${activeCharacter.level}/${subLvl}`;
+        }
+        line2.textContent = `${jobText} HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
+
+        profile.appendChild(line1);
+        profile.appendChild(line2);
+        container.appendChild(profile);
+
+        const info = document.createElement('div');
+        info.className = 'profile-info';
+
+        const buttons = document.createElement('div');
+        buttons.className = 'info-buttons';
+        const display = document.createElement('div');
+        display.className = 'info-display';
+
+        const sections = [
+            { label: 'Traits', data: activeCharacter.traits },
+            { label: 'Abilities', data: activeCharacter.abilities },
+            { label: 'Skills', data: activeCharacter.skills },
+            { label: 'Weapon Skills', data: activeCharacter.weaponSkills },
+            { label: 'Magic', data: activeCharacter.magic }
+        ];
+
+        sections.forEach(sec => {
+            const btn = document.createElement('button');
+            btn.textContent = sec.label;
+            btn.addEventListener('click', () => {
+                display.innerHTML = '';
+                const ul = document.createElement('ul');
+                if (sec.data && sec.data.length) {
+                    sec.data.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.name || item;
+                        ul.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = 'None';
+                    ul.appendChild(li);
+                }
+                display.appendChild(ul);
+            });
+            buttons.appendChild(btn);
+        });
+
+        info.appendChild(buttons);
+        info.appendChild(display);
+        container.appendChild(info);
+    }
 
     return container;
 }
@@ -89,7 +121,9 @@ export function renderCharacterMenu(root) {
     const slotCount = Math.min(Math.max(characters.length, 3), maxSlots);
     for (let i = 0; i < slotCount; i++) {
         const entry = document.createElement('div');
+        entry.className = 'slot-entry';
         const label = document.createElement('span');
+        label.className = 'slot-label';
         const ch = characters[i];
         label.textContent = ch ? `${ch.name} - ${ch.race} ${ch.job} Lv.${ch.level}` : 'No Save';
         entry.appendChild(label);
@@ -139,15 +173,27 @@ function renderNewCharacterForm(root) {
     title.textContent = 'Create Character';
     root.appendChild(title);
 
+    // container for two-column layout
+    const form = document.createElement('div');
+    form.className = 'character-form';
+
+    // left column: input fields
+    const inputs = document.createElement('div');
+    inputs.className = 'form-inputs';
+
+    const nameField = document.createElement('div');
+    nameField.className = 'form-field';
     const nameLabel = document.createElement('label');
     nameLabel.textContent = 'Name:';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = `Adventurer ${characters.length + 1}`;
-    root.appendChild(nameLabel);
-    root.appendChild(nameInput);
-    root.appendChild(document.createElement('br'));
+    nameField.appendChild(nameLabel);
+    nameField.appendChild(nameInput);
+    inputs.appendChild(nameField);
 
+    const raceField = document.createElement('div');
+    raceField.className = 'form-field';
     const raceLabel = document.createElement('label');
     raceLabel.textContent = 'Race:';
     const raceSelect = document.createElement('select');
@@ -157,10 +203,12 @@ function renderNewCharacterForm(root) {
         opt.textContent = r;
         raceSelect.appendChild(opt);
     });
-    root.appendChild(raceLabel);
-    root.appendChild(raceSelect);
-    root.appendChild(document.createElement('br'));
+    raceField.appendChild(raceLabel);
+    raceField.appendChild(raceSelect);
+    inputs.appendChild(raceField);
 
+    const sexField = document.createElement('div');
+    sexField.className = 'form-field';
     const sexLabel = document.createElement('label');
     sexLabel.textContent = 'Sex:';
     const sexSelect = document.createElement('select');
@@ -170,10 +218,12 @@ function renderNewCharacterForm(root) {
         opt.textContent = s;
         sexSelect.appendChild(opt);
     });
-    root.appendChild(sexLabel);
-    root.appendChild(sexSelect);
-    root.appendChild(document.createElement('br'));
+    sexField.appendChild(sexLabel);
+    sexField.appendChild(sexSelect);
+    inputs.appendChild(sexField);
 
+    const jobField = document.createElement('div');
+    jobField.className = 'form-field';
     const jobLabel = document.createElement('label');
     jobLabel.textContent = 'Job:';
     const jobSelect = document.createElement('select');
@@ -183,12 +233,26 @@ function renderNewCharacterForm(root) {
         opt.textContent = j;
         jobSelect.appendChild(opt);
     });
-    root.appendChild(jobLabel);
-    root.appendChild(jobSelect);
-    root.appendChild(document.createElement('br'));
+    jobField.appendChild(jobLabel);
+    jobField.appendChild(jobSelect);
+    inputs.appendChild(jobField);
 
-    const infoDiv = document.createElement('div');
-    root.appendChild(infoDiv);
+    form.appendChild(inputs);
+
+    // right column: info display
+    const infoCol = document.createElement('div');
+    infoCol.className = 'form-info';
+
+    const hpmpDiv = document.createElement('div');
+    hpmpDiv.id = 'info-hpmp';
+    infoCol.appendChild(hpmpDiv);
+
+    const detailsDiv = document.createElement('div');
+    infoCol.appendChild(detailsDiv);
+
+    form.appendChild(infoCol);
+
+    root.appendChild(form);
 
     function updateInfo() {
         const preview = createCharacterObject(
@@ -197,14 +261,14 @@ function renderNewCharacterForm(root) {
             raceSelect.value,
             sexSelect.value
         );
-        infoDiv.innerHTML = `HP: ${preview.hp} | MP: ${preview.mp}`;
+        hpmpDiv.textContent = `HP: ${preview.hp} | MP: ${preview.mp}`;
+        detailsDiv.innerHTML = '';
         const job = jobs.find(j => j.name === jobSelect.value);
         if (job) {
             const trait = job.traits[0];
             const ability = job.abilities[0];
-            infoDiv.innerHTML += '<br>';
-            if (trait) infoDiv.innerHTML += `Trait: ${trait.name} - ${trait.effect}<br>`;
-            if (ability) infoDiv.innerHTML += `Ability: ${ability.name} - ${ability.effect}`;
+            if (trait) detailsDiv.innerHTML += `Trait: ${trait.name} - ${trait.effect}<br>`;
+            if (ability) detailsDiv.innerHTML += `Ability: ${ability.name} - ${ability.effect}`;
         }
     }
 
@@ -235,15 +299,6 @@ function renderNewCharacterForm(root) {
     root.appendChild(cancelBtn);
 }
 
-function displayRandomSelection(root, race, job) {
-    let display = root.querySelector('#random-display');
-    if (!display) {
-        display = document.createElement('p');
-        display.id = 'random-display';
-        root.appendChild(display);
-    }
-    display.textContent = `Race: ${race} | Job: ${job}`;
-}
 
 export function renderPlayUI(root) {
     root.innerHTML = '';
