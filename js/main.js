@@ -2,12 +2,26 @@ import { renderMainMenu } from './ui.js';
 import { loadCharacters } from '../data/index.js';
 
 // Entry point: initialize application
+let uiScale = 1;
+
+function updateScale(delta) {
+    uiScale = Math.max(0.5, Math.min(2, uiScale + delta));
+    document.documentElement.style.setProperty('--ui-scale', uiScale);
+}
+
 function init() {
     loadCharacters();
     const app = document.getElementById('app');
     app.innerHTML = '';
     const menu = renderMainMenu();
     app.appendChild(menu);
+
+    const inc = document.getElementById('scale-inc');
+    const dec = document.getElementById('scale-dec');
+    if (inc && dec) {
+        inc.addEventListener('click', () => updateScale(0.1));
+        dec.addEventListener('click', () => updateScale(-0.1));
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);

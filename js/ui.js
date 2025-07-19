@@ -313,16 +313,45 @@ function renderNewCharacterForm(root) {
         abilitiesList.innerHTML = '';
         const job = jobs.find(j => j.name === jobSelect.value);
         if (job) {
-            (job.traits || []).forEach(t => {
+            const level1Traits = (job.traits || []).filter(t => t.level === 1);
+            if (level1Traits.length) {
+                level1Traits.forEach(t => {
+                    const li = document.createElement('li');
+                    const name = document.createElement('span');
+                    name.className = 'trait-name';
+                    name.textContent = t.name;
+                    const desc = document.createElement('span');
+                    desc.className = 'trait-desc';
+                    desc.textContent = t.effect;
+                    li.appendChild(name);
+                    li.appendChild(desc);
+                    traitsList.appendChild(li);
+                });
+            } else {
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${t.name}</span><span>-</span><span>${t.effect}</span>`;
+                li.textContent = 'None';
                 traitsList.appendChild(li);
-            });
-            (job.abilities || []).forEach(a => {
+            }
+
+            const level1Abilities = (job.abilities || []).filter(a => a.level === 1);
+            if (level1Abilities.length) {
+                level1Abilities.forEach(a => {
+                    const li = document.createElement('li');
+                    const name = document.createElement('span');
+                    name.className = 'ability-name';
+                    name.textContent = a.name;
+                    const desc = document.createElement('span');
+                    desc.className = 'ability-desc';
+                    desc.textContent = a.effect;
+                    li.appendChild(name);
+                    li.appendChild(desc);
+                    abilitiesList.appendChild(li);
+                });
+            } else {
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${a.name}</span><span>-</span><span>${a.effect}</span>`;
+                li.textContent = 'None';
                 abilitiesList.appendChild(li);
-            });
+            }
         }
     }
 
