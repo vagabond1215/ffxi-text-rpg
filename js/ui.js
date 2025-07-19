@@ -1,4 +1,4 @@
-import { characters, jobNames, raceNames, createNewCharacter } from '../data/index.js';
+import { characters, jobNames, raceNames, baseJobNames, createNewCharacter, saveCharacters, loadCharacters } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -52,10 +52,24 @@ export function renderCharacterMenu(root) {
     const newBtn = document.createElement('button');
     newBtn.textContent = 'New Character';
     newBtn.addEventListener('click', () => {
-        createNewCharacter();
-        renderCharacterMenu(root);
+        renderNewCharacterForm(root);
     });
     root.appendChild(newBtn);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Save';
+    saveBtn.addEventListener('click', () => {
+        saveCharacters();
+    });
+    root.appendChild(saveBtn);
+
+    const loadBtn = document.createElement('button');
+    loadBtn.textContent = 'Load';
+    loadBtn.addEventListener('click', () => {
+        loadCharacters();
+        renderCharacterMenu(root);
+    });
+    root.appendChild(loadBtn);
 
     const back = document.createElement('button');
     back.textContent = 'Back';
@@ -66,6 +80,50 @@ export function renderCharacterMenu(root) {
 
     root.appendChild(document.createElement('br'));
     root.appendChild(back);
+}
+
+function renderNewCharacterForm(root) {
+    root.innerHTML = '';
+    const title = document.createElement('h3');
+    title.textContent = 'Create Character';
+    root.appendChild(title);
+
+    const nameLabel = document.createElement('label');
+    nameLabel.textContent = 'Name:';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.value = `Adventurer ${characters.length + 1}`;
+    root.appendChild(nameLabel);
+    root.appendChild(nameInput);
+    root.appendChild(document.createElement('br'));
+
+    const jobLabel = document.createElement('label');
+    jobLabel.textContent = 'Job:';
+    const jobSelect = document.createElement('select');
+    baseJobNames.forEach(j => {
+        const opt = document.createElement('option');
+        opt.value = j;
+        opt.textContent = j;
+        jobSelect.appendChild(opt);
+    });
+    root.appendChild(jobLabel);
+    root.appendChild(jobSelect);
+    root.appendChild(document.createElement('br'));
+
+    const createBtn = document.createElement('button');
+    createBtn.textContent = 'Create';
+    createBtn.addEventListener('click', () => {
+        createNewCharacter(nameInput.value.trim() || undefined, jobSelect.value);
+        renderCharacterMenu(root);
+    });
+    root.appendChild(createBtn);
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.addEventListener('click', () => {
+        renderCharacterMenu(root);
+    });
+    root.appendChild(cancelBtn);
 }
 
 function displayRandomSelection(root, race, job) {
