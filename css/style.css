@@ -1,3 +1,7 @@
+:root {
+    --ui-scale: 1;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #111;
@@ -16,6 +20,25 @@ button {
     color: #fff;
     border: 1px solid #555;
     cursor: pointer;
+}
+
+#app {
+    transform: scale(var(--ui-scale));
+    transform-origin: top left;
+    width: calc(100% / var(--ui-scale));
+}
+
+#scale-controls {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    z-index: 1000;
+}
+
+#scale-controls button {
+    padding: 2px 6px;
+    font-size: 14px;
+    margin: 0 2px;
 }
 
 button:hover {
@@ -88,8 +111,21 @@ button:hover {
 .trait-list li,
 .ability-list li {
     display: flex;
-    justify-content: center;
-    gap: 4px;
+    justify-content: flex-start;
+    gap: clamp(4px, 1vw, 10px);
+}
+
+.trait-name,
+.ability-name {
+    flex: 1;
+    text-align: right;
+    margin-right: clamp(6px, 1vw, 12px);
+}
+
+.trait-desc,
+.ability-desc {
+    flex: 2;
+    text-align: left;
 }
 
 .start-city {
