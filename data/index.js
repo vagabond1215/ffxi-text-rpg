@@ -1,5 +1,5 @@
 export { jobs, jobNames, baseJobNames } from './jobs.js';
-export { races, raceNames } from './races.js';
+export { races, raceNames, startingCities } from './races.js';
 export {
   characters,
   activeCharacter,

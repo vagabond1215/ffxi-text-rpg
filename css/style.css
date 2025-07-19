@@ -5,12 +5,13 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
+    font-size: clamp(14px, 2vw, 20px);
 }
 
 button {
-    padding: 10px 20px;
+    padding: clamp(8px, 1vw, 12px) clamp(12px, 2vw, 24px);
     margin: 5px;
-    font-size: 16px;
+    font-size: clamp(14px, 1.5vw, 18px);
     background-color: #333;
     color: #fff;
     border: 1px solid #555;
@@ -45,8 +46,16 @@ button:hover {
 .character-form {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin-top: 20px;
     gap: 20px;
+    padding: 2vw;
+}
+
+@media (max-width: 600px) {
+    .character-form {
+        flex-direction: column;
+    }
 }
 
 .form-inputs {
@@ -58,14 +67,36 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.form-info {
+.form-stats {
+    flex: 1;
+    text-align: left;
+}
+
+.form-traits {
     flex: 1;
     text-align: center;
 }
 
-#info-hpmp {
-    margin-bottom: 10px;
+.stats-list,
+.trait-list,
+.ability-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
+
+.trait-list li,
+.ability-list li {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+.start-city {
+    margin-top: 10px;
+    text-align: left;
+}
+
 
 /* Active character profile */
 #active-profile {
@@ -76,16 +107,20 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
+    gap: clamp(10px, 2vw, 30px);
     margin-top: 10px;
+    padding: 2vw;
 }
 
 .info-buttons {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 5px;
+    margin-right: clamp(10px, 2vw, 30px);
 }
 
 .info-display {
     text-align: right;
+    margin-left: clamp(10px, 2vw, 30px);
 }

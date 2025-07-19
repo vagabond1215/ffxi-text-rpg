@@ -4,6 +4,7 @@ import {
     raceNames,
     baseJobNames,
     jobs,
+    startingCities,
     createCharacterObject,
     createNewCharacter,
     saveCharacterSlot,
@@ -173,7 +174,7 @@ function renderNewCharacterForm(root) {
     title.textContent = 'Create Character';
     root.appendChild(title);
 
-    // container for two-column layout
+    // container for three-column layout
     const form = document.createElement('div');
     form.className = 'character-form';
 
@@ -237,18 +238,46 @@ function renderNewCharacterForm(root) {
     jobField.appendChild(jobSelect);
     inputs.appendChild(jobField);
 
+    const randomBtn = document.createElement('button');
+    randomBtn.textContent = 'Randomize';
+    randomBtn.addEventListener('click', () => {
+        raceSelect.value = raceNames[Math.floor(Math.random() * raceNames.length)];
+        jobSelect.value = baseJobNames[Math.floor(Math.random() * baseJobNames.length)];
+        sexSelect.value = ['Male', 'Female'][Math.floor(Math.random() * 2)];
+        updateInfo();
+    });
+    inputs.appendChild(randomBtn);
+
     form.appendChild(inputs);
+    // middle column: stats display
+    const statsCol = document.createElement('div');
+    statsCol.className = 'form-stats';
+    const statsList = document.createElement('ul');
+    statsList.className = 'stats-list';
+    statsCol.appendChild(statsList);
+    const cityDiv = document.createElement('div');
+    cityDiv.className = 'start-city';
+    statsCol.appendChild(cityDiv);
+    form.appendChild(statsCol);
 
-    // right column: info display
+    // right column: traits and abilities
     const infoCol = document.createElement('div');
-    infoCol.className = 'form-info';
+    infoCol.className = 'form-traits';
 
-    const hpmpDiv = document.createElement('div');
-    hpmpDiv.id = 'info-hpmp';
-    infoCol.appendChild(hpmpDiv);
+    const traitsHeader = document.createElement('h4');
+    traitsHeader.textContent = 'Traits';
+    infoCol.appendChild(traitsHeader);
+    const traitsList = document.createElement('ul');
+    traitsList.className = 'trait-list';
+    infoCol.appendChild(traitsList);
 
-    const detailsDiv = document.createElement('div');
-    infoCol.appendChild(detailsDiv);
+    const abilitiesHeader = document.createElement('h4');
+    abilitiesHeader.textContent = 'Abilities';
+    abilitiesHeader.style.marginTop = '20px';
+    infoCol.appendChild(abilitiesHeader);
+    const abilitiesList = document.createElement('ul');
+    abilitiesList.className = 'ability-list';
+    infoCol.appendChild(abilitiesList);
 
     form.appendChild(infoCol);
 
@@ -261,14 +290,39 @@ function renderNewCharacterForm(root) {
             raceSelect.value,
             sexSelect.value
         );
-        hpmpDiv.textContent = `HP: ${preview.hp} | MP: ${preview.mp}`;
-        detailsDiv.innerHTML = '';
+        statsList.innerHTML = '';
+        const statEntries = [
+            ['HP', preview.hp],
+            ['MP', preview.mp],
+            ['STR', preview.stats.str],
+            ['DEX', preview.stats.dex],
+            ['VIT', preview.stats.vit],
+            ['AGI', preview.stats.agi],
+            ['INT', preview.stats.int],
+            ['MND', preview.stats.mnd],
+            ['CHR', preview.stats.chr]
+        ];
+        statEntries.forEach(([label, val]) => {
+            const li = document.createElement('li');
+            li.textContent = `${label}: ${val}`;
+            statsList.appendChild(li);
+        });
+        cityDiv.textContent = `Starting City: ${startingCities[raceSelect.value]}`;
+
+        traitsList.innerHTML = '';
+        abilitiesList.innerHTML = '';
         const job = jobs.find(j => j.name === jobSelect.value);
         if (job) {
-            const trait = job.traits[0];
-            const ability = job.abilities[0];
-            if (trait) detailsDiv.innerHTML += `Trait: ${trait.name} - ${trait.effect}<br>`;
-            if (ability) detailsDiv.innerHTML += `Ability: ${ability.name} - ${ability.effect}`;
+            (job.traits || []).forEach(t => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${t.name}</span><span>-</span><span>${t.effect}</span>`;
+                traitsList.appendChild(li);
+            });
+            (job.abilities || []).forEach(a => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${a.name}</span><span>-</span><span>${a.effect}</span>`;
+                abilitiesList.appendChild(li);
+            });
         }
     }
 
