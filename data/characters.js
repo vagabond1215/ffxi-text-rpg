@@ -5,6 +5,8 @@ import { getScale, proficiencyScale } from './scales.js';
 const aldoScale = buildScaleFields('Hume', 'Thief');
 const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
 
+export let activeCharacter = null;
+
 function buildScaleFields(raceName, jobName) {
   const raceInfo = races.find(r => r.name === raceName);
   const jobInfo = jobs.find(j => j.name === jobName);
@@ -39,6 +41,7 @@ export const characters = [
   {
     name: 'Aldo',
     race: 'Hume',
+    sex: 'Male',
     job: 'Thief',
     level: 99,
     stats: { str: 70, dex: 90, vit: 70, agi: 80, int: 60, mnd: 60, chr: 70 },
@@ -85,6 +88,7 @@ export const characters = [
   {
     name: 'Shantotto',
     race: 'Tarutaru',
+    sex: 'Female',
     job: 'Black Mage',
     level: 99,
     stats: { str: 40, dex: 60, vit: 50, agi: 60, int: 95, mnd: 80, chr: 70 },
@@ -132,12 +136,13 @@ export const characters = [
 
 characters.forEach(ch => updateDerivedStats(ch));
 
-export function createNewCharacter(name = `Adventurer ${characters.length + 1}`, job, race) {
+export function createCharacterObject(name, job, race, sex = 'Male') {
   const selectedRace = race || raceNames[Math.floor(Math.random() * raceNames.length)];
   const selectedJob = job || jobNames[Math.floor(Math.random() * jobNames.length)];
   const character = {
     name,
     race: selectedRace,
+    sex,
     job: selectedJob,
     level: 1,
     stats: { str: 10, dex: 10, vit: 10, agi: 10, int: 10, mnd: 10, chr: 10 },
@@ -181,8 +186,14 @@ export function createNewCharacter(name = `Adventurer ${characters.length + 1}`,
       rightRing: null
     }
   };
-  characters.unshift(character);
   updateDerivedStats(character);
+  return character;
+}
+
+export function createNewCharacter(name = `Adventurer ${characters.length + 1}`, job, race, sex = 'Male') {
+  const character = createCharacterObject(name, job, race, sex);
+  characters.unshift(character);
+  activeCharacter = character;
   return character;
 }
 
@@ -304,6 +315,22 @@ export function saveCharacters() {
   }
 }
 
+export function saveCharacterSlot(index) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    while (saved.length <= index) saved.push(null);
+    const char = characters[index];
+    if (!char) return;
+    if (saved[index] && saved[index].name !== char.name) {
+      if (!confirm('Overwrite existing character in this slot?')) return;
+    }
+    saved[index] = char;
+    localStorage.setItem('ffxiCharacters', JSON.stringify(saved));
+  } catch (e) {
+    console.error('Failed to save character slot', e);
+  }
+}
+
 export function loadCharacters() {
   try {
     const data = localStorage.getItem('ffxiCharacters');
@@ -314,8 +341,21 @@ export function loadCharacters() {
       characters.push(c);
       updateDerivedStats(c);
     });
+    activeCharacter = characters[0] || null;
   } catch (e) {
     console.error('Failed to load characters', e);
+  }
+}
+
+export function loadCharacterSlot(index) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    if (!saved[index]) return;
+    characters[index] = saved[index];
+    updateDerivedStats(characters[index]);
+    activeCharacter = characters[index];
+  } catch (e) {
+    console.error('Failed to load character slot', e);
   }
 }
 
@@ -323,7 +363,23 @@ export function clearSavedCharacters() {
   try {
     localStorage.removeItem('ffxiCharacters');
     characters.length = 0;
+    activeCharacter = null;
   } catch (e) {
     console.error('Failed to clear characters', e);
+  }
+}
+
+export function deleteCharacterSlot(index) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    while (saved.length <= index) saved.push(null);
+    saved[index] = null;
+    localStorage.setItem('ffxiCharacters', JSON.stringify(saved));
+    if (characters[index] && characters[index] === activeCharacter) {
+      activeCharacter = null;
+    }
+    characters[index] = null;
+  } catch (e) {
+    console.error('Failed to delete character slot', e);
   }
 }
