@@ -1,4 +1,17 @@
-import { characters, jobNames, raceNames, baseJobNames, createNewCharacter, saveCharacters, loadCharacters, clearSavedCharacters } from '../data/index.js';
+import {
+    characters,
+    activeCharacter,
+    jobNames,
+    raceNames,
+    baseJobNames,
+    jobs,
+    createCharacterObject,
+    createNewCharacter,
+    clearSavedCharacters,
+    saveCharacterSlot,
+    loadCharacterSlot,
+    deleteCharacterSlot
+} from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -44,6 +57,13 @@ export function renderMainMenu() {
     container.appendChild(title);
     container.appendChild(menu);
 
+    if (activeCharacter) {
+        const profile = document.createElement('p');
+        profile.id = 'active-profile';
+        profile.textContent = `${activeCharacter.name} - ${activeCharacter.race} ${activeCharacter.sex} ${activeCharacter.job} Lv.${activeCharacter.level} HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
+        container.appendChild(profile);
+    }
+
     const display = document.createElement('p');
     display.id = 'random-display';
     container.appendChild(display);
@@ -57,14 +77,6 @@ export function renderCharacterMenu(root) {
     title.textContent = 'Characters';
     root.appendChild(title);
 
-    const list = document.createElement('div');
-    characters.forEach((ch) => {
-        const entry = document.createElement('div');
-        entry.textContent = `${ch.name} - ${ch.race} ${ch.job} Lv.${ch.level}`;
-        list.appendChild(entry);
-    });
-    root.appendChild(list);
-
     const newBtn = document.createElement('button');
     newBtn.textContent = 'New Character';
     newBtn.addEventListener('click', () => {
@@ -72,29 +84,52 @@ export function renderCharacterMenu(root) {
     });
     root.appendChild(newBtn);
 
-    const saveBtn = document.createElement('button');
-    saveBtn.textContent = 'Save';
-    saveBtn.addEventListener('click', () => {
-        saveCharacters();
-    });
-    root.appendChild(saveBtn);
+    const list = document.createElement('div');
+    const maxSlots = 8;
+    const slotCount = Math.min(Math.max(characters.length, 3), maxSlots);
+    for (let i = 0; i < slotCount; i++) {
+        const entry = document.createElement('div');
+        const label = document.createElement('span');
+        const ch = characters[i];
+        label.textContent = ch ? `${ch.name} - ${ch.race} ${ch.job} Lv.${ch.level}` : 'No Save';
+        entry.appendChild(label);
 
-    const loadBtn = document.createElement('button');
-    loadBtn.textContent = 'Load';
-    loadBtn.addEventListener('click', () => {
-        loadCharacters();
-        renderCharacterMenu(root);
-    });
-    root.appendChild(loadBtn);
+        const loadBtn = document.createElement('button');
+        loadBtn.textContent = 'Load';
+        loadBtn.addEventListener('click', () => {
+            loadCharacterSlot(i);
+            renderCharacterMenu(root);
+        });
+        entry.appendChild(loadBtn);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save';
+        saveBtn.addEventListener('click', () => {
+            saveCharacterSlot(i);
+        });
+        entry.appendChild(saveBtn);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Delete this character slot?')) {
+                deleteCharacterSlot(i);
+                renderCharacterMenu(root);
+            }
+        });
+        entry.appendChild(deleteBtn);
+
+        list.appendChild(entry);
+    }
+    root.appendChild(list);
 
     const back = document.createElement('button');
-    back.textContent = 'Back';
+    back.textContent = 'Return to Main Menu';
     back.addEventListener('click', () => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
 
-    root.appendChild(document.createElement('br'));
     root.appendChild(back);
 }
 
@@ -113,6 +148,32 @@ function renderNewCharacterForm(root) {
     root.appendChild(nameInput);
     root.appendChild(document.createElement('br'));
 
+    const raceLabel = document.createElement('label');
+    raceLabel.textContent = 'Race:';
+    const raceSelect = document.createElement('select');
+    raceNames.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        raceSelect.appendChild(opt);
+    });
+    root.appendChild(raceLabel);
+    root.appendChild(raceSelect);
+    root.appendChild(document.createElement('br'));
+
+    const sexLabel = document.createElement('label');
+    sexLabel.textContent = 'Sex:';
+    const sexSelect = document.createElement('select');
+    ['Male', 'Female'].forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        sexSelect.appendChild(opt);
+    });
+    root.appendChild(sexLabel);
+    root.appendChild(sexSelect);
+    root.appendChild(document.createElement('br'));
+
     const jobLabel = document.createElement('label');
     jobLabel.textContent = 'Job:';
     const jobSelect = document.createElement('select');
@@ -126,10 +187,42 @@ function renderNewCharacterForm(root) {
     root.appendChild(jobSelect);
     root.appendChild(document.createElement('br'));
 
+    const infoDiv = document.createElement('div');
+    root.appendChild(infoDiv);
+
+    function updateInfo() {
+        const preview = createCharacterObject(
+            nameInput.value.trim() || `Adventurer ${characters.length + 1}`,
+            jobSelect.value,
+            raceSelect.value,
+            sexSelect.value
+        );
+        infoDiv.innerHTML = `HP: ${preview.hp} | MP: ${preview.mp}`;
+        const job = jobs.find(j => j.name === jobSelect.value);
+        if (job) {
+            const trait = job.traits[0];
+            const ability = job.abilities[0];
+            infoDiv.innerHTML += '<br>';
+            if (trait) infoDiv.innerHTML += `Trait: ${trait.name} - ${trait.effect}<br>`;
+            if (ability) infoDiv.innerHTML += `Ability: ${ability.name} - ${ability.effect}`;
+        }
+    }
+
+    nameInput.addEventListener('input', updateInfo);
+    raceSelect.addEventListener('change', updateInfo);
+    sexSelect.addEventListener('change', updateInfo);
+    jobSelect.addEventListener('change', updateInfo);
+    updateInfo();
+
     const createBtn = document.createElement('button');
     createBtn.textContent = 'Create';
     createBtn.addEventListener('click', () => {
-        createNewCharacter(nameInput.value.trim() || undefined, jobSelect.value);
+        createNewCharacter(
+            nameInput.value.trim() || undefined,
+            jobSelect.value,
+            raceSelect.value,
+            sexSelect.value
+        );
         renderCharacterMenu(root);
     });
     root.appendChild(createBtn);
