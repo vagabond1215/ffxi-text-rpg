@@ -605,3 +605,14 @@ export const jobs = [
 ];
 
 export const jobNames = jobs.map(j => j.name);
+// Jobs available when creating a brand new character without completing any
+// unlock quests. These correspond to the six starter jobs from the original
+// Final Fantasy XI release.
+export const baseJobNames = [
+  'Warrior',
+  'Monk',
+  'White Mage',
+  'Black Mage',
+  'Red Mage',
+  'Thief'
+];
