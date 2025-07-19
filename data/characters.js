@@ -132,13 +132,13 @@ export const characters = [
 
 characters.forEach(ch => updateDerivedStats(ch));
 
-export function createNewCharacter() {
-  const race = raceNames[Math.floor(Math.random() * raceNames.length)];
-  const job = jobNames[Math.floor(Math.random() * jobNames.length)];
+export function createNewCharacter(name = `Adventurer ${characters.length + 1}`, job, race) {
+  const selectedRace = race || raceNames[Math.floor(Math.random() * raceNames.length)];
+  const selectedJob = job || jobNames[Math.floor(Math.random() * jobNames.length)];
   const character = {
-    name: `Adventurer ${characters.length + 1}`,
-    race,
-    job,
+    name,
+    race: selectedRace,
+    job: selectedJob,
     level: 1,
     stats: { str: 10, dex: 10, vit: 10, agi: 10, int: 10, mnd: 10, chr: 10 },
     hp: 50,
@@ -147,12 +147,12 @@ export function createNewCharacter() {
     skills: [],
     traits: [],
     abilities: [],
-    jobs: { [job]: 1 },
+    jobs: { [selectedJob]: 1 },
     gil: 0,
     combatSkills: {},
     magicSkills: {},
     crafting: {},
-    ...buildScaleFields(race, job),
+    ...buildScaleFields(selectedRace, selectedJob),
     mLvX: 0,
     mLvXXX: 0,
     sLvX: 0,
@@ -294,4 +294,36 @@ function applyProficiencies(stats, profs) {
 function gradeToValue(grade) {
   const mapping = { A: 6, B: 5, C: 4, D: 3, E: 2, F: 1, G: 0, X: 0 };
   return mapping[grade] ?? 0;
+}
+
+export function saveCharacters() {
+  try {
+    localStorage.setItem('ffxiCharacters', JSON.stringify(characters));
+  } catch (e) {
+    console.error('Failed to save characters', e);
+  }
+}
+
+export function loadCharacters() {
+  try {
+    const data = localStorage.getItem('ffxiCharacters');
+    if (!data) return;
+    const loaded = JSON.parse(data);
+    characters.length = 0;
+    loaded.forEach(c => {
+      characters.push(c);
+      updateDerivedStats(c);
+    });
+  } catch (e) {
+    console.error('Failed to load characters', e);
+  }
+}
+
+export function clearSavedCharacters() {
+  try {
+    localStorage.removeItem('ffxiCharacters');
+    characters.length = 0;
+  } catch (e) {
+    console.error('Failed to clear characters', e);
+  }
 }
