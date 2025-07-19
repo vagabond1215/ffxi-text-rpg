@@ -9,7 +9,6 @@ export {
   updateDerivedStats,
   saveCharacters,
   loadCharacters,
-  clearSavedCharacters,
   saveCharacterSlot,
   loadCharacterSlot,
   deleteCharacterSlot

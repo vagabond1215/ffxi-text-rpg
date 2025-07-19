@@ -359,15 +359,6 @@ export function loadCharacterSlot(index) {
   }
 }
 
-export function clearSavedCharacters() {
-  try {
-    localStorage.removeItem('ffxiCharacters');
-    characters.length = 0;
-    activeCharacter = null;
-  } catch (e) {
-    console.error('Failed to clear characters', e);
-  }
-}
 
 export function deleteCharacterSlot(index) {
   try {
