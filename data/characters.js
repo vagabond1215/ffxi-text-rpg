@@ -318,3 +318,12 @@ export function loadCharacters() {
     console.error('Failed to load characters', e);
   }
 }
+
+export function clearSavedCharacters() {
+  try {
+    localStorage.removeItem('ffxiCharacters');
+    characters.length = 0;
+  } catch (e) {
+    console.error('Failed to clear characters', e);
+  }
+}

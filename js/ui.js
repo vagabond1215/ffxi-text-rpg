@@ -1,4 +1,4 @@
-import { characters, jobNames, raceNames, baseJobNames, createNewCharacter, saveCharacters, loadCharacters } from '../data/index.js';
+import { characters, jobNames, raceNames, baseJobNames, createNewCharacter, saveCharacters, loadCharacters, clearSavedCharacters } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -22,8 +22,24 @@ export function renderMainMenu() {
         displayRandomSelection(container, race, job);
     });
 
+    const adventureBtn = document.createElement('button');
+    adventureBtn.textContent = 'Adventure';
+    adventureBtn.addEventListener('click', () => {
+        renderPlayUI(container);
+    });
+
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear Data';
+    clearBtn.addEventListener('click', () => {
+        clearSavedCharacters();
+        const newMenu = renderMainMenu();
+        container.replaceWith(newMenu);
+    });
+
     menu.appendChild(charactersBtn);
     menu.appendChild(randomBtn);
+    menu.appendChild(adventureBtn);
+    menu.appendChild(clearBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
@@ -134,4 +150,57 @@ function displayRandomSelection(root, race, job) {
         root.appendChild(display);
     }
     display.textContent = `Race: ${race} | Job: ${job}`;
+}
+
+export function renderPlayUI(root) {
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = 'Adventure';
+    root.appendChild(title);
+
+    const travelBtn = document.createElement('button');
+    travelBtn.textContent = 'Travel';
+    travelBtn.addEventListener('click', Travel);
+    root.appendChild(travelBtn);
+
+    const exploreBtn = document.createElement('button');
+    exploreBtn.textContent = 'Explore';
+    exploreBtn.addEventListener('click', Explore);
+    root.appendChild(exploreBtn);
+
+    const skillsBtn = document.createElement('button');
+    skillsBtn.textContent = 'Skills';
+    skillsBtn.addEventListener('click', Skills);
+    root.appendChild(skillsBtn);
+
+    const magicBtn = document.createElement('button');
+    magicBtn.textContent = 'Magic';
+    magicBtn.addEventListener('click', Magic);
+    root.appendChild(magicBtn);
+
+    const back = document.createElement('button');
+    back.textContent = 'Back';
+    back.addEventListener('click', () => {
+        const menu = renderMainMenu();
+        root.replaceWith(menu);
+    });
+
+    root.appendChild(document.createElement('br'));
+    root.appendChild(back);
+}
+
+export function Travel() {
+    console.log('Travel not implemented');
+}
+
+export function Explore() {
+    console.log('Explore not implemented');
+}
+
+export function Skills() {
+    console.log('Skills not implemented');
+}
+
+export function Magic() {
+    console.log('Magic not implemented');
 }
