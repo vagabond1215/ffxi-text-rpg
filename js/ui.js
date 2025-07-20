@@ -7,11 +7,11 @@ import {
     startingCities,
     createCharacterObject,
     createNewCharacter,
-    saveCharacterSlot,
-    loadCharacterSlot,
-    deleteCharacterSlot
+    deleteCharacterSlot,
+    saveCharacterToFile,
+    loadCharacterFromFile
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -95,16 +95,19 @@ export function renderCharacterMenu(root) {
 
         const loadBtn = document.createElement('button');
         loadBtn.textContent = 'Load';
-        loadBtn.addEventListener('click', () => {
-            loadCharacterSlot(i);
+        loadBtn.addEventListener('click', async () => {
+            await loadCharacterFromFile();
             renderCharacterMenu(root);
         });
         entry.appendChild(loadBtn);
 
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Save';
-        saveBtn.addEventListener('click', () => {
-            saveCharacterSlot(i);
+        saveBtn.addEventListener('click', async () => {
+            const ch = characters[i];
+            if (ch) {
+                await saveCharacterToFile(ch);
+            }
         });
         entry.appendChild(saveBtn);
 
@@ -134,9 +137,30 @@ export function renderCharacterMenu(root) {
 
 function renderNewCharacterForm(root) {
     root.innerHTML = '';
-    const title = document.createElement('h3');
-    title.textContent = 'Create Character';
-    root.appendChild(title);
+    const header = document.createElement('div');
+    header.className = 'form-header';
+
+    const createBtn = document.createElement('button');
+    createBtn.textContent = 'Create Character';
+    createBtn.addEventListener('click', () => {
+        createNewCharacter(
+            nameInput.value.trim() || undefined,
+            jobSelect.value,
+            raceSelect.value,
+            sexSelect.value
+        );
+        renderCharacterMenu(root);
+    });
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'Back';
+    cancelBtn.addEventListener('click', () => {
+        renderCharacterMenu(root);
+    });
+
+    header.appendChild(createBtn);
+    header.appendChild(cancelBtn);
+    root.appendChild(header);
 
     // container for three-column layout
     const form = document.createElement('div');
@@ -232,9 +256,16 @@ function renderNewCharacterForm(root) {
         updateInfo();
     });
     inputs.appendChild(randomBtn);
-    const raceDesc = document.createElement('p');
-    raceDesc.className = 'race-desc';
-    inputs.appendChild(raceDesc);
+
+    const statsList = document.createElement('ul');
+    statsList.className = 'stats-list';
+    inputs.appendChild(statsList);
+    const cityDiv = document.createElement('div');
+    cityDiv.className = 'start-city';
+    inputs.appendChild(cityDiv);
+    const cityImg = document.createElement('img');
+    cityImg.className = 'city-img';
+    inputs.appendChild(cityImg);
 
     form.appendChild(inputs);
     // middle column: stats display
@@ -242,29 +273,27 @@ function renderNewCharacterForm(root) {
     const statsCol = document.createElement('div');
     statsCol.className = 'form-stats';
 
+    const raceDesc = document.createElement('p');
+    raceDesc.className = 'race-desc';
+    statsCol.appendChild(raceDesc);
+
     const raceImg = document.createElement('img');
     raceImg.className = 'race-img';
     statsCol.appendChild(raceImg);
 
-    const statsList = document.createElement('ul');
-    statsList.className = 'stats-list';
-    statsCol.appendChild(statsList);
-    const cityDiv = document.createElement('div');
-    cityDiv.className = 'start-city';
-    statsCol.appendChild(cityDiv);
     form.appendChild(statsCol);
 
     // right column: traits and abilities
     const infoCol = document.createElement('div');
     infoCol.className = 'form-traits';
 
+    const jobDesc = document.createElement('p');
+    jobDesc.className = 'job-desc';
+    infoCol.appendChild(jobDesc);
+
     const jobImg = document.createElement('img');
     jobImg.className = 'job-img';
     infoCol.appendChild(jobImg);
-
-    const jobDesc = document.createElement('p');
-    jobDesc.className = 'job-desc';
-    inputs.appendChild(jobDesc);
 
     const traitsHeader = document.createElement('h4');
     traitsHeader.textContent = 'Traits';
@@ -296,7 +325,12 @@ function renderNewCharacterForm(root) {
         raceImg.src = raceInfo[raceSelect.value]?.image || '';
         raceDesc.textContent = raceInfo[raceSelect.value]?.description || '';
         jobImg.src = jobInfo[jobSelect.value]?.image || '';
-        jobDesc.textContent = jobInfo[jobSelect.value]?.description || '';
+        let jd = jobInfo[jobSelect.value]?.description || '';
+        jd = jd.replace(/ (Skills:)/, '<br>$1')
+               .replace(/ (Magic:)/, '<br>$1')
+               .replace(/ (Gear:)/, '<br>$1')
+               .replace(/ (History:)/, '<br>$1');
+        jobDesc.innerHTML = jd;
 
         const statEntries = [
             ['HP', preview.hp],
@@ -314,7 +348,9 @@ function renderNewCharacterForm(root) {
             li.textContent = `${label}: ${val}`;
             statsList.appendChild(li);
         });
-        cityDiv.textContent = `Starting City: ${startingCities[raceSelect.value]}`;
+        const city = startingCities[raceSelect.value];
+        cityDiv.textContent = `Starting City: ${city}`;
+        cityImg.src = cityImages[city] || '';
 
         traitsList.innerHTML = '';
         abilitiesList.innerHTML = '';
@@ -377,25 +413,6 @@ function renderNewCharacterForm(root) {
     jobSelect.addEventListener('change', updateInfo);
     updateInfo();
 
-    const createBtn = document.createElement('button');
-    createBtn.textContent = 'Create';
-    createBtn.addEventListener('click', () => {
-        createNewCharacter(
-            nameInput.value.trim() || undefined,
-            jobSelect.value,
-            raceSelect.value,
-            sexSelect.value
-        );
-        renderCharacterMenu(root);
-    });
-    root.appendChild(createBtn);
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.textContent = 'Cancel';
-    cancelBtn.addEventListener('click', () => {
-        renderCharacterMenu(root);
-    });
-    root.appendChild(cancelBtn);
 }
 
 

@@ -39,6 +39,7 @@ button {
     padding: 2px 6px;
     font-size: 14px;
     margin: 0 2px;
+    width: 28px;
 }
 
 button:hover {
@@ -47,6 +48,13 @@ button:hover {
 
 #menu {
     margin-top: 50px;
+}
+
+.form-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 /* Character slot layout */
@@ -139,7 +147,7 @@ button:hover {
     margin-top: 20px;
 }
 
-.race-img, .job-img {
+.race-img, .job-img, .city-img {
     width: 150px;
     height: auto;
     display: block;

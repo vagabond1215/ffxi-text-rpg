@@ -413,3 +413,47 @@ export function deleteCharacterSlot(index) {
     console.error('Failed to delete character slot', e);
   }
 }
+
+export async function saveCharacterToFile(character) {
+  try {
+    if (!window.showSaveFilePicker) {
+      console.error('File picker API not available');
+      return;
+    }
+    const handle = await window.showSaveFilePicker({
+      suggestedName: `${character.name}.json`,
+      types: [{ description: 'Character Save', accept: { 'application/json': ['.json'] } }]
+    });
+    const writable = await handle.createWritable();
+    await writable.write(JSON.stringify(character, null, 2));
+    await writable.close();
+    character.saveFileHandle = handle;
+    character.saveFileName = handle.name;
+  } catch (e) {
+    console.error('Failed to save character to file', e);
+  }
+}
+
+export async function loadCharacterFromFile() {
+  try {
+    if (!window.showOpenFilePicker) {
+      console.error('File picker API not available');
+      return null;
+    }
+    const [handle] = await window.showOpenFilePicker({
+      types: [{ description: 'Character Save', accept: { 'application/json': ['.json'] } }]
+    });
+    const file = await handle.getFile();
+    const text = await file.text();
+    const character = JSON.parse(text);
+    updateDerivedStats(character);
+    character.saveFileHandle = handle;
+    character.saveFileName = handle.name;
+    characters.unshift(character);
+    activeCharacter = character;
+    return character;
+  } catch (e) {
+    console.error('Failed to load character from file', e);
+    return null;
+  }
+}
