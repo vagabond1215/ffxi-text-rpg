@@ -14,8 +14,9 @@ Open `index.html` in a browser. No build step is required.
   job and level.
 - Character equipment now tracks left and right rings and earrings as well as main and off-hand weapons.
 - A utility function can calculate a character's current stats factoring in race, job and equipment.
-- `updateDerivedStats()` computes HP, MP and status values using level-based formulas derived from race and job proficiencies.
+- `updateDerivedStats()` computes HP, MP and per-stat values using level-based formulas derived from race and job proficiencies. Each attribute (STR, DEX, VIT, AGI, INT, MND and CHR) scales individually.
 - Characters now store numeric scaling values derived from their race and job
   proficiencies. The `proficiencyScale` table maps letter grades to HP, MP and
   status base/scale numbers. These values are kept separately for race and job
   (e.g. `raceHpScale` and `jobHpScale`) alongside level-based placeholders.
+- White Mage traits have been fully verified and are flagged with `traitsVerified` in `jobs.js`.

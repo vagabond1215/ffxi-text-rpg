@@ -13,28 +13,34 @@ function buildScaleFields(raceName, jobName) {
 
   const raceHP = getScale(raceInfo?.proficiencies?.hp);
   const raceMP = getScale(raceInfo?.proficiencies?.mp);
-  const raceStatus = getScale(raceInfo?.proficiencies?.str);
-
   const jobHP = getScale(jobInfo?.proficiencies?.hp);
   const jobMP = getScale(jobInfo?.proficiencies?.mp);
-  const jobStatus = getScale(jobInfo?.proficiencies?.str);
 
-  return {
+  const fields = {
     raceHpScale: raceHP.hpScale,
     raceHpBase: raceHP.hpBase,
     raceHpScaleXXX: raceHP.hpScaleXXX,
     raceMpScale: raceMP.mpScale,
     raceMpBase: raceMP.mpBase,
-    raceStatusScale: raceStatus.statusScale,
-    raceStatusBase: raceStatus.statusBase,
     jobHpScale: jobHP.hpScale,
     jobHpBase: jobHP.hpBase,
     jobHpScaleXXX: jobHP.hpScaleXXX,
     jobMpScale: jobMP.mpScale,
-    jobMpBase: jobMP.mpBase,
-    jobStatusScale: jobStatus.statusScale,
-    jobStatusBase: jobStatus.statusBase
+    jobMpBase: jobMP.mpBase
   };
+
+  const stats = ['str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr'];
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  stats.forEach(stat => {
+    const rScale = getScale(raceInfo?.proficiencies?.[stat]);
+    const jScale = getScale(jobInfo?.proficiencies?.[stat]);
+    fields[`race${cap(stat)}Scale`] = rScale.statusScale;
+    fields[`race${cap(stat)}Base`] = rScale.statusBase;
+    fields[`job${cap(stat)}Scale`] = jScale.statusScale;
+    fields[`job${cap(stat)}Base`] = jScale.statusBase;
+  });
+
+  return fields;
 }
 
 export const characters = [
@@ -244,15 +250,21 @@ export function updateDerivedStats(character) {
 
   const raceHP = getScale(raceInfo?.proficiencies?.hp);
   const raceMP = getScale(raceInfo?.proficiencies?.mp);
-  const raceStatus = getScale(raceInfo?.proficiencies?.str);
-
   const jobHP = getScale(jobInfo?.proficiencies?.hp);
   const jobMP = getScale(jobInfo?.proficiencies?.mp);
-  const jobStatus = getScale(jobInfo?.proficiencies?.str);
+
+  const stats = ['str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr'];
+  const raceStatScale = {};
+  const jobStatScale = {};
+  const subStatScale = {};
+  stats.forEach(stat => {
+    raceStatScale[stat] = getScale(raceInfo?.proficiencies?.[stat]);
+    jobStatScale[stat] = getScale(jobInfo?.proficiencies?.[stat]);
+    subStatScale[stat] = subInfo ? getScale(subInfo.proficiencies?.[stat]) : proficiencyScale.X;
+  });
 
   const subHP = subInfo ? getScale(subInfo.proficiencies?.hp) : proficiencyScale.X;
   const subMP = subInfo ? getScale(subInfo.proficiencies?.mp) : proficiencyScale.X;
-  const subStatus = subInfo ? getScale(subInfo.proficiencies?.str) : proficiencyScale.X;
 
   const mLvX = Math.max(mainLevel - 10, 0);
   const mLvXXX = Math.max(mainLevel - 30, 0);
@@ -273,10 +285,24 @@ export function updateDerivedStats(character) {
   const sJobMPVal = subInfo && subMP.mpScale > 0 ? (subMP.mpScale * (subLevel - 1) + subMP.mpBase) / 2 : 0;
   const mpTotal = raceMPVal + jobMPVal + sJobMPVal;
 
-  const raceStatusVal = raceStatus.statusScale * (mainLevel - 1) + raceStatus.statusBase;
-  const jobStatusVal = jobStatus.statusScale * (mainLevel - 1) + jobStatus.statusBase;
-  const sJobStatusVal = subInfo ? (subStatus.statusScale * (subLevel - 1) + subStatus.statusBase) / 2 : 0;
-  const statusTotal = raceStatusVal + jobStatusVal + sJobStatusVal;
+  const derivedStats = {};
+  const raceStatVals = {};
+  const jobStatVals = {};
+  const sJobStatVals = {};
+  stats.forEach(stat => {
+    const r = raceStatScale[stat].statusScale * (mainLevel - 1) + raceStatScale[stat].statusBase;
+    const j = jobStatScale[stat].statusScale * (mainLevel - 1) + jobStatScale[stat].statusBase;
+    const s = subInfo ? (subStatScale[stat].statusScale * (subLevel - 1) + subStatScale[stat].statusBase) / 2 : 0;
+    raceStatVals[stat] = r;
+    jobStatVals[stat] = j;
+    sJobStatVals[stat] = s;
+    derivedStats[stat] = r + j + s;
+  });
+
+  const raceStatusVal = raceStatVals.str;
+  const jobStatusVal = jobStatVals.str;
+  const sJobStatusVal = sJobStatVals.str;
+  const statusTotal = derivedStats.str;
 
   Object.assign(character, {
     mLvX,
@@ -295,6 +321,16 @@ export function updateDerivedStats(character) {
     mp: mpTotal,
     status: statusTotal
   });
+
+  const statFields = {};
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  stats.forEach(stat => {
+    statFields[`race${cap(stat)}`] = raceStatVals[stat];
+    statFields[`job${cap(stat)}`] = jobStatVals[stat];
+    statFields[`sJob${cap(stat)}`] = sJobStatVals[stat];
+  });
+  Object.assign(character, statFields);
+  character.stats = { ...derivedStats };
 
   return character;
 }
