@@ -153,14 +153,9 @@ function renderNewCharacterForm(root) {
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = randomName(raceNames[0], 'Male');
+    let customName = false;
     nameField.appendChild(nameLabel);
     nameField.appendChild(nameInput);
-    const nameRand = document.createElement('button');
-    nameRand.textContent = 'Random Name';
-    nameRand.addEventListener('click', () => {
-        nameInput.value = randomName(raceSelect.value, sexSelect.value);
-    });
-    nameField.appendChild(nameRand);
     inputs.appendChild(nameField);
 
     const raceField = document.createElement('div');
@@ -183,12 +178,26 @@ function renderNewCharacterForm(root) {
     const sexLabel = document.createElement('label');
     sexLabel.textContent = 'Sex:';
     const sexSelect = document.createElement('select');
-    ['Male', 'Female'].forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s;
-        opt.textContent = s;
-        sexSelect.appendChild(opt);
-    });
+    function updateSexOptions() {
+        const race = raceSelect.value;
+        const options = race === 'Galka'
+            ? ['Male']
+            : race === 'Mithra'
+                ? ['Female']
+                : ['Male', 'Female'];
+        const current = sexSelect.value;
+        sexSelect.innerHTML = '';
+        options.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s;
+            opt.textContent = s;
+            sexSelect.appendChild(opt);
+        });
+        if (options.includes(current)) {
+            sexSelect.value = current;
+        }
+    }
+    updateSexOptions();
     sexField.appendChild(sexLabel);
     sexField.appendChild(sexSelect);
     inputs.appendChild(sexField);
@@ -213,23 +222,29 @@ function renderNewCharacterForm(root) {
     randomBtn.addEventListener('click', () => {
         raceSelect.value = raceNames[Math.floor(Math.random() * raceNames.length)];
         jobSelect.value = baseJobNames[Math.floor(Math.random() * baseJobNames.length)];
-        sexSelect.value = ['Male', 'Female'][Math.floor(Math.random() * 2)];
-        nameInput.value = randomName(raceSelect.value, sexSelect.value);
+        updateSexOptions();
+        const options = Array.from(sexSelect.options).map(o => o.value);
+        sexSelect.value = options[Math.floor(Math.random() * options.length)];
+        if (!customName) {
+            nameInput.value = randomName(raceSelect.value, sexSelect.value);
+        }
+        customName = false;
         updateInfo();
     });
     inputs.appendChild(randomBtn);
+    const raceDesc = document.createElement('p');
+    raceDesc.className = 'race-desc';
+    inputs.appendChild(raceDesc);
 
     form.appendChild(inputs);
     // middle column: stats display
+
     const statsCol = document.createElement('div');
     statsCol.className = 'form-stats';
 
     const raceImg = document.createElement('img');
     raceImg.className = 'race-img';
     statsCol.appendChild(raceImg);
-    const raceDesc = document.createElement('p');
-    raceDesc.className = 'race-desc';
-    statsCol.appendChild(raceDesc);
 
     const statsList = document.createElement('ul');
     statsList.className = 'stats-list';
@@ -246,9 +261,10 @@ function renderNewCharacterForm(root) {
     const jobImg = document.createElement('img');
     jobImg.className = 'job-img';
     infoCol.appendChild(jobImg);
+
     const jobDesc = document.createElement('p');
     jobDesc.className = 'job-desc';
-    infoCol.appendChild(jobDesc);
+    inputs.appendChild(jobDesc);
 
     const traitsHeader = document.createElement('h4');
     traitsHeader.textContent = 'Traits';
@@ -346,8 +362,17 @@ function renderNewCharacterForm(root) {
         }
     }
 
-    nameInput.addEventListener('input', updateInfo);
-    raceSelect.addEventListener('change', updateInfo);
+    nameInput.addEventListener('input', () => {
+        customName = true;
+        updateInfo();
+    });
+    raceSelect.addEventListener('change', () => {
+        updateSexOptions();
+        if (!customName) {
+            nameInput.value = randomName(raceSelect.value, sexSelect.value);
+        }
+        updateInfo();
+    });
     sexSelect.addEventListener('change', updateInfo);
     jobSelect.addEventListener('change', updateInfo);
     updateInfo();
