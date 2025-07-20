@@ -457,3 +457,7 @@ export async function loadCharacterFromFile() {
     return null;
   }
 }
+
+export function setActiveCharacter(character) {
+  activeCharacter = character;
+}

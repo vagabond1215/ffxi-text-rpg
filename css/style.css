@@ -68,8 +68,10 @@ button:hover {
 .slot-entry {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 10px;
+    gap: 5px;
+    text-align: left;
 }
 
 .slot-label {
@@ -79,6 +81,16 @@ button:hover {
 
 .slot-entry button {
     margin-left: 5px;
+}
+
+#slot-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 50px;
+    row-gap: 10px;
+    width: fit-content;
+    margin: 20px auto;
+    text-align: left;
 }
 
 /* Character creation layout */

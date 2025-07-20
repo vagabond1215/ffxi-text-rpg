@@ -9,7 +9,9 @@ import {
     createNewCharacter,
     deleteCharacterSlot,
     saveCharacterToFile,
-    loadCharacterFromFile
+    loadCharacterFromFile,
+    loadCharacterSlot,
+    setActiveCharacter
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages } from '../data/index.js';
 
@@ -97,6 +99,7 @@ export function renderCharacterMenu(root) {
     root.appendChild(newBtn);
 
     const list = document.createElement('div');
+    list.id = 'slot-container';
     const maxSlots = 8;
     const slotCount = Math.min(Math.max(characters.length, 3), maxSlots);
     for (let i = 0; i < slotCount; i++) {
@@ -109,11 +112,19 @@ export function renderCharacterMenu(root) {
         entry.appendChild(label);
 
         const loadBtn = document.createElement('button');
-        loadBtn.textContent = 'Load';
-        loadBtn.addEventListener('click', async () => {
-            await loadCharacterFromFile();
-            renderCharacterMenu(root);
-        });
+        if (ch) {
+            loadBtn.textContent = 'Load';
+            loadBtn.addEventListener('click', () => {
+                setActiveCharacter(ch);
+                renderCharacterMenu(root);
+            });
+        } else {
+            loadBtn.textContent = 'Import';
+            loadBtn.addEventListener('click', async () => {
+                await loadCharacterFromFile();
+                renderCharacterMenu(root);
+            });
+        }
         entry.appendChild(loadBtn);
 
         const saveBtn = document.createElement('button');
