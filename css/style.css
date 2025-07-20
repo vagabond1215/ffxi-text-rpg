@@ -139,3 +139,14 @@ button:hover {
     margin-top: 20px;
 }
 
+.race-img, .job-img {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+.race-desc, .job-desc {
+    margin-bottom: 10px;
+}
+

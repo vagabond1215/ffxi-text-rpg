@@ -14,3 +14,5 @@ export {
   deleteCharacterSlot
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
+export { names, randomName } from './names.js';
+export { raceInfo, jobInfo } from './descriptions.js';
