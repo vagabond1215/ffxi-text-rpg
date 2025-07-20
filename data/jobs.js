@@ -2,6 +2,7 @@ export const jobs = [
   {
     name: 'Warrior',
     proficiencies: { hp: 'B', mp: 'X', str: 'A', dex: 'C', vit: 'D', agi: 'C', int: 'F', mnd: 'F', chr: 'E' },
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Defense Bonus I', effect: 'Increases defense', level: 10 },
       { name: 'Resist Virus I', effect: 'Improves virus resistance', level: 15 },
@@ -62,6 +63,7 @@ export const jobs = [
   {
     name: 'Monk',
     proficiencies: { hp: 'A', mp: 'X', str: 'C', dex: 'B', vit: 'A', agi: 'F', int: 'G', mnd: 'D', chr: 'E' },
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Martial Arts I', effect: 'Reduces hand-to-hand delay', level: 1 },
       { name: 'Subtle Blow I', effect: 'Reduces enemy TP gain', level: 5 },
@@ -121,7 +123,7 @@ export const jobs = [
   {
     name: 'White Mage',
     proficiencies: { hp: 'E', mp: 'C', str: 'D', dex: 'F', vit: 'D', agi: 'E', int: 'E', mnd: 'A', chr: 'C' },
-    traitsVerified: true,
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Magic Defense Bonus', effect: 'Raises magic defense', level: 10 },
       { name: 'Clear Mind', effect: 'Improves MP recovery while resting', level: 20 },
@@ -148,9 +150,8 @@ export const jobs = [
     abilities: [
       { name: 'Benediction', effect: 'Restores HP to party', level: 1 },
       { name: 'Divine Seal', effect: 'Enhances next healing spell', level: 15 },
-      { name: 'Afflatus Misery', effect: 'Changes stance to Misery', level: 30 },
-      { name: 'Afflatus Solace', effect: 'Changes stance to Solace', level: 30 },
-      { name: 'Auspice', effect: 'Enhances party attack and lowers enemy attack', level: 55 },
+      { name: 'Afflatus Misery', effect: 'Changes stance to Misery', level: 40 },
+      { name: 'Afflatus Solace', effect: 'Changes stance to Solace', level: 40 },
       { name: 'Devotion', level: 75 },
       { name: 'Martyr', level: 75 },
       { name: 'Divine Caress', effect: 'Enhances next status removal', level: 83 },
@@ -161,6 +162,7 @@ export const jobs = [
   {
     name: 'Black Mage',
     proficiencies: { hp: 'F', mp: 'B', str: 'F', dex: 'C', vit: 'F', agi: 'C', int: 'A', mnd: 'E', chr: 'D' },
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Magic Attack Bonus I', effect: 'Boosts magic damage', level: 10 },
       { name: 'Clear Mind I', effect: 'Improves MP recovery while resting', level: 15 },
@@ -202,6 +204,7 @@ export const jobs = [
   {
     name: 'Red Mage',
     proficiencies: { hp: 'D', mp: 'D', str: 'D', dex: 'D', vit: 'E', agi: 'E', int: 'C', mnd: 'C', chr: 'D' },
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Resist Petrify I', effect: 'Improves resistance to Petrify', level: 10 },
       { name: 'Fast Cast I', effect: 'Shortens casting time', level: 15 },
@@ -240,6 +243,7 @@ export const jobs = [
   {
     name: 'Thief',
     proficiencies: { hp: 'D', mp: 'X', str: 'D', dex: 'A', vit: 'D', agi: 'B', int: 'C', mnd: 'G', chr: 'G' },
+    verified: { traits: true, abilities: true },
     traits: [
       { name: 'Gilfinder', effect: 'Increases gil obtained', level: 5 },
       { name: 'Evasion Bonus I', effect: 'Increases evasion', level: 10 },
@@ -252,7 +256,7 @@ export const jobs = [
       { name: 'Damage Limit+ I', effect: 'Raises damage cap', level: 50 },
       { name: 'Triple Attack I', effect: 'Chance to attack three times', level: 55 },
       { name: 'Assassin', effect: 'Enhances sneak and trick attack', level: 60 },
-      { name: 'Resist Gravity III', effect: 'Greatly improves Weight resistance', level: 66 },
+      { name: 'Resist Gravity III', effect: 'Greatly improves Weight resistance', level: 60 },
       { name: 'Evasion Bonus IV', effect: 'Greatly increases evasion', level: 70 },
       { name: 'Resist Gravity IV', effect: 'Greater Weight resistance', level: 75 },
       { name: 'Ambush', effect: 'Improves attacks from behind', level: 75 },
@@ -291,13 +295,36 @@ export const jobs = [
   {
     name: 'Paladin',
     proficiencies: { hp: 'C', mp: 'F', str: 'B', dex: 'E', vit: 'A', agi: 'G', int: 'G', mnd: 'C', chr: 'C' },
+    verified: { traits: true, abilities: true },
     traits: [
-      { name: 'Defense Bonus I', effect: 'Raises defense', level: 1 },
-      { name: 'Resist Sleep I', effect: 'Improves sleep resistance', level: 20 },
-      { name: 'Shield Mastery I', effect: 'TP gained when blocking', level: 25 },
-      { name: 'Defense Bonus II', effect: 'Further raises defense', level: 30 },
-      { name: 'Auto Refresh', effect: 'Restores MP over time', level: 35 },
-      { name: 'Resist Sleep II', effect: 'Improves sleep resistance', level: 40 }
+      { name: 'Undead Killer', level: 5 },
+      { name: 'Defense Bonus I', level: 10 },
+      { name: 'Resist Sleep I', level: 20 },
+      { name: 'Shield Mastery I', level: 25 },
+      { name: 'Defense Bonus II', level: 30 },
+      { name: 'Auto Refresh', level: 35 },
+      { name: 'Resist Sleep II', level: 40 },
+      { name: 'Max HP Boost I', level: 45 },
+      { name: 'Defense Bonus III', level: 50 },
+      { name: 'Shield Mastery II', level: 50 },
+      { name: 'Resist Sleep III', level: 60 },
+      { name: 'Defense Bonus IV', level: 70 },
+      { name: 'Shield Barrier', level: 70 },
+      { name: 'Resist Sleep IV', level: 75 },
+      { name: 'Shield Mastery III', level: 75 },
+      { name: 'Iron Will', level: 75 },
+      { name: 'Guardian', level: 75 },
+      { name: 'Defense Bonus V', level: 76 },
+      { name: 'Shield Defense Bonus I', level: 77 },
+      { name: 'Crit. Def. Bonus', level: 79 },
+      { name: 'Resist Sleep V', level: 81 },
+      { name: 'Shield Defense Bonus II', level: 82 },
+      { name: 'Max HP Boost II', level: 85 },
+      { name: 'Undead Killer II', level: 86 },
+      { name: 'Shield Defense Bonus III', level: 88 },
+      { name: 'Defense Bonus VI', level: 91 },
+      { name: 'Shield Defense Bonus IV', level: 93 },
+      { name: 'Shield Mastery IV', level: 96 }
     ],
     abilities: [
       { name: 'Invincible', effect: 'Temporarily nullifies damage', level: 1 },
@@ -369,12 +396,19 @@ export const jobs = [
   {
     name: 'Bard',
     proficiencies: { hp: 'D', mp: 'X', str: 'D', dex: 'D', vit: 'D', agi: 'F', int: 'D', mnd: 'D', chr: 'B' },
+    verified: { traits: true, abilities: true },
     traits: [
-      { name: 'Resist Silence I', effect: 'Improves silence resistance', level: 5 },
-      { name: 'Resist Silence II', effect: 'Improves silence resistance', level: 25 },
-      { name: 'Resist Silence III', effect: 'Improves silence resistance', level: 45 },
-      { name: 'Resist Silence IV', effect: 'Improves silence resistance', level: 65 },
-      { name: 'Fencer I', effect: 'Improves one-handed weapon use', level: 85 }
+      { name: 'Resist Silence I', level: 5 },
+      { name: 'Resist Silence II', level: 25 },
+      { name: 'Resist Silence III', level: 45 },
+      { name: 'Resist Silence IV', level: 65 },
+      { name: 'Con Anima', level: 75 },
+      { name: 'Con Brio', level: 75 },
+      { name: 'Critical Defense Bonus I', level: 80 },
+      { name: 'Resist Silence V', level: 81 },
+      { name: 'Fencer I', level: 85 },
+      { name: 'Critical Defense Bonus II', level: 91 },
+      { name: 'Fencer II', level: 95 }
     ],
     abilities: [
       { name: 'Soul Voice', effect: 'Dramatically enhances songs', level: 1 },
