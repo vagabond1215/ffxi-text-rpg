@@ -11,6 +11,7 @@ import {
     loadCharacterSlot,
     deleteCharacterSlot
 } from '../data/index.js';
+import { randomName, raceInfo, jobInfo } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -151,9 +152,15 @@ function renderNewCharacterForm(root) {
     nameLabel.textContent = 'Name:';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
-    nameInput.value = `Adventurer ${characters.length + 1}`;
+    nameInput.value = randomName(raceNames[0], 'Male');
     nameField.appendChild(nameLabel);
     nameField.appendChild(nameInput);
+    const nameRand = document.createElement('button');
+    nameRand.textContent = 'Random Name';
+    nameRand.addEventListener('click', () => {
+        nameInput.value = randomName(raceSelect.value, sexSelect.value);
+    });
+    nameField.appendChild(nameRand);
     inputs.appendChild(nameField);
 
     const raceField = document.createElement('div');
@@ -207,6 +214,7 @@ function renderNewCharacterForm(root) {
         raceSelect.value = raceNames[Math.floor(Math.random() * raceNames.length)];
         jobSelect.value = baseJobNames[Math.floor(Math.random() * baseJobNames.length)];
         sexSelect.value = ['Male', 'Female'][Math.floor(Math.random() * 2)];
+        nameInput.value = randomName(raceSelect.value, sexSelect.value);
         updateInfo();
     });
     inputs.appendChild(randomBtn);
@@ -215,6 +223,14 @@ function renderNewCharacterForm(root) {
     // middle column: stats display
     const statsCol = document.createElement('div');
     statsCol.className = 'form-stats';
+
+    const raceImg = document.createElement('img');
+    raceImg.className = 'race-img';
+    statsCol.appendChild(raceImg);
+    const raceDesc = document.createElement('p');
+    raceDesc.className = 'race-desc';
+    statsCol.appendChild(raceDesc);
+
     const statsList = document.createElement('ul');
     statsList.className = 'stats-list';
     statsCol.appendChild(statsList);
@@ -226,6 +242,13 @@ function renderNewCharacterForm(root) {
     // right column: traits and abilities
     const infoCol = document.createElement('div');
     infoCol.className = 'form-traits';
+
+    const jobImg = document.createElement('img');
+    jobImg.className = 'job-img';
+    infoCol.appendChild(jobImg);
+    const jobDesc = document.createElement('p');
+    jobDesc.className = 'job-desc';
+    infoCol.appendChild(jobDesc);
 
     const traitsHeader = document.createElement('h4');
     traitsHeader.textContent = 'Traits';
@@ -254,6 +277,11 @@ function renderNewCharacterForm(root) {
             sexSelect.value
         );
         statsList.innerHTML = '';
+        raceImg.src = raceInfo[raceSelect.value]?.image || '';
+        raceDesc.textContent = raceInfo[raceSelect.value]?.description || '';
+        jobImg.src = jobInfo[jobSelect.value]?.image || '';
+        jobDesc.textContent = jobInfo[jobSelect.value]?.description || '';
+
         const statEntries = [
             ['HP', preview.hp],
             ['MP', preview.mp],
