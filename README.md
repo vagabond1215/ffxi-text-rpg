@@ -19,4 +19,7 @@ Open `index.html` in a browser. No build step is required.
   proficiencies. The `proficiencyScale` table maps letter grades to HP, MP and
   status base/scale numbers. These values are kept separately for race and job
   (e.g. `raceHpScale` and `jobHpScale`) alongside level-based placeholders.
-- White Mage traits have been fully verified and are flagged with `traitsVerified` in `jobs.js`.
+- Job data tracks verification status with a `verified` object for each job.
+- Warrior, Monk, Red Mage, Black Mage and Thief have both `verified.traits = true` and `verified.abilities = true`.
+- White Mage is fully verified as well, with `verified.traits = true` and `verified.abilities = true`.
+- Paladin and Bard data has been confirmed, with `verified.traits = true` and `verified.abilities = true` for both jobs.
