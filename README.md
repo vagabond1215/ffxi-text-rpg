@@ -19,3 +19,4 @@ Open `index.html` in a browser. No build step is required.
   proficiencies. The `proficiencyScale` table maps letter grades to HP, MP and
   status base/scale numbers. These values are kept separately for race and job
   (e.g. `raceHpScale` and `jobHpScale`) alongside level-based placeholders.
+- White Mage traits have been fully verified and are flagged with `traitsVerified` in `jobs.js`.
