@@ -35,6 +35,13 @@ button {
     z-index: 1000;
 }
 
+#character-select {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+
 #scale-controls button {
     padding: 2px 6px;
     font-size: 14px;
@@ -62,6 +69,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 10px;
 }
 
 .slot-label {
@@ -147,7 +155,7 @@ button:hover {
     margin-top: 20px;
 }
 
-.race-img, .job-img, .city-img {
+.race-img, .job-img, .city-img, .character-img {
     width: 150px;
     height: auto;
     display: block;
@@ -156,5 +164,19 @@ button:hover {
 
 .race-desc, .job-desc {
     margin-bottom: 10px;
+    text-align: left;
+}
+
+.race-header,
+.job-header {
+    text-align: center;
+}
+
+.stats-list {
+    margin-top: 10px;
+}
+
+.stats-list li {
+    margin-top: 4px;
 }
 

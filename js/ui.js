@@ -22,7 +22,8 @@ export function renderMainMenu() {
     menu.id = 'menu';
 
     const charactersBtn = document.createElement('button');
-    charactersBtn.textContent = 'Characters';
+    charactersBtn.id = 'character-select';
+    charactersBtn.textContent = 'Character Select';
     charactersBtn.addEventListener('click', () => {
         renderCharacterMenu(container);
     });
@@ -43,6 +44,10 @@ export function renderMainMenu() {
         const profile = document.createElement('div');
         profile.id = 'active-profile';
 
+        const charImg = document.createElement('img');
+        charImg.className = 'character-img';
+        charImg.src = raceInfo[activeCharacter.race]?.image || '';
+
         const line1 = document.createElement('div');
         line1.textContent = `${activeCharacter.name} ${activeCharacter.sex} ${activeCharacter.race}`;
         const line2 = document.createElement('div');
@@ -53,10 +58,20 @@ export function renderMainMenu() {
         if (subJob) {
             jobText = `${activeCharacter.job}/${subJob} ${activeCharacter.level}/${subLvl}`;
         }
-        line2.textContent = `${jobText} HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
+        line2.textContent = jobText;
 
+        const line3 = document.createElement('div');
+        line3.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
+
+        const line4 = document.createElement('div');
+        const loc = activeCharacter.currentLocation || activeCharacter.startingCity || 'Unknown';
+        line4.textContent = `Current location: ${loc}`;
+
+        profile.appendChild(charImg);
         profile.appendChild(line1);
         profile.appendChild(line2);
+        profile.appendChild(line3);
+        profile.appendChild(line4);
         container.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -273,6 +288,10 @@ function renderNewCharacterForm(root) {
     const statsCol = document.createElement('div');
     statsCol.className = 'form-stats';
 
+    const raceHeader = document.createElement('h3');
+    raceHeader.className = 'race-header';
+    statsCol.appendChild(raceHeader);
+
     const raceDesc = document.createElement('p');
     raceDesc.className = 'race-desc';
     statsCol.appendChild(raceDesc);
@@ -286,6 +305,10 @@ function renderNewCharacterForm(root) {
     // right column: traits and abilities
     const infoCol = document.createElement('div');
     infoCol.className = 'form-traits';
+
+    const jobHeader = document.createElement('h3');
+    jobHeader.className = 'job-header';
+    infoCol.appendChild(jobHeader);
 
     const jobDesc = document.createElement('p');
     jobDesc.className = 'job-desc';
@@ -322,14 +345,16 @@ function renderNewCharacterForm(root) {
             sexSelect.value
         );
         statsList.innerHTML = '';
+        raceHeader.textContent = raceSelect.value;
         raceImg.src = raceInfo[raceSelect.value]?.image || '';
         raceDesc.textContent = raceInfo[raceSelect.value]?.description || '';
+        jobHeader.textContent = jobSelect.value;
         jobImg.src = jobInfo[jobSelect.value]?.image || '';
         let jd = jobInfo[jobSelect.value]?.description || '';
-        jd = jd.replace(/ (Skills:)/, '<br>$1')
-               .replace(/ (Magic:)/, '<br>$1')
-               .replace(/ (Gear:)/, '<br>$1')
-               .replace(/ (History:)/, '<br>$1');
+        jd = jd.replace(/ (Skills:)/, '<br><br>$1')
+               .replace(/ (Magic:)/, '<br><br>$1')
+               .replace(/ (Gear:)/, '<br><br>$1')
+               .replace(/ (History:)/, '<br><br>$1');
         jobDesc.innerHTML = jd;
 
         const statEntries = [
