@@ -11,8 +11,10 @@ export {
   loadCharacters,
   saveCharacterSlot,
   loadCharacterSlot,
-  deleteCharacterSlot
+  deleteCharacterSlot,
+  saveCharacterToFile,
+  loadCharacterFromFile
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
-export { raceInfo, jobInfo } from './descriptions.js';
+export { raceInfo, jobInfo, cityImages } from './descriptions.js';

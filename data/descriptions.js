@@ -77,3 +77,9 @@ export const jobInfo = {
     image: 'https://via.placeholder.com/150?text=Thief'
   }
 };
+
+export const cityImages = {
+  Bastok: 'https://via.placeholder.com/150?text=Bastok',
+  "San d'Oria": 'https://via.placeholder.com/150?text=San+d%27Oria',
+  Windurst: 'https://via.placeholder.com/150?text=Windurst'
+};
