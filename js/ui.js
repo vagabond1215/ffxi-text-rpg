@@ -58,47 +58,10 @@ export function renderMainMenu() {
         profile.appendChild(line2);
         container.appendChild(profile);
 
-        const info = document.createElement('div');
-        info.className = 'profile-info';
-
-        const buttons = document.createElement('div');
-        buttons.className = 'info-buttons';
-        const display = document.createElement('div');
-        display.className = 'info-display';
-
-        const sections = [
-            { label: 'Traits', data: activeCharacter.traits },
-            { label: 'Abilities', data: activeCharacter.abilities },
-            { label: 'Skills', data: activeCharacter.skills },
-            { label: 'Weapon Skills', data: activeCharacter.weaponSkills },
-            { label: 'Magic', data: activeCharacter.magic }
-        ];
-
-        sections.forEach(sec => {
-            const btn = document.createElement('button');
-            btn.textContent = sec.label;
-            btn.addEventListener('click', () => {
-                display.innerHTML = '';
-                const ul = document.createElement('ul');
-                if (sec.data && sec.data.length) {
-                    sec.data.forEach(item => {
-                        const li = document.createElement('li');
-                        li.textContent = item.name || item;
-                        ul.appendChild(li);
-                    });
-                } else {
-                    const li = document.createElement('li');
-                    li.textContent = 'None';
-                    ul.appendChild(li);
-                }
-                display.appendChild(ul);
-            });
-            buttons.appendChild(btn);
-        });
-
-        info.appendChild(buttons);
-        info.appendChild(display);
-        container.appendChild(info);
+        // Previously the main menu displayed several buttons that allowed the
+        // player to inspect traits, abilities, skills and other details. Those
+        // buttons have been removed to simplify the profile view. The character
+        // information now only shows the basic profile lines above.
     }
 
     return container;
