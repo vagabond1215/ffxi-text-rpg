@@ -13,7 +13,8 @@ export {
   loadCharacterSlot,
   deleteCharacterSlot,
   saveCharacterToFile,
-  loadCharacterFromFile
+  loadCharacterFromFile,
+  setActiveCharacter
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
