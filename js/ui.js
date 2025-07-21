@@ -12,7 +12,9 @@ import {
     loadCharacterFromFile,
     loadCharacterSlot,
     setActiveCharacter,
-    locations
+    locations,
+    vendorInventories,
+    items
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, parseLevel } from '../data/index.js';
 
@@ -515,13 +517,17 @@ export function renderAreaScreen(root) {
         loc.connectedAreas.forEach(area => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
-            const total = getZoneTravelTurns(area);
+            const total = getZoneTravelTurns(area, loc.name);
             const travel = activeCharacter.travel &&
                 activeCharacter.travel.start === loc.name &&
                 activeCharacter.travel.destination === area
                 ? activeCharacter.travel.remaining
                 : total;
-            btn.textContent = `${area} (${travel}/${total})`;
+            if (total > 1) {
+                btn.textContent = `${area} (${travel}/${total})`;
+            } else {
+                btn.textContent = area;
+            }
             btn.addEventListener('click', () => {
                 if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
                     activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
@@ -796,6 +802,73 @@ export function Magic() {
     console.log('Magic not implemented');
 }
 
+function buyItem(id, qty = 1) {
+    const item = items[id];
+    const cost = item.price * qty;
+    if (activeCharacter.gil < cost) {
+        alert('Not enough gil!');
+        return;
+    }
+    activeCharacter.gil -= cost;
+    const existing = activeCharacter.inventory.find(i => i.id === id);
+    if (existing) {
+        existing.qty += qty;
+    } else {
+        activeCharacter.inventory.push({ id, qty });
+    }
+    alert(`Purchased ${qty} x ${item.name}.`);
+}
+
+export function renderVendorScreen(root, vendor) {
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = vendor;
+    root.appendChild(title);
+    const list = document.createElement('div');
+    list.className = 'vendor-list';
+    const inv = vendorInventories[vendor] || [];
+    inv.forEach(id => {
+        const item = items[id];
+        const row = document.createElement('div');
+        row.className = 'vendor-item';
+        const name = document.createElement('span');
+        name.textContent = `${item.name} - ${item.price} gil`;
+        row.appendChild(name);
+        const detail = document.createElement('button');
+        detail.textContent = 'Details';
+        detail.addEventListener('click', () => alert(item.description || item.name));
+        row.appendChild(detail);
+        let qtyInput = null;
+        if (item.stack > 1) {
+            qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.min = '1';
+            qtyInput.max = String(item.stack);
+            qtyInput.value = '1';
+            qtyInput.className = 'vendor-qty';
+            row.appendChild(qtyInput);
+        }
+        const buyBtn = document.createElement('button');
+        buyBtn.textContent = 'Buy';
+        buyBtn.addEventListener('click', () => {
+            const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+            buyItem(id, q);
+        });
+        row.appendChild(buyBtn);
+        list.appendChild(row);
+    });
+    root.appendChild(list);
+    const back = document.createElement('button');
+    back.textContent = 'Back';
+    back.addEventListener('click', () => renderAreaScreen(root));
+    root.appendChild(back);
+}
+
 function openMenu(name) {
-    alert(`Opening menu for ${name}`);
+    const root = document.getElementById('app');
+    if (vendorInventories[name]) {
+        renderVendorScreen(root, name);
+    } else {
+        alert(`Opening menu for ${name}`);
+    }
 }

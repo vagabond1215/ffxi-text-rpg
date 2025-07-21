@@ -48,9 +48,9 @@ export function baseEncounterChanceForZone(playerLevel, zone) {
   return maxChance;
 }
 
-export function getZoneTravelTurns(zone) {
+export function getZoneTravelTurns(zone, baseZone = zone) {
   const info = locations.find(l => l.name === zone);
-  const hasMonsters = (bestiaryByZone[zone] && bestiaryByZone[zone].length > 0);
+  const hasMonsters = bestiaryByZone[baseZone] && bestiaryByZone[baseZone].length > 0;
   const defaultTurns = hasMonsters ? 10 : 1;
   return info && info.travelTurns ? info.travelTurns : defaultTurns;
 }

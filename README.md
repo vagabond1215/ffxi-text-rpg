@@ -33,3 +33,5 @@ Open `index.html` in a browser. No build step is required.
   (capped at ten).
 - Encountering a monster now opens a battle screen showing player and enemy
   details with an initiative roll to decide who acts first.
+- City vendors now sell basic weapons, armor, scrolls and consumables at
+  canonical prices. Stackable items include a quantity selector when purchasing.

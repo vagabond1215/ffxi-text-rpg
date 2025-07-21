@@ -246,3 +246,26 @@ body.portrait .character-form {
     margin-top: 4px;
 }
 
+.vendor-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.vendor-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vendor-item span {
+    flex: 1;
+    text-align: left;
+}
+
+.vendor-qty {
+    width: 60px;
+}
+
