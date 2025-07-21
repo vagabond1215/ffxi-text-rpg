@@ -37,15 +37,8 @@ export function renderMainMenu() {
         renderAreaScreen(container);
     });
 
-    const travelMainBtn = document.createElement('button');
-    travelMainBtn.textContent = 'Travel';
-    travelMainBtn.addEventListener('click', () => {
-        renderTravelScreen(container);
-    });
-
     menu.appendChild(charactersBtn);
     menu.appendChild(areaBtn);
-    menu.appendChild(travelMainBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
@@ -509,40 +502,87 @@ export function renderAreaScreen(root) {
         const grid = document.createElement('div');
         grid.id = 'area-grid';
 
-        const poiCol = document.createElement('div');
-        poiCol.className = 'area-column';
-        const poiHeader = document.createElement('h3');
-        poiHeader.textContent = 'Points of Interest';
-        poiCol.appendChild(poiHeader);
-        const poiList = document.createElement('ul');
-        loc.pointsOfInterest.forEach(p => {
+        const travelCol = document.createElement('div');
+        travelCol.className = 'area-column';
+        const travelHeader = document.createElement('h3');
+        travelHeader.textContent = 'Travel';
+        travelCol.appendChild(travelHeader);
+        const travelList = document.createElement('ul');
+
+        const travelKeywords = /(airship|ferry|chocobo|home point|gate|dock|boat)/i;
+        const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
+
+        loc.connectedAreas.forEach(area => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = area;
+            btn.addEventListener('click', () => {
+                activeCharacter.currentLocation = area;
+                renderAreaScreen(root);
+            });
+            li.appendChild(btn);
+            travelList.appendChild(li);
+        });
+
+        travelPOIs.forEach(p => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = p;
             btn.addEventListener('click', () => openMenu(p));
             li.appendChild(btn);
-            poiList.appendChild(li);
+            travelList.appendChild(li);
         });
-        poiCol.appendChild(poiList);
+        travelCol.appendChild(travelList);
 
-        const npcCol = document.createElement('div');
-        npcCol.className = 'area-column';
-        const npcHeader = document.createElement('h3');
-        npcHeader.textContent = 'NPCs';
-        npcCol.appendChild(npcHeader);
-        const npcList = document.createElement('ul');
+        const marketCol = document.createElement('div');
+        marketCol.className = 'area-column';
+        const marketHeader = document.createElement('h3');
+        marketHeader.textContent = 'Marketplace';
+        marketCol.appendChild(marketHeader);
+        const marketList = document.createElement('ul');
+
+        const marketKeywords = /(shop|store|auction|guild|merchant|market)/i;
+        const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p));
+
+        marketPOIs.forEach(p => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = p;
+            btn.addEventListener('click', () => openMenu(p));
+            li.appendChild(btn);
+            marketList.appendChild(li);
+        });
+        marketCol.appendChild(marketList);
+
+        const otherCol = document.createElement('div');
+        otherCol.className = 'area-column';
+        const otherHeader = document.createElement('h3');
+        otherHeader.textContent = 'Other';
+        otherCol.appendChild(otherHeader);
+        const otherList = document.createElement('ul');
+
+        loc.pointsOfInterest.forEach(p => {
+            if (travelPOIs.includes(p) || marketPOIs.includes(p)) return;
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = p;
+            btn.addEventListener('click', () => openMenu(p));
+            li.appendChild(btn);
+            otherList.appendChild(li);
+        });
         loc.importantNPCs.forEach(n => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = n;
             btn.addEventListener('click', () => openMenu(n));
             li.appendChild(btn);
-            npcList.appendChild(li);
+            otherList.appendChild(li);
         });
-        npcCol.appendChild(npcList);
+        otherCol.appendChild(otherList);
 
-        grid.appendChild(poiCol);
-        grid.appendChild(npcCol);
+        grid.appendChild(travelCol);
+        grid.appendChild(marketCol);
+        grid.appendChild(otherCol);
         root.appendChild(grid);
     }
 

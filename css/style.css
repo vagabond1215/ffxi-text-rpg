@@ -70,6 +70,12 @@ button:hover {
     margin-top: 20px;
 }
 
+.area-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .area-column ul {
     list-style: none;
     padding: 0;
