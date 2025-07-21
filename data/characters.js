@@ -76,6 +76,7 @@ export const characters = [
     raceMP: 0,
     jobMP: 0,
     sJobMP: 0,
+    travel: null,
     equipment: {
       head: null,
       body: null,
@@ -125,6 +126,7 @@ export const characters = [
     raceMP: 0,
     jobMP: 0,
     sJobMP: 0,
+    travel: null,
     equipment: {
       head: null,
       body: null,
@@ -181,6 +183,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     raceMP: 0,
     jobMP: 0,
     sJobMP: 0,
+    travel: null,
     equipment: {
       head: null,
       body: null,

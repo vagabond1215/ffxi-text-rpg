@@ -14,7 +14,7 @@ import {
     setActiveCharacter,
     locations
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -515,9 +515,24 @@ export function renderAreaScreen(root) {
         loc.connectedAreas.forEach(area => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
-            btn.textContent = area;
+            const total = getZoneTravelTurns(area);
+            const travel = activeCharacter.travel &&
+                activeCharacter.travel.start === loc.name &&
+                activeCharacter.travel.destination === area
+                ? activeCharacter.travel.remaining
+                : total;
+            btn.textContent = `${area} (${travel}/${total})`;
             btn.addEventListener('click', () => {
-                activeCharacter.currentLocation = area;
+                if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
+                    activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
+                }
+                const mob = rollForEncounter(activeCharacter, loc.name);
+                if (mob) alert(`A wild ${mob.name} appears!`);
+                activeCharacter.travel.remaining -= 1;
+                if (activeCharacter.travel.remaining <= 0) {
+                    activeCharacter.currentLocation = area;
+                    activeCharacter.travel = null;
+                }
                 renderAreaScreen(root);
             });
             li.appendChild(btn);
