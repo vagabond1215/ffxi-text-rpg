@@ -25,3 +25,4 @@ Open `index.html` in a browser. No build step is required.
 - Paladin and Bard data has been confirmed, with `verified.traits = true` and `verified.abilities = true` for both jobs.
 - Initial bestiary data lists low-level monsters for zones adjacent to the three starting cities.
 - `experienceForKill(level, targetLevel)` replicates FFXI's EXP table including level difference adjustments.
+- Basic encounter simulation using `walkAcrossZone()` and `rollForEncounter()` with level-based aggro rates.
