@@ -20,3 +20,5 @@ export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
 export { raceInfo, jobInfo, cityImages } from './descriptions.js';
 export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
+export { bestiaryByZone, allMonsters } from './bestiary.js';
+export { experienceTable, experienceForKill } from './experience.js';

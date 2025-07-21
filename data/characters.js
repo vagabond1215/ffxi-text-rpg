@@ -7,6 +7,7 @@ const aldoScale = buildScaleFields('Hume', 'Thief');
 const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
 
 export let activeCharacter = null;
+const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter';
 
 function buildScaleFields(raceName, jobName) {
   const raceInfo = races.find(r => r.name === raceName);
@@ -206,7 +207,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
 export function createNewCharacter(name = `Adventurer ${characters.length + 1}`, job, race, sex = 'Male') {
   const character = createCharacterObject(name, job, race, sex);
   characters.unshift(character);
-  activeCharacter = character;
+  setActiveCharacter(character);
   return character;
 }
 
@@ -384,7 +385,9 @@ export function loadCharacters() {
       characters.push(c);
       updateDerivedStats(c);
     });
-    activeCharacter = characters[0] || null;
+    const lastName = localStorage.getItem(LAST_ACTIVE_KEY);
+    activeCharacter = characters.find(c => c.name === lastName) || characters[0] || null;
+    setActiveCharacter(activeCharacter);
   } catch (e) {
     console.error('Failed to load characters', e);
   }
@@ -396,7 +399,7 @@ export function loadCharacterSlot(index) {
     if (!saved[index]) return;
     characters[index] = saved[index];
     updateDerivedStats(characters[index]);
-    activeCharacter = characters[index];
+    setActiveCharacter(characters[index]);
   } catch (e) {
     console.error('Failed to load character slot', e);
   }
@@ -410,7 +413,7 @@ export function deleteCharacterSlot(index) {
     saved[index] = null;
     localStorage.setItem('ffxiCharacters', JSON.stringify(saved));
     if (characters[index] && characters[index] === activeCharacter) {
-      activeCharacter = null;
+      setActiveCharacter(null);
     }
     characters[index] = null;
   } catch (e) {
@@ -454,7 +457,7 @@ export async function loadCharacterFromFile() {
     character.saveFileHandle = handle;
     character.saveFileName = handle.name;
     characters.unshift(character);
-    activeCharacter = character;
+    setActiveCharacter(character);
     return character;
   } catch (e) {
     console.error('Failed to load character from file', e);
@@ -464,4 +467,13 @@ export async function loadCharacterFromFile() {
 
 export function setActiveCharacter(character) {
   activeCharacter = character;
+  try {
+    if (character) {
+      localStorage.setItem(LAST_ACTIVE_KEY, character.name);
+    } else {
+      localStorage.removeItem(LAST_ACTIVE_KEY);
+    }
+  } catch (e) {
+    console.error('Failed to save last active character', e);
+  }
 }
