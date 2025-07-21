@@ -11,7 +11,8 @@ import {
     saveCharacterToFile,
     loadCharacterFromFile,
     loadCharacterSlot,
-    setActiveCharacter
+    setActiveCharacter,
+    locations
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages } from '../data/index.js';
 
@@ -30,14 +31,21 @@ export function renderMainMenu() {
         renderCharacterMenu(container);
     });
 
-    const adventureBtn = document.createElement('button');
-    adventureBtn.textContent = 'Adventure';
-    adventureBtn.addEventListener('click', () => {
-        renderPlayUI(container);
+    const areaBtn = document.createElement('button');
+    areaBtn.textContent = 'Area';
+    areaBtn.addEventListener('click', () => {
+        renderAreaScreen(container);
+    });
+
+    const travelMainBtn = document.createElement('button');
+    travelMainBtn.textContent = 'Travel';
+    travelMainBtn.addEventListener('click', () => {
+        renderTravelScreen(container);
     });
 
     menu.appendChild(charactersBtn);
-    menu.appendChild(adventureBtn);
+    menu.appendChild(areaBtn);
+    menu.appendChild(travelMainBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
@@ -486,6 +494,80 @@ export function renderPlayUI(root) {
     });
 
     root.appendChild(document.createElement('br'));
+    root.appendChild(back);
+}
+
+export function renderAreaScreen(root) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    const loc = locations.find(l => l.name === activeCharacter.currentLocation);
+    const title = document.createElement('h2');
+    title.textContent = loc ? loc.name : 'Unknown Area';
+    root.appendChild(title);
+
+    if (loc) {
+        const poiHeader = document.createElement('h3');
+        poiHeader.textContent = 'Points of Interest';
+        root.appendChild(poiHeader);
+        const poiList = document.createElement('ul');
+        loc.pointsOfInterest.forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = p;
+            poiList.appendChild(li);
+        });
+        root.appendChild(poiList);
+
+        const npcHeader = document.createElement('h3');
+        npcHeader.textContent = 'Important NPCs';
+        root.appendChild(npcHeader);
+        const npcList = document.createElement('ul');
+        loc.importantNPCs.forEach(n => {
+            const li = document.createElement('li');
+            li.textContent = n;
+            npcList.appendChild(li);
+        });
+        root.appendChild(npcList);
+    }
+
+    const back = document.createElement('button');
+    back.textContent = 'Back';
+    back.addEventListener('click', () => {
+        const menu = renderMainMenu();
+        root.replaceWith(menu);
+    });
+    root.appendChild(back);
+}
+
+export function renderTravelScreen(root) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    const loc = locations.find(l => l.name === activeCharacter.currentLocation);
+    const title = document.createElement('h2');
+    title.textContent = 'Travel';
+    root.appendChild(title);
+
+    const list = document.createElement('ul');
+    if (loc) {
+        loc.connectedAreas.forEach(area => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = area;
+            btn.addEventListener('click', () => {
+                activeCharacter.currentLocation = area;
+                renderAreaScreen(root);
+            });
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+    }
+    root.appendChild(list);
+
+    const back = document.createElement('button');
+    back.textContent = 'Back';
+    back.addEventListener('click', () => {
+        const menu = renderMainMenu();
+        root.replaceWith(menu);
+    });
     root.appendChild(back);
 }
 

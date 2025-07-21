@@ -1,5 +1,6 @@
 import { jobs, jobNames } from './jobs.js';
 import { races, raceNames, startingCities } from './races.js';
+import { zonesByCity } from './locations.js';
 import { getScale, proficiencyScale } from './scales.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
@@ -50,6 +51,7 @@ export const characters = [
     sex: 'Male',
     job: 'Thief',
     startingCity: startingCities['Hume'],
+    currentLocation: zonesByCity[startingCities['Hume']][0].name,
     level: 99,
     stats: { str: 70, dex: 90, vit: 70, agi: 80, int: 60, mnd: 60, chr: 70 },
     hp: 1200,
@@ -98,6 +100,7 @@ export const characters = [
     sex: 'Female',
     job: 'Black Mage',
     startingCity: startingCities['Tarutaru'],
+    currentLocation: zonesByCity[startingCities['Tarutaru']][0].name,
     level: 99,
     stats: { str: 40, dex: 60, vit: 50, agi: 60, int: 95, mnd: 80, chr: 70 },
     hp: 1000,
@@ -153,6 +156,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     sex,
     job: selectedJob,
     startingCity: startingCities[selectedRace],
+    currentLocation: zonesByCity[startingCities[selectedRace]][0].name,
     level: 1,
     stats: { str: 10, dex: 10, vit: 10, agi: 10, int: 10, mnd: 10, chr: 10 },
     hp: 50,
