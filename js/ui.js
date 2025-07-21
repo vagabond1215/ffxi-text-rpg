@@ -506,27 +506,44 @@ export function renderAreaScreen(root) {
     root.appendChild(title);
 
     if (loc) {
+        const grid = document.createElement('div');
+        grid.id = 'area-grid';
+
+        const poiCol = document.createElement('div');
+        poiCol.className = 'area-column';
         const poiHeader = document.createElement('h3');
         poiHeader.textContent = 'Points of Interest';
-        root.appendChild(poiHeader);
+        poiCol.appendChild(poiHeader);
         const poiList = document.createElement('ul');
         loc.pointsOfInterest.forEach(p => {
             const li = document.createElement('li');
-            li.textContent = p;
+            const btn = document.createElement('button');
+            btn.textContent = p;
+            btn.addEventListener('click', () => openMenu(p));
+            li.appendChild(btn);
             poiList.appendChild(li);
         });
-        root.appendChild(poiList);
+        poiCol.appendChild(poiList);
 
+        const npcCol = document.createElement('div');
+        npcCol.className = 'area-column';
         const npcHeader = document.createElement('h3');
-        npcHeader.textContent = 'Important NPCs';
-        root.appendChild(npcHeader);
+        npcHeader.textContent = 'NPCs';
+        npcCol.appendChild(npcHeader);
         const npcList = document.createElement('ul');
         loc.importantNPCs.forEach(n => {
             const li = document.createElement('li');
-            li.textContent = n;
+            const btn = document.createElement('button');
+            btn.textContent = n;
+            btn.addEventListener('click', () => openMenu(n));
+            li.appendChild(btn);
             npcList.appendChild(li);
         });
-        root.appendChild(npcList);
+        npcCol.appendChild(npcList);
+
+        grid.appendChild(poiCol);
+        grid.appendChild(npcCol);
+        root.appendChild(grid);
     }
 
     const back = document.createElement('button');
@@ -585,4 +602,8 @@ export function Skills() {
 
 export function Magic() {
     console.log('Magic not implemented');
+}
+
+function openMenu(name) {
+    alert(`Opening menu for ${name}`);
 }
