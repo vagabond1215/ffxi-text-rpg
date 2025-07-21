@@ -26,3 +26,10 @@ Open `index.html` in a browser. No build step is required.
 - Initial bestiary data lists low-level monsters for zones adjacent to the three starting cities.
 - `experienceForKill(level, targetLevel)` replicates FFXI's EXP table including level difference adjustments.
 - Basic encounter simulation using `walkAcrossZone()` and `rollForEncounter()` with level-based aggro rates.
+- Traveling through non-combat zones (areas without entries in the bestiary) only
+  takes a single turn and never triggers encounters.
+- Leaving a zone begins a return counter at `1/10`. Each subsequent turn spent
+  moving away from the previous zone increases the turns required to return
+  (capped at ten).
+- Encountering a monster now opens a battle screen showing player and enemy
+  details with an initiative roll to decide who acts first.

@@ -14,7 +14,7 @@ import {
     setActiveCharacter,
     locations
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, parseLevel } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -527,11 +527,24 @@ export function renderAreaScreen(root) {
                     activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
                 }
                 const mob = rollForEncounter(activeCharacter, loc.name);
-                if (mob) alert(`A wild ${mob.name} appears!`);
+                if (mob) {
+                    renderCombatScreen(root, mob, area);
+                    return;
+                }
                 activeCharacter.travel.remaining -= 1;
                 if (activeCharacter.travel.remaining <= 0) {
+                    const prev = loc.name;
                     activeCharacter.currentLocation = area;
                     activeCharacter.travel = null;
+                    if (activeCharacter.returnJourney) {
+                        if (area === activeCharacter.returnJourney.zone) {
+                            activeCharacter.returnJourney = null;
+                        } else {
+                            activeCharacter.returnJourney.turns = Math.min(activeCharacter.returnJourney.turns + 1, 10);
+                        }
+                    } else {
+                        activeCharacter.returnJourney = { zone: prev, turns: 1 };
+                    }
                 }
                 renderAreaScreen(root);
             });
@@ -608,6 +621,130 @@ export function renderAreaScreen(root) {
         root.replaceWith(menu);
     });
     root.appendChild(back);
+}
+
+function renderCombatScreen(root, mob, destination) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    const container = document.createElement('div');
+    container.id = 'combat-screen';
+
+    const playerDiv = document.createElement('div');
+    playerDiv.className = 'combat-player';
+    playerDiv.innerHTML = `<h3>${activeCharacter.name}</h3><div id="player-hp">HP: ${activeCharacter.hp}</div>`;
+
+    mob.currentHP = parseLevel(mob.level) * 20;
+    const mobDiv = document.createElement('div');
+    mobDiv.className = 'combat-monster';
+    mobDiv.innerHTML = `<h3>${mob.name}</h3><div id="mob-hp">HP: ${mob.currentHP}</div>`;
+
+    const logDiv = document.createElement('div');
+    logDiv.id = 'combat-log';
+    logDiv.className = 'combat-log';
+
+    container.appendChild(playerDiv);
+    container.appendChild(logDiv);
+    container.appendChild(mobDiv);
+    root.appendChild(container);
+
+    const playerInit = activeCharacter.stats.dex + activeCharacter.stats.agi;
+    const mobInit = parseLevel(mob.level) * 2;
+
+    const playerStats = {
+        atk: activeCharacter.stats.str + activeCharacter.level,
+        def: activeCharacter.stats.vit + activeCharacter.level,
+        acc: activeCharacter.stats.dex + activeCharacter.level,
+        eva: activeCharacter.stats.agi + activeCharacter.level
+    };
+    const mobStats = {
+        atk: mobInit + 10,
+        def: mobInit + 10,
+        acc: mobInit + 10,
+        eva: mobInit + 10
+    };
+
+    function log(msg) {
+        const p = document.createElement('div');
+        p.textContent = msg;
+        logDiv.appendChild(p);
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function update() {
+        document.getElementById('player-hp').textContent = `HP: ${activeCharacter.hp}`;
+        document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
+    }
+
+    function attack(attacker, defender, aStats, dStats) {
+        const hitChance = Math.min(0.95, Math.max(0.05, (aStats.acc - dStats.eva + 50) / 100));
+        if (Math.random() < hitChance) {
+            const dmg = Math.max(1, aStats.atk - dStats.def + Math.floor(Math.random() * 5));
+            if (defender === activeCharacter) {
+                activeCharacter.hp -= dmg;
+            } else {
+                mob.currentHP -= dmg;
+            }
+            log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
+        } else {
+            log(`${attacker.name} misses.`);
+        }
+        update();
+    }
+
+    function endBattle() {
+        const btn = document.createElement('button');
+        btn.textContent = 'Continue';
+        btn.addEventListener('click', () => {
+            if (destination) {
+                activeCharacter.currentLocation = destination;
+            }
+            renderAreaScreen(root);
+        });
+        root.appendChild(btn);
+    }
+
+    function monsterTurn() {
+        if (mob.currentHP <= 0) return endBattle();
+        attack(mob, activeCharacter, mobStats, playerStats);
+        if (activeCharacter.hp > 0) {
+            playerTurn();
+        } else {
+            endBattle();
+        }
+    }
+
+    function playerTurn() {
+        if (mob.currentHP <= 0) return endBattle();
+        const actionDiv = document.createElement('div');
+        const select = document.createElement('select');
+        const opt = document.createElement('option');
+        opt.value = 'attack';
+        opt.textContent = 'Attack';
+        select.appendChild(opt);
+        const go = document.createElement('button');
+        go.textContent = 'Go';
+        actionDiv.appendChild(select);
+        actionDiv.appendChild(go);
+        root.appendChild(actionDiv);
+        go.addEventListener('click', () => {
+            root.removeChild(actionDiv);
+            attack(activeCharacter, mob, playerStats, mobStats);
+            if (mob.currentHP > 0) {
+                monsterTurn();
+            } else {
+                endBattle();
+            }
+        });
+    }
+
+    log(`A ${mob.name} appears!`);
+    update();
+
+    if (playerInit >= mobInit) {
+        playerTurn();
+    } else {
+        monsterTurn();
+    }
 }
 
 export function renderTravelScreen(root) {
