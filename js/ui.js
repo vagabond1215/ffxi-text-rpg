@@ -41,6 +41,51 @@ export function hideBackButton() {
     backButtonElement.onclick = null;
 }
 
+export function renderUserControls() {
+    const container = document.getElementById('user-controls');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const label = document.createElement('label');
+    label.textContent = 'User:';
+    label.htmlFor = 'user-select';
+
+    const userSelect = document.createElement('select');
+    userSelect.id = 'user-select';
+    loadUsers().forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u;
+        opt.textContent = u;
+        userSelect.appendChild(opt);
+    });
+    userSelect.value = currentUser || '';
+    userSelect.addEventListener('change', () => {
+        setCurrentUser(userSelect.value);
+        const root = document.getElementById('app').firstElementChild;
+        if (root) {
+            renderCharacterMenu(root);
+        }
+    });
+
+    const newUserBtn = document.createElement('button');
+    newUserBtn.id = 'new-user-btn';
+    newUserBtn.textContent = 'New User';
+    newUserBtn.addEventListener('click', () => {
+        const name = prompt('Enter new username');
+        if (name) {
+            addUser(name);
+            setCurrentUser(name);
+            renderUserControls();
+            const root = document.getElementById('app').firstElementChild;
+            if (root) renderCharacterMenu(root);
+        }
+    });
+
+    container.appendChild(label);
+    container.appendChild(userSelect);
+    container.appendChild(newUserBtn);
+}
+
 function getAttack(character) {
     const weapon = items[character.equipment?.mainHand];
     const dmg = weapon?.damage || 0;
@@ -92,6 +137,35 @@ function itemDetailsText(item) {
     if (item.defense !== undefined) parts.push(`DEF: ${item.defense}`);
     if (item.element) parts.push(`Element: ${item.element}`);
     return parts.join('\n');
+}
+
+function basicStatsText(item) {
+    const parts = [];
+    if (item.damage !== undefined) parts.push(`DMG ${item.damage}`);
+    if (item.delay !== undefined) parts.push(`Delay ${item.delay}`);
+    if (item.defense !== undefined) parts.push(`DEF ${item.defense}`);
+    return parts.join(' ');
+}
+
+function meetsRequirements(item) {
+    if (item.levelRequirement > activeCharacter.level) return false;
+    if (item.sex && item.sex !== activeCharacter.sex) return false;
+    if (item.races && !item.races.includes(activeCharacter.race)) return false;
+    if (item.jobs && !item.jobs.includes(activeCharacter.job)) return false;
+    return true;
+}
+
+function isBetterItem(item) {
+    if (!item.slot) return false;
+    const current = items[activeCharacter.equipment?.[item.slot]];
+    if (!current) return true;
+    if (item.damage !== undefined && current.damage !== undefined) {
+        return item.damage > current.damage;
+    }
+    if (item.defense !== undefined && current.defense !== undefined) {
+        return item.defense > current.defense;
+    }
+    return false;
 }
 
 function characterSummary() {
@@ -193,34 +267,6 @@ export function renderCharacterMenu(root) {
     const title = document.createElement('h2');
     title.textContent = 'Characters';
     root.appendChild(title);
-
-    const userDiv = document.createElement('div');
-    userDiv.className = 'user-select';
-    const userSelect = document.createElement('select');
-    loadUsers().forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u;
-        opt.textContent = u;
-        userSelect.appendChild(opt);
-    });
-    userSelect.value = currentUser || '';
-    userSelect.addEventListener('change', () => {
-        setCurrentUser(userSelect.value);
-        renderCharacterMenu(root);
-    });
-    const newUserBtn = document.createElement('button');
-    newUserBtn.textContent = 'New User';
-    newUserBtn.addEventListener('click', () => {
-        const name = prompt('Enter new username');
-        if (name) {
-            addUser(name);
-            setCurrentUser(name);
-            renderCharacterMenu(root);
-        }
-    });
-    userDiv.appendChild(userSelect);
-    userDiv.appendChild(newUserBtn);
-    root.appendChild(userDiv);
     if (!currentUser) {
         const msg = document.createElement('div');
         msg.textContent = 'Create a user to start saving characters.';
@@ -1089,8 +1135,14 @@ export function renderVendorScreen(root, vendor) {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
         const name = document.createElement('span');
-        name.textContent = `${item.name} - ${item.price} gil`;
+        name.textContent = item.name;
+        if (!meetsRequirements(item)) name.style.color = 'red';
+        else if (canEquipItem(item) && isBetterItem(item)) name.style.color = 'lightgreen';
         top.appendChild(name);
+        const price = document.createElement('span');
+        price.textContent = ` - ${item.price} gil`;
+        if (item.price > activeCharacter.gil) price.style.color = 'red';
+        top.appendChild(price);
         const detail = document.createElement('button');
         detail.textContent = 'Details';
         detail.addEventListener('click', () => alert(itemDetailsText(item)));
@@ -1117,6 +1169,13 @@ export function renderVendorScreen(root, vendor) {
         desc.className = 'item-description';
         desc.textContent = item.description || item.name;
         row.appendChild(desc);
+        const stats = basicStatsText(item);
+        if (stats) {
+            const s = document.createElement('div');
+            s.className = 'item-stats';
+            s.textContent = stats;
+            row.appendChild(s);
+        }
         const req = requirementText(item);
         if (req) {
             const r = document.createElement('div');
@@ -1156,12 +1215,22 @@ export function renderEquipmentScreen(root) {
             const item = items[itemId];
             const nameDiv = document.createElement('div');
             nameDiv.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            if (item) {
+                if (!meetsRequirements(item)) nameDiv.style.color = 'red';
+            }
             li.appendChild(nameDiv);
             if (item) {
                 const desc = document.createElement('div');
                 desc.className = 'item-description';
                 desc.textContent = item.description || item.name;
                 li.appendChild(desc);
+                const stats = basicStatsText(item);
+                if (stats) {
+                    const s = document.createElement('div');
+                    s.className = 'item-stats';
+                    s.textContent = stats;
+                    li.appendChild(s);
+                }
                 const reqTxt = requirementText(item);
                 if (reqTxt) {
                     const r = document.createElement('div');
@@ -1201,12 +1270,7 @@ function getItemCategory(item) {
 }
 
 function canEquipItem(item) {
-    if (!item.slot) return false;
-    if (item.levelRequirement > activeCharacter.level) return false;
-    if (item.sex && item.sex !== activeCharacter.sex) return false;
-    if (item.races && !item.races.includes(activeCharacter.race)) return false;
-    if (item.jobs && !item.jobs.includes(activeCharacter.job)) return false;
-    return true;
+    return item.slot && meetsRequirements(item);
 }
 
 function requirementText(item) {
@@ -1254,7 +1318,12 @@ export function renderInventoryScreen(root) {
         ul.className = 'inventory-list';
         list.forEach(ent => {
             const li = document.createElement('li');
-            li.textContent = `${ent.item.name} x${ent.qty}`;
+            const nameSpan = document.createElement('span');
+            const qtyText = ent.item.stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
+            nameSpan.textContent = ent.item.name + qtyText;
+            if (!meetsRequirements(ent.item)) nameSpan.style.color = 'red';
+            else if (canEquipItem(ent.item) && isBetterItem(ent.item)) nameSpan.style.color = 'lightgreen';
+            li.appendChild(nameSpan);
             const details = document.createElement('button');
             details.textContent = 'Details';
             details.addEventListener('click', () => alert(itemDetailsText(ent.item)));
@@ -1268,6 +1337,13 @@ export function renderInventoryScreen(root) {
                     eq.addEventListener('click', () => equipItem(ent.id, root));
                 }
                 li.appendChild(eq);
+            }
+            const stats = basicStatsText(ent.item);
+            if (stats) {
+                const s = document.createElement('div');
+                s.className = 'item-stats';
+                s.textContent = stats;
+                li.appendChild(s);
             }
             ul.appendChild(li);
         });

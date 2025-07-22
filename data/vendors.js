@@ -1,3 +1,5 @@
+import { baseJobNames } from './jobs.js';
+
 export const items = {
   bronzeDagger: {
     name: 'Bronze Dagger',
@@ -7,7 +9,8 @@ export const items = {
     damage: 3,
     delay: 183,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   bronzeSword: {
     name: 'Bronze Sword',
@@ -17,7 +20,8 @@ export const items = {
     damage: 6,
     delay: 231,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   leatherVest: {
     name: 'Leather Vest',
@@ -26,7 +30,8 @@ export const items = {
     description: 'Basic leather armor for the body.',
     defense: 7,
     levelRequirement: 1,
-    slot: 'body'
+    slot: 'body',
+    jobs: baseJobNames
   },
   bronzeIngot: {
     name: 'Bronze Ingot',
@@ -84,7 +89,8 @@ export const items = {
     description: 'A small bronze buckler.',
     defense: 2,
     levelRequirement: 1,
-    slot: 'offHand'
+    slot: 'offHand',
+    jobs: baseJobNames
   },
   leatherGloves: {
     name: 'Leather Gloves',
@@ -93,7 +99,8 @@ export const items = {
     description: 'Basic leather armor for the hands.',
     defense: 4,
     levelRequirement: 1,
-    slot: 'hands'
+    slot: 'hands',
+    jobs: baseJobNames
   },
   clothHeadband: {
     name: 'Cloth Headband',
@@ -102,7 +109,8 @@ export const items = {
     description: 'A simple cloth headband.',
     defense: 1,
     levelRequirement: 1,
-    slot: 'head'
+    slot: 'head',
+    jobs: baseJobNames
   },
   scrollFire: {
     name: 'Scroll of Fire',
@@ -132,7 +140,8 @@ export const items = {
     description: 'A basic leather cap.',
     defense: 2,
     levelRequirement: 1,
-    slot: 'head'
+    slot: 'head',
+    jobs: baseJobNames
   },
   leatherBoots: {
     name: 'Leather Boots',
@@ -141,7 +150,8 @@ export const items = {
     description: 'Sturdy leather boots.',
     defense: 3,
     levelRequirement: 1,
-    slot: 'feet'
+    slot: 'feet',
+    jobs: baseJobNames
   },
   bronzeAxe: {
     name: 'Bronze Axe',
@@ -151,7 +161,8 @@ export const items = {
     damage: 7,
     delay: 276,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   bronzeSpear: {
     name: 'Bronze Spear',
@@ -161,7 +172,8 @@ export const items = {
     damage: 8,
     delay: 303,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   bronzeKnife: {
     name: 'Bronze Knife',
@@ -171,7 +183,8 @@ export const items = {
     damage: 2,
     delay: 186,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   willowStaff: {
     name: 'Willow Staff',
@@ -181,7 +194,8 @@ export const items = {
     damage: 4,
     delay: 366,
     levelRequirement: 1,
-    slot: 'mainHand'
+    slot: 'mainHand',
+    jobs: baseJobNames
   },
   woodenArrow: {
     name: 'Wooden Arrow',

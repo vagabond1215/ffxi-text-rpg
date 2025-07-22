@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls } from './ui.js';
 import { loadCharacters, initCurrentUser } from '../data/index.js';
 
 // Entry point: initialize application
@@ -22,6 +22,9 @@ function init() {
     app.innerHTML = '';
     const menu = renderMainMenu();
     app.appendChild(menu);
+
+    const userContainer = document.getElementById('user-controls');
+    if (userContainer) renderUserControls();
 
     const backBtn = document.getElementById('back-button');
     if (backBtn) setupBackButton(backBtn);
