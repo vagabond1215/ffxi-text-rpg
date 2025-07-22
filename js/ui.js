@@ -727,21 +727,27 @@ function renderCombatScreen(root, mob, destination) {
 
     const playerDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
     const mobDelay = mob.delay || 240;
-    const playerInit = (activeCharacter.stats.dex + activeCharacter.stats.agi) * (60 / playerDelay);
-    const mobInit = parseLevel(mob.level) * 2 * (60 / mobDelay);
+    const mobLevel = parseLevel(mob.level);
+    const mobScale = mobLevel * 2;
+    let timeToPlayer = playerDelay;
+    let timeToMob = mobDelay;
 
-    const playerStats = {
-        atk: getAttack(activeCharacter),
-        def: getDefense(activeCharacter),
-        acc: activeCharacter.stats.dex + activeCharacter.level,
-        eva: activeCharacter.stats.agi + activeCharacter.level
-    };
-    const mobStats = {
-        atk: mobInit + 10,
-        def: mobInit + 10,
-        acc: mobInit + 10,
-        eva: mobInit + 10
-    };
+    function getCombatStats(target) {
+        if (target === activeCharacter) {
+            return {
+                atk: getAttack(activeCharacter),
+                def: getDefense(activeCharacter),
+                acc: activeCharacter.stats.dex + activeCharacter.level,
+                eva: activeCharacter.stats.agi + activeCharacter.level
+            };
+        }
+        return {
+            atk: mobScale + 10,
+            def: mobScale + 10,
+            acc: mobScale + 10,
+            eva: mobScale + 10
+        };
+    }
 
     function log(msg) {
         const p = document.createElement('div');
@@ -789,7 +795,9 @@ function renderCombatScreen(root, mob, destination) {
         return Math.max(1, Math.floor(baseDamage * pdif));
     }
 
-    function attack(attacker, defender, aStats, dStats) {
+    function attack(attacker, defender) {
+        const aStats = getCombatStats(attacker);
+        const dStats = getCombatStats(defender);
         const hitChance = Math.min(0.95, Math.max(0.05, (aStats.acc - dStats.eva + 50) / 100));
         if (Math.random() < hitChance) {
             const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats);
@@ -819,9 +827,9 @@ function renderCombatScreen(root, mob, destination) {
 
     function monsterTurn() {
         if (mob.currentHP <= 0) return endBattle();
-        attack(mob, activeCharacter, mobStats, playerStats);
+        attack(mob, activeCharacter);
         if (activeCharacter.hp > 0) {
-            playerTurn();
+            nextTurn();
         } else {
             endBattle();
         }
@@ -870,7 +878,7 @@ function renderCombatScreen(root, mob, destination) {
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
-            const mobAgi = mobInit;
+            const mobAgi = mobScale;
             let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
             chance = Math.max(0.05, Math.min(0.95, chance));
             if (Math.random() < chance) {
@@ -886,21 +894,21 @@ function renderCombatScreen(root, mob, destination) {
             root.removeChild(actionDiv);
             const choice = command.value;
             if (choice === 'attack') {
-                attack(activeCharacter, mob, playerStats, mobStats);
+                attack(activeCharacter, mob);
             } else if (choice === 'ability') {
                 const name = abilitySelect.value || 'Ability';
                 log(`${activeCharacter.name} uses ${name}.`);
-                attack(activeCharacter, mob, playerStats, mobStats);
+                attack(activeCharacter, mob);
             } else if (choice === 'magic') {
                 const spell = magicSelect.value || 'Spell';
                 log(`${activeCharacter.name} casts ${spell}.`);
-                attack(activeCharacter, mob, playerStats, mobStats);
+                attack(activeCharacter, mob);
             } else if (choice === 'flee') {
                 if (attemptFlee()) return; // battle ended on success
-                return monsterTurn();
+                return nextTurn();
             }
             if (mob.currentHP > 0) {
-                monsterTurn();
+                nextTurn();
             } else {
                 endBattle();
             }
@@ -910,11 +918,19 @@ function renderCombatScreen(root, mob, destination) {
     log(`A ${mob.name} appears!`);
     update();
 
-    if (playerInit >= mobInit) {
-        playerTurn();
-    } else {
-        monsterTurn();
+    function nextTurn() {
+        if (timeToPlayer <= timeToMob) {
+            timeToMob -= timeToPlayer;
+            timeToPlayer = playerDelay;
+            playerTurn();
+        } else {
+            timeToPlayer -= timeToMob;
+            timeToMob = mobDelay;
+            monsterTurn();
+        }
     }
+
+    nextTurn();
 }
 
 export function renderTravelScreen(root) {
