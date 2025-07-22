@@ -1,7 +1,27 @@
 export const items = {
-  bronzeDagger: { name: 'Bronze Dagger', price: 140, stack: 1, description: 'A small dagger forged from bronze.' },
-  bronzeSword: { name: 'Bronze Sword', price: 240, stack: 1, description: 'A simple bronze sword.' },
-  leatherVest: { name: 'Leather Vest', price: 604, stack: 1, description: 'Basic leather armor for the body.' },
+  bronzeDagger: {
+    name: 'Bronze Dagger',
+    price: 140,
+    stack: 1,
+    description: 'A small dagger forged from bronze.',
+    damage: 3,
+    delay: 183
+  },
+  bronzeSword: {
+    name: 'Bronze Sword',
+    price: 240,
+    stack: 1,
+    description: 'A simple bronze sword.',
+    damage: 6,
+    delay: 231
+  },
+  leatherVest: {
+    name: 'Leather Vest',
+    price: 604,
+    stack: 1,
+    description: 'Basic leather armor for the body.',
+    defense: 7
+  },
   bronzeIngot: { name: 'Bronze Ingot', price: 120, stack: 12, description: 'A bar of bronze used in crafting.' },
   potion: { name: 'Potion', price: 300, stack: 12, description: 'Restores a small amount of HP.' },
   antidote: { name: 'Antidote', price: 60, stack: 12, description: 'Cures poison.' },

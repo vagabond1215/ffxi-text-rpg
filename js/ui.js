@@ -43,8 +43,14 @@ export function renderMainMenu() {
         const menu = renderMainMenu();
         container.replaceWith(menu);
     });
+    const equipBtn = document.createElement('button');
+    equipBtn.textContent = 'Equipment';
+    equipBtn.addEventListener('click', () => {
+        renderEquipmentScreen(container);
+    });
     menu.appendChild(areaBtn);
     menu.appendChild(restBtn);
+    menu.appendChild(equipBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
@@ -921,6 +927,43 @@ export function renderVendorScreen(root, vendor) {
     const back = document.createElement('button');
     back.textContent = 'Back';
     back.addEventListener('click', () => renderAreaScreen(root));
+    root.appendChild(back);
+}
+
+export function renderEquipmentScreen(root) {
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = 'Equipment';
+    root.appendChild(title);
+    if (!activeCharacter) {
+        const p = document.createElement('p');
+        p.textContent = 'No active character';
+        root.appendChild(p);
+    } else {
+        const list = document.createElement('ul');
+        list.className = 'equipment-list';
+        const slots = {
+            head: 'Head', body: 'Body', hands: 'Hands', legs: 'Legs', feet: 'Feet',
+            mainHand: 'Main Hand', offHand: 'Off Hand', ranged: 'Ranged', ammo: 'Ammo',
+            back: 'Back', waist: 'Waist', neck: 'Neck',
+            leftEar: 'Left Ear', rightEar: 'Right Ear',
+            leftRing: 'Left Ring', rightRing: 'Right Ring'
+        };
+        for (const key of Object.keys(slots)) {
+            const li = document.createElement('li');
+            const itemId = activeCharacter.equipment?.[key];
+            const item = items[itemId];
+            li.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            list.appendChild(li);
+        }
+        root.appendChild(list);
+    }
+    const back = document.createElement('button');
+    back.textContent = 'Back';
+    back.addEventListener('click', () => {
+        const menu = renderMainMenu();
+        root.replaceWith(menu);
+    });
     root.appendChild(back);
 }
 
