@@ -15,7 +15,7 @@ const startingGearByJob = {
   'Thief': { weapon: 'bronzeDagger', armor: 'leatherVest' }
 };
 
-const STARTING_GIL = 50;
+const STARTING_GIL = 500;
 
 export let activeCharacter = null;
 const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter';

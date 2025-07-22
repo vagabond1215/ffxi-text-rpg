@@ -53,7 +53,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ['Bastok Mines', 'North Gustaberg'],
-      pointsOfInterest: ['Training Grounds', 'Mine Shafts', 'Home Point Crystal'],
+      pointsOfInterest: ['Training Grounds', 'Mine Shafts'],
       importantNPCs: []
     },
     {
@@ -62,7 +62,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ['Bastok Mines', 'South Gustaberg', 'Konschtat Highlands', 'Zeruhn Mines', 'Dangruf Wadi'],
-      pointsOfInterest: ['Outpost', 'Dangruf Wadi Entrance', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Dangruf Wadi Entrance'],
       importantNPCs: []
     },
     {
@@ -71,7 +71,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ['Bastok Markets', 'North Gustaberg', 'Konschtat Highlands', 'Dangruf Wadi'],
-      pointsOfInterest: ['Outpost', 'Selt Steel Mines', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Selt Steel Mines'],
       importantNPCs: []
     },
     {
@@ -80,7 +80,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['North Gustaberg', 'South Gustaberg', 'Valkurm Dunes', 'Gusgen Mines', 'Pashhow Marshlands'],
-      pointsOfInterest: ['Outpost', 'Crag of Dem', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Dem'],
       importantNPCs: []
     },
     {
@@ -89,7 +89,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Konschtat Highlands'],
-      pointsOfInterest: ['Home Point Crystal'],
+      pointsOfInterest: [],
       importantNPCs: []
     },
     {
@@ -98,7 +98,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['North Gustaberg', 'South Gustaberg'],
-      pointsOfInterest: ['Outpost', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     }
   ],
@@ -154,7 +154,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ["Northern San d'Oria", 'East Ronfaure', 'La Theine Plateau'],
-      pointsOfInterest: ['Outpost', 'Canyon', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Canyon'],
       importantNPCs: []
     },
     {
@@ -163,7 +163,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ["Southern San d'Oria", 'West Ronfaure', 'La Theine Plateau'],
-      pointsOfInterest: ['Outpost', 'Orc Camps', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Orc Camps'],
       importantNPCs: []
     },
     {
@@ -172,7 +172,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['West Ronfaure', 'East Ronfaure', 'Valkurm Dunes'],
-      pointsOfInterest: ['Outpost', 'Crag of Holla', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Holla'],
       importantNPCs: []
     }
   ],
@@ -237,7 +237,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ['Windurst Waters', 'Windurst Woods', 'Tahrongi Canyon'],
-      pointsOfInterest: ['Outpost', 'Crag of Mea', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Mea'],
       importantNPCs: []
     },
     {
@@ -246,7 +246,7 @@ export const zonesByCity = {
       distance: 1,
       subAreas: [],
       connectedAreas: ['Port Windurst', 'Tahrongi Canyon'],
-      pointsOfInterest: ['Outpost', 'Giddeus Entrance', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Giddeus Entrance'],
       importantNPCs: []
     },
     {
@@ -255,7 +255,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['East Sarutabaruta', 'West Sarutabaruta', 'Buburimu Peninsula', 'Meriphataud Mountains'],
-      pointsOfInterest: ['Outpost', 'Crag of Mea', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Mea'],
       importantNPCs: []
     },
     {
@@ -264,7 +264,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Tahrongi Canyon'],
-      pointsOfInterest: ['Outpost', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     },
     {
@@ -273,7 +273,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Tahrongi Canyon', 'Sauromugue Champaign'],
-      pointsOfInterest: ['Outpost', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     }
   ],
@@ -329,7 +329,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['Lower Jeuno'],
-      pointsOfInterest: ['Outpost', "Delkfutt's Tower", 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', "Delkfutt's Tower"],
       importantNPCs: []
     },
     {
@@ -338,7 +338,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['Lower Jeuno', 'Sauromugue Champaign', 'Battalia Downs', 'Pashhow Marshlands'],
-      pointsOfInterest: ['Outpost', 'Crag of Mea', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Mea'],
       importantNPCs: []
     },
     {
@@ -347,7 +347,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Port Jeuno', 'Rolanberry Fields', 'Meriphataud Mountains'],
-      pointsOfInterest: ['Outpost', 'Crag of Dem', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Dem'],
       importantNPCs: []
     },
     {
@@ -356,7 +356,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Upper Jeuno', 'Rolanberry Fields'],
-      pointsOfInterest: ['Outpost', 'Crag of Holla', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Holla'],
       importantNPCs: []
     },
     {
@@ -365,7 +365,7 @@ export const zonesByCity = {
       distance: 3,
       subAreas: [],
       connectedAreas: ['Konschtat Highlands', 'Rolanberry Fields'],
-      pointsOfInterest: ['Outpost', 'Crag of Dem', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost', 'Crag of Dem'],
       importantNPCs: []
     },
     {
@@ -374,7 +374,7 @@ export const zonesByCity = {
       distance: 2,
       subAreas: [],
       connectedAreas: ['Konschtat Highlands', 'La Theine Plateau'],
-      pointsOfInterest: ['Outpost', 'Home Point Crystal'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     }
   ]
