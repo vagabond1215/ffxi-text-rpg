@@ -79,7 +79,7 @@ button:hover {
 
 body.portrait #menu {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
 
 body.landscape #menu {

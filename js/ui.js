@@ -37,6 +37,30 @@ export function hideBackButton() {
     backButtonElement.onclick = null;
 }
 
+function getAttack(character) {
+    const weapon = items[character.equipment?.mainHand];
+    const dmg = weapon?.damage || 0;
+    return character.stats.str + character.level + dmg;
+}
+
+function getDefense(character) {
+    let def = character.stats.vit + character.level;
+    for (const slot of Object.values(character.equipment || {})) {
+        const it = items[slot];
+        if (it?.defense) def += it.defense;
+    }
+    return def;
+}
+
+function itemDetailsText(item) {
+    const parts = [item.description || item.name];
+    if (item.damage !== undefined) parts.push(`DMG: ${item.damage}`);
+    if (item.delay !== undefined) parts.push(`Delay: ${item.delay}`);
+    if (item.defense !== undefined) parts.push(`DEF: ${item.defense}`);
+    if (item.element) parts.push(`Element: ${item.element}`);
+    return parts.join('\n');
+}
+
 function characterSummary() {
     if (!activeCharacter) return document.createElement('div');
     const div = document.createElement('div');
@@ -55,7 +79,7 @@ export function renderMainMenu() {
     menu.id = 'menu';
 
     const areaBtn = document.createElement('button');
-    areaBtn.textContent = 'Area';
+    areaBtn.textContent = activeCharacter?.currentLocation || 'Area';
     areaBtn.addEventListener('click', () => {
         renderAreaScreen(container);
     });
@@ -113,8 +137,7 @@ export function renderMainMenu() {
         line3.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
 
         const line4 = document.createElement('div');
-        const loc = activeCharacter.currentLocation || activeCharacter.startingCity || 'Unknown';
-        line4.textContent = `Current location: ${loc}`;
+        line4.textContent = `ATK: ${getAttack(activeCharacter)} DEF: ${getDefense(activeCharacter)}`;
 
         profile.appendChild(charImg);
         profile.appendChild(line1);
@@ -702,12 +725,14 @@ function renderCombatScreen(root, mob, destination) {
     container.appendChild(mobDiv);
     root.appendChild(container);
 
-    const playerInit = activeCharacter.stats.dex + activeCharacter.stats.agi;
-    const mobInit = parseLevel(mob.level) * 2;
+    const playerDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
+    const mobDelay = mob.delay || 240;
+    const playerInit = (activeCharacter.stats.dex + activeCharacter.stats.agi) * (60 / playerDelay);
+    const mobInit = parseLevel(mob.level) * 2 * (60 / mobDelay);
 
     const playerStats = {
-        atk: activeCharacter.stats.str + activeCharacter.level,
-        def: activeCharacter.stats.vit + activeCharacter.level,
+        atk: getAttack(activeCharacter),
+        def: getDefense(activeCharacter),
         acc: activeCharacter.stats.dex + activeCharacter.level,
         eva: activeCharacter.stats.agi + activeCharacter.level
     };
@@ -975,7 +1000,7 @@ export function renderVendorScreen(root, vendor) {
         top.appendChild(name);
         const detail = document.createElement('button');
         detail.textContent = 'Details';
-        detail.addEventListener('click', () => alert(item.description || item.name));
+        detail.addEventListener('click', () => alert(itemDetailsText(item)));
         top.appendChild(detail);
         let qtyInput = null;
         if (item.stack > 1) {
@@ -1053,7 +1078,7 @@ export function renderEquipmentScreen(root) {
                 }
                 const details = document.createElement('button');
                 details.textContent = 'Details';
-                details.addEventListener('click', () => alert(item.description || item.name));
+                details.addEventListener('click', () => alert(itemDetailsText(item)));
                 li.appendChild(details);
                 const unequip = document.createElement('button');
                 unequip.textContent = 'Unequip';
@@ -1139,7 +1164,7 @@ export function renderInventoryScreen(root) {
             li.textContent = `${ent.item.name} x${ent.qty}`;
             const details = document.createElement('button');
             details.textContent = 'Details';
-            details.addEventListener('click', () => alert(ent.item.description || ent.item.name));
+            details.addEventListener('click', () => alert(itemDetailsText(ent.item)));
             li.appendChild(details);
             if (canEquipItem(ent.item)) {
                 const eq = document.createElement('button');
