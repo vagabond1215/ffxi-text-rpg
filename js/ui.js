@@ -706,10 +706,44 @@ function renderCombatScreen(root, mob, destination) {
         document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
     }
 
+    function calculatePhysicalDamage(attacker, defender, aStats, dStats) {
+        const atkLevel = attacker === activeCharacter ? activeCharacter.level : parseLevel(attacker.level);
+        const defLevel = defender === activeCharacter ? activeCharacter.level : parseLevel(defender.level);
+
+        const weaponDamage = attacker === activeCharacter
+            ? (items[activeCharacter.equipment?.mainHand]?.damage || 1)
+            : Math.max(1, Math.floor(aStats.atk / 2));
+
+        const str = attacker.stats?.str ?? aStats.atk;
+        const vit = defender.stats?.vit ?? dStats.def;
+
+        const rank = Math.floor(weaponDamage / 9);
+        let fSTR = Math.floor(((str - vit) + 4) / 4);
+        fSTR = Math.min(Math.max(fSTR, -rank), rank + 8);
+
+        const baseDamage = weaponDamage + fSTR;
+
+        let ratio = aStats.atk / dStats.def;
+        ratio = Math.min(ratio, 2.25);
+        if (defLevel > atkLevel) {
+            ratio -= 0.05 * (defLevel - atkLevel);
+        }
+
+        const p = x => Math.max(x, 0);
+        const n = x => Math.max(-x, 0);
+        const a = 1 + (10 / 9) * (p(Math.max(ratio, 0.5) - 1.5) - n(Math.max(ratio, 0.5) - 1.25));
+        const b = 1 + (10 / 9) * (p(ratio - 0.75) - n(ratio - 0.5));
+        let pdif = a + Math.random() * (b - a);
+        pdif = Math.floor(pdif * 1000) / 1000;
+        pdif = Math.floor(pdif * (1 + Math.random() * 0.05) * 1000) / 1000;
+
+        return Math.max(1, Math.floor(baseDamage * pdif));
+    }
+
     function attack(attacker, defender, aStats, dStats) {
         const hitChance = Math.min(0.95, Math.max(0.05, (aStats.acc - dStats.eva + 50) / 100));
         if (Math.random() < hitChance) {
-            const dmg = Math.max(1, aStats.atk - dStats.def + Math.floor(Math.random() * 5));
+            const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats);
             if (defender === activeCharacter) {
                 activeCharacter.hp -= dmg;
             } else {

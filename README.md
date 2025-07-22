@@ -45,3 +45,5 @@ Open `index.html` in a browser. No build step is required.
 - Each zone tracks distance from its home city to scale available monsters.
 - The main menu now includes an Equipment button that lists currently
   equipped items along with empty slots.
+- Battle damage now uses FFXI-style calculations including base damage,
+  fSTR and pDIF formulas.
