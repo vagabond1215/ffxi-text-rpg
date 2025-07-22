@@ -74,7 +74,34 @@ function calculateHitChance(acc, eva, attackerLevel, defenderLevel, cap = 95) {
   return rate / 100;
 }
 
-function calcPhysicalDamage(attacker, defender, aStats, dStats) {
+function critBonusDex(dDex) {
+  if (dDex <= 6) return 0;
+  if (dDex <= 13) return 1;
+  if (dDex <= 19) return 2;
+  if (dDex <= 29) return 3;
+  if (dDex <= 39) return 4;
+  if (dDex <= 50) return dDex - 35;
+  return 15;
+}
+
+function criticalChance(attacker, defender) {
+  let rate = 0.05;
+  const atkDex = attacker.stats?.dex !== undefined
+    ? attacker.stats.dex
+    : attacker.dex !== undefined
+      ? attacker.dex
+      : attacker.str;
+  const defAgi = defender.stats?.agi !== undefined
+    ? defender.stats.agi
+    : defender.agi !== undefined
+      ? defender.agi
+      : (defender.vit ?? (parseLevel(defender.level) * 2)) + 1;
+  const dDex = atkDex - defAgi;
+  rate += critBonusDex(dDex) / 100;
+  return rate;
+}
+
+function calcPhysicalDamage(attacker, defender, aStats, dStats, isCrit = false, critBonus = 0) {
   const atkLevel = attacker.level || parseLevel(attacker.level);
   const defLevel = defender.level || parseLevel(defender.level);
   const weaponDamage = attacker.equipment
@@ -98,13 +125,18 @@ function calcPhysicalDamage(attacker, defender, aStats, dStats) {
   let pdif = a + Math.random() * (b - a);
   pdif = Math.floor(pdif * 1000) / 1000;
   pdif = Math.floor(pdif * (1 + Math.random() * 0.05) * 1000) / 1000;
+  if (isCrit) {
+    pdif += 1;
+    return Math.max(1, Math.floor(baseDamage * pdif * (1 + critBonus)));
+  }
   return Math.max(1, Math.floor(baseDamage * pdif));
 }
 
 function attemptHit(attacker, defender, aStats, dStats) {
   const hitChance = calculateHitChance(aStats.acc, dStats.eva, aStats.level, dStats.level);
   if (Math.random() < hitChance) {
-    return calcPhysicalDamage(attacker, defender, aStats, dStats);
+    const isCrit = Math.random() < criticalChance(attacker, defender);
+    return calcPhysicalDamage(attacker, defender, aStats, dStats, isCrit);
   }
   return 0;
 }
@@ -142,12 +174,14 @@ function runDetailedBattle(char, mob) {
   function mobStats() {
     const level = mobLevel;
     const dex = mob.dex !== undefined ? mob.dex : mob.str;
-    const agi = mob.agi !== undefined ? mob.agi : mob.vit + 1;
+    const agi = mob.agi !== undefined ? mob.agi : (mob.vit ?? mobScale) + 1;
     const ws = mob.weaponSkill || level * 5;
     const es = mob.evasionSkill || level * 5;
+    const str = mob.str ?? mobScale;
+    const vit = mob.vit ?? mobScale;
     return {
-      atk: mobScale + 10,
-      def: mobScale + 10,
+      atk: str + level,
+      def: vit + level,
       acc: calculateAccuracy(dex, ws),
       eva: calculateEvasion(agi, es),
       level,

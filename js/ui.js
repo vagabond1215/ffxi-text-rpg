@@ -130,6 +130,33 @@ function calculateHitChance(acc, eva, attackerLevel, defenderLevel, cap = 95) {
     return rate / 100;
 }
 
+function calculateCritBonusDex(dDex) {
+    if (dDex <= 6) return 0;
+    if (dDex <= 13) return 1;
+    if (dDex <= 19) return 2;
+    if (dDex <= 29) return 3;
+    if (dDex <= 39) return 4;
+    if (dDex <= 50) return dDex - 35;
+    return 15;
+}
+
+function calculateCriticalChance(attacker, defender) {
+    let rate = 0.05; // base 5%
+    const atkDex = attacker.stats?.dex !== undefined
+        ? attacker.stats.dex
+        : attacker.dex !== undefined
+            ? attacker.dex
+            : attacker.str;
+    const defAgi = defender.stats?.agi !== undefined
+        ? defender.stats.agi
+        : defender.agi !== undefined
+            ? defender.agi
+            : (defender.vit ?? (parseLevel(defender.level) * 2)) + 1;
+    const dDex = atkDex - defAgi;
+    rate += calculateCritBonusDex(dDex) / 100;
+    return rate;
+}
+
 function itemDetailsText(item) {
     const parts = [item.description || item.name];
     if (item.damage !== undefined) parts.push(`DMG: ${item.damage}`);
@@ -860,12 +887,14 @@ function renderCombatScreen(root, mob, destination) {
         }
         const level = mobLevel;
         const dex = mob.dex !== undefined ? mob.dex : mob.str;
-        const agi = mob.agi !== undefined ? mob.agi : mob.vit + 1;
+        const agi = mob.agi !== undefined ? mob.agi : (mob.vit ?? mobScale) + 1;
         const weaponSkill = mob.weaponSkill || level * 5;
         const evasionSkill = mob.evasionSkill || level * 5;
+        const str = mob.str ?? mobScale;
+        const vit = mob.vit ?? mobScale;
         return {
-            atk: mobScale + 10,
-            def: mobScale + 10,
+            atk: str + level,
+            def: vit + level,
             acc: calculateAccuracy(dex, weaponSkill),
             eva: calculateEvasion(agi, evasionSkill),
             level
@@ -884,7 +913,7 @@ function renderCombatScreen(root, mob, destination) {
         document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
     }
 
-    function calculatePhysicalDamage(attacker, defender, aStats, dStats) {
+    function calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit = false, critBonus = 0) {
         const atkLevel = attacker === activeCharacter ? activeCharacter.level : parseLevel(attacker.level);
         const defLevel = defender === activeCharacter ? activeCharacter.level : parseLevel(defender.level);
 
@@ -915,6 +944,10 @@ function renderCombatScreen(root, mob, destination) {
         pdif = Math.floor(pdif * 1000) / 1000;
         pdif = Math.floor(pdif * (1 + Math.random() * 0.05) * 1000) / 1000;
 
+        if (isCrit) {
+            pdif += 1;
+            return Math.max(1, Math.floor(baseDamage * pdif * (1 + critBonus)));
+        }
         return Math.max(1, Math.floor(baseDamage * pdif));
     }
 
@@ -923,13 +956,19 @@ function renderCombatScreen(root, mob, destination) {
         const dStats = getCombatStats(defender);
         const hitChance = calculateHitChance(aStats.acc, dStats.eva, aStats.level, dStats.level);
         if (Math.random() < hitChance) {
-            const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats);
+            const critChance = calculateCriticalChance(attacker, defender);
+            const isCrit = Math.random() < critChance;
+            const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit);
             if (defender === activeCharacter) {
                 activeCharacter.hp -= dmg;
             } else {
                 mob.currentHP -= dmg;
             }
-            log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
+            if (isCrit) {
+                log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
+            } else {
+                log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
+            }
         } else {
             log(`${attacker.name} misses.`);
         }
@@ -1001,7 +1040,7 @@ function renderCombatScreen(root, mob, destination) {
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
-            const mobAgi = mobScale;
+            const mobAgi = mob.agi !== undefined ? mob.agi : (mob.vit ?? mobScale) + 1;
             let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
             chance = Math.max(0.05, Math.min(0.95, chance));
             if (Math.random() < chance) {
