@@ -6,6 +6,17 @@ import { getScale, proficiencyScale } from './scales.js';
 const aldoScale = buildScaleFields('Hume', 'Thief');
 const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
 
+const startingGearByJob = {
+  'Warrior': { weapon: 'bronzeSword', armor: 'leatherVest' },
+  'Monk': { weapon: 'bronzeDagger', armor: 'leatherVest' },
+  'White Mage': { weapon: 'bronzeDagger', armor: 'leatherVest' },
+  'Black Mage': { weapon: 'bronzeDagger', armor: 'leatherVest' },
+  'Red Mage': { weapon: 'bronzeDagger', armor: 'leatherVest' },
+  'Thief': { weapon: 'bronzeDagger', armor: 'leatherVest' }
+};
+
+const STARTING_GIL = 50;
+
 export let activeCharacter = null;
 const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter';
 
@@ -81,11 +92,11 @@ export const characters = [
     inventory: [],
     equipment: {
       head: null,
-      body: null,
+      body: 'leatherVest',
       hands: null,
       legs: null,
       feet: null,
-      mainHand: null,
+      mainHand: 'bronzeDagger',
       offHand: null,
       ranged: null,
       ammo: null,
@@ -133,11 +144,11 @@ export const characters = [
     inventory: [],
     equipment: {
       head: null,
-      body: null,
+      body: 'leatherVest',
       hands: null,
       legs: null,
       feet: null,
-      mainHand: null,
+      mainHand: 'bronzeDagger',
       offHand: null,
       ranged: null,
       ammo: null,
@@ -157,6 +168,7 @@ characters.forEach(ch => updateDerivedStats(ch));
 export function createCharacterObject(name, job, race, sex = 'Male') {
   const selectedRace = race || raceNames[Math.floor(Math.random() * raceNames.length)];
   const selectedJob = job || jobNames[Math.floor(Math.random() * jobNames.length)];
+  const gear = startingGearByJob[selectedJob] || {};
   const character = {
     name,
     race: selectedRace,
@@ -173,7 +185,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     traits: [],
     abilities: [],
     jobs: { [selectedJob]: 1 },
-    gil: 0,
+    gil: STARTING_GIL,
     combatSkills: {},
     magicSkills: {},
     crafting: {},
@@ -192,11 +204,11 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     inventory: [],
     equipment: {
       head: null,
-      body: null,
+      body: gear.armor || null,
       hands: null,
       legs: null,
       feet: null,
-      mainHand: null,
+      mainHand: gear.weapon || null,
       offHand: null,
       ranged: null,
       ammo: null,

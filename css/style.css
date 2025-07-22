@@ -33,16 +33,24 @@ button {
     top: 5px;
     right: 5px;
     z-index: 1000;
+    display: flex;
+    align-items: center;
 }
 
 #character-select {
-    /* button order handled by menu layout */
+    padding: 2px 6px;
+    font-size: 14px;
+    margin: 0 2px;
 }
 
 #scale-controls button {
     padding: 2px 6px;
     font-size: 14px;
     margin: 0 2px;
+    height: 28px;
+}
+
+#scale-controls .scale-btn {
     width: 28px;
 }
 
