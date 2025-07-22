@@ -15,7 +15,11 @@ import {
     locations,
     vendorInventories,
     items,
-    updateDerivedStats
+    updateDerivedStats,
+    loadUsers,
+    addUser,
+    setCurrentUser,
+    currentUser
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
 
@@ -190,11 +194,45 @@ export function renderCharacterMenu(root) {
     title.textContent = 'Characters';
     root.appendChild(title);
 
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user-select';
+    const userSelect = document.createElement('select');
+    loadUsers().forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u;
+        opt.textContent = u;
+        userSelect.appendChild(opt);
+    });
+    userSelect.value = currentUser || '';
+    userSelect.addEventListener('change', () => {
+        setCurrentUser(userSelect.value);
+        renderCharacterMenu(root);
+    });
+    const newUserBtn = document.createElement('button');
+    newUserBtn.textContent = 'New User';
+    newUserBtn.addEventListener('click', () => {
+        const name = prompt('Enter new username');
+        if (name) {
+            addUser(name);
+            setCurrentUser(name);
+            renderCharacterMenu(root);
+        }
+    });
+    userDiv.appendChild(userSelect);
+    userDiv.appendChild(newUserBtn);
+    root.appendChild(userDiv);
+    if (!currentUser) {
+        const msg = document.createElement('div');
+        msg.textContent = 'Create a user to start saving characters.';
+        root.appendChild(msg);
+    }
+
     const newBtn = document.createElement('button');
     newBtn.textContent = 'New Character';
     newBtn.addEventListener('click', () => {
         renderNewCharacterForm(root);
     });
+    if (!currentUser) newBtn.disabled = true;
     root.appendChild(newBtn);
 
     const list = document.createElement('div');

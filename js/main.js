@@ -1,5 +1,5 @@
 import { renderMainMenu, renderCharacterMenu, setupBackButton } from './ui.js';
-import { loadCharacters } from '../data/index.js';
+import { loadCharacters, initCurrentUser } from '../data/index.js';
 
 // Entry point: initialize application
 let uiScale = 1;
@@ -16,6 +16,7 @@ function updateScale(delta) {
 }
 
 function init() {
+    initCurrentUser();
     loadCharacters();
     const app = document.getElementById('app');
     app.innerHTML = '';

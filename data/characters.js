@@ -17,8 +17,54 @@ const startingGearByJob = {
 
 const STARTING_GIL = 500;
 
+export let currentUser = null;
+const USERS_KEY = 'ffxiUsers';
+const CURRENT_USER_KEY = 'ffxiCurrentUser';
 export let activeCharacter = null;
-const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter';
+const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter_';
+
+export function loadUsers() {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+  } catch (e) {
+    console.error('Failed to load users', e);
+    return [];
+  }
+}
+
+export function saveUsers(list) {
+  try {
+    localStorage.setItem(USERS_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.error('Failed to save users', e);
+  }
+}
+
+export function addUser(name) {
+  const users = loadUsers();
+  if (!users.includes(name)) {
+    users.push(name);
+    saveUsers(users);
+    localStorage.setItem(`ffxiChars_${name}`, JSON.stringify([]));
+  }
+  return name;
+}
+
+export function initCurrentUser() {
+  const users = loadUsers();
+  const saved = localStorage.getItem(CURRENT_USER_KEY);
+  currentUser = saved && users.includes(saved) ? saved : users[0] || null;
+}
+
+export function setCurrentUser(name) {
+  currentUser = name;
+  try {
+    localStorage.setItem(CURRENT_USER_KEY, name);
+  } catch (e) {
+    console.error('Failed to set current user', e);
+  }
+  loadCharacters();
+}
 
 function buildScaleFields(raceName, jobName) {
   const raceInfo = races.find(r => r.name === raceName);
@@ -238,6 +284,7 @@ export function createNewCharacter(name = `Adventurer ${characters.length + 1}`,
   const character = createCharacterObject(name, job, race, sex);
   characters.unshift(character);
   setActiveCharacter(character);
+  saveCharacters();
   return character;
 }
 
@@ -383,7 +430,8 @@ function gradeToValue(grade) {
 
 export function saveCharacters() {
   try {
-    localStorage.setItem('ffxiCharacters', JSON.stringify(characters));
+    if (!currentUser) return;
+    localStorage.setItem(`ffxiChars_${currentUser}`, JSON.stringify(characters));
   } catch (e) {
     console.error('Failed to save characters', e);
   }
@@ -391,7 +439,8 @@ export function saveCharacters() {
 
 export function saveCharacterSlot(index) {
   try {
-    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    if (!currentUser) return;
+    const saved = JSON.parse(localStorage.getItem(`ffxiChars_${currentUser}`) || '[]');
     while (saved.length <= index) saved.push(null);
     const char = characters[index];
     if (!char) return;
@@ -399,7 +448,8 @@ export function saveCharacterSlot(index) {
       if (!confirm('Overwrite existing character in this slot?')) return;
     }
     saved[index] = char;
-    localStorage.setItem('ffxiCharacters', JSON.stringify(saved));
+    localStorage.setItem(`ffxiChars_${currentUser}`, JSON.stringify(saved));
+    saveCharacters();
   } catch (e) {
     console.error('Failed to save character slot', e);
   }
@@ -407,15 +457,22 @@ export function saveCharacterSlot(index) {
 
 export function loadCharacters() {
   try {
-    const data = localStorage.getItem('ffxiCharacters');
-    if (!data) return;
+    if (!currentUser) {
+      characters.length = 0;
+      return;
+    }
+    const data = localStorage.getItem(`ffxiChars_${currentUser}`);
+    if (!data) {
+      characters.length = 0;
+      return;
+    }
     const loaded = JSON.parse(data);
     characters.length = 0;
     loaded.forEach(c => {
       characters.push(c);
       updateDerivedStats(c);
     });
-    const lastName = localStorage.getItem(LAST_ACTIVE_KEY);
+    const lastName = localStorage.getItem(`${LAST_ACTIVE_KEY}${currentUser}`);
     activeCharacter = characters.find(c => c.name === lastName) || characters[0] || null;
     setActiveCharacter(activeCharacter);
   } catch (e) {
@@ -425,11 +482,13 @@ export function loadCharacters() {
 
 export function loadCharacterSlot(index) {
   try {
-    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    if (!currentUser) return;
+    const saved = JSON.parse(localStorage.getItem(`ffxiChars_${currentUser}`) || '[]');
     if (!saved[index]) return;
     characters[index] = saved[index];
     updateDerivedStats(characters[index]);
     setActiveCharacter(characters[index]);
+    saveCharacters();
   } catch (e) {
     console.error('Failed to load character slot', e);
   }
@@ -438,14 +497,16 @@ export function loadCharacterSlot(index) {
 
 export function deleteCharacterSlot(index) {
   try {
-    const saved = JSON.parse(localStorage.getItem('ffxiCharacters') || '[]');
+    if (!currentUser) return;
+    const saved = JSON.parse(localStorage.getItem(`ffxiChars_${currentUser}`) || '[]');
     while (saved.length <= index) saved.push(null);
     saved[index] = null;
-    localStorage.setItem('ffxiCharacters', JSON.stringify(saved));
+    localStorage.setItem(`ffxiChars_${currentUser}`, JSON.stringify(saved));
     if (characters[index] && characters[index] === activeCharacter) {
       setActiveCharacter(null);
     }
     characters[index] = null;
+    saveCharacters();
   } catch (e) {
     console.error('Failed to delete character slot', e);
   }
@@ -488,6 +549,7 @@ export async function loadCharacterFromFile() {
     character.saveFileName = handle.name;
     characters.unshift(character);
     setActiveCharacter(character);
+    saveCharacters();
     return character;
   } catch (e) {
     console.error('Failed to load character from file', e);
@@ -499,10 +561,13 @@ export function setActiveCharacter(character) {
   activeCharacter = character;
   try {
     if (character) {
-      localStorage.setItem(LAST_ACTIVE_KEY, character.name);
+      if (currentUser)
+        localStorage.setItem(`${LAST_ACTIVE_KEY}${currentUser}`, character.name);
     } else {
-      localStorage.removeItem(LAST_ACTIVE_KEY);
+      if (currentUser)
+        localStorage.removeItem(`${LAST_ACTIVE_KEY}${currentUser}`);
     }
+    saveCharacters();
   } catch (e) {
     console.error('Failed to save last active character', e);
   }
