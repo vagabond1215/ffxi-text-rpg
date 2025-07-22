@@ -32,9 +32,25 @@ export function encounterChance(playerLevel, monsterLevel) {
 import { bestiaryByZone } from '../data/bestiary.js';
 import { locations } from '../data/locations.js';
 
+function monstersByDistance(zone) {
+  const mobs = bestiaryByZone[zone] || [];
+  const loc = locations.find(l => l.name === zone);
+  const dist = loc?.distance ?? 0;
+  if (!mobs.length) return [];
+  const sorted = [...mobs].sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
+  const third = Math.max(1, Math.floor(sorted.length / 3));
+  if (dist <= 1) return sorted.slice(0, third);
+  if (dist === 2) return sorted.slice(third, 2 * third);
+  return sorted.slice(2 * third);
+}
+
+export function randomMonster(zone) {
+  const pool = monstersByDistance(zone);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 export function getAggressiveMonsters(zone) {
-  const list = bestiaryByZone[zone] || [];
-  return list.filter(m => m.aggressive);
+  return monstersByDistance(zone).filter(m => m.aggressive);
 }
 
 export function baseEncounterChanceForZone(playerLevel, zone) {
@@ -85,4 +101,10 @@ export function walkAcrossZone(character, zone, options = {}) {
     }
   }
   return { turns, encounters };
+}
+
+export function exploreEncounter(zone) {
+  const mobs = monstersByDistance(zone);
+  if (!mobs.length) return null;
+  return mobs[Math.floor(Math.random() * mobs.length)];
 }

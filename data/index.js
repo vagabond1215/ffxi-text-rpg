@@ -31,5 +31,7 @@ export {
   baseEncounterChanceForZone,
   getZoneTravelTurns,
   rollForEncounter,
-  walkAcrossZone
+  walkAcrossZone,
+  exploreEncounter,
+  randomMonster
 } from '../js/encounter.js';
