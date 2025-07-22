@@ -37,6 +37,14 @@ export function hideBackButton() {
     backButtonElement.onclick = null;
 }
 
+function characterSummary() {
+    if (!activeCharacter) return document.createElement('div');
+    const div = document.createElement('div');
+    div.className = 'character-summary';
+    div.textContent = `${activeCharacter.name} - Lv.${activeCharacter.level} ${activeCharacter.sex} ${activeCharacter.race} ${activeCharacter.job}`;
+    return div;
+}
+
 export function renderMainMenu() {
     hideBackButton();
     const container = document.createElement('div');
@@ -952,6 +960,7 @@ export function renderVendorScreen(root, vendor) {
     const title = document.createElement('h2');
     title.textContent = vendor;
     root.appendChild(title);
+    root.appendChild(characterSummary());
     const list = document.createElement('div');
     list.className = 'vendor-list';
     const inv = vendorInventories[vendor] || [];
@@ -959,13 +968,15 @@ export function renderVendorScreen(root, vendor) {
         const item = items[id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
+        const top = document.createElement('div');
+        top.className = 'vendor-row-top';
         const name = document.createElement('span');
         name.textContent = `${item.name} - ${item.price} gil`;
-        row.appendChild(name);
+        top.appendChild(name);
         const detail = document.createElement('button');
         detail.textContent = 'Details';
         detail.addEventListener('click', () => alert(item.description || item.name));
-        row.appendChild(detail);
+        top.appendChild(detail);
         let qtyInput = null;
         if (item.stack > 1) {
             qtyInput = document.createElement('input');
@@ -974,7 +985,7 @@ export function renderVendorScreen(root, vendor) {
             qtyInput.max = String(item.stack);
             qtyInput.value = '1';
             qtyInput.className = 'vendor-qty';
-            row.appendChild(qtyInput);
+            top.appendChild(qtyInput);
         }
         const buyBtn = document.createElement('button');
         buyBtn.textContent = 'Buy';
@@ -982,7 +993,19 @@ export function renderVendorScreen(root, vendor) {
             const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
             buyItem(id, q);
         });
-        row.appendChild(buyBtn);
+        top.appendChild(buyBtn);
+        row.appendChild(top);
+        const desc = document.createElement('div');
+        desc.className = 'item-description';
+        desc.textContent = item.description || item.name;
+        row.appendChild(desc);
+        const req = requirementText(item);
+        if (req) {
+            const r = document.createElement('div');
+            r.className = 'item-req';
+            r.textContent = req;
+            row.appendChild(r);
+        }
         list.appendChild(row);
     });
     root.appendChild(list);
@@ -994,6 +1017,7 @@ export function renderEquipmentScreen(root) {
     const title = document.createElement('h2');
     title.textContent = 'Equipment';
     root.appendChild(title);
+    root.appendChild(characterSummary());
     if (!activeCharacter) {
         const p = document.createElement('p');
         p.textContent = 'No active character';
@@ -1012,8 +1036,21 @@ export function renderEquipmentScreen(root) {
             const li = document.createElement('li');
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
-            li.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            const nameDiv = document.createElement('div');
+            nameDiv.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            li.appendChild(nameDiv);
             if (item) {
+                const desc = document.createElement('div');
+                desc.className = 'item-description';
+                desc.textContent = item.description || item.name;
+                li.appendChild(desc);
+                const reqTxt = requirementText(item);
+                if (reqTxt) {
+                    const r = document.createElement('div');
+                    r.className = 'item-req';
+                    r.textContent = reqTxt;
+                    li.appendChild(r);
+                }
                 const details = document.createElement('button');
                 details.textContent = 'Details';
                 details.addEventListener('click', () => alert(item.description || item.name));
@@ -1052,6 +1089,15 @@ function canEquipItem(item) {
     if (item.races && !item.races.includes(activeCharacter.race)) return false;
     if (item.jobs && !item.jobs.includes(activeCharacter.job)) return false;
     return true;
+}
+
+function requirementText(item) {
+    const parts = [];
+    if (item.levelRequirement) parts.push(`Lv.${item.levelRequirement}`);
+    if (item.jobs) parts.push(item.jobs.join('/'));
+    if (item.races) parts.push(item.races.join('/'));
+    if (item.sex) parts.push(item.sex);
+    return parts.join(' ');
 }
 
 function equipItem(id, root) {
@@ -1097,8 +1143,12 @@ export function renderInventoryScreen(root) {
             li.appendChild(details);
             if (canEquipItem(ent.item)) {
                 const eq = document.createElement('button');
-                eq.textContent = 'Equip';
-                eq.addEventListener('click', () => equipItem(ent.id, root));
+                if (activeCharacter.equipment[ent.item.slot] === ent.id) {
+                    eq.textContent = 'Equipped';
+                } else {
+                    eq.textContent = 'Equip';
+                    eq.addEventListener('click', () => equipItem(ent.id, root));
+                }
                 li.appendChild(eq);
             }
             ul.appendChild(li);

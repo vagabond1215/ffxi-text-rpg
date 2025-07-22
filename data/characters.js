@@ -89,7 +89,10 @@ export const characters = [
     sJobMP: 0,
     travel: null,
     returnJourney: null,
-    inventory: [],
+    inventory: [
+      { id: 'bronzeDagger', qty: 1 },
+      { id: 'leatherVest', qty: 1 }
+    ],
     equipment: {
       head: null,
       body: 'leatherVest',
@@ -141,7 +144,10 @@ export const characters = [
     sJobMP: 0,
     travel: null,
     returnJourney: null,
-    inventory: [],
+    inventory: [
+      { id: 'bronzeDagger', qty: 1 },
+      { id: 'leatherVest', qty: 1 }
+    ],
     equipment: {
       head: null,
       body: 'leatherVest',
@@ -201,7 +207,10 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     sJobMP: 0,
     travel: null,
     returnJourney: null,
-    inventory: [],
+    inventory: [
+      ...(gear.weapon ? [{ id: gear.weapon, qty: 1 }] : []),
+      ...(gear.armor ? [{ id: gear.armor, qty: 1 }] : [])
+    ],
     equipment: {
       head: null,
       body: gear.armor || null,
