@@ -35,7 +35,12 @@ Open `index.html` in a browser. No build step is required.
   details with an initiative roll to decide who acts first.
 - City vendors now sell basic weapons, armor, scrolls and consumables at
   canonical prices. Stackable items include a quantity selector when purchasing.
+- Vendor inventories have been expanded with additional early-game gear and
+  consumables.
 - Weapon and armor entries include damage or defense values based on
-  early-game FFXI stats.
+  early-game FFXI stats and now list level requirements.
+- A new Explore button on area screens always triggers a battle without
+  consuming travel turns.
+- Each zone tracks distance from its home city to scale available monsters.
 - The main menu now includes an Equipment button that lists currently
   equipped items along with empty slots.

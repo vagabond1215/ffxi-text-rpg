@@ -12,6 +12,11 @@ body {
     font-size: clamp(14px, 2vw, 20px);
 }
 
+h1, h2 {
+    padding-top: 40px;
+    padding-right: 150px;
+}
+
 button {
     padding: clamp(8px, 1vw, 12px) clamp(12px, 2vw, 24px);
     margin: 5px;
@@ -110,6 +115,10 @@ body.landscape #area-grid {
 .area-column button {
     width: 160px;
     margin: 4px 0;
+}
+
+.explore-btn {
+    margin-bottom: 10px;
 }
 
 .form-header {

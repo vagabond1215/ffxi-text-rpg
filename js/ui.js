@@ -17,7 +17,7 @@ import {
     items,
     updateDerivedStats
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, parseLevel } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
 
 export function renderMainMenu() {
     const container = document.createElement('div');
@@ -520,6 +520,19 @@ export function renderAreaScreen(root) {
         travelHeader.textContent = 'Travel';
         travelCol.appendChild(travelHeader);
         const travelList = document.createElement('ul');
+
+        const exploreLi = document.createElement('li');
+        const exploreBtn = document.createElement('button');
+        exploreBtn.textContent = 'Explore';
+        exploreBtn.className = 'explore-btn';
+        exploreBtn.addEventListener('click', () => {
+            const mob = exploreEncounter(loc.name);
+            if (mob) {
+                renderCombatScreen(root, mob);
+            }
+        });
+        exploreLi.appendChild(exploreBtn);
+        travelList.appendChild(exploreLi);
 
         const travelKeywords = /(airship|ferry|chocobo|home point|gate|dock|boat)/i;
         const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
