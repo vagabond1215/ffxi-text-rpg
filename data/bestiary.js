@@ -81,7 +81,48 @@ export const bestiaryByZone = {
       resistances: []
     }
   ],
-  'North Gustaberg': [
+  'North Gustaberg (East)': [
+    {
+      name: 'Huge Wasp',
+      level: '1-3',
+      drops: ['Insect Wing', 'Beeswax', 'Honey'],
+      aggressive: false,
+      linking: false,
+      detection: 'Sight',
+      attacks: ['Attack'],
+      skills: ['Sting'],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: []
+    },
+    {
+      name: 'Tunnel Worm',
+      level: '1-3',
+      drops: ['Worm Thread', 'Pebble'],
+      aggressive: false,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Attack'],
+      skills: ['Sandpit'],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Carrion Crow',
+      level: '2-4',
+      drops: ['Bird Feather', 'Bird Egg'],
+      aggressive: true,
+      linking: true,
+      detection: 'Sight',
+      attacks: ['Attack'],
+      skills: ['Poison Peck'],
+      magic: [],
+      weaknesses: ['Lightning'],
+      resistances: []
+    }
+  ],
+  'North Gustaberg (West)': [
     {
       name: 'Huge Wasp',
       level: '1-3',

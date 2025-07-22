@@ -19,7 +19,26 @@ import {
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
 
+let backButtonElement = null;
+
+export function setupBackButton(element) {
+    backButtonElement = element;
+}
+
+export function showBackButton(handler) {
+    if (!backButtonElement) return;
+    backButtonElement.style.display = 'inline-block';
+    backButtonElement.onclick = handler;
+}
+
+export function hideBackButton() {
+    if (!backButtonElement) return;
+    backButtonElement.style.display = 'none';
+    backButtonElement.onclick = null;
+}
+
 export function renderMainMenu() {
+    hideBackButton();
     const container = document.createElement('div');
     const title = document.createElement('h1');
     title.textContent = 'FFXI Adventures';
@@ -43,6 +62,12 @@ export function renderMainMenu() {
         const menu = renderMainMenu();
         container.replaceWith(menu);
     });
+    const invBtn = document.createElement('button');
+    invBtn.textContent = 'Inventory';
+    invBtn.addEventListener('click', () => {
+        renderInventoryScreen(container);
+    });
+
     const equipBtn = document.createElement('button');
     equipBtn.textContent = 'Equipment';
     equipBtn.addEventListener('click', () => {
@@ -50,6 +75,7 @@ export function renderMainMenu() {
     });
     menu.appendChild(areaBtn);
     menu.appendChild(restBtn);
+    menu.appendChild(invBtn);
     menu.appendChild(equipBtn);
 
     container.appendChild(title);
@@ -164,18 +190,15 @@ export function renderCharacterMenu(root) {
     }
     root.appendChild(list);
 
-    const back = document.createElement('button');
-    back.textContent = 'Return to Main Menu';
-    back.addEventListener('click', () => {
+    showBackButton(() => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
-
-    root.appendChild(back);
 }
 
 function renderNewCharacterForm(root) {
     root.innerHTML = '';
+    showBackButton(() => renderCharacterMenu(root));
     const header = document.createElement('div');
     header.className = 'form-header';
 
@@ -491,15 +514,11 @@ export function renderPlayUI(root) {
     magicBtn.addEventListener('click', Magic);
     root.appendChild(magicBtn);
 
-    const back = document.createElement('button');
-    back.textContent = 'Back';
-    back.addEventListener('click', () => {
+    root.appendChild(document.createElement('br'));
+    showBackButton(() => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
-
-    root.appendChild(document.createElement('br'));
-    root.appendChild(back);
 }
 
 export function renderAreaScreen(root) {
@@ -645,13 +664,10 @@ export function renderAreaScreen(root) {
         root.appendChild(grid);
     }
 
-    const back = document.createElement('button');
-    back.textContent = 'Back';
-    back.addEventListener('click', () => {
+    showBackButton(() => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
-    root.appendChild(back);
 }
 
 function renderCombatScreen(root, mob, destination) {
@@ -892,13 +908,10 @@ export function renderTravelScreen(root) {
     }
     root.appendChild(list);
 
-    const back = document.createElement('button');
-    back.textContent = 'Back';
-    back.addEventListener('click', () => {
+    showBackButton(() => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
-    root.appendChild(back);
 }
 
 export function Travel() {
@@ -973,10 +986,7 @@ export function renderVendorScreen(root, vendor) {
         list.appendChild(row);
     });
     root.appendChild(list);
-    const back = document.createElement('button');
-    back.textContent = 'Back';
-    back.addEventListener('click', () => renderAreaScreen(root));
-    root.appendChild(back);
+    showBackButton(() => renderAreaScreen(root));
 }
 
 export function renderEquipmentScreen(root) {
@@ -1003,17 +1013,102 @@ export function renderEquipmentScreen(root) {
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
             li.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            if (item) {
+                const details = document.createElement('button');
+                details.textContent = 'Details';
+                details.addEventListener('click', () => alert(item.description || item.name));
+                li.appendChild(details);
+                const unequip = document.createElement('button');
+                unequip.textContent = 'Unequip';
+                unequip.addEventListener('click', () => {
+                    activeCharacter.equipment[key] = null;
+                    renderEquipmentScreen(root);
+                });
+                li.appendChild(unequip);
+            }
             list.appendChild(li);
         }
         root.appendChild(list);
     }
-    const back = document.createElement('button');
-    back.textContent = 'Back';
-    back.addEventListener('click', () => {
+    showBackButton(() => {
         const menu = renderMainMenu();
         root.replaceWith(menu);
     });
-    root.appendChild(back);
+}
+
+function getItemCategory(item) {
+    if (item.damage !== undefined || item.delay !== undefined) return 'Weapons';
+    if (item.defense !== undefined) return 'Armor';
+    if (/crystal/i.test(item.name)) return 'Crystals';
+    if (/potion|ether|antidote|pie|jerky|water/i.test(item.name)) return 'Consumables';
+    if (/ore|ingot|thread|log|chip/i.test(item.name)) return 'Crafting Materials';
+    return 'Misc Loot';
+}
+
+function canEquipItem(item) {
+    if (!item.slot) return false;
+    if (item.levelRequirement > activeCharacter.level) return false;
+    if (item.sex && item.sex !== activeCharacter.sex) return false;
+    if (item.races && !item.races.includes(activeCharacter.race)) return false;
+    if (item.jobs && !item.jobs.includes(activeCharacter.job)) return false;
+    return true;
+}
+
+function equipItem(id, root) {
+    const item = items[id];
+    if (!canEquipItem(item)) return;
+    activeCharacter.equipment[item.slot] = id;
+    renderInventoryScreen(root);
+}
+
+export function renderInventoryScreen(root) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = 'Inventory';
+    root.appendChild(title);
+    const categories = {
+        Weapons: [],
+        Armor: [],
+        'Crafting Materials': [],
+        Crystals: [],
+        Consumables: [],
+        'Misc Loot': []
+    };
+    activeCharacter.inventory.forEach(entry => {
+        const item = items[entry.id];
+        const cat = getItemCategory(item);
+        categories[cat].push({ item, qty: entry.qty, id: entry.id });
+    });
+    Object.keys(categories).forEach(cat => {
+        const list = categories[cat];
+        if (!list.length) return;
+        const h = document.createElement('h3');
+        h.textContent = cat;
+        root.appendChild(h);
+        const ul = document.createElement('ul');
+        ul.className = 'inventory-list';
+        list.forEach(ent => {
+            const li = document.createElement('li');
+            li.textContent = `${ent.item.name} x${ent.qty}`;
+            const details = document.createElement('button');
+            details.textContent = 'Details';
+            details.addEventListener('click', () => alert(ent.item.description || ent.item.name));
+            li.appendChild(details);
+            if (canEquipItem(ent.item)) {
+                const eq = document.createElement('button');
+                eq.textContent = 'Equip';
+                eq.addEventListener('click', () => equipItem(ent.id, root));
+                li.appendChild(eq);
+            }
+            ul.appendChild(li);
+        });
+        root.appendChild(ul);
+    });
+    showBackButton(() => {
+        const menu = renderMainMenu();
+        root.replaceWith(menu);
+    });
 }
 
 function openMenu(name) {
