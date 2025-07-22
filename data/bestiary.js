@@ -2,7 +2,9 @@ export const bestiaryByZone = {
   'West Ronfaure': [
     {
       name: 'Forest Hare',
-      level: '1-3',
+      level: '1-5',
+      str: 6,
+      vit: 5,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
       aggressive: false,
       linking: false,
@@ -15,7 +17,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Tiny Bee',
-      level: '1-2',
+      level: '1-3',
+      str: 5,
+      vit: 3,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
       aggressive: false,
       linking: false,
@@ -28,7 +32,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Orcish Fodder',
-      level: '2-4',
+      level: '3-8',
+      str: 10,
+      vit: 8,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
       aggressive: true,
       linking: true,
@@ -43,7 +49,9 @@ export const bestiaryByZone = {
   'East Ronfaure': [
     {
       name: 'Forest Hare',
-      level: '1-3',
+      level: '1-5',
+      str: 6,
+      vit: 5,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
       aggressive: false,
       linking: false,
@@ -56,7 +64,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Tiny Bee',
-      level: '1-2',
+      level: '1-3',
+      str: 5,
+      vit: 3,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
       aggressive: false,
       linking: false,
@@ -69,7 +79,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Orcish Fodder',
-      level: '2-4',
+      level: '3-8',
+      str: 10,
+      vit: 8,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
       aggressive: true,
       linking: true,
@@ -84,7 +96,9 @@ export const bestiaryByZone = {
   'North Gustaberg (East)': [
     {
       name: 'Huge Wasp',
-      level: '1-3',
+      level: '1-2',
+      str: 4,
+      vit: 3,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
       aggressive: false,
       linking: false,
@@ -98,6 +112,8 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      str: 5,
+      vit: 3,
       drops: ['Worm Thread', 'Pebble'],
       aggressive: false,
       linking: false,
@@ -109,8 +125,10 @@ export const bestiaryByZone = {
       resistances: ['Earth']
     },
     {
-      name: 'Carrion Crow',
-      level: '2-4',
+      name: 'Vulture',
+      level: '2-6',
+      str: 8,
+      vit: 6,
       drops: ['Bird Feather', 'Bird Egg'],
       aggressive: true,
       linking: true,
@@ -125,7 +143,9 @@ export const bestiaryByZone = {
   'North Gustaberg (West)': [
     {
       name: 'Huge Wasp',
-      level: '1-3',
+      level: '1-2',
+      str: 4,
+      vit: 3,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
       aggressive: false,
       linking: false,
@@ -139,6 +159,8 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      str: 5,
+      vit: 3,
       drops: ['Worm Thread', 'Pebble'],
       aggressive: false,
       linking: false,
@@ -150,8 +172,10 @@ export const bestiaryByZone = {
       resistances: ['Earth']
     },
     {
-      name: 'Carrion Crow',
-      level: '2-4',
+      name: 'Vulture',
+      level: '2-6',
+      str: 8,
+      vit: 6,
       drops: ['Bird Feather', 'Bird Egg'],
       aggressive: true,
       linking: true,
@@ -166,7 +190,9 @@ export const bestiaryByZone = {
   'South Gustaberg': [
     {
       name: 'Huge Wasp',
-      level: '1-3',
+      level: '1-2',
+      str: 4,
+      vit: 3,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
       aggressive: false,
       linking: false,
@@ -180,6 +206,8 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      str: 5,
+      vit: 3,
       drops: ['Worm Thread', 'Pebble'],
       aggressive: false,
       linking: false,
@@ -193,6 +221,8 @@ export const bestiaryByZone = {
     {
       name: 'Mad Sheep',
       level: '2-3',
+      str: 5,
+      vit: 4,
       drops: ['Sheepskin', 'Sheep Meat', 'Wool'],
       aggressive: true,
       linking: true,
@@ -207,7 +237,9 @@ export const bestiaryByZone = {
   'West Sarutabaruta': [
     {
       name: 'Savanna Rarab',
-      level: '1-3',
+      level: '1-6',
+      str: 7,
+      vit: 5,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
       aggressive: false,
       linking: false,
@@ -220,7 +252,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Tiny Mandragora',
-      level: '1-3',
+      level: '1',
+      str: 3,
+      vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
       aggressive: false,
       linking: false,
@@ -233,7 +267,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Yagudo Initiate',
-      level: '2-5',
+      level: '1-8',
+      str: 8,
+      vit: 7,
       drops: ['Yagudo Feather', 'Bird Egg'],
       aggressive: true,
       linking: true,
@@ -248,7 +284,9 @@ export const bestiaryByZone = {
   'East Sarutabaruta': [
     {
       name: 'Savanna Rarab',
-      level: '1-3',
+      level: '1-6',
+      str: 7,
+      vit: 5,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
       aggressive: false,
       linking: false,
@@ -261,7 +299,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Tiny Mandragora',
-      level: '1-3',
+      level: '1',
+      str: 3,
+      vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
       aggressive: false,
       linking: false,
@@ -274,7 +314,9 @@ export const bestiaryByZone = {
     },
     {
       name: 'Yagudo Initiate',
-      level: '2-5',
+      level: '1-8',
+      str: 8,
+      vit: 7,
       drops: ['Yagudo Feather', 'Bird Egg'],
       aggressive: true,
       linking: true,
