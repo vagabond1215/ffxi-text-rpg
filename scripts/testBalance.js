@@ -96,31 +96,40 @@ function runBattle(char, mob) {
   let mobHp = parseLevel(mob.level) * 20;
   const playerDelay = items[char.equipment?.mainHand]?.delay || 240;
   const mobDelay = mob.delay || 240;
-  const playerInit = (char.stats.dex + char.stats.agi) * (60 / playerDelay);
-  const mobInit = parseLevel(mob.level) * 2 * (60 / mobDelay);
-  const playerStats = {
-    atk: getAttack(char),
-    def: getDefense(char),
-    acc: char.stats.dex + char.level,
-    eva: char.stats.agi + char.level
-  };
-  const mobStats = {
-    atk: mobInit + 10,
-    def: mobInit + 10,
-    acc: mobInit + 10,
-    eva: mobInit + 10
-  };
+  const mobLevel = parseLevel(mob.level);
+  const mobScale = mobLevel * 2;
 
-  let turn = playerInit >= mobInit ? 'player' : 'mob';
+  function playerStats() {
+    return {
+      atk: getAttack(char),
+      def: getDefense(char),
+      acc: char.stats.dex + char.level,
+      eva: char.stats.agi + char.level
+    };
+  }
+
+  function mobStats() {
+    return {
+      atk: mobScale + 10,
+      def: mobScale + 10,
+      acc: mobScale + 10,
+      eva: mobScale + 10
+    };
+  }
+
+  let timeToPlayer = playerDelay;
+  let timeToMob = mobDelay;
   while (playerHp > 0 && mobHp > 0) {
-    if (turn === 'player') {
-      mobHp -= attemptHit(char, mob, playerStats, mobStats);
+    if (timeToPlayer <= timeToMob) {
+      timeToMob -= timeToPlayer;
+      mobHp -= attemptHit(char, mob, playerStats(), mobStats());
       if (mobHp <= 0) break;
-      playerHp -= attemptHit(mob, char, mobStats, playerStats);
+      timeToPlayer = playerDelay;
     } else {
-      playerHp -= attemptHit(mob, char, mobStats, playerStats);
+      timeToPlayer -= timeToMob;
+      playerHp -= attemptHit(mob, char, mobStats(), playerStats());
       if (playerHp <= 0) break;
-      mobHp -= attemptHit(char, mob, playerStats, mobStats);
+      timeToMob = mobDelay;
     }
   }
   return Math.max(0, playerHp);
