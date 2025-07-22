@@ -48,6 +48,13 @@ button {
     margin: 0 2px;
 }
 
+#back-button {
+    padding: 2px 6px;
+    font-size: 14px;
+    margin: 0 2px;
+    display: none;
+}
+
 #scale-controls button {
     padding: 2px 6px;
     font-size: 14px;
@@ -295,5 +302,16 @@ body.portrait .character-form {
 .equipment-list li {
     margin-top: 4px;
     text-align: left;
+}
+
+.inventory-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.inventory-list li {
+    margin-top: 4px;
 }
 

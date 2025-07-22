@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton } from './ui.js';
 import { loadCharacters } from '../data/index.js';
 
 // Entry point: initialize application
@@ -21,6 +21,9 @@ function init() {
     app.innerHTML = '';
     const menu = renderMainMenu();
     app.appendChild(menu);
+
+    const backBtn = document.getElementById('back-button');
+    if (backBtn) setupBackButton(backBtn);
 
     applyOrientation();
     window.addEventListener('resize', applyOrientation);

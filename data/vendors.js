@@ -6,7 +6,8 @@ export const items = {
     description: 'A small dagger forged from bronze.',
     damage: 3,
     delay: 183,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   bronzeSword: {
     name: 'Bronze Sword',
@@ -15,7 +16,8 @@ export const items = {
     description: 'A simple bronze sword.',
     damage: 6,
     delay: 231,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   leatherVest: {
     name: 'Leather Vest',
@@ -23,7 +25,8 @@ export const items = {
     stack: 1,
     description: 'Basic leather armor for the body.',
     defense: 7,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'body'
   },
   bronzeIngot: {
     name: 'Bronze Ingot',
@@ -80,7 +83,8 @@ export const items = {
     stack: 1,
     description: 'A small bronze buckler.',
     defense: 2,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'offHand'
   },
   leatherGloves: {
     name: 'Leather Gloves',
@@ -88,7 +92,8 @@ export const items = {
     stack: 1,
     description: 'Basic leather armor for the hands.',
     defense: 4,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'hands'
   },
   clothHeadband: {
     name: 'Cloth Headband',
@@ -96,7 +101,8 @@ export const items = {
     stack: 1,
     description: 'A simple cloth headband.',
     defense: 1,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'head'
   },
   scrollFire: {
     name: 'Scroll of Fire',
@@ -125,7 +131,8 @@ export const items = {
     stack: 1,
     description: 'A basic leather cap.',
     defense: 2,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'head'
   },
   leatherBoots: {
     name: 'Leather Boots',
@@ -133,7 +140,8 @@ export const items = {
     stack: 1,
     description: 'Sturdy leather boots.',
     defense: 3,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'feet'
   },
   bronzeAxe: {
     name: 'Bronze Axe',
@@ -142,7 +150,8 @@ export const items = {
     description: 'A crude axe forged from bronze.',
     damage: 7,
     delay: 276,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   bronzeSpear: {
     name: 'Bronze Spear',
@@ -151,7 +160,8 @@ export const items = {
     description: 'A simple bronze spear.',
     damage: 8,
     delay: 303,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   bronzeKnife: {
     name: 'Bronze Knife',
@@ -160,7 +170,8 @@ export const items = {
     description: 'A small bronze knife.',
     damage: 2,
     delay: 186,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   willowStaff: {
     name: 'Willow Staff',
@@ -169,7 +180,8 @@ export const items = {
     description: 'A basic wooden staff.',
     damage: 4,
     delay: 366,
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'mainHand'
   },
   woodenArrow: {
     name: 'Wooden Arrow',

@@ -7,7 +7,7 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 0,
       subAreas: [],
-      connectedAreas: ['Bastok Markets', 'Metalworks', 'Zeruhn Mines', 'North Gustaberg', 'Bastok Residential Area'],
+      connectedAreas: ['Bastok Markets', 'Metalworks', 'Zeruhn Mines', 'North Gustaberg (East)', 'Bastok Residential Area'],
       pointsOfInterest: ['Mog House', 'Mining Guild', 'Swordsmith Shop', 'General Goods Shop', 'Food Shop', 'Home Point Crystal'],
       importantNPCs: ['Gate Guard']
     },
@@ -25,7 +25,7 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 0,
       subAreas: [],
-      connectedAreas: ['Bastok Markets', 'Bastok Residential Area'],
+      connectedAreas: ['Bastok Markets', 'Bastok Residential Area', 'North Gustaberg (East)'],
       pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Shop', 'Ferry to Selbina', 'Home Point Crystal', 'Map Vendor'],
       importantNPCs: ['Gate Guard', 'Regional Merchant']
     },
@@ -52,17 +52,26 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 1,
       subAreas: [],
-      connectedAreas: ['Bastok Mines', 'North Gustaberg'],
+      connectedAreas: ['Bastok Mines', 'North Gustaberg (East)'],
       pointsOfInterest: ['Training Grounds', 'Mine Shafts'],
       importantNPCs: []
     },
     {
-      name: 'North Gustaberg',
+      name: 'North Gustaberg (East)',
       city: 'Bastok',
       distance: 1,
       subAreas: [],
-      connectedAreas: ['Bastok Mines', 'South Gustaberg', 'Konschtat Highlands', 'Zeruhn Mines', 'Dangruf Wadi'],
-      pointsOfInterest: ['Outpost', 'Dangruf Wadi Entrance'],
+      connectedAreas: ['South Gustaberg', 'Port Bastok', 'Oldton Movalpolos', 'Palborough Mines'],
+      pointsOfInterest: ['Outpost'],
+      importantNPCs: []
+    },
+    {
+      name: 'North Gustaberg (West)',
+      city: 'Bastok',
+      distance: 1,
+      subAreas: [],
+      connectedAreas: ['South Gustaberg', 'Konschtat Highlands'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     },
     {
@@ -70,7 +79,7 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 1,
       subAreas: [],
-      connectedAreas: ['Bastok Markets', 'North Gustaberg', 'Konschtat Highlands', 'Dangruf Wadi'],
+      connectedAreas: ['Bastok Markets', 'North Gustaberg (East)', 'North Gustaberg (West)', 'Konschtat Highlands', 'Dangruf Wadi'],
       pointsOfInterest: ['Outpost', 'Selt Steel Mines'],
       importantNPCs: []
     },
@@ -79,7 +88,7 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 2,
       subAreas: [],
-      connectedAreas: ['North Gustaberg', 'South Gustaberg', 'Valkurm Dunes', 'Gusgen Mines', 'Pashhow Marshlands'],
+      connectedAreas: ['North Gustaberg (West)', 'South Gustaberg', 'Valkurm Dunes', 'Gusgen Mines', 'Pashhow Marshlands'],
       pointsOfInterest: ['Outpost', 'Crag of Dem'],
       importantNPCs: []
     },
@@ -93,11 +102,29 @@ export const zonesByCity = {
       importantNPCs: []
     },
     {
+      name: 'Palborough Mines',
+      city: 'Bastok',
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['North Gustaberg (East)'],
+      pointsOfInterest: [],
+      importantNPCs: []
+    },
+    {
+      name: 'Oldton Movalpolos',
+      city: 'Bastok',
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['North Gustaberg (East)'],
+      pointsOfInterest: [],
+      importantNPCs: []
+    },
+    {
       name: 'Dangruf Wadi',
       city: 'Bastok',
       distance: 2,
       subAreas: [],
-      connectedAreas: ['North Gustaberg', 'South Gustaberg'],
+      connectedAreas: ['North Gustaberg (East)', 'South Gustaberg'],
       pointsOfInterest: ['Outpost'],
       importantNPCs: []
     }
