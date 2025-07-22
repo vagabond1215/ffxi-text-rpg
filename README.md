@@ -47,3 +47,5 @@ Open `index.html` in a browser. No build step is required.
   equipped items along with empty slots.
 - Battle damage now uses FFXI-style calculations including base damage,
   fSTR and pDIF formulas.
+- Hit chance now factors Dexterity and Agility with weapon and evasion skill
+  to compute accuracy and evasion.

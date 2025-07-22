@@ -15,10 +15,10 @@ function load(file, context) {
   vm.runInContext(code, context, { filename: file });
 }
 
-const context = { console, Math }; // allow console and Math
+const context = { console, Math };
 vm.createContext(context);
 
-// load data modules
+// load modules similar to testBalance
 load('data/scales.js', context);
 load('data/jobs.js', context);
 load('data/races.js', context);
@@ -28,7 +28,7 @@ load('data/characters.js', context);
 load('data/bestiary.js', context);
 load('js/encounter.js', context);
 
-const { races, jobs, baseJobNames, items, createCharacterObject, bestiaryByZone, parseLevel } = context;
+const { items, createCharacterObject, bestiaryByZone, parseLevel } = context;
 
 function getAttack(character) {
   const weapon = items[character.equipment?.mainHand];
@@ -74,17 +74,6 @@ function calculateHitChance(acc, eva, attackerLevel, defenderLevel, cap = 95) {
   return rate / 100;
 }
 
-const testMob = (function() {
-  for (const zone of Object.values(bestiaryByZone)) {
-    for (const m of zone) {
-      if (parseLevel(m.level) === 1) return { ...m };
-    }
-  }
-  throw new Error('No level 1 mob found');
-})();
-
-testMob.delay = testMob.delay || 240;
-
 function calcPhysicalDamage(attacker, defender, aStats, dStats) {
   const atkLevel = attacker.level || parseLevel(attacker.level);
   const defLevel = defender.level || parseLevel(defender.level);
@@ -120,13 +109,22 @@ function attemptHit(attacker, defender, aStats, dStats) {
   return 0;
 }
 
-function runBattle(char, mob) {
+function runDetailedBattle(char, mob) {
   let playerHp = char.hp;
   let mobHp = parseLevel(mob.level) * 20;
   const playerDelay = items[char.equipment?.mainHand]?.delay || 240;
   const mobDelay = mob.delay || 240;
   const mobLevel = parseLevel(mob.level);
   const mobScale = mobLevel * 2;
+
+  const stats = {
+    playerHits: 0,
+    playerDamage: 0,
+    playerDodges: 0,
+    mobHits: 0,
+    mobDamage: 0,
+    mobDodges: 0,
+  };
 
   function playerStats() {
     const level = char.level;
@@ -137,7 +135,7 @@ function runBattle(char, mob) {
       def: getDefense(char),
       acc: calculateAccuracy(char.stats.dex, ws),
       eva: calculateEvasion(char.stats.agi, es),
-      level
+      level,
     };
   }
 
@@ -152,7 +150,7 @@ function runBattle(char, mob) {
       def: mobScale + 10,
       acc: calculateAccuracy(dex, ws),
       eva: calculateEvasion(agi, es),
-      level
+      level,
     };
   }
 
@@ -161,35 +159,44 @@ function runBattle(char, mob) {
   while (playerHp > 0 && mobHp > 0) {
     if (timeToPlayer <= timeToMob) {
       timeToMob -= timeToPlayer;
-      mobHp -= attemptHit(char, mob, playerStats(), mobStats());
+      const dmg = attemptHit(char, mob, playerStats(), mobStats());
+      if (dmg > 0) {
+        mobHp -= dmg;
+        stats.playerHits++;
+        stats.playerDamage += dmg;
+      } else {
+        stats.mobDodges++;
+      }
       if (mobHp <= 0) break;
       timeToPlayer = playerDelay;
     } else {
       timeToPlayer -= timeToMob;
-      playerHp -= attemptHit(mob, char, mobStats(), playerStats());
+      const dmg = attemptHit(mob, char, mobStats(), playerStats());
+      if (dmg > 0) {
+        playerHp -= dmg;
+        stats.mobHits++;
+        stats.mobDamage += dmg;
+      } else {
+        stats.playerDodges++;
+      }
       if (playerHp <= 0) break;
       timeToMob = mobDelay;
     }
   }
-  return Math.max(0, playerHp);
+
+  stats.playerHp = Math.max(0, playerHp);
+  stats.mobHp = Math.max(0, mobHp);
+  stats.playerAvgDamage = stats.playerHits ? stats.playerDamage / stats.playerHits : 0;
+  stats.mobAvgDamage = stats.mobHits ? stats.mobDamage / stats.mobHits : 0;
+
+  return stats;
 }
 
-function averageOutcome(char, iterations = 100) {
-  let total = 0;
-  for (let i = 0; i < iterations; i++) {
-    total += runBattle(char, testMob);
-  }
-  return total / iterations;
-}
+const player = createCharacterObject('Test', 'Black Mage', 'Tarutaru');
+const waspZone = Object.values(bestiaryByZone).find(list => list.some(m => m.name === 'Huge Wasp'));
+const wasp = waspZone.find(m => m.name === 'Huge Wasp');
 
-const results = [];
-for (const race of races) {
-  for (const jobName of baseJobNames) {
-    const c = createCharacterObject('Test', jobName, race.name);
-    const avgHp = averageOutcome(c, 200);
-    const percent = Math.round((avgHp / c.hp) * 100);
-    results.push({ race: race.name, job: jobName, hpPercent: percent });
-  }
-}
-
-console.table(results);
+const result = runDetailedBattle(player, { ...wasp });
+console.log('Remaining HP - Player:', result.playerHp, 'Mob:', result.mobHp);
+console.log('Player hits:', result.playerHits, 'Avg dmg:', result.playerAvgDamage.toFixed(2), 'Dodges:', result.playerDodges);
+console.log('Mob hits:', result.mobHits, 'Avg dmg:', result.mobAvgDamage.toFixed(2), 'Dodges:', result.mobDodges);

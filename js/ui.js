@@ -52,6 +52,35 @@ function getDefense(character) {
     return def;
 }
 
+function accuracyFromSkill(skill) {
+    if (skill <= 200) return skill;
+    if (skill <= 400) return 200 + Math.floor((skill - 200) * 0.9);
+    if (skill <= 600) return 380 + Math.floor((skill - 400) * 0.8);
+    return 540 + Math.floor((skill - 600) * 0.9);
+}
+
+function evasionFromSkill(skill) {
+    if (skill <= 200) return skill;
+    return 200 + Math.floor((skill - 200) * 0.9);
+}
+
+function calculateAccuracy(dex, skill, bonus = 0, isPet = false) {
+    const dexAcc = Math.floor(dex * (isPet ? 0.5 : 0.75));
+    return dexAcc + accuracyFromSkill(skill) + bonus;
+}
+
+function calculateEvasion(agi, skill, bonus = 0) {
+    const agiEva = Math.floor(agi / 2);
+    return agiEva + evasionFromSkill(skill) + bonus;
+}
+
+function calculateHitChance(acc, eva, attackerLevel, defenderLevel, cap = 95) {
+    const dLvl = defenderLevel - attackerLevel;
+    let rate = 75 + Math.floor((acc - eva) / 2) - 2 * dLvl;
+    rate = Math.max(20, Math.min(cap, rate));
+    return rate / 100;
+}
+
 function itemDetailsText(item) {
     const parts = [item.description || item.name];
     if (item.damage !== undefined) parts.push(`DMG: ${item.damage}`);
@@ -734,18 +763,28 @@ function renderCombatScreen(root, mob, destination) {
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
+            const level = activeCharacter.level;
+            const weaponSkill = level * 5;
+            const evasionSkill = level * 5;
             return {
                 atk: getAttack(activeCharacter),
                 def: getDefense(activeCharacter),
-                acc: activeCharacter.stats.dex + activeCharacter.level,
-                eva: activeCharacter.stats.agi + activeCharacter.level
+                acc: calculateAccuracy(activeCharacter.stats.dex, weaponSkill),
+                eva: calculateEvasion(activeCharacter.stats.agi, evasionSkill),
+                level
             };
         }
+        const level = mobLevel;
+        const dex = mob.dex !== undefined ? mob.dex : mob.str;
+        const agi = mob.agi !== undefined ? mob.agi : mob.vit + 1;
+        const weaponSkill = mob.weaponSkill || level * 5;
+        const evasionSkill = mob.evasionSkill || level * 5;
         return {
             atk: mobScale + 10,
             def: mobScale + 10,
-            acc: mobScale + 10,
-            eva: mobScale + 10
+            acc: calculateAccuracy(dex, weaponSkill),
+            eva: calculateEvasion(agi, evasionSkill),
+            level
         };
     }
 
@@ -798,7 +837,7 @@ function renderCombatScreen(root, mob, destination) {
     function attack(attacker, defender) {
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
-        const hitChance = Math.min(0.95, Math.max(0.05, (aStats.acc - dStats.eva + 50) / 100));
+        const hitChance = calculateHitChance(aStats.acc, dStats.eva, aStats.level, dStats.level);
         if (Math.random() < hitChance) {
             const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats);
             if (defender === activeCharacter) {
