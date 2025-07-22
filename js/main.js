@@ -1,4 +1,4 @@
-import { renderMainMenu } from './ui.js';
+import { renderMainMenu, renderCharacterMenu } from './ui.js';
 import { loadCharacters } from '../data/index.js';
 
 // Entry point: initialize application
@@ -30,6 +30,16 @@ function init() {
     if (inc && dec) {
         inc.addEventListener('click', () => updateScale(0.1));
         dec.addEventListener('click', () => updateScale(-0.1));
+    }
+
+    const charBtn = document.getElementById('character-select');
+    if (charBtn) {
+        charBtn.addEventListener('click', () => {
+            const root = document.getElementById('app').firstElementChild;
+            if (root) {
+                renderCharacterMenu(root);
+            }
+        });
     }
 }
 
