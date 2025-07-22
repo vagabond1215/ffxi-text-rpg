@@ -14,7 +14,8 @@ import {
     setActiveCharacter,
     locations,
     vendorInventories,
-    items
+    items,
+    updateDerivedStats
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, parseLevel } from '../data/index.js';
 
@@ -26,21 +27,24 @@ export function renderMainMenu() {
     const menu = document.createElement('div');
     menu.id = 'menu';
 
-    const charactersBtn = document.createElement('button');
-    charactersBtn.id = 'character-select';
-    charactersBtn.textContent = 'Character Select';
-    charactersBtn.addEventListener('click', () => {
-        renderCharacterMenu(container);
-    });
-
     const areaBtn = document.createElement('button');
     areaBtn.textContent = 'Area';
     areaBtn.addEventListener('click', () => {
         renderAreaScreen(container);
     });
 
-    menu.appendChild(charactersBtn);
+    const restBtn = document.createElement('button');
+    restBtn.textContent = 'Rest';
+    restBtn.addEventListener('click', () => {
+        if (activeCharacter) {
+            updateDerivedStats(activeCharacter);
+            activeCharacter.tp = 0;
+        }
+        const menu = renderMainMenu();
+        container.replaceWith(menu);
+    });
     menu.appendChild(areaBtn);
+    menu.appendChild(restBtn);
 
     container.appendChild(title);
     container.appendChild(menu);
