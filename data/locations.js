@@ -26,7 +26,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Bastok Markets', 'Bastok Residential Area'],
-      pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Shop', 'Ferry to Selbina', 'Home Point Crystal'],
+      pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Shop', 'Ferry to Selbina', 'Home Point Crystal', 'Map Vendor'],
       importantNPCs: ['Gate Guard', 'Regional Merchant']
     },
     {
@@ -127,7 +127,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ["Northern San d'Oria", "San d'Oria Residential Area"],
-      pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Guild', 'Item Shop', 'Home Point Crystal', 'Ferry to Mhaura'],
+      pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Guild', 'Item Shop', 'Home Point Crystal', 'Ferry to Mhaura', 'Map Vendor'],
       importantNPCs: ['Gate Guard', 'Ferry Ticket Seller', 'Regional Merchant']
     },
     {
@@ -210,7 +210,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Windurst Waters', 'West Sarutabaruta', 'Windurst Woods', 'Windurst Residential Area'],
-      pointsOfInterest: ['Ferry to Mhaura', 'Chocobo Stables', 'Fishing Supplies Shop', 'Item Shop', 'Airship Dock', 'Home Point Crystal'],
+      pointsOfInterest: ['Ferry to Mhaura', 'Chocobo Stables', 'Fishing Supplies Shop', 'Item Shop', 'Airship Dock', 'Home Point Crystal', 'Map Vendor'],
       importantNPCs: ['Regional Merchant', 'Ferry Ticket Seller']
     },
     {
@@ -284,7 +284,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Upper Jeuno', 'Port Jeuno', 'Qufim Island', 'Rolanberry Fields', 'Jeuno Residential Area'],
-      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', 'Chocobo Stables', 'General Goods Shop', 'Armor Shop', 'Weapon Shop', 'Home Point Crystal'],
+      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', 'Chocobo Stables', 'General Goods Shop', 'Armor Shop', 'Weapon Shop', 'Home Point Crystal', 'Map Vendor'],
       importantNPCs: ['Fame/Mission/Quest NPCs', 'Outpost Warper', 'Regional Merchant']
     },
     {
