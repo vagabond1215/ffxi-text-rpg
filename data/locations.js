@@ -17,7 +17,23 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Bastok Mines', 'Port Bastok', 'South Gustaberg', 'Bastok Residential Area'],
-      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', "Goldsmiths' Guild", "Blacksmiths' Guild", 'Arms & Armor Shop', 'General Goods Shop', 'Item Shop', 'Tenshodo Entrance', 'Chocobo Stables', 'Home Point Crystal'],
+      pointsOfInterest: [
+        'Auction House',
+        'Mog House',
+        'Rental House',
+        "Goldsmiths' Guild",
+        "Blacksmiths' Guild",
+        "Brunhilde's Armourer",
+        "Dragon's Claw Weaponry",
+        "Carmelide's Jewelry Store",
+        "Mjoll's General Goods",
+        "Olwyn's General Goods",
+        "Harmodios's Music Shop",
+        'Scribe & Notary',
+        'Tenshodo Entrance',
+        'Chocobo Stables',
+        'Home Point Crystal'
+      ],
       importantNPCs: ['Gate Guard', 'Regional Merchant']
     },
     {
