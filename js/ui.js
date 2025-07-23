@@ -14,6 +14,7 @@ import {
     setActiveCharacter,
     locations,
     vendorInventories,
+    shopNpcs,
     items,
     updateDerivedStats,
     loadUsers,
@@ -1158,7 +1159,7 @@ function buyItem(id, qty = 1) {
     alert(`Purchased ${qty} x ${item.name}.`);
 }
 
-export function renderVendorScreen(root, vendor) {
+export function renderVendorScreen(root, vendor, backFn = null) {
     root.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = vendor;
@@ -1225,7 +1226,8 @@ export function renderVendorScreen(root, vendor) {
         list.appendChild(row);
     });
     root.appendChild(list);
-    showBackButton(() => renderAreaScreen(root));
+    const handler = backFn || (() => renderAreaScreen(root));
+    showBackButton(handler);
 }
 
 export function renderEquipmentScreen(root) {
@@ -1394,10 +1396,27 @@ export function renderInventoryScreen(root) {
     });
 }
 
-function openMenu(name) {
+function openMenu(name, backFn) {
     const root = document.getElementById('app');
-    if (vendorInventories[name]) {
-        renderVendorScreen(root, name);
+    const backHandler = backFn || (() => renderAreaScreen(root));
+    if (shopNpcs[name]) {
+        root.innerHTML = '';
+        const title = document.createElement('h2');
+        title.textContent = name;
+        root.appendChild(title);
+        const list = document.createElement('ul');
+        shopNpcs[name].forEach(npc => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = npc;
+            btn.addEventListener('click', () => openMenu(npc, () => openMenu(name, backFn)));
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+        root.appendChild(list);
+        showBackButton(backHandler);
+    } else if (vendorInventories[name]) {
+        renderVendorScreen(root, name, backHandler);
     } else {
         alert(`Opening menu for ${name}`);
     }
