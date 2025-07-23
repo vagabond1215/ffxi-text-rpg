@@ -762,8 +762,11 @@ export function renderAreaScreen(root) {
             travelList.appendChild(exploreLi);
         }
 
-        const travelKeywords = /(airship|ferry|chocobo|home point|gate|dock|boat)/i;
+        const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
         const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
+
+        const craftingKeywords = /guild/i;
+        const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
 
         loc.connectedAreas.forEach(area => {
             const li = document.createElement('li');
@@ -820,6 +823,23 @@ export function renderAreaScreen(root) {
         });
         travelCol.appendChild(travelList);
 
+        const craftCol = document.createElement('div');
+        craftCol.className = 'area-column';
+        const craftHeader = document.createElement('h3');
+        craftHeader.textContent = 'Crafting';
+        craftCol.appendChild(craftHeader);
+        const craftList = document.createElement('ul');
+
+        craftingPOIs.forEach(p => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.textContent = p;
+            btn.addEventListener('click', () => openMenu(p));
+            li.appendChild(btn);
+            craftList.appendChild(li);
+        });
+        craftCol.appendChild(craftList);
+
         const marketCol = document.createElement('div');
         marketCol.className = 'area-column';
         const marketHeader = document.createElement('h3');
@@ -827,8 +847,8 @@ export function renderAreaScreen(root) {
         marketCol.appendChild(marketHeader);
         const marketList = document.createElement('ul');
 
-        const marketKeywords = /(shop|store|auction|guild|merchant|market)/i;
-        const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p));
+        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor)/i;
+        const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
 
         marketPOIs.forEach(p => {
             const li = document.createElement('li');
@@ -848,7 +868,7 @@ export function renderAreaScreen(root) {
         const otherList = document.createElement('ul');
 
         loc.pointsOfInterest.forEach(p => {
-            if (travelPOIs.includes(p) || marketPOIs.includes(p)) return;
+            if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = p;
@@ -872,6 +892,7 @@ export function renderAreaScreen(root) {
         otherCol.appendChild(otherList);
 
         grid.appendChild(travelCol);
+        grid.appendChild(craftCol);
         grid.appendChild(marketCol);
         grid.appendChild(otherCol);
         root.appendChild(grid);
