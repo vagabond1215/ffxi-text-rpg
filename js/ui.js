@@ -902,6 +902,7 @@ function renderCombatScreen(root, mob, destination) {
     const mobScale = mobLevel * 2;
     let timeToPlayer = playerDelay;
     let timeToMob = mobDelay;
+    let battleEnded = false;
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -939,6 +940,67 @@ function renderCombatScreen(root, mob, destination) {
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
+    function findItemIdByName(name) {
+        for (const [id, data] of Object.entries(items)) {
+            if (data.name === name) return id;
+        }
+        return null;
+    }
+
+    function addItemsToInventory(list) {
+        list.forEach(({ id, qty }) => {
+            const existing = activeCharacter.inventory.find(i => i.id === id);
+            if (existing) existing.qty += qty; else activeCharacter.inventory.push({ id, qty });
+        });
+        activeCharacter.inventory.sort((a, b) => {
+            const n1 = items[a.id]?.name || a.id;
+            const n2 = items[b.id]?.name || b.id;
+            return n1.localeCompare(n2);
+        });
+    }
+
+    function victory(exp, gil, itemDrops) {
+        mob.currentHP = 0;
+        update();
+        battleEnded = true;
+        const lootDiv = document.createElement('div');
+        lootDiv.className = 'loot-display';
+        const msg = document.createElement('div');
+        msg.textContent = `You defeat the ${mob.name}!`;
+        lootDiv.appendChild(msg);
+        const list = document.createElement('ul');
+        if (exp > 0) {
+            const li = document.createElement('li');
+            li.textContent = `${exp} EXP`;
+            list.appendChild(li);
+        }
+        if (gil > 0) {
+            const li = document.createElement('li');
+            li.textContent = `${gil} gil`;
+            list.appendChild(li);
+        }
+        itemDrops.forEach(it => {
+            const li = document.createElement('li');
+            const name = items[it.id]?.name || it.id;
+            li.textContent = name + (it.qty > 1 ? ` x${it.qty}` : '');
+            list.appendChild(li);
+        });
+        lootDiv.appendChild(list);
+        const btn = document.createElement('button');
+        btn.textContent = 'Claim Loot';
+        btn.addEventListener('click', () => {
+            activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+            activeCharacter.gil += gil;
+            addItemsToInventory(itemDrops);
+            if (destination && activeCharacter.hp > 0) {
+                activeCharacter.currentLocation = destination;
+            }
+            renderAreaScreen(root);
+        });
+        lootDiv.appendChild(btn);
+        root.appendChild(lootDiv);
+    }
+
     function update() {
         document.getElementById('player-hp').textContent = `HP: ${activeCharacter.hp}`;
         document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
@@ -946,20 +1008,21 @@ function renderCombatScreen(root, mob, destination) {
 
     function monsterDefeated() {
         const exp = experienceForKill(activeCharacter.level, mobLevel);
-        log(`You defeat the ${mob.name}! Gained ${exp} EXP.`);
-        activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+        let gil = 0;
         if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
-            const gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
-            activeCharacter.gil += gil;
-            log(`Found ${gil} gil.`);
+            gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
         }
+        const drops = [];
         if (mob.drops && mob.drops.length) {
-            const item = mob.drops[Math.floor(Math.random() * mob.drops.length)];
-            log(`Obtained ${item}.`);
+            const name = mob.drops[Math.floor(Math.random() * mob.drops.length)];
+            const id = findItemIdByName(name);
+            if (id) drops.push({ id, qty: 1 });
         }
         if (hasSignet(activeCharacter) && Math.random() < 0.1) {
-            log('A crystal drops.');
+            const crystalId = Object.keys(items).find(k => /Crystal/i.test(items[k].name));
+            if (crystalId) drops.push({ id: crystalId, qty: 1 });
         }
+        victory(exp, gil, drops);
     }
 
     function calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit = false, critBonus = 0) {
@@ -1033,6 +1096,7 @@ function renderCombatScreen(root, mob, destination) {
             activeCharacter.currentLocation = activeCharacter.currentHomePoint || activeCharacter.startingCity;
             log('You were defeated and return to your home point.');
         }
+        battleEnded = true;
         const btn = document.createElement('button');
         btn.textContent = 'Continue';
         btn.addEventListener('click', () => {
@@ -1045,6 +1109,7 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function monsterTurn() {
+        if (battleEnded) return;
         if (mob.currentHP <= 0) return endBattle();
         attack(mob, activeCharacter);
         if (activeCharacter.hp > 0) {
@@ -1055,6 +1120,7 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function playerTurn() {
+        if (battleEnded) return;
         if (mob.currentHP <= 0) return endBattle();
         const actionDiv = document.createElement('div');
 
@@ -1126,6 +1192,7 @@ function renderCombatScreen(root, mob, destination) {
                 if (attemptFlee()) return; // battle ended on success
                 return nextTurn();
             }
+            if (battleEnded) return;
             if (mob.currentHP > 0) {
                 nextTurn();
             } else {
@@ -1138,6 +1205,7 @@ function renderCombatScreen(root, mob, destination) {
     update();
 
     function nextTurn() {
+        if (battleEnded) return;
         if (timeToPlayer <= timeToMob) {
             timeToMob -= timeToPlayer;
             timeToPlayer = playerDelay;
