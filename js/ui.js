@@ -22,7 +22,11 @@ import {
     setCurrentUser,
     currentUser,
     grantSignet,
-    hasSignet
+    hasSignet,
+    clearTemporaryEffects,
+    pruneExpiredEffects,
+    persistCharacter,
+    setLocation
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
 
@@ -210,8 +214,15 @@ function statusEffectsDisplay() {
     const div = document.createElement('div');
     div.id = 'status-effects';
     if (!activeCharacter) return div;
-    const buffs = activeCharacter.buffs || [];
-    const debuffs = activeCharacter.debuffs || [];
+    pruneExpiredEffects(activeCharacter);
+    const buffs = [
+        ...(activeCharacter.buffs || []),
+        ...((activeCharacter.temporaryBuffs || []).map(b => b.name))
+    ];
+    const debuffs = [
+        ...(activeCharacter.debuffs || []),
+        ...((activeCharacter.temporaryDebuffs || []).map(d => d.name))
+    ];
     if (!hasSignet(activeCharacter)) {
         const idx = buffs.indexOf('Signet');
         if (idx !== -1) buffs.splice(idx, 1);
@@ -780,7 +791,7 @@ export function renderAreaScreen(root) {
                 activeCharacter.travel.remaining -= 1;
                 if (activeCharacter.travel.remaining <= 0) {
                     const prev = loc.name;
-                    activeCharacter.currentLocation = area;
+                    setLocation(activeCharacter, area);
                     activeCharacter.travel = null;
                     if (activeCharacter.returnJourney) {
                         if (area === activeCharacter.returnJourney.zone) {
@@ -792,6 +803,7 @@ export function renderAreaScreen(root) {
                         activeCharacter.returnJourney = { zone: prev, turns: 1 };
                     }
                 }
+                persistCharacter(activeCharacter);
                 renderAreaScreen(root);
             });
             li.appendChild(btn);
@@ -993,8 +1005,9 @@ function renderCombatScreen(root, mob, destination) {
             activeCharacter.gil += gil;
             addItemsToInventory(itemDrops);
             if (destination && activeCharacter.hp > 0) {
-                activeCharacter.currentLocation = destination;
+                setLocation(activeCharacter, destination);
             }
+            persistCharacter(activeCharacter);
             renderAreaScreen(root);
         });
         lootDiv.appendChild(btn);
@@ -1093,7 +1106,8 @@ function renderCombatScreen(root, mob, destination) {
     function endBattle() {
         if (activeCharacter.hp <= 0) {
             activeCharacter.hp = 1;
-            activeCharacter.currentLocation = activeCharacter.currentHomePoint || activeCharacter.startingCity;
+            setLocation(activeCharacter, activeCharacter.currentHomePoint || activeCharacter.startingCity);
+            clearTemporaryEffects(activeCharacter);
             log('You were defeated and return to your home point.');
         }
         battleEnded = true;
@@ -1101,8 +1115,9 @@ function renderCombatScreen(root, mob, destination) {
         btn.textContent = 'Continue';
         btn.addEventListener('click', () => {
             if (destination && activeCharacter.hp > 0) {
-                activeCharacter.currentLocation = destination;
+                setLocation(activeCharacter, destination);
             }
+            persistCharacter(activeCharacter);
             renderAreaScreen(root);
         });
         root.appendChild(btn);
@@ -1235,7 +1250,7 @@ export function renderTravelScreen(root) {
             const btn = document.createElement('button');
             btn.textContent = area;
             btn.addEventListener('click', () => {
-                activeCharacter.currentLocation = area;
+                setLocation(activeCharacter, area);
                 renderAreaScreen(root);
             });
             li.appendChild(btn);
@@ -1280,6 +1295,7 @@ function buyItem(id, qty = 1) {
     } else {
         activeCharacter.inventory.push({ id, qty });
     }
+    persistCharacter(activeCharacter);
     alert(`Purchased ${qty} x ${item.name}.`);
 }
 
@@ -1411,6 +1427,7 @@ export function renderEquipmentScreen(root) {
                 unequip.textContent = 'Unequip';
                 unequip.addEventListener('click', () => {
                     activeCharacter.equipment[key] = null;
+                    persistCharacter(activeCharacter);
                     renderEquipmentScreen(root);
                 });
                 li.appendChild(unequip);
@@ -1451,6 +1468,7 @@ function equipItem(id, root) {
     const item = items[id];
     if (!canEquipItem(item)) return;
     activeCharacter.equipment[item.slot] = id;
+    persistCharacter(activeCharacter);
     renderInventoryScreen(root);
 }
 
@@ -1551,12 +1569,14 @@ function openMenu(name, backFn) {
         if (!activeCharacter.homePoints.includes(zone)) {
             activeCharacter.homePoints.push(zone);
             alert('You have attuned to this home point crystal.');
+            persistCharacter(activeCharacter);
         }
         const setBtn = document.createElement('button');
         setBtn.textContent = 'Set Home Point';
         setBtn.addEventListener('click', () => {
             activeCharacter.currentHomePoint = zone;
             alert('Home point set.');
+            persistCharacter(activeCharacter);
         });
         root.appendChild(setBtn);
         const select = document.createElement('select');
@@ -1570,7 +1590,8 @@ function openMenu(name, backFn) {
             const dest = select.value;
             if (activeCharacter.gil < 1000) return alert('Not enough gil.');
             activeCharacter.gil -= 1000;
-            activeCharacter.currentLocation = dest;
+            setLocation(activeCharacter, dest);
+            persistCharacter(activeCharacter);
             renderAreaScreen(root);
         });
         root.appendChild(document.createElement('br'));
@@ -1588,6 +1609,7 @@ function openMenu(name, backFn) {
         signetBtn.addEventListener('click', () => {
             grantSignet(activeCharacter);
             alert('Signet bestowed.');
+            persistCharacter(activeCharacter);
             renderAreaScreen(root);
         });
         root.appendChild(signetBtn);

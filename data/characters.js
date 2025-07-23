@@ -1,6 +1,6 @@
 import { jobs, jobNames } from './jobs.js';
 import { races, raceNames, startingCities } from './races.js';
-import { zonesByCity } from './locations.js';
+import { zonesByCity, locations } from './locations.js';
 import { getScale, proficiencyScale } from './scales.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
@@ -171,6 +171,8 @@ export const characters = [
     },
     buffs: [],
     debuffs: [],
+    temporaryBuffs: [],
+    temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities['Hume']][0].name],
     currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
     signetUntil: 0
@@ -231,6 +233,8 @@ export const characters = [
     },
     buffs: [],
     debuffs: [],
+    temporaryBuffs: [],
+    temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities['Tarutaru']][0].name],
     currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
     signetUntil: 0
@@ -299,6 +303,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     },
     buffs: [],
     debuffs: [],
+    temporaryBuffs: [],
+    temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities[selectedRace]][0].name],
     currentHomePoint: zonesByCity[startingCities[selectedRace]][0].name,
     signetUntil: 0
@@ -598,4 +604,41 @@ export function setActiveCharacter(character) {
   } catch (e) {
     console.error('Failed to save last active character', e);
   }
+}
+
+export function clearTemporaryEffects(character) {
+  if (!character) return;
+  character.temporaryBuffs = [];
+  character.temporaryDebuffs = [];
+}
+
+export function pruneExpiredEffects(character) {
+  if (!character) return;
+  const now = Date.now();
+  character.temporaryBuffs = (character.temporaryBuffs || []).filter(b => b.expiresAt > now);
+  character.temporaryDebuffs = (character.temporaryDebuffs || []).filter(d => d.expiresAt > now);
+}
+
+export async function persistCharacter(character) {
+  if (!character) return;
+  saveCharacters();
+  if (character.saveFileHandle) {
+    try {
+      const writable = await character.saveFileHandle.createWritable();
+      await writable.write(JSON.stringify(character, null, 2));
+      await writable.close();
+    } catch (e) {
+      console.error('Failed to update character file', e);
+    }
+  }
+}
+
+export function setLocation(character, name) {
+  if (!character) return;
+  character.currentLocation = name;
+  const zone = locations.find(l => l.name === name);
+  if (zone && zone.distance === 0) {
+    clearTemporaryEffects(character);
+  }
+  persistCharacter(character);
 }

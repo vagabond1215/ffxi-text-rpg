@@ -22,7 +22,11 @@ export {
   setCurrentUser,
   currentUser,
   grantSignet,
-  hasSignet
+  hasSignet,
+  clearTemporaryEffects,
+  pruneExpiredEffects,
+  persistCharacter,
+  setLocation
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
