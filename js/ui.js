@@ -28,7 +28,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill } from '../data/index.js';
 
 let backButtonElement = null;
 
