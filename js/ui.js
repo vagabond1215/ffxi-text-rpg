@@ -242,7 +242,7 @@ export function renderMainMenu() {
     hideBackButton();
     const container = document.createElement('div');
     const title = document.createElement('h1');
-    title.textContent = 'FFXI Adventures';
+    title.textContent = activeCharacter ? activeCharacter.name : 'FFXI Adventures';
 
     const menu = document.createElement('div');
     menu.id = 'menu';
@@ -253,6 +253,7 @@ export function renderMainMenu() {
         renderAreaScreen(container);
     });
 
+    const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     const restBtn = document.createElement('button');
     restBtn.textContent = 'Rest';
     restBtn.addEventListener('click', () => {
@@ -275,12 +276,13 @@ export function renderMainMenu() {
         renderEquipmentScreen(container);
     });
     menu.appendChild(areaBtn);
-    menu.appendChild(restBtn);
+    if (loc && loc.distance > 0) menu.appendChild(restBtn);
     menu.appendChild(invBtn);
     menu.appendChild(equipBtn);
-
     container.appendChild(title);
-    container.appendChild(menu);
+
+    const layout = document.createElement('div');
+    layout.className = 'main-layout';
 
     if (activeCharacter) {
         const profile = document.createElement('div');
@@ -290,9 +292,7 @@ export function renderMainMenu() {
         charImg.className = 'character-img';
         charImg.src = raceInfo[activeCharacter.race]?.image || '';
 
-        const line1 = document.createElement('div');
-        line1.textContent = `${activeCharacter.name} ${activeCharacter.sex} ${activeCharacter.race}`;
-        const line2 = document.createElement('div');
+    const line2 = document.createElement('div');
 
         const subJob = Object.keys(activeCharacter.jobs || {}).find(j => j !== activeCharacter.job);
         const subLvl = subJob ? activeCharacter.jobs[subJob] : 0;
@@ -307,20 +307,23 @@ export function renderMainMenu() {
 
         const line4 = document.createElement('div');
         line4.textContent = `ATK: ${getAttack(activeCharacter)} DEF: ${getDefense(activeCharacter)}`;
+        const line5 = document.createElement('div');
+        line5.textContent = `Gil: ${activeCharacter.gil}`;
 
         profile.appendChild(charImg);
-        profile.appendChild(line1);
         profile.appendChild(line2);
         profile.appendChild(line3);
         profile.appendChild(line4);
-        container.appendChild(profile);
+        profile.appendChild(line5);
+        layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
         // player to inspect traits, abilities, skills and other details. Those
         // buttons have been removed to simplify the profile view. The character
         // information now only shows the basic profile lines above.
     }
-
+    layout.appendChild(menu);
+    container.appendChild(layout);
     return container;
 }
 
@@ -335,13 +338,44 @@ export function renderCharacterMenu(root) {
         root.appendChild(msg);
     }
 
+    const controls = document.createElement('div');
+    controls.className = 'char-menu-controls';
+
+    const userSelect = document.createElement('select');
+    loadUsers().forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u;
+        opt.textContent = u;
+        userSelect.appendChild(opt);
+    });
+    userSelect.value = currentUser || '';
+    userSelect.addEventListener('change', () => {
+        setCurrentUser(userSelect.value);
+        renderCharacterMenu(root);
+    });
+
     const newBtn = document.createElement('button');
     newBtn.textContent = 'New Character';
     newBtn.addEventListener('click', () => {
         renderNewCharacterForm(root);
     });
     if (!currentUser) newBtn.disabled = true;
-    root.appendChild(newBtn);
+
+    const newUserBtn = document.createElement('button');
+    newUserBtn.textContent = 'New User';
+    newUserBtn.addEventListener('click', () => {
+        const name = prompt('Enter new username');
+        if (name) {
+            addUser(name);
+            setCurrentUser(name);
+            renderCharacterMenu(root);
+        }
+    });
+
+    controls.appendChild(userSelect);
+    controls.appendChild(newBtn);
+    controls.appendChild(newUserBtn);
+    root.appendChild(controls);
 
     const list = document.createElement('div');
     list.id = 'slot-container';
@@ -358,11 +392,16 @@ export function renderCharacterMenu(root) {
 
         const loadBtn = document.createElement('button');
         if (ch) {
-            loadBtn.textContent = 'Load';
-            loadBtn.addEventListener('click', () => {
-                setActiveCharacter(ch);
-                renderCharacterMenu(root);
-            });
+            if (ch === activeCharacter) {
+                loadBtn.textContent = 'Active';
+                loadBtn.disabled = true;
+            } else {
+                loadBtn.textContent = 'Load';
+                loadBtn.addEventListener('click', () => {
+                    setActiveCharacter(ch);
+                    renderCharacterMenu(root);
+                });
+            }
         } else {
             loadBtn.textContent = 'Import';
             loadBtn.addEventListener('click', async () => {
