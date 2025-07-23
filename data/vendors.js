@@ -2053,6 +2053,509 @@ export const items = {
     stack: 99,
     description: 'A log cut from a maple tree.',
     levelRequirement: 0
+  },
+  arquebus: {
+    name: 'Arquebus',
+    price: 46836,
+    stack: 1,
+    description: 'A basic firearm.',
+    slot: 'ranged',
+    damage: 15,
+    delay: 600,
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  aspis: {
+    name: 'Aspis',
+    price: 2400,
+    stack: 1,
+    description: 'A small shield.',
+    defense: 4,
+    slot: 'offHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  baghnakh: {
+    name: 'Baghnakh',
+    price: 1920,
+    stack: 1,
+    description: 'Clawed fist weapons.',
+    damage: 6,
+    delay: 96,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  battleaxe: {
+    name: 'Battleaxe',
+    price: 1344,
+    stack: 1,
+    description: 'A two-handed battleaxe.',
+    damage: 12,
+    delay: 360,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  bilbo: {
+    name: 'Bilbo',
+    price: 1200,
+    stack: 1,
+    description: 'A well-balanced sword.',
+    damage: 10,
+    delay: 240,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  bronzeBed: {
+    name: 'Bronze Bed',
+    price: 90,
+    stack: 1,
+    description: 'A bellows used in smithing.',
+    levelRequirement: 0
+  },
+  bronzeScales: {
+    name: 'Bronze Scales',
+    price: 592,
+    stack: 1,
+    description: 'Light bronze scale armor.',
+    defense: 7,
+    slot: 'body',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  bronzeSheet: {
+    name: 'Bronze Sheet',
+    price: 70,
+    stack: 99,
+    description: 'A sheet of bronze for crafting.',
+    levelRequirement: 0
+  },
+  butterflyAxe: {
+    name: 'Butterfly Axe',
+    price: 819,
+    stack: 1,
+    description: 'A decorative axe.',
+    damage: 8,
+    delay: 300,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  cuisses: {
+    name: 'Cuisses',
+    price: 1200,
+    stack: 1,
+    description: 'Plate armor for the legs.',
+    defense: 6,
+    slot: 'legs',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  darksteelChain: {
+    name: 'Darksteel Chain',
+    price: 2400,
+    stack: 1,
+    description: 'Mail forged of darksteel.',
+    defense: 9,
+    slot: 'body',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  darksteelFalchion: {
+    name: 'Darksteel Falchion',
+    price: 3600,
+    stack: 1,
+    description: 'A darksteel sword.',
+    damage: 15,
+    delay: 240,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  darksteelIngot: {
+    name: 'Darksteel Ingot',
+    price: 525,
+    stack: 99,
+    description: 'Refined darksteel used in smithing.',
+    levelRequirement: 0
+  },
+  darksteelKnife: {
+    name: 'Darksteel Knife',
+    price: 1200,
+    stack: 1,
+    description: 'A sharp darksteel dagger.',
+    damage: 9,
+    delay: 200,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  darksteelKnuckles: {
+    name: 'Darksteel Knuckles',
+    price: 1920,
+    stack: 1,
+    description: 'Darksteel fist weapons.',
+    damage: 8,
+    delay: 96,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  darksteelSheet: {
+    name: 'Darksteel Sheet',
+    price: 600,
+    stack: 99,
+    description: 'A sheet of darksteel.',
+    levelRequirement: 0
+  },
+  falchion: {
+    name: 'Falchion',
+    price: 2400,
+    stack: 1,
+    description: 'A single-edged sword.',
+    damage: 11,
+    delay: 240,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  gorget: {
+    name: 'Gorget',
+    price: 855,
+    stack: 1,
+    description: 'Neck armor for protection.',
+    defense: 2,
+    slot: 'neck',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  greataxe: {
+    name: 'Greataxe',
+    price: 4560,
+    stack: 1,
+    description: 'A heavy two-handed axe.',
+    damage: 18,
+    delay: 450,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  heavyAxe: {
+    name: 'Heavy Axe',
+    price: 3600,
+    stack: 1,
+    description: 'A large two-handed axe.',
+    damage: 16,
+    delay: 420,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  ironChain: {
+    name: 'Iron Chain',
+    price: 1200,
+    stack: 1,
+    description: 'Chainmail crafted from iron.',
+    defense: 7,
+    slot: 'body',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  ironIngot: {
+    name: 'Iron Ingot',
+    price: 105,
+    stack: 99,
+    description: 'A refined bar of iron.',
+    levelRequirement: 0
+  },
+  ironScales: {
+    name: 'Iron Scales',
+    price: 2100,
+    stack: 1,
+    description: 'Iron scale armor.',
+    defense: 10,
+    slot: 'body',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  ironSheet: {
+    name: 'Iron Sheet',
+    price: 350,
+    stack: 99,
+    description: 'A sheet of iron.',
+    levelRequirement: 0
+  },
+  knife: {
+    name: 'Knife',
+    price: 42,
+    stack: 1,
+    description: 'A small knife.',
+    damage: 3,
+    delay: 180,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  kukri: {
+    name: 'Kukri',
+    price: 150,
+    stack: 1,
+    description: 'A curved dagger.',
+    damage: 4,
+    delay: 190,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  mandrel: {
+    name: 'Mandrel',
+    price: 60,
+    stack: 1,
+    description: 'A forging mandrel.',
+    levelRequirement: 0
+  },
+  maul: {
+    name: 'Maul',
+    price: 420,
+    stack: 1,
+    description: 'A heavy hammer.',
+    damage: 9,
+    delay: 320,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  mythrilAxe: {
+    name: 'Mythril Axe',
+    price: 2100,
+    stack: 1,
+    description: 'A mythril axe.',
+    damage: 12,
+    delay: 276,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  mythrilBolt: {
+    name: 'Mythril Bolt',
+    price: 12,
+    stack: 99,
+    description: 'Bolts made of mythril.',
+    levelRequirement: 1
+  },
+  mythrilIngot: {
+    name: 'Mythril Ingot',
+    price: 130,
+    stack: 99,
+    description: 'A bar of mythril.',
+    levelRequirement: 0
+  },
+  mythrilKnife: {
+    name: 'Mythril Knife',
+    price: 200,
+    stack: 1,
+    description: 'A mythril dagger.',
+    damage: 5,
+    delay: 180,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  mythrilKnuckles: {
+    name: 'Mythril Knuckles',
+    price: 500,
+    stack: 1,
+    description: 'Mythril fist weapons.',
+    damage: 7,
+    delay: 96,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  mythrilSheet: {
+    name: 'Mythril Sheet',
+    price: 230,
+    stack: 99,
+    description: 'A sheet of mythril.',
+    levelRequirement: 0
+  },
+  tabar: {
+    name: 'Tabar',
+    price: 2400,
+    stack: 1,
+    description: 'A sturdy battleaxe.',
+    damage: 14,
+    delay: 360,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  tulwar: {
+    name: 'Tulwar',
+    price: 3600,
+    stack: 1,
+    description: 'A curved sword.',
+    damage: 13,
+    delay: 270,
+    slot: 'mainHand',
+    levelRequirement: 1,
+    jobs: baseJobNames
+  },
+  workshopAnvil: {
+    name: 'Workshop Anvil',
+    price: 75,
+    stack: 1,
+    description: 'A portable smithing anvil.',
+    levelRequirement: 0
+  },
+  bronzeNugget: {
+    name: 'Bronze Nugget',
+    price: 70,
+    stack: 99,
+    description: 'A small lump of bronze.',
+    levelRequirement: 0
+  },
+  tinOre: {
+    name: 'Tin Ore',
+    price: 60,
+    stack: 99,
+    description: 'Ore containing tin.',
+    levelRequirement: 0
+  },
+  kopparnickelOre: {
+    name: 'Kopparnickel Ore',
+    price: 800,
+    stack: 99,
+    description: 'Ore rich in kopparnickel.',
+    levelRequirement: 0
+  },
+  ironNugget: {
+    name: 'Iron Nugget',
+    price: 500,
+    stack: 99,
+    description: 'A small lump of iron.',
+    levelRequirement: 0
+  },
+  steelSheet: {
+    name: 'Steel Sheet',
+    price: 10000,
+    stack: 99,
+    description: 'A sheet of steel.',
+    levelRequirement: 0
+  },
+  steelIngot: {
+    name: 'Steel Ingot',
+    price: 6000,
+    stack: 99,
+    description: 'A bar of steel.',
+    levelRequirement: 0
+  },
+  tamaHagane: {
+    name: 'Tama-Hagane',
+    price: 12000,
+    stack: 99,
+    description: 'A special steel used in forging.',
+    levelRequirement: 0
+  },
+  darksteelNugget: {
+    name: 'Darksteel Nugget',
+    price: 2700,
+    stack: 99,
+    description: 'A lump of darksteel.',
+    levelRequirement: 0
+  },
+  darksteelOre: {
+    name: 'Darksteel Ore',
+    price: 7000,
+    stack: 99,
+    description: 'Ore containing darksteel.',
+    levelRequirement: 0
+  },
+  steelNugget: {
+    name: 'Steel Nugget',
+    price: 800,
+    stack: 99,
+    description: 'A small piece of steel.',
+    levelRequirement: 0
+  },
+  swampOre: {
+    name: 'Swamp Ore',
+    price: 5000,
+    stack: 99,
+    description: 'Ore found in swampy regions.',
+    levelRequirement: 0
+  },
+  smithingKit: {
+    name: 'Smithing Kit',
+    price: 300,
+    stack: 1,
+    description: 'A kit of smithing materials.',
+    levelRequirement: 0
+  },
+  niobiumOre: {
+    name: 'Niobium Ore',
+    price: 1126125,
+    stack: 99,
+    description: 'Rare niobium ore.',
+    levelRequirement: 0
+  },
+  bullet: {
+    name: 'Bullet',
+    price: 90,
+    stack: 99,
+    description: 'Ammunition for firearms.',
+    levelRequirement: 1
+  },
+  bombArm: {
+    name: 'Bomb Arm',
+    price: 675,
+    stack: 99,
+    description: 'The arm of a bomb, used in alchemy.',
+    levelRequirement: 0
+  },
+  grenade: {
+    name: 'Grenade',
+    price: 1083,
+    stack: 99,
+    description: 'An explosive device.',
+    levelRequirement: 0
+  },
+  catalyticOil: {
+    name: 'Catalytic Oil',
+    price: 92,
+    stack: 99,
+    description: 'Oil used to catalyze explosions.',
+    levelRequirement: 0
+  },
+  soot: {
+    name: 'Soot',
+    price: 12,
+    stack: 99,
+    description: 'Fine black powder.',
+    levelRequirement: 0
+  },
+  sausageRoll: {
+    name: 'Sausage Roll',
+    price: 257,
+    stack: 12,
+    description: 'A savory sausage roll.',
+    levelRequirement: 0
+  },
+  hardBoiledEgg: {
+    name: 'Hard-Boiled Egg',
+    price: 73,
+    stack: 12,
+    description: 'A simply boiled egg.',
+    levelRequirement: 0
+  },
+  magicPotShard: {
+    name: 'Magic Pot Shard',
+    price: 614,
+    stack: 99,
+    description: 'Expands Mog House storage when used.',
+    levelRequirement: 0
   }
 };
 
@@ -2084,9 +2587,14 @@ export const vendorInventories = {
   'Clothcraft Guild': ['cottonThread'],
   "Boneworker's Guild": ['boneChip'],
   "Goldsmiths' Guild": ['copperIngot'],
-  "Blacksmith's Guild": ['bronzeIngot', 'copperOre', 'pickaxe'],
-  "Blacksmiths' Guild": ['bronzeIngot', 'copperOre', 'pickaxe'],
+  "Blacksmith's Guild": ['arquebus', 'aspis', 'baghnakh', 'battleaxe', 'bilbo', 'breastplate', 'bronzeAxe', 'bronzeBed', 'bronzeCap', 'bronzeHammer', 'bronzeHarness', 'bronzeIngot', 'bronzeKnuckles', 'bronzeKnife', 'bronzeLeggings', 'bronzeMittens', 'bronzeScales', 'bronzeSheet', 'bronzeSubligar', 'butterflyAxe', 'copperOre', 'crossbowBolt', 'cuisses', 'darksteelChain', 'darksteelFalchion', 'darksteelIngot', 'darksteelKnife', 'darksteelKnuckles', 'darksteelSheet', 'degen', 'falchion', 'gauntlets', 'gorget', 'greataxe', 'heavyAxe', 'ironChain', 'ironIngot', 'ironMittens', 'ironOre', 'ironScales', 'ironSheet', 'ironSubligar', 'knife', 'kukri', 'leggings', 'mandrel', 'maul', 'metalKnuckles', 'mythrilAxe', 'mythrilBolt', 'mythrilIngot', 'mythrilKnife', 'mythrilKnuckles', 'mythrilSheet', 'targe', 'tabar', 'tulwar', 'warhammer'],
+  "Blacksmiths' Guild": ['arquebus', 'aspis', 'baghnakh', 'battleaxe', 'bilbo', 'breastplate', 'bronzeAxe', 'bronzeBed', 'bronzeCap', 'bronzeHammer', 'bronzeHarness', 'bronzeIngot', 'bronzeKnuckles', 'bronzeKnife', 'bronzeLeggings', 'bronzeMittens', 'bronzeScales', 'bronzeSheet', 'bronzeSubligar', 'butterflyAxe', 'copperOre', 'crossbowBolt', 'cuisses', 'darksteelChain', 'darksteelFalchion', 'darksteelIngot', 'darksteelKnife', 'darksteelKnuckles', 'darksteelSheet', 'degen', 'falchion', 'gauntlets', 'gorget', 'greataxe', 'heavyAxe', 'ironChain', 'ironIngot', 'ironMittens', 'ironOre', 'ironScales', 'ironSheet', 'ironSubligar', 'knife', 'kukri', 'leggings', 'mandrel', 'maul', 'metalKnuckles', 'mythrilAxe', 'mythrilBolt', 'mythrilIngot', 'mythrilKnife', 'mythrilKnuckles', 'mythrilSheet', 'targe', 'tabar', 'tulwar', 'warhammer'],
+  'Blacksmith Supplies': ['workshopAnvil', 'mandrel', 'copperOre', 'bronzeNugget', 'tinOre', 'bronzeSheet', 'ironOre', 'kopparnickelOre', 'ironNugget', 'ironSheet', 'steelSheet', 'steelIngot', 'tamaHagane', 'darksteelNugget', 'darksteelOre', 'steelNugget', 'darksteelSheet', 'swampOre', 'smithingKit', 'niobiumOre'],
   'Mining Guild': ['pickaxe', 'copperOre'],
+  Nogga: ['soot', 'bombArm', 'grenade', 'catalyticOil'],
+  Olaf: ['arquebus', 'bullet', 'bombAsh'],
+  Tomasa: ['sausageRoll', 'hardBoiledEgg', 'eggSoup', 'pineappleJuice', 'bretzel', 'sausage', 'melonJuice', 'ironBread', 'bakedPopoto'],
+  Takiyah: ['magicPotShard'],
   "Boytz's Knickknacks": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote', 'woodenArrow', 'ironArrow', 'crossbowBolt', 'brassFlowerpot', 'pickaxe', 'republicWaystone', 'thievesTools', 'livingKey'],
   "Gelzerio's Stall": ['lugworm', 'littleWorm', 'bambooFishingRod', 'yewFishingRod', 'willowFishingRod', 'robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
   "Deegis's Armour": ['paddedCap', 'ironMask', 'paddedArmor', 'ironMittens', 'brassCap', 'leatherBandana', 'brassHarness', 'leatherVest', 'brassMittens', 'leatherGloves', 'bronzeCap', 'bronzeHarness'],
@@ -2137,6 +2645,11 @@ export const shopNpcs = {
   'Proud Beard': ['Proud Beard'],
   "Neigepance's Chocobo Stables": ['Neigepance'],
   "Griselda's Tavern": ['Griselda'],
+  "Blacksmith's Guild": ['Amulya'],
+  'Blacksmith Supplies': ['Vicious Eye'],
+  'Gunpowder Room': ['Nogga', 'Olaf'],
+  "Craftsmen's Eatery": ['Tomasa'],
+  'Qufim Regional Goods': ['Takiyah'],
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
   "Rodellieux's Stall": ['Rodellieux']
 };
