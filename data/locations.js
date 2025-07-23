@@ -8,7 +8,20 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Bastok Markets', 'Metalworks', 'Zeruhn Mines', 'North Gustaberg (East)', 'Bastok Residential Area'],
-      pointsOfInterest: ['Mog House', 'Mining Guild', 'Swordsmith Shop', 'General Goods Shop', 'Food Shop', 'Home Point Crystal'],
+      pointsOfInterest: [
+        'Mog House',
+        'Mining Guild',
+        "Boytz's Knickknacks",
+        "Gelzerio's Stall",
+        "Deegis's Armour",
+        'Zemedars',
+        'Proud Beard',
+        "Neigepance's Chocobo Stables",
+        "Griselda's Tavern",
+        "Alchemists' Guild",
+        "Rodellieux's Stall",
+        'Home Point Crystal'
+      ],
       importantNPCs: ['Gate Guard']
     },
     {
@@ -42,8 +55,21 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Bastok Markets', 'Bastok Residential Area', 'North Gustaberg (East)'],
-      pointsOfInterest: ['Airship Dock', 'Chocobo Stables', 'Fishing Shop', 'Ferry to Selbina', 'Home Point Crystal', 'Map Vendor'],
-      importantNPCs: ['Gate Guard', 'Regional Merchant']
+      pointsOfInterest: [
+        'Airship Dock',
+        'Chocobo Stables',
+        'Fishing Shop',
+        'Ferry to Selbina',
+        "Galvin's Travel Gear",
+        'Denvihr',
+        'Blabbivix',
+        'Steaming Sheep Restaurant',
+        'Sugandhi',
+        'World Pass Merchant',
+        'Map Vendor',
+        'Home Point Crystal'
+      ],
+      importantNPCs: ['Gate Guard', 'Regional Merchant', 'Rex']
     },
     {
       name: 'Metalworks',
