@@ -25,6 +25,7 @@ button {
     color: #fff;
     border: 1px solid #555;
     cursor: pointer;
+    min-height: 28px;
 }
 
 #app {
@@ -46,15 +47,7 @@ button {
 }
 
 #user-controls {
-    position: fixed;
-    top: 38px;
-    right: 5px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 4px;
-    border-radius: 4px;
+    display: none;
 }
 
 #user-controls select,
@@ -97,21 +90,12 @@ button:hover {
 }
 
 #menu {
-    margin-top: 50px;
+    margin-top: 0;
     display: flex;
-    gap: 10px;
-    padding: 10px;
-}
-
-body.portrait #menu {
     flex-direction: column;
     align-items: center;
-}
-
-body.landscape #menu {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
+    padding: 10px;
 }
 
 #menu button {
@@ -178,6 +162,7 @@ body.landscape #area-grid {
 
 .slot-entry button {
     margin-left: 5px;
+    width: 80px;
 }
 
 #slot-container {
@@ -267,6 +252,18 @@ body.portrait .character-form {
     margin-top: 20px;
 }
 
+.main-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+body.portrait .main-layout {
+    flex-direction: column;
+    align-items: center;
+}
+
 #active-profile div {
     margin-top: 6px;
 }
@@ -347,6 +344,18 @@ body.portrait .character-form {
 
 .inventory-list li {
     margin-top: 4px;
+}
+
+.char-menu-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.char-menu-controls select,
+.char-menu-controls button {
+    width: 180px;
 }
 
 .item-description {
