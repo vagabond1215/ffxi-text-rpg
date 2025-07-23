@@ -20,7 +20,9 @@ export {
   addUser,
   initCurrentUser,
   setCurrentUser,
-  currentUser
+  currentUser,
+  grantSignet,
+  hasSignet
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';

@@ -330,4 +330,13 @@ export const bestiaryByZone = {
   ]
 };
 
+// Increase base monster stats by 1 for better balance
+for (const zone of Object.values(bestiaryByZone)) {
+  for (const mob of zone) {
+    ['str','vit','dex','agi','int','mnd','chr'].forEach(a => {
+      if (typeof mob[a] === 'number') mob[a] += 1;
+    });
+  }
+}
+
 export const allMonsters = Object.values(bestiaryByZone).flat();

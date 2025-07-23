@@ -66,6 +66,18 @@ export function setCurrentUser(name) {
   loadCharacters();
 }
 
+export function grantSignet(character) {
+  const now = new Date();
+  const nextMid = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  character.signetUntil = nextMid.getTime();
+  if (!character.buffs) character.buffs = [];
+  if (!character.buffs.includes('Signet')) character.buffs.push('Signet');
+}
+
+export function hasSignet(character) {
+  return character.signetUntil && character.signetUntil > Date.now();
+}
+
 function buildScaleFields(raceName, jobName) {
   const raceInfo = races.find(r => r.name === raceName);
   const jobInfo = jobs.find(j => j.name === jobName);
@@ -156,7 +168,12 @@ export const characters = [
       rightEar: null,
       leftRing: null,
       rightRing: null
-    }
+    },
+    buffs: [],
+    debuffs: [],
+    homePoints: [zonesByCity[startingCities['Hume']][0].name],
+    currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
+    signetUntil: 0
   },
   {
     name: 'Shantotto',
@@ -211,7 +228,12 @@ export const characters = [
       rightEar: null,
       leftRing: null,
       rightRing: null
-    }
+    },
+    buffs: [],
+    debuffs: [],
+    homePoints: [zonesByCity[startingCities['Tarutaru']][0].name],
+    currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
+    signetUntil: 0
   }
 ];
 
@@ -274,7 +296,12 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
       rightEar: null,
       leftRing: null,
       rightRing: null
-    }
+    },
+    buffs: [],
+    debuffs: [],
+    homePoints: [zonesByCity[startingCities[selectedRace]][0].name],
+    currentHomePoint: zonesByCity[startingCities[selectedRace]][0].name,
+    signetUntil: 0
   };
   updateDerivedStats(character);
   return character;
