@@ -20,7 +20,9 @@ import {
     loadUsers,
     addUser,
     setCurrentUser,
-    currentUser
+    currentUser,
+    grantSignet,
+    hasSignet
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel } from '../data/index.js';
 
@@ -204,6 +206,27 @@ function characterSummary() {
     return div;
 }
 
+function statusEffectsDisplay() {
+    const div = document.createElement('div');
+    div.id = 'status-effects';
+    if (!activeCharacter) return div;
+    const buffs = activeCharacter.buffs || [];
+    const debuffs = activeCharacter.debuffs || [];
+    if (!hasSignet(activeCharacter)) {
+        const idx = buffs.indexOf('Signet');
+        if (idx !== -1) buffs.splice(idx, 1);
+    }
+    const buffSpan = document.createElement('span');
+    buffSpan.className = 'buffs';
+    buffSpan.textContent = buffs.join(', ');
+    const debuffSpan = document.createElement('span');
+    debuffSpan.className = 'debuffs';
+    debuffSpan.textContent = debuffs.join(', ');
+    div.appendChild(buffSpan);
+    div.appendChild(debuffSpan);
+    return div;
+}
+
 export function renderMainMenu() {
     hideBackButton();
     const container = document.createElement('div');
@@ -311,7 +334,7 @@ export function renderCharacterMenu(root) {
 
     const list = document.createElement('div');
     list.id = 'slot-container';
-    const maxSlots = 8;
+    const maxSlots = 12;
     const slotCount = Math.min(Math.max(characters.length, 3), maxSlots);
     for (let i = 0; i < slotCount; i++) {
         const entry = document.createElement('div');
@@ -696,6 +719,7 @@ export function renderPlayUI(root) {
 export function renderAreaScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
+    root.appendChild(statusEffectsDisplay());
     const loc = locations.find(l => l.name === activeCharacter.currentLocation);
     const title = document.createElement('h2');
     title.textContent = loc ? loc.name : 'Unknown Area';
@@ -820,13 +844,18 @@ export function renderAreaScreen(root) {
             li.appendChild(btn);
             otherList.appendChild(li);
         });
+        const merchantNPC = /(merchant|shop|store|auction)/i;
         loc.importantNPCs.forEach(n => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = n;
             btn.addEventListener('click', () => openMenu(n));
             li.appendChild(btn);
-            otherList.appendChild(li);
+            if (merchantNPC.test(n)) {
+                marketList.appendChild(li);
+            } else {
+                otherList.appendChild(li);
+            }
         });
         otherCol.appendChild(otherList);
 
@@ -845,6 +874,7 @@ export function renderAreaScreen(root) {
 function renderCombatScreen(root, mob, destination) {
     if (!activeCharacter) return;
     root.innerHTML = '';
+    root.appendChild(statusEffectsDisplay());
     const container = document.createElement('div');
     container.id = 'combat-screen';
 
@@ -914,6 +944,24 @@ function renderCombatScreen(root, mob, destination) {
         document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
     }
 
+    function monsterDefeated() {
+        const exp = experienceForKill(activeCharacter.level, mobLevel);
+        log(`You defeat the ${mob.name}! Gained ${exp} EXP.`);
+        activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+        if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
+            const gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
+            activeCharacter.gil += gil;
+            log(`Found ${gil} gil.`);
+        }
+        if (mob.drops && mob.drops.length) {
+            const item = mob.drops[Math.floor(Math.random() * mob.drops.length)];
+            log(`Obtained ${item}.`);
+        }
+        if (hasSignet(activeCharacter) && Math.random() < 0.1) {
+            log('A crystal drops.');
+        }
+    }
+
     function calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit = false, critBonus = 0) {
         const atkLevel = attacker === activeCharacter ? activeCharacter.level : parseLevel(attacker.level);
         const defLevel = defender === activeCharacter ? activeCharacter.level : parseLevel(defender.level);
@@ -961,14 +1009,17 @@ function renderCombatScreen(root, mob, destination) {
             const isCrit = Math.random() < critChance;
             const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit);
             if (defender === activeCharacter) {
-                activeCharacter.hp -= dmg;
+                activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
             } else {
-                mob.currentHP -= dmg;
+                mob.currentHP = Math.max(0, mob.currentHP - dmg);
             }
             if (isCrit) {
                 log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
             } else {
                 log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
+            }
+            if (mob.currentHP <= 0 && defender !== activeCharacter) {
+                monsterDefeated();
             }
         } else {
             log(`${attacker.name} misses.`);
@@ -977,10 +1028,15 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function endBattle() {
+        if (activeCharacter.hp <= 0) {
+            activeCharacter.hp = 1;
+            activeCharacter.currentLocation = activeCharacter.currentHomePoint || activeCharacter.startingCity;
+            log('You were defeated and return to your home point.');
+        }
         const btn = document.createElement('button');
         btn.textContent = 'Continue';
         btn.addEventListener('click', () => {
-            if (destination) {
+            if (destination && activeCharacter.hp > 0) {
                 activeCharacter.currentLocation = destination;
             }
             renderAreaScreen(root);
@@ -1417,6 +1473,57 @@ function openMenu(name, backFn) {
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
         renderVendorScreen(root, name, backHandler);
+    } else if (/Home Point Crystal/i.test(name)) {
+        root.innerHTML = '';
+        const title = document.createElement('h2');
+        title.textContent = 'Home Point Crystal';
+        root.appendChild(title);
+        root.appendChild(characterSummary());
+        const zone = activeCharacter.currentLocation;
+        if (!activeCharacter.homePoints.includes(zone)) {
+            activeCharacter.homePoints.push(zone);
+            alert('You have attuned to this home point crystal.');
+        }
+        const setBtn = document.createElement('button');
+        setBtn.textContent = 'Set Home Point';
+        setBtn.addEventListener('click', () => {
+            activeCharacter.currentHomePoint = zone;
+            alert('Home point set.');
+        });
+        root.appendChild(setBtn);
+        const select = document.createElement('select');
+        activeCharacter.homePoints.forEach(hp => {
+            const opt = new Option(hp, hp);
+            select.appendChild(opt);
+        });
+        const warpBtn = document.createElement('button');
+        warpBtn.textContent = 'Teleport (1000 gil)';
+        warpBtn.addEventListener('click', () => {
+            const dest = select.value;
+            if (activeCharacter.gil < 1000) return alert('Not enough gil.');
+            activeCharacter.gil -= 1000;
+            activeCharacter.currentLocation = dest;
+            renderAreaScreen(root);
+        });
+        root.appendChild(document.createElement('br'));
+        root.appendChild(select);
+        root.appendChild(warpBtn);
+        showBackButton(backHandler);
+    } else if (/Gate Guard/i.test(name)) {
+        root.innerHTML = '';
+        const title = document.createElement('h2');
+        title.textContent = 'Gate Guard';
+        root.appendChild(title);
+        root.appendChild(characterSummary());
+        const signetBtn = document.createElement('button');
+        signetBtn.textContent = 'Receive Signet';
+        signetBtn.addEventListener('click', () => {
+            grantSignet(activeCharacter);
+            alert('Signet bestowed.');
+            renderAreaScreen(root);
+        });
+        root.appendChild(signetBtn);
+        showBackButton(backHandler);
     } else {
         alert(`Opening menu for ${name}`);
     }

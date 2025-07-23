@@ -8,7 +8,7 @@ body {
     color: #eee;
     text-align: center;
     margin: 0;
-    padding: 0;
+    padding: 60px 0 0 0;
     font-size: clamp(14px, 2vw, 20px);
 }
 
@@ -362,5 +362,18 @@ body.portrait .character-form {
 .character-summary {
     margin-top: 10px;
     text-align: left;
+}
+
+#status-effects {
+    margin: 10px 0;
+}
+
+#status-effects .buffs {
+    color: lightgreen;
+    margin-right: 10px;
+}
+
+#status-effects .debuffs {
+    color: salmon;
 }
 
