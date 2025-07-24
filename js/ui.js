@@ -600,12 +600,6 @@ function renderNewCharacterForm(root) {
         updateInfo();
     });
     inputs.appendChild(randomBtn);
-    const cityDiv = document.createElement('div');
-    cityDiv.className = 'start-city';
-    inputs.appendChild(cityDiv);
-    const cityImg = document.createElement('img');
-    cityImg.className = 'city-img';
-    inputs.appendChild(cityImg);
 
     form.appendChild(inputs);
     // middle column: stats display
@@ -622,6 +616,13 @@ function renderNewCharacterForm(root) {
     const raceImg = document.createElement('img');
     raceImg.className = 'race-img';
     statsCol.appendChild(raceImg);
+
+    const cityDiv = document.createElement('div');
+    cityDiv.className = 'start-city';
+    statsCol.appendChild(cityDiv);
+    const cityImg = document.createElement('img');
+    cityImg.className = 'city-img';
+    statsCol.appendChild(cityImg);
 
     form.appendChild(statsCol);
 

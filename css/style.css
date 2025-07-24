@@ -199,7 +199,7 @@ body.portrait .character-form {
 }
 
 .form-inputs {
-    flex: 1;
+    flex: 0.8;
     text-align: left;
 }
 
@@ -220,7 +220,7 @@ body.portrait .character-form {
 }
 
 .form-stats {
-    flex: 1;
+    flex: 1.2;
     text-align: left;
 }
 
@@ -285,7 +285,7 @@ body.portrait .main-layout {
 }
 
 .race-img, .job-img, .city-img, .character-img {
-    width: 150px;
+    width: clamp(120px, 20vw, 200px);
     height: auto;
     display: block;
     margin: 0 auto 10px auto;
@@ -303,6 +303,7 @@ body.portrait .main-layout {
 
 .stats-list {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .stats-list li {
