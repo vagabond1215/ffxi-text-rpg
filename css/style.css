@@ -478,3 +478,39 @@ body.portrait .main-layout {
     color: salmon;
 }
 
+/* Combat screen layout */
+#combat-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#combat-log {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    text-align: left;
+}
+
+#action-buttons {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+}
+
+body.portrait #action-buttons {
+    grid-template-columns: 1fr 1fr;
+}
+
+body.landscape #action-buttons {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+#action-buttons .action-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+

@@ -1107,8 +1107,7 @@ function renderCombatScreen(root, mob, destination) {
     function log(msg) {
         const p = document.createElement('div');
         p.textContent = msg;
-        logDiv.appendChild(p);
-        logDiv.scrollTop = logDiv.scrollHeight;
+        logDiv.prepend(p);
     }
 
     function findItemIdByName(name) {
@@ -1128,6 +1127,18 @@ function renderCombatScreen(root, mob, destination) {
             const n2 = items[b.id]?.name || b.id;
             return n1.localeCompare(n2);
         });
+    }
+
+    function checkLevelUp() {
+        let leveled = false;
+        while (activeCharacter.level < 99 &&
+            activeCharacter.experience >= expToLevel[activeCharacter.level + 1]) {
+            activeCharacter.level++;
+            leveled = true;
+        }
+        if (leveled) {
+            updateDerivedStats(activeCharacter);
+        }
     }
 
     function victory(exp, gil, itemDrops) {
@@ -1175,6 +1186,7 @@ function renderCombatScreen(root, mob, destination) {
                     }
                 } else {
                     activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+                    checkLevelUp();
                 }
             }
             activeCharacter.gil += gil;
@@ -1313,6 +1325,7 @@ function renderCombatScreen(root, mob, destination) {
         if (battleEnded) return;
         if (mob.currentHP <= 0) return endBattle();
         const actionDiv = document.createElement('div');
+        actionDiv.id = 'action-buttons';
 
         const attackBtn = document.createElement('button');
         attackBtn.textContent = 'Attack';
@@ -1328,28 +1341,37 @@ function renderCombatScreen(root, mob, destination) {
         const magicSelect = document.createElement('select');
         const magicBtn = document.createElement('button');
         magicBtn.textContent = 'Magic';
-        const spellsByJob = {
-            'White Mage': [{ name: 'Cure', level: 1 }],
-            'Black Mage': [{ name: 'Fire', level: 1 }],
-            'Red Mage': [
-                { name: 'Cure', level: 1 },
-                { name: 'Fire', level: 1 }
-            ]
-        };
-        const spells = (spellsByJob[activeCharacter.job] || [])
-            .filter(s => s.level <= activeCharacter.level);
-        spells.forEach(s => magicSelect.appendChild(new Option(s.name, s.name)));
+        const spells = activeCharacter.spells || [];
+        spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
+        if (!spells.length) magicBtn.disabled = true;
 
         const fleeBtn = document.createElement('button');
         fleeBtn.textContent = 'Flee';
 
-        actionDiv.appendChild(attackBtn);
-        actionDiv.appendChild(abilitySelect);
-        actionDiv.appendChild(abilityBtn);
-        actionDiv.appendChild(magicSelect);
-        actionDiv.appendChild(magicBtn);
-        actionDiv.appendChild(fleeBtn);
-        root.appendChild(actionDiv);
+        const attackWrap = document.createElement('div');
+        attackWrap.className = 'action-cell';
+        attackWrap.appendChild(attackBtn);
+
+        const abilityWrap = document.createElement('div');
+        abilityWrap.className = 'action-cell';
+        abilityWrap.appendChild(abilitySelect);
+        abilityWrap.appendChild(abilityBtn);
+
+        const magicWrap = document.createElement('div');
+        magicWrap.className = 'action-cell';
+        magicWrap.appendChild(magicSelect);
+        magicWrap.appendChild(magicBtn);
+
+        const fleeWrap = document.createElement('div');
+        fleeWrap.className = 'action-cell';
+        fleeWrap.appendChild(fleeBtn);
+
+        actionDiv.appendChild(attackWrap);
+        actionDiv.appendChild(abilityWrap);
+        actionDiv.appendChild(fleeWrap);
+        actionDiv.appendChild(magicWrap);
+
+        container.insertBefore(actionDiv, logDiv);
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
@@ -1375,13 +1397,13 @@ function renderCombatScreen(root, mob, destination) {
         }
 
         attackBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             attack(activeCharacter, mob);
             afterAction();
         });
 
         abilityBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
             attack(activeCharacter, mob);
@@ -1389,7 +1411,7 @@ function renderCombatScreen(root, mob, destination) {
         });
 
         magicBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
             attack(activeCharacter, mob);
@@ -1397,7 +1419,7 @@ function renderCombatScreen(root, mob, destination) {
         });
 
         fleeBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             if (attemptFlee()) return; // battle ended on success
             nextTurn();
         });
@@ -1523,6 +1545,16 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         name.textContent = item.name;
         if (!meetsRequirements(item)) name.style.color = 'red';
         else if (canEquipItem(item) && isBetterItem(item)) name.style.color = 'lightgreen';
+        if (/^scroll/i.test(id)) {
+            const spell = item.name.replace(/^Scroll of\s+/i, '');
+            if (activeCharacter.spells && activeCharacter.spells.includes(spell)) {
+                name.style.color = 'gray';
+            }
+        } else if (/Map$/.test(id)) {
+            if (activeCharacter.inventory.some(e => e.id === id)) {
+                name.style.color = 'lightskyblue';
+            }
+        }
         top.appendChild(name);
         const price = document.createElement('span');
         price.textContent = ` - ${item.price} gil`;
