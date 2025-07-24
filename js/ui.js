@@ -1098,50 +1098,64 @@ function renderCombatScreen(root, mobs, destination) {
     const container = document.createElement('div');
     container.id = 'combat-screen';
 
-    const sideBar = document.createElement('div');
+    const enemyColumn = document.createElement('div');
+    enemyColumn.className = 'enemy-column';
     const enemyList = document.createElement('div');
     enemyList.className = 'enemy-list';
     const partyList = document.createElement('div');
     partyList.className = 'party-list';
-    sideBar.appendChild(enemyList);
-    sideBar.appendChild(partyList);
+    enemyColumn.appendChild(enemyList);
+    enemyColumn.appendChild(partyList);
 
-    const mainDiv = document.createElement('div');
-    mainDiv.id = 'combat-main';
+    const logColumn = document.createElement('div');
+    logColumn.className = 'log-column';
 
-    const playerDiv = document.createElement('div');
-    playerDiv.className = 'combat-player';
-    playerDiv.innerHTML = `<h3>${activeCharacter.name}</h3><div id="player-hp">HP: ${activeCharacter.hp}</div>`;
+    const actionColumn = document.createElement('div');
+    actionColumn.className = 'action-column';
 
-    const enemyButtons = [];
+    const enemyEntries = [];
     mobs.forEach((m, idx) => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
+        const entry = document.createElement('div');
+        entry.className = 'target-entry';
         const btn = document.createElement('button');
         btn.className = 'target-button';
         btn.id = `enemy-${idx}`;
-        btn.textContent = `${m.name} - HP: ${m.currentHP}`;
+        btn.textContent = m.name;
         btn.addEventListener('click', () => {
             currentTarget = m;
         });
-        enemyButtons.push(btn);
-        enemyList.appendChild(btn);
+        const stat = document.createElement('span');
+        stat.className = 'target-stats';
+        stat.textContent = `HP:${m.currentHP}`;
+        entry.appendChild(btn);
+        entry.appendChild(stat);
+        enemyEntries.push({ entry, btn, stat });
+        enemyList.appendChild(entry);
     });
     let currentTarget = mobs[0];
+    const partyEntry = document.createElement('div');
+    partyEntry.className = 'target-entry';
     const partyBtn = document.createElement('button');
     partyBtn.id = 'party-player';
     partyBtn.className = 'target-button';
-    partyBtn.textContent = `${activeCharacter.name} HP:${activeCharacter.hp} MP:${activeCharacter.mp} TP:${activeCharacter.tp}`;
-    partyList.appendChild(partyBtn);
+    partyBtn.textContent = activeCharacter.name;
+    const partyStats = document.createElement('span');
+    partyStats.className = 'target-stats';
+    partyStats.textContent = `HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
+    partyEntry.appendChild(partyBtn);
+    partyEntry.appendChild(partyStats);
+    partyList.appendChild(partyEntry);
 
     const logDiv = document.createElement('div');
     logDiv.id = 'combat-log';
     logDiv.className = 'combat-log';
 
-    mainDiv.appendChild(playerDiv);
-    mainDiv.appendChild(logDiv);
+    logColumn.appendChild(logDiv);
 
-    container.appendChild(sideBar);
-    container.appendChild(mainDiv);
+    container.appendChild(enemyColumn);
+    container.appendChild(logColumn);
+    container.appendChild(actionColumn);
     root.appendChild(container);
 
     let battleEnded = false;
@@ -1283,9 +1297,9 @@ function renderCombatScreen(root, mobs, destination) {
     }
 
     function update() {
-        partyBtn.textContent = `${activeCharacter.name} HP:${activeCharacter.hp} MP:${activeCharacter.mp} TP:${activeCharacter.tp}`;
-        enemyButtons.forEach((btn, i) => {
-            if (mobs[i]) btn.textContent = `${mobs[i].name} - HP: ${mobs[i].currentHP}`;
+        partyStats.textContent = `HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
+        enemyEntries.forEach((obj, i) => {
+            if (mobs[i]) obj.stat.textContent = `HP:${mobs[i].currentHP}`;
         });
     }
 
@@ -1316,8 +1330,8 @@ function renderCombatScreen(root, mobs, destination) {
         pendingCP += cpGain;
         pendingDrops.push(...drops);
         mobs.splice(idx, 1);
-        enemyButtons[idx].remove();
-        enemyButtons.splice(idx, 1);
+        enemyEntries[idx].entry.remove();
+        enemyEntries.splice(idx, 1);
         if (mobs.length === 0) {
             victory(pendingExp, pendingGil, pendingCP, pendingDrops);
         } else {
@@ -1477,7 +1491,7 @@ function renderCombatScreen(root, mobs, destination) {
         actionDiv.appendChild(fleeWrap);
         actionDiv.appendChild(magicWrap);
 
-        container.insertBefore(actionDiv, logDiv);
+        actionColumn.appendChild(actionDiv);
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
@@ -1503,13 +1517,13 @@ function renderCombatScreen(root, mobs, destination) {
         }
 
         attackBtn.addEventListener('click', () => {
-            container.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             attack(activeCharacter, currentTarget);
             afterAction();
         });
 
         abilityBtn.addEventListener('click', () => {
-            container.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
             attack(activeCharacter, currentTarget);
@@ -1517,7 +1531,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         magicBtn.addEventListener('click', () => {
-            container.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
             attack(activeCharacter, currentTarget);
@@ -1525,7 +1539,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         fleeBtn.addEventListener('click', () => {
-            container.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             if (attemptFlee()) return;
             monsterTurn();
         });
