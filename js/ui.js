@@ -1353,6 +1353,23 @@ function buyItem(id, qty = 1) {
     alert(`Purchased ${qty} x ${item.name}.`);
 }
 
+function sellItem(id, qty = 1) {
+    const entry = activeCharacter.inventory.find(i => i.id === id);
+    if (!entry) return;
+    qty = Math.min(qty, entry.qty);
+    if (qty <= 0) return;
+    const item = items[id];
+    const revenue = (item.sellPrice || Math.floor(item.price / 2)) * qty;
+    activeCharacter.gil += revenue;
+    entry.qty -= qty;
+    if (entry.qty <= 0) {
+        const idx = activeCharacter.inventory.indexOf(entry);
+        activeCharacter.inventory.splice(idx, 1);
+    }
+    persistCharacter(activeCharacter);
+    alert(`Sold ${qty} x ${item.name} for ${revenue} gil.`);
+}
+
 export function renderVendorScreen(root, vendor, backFn = null) {
     root.innerHTML = '';
     const title = document.createElement('h2');
@@ -1420,6 +1437,52 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         list.appendChild(row);
     });
     root.appendChild(list);
+
+    const sellTitle = document.createElement('h3');
+    sellTitle.textContent = 'Sell Items';
+    root.appendChild(sellTitle);
+    const sellList = document.createElement('div');
+    sellList.className = 'vendor-list';
+    activeCharacter.inventory.forEach(entry => {
+        const item = items[entry.id];
+        const row = document.createElement('div');
+        row.className = 'vendor-item';
+        const top = document.createElement('div');
+        top.className = 'vendor-row-top';
+        const name = document.createElement('span');
+        const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
+        name.textContent = item.name + qtyText;
+        top.appendChild(name);
+        const price = document.createElement('span');
+        const sp = item.sellPrice || Math.floor(item.price / 2);
+        price.textContent = ` - ${sp} gil`;
+        top.appendChild(price);
+        let qtyInput = null;
+        if ((item.stack > 1 || entry.qty > 1) && entry.qty > 1) {
+            qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.min = '1';
+            qtyInput.max = String(entry.qty);
+            qtyInput.value = '1';
+            qtyInput.className = 'vendor-qty';
+            top.appendChild(qtyInput);
+        }
+        const sellBtn = document.createElement('button');
+        sellBtn.textContent = 'Sell';
+        sellBtn.addEventListener('click', () => {
+            const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+            sellItem(entry.id, q);
+            renderVendorScreen(root, vendor, backFn);
+        });
+        top.appendChild(sellBtn);
+        row.appendChild(top);
+        const desc = document.createElement('div');
+        desc.className = 'item-description';
+        desc.textContent = item.description || item.name;
+        row.appendChild(desc);
+        sellList.appendChild(row);
+    });
+    root.appendChild(sellList);
     const handler = backFn || (() => renderAreaScreen(root));
     showBackButton(handler);
 }
