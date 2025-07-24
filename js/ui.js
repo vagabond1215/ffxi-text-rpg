@@ -15,6 +15,7 @@ import {
     locations,
     vendorInventories,
     shopNpcs,
+    npcInventories,
     items,
     updateDerivedStats,
     loadUsers,
@@ -1359,7 +1360,7 @@ function buyItem(id, qty = 1) {
     alert(`Purchased ${qty} x ${item.name}.`);
 }
 
-export function renderVendorScreen(root, vendor, backFn = null) {
+export function renderVendorScreen(root, vendor, backFn = null, inventory = null) {
     root.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = vendor;
@@ -1367,7 +1368,7 @@ export function renderVendorScreen(root, vendor, backFn = null) {
     root.appendChild(characterSummary());
     const list = document.createElement('div');
     list.className = 'vendor-list';
-    const inv = vendorInventories[vendor] || [];
+    const inv = inventory || vendorInventories[vendor] || [];
     inv.forEach(id => {
         const item = items[id];
         const row = document.createElement('div');
@@ -1619,6 +1620,8 @@ function openMenu(name, backFn) {
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
         renderVendorScreen(root, name, backHandler);
+    } else if (npcInventories[name]) {
+        renderVendorScreen(root, name, backHandler, npcInventories[name]);
     } else if (/Home Point Crystal/i.test(name)) {
         root.innerHTML = '';
         const title = document.createElement('h2');

@@ -2653,3 +2653,32 @@ export const shopNpcs = {
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
   "Rodellieux's Stall": ['Rodellieux']
 };
+
+export const npcInventories = {
+  'Brunhilde the Armourer': vendorInventories['Brunhilde the Armourer'],
+  Ciqala: vendorInventories['Ciqala'],
+  Carmelide: vendorInventories['Carmelide'],
+  Hortense: vendorInventories['Hortense'],
+  Sororo: vendorInventories['Sororo'],
+  Galvin: vendorInventories['Galvin'],
+  Ilita: vendorInventories['Ilita'],
+  Numa: vendorInventories['Numa'],
+  Melloa: vendorInventories['Melloa'],
+  Sawyer: vendorInventories['Sawyer'],
+  Boytz: vendorInventories["Boytz's Knickknacks"],
+  Gelzerio: vendorInventories["Gelzerio's Stall"],
+  Deegis: vendorInventories["Deegis's Armour"],
+  Zemedars: vendorInventories['Zemedars'],
+  'Proud Beard': vendorInventories['Proud Beard'],
+  Neigepance: vendorInventories["Neigepance's Chocobo Stables"],
+  Griselda: vendorInventories["Griselda's Tavern"],
+  Amulya: vendorInventories["Blacksmith's Guild"],
+  'Vicious Eye': vendorInventories['Blacksmith Supplies'],
+  Nogga: vendorInventories['Nogga'],
+  Olaf: vendorInventories['Olaf'],
+  Tomasa: vendorInventories['Tomasa'],
+  Takiyah: vendorInventories['Takiyah'],
+  Odoba: vendorInventories["Alchemists' Guild"],
+  Maymunah: vendorInventories["Alchemists' Guild"],
+  Rodellieux: vendorInventories["Rodellieux's Stall"]
+};

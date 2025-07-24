@@ -34,7 +34,7 @@ export { raceInfo, jobInfo, cityImages } from './descriptions.js';
 export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
 export { bestiaryByZone, allMonsters } from './bestiary.js';
 export { experienceTable, experienceForKill } from './experience.js';
-export { items, vendorInventories, shopNpcs } from './vendors.js';
+export { items, vendorInventories, shopNpcs, npcInventories } from './vendors.js';
 export {
   parseLevel,
   conLevel,
