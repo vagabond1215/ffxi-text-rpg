@@ -74,6 +74,7 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Bee',
       level: '1-3',
+      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -89,6 +90,7 @@ export const bestiaryByZone = {
     {
       name: 'Orcish Fodder',
       level: '3-8',
+      exp: 20,
       str: 6,
       vit: 4,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
@@ -177,6 +179,7 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Bee',
       level: '1-3',
+      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -192,6 +195,7 @@ export const bestiaryByZone = {
     {
       name: 'Orcish Fodder',
       level: '3-8',
+      exp: 20,
       str: 6,
       vit: 4,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
@@ -209,6 +213,7 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
+      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -248,6 +253,7 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
+      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -355,6 +361,7 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
+      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -394,6 +401,7 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
+      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -499,6 +507,7 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
+      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -538,6 +547,7 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
+      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -553,6 +563,7 @@ export const bestiaryByZone = {
     {
       name: 'Mad Sheep',
       level: '2-3',
+      exp: 15,
       str: 2,
       vit: 2,
       drops: ['Sheepskin', 'Sheep Meat', 'Wool'],
@@ -610,6 +621,7 @@ export const bestiaryByZone = {
     {
       name: 'Savanna Rarab',
       level: '1-6',
+      exp: 15,
       str: 3,
       vit: 2,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
@@ -625,6 +637,7 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Mandragora',
       level: '1',
+      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
@@ -686,6 +699,7 @@ export const bestiaryByZone = {
     {
       name: 'Yagudo Initiate',
       level: '1-8',
+      exp: 20,
       str: 4,
       vit: 3,
       drops: ['Yagudo Feather', 'Bird Egg'],
@@ -703,6 +717,7 @@ export const bestiaryByZone = {
     {
       name: 'Savanna Rarab',
       level: '1-6',
+      exp: 15,
       str: 3,
       vit: 2,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
@@ -718,6 +733,7 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Mandragora',
       level: '1',
+      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
@@ -755,6 +771,7 @@ export const bestiaryByZone = {
     {
       name: 'Yagudo Initiate',
       level: '1-8',
+      exp: 20,
       str: 4,
       vit: 3,
       drops: ['Yagudo Feather', 'Bird Egg'],

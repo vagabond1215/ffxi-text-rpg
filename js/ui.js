@@ -882,8 +882,10 @@ export function renderAreaScreen(root) {
 
         const travelCol = document.createElement('div');
         travelCol.className = 'area-column';
-        const travelHeader = document.createElement('h3');
+        const travelHeader = document.createElement('button');
+        travelHeader.className = 'area-header';
         travelHeader.textContent = 'Zone';
+        travelHeader.addEventListener('click', () => travelList.classList.toggle('hidden'));
         travelCol.appendChild(travelHeader);
         const travelList = document.createElement('ul');
 
@@ -966,15 +968,17 @@ export function renderAreaScreen(root) {
         if (craftPOIs.length) {
             craftCol = document.createElement('div');
             craftCol.className = 'area-column';
-            const craftHeader = document.createElement('h3');
+            const craftHeader = document.createElement('button');
+            craftHeader.className = 'area-header';
             craftHeader.textContent = 'Crafting';
             craftCol.appendChild(craftHeader);
             const craftList = document.createElement('ul');
+            craftHeader.addEventListener('click', () => craftList.classList.toggle('hidden'));
             craftPOIs.forEach(li => craftList.appendChild(li));
             craftCol.appendChild(craftList);
         }
 
-        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor)/i;
+        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
         const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
         const marketItems = [];
         marketPOIs.forEach(p => {
@@ -990,8 +994,10 @@ export function renderAreaScreen(root) {
         if (marketItems.length) {
             marketCol = document.createElement('div');
             marketCol.className = 'area-column';
-            const marketHeader = document.createElement('h3');
+            const marketHeader = document.createElement('button');
+            marketHeader.className = 'area-header';
             marketHeader.textContent = 'Marketplace';
+            marketHeader.addEventListener('click', () => marketList.classList.toggle('hidden'));
             marketCol.appendChild(marketHeader);
             marketList = document.createElement('ul');
             marketItems.forEach(li => marketList.appendChild(li));
@@ -1000,8 +1006,10 @@ export function renderAreaScreen(root) {
 
         const otherCol = document.createElement('div');
         otherCol.className = 'area-column';
-        const otherHeader = document.createElement('h3');
+        const otherHeader = document.createElement('button');
+        otherHeader.className = 'area-header';
         otherHeader.textContent = 'Other';
+        otherHeader.addEventListener('click', () => otherList.classList.toggle('hidden'));
         otherCol.appendChild(otherHeader);
         const otherList = document.createElement('ul');
 
@@ -1014,7 +1022,7 @@ export function renderAreaScreen(root) {
             li.appendChild(btn);
             otherList.appendChild(li);
         });
-        const merchantNPC = /(merchant|shop|store|auction)/i;
+        const merchantNPC = /(merchant|shop|store|auction|vendor|goods|gear|scribe|notary)/i;
         loc.importantNPCs.forEach(n => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
@@ -1107,8 +1115,7 @@ function renderCombatScreen(root, mob, destination) {
     function log(msg) {
         const p = document.createElement('div');
         p.textContent = msg;
-        logDiv.appendChild(p);
-        logDiv.scrollTop = logDiv.scrollHeight;
+        logDiv.prepend(p);
     }
 
     function findItemIdByName(name) {
@@ -1128,6 +1135,18 @@ function renderCombatScreen(root, mob, destination) {
             const n2 = items[b.id]?.name || b.id;
             return n1.localeCompare(n2);
         });
+    }
+
+    function checkLevelUp() {
+        let leveled = false;
+        while (activeCharacter.level < 99 &&
+            activeCharacter.experience >= expToLevel[activeCharacter.level + 1]) {
+            activeCharacter.level++;
+            leveled = true;
+        }
+        if (leveled) {
+            updateDerivedStats(activeCharacter);
+        }
     }
 
     function victory(exp, gil, itemDrops) {
@@ -1175,6 +1194,7 @@ function renderCombatScreen(root, mob, destination) {
                     }
                 } else {
                     activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+                    checkLevelUp();
                 }
             }
             activeCharacter.gil += gil;
@@ -1313,6 +1333,7 @@ function renderCombatScreen(root, mob, destination) {
         if (battleEnded) return;
         if (mob.currentHP <= 0) return endBattle();
         const actionDiv = document.createElement('div');
+        actionDiv.id = 'action-buttons';
 
         const attackBtn = document.createElement('button');
         attackBtn.textContent = 'Attack';
@@ -1328,28 +1349,37 @@ function renderCombatScreen(root, mob, destination) {
         const magicSelect = document.createElement('select');
         const magicBtn = document.createElement('button');
         magicBtn.textContent = 'Magic';
-        const spellsByJob = {
-            'White Mage': [{ name: 'Cure', level: 1 }],
-            'Black Mage': [{ name: 'Fire', level: 1 }],
-            'Red Mage': [
-                { name: 'Cure', level: 1 },
-                { name: 'Fire', level: 1 }
-            ]
-        };
-        const spells = (spellsByJob[activeCharacter.job] || [])
-            .filter(s => s.level <= activeCharacter.level);
-        spells.forEach(s => magicSelect.appendChild(new Option(s.name, s.name)));
+        const spells = activeCharacter.spells || [];
+        spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
+        if (!spells.length) magicBtn.disabled = true;
 
         const fleeBtn = document.createElement('button');
         fleeBtn.textContent = 'Flee';
 
-        actionDiv.appendChild(attackBtn);
-        actionDiv.appendChild(abilitySelect);
-        actionDiv.appendChild(abilityBtn);
-        actionDiv.appendChild(magicSelect);
-        actionDiv.appendChild(magicBtn);
-        actionDiv.appendChild(fleeBtn);
-        root.appendChild(actionDiv);
+        const attackWrap = document.createElement('div');
+        attackWrap.className = 'action-cell';
+        attackWrap.appendChild(attackBtn);
+
+        const abilityWrap = document.createElement('div');
+        abilityWrap.className = 'action-cell';
+        abilityWrap.appendChild(abilitySelect);
+        abilityWrap.appendChild(abilityBtn);
+
+        const magicWrap = document.createElement('div');
+        magicWrap.className = 'action-cell';
+        magicWrap.appendChild(magicSelect);
+        magicWrap.appendChild(magicBtn);
+
+        const fleeWrap = document.createElement('div');
+        fleeWrap.className = 'action-cell';
+        fleeWrap.appendChild(fleeBtn);
+
+        actionDiv.appendChild(attackWrap);
+        actionDiv.appendChild(abilityWrap);
+        actionDiv.appendChild(fleeWrap);
+        actionDiv.appendChild(magicWrap);
+
+        container.insertBefore(actionDiv, logDiv);
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
@@ -1375,13 +1405,13 @@ function renderCombatScreen(root, mob, destination) {
         }
 
         attackBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             attack(activeCharacter, mob);
             afterAction();
         });
 
         abilityBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
             attack(activeCharacter, mob);
@@ -1389,7 +1419,7 @@ function renderCombatScreen(root, mob, destination) {
         });
 
         magicBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
             attack(activeCharacter, mob);
@@ -1397,7 +1427,7 @@ function renderCombatScreen(root, mob, destination) {
         });
 
         fleeBtn.addEventListener('click', () => {
-            root.removeChild(actionDiv);
+            container.removeChild(actionDiv);
             if (attemptFlee()) return; // battle ended on success
             nextTurn();
         });
@@ -1503,17 +1533,40 @@ function sellItem(id, qty = 1) {
     alert(`Sold ${qty} x ${item.name} for ${revenue} gil.`);
 }
 
-export function renderVendorScreen(root, vendor, backFn = null) {
+function renderVendorMenu(root, vendor, backFn = null) {
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = vendor;
+    root.appendChild(title);
+    root.appendChild(characterSummary());
+    const buyBtn = document.createElement('button');
+    buyBtn.textContent = 'Buy';
+    buyBtn.addEventListener('click', () => {
+        renderVendorScreen(root, vendor, backFn, 'buy');
+    });
+    const sellBtn = document.createElement('button');
+    sellBtn.textContent = 'Sell';
+    sellBtn.addEventListener('click', () => {
+        renderVendorScreen(root, vendor, backFn, 'sell');
+    });
+    root.appendChild(buyBtn);
+    root.appendChild(sellBtn);
+    const handler = backFn || (() => renderAreaScreen(root));
+    showBackButton(handler);
+}
+
+export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
     root.innerHTML = '';
     resetDetails();
     const title = document.createElement('h2');
     title.textContent = vendor;
     root.appendChild(title);
     root.appendChild(characterSummary());
-    const list = document.createElement('div');
-    list.className = 'vendor-list';
-    const inv = vendorInventories[vendor] || [];
-    inv.forEach(id => {
+    if (mode === 'buy') {
+        const list = document.createElement('div');
+        list.className = 'vendor-list';
+        const inv = vendorInventories[vendor] || [];
+        inv.forEach(id => {
         const item = items[id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -1523,6 +1576,16 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         name.textContent = item.name;
         if (!meetsRequirements(item)) name.style.color = 'red';
         else if (canEquipItem(item) && isBetterItem(item)) name.style.color = 'lightgreen';
+        if (/^scroll/i.test(id)) {
+            const spell = item.name.replace(/^Scroll of\s+/i, '');
+            if (activeCharacter.spells && activeCharacter.spells.includes(spell)) {
+                name.style.color = 'gray';
+            }
+        } else if (/Map$/.test(id)) {
+            if (activeCharacter.inventory.some(e => e.id === id)) {
+                name.style.color = 'lightskyblue';
+            }
+        }
         top.appendChild(name);
         const price = document.createElement('span');
         price.textContent = ` - ${item.price} gil`;
@@ -1571,16 +1634,18 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         }
         row.appendChild(detailsWrap);
         detail.addEventListener('click', () => toggleDetails(detailsWrap));
-        list.appendChild(row);
-    });
-    root.appendChild(list);
+            list.appendChild(row);
+        });
+        root.appendChild(list);
+    }
 
-    const sellTitle = document.createElement('h3');
-    sellTitle.textContent = 'Sell Items';
-    root.appendChild(sellTitle);
-    const sellList = document.createElement('div');
-    sellList.className = 'vendor-list';
-    activeCharacter.inventory.forEach(entry => {
+    if (mode === 'sell') {
+        const sellTitle = document.createElement('h3');
+        sellTitle.textContent = 'Sell Items';
+        root.appendChild(sellTitle);
+        const sellList = document.createElement('div');
+        sellList.className = 'vendor-list';
+        activeCharacter.inventory.forEach(entry => {
         const item = items[entry.id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -1624,11 +1689,11 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         detailBtn.textContent = 'Details';
         detailBtn.addEventListener('click', () => toggleDetails(detailsWrap));
         top.appendChild(detailBtn);
-        sellList.appendChild(row);
-    });
-    root.appendChild(sellList);
-    const handler = backFn || (() => renderAreaScreen(root));
-    showBackButton(handler);
+            sellList.appendChild(row);
+        });
+        root.appendChild(sellList);
+    }
+    showBackButton(() => renderVendorMenu(root, vendor, backFn));
 }
 
 export function renderEquipmentScreen(root) {
@@ -1837,7 +1902,7 @@ function openMenu(name, backFn) {
         root.appendChild(list);
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
-        renderVendorScreen(root, name, backHandler);
+        renderVendorMenu(root, name, backHandler);
     } else if (/Home Point Crystal/i.test(name)) {
         root.innerHTML = '';
         const title = document.createElement('h2');
