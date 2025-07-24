@@ -53,8 +53,11 @@ button {
 #user-controls select,
 #user-controls button {
     padding: 2px 6px;
-    font-size: 14px;
+    font-size: clamp(12px, 1.5vw, 16px);
     margin: 0 2px;
+}
+#user-select {
+    width: auto;
 }
 
 #new-user-btn {
@@ -163,6 +166,7 @@ body.landscape #area-grid {
 .slot-entry button {
     margin-left: 5px;
     width: 80px;
+    text-align: center;
 }
 
 #slot-container {

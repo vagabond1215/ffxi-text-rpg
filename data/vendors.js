@@ -4,6 +4,7 @@ export const items = {
   bronzeDagger: {
     name: 'Bronze Dagger',
     price: 140,
+        sellPrice: 70,
     stack: 1,
     description: 'A small dagger forged from bronze.',
     damage: 3,
@@ -15,6 +16,7 @@ export const items = {
   bronzeSword: {
     name: 'Bronze Sword',
     price: 240,
+        sellPrice: 120,
     stack: 1,
     description: 'A simple bronze sword.',
     damage: 6,
@@ -26,6 +28,7 @@ export const items = {
   leatherVest: {
     name: 'Leather Vest',
     price: 604,
+        sellPrice: 302,
     stack: 1,
     description: 'Basic leather armor for the body.',
     defense: 7,
@@ -36,6 +39,7 @@ export const items = {
   bronzeIngot: {
     name: 'Bronze Ingot',
     price: 120,
+        sellPrice: 60,
     stack: 12,
     description: 'A bar of bronze used in crafting.',
     levelRequirement: 0
@@ -43,6 +47,7 @@ export const items = {
   potion: {
     name: 'Potion',
     price: 300,
+        sellPrice: 150,
     stack: 12,
     description: 'Restores a small amount of HP.',
     levelRequirement: 0
@@ -50,6 +55,7 @@ export const items = {
   antidote: {
     name: 'Antidote',
     price: 60,
+        sellPrice: 30,
     stack: 12,
     description: 'Cures poison.',
     levelRequirement: 0
@@ -57,6 +63,7 @@ export const items = {
   meatJerky: {
     name: 'Meat Jerky',
     price: 120,
+        sellPrice: 60,
     stack: 12,
     description: 'Dried meat that slightly restores HP.',
     levelRequirement: 0
@@ -64,6 +71,7 @@ export const items = {
   distilledWater: {
     name: 'Distilled Water',
     price: 12,
+        sellPrice: 6,
     stack: 12,
     description: 'Used in alchemy and cooking.',
     levelRequirement: 0
@@ -71,6 +79,7 @@ export const items = {
   insectPaste: {
     name: 'Insect Paste',
     price: 36,
+        sellPrice: 18,
     stack: 12,
     description: 'Popular fishing bait.',
     levelRequirement: 0
@@ -78,6 +87,7 @@ export const items = {
   scrollCure: {
     name: 'Scroll of Cure',
     price: 600,
+        sellPrice: 300,
     stack: 1,
     description: 'Teaches the white magic Cure.',
     levelRequirement: 1
@@ -85,6 +95,7 @@ export const items = {
   bronzeShield: {
     name: 'Bronze Shield',
     price: 220,
+        sellPrice: 110,
     stack: 1,
     description: 'A small bronze buckler.',
     defense: 2,
@@ -95,6 +106,7 @@ export const items = {
   leatherGloves: {
     name: 'Leather Gloves',
     price: 176,
+        sellPrice: 88,
     stack: 1,
     description: 'Basic leather armor for the hands.',
     defense: 4,
@@ -105,6 +117,7 @@ export const items = {
   clothHeadband: {
     name: 'Cloth Headband',
     price: 112,
+        sellPrice: 56,
     stack: 1,
     description: 'A simple cloth headband.',
     defense: 1,
@@ -115,6 +128,7 @@ export const items = {
   scrollFire: {
     name: 'Scroll of Fire',
     price: 600,
+        sellPrice: 300,
     stack: 1,
     description: 'Teaches the black magic Fire.',
     levelRequirement: 1
@@ -122,6 +136,7 @@ export const items = {
   ether: {
     name: 'Ether',
     price: 540,
+        sellPrice: 270,
     stack: 12,
     description: 'Restores a small amount of MP.',
     levelRequirement: 0
@@ -129,6 +144,7 @@ export const items = {
   applePie: {
     name: 'Apple Pie',
     price: 200,
+        sellPrice: 100,
     stack: 12,
     description: 'A sweet pie that restores MP over time.',
     levelRequirement: 0
@@ -136,6 +152,7 @@ export const items = {
   leatherCap: {
     name: 'Leather Cap',
     price: 150,
+        sellPrice: 75,
     stack: 1,
     description: 'A basic leather cap.',
     defense: 2,
@@ -146,6 +163,7 @@ export const items = {
   leatherBoots: {
     name: 'Leather Boots',
     price: 176,
+        sellPrice: 88,
     stack: 1,
     description: 'Sturdy leather boots.',
     defense: 3,
@@ -156,6 +174,7 @@ export const items = {
   bronzeAxe: {
     name: 'Bronze Axe',
     price: 360,
+        sellPrice: 180,
     stack: 1,
     description: 'A crude axe forged from bronze.',
     damage: 7,
@@ -167,6 +186,7 @@ export const items = {
   bronzeSpear: {
     name: 'Bronze Spear',
     price: 520,
+        sellPrice: 260,
     stack: 1,
     description: 'A simple bronze spear.',
     damage: 8,
@@ -178,6 +198,7 @@ export const items = {
   bronzeKnife: {
     name: 'Bronze Knife',
     price: 100,
+        sellPrice: 50,
     stack: 1,
     description: 'A small bronze knife.',
     damage: 2,
@@ -189,6 +210,7 @@ export const items = {
   willowStaff: {
     name: 'Willow Staff',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A basic wooden staff.',
     damage: 4,
@@ -200,6 +222,7 @@ export const items = {
   woodenArrow: {
     name: 'Wooden Arrow',
     price: 3,
+        sellPrice: 1,
     stack: 99,
     description: 'Simple arrows made of wood.',
     levelRequirement: 0
@@ -207,6 +230,7 @@ export const items = {
   bambooFishingRod: {
     name: 'Bamboo Fishing Rod',
     price: 500,
+        sellPrice: 250,
     stack: 1,
     description: 'A basic bamboo fishing rod.',
     levelRequirement: 0
@@ -214,6 +238,7 @@ export const items = {
   pickaxe: {
     name: 'Pickaxe',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'Used for mining ore from deposits.',
     levelRequirement: 0
@@ -221,6 +246,7 @@ export const items = {
   copperOre: {
     name: 'Copper Ore',
     price: 50,
+        sellPrice: 25,
     stack: 12,
     description: 'Ore used in smithing.',
     levelRequirement: 0
@@ -228,6 +254,7 @@ export const items = {
   copperIngot: {
     name: 'Copper Ingot',
     price: 150,
+        sellPrice: 75,
     stack: 12,
     description: 'A bar of refined copper.',
     levelRequirement: 0
@@ -235,6 +262,7 @@ export const items = {
   cottonThread: {
     name: 'Cotton Thread',
     price: 60,
+        sellPrice: 30,
     stack: 12,
     description: 'Thread spun from cotton.',
     levelRequirement: 0
@@ -242,6 +270,7 @@ export const items = {
   boneChip: {
     name: 'Bone Chip',
     price: 20,
+        sellPrice: 10,
     stack: 12,
     description: 'Small fragments of bone.',
     levelRequirement: 0
@@ -249,6 +278,7 @@ export const items = {
   arrowwoodLog: {
     name: 'Arrowwood Log',
     price: 100,
+        sellPrice: 50,
     stack: 12,
     description: 'A log of arrowwood.',
     levelRequirement: 0
@@ -256,6 +286,7 @@ export const items = {
   honey: {
     name: 'Honey',
     price: 40,
+        sellPrice: 20,
     stack: 12,
     description: 'Sweet honey used in cooking.',
     levelRequirement: 0
@@ -263,6 +294,7 @@ export const items = {
   mythrilSallet: {
     name: 'Mythril Sallet',
     price: 51152,
+        sellPrice: 25576,
     stack: 1,
     description: 'Heavy headgear forged of mythril.',
     defense: 15,
@@ -273,6 +305,7 @@ export const items = {
   breastplate: {
     name: 'Breastplate',
     price: 44226,
+        sellPrice: 22113,
     stack: 1,
     description: 'A sturdy metal breastplate.',
     defense: 27,
@@ -283,6 +316,7 @@ export const items = {
   gauntlets: {
     name: 'Gauntlets',
     price: 23328,
+        sellPrice: 11664,
     stack: 1,
     description: 'Heavy metal gauntlets.',
     defense: 12,
@@ -293,6 +327,7 @@ export const items = {
   brassMask: {
     name: 'Brass Mask',
     price: 11520,
+        sellPrice: 5760,
     stack: 1,
     description: 'Face armor forged from brass.',
     defense: 8,
@@ -303,6 +338,7 @@ export const items = {
   sallet: {
     name: 'Sallet',
     price: 28674,
+        sellPrice: 14337,
     stack: 1,
     description: 'A sturdy metal helm.',
     defense: 12,
@@ -313,6 +349,7 @@ export const items = {
   brassScaleMail: {
     name: 'Brass Scale Mail',
     price: 17539,
+        sellPrice: 8769,
     stack: 1,
     description: 'Scale armor made of brass.',
     defense: 17,
@@ -323,6 +360,7 @@ export const items = {
   brassFingerGauntlets: {
     name: 'Brass Finger Gauntlets',
     price: 9273,
+        sellPrice: 4636,
     stack: 1,
     description: 'Fingered gauntlets of brass.',
     defense: 8,
@@ -333,6 +371,7 @@ export const items = {
   bronzeCap: {
     name: 'Bronze Cap',
     price: 151,
+        sellPrice: 75,
     stack: 1,
     description: 'A simple bronze cap.',
     defense: 1,
@@ -343,6 +382,7 @@ export const items = {
   faceguard: {
     name: 'Faceguard',
     price: 1305,
+        sellPrice: 652,
     stack: 1,
     description: 'Protective face armor.',
     defense: 4,
@@ -353,6 +393,7 @@ export const items = {
   bronzeHarness: {
     name: 'Bronze Harness',
     price: 230,
+        sellPrice: 115,
     stack: 1,
     description: 'A light bronze cuirass.',
     defense: 4,
@@ -363,6 +404,7 @@ export const items = {
   scaleMail: {
     name: 'Scale Mail',
     price: 2007,
+        sellPrice: 1003,
     stack: 1,
     description: 'Light armor of overlapping scales.',
     defense: 14,
@@ -373,6 +415,7 @@ export const items = {
   bronzeMittens: {
     name: 'Bronze Mittens',
     price: 126,
+        sellPrice: 63,
     stack: 1,
     description: 'Simple bronze mittens.',
     defense: 1,
@@ -383,6 +426,7 @@ export const items = {
   scaleFingerGauntlets: {
     name: 'Scale Finger Gauntlets',
     price: 1071,
+        sellPrice: 535,
     stack: 1,
     description: 'Finger gauntlets crafted from scales.',
     defense: 5,
@@ -393,6 +437,7 @@ export const items = {
   bronzeKnuckles: {
     name: 'Bronze Knuckles',
     price: 224,
+        sellPrice: 112,
     stack: 1,
     description: 'Bronze fist weapons.',
     damage: 4,
@@ -404,6 +449,7 @@ export const items = {
   brassKnuckles: {
     name: 'Brass Knuckles',
     price: 828,
+        sellPrice: 414,
     stack: 1,
     description: 'Brass fist weapons.',
     damage: 7,
@@ -415,6 +461,7 @@ export const items = {
   metalKnuckles: {
     name: 'Metal Knuckles',
     price: 4818,
+        sellPrice: 2409,
     stack: 1,
     description: 'Heavy metal knuckles.',
     damage: 10,
@@ -426,6 +473,7 @@ export const items = {
   bronzeHammer: {
     name: 'Bronze Hammer',
     price: 312,
+        sellPrice: 156,
     stack: 1,
     description: 'A basic bronze hammer.',
     damage: 5,
@@ -437,6 +485,7 @@ export const items = {
   brassHammer: {
     name: 'Brass Hammer',
     price: 2129,
+        sellPrice: 1064,
     stack: 1,
     description: 'A sturdy brass hammer.',
     damage: 11,
@@ -448,6 +497,7 @@ export const items = {
   warhammer: {
     name: 'Warhammer',
     price: 6033,
+        sellPrice: 3016,
     stack: 1,
     description: 'A heavy warhammer.',
     damage: 18,
@@ -459,6 +509,7 @@ export const items = {
   mapleWand: {
     name: 'Maple Wand',
     price: 47,
+        sellPrice: 23,
     stack: 1,
     description: 'A simple wand made of maple.',
     damage: 3,
@@ -470,6 +521,7 @@ export const items = {
   ironArrow: {
     name: 'Iron Arrow',
     price: 7,
+        sellPrice: 3,
     stack: 99,
     description: 'Sturdy iron arrows.',
     levelRequirement: 1
@@ -477,6 +529,7 @@ export const items = {
   silverArrow: {
     name: 'Silver Arrow',
     price: 16,
+        sellPrice: 8,
     stack: 99,
     description: 'High-quality silver arrows.',
     levelRequirement: 1
@@ -484,6 +537,7 @@ export const items = {
   crossbowBolt: {
     name: 'Crossbow Bolt',
     price: 5,
+        sellPrice: 2,
     stack: 99,
     description: 'Bolts used with crossbows.',
     levelRequirement: 1
@@ -491,6 +545,7 @@ export const items = {
   lightCrossbow: {
     name: 'Light Crossbow',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'A lightweight crossbow.',
     damage: 10,
@@ -502,6 +557,7 @@ export const items = {
   crossbow: {
     name: 'Crossbow',
     price: 2166,
+        sellPrice: 1083,
     stack: 1,
     description: 'A standard crossbow.',
     damage: 15,
@@ -513,6 +569,7 @@ export const items = {
   scrollDarkThrenody: {
     name: 'Scroll of Dark Threnody',
     price: 199,
+        sellPrice: 99,
     stack: 1,
     description: 'Teaches the song Dark Threnody.',
     levelRequirement: 15
@@ -520,6 +577,7 @@ export const items = {
   scrollIceThrenody: {
     name: 'Scroll of Ice Threnody',
     price: 1000,
+        sellPrice: 500,
     stack: 1,
     description: 'Teaches the song Ice Threnody.',
     levelRequirement: 45
@@ -527,6 +585,7 @@ export const items = {
   scrollFoeRequiemI: {
     name: 'Scroll of Foe Requiem I',
     price: 64,
+        sellPrice: 32,
     stack: 1,
     description: 'Teaches Foe Requiem I.',
     levelRequirement: 7
@@ -534,6 +593,7 @@ export const items = {
   scrollFoeRequiemII: {
     name: 'Scroll of Foe Requiem II',
     price: 441,
+        sellPrice: 220,
     stack: 1,
     description: 'Teaches Foe Requiem II.',
     levelRequirement: 17
@@ -541,6 +601,7 @@ export const items = {
   scrollFoeRequiemIII: {
     name: 'Scroll of Foe Requiem III',
     price: 3960,
+        sellPrice: 1980,
     stack: 1,
     description: 'Teaches Foe Requiem III.',
     levelRequirement: 37
@@ -548,6 +609,7 @@ export const items = {
   scrollFoeRequiemIV: {
     name: 'Scroll of Foe Requiem IV',
     price: 6912,
+        sellPrice: 3456,
     stack: 1,
     description: 'Teaches Foe Requiem IV.',
     levelRequirement: 47
@@ -555,6 +617,7 @@ export const items = {
   scrollArmysPaeon: {
     name: "Scroll of Army's Paeon", 
     price: 37,
+        sellPrice: 18,
     stack: 1,
     description: "Teaches Army's Paeon.",
     levelRequirement: 5
@@ -562,6 +625,7 @@ export const items = {
   scrollArmysPaeonII: {
     name: "Scroll of Army's Paeon II",
     price: 321,
+        sellPrice: 160,
     stack: 1,
     description: "Teaches Army's Paeon II.",
     levelRequirement: 15
@@ -569,6 +633,7 @@ export const items = {
   scrollArmysPaeonIII: {
     name: "Scroll of Army's Paeon III",
     price: 3240,
+        sellPrice: 1620,
     stack: 1,
     description: "Teaches Army's Paeon III.",
     levelRequirement: 35
@@ -576,6 +641,7 @@ export const items = {
   scrollArmysPaeonIV: {
     name: "Scroll of Army's Paeon IV",
     price: 5940,
+        sellPrice: 2970,
     stack: 1,
     description: "Teaches Army's Paeon IV.",
     levelRequirement: 45
@@ -583,6 +649,7 @@ export const items = {
   scrollValorMinuet: {
     name: 'Scroll of Valor Minuet',
     price: 21,
+        sellPrice: 10,
     stack: 1,
     description: 'Teaches Valor Minuet.',
     levelRequirement: 3
@@ -590,6 +657,7 @@ export const items = {
   scrollValorMinuetII: {
     name: 'Scroll of Valor Minuet II',
     price: 1101,
+        sellPrice: 550,
     stack: 1,
     description: 'Teaches Valor Minuet II.',
     levelRequirement: 23
@@ -597,6 +665,7 @@ export const items = {
   scrollValorMinuetIII: {
     name: 'Scroll of Valor Minuet III',
     price: 5544,
+        sellPrice: 2772,
     stack: 1,
     description: 'Teaches Valor Minuet III.',
     levelRequirement: 43
@@ -604,6 +673,7 @@ export const items = {
   scrollCureII: {
     name: 'Scroll of Cure II',
     price: 585,
+        sellPrice: 292,
     stack: 1,
     description: 'Teaches the white magic Cure II.',
     levelRequirement: 11
@@ -611,6 +681,7 @@ export const items = {
   scrollCuraga: {
     name: 'Scroll of Curaga',
     price: 1363,
+        sellPrice: 681,
     stack: 1,
     description: 'Teaches the white magic Curaga.',
     levelRequirement: 43
@@ -618,6 +689,7 @@ export const items = {
   scrollPoisona: {
     name: 'Scroll of Poisona',
     price: 180,
+        sellPrice: 90,
     stack: 1,
     description: 'Teaches the white magic Poisona.',
     levelRequirement: 15
@@ -625,6 +697,7 @@ export const items = {
   scrollParalyna: {
     name: 'Scroll of Paralyna',
     price: 324,
+        sellPrice: 162,
     stack: 1,
     description: 'Teaches the white magic Paralyna.',
     levelRequirement: 21
@@ -632,6 +705,7 @@ export const items = {
   scrollBlindna: {
     name: 'Scroll of Blindna',
     price: 990,
+        sellPrice: 495,
     stack: 1,
     description: 'Teaches the white magic Blindna.',
     levelRequirement: 47
@@ -639,6 +713,7 @@ export const items = {
   scrollDia: {
     name: 'Scroll of Dia',
     price: 82,
+        sellPrice: 41,
     stack: 1,
     description: 'Teaches the white magic Dia.',
     levelRequirement: 27
@@ -646,6 +721,7 @@ export const items = {
   scrollDiaga: {
     name: 'Scroll of Diaga',
     price: 1165,
+        sellPrice: 582,
     stack: 1,
     description: 'Teaches the white magic Diaga.',
     levelRequirement: 73
@@ -653,6 +729,7 @@ export const items = {
   scrollBanish: {
     name: 'Scroll of Banish',
     price: 140,
+        sellPrice: 70,
     stack: 1,
     description: 'Teaches Banish.',
     levelRequirement: 1
@@ -660,6 +737,7 @@ export const items = {
   scrollBanishga: {
     name: 'Scroll of Banishga',
     price: 1165,
+        sellPrice: 582,
     stack: 1,
     description: 'Teaches Banishga.',
     levelRequirement: 35
@@ -667,6 +745,7 @@ export const items = {
   scrollBlink: {
     name: 'Scroll of Blink',
     price: 2097,
+        sellPrice: 1048,
     stack: 1,
     description: 'Teaches Blink.',
     levelRequirement: 15
@@ -674,6 +753,7 @@ export const items = {
   scrollProtect: {
     name: 'Scroll of Protect',
     price: 219,
+        sellPrice: 109,
     stack: 1,
     description: 'Teaches Protect.',
     levelRequirement: 20
@@ -681,6 +761,7 @@ export const items = {
   scrollShell: {
     name: 'Scroll of Shell',
     price: 1584,
+        sellPrice: 792,
     stack: 1,
     description: 'Teaches Shell.',
     levelRequirement: 35
@@ -688,6 +769,7 @@ export const items = {
   scrollStoneskin: {
     name: 'Scroll of Stoneskin',
     price: 7025,
+        sellPrice: 3512,
     stack: 1,
     description: 'Teaches Stoneskin.',
     levelRequirement: 49
@@ -695,6 +777,7 @@ export const items = {
   scrollSlow: {
     name: 'Scroll of Slow',
     price: 837,
+        sellPrice: 418,
     stack: 1,
     description: 'Teaches Slow.',
     levelRequirement: 13
@@ -702,6 +785,7 @@ export const items = {
   echoDrops: {
     name: 'Echo Drops',
     price: 736,
+        sellPrice: 368,
     stack: 12,
     description: 'Cures silence.',
     levelRequirement: 0
@@ -709,6 +793,7 @@ export const items = {
   eyeDrops: {
     name: 'Eye Drops',
     price: 2387,
+        sellPrice: 1193,
     stack: 12,
     description: 'Cures blindness.',
     levelRequirement: 0
@@ -716,6 +801,7 @@ export const items = {
   tourmaline: {
     name: 'Tourmaline',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A pink gemstone.',
     levelRequirement: 0
@@ -723,6 +809,7 @@ export const items = {
   sardonyx: {
     name: 'Sardonyx',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A striped gemstone.',
     levelRequirement: 0
@@ -730,6 +817,7 @@ export const items = {
   amethyst: {
     name: 'Amethyst',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A purple gemstone.',
     levelRequirement: 0
@@ -737,6 +825,7 @@ export const items = {
   amber: {
     name: 'Amber',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A golden gemstone.',
     levelRequirement: 0
@@ -744,6 +833,7 @@ export const items = {
   lapisLazuli: {
     name: 'Lapis Lazuli',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A blue gemstone.',
     levelRequirement: 0
@@ -751,6 +841,7 @@ export const items = {
   clearTopaz: {
     name: 'Clear Topaz',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A transparent gem.',
     levelRequirement: 0
@@ -758,6 +849,7 @@ export const items = {
   onyx: {
     name: 'Onyx',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A jet-black gem.',
     levelRequirement: 0
@@ -765,6 +857,7 @@ export const items = {
   lightOpal: {
     name: 'Light Opal',
     price: 1676,
+        sellPrice: 838,
     stack: 1,
     description: 'A brilliant opal.',
     levelRequirement: 0
@@ -772,6 +865,7 @@ export const items = {
   copperRing: {
     name: 'Copper Ring',
     price: 68,
+        sellPrice: 34,
     stack: 1,
     description: 'A simple copper ring.',
     levelRequirement: 0,
@@ -781,6 +875,7 @@ export const items = {
   bastokMap: {
     name: 'Map of Bastok',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A detailed map of Bastok and surrounding areas.',
     levelRequirement: 0
@@ -788,6 +883,7 @@ export const items = {
   sandoriaMap: {
     name: "Map of San d'Oria",
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: "A detailed map of San d'Oria and surrounding areas.",
     levelRequirement: 0
@@ -795,6 +891,7 @@ export const items = {
   windurstMap: {
     name: 'Map of Windurst',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A detailed map of Windurst and surrounding areas.',
     levelRequirement: 0
@@ -802,6 +899,7 @@ export const items = {
   jeunoMap: {
     name: 'Map of Jeuno',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A detailed map of Jeuno and surrounding areas.',
     levelRequirement: 0
@@ -809,6 +907,7 @@ export const items = {
   valkurmMap: {
     name: 'Map of Valkurm Dunes',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A map guiding travelers through the Valkurm Dunes.',
     levelRequirement: 0
@@ -816,6 +915,7 @@ export const items = {
   ashLog: {
     name: 'Ash Log',
     price: 88,
+        sellPrice: 44,
     stack: 99,
     description: 'A log cut from an ash tree.',
     levelRequirement: 0
@@ -823,6 +923,7 @@ export const items = {
   chestnutLog: {
     name: 'Chestnut Log',
     price: 2599,
+        sellPrice: 1299,
     stack: 99,
     description: 'Wood from a chestnut tree.',
     levelRequirement: 0
@@ -830,6 +931,7 @@ export const items = {
   oakLog: {
     name: 'Oak Log',
     price: 5814,
+        sellPrice: 2907,
     stack: 99,
     description: 'A sturdy oak log.',
     levelRequirement: 0
@@ -837,6 +939,7 @@ export const items = {
   ironOre: {
     name: 'Iron Ore',
     price: 828,
+        sellPrice: 414,
     stack: 99,
     description: 'Ore containing iron.',
     levelRequirement: 0
@@ -844,6 +947,7 @@ export const items = {
   mythrilOre: {
     name: 'Mythril Ore',
     price: 1840,
+        sellPrice: 920,
     stack: 99,
     description: 'Ore containing mythril.',
     levelRequirement: 0
@@ -851,6 +955,7 @@ export const items = {
   mokoGrass: {
     name: 'Moko Grass',
     price: 18,
+        sellPrice: 9,
     stack: 99,
     description: 'A clump of moko grass used in clothcraft.',
     levelRequirement: 0
@@ -858,6 +963,7 @@ export const items = {
   birdEgg: {
     name: 'Bird Egg',
     price: 51,
+        sellPrice: 25,
     stack: 12,
     description: 'A fresh bird egg.',
     levelRequirement: 0
@@ -865,6 +971,7 @@ export const items = {
   flaxFlower: {
     name: 'Flax Flower',
     price: 230,
+        sellPrice: 115,
     stack: 99,
     description: 'A delicate flax blossom.',
     levelRequirement: 0
@@ -872,6 +979,7 @@ export const items = {
   kaiserinCosmetics: {
     name: 'Kaiserin Cosmetics',
     price: 1840,
+        sellPrice: 920,
     stack: 99,
     description: 'Cosmetics from the Empire of Aht Urhgan.',
     levelRequirement: 0
@@ -879,6 +987,7 @@ export const items = {
   blackChip: {
     name: 'Black Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A black strange apparatus chip.',
     levelRequirement: 0
@@ -886,6 +995,7 @@ export const items = {
   blueChip: {
     name: 'Blue Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A blue strange apparatus chip.',
     levelRequirement: 0
@@ -893,6 +1003,7 @@ export const items = {
   clearChip: {
     name: 'Clear Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A clear strange apparatus chip.',
     levelRequirement: 0
@@ -900,6 +1011,7 @@ export const items = {
   greenChip: {
     name: 'Green Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A green strange apparatus chip.',
     levelRequirement: 0
@@ -907,6 +1019,7 @@ export const items = {
   purpleChip: {
     name: 'Purple Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A purple strange apparatus chip.',
     levelRequirement: 0
@@ -914,6 +1027,7 @@ export const items = {
   redChip: {
     name: 'Red Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A red strange apparatus chip.',
     levelRequirement: 0
@@ -921,6 +1035,7 @@ export const items = {
   whiteChip: {
     name: 'White Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A white strange apparatus chip.',
     levelRequirement: 0
@@ -928,6 +1043,7 @@ export const items = {
   yellowChip: {
     name: 'Yellow Chip',
     price: 21000,
+        sellPrice: 10500,
     stack: 1,
     description: 'A yellow strange apparatus chip.',
     levelRequirement: 0
@@ -935,6 +1051,7 @@ export const items = {
   linkshell: {
     name: 'Linkshell',
     price: 6000,
+        sellPrice: 3000,
     stack: 1,
     description: 'Creates a social linkshell.',
     levelRequirement: 0
@@ -942,6 +1059,7 @@ export const items = {
   pendantCompass: {
     name: 'Pendant Compass',
     price: 375,
+        sellPrice: 187,
     stack: 1,
     description: 'A simple compass pendant.',
     levelRequirement: 0
@@ -949,6 +1067,7 @@ export const items = {
   cottonHachimaki: {
     name: 'Cotton Hachimaki',
     price: 5079,
+        sellPrice: 2539,
     stack: 99,
     description: 'Headgear woven from cotton.',
     defense: 4,
@@ -959,6 +1078,7 @@ export const items = {
   cottonDogi: {
     name: 'Cotton Dogi',
     price: 7654,
+        sellPrice: 3827,
     stack: 99,
     description: 'A cotton martial arts tunic.',
     defense: 10,
@@ -969,6 +1089,7 @@ export const items = {
   cottonTekko: {
     name: 'Cotton Tekko',
     price: 4212,
+        sellPrice: 2106,
     stack: 99,
     description: 'Cotton handguards.',
     defense: 6,
@@ -979,6 +1100,7 @@ export const items = {
   cottonSitabaki: {
     name: 'Cotton Sitabaki',
     price: 6133,
+        sellPrice: 3066,
     stack: 99,
     description: 'Cotton shinobi trousers.',
     defense: 8,
@@ -989,6 +1111,7 @@ export const items = {
   cottonKyahan: {
     name: 'Cotton Kyahan',
     price: 3924,
+        sellPrice: 1962,
     stack: 99,
     description: 'Cotton boots favored by monks.',
     defense: 5,
@@ -999,6 +1122,7 @@ export const items = {
   silverObi: {
     name: 'Silver Obi',
     price: 3825,
+        sellPrice: 1912,
     stack: 99,
     description: 'A belt adorned with silver.',
     defense: 1,
@@ -1009,6 +1133,7 @@ export const items = {
   hachimaki: {
     name: 'Hachimaki',
     price: 742,
+        sellPrice: 371,
     stack: 99,
     description: 'Simple cloth headgear.',
     defense: 2,
@@ -1019,6 +1144,7 @@ export const items = {
   kenpogi: {
     name: 'Kenpogi',
     price: 1120,
+        sellPrice: 560,
     stack: 99,
     description: 'A light practice gi.',
     defense: 6,
@@ -1029,6 +1155,7 @@ export const items = {
   tekko: {
     name: 'Tekko',
     price: 616,
+        sellPrice: 308,
     stack: 99,
     description: 'Training gloves for monks.',
     defense: 3,
@@ -1039,6 +1166,7 @@ export const items = {
   sitabaki: {
     name: 'Sitabaki',
     price: 895,
+        sellPrice: 447,
     stack: 99,
     description: 'Loose martial arts pants.',
     defense: 4,
@@ -1049,6 +1177,7 @@ export const items = {
   kyahan: {
     name: 'Kyahan',
     price: 571,
+        sellPrice: 285,
     stack: 99,
     description: 'Simple cloth footwear.',
     defense: 2,
@@ -1059,6 +1188,7 @@ export const items = {
   bambooStick: {
     name: 'Bamboo Stick',
     price: 132,
+        sellPrice: 66,
     stack: 99,
     description: 'A basic bamboo pole.',
     damage: 5,
@@ -1070,6 +1200,7 @@ export const items = {
   toolbagIno: {
     name: 'Toolbag (Ino)',
     price: 13500,
+        sellPrice: 6750,
     stack: 99,
     description: 'Bundle of Ino tools for ninjutsu.',
     levelRequirement: 0
@@ -1077,6 +1208,7 @@ export const items = {
   toolbagShika: {
     name: 'Toolbag (Shika)',
     price: 18000,
+        sellPrice: 9000,
     stack: 99,
     description: 'Bundle of Shika tools for ninjutsu.',
     levelRequirement: 0
@@ -1084,6 +1216,7 @@ export const items = {
   toolbagCho: {
     name: 'Toolbag (Cho)',
     price: 18000,
+        sellPrice: 9000,
     stack: 99,
     description: 'Bundle of Cho tools for ninjutsu.',
     levelRequirement: 0
@@ -1091,6 +1224,7 @@ export const items = {
   ironBread: {
     name: 'Iron Bread',
     price: 92,
+        sellPrice: 46,
     stack: 99,
     description: 'Bread that slightly boosts vitality when eaten.',
     levelRequirement: 0
@@ -1098,6 +1232,7 @@ export const items = {
   bretzel: {
     name: 'Bretzel',
     price: 22,
+        sellPrice: 11,
     stack: 99,
     description: 'A soft pretzel popular in Bastok.',
     levelRequirement: 0
@@ -1105,6 +1240,7 @@ export const items = {
   pumpernickel: {
     name: 'Pumpernickel',
     price: 147,
+        sellPrice: 73,
     stack: 99,
     description: 'Dark rye bread with a mild effect.',
     levelRequirement: 0
@@ -1112,6 +1248,7 @@ export const items = {
   sausage: {
     name: 'Sausage',
     price: 143,
+        sellPrice: 71,
     stack: 99,
     description: 'A grilled sausage that restores a little HP.',
     levelRequirement: 0
@@ -1119,6 +1256,7 @@ export const items = {
   bakedPopoto: {
     name: 'Baked Popoto',
     price: 294,
+        sellPrice: 147,
     stack: 99,
     description: 'A baked popoto that recovers HP.',
     levelRequirement: 0
@@ -1126,6 +1264,7 @@ export const items = {
   pebbleSoup: {
     name: 'Pebble Soup',
     price: 184,
+        sellPrice: 92,
     stack: 99,
     description: 'Soup with tiny pebbles for texture.',
     levelRequirement: 0
@@ -1133,6 +1272,7 @@ export const items = {
   pineappleJuice: {
     name: 'Pineapple Juice',
     price: 368,
+        sellPrice: 184,
     stack: 99,
     description: 'A sweet juice that gradually restores MP.',
     levelRequirement: 0
@@ -1140,6 +1280,7 @@ export const items = {
   melonJuice: {
     name: 'Melon Juice',
     price: 1012,
+        sellPrice: 506,
     stack: 99,
     description: 'A refreshing melon juice that restores MP over time.',
     levelRequirement: 0
@@ -1147,6 +1288,7 @@ export const items = {
   roastMutton: {
     name: 'Roast Mutton',
     price: 662,
+        sellPrice: 331,
     stack: 99,
     description: 'A hearty roast of mutton.',
     levelRequirement: 0
@@ -1154,6 +1296,7 @@ export const items = {
   eggSoup: {
     name: 'Egg Soup',
     price: 3036,
+        sellPrice: 1518,
     stack: 99,
     description: 'A soup made from eggs.',
     levelRequirement: 0
@@ -1161,6 +1304,7 @@ export const items = {
   derflandPear: {
     name: 'Derfland Pear',
     price: 128,
+        sellPrice: 64,
     stack: 99,
     description: 'A sweet pear from the Derfland region.',
     levelRequirement: 0
@@ -1168,6 +1312,7 @@ export const items = {
   ginger: {
     name: 'Ginger',
     price: 142,
+        sellPrice: 71,
     stack: 99,
     description: 'A fragrant root used in cooking.',
     levelRequirement: 0
@@ -1175,6 +1320,7 @@ export const items = {
   gysahlGreens: {
     name: 'Gysahl Greens',
     price: 62,
+        sellPrice: 31,
     stack: 99,
     description: 'Favorite food of chocobos.',
     levelRequirement: 0
@@ -1182,6 +1328,7 @@ export const items = {
   oliveFlower: {
     name: 'Olive Flower',
     price: 1656,
+        sellPrice: 828,
     stack: 99,
     description: 'A delicate olive blossom.',
     levelRequirement: 0
@@ -1189,6 +1336,7 @@ export const items = {
   oliveOil: {
     name: 'Olive Oil',
     price: 14,
+        sellPrice: 7,
     stack: 99,
     description: 'Oil pressed from olives.',
     levelRequirement: 0
@@ -1196,6 +1344,7 @@ export const items = {
   wijnruit: {
     name: 'Wijnruit',
     price: 110,
+        sellPrice: 55,
     stack: 99,
     description: 'A pungent herb used in alchemy.',
     levelRequirement: 0
@@ -1203,6 +1352,7 @@ export const items = {
   kazhamPeppers: {
     name: 'Kazham Peppers',
     price: 55,
+        sellPrice: 27,
     stack: 99,
     description: 'Spicy peppers from Kazham.',
     levelRequirement: 0
@@ -1210,6 +1360,7 @@ export const items = {
   kazhamPineapple: {
     name: 'Kazham Pineapple',
     price: 55,
+        sellPrice: 27,
     stack: 99,
     description: 'A tropical pineapple.',
     levelRequirement: 0
@@ -1217,6 +1368,7 @@ export const items = {
   mithranTomato: {
     name: 'Mithran Tomato',
     price: 36,
+        sellPrice: 18,
     stack: 99,
     description: 'A juicy tomato cultivated by Mithra.',
     levelRequirement: 0
@@ -1224,6 +1376,7 @@ export const items = {
   blackPepper: {
     name: 'Black Pepper',
     price: 234,
+        sellPrice: 117,
     stack: 99,
     description: 'A common spice used in cooking.',
     levelRequirement: 0
@@ -1231,6 +1384,7 @@ export const items = {
   ogrePumpkin: {
     name: 'Ogre Pumpkin',
     price: 88,
+        sellPrice: 44,
     stack: 99,
     description: 'A large pumpkin.',
     levelRequirement: 0
@@ -1238,6 +1392,7 @@ export const items = {
   kukuruBean: {
     name: 'Kukuru Bean',
     price: 110,
+        sellPrice: 55,
     stack: 99,
     description: 'A flavorful bean used in sweets.',
     levelRequirement: 0
@@ -1245,6 +1400,7 @@ export const items = {
   phalaenopsis: {
     name: 'Phalaenopsis',
     price: 1656,
+        sellPrice: 828,
     stack: 99,
     description: 'A rare orchid.',
     levelRequirement: 0
@@ -1252,6 +1408,7 @@ export const items = {
   cattleya: {
     name: 'Cattleya',
     price: 1656,
+        sellPrice: 828,
     stack: 99,
     description: 'An exotic flower from the uplands.',
     levelRequirement: 0
@@ -1259,6 +1416,7 @@ export const items = {
   cinnamon: {
     name: 'Cinnamon',
     price: 239,
+        sellPrice: 119,
     stack: 99,
     description: 'Fragrant cinnamon bark.',
     levelRequirement: 0
@@ -1266,6 +1424,7 @@ export const items = {
   pamamas: {
     name: 'Pamamas',
     price: 73,
+        sellPrice: 36,
     stack: 99,
     description: 'Small sweet bananas.',
     levelRequirement: 0
@@ -1273,6 +1432,7 @@ export const items = {
   rattanLumber: {
     name: 'Rattan Lumber',
     price: 147,
+        sellPrice: 73,
     stack: 99,
     description: 'Lumber cut from rattan.',
     levelRequirement: 0
@@ -1280,6 +1440,7 @@ export const items = {
   sulfur: {
     name: 'Sulfur',
     price: 703,
+        sellPrice: 351,
     stack: 99,
     description: 'Yellow sulfur used in alchemy.',
     levelRequirement: 0
@@ -1287,6 +1448,7 @@ export const items = {
   popoto: {
     name: 'Popoto',
     price: 43,
+        sellPrice: 21,
     stack: 99,
     description: 'A starchy vegetable.',
     levelRequirement: 0
@@ -1294,6 +1456,7 @@ export const items = {
   ryeFlour: {
     name: 'Rye Flour',
     price: 36,
+        sellPrice: 18,
     stack: 99,
     description: 'Finely milled rye flour.',
     levelRequirement: 0
@@ -1301,6 +1464,7 @@ export const items = {
   eggplant: {
     name: 'Eggplant',
     price: 40,
+        sellPrice: 20,
     stack: 99,
     description: 'A glossy purple vegetable.',
     levelRequirement: 0
@@ -1308,6 +1472,7 @@ export const items = {
   cactuarNeedle: {
     name: 'Cactuar Needle',
     price: 855,
+        sellPrice: 427,
     stack: 99,
     description: 'A sharp needle from a cactuar.',
     levelRequirement: 0
@@ -1315,6 +1480,7 @@ export const items = {
   thundermelon: {
     name: 'Thundermelon',
     price: 299,
+        sellPrice: 149,
     stack: 99,
     description: 'A melon crackling with energy.',
     levelRequirement: 0
@@ -1322,6 +1488,7 @@ export const items = {
   watermelon: {
     name: 'Watermelon',
     price: 184,
+        sellPrice: 92,
     stack: 99,
     description: 'A juicy watermelon.',
     levelRequirement: 0
@@ -1329,6 +1496,7 @@ export const items = {
   giantSheepMeat: {
     name: 'Giant Sheep Meat',
     price: 44,
+        sellPrice: 22,
     stack: 99,
     description: 'Meat from a giant sheep.',
     levelRequirement: 0
@@ -1336,6 +1504,7 @@ export const items = {
   driedMarjoram: {
     name: 'Dried Marjoram',
     price: 44,
+        sellPrice: 22,
     stack: 99,
     description: 'A bundle of dried marjoram.',
     levelRequirement: 0
@@ -1343,6 +1512,7 @@ export const items = {
   sanDoriaFlour: {
     name: "San d'Oria Flour",
     price: 55,
+        sellPrice: 27,
     stack: 99,
     description: 'Flour milled in San d\'Oria.',
     levelRequirement: 0
@@ -1350,6 +1520,7 @@ export const items = {
   semolina: {
     name: 'Semolina',
     price: 1840,
+        sellPrice: 920,
     stack: 99,
     description: 'High-quality wheat flour.',
     levelRequirement: 0
@@ -1357,6 +1528,7 @@ export const items = {
   laTheineCabbage: {
     name: 'La Theine Cabbage',
     price: 22,
+        sellPrice: 11,
     stack: 99,
     description: 'A crisp cabbage from La Theine.',
     levelRequirement: 0
@@ -1364,6 +1536,7 @@ export const items = {
   selbinaMilk: {
     name: 'Selbina Milk',
     price: 55,
+        sellPrice: 27,
     stack: 99,
     description: 'Fresh milk from Selbina.',
     levelRequirement: 0
@@ -1371,6 +1544,7 @@ export const items = {
   movalpolosWater: {
     name: 'Movalpolos Water',
     price: 736,
+        sellPrice: 368,
     stack: 99,
     description: 'Water from the depth of Movalpolos.',
     levelRequirement: 0
@@ -1378,6 +1552,7 @@ export const items = {
   danceshroom: {
     name: 'Danceshroom',
     price: 4121,
+        sellPrice: 2060,
     stack: 99,
     description: 'A rare dancing mushroom.',
     levelRequirement: 0
@@ -1385,6 +1560,7 @@ export const items = {
   coralFungus: {
     name: 'Coral Fungus',
     price: 694,
+        sellPrice: 347,
     stack: 99,
     description: 'A fungus resembling coral.',
     levelRequirement: 0
@@ -1392,6 +1568,7 @@ export const items = {
   kopparnickel: {
     name: 'Kopparnickel',
     price: 736,
+        sellPrice: 368,
     stack: 99,
     description: 'Ore rich in copper and nickel.',
     levelRequirement: 0
@@ -1399,6 +1576,7 @@ export const items = {
   degen: {
     name: 'Degen',
     price: 9406,
+        sellPrice: 4703,
     stack: 1,
     description: 'A well-balanced broadsword.',
     damage: 20,
@@ -1410,6 +1588,7 @@ export const items = {
   worldPass: {
     name: 'World Pass',
     price: 1000,
+        sellPrice: 500,
     stack: 1,
     description: 'Allows inviting new players to your world.',
     levelRequirement: 0
@@ -1417,6 +1596,7 @@ export const items = {
   goldWorldPass: {
     name: 'Gold World Pass',
     price: 1000,
+        sellPrice: 500,
     stack: 1,
     description: 'A gold pass for new characters.',
     levelRequirement: 0
@@ -1424,6 +1604,7 @@ export const items = {
   brassFlowerpot: {
     name: 'Brass Flowerpot',
     price: 920,
+        sellPrice: 460,
     stack: 1,
     description: 'A small brass pot for gardening.',
     levelRequirement: 0
@@ -1431,6 +1612,7 @@ export const items = {
   republicWaystone: {
     name: 'Republic Waystone',
     price: 9200,
+        sellPrice: 4600,
     stack: 1,
     description: 'Teleports the user to a Bastok location.',
     levelRequirement: 0
@@ -1438,6 +1620,7 @@ export const items = {
   thievesTools: {
     name: "Thief's Tools",
     price: 3643,
+        sellPrice: 1821,
     stack: 1,
     description: 'Used to pick simple locks.',
     levelRequirement: 0
@@ -1445,6 +1628,7 @@ export const items = {
   livingKey: {
     name: 'Living Key',
     price: 5520,
+        sellPrice: 2760,
     stack: 1,
     description: 'Opens locked doors and chests.',
     levelRequirement: 0
@@ -1452,6 +1636,7 @@ export const items = {
   lugworm: {
     name: 'Lugworm',
     price: 11,
+        sellPrice: 5,
     stack: 99,
     description: 'Common fishing bait.',
     levelRequirement: 0
@@ -1459,6 +1644,7 @@ export const items = {
   littleWorm: {
     name: 'Little Worm',
     price: 3,
+        sellPrice: 1,
     stack: 99,
     description: 'Small bait for beginner fishers.',
     levelRequirement: 0
@@ -1466,6 +1652,7 @@ export const items = {
   yewFishingRod: {
     name: 'Yew Fishing Rod',
     price: 217,
+        sellPrice: 108,
     stack: 1,
     description: 'A sturdy fishing rod made of yew.',
     levelRequirement: 0
@@ -1473,6 +1660,7 @@ export const items = {
   willowFishingRod: {
     name: 'Willow Fishing Rod',
     price: 66,
+        sellPrice: 33,
     stack: 1,
     description: 'A light fishing rod crafted from willow.',
     levelRequirement: 0
@@ -1480,6 +1668,7 @@ export const items = {
   robe: {
     name: 'Robe',
     price: 220,
+        sellPrice: 110,
     stack: 1,
     description: 'Simple robe for novice adventurers.',
     defense: 3,
@@ -1490,6 +1679,7 @@ export const items = {
   cuffs: {
     name: 'Cuffs',
     price: 121,
+        sellPrice: 60,
     stack: 1,
     description: 'Basic arm cuffs.',
     defense: 1,
@@ -1500,6 +1690,7 @@ export const items = {
   slops: {
     name: 'Slops',
     price: 176,
+        sellPrice: 88,
     stack: 1,
     description: 'Loose legwear for all jobs.',
     defense: 1,
@@ -1510,6 +1701,7 @@ export const items = {
   ashClogs: {
     name: 'Ash Clogs',
     price: 114,
+        sellPrice: 57,
     stack: 1,
     description: 'Wooden clogs fashioned from ash.',
     defense: 1,
@@ -1520,6 +1712,7 @@ export const items = {
   headgear: {
     name: 'Headgear',
     price: 1781,
+        sellPrice: 890,
     stack: 1,
     description: 'Protective headgear.',
     defense: 5,
@@ -1530,6 +1723,7 @@ export const items = {
   doublet: {
     name: 'Doublet',
     price: 2525,
+        sellPrice: 1262,
     stack: 1,
     description: 'A simple doublet.',
     defense: 6,
@@ -1540,6 +1734,7 @@ export const items = {
   gloves: {
     name: 'Gloves',
     price: 1393,
+        sellPrice: 696,
     stack: 1,
     description: 'Light gloves for adventurers.',
     defense: 3,
@@ -1550,6 +1745,7 @@ export const items = {
   brais: {
     name: 'Brais',
     price: 1941,
+        sellPrice: 970,
     stack: 1,
     description: 'Light leg armor.',
     defense: 5,
@@ -1560,6 +1756,7 @@ export const items = {
   gaiters: {
     name: 'Gaiters',
     price: 1297,
+        sellPrice: 648,
     stack: 1,
     description: 'Protective footwear.',
     defense: 4,
@@ -1570,6 +1767,7 @@ export const items = {
   paddedCap: {
     name: 'Padded Cap',
     price: 18360,
+        sellPrice: 9180,
     stack: 1,
     description: 'A padded iron cap.',
     defense: 12,
@@ -1580,6 +1778,7 @@ export const items = {
   ironMask: {
     name: 'Iron Mask',
     price: 9234,
+        sellPrice: 4617,
     stack: 1,
     description: 'A heavy iron mask.',
     defense: 7,
@@ -1590,6 +1789,7 @@ export const items = {
   paddedArmor: {
     name: 'Padded Armor',
     price: 28339,
+        sellPrice: 14169,
     stack: 1,
     description: 'Body armor lined with padding.',
     defense: 24,
@@ -1600,6 +1800,7 @@ export const items = {
   ironMittens: {
     name: 'Iron Mittens',
     price: 15552,
+        sellPrice: 7776,
     stack: 1,
     description: 'Iron gauntlets.',
     defense: 11,
@@ -1610,6 +1811,7 @@ export const items = {
   brassCap: {
     name: 'Brass Cap',
     price: 1471,
+        sellPrice: 735,
     stack: 1,
     description: 'A cap made of brass.',
     defense: 4,
@@ -1620,6 +1822,7 @@ export const items = {
   leatherBandana: {
     name: 'Leather Bandana',
     price: 396,
+        sellPrice: 198,
     stack: 1,
     description: 'A rugged leather bandana.',
     defense: 1,
@@ -1630,6 +1833,7 @@ export const items = {
   brassHarness: {
     name: 'Brass Harness',
     price: 2236,
+        sellPrice: 1118,
     stack: 1,
     description: 'Chest armor of polished brass.',
     defense: 6,
@@ -1640,6 +1844,7 @@ export const items = {
   brassMittens: {
     name: 'Brass Mittens',
     price: 1228,
+        sellPrice: 614,
     stack: 1,
     description: 'Mittens crafted from brass.',
     defense: 3,
@@ -1650,6 +1855,7 @@ export const items = {
   ironSubligar: {
     name: 'Iron Subligar',
     price: 23316,
+        sellPrice: 11658,
     stack: 1,
     description: 'Iron leg protection.',
     defense: 10,
@@ -1660,6 +1866,7 @@ export const items = {
   lizardTrousers: {
     name: 'Lizard Trousers',
     price: 5003,
+        sellPrice: 2501,
     stack: 1,
     description: 'Trousers made from lizard skin.',
     defense: 3,
@@ -1670,6 +1877,7 @@ export const items = {
   leggings: {
     name: 'Leggings',
     price: 14484,
+        sellPrice: 7242,
     stack: 1,
     description: 'Sturdy protective leggings.',
     defense: 11,
@@ -1680,6 +1888,7 @@ export const items = {
   lizardLedelsens: {
     name: 'Lizard Ledelsens',
     price: 3162,
+        sellPrice: 1581,
     stack: 1,
     description: 'Footwear made from lizard skin.',
     defense: 4,
@@ -1690,6 +1899,7 @@ export const items = {
   buckler: {
     name: 'Buckler',
     price: 31544,
+        sellPrice: 15772,
     stack: 1,
     description: 'A sturdy round shield.',
     defense: 12,
@@ -1700,6 +1910,7 @@ export const items = {
   brassSubligar: {
     name: 'Brass Subligar',
     price: 1840,
+        sellPrice: 920,
     stack: 1,
     description: 'A subligar fashioned from brass.',
     defense: 3,
@@ -1710,6 +1921,7 @@ export const items = {
   leatherTrousers: {
     name: 'Leather Trousers',
     price: 493,
+        sellPrice: 246,
     stack: 1,
     description: 'Simple leather trousers.',
     defense: 2,
@@ -1720,6 +1932,7 @@ export const items = {
   brassLeggings: {
     name: 'Brass Leggings',
     price: 1140,
+        sellPrice: 570,
     stack: 1,
     description: 'Leg armor crafted from brass.',
     defense: 4,
@@ -1730,6 +1943,7 @@ export const items = {
   leatherHighboots: {
     name: 'Leather Highboots',
     price: 309,
+        sellPrice: 154,
     stack: 1,
     description: 'High-cut leather boots.',
     defense: 2,
@@ -1740,6 +1954,7 @@ export const items = {
   targe: {
     name: 'Targe',
     price: 11076,
+        sellPrice: 5538,
     stack: 1,
     description: 'A small protective shield.',
     defense: 8,
@@ -1750,6 +1965,7 @@ export const items = {
   bronzeSubligar: {
     name: 'Bronze Subligar',
     price: 191,
+        sellPrice: 95,
     stack: 1,
     description: 'Bronze under-armor.',
     defense: 1,
@@ -1760,6 +1976,7 @@ export const items = {
   chainHose: {
     name: 'Chain Hose',
     price: 11592,
+        sellPrice: 5796,
     stack: 1,
     description: 'Leg armor of interlocked chain.',
     defense: 12,
@@ -1770,6 +1987,7 @@ export const items = {
   bronzeLeggings: {
     name: 'Bronze Leggings',
     price: 117,
+        sellPrice: 58,
     stack: 1,
     description: 'Bronze greaves for beginners.',
     defense: 2,
@@ -1780,6 +1998,7 @@ export const items = {
   greaves: {
     name: 'Greaves',
     price: 7120,
+        sellPrice: 3560,
     stack: 1,
     description: 'Heavy metal greaves.',
     defense: 9,
@@ -1790,6 +2009,7 @@ export const items = {
   lauanShield: {
     name: 'Lauan Shield',
     price: 110,
+        sellPrice: 55,
     stack: 1,
     description: 'A basic wooden shield.',
     defense: 2,
@@ -1800,6 +2020,7 @@ export const items = {
   humeTunic: {
     name: 'Hume Tunic',
     price: 276,
+        sellPrice: 138,
     stack: 1,
     description: 'Starting tunic for Hume males.',
     defense: 6,
@@ -1810,6 +2031,7 @@ export const items = {
   humeVest: {
     name: 'Hume Vest',
     price: 276,
+        sellPrice: 138,
     stack: 1,
     description: 'Starting vest for Hume females.',
     defense: 6,
@@ -1820,6 +2042,7 @@ export const items = {
   humeMGloves: {
     name: 'Hume M Gloves',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Gloves sized for Hume males.',
     defense: 2,
@@ -1830,6 +2053,7 @@ export const items = {
   humeFGloves: {
     name: 'Hume F Gloves',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Gloves sized for Hume females.',
     defense: 2,
@@ -1840,6 +2064,7 @@ export const items = {
   humeSlacks: {
     name: 'Hume Slacks',
     price: 239,
+        sellPrice: 119,
     stack: 1,
     description: 'Starting pants for Humes.',
     defense: 2,
@@ -1850,6 +2075,7 @@ export const items = {
   humeMBoots: {
     name: 'Hume M Boots',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Boots sized for Hume males.',
     defense: 2,
@@ -1860,6 +2086,7 @@ export const items = {
   humeFBoots: {
     name: 'Hume F Boots',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Boots sized for Hume females.',
     defense: 2,
@@ -1870,6 +2097,7 @@ export const items = {
   galkanSurcoat: {
     name: 'Galkan Surcoat',
     price: 276,
+        sellPrice: 138,
     stack: 1,
     description: 'Starting surcoat for Galkas.',
     defense: 6,
@@ -1880,6 +2108,7 @@ export const items = {
   galkanBracers: {
     name: 'Galkan Bracers',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Bracers sized for Galkas.',
     defense: 2,
@@ -1890,6 +2119,7 @@ export const items = {
   galkanBraguette: {
     name: 'Galkan Braguette',
     price: 239,
+        sellPrice: 119,
     stack: 1,
     description: 'Legwear for Galkas.',
     defense: 2,
@@ -1900,6 +2130,7 @@ export const items = {
   galkanSandals: {
     name: 'Galkan Sandals',
     price: 165,
+        sellPrice: 82,
     stack: 1,
     description: 'Sandals for Galkas.',
     defense: 2,
@@ -1910,6 +2141,7 @@ export const items = {
   chocoboFeather: {
     name: 'Chocobo Feather',
     price: 7,
+        sellPrice: 3,
     stack: 99,
     description: 'Feather used to revive chocobos.',
     levelRequirement: 0
@@ -1917,6 +2149,7 @@ export const items = {
   dart: {
     name: 'Dart',
     price: 9,
+        sellPrice: 4,
     stack: 99,
     description: 'A small dart for chocobo racing.',
     levelRequirement: 0
@@ -1924,6 +2157,7 @@ export const items = {
   blackChocoboFeather: {
     name: 'Black Chocobo Feather',
     price: 1150,
+        sellPrice: 575,
     stack: 99,
     description: 'Revives a black chocobo.',
     levelRequirement: 0
@@ -1931,6 +2165,7 @@ export const items = {
   petFoodAlphaBiscuit: {
     name: 'Pet Food Alpha Biscuit',
     price: 11,
+        sellPrice: 5,
     stack: 99,
     description: 'Biscuit that boosts pet speed.',
     levelRequirement: 0
@@ -1938,6 +2173,7 @@ export const items = {
   petFoodBetaBiscuit: {
     name: 'Pet Food Beta Biscuit',
     price: 82,
+        sellPrice: 41,
     stack: 99,
     description: 'Biscuit that extends sprint duration.',
     levelRequirement: 0
@@ -1945,6 +2181,7 @@ export const items = {
   carrotBroth: {
     name: 'Carrot Broth',
     price: 82,
+        sellPrice: 41,
     stack: 99,
     description: 'Pet broth made from carrots.',
     levelRequirement: 0
@@ -1952,6 +2189,7 @@ export const items = {
   bugBroth: {
     name: 'Bug Broth',
     price: 695,
+        sellPrice: 347,
     stack: 99,
     description: 'Pet broth teeming with insects.',
     levelRequirement: 0
@@ -1959,6 +2197,7 @@ export const items = {
   herbalBroth: {
     name: 'Herbal Broth',
     price: 126,
+        sellPrice: 63,
     stack: 99,
     description: 'Aromatic herb-based pet feed.',
     levelRequirement: 0
@@ -1966,6 +2205,7 @@ export const items = {
   carrionBroth: {
     name: 'Carrion Broth',
     price: 695,
+        sellPrice: 347,
     stack: 99,
     description: 'Pet feed made from carrion.',
     levelRequirement: 0
@@ -1973,6 +2213,7 @@ export const items = {
   scrollChocoboMazurka: {
     name: 'Scroll of Chocobo Mazurka',
     price: 50784,
+        sellPrice: 25392,
     stack: 1,
     description: 'Teaches the song Chocobo Mazurka.',
     levelRequirement: 75
@@ -1980,6 +2221,7 @@ export const items = {
   pickledHerring: {
     name: 'Pickled Herring',
     price: 441,
+        sellPrice: 220,
     stack: 12,
     description: 'A salty preserved fish.',
     levelRequirement: 0
@@ -1987,6 +2229,7 @@ export const items = {
   hiPotion: {
     name: 'Hi-Potion',
     price: 3375,
+        sellPrice: 1687,
     stack: 12,
     description: 'Restores a large amount of HP.',
     levelRequirement: 0
@@ -1994,6 +2237,7 @@ export const items = {
   triturator: {
     name: 'Triturator',
     price: 75,
+        sellPrice: 37,
     stack: 1,
     description: 'An alchemy tool for grinding.',
     levelRequirement: 0
@@ -2001,6 +2245,7 @@ export const items = {
   beehiveChip: {
     name: 'Beehive Chip',
     price: 192,
+        sellPrice: 96,
     stack: 99,
     description: 'A chunk of honeycomb.',
     levelRequirement: 0
@@ -2008,6 +2253,7 @@ export const items = {
   cobaltJellyfish: {
     name: 'Cobalt Jellyfish',
     price: 114,
+        sellPrice: 57,
     stack: 12,
     description: 'A bright blue jellyfish.',
     levelRequirement: 0
@@ -2015,6 +2261,7 @@ export const items = {
   holyWater: {
     name: 'Holy Water',
     price: 5250,
+        sellPrice: 2625,
     stack: 12,
     description: 'Cures petrification.',
     levelRequirement: 0
@@ -2022,6 +2269,7 @@ export const items = {
   prismPowder: {
     name: 'Prism Powder',
     price: 1050,
+        sellPrice: 525,
     stack: 12,
     description: 'Creates an invisible barrier.',
     levelRequirement: 0
@@ -2029,6 +2277,7 @@ export const items = {
   bombAsh: {
     name: 'Bomb Ash',
     price: 1004,
+        sellPrice: 502,
     stack: 99,
     description: 'Ash from an exploded bomb.',
     levelRequirement: 0
@@ -2036,6 +2285,7 @@ export const items = {
   beaugreens: {
     name: 'Beaugreens',
     price: 90,
+        sellPrice: 45,
     stack: 99,
     description: 'A leafy vegetable from Fauregandi.',
     levelRequirement: 0
@@ -2043,6 +2293,7 @@ export const items = {
   faerieApple: {
     name: 'Faerie Apple',
     price: 39,
+        sellPrice: 19,
     stack: 99,
     description: 'A sweet apple from Fauregandi.',
     levelRequirement: 0
@@ -2050,6 +2301,7 @@ export const items = {
   mapleLog: {
     name: 'Maple Log',
     price: 54,
+        sellPrice: 27,
     stack: 99,
     description: 'A log cut from a maple tree.',
     levelRequirement: 0
@@ -2057,6 +2309,7 @@ export const items = {
   arquebus: {
     name: 'Arquebus',
     price: 46836,
+        sellPrice: 23418,
     stack: 1,
     description: 'A basic firearm.',
     slot: 'ranged',
@@ -2068,6 +2321,7 @@ export const items = {
   aspis: {
     name: 'Aspis',
     price: 2400,
+        sellPrice: 1200,
     stack: 1,
     description: 'A small shield.',
     defense: 4,
@@ -2078,6 +2332,7 @@ export const items = {
   baghnakh: {
     name: 'Baghnakh',
     price: 1920,
+        sellPrice: 960,
     stack: 1,
     description: 'Clawed fist weapons.',
     damage: 6,
@@ -2089,6 +2344,7 @@ export const items = {
   battleaxe: {
     name: 'Battleaxe',
     price: 1344,
+        sellPrice: 672,
     stack: 1,
     description: 'A two-handed battleaxe.',
     damage: 12,
@@ -2100,6 +2356,7 @@ export const items = {
   bilbo: {
     name: 'Bilbo',
     price: 1200,
+        sellPrice: 600,
     stack: 1,
     description: 'A well-balanced sword.',
     damage: 10,
@@ -2111,6 +2368,7 @@ export const items = {
   bronzeBed: {
     name: 'Bronze Bed',
     price: 90,
+        sellPrice: 45,
     stack: 1,
     description: 'A bellows used in smithing.',
     levelRequirement: 0
@@ -2118,6 +2376,7 @@ export const items = {
   bronzeScales: {
     name: 'Bronze Scales',
     price: 592,
+        sellPrice: 296,
     stack: 1,
     description: 'Light bronze scale armor.',
     defense: 7,
@@ -2128,6 +2387,7 @@ export const items = {
   bronzeSheet: {
     name: 'Bronze Sheet',
     price: 70,
+        sellPrice: 35,
     stack: 99,
     description: 'A sheet of bronze for crafting.',
     levelRequirement: 0
@@ -2135,6 +2395,7 @@ export const items = {
   butterflyAxe: {
     name: 'Butterfly Axe',
     price: 819,
+        sellPrice: 409,
     stack: 1,
     description: 'A decorative axe.',
     damage: 8,
@@ -2146,6 +2407,7 @@ export const items = {
   cuisses: {
     name: 'Cuisses',
     price: 1200,
+        sellPrice: 600,
     stack: 1,
     description: 'Plate armor for the legs.',
     defense: 6,
@@ -2156,6 +2418,7 @@ export const items = {
   darksteelChain: {
     name: 'Darksteel Chain',
     price: 2400,
+        sellPrice: 1200,
     stack: 1,
     description: 'Mail forged of darksteel.',
     defense: 9,
@@ -2166,6 +2429,7 @@ export const items = {
   darksteelFalchion: {
     name: 'Darksteel Falchion',
     price: 3600,
+        sellPrice: 1800,
     stack: 1,
     description: 'A darksteel sword.',
     damage: 15,
@@ -2177,6 +2441,7 @@ export const items = {
   darksteelIngot: {
     name: 'Darksteel Ingot',
     price: 525,
+        sellPrice: 262,
     stack: 99,
     description: 'Refined darksteel used in smithing.',
     levelRequirement: 0
@@ -2184,6 +2449,7 @@ export const items = {
   darksteelKnife: {
     name: 'Darksteel Knife',
     price: 1200,
+        sellPrice: 600,
     stack: 1,
     description: 'A sharp darksteel dagger.',
     damage: 9,
@@ -2195,6 +2461,7 @@ export const items = {
   darksteelKnuckles: {
     name: 'Darksteel Knuckles',
     price: 1920,
+        sellPrice: 960,
     stack: 1,
     description: 'Darksteel fist weapons.',
     damage: 8,
@@ -2206,6 +2473,7 @@ export const items = {
   darksteelSheet: {
     name: 'Darksteel Sheet',
     price: 600,
+        sellPrice: 300,
     stack: 99,
     description: 'A sheet of darksteel.',
     levelRequirement: 0
@@ -2213,6 +2481,7 @@ export const items = {
   falchion: {
     name: 'Falchion',
     price: 2400,
+        sellPrice: 1200,
     stack: 1,
     description: 'A single-edged sword.',
     damage: 11,
@@ -2224,6 +2493,7 @@ export const items = {
   gorget: {
     name: 'Gorget',
     price: 855,
+        sellPrice: 427,
     stack: 1,
     description: 'Neck armor for protection.',
     defense: 2,
@@ -2234,6 +2504,7 @@ export const items = {
   greataxe: {
     name: 'Greataxe',
     price: 4560,
+        sellPrice: 2280,
     stack: 1,
     description: 'A heavy two-handed axe.',
     damage: 18,
@@ -2245,6 +2516,7 @@ export const items = {
   heavyAxe: {
     name: 'Heavy Axe',
     price: 3600,
+        sellPrice: 1800,
     stack: 1,
     description: 'A large two-handed axe.',
     damage: 16,
@@ -2256,6 +2528,7 @@ export const items = {
   ironChain: {
     name: 'Iron Chain',
     price: 1200,
+        sellPrice: 600,
     stack: 1,
     description: 'Chainmail crafted from iron.',
     defense: 7,
@@ -2266,6 +2539,7 @@ export const items = {
   ironIngot: {
     name: 'Iron Ingot',
     price: 105,
+        sellPrice: 52,
     stack: 99,
     description: 'A refined bar of iron.',
     levelRequirement: 0
@@ -2273,6 +2547,7 @@ export const items = {
   ironScales: {
     name: 'Iron Scales',
     price: 2100,
+        sellPrice: 1050,
     stack: 1,
     description: 'Iron scale armor.',
     defense: 10,
@@ -2283,6 +2558,7 @@ export const items = {
   ironSheet: {
     name: 'Iron Sheet',
     price: 350,
+        sellPrice: 175,
     stack: 99,
     description: 'A sheet of iron.',
     levelRequirement: 0
@@ -2290,6 +2566,7 @@ export const items = {
   knife: {
     name: 'Knife',
     price: 42,
+        sellPrice: 21,
     stack: 1,
     description: 'A small knife.',
     damage: 3,
@@ -2301,6 +2578,7 @@ export const items = {
   kukri: {
     name: 'Kukri',
     price: 150,
+        sellPrice: 75,
     stack: 1,
     description: 'A curved dagger.',
     damage: 4,
@@ -2312,6 +2590,7 @@ export const items = {
   mandrel: {
     name: 'Mandrel',
     price: 60,
+        sellPrice: 30,
     stack: 1,
     description: 'A forging mandrel.',
     levelRequirement: 0
@@ -2319,6 +2598,7 @@ export const items = {
   maul: {
     name: 'Maul',
     price: 420,
+        sellPrice: 210,
     stack: 1,
     description: 'A heavy hammer.',
     damage: 9,
@@ -2330,6 +2610,7 @@ export const items = {
   mythrilAxe: {
     name: 'Mythril Axe',
     price: 2100,
+        sellPrice: 1050,
     stack: 1,
     description: 'A mythril axe.',
     damage: 12,
@@ -2341,6 +2622,7 @@ export const items = {
   mythrilBolt: {
     name: 'Mythril Bolt',
     price: 12,
+        sellPrice: 6,
     stack: 99,
     description: 'Bolts made of mythril.',
     levelRequirement: 1
@@ -2348,6 +2630,7 @@ export const items = {
   mythrilIngot: {
     name: 'Mythril Ingot',
     price: 130,
+        sellPrice: 65,
     stack: 99,
     description: 'A bar of mythril.',
     levelRequirement: 0
@@ -2355,6 +2638,7 @@ export const items = {
   mythrilKnife: {
     name: 'Mythril Knife',
     price: 200,
+        sellPrice: 100,
     stack: 1,
     description: 'A mythril dagger.',
     damage: 5,
@@ -2366,6 +2650,7 @@ export const items = {
   mythrilKnuckles: {
     name: 'Mythril Knuckles',
     price: 500,
+        sellPrice: 250,
     stack: 1,
     description: 'Mythril fist weapons.',
     damage: 7,
@@ -2377,6 +2662,7 @@ export const items = {
   mythrilSheet: {
     name: 'Mythril Sheet',
     price: 230,
+        sellPrice: 115,
     stack: 99,
     description: 'A sheet of mythril.',
     levelRequirement: 0
@@ -2384,6 +2670,7 @@ export const items = {
   tabar: {
     name: 'Tabar',
     price: 2400,
+        sellPrice: 1200,
     stack: 1,
     description: 'A sturdy battleaxe.',
     damage: 14,
@@ -2395,6 +2682,7 @@ export const items = {
   tulwar: {
     name: 'Tulwar',
     price: 3600,
+        sellPrice: 1800,
     stack: 1,
     description: 'A curved sword.',
     damage: 13,
@@ -2406,6 +2694,7 @@ export const items = {
   workshopAnvil: {
     name: 'Workshop Anvil',
     price: 75,
+        sellPrice: 37,
     stack: 1,
     description: 'A portable smithing anvil.',
     levelRequirement: 0
@@ -2413,6 +2702,7 @@ export const items = {
   bronzeNugget: {
     name: 'Bronze Nugget',
     price: 70,
+        sellPrice: 35,
     stack: 99,
     description: 'A small lump of bronze.',
     levelRequirement: 0
@@ -2420,6 +2710,7 @@ export const items = {
   tinOre: {
     name: 'Tin Ore',
     price: 60,
+        sellPrice: 30,
     stack: 99,
     description: 'Ore containing tin.',
     levelRequirement: 0
@@ -2427,6 +2718,7 @@ export const items = {
   kopparnickelOre: {
     name: 'Kopparnickel Ore',
     price: 800,
+        sellPrice: 400,
     stack: 99,
     description: 'Ore rich in kopparnickel.',
     levelRequirement: 0
@@ -2434,6 +2726,7 @@ export const items = {
   ironNugget: {
     name: 'Iron Nugget',
     price: 500,
+        sellPrice: 250,
     stack: 99,
     description: 'A small lump of iron.',
     levelRequirement: 0
@@ -2441,6 +2734,7 @@ export const items = {
   steelSheet: {
     name: 'Steel Sheet',
     price: 10000,
+        sellPrice: 5000,
     stack: 99,
     description: 'A sheet of steel.',
     levelRequirement: 0
@@ -2448,6 +2742,7 @@ export const items = {
   steelIngot: {
     name: 'Steel Ingot',
     price: 6000,
+        sellPrice: 3000,
     stack: 99,
     description: 'A bar of steel.',
     levelRequirement: 0
@@ -2455,6 +2750,7 @@ export const items = {
   tamaHagane: {
     name: 'Tama-Hagane',
     price: 12000,
+        sellPrice: 6000,
     stack: 99,
     description: 'A special steel used in forging.',
     levelRequirement: 0
@@ -2462,6 +2758,7 @@ export const items = {
   darksteelNugget: {
     name: 'Darksteel Nugget',
     price: 2700,
+        sellPrice: 1350,
     stack: 99,
     description: 'A lump of darksteel.',
     levelRequirement: 0
@@ -2469,6 +2766,7 @@ export const items = {
   darksteelOre: {
     name: 'Darksteel Ore',
     price: 7000,
+        sellPrice: 3500,
     stack: 99,
     description: 'Ore containing darksteel.',
     levelRequirement: 0
@@ -2476,6 +2774,7 @@ export const items = {
   steelNugget: {
     name: 'Steel Nugget',
     price: 800,
+        sellPrice: 400,
     stack: 99,
     description: 'A small piece of steel.',
     levelRequirement: 0
@@ -2483,6 +2782,7 @@ export const items = {
   swampOre: {
     name: 'Swamp Ore',
     price: 5000,
+        sellPrice: 2500,
     stack: 99,
     description: 'Ore found in swampy regions.',
     levelRequirement: 0
@@ -2490,6 +2790,7 @@ export const items = {
   smithingKit: {
     name: 'Smithing Kit',
     price: 300,
+        sellPrice: 150,
     stack: 1,
     description: 'A kit of smithing materials.',
     levelRequirement: 0
@@ -2497,6 +2798,7 @@ export const items = {
   niobiumOre: {
     name: 'Niobium Ore',
     price: 1126125,
+        sellPrice: 563062,
     stack: 99,
     description: 'Rare niobium ore.',
     levelRequirement: 0
@@ -2504,6 +2806,7 @@ export const items = {
   bullet: {
     name: 'Bullet',
     price: 90,
+        sellPrice: 45,
     stack: 99,
     description: 'Ammunition for firearms.',
     levelRequirement: 1
@@ -2511,6 +2814,7 @@ export const items = {
   bombArm: {
     name: 'Bomb Arm',
     price: 675,
+        sellPrice: 337,
     stack: 99,
     description: 'The arm of a bomb, used in alchemy.',
     levelRequirement: 0
@@ -2518,6 +2822,7 @@ export const items = {
   grenade: {
     name: 'Grenade',
     price: 1083,
+        sellPrice: 541,
     stack: 99,
     description: 'An explosive device.',
     levelRequirement: 0
@@ -2525,6 +2830,7 @@ export const items = {
   catalyticOil: {
     name: 'Catalytic Oil',
     price: 92,
+        sellPrice: 46,
     stack: 99,
     description: 'Oil used to catalyze explosions.',
     levelRequirement: 0
@@ -2532,6 +2838,7 @@ export const items = {
   soot: {
     name: 'Soot',
     price: 12,
+        sellPrice: 6,
     stack: 99,
     description: 'Fine black powder.',
     levelRequirement: 0
@@ -2539,6 +2846,7 @@ export const items = {
   sausageRoll: {
     name: 'Sausage Roll',
     price: 257,
+        sellPrice: 128,
     stack: 12,
     description: 'A savory sausage roll.',
     levelRequirement: 0
@@ -2546,6 +2854,7 @@ export const items = {
   hardBoiledEgg: {
     name: 'Hard-Boiled Egg',
     price: 73,
+        sellPrice: 36,
     stack: 12,
     description: 'A simply boiled egg.',
     levelRequirement: 0
@@ -2553,6 +2862,7 @@ export const items = {
   magicPotShard: {
     name: 'Magic Pot Shard',
     price: 614,
+        sellPrice: 307,
     stack: 99,
     description: 'Expands Mog House storage when used.',
     levelRequirement: 0

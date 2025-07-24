@@ -29,7 +29,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
 
 let backButtonElement = null;
 
@@ -311,11 +311,15 @@ export function renderMainMenu() {
         const line5 = document.createElement('div');
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
+        const line6 = document.createElement('div');
+        line6.textContent = `EXP to Next Level: ${expNeeded(activeCharacter)}`;
+
         profile.appendChild(charImg);
         profile.appendChild(line2);
         profile.appendChild(line3);
         profile.appendChild(line4);
         profile.appendChild(line5);
+        profile.appendChild(line6);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -741,7 +745,7 @@ export function renderPlayUI(root) {
     root.appendChild(title);
 
     const travelBtn = document.createElement('button');
-    travelBtn.textContent = 'Travel';
+    travelBtn.textContent = 'Zone';
     travelBtn.addEventListener('click', Travel);
     root.appendChild(travelBtn);
 
@@ -783,7 +787,7 @@ export function renderAreaScreen(root) {
         const travelCol = document.createElement('div');
         travelCol.className = 'area-column';
         const travelHeader = document.createElement('h3');
-        travelHeader.textContent = 'Travel';
+        travelHeader.textContent = 'Zone';
         travelCol.appendChild(travelHeader);
         const travelList = document.createElement('ul');
 
@@ -833,18 +837,8 @@ export function renderAreaScreen(root) {
                 }
                 activeCharacter.travel.remaining -= 1;
                 if (activeCharacter.travel.remaining <= 0) {
-                    const prev = loc.name;
                     setLocation(activeCharacter, area);
                     activeCharacter.travel = null;
-                    if (activeCharacter.returnJourney) {
-                        if (area === activeCharacter.returnJourney.zone) {
-                            activeCharacter.returnJourney = null;
-                        } else {
-                            activeCharacter.returnJourney.turns = Math.min(activeCharacter.returnJourney.turns + 1, 10);
-                        }
-                    } else {
-                        activeCharacter.returnJourney = { zone: prev, turns: 1 };
-                    }
                 }
                 persistCharacter(activeCharacter);
                 renderAreaScreen(root);
@@ -1301,7 +1295,7 @@ export function renderTravelScreen(root) {
     root.innerHTML = '';
     const loc = locations.find(l => l.name === activeCharacter.currentLocation);
     const title = document.createElement('h2');
-    title.textContent = 'Travel';
+    title.textContent = 'Zone';
     root.appendChild(title);
 
     const list = document.createElement('ul');
@@ -1327,7 +1321,7 @@ export function renderTravelScreen(root) {
 }
 
 export function Travel() {
-    console.log('Travel not implemented');
+    renderTravelScreen(document.getElementById('app'));
 }
 
 export function Explore() {
@@ -1358,6 +1352,23 @@ function buyItem(id, qty = 1) {
     }
     persistCharacter(activeCharacter);
     alert(`Purchased ${qty} x ${item.name}.`);
+}
+
+function sellItem(id, qty = 1) {
+    const entry = activeCharacter.inventory.find(i => i.id === id);
+    if (!entry) return;
+    qty = Math.min(qty, entry.qty);
+    if (qty <= 0) return;
+    const item = items[id];
+    const revenue = (item.sellPrice || Math.floor(item.price / 2)) * qty;
+    activeCharacter.gil += revenue;
+    entry.qty -= qty;
+    if (entry.qty <= 0) {
+        const idx = activeCharacter.inventory.indexOf(entry);
+        activeCharacter.inventory.splice(idx, 1);
+    }
+    persistCharacter(activeCharacter);
+    alert(`Sold ${qty} x ${item.name} for ${revenue} gil.`);
 }
 
 export function renderVendorScreen(root, vendor, backFn = null, inventory = null) {
@@ -1427,6 +1438,52 @@ export function renderVendorScreen(root, vendor, backFn = null, inventory = null
         list.appendChild(row);
     });
     root.appendChild(list);
+
+    const sellTitle = document.createElement('h3');
+    sellTitle.textContent = 'Sell Items';
+    root.appendChild(sellTitle);
+    const sellList = document.createElement('div');
+    sellList.className = 'vendor-list';
+    activeCharacter.inventory.forEach(entry => {
+        const item = items[entry.id];
+        const row = document.createElement('div');
+        row.className = 'vendor-item';
+        const top = document.createElement('div');
+        top.className = 'vendor-row-top';
+        const name = document.createElement('span');
+        const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
+        name.textContent = item.name + qtyText;
+        top.appendChild(name);
+        const price = document.createElement('span');
+        const sp = item.sellPrice || Math.floor(item.price / 2);
+        price.textContent = ` - ${sp} gil`;
+        top.appendChild(price);
+        let qtyInput = null;
+        if ((item.stack > 1 || entry.qty > 1) && entry.qty > 1) {
+            qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.min = '1';
+            qtyInput.max = String(entry.qty);
+            qtyInput.value = '1';
+            qtyInput.className = 'vendor-qty';
+            top.appendChild(qtyInput);
+        }
+        const sellBtn = document.createElement('button');
+        sellBtn.textContent = 'Sell';
+        sellBtn.addEventListener('click', () => {
+            const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+            sellItem(entry.id, q);
+            renderVendorScreen(root, vendor, backFn);
+        });
+        top.appendChild(sellBtn);
+        row.appendChild(top);
+        const desc = document.createElement('div');
+        desc.className = 'item-description';
+        desc.textContent = item.description || item.name;
+        row.appendChild(desc);
+        sellList.appendChild(row);
+    });
+    root.appendChild(sellList);
     const handler = backFn || (() => renderAreaScreen(root));
     showBackButton(handler);
 }
