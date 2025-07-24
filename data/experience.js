@@ -1323,11 +1323,24 @@ export const experienceTable = {
 
 export function experienceForKill(playerLevel, monsterLevel) {
   const diff = monsterLevel - playerLevel;
-  const clamped = Math.max(-44, Math.min(15, diff));
-  const row = experienceTable[clamped];
-  if (!row) return 0;
-  const idx = Math.min(19, Math.floor((playerLevel - 1) / 5));
-  return row[idx] || 0;
+  if (diff <= -8) return 0;
+  if (diff >= 6) return 250;
+  const table = {
+    [-7]: 12,
+    [-6]: 20,
+    [-5]: 30,
+    [-4]: 40,
+    [-3]: 60,
+    [-2]: 80,
+    [-1]: 95,
+    0: 100,
+    1: 130,
+    2: 150,
+    3: 170,
+    4: 190,
+    5: 220
+  };
+  return table[diff] || 0;
 }
 
 export const levelTNL = [
