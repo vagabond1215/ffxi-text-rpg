@@ -485,14 +485,17 @@ body.portrait .main-layout {
 
 /* Combat screen layout */
 #combat-screen {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
     gap: 10px;
+    padding: 4px;
+    align-items: start;
 }
-#combat-main {
+.enemy-column, .log-column, .action-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 #combat-log {
@@ -527,10 +530,20 @@ body.landscape #action-buttons {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    min-width: 120px;
+    width: 100%;
 }
-
+.target-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.target-stats {
+    margin-left: 6px;
+    white-space: nowrap;
+}
 .target-button {
     width: 100%;
+    flex: 1;
 }
 
