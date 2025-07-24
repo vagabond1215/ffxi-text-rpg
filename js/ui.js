@@ -28,7 +28,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded } from '../data/index.js';
 
 let backButtonElement = null;
 let openDetailElement = null;
@@ -1195,7 +1195,7 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function monsterDefeated() {
-        const exp = experienceForKill(activeCharacter.level, mobLevel);
+        const exp = mob.exp || 0;
         let gil = 0;
         if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
             gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
