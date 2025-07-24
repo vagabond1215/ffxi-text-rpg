@@ -137,6 +137,11 @@ body.landscape #area-grid {
     margin: 4px 0;
 }
 
+.area-header {
+    font-weight: bold;
+    background-color: #222;
+}
+
 .explore-btn {
     margin-bottom: 10px;
 }

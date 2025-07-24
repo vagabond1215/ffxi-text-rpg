@@ -882,8 +882,10 @@ export function renderAreaScreen(root) {
 
         const travelCol = document.createElement('div');
         travelCol.className = 'area-column';
-        const travelHeader = document.createElement('h3');
+        const travelHeader = document.createElement('button');
+        travelHeader.className = 'area-header';
         travelHeader.textContent = 'Zone';
+        travelHeader.addEventListener('click', () => travelList.classList.toggle('hidden'));
         travelCol.appendChild(travelHeader);
         const travelList = document.createElement('ul');
 
@@ -966,15 +968,17 @@ export function renderAreaScreen(root) {
         if (craftPOIs.length) {
             craftCol = document.createElement('div');
             craftCol.className = 'area-column';
-            const craftHeader = document.createElement('h3');
+            const craftHeader = document.createElement('button');
+            craftHeader.className = 'area-header';
             craftHeader.textContent = 'Crafting';
             craftCol.appendChild(craftHeader);
             const craftList = document.createElement('ul');
+            craftHeader.addEventListener('click', () => craftList.classList.toggle('hidden'));
             craftPOIs.forEach(li => craftList.appendChild(li));
             craftCol.appendChild(craftList);
         }
 
-        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor)/i;
+        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
         const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
         const marketItems = [];
         marketPOIs.forEach(p => {
@@ -990,8 +994,10 @@ export function renderAreaScreen(root) {
         if (marketItems.length) {
             marketCol = document.createElement('div');
             marketCol.className = 'area-column';
-            const marketHeader = document.createElement('h3');
+            const marketHeader = document.createElement('button');
+            marketHeader.className = 'area-header';
             marketHeader.textContent = 'Marketplace';
+            marketHeader.addEventListener('click', () => marketList.classList.toggle('hidden'));
             marketCol.appendChild(marketHeader);
             marketList = document.createElement('ul');
             marketItems.forEach(li => marketList.appendChild(li));
@@ -1000,8 +1006,10 @@ export function renderAreaScreen(root) {
 
         const otherCol = document.createElement('div');
         otherCol.className = 'area-column';
-        const otherHeader = document.createElement('h3');
+        const otherHeader = document.createElement('button');
+        otherHeader.className = 'area-header';
         otherHeader.textContent = 'Other';
+        otherHeader.addEventListener('click', () => otherList.classList.toggle('hidden'));
         otherCol.appendChild(otherHeader);
         const otherList = document.createElement('ul');
 
@@ -1014,7 +1022,7 @@ export function renderAreaScreen(root) {
             li.appendChild(btn);
             otherList.appendChild(li);
         });
-        const merchantNPC = /(merchant|shop|store|auction)/i;
+        const merchantNPC = /(merchant|shop|store|auction|vendor|goods|gear|scribe|notary)/i;
         loc.importantNPCs.forEach(n => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
@@ -1525,17 +1533,40 @@ function sellItem(id, qty = 1) {
     alert(`Sold ${qty} x ${item.name} for ${revenue} gil.`);
 }
 
-export function renderVendorScreen(root, vendor, backFn = null) {
+function renderVendorMenu(root, vendor, backFn = null) {
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = vendor;
+    root.appendChild(title);
+    root.appendChild(characterSummary());
+    const buyBtn = document.createElement('button');
+    buyBtn.textContent = 'Buy';
+    buyBtn.addEventListener('click', () => {
+        renderVendorScreen(root, vendor, backFn, 'buy');
+    });
+    const sellBtn = document.createElement('button');
+    sellBtn.textContent = 'Sell';
+    sellBtn.addEventListener('click', () => {
+        renderVendorScreen(root, vendor, backFn, 'sell');
+    });
+    root.appendChild(buyBtn);
+    root.appendChild(sellBtn);
+    const handler = backFn || (() => renderAreaScreen(root));
+    showBackButton(handler);
+}
+
+export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
     root.innerHTML = '';
     resetDetails();
     const title = document.createElement('h2');
     title.textContent = vendor;
     root.appendChild(title);
     root.appendChild(characterSummary());
-    const list = document.createElement('div');
-    list.className = 'vendor-list';
-    const inv = vendorInventories[vendor] || [];
-    inv.forEach(id => {
+    if (mode === 'buy') {
+        const list = document.createElement('div');
+        list.className = 'vendor-list';
+        const inv = vendorInventories[vendor] || [];
+        inv.forEach(id => {
         const item = items[id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -1603,16 +1634,18 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         }
         row.appendChild(detailsWrap);
         detail.addEventListener('click', () => toggleDetails(detailsWrap));
-        list.appendChild(row);
-    });
-    root.appendChild(list);
+            list.appendChild(row);
+        });
+        root.appendChild(list);
+    }
 
-    const sellTitle = document.createElement('h3');
-    sellTitle.textContent = 'Sell Items';
-    root.appendChild(sellTitle);
-    const sellList = document.createElement('div');
-    sellList.className = 'vendor-list';
-    activeCharacter.inventory.forEach(entry => {
+    if (mode === 'sell') {
+        const sellTitle = document.createElement('h3');
+        sellTitle.textContent = 'Sell Items';
+        root.appendChild(sellTitle);
+        const sellList = document.createElement('div');
+        sellList.className = 'vendor-list';
+        activeCharacter.inventory.forEach(entry => {
         const item = items[entry.id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -1656,11 +1689,11 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         detailBtn.textContent = 'Details';
         detailBtn.addEventListener('click', () => toggleDetails(detailsWrap));
         top.appendChild(detailBtn);
-        sellList.appendChild(row);
-    });
-    root.appendChild(sellList);
-    const handler = backFn || (() => renderAreaScreen(root));
-    showBackButton(handler);
+            sellList.appendChild(row);
+        });
+        root.appendChild(sellList);
+    }
+    showBackButton(() => renderVendorMenu(root, vendor, backFn));
 }
 
 export function renderEquipmentScreen(root) {
@@ -1869,7 +1902,7 @@ function openMenu(name, backFn) {
         root.appendChild(list);
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
-        renderVendorScreen(root, name, backHandler);
+        renderVendorMenu(root, name, backHandler);
     } else if (/Home Point Crystal/i.test(name)) {
         root.innerHTML = '';
         const title = document.createElement('h2');
