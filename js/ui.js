@@ -28,7 +28,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
 
 let backButtonElement = null;
 
@@ -290,7 +290,7 @@ export function renderMainMenu() {
 
         const charImg = document.createElement('img');
         charImg.className = 'character-img';
-        charImg.src = raceInfo[activeCharacter.race]?.image || '';
+        charImg.src = characterImages[activeCharacter.race]?.[activeCharacter.sex]?.[activeCharacter.job] || '';
 
     const line2 = document.createElement('div');
 
@@ -323,22 +323,23 @@ export function renderMainMenu() {
         }
         line6.textContent = progressText;
 
-        const modeBtn = document.createElement('button');
-        modeBtn.textContent = `Mode: ${activeCharacter.xpMode}`;
-        modeBtn.addEventListener('click', () => {
-            if (activeCharacter.level >= 99) {
-                if (activeCharacter.xpMode === 'EXP') activeCharacter.xpMode = 'LP';
-                else if (activeCharacter.xpMode === 'LP') activeCharacter.xpMode = 'CP';
-                else activeCharacter.xpMode = 'EXP';
-            } else if (activeCharacter.level >= 75) {
-                activeCharacter.xpMode = activeCharacter.xpMode === 'EXP' ? 'LP' : 'EXP';
-            } else {
-                activeCharacter.xpMode = 'EXP';
-            }
-            persistCharacter(activeCharacter);
-            const menu = renderMainMenu();
-            container.replaceWith(menu);
-        });
+        let modeBtn = null;
+        if (activeCharacter.level >= 75) {
+            modeBtn = document.createElement('button');
+            modeBtn.textContent = `Mode: ${activeCharacter.xpMode}`;
+            modeBtn.addEventListener('click', () => {
+                if (activeCharacter.level >= 99) {
+                    if (activeCharacter.xpMode === 'EXP') activeCharacter.xpMode = 'LP';
+                    else if (activeCharacter.xpMode === 'LP') activeCharacter.xpMode = 'CP';
+                    else activeCharacter.xpMode = 'EXP';
+                } else {
+                    activeCharacter.xpMode = activeCharacter.xpMode === 'EXP' ? 'LP' : 'EXP';
+                }
+                persistCharacter(activeCharacter);
+                const menu = renderMainMenu();
+                container.replaceWith(menu);
+            });
+        }
 
         profile.appendChild(charImg);
         profile.appendChild(line2);
@@ -346,7 +347,7 @@ export function renderMainMenu() {
         profile.appendChild(line4);
         profile.appendChild(line5);
         profile.appendChild(line6);
-        profile.appendChild(modeBtn);
+        if (modeBtn) profile.appendChild(modeBtn);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -509,6 +510,10 @@ function renderNewCharacterForm(root) {
     const inputs = document.createElement('div');
     inputs.className = 'form-inputs';
 
+    const statsList = document.createElement('ul');
+    statsList.className = 'stats-list';
+    inputs.appendChild(statsList);
+
     const nameField = document.createElement('div');
     nameField.className = 'form-field';
     const nameLabel = document.createElement('label');
@@ -595,10 +600,6 @@ function renderNewCharacterForm(root) {
         updateInfo();
     });
     inputs.appendChild(randomBtn);
-
-    const statsList = document.createElement('ul');
-    statsList.className = 'stats-list';
-    inputs.appendChild(statsList);
     const cityDiv = document.createElement('div');
     cityDiv.className = 'start-city';
     inputs.appendChild(cityDiv);
@@ -614,11 +615,9 @@ function renderNewCharacterForm(root) {
 
     const raceHeader = document.createElement('h3');
     raceHeader.className = 'race-header';
-    statsCol.appendChild(raceHeader);
 
     const raceDesc = document.createElement('p');
     raceDesc.className = 'race-desc';
-    statsCol.appendChild(raceDesc);
 
     const raceImg = document.createElement('img');
     raceImg.className = 'race-img';
@@ -630,6 +629,9 @@ function renderNewCharacterForm(root) {
     const infoCol = document.createElement('div');
     infoCol.className = 'form-traits';
 
+    infoCol.appendChild(raceHeader);
+    infoCol.appendChild(raceDesc);
+
     const jobHeader = document.createElement('h3');
     jobHeader.className = 'job-header';
     infoCol.appendChild(jobHeader);
@@ -637,10 +639,6 @@ function renderNewCharacterForm(root) {
     const jobDesc = document.createElement('p');
     jobDesc.className = 'job-desc';
     infoCol.appendChild(jobDesc);
-
-    const jobImg = document.createElement('img');
-    jobImg.className = 'job-img';
-    infoCol.appendChild(jobImg);
 
     const traitsHeader = document.createElement('h4');
     traitsHeader.textContent = 'Traits';
@@ -670,10 +668,9 @@ function renderNewCharacterForm(root) {
         );
         statsList.innerHTML = '';
         raceHeader.textContent = raceSelect.value;
-        raceImg.src = raceInfo[raceSelect.value]?.image || '';
+        raceImg.src = characterImages[raceSelect.value]?.[sexSelect.value]?.[jobSelect.value] || '';
         raceDesc.textContent = raceInfo[raceSelect.value]?.description || '';
         jobHeader.textContent = jobSelect.value;
-        jobImg.src = jobInfo[jobSelect.value]?.image || '';
         let jd = jobInfo[jobSelect.value]?.description || '';
         jd = jd.replace(/ (Skills:)/, '<br><br>$1')
                .replace(/ (Magic:)/, '<br><br>$1')

@@ -205,6 +205,18 @@ body.portrait .character-form {
 
 .form-field {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-field label {
+    width: 90px;
+}
+
+.form-field input,
+.form-field select {
+    flex: 1;
 }
 
 .form-stats {
