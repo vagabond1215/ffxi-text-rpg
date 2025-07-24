@@ -291,6 +291,30 @@ body.portrait .main-layout {
     margin: 0 auto 10px auto;
 }
 
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.img-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 2px 6px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.img-nav.left {
+    left: 0;
+}
+
+.img-nav.right {
+    right: 0;
+}
+
 .race-desc, .job-desc {
     margin-bottom: 10px;
     text-align: left;
