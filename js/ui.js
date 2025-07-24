@@ -31,6 +31,28 @@ import {
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
 
 let backButtonElement = null;
+let openDetailElement = null;
+
+function resetDetails() {
+    if (openDetailElement) {
+        openDetailElement.classList.add('hidden');
+        openDetailElement = null;
+    }
+}
+
+function toggleDetails(element) {
+    const isVisible = !element.classList.contains('hidden');
+    if (openDetailElement && openDetailElement !== element) {
+        openDetailElement.classList.add('hidden');
+    }
+    if (isVisible) {
+        element.classList.add('hidden');
+        if (openDetailElement === element) openDetailElement = null;
+    } else {
+        element.classList.remove('hidden');
+        openDetailElement = element;
+    }
+}
 
 function createImageContainer() {
     const wrapper = document.createElement('div');
@@ -1471,6 +1493,7 @@ function sellItem(id, qty = 1) {
 
 export function renderVendorScreen(root, vendor, backFn = null) {
     root.innerHTML = '';
+    resetDetails();
     const title = document.createElement('h2');
     title.textContent = vendor;
     root.appendChild(title);
@@ -1495,7 +1518,6 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         top.appendChild(price);
         const detail = document.createElement('button');
         detail.textContent = 'Details';
-        detail.addEventListener('click', () => alert(itemDetailsText(item)));
         top.appendChild(detail);
         let qtyInput = null;
         if (item.stack > 1) {
@@ -1515,24 +1537,28 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         });
         top.appendChild(buyBtn);
         row.appendChild(top);
+        const detailsWrap = document.createElement('div');
+        detailsWrap.className = 'item-details hidden';
         const desc = document.createElement('div');
         desc.className = 'item-description';
         desc.textContent = item.description || item.name;
-        row.appendChild(desc);
+        detailsWrap.appendChild(desc);
         const stats = basicStatsText(item);
         if (stats) {
             const s = document.createElement('div');
             s.className = 'item-stats';
             s.textContent = stats;
-            row.appendChild(s);
+            detailsWrap.appendChild(s);
         }
         const req = requirementText(item);
         if (req) {
             const r = document.createElement('div');
             r.className = 'item-req';
             r.textContent = req;
-            row.appendChild(r);
+            detailsWrap.appendChild(r);
         }
+        row.appendChild(detailsWrap);
+        detail.addEventListener('click', () => toggleDetails(detailsWrap));
         list.appendChild(row);
     });
     root.appendChild(list);
@@ -1575,10 +1601,17 @@ export function renderVendorScreen(root, vendor, backFn = null) {
         });
         top.appendChild(sellBtn);
         row.appendChild(top);
+        const detailsWrap = document.createElement('div');
+        detailsWrap.className = 'item-details hidden';
         const desc = document.createElement('div');
         desc.className = 'item-description';
         desc.textContent = item.description || item.name;
-        row.appendChild(desc);
+        detailsWrap.appendChild(desc);
+        row.appendChild(detailsWrap);
+        const detailBtn = document.createElement('button');
+        detailBtn.textContent = 'Details';
+        detailBtn.addEventListener('click', () => toggleDetails(detailsWrap));
+        top.appendChild(detailBtn);
         sellList.appendChild(row);
     });
     root.appendChild(sellList);
@@ -1588,6 +1621,7 @@ export function renderVendorScreen(root, vendor, backFn = null) {
 
 export function renderEquipmentScreen(root) {
     root.innerHTML = '';
+    resetDetails();
     const title = document.createElement('h2');
     title.textContent = 'Equipment';
     root.appendChild(title);
@@ -1608,37 +1642,44 @@ export function renderEquipmentScreen(root) {
         };
         for (const key of Object.keys(slots)) {
             const li = document.createElement('li');
+            li.className = 'equipment-item';
+            const top = document.createElement('div');
+            top.className = 'equipment-row-top';
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
-            const nameDiv = document.createElement('div');
+            const nameDiv = document.createElement('span');
             nameDiv.textContent = `${slots[key]}: ${item ? item.name : itemId || 'Empty'}`;
+            if (item && !meetsRequirements(item)) nameDiv.style.color = 'red';
+            top.appendChild(nameDiv);
             if (item) {
-                if (!meetsRequirements(item)) nameDiv.style.color = 'red';
-            }
-            li.appendChild(nameDiv);
-            if (item) {
+                const detailsBtn = document.createElement('button');
+                detailsBtn.textContent = 'Details';
+                top.appendChild(detailsBtn);
+                li.appendChild(top);
+                const detailsWrap = document.createElement('div');
+                detailsWrap.className = 'item-details hidden';
                 const desc = document.createElement('div');
                 desc.className = 'item-description';
                 desc.textContent = item.description || item.name;
-                li.appendChild(desc);
+                detailsWrap.appendChild(desc);
                 const stats = basicStatsText(item);
                 if (stats) {
                     const s = document.createElement('div');
                     s.className = 'item-stats';
                     s.textContent = stats;
-                    li.appendChild(s);
+                    detailsWrap.appendChild(s);
                 }
                 const reqTxt = requirementText(item);
                 if (reqTxt) {
                     const r = document.createElement('div');
                     r.className = 'item-req';
                     r.textContent = reqTxt;
-                    li.appendChild(r);
+                    detailsWrap.appendChild(r);
                 }
-                const details = document.createElement('button');
-                details.textContent = 'Details';
-                details.addEventListener('click', () => alert(itemDetailsText(item)));
-                li.appendChild(details);
+                li.appendChild(detailsWrap);
+                detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
+            } else {
+                li.appendChild(top);
             }
             if (itemId) {
                 const unequip = document.createElement('button');
@@ -1648,7 +1689,7 @@ export function renderEquipmentScreen(root) {
                     persistCharacter(activeCharacter);
                     renderEquipmentScreen(root);
                 });
-                li.appendChild(unequip);
+                top.appendChild(unequip);
             }
             list.appendChild(li);
         }
@@ -1693,6 +1734,7 @@ function equipItem(id, root) {
 export function renderInventoryScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
+    resetDetails();
     const title = document.createElement('h2');
     title.textContent = 'Inventory';
     root.appendChild(title);
@@ -1719,16 +1761,18 @@ export function renderInventoryScreen(root) {
         ul.className = 'inventory-list';
         list.forEach(ent => {
             const li = document.createElement('li');
+            li.className = 'inventory-item';
+            const top = document.createElement('div');
+            top.className = 'inventory-row-top';
             const nameSpan = document.createElement('span');
             const qtyText = ent.item.stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
             nameSpan.textContent = ent.item.name + qtyText;
             if (!meetsRequirements(ent.item)) nameSpan.style.color = 'red';
             else if (canEquipItem(ent.item) && isBetterItem(ent.item)) nameSpan.style.color = 'lightgreen';
-            li.appendChild(nameSpan);
-            const details = document.createElement('button');
-            details.textContent = 'Details';
-            details.addEventListener('click', () => alert(itemDetailsText(ent.item)));
-            li.appendChild(details);
+            top.appendChild(nameSpan);
+            const detailsBtn = document.createElement('button');
+            detailsBtn.textContent = 'Details';
+            top.appendChild(detailsBtn);
             if (canEquipItem(ent.item)) {
                 const eq = document.createElement('button');
                 if (activeCharacter.equipment[ent.item.slot] === ent.id) {
@@ -1737,15 +1781,20 @@ export function renderInventoryScreen(root) {
                     eq.textContent = 'Equip';
                     eq.addEventListener('click', () => equipItem(ent.id, root));
                 }
-                li.appendChild(eq);
+                top.appendChild(eq);
             }
+            li.appendChild(top);
+            const detailsWrap = document.createElement('div');
+            detailsWrap.className = 'item-details hidden';
             const stats = basicStatsText(ent.item);
             if (stats) {
                 const s = document.createElement('div');
                 s.className = 'item-stats';
                 s.textContent = stats;
-                li.appendChild(s);
+                detailsWrap.appendChild(s);
             }
+            li.appendChild(detailsWrap);
+            detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
             ul.appendChild(li);
         });
         root.appendChild(ul);
