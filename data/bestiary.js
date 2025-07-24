@@ -3,17 +3,73 @@ export const bestiaryByZone = {
     {
       name: 'Forest Hare',
       level: '1-5',
+      exp: 27,
+      hp: 30,
+      element: 'Water',
       str: 2,
       vit: 2,
-      drops: ['Rabbit Hide', 'Rabbit Meat'],
+      drops: ['Hare Meat', 'Rabbit Hide'],
+      dropRates: {
+        'Hare Meat': '50-75%',
+        'Rabbit Hide': '2-10%'
+      },
+      steal: 'San d\'Oria Carrot',
       aggressive: false,
       linking: false,
-      detection: 'Sight',
-      attacks: ['Attack'],
-      skills: ['Foot Kick'],
+      detection: 'Sight & Scent',
+      attacks: ['Nip'],
+      skills: [],
       magic: [],
-      weaknesses: ['Fire'],
-      resistances: []
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Fire', 'Earth']
+    },
+    {
+      name: 'Wild Rabbit',
+      level: '1-2',
+      exp: 27,
+      hp: 25,
+      element: 'Water',
+      str: 2,
+      vit: 2,
+      drops: ['Hare Meat', 'Rabbit Hide'],
+      dropRates: {
+        'Hare Meat': '50-75%',
+        'Rabbit Hide': '2-10%'
+      },
+      steal: 'San d\'Oria Carrot',
+      aggressive: false,
+      linking: false,
+      detection: 'Sight & Scent',
+      attacks: ['Nip'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Fire', 'Earth']
+    },
+    {
+      name: 'Carrion Worm',
+      level: '1-5',
+      exp: 36,
+      hp: 50,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Silver Ore', 'Zinc Ore'],
+      dropRates: {
+        'Copper Ore': '5-15%',
+        'Flint Stone': '10-20%',
+        'Silver Ore': '1-5%',
+        'Zinc Ore': '1-3%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Bite'],
+      skills: ['Poison Mist'],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
     },
     {
       name: 'Tiny Bee',
@@ -50,17 +106,73 @@ export const bestiaryByZone = {
     {
       name: 'Forest Hare',
       level: '1-5',
+      exp: 27,
+      hp: 30,
+      element: 'Water',
       str: 2,
       vit: 2,
-      drops: ['Rabbit Hide', 'Rabbit Meat'],
+      drops: ['Hare Meat', 'Rabbit Hide'],
+      dropRates: {
+        'Hare Meat': '50-75%',
+        'Rabbit Hide': '2-10%'
+      },
+      steal: 'San d\'Oria Carrot',
       aggressive: false,
       linking: false,
-      detection: 'Sight',
-      attacks: ['Attack'],
-      skills: ['Foot Kick'],
+      detection: 'Sight & Scent',
+      attacks: ['Nip'],
+      skills: [],
       magic: [],
-      weaknesses: ['Fire'],
-      resistances: []
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Fire', 'Earth']
+    },
+    {
+      name: 'Wild Rabbit',
+      level: '1-2',
+      exp: 27,
+      hp: 25,
+      element: 'Water',
+      str: 2,
+      vit: 2,
+      drops: ['Hare Meat', 'Rabbit Hide'],
+      dropRates: {
+        'Hare Meat': '50-75%',
+        'Rabbit Hide': '2-10%'
+      },
+      steal: 'San d\'Oria Carrot',
+      aggressive: false,
+      linking: false,
+      detection: 'Sight & Scent',
+      attacks: ['Nip'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Fire', 'Earth']
+    },
+    {
+      name: 'Carrion Worm',
+      level: '1-5',
+      exp: 36,
+      hp: 50,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Silver Ore', 'Zinc Ore'],
+      dropRates: {
+        'Copper Ore': '5-15%',
+        'Flint Stone': '10-20%',
+        'Silver Ore': '1-5%',
+        'Zinc Ore': '1-3%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Bite'],
+      skills: ['Poison Mist'],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
     },
     {
       name: 'Tiny Bee',
@@ -112,16 +224,25 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      exp: 14,
+      hp: 25,
+      element: 'Earth',
       str: 2,
       vit: 2,
-      drops: ['Worm Thread', 'Pebble'],
+      drops: ['Flint Stone', 'Copper Ore', 'Zinc Ore'],
+      dropRates: {
+        'Flint Stone': '17.5-23.5%',
+        'Copper Ore': '0-1.8%',
+        'Zinc Ore': '2.5-6%'
+      },
+      steal: 'Pebble',
       aggressive: false,
       linking: false,
       detection: 'Sound',
-      attacks: ['Attack'],
-      skills: ['Sandpit'],
+      attacks: ['Bite'],
+      skills: ['Sandpit', 'Stone'],
       magic: [],
-      weaknesses: ['Ice'],
+      weaknesses: ['Wind', 'Light'],
       resistances: ['Earth']
     },
     {
@@ -138,6 +259,29 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Lightning'],
       resistances: []
+    },
+    {
+      name: 'Ding Bat',
+      level: '1-5',
+      exp: 16,
+      hp: 35,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Bat Wing'],
+      dropRates: {
+        'Bat Wing': '14.5-31.2%'
+      },
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Light'],
+      resistances: ['Water', 'Dark'],
+      nightOnly: true
     }
   ],
   'North Gustaberg (West)': [
@@ -159,16 +303,25 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      exp: 14,
+      hp: 25,
+      element: 'Earth',
       str: 2,
       vit: 2,
-      drops: ['Worm Thread', 'Pebble'],
+      drops: ['Flint Stone', 'Copper Ore', 'Zinc Ore'],
+      dropRates: {
+        'Flint Stone': '17.5-23.5%',
+        'Copper Ore': '0-1.8%',
+        'Zinc Ore': '2.5-6%'
+      },
+      steal: 'Pebble',
       aggressive: false,
       linking: false,
       detection: 'Sound',
-      attacks: ['Attack'],
-      skills: ['Sandpit'],
+      attacks: ['Bite'],
+      skills: ['Sandpit', 'Stone'],
       magic: [],
-      weaknesses: ['Ice'],
+      weaknesses: ['Wind', 'Light'],
       resistances: ['Earth']
     },
     {
@@ -185,6 +338,27 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Lightning'],
       resistances: []
+    },
+    {
+      name: 'Ding Bat',
+      level: '1-5',
+      exp: 16,
+      hp: 35,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Bat Wing'],
+      dropRates: { 'Bat Wing': '14.5-31.2%' },
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Light'],
+      resistances: ['Water', 'Dark'],
+      nightOnly: true
     }
   ],
   'South Gustaberg': [
@@ -206,16 +380,25 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
+      exp: 14,
+      hp: 25,
+      element: 'Earth',
       str: 2,
       vit: 2,
-      drops: ['Worm Thread', 'Pebble'],
+      drops: ['Flint Stone', 'Copper Ore', 'Zinc Ore'],
+      dropRates: {
+        'Flint Stone': '17.5-23.5%',
+        'Copper Ore': '0-1.8%',
+        'Zinc Ore': '2.5-6%'
+      },
+      steal: 'Pebble',
       aggressive: false,
       linking: false,
       detection: 'Sound',
-      attacks: ['Attack'],
-      skills: ['Sandpit'],
+      attacks: ['Bite'],
+      skills: ['Sandpit', 'Stone'],
       magic: [],
-      weaknesses: ['Ice'],
+      weaknesses: ['Wind', 'Light'],
       resistances: ['Earth']
     },
     {
@@ -232,6 +415,27 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Fire'],
       resistances: []
+    },
+    {
+      name: 'Ding Bat',
+      level: '1-5',
+      exp: 16,
+      hp: 35,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Bat Wing'],
+      dropRates: { 'Bat Wing': '14.5-31.2%' },
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Light'],
+      resistances: ['Water', 'Dark'],
+      nightOnly: true
     }
   ],
   'West Sarutabaruta': [
@@ -264,6 +468,30 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Fire'],
       resistances: []
+    },
+    {
+      name: 'Land Crab',
+      level: '1-3',
+      exp: 11,
+      hp: 40,
+      element: 'Water',
+      str: 3,
+      vit: 3,
+      drops: ['Chunk of Rock Salt', 'Slice of Land Crab Meat', 'Water Cluster'],
+      dropRates: {
+        'Chunk of Rock Salt': '20-23%',
+        'Slice of Land Crab Meat': '1-2%',
+        'Water Cluster': '0.01%'
+      },
+      steal: 'Rock Salt',
+      aggressive: false,
+      linking: false,
+      detection: 'Sight',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Fire', 'Earth']
     },
     {
       name: 'Yagudo Initiate',

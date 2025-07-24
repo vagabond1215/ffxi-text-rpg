@@ -165,8 +165,12 @@ body.landscape #area-grid {
 
 .slot-entry button {
     margin-left: 5px;
-    width: 80px;
+    width: auto;
+    padding: 2px 6px;
+    font-size: 14px;
+    line-height: 1;
     text-align: center;
+    min-height: 0;
 }
 
 #slot-container {
@@ -396,7 +400,9 @@ body.portrait .main-layout {
 
 .char-menu-controls select,
 .char-menu-controls button {
-    width: 180px;
+    width: auto;
+    padding: 2px 6px;
+    font-size: 14px;
 }
 
 .item-description {
