@@ -9,7 +9,6 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['Bastok Markets', 'Metalworks', 'Zeruhn Mines', 'North Gustaberg (East)', 'Bastok Residential Area'],
       pointsOfInterest: [
-        'Mog House',
         'Mining Guild',
         "Boytz's Knickknacks",
         "Gelzerio's Stall",
@@ -32,7 +31,6 @@ export const zonesByCity = {
       connectedAreas: ['Bastok Mines', 'Port Bastok', 'South Gustaberg', 'Bastok Residential Area'],
       pointsOfInterest: [
         'Auction House',
-        'Mog House',
         'Rental House',
         "Goldsmiths' Guild",
         "Blacksmiths' Guild",
@@ -178,7 +176,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ["Southern San d'Oria", "Port San d'Oria", "Château d'Oraguille", 'West Ronfaure', "San d'Oria Residential Area"],
-      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', 'Armor Shop', 'Weapon Shop', 'Consumable Shop', 'Item Shop', 'Chocobo Stables', 'Home Point Crystal'],
+      pointsOfInterest: ['Auction House', 'Rental House', 'Armor Shop', 'Weapon Shop', 'Consumable Shop', 'Item Shop', 'Chocobo Stables', 'Home Point Crystal'],
       importantNPCs: ['Gate Guard', 'Mission/Fame NPCs', 'Outpost Warper', 'Regional Merchant']
     },
     {
@@ -252,7 +250,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Windurst Walls', 'Windurst Woods', 'Port Windurst', 'East Sarutabaruta', 'Windurst Residential Area'],
-      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', 'Cooking Guild', "Fisherman's Guild", 'General Store', 'Food Shop', 'Scroll Shop', 'Item Shop', 'Chocobo Stables', 'Home Point Crystal'],
+      pointsOfInterest: ['Auction House', 'Rental House', 'Cooking Guild', "Fisherman's Guild", 'General Store', 'Food Shop', 'Scroll Shop', 'Item Shop', 'Chocobo Stables', 'Home Point Crystal'],
       importantNPCs: ['Gate Guard', 'Mission/Quest NPCs', 'Outpost Warper', 'Regional Merchant']
     },
     {
@@ -353,7 +351,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Upper Jeuno', 'Port Jeuno', 'Qufim Island', 'Rolanberry Fields', 'Jeuno Residential Area'],
-      pointsOfInterest: ['Auction House', 'Mog House', 'Rental House', 'Chocobo Stables', 'General Goods Shop', 'Armor Shop', 'Weapon Shop', 'Home Point Crystal', 'Map Vendor'],
+      pointsOfInterest: ['Auction House', 'Rental House', 'Chocobo Stables', 'General Goods Shop', 'Armor Shop', 'Weapon Shop', 'Home Point Crystal', 'Map Vendor'],
       importantNPCs: ['Fame/Mission/Quest NPCs', 'Outpost Warper', 'Regional Merchant']
     },
     {
