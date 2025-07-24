@@ -486,6 +486,10 @@ body.portrait .main-layout {
 /* Combat screen layout */
 #combat-screen {
     display: flex;
+    gap: 10px;
+}
+#combat-main {
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -517,5 +521,16 @@ body.landscape #action-buttons {
     flex-direction: column;
     align-items: center;
     gap: 4px;
+}
+
+.enemy-list, .party-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
+}
+
+.target-button {
+    width: 100%;
 }
 

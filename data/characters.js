@@ -187,7 +187,8 @@ export const characters = [
     ownedResidences: [startingCities['Hume']],
     currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
     travelTurns: { [startingCities['Hume']]: 0 },
-    signetUntil: 0
+    signetUntil: 0,
+    conquestPoints: 0
   },
   {
     name: 'Shantotto',
@@ -261,7 +262,8 @@ export const characters = [
     ownedResidences: [startingCities['Tarutaru']],
     currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
     travelTurns: { [startingCities['Tarutaru']]: 0 },
-    signetUntil: 0
+    signetUntil: 0,
+    conquestPoints: 0
   }
 ];
 
@@ -343,7 +345,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     ownedResidences: [startingCities[selectedRace]],
     currentHomePoint: zonesByCity[startingCities[selectedRace]][0].name,
     travelTurns: { [startingCities[selectedRace]]: 0 },
-    signetUntil: 0
+    signetUntil: 0,
+    conquestPoints: 0
   };
   updateDerivedStats(character);
   return character;
@@ -538,6 +541,7 @@ export function loadCharacters() {
     const loaded = JSON.parse(data);
     characters.length = 0;
     loaded.forEach(c => {
+      if (c.conquestPoints === undefined) c.conquestPoints = 0;
       characters.push(c);
       updateDerivedStats(c);
     });
@@ -555,6 +559,7 @@ export function loadCharacterSlot(index) {
     const saved = JSON.parse(localStorage.getItem(`ffxiChars_${currentUser}`) || '[]');
     if (!saved[index]) return;
     characters[index] = saved[index];
+    if (characters[index].conquestPoints === undefined) characters[index].conquestPoints = 0;
     updateDerivedStats(characters[index]);
     setActiveCharacter(characters[index]);
     saveCharacters();

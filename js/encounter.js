@@ -125,3 +125,21 @@ export function exploreEncounter(zone) {
   if (!mobs.length) return null;
   return mobs[Math.floor(Math.random() * mobs.length)];
 }
+
+export function huntEncounter(zone, targetName) {
+  const mobs = bestiaryByZone[zone] || [];
+  const matches = mobs.filter(m => m.name === targetName);
+  if (!matches.length) return [];
+  const pick = { ...matches[Math.floor(Math.random() * matches.length)] };
+  const group = [pick];
+  const firstWord = targetName.split(' ')[0];
+  const sameRace = mobs.filter(m => m.name.startsWith(firstWord));
+  if ((pick.linking || /(Goblin|Orc|Yagudo|Quadav)/i.test(firstWord)) && sameRace.length > 1) {
+    const extra = Math.random() < 0.5 ? 1 : 0;
+    for (let i = 0; i < extra; i++) {
+      const mob = { ...sameRace[Math.floor(Math.random() * sameRace.length)] };
+      group.push(mob);
+    }
+  }
+  return group;
+}

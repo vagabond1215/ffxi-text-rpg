@@ -16,6 +16,7 @@ import {
     vendorInventories,
     shopNpcs,
     items,
+    conquestRewards,
     updateDerivedStats,
     loadUsers,
     addUser,
@@ -26,7 +27,9 @@ import {
     clearTemporaryEffects,
     pruneExpiredEffects,
     persistCharacter,
-    setLocation
+    setLocation,
+    bestiaryByZone,
+    huntEncounter
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel, experienceForKill } from '../data/index.js';
 
@@ -277,7 +280,12 @@ function characterSummary() {
     if (!activeCharacter) return document.createElement('div');
     const div = document.createElement('div');
     div.className = 'character-summary';
-    div.textContent = `${activeCharacter.name} - Lv.${activeCharacter.level} ${activeCharacter.sex} ${activeCharacter.race} ${activeCharacter.job}`;
+    const line1 = document.createElement('div');
+    line1.textContent = `${activeCharacter.name} - Lv.${activeCharacter.level} ${activeCharacter.sex} ${activeCharacter.race} ${activeCharacter.job}`;
+    const line2 = document.createElement('div');
+    line2.textContent = `Gil: ${activeCharacter.gil} CP: ${activeCharacter.conquestPoints || 0}`;
+    div.appendChild(line1);
+    div.appendChild(line2);
     return div;
 }
 
@@ -380,6 +388,9 @@ export function renderMainMenu() {
         const line5 = document.createElement('div');
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
+        const lineCp = document.createElement('div');
+        lineCp.textContent = `Conquest Points: ${activeCharacter.conquestPoints || 0}`;
+
         const line6 = document.createElement('div');
         let progressText;
         if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
@@ -416,6 +427,7 @@ export function renderMainMenu() {
         profile.appendChild(line3);
         profile.appendChild(line4);
         profile.appendChild(line5);
+        profile.appendChild(lineCp);
         profile.appendChild(line6);
         if (modeBtn) profile.appendChild(modeBtn);
         layout.appendChild(profile);
@@ -911,11 +923,25 @@ export function renderAreaScreen(root) {
             exploreBtn.addEventListener('click', () => {
                 const mob = exploreEncounter(loc.name);
                 if (mob) {
-                    renderCombatScreen(root, mob);
+                    renderCombatScreen(root, [mob]);
                 }
             });
             exploreLi.appendChild(exploreBtn);
             travelList.appendChild(exploreLi);
+
+            const huntLi = document.createElement('li');
+            const huntSelect = document.createElement('select');
+            const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
+            names.forEach(n => huntSelect.appendChild(new Option(n, n)));
+            const huntBtn = document.createElement('button');
+            huntBtn.textContent = 'Hunt';
+            huntBtn.addEventListener('click', () => {
+                const mobs = huntEncounter(loc.name, huntSelect.value);
+                if (mobs.length) renderCombatScreen(root, mobs);
+            });
+            huntLi.appendChild(huntSelect);
+            huntLi.appendChild(huntBtn);
+            travelList.appendChild(huntLi);
         }
 
         const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
@@ -944,7 +970,7 @@ export function renderAreaScreen(root) {
                 }
                 const mob = rollForEncounter(activeCharacter, loc.name);
                 if (mob) {
-                    renderCombatScreen(root, mob, area);
+                    renderCombatScreen(root, [mob], area);
                     return;
                 }
                 activeCharacter.travel.remaining -= 1;
@@ -1064,38 +1090,65 @@ export function renderAreaScreen(root) {
     });
 }
 
-function renderCombatScreen(root, mob, destination) {
+function renderCombatScreen(root, mobs, destination) {
     if (!activeCharacter) return;
+    if (!Array.isArray(mobs)) mobs = [mobs];
     root.innerHTML = '';
     root.appendChild(statusEffectsDisplay());
     const container = document.createElement('div');
     container.id = 'combat-screen';
 
+    const sideBar = document.createElement('div');
+    const enemyList = document.createElement('div');
+    enemyList.className = 'enemy-list';
+    const partyList = document.createElement('div');
+    partyList.className = 'party-list';
+    sideBar.appendChild(enemyList);
+    sideBar.appendChild(partyList);
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'combat-main';
+
     const playerDiv = document.createElement('div');
     playerDiv.className = 'combat-player';
     playerDiv.innerHTML = `<h3>${activeCharacter.name}</h3><div id="player-hp">HP: ${activeCharacter.hp}</div>`;
 
-    mob.currentHP = parseLevel(mob.level) * 20;
-    const mobDiv = document.createElement('div');
-    mobDiv.className = 'combat-monster';
-    mobDiv.innerHTML = `<h3>${mob.name}</h3><div id="mob-hp">HP: ${mob.currentHP}</div>`;
+    const enemyButtons = [];
+    mobs.forEach((m, idx) => {
+        m.currentHP = (m.hp || parseLevel(m.level) * 20);
+        const btn = document.createElement('button');
+        btn.className = 'target-button';
+        btn.id = `enemy-${idx}`;
+        btn.textContent = `${m.name} - HP: ${m.currentHP}`;
+        btn.addEventListener('click', () => {
+            currentTarget = m;
+        });
+        enemyButtons.push(btn);
+        enemyList.appendChild(btn);
+    });
+    let currentTarget = mobs[0];
+    const partyBtn = document.createElement('button');
+    partyBtn.id = 'party-player';
+    partyBtn.className = 'target-button';
+    partyBtn.textContent = `${activeCharacter.name} HP:${activeCharacter.hp} MP:${activeCharacter.mp} TP:${activeCharacter.tp}`;
+    partyList.appendChild(partyBtn);
 
     const logDiv = document.createElement('div');
     logDiv.id = 'combat-log';
     logDiv.className = 'combat-log';
 
-    container.appendChild(playerDiv);
-    container.appendChild(logDiv);
-    container.appendChild(mobDiv);
+    mainDiv.appendChild(playerDiv);
+    mainDiv.appendChild(logDiv);
+
+    container.appendChild(sideBar);
+    container.appendChild(mainDiv);
     root.appendChild(container);
 
-    const playerDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
-    const mobDelay = mob.delay || 240;
-    const mobLevel = parseLevel(mob.level);
-    const mobScale = mobLevel * 2;
-    let timeToPlayer = playerDelay;
-    let timeToMob = mobDelay;
     let battleEnded = false;
+    let pendingExp = 0;
+    let pendingGil = 0;
+    let pendingCP = 0;
+    const pendingDrops = [];
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -1110,13 +1163,14 @@ function renderCombatScreen(root, mob, destination) {
                 level
             };
         }
-        const level = mobLevel;
-        const dex = mob.dex !== undefined ? mob.dex : mob.str;
-        const agi = mob.agi !== undefined ? mob.agi : (mob.vit ?? mobScale) + 1;
-        const weaponSkill = mob.weaponSkill || level * 5;
-        const evasionSkill = mob.evasionSkill || level * 5;
-        const str = mob.str ?? mobScale;
-        const vit = mob.vit ?? mobScale;
+        const level = parseLevel(target.level);
+        const scale = level * 2;
+        const dex = target.dex !== undefined ? target.dex : target.str;
+        const agi = target.agi !== undefined ? target.agi : (target.vit ?? scale) + 1;
+        const weaponSkill = target.weaponSkill || level * 5;
+        const evasionSkill = target.evasionSkill || level * 5;
+        const str = target.str ?? scale;
+        const vit = target.vit ?? scale;
         return {
             atk: str + level,
             def: vit + level,
@@ -1163,14 +1217,13 @@ function renderCombatScreen(root, mob, destination) {
         }
     }
 
-    function victory(exp, gil, itemDrops) {
-        mob.currentHP = 0;
+    function victory(exp, gil, cp, itemDrops) {
         update();
         battleEnded = true;
         const lootDiv = document.createElement('div');
         lootDiv.className = 'loot-display';
         const msg = document.createElement('div');
-        msg.textContent = `You defeat the ${mob.name}!`;
+        msg.textContent = 'Victory!';
         lootDiv.appendChild(msg);
         const list = document.createElement('ul');
         if (exp > 0) {
@@ -1181,6 +1234,11 @@ function renderCombatScreen(root, mob, destination) {
         if (gil > 0) {
             const li = document.createElement('li');
             li.textContent = `${gil} gil`;
+            list.appendChild(li);
+        }
+        if (cp > 0) {
+            const li = document.createElement('li');
+            li.textContent = `${cp} CP`;
             list.appendChild(li);
         }
         itemDrops.forEach(it => {
@@ -1212,6 +1270,7 @@ function renderCombatScreen(root, mob, destination) {
                 }
             }
             activeCharacter.gil += gil;
+            activeCharacter.conquestPoints = (activeCharacter.conquestPoints || 0) + cp;
             addItemsToInventory(itemDrops);
             if (destination && activeCharacter.hp > 0) {
                 setLocation(activeCharacter, destination);
@@ -1224,12 +1283,20 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function update() {
-        document.getElementById('player-hp').textContent = `HP: ${activeCharacter.hp}`;
-        document.getElementById('mob-hp').textContent = `HP: ${mob.currentHP}`;
+        partyBtn.textContent = `${activeCharacter.name} HP:${activeCharacter.hp} MP:${activeCharacter.mp} TP:${activeCharacter.tp}`;
+        enemyButtons.forEach((btn, i) => {
+            if (mobs[i]) btn.textContent = `${mobs[i].name} - HP: ${mobs[i].currentHP}`;
+        });
     }
 
-    function monsterDefeated() {
+    function monsterDefeated(idx) {
+        const mob = mobs[idx];
+        const mobLevel = parseLevel(mob.level);
         const exp = experienceForKill(activeCharacter.level, mobLevel);
+        let cpGain = 0;
+        if (activeCharacter.level >= 6 && hasSignet(activeCharacter)) {
+            cpGain = Math.floor(exp / 10);
+        }
         let gil = 0;
         if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
             gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
@@ -1244,7 +1311,19 @@ function renderCombatScreen(root, mob, destination) {
             const crystalId = Object.keys(items).find(k => /Crystal/i.test(items[k].name));
             if (crystalId) drops.push({ id: crystalId, qty: 1 });
         }
-        victory(exp, gil, drops);
+        pendingExp += exp;
+        pendingGil += gil;
+        pendingCP += cpGain;
+        pendingDrops.push(...drops);
+        mobs.splice(idx, 1);
+        enemyButtons[idx].remove();
+        enemyButtons.splice(idx, 1);
+        if (mobs.length === 0) {
+            victory(pendingExp, pendingGil, pendingCP, pendingDrops);
+        } else {
+            currentTarget = mobs[0];
+            update();
+        }
     }
 
     function calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit = false, critBonus = 0) {
@@ -1296,15 +1375,16 @@ function renderCombatScreen(root, mob, destination) {
             if (defender === activeCharacter) {
                 activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
             } else {
-                mob.currentHP = Math.max(0, mob.currentHP - dmg);
+                defender.currentHP = Math.max(0, defender.currentHP - dmg);
             }
             if (isCrit) {
                 log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
             } else {
                 log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
             }
-            if (mob.currentHP <= 0 && defender !== activeCharacter) {
-                monsterDefeated();
+            if (defender.currentHP <= 0 && defender !== activeCharacter) {
+                const idx = mobs.indexOf(defender);
+                if (idx !== -1) monsterDefeated(idx);
             }
         } else {
             log(`${attacker.name} misses.`);
@@ -1334,10 +1414,14 @@ function renderCombatScreen(root, mob, destination) {
 
     function monsterTurn() {
         if (battleEnded) return;
-        if (mob.currentHP <= 0) return endBattle();
-        attack(mob, activeCharacter);
-        if (activeCharacter.hp > 0) {
-            nextTurn();
+        for (const m of mobs) {
+            if (m.currentHP > 0) {
+                attack(m, activeCharacter);
+                if (activeCharacter.hp <= 0) break;
+            }
+        }
+        if (activeCharacter.hp > 0 && mobs.length > 0) {
+            playerTurn();
         } else {
             endBattle();
         }
@@ -1345,7 +1429,7 @@ function renderCombatScreen(root, mob, destination) {
 
     function playerTurn() {
         if (battleEnded) return;
-        if (mob.currentHP <= 0) return endBattle();
+        if (mobs.length === 0) return endBattle();
         const actionDiv = document.createElement('div');
         actionDiv.id = 'action-buttons';
 
@@ -1397,7 +1481,7 @@ function renderCombatScreen(root, mob, destination) {
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
-            const mobAgi = mob.agi !== undefined ? mob.agi : (mob.vit ?? mobScale) + 1;
+            const mobAgi = currentTarget.agi !== undefined ? currentTarget.agi : (currentTarget.vit ?? parseLevel(currentTarget.level) * 2) + 1;
             let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
             chance = Math.max(0.05, Math.min(0.95, chance));
             if (Math.random() < chance) {
@@ -1411,8 +1495,8 @@ function renderCombatScreen(root, mob, destination) {
 
         function afterAction() {
             if (battleEnded) return;
-            if (mob.currentHP > 0) {
-                nextTurn();
+            if (mobs.length > 0) {
+                monsterTurn();
             } else {
                 endBattle();
             }
@@ -1420,7 +1504,7 @@ function renderCombatScreen(root, mob, destination) {
 
         attackBtn.addEventListener('click', () => {
             container.removeChild(actionDiv);
-            attack(activeCharacter, mob);
+            attack(activeCharacter, currentTarget);
             afterAction();
         });
 
@@ -1428,7 +1512,7 @@ function renderCombatScreen(root, mob, destination) {
             container.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
-            attack(activeCharacter, mob);
+            attack(activeCharacter, currentTarget);
             afterAction();
         });
 
@@ -1436,34 +1520,20 @@ function renderCombatScreen(root, mob, destination) {
             container.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
-            attack(activeCharacter, mob);
+            attack(activeCharacter, currentTarget);
             afterAction();
         });
 
         fleeBtn.addEventListener('click', () => {
             container.removeChild(actionDiv);
-            if (attemptFlee()) return; // battle ended on success
-            nextTurn();
+            if (attemptFlee()) return;
+            monsterTurn();
         });
     }
 
-    log(`A ${mob.name} appears!`);
+    log(`A ${mobs.map(m=>m.name).join(', ')} appear!`);
     update();
-
-    function nextTurn() {
-        if (battleEnded) return;
-        if (timeToPlayer <= timeToMob) {
-            timeToMob -= timeToPlayer;
-            timeToPlayer = playerDelay;
-            playerTurn();
-        } else {
-            timeToPlayer -= timeToMob;
-            timeToMob = mobDelay;
-            monsterTurn();
-        }
-    }
-
-    nextTurn();
+    playerTurn();
 }
 
 export function renderTravelScreen(root) {
@@ -1710,6 +1780,61 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         root.appendChild(sellList);
     }
     showBackButton(() => renderVendorMenu(root, vendor, backFn));
+}
+
+export function renderConquestShop(root, backFn = null) {
+    root.innerHTML = '';
+    resetDetails();
+    const title = document.createElement('h2');
+    title.textContent = 'Conquest Rewards';
+    root.appendChild(title);
+    root.appendChild(characterSummary());
+    const list = document.createElement('div');
+    list.className = 'vendor-list';
+    Object.entries(conquestRewards).forEach(([id, cost]) => {
+        const item = items[id];
+        const row = document.createElement('div');
+        row.className = 'vendor-item';
+        const top = document.createElement('div');
+        top.className = 'vendor-row-top';
+        const name = document.createElement('span');
+        name.textContent = item.name;
+        top.appendChild(name);
+        const price = document.createElement('span');
+        price.textContent = ` - ${cost} CP`;
+        if (cost > (activeCharacter.conquestPoints || 0)) price.style.color = 'red';
+        top.appendChild(price);
+        const detail = document.createElement('button');
+        detail.textContent = 'Details';
+        top.appendChild(detail);
+        const buyBtn = document.createElement('button');
+        buyBtn.textContent = 'Buy';
+        buyBtn.addEventListener('click', () => {
+            if ((activeCharacter.conquestPoints || 0) < cost) {
+                alert('Not enough Conquest Points!');
+                return;
+            }
+            activeCharacter.conquestPoints -= cost;
+            const existing = activeCharacter.inventory.find(i => i.id === id);
+            if (existing) existing.qty += 1; else activeCharacter.inventory.push({ id, qty: 1 });
+            persistCharacter(activeCharacter);
+            alert(`Purchased ${item.name}.`);
+            renderConquestShop(root, backFn);
+        });
+        top.appendChild(buyBtn);
+        row.appendChild(top);
+        const detailsWrap = document.createElement('div');
+        detailsWrap.className = 'item-details hidden';
+        const desc = document.createElement('div');
+        desc.className = 'item-description';
+        desc.textContent = item.description || item.name;
+        detailsWrap.appendChild(desc);
+        row.appendChild(detailsWrap);
+        detail.addEventListener('click', () => toggleDetails(detailsWrap));
+        list.appendChild(row);
+    });
+    root.appendChild(list);
+    showBackButton(backFn || (() => renderAreaScreen(root)));
 }
 
 export function renderEquipmentScreen(root) {
@@ -1988,7 +2113,7 @@ function openMenu(name, backFn) {
         root.appendChild(select);
         root.appendChild(warpBtn);
         showBackButton(backHandler);
-    } else if (/Gate Guard/i.test(name)) {
+    } else if (/Gate Guard|I\.M\./i.test(name)) {
         root.innerHTML = '';
         const title = document.createElement('h2');
         title.textContent = 'Gate Guard';
@@ -2003,6 +2128,12 @@ function openMenu(name, backFn) {
             renderAreaScreen(root);
         });
         root.appendChild(signetBtn);
+        const rewardBtn = document.createElement('button');
+        rewardBtn.textContent = 'Redeem Conquest Points';
+        rewardBtn.addEventListener('click', () => {
+            renderConquestShop(root, backHandler);
+        });
+        root.appendChild(rewardBtn);
         showBackButton(backHandler);
     } else {
         alert(`Opening menu for ${name}`);
