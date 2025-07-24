@@ -3,7 +3,6 @@ export const bestiaryByZone = {
     {
       name: 'Forest Hare',
       level: '1-5',
-      exp: 27,
       hp: 30,
       element: 'Water',
       str: 2,
@@ -26,7 +25,6 @@ export const bestiaryByZone = {
     {
       name: 'Wild Rabbit',
       level: '1-2',
-      exp: 27,
       hp: 25,
       element: 'Water',
       str: 2,
@@ -49,7 +47,6 @@ export const bestiaryByZone = {
     {
       name: 'Carrion Worm',
       level: '1-5',
-      exp: 36,
       hp: 50,
       element: 'Earth',
       str: 3,
@@ -74,7 +71,6 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Bee',
       level: '1-3',
-      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -90,7 +86,6 @@ export const bestiaryByZone = {
     {
       name: 'Orcish Fodder',
       level: '3-8',
-      exp: 20,
       str: 6,
       vit: 4,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
@@ -108,7 +103,6 @@ export const bestiaryByZone = {
     {
       name: 'Forest Hare',
       level: '1-5',
-      exp: 27,
       hp: 30,
       element: 'Water',
       str: 2,
@@ -131,7 +125,6 @@ export const bestiaryByZone = {
     {
       name: 'Wild Rabbit',
       level: '1-2',
-      exp: 27,
       hp: 25,
       element: 'Water',
       str: 2,
@@ -154,7 +147,6 @@ export const bestiaryByZone = {
     {
       name: 'Carrion Worm',
       level: '1-5',
-      exp: 36,
       hp: 50,
       element: 'Earth',
       str: 3,
@@ -179,7 +171,6 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Bee',
       level: '1-3',
-      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -195,7 +186,6 @@ export const bestiaryByZone = {
     {
       name: 'Orcish Fodder',
       level: '3-8',
-      exp: 20,
       str: 6,
       vit: 4,
       drops: ['Orcish Axe', 'Bronze Axe', 'Stone'],
@@ -213,7 +203,6 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
-      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -229,7 +218,6 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
-      exp: 14,
       hp: 25,
       element: 'Earth',
       str: 2,
@@ -253,7 +241,6 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
-      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -269,7 +256,6 @@ export const bestiaryByZone = {
     {
       name: 'Ding Bat',
       level: '1-5',
-      exp: 16,
       hp: 35,
       element: 'Wind',
       str: 3,
@@ -292,7 +278,6 @@ export const bestiaryByZone = {
     {
       name: 'Stone Eater',
       level: '2-5',
-      exp: 69,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -316,7 +301,6 @@ export const bestiaryByZone = {
     {
       name: 'Maneating Hornet',
       level: '2-5',
-      exp: 40,
       hp: 100,
       element: 'Wind',
       str: 3,
@@ -341,7 +325,6 @@ export const bestiaryByZone = {
     {
       name: 'Walking Sapling',
       level: '2-6',
-      exp: 40,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -361,7 +344,6 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
-      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -377,7 +359,6 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
-      exp: 14,
       hp: 25,
       element: 'Earth',
       str: 2,
@@ -401,7 +382,6 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
-      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -417,7 +397,6 @@ export const bestiaryByZone = {
     {
       name: 'Ding Bat',
       level: '1-5',
-      exp: 16,
       hp: 35,
       element: 'Wind',
       str: 3,
@@ -438,7 +417,6 @@ export const bestiaryByZone = {
     {
       name: 'Stone Eater',
       level: '2-5',
-      exp: 69,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -462,7 +440,6 @@ export const bestiaryByZone = {
     {
       name: 'Maneating Hornet',
       level: '2-5',
-      exp: 40,
       hp: 100,
       element: 'Wind',
       str: 3,
@@ -487,7 +464,6 @@ export const bestiaryByZone = {
     {
       name: 'Walking Sapling',
       level: '2-6',
-      exp: 40,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -507,7 +483,6 @@ export const bestiaryByZone = {
     {
       name: 'Huge Wasp',
       level: '1-2',
-      exp: 11,
       str: 2,
       vit: 2,
       drops: ['Insect Wing', 'Beeswax', 'Honey'],
@@ -523,7 +498,6 @@ export const bestiaryByZone = {
     {
       name: 'Tunnel Worm',
       level: '1-3',
-      exp: 14,
       hp: 25,
       element: 'Earth',
       str: 2,
@@ -547,7 +521,6 @@ export const bestiaryByZone = {
     {
       name: 'Vulture',
       level: '2-6',
-      exp: 30,
       str: 4,
       vit: 2,
       drops: ['Bird Feather', 'Bird Egg'],
@@ -563,7 +536,6 @@ export const bestiaryByZone = {
     {
       name: 'Mad Sheep',
       level: '2-3',
-      exp: 15,
       str: 2,
       vit: 2,
       drops: ['Sheepskin', 'Sheep Meat', 'Wool'],
@@ -579,7 +551,6 @@ export const bestiaryByZone = {
     {
       name: 'Ding Bat',
       level: '1-5',
-      exp: 16,
       hp: 35,
       element: 'Wind',
       str: 3,
@@ -600,7 +571,6 @@ export const bestiaryByZone = {
     {
       name: 'Walking Sapling',
       level: '2-6',
-      exp: 49,
       hp: 78,
       element: 'Earth',
       str: 3,
@@ -621,7 +591,6 @@ export const bestiaryByZone = {
     {
       name: 'Savanna Rarab',
       level: '1-6',
-      exp: 15,
       str: 3,
       vit: 2,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
@@ -637,7 +606,6 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Mandragora',
       level: '1',
-      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
@@ -651,9 +619,32 @@ export const bestiaryByZone = {
       resistances: []
     },
     {
+      name: 'Mandragora',
+      level: '3-5',
+      hp: 95,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Cornette', 'Four-Leaf Mandragora Bud', 'Two-Leaf Mandragora Bud', 'Yuhtunga Sulfur'],
+      dropRates: {
+        'Cornette': '13%',
+        'Four-Leaf Mandragora Bud': '1%',
+        'Two-Leaf Mandragora Bud': '12%',
+        'Yuhtunga Sulfur': '4%'
+      },
+      steal: 'Saruta Cotton',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Root Whip'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Dark', 'Fire', 'Ice', 'Lightning', 'Wind'],
+      resistances: []
+    },
+    {
       name: 'Land Crab',
       level: '1-3',
-      exp: 11,
       hp: 40,
       element: 'Water',
       str: 3,
@@ -677,7 +668,6 @@ export const bestiaryByZone = {
     {
       name: 'Carrion Crow',
       level: '2-6',
-      exp: 37,
       element: 'Fire',
       str: 3,
       vit: 2,
@@ -699,7 +689,6 @@ export const bestiaryByZone = {
     {
       name: 'Yagudo Initiate',
       level: '1-8',
-      exp: 20,
       str: 4,
       vit: 3,
       drops: ['Yagudo Feather', 'Bird Egg'],
@@ -717,7 +706,6 @@ export const bestiaryByZone = {
     {
       name: 'Savanna Rarab',
       level: '1-6',
-      exp: 15,
       str: 3,
       vit: 2,
       drops: ['Rabbit Hide', 'Rabbit Meat'],
@@ -733,7 +721,6 @@ export const bestiaryByZone = {
     {
       name: 'Tiny Mandragora',
       level: '1',
-      exp: 10,
       str: 2,
       vit: 2,
       drops: ['Mandragora Flower', 'La Theine Cabbage'],
@@ -749,7 +736,6 @@ export const bestiaryByZone = {
     {
       name: 'Carrion Crow',
       level: '2-5',
-      exp: 41,
       element: 'Fire',
       str: 3,
       vit: 2,
@@ -771,7 +757,6 @@ export const bestiaryByZone = {
     {
       name: 'Yagudo Initiate',
       level: '1-8',
-      exp: 20,
       str: 4,
       vit: 3,
       drops: ['Yagudo Feather', 'Bird Egg'],
@@ -789,7 +774,6 @@ export const bestiaryByZone = {
     {
       name: 'River Crab',
       level: '2-4',
-      exp: 3,
       element: 'Water',
       str: 3,
       vit: 3,
@@ -811,7 +795,6 @@ export const bestiaryByZone = {
     {
       name: 'Mouse Bat',
       level: '2-4',
-      exp: 0,
       hp: 61,
       element: 'Wind',
       str: 3,
@@ -831,13 +814,46 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Wind', 'Light'],
       resistances: ['Dark']
+    },
+    {
+      name: 'Giant Amoeba',
+      level: '3-5',
+      element: 'Water',
+      str: 3,
+      vit: 2,
+      drops: ['Zeruhn Soot'],
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound & Scent',
+      attacks: ['Engulf'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Fire'],
+      resistances: ['Water']
+    },
+    {
+      name: 'Leech',
+      level: '3-5',
+      element: 'Water',
+      str: 3,
+      vit: 2,
+      drops: ['Zeruhn Soot'],
+      steal: null,
+      aggressive: true,
+      linking: true,
+      detection: 'Sound & Scent',
+      attacks: ['Bite'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Light'],
+      resistances: ['Water']
     }
   ],
   'Palborough Mines': [
     {
       name: 'Pit Hare',
       level: '2-6',
-      exp: 42,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -850,14 +866,37 @@ export const bestiaryByZone = {
       skills: [],
       magic: [],
       weaknesses: ['Water', 'Lightning', 'Dark'],
-      resistances: ['Fire']
+    resistances: ['Fire']
+    }
+  ],
+  'Dangruf Wadi': [
+    {
+      name: 'Stone Eater',
+      level: '3-5',
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Flint Stone', 'Hermit\'s Ring', 'Zinc Ore', 'Sulfur'],
+      dropRates: {
+        'Hermit\'s Ring': '11%',
+        'Zinc Ore': '11%',
+        'Sulfur': '73%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Crush'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
     }
   ],
   "King Ranperre's Tomb": [
     {
       name: 'Ding Bat',
       level: '2-5',
-      exp: 30,
       element: 'Wind',
       str: 3,
       vit: 2,
@@ -880,7 +919,6 @@ export const bestiaryByZone = {
     {
       name: 'Carrion Worm',
       level: '2-5',
-      exp: 19,
       element: 'Earth',
       str: 3,
       vit: 3,
@@ -899,14 +937,32 @@ export const bestiaryByZone = {
       skills: ['Poison Mist'],
       magic: [],
       weaknesses: ['Wind', 'Light'],
-      resistances: ['Earth']
+    resistances: ['Earth']
+    }
+  ],
+  'Ghelsba Outpost': [
+    {
+      name: 'Watch Lizard',
+      level: '3-5',
+      element: 'Fire',
+      str: 3,
+      vit: 3,
+      drops: ['Lizard Tail'],
+      steal: null,
+      aggressive: true,
+      linking: true,
+      detection: 'Sound',
+      attacks: ['Bite'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Ice'],
+      resistances: ['Fire']
     }
   ],
   'Giddeus': [
     {
       name: 'Giddeus Pugil',
       level: '2-5',
-      exp: 9,
       hp: 99,
       element: 'Water',
       str: 3,
@@ -925,7 +981,6 @@ export const bestiaryByZone = {
     {
       name: 'Giddeus Bee',
       level: '2-5',
-      exp: 19,
       hp: 90,
       element: 'Wind',
       str: 3,
@@ -945,6 +1000,23 @@ export const bestiaryByZone = {
       skills: [],
       magic: [],
       weaknesses: ['Ice'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Dirt Eater',
+      level: '3-5',
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Zinc Ore'],
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Bite'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
       resistances: ['Earth']
     }
   ]

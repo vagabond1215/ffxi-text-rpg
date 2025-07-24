@@ -24,13 +24,14 @@ Open `index.html` in a browser. No build step is required.
 - White Mage is fully verified as well, with `verified.traits = true` and `verified.abilities = true`.
 - Paladin and Bard data has been confirmed, with `verified.traits = true` and `verified.abilities = true` for both jobs.
 - Initial bestiary data lists low-level monsters for zones adjacent to the three starting cities.
-- Monsters award experience using their `exp` value from the bestiary instead of level scaling.
+- Experience from battles is based on the level difference between your character and the monster.
 - Basic encounter simulation using `walkAcrossZone()` and `rollForEncounter()` with level-based aggro rates.
 - Traveling through non-combat zones (areas without entries in the bestiary) only
   takes a single turn and never triggers encounters.
-- Leaving a zone begins a return counter at `1/10`. Each subsequent turn spent
-  moving away from the previous zone increases the turns required to return
-  (capped at ten).
+- Each city now tracks a travel-turn counter. Leaving any city sets that city's
+  counter to `1/10` and increments the counters for other cities. Moving deeper
+  into the wilderness increases these counters up to ten, while entering a city
+  resets its counter to `0`.
 - Encountering a monster now opens a battle screen showing player and enemy
   details with an initiative roll to decide who acts first.
 - City vendors now sell basic weapons, armor, scrolls and consumables at

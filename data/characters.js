@@ -121,6 +121,8 @@ export const characters = [
     sex: 'Male',
     job: 'Thief',
     startingCity: startingCities['Hume'],
+    homeCity: startingCities['Hume'],
+    spawnPoint: zonesByCity[startingCities['Hume']][0].name,
     currentLocation: zonesByCity[startingCities['Hume']][0].name,
     lastZone: null,
     level: 99,
@@ -182,7 +184,9 @@ export const characters = [
     temporaryBuffs: [],
     temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities['Hume']][0].name],
+    ownedResidences: [startingCities['Hume']],
     currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
+    travelTurns: { [startingCities['Hume']]: 0 },
     signetUntil: 0
   },
   {
@@ -191,6 +195,8 @@ export const characters = [
     sex: 'Female',
     job: 'Black Mage',
     startingCity: startingCities['Tarutaru'],
+    homeCity: startingCities['Tarutaru'],
+    spawnPoint: zonesByCity[startingCities['Tarutaru']][0].name,
     currentLocation: zonesByCity[startingCities['Tarutaru']][0].name,
     lastZone: null,
     level: 99,
@@ -252,7 +258,9 @@ export const characters = [
     temporaryBuffs: [],
     temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities['Tarutaru']][0].name],
+    ownedResidences: [startingCities['Tarutaru']],
     currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
+    travelTurns: { [startingCities['Tarutaru']]: 0 },
     signetUntil: 0
   }
 ];
@@ -269,6 +277,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     sex,
     job: selectedJob,
     startingCity: startingCities[selectedRace],
+    homeCity: startingCities[selectedRace],
+    spawnPoint: zonesByCity[startingCities[selectedRace]][0].name,
     currentLocation: zonesByCity[startingCities[selectedRace]][0].name,
     lastZone: null,
     level: 1,
@@ -330,7 +340,9 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     temporaryBuffs: [],
     temporaryDebuffs: [],
     homePoints: [zonesByCity[startingCities[selectedRace]][0].name],
+    ownedResidences: [startingCities[selectedRace]],
     currentHomePoint: zonesByCity[startingCities[selectedRace]][0].name,
+    travelTurns: { [startingCities[selectedRace]]: 0 },
     signetUntil: 0
   };
   updateDerivedStats(character);
@@ -663,11 +675,18 @@ export function setLocation(character, name) {
   character.currentLocation = name;
   const zone = locations.find(l => l.name === name);
   if (zone) {
+    if (!character.travelTurns) character.travelTurns = {};
     if (zone.distance === 0) {
-      clearTemporaryEffects(character);
       character.returnJourney = null;
+      character.travelTurns[zone.city] = 0;
     } else {
       character.returnJourney = { zone: zone.city, turns: zone.distance };
+      character.travelTurns[zone.city] = zone.distance;
+      for (const c in character.travelTurns) {
+        if (c !== zone.city) {
+          character.travelTurns[c] = Math.min(10, (character.travelTurns[c] || 0) + 1);
+        }
+      }
     }
   }
   persistCharacter(character);

@@ -37,11 +37,28 @@ function monstersByDistance(zone) {
   const loc = locations.find(l => l.name === zone);
   const dist = loc?.distance ?? 0;
   if (!mobs.length) return [];
-  const sorted = [...mobs].sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
-  const third = Math.max(1, Math.floor(sorted.length / 3));
-  if (dist <= 1) return sorted.slice(0, third);
-  if (dist === 2) return sorted.slice(third, 2 * third);
-  return sorted.slice(2 * third);
+  const groups = {};
+  for (const m of mobs) {
+    if (!groups[m.name]) groups[m.name] = [];
+    groups[m.name].push(m);
+  }
+  for (const name in groups) {
+    groups[name].sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
+  }
+  const pool = [];
+  for (const name of Object.keys(groups)) {
+    const arr = groups[name];
+    let idx = 0;
+    if (dist <= 1) {
+      idx = 0;
+    } else if (dist === 2) {
+      idx = Math.min(1, arr.length - 1);
+    } else {
+      idx = arr.length - 1;
+    }
+    pool.push(arr[idx]);
+  }
+  return pool.sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
 }
 
 export function randomMonster(zone) {

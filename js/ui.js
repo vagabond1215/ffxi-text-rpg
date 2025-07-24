@@ -28,7 +28,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel, experienceForKill } from '../data/index.js';
 
 let backButtonElement = null;
 let openDetailElement = null;
@@ -877,6 +877,20 @@ export function renderAreaScreen(root) {
     root.appendChild(title);
 
     if (loc) {
+        if (/Residential Area/i.test(loc.name)) {
+            if (loc.city !== activeCharacter.homeCity && !activeCharacter.ownedResidences.includes(loc.city)) {
+                if (confirm(`You do not currently have a rental house in ${loc.city}, would you like to purchase one now for 3500 gil?`)) {
+                    if (activeCharacter.gil >= 3500) {
+                        activeCharacter.gil -= 3500;
+                        activeCharacter.ownedResidences.push(loc.city);
+                        persistCharacter(activeCharacter);
+                        alert('Rental house purchased.');
+                    } else {
+                        alert('Not enough gil.');
+                    }
+                }
+            }
+        }
         const grid = document.createElement('div');
         grid.id = 'area-grid';
 
@@ -1215,7 +1229,7 @@ function renderCombatScreen(root, mob, destination) {
     }
 
     function monsterDefeated() {
-        const exp = mob.exp || 0;
+        const exp = experienceForKill(activeCharacter.level, mobLevel);
         let gil = 0;
         if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
             gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
@@ -1301,7 +1315,7 @@ function renderCombatScreen(root, mob, destination) {
     function endBattle() {
         if (activeCharacter.hp <= 0) {
             activeCharacter.hp = 1;
-            setLocation(activeCharacter, activeCharacter.currentHomePoint || activeCharacter.startingCity);
+            setLocation(activeCharacter, activeCharacter.spawnPoint || activeCharacter.homeCity);
             clearTemporaryEffects(activeCharacter);
             log('You were defeated and return to your home point.');
         }
@@ -1645,7 +1659,9 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         root.appendChild(sellTitle);
         const sellList = document.createElement('div');
         sellList.className = 'vendor-list';
+        const equipped = new Set(Object.values(activeCharacter.equipment || {}));
         activeCharacter.inventory.forEach(entry => {
+        if (equipped.has(entry.id)) return;
         const item = items[entry.id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -1808,6 +1824,27 @@ function equipItem(id, root) {
     renderInventoryScreen(root);
 }
 
+function useScroll(id, root) {
+    const entry = activeCharacter.inventory.find(i => i.id === id);
+    if (!entry) return;
+    const item = items[id];
+    const spell = item.name.replace(/^Scroll of\s+/i, '');
+    if (!activeCharacter.spells) activeCharacter.spells = [];
+    if (activeCharacter.spells.includes(spell)) {
+        alert(`${spell} is already learned.`);
+    } else {
+        activeCharacter.spells.push(spell);
+        alert(`${spell} learned!`);
+    }
+    entry.qty -= 1;
+    if (entry.qty <= 0) {
+        const idx = activeCharacter.inventory.indexOf(entry);
+        activeCharacter.inventory.splice(idx, 1);
+    }
+    persistCharacter(activeCharacter);
+    renderInventoryScreen(root);
+}
+
 export function renderInventoryScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
@@ -1859,6 +1896,14 @@ export function renderInventoryScreen(root) {
                     eq.addEventListener('click', () => equipItem(ent.id, root));
                 }
                 top.appendChild(eq);
+            } else if (/^Scroll of/i.test(ent.item.name)) {
+                const learnBtn = document.createElement('button');
+                learnBtn.textContent = 'Use';
+                learnBtn.addEventListener('click', () => useScroll(ent.id, root));
+                if (activeCharacter.spells && activeCharacter.spells.includes(ent.item.name.replace(/^Scroll of\s+/i, ''))) {
+                    learnBtn.disabled = true;
+                }
+                top.appendChild(learnBtn);
             }
             li.appendChild(top);
             const detailsWrap = document.createElement('div');
@@ -1919,6 +1964,7 @@ function openMenu(name, backFn) {
         setBtn.textContent = 'Set Home Point';
         setBtn.addEventListener('click', () => {
             activeCharacter.currentHomePoint = zone;
+            activeCharacter.spawnPoint = zone;
             alert('Home point set.');
             persistCharacter(activeCharacter);
         });
