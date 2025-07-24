@@ -28,7 +28,7 @@ import {
     persistCharacter,
     setLocation
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, experienceForKill, expNeeded } from '../data/index.js';
 
 let backButtonElement = null;
 
@@ -310,11 +310,15 @@ export function renderMainMenu() {
         const line5 = document.createElement('div');
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
+        const line6 = document.createElement('div');
+        line6.textContent = `EXP to Next Level: ${expNeeded(activeCharacter)}`;
+
         profile.appendChild(charImg);
         profile.appendChild(line2);
         profile.appendChild(line3);
         profile.appendChild(line4);
         profile.appendChild(line5);
+        profile.appendChild(line6);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
