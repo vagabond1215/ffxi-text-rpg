@@ -1,4 +1,4 @@
-export const cityList = ['Bastok', "San d'Oria", 'Windurst', 'Jeuno'];
+export const cityList = ['Bastok', "San d'Oria", 'Windurst', 'Jeuno', 'Outlands'];
 
 export const zonesByCity = {
   Bastok: [
@@ -45,7 +45,7 @@ export const zonesByCity = {
         'Chocobo Stables',
         'Home Point Crystal'
       ],
-      importantNPCs: ['Gate Guard', 'Regional Merchant']
+      importantNPCs: ['Gate Guard', 'Regional Merchant', 'Karine']
     },
     {
       name: 'Port Bastok',
@@ -177,7 +177,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ["Southern San d'Oria", "Port San d'Oria", "Château d'Oraguille", 'West Ronfaure', "San d'Oria Residential Area"],
       pointsOfInterest: ['Auction House', 'Rental House', 'Armor Shop', 'Weapon Shop', 'Consumable Shop', 'Item Shop', 'Chocobo Stables', 'Home Point Crystal'],
-      importantNPCs: ['Gate Guard', 'Mission/Fame NPCs', 'Outpost Warper', 'Regional Merchant']
+      importantNPCs: ['Gate Guard', 'Mission/Fame NPCs', 'Outpost Warper', 'Regional Merchant', 'Elesca']
     },
     {
       name: "Southern San d'Oria",
@@ -186,7 +186,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ["Northern San d'Oria", 'East Ronfaure', "San d'Oria Residential Area"],
       pointsOfInterest: ["Carpenter's Guild", "Blacksmith's Guild", 'Food Shop', 'Arrow Shop', 'Potion Shop', 'Armor Shop', 'Sword Shop', 'Home Point Crystal'],
-      importantNPCs: ['Gate Guard', 'Quest Giver NPCs', 'Regional Merchant']
+      importantNPCs: ['Gate Guard', 'Quest Giver NPCs', 'Regional Merchant', 'Violitte']
     },
     {
       name: "Port San d'Oria",
@@ -260,7 +260,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['Windurst Waters', 'Port Windurst', 'East Sarutabaruta', 'Windurst Residential Area'],
       pointsOfInterest: ['Clothcraft Guild', "Boneworker's Guild", 'Dagger Shop', 'Staff Shop', 'Magic Shop', 'Guild Shop', 'Alchemy Shop', 'Consumable Shop', 'Home Point Crystal'],
-      importantNPCs: ['Gate Guard', 'Fame/Quest/Event NPCs', 'Regional Merchant']
+      importantNPCs: ['Gate Guard', 'Fame/Quest/Event NPCs', 'Regional Merchant', 'Pehki Machumaht']
     },
     {
       name: 'Windurst Walls',
@@ -278,7 +278,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['Windurst Waters', 'West Sarutabaruta', 'Windurst Woods', 'Windurst Residential Area'],
       pointsOfInterest: ['Ferry to Mhaura', 'Chocobo Stables', 'Fishing Supplies Shop', 'Item Shop', 'Airship Dock', 'Home Point Crystal', 'Map Vendor'],
-      importantNPCs: ['Regional Merchant', 'Ferry Ticket Seller']
+      importantNPCs: ['Regional Merchant', 'Ferry Ticket Seller', 'Mhoji Roccoruh']
     },
     {
       name: 'Heavens Tower',
@@ -352,7 +352,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['Upper Jeuno', 'Port Jeuno', 'Qufim Island', 'Rolanberry Fields', 'Jeuno Residential Area'],
       pointsOfInterest: ['Auction House', 'Rental House', 'Chocobo Stables', 'General Goods Shop', 'Armor Shop', 'Weapon Shop', 'Home Point Crystal', 'Map Vendor'],
-      importantNPCs: ['Fame/Mission/Quest NPCs', 'Outpost Warper', 'Regional Merchant']
+      importantNPCs: ['Fame/Mission/Quest NPCs', 'Outpost Warper', 'Regional Merchant', 'Promurouve']
     },
     {
       name: 'Upper Jeuno',
@@ -361,7 +361,7 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['Lower Jeuno', "Ru'Lude Gardens", 'Battalia Downs', 'Jeuno Residential Area'],
       pointsOfInterest: ['Airship Dock', 'Magic Shop', 'Item Shop', 'Armor Shop', 'Weapon Shop', 'Consumable Shop', 'Home Point Crystal'],
-      importantNPCs: ['Mission/Quest/Event NPCs', 'Regional Merchant']
+      importantNPCs: ['Mission/Quest/Event NPCs', 'Regional Merchant', 'Rusese']
     },
     {
       name: 'Port Jeuno',
@@ -443,6 +443,62 @@ export const zonesByCity = {
       connectedAreas: ['Konschtat Highlands', 'La Theine Plateau'],
       pointsOfInterest: ['Outpost'],
       importantNPCs: []
+    }
+  ],
+  Outlands: [
+    {
+      name: 'Mhaura',
+      city: 'Outlands',
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['Buburimu Peninsula', 'Selbina', 'Aht Urhgan Whitegate'],
+      pointsOfInterest: ['Ferry Docks', 'Home Point Crystal'],
+      importantNPCs: ['Ludwig']
+    },
+    {
+      name: 'Selbina',
+      city: 'Outlands',
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['Valkurm Dunes', 'Mhaura'],
+      pointsOfInterest: ['Ferry Docks', 'Home Point Crystal'],
+      importantNPCs: ['Lombaria']
+    },
+    {
+      name: 'Castle Oztroja',
+      city: 'Outlands',
+      distance: 3,
+      subAreas: [],
+      connectedAreas: ['Meriphataud Mountains'],
+      pointsOfInterest: [],
+      importantNPCs: ['Antiqix']
+    },
+    {
+      name: 'Beadeaux',
+      city: 'Outlands',
+      distance: 3,
+      subAreas: [],
+      connectedAreas: ['Pashhow Marshlands'],
+      pointsOfInterest: [],
+      importantNPCs: ['Haggleblix']
+    },
+    {
+      name: 'Davoi',
+      city: 'Outlands',
+      distance: 3,
+      subAreas: [],
+      connectedAreas: ['Battalia Downs'],
+      pointsOfInterest: [],
+      importantNPCs: ['Lootblox']
+    },
+    {
+      name: 'Aht Urhgan Whitegate',
+      city: 'Outlands',
+      distance: 3,
+      subAreas: [],
+      connectedAreas: ['Mhaura'],
+      pointsOfInterest: ['Home Point Crystal'],
+      importantNPCs: ['Riyadahf']
     }
   ]
 };
