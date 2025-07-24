@@ -24,7 +24,7 @@ Open `index.html` in a browser. No build step is required.
 - White Mage is fully verified as well, with `verified.traits = true` and `verified.abilities = true`.
 - Paladin and Bard data has been confirmed, with `verified.traits = true` and `verified.abilities = true` for both jobs.
 - Initial bestiary data lists low-level monsters for zones adjacent to the three starting cities.
-- `experienceForKill(level, targetLevel)` replicates FFXI's EXP table including level difference adjustments.
+- Monsters award experience using their `exp` value from the bestiary instead of level scaling.
 - Basic encounter simulation using `walkAcrossZone()` and `rollForEncounter()` with level-based aggro rates.
 - Traveling through non-combat zones (areas without entries in the bestiary) only
   takes a single turn and never triggers encounters.
