@@ -1326,7 +1326,7 @@ export function renderTravelScreen(root) {
 }
 
 export function Travel() {
-    console.log('Travel not implemented');
+    renderTravelScreen(document.getElementById('app'));
 }
 
 export function Explore() {
