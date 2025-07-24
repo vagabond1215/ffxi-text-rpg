@@ -3282,6 +3282,74 @@ export const items = {
     stack: 99,
     description: 'Expands Mog House storage when used.',
     levelRequirement: 0
+  },
+  instantReraise: {
+    name: 'Instant Reraise',
+    price: 0,
+    stack: 1,
+    description: 'Grants the Reraise effect when used.',
+    levelRequirement: 0
+  },
+  instantWarp: {
+    name: 'Instant Warp',
+    price: 0,
+    stack: 1,
+    description: 'Teleports you to your Home Point.',
+    levelRequirement: 0
+  },
+  returnRing: {
+    name: 'Return Ring',
+    price: 0,
+    stack: 1,
+    description: 'Outpost warp ring with 10 charges.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
+  },
+  homingRing: {
+    name: 'Homing Ring',
+    price: 0,
+    stack: 1,
+    description: 'Outpost warp ring with 30 charges.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
+  },
+  chariotBand: {
+    name: 'Chariot Band',
+    price: 0,
+    stack: 1,
+    description: 'Grants +75% EXP up to 10,000.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
+  },
+  empressBand: {
+    name: 'Empress Band',
+    price: 0,
+    stack: 1,
+    description: 'Grants +50% EXP up to 1,000 per charge.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
+  },
+  emperorBand: {
+    name: 'Emperor Band',
+    price: 0,
+    stack: 1,
+    description: 'Grants +50% EXP up to 30,000 per charge.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
+  },
+  warpRing: {
+    name: 'Warp Ring',
+    price: 0,
+    stack: 1,
+    description: 'Warp to Home Point.',
+    slot: 'leftRing',
+    levelRequirement: 0,
+    jobs: baseJobNames
   }
 };
 
@@ -3396,4 +3464,15 @@ export const shopNpcs = {
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
   "Rodellieux's Stall": ['Rodellieux'],
   'Map Vendor': ['Karine', 'Rex', 'Elesca', 'Violitte', 'Mhoji Roccoruh', 'Pehki Machumaht', 'Ludwig', 'Lombaria', 'Promurouve', 'Rusese', 'Antiqix', 'Haggleblix', 'Lootblox', 'Riyadahf']
+};
+
+export const conquestRewards = {
+  instantReraise: 7,
+  instantWarp: 10,
+  returnRing: 2500,
+  homingRing: 9000,
+  chariotBand: 500,
+  empressBand: 1000,
+  emperorBand: 2000,
+  warpRing: 5000
 };

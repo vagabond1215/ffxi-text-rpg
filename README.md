@@ -50,3 +50,7 @@ Open `index.html` in a browser. No build step is required.
   fSTR and pDIF formulas.
 - Hit chance now factors Dexterity and Agility with weapon and evasion skill
   to compute accuracy and evasion.
+- Defeating monsters with Signet now awards Conquest Points which can be spent
+  at Gate Guards on special items.
+- Areas with monsters now include a Hunt option to target specific enemies and
+  immediately engage them.
