@@ -311,7 +311,34 @@ export function renderMainMenu() {
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
         const line6 = document.createElement('div');
-        line6.textContent = `EXP to Next Level: ${expNeeded(activeCharacter)}`;
+        let progressText;
+        if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
+            const needed = 30000 - ((activeCharacter.capacityPoints || 0) % 30000);
+            progressText = `CP to Next Job Point: ${needed}`;
+        } else if (activeCharacter.level >= 75 && activeCharacter.xpMode === 'LP') {
+            const needed = 10000 - ((activeCharacter.limitPoints || 0) % 10000);
+            progressText = `LP to Next Merit: ${needed}`;
+        } else {
+            progressText = `EXP to Next Level: ${expNeeded(activeCharacter)}`;
+        }
+        line6.textContent = progressText;
+
+        const modeBtn = document.createElement('button');
+        modeBtn.textContent = `Mode: ${activeCharacter.xpMode}`;
+        modeBtn.addEventListener('click', () => {
+            if (activeCharacter.level >= 99) {
+                if (activeCharacter.xpMode === 'EXP') activeCharacter.xpMode = 'LP';
+                else if (activeCharacter.xpMode === 'LP') activeCharacter.xpMode = 'CP';
+                else activeCharacter.xpMode = 'EXP';
+            } else if (activeCharacter.level >= 75) {
+                activeCharacter.xpMode = activeCharacter.xpMode === 'EXP' ? 'LP' : 'EXP';
+            } else {
+                activeCharacter.xpMode = 'EXP';
+            }
+            persistCharacter(activeCharacter);
+            const menu = renderMainMenu();
+            container.replaceWith(menu);
+        });
 
         profile.appendChild(charImg);
         profile.appendChild(line2);
@@ -319,6 +346,7 @@ export function renderMainMenu() {
         profile.appendChild(line4);
         profile.appendChild(line5);
         profile.appendChild(line6);
+        profile.appendChild(modeBtn);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -856,42 +884,49 @@ export function renderAreaScreen(root) {
         });
         travelCol.appendChild(travelList);
 
-        const craftCol = document.createElement('div');
-        craftCol.className = 'area-column';
-        const craftHeader = document.createElement('h3');
-        craftHeader.textContent = 'Crafting';
-        craftCol.appendChild(craftHeader);
-        const craftList = document.createElement('ul');
-
+        const craftPOIs = [];
         craftingPOIs.forEach(p => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = p;
             btn.addEventListener('click', () => openMenu(p));
             li.appendChild(btn);
-            craftList.appendChild(li);
+            craftPOIs.push(li);
         });
-        craftCol.appendChild(craftList);
-
-        const marketCol = document.createElement('div');
-        marketCol.className = 'area-column';
-        const marketHeader = document.createElement('h3');
-        marketHeader.textContent = 'Marketplace';
-        marketCol.appendChild(marketHeader);
-        const marketList = document.createElement('ul');
+        let craftCol = null;
+        if (craftPOIs.length) {
+            craftCol = document.createElement('div');
+            craftCol.className = 'area-column';
+            const craftHeader = document.createElement('h3');
+            craftHeader.textContent = 'Crafting';
+            craftCol.appendChild(craftHeader);
+            const craftList = document.createElement('ul');
+            craftPOIs.forEach(li => craftList.appendChild(li));
+            craftCol.appendChild(craftList);
+        }
 
         const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor)/i;
         const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
-
+        const marketItems = [];
         marketPOIs.forEach(p => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
             btn.textContent = p;
             btn.addEventListener('click', () => openMenu(p));
             li.appendChild(btn);
-            marketList.appendChild(li);
+            marketItems.push(li);
         });
-        marketCol.appendChild(marketList);
+        let marketCol = null;
+        if (marketItems.length) {
+            marketCol = document.createElement('div');
+            marketCol.className = 'area-column';
+            const marketHeader = document.createElement('h3');
+            marketHeader.textContent = 'Marketplace';
+            marketCol.appendChild(marketHeader);
+            const marketList = document.createElement('ul');
+            marketItems.forEach(li => marketList.appendChild(li));
+            marketCol.appendChild(marketList);
+        }
 
         const otherCol = document.createElement('div');
         otherCol.className = 'area-column';
@@ -925,8 +960,8 @@ export function renderAreaScreen(root) {
         otherCol.appendChild(otherList);
 
         grid.appendChild(travelCol);
-        grid.appendChild(craftCol);
-        grid.appendChild(marketCol);
+        if (craftCol) grid.appendChild(craftCol);
+        if (marketCol) grid.appendChild(marketCol);
         grid.appendChild(otherCol);
         root.appendChild(grid);
     }
@@ -1055,7 +1090,23 @@ function renderCombatScreen(root, mob, destination) {
         const btn = document.createElement('button');
         btn.textContent = 'Claim Loot';
         btn.addEventListener('click', () => {
-            activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+            if (exp > 0) {
+                if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
+                    activeCharacter.capacityPoints = (activeCharacter.capacityPoints || 0) + exp;
+                    while (activeCharacter.capacityPoints >= 30000) {
+                        activeCharacter.capacityPoints -= 30000;
+                        activeCharacter.jobPoints = (activeCharacter.jobPoints || 0) + 1;
+                    }
+                } else if (activeCharacter.level >= 75 && activeCharacter.xpMode === 'LP') {
+                    activeCharacter.limitPoints = (activeCharacter.limitPoints || 0) + exp;
+                    while (activeCharacter.limitPoints >= 10000) {
+                        activeCharacter.limitPoints -= 10000;
+                        activeCharacter.meritPoints = (activeCharacter.meritPoints || 0) + 1;
+                    }
+                } else {
+                    activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+                }
+            }
             activeCharacter.gil += gil;
             addItemsToInventory(itemDrops);
             if (destination && activeCharacter.hp > 0) {
@@ -1512,7 +1563,7 @@ export function renderEquipmentScreen(root) {
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
             const nameDiv = document.createElement('div');
-            nameDiv.textContent = `${slots[key]}: ${item ? item.name : 'Empty'}`;
+            nameDiv.textContent = `${slots[key]}: ${item ? item.name : itemId || 'Empty'}`;
             if (item) {
                 if (!meetsRequirements(item)) nameDiv.style.color = 'red';
             }
@@ -1540,6 +1591,8 @@ export function renderEquipmentScreen(root) {
                 details.textContent = 'Details';
                 details.addEventListener('click', () => alert(itemDetailsText(item)));
                 li.appendChild(details);
+            }
+            if (itemId) {
                 const unequip = document.createElement('button');
                 unequip.textContent = 'Unequip';
                 unequip.addEventListener('click', () => {
