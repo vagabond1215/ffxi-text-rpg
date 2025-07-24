@@ -1314,41 +1314,41 @@ function renderCombatScreen(root, mob, destination) {
         if (mob.currentHP <= 0) return endBattle();
         const actionDiv = document.createElement('div');
 
-        const command = document.createElement('select');
-        const actOpt = new Option('Attack', 'attack');
-        const abilOpt = new Option('Ability', 'ability');
-        const magicOpt = new Option('Magic', 'magic');
-        const fleeOpt = new Option('Flee', 'flee');
-        [actOpt, abilOpt, magicOpt, fleeOpt].forEach(o => command.appendChild(o));
+        const attackBtn = document.createElement('button');
+        attackBtn.textContent = 'Attack';
 
         const abilitySelect = document.createElement('select');
+        const abilityBtn = document.createElement('button');
+        abilityBtn.textContent = 'Ability';
         const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
-        const availableAbilities = (jobData.abilities || []).filter(a => a.level <= activeCharacter.level);
+        const availableAbilities = (jobData.abilities || [])
+            .filter(a => a.level <= activeCharacter.level);
         availableAbilities.forEach(a => abilitySelect.appendChild(new Option(a.name, a.name)));
-        abilitySelect.style.display = 'none';
 
-        const spellsByJob = {
-            'White Mage': ['Cure'],
-            'Black Mage': ['Fire'],
-            'Red Mage': ['Cure', 'Fire']
-        };
         const magicSelect = document.createElement('select');
-        const spells = spellsByJob[activeCharacter.job] || [];
-        spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
-        magicSelect.style.display = 'none';
+        const magicBtn = document.createElement('button');
+        magicBtn.textContent = 'Magic';
+        const spellsByJob = {
+            'White Mage': [{ name: 'Cure', level: 1 }],
+            'Black Mage': [{ name: 'Fire', level: 1 }],
+            'Red Mage': [
+                { name: 'Cure', level: 1 },
+                { name: 'Fire', level: 1 }
+            ]
+        };
+        const spells = (spellsByJob[activeCharacter.job] || [])
+            .filter(s => s.level <= activeCharacter.level);
+        spells.forEach(s => magicSelect.appendChild(new Option(s.name, s.name)));
 
-        const go = document.createElement('button');
-        go.textContent = 'Go';
+        const fleeBtn = document.createElement('button');
+        fleeBtn.textContent = 'Flee';
 
-        command.addEventListener('change', () => {
-            abilitySelect.style.display = command.value === 'ability' ? 'inline' : 'none';
-            magicSelect.style.display = command.value === 'magic' ? 'inline' : 'none';
-        });
-
-        actionDiv.appendChild(command);
+        actionDiv.appendChild(attackBtn);
         actionDiv.appendChild(abilitySelect);
+        actionDiv.appendChild(abilityBtn);
         actionDiv.appendChild(magicSelect);
-        actionDiv.appendChild(go);
+        actionDiv.appendChild(magicBtn);
+        actionDiv.appendChild(fleeBtn);
         root.appendChild(actionDiv);
 
         function attemptFlee() {
@@ -1365,29 +1365,41 @@ function renderCombatScreen(root, mob, destination) {
             return false;
         }
 
-        go.addEventListener('click', () => {
-            root.removeChild(actionDiv);
-            const choice = command.value;
-            if (choice === 'attack') {
-                attack(activeCharacter, mob);
-            } else if (choice === 'ability') {
-                const name = abilitySelect.value || 'Ability';
-                log(`${activeCharacter.name} uses ${name}.`);
-                attack(activeCharacter, mob);
-            } else if (choice === 'magic') {
-                const spell = magicSelect.value || 'Spell';
-                log(`${activeCharacter.name} casts ${spell}.`);
-                attack(activeCharacter, mob);
-            } else if (choice === 'flee') {
-                if (attemptFlee()) return; // battle ended on success
-                return nextTurn();
-            }
+        function afterAction() {
             if (battleEnded) return;
             if (mob.currentHP > 0) {
                 nextTurn();
             } else {
                 endBattle();
             }
+        }
+
+        attackBtn.addEventListener('click', () => {
+            root.removeChild(actionDiv);
+            attack(activeCharacter, mob);
+            afterAction();
+        });
+
+        abilityBtn.addEventListener('click', () => {
+            root.removeChild(actionDiv);
+            const name = abilitySelect.value || 'Ability';
+            log(`${activeCharacter.name} uses ${name}.`);
+            attack(activeCharacter, mob);
+            afterAction();
+        });
+
+        magicBtn.addEventListener('click', () => {
+            root.removeChild(actionDiv);
+            const spell = magicSelect.value || 'Spell';
+            log(`${activeCharacter.name} casts ${spell}.`);
+            attack(activeCharacter, mob);
+            afterAction();
+        });
+
+        fleeBtn.addEventListener('click', () => {
+            root.removeChild(actionDiv);
+            if (attemptFlee()) return; // battle ended on success
+            nextTurn();
         });
     }
 
