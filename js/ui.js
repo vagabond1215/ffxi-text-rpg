@@ -52,7 +52,8 @@ function createImageContainer() {
     let index = 0;
 
     function update() {
-        img.src = images[index] || '';
+        const src = images[index] || '';
+        img.src = src ? encodeURI(src) : '';
         const show = images.length > 1;
         left.style.display = show ? 'block' : 'none';
         right.style.display = show ? 'block' : 'none';
@@ -963,13 +964,14 @@ export function renderAreaScreen(root) {
             marketItems.push(li);
         });
         let marketCol = null;
+        let marketList = null;
         if (marketItems.length) {
             marketCol = document.createElement('div');
             marketCol.className = 'area-column';
             const marketHeader = document.createElement('h3');
             marketHeader.textContent = 'Marketplace';
             marketCol.appendChild(marketHeader);
-            const marketList = document.createElement('ul');
+            marketList = document.createElement('ul');
             marketItems.forEach(li => marketList.appendChild(li));
             marketCol.appendChild(marketList);
         }
@@ -997,7 +999,7 @@ export function renderAreaScreen(root) {
             btn.textContent = n;
             btn.addEventListener('click', () => openMenu(n));
             li.appendChild(btn);
-            if (merchantNPC.test(n)) {
+            if (merchantNPC.test(n) && marketList) {
                 marketList.appendChild(li);
             } else {
                 otherList.appendChild(li);
