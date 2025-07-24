@@ -1329,3 +1329,19 @@ export function experienceForKill(playerLevel, monsterLevel) {
   const idx = Math.min(19, Math.floor((playerLevel - 1) / 5));
   return row[idx] || 0;
 }
+
+export const expToLevel = (() => {
+  const table = { 1: 0 };
+  let total = 0;
+  for (let lvl = 1; lvl < 100; lvl++) {
+    total += lvl * 100;
+    table[lvl + 1] = total;
+  }
+  return table;
+})();
+
+export function expNeeded(character) {
+  const next = expToLevel[character.level + 1];
+  if (next === undefined) return 0;
+  return Math.max(next - (character.experience || 0), 0);
+}
