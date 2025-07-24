@@ -32,6 +32,54 @@ import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTrav
 
 let backButtonElement = null;
 
+function createImageContainer() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'image-container';
+    const img = document.createElement('img');
+    img.className = 'character-img';
+    wrapper.appendChild(img);
+
+    const left = document.createElement('span');
+    left.className = 'img-nav left';
+    left.textContent = '‹';
+    wrapper.appendChild(left);
+    const right = document.createElement('span');
+    right.className = 'img-nav right';
+    right.textContent = '›';
+    wrapper.appendChild(right);
+
+    let images = [];
+    let index = 0;
+
+    function update() {
+        img.src = images[index] || '';
+        const show = images.length > 1;
+        left.style.display = show ? 'block' : 'none';
+        right.style.display = show ? 'block' : 'none';
+    }
+
+    left.addEventListener('click', () => {
+        if (!images.length) return;
+        index = (index - 1 + images.length) % images.length;
+        update();
+    });
+    right.addEventListener('click', () => {
+        if (!images.length) return;
+        index = (index + 1) % images.length;
+        update();
+    });
+
+    return {
+        wrapper,
+        setImages(list) {
+            images = Array.isArray(list) ? list : [list].filter(Boolean);
+            index = 0;
+            update();
+        },
+        img
+    };
+}
+
 export function setupBackButton(element) {
     backButtonElement = element;
 }
@@ -288,9 +336,8 @@ export function renderMainMenu() {
         const profile = document.createElement('div');
         profile.id = 'active-profile';
 
-        const charImg = document.createElement('img');
-        charImg.className = 'character-img';
-        charImg.src = characterImages[activeCharacter.race]?.[activeCharacter.sex]?.[activeCharacter.job] || '';
+        const imgNav = createImageContainer();
+        imgNav.setImages(characterImages[activeCharacter.race]?.[activeCharacter.sex]?.[activeCharacter.job]);
 
     const line2 = document.createElement('div');
 
@@ -341,7 +388,7 @@ export function renderMainMenu() {
             });
         }
 
-        profile.appendChild(charImg);
+        profile.appendChild(imgNav.wrapper);
         profile.appendChild(line2);
         profile.appendChild(line3);
         profile.appendChild(line4);
@@ -613,9 +660,10 @@ function renderNewCharacterForm(root) {
     const raceDesc = document.createElement('p');
     raceDesc.className = 'race-desc';
 
-    const raceImg = document.createElement('img');
-    raceImg.className = 'race-img';
-    statsCol.appendChild(raceImg);
+    const raceImgNav = createImageContainer();
+    raceImgNav.img.classList.remove('character-img');
+    raceImgNav.img.classList.add('race-img');
+    statsCol.appendChild(raceImgNav.wrapper);
 
     const cityDiv = document.createElement('div');
     cityDiv.className = 'start-city';
@@ -669,7 +717,7 @@ function renderNewCharacterForm(root) {
         );
         statsList.innerHTML = '';
         raceHeader.textContent = raceSelect.value;
-        raceImg.src = characterImages[raceSelect.value]?.[sexSelect.value]?.[jobSelect.value] || '';
+        raceImgNav.setImages(characterImages[raceSelect.value]?.[sexSelect.value]?.[jobSelect.value]);
         raceDesc.textContent = raceInfo[raceSelect.value]?.description || '';
         jobHeader.textContent = jobSelect.value;
         let jd = jobInfo[jobSelect.value]?.description || '';
