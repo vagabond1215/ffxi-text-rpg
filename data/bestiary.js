@@ -236,7 +236,7 @@ export const bestiaryByZone = {
         'Zinc Ore': '2.5-6%'
       },
       steal: 'Pebble',
-      aggressive: false,
+      aggressive: true,
       linking: false,
       detection: 'Sound',
       attacks: ['Bite'],
@@ -282,6 +282,73 @@ export const bestiaryByZone = {
       weaknesses: ['Ice', 'Light'],
       resistances: ['Water', 'Dark'],
       nightOnly: true
+    },
+    {
+      name: 'Stone Eater',
+      level: '2-5',
+      exp: 69,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Silver Ore', 'Zinc Ore'],
+      dropRates: {
+        'Copper Ore': '16.7%',
+        'Flint Stone': '17.7%',
+        'Silver Ore': '1%',
+        'Zinc Ore': '2.1%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Crush'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Maneating Hornet',
+      level: '2-5',
+      exp: 40,
+      hp: 100,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Beehive Chip', 'Giant Stinger', 'Honey', 'Insect Wing'],
+      dropRates: {
+        'Beehive Chip': '36.7%',
+        'Giant Stinger': '1.7%',
+        'Honey': '15.5%',
+        'Insect Wing': '8.3%'
+      },
+      steal: 'Honey',
+      aggressive: true,
+      linking: false,
+      detection: 'Sight & Scent',
+      attacks: ['Sting'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Walking Sapling',
+      level: '2-6',
+      exp: 40,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Grain Seeds', 'Treant Bulb', 'Vegetable Seeds'],
+      steal: 'Grain Seeds',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Root Slam'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Fire', 'Dark'],
+      resistances: ['Water']
     }
   ],
   'North Gustaberg (West)': [
@@ -315,7 +382,7 @@ export const bestiaryByZone = {
         'Zinc Ore': '2.5-6%'
       },
       steal: 'Pebble',
-      aggressive: false,
+      aggressive: true,
       linking: false,
       detection: 'Sound',
       attacks: ['Bite'],
@@ -359,6 +426,73 @@ export const bestiaryByZone = {
       weaknesses: ['Ice', 'Light'],
       resistances: ['Water', 'Dark'],
       nightOnly: true
+    },
+    {
+      name: 'Stone Eater',
+      level: '2-5',
+      exp: 69,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Silver Ore', 'Zinc Ore'],
+      dropRates: {
+        'Copper Ore': '16.7%',
+        'Flint Stone': '17.7%',
+        'Silver Ore': '1%',
+        'Zinc Ore': '2.1%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Crush'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Maneating Hornet',
+      level: '2-5',
+      exp: 40,
+      hp: 100,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Beehive Chip', 'Giant Stinger', 'Honey', 'Insect Wing'],
+      dropRates: {
+        'Beehive Chip': '36.7%',
+        'Giant Stinger': '1.7%',
+        'Honey': '15.5%',
+        'Insect Wing': '8.3%'
+      },
+      steal: 'Honey',
+      aggressive: true,
+      linking: false,
+      detection: 'Sight & Scent',
+      attacks: ['Sting'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Earth']
+    },
+    {
+      name: 'Walking Sapling',
+      level: '2-6',
+      exp: 40,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Grain Seeds', 'Treant Bulb', 'Vegetable Seeds'],
+      steal: 'Grain Seeds',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Root Slam'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Fire', 'Dark'],
+      resistances: ['Water']
     }
   ],
   'South Gustaberg': [
@@ -392,7 +526,7 @@ export const bestiaryByZone = {
         'Zinc Ore': '2.5-6%'
       },
       steal: 'Pebble',
-      aggressive: false,
+      aggressive: true,
       linking: false,
       detection: 'Sound',
       attacks: ['Bite'],
@@ -400,6 +534,21 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Wind', 'Light'],
       resistances: ['Earth']
+    },
+    {
+      name: 'Vulture',
+      level: '2-6',
+      str: 4,
+      vit: 2,
+      drops: ['Bird Feather', 'Bird Egg'],
+      aggressive: true,
+      linking: true,
+      detection: 'Sight',
+      attacks: ['Attack'],
+      skills: ['Poison Peck'],
+      magic: [],
+      weaknesses: ['Lightning'],
+      resistances: []
     },
     {
       name: 'Mad Sheep',
@@ -436,6 +585,25 @@ export const bestiaryByZone = {
       weaknesses: ['Ice', 'Light'],
       resistances: ['Water', 'Dark'],
       nightOnly: true
+    },
+    {
+      name: 'Walking Sapling',
+      level: '2-6',
+      exp: 49,
+      hp: 78,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Grain Seeds', 'Treant Bulb', 'Vegetable Seeds'],
+      steal: 'Grain Seeds',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Root Slam'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Fire', 'Dark'],
+      resistances: ['Water']
     }
   ],
   'West Sarutabaruta': [
@@ -494,6 +662,28 @@ export const bestiaryByZone = {
       resistances: ['Fire', 'Earth']
     },
     {
+      name: 'Carrion Crow',
+      level: '2-6',
+      exp: 37,
+      element: 'Fire',
+      str: 3,
+      vit: 2,
+      drops: ['Bird Egg', 'Bird Feather'],
+      dropRates: {
+        'Bird Egg': '23.1%',
+        'Bird Feather': '23.1%'
+      },
+      steal: 'Bird Feather',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Peck'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Water']
+    },
+    {
       name: 'Yagudo Initiate',
       level: '1-8',
       str: 4,
@@ -541,6 +731,28 @@ export const bestiaryByZone = {
       resistances: []
     },
     {
+      name: 'Carrion Crow',
+      level: '2-5',
+      exp: 41,
+      element: 'Fire',
+      str: 3,
+      vit: 2,
+      drops: ['Bird Egg', 'Bird Feather'],
+      dropRates: {
+        'Bird Egg': '8.8%',
+        'Bird Feather': '29.4%'
+      },
+      steal: 'Bird Feather',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Peck'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Water']
+    },
+    {
       name: 'Yagudo Initiate',
       level: '1-8',
       str: 4,
@@ -554,6 +766,169 @@ export const bestiaryByZone = {
       magic: [],
       weaknesses: ['Light'],
       resistances: []
+    }
+  ],
+  'Zeruhn Mines': [
+    {
+      name: 'River Crab',
+      level: '2-4',
+      exp: 3,
+      element: 'Water',
+      str: 3,
+      vit: 3,
+      drops: ['Rock Salt', 'Zeruhn Soot'],
+      dropRates: {
+        'Rock Salt': '22.1%',
+        'Zeruhn Soot': '7%'
+      },
+      steal: 'Rock Salt',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice', 'Lightning'],
+      resistances: ['Water']
+    },
+    {
+      name: 'Mouse Bat',
+      level: '2-4',
+      exp: 0,
+      hp: 61,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Bat Wing', 'Fiend Blood', 'Zeruhn Soot'],
+      dropRates: {
+        'Bat Wing': '26.9%',
+        'Fiend Blood': '2.5%',
+        'Zeruhn Soot': '16.8%'
+      },
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Dark']
+    }
+  ],
+  'Palborough Mines': [
+    {
+      name: 'Pit Hare',
+      level: '2-6',
+      exp: 42,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Hare Meat', 'Rabbit Hide'],
+      steal: 'Hare Meat',
+      aggressive: true,
+      linking: true,
+      detection: 'Sight & Scent',
+      attacks: ['Nip'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Water', 'Lightning', 'Dark'],
+      resistances: ['Fire']
+    }
+  ],
+  "King Ranperre's Tomb": [
+    {
+      name: 'Ding Bat',
+      level: '2-5',
+      exp: 30,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Bat Wing', 'Orcish Mail Scales'],
+      dropRates: {
+        'Bat Wing': '31.2%',
+        'Orcish Mail Scales': '12.4%'
+      },
+      steal: null,
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Claw'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Water'],
+      nightOnly: true
+    },
+    {
+      name: 'Carrion Worm',
+      level: '2-5',
+      exp: 19,
+      element: 'Earth',
+      str: 3,
+      vit: 3,
+      drops: ['Copper Ore', 'Flint Stone', 'Silver Ore', 'Zinc Ore'],
+      dropRates: {
+        'Copper Ore': '10.1%',
+        'Flint Stone': '21.2%',
+        'Silver Ore': '1.2%',
+        'Zinc Ore': '3%'
+      },
+      steal: 'Pebble',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Bite'],
+      skills: ['Poison Mist'],
+      magic: [],
+      weaknesses: ['Wind', 'Light'],
+      resistances: ['Earth']
+    }
+  ],
+  'Giddeus': [
+    {
+      name: 'Giddeus Pugil',
+      level: '2-5',
+      exp: 9,
+      hp: 99,
+      element: 'Water',
+      str: 3,
+      vit: 3,
+      drops: ['Pugil Scales', 'Shall Shell'],
+      steal: 'Fish Scales',
+      aggressive: true,
+      linking: false,
+      detection: 'Sound',
+      attacks: ['Punch'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Lightning', 'Ice'],
+      resistances: ['Water']
+    },
+    {
+      name: 'Giddeus Bee',
+      level: '2-5',
+      exp: 19,
+      hp: 90,
+      element: 'Wind',
+      str: 3,
+      vit: 2,
+      drops: ['Beehive Chip', 'Honey', 'Insect Wing', 'Giant Stinger'],
+      dropRates: {
+        'Beehive Chip': '37.7%',
+        'Honey': '16.3%',
+        'Insect Wing': '4%',
+        'Giant Stinger': '2.8%'
+      },
+      steal: 'Honey',
+      aggressive: true,
+      linking: true,
+      detection: 'Sight & Scent',
+      attacks: ['Sting'],
+      skills: [],
+      magic: [],
+      weaknesses: ['Ice'],
+      resistances: ['Earth']
     }
   ]
 };

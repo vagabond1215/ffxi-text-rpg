@@ -229,7 +229,7 @@ export const zonesByCity = {
       city: "San d'Oria",
       distance: 1,
       subAreas: [],
-      connectedAreas: ["Southern San d'Oria", 'West Ronfaure', 'La Theine Plateau'],
+      connectedAreas: ["Southern San d'Oria", 'West Ronfaure', 'La Theine Plateau', "King Ranperre's Tomb"],
       pointsOfInterest: ['Outpost', 'Orc Camps'],
       importantNPCs: []
     },
@@ -240,6 +240,15 @@ export const zonesByCity = {
       subAreas: [],
       connectedAreas: ['West Ronfaure', 'East Ronfaure', 'Valkurm Dunes'],
       pointsOfInterest: ['Outpost', 'Crag of Holla'],
+      importantNPCs: []
+    },
+    {
+      name: "King Ranperre's Tomb",
+      city: "San d'Oria",
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['East Ronfaure'],
+      pointsOfInterest: [],
       importantNPCs: []
     }
   ],
@@ -312,8 +321,17 @@ export const zonesByCity = {
       city: 'Windurst',
       distance: 1,
       subAreas: [],
-      connectedAreas: ['Port Windurst', 'Tahrongi Canyon'],
+      connectedAreas: ['Port Windurst', 'Tahrongi Canyon', 'Giddeus'],
       pointsOfInterest: ['Outpost', 'Giddeus Entrance'],
+      importantNPCs: []
+    },
+    {
+      name: 'Giddeus',
+      city: 'Windurst',
+      distance: 2,
+      subAreas: [],
+      connectedAreas: ['West Sarutabaruta'],
+      pointsOfInterest: ['Outpost'],
       importantNPCs: []
     },
     {
