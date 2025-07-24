@@ -740,7 +740,7 @@ export function renderPlayUI(root) {
     root.appendChild(title);
 
     const travelBtn = document.createElement('button');
-    travelBtn.textContent = 'Travel';
+    travelBtn.textContent = 'Zone';
     travelBtn.addEventListener('click', Travel);
     root.appendChild(travelBtn);
 
@@ -782,7 +782,7 @@ export function renderAreaScreen(root) {
         const travelCol = document.createElement('div');
         travelCol.className = 'area-column';
         const travelHeader = document.createElement('h3');
-        travelHeader.textContent = 'Travel';
+        travelHeader.textContent = 'Zone';
         travelCol.appendChild(travelHeader);
         const travelList = document.createElement('ul');
 
@@ -832,18 +832,8 @@ export function renderAreaScreen(root) {
                 }
                 activeCharacter.travel.remaining -= 1;
                 if (activeCharacter.travel.remaining <= 0) {
-                    const prev = loc.name;
                     setLocation(activeCharacter, area);
                     activeCharacter.travel = null;
-                    if (activeCharacter.returnJourney) {
-                        if (area === activeCharacter.returnJourney.zone) {
-                            activeCharacter.returnJourney = null;
-                        } else {
-                            activeCharacter.returnJourney.turns = Math.min(activeCharacter.returnJourney.turns + 1, 10);
-                        }
-                    } else {
-                        activeCharacter.returnJourney = { zone: prev, turns: 1 };
-                    }
                 }
                 persistCharacter(activeCharacter);
                 renderAreaScreen(root);
@@ -1300,7 +1290,7 @@ export function renderTravelScreen(root) {
     root.innerHTML = '';
     const loc = locations.find(l => l.name === activeCharacter.currentLocation);
     const title = document.createElement('h2');
-    title.textContent = 'Travel';
+    title.textContent = 'Zone';
     root.appendChild(title);
 
     const list = document.createElement('ul');
