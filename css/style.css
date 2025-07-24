@@ -391,6 +391,38 @@ body.portrait .main-layout {
     margin-top: 4px;
 }
 
+.inventory-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.inventory-row-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.equipment-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.equipment-row-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
 .char-menu-controls {
     display: flex;
     justify-content: center;
@@ -408,6 +440,13 @@ body.portrait .main-layout {
 .item-description {
     font-size: 0.9em;
     text-align: left;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
 }
 
 .item-stats {
