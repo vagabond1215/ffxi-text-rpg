@@ -165,8 +165,8 @@ body.landscape #area-grid {
 
 .slot-entry button {
     margin-left: 5px;
-    width: auto;
-    padding: 2px 6px;
+    width: 90px;
+    padding: 1px 0;
     font-size: 14px;
     line-height: 1;
     text-align: center;
