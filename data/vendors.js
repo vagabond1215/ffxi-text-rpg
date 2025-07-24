@@ -897,11 +897,11 @@ export const items = {
     levelRequirement: 0
   },
   jeunoMap: {
-    name: 'Map of Jeuno',
-    price: 200,
-        sellPrice: 100,
+    name: 'Map of the Jeuno area',
+    price: 600,
+        sellPrice: 300,
     stack: 1,
-    description: 'A detailed map of Jeuno and surrounding areas.',
+    description: 'A detailed map of the Jeuno area.',
     levelRequirement: 0
   },
   valkurmMap: {
@@ -910,6 +910,422 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'A map guiding travelers through the Valkurm Dunes.',
+    levelRequirement: 0
+  },
+  ordellesCavesMap: {
+    name: 'Map of Ordelle\'s Caves',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of ordelle\'s caves.',
+    levelRequirement: 0
+  },
+  ghelsbaMap: {
+    name: 'Map of Ghelsba',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of ghelsba.',
+    levelRequirement: 0
+  },
+  zeruhnMinesMap: {
+    name: 'Map of the Zeruhn Mines',
+    price: 200,
+        sellPrice: 100,
+    stack: 1,
+    description: 'A detailed map of the zeruhn mines.',
+    levelRequirement: 0
+  },
+  palboroughMinesMap: {
+    name: 'Map of the Palborough Mines',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of the palborough mines.',
+    levelRequirement: 0
+  },
+  beadeauxMap: {
+    name: 'Map of Beadeaux',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of beadeaux.',
+    levelRequirement: 0
+  },
+  giddeusMap: {
+    name: 'Map of Giddeus',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of giddeus.',
+    levelRequirement: 0
+  },
+  castleOztrojaMap: {
+    name: 'Map of Castle Oztroja',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of castle oztroja.',
+    levelRequirement: 0
+  },
+  mazeOfShakhramiMap: {
+    name: 'Map of the Maze of Shakhrami',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of the maze of shakhrami.',
+    levelRequirement: 0
+  },
+  liTelorMap: {
+    name: 'Map of the Li\'Telor region',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the li\'telor region.',
+    levelRequirement: 0
+  },
+  bibikiBayMap: {
+    name: 'Map of Bibiki Bay',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of bibiki bay.',
+    levelRequirement: 0
+  },
+  qufimIslandMap: {
+    name: 'Map of Qufim Island',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of qufim island.',
+    levelRequirement: 0
+  },
+  elshimoMap: {
+    name: 'Map of the Elshimo regions',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the elshimo regions.',
+    levelRequirement: 0
+  },
+  eldiemeNecropolisMap: {
+    name: 'Map of the Eldieme Necropolis',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the eldieme necropolis.',
+    levelRequirement: 0
+  },
+  garlaigeCitadelMap: {
+    name: 'Map of the Garlaige Citadel',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the garlaige citadel.',
+    levelRequirement: 0
+  },
+  northlandsMap: {
+    name: 'Map of the Northlands area',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the northlands area.',
+    levelRequirement: 0
+  },
+  kingRanperresTombMap: {
+    name: 'Map of King Ranperre\'s Tomb',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of king ranperre\'s tomb.',
+    levelRequirement: 0
+  },
+  dangrufWadiMap: {
+    name: 'Map of the Dangruf Wadi',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of the dangruf wadi.',
+    levelRequirement: 0
+  },
+  horutotoRuinsMap: {
+    name: 'Map of the Horutoto Ruins',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of the horutoto ruins.',
+    levelRequirement: 0
+  },
+  bostaunieuxOublietteMap: {
+    name: 'Map of Bostaunieux Oubliette',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of bostaunieux oubliette.',
+    levelRequirement: 0
+  },
+  toraimaraiCanalMap: {
+    name: 'Map of the Toraimarai Canal',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the toraimarai canal.',
+    levelRequirement: 0
+  },
+  gusgenMinesMap: {
+    name: 'Map of the Gusgen Mines',
+    price: 600,
+        sellPrice: 300,
+    stack: 1,
+    description: 'A detailed map of the gusgen mines.',
+    levelRequirement: 0
+  },
+  crawlersNestMap: {
+    name: 'Map of the Crawlers\' Nest',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the crawlers\' nest.',
+    levelRequirement: 0
+  },
+  ranguemontPassMap: {
+    name: 'Map of the Ranguemont Pass',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the ranguemont pass.',
+    levelRequirement: 0
+  },
+  delfkuttsTowerMap: {
+    name: 'Map of Delkfutt\'s Tower',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of delkfutt\'s tower.',
+    levelRequirement: 0
+  },
+  feiyinMap: {
+    name: "Map of Fei'Yin",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of fei'yin.",
+    levelRequirement: 0
+  },
+  castleZvahlMap: {
+    name: 'Map of Castle Zvahl',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of castle zvahl.',
+    levelRequirement: 0
+  },
+  kuzotzMap: {
+    name: 'Map of the Kuzotz region',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the kuzotz region.',
+    levelRequirement: 0
+  },
+  ruaunGardensMap: {
+    name: "Map of the Ru'Aun Gardens",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of the ru'aun gardens.",
+    levelRequirement: 0
+  },
+  norgMap: {
+    name: 'Map of Norg',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of norg.',
+    levelRequirement: 0
+  },
+  templeOfUggalepihMap: {
+    name: 'Map of Temple of Uggalepih',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of temple of uggalepih.',
+    levelRequirement: 0
+  },
+  denOfRancorMap: {
+    name: 'Map of the Den of Rancor',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the den of rancor.',
+    levelRequirement: 0
+  },
+  korrolokaTunnelMap: {
+    name: 'Map of the Korroloka Tunnel',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the korroloka tunnel.',
+    levelRequirement: 0
+  },
+  kuftalTunnelMap: {
+    name: 'Map of the Kuftal Tunnel',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the kuftal tunnel.',
+    levelRequirement: 0
+  },
+  boyahdaTreeMap: {
+    name: 'Map of the Boyahda Tree',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the boyahda tree.',
+    levelRequirement: 0
+  },
+  velugannonPalaceMap: {
+    name: "Map of Ve'Lugannon Palace",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of ve'lugannon palace.",
+    levelRequirement: 0
+  },
+  ifritsCauldronMap: {
+    name: "Map of Ifrit's Cauldron",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of ifrit's cauldron.",
+    levelRequirement: 0
+  },
+  quicksandCavesMap: {
+    name: 'Map of the Quicksand Caves',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the quicksand caves.',
+    levelRequirement: 0
+  },
+  seaSerpentGrottoMap: {
+    name: 'Map of Sea Serpent Grotto',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of sea serpent grotto.',
+    levelRequirement: 0
+  },
+  vollbowRegionMap: {
+    name: 'Map of the Vollbow region',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the vollbow region.',
+    levelRequirement: 0
+  },
+  labyrinthOfOnzozoMap: {
+    name: 'Map of the Labyrinth of Onzozo',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the labyrinth of onzozo.',
+    levelRequirement: 0
+  },
+  uleguerandRangeMap: {
+    name: 'Map of the Uleguerand Range',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the uleguerand range.',
+    levelRequirement: 0
+  },
+  attohwaChasmMap: {
+    name: 'Map of the Attohwa Chasm',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the attohwa chasm.',
+    levelRequirement: 0
+  },
+  psoxjaMap: {
+    name: "Map of Pso'Xja",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of pso'xja.",
+    levelRequirement: 0
+  },
+  oldtonMovalpolosMap: {
+    name: 'Map of Oldton Movalpolos',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of oldton movalpolos.',
+    levelRequirement: 0
+  },
+  newtonMovalpolosMap: {
+    name: 'Map of Newton Movalpolos',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of newton movalpolos.',
+    levelRequirement: 0
+  },
+  tavnaziaMap: {
+    name: 'Map of Tavnazia',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of tavnazia.',
+    levelRequirement: 0
+  },
+  aqueductsMap: {
+    name: 'Map of the Aqueducts',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the aqueducts.',
+    levelRequirement: 0
+  },
+  sacrariumMap: {
+    name: 'Map of the Sacrarium',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of the sacrarium.',
+    levelRequirement: 0
+  },
+  capeRiverneMap: {
+    name: 'Map of Cape Riverne',
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: 'A detailed map of cape riverne.',
+    levelRequirement: 0
+  },
+  altaieuMap: {
+    name: "Map of Al'Taieu",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of al'taieu.",
+    levelRequirement: 0
+  },
+  huxzoiMap: {
+    name: "Map of Hu'Xzoi",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of hu'xzoi.",
+    levelRequirement: 0
+  },
+  ruHmetMap: {
+    name: "Map of Ru'Hmet",
+    price: 3000,
+        sellPrice: 1500,
+    stack: 1,
+    description: "A detailed map of ru'hmet.",
     levelRequirement: 0
   },
   ashLog: {
@@ -2869,6 +3285,10 @@ export const items = {
   }
 };
 
+const mapInventory = [
+'bastokMap', 'sandoriaMap', 'windurstMap', 'jeunoMap', 'valkurmMap', 'ordellesCavesMap', 'ghelsbaMap', 'zeruhnMinesMap', 'palboroughMinesMap', 'beadeauxMap', 'giddeusMap', 'castleOztrojaMap', 'mazeOfShakhramiMap', 'liTelorMap', 'bibikiBayMap', 'qufimIslandMap', 'elshimoMap', 'eldiemeNecropolisMap', 'garlaigeCitadelMap', 'northlandsMap', 'kingRanperresTombMap', 'dangrufWadiMap', 'horutotoRuinsMap', 'bostaunieuxOublietteMap', 'toraimaraiCanalMap', 'gusgenMinesMap', 'crawlersNestMap', 'ranguemontPassMap', 'delfkuttsTowerMap', 'feiyinMap', 'castleZvahlMap', 'kuzotzMap', 'ruaunGardensMap', 'norgMap', 'templeOfUggalepihMap', 'denOfRancorMap', 'korrolokaTunnelMap', 'kuftalTunnelMap', 'boyahdaTreeMap', 'velugannonPalaceMap', 'ifritsCauldronMap', 'quicksandCavesMap', 'seaSerpentGrottoMap', 'vollbowRegionMap', 'labyrinthOfOnzozoMap', 'uleguerandRangeMap', 'attohwaChasmMap', 'psoxjaMap', 'oldtonMovalpolosMap', 'newtonMovalpolosMap', 'tavnaziaMap', 'aqueductsMap', 'sacrariumMap', 'capeRiverneMap', 'altaieuMap', 'huxzoiMap', 'ruHmetMap'
+];
+
 export const vendorInventories = {
   'Swordsmith Shop': ['bronzeDagger', 'bronzeSword', 'bronzeShield'],
   'Arms & Armor Shop': ['bronzeSword', 'leatherVest', 'bronzeDagger', 'leatherGloves', 'clothHeadband', 'bronzeShield'],
@@ -2880,7 +3300,7 @@ export const vendorInventories = {
   'Magic Shop': ['scrollCure', 'scrollFire', 'ether'],
   'Fishing Supplies Shop': ['insectPaste', 'distilledWater'],
   'Guild Shop': ['bronzeIngot'],
-  'Map Vendor': ['bastokMap', 'sandoriaMap', 'windurstMap', 'jeunoMap', 'valkurmMap'],
+  'Map Vendor': mapInventory,
   'Armor Shop': ['leatherVest', 'leatherGloves', 'clothHeadband', 'bronzeShield', 'leatherCap', 'leatherBoots'],
   'Weapon Shop': ['bronzeSword', 'bronzeDagger', 'bronzeAxe', 'bronzeSpear', 'willowStaff'],
   'Consumable Shop': ['potion', 'antidote', 'meatJerky', 'applePie', 'distilledWater', 'ether', 'honey'],
@@ -2930,7 +3350,20 @@ export const vendorInventories = {
   Rosswald: ['giantSheepMeat', 'driedMarjoram', 'sanDoriaFlour', 'ryeFlour', 'semolina', 'laTheineCabbage', 'selbinaMilk'],
   Bagnobrok: ['movalpolosWater', 'copperOre', 'danceshroom', 'coralFungus', 'kopparnickel'],
   Kachada: ['worldPass', 'goldWorldPass'],
-  Rex: ['bastokMap', 'sandoriaMap', 'windurstMap', 'jeunoMap', 'valkurmMap'],
+  Rex: mapInventory,
+  Karine: mapInventory,
+  Elesca: mapInventory,
+  Violitte: mapInventory,
+  'Mhoji Roccoruh': mapInventory,
+  'Pehki Machumaht': mapInventory,
+  Ludwig: mapInventory,
+  Lombaria: mapInventory,
+  Promurouve: mapInventory,
+  Rusese: mapInventory,
+  Antiqix: mapInventory,
+  Haggleblix: mapInventory,
+  Lootblox: mapInventory,
+  Riyadahf: mapInventory,
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets'],
   'Ciqala': ['bronzeKnuckles', 'brassKnuckles', 'metalKnuckles', 'bronzeHammer', 'brassHammer', 'warhammer', 'mapleWand'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
@@ -2961,5 +3394,6 @@ export const shopNpcs = {
   "Craftsmen's Eatery": ['Tomasa'],
   'Qufim Regional Goods': ['Takiyah'],
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
-  "Rodellieux's Stall": ['Rodellieux']
+  "Rodellieux's Stall": ['Rodellieux'],
+  'Map Vendor': ['Karine', 'Rex', 'Elesca', 'Violitte', 'Mhoji Roccoruh', 'Pehki Machumaht', 'Ludwig', 'Lombaria', 'Promurouve', 'Rusese', 'Antiqix', 'Haggleblix', 'Lootblox', 'Riyadahf']
 };
