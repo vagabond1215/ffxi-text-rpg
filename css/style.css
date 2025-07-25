@@ -146,6 +146,22 @@ body.landscape #area-grid {
     margin-bottom: 10px;
 }
 
+#area-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
+}
+
+#area-actions button, #area-actions select {
+    width: 160px;
+}
+
+.hunt-select {
+    width: 160px;
+}
+
 .form-header {
     display: flex;
     justify-content: center;
