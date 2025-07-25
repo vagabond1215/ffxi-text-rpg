@@ -505,6 +505,20 @@ body.portrait .main-layout {
     text-align: left;
 }
 
+#game-log {
+    position: fixed;
+    bottom: 40px;
+    left: 5px;
+    right: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px;
+    border-radius: 4px;
+    text-align: left;
+    z-index: 1000;
+}
+
 #action-buttons {
     display: grid;
     gap: 8px;
@@ -524,6 +538,10 @@ body.landscape #action-buttons {
     flex-direction: column;
     align-items: center;
     gap: 4px;
+}
+
+#action-buttons .action-cell > * {
+    width: 100%;
 }
 
 .enemy-list, .party-list {
