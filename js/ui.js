@@ -371,19 +371,8 @@ export function renderMainMenu() {
         const grid = createAreaGrid(container, loc);
         areaDiv.appendChild(grid);
     }
-    const restBtn = document.createElement('button');
-    restBtn.textContent = 'Rest';
-    restBtn.addEventListener('click', () => {
-        if (activeCharacter) {
-            updateDerivedStats(activeCharacter);
-            activeCharacter.tp = 0;
-        }
-        const menu = renderMainMenu();
-        container.replaceWith(menu);
-    });
     menu.appendChild(areaBtn);
     menu.appendChild(areaDiv);
-    if (loc && loc.distance > 0) menu.appendChild(restBtn);
 
     const layout = document.createElement('div');
     layout.className = 'main-layout';
@@ -939,34 +928,7 @@ function createAreaGrid(root, loc) {
     travelCol.appendChild(travelHeader);
     const travelList = document.createElement('ul');
 
-    if (loc.distance > 0) {
-        const exploreLi = document.createElement('li');
-        const exploreBtn = document.createElement('button');
-        exploreBtn.textContent = 'Explore';
-        exploreBtn.className = 'explore-btn';
-        exploreBtn.addEventListener('click', () => {
-            const mob = exploreEncounter(loc.name);
-            if (mob) {
-                renderCombatScreen(root, [mob]);
-            }
-        });
-        exploreLi.appendChild(exploreBtn);
-        travelList.appendChild(exploreLi);
-
-        const huntLi = document.createElement('li');
-        const huntSelect = document.createElement('select');
-        const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
-        names.forEach(n => huntSelect.appendChild(new Option(n, n)));
-        const huntBtn = document.createElement('button');
-        huntBtn.textContent = 'Hunt';
-        huntBtn.addEventListener('click', () => {
-            const mobs = huntEncounter(loc.name, huntSelect.value);
-            if (mobs.length) renderCombatScreen(root, mobs);
-        });
-        huntLi.appendChild(huntSelect);
-        huntLi.appendChild(huntBtn);
-        travelList.appendChild(huntLi);
-    }
+    // Explore and hunt controls are added in renderAreaScreen
 
     const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
     const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
@@ -1131,6 +1093,54 @@ export function renderAreaScreen(root) {
                     }
                 }
             }
+        }
+        if (loc.distance > 0) {
+            const actionWrap = document.createElement('div');
+            actionWrap.id = 'area-actions';
+
+            const restBtn = document.createElement('button');
+            restBtn.textContent = 'Rest';
+            restBtn.addEventListener('click', () => {
+                if (activeCharacter) {
+                    updateDerivedStats(activeCharacter);
+                    activeCharacter.tp = 0;
+                }
+                renderAreaScreen(root);
+            });
+            actionWrap.appendChild(restBtn);
+
+            const exploreBtn = document.createElement('button');
+            exploreBtn.textContent = 'Explore';
+            exploreBtn.className = 'explore-btn';
+            exploreBtn.addEventListener('click', () => {
+                const mob = exploreEncounter(loc.name);
+                if (mob) {
+                    renderCombatScreen(root, [mob]);
+                }
+            });
+            actionWrap.appendChild(exploreBtn);
+
+            const huntSelect = document.createElement('select');
+            huntSelect.className = 'hunt-select';
+            huntSelect.appendChild(new Option('', ''));
+            const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
+            names.forEach(n => huntSelect.appendChild(new Option(n, n)));
+            huntSelect.value = activeCharacter.huntTarget || '';
+            huntSelect.addEventListener('change', () => {
+                activeCharacter.huntTarget = huntSelect.value;
+            });
+            actionWrap.appendChild(huntSelect);
+
+            const huntBtn = document.createElement('button');
+            huntBtn.textContent = 'Hunt';
+            huntBtn.addEventListener('click', () => {
+                const target = huntSelect.value;
+                const mobs = huntEncounter(loc.name, target);
+                if (mobs.length) renderCombatScreen(root, mobs);
+            });
+            actionWrap.appendChild(huntBtn);
+
+            root.appendChild(actionWrap);
         }
         const grid = createAreaGrid(root, loc);
         root.appendChild(grid);
@@ -1297,32 +1307,16 @@ function renderCombatScreen(root, mobs, destination) {
         battleEnded = true;
         const lootDiv = document.createElement('div');
         lootDiv.className = 'loot-display';
-        const msg = document.createElement('div');
-        msg.textContent = 'Victory!';
-        lootDiv.appendChild(msg);
-        const list = document.createElement('ul');
-        if (exp > 0) {
-            const li = document.createElement('li');
-            li.textContent = `${exp} EXP`;
-            list.appendChild(li);
-        }
-        if (gil > 0) {
-            const li = document.createElement('li');
-            li.textContent = `${gil} gil`;
-            list.appendChild(li);
-        }
-        if (cp > 0) {
-            const li = document.createElement('li');
-            li.textContent = `${cp} CP`;
-            list.appendChild(li);
-        }
+        const enemyNames = defeated.map(m => m.name).join(', ');
+        addGameLog(`You defeated the ${enemyNames}.`);
+        if (exp > 0) addGameLog(`${exp} EXP`);
+        if (gil > 0) addGameLog(`${gil} gil`);
+        if (cp > 0) addGameLog(`${cp} CP`);
         itemDrops.forEach(it => {
-            const li = document.createElement('li');
             const name = items[it.id]?.name || it.id;
-            li.textContent = name + (it.qty > 1 ? ` x${it.qty}` : '');
-            list.appendChild(li);
+            addGameLog(name + (it.qty > 1 ? ` x${it.qty}` : ''));
         });
-        lootDiv.appendChild(list);
+        showGameLogTemporarily();
         const btn = document.createElement('button');
         btn.textContent = 'Claim Loot';
         btn.addEventListener('click', () => {
