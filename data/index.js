@@ -33,6 +33,7 @@ export { names, randomName } from './names.js';
 export { raceInfo, jobInfo, cityImages, characterImages } from './descriptions.js';
 export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
 export { bestiaryByZone, allMonsters } from './bestiary.js';
+export { notoriousMonsters } from './nms.js';
 export { experienceTable, expToLevel, expNeeded, experienceForKill } from './experience.js';
 export { items, vendorInventories, shopNpcs, conquestRewards } from './vendors.js';
 export {
@@ -46,6 +47,10 @@ export {
   walkAcrossZone,
   exploreEncounter,
   randomMonster,
-  huntEncounter
+  huntEncounter,
+  parseCoordinate,
+  coordinateDistance,
+  stepToward
 } from '../js/encounter.js';
 export { calculateBattleRewards, findItemIdByName } from '../js/rewards.js';
+export { initNotorious, handleMonsterKill, checkForNM } from '../js/notorious.js';

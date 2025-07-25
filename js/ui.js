@@ -30,7 +30,11 @@ import {
     setLocation,
     bestiaryByZone,
     huntEncounter,
-    calculateBattleRewards
+    calculateBattleRewards,
+    parseCoordinate,
+    coordinateDistance,
+    stepToward,
+    checkForNM
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -361,13 +365,18 @@ export function renderMainMenu() {
 
     const areaBtn = document.createElement('button');
     areaBtn.className = 'area-header';
-    areaBtn.textContent = activeCharacter?.currentLocation || 'Area';
+    const coord = activeCharacter?.coordinates ? `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}` : '';
+    areaBtn.textContent = `${activeCharacter?.currentLocation || 'Area'} ${coord}`.trim();
     const areaDiv = document.createElement('div');
     areaDiv.classList.add('hidden');
     areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
 
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     if (loc) {
+        if (loc.distance > 0) {
+            const actions = createAreaActions(container, loc);
+            if (actions) areaDiv.appendChild(actions);
+        }
         const grid = createAreaGrid(container, loc);
         areaDiv.appendChild(grid);
     }
@@ -438,10 +447,12 @@ export function renderMainMenu() {
 
         profile.appendChild(imgNav.wrapper);
         const charBtn = document.createElement('button');
+        charBtn.className = 'profile-btn';
         charBtn.textContent = activeCharacter.name;
         profile.appendChild(charBtn);
         const details = document.createElement('div');
         details.id = 'character-details';
+        details.classList.add('hidden');
         charBtn.addEventListener('click', () => details.classList.toggle('hidden'));
 
         const invBtn = document.createElement('button');
@@ -939,7 +950,11 @@ function createAreaGrid(root, loc) {
     loc.connectedAreas.forEach(area => {
         const li = document.createElement('li');
         const btn = document.createElement('button');
-        const total = getZoneTravelTurns(area, loc.name);
+        const destCoordStr = loc.coordinates?.[area];
+        let total = getZoneTravelTurns(area, loc.name);
+        if (activeCharacter.coordinates && destCoordStr) {
+            total = coordinateDistance(activeCharacter.coordinates, parseCoordinate(destCoordStr));
+        }
         const travel = activeCharacter.travel &&
             activeCharacter.travel.start === loc.name &&
             activeCharacter.travel.destination === area
@@ -951,18 +966,33 @@ function createAreaGrid(root, loc) {
             btn.textContent = area;
         }
         btn.addEventListener('click', () => {
+            const destCoordStrClick = loc.coordinates?.[area];
             if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
-                activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
+                let t = getZoneTravelTurns(area, loc.name);
+                let destC = null;
+                if (activeCharacter.coordinates && destCoordStrClick) {
+                    destC = parseCoordinate(destCoordStrClick);
+                    t = coordinateDistance(activeCharacter.coordinates, destC);
+                }
+                activeCharacter.travel = { start: loc.name, destination: area, remaining: t, total: t, destCoord: destC };
             }
             const mob = rollForEncounter(activeCharacter, loc.name);
             if (mob) {
                 renderCombatScreen(root, [mob], area);
                 return;
             }
+            if (activeCharacter.travel.destCoord && activeCharacter.coordinates) {
+                activeCharacter.coordinates = stepToward(activeCharacter.coordinates, activeCharacter.travel.destCoord);
+            }
             activeCharacter.travel.remaining -= 1;
             if (activeCharacter.travel.remaining <= 0) {
-                setLocation(activeCharacter, area);
+                setLocation(activeCharacter, area, loc.name);
                 activeCharacter.travel = null;
+            }
+            const nm = checkForNM(loc.name, activeCharacter.coordinates);
+            if (nm) {
+                renderCombatScreen(root, [nm]);
+                return;
             }
             persistCharacter(activeCharacter);
             renderAreaScreen(root);
@@ -1070,13 +1100,64 @@ function createAreaGrid(root, loc) {
     return grid;
 }
 
+function createAreaActions(root, loc) {
+    if (!loc || loc.distance <= 0) return null;
+    const actionWrap = document.createElement('div');
+    actionWrap.id = 'area-actions';
+
+    const restBtn = document.createElement('button');
+    restBtn.textContent = 'Rest';
+    restBtn.addEventListener('click', () => {
+        if (activeCharacter) {
+            updateDerivedStats(activeCharacter);
+            activeCharacter.tp = 0;
+        }
+        renderAreaScreen(root);
+    });
+    actionWrap.appendChild(restBtn);
+
+    const exploreBtn = document.createElement('button');
+    exploreBtn.textContent = 'Explore';
+    exploreBtn.className = 'explore-btn';
+    exploreBtn.addEventListener('click', () => {
+        const mob = exploreEncounter(loc.name);
+        if (mob) {
+            renderCombatScreen(root, [mob]);
+        }
+    });
+    actionWrap.appendChild(exploreBtn);
+
+    const huntSelect = document.createElement('select');
+    huntSelect.className = 'hunt-select';
+    huntSelect.appendChild(new Option('', ''));
+    const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
+    names.forEach(n => huntSelect.appendChild(new Option(n, n)));
+    huntSelect.value = activeCharacter.huntTarget || '';
+    huntSelect.addEventListener('change', () => {
+        activeCharacter.huntTarget = huntSelect.value;
+    });
+    actionWrap.appendChild(huntSelect);
+
+    const huntBtn = document.createElement('button');
+    huntBtn.textContent = 'Hunt';
+    huntBtn.addEventListener('click', () => {
+        const target = huntSelect.value;
+        const mobs = huntEncounter(loc.name, target);
+        if (mobs.length) renderCombatScreen(root, mobs);
+    });
+    actionWrap.appendChild(huntBtn);
+
+    return actionWrap;
+}
+
 export function renderAreaScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
     root.appendChild(statusEffectsDisplay());
     const loc = locations.find(l => l.name === activeCharacter.currentLocation);
     const title = document.createElement('h2');
-    title.textContent = loc ? loc.name : 'Unknown Area';
+    const coordLabel = activeCharacter.coordinates ? `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}` : '';
+    title.textContent = loc ? `${loc.name} ${coordLabel}`.trim() : 'Unknown Area';
     root.appendChild(title);
 
     if (loc) {
@@ -1095,52 +1176,8 @@ export function renderAreaScreen(root) {
             }
         }
         if (loc.distance > 0) {
-            const actionWrap = document.createElement('div');
-            actionWrap.id = 'area-actions';
-
-            const restBtn = document.createElement('button');
-            restBtn.textContent = 'Rest';
-            restBtn.addEventListener('click', () => {
-                if (activeCharacter) {
-                    updateDerivedStats(activeCharacter);
-                    activeCharacter.tp = 0;
-                }
-                renderAreaScreen(root);
-            });
-            actionWrap.appendChild(restBtn);
-
-            const exploreBtn = document.createElement('button');
-            exploreBtn.textContent = 'Explore';
-            exploreBtn.className = 'explore-btn';
-            exploreBtn.addEventListener('click', () => {
-                const mob = exploreEncounter(loc.name);
-                if (mob) {
-                    renderCombatScreen(root, [mob]);
-                }
-            });
-            actionWrap.appendChild(exploreBtn);
-
-            const huntSelect = document.createElement('select');
-            huntSelect.className = 'hunt-select';
-            huntSelect.appendChild(new Option('', ''));
-            const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
-            names.forEach(n => huntSelect.appendChild(new Option(n, n)));
-            huntSelect.value = activeCharacter.huntTarget || '';
-            huntSelect.addEventListener('change', () => {
-                activeCharacter.huntTarget = huntSelect.value;
-            });
-            actionWrap.appendChild(huntSelect);
-
-            const huntBtn = document.createElement('button');
-            huntBtn.textContent = 'Hunt';
-            huntBtn.addEventListener('click', () => {
-                const target = huntSelect.value;
-                const mobs = huntEncounter(loc.name, target);
-                if (mobs.length) renderCombatScreen(root, mobs);
-            });
-            actionWrap.appendChild(huntBtn);
-
-            root.appendChild(actionWrap);
+            const actions = createAreaActions(root, loc);
+            if (actions) root.appendChild(actions);
         }
         const grid = createAreaGrid(root, loc);
         root.appendChild(grid);
@@ -1302,7 +1339,7 @@ function renderCombatScreen(root, mobs, destination) {
         }
     }
 
-    function victory(exp, gil, cp, itemDrops) {
+    function victory(exp, gil, cp, itemDrops, notes = []) {
         update();
         battleEnded = true;
         const lootDiv = document.createElement('div');
@@ -1312,6 +1349,7 @@ function renderCombatScreen(root, mobs, destination) {
         if (exp > 0) addGameLog(`${exp} EXP`);
         if (gil > 0) addGameLog(`${gil} gil`);
         if (cp > 0) addGameLog(`${cp} CP`);
+        notes.forEach(m => addGameLog(m));
         itemDrops.forEach(it => {
             const name = items[it.id]?.name || it.id;
             addGameLog(name + (it.qty > 1 ? ` x${it.qty}` : ''));
@@ -1366,7 +1404,7 @@ function renderCombatScreen(root, mobs, destination) {
         enemyEntries.splice(idx, 1);
         if (mobs.length === 0) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
-            victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops);
+            victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
         } else {
             currentTarget = mobs[0];
             update();

@@ -321,6 +321,15 @@ body.portrait .main-layout {
     margin: 0 auto 10px auto;
 }
 
+.character-img {
+    width: clamp(138px, 23vw, 230px);
+}
+
+.profile-btn {
+    display: block;
+    margin: 0 auto;
+}
+
 .image-container {
     position: relative;
     display: inline-block;
