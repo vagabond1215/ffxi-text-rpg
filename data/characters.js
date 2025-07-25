@@ -1,6 +1,7 @@
 import { jobs, jobNames } from './jobs.js';
 import { races, raceNames, startingCities } from './races.js';
 import { zonesByCity, locations } from './locations.js';
+import { parseCoordinate } from '../js/encounter.js';
 import { getScale, proficiencyScale } from './scales.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
@@ -156,6 +157,7 @@ export const characters = [
     jobMP: 0,
     sJobMP: 0,
     travel: null,
+    coordinates: null,
     returnJourney: null,
     inventory: [
       { id: 'bronzeDagger', qty: 1 },
@@ -231,6 +233,7 @@ export const characters = [
     jobMP: 0,
     sJobMP: 0,
     travel: null,
+    coordinates: null,
     returnJourney: null,
     inventory: [
       { id: 'bronzeDagger', qty: 1 },
@@ -674,7 +677,7 @@ export async function persistCharacter(character) {
   }
 }
 
-export function setLocation(character, name) {
+export function setLocation(character, name, from) {
   if (!character) return;
   character.lastZone = character.currentLocation;
   character.currentLocation = name;
@@ -693,6 +696,10 @@ export function setLocation(character, name) {
           character.travelTurns[c] = Math.min(10, (character.travelTurns[c] || 0) + 1);
         }
       }
+    }
+    const coordStr = zone.coordinates?.[from];
+    if (coordStr) {
+      character.coordinates = parseCoordinate(coordStr);
     }
   }
   persistCharacter(character);

@@ -81,6 +81,37 @@ export function baseEncounterChanceForZone(playerLevel, zone) {
   return maxChance;
 }
 
+export function parseCoordinate(coord) {
+  if (!coord) return null;
+  const [letter, num] = coord.split('-');
+  return { letter, number: parseInt(num, 10) };
+}
+
+export function coordinateDistance(a, b) {
+  if (!a || !b) return 1;
+  const x1 = a.letter.toUpperCase().charCodeAt(0);
+  const y1 = a.number;
+  const x2 = b.letter.toUpperCase().charCodeAt(0);
+  const y2 = b.number;
+  return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+}
+
+export function stepToward(current, target) {
+  const result = { ...current };
+  const x1 = current.letter.toUpperCase().charCodeAt(0);
+  const x2 = target.letter.toUpperCase().charCodeAt(0);
+  if (x1 < x2) {
+    result.letter = String.fromCharCode(x1 + 1);
+  } else if (x1 > x2) {
+    result.letter = String.fromCharCode(x1 - 1);
+  } else if (current.number < target.number) {
+    result.number += 1;
+  } else if (current.number > target.number) {
+    result.number -= 1;
+  }
+  return result;
+}
+
 export function getZoneTravelTurns(zone, baseZone = zone) {
   const info = locations.find(l => l.name === zone);
   const hasMonsters = bestiaryByZone[baseZone] && bestiaryByZone[baseZone].length > 0;

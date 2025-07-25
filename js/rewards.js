@@ -2,6 +2,7 @@ import { items } from '../data/vendors.js';
 import { experienceForKill } from '../data/experience.js';
 import { hasSignet } from '../data/characters.js';
 import { parseLevel } from './encounter.js';
+import { handleMonsterKill } from './notorious.js';
 
 export function findItemIdByName(name) {
   for (const [id, data] of Object.entries(items)) {
@@ -30,6 +31,7 @@ export function calculateBattleRewards(character, defeated) {
   let gil = 0;
   let cp = 0;
   const drops = [];
+  const messages = [];
 
   for (const mob of defeated) {
     const mobLevel = parseLevel(mob.level);
@@ -58,7 +60,9 @@ export function calculateBattleRewards(character, defeated) {
       const crystalId = Object.keys(items).find(k => /Crystal/i.test(items[k].name));
       if (crystalId) drops.push({ id: crystalId, qty: 1 });
     }
+    const notes = handleMonsterKill(character.currentLocation, mob.name);
+    if (notes.length) messages.push(...notes);
   }
 
-  return { exp, gil, cp, drops };
+  return { exp, gil, cp, drops, messages };
 }
