@@ -161,6 +161,11 @@ export function hideBackButton() {
     backButtonElement.onclick = null;
 }
 
+function refreshMainMenu(root) {
+    const menu = renderMainMenu();
+    root.replaceWith(menu);
+}
+
 export function renderUserControls() {
     const container = document.getElementById('user-controls');
     if (!container) return;
@@ -996,7 +1001,7 @@ function createAreaGrid(root, loc) {
                 return;
             }
             persistCharacter(activeCharacter);
-            renderAreaScreen(root);
+            refreshMainMenu(root);
         });
         li.appendChild(btn);
         travelList.appendChild(li);
@@ -1120,7 +1125,7 @@ function createActionPanel(root, loc) {
             updateDerivedStats(activeCharacter);
             activeCharacter.tp = 0;
         }
-        renderAreaScreen(root);
+        refreshMainMenu(root);
     });
     actionWrap.appendChild(restBtn);
 
@@ -1182,7 +1187,7 @@ function createActionPanel(root, loc) {
                     renderCombatScreen(root, [nm]);
                     return;
                 }
-                renderAreaScreen(root);
+                refreshMainMenu(root);
             });
         }
         dirGrid.appendChild(b);
@@ -1432,7 +1437,7 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            renderAreaScreen(root);
+            refreshMainMenu(root);
         });
         lootDiv.appendChild(btn);
         root.appendChild(lootDiv);
@@ -1541,7 +1546,7 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            renderAreaScreen(root);
+            refreshMainMenu(root);
         });
         root.appendChild(btn);
     }
@@ -1687,7 +1692,7 @@ function renderTravelScreen(root) {
             btn.textContent = area;
             btn.addEventListener('click', () => {
                 setLocation(activeCharacter, area);
-                renderAreaScreen(root);
+                refreshMainMenu(root);
             });
             li.appendChild(btn);
             list.appendChild(li);
@@ -1770,7 +1775,7 @@ function renderVendorMenu(root, vendor, backFn = null) {
     });
     root.appendChild(buyBtn);
     root.appendChild(sellBtn);
-    const handler = backFn || (() => renderAreaScreen(root));
+    const handler = backFn || (() => refreshMainMenu(root));
     showBackButton(handler);
 }
 
@@ -1969,7 +1974,7 @@ export function renderConquestShop(root, backFn = null) {
         list.appendChild(row);
     });
     root.appendChild(list);
-    showBackButton(backFn || (() => renderAreaScreen(root)));
+    showBackButton(backFn || (() => refreshMainMenu(root)));
 }
 
 export function renderEquipmentScreen(root) {
@@ -2213,7 +2218,7 @@ export function renderInventoryScreen(root) {
 
 function openMenu(name, backFn) {
     const root = document.getElementById('app');
-    const backHandler = backFn || (() => renderAreaScreen(root));
+    const backHandler = backFn || (() => refreshMainMenu(root));
     if (shopNpcs[name]) {
         root.innerHTML = '';
         const title = document.createElement('h2');
@@ -2266,7 +2271,7 @@ function openMenu(name, backFn) {
             activeCharacter.gil -= 1000;
             setLocation(activeCharacter, dest);
             persistCharacter(activeCharacter);
-            renderAreaScreen(root);
+            refreshMainMenu(root);
         });
         root.appendChild(document.createElement('br'));
         root.appendChild(select);
@@ -2284,7 +2289,7 @@ function openMenu(name, backFn) {
             grantSignet(activeCharacter);
             alert('Signet bestowed.');
             persistCharacter(activeCharacter);
-            renderAreaScreen(root);
+            refreshMainMenu(root);
         });
         root.appendChild(signetBtn);
         const rewardBtn = document.createElement('button');
