@@ -2029,25 +2029,47 @@ export function renderInventoryScreen(root) {
     Object.keys(categories).forEach(cat => {
         const list = categories[cat];
         if (!list.length) return;
-        const h = document.createElement('h3');
-        h.textContent = cat;
-        root.appendChild(h);
+
+        const headerBtn = document.createElement('button');
+        headerBtn.className = 'inventory-header';
+        headerBtn.textContent = cat;
+        root.appendChild(headerBtn);
+
+        const section = document.createElement('div');
+        section.className = 'inventory-section';
+        root.appendChild(section);
+
         const ul = document.createElement('ul');
         ul.className = 'inventory-list';
+        section.appendChild(ul);
+
+        headerBtn.addEventListener('click', () => {
+            section.classList.toggle('hidden');
+        });
+
         list.forEach(ent => {
             const li = document.createElement('li');
             li.className = 'inventory-item';
-            const top = document.createElement('div');
-            top.className = 'inventory-row-top';
-            const nameSpan = document.createElement('span');
+
+            const row = document.createElement('div');
+            row.className = 'inventory-row-top';
+
+            const info = document.createElement('div');
+            info.className = 'item-info';
             const qtyText = ent.item.stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
-            nameSpan.textContent = ent.item.name + qtyText;
-            if (!meetsRequirements(ent.item)) nameSpan.style.color = 'red';
-            else if (canEquipItem(ent.item) && isBetterItem(ent.item)) nameSpan.style.color = 'lightgreen';
-            top.appendChild(nameSpan);
+            const statsInline = basicStatsText(ent.item);
+            info.textContent = ent.item.name + qtyText + (statsInline ? ` (${statsInline})` : '');
+            if (!meetsRequirements(ent.item)) info.style.color = 'red';
+            else if (canEquipItem(ent.item) && isBetterItem(ent.item)) info.style.color = 'lightgreen';
+            row.appendChild(info);
+
+            const actions = document.createElement('div');
+            actions.className = 'item-actions';
+
             const detailsBtn = document.createElement('button');
             detailsBtn.textContent = 'Details';
-            top.appendChild(detailsBtn);
+            actions.appendChild(detailsBtn);
+
             if (canEquipItem(ent.item)) {
                 const eq = document.createElement('button');
                 if (activeCharacter.equipment[ent.item.slot] === ent.id) {
@@ -2056,7 +2078,7 @@ export function renderInventoryScreen(root) {
                     eq.textContent = 'Equip';
                     eq.addEventListener('click', () => equipItem(ent.id, root));
                 }
-                top.appendChild(eq);
+                actions.appendChild(eq);
             } else if (/^Scroll of/i.test(ent.item.name)) {
                 const learnBtn = document.createElement('button');
                 learnBtn.textContent = 'Use';
@@ -2064,9 +2086,12 @@ export function renderInventoryScreen(root) {
                 if (activeCharacter.spells && activeCharacter.spells.includes(ent.item.name.replace(/^Scroll of\s+/i, ''))) {
                     learnBtn.disabled = true;
                 }
-                top.appendChild(learnBtn);
+                actions.appendChild(learnBtn);
             }
-            li.appendChild(top);
+
+            row.appendChild(actions);
+            li.appendChild(row);
+
             const detailsWrap = document.createElement('div');
             detailsWrap.className = 'item-details hidden';
             const stats = basicStatsText(ent.item);
@@ -2080,7 +2105,6 @@ export function renderInventoryScreen(root) {
             detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
             ul.appendChild(li);
         });
-        root.appendChild(ul);
     });
     showBackButton(() => {
         const menu = renderMainMenu();
