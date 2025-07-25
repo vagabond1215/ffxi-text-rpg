@@ -48,3 +48,4 @@ export {
   randomMonster,
   huntEncounter
 } from '../js/encounter.js';
+export { calculateBattleRewards, findItemIdByName } from '../js/rewards.js';

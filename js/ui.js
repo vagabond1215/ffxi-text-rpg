@@ -29,12 +29,47 @@ import {
     persistCharacter,
     setLocation,
     bestiaryByZone,
-    huntEncounter
+    huntEncounter,
+    calculateBattleRewards
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel, experienceForKill } from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
 let backButtonElement = null;
 let openDetailElement = null;
+let logButtonElement = null;
+let logPanelElement = null;
+const gameLogMessages = [];
+
+export function setupLogControls(btn, panel) {
+    logButtonElement = btn;
+    logPanelElement = panel;
+    if (!logButtonElement || !logPanelElement) return;
+    const show = () => logPanelElement.classList.remove('hidden');
+    const hide = () => logPanelElement.classList.add('hidden');
+    logButtonElement.addEventListener('mousedown', show);
+    logButtonElement.addEventListener('touchstart', show);
+    logButtonElement.addEventListener('mouseup', hide);
+    logButtonElement.addEventListener('mouseleave', hide);
+    logButtonElement.addEventListener('touchend', hide);
+}
+
+export function addGameLog(msg) {
+    if (!logPanelElement) return;
+    const div = document.createElement('div');
+    div.textContent = msg;
+    logPanelElement.prepend(div);
+    gameLogMessages.push(div);
+    if (gameLogMessages.length > 50) {
+        const old = gameLogMessages.shift();
+        if (old && old.parentElement) old.parentElement.remove();
+    }
+}
+
+export function showGameLogTemporarily(ms = 3000) {
+    if (!logPanelElement) return;
+    logPanelElement.classList.remove('hidden');
+    setTimeout(() => logPanelElement.classList.add('hidden'), ms);
+}
 
 function resetDetails() {
     if (openDetailElement) {
@@ -1159,10 +1194,7 @@ function renderCombatScreen(root, mobs, destination) {
     root.appendChild(container);
 
     let battleEnded = false;
-    let pendingExp = 0;
-    let pendingGil = 0;
-    let pendingCP = 0;
-    const pendingDrops = [];
+    const defeated = [];
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -1198,13 +1230,7 @@ function renderCombatScreen(root, mobs, destination) {
         const p = document.createElement('div');
         p.textContent = msg;
         logDiv.prepend(p);
-    }
-
-    function findItemIdByName(name) {
-        for (const [id, data] of Object.entries(items)) {
-            if (data.name === name) return id;
-        }
-        return null;
+        addGameLog(msg);
     }
 
     function addItemsToInventory(list) {
@@ -1221,6 +1247,12 @@ function renderCombatScreen(root, mobs, destination) {
 
     function checkLevelUp() {
         let leveled = false;
+        const oldLevel = activeCharacter.level;
+        const oldVals = {
+            hp: activeCharacter.hp,
+            mp: activeCharacter.mp,
+            ...activeCharacter.stats
+        };
         while (activeCharacter.level < 99 &&
             activeCharacter.experience >= expToLevel[activeCharacter.level + 1]) {
             activeCharacter.level++;
@@ -1228,6 +1260,18 @@ function renderCombatScreen(root, mobs, destination) {
         }
         if (leveled) {
             updateDerivedStats(activeCharacter);
+            const diffs = [];
+            const fields = ['hp','mp','str','dex','vit','agi','int','mnd','chr'];
+            fields.forEach(f => {
+                const before = oldVals[f] || 0;
+                const after = f === 'hp' ? activeCharacter.hp
+                    : f === 'mp' ? activeCharacter.mp
+                    : activeCharacter.stats[f];
+                const diff = after - before;
+                if (diff !== 0) diffs.push(`${f.toUpperCase()} ${diff > 0 ? '+'+diff : diff}`);
+            });
+            addGameLog(`Level up! ${oldLevel} → ${activeCharacter.level} | ${diffs.join(', ')}`);
+            showGameLogTemporarily();
         }
     }
 
@@ -1305,35 +1349,13 @@ function renderCombatScreen(root, mobs, destination) {
 
     function monsterDefeated(idx) {
         const mob = mobs[idx];
-        const mobLevel = parseLevel(mob.level);
-        const exp = experienceForKill(activeCharacter.level, mobLevel);
-        let cpGain = 0;
-        if (activeCharacter.level >= 6 && hasSignet(activeCharacter)) {
-            cpGain = Math.floor(exp / 10);
-        }
-        let gil = 0;
-        if (/(Orc|Yagudo|Goblin|Quadav|Moblin)/i.test(mob.name)) {
-            gil = Math.floor(mobLevel * 5 + Math.random() * mobLevel * 5);
-        }
-        const drops = [];
-        if (mob.drops && mob.drops.length) {
-            const name = mob.drops[Math.floor(Math.random() * mob.drops.length)];
-            const id = findItemIdByName(name);
-            if (id) drops.push({ id, qty: 1 });
-        }
-        if (hasSignet(activeCharacter) && Math.random() < 0.1) {
-            const crystalId = Object.keys(items).find(k => /Crystal/i.test(items[k].name));
-            if (crystalId) drops.push({ id: crystalId, qty: 1 });
-        }
-        pendingExp += exp;
-        pendingGil += gil;
-        pendingCP += cpGain;
-        pendingDrops.push(...drops);
+        defeated.push(mob);
         mobs.splice(idx, 1);
         enemyEntries[idx].entry.remove();
         enemyEntries.splice(idx, 1);
         if (mobs.length === 0) {
-            victory(pendingExp, pendingGil, pendingCP, pendingDrops);
+            const rewards = calculateBattleRewards(activeCharacter, defeated);
+            victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops);
         } else {
             currentTarget = mobs[0];
             update();

@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls } from './ui.js';
 import { loadCharacters, initCurrentUser } from '../data/index.js';
 
 // Entry point: initialize application
@@ -37,6 +37,10 @@ function init() {
         inc.addEventListener('click', () => updateScale(0.1));
         dec.addEventListener('click', () => updateScale(-0.1));
     }
+
+    const logBtn = document.getElementById('log-button');
+    const logPanel = document.getElementById('game-log');
+    if (logBtn && logPanel) setupLogControls(logBtn, logPanel);
 
     const charBtn = document.getElementById('character-select');
     if (charBtn) {
