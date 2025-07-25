@@ -158,6 +158,24 @@ body.landscape #area-grid {
     width: 160px;
 }
 
+#direction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    grid-template-rows: repeat(3, 40px);
+    gap: 4px;
+    margin-top: 6px;
+}
+
+#direction-grid button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+#coord-display {
+    margin-top: 6px;
+}
+
 .hunt-select {
     width: 160px;
 }

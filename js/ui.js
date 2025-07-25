@@ -374,8 +374,8 @@ export function renderMainMenu() {
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     if (loc) {
         if (loc.distance > 0) {
-            const actions = createAreaActions(container, loc);
-            if (actions) areaDiv.appendChild(actions);
+            const actions = createActionPanel(container, loc);
+            if (actions) menu.appendChild(actions);
         }
         const grid = createAreaGrid(container, loc);
         areaDiv.appendChild(grid);
@@ -893,7 +893,8 @@ function renderNewCharacterForm(root) {
 }
 
 
-export function renderPlayUI(root) {
+// Legacy function no longer used
+function renderPlayUI(root) {
     root.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = 'Adventure';
@@ -1100,7 +1101,14 @@ function createAreaGrid(root, loc) {
     return grid;
 }
 
-function createAreaActions(root, loc) {
+function stepInDirection(coord, dx, dy) {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const x = Math.min(Math.max(0, coord.letter.toUpperCase().charCodeAt(0) - 65 + dx), letters.length - 1);
+    const y = Math.max(1, coord.number + dy);
+    return { letter: letters[x], number: y };
+}
+
+function createActionPanel(root, loc) {
     if (!loc || loc.distance <= 0) return null;
     const actionWrap = document.createElement('div');
     actionWrap.id = 'area-actions';
@@ -1116,16 +1124,14 @@ function createAreaActions(root, loc) {
     });
     actionWrap.appendChild(restBtn);
 
-    const exploreBtn = document.createElement('button');
-    exploreBtn.textContent = 'Explore';
-    exploreBtn.className = 'explore-btn';
-    exploreBtn.addEventListener('click', () => {
+    const exploreHandler = () => {
         const mob = exploreEncounter(loc.name);
         if (mob) {
             renderCombatScreen(root, [mob]);
+            return true;
         }
-    });
-    actionWrap.appendChild(exploreBtn);
+        return false;
+    };
 
     const huntSelect = document.createElement('select');
     huntSelect.className = 'hunt-select';
@@ -1146,6 +1152,49 @@ function createAreaActions(root, loc) {
         if (mobs.length) renderCombatScreen(root, mobs);
     });
     actionWrap.appendChild(huntBtn);
+
+    const dirGrid = document.createElement('div');
+    dirGrid.id = 'direction-grid';
+    const dirs = [
+        { l: 'NW', dx: -1, dy: -1 },
+        { l: 'N', dx: 0, dy: -1 },
+        { l: 'NE', dx: 1, dy: -1 },
+        { l: 'W', dx: -1, dy: 0 },
+        { l: 'X', explore: true },
+        { l: 'E', dx: 1, dy: 0 },
+        { l: 'SW', dx: -1, dy: 1 },
+        { l: 'S', dx: 0, dy: 1 },
+        { l: 'SE', dx: 1, dy: 1 }
+    ];
+    dirs.forEach(d => {
+        const b = document.createElement('button');
+        b.textContent = d.l;
+        if (d.explore) {
+            b.addEventListener('click', exploreHandler);
+        } else {
+            b.addEventListener('click', () => {
+                if (!activeCharacter?.coordinates) return;
+                activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
+                persistCharacter(activeCharacter);
+                if (exploreHandler()) return;
+                const nm = checkForNM(loc.name, activeCharacter.coordinates);
+                if (nm) {
+                    renderCombatScreen(root, [nm]);
+                    return;
+                }
+                renderAreaScreen(root);
+            });
+        }
+        dirGrid.appendChild(b);
+    });
+    actionWrap.appendChild(dirGrid);
+
+    const coordDisp = document.createElement('div');
+    coordDisp.id = 'coord-display';
+    if (activeCharacter.coordinates) {
+        coordDisp.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
+    }
+    actionWrap.appendChild(coordDisp);
 
     return actionWrap;
 }
@@ -1176,7 +1225,7 @@ export function renderAreaScreen(root) {
             }
         }
         if (loc.distance > 0) {
-            const actions = createAreaActions(root, loc);
+            const actions = createActionPanel(root, loc);
             if (actions) root.appendChild(actions);
         }
         const grid = createAreaGrid(root, loc);
@@ -1621,7 +1670,8 @@ function renderCombatScreen(root, mobs, destination) {
     playerTurn();
 }
 
-export function renderTravelScreen(root) {
+// Legacy function no longer used
+function renderTravelScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
     const loc = locations.find(l => l.name === activeCharacter.currentLocation);
@@ -1651,19 +1701,19 @@ export function renderTravelScreen(root) {
     });
 }
 
-export function Travel() {
+function Travel() {
     renderTravelScreen(document.getElementById('app'));
 }
 
-export function Explore() {
+function Explore() {
     console.log('Explore not implemented');
 }
 
-export function Skills() {
+function Skills() {
     console.log('Skills not implemented');
 }
 
-export function Magic() {
+function Magic() {
     console.log('Magic not implemented');
 }
 
