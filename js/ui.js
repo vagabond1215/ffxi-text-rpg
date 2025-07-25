@@ -355,19 +355,22 @@ function statusEffectsDisplay() {
 export function renderMainMenu() {
     hideBackButton();
     const container = document.createElement('div');
-    const title = document.createElement('h1');
-    title.textContent = activeCharacter ? activeCharacter.name : 'FFXI Adventures';
 
     const menu = document.createElement('div');
     menu.id = 'menu';
 
     const areaBtn = document.createElement('button');
+    areaBtn.className = 'area-header';
     areaBtn.textContent = activeCharacter?.currentLocation || 'Area';
-    areaBtn.addEventListener('click', () => {
-        renderAreaScreen(container);
-    });
+    const areaDiv = document.createElement('div');
+    areaDiv.classList.add('hidden');
+    areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
 
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
+    if (loc) {
+        const grid = createAreaGrid(container, loc);
+        areaDiv.appendChild(grid);
+    }
     const restBtn = document.createElement('button');
     restBtn.textContent = 'Rest';
     restBtn.addEventListener('click', () => {
@@ -378,22 +381,9 @@ export function renderMainMenu() {
         const menu = renderMainMenu();
         container.replaceWith(menu);
     });
-    const invBtn = document.createElement('button');
-    invBtn.textContent = 'Inventory';
-    invBtn.addEventListener('click', () => {
-        renderInventoryScreen(container);
-    });
-
-    const equipBtn = document.createElement('button');
-    equipBtn.textContent = 'Equipment';
-    equipBtn.addEventListener('click', () => {
-        renderEquipmentScreen(container);
-    });
     menu.appendChild(areaBtn);
+    menu.appendChild(areaDiv);
     if (loc && loc.distance > 0) menu.appendChild(restBtn);
-    menu.appendChild(invBtn);
-    menu.appendChild(equipBtn);
-    container.appendChild(title);
 
     const layout = document.createElement('div');
     layout.className = 'main-layout';
@@ -458,13 +448,35 @@ export function renderMainMenu() {
         }
 
         profile.appendChild(imgNav.wrapper);
-        profile.appendChild(line2);
-        profile.appendChild(line3);
-        profile.appendChild(line4);
-        profile.appendChild(line5);
-        profile.appendChild(lineCp);
-        profile.appendChild(line6);
-        if (modeBtn) profile.appendChild(modeBtn);
+        const charBtn = document.createElement('button');
+        charBtn.textContent = activeCharacter.name;
+        profile.appendChild(charBtn);
+        const details = document.createElement('div');
+        details.id = 'character-details';
+        charBtn.addEventListener('click', () => details.classList.toggle('hidden'));
+
+        const invBtn = document.createElement('button');
+        invBtn.textContent = 'Inventory';
+        invBtn.addEventListener('click', () => {
+            renderInventoryScreen(container);
+        });
+
+        const equipBtn = document.createElement('button');
+        equipBtn.textContent = 'Equipment';
+        equipBtn.addEventListener('click', () => {
+            renderEquipmentScreen(container);
+        });
+
+        details.appendChild(line2);
+        details.appendChild(line3);
+        details.appendChild(line4);
+        details.appendChild(line5);
+        details.appendChild(lineCp);
+        details.appendChild(line6);
+        if (modeBtn) details.appendChild(modeBtn);
+        details.appendChild(invBtn);
+        details.appendChild(equipBtn);
+        profile.appendChild(details);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -914,6 +926,188 @@ export function renderPlayUI(root) {
     });
 }
 
+function createAreaGrid(root, loc) {
+    const grid = document.createElement('div');
+    grid.id = 'area-grid';
+
+    const travelCol = document.createElement('div');
+    travelCol.className = 'area-column';
+    const travelHeader = document.createElement('button');
+    travelHeader.className = 'area-header';
+    travelHeader.textContent = 'Zone';
+    travelHeader.addEventListener('click', () => travelList.classList.toggle('hidden'));
+    travelCol.appendChild(travelHeader);
+    const travelList = document.createElement('ul');
+
+    if (loc.distance > 0) {
+        const exploreLi = document.createElement('li');
+        const exploreBtn = document.createElement('button');
+        exploreBtn.textContent = 'Explore';
+        exploreBtn.className = 'explore-btn';
+        exploreBtn.addEventListener('click', () => {
+            const mob = exploreEncounter(loc.name);
+            if (mob) {
+                renderCombatScreen(root, [mob]);
+            }
+        });
+        exploreLi.appendChild(exploreBtn);
+        travelList.appendChild(exploreLi);
+
+        const huntLi = document.createElement('li');
+        const huntSelect = document.createElement('select');
+        const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
+        names.forEach(n => huntSelect.appendChild(new Option(n, n)));
+        const huntBtn = document.createElement('button');
+        huntBtn.textContent = 'Hunt';
+        huntBtn.addEventListener('click', () => {
+            const mobs = huntEncounter(loc.name, huntSelect.value);
+            if (mobs.length) renderCombatScreen(root, mobs);
+        });
+        huntLi.appendChild(huntSelect);
+        huntLi.appendChild(huntBtn);
+        travelList.appendChild(huntLi);
+    }
+
+    const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
+    const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
+
+    const craftingKeywords = /guild/i;
+    const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
+
+    loc.connectedAreas.forEach(area => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        const total = getZoneTravelTurns(area, loc.name);
+        const travel = activeCharacter.travel &&
+            activeCharacter.travel.start === loc.name &&
+            activeCharacter.travel.destination === area
+            ? activeCharacter.travel.remaining
+            : total;
+        if (total > 1) {
+            btn.textContent = `${area} (${travel}/${total})`;
+        } else {
+            btn.textContent = area;
+        }
+        btn.addEventListener('click', () => {
+            if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
+                activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
+            }
+            const mob = rollForEncounter(activeCharacter, loc.name);
+            if (mob) {
+                renderCombatScreen(root, [mob], area);
+                return;
+            }
+            activeCharacter.travel.remaining -= 1;
+            if (activeCharacter.travel.remaining <= 0) {
+                setLocation(activeCharacter, area);
+                activeCharacter.travel = null;
+            }
+            persistCharacter(activeCharacter);
+            renderAreaScreen(root);
+        });
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    });
+
+    travelPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    });
+    travelCol.appendChild(travelList);
+
+    const craftPOIs = [];
+    craftingPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        craftPOIs.push(li);
+    });
+    let craftCol = null;
+    if (craftPOIs.length) {
+        craftCol = document.createElement('div');
+        craftCol.className = 'area-column';
+        const craftHeader = document.createElement('button');
+        craftHeader.className = 'area-header';
+        craftHeader.textContent = 'Crafting';
+        craftCol.appendChild(craftHeader);
+        const craftList = document.createElement('ul');
+        craftHeader.addEventListener('click', () => craftList.classList.toggle('hidden'));
+        craftPOIs.forEach(li => craftList.appendChild(li));
+        craftCol.appendChild(craftList);
+    }
+
+    const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
+    const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
+    const marketItems = [];
+    marketPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        marketItems.push(li);
+    });
+    let marketCol = null;
+    let marketList = null;
+    if (marketItems.length) {
+        marketCol = document.createElement('div');
+        marketCol.className = 'area-column';
+        const marketHeader = document.createElement('button');
+        marketHeader.className = 'area-header';
+        marketHeader.textContent = 'Marketplace';
+        marketHeader.addEventListener('click', () => marketList.classList.toggle('hidden'));
+        marketCol.appendChild(marketHeader);
+        marketList = document.createElement('ul');
+        marketItems.forEach(li => marketList.appendChild(li));
+        marketCol.appendChild(marketList);
+    }
+
+    const otherCol = document.createElement('div');
+    otherCol.className = 'area-column';
+    const otherHeader = document.createElement('button');
+    otherHeader.className = 'area-header';
+    otherHeader.textContent = 'Other';
+    otherHeader.addEventListener('click', () => otherList.classList.toggle('hidden'));
+    otherCol.appendChild(otherHeader);
+    const otherList = document.createElement('ul');
+
+    loc.pointsOfInterest.forEach(p => {
+        if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        otherList.appendChild(li);
+    });
+    const merchantNPC = /(merchant|shop|store|auction|vendor|goods|gear|scribe|notary)/i;
+    loc.importantNPCs.forEach(n => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = n;
+        btn.addEventListener('click', () => openMenu(n));
+        li.appendChild(btn);
+        if (merchantNPC.test(n) && marketList) {
+            marketList.appendChild(li);
+        } else {
+            otherList.appendChild(li);
+        }
+    });
+    otherCol.appendChild(otherList);
+
+    grid.appendChild(travelCol);
+    if (craftCol) grid.appendChild(craftCol);
+    if (marketCol) grid.appendChild(marketCol);
+    grid.appendChild(otherCol);
+    return grid;
+}
+
 export function renderAreaScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
@@ -938,184 +1132,7 @@ export function renderAreaScreen(root) {
                 }
             }
         }
-        const grid = document.createElement('div');
-        grid.id = 'area-grid';
-
-        const travelCol = document.createElement('div');
-        travelCol.className = 'area-column';
-        const travelHeader = document.createElement('button');
-        travelHeader.className = 'area-header';
-        travelHeader.textContent = 'Zone';
-        travelHeader.addEventListener('click', () => travelList.classList.toggle('hidden'));
-        travelCol.appendChild(travelHeader);
-        const travelList = document.createElement('ul');
-
-        if (loc.distance > 0) {
-            const exploreLi = document.createElement('li');
-            const exploreBtn = document.createElement('button');
-            exploreBtn.textContent = 'Explore';
-            exploreBtn.className = 'explore-btn';
-            exploreBtn.addEventListener('click', () => {
-                const mob = exploreEncounter(loc.name);
-                if (mob) {
-                    renderCombatScreen(root, [mob]);
-                }
-            });
-            exploreLi.appendChild(exploreBtn);
-            travelList.appendChild(exploreLi);
-
-            const huntLi = document.createElement('li');
-            const huntSelect = document.createElement('select');
-            const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
-            names.forEach(n => huntSelect.appendChild(new Option(n, n)));
-            const huntBtn = document.createElement('button');
-            huntBtn.textContent = 'Hunt';
-            huntBtn.addEventListener('click', () => {
-                const mobs = huntEncounter(loc.name, huntSelect.value);
-                if (mobs.length) renderCombatScreen(root, mobs);
-            });
-            huntLi.appendChild(huntSelect);
-            huntLi.appendChild(huntBtn);
-            travelList.appendChild(huntLi);
-        }
-
-        const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
-        const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
-
-        const craftingKeywords = /guild/i;
-        const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
-
-        loc.connectedAreas.forEach(area => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            const total = getZoneTravelTurns(area, loc.name);
-            const travel = activeCharacter.travel &&
-                activeCharacter.travel.start === loc.name &&
-                activeCharacter.travel.destination === area
-                ? activeCharacter.travel.remaining
-                : total;
-            if (total > 1) {
-                btn.textContent = `${area} (${travel}/${total})`;
-            } else {
-                btn.textContent = area;
-            }
-            btn.addEventListener('click', () => {
-                if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
-                    activeCharacter.travel = { start: loc.name, destination: area, remaining: total, total };
-                }
-                const mob = rollForEncounter(activeCharacter, loc.name);
-                if (mob) {
-                    renderCombatScreen(root, [mob], area);
-                    return;
-                }
-                activeCharacter.travel.remaining -= 1;
-                if (activeCharacter.travel.remaining <= 0) {
-                    setLocation(activeCharacter, area);
-                    activeCharacter.travel = null;
-                }
-                persistCharacter(activeCharacter);
-                renderAreaScreen(root);
-            });
-            li.appendChild(btn);
-            travelList.appendChild(li);
-        });
-
-        travelPOIs.forEach(p => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.textContent = p;
-            btn.addEventListener('click', () => openMenu(p));
-            li.appendChild(btn);
-            travelList.appendChild(li);
-        });
-        travelCol.appendChild(travelList);
-
-        const craftPOIs = [];
-        craftingPOIs.forEach(p => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.textContent = p;
-            btn.addEventListener('click', () => openMenu(p));
-            li.appendChild(btn);
-            craftPOIs.push(li);
-        });
-        let craftCol = null;
-        if (craftPOIs.length) {
-            craftCol = document.createElement('div');
-            craftCol.className = 'area-column';
-            const craftHeader = document.createElement('button');
-            craftHeader.className = 'area-header';
-            craftHeader.textContent = 'Crafting';
-            craftCol.appendChild(craftHeader);
-            const craftList = document.createElement('ul');
-            craftHeader.addEventListener('click', () => craftList.classList.toggle('hidden'));
-            craftPOIs.forEach(li => craftList.appendChild(li));
-            craftCol.appendChild(craftList);
-        }
-
-        const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
-        const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
-        const marketItems = [];
-        marketPOIs.forEach(p => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.textContent = p;
-            btn.addEventListener('click', () => openMenu(p));
-            li.appendChild(btn);
-            marketItems.push(li);
-        });
-        let marketCol = null;
-        let marketList = null;
-        if (marketItems.length) {
-            marketCol = document.createElement('div');
-            marketCol.className = 'area-column';
-            const marketHeader = document.createElement('button');
-            marketHeader.className = 'area-header';
-            marketHeader.textContent = 'Marketplace';
-            marketHeader.addEventListener('click', () => marketList.classList.toggle('hidden'));
-            marketCol.appendChild(marketHeader);
-            marketList = document.createElement('ul');
-            marketItems.forEach(li => marketList.appendChild(li));
-            marketCol.appendChild(marketList);
-        }
-
-        const otherCol = document.createElement('div');
-        otherCol.className = 'area-column';
-        const otherHeader = document.createElement('button');
-        otherHeader.className = 'area-header';
-        otherHeader.textContent = 'Other';
-        otherHeader.addEventListener('click', () => otherList.classList.toggle('hidden'));
-        otherCol.appendChild(otherHeader);
-        const otherList = document.createElement('ul');
-
-        loc.pointsOfInterest.forEach(p => {
-            if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.textContent = p;
-            btn.addEventListener('click', () => openMenu(p));
-            li.appendChild(btn);
-            otherList.appendChild(li);
-        });
-        const merchantNPC = /(merchant|shop|store|auction|vendor|goods|gear|scribe|notary)/i;
-        loc.importantNPCs.forEach(n => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.textContent = n;
-            btn.addEventListener('click', () => openMenu(n));
-            li.appendChild(btn);
-            if (merchantNPC.test(n) && marketList) {
-                marketList.appendChild(li);
-            } else {
-                otherList.appendChild(li);
-            }
-        });
-        otherCol.appendChild(otherList);
-
-        grid.appendChild(travelCol);
-        if (craftCol) grid.appendChild(craftCol);
-        if (marketCol) grid.appendChild(marketCol);
-        grid.appendChild(otherCol);
+        const grid = createAreaGrid(root, loc);
         root.appendChild(grid);
     }
 

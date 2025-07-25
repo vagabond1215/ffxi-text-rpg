@@ -293,6 +293,11 @@ body.portrait .main-layout {
     margin-top: 6px;
 }
 
+#character-details {
+    display: flex;
+    flex-direction: column;
+}
+
 .race-img, .job-img, .city-img, .character-img {
     width: clamp(120px, 20vw, 200px);
     height: auto;
