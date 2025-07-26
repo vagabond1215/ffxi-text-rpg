@@ -163,6 +163,20 @@ body.landscape #area-grid {
     gap: 10px;
 }
 
+.nav-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.mob-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
 #nearby-monsters {
     display: flex;
     flex-direction: column;
@@ -171,6 +185,11 @@ body.landscape #area-grid {
 
 .monster-btn {
     width: 100px;
+}
+
+.monster-btn.defeated {
+    background-color: #555;
+    color: #aaa;
 }
 
 .monster-btn.aggro {
@@ -597,7 +616,7 @@ body.portrait .main-layout {
 
 #game-log {
     position: fixed;
-    bottom: 40px;
+    top: 40px;
     left: 5px;
     right: 5px;
     max-height: 200px;

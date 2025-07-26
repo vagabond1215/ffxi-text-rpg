@@ -50,7 +50,7 @@ let selectedMonsterIndex = null;
 function updateGameLogPadding() {
     if (!logPanelElement) return;
     const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
-    document.body.style.paddingBottom = height + 'px';
+    document.body.style.paddingTop = height + 'px';
 }
 
 export function setupLogControls(btn, panel) {
@@ -64,7 +64,7 @@ export function setupLogControls(btn, panel) {
     logButtonElement.addEventListener('mouseup', hide);
     logButtonElement.addEventListener('mouseleave', hide);
     logButtonElement.addEventListener('touchend', hide);
-    hide();
+    show();
 }
 
 export function addGameLog(msg) {
@@ -1176,7 +1176,7 @@ function createActionPanel(root, loc) {
         { l: 'N', dx: 0, dy: -1 },
         { l: 'NE', dx: 1, dy: -1 },
         { l: 'W', dx: -1, dy: 0 },
-        { l: '\u2694', attack: true },
+        { blank: true },
         { l: 'E', dx: 1, dy: 0 },
         { l: 'SW', dx: -1, dy: 1 },
         { l: 'S', dx: 0, dy: 1 },
@@ -1184,16 +1184,11 @@ function createActionPanel(root, loc) {
     ];
     dirs.forEach(d => {
         const b = document.createElement('button');
-        b.textContent = d.l;
-        if (d.attack) {
-            b.addEventListener('click', () => {
-                if (selectedMonsterIndex === null) return;
-                const mob = nearbyMonsters[selectedMonsterIndex];
-                if (mob) {
-                    renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
-                }
-            });
+        if (d.blank) {
+            b.disabled = true;
+            b.style.visibility = 'hidden';
         } else {
+            b.textContent = d.l;
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
@@ -1219,12 +1214,15 @@ function createActionPanel(root, loc) {
             const btn = document.createElement('button');
             btn.textContent = m.name;
             btn.className = 'monster-btn';
+            if (m.defeated) btn.classList.add('defeated');
             if (m.aggro) btn.classList.add('aggro');
             if (i === selectedMonsterIndex) btn.classList.add('selected');
             btn.addEventListener('click', () => {
+                if (m.defeated) return;
                 selectedMonsterIndex = i;
                 renderMonsters();
             });
+            btn.disabled = m.defeated;
             monsterList.appendChild(btn);
         });
     }
@@ -1233,16 +1231,34 @@ function createActionPanel(root, loc) {
 
     const navRow = document.createElement('div');
     navRow.className = 'nav-row';
-    navRow.appendChild(dirGrid);
-    navRow.appendChild(monsterList);
-    actionWrap.appendChild(navRow);
+    const navCol = document.createElement('div');
+    navCol.className = 'nav-column';
+    navCol.appendChild(dirGrid);
 
     const coordDisp = document.createElement('div');
     coordDisp.id = 'coord-display';
     if (activeCharacter.coordinates) {
         coordDisp.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
     }
-    actionWrap.appendChild(coordDisp);
+    navCol.appendChild(coordDisp);
+
+    const mobCol = document.createElement('div');
+    mobCol.className = 'mob-column';
+    mobCol.appendChild(monsterList);
+    const attackBtn = document.createElement('button');
+    attackBtn.textContent = 'Attack';
+    attackBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex === null) return;
+        const mob = nearbyMonsters[selectedMonsterIndex];
+        if (mob && !mob.defeated) {
+            renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
+        }
+    });
+    mobCol.appendChild(attackBtn);
+
+    navRow.appendChild(navCol);
+    navRow.appendChild(mobCol);
+    actionWrap.appendChild(navRow);
 
     return actionWrap;
 }
@@ -1484,11 +1500,12 @@ function renderCombatScreen(root, mobs, destination) {
             activeCharacter.gil += gil;
             activeCharacter.conquestPoints = (activeCharacter.conquestPoints || 0) + cp;
             addItemsToInventory(itemDrops);
-            defeated
-                .map(m => m.listIndex)
-                .filter(i => i !== undefined)
-                .sort((a, b) => b - a)
-                .forEach(i => nearbyMonsters.splice(i, 1));
+            defeated.forEach(m => {
+                let idx = m.listIndex;
+                if (idx === undefined) idx = nearbyMonsters.indexOf(m);
+                if (idx !== -1) nearbyMonsters[idx].defeated = true;
+            });
+            selectedMonsterIndex = null;
             if (destination && activeCharacter.hp > 0) {
                 setLocation(activeCharacter, destination);
             }
