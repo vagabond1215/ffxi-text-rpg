@@ -127,7 +127,7 @@ export const zonesByCity = {
         'Vomp Hill': 'I-9',
         'Cavernous Maw (Abyssea – Altepa)': 'J-10'
       },
-      connectedAreas: ['Bastok Markets', 'North Gustaberg (East)', 'North Gustaberg (West)', 'Konschtat Highlands', 'Dangruf Wadi', 'Vomp Hill'],
+      connectedAreas: ['Bastok Markets', 'North Gustaberg (East)', 'North Gustaberg (West)', 'Dangruf Wadi', 'Vomp Hill'],
       pointsOfInterest: ['Outpost', 'Selt Steel Mines', 'Vomp Hill Ramp'],
       importantNPCs: []
     },
@@ -146,7 +146,7 @@ export const zonesByCity = {
       city: 'Bastok',
       distance: 2,
       subAreas: [],
-      connectedAreas: ['North Gustaberg (West)', 'South Gustaberg', 'Valkurm Dunes', 'Gusgen Mines', 'Pashhow Marshlands'],
+      connectedAreas: ['North Gustaberg (West)', 'Valkurm Dunes', 'Gusgen Mines', 'Pashhow Marshlands'],
       pointsOfInterest: ['Outpost', 'Crag of Dem'],
       importantNPCs: []
     },
