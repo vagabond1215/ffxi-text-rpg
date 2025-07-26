@@ -1175,7 +1175,7 @@ function createActionPanel(root, loc) {
         { l: 'N', dx: 0, dy: -1 },
         { l: 'NE', dx: 1, dy: -1 },
         { l: 'W', dx: -1, dy: 0 },
-        { blank: true },
+        { attack: true },
         { l: 'E', dx: 1, dy: 0 },
         { l: 'SW', dx: -1, dy: 1 },
         { l: 'S', dx: 0, dy: 1 },
@@ -1183,9 +1183,16 @@ function createActionPanel(root, loc) {
     ];
     dirs.forEach(d => {
         const b = document.createElement('button');
-        if (d.blank) {
-            b.disabled = true;
-            b.style.visibility = 'hidden';
+        if (d.attack) {
+            b.textContent = '🗡';
+            b.id = 'attack-button';
+            b.addEventListener('click', () => {
+                if (selectedMonsterIndex === null) return;
+                const mob = nearbyMonsters[selectedMonsterIndex];
+                if (mob && !mob.defeated) {
+                    renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
+                }
+            });
         } else {
             b.textContent = d.l;
             b.addEventListener('click', () => {
@@ -1244,16 +1251,6 @@ function createActionPanel(root, loc) {
     const mobCol = document.createElement('div');
     mobCol.className = 'mob-column';
     mobCol.appendChild(monsterList);
-    const attackBtn = document.createElement('button');
-    attackBtn.textContent = 'Attack';
-    attackBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex === null) return;
-        const mob = nearbyMonsters[selectedMonsterIndex];
-        if (mob && !mob.defeated) {
-            renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
-        }
-    });
-    mobCol.appendChild(attackBtn);
 
     navRow.appendChild(navCol);
     navRow.appendChild(mobCol);
@@ -1275,10 +1272,10 @@ function renderCombatScreen(root, mobs, destination) {
     enemyColumn.className = 'enemy-column';
     const enemyList = document.createElement('div');
     enemyList.className = 'enemy-list';
-    const partyList = document.createElement('div');
-    partyList.className = 'party-list';
     enemyColumn.appendChild(enemyList);
-    enemyColumn.appendChild(partyList);
+
+    const actionColumn = document.createElement('div');
+    actionColumn.className = 'action-column';
 
     const logColumn = document.createElement('div');
     logColumn.className = 'log-column';
@@ -1304,18 +1301,6 @@ function renderCombatScreen(root, mobs, destination) {
         enemyList.appendChild(entry);
     });
     let currentTarget = mobs[0];
-    const partyEntry = document.createElement('div');
-    partyEntry.className = 'target-entry';
-    const partyBtn = document.createElement('button');
-    partyBtn.id = 'party-player';
-    partyBtn.className = 'target-button';
-    partyBtn.textContent = activeCharacter.name;
-    const partyStats = document.createElement('span');
-    partyStats.className = 'target-stats';
-    partyStats.textContent = `HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
-    partyEntry.appendChild(partyBtn);
-    partyEntry.appendChild(partyStats);
-    partyList.appendChild(partyEntry);
 
     const logDiv = document.createElement('div');
     logDiv.id = 'combat-log';
@@ -1324,6 +1309,7 @@ function renderCombatScreen(root, mobs, destination) {
     logColumn.appendChild(logDiv);
 
     container.appendChild(enemyColumn);
+    container.appendChild(actionColumn);
     container.appendChild(logColumn);
     root.appendChild(container);
 
@@ -1478,7 +1464,6 @@ function renderCombatScreen(root, mobs, destination) {
     }
 
     function update() {
-        partyStats.textContent = `HP:${activeCharacter.hp} MP:${activeCharacter.mp}`;
         enemyEntries.forEach((obj, i) => {
             if (mobs[i]) obj.stat.textContent = `HP:${mobs[i].currentHP}`;
         });
@@ -1651,7 +1636,7 @@ function renderCombatScreen(root, mobs, destination) {
         actionDiv.appendChild(fleeWrap);
         actionDiv.appendChild(magicWrap);
 
-        enemyColumn.appendChild(actionDiv);
+        actionColumn.appendChild(actionDiv);
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
@@ -1677,13 +1662,13 @@ function renderCombatScreen(root, mobs, destination) {
         }
 
         attackBtn.addEventListener('click', () => {
-            enemyColumn.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             attack(activeCharacter, currentTarget);
             afterAction();
         });
 
         abilityBtn.addEventListener('click', () => {
-            enemyColumn.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
             attack(activeCharacter, currentTarget);
@@ -1691,7 +1676,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         magicBtn.addEventListener('click', () => {
-            enemyColumn.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
             attack(activeCharacter, currentTarget);
@@ -1699,7 +1684,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         fleeBtn.addEventListener('click', () => {
-            enemyColumn.removeChild(actionDiv);
+            actionColumn.removeChild(actionDiv);
             if (attemptFlee()) return;
             monsterTurn();
         });
