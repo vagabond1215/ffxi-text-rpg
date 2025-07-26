@@ -21,18 +21,16 @@ export function conLevel(playerLevel, monsterLevel) {
 
 export function encounterChance(playerLevel, monsterLevel) {
   const diff = monsterLevel - playerLevel;
-  if (diff <= -6) return 0; // too weak
-  if (diff <= -1) return 0.2; // easy prey / decent challenge
-  if (diff === 0) return 0.5; // even match
-  if (diff === 1) return 0.7; // tough
-  if (diff === 2) return 0.9; // very tough
-  return 1; // incredibly tough
+  let chance = 0.5 + diff * 0.0625;
+  if (chance < 0) chance = 0;
+  if (chance > 1) chance = 1;
+  return chance;
 }
 
 import { bestiaryByZone } from '../data/bestiary.js';
 import { locations } from '../data/locations.js';
 
-function monstersByDistance(zone) {
+export function monstersByDistance(zone) {
   const mobs = bestiaryByZone[zone] || [];
   const loc = locations.find(l => l.name === zone);
   const dist = loc?.distance ?? 0;
@@ -121,14 +119,13 @@ export function getZoneTravelTurns(zone, baseZone = zone) {
 
 export function rollForEncounter(character, zone, options = {}) {
   const usingMount = !!options.mount;
-  const baseChance = baseEncounterChanceForZone(character.level, zone);
-  const chance = Math.max(0, baseChance - (usingMount ? 0.2 : 0));
+  const mobs = getAggressiveMonsters(zone);
+  if (!mobs.length) return null;
+  const mob = mobs[Math.floor(Math.random() * mobs.length)];
+  let chance = encounterChance(character.level, parseLevel(mob.level));
+  if (usingMount) chance = Math.max(0, chance - 0.2);
   if (Math.random() < chance) {
-    const mobs = getAggressiveMonsters(zone);
-    if (mobs.length) {
-      const mob = mobs[Math.floor(Math.random() * mobs.length)];
-      return mob;
-    }
+    return mob;
   }
   return null;
 }
@@ -136,16 +133,15 @@ export function rollForEncounter(character, zone, options = {}) {
 export function walkAcrossZone(character, zone, options = {}) {
   const usingMount = !!options.mount;
   const turns = Math.ceil(getZoneTravelTurns(zone) / (usingMount ? 2 : 1));
-  const baseChance = baseEncounterChanceForZone(character.level, zone);
-  const chance = Math.max(0, baseChance - (usingMount ? 0.2 : 0));
   const encounters = [];
   for (let t = 1; t <= turns; t++) {
+    const mobs = getAggressiveMonsters(zone);
+    if (!mobs.length) break;
+    const mob = mobs[Math.floor(Math.random() * mobs.length)];
+    let chance = encounterChance(character.level, parseLevel(mob.level));
+    if (usingMount) chance = Math.max(0, chance - 0.2);
     if (Math.random() < chance) {
-      const mobs = getAggressiveMonsters(zone);
-      if (mobs.length) {
-        const mob = mobs[Math.floor(Math.random() * mobs.length)];
-        encounters.push({ turn: t, monster: mob.name });
-      }
+      encounters.push({ turn: t, monster: mob.name });
     }
   }
   return { turns, encounters };
@@ -159,11 +155,11 @@ export function exploreEncounter(zone) {
 
 export function huntEncounter(zone, targetName) {
   const mobs = bestiaryByZone[zone] || [];
-  const matches = mobs.filter(m => m.name === targetName);
+  const matches = mobs.filter(m => m.name.startsWith(targetName));
   if (!matches.length) return [];
   const pick = { ...matches[Math.floor(Math.random() * matches.length)] };
   const group = [pick];
-  const firstWord = targetName.split(' ')[0];
+  const firstWord = pick.name.split(' ')[0];
   const sameRace = mobs.filter(m => m.name.startsWith(firstWord));
   if ((pick.linking || /(Goblin|Orc|Yagudo|Quadav)/i.test(firstWord)) && sameRace.length > 1) {
     const extra = Math.random() < 0.5 ? 1 : 0;
@@ -173,4 +169,57 @@ export function huntEncounter(zone, targetName) {
     }
   }
   return group;
+}
+
+export function spawnNearbyMonsters(character, zone) {
+  const pool = monstersByDistance(zone);
+  if (!pool.length) return { list: [], aggro: [] };
+  const count = Math.floor(Math.random() * 6) + 1;
+  const list = [];
+  for (let i = 0; i < count; i++) {
+    const mob = { ...pool[Math.floor(Math.random() * pool.length)] };
+    list.push(mob);
+  }
+  const linkGroups = {};
+  list.forEach(m => {
+    if (m.linking) {
+      const key = m.name.split(' ')[0];
+      if (!linkGroups[key]) linkGroups[key] = [];
+      linkGroups[key].push(m);
+    }
+  });
+
+  const processed = new Set();
+  const aggro = [];
+  let aggroCount = 0;
+  const candidates = [];
+
+  list.forEach(m => {
+    if (m.linking) {
+      const key = m.name.split(' ')[0];
+      if (processed.has(key)) return;
+      processed.add(key);
+      candidates.push(linkGroups[key]);
+    } else {
+      candidates.push([m]);
+    }
+  });
+
+  candidates.forEach(group => {
+    const baseLevel = parseLevel(group[0].level);
+    let baseChance = encounterChance(character.level, baseLevel);
+    let chance = baseChance;
+    if (group.length === 1 && aggroCount > 0) {
+      chance = Math.pow(baseChance, aggroCount + 1);
+    }
+    if (Math.random() < chance) {
+      aggroCount++;
+      group.forEach(m => {
+        m.aggro = true;
+        aggro.push(m);
+      });
+    }
+  });
+
+  return { list, aggro };
 }
