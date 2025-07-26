@@ -3441,6 +3441,18 @@ export const vendorInventories = {
   'Sororo': ['scrollCure', 'scrollCureII', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollDiaga', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollProtect', 'scrollShell', 'scrollStoneskin', 'scrollSlow']
 };
 
+// Map vendor NPCs to their shop inventories
+vendorInventories.Boytz = vendorInventories["Boytz's Knickknacks"];
+vendorInventories.Gelzerio = vendorInventories["Gelzerio's Stall"];
+vendorInventories.Deegis = vendorInventories["Deegis's Armour"];
+vendorInventories.Neigepance = vendorInventories["Neigepance's Chocobo Stables"];
+vendorInventories.Griselda = vendorInventories["Griselda's Tavern"];
+vendorInventories.Amulya = vendorInventories["Blacksmith's Guild"];
+vendorInventories['Vicious Eye'] = vendorInventories['Blacksmith Supplies'];
+vendorInventories.Odoba = vendorInventories["Alchemists' Guild"];
+vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
+vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
+
 export const shopNpcs = {
   'Brunhilde\'s Armourer': ['Brunhilde the Armourer'],
   "Dragon's Claw Weaponry": ['Ciqala'],
