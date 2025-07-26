@@ -984,7 +984,6 @@ function createAreaGrid(root, loc) {
 
     const travelList = makeSection('Zone');
 
-    // Explore and hunt controls are added in renderAreaScreen
 
     const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
     const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
@@ -1263,44 +1262,6 @@ function createActionPanel(root, loc) {
     return actionWrap;
 }
 
-export function renderAreaScreen(root) {
-    if (!activeCharacter) return;
-    root.innerHTML = '';
-    root.appendChild(statusEffectsDisplay());
-    const loc = locations.find(l => l.name === activeCharacter.currentLocation);
-    const title = document.createElement('h2');
-    const coordLabel = activeCharacter.coordinates ? `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}` : '';
-    title.textContent = loc ? `${loc.name} ${coordLabel}`.trim() : 'Unknown Area';
-    root.appendChild(title);
-
-    if (loc) {
-        if (/Residential Area/i.test(loc.name)) {
-            if (loc.city !== activeCharacter.homeCity && !activeCharacter.ownedResidences.includes(loc.city)) {
-                if (confirm(`You do not currently have a rental house in ${loc.city}, would you like to purchase one now for 3500 gil?`)) {
-                    if (activeCharacter.gil >= 3500) {
-                        activeCharacter.gil -= 3500;
-                        activeCharacter.ownedResidences.push(loc.city);
-                        persistCharacter(activeCharacter);
-                        alert('Rental house purchased.');
-                    } else {
-                        alert('Not enough gil.');
-                    }
-                }
-            }
-        }
-        if (loc.distance > 0) {
-            const actions = createActionPanel(root, loc);
-            if (actions) root.appendChild(actions);
-        }
-        const grid = createAreaGrid(root, loc);
-        root.appendChild(grid);
-    }
-
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
-}
 
 function renderCombatScreen(root, mobs, destination) {
     if (!activeCharacter) return;
