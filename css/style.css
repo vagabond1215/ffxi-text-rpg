@@ -380,6 +380,12 @@ body.portrait .main-layout {
     flex-direction: column;
 }
 
+.profile-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .race-img, .job-img, .city-img, .character-img {
     width: clamp(120px, 20vw, 200px);
     height: auto;

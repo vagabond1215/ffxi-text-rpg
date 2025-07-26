@@ -35,7 +35,7 @@ export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
 export { bestiaryByZone, allMonsters } from './bestiary.js';
 export { notoriousMonsters } from './nms.js';
 export { experienceTable, expToLevel, expNeeded, experienceForKill } from './experience.js';
-export { items, vendorInventories, shopNpcs, conquestRewards } from './vendors.js';
+export { items, vendorInventories, shopNpcs, vendorGreetings, vendorTypes, conquestRewards } from './vendors.js';
 export {
   parseLevel,
   conLevel,

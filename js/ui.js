@@ -15,6 +15,8 @@ import {
     locations,
     vendorInventories,
     shopNpcs,
+    vendorGreetings,
+    vendorTypes,
     items,
     conquestRewards,
     updateDerivedStats,
@@ -484,10 +486,15 @@ export function renderMainMenu() {
         }
 
         profile.appendChild(imgNav.wrapper);
+
+        const group = document.createElement('div');
+        group.className = 'profile-group';
+
         const charBtn = document.createElement('button');
         charBtn.className = 'profile-btn';
         charBtn.textContent = activeCharacter.name;
-        profile.appendChild(charBtn);
+        group.appendChild(charBtn);
+
         const details = document.createElement('div');
         details.id = 'character-details';
         details.classList.add('hidden');
@@ -514,7 +521,8 @@ export function renderMainMenu() {
         if (modeBtn) details.appendChild(modeBtn);
         details.appendChild(invBtn);
         details.appendChild(equipBtn);
-        profile.appendChild(details);
+        group.appendChild(details);
+        profile.appendChild(group);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -968,9 +976,7 @@ function renderPlayUI(root) {
 function createAreaGrid(root, loc) {
     const grid = document.createElement('div');
     grid.id = 'area-grid';
-    if (loc.distance === 0) {
-        grid.classList.add('vertical');
-    }
+    grid.classList.add('vertical');
 
     const sections = [];
     function makeSection(title) {
@@ -1782,11 +1788,18 @@ function sellItem(id, qty = 1) {
     alert(`Sold ${qty} x ${item.name} for ${revenue} gil.`);
 }
 
-function renderVendorMenu(root, vendor, backFn = null) {
+function renderVendorMenu(root, vendor, backFn = null, shopName = null) {
     root.innerHTML = '';
     const title = document.createElement('h2');
-    title.textContent = vendor;
+    title.textContent = shopName || vendor;
     root.appendChild(title);
+    const intro = document.createElement('p');
+    if (shopName) intro.textContent = `You enter ${shopName} and approach ${vendor}.`;
+    else intro.textContent = `You approach ${vendor}.`;
+    root.appendChild(intro);
+    const greet = document.createElement('p');
+    greet.textContent = vendorGreetings[vendor] || 'Welcome, traveler.';
+    root.appendChild(greet);
     root.appendChild(characterSummary());
     const buyBtn = document.createElement('button');
     buyBtn.textContent = 'Buy';
@@ -2245,15 +2258,23 @@ function openMenu(name, backFn) {
     const root = document.getElementById('app');
     const backHandler = backFn || (() => refreshMainMenu(root));
     if (shopNpcs[name]) {
+        const npcs = shopNpcs[name];
+        if (npcs.length === 1) {
+            renderVendorMenu(root, npcs[0], backHandler, name);
+            return;
+        }
         root.innerHTML = '';
         const title = document.createElement('h2');
         title.textContent = name;
         root.appendChild(title);
+        const intro = document.createElement('p');
+        intro.textContent = `You enter ${name}. Inside you see:`;
+        root.appendChild(intro);
         const list = document.createElement('ul');
-        shopNpcs[name].forEach(npc => {
+        npcs.forEach(npc => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
-            btn.textContent = npc;
+            btn.textContent = npc + (vendorTypes[npc] ? ` - ${vendorTypes[npc]}` : '');
             btn.addEventListener('click', () => openMenu(npc, () => openMenu(name, backFn)));
             li.appendChild(btn);
             list.appendChild(li);

@@ -3478,6 +3478,68 @@ export const shopNpcs = {
   'Map Vendor': ['Karine', 'Rex', 'Elesca', 'Violitte', 'Mhoji Roccoruh', 'Pehki Machumaht', 'Ludwig', 'Lombaria', 'Promurouve', 'Rusese', 'Antiqix', 'Haggleblix', 'Lootblox', 'Riyadahf']
 };
 
+export const vendorGreetings = {
+  'Brunhilde the Armourer': "Welcome to my armoury, traveler!",
+  'Ciqala': 'Looking for a new weapon? Take your pick.',
+  'Carmelide': 'Only the finest jewels for sale here.',
+  'Hortense': 'Care to peruse my collection of scores?',
+  'Sororo': 'Official documents and scrolls, right this way.',
+  'Galvin': 'Travel gear for every journey!',
+  'Ilita': 'Linkshells and rare trinkets at fair prices.',
+  'Numa': 'Sturdy gear for the road.',
+  'Melloa': 'Hungry? We have fresh meals ready.',
+  'Sawyer': 'Sit and relax, I will serve you shortly.',
+  'Boytz': 'Knickknacks and oddities galore!',
+  'Gelzerio': 'Need supplies? Take a look.',
+  'Deegis': 'Armor to keep you standing strong.',
+  'Zemedars': 'Protect your legs and feet with my wares.',
+  'Proud Beard': 'Finest clothing in Bastok!',
+  'Neigepance': 'Chocobo supplies for the discerning rider.',
+  'Griselda': 'Welcome, have a seat and enjoy.',
+  'Amulya': 'Smithing goods for your craft.',
+  'Vicious Eye': 'Tools and metals, sharp and true.',
+  'Nogga': 'Handle these explosives with care!',
+  'Olaf': 'Ammunition and powder ready to go.',
+  'Tomasa': 'A warm meal will do you good.',
+  'Takiyah': 'Goods from distant Qufim, just in.',
+  'Odoba': 'Potions brewed to perfection.',
+  'Maymunah': 'Alchemical supplies for any venture.',
+  'Rodellieux': 'Fresh produce and lumber, take your pick.'
+};
+
+export const vendorTypes = {
+  'Brunhilde the Armourer': 'armor',
+  'Ciqala': 'weapons',
+  'Carmelide': 'jewelry',
+  'Hortense': 'music',
+  'Sororo': 'scribery',
+  'Galvin': 'travel gear',
+  'Ilita': 'linkshells',
+  'Numa': 'equipment',
+  'Melloa': 'food',
+  'Sawyer': 'food',
+  'Boytz': 'knickknacks',
+  'Gelzerio': 'supplies',
+  'Deegis': 'armor',
+  'Zemedars': 'armor',
+  'Proud Beard': 'clothing',
+  'Neigepance': 'chocobo gear',
+  'Griselda': 'tavern fare',
+  'Amulya': 'smithing goods',
+  'Vicious Eye': 'smithing supplies',
+  'Nogga': 'explosives',
+  'Olaf': 'ammunition',
+  'Tomasa': 'meals',
+  'Takiyah': 'regional goods',
+  'Odoba': 'alchemy',
+  'Maymunah': 'alchemy',
+  'Rodellieux': 'produce',
+  'Karine': 'maps', 'Rex': 'maps', 'Elesca': 'maps', 'Violitte': 'maps',
+  'Mhoji Roccoruh': 'maps', 'Pehki Machumaht': 'maps', 'Ludwig': 'maps',
+  'Lombaria': 'maps', 'Promurouve': 'maps', 'Rusese': 'maps', 'Antiqix': 'maps',
+  'Haggleblix': 'maps', 'Lootblox': 'maps', 'Riyadahf': 'maps'
+};
+
 export const conquestRewards = {
   instantReraise: 7,
   instantWarp: 10,
