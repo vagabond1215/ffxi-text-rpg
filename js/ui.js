@@ -47,10 +47,12 @@ let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
 
+const BASE_TOP_PADDING = 60;
+
 function updateGameLogPadding() {
     if (!logPanelElement) return;
     const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
-    document.body.style.paddingTop = height + 'px';
+    document.body.style.paddingTop = (BASE_TOP_PADDING + height) + 'px';
 }
 
 export function setupLogControls(btn, panel) {
@@ -966,6 +968,9 @@ function renderPlayUI(root) {
 function createAreaGrid(root, loc) {
     const grid = document.createElement('div');
     grid.id = 'area-grid';
+    if (loc.distance === 0) {
+        grid.classList.add('vertical');
+    }
 
     const sections = [];
     function makeSection(title) {
@@ -1618,14 +1623,14 @@ function renderCombatScreen(root, mobs, destination) {
         attackWrap.appendChild(attackBtn);
 
         const abilityWrap = document.createElement('div');
-        abilityWrap.className = 'action-cell';
-        abilityWrap.appendChild(abilitySelect);
+        abilityWrap.className = 'action-cell with-select';
         abilityWrap.appendChild(abilityBtn);
+        abilityWrap.appendChild(abilitySelect);
 
         const magicWrap = document.createElement('div');
-        magicWrap.className = 'action-cell';
-        magicWrap.appendChild(magicSelect);
+        magicWrap.className = 'action-cell with-select';
         magicWrap.appendChild(magicBtn);
+        magicWrap.appendChild(magicSelect);
 
         const fleeWrap = document.createElement('div');
         fleeWrap.className = 'action-cell';
