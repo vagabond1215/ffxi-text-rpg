@@ -214,6 +214,10 @@ body.landscape #area-grid {
     padding: 0;
 }
 
+#attack-button {
+    font-size: 20px;
+}
+
 #coord-display {
     margin-top: 6px;
 }
@@ -595,12 +599,12 @@ body.portrait .main-layout {
 /* Combat screen layout */
 #combat-screen {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr 2fr;
     gap: 10px;
     padding: 4px;
     align-items: start;
 }
-.enemy-column, .log-column {
+.enemy-column, .log-column, .action-column {
     display: flex;
     flex-direction: column;
     align-items: center;
