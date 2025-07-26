@@ -29,32 +29,42 @@ import {
     persistCharacter,
     setLocation,
     bestiaryByZone,
-    huntEncounter,
+    spawnNearbyMonsters,
     calculateBattleRewards,
     parseCoordinate,
     coordinateDistance,
     stepToward,
     checkForNM
 } from '../data/index.js';
-import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, rollForEncounter, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
+import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
 let backButtonElement = null;
 let openDetailElement = null;
 let logButtonElement = null;
 let logPanelElement = null;
 const gameLogMessages = [];
+let nearbyMonsters = [];
+let monsterCoordKey = '';
+let selectedMonsterIndex = null;
+
+function updateGameLogPadding() {
+    if (!logPanelElement) return;
+    const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
+    document.body.style.paddingBottom = height + 'px';
+}
 
 export function setupLogControls(btn, panel) {
     logButtonElement = btn;
     logPanelElement = panel;
     if (!logButtonElement || !logPanelElement) return;
-    const show = () => logPanelElement.classList.remove('hidden');
-    const hide = () => logPanelElement.classList.add('hidden');
+    const show = () => { logPanelElement.classList.remove('hidden'); updateGameLogPadding(); };
+    const hide = () => { logPanelElement.classList.add('hidden'); updateGameLogPadding(); };
     logButtonElement.addEventListener('mousedown', show);
     logButtonElement.addEventListener('touchstart', show);
     logButtonElement.addEventListener('mouseup', hide);
     logButtonElement.addEventListener('mouseleave', hide);
     logButtonElement.addEventListener('touchend', hide);
+    hide();
 }
 
 export function addGameLog(msg) {
@@ -67,12 +77,14 @@ export function addGameLog(msg) {
         const old = gameLogMessages.shift();
         if (old && old.parentElement) old.parentElement.remove();
     }
+    updateGameLogPadding();
 }
 
 export function showGameLogTemporarily(ms = 3000) {
     if (!logPanelElement) return;
     logPanelElement.classList.remove('hidden');
-    setTimeout(() => logPanelElement.classList.add('hidden'), ms);
+    updateGameLogPadding();
+    setTimeout(() => { logPanelElement.classList.add('hidden'); updateGameLogPadding(); }, ms);
 }
 
 function resetDetails() {
@@ -94,6 +106,25 @@ function toggleDetails(element) {
         element.classList.remove('hidden');
         openDetailElement = element;
     }
+}
+
+function coordKey(coord) {
+    return coord ? `${coord.letter}-${coord.number}` : '';
+}
+
+function updateNearbyMonsters(zone, root) {
+    const key = coordKey(activeCharacter.coordinates);
+    if (key !== monsterCoordKey) {
+        const { list, aggro } = spawnNearbyMonsters(activeCharacter, zone);
+        nearbyMonsters = list;
+        monsterCoordKey = key;
+        selectedMonsterIndex = null;
+        if (aggro.length) {
+            renderCombatScreen(root, aggro);
+            return true;
+        }
+    }
+    return false;
 }
 
 function createImageContainer() {
@@ -370,14 +401,14 @@ export function renderMainMenu() {
 
     const areaBtn = document.createElement('button');
     areaBtn.className = 'area-header';
-    const coord = activeCharacter?.coordinates ? `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}` : '';
-    areaBtn.textContent = `${activeCharacter?.currentLocation || 'Area'} ${coord}`.trim();
+    areaBtn.textContent = activeCharacter?.currentLocation || 'Area';
     const areaDiv = document.createElement('div');
     areaDiv.classList.add('hidden');
     areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
 
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     if (loc) {
+        updateNearbyMonsters(loc.name, container);
         if (loc.distance > 0) {
             const actions = createActionPanel(container, loc);
             if (actions) menu.appendChild(actions);
@@ -936,14 +967,22 @@ function createAreaGrid(root, loc) {
     const grid = document.createElement('div');
     grid.id = 'area-grid';
 
-    const travelCol = document.createElement('div');
-    travelCol.className = 'area-column';
-    const travelHeader = document.createElement('button');
-    travelHeader.className = 'area-header';
-    travelHeader.textContent = 'Zone';
-    travelHeader.addEventListener('click', () => travelList.classList.toggle('hidden'));
-    travelCol.appendChild(travelHeader);
-    const travelList = document.createElement('ul');
+    const sections = [];
+    function makeSection(title) {
+        const col = document.createElement('div');
+        col.className = 'area-column';
+        const header = document.createElement('button');
+        header.className = 'area-header';
+        header.textContent = title;
+        const list = document.createElement('ul');
+        col.appendChild(header);
+        col.appendChild(list);
+        grid.appendChild(col);
+        sections.push({ header, list });
+        return list;
+    }
+
+    const travelList = makeSection('Zone');
 
     // Explore and hunt controls are added in renderAreaScreen
 
@@ -954,6 +993,8 @@ function createAreaGrid(root, loc) {
     const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
 
     loc.connectedAreas.forEach(area => {
+        if (loc.name === 'South Gustaberg' && area === 'Vomp Hill') return;
+        if (loc.name === 'Vomp Hill' && area === 'South Gustaberg') return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
         const destCoordStr = loc.coordinates?.[area];
@@ -982,11 +1023,7 @@ function createAreaGrid(root, loc) {
                 }
                 activeCharacter.travel = { start: loc.name, destination: area, remaining: t, total: t, destCoord: destC };
             }
-            const mob = rollForEncounter(activeCharacter, loc.name);
-            if (mob) {
-                renderCombatScreen(root, [mob], area);
-                return;
-            }
+            if (updateNearbyMonsters(loc.name, root)) return;
             if (activeCharacter.travel.destCoord && activeCharacter.coordinates) {
                 activeCharacter.coordinates = stepToward(activeCharacter.coordinates, activeCharacter.travel.destCoord);
             }
@@ -1007,6 +1044,30 @@ function createAreaGrid(root, loc) {
         travelList.appendChild(li);
     });
 
+    if (loc.name === 'South Gustaberg') {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = 'Vomp Hill Ramp';
+        btn.addEventListener('click', () => {
+            setLocation(activeCharacter, 'Vomp Hill', loc.name);
+            persistCharacter(activeCharacter);
+            refreshMainMenu(root);
+        });
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    } else if (loc.name === 'Vomp Hill') {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = 'Vomp Hill Ramp';
+        btn.addEventListener('click', () => {
+            setLocation(activeCharacter, 'South Gustaberg', loc.name);
+            persistCharacter(activeCharacter);
+            refreshMainMenu(root);
+        });
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    }
+
     travelPOIs.forEach(p => {
         const li = document.createElement('li');
         const btn = document.createElement('button');
@@ -1015,7 +1076,6 @@ function createAreaGrid(root, loc) {
         li.appendChild(btn);
         travelList.appendChild(li);
     });
-    travelCol.appendChild(travelList);
 
     const craftPOIs = [];
     craftingPOIs.forEach(p => {
@@ -1026,18 +1086,9 @@ function createAreaGrid(root, loc) {
         li.appendChild(btn);
         craftPOIs.push(li);
     });
-    let craftCol = null;
-    if (craftPOIs.length) {
-        craftCol = document.createElement('div');
-        craftCol.className = 'area-column';
-        const craftHeader = document.createElement('button');
-        craftHeader.className = 'area-header';
-        craftHeader.textContent = 'Crafting';
-        craftCol.appendChild(craftHeader);
-        const craftList = document.createElement('ul');
-        craftHeader.addEventListener('click', () => craftList.classList.toggle('hidden'));
+    const craftList = craftPOIs.length ? makeSection('Crafting') : null;
+    if (craftList) {
         craftPOIs.forEach(li => craftList.appendChild(li));
-        craftCol.appendChild(craftList);
     }
 
     const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
@@ -1051,32 +1102,17 @@ function createAreaGrid(root, loc) {
         li.appendChild(btn);
         marketItems.push(li);
     });
-    let marketCol = null;
     let marketList = null;
     if (marketItems.length) {
-        marketCol = document.createElement('div');
-        marketCol.className = 'area-column';
-        const marketHeader = document.createElement('button');
-        marketHeader.className = 'area-header';
-        marketHeader.textContent = 'Marketplace';
-        marketHeader.addEventListener('click', () => marketList.classList.toggle('hidden'));
-        marketCol.appendChild(marketHeader);
-        marketList = document.createElement('ul');
+        marketList = makeSection('Marketplace');
         marketItems.forEach(li => marketList.appendChild(li));
-        marketCol.appendChild(marketList);
     }
 
-    const otherCol = document.createElement('div');
-    otherCol.className = 'area-column';
-    const otherHeader = document.createElement('button');
-    otherHeader.className = 'area-header';
-    otherHeader.textContent = 'Other';
-    otherHeader.addEventListener('click', () => otherList.classList.toggle('hidden'));
-    otherCol.appendChild(otherHeader);
-    const otherList = document.createElement('ul');
+    const otherList = makeSection('Other');
 
     loc.pointsOfInterest.forEach(p => {
         if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
+        if ((loc.name === 'South Gustaberg' || loc.name === 'Vomp Hill') && p === 'Vomp Hill Ramp') return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
         btn.textContent = p;
@@ -1097,12 +1133,15 @@ function createAreaGrid(root, loc) {
             otherList.appendChild(li);
         }
     });
-    otherCol.appendChild(otherList);
 
-    grid.appendChild(travelCol);
-    if (craftCol) grid.appendChild(craftCol);
-    if (marketCol) grid.appendChild(marketCol);
-    grid.appendChild(otherCol);
+    sections.forEach((s, idx) => {
+        if (idx !== 0) s.list.classList.add('hidden');
+        s.header.addEventListener('click', () => {
+            sections.forEach(o => o.list.classList.add('hidden'));
+            s.list.classList.remove('hidden');
+        });
+    });
+
     return grid;
 }
 
@@ -1129,35 +1168,7 @@ function createActionPanel(root, loc) {
     });
     actionWrap.appendChild(restBtn);
 
-    const exploreHandler = () => {
-        const mob = exploreEncounter(loc.name);
-        if (mob) {
-            renderCombatScreen(root, [mob]);
-            return true;
-        }
-        return false;
-    };
-
-    const huntSelect = document.createElement('select');
-    huntSelect.className = 'hunt-select';
-    huntSelect.appendChild(new Option('', ''));
-    const names = [...new Set((bestiaryByZone[loc.name] || []).map(m => m.name))];
-    names.forEach(n => huntSelect.appendChild(new Option(n, n)));
-    huntSelect.value = activeCharacter.huntTarget || '';
-    huntSelect.addEventListener('change', () => {
-        activeCharacter.huntTarget = huntSelect.value;
-    });
-    actionWrap.appendChild(huntSelect);
-
-    const huntBtn = document.createElement('button');
-    huntBtn.textContent = 'Hunt';
-    huntBtn.addEventListener('click', () => {
-        const target = huntSelect.value;
-        const mobs = huntEncounter(loc.name, target);
-        if (mobs.length) renderCombatScreen(root, mobs);
-    });
-    actionWrap.appendChild(huntBtn);
-
+    updateNearbyMonsters(loc.name, root);
     const dirGrid = document.createElement('div');
     dirGrid.id = 'direction-grid';
     const dirs = [
@@ -1165,7 +1176,7 @@ function createActionPanel(root, loc) {
         { l: 'N', dx: 0, dy: -1 },
         { l: 'NE', dx: 1, dy: -1 },
         { l: 'W', dx: -1, dy: 0 },
-        { l: 'X', explore: true },
+        { l: '\u2694', attack: true },
         { l: 'E', dx: 1, dy: 0 },
         { l: 'SW', dx: -1, dy: 1 },
         { l: 'S', dx: 0, dy: 1 },
@@ -1174,14 +1185,20 @@ function createActionPanel(root, loc) {
     dirs.forEach(d => {
         const b = document.createElement('button');
         b.textContent = d.l;
-        if (d.explore) {
-            b.addEventListener('click', exploreHandler);
+        if (d.attack) {
+            b.addEventListener('click', () => {
+                if (selectedMonsterIndex === null) return;
+                const mob = nearbyMonsters[selectedMonsterIndex];
+                if (mob) {
+                    renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
+                }
+            });
         } else {
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
                 persistCharacter(activeCharacter);
-                if (exploreHandler()) return;
+                if (updateNearbyMonsters(loc.name, root)) return;
                 const nm = checkForNM(loc.name, activeCharacter.coordinates);
                 if (nm) {
                     renderCombatScreen(root, [nm]);
@@ -1192,7 +1209,33 @@ function createActionPanel(root, loc) {
         }
         dirGrid.appendChild(b);
     });
-    actionWrap.appendChild(dirGrid);
+
+    const monsterList = document.createElement('div');
+    monsterList.id = 'nearby-monsters';
+
+    function renderMonsters() {
+        monsterList.innerHTML = '';
+        nearbyMonsters.forEach((m, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = m.name;
+            btn.className = 'monster-btn';
+            if (m.aggro) btn.classList.add('aggro');
+            if (i === selectedMonsterIndex) btn.classList.add('selected');
+            btn.addEventListener('click', () => {
+                selectedMonsterIndex = i;
+                renderMonsters();
+            });
+            monsterList.appendChild(btn);
+        });
+    }
+
+    renderMonsters();
+
+    const navRow = document.createElement('div');
+    navRow.className = 'nav-row';
+    navRow.appendChild(dirGrid);
+    navRow.appendChild(monsterList);
+    actionWrap.appendChild(navRow);
 
     const coordDisp = document.createElement('div');
     coordDisp.id = 'coord-display';
@@ -1263,9 +1306,6 @@ function renderCombatScreen(root, mobs, destination) {
     const logColumn = document.createElement('div');
     logColumn.className = 'log-column';
 
-    const actionColumn = document.createElement('div');
-    actionColumn.className = 'action-column';
-
     const enemyEntries = [];
     mobs.forEach((m, idx) => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
@@ -1308,11 +1348,11 @@ function renderCombatScreen(root, mobs, destination) {
 
     container.appendChild(enemyColumn);
     container.appendChild(logColumn);
-    container.appendChild(actionColumn);
     root.appendChild(container);
 
     let battleEnded = false;
     const defeated = [];
+    let combatEntries = [];
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -1348,7 +1388,18 @@ function renderCombatScreen(root, mobs, destination) {
         const p = document.createElement('div');
         p.textContent = msg;
         logDiv.prepend(p);
+        combatEntries.unshift({ elem: p, age: 0 });
         addGameLog(msg);
+        updateGameLogPadding();
+    }
+
+    function advanceLogTurn() {
+        combatEntries.forEach(entry => entry.age++);
+        while (combatEntries.length && combatEntries[combatEntries.length - 1].age >= 2) {
+            const old = combatEntries.pop();
+            if (old.elem.parentElement) old.elem.parentElement.remove();
+        }
+        updateGameLogPadding();
     }
 
     function addItemsToInventory(list) {
@@ -1433,6 +1484,11 @@ function renderCombatScreen(root, mobs, destination) {
             activeCharacter.gil += gil;
             activeCharacter.conquestPoints = (activeCharacter.conquestPoints || 0) + cp;
             addItemsToInventory(itemDrops);
+            defeated
+                .map(m => m.listIndex)
+                .filter(i => i !== undefined)
+                .sort((a, b) => b - a)
+                .forEach(i => nearbyMonsters.splice(i, 1));
             if (destination && activeCharacter.hp > 0) {
                 setLocation(activeCharacter, destination);
             }
@@ -1569,6 +1625,7 @@ function renderCombatScreen(root, mobs, destination) {
     function playerTurn() {
         if (battleEnded) return;
         if (mobs.length === 0) return endBattle();
+        advanceLogTurn();
         const actionDiv = document.createElement('div');
         actionDiv.id = 'action-buttons';
 
@@ -1616,7 +1673,7 @@ function renderCombatScreen(root, mobs, destination) {
         actionDiv.appendChild(fleeWrap);
         actionDiv.appendChild(magicWrap);
 
-        actionColumn.appendChild(actionDiv);
+        enemyColumn.appendChild(actionDiv);
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
@@ -1642,13 +1699,13 @@ function renderCombatScreen(root, mobs, destination) {
         }
 
         attackBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
+            enemyColumn.removeChild(actionDiv);
             attack(activeCharacter, currentTarget);
             afterAction();
         });
 
         abilityBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
+            enemyColumn.removeChild(actionDiv);
             const name = abilitySelect.value || 'Ability';
             log(`${activeCharacter.name} uses ${name}.`);
             attack(activeCharacter, currentTarget);
@@ -1656,7 +1713,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         magicBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
+            enemyColumn.removeChild(actionDiv);
             const spell = magicSelect.value || 'Spell';
             log(`${activeCharacter.name} casts ${spell}.`);
             attack(activeCharacter, currentTarget);
@@ -1664,7 +1721,7 @@ function renderCombatScreen(root, mobs, destination) {
         });
 
         fleeBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
+            enemyColumn.removeChild(actionDiv);
             if (attemptFlee()) return;
             monsterTurn();
         });

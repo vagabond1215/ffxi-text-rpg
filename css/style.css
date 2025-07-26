@@ -158,6 +158,29 @@ body.landscape #area-grid {
     width: 160px;
 }
 
+.nav-row {
+    display: flex;
+    gap: 10px;
+}
+
+#nearby-monsters {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.monster-btn {
+    width: 100px;
+}
+
+.monster-btn.aggro {
+    background-color: darkred;
+}
+
+.monster-btn.selected {
+    outline: 4px solid yellow;
+}
+
 #direction-grid {
     display: grid;
     grid-template-columns: repeat(3, 40px);
@@ -176,9 +199,6 @@ body.landscape #area-grid {
     margin-top: 6px;
 }
 
-.hunt-select {
-    width: 160px;
-}
 
 .form-header {
     display: flex;
@@ -561,7 +581,7 @@ body.portrait .main-layout {
     padding: 4px;
     align-items: start;
 }
-.enemy-column, .log-column, .action-column {
+.enemy-column, .log-column {
     display: flex;
     flex-direction: column;
     align-items: center;

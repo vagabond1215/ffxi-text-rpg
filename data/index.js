@@ -48,6 +48,7 @@ export {
   exploreEncounter,
   randomMonster,
   huntEncounter,
+  spawnNearbyMonsters,
   parseCoordinate,
   coordinateDistance,
   stepToward
