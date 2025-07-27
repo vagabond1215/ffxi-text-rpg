@@ -1365,30 +1365,30 @@ function renderCombatScreen(root, mobs, destination) {
     enemyList.className = 'enemy-list';
     enemyColumn.appendChild(enemyList);
 
-    const actionColumn = document.createElement('div');
-    actionColumn.className = 'action-column';
-
     const logColumn = document.createElement('div');
     logColumn.className = 'log-column';
+
+    const actionColumn = document.createElement('div');
+    actionColumn.className = 'action-column';
 
     const enemyEntries = [];
     mobs.forEach((m, idx) => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
         const entry = document.createElement('div');
         entry.className = 'target-entry';
-        const btn = document.createElement('button');
-        btn.className = 'target-button';
-        btn.id = `enemy-${idx}`;
-        btn.textContent = m.name;
-        btn.addEventListener('click', () => {
-            currentTarget = m;
-        });
+        entry.id = `enemy-${idx}`;
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'target-name';
+        nameSpan.textContent = m.name;
         const stat = document.createElement('span');
         stat.className = 'target-stats';
         stat.textContent = `HP:${m.currentHP}`;
-        entry.appendChild(btn);
+        entry.addEventListener('click', () => {
+            currentTarget = m;
+        });
+        entry.appendChild(nameSpan);
         entry.appendChild(stat);
-        enemyEntries.push({ entry, btn, stat });
+        enemyEntries.push({ entry, stat });
         enemyList.appendChild(entry);
     });
     let currentTarget = mobs[0];
@@ -1398,9 +1398,9 @@ function renderCombatScreen(root, mobs, destination) {
     logDiv.className = 'combat-log';
 
     logColumn.appendChild(logDiv);
+    logColumn.appendChild(actionColumn);
 
     container.appendChild(enemyColumn);
-    container.appendChild(actionColumn);
     container.appendChild(logColumn);
     root.appendChild(container);
 
