@@ -210,7 +210,8 @@ function updateNearbyMonsters(zone, root) {
         monsterCoordKey = key;
         selectedMonsterIndex = null;
         if (aggro.length) {
-            renderCombatScreen(root.parentElement, aggro);
+            const app = root.parentElement || root;
+            renderCombatScreen(app, aggro);
             return true;
         }
     }
