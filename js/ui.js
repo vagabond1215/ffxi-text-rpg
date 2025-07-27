@@ -38,7 +38,9 @@ import {
     stepToward,
     checkForNM,
     getSubArea,
-    canMove
+    canMove,
+    advanceTime,
+    formatTime
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -459,6 +461,9 @@ export function renderMainMenu() {
         const line5 = document.createElement('div');
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
+        const lineTime = document.createElement('div');
+        lineTime.textContent = `Time: ${formatTime(activeCharacter.minutes || 0)}`;
+
         const lineCp = document.createElement('div');
         lineCp.textContent = `Conquest Points: ${activeCharacter.conquestPoints || 0}`;
 
@@ -523,6 +528,7 @@ export function renderMainMenu() {
         details.appendChild(line3);
         details.appendChild(line4);
         details.appendChild(line5);
+        details.appendChild(lineTime);
         details.appendChild(lineCp);
         details.appendChild(line6);
         if (modeBtn) details.appendChild(modeBtn);
@@ -1047,6 +1053,7 @@ function createAreaGrid(root, loc) {
                 }
             }
             activeCharacter.travel.remaining -= 1;
+            advanceTime(activeCharacter, loc.name);
             if (activeCharacter.travel.remaining <= 0) {
                 setLocation(activeCharacter, area, loc.name);
                 activeCharacter.travel = null;
@@ -1190,6 +1197,8 @@ function createActionPanel(root, loc) {
         if (activeCharacter) {
             updateDerivedStats(activeCharacter);
             activeCharacter.tp = 0;
+            advanceTime(activeCharacter, loc.name);
+            persistCharacter(activeCharacter);
         }
         refreshMainMenu(root.parentElement);
     });
@@ -1225,6 +1234,7 @@ function createActionPanel(root, loc) {
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
+                advanceTime(activeCharacter, loc.name);
                 persistCharacter(activeCharacter);
                 if (updateNearbyMonsters(loc.name, root)) return;
                 const nm = checkForNM(
