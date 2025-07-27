@@ -419,7 +419,7 @@ body.portrait .main-layout {
 .profile-btn {
     display: block;
     margin: 0 auto;
-    width: 160px;
+    width: 180px;
 }
 
 .image-container {
@@ -630,16 +630,24 @@ body.portrait .main-layout {
 /* Combat screen layout */
 #combat-screen {
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-columns: 1fr 2fr;
     gap: 10px;
     padding: 4px;
     align-items: start;
 }
-.enemy-column, .log-column, .action-column {
+.enemy-column, .log-column {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
+}
+
+.action-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
 }
 
 #combat-log {
@@ -728,13 +736,14 @@ body.portrait .main-layout {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    cursor: pointer;
+}
+.target-name {
+    flex: 1;
+    text-align: left;
 }
 .target-stats {
     margin-left: 6px;
     white-space: nowrap;
-}
-.target-button {
-    width: 100%;
-    flex: 1;
 }
 
