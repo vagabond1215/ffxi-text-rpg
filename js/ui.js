@@ -498,7 +498,7 @@ export function renderMainMenu() {
         const details = document.createElement('div');
         details.id = 'character-details';
         details.classList.add('hidden');
-        charBtn.addEventListener('click', () => details.classList.toggle('hidden'));
+        charBtn.addEventListener('click', () => toggleDetails(details));
 
         const invBtn = document.createElement('button');
         invBtn.textContent = 'Inventory';
@@ -979,13 +979,15 @@ function createAreaGrid(root, loc) {
     grid.classList.add('vertical');
 
     const sections = [];
-    function makeSection(title) {
+    function makeSection(title, expanded = false) {
         const col = document.createElement('div');
         col.className = 'area-column';
         const header = document.createElement('button');
         header.className = 'area-header';
         header.textContent = title;
+        if (expanded) header.classList.add('expanded');
         const list = document.createElement('ul');
+        if (!expanded) list.classList.add('hidden');
         col.appendChild(header);
         col.appendChild(list);
         grid.appendChild(col);
@@ -993,7 +995,7 @@ function createAreaGrid(root, loc) {
         return list;
     }
 
-    const travelList = makeSection('Zone');
+    const travelList = makeSection('Zone', true);
 
 
     const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
@@ -1144,11 +1146,14 @@ function createAreaGrid(root, loc) {
         }
     });
 
-    sections.forEach((s, idx) => {
-        if (idx !== 0) s.list.classList.add('hidden');
+    sections.forEach((s) => {
         s.header.addEventListener('click', () => {
-            sections.forEach(o => o.list.classList.add('hidden'));
+            sections.forEach(o => {
+                o.list.classList.add('hidden');
+                o.header.classList.remove('expanded');
+            });
             s.list.classList.remove('hidden');
+            s.header.classList.add('expanded');
         });
     });
 
