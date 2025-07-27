@@ -1397,38 +1397,14 @@ function renderCombatScreen(app, mobs, destination) {
     container.appendChild(statusEffectsDisplay());
     app.appendChild(container);
 
-    const enemyColumn = document.createElement('div');
-    enemyColumn.className = 'enemy-column';
-    const enemyList = document.createElement('div');
-    enemyList.className = 'enemy-list';
-    enemyColumn.appendChild(enemyList);
-
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
 
-    const enemyEntries = [];
-    mobs.forEach((m, idx) => {
+    mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
-        const entry = document.createElement('div');
-        entry.className = 'target-entry';
-        entry.id = `enemy-${idx}`;
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'target-name';
-        nameSpan.textContent = m.name;
-        const stat = document.createElement('span');
-        stat.className = 'target-stats';
-        stat.textContent = `HP:${m.currentHP}`;
-        entry.addEventListener('click', () => {
-            currentTarget = m;
-        });
-        entry.appendChild(nameSpan);
-        entry.appendChild(stat);
-        enemyEntries.push({ entry, stat });
-        enemyList.appendChild(entry);
     });
     let currentTarget = mobs[0];
 
-    container.appendChild(enemyColumn);
     container.appendChild(actionColumn);
 
     let battleEnded = false;
@@ -1568,17 +1544,13 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     function update() {
-        enemyEntries.forEach((obj, i) => {
-            if (mobs[i]) obj.stat.textContent = `HP:${mobs[i].currentHP}`;
-        });
+        // Enemy list removed; nothing to update
     }
 
     function monsterDefeated(idx) {
         const mob = mobs[idx];
         defeated.push(mob);
         mobs.splice(idx, 1);
-        enemyEntries[idx].entry.remove();
-        enemyEntries.splice(idx, 1);
         if (mobs.length === 0) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
             victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
