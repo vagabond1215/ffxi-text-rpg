@@ -40,7 +40,10 @@ import {
     getSubArea,
     canMove,
     advanceTime,
-    formatTime
+    formatTime,
+    currentVanaTime,
+    formatVanaTime,
+    dayElements
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -49,6 +52,7 @@ let openDetailElement = null;
 let logButtonElement = null;
 let logPanelElement = null;
 let timeDisplayElement = null;
+let timePopupElement = null;
 const gameLogMessages = [];
 let currentTurn = 0;
 let logFontSize = 14;
@@ -64,14 +68,46 @@ function updateGameLogPadding() {
     document.body.style.paddingTop = (BASE_TOP_PADDING + height) + 'px';
 }
 
-export function setupTimeDisplay(el) {
+export function setupTimeDisplay(el, popup) {
     timeDisplayElement = el;
+    timePopupElement = popup;
+    if (!timeDisplayElement) return;
+    if (timePopupElement) {
+        timeDisplayElement.addEventListener('click', () => {
+            updateTimePopup();
+            toggleDetails(timePopupElement);
+        });
+    }
+    setInterval(updateTimeDisplay, 1000);
 }
 
 export function updateTimeDisplay() {
-    if (timeDisplayElement && activeCharacter) {
-        timeDisplayElement.textContent = formatTime(activeCharacter.minutes || 0);
+    if (!timeDisplayElement) return;
+    const vt = currentVanaTime();
+    const icon = dayElements[vt.weekday] || '';
+    timeDisplayElement.textContent = `${icon} ${vt.hour.toString().padStart(2, '0')}:${vt.minute.toString().padStart(2, '0')}`;
+}
+
+function updateTimePopup() {
+    if (!timePopupElement) return;
+    const vt = currentVanaTime();
+    const icon = dayElements[vt.weekday] || '';
+    const openHour = 8;
+    const closeHour = 20;
+    let status, nextChange;
+    if (vt.hour >= openHour && vt.hour < closeHour) {
+        status = 'Shops open';
+        nextChange = `Closes at ${closeHour.toString().padStart(2,'0')}:00`;
+    } else {
+        status = 'Shops closed';
+        nextChange = `Opens at ${openHour.toString().padStart(2,'0')}:00`;
     }
+    const nextFerry = `${((vt.hour + 1) % 24).toString().padStart(2,'0')}:00`;
+    timePopupElement.innerHTML = `
+        <div>${icon} ${formatVanaTime(vt)} - ${vt.weekday}</div>
+        <div>${status} - ${nextChange}</div>
+        <div>Next ferry departure: ${nextFerry}</div>
+    `;
 }
 
 function updateLogFont() {
@@ -509,7 +545,7 @@ export function renderMainMenu() {
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
         const lineTime = document.createElement('div');
-        lineTime.textContent = `Time: ${formatTime(activeCharacter.minutes || 0)}`;
+        lineTime.textContent = `Time: ${formatVanaTime(currentVanaTime())}`;
 
         const lineCp = document.createElement('div');
         lineCp.textContent = `Conquest Points: ${activeCharacter.conquestPoints || 0}`;

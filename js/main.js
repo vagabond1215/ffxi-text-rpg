@@ -47,8 +47,9 @@ function init() {
     if (logBtn && logPanel) setupLogControls(logBtn, logPanel);
 
     const timeEl = document.getElementById('time-display');
+    const timePopup = document.getElementById('time-popup');
     if (timeEl) {
-        setupTimeDisplay(timeEl);
+        setupTimeDisplay(timeEl, timePopup);
         updateTimeDisplay();
     }
 
