@@ -177,7 +177,9 @@ export function spawnNearbyMonsters(character, zone) {
   const count = Math.floor(Math.random() * 6) + 1;
   const list = [];
   for (let i = 0; i < count; i++) {
-    const mob = { ...pool[Math.floor(Math.random() * pool.length)] };
+    const base = pool[Math.floor(Math.random() * pool.length)];
+    const mob = { ...base };
+    mob.hp = base.hp || parseLevel(base.level) * 20;
     list.push(mob);
   }
   const linkGroups = {};

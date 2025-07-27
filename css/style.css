@@ -159,26 +159,16 @@ body.landscape #area-grid {
     content: '\25BC';
 }
 
+body.combat-active .area-header,
+body.combat-active #area-grid {
+    display: none !important;
+}
+
 .explore-btn {
     margin-bottom: 10px;
 }
 
-#area-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    margin-top: 10px;
-}
 
-#area-actions button, #area-actions select {
-    width: 160px;
-}
-
-.nav-row {
-    display: flex;
-    gap: 10px;
-}
 
 .nav-column {
     display: flex;
@@ -192,6 +182,13 @@ body.landscape #area-grid {
     flex-direction: column;
     align-items: center;
     gap: 4px;
+}
+
+.nav-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 #nearby-monsters {
@@ -374,7 +371,7 @@ body.portrait .character-form {
 .main-layout {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
 }
 
