@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, updateTimeDisplay } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -45,6 +45,12 @@ function init() {
     const logBtn = document.getElementById('log-button');
     const logPanel = document.getElementById('game-log');
     if (logBtn && logPanel) setupLogControls(logBtn, logPanel);
+
+    const timeEl = document.getElementById('time-display');
+    if (timeEl) {
+        setupTimeDisplay(timeEl);
+        updateTimeDisplay();
+    }
 
     const charBtn = document.getElementById('character-select');
     if (charBtn) {

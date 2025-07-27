@@ -48,7 +48,10 @@ let backButtonElement = null;
 let openDetailElement = null;
 let logButtonElement = null;
 let logPanelElement = null;
+let timeDisplayElement = null;
 const gameLogMessages = [];
+let currentTurn = 0;
+let logFontSize = 14;
 let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
@@ -61,18 +64,61 @@ function updateGameLogPadding() {
     document.body.style.paddingTop = (BASE_TOP_PADDING + height) + 'px';
 }
 
+export function setupTimeDisplay(el) {
+    timeDisplayElement = el;
+}
+
+export function updateTimeDisplay() {
+    if (timeDisplayElement && activeCharacter) {
+        timeDisplayElement.textContent = formatTime(activeCharacter.minutes || 0);
+    }
+}
+
+function updateLogFont() {
+    document.documentElement.style.setProperty('--log-font-size', `${logFontSize}px`);
+}
+
+function pruneLog() {
+    const cutoff = currentTurn - 1;
+    gameLogMessages.forEach(obj => {
+        const show = logPanelElement.classList.contains('fullscreen') || obj.turn >= cutoff;
+        obj.div.style.display = show ? '' : 'none';
+    });
+    updateGameLogPadding();
+}
+
+export function incrementTurn() {
+    currentTurn++;
+    updateTimeDisplay();
+    pruneLog();
+}
+
 export function setupLogControls(btn, panel) {
     logButtonElement = btn;
     logPanelElement = panel;
     if (!logButtonElement || !logPanelElement) return;
-    const show = () => { logPanelElement.classList.remove('hidden'); updateGameLogPadding(); };
-    const hide = () => { logPanelElement.classList.add('hidden'); updateGameLogPadding(); };
-    logButtonElement.addEventListener('mousedown', show);
-    logButtonElement.addEventListener('touchstart', show);
-    logButtonElement.addEventListener('mouseup', hide);
-    logButtonElement.addEventListener('mouseleave', hide);
-    logButtonElement.addEventListener('touchend', hide);
-    show();
+    const fontControls = document.createElement('div');
+    fontControls.className = 'font-controls hidden';
+    const dec = document.createElement('button');
+    dec.textContent = '-';
+    const inc = document.createElement('button');
+    inc.textContent = '+';
+    fontControls.appendChild(dec);
+    fontControls.appendChild(inc);
+    logPanelElement.appendChild(fontControls);
+    updateLogFont();
+
+    const toggle = () => {
+        const fs = logPanelElement.classList.toggle('fullscreen');
+        logPanelElement.classList.toggle('hidden', false);
+        fontControls.classList.toggle('hidden', !fs);
+        pruneLog();
+        updateGameLogPadding();
+    };
+    logButtonElement.addEventListener('click', toggle);
+    dec.addEventListener('click', e => { e.stopPropagation(); logFontSize = Math.max(8, logFontSize - 2); updateLogFont(); });
+    inc.addEventListener('click', e => { e.stopPropagation(); logFontSize = Math.min(32, logFontSize + 2); updateLogFont(); });
+    pruneLog();
 }
 
 export function addGameLog(msg) {
@@ -80,18 +126,18 @@ export function addGameLog(msg) {
     const div = document.createElement('div');
     div.textContent = msg;
     logPanelElement.prepend(div);
-    gameLogMessages.push(div);
+    gameLogMessages.unshift({ div, turn: currentTurn });
     if (gameLogMessages.length > 50) {
-        const old = gameLogMessages.shift();
-        if (old && old.parentElement) old.parentElement.remove();
+        const old = gameLogMessages.pop();
+        if (old && old.div.parentElement) old.div.parentElement.remove();
     }
-    updateGameLogPadding();
+    pruneLog();
 }
 
 export function showGameLogTemporarily(ms = 3000) {
     if (!logPanelElement) return;
     logPanelElement.classList.remove('hidden');
-    updateGameLogPadding();
+    pruneLog();
     setTimeout(() => { logPanelElement.classList.add('hidden'); updateGameLogPadding(); }, ms);
 }
 
@@ -203,6 +249,7 @@ export function hideBackButton() {
 function refreshMainMenu(container = document.getElementById('app')) {
     container.innerHTML = '';
     container.appendChild(renderMainMenu());
+    updateTimeDisplay();
 }
 
 export function renderUserControls() {
@@ -1054,6 +1101,7 @@ function createAreaGrid(root, loc) {
             }
             activeCharacter.travel.remaining -= 1;
             advanceTime(activeCharacter, loc.name);
+            incrementTurn();
             if (activeCharacter.travel.remaining <= 0) {
                 setLocation(activeCharacter, area, loc.name);
                 activeCharacter.travel = null;
@@ -1198,6 +1246,7 @@ function createActionPanel(root, loc) {
             updateDerivedStats(activeCharacter);
             activeCharacter.tp = 0;
             advanceTime(activeCharacter, loc.name);
+            incrementTurn();
             persistCharacter(activeCharacter);
         }
         refreshMainMenu(root.parentElement);
@@ -1235,6 +1284,7 @@ function createActionPanel(root, loc) {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
                 advanceTime(activeCharacter, loc.name);
+                incrementTurn();
                 persistCharacter(activeCharacter);
                 if (updateNearbyMonsters(loc.name, root)) return;
                 const nm = checkForNM(

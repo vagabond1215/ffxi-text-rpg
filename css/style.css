@@ -1,5 +1,6 @@
 :root {
     --ui-scale: 1;
+    --log-font-size: 14px;
 }
 
 body {
@@ -44,6 +45,10 @@ button {
     background: rgba(0, 0, 0, 0.6);
     padding: 4px;
     border-radius: 4px;
+}
+#scale-controls #time-display {
+    margin-right: 6px;
+    min-width: 140px;
 }
 
 #user-controls {
@@ -656,6 +661,27 @@ body.portrait .main-layout {
     border-radius: 4px;
     text-align: left;
     z-index: 1000;
+    font-size: var(--log-font-size);
+}
+
+#game-log.fullscreen {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    max-height: none;
+}
+
+#game-log .font-controls {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+#game-log .font-controls button {
+    width: 28px;
+    height: 28px;
+    margin-left: 2px;
 }
 
 #action-buttons {
