@@ -2,6 +2,7 @@ import { jobs, jobNames } from './jobs.js';
 import { races, raceNames, startingCities } from './races.js';
 import { zonesByCity, locations } from './locations.js';
 import { parseCoordinate } from '../js/encounter.js';
+import { bestiaryByZone } from './bestiary.js';
 import { getScale, proficiencyScale } from './scales.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
@@ -191,7 +192,8 @@ export const characters = [
     currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
     travelTurns: { [startingCities['Hume']]: 0 },
     signetUntil: 0,
-    conquestPoints: 0
+    conquestPoints: 0,
+    minutes: 0
   },
   {
     name: 'Shantotto',
@@ -268,7 +270,8 @@ export const characters = [
     currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
     travelTurns: { [startingCities['Tarutaru']]: 0 },
     signetUntil: 0,
-    conquestPoints: 0
+    conquestPoints: 0,
+    minutes: 0
   }
 ];
 
@@ -352,7 +355,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     currentHomePoint: zonesByCity[startingCities[selectedRace]][0].name,
     travelTurns: { [startingCities[selectedRace]]: 0 },
     signetUntil: 0,
-    conquestPoints: 0
+    conquestPoints: 0,
+    minutes: 0
   };
   updateDerivedStats(character);
   return character;
@@ -707,4 +711,20 @@ export function setLocation(character, name, from) {
     }
   }
   persistCharacter(character);
+}
+
+export function advanceTime(character, zone, turns = 1) {
+  if (!character) return;
+  const loc = locations.find(l => l.name === zone);
+  const hasMonsters = bestiaryByZone[zone] && bestiaryByZone[zone].length > 0;
+  if (loc && loc.distance > 0 && hasMonsters) {
+    character.minutes = (character.minutes || 0) + 10 * turns;
+  }
+}
+
+export function formatTime(minutes = 0) {
+  const day = Math.floor(minutes / 1440) + 1;
+  const hour = Math.floor((minutes % 1440) / 60);
+  const min = minutes % 60;
+  return `Day ${day} ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
 }
