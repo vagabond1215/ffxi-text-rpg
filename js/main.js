@@ -1,5 +1,5 @@
 import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls } from './ui.js';
-import { loadCharacters, initCurrentUser, initNotorious } from '../data/index.js';
+import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
 
 // Entry point: initialize application
 let uiScale = 1;
@@ -24,6 +24,9 @@ function init() {
     app.innerHTML = '';
     const menu = renderMainMenu();
     app.appendChild(menu);
+    if (!activeCharacter) {
+        renderCharacterMenu(menu);
+    }
 
 
     const backBtn = document.getElementById('back-button');
