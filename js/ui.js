@@ -412,10 +412,10 @@ export function renderMainMenu() {
     areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
 
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
+    let navSection = null;
+    let restBtn = null;
     if (loc) {
         updateNearbyMonsters(loc.name, container);
-        let navSection = null;
-        let restBtn = null;
         if (loc.distance > 0) {
             const actions = createActionPanel(container, loc);
             if (actions) {
