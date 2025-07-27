@@ -49,6 +49,23 @@ button {
 #scale-controls #time-display {
     margin-right: 6px;
     min-width: 140px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+#time-popup {
+    position: fixed;
+    right: 5px;
+    top: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 8px;
+    border-radius: 4px;
+    max-width: 200px;
+    z-index: 1000;
+    text-align: left;
+    color: #fff;
 }
 
 #user-controls {

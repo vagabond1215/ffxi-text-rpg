@@ -728,3 +728,46 @@ export function formatTime(minutes = 0) {
   const min = minutes % 60;
   return `Day ${day} ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
 }
+
+// ----- Real-time based Vana'diel clock -----
+const VANADIEL_EPOCH = Date.UTC(2025, 0, 1, 0, 0, 0); // Jan 1st 2025
+const VANADIEL_SCALE = 25; // 25x faster than Earth time
+
+const dayNames = [
+  'Firesday',
+  'Earthsday',
+  'Watersday',
+  'Windsday',
+  'Iceday',
+  'Lightningday',
+  'Lightsday',
+  'Darksday'
+];
+
+export const dayElements = {
+  Firesday: '🔥',
+  Earthsday: '🌍',
+  Watersday: '💧',
+  Windsday: '💨',
+  Iceday: '❄️',
+  Lightningday: '⚡',
+  Lightsday: '✨',
+  Darksday: '🌑'
+};
+
+export function currentVanaTime(date = new Date()) {
+  const elapsedMs = date.getTime() - VANADIEL_EPOCH;
+  const vanaMs = elapsedMs * VANADIEL_SCALE;
+  const totalMinutes = Math.floor(vanaMs / 60000);
+  const day = Math.floor(totalMinutes / 1440);
+  const hour = Math.floor((totalMinutes % 1440) / 60);
+  const minute = totalMinutes % 60;
+  const weekday = dayNames[day % 8];
+  const month = Math.floor(day / 30) + 1;
+  const year = Math.floor(day / 360) + 1;
+  return { day: day + 1, hour, minute, weekday, month, year };
+}
+
+export function formatVanaTime(vanaObj) {
+  return `Day ${vanaObj.day} ${vanaObj.hour.toString().padStart(2, '0')}:${vanaObj.minute.toString().padStart(2, '0')}`;
+}

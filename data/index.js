@@ -28,7 +28,10 @@ export {
   persistCharacter,
   setLocation,
   advanceTime,
-  formatTime
+  formatTime,
+  currentVanaTime,
+  formatVanaTime,
+  dayElements
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
