@@ -661,16 +661,10 @@ body.portrait .main-layout {
 /* Combat screen layout */
 #combat-screen {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr;
     gap: 10px;
     padding: 4px;
     align-items: start;
-}
-.enemy-column, .action-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
 }
 
 .action-column {
@@ -750,25 +744,4 @@ body.portrait .main-layout {
     margin-top: -1px;
 }
 
-.enemy-list, .party-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 100%;
-}
-.target-entry {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    cursor: pointer;
-}
-.target-name {
-    flex: 1;
-    text-align: left;
-}
-.target-stats {
-    margin-left: 6px;
-    white-space: nowrap;
-}
 
