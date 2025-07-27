@@ -27,11 +27,12 @@ export function initNotorious() {
   }
 }
 
-export function handleMonsterKill(zone, name) {
+export function handleMonsterKill(zone, name, subArea = null) {
   const messages = [];
   const now = Date.now();
   for (const nm of notoriousMonsters) {
     if (nm.zone !== zone) continue;
+    if (nm.subArea && nm.subArea !== subArea) continue;
     if (nm.type === 'lottery' && name.startsWith(nm.placeholder)) {
       if (now >= nm.windowOpen && !nm.spawned && Math.random() < nm.chance) {
         nm.spawned = true;
@@ -42,10 +43,11 @@ export function handleMonsterKill(zone, name) {
   return messages;
 }
 
-export function checkForNM(zone, coord) {
+export function checkForNM(zone, coord, subArea = null) {
   const now = Date.now();
   for (const nm of notoriousMonsters) {
     if (nm.zone !== zone) continue;
+    if (nm.subArea && nm.subArea !== subArea) continue;
     if (nm.type === 'timed' && !nm.spawned && now >= nm.nextSpawn) {
       nm.spawned = true;
     }

@@ -36,7 +36,9 @@ import {
     parseCoordinate,
     coordinateDistance,
     stepToward,
-    checkForNM
+    checkForNM,
+    getSubArea,
+    canMove
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -1038,14 +1040,22 @@ function createAreaGrid(root, loc) {
             }
             if (updateNearbyMonsters(loc.name, root)) return;
             if (activeCharacter.travel.destCoord && activeCharacter.coordinates) {
-                activeCharacter.coordinates = stepToward(activeCharacter.coordinates, activeCharacter.travel.destCoord);
+                const next = stepToward(activeCharacter.coordinates, activeCharacter.travel.destCoord);
+                if (canMove(loc.name, activeCharacter.coordinates, next)) {
+                    activeCharacter.coordinates = next;
+                    activeCharacter.subArea = getSubArea(loc.name, next);
+                }
             }
             activeCharacter.travel.remaining -= 1;
             if (activeCharacter.travel.remaining <= 0) {
                 setLocation(activeCharacter, area, loc.name);
                 activeCharacter.travel = null;
             }
-            const nm = checkForNM(loc.name, activeCharacter.coordinates);
+            const nm = checkForNM(
+                loc.name,
+                activeCharacter.coordinates,
+                getSubArea(loc.name, activeCharacter.coordinates)
+            );
             if (nm) {
                 renderCombatScreen(root, [nm]);
                 return;
@@ -1165,7 +1175,10 @@ function stepInDirection(coord, dx, dy) {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const x = Math.min(Math.max(0, coord.letter.toUpperCase().charCodeAt(0) - 65 + dx), letters.length - 1);
     const y = Math.max(1, coord.number + dy);
-    return { letter: letters[x], number: y };
+    const next = { letter: letters[x], number: y };
+    if (!canMove(activeCharacter.currentLocation, coord, next)) return coord;
+    activeCharacter.subArea = getSubArea(activeCharacter.currentLocation, next);
+    return next;
 }
 
 function createActionPanel(root, loc) {
@@ -1214,7 +1227,11 @@ function createActionPanel(root, loc) {
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
                 persistCharacter(activeCharacter);
                 if (updateNearbyMonsters(loc.name, root)) return;
-                const nm = checkForNM(loc.name, activeCharacter.coordinates);
+                const nm = checkForNM(
+                    loc.name,
+                    activeCharacter.coordinates,
+                    getSubArea(loc.name, activeCharacter.coordinates)
+                );
                 if (nm) {
                     renderCombatScreen(root, [nm]);
                     return;

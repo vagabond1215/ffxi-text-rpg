@@ -33,6 +33,8 @@ export { names, randomName } from './names.js';
 export { raceInfo, jobInfo, cityImages, characterImages } from './descriptions.js';
 export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
 export { bestiaryByZone, allMonsters } from './bestiary.js';
+export { zoneMaps, registerZoneMap, getSubArea, canMove } from './maps.js';
+export { regions, regionOwner, regionBonusApplies } from './regions.js';
 export { notoriousMonsters } from './nms.js';
 export { experienceTable, expToLevel, expNeeded, experienceForKill } from './experience.js';
 export { items, vendorInventories, shopNpcs, vendorGreetings, vendorTypes, conquestRewards } from './vendors.js';
