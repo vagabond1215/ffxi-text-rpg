@@ -196,9 +196,9 @@ export function hideBackButton() {
     backButtonElement.onclick = null;
 }
 
-function refreshMainMenu(root) {
-    const menu = renderMainMenu();
-    root.replaceWith(menu);
+function refreshMainMenu(container = document.getElementById('app')) {
+    container.innerHTML = '';
+    container.appendChild(renderMainMenu());
 }
 
 export function renderUserControls() {
@@ -486,8 +486,7 @@ export function renderMainMenu() {
                     activeCharacter.xpMode = activeCharacter.xpMode === 'EXP' ? 'LP' : 'EXP';
                 }
                 persistCharacter(activeCharacter);
-                const menu = renderMainMenu();
-                container.replaceWith(menu);
+                refreshMainMenu(container.parentElement);
             });
         }
 
@@ -651,10 +650,7 @@ export function renderCharacterMenu(root) {
     }
     root.appendChild(list);
 
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
+    showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
 function renderNewCharacterForm(root) {
@@ -975,10 +971,7 @@ function renderPlayUI(root) {
     root.appendChild(magicBtn);
 
     root.appendChild(document.createElement('br'));
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
+    showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
 function createAreaGrid(root, loc) {
@@ -1058,7 +1051,7 @@ function createAreaGrid(root, loc) {
                 return;
             }
             persistCharacter(activeCharacter);
-            refreshMainMenu(root);
+            refreshMainMenu(root.parentElement);
         });
         li.appendChild(btn);
         travelList.appendChild(li);
@@ -1071,7 +1064,7 @@ function createAreaGrid(root, loc) {
         btn.addEventListener('click', () => {
             setLocation(activeCharacter, 'Vomp Hill', loc.name);
             persistCharacter(activeCharacter);
-            refreshMainMenu(root);
+            refreshMainMenu(root.parentElement);
         });
         li.appendChild(btn);
         travelList.appendChild(li);
@@ -1082,7 +1075,7 @@ function createAreaGrid(root, loc) {
         btn.addEventListener('click', () => {
             setLocation(activeCharacter, 'South Gustaberg', loc.name);
             persistCharacter(activeCharacter);
-            refreshMainMenu(root);
+            refreshMainMenu(root.parentElement);
         });
         li.appendChild(btn);
         travelList.appendChild(li);
@@ -1185,7 +1178,7 @@ function createActionPanel(root, loc) {
             updateDerivedStats(activeCharacter);
             activeCharacter.tp = 0;
         }
-        refreshMainMenu(root);
+        refreshMainMenu(root.parentElement);
     });
 
     updateNearbyMonsters(loc.name, root);
@@ -1226,7 +1219,7 @@ function createActionPanel(root, loc) {
                     renderCombatScreen(root, [nm]);
                     return;
                 }
-                refreshMainMenu(root);
+                refreshMainMenu(root.parentElement);
             });
         }
         dirGrid.appendChild(b);
@@ -1478,7 +1471,7 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            refreshMainMenu(root);
+            refreshMainMenu(root.parentElement);
         });
         lootDiv.appendChild(btn);
         root.appendChild(lootDiv);
@@ -1586,7 +1579,7 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            refreshMainMenu(root);
+            refreshMainMenu(root.parentElement);
         });
         root.appendChild(btn);
     }
@@ -1738,7 +1731,7 @@ function renderTravelScreen(root) {
             btn.textContent = area;
             btn.addEventListener('click', () => {
                 setLocation(activeCharacter, area);
-                refreshMainMenu(root);
+                refreshMainMenu(root.parentElement);
             });
             li.appendChild(btn);
             list.appendChild(li);
@@ -1746,10 +1739,7 @@ function renderTravelScreen(root) {
     }
     root.appendChild(list);
 
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
+    showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
 function Travel() {
@@ -1828,7 +1818,7 @@ function renderVendorMenu(root, vendor, backFn = null, shopName = null) {
     });
     root.appendChild(buyBtn);
     root.appendChild(sellBtn);
-    const handler = backFn || (() => refreshMainMenu(root));
+    const handler = backFn || (() => refreshMainMenu(root.parentElement));
     showBackButton(handler);
 }
 
@@ -2027,7 +2017,7 @@ export function renderConquestShop(root, backFn = null) {
         list.appendChild(row);
     });
     root.appendChild(list);
-    showBackButton(backFn || (() => refreshMainMenu(root)));
+    showBackButton(backFn || (() => refreshMainMenu(root.parentElement)));
 }
 
 export function renderEquipmentScreen(root) {
@@ -2106,10 +2096,7 @@ export function renderEquipmentScreen(root) {
         }
         root.appendChild(list);
     }
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
+    showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
 function getItemCategory(item) {
@@ -2263,10 +2250,7 @@ export function renderInventoryScreen(root) {
             ul.appendChild(li);
         });
     });
-    showBackButton(() => {
-        const menu = renderMainMenu();
-        root.replaceWith(menu);
-    });
+    showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
 function openMenu(name, backFn) {
