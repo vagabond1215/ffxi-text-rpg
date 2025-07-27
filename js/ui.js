@@ -210,7 +210,7 @@ function updateNearbyMonsters(zone, root) {
         monsterCoordKey = key;
         selectedMonsterIndex = null;
         if (aggro.length) {
-            renderCombatScreen(root, aggro);
+            renderCombatScreen(root.parentElement, aggro);
             return true;
         }
     }
@@ -487,6 +487,7 @@ export function renderMainMenu() {
     document.body.classList.remove('combat-active');
     hideBackButton();
     const container = document.createElement('div');
+    container.id = 'main-screen';
 
     const menu = document.createElement('div');
     menu.id = 'menu';
@@ -1148,7 +1149,7 @@ function createAreaGrid(root, loc) {
                 getSubArea(loc.name, activeCharacter.coordinates)
             );
             if (nm) {
-                renderCombatScreen(root, [nm]);
+                renderCombatScreen(root.parentElement, [nm]);
                 return;
             }
             persistCharacter(activeCharacter);
@@ -1311,7 +1312,7 @@ function createActionPanel(root, loc) {
                 if (selectedMonsterIndex === null) return;
                 const mob = nearbyMonsters[selectedMonsterIndex];
                 if (mob && !mob.defeated) {
-                    renderCombatScreen(root, [{ ...mob, listIndex: selectedMonsterIndex }]);
+                    renderCombatScreen(root.parentElement, [{ ...mob, listIndex: selectedMonsterIndex }]);
                 }
             });
         } else {
@@ -1329,7 +1330,7 @@ function createActionPanel(root, loc) {
                     getSubArea(loc.name, activeCharacter.coordinates)
                 );
                 if (nm) {
-                    renderCombatScreen(root, [nm]);
+                    renderCombatScreen(root.parentElement, [nm]);
                     return;
                 }
                 refreshMainMenu(root.parentElement);
@@ -1386,23 +1387,20 @@ function createActionPanel(root, loc) {
 }
 
 
-function renderCombatScreen(root, mobs, destination) {
+function renderCombatScreen(app, mobs, destination) {
     if (!activeCharacter) return;
     if (!Array.isArray(mobs)) mobs = [mobs];
     document.body.classList.add('combat-active');
-    root.innerHTML = '';
-    root.appendChild(statusEffectsDisplay());
     const container = document.createElement('div');
     container.id = 'combat-screen';
+    container.appendChild(statusEffectsDisplay());
+    app.appendChild(container);
 
     const enemyColumn = document.createElement('div');
     enemyColumn.className = 'enemy-column';
     const enemyList = document.createElement('div');
     enemyList.className = 'enemy-list';
     enemyColumn.appendChild(enemyList);
-
-    const logColumn = document.createElement('div');
-    logColumn.className = 'log-column';
 
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
@@ -1429,20 +1427,11 @@ function renderCombatScreen(root, mobs, destination) {
     });
     let currentTarget = mobs[0];
 
-    const logDiv = document.createElement('div');
-    logDiv.id = 'combat-log';
-    logDiv.className = 'combat-log';
-
-    logColumn.appendChild(logDiv);
-    logColumn.appendChild(actionColumn);
-
     container.appendChild(enemyColumn);
-    container.appendChild(logColumn);
-    root.appendChild(container);
+    container.appendChild(actionColumn);
 
     let battleEnded = false;
     const defeated = [];
-    let combatEntries = [];
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -1475,20 +1464,7 @@ function renderCombatScreen(root, mobs, destination) {
     }
 
     function log(msg) {
-        const p = document.createElement('div');
-        p.textContent = msg;
-        logDiv.prepend(p);
-        combatEntries.unshift({ elem: p, age: 0 });
         addGameLog(msg);
-        updateGameLogPadding();
-    }
-
-    function advanceLogTurn() {
-        combatEntries.forEach(entry => entry.age++);
-        while (combatEntries.length && combatEntries[combatEntries.length - 1].age >= 2) {
-            const old = combatEntries.pop();
-            if (old.elem.parentElement) old.elem.parentElement.remove();
-        }
         updateGameLogPadding();
     }
 
@@ -1584,10 +1560,10 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            refreshMainMenu(root.parentElement);
+            refreshMainMenu(app);
         });
         lootDiv.appendChild(btn);
-        root.appendChild(lootDiv);
+        container.appendChild(lootDiv);
     }
 
     function update() {
@@ -1692,9 +1668,9 @@ function renderCombatScreen(root, mobs, destination) {
                 setLocation(activeCharacter, destination);
             }
             persistCharacter(activeCharacter);
-            refreshMainMenu(root.parentElement);
+            refreshMainMenu(app);
         });
-        root.appendChild(btn);
+        container.appendChild(btn);
     }
 
     function monsterTurn() {
@@ -1715,7 +1691,6 @@ function renderCombatScreen(root, mobs, destination) {
     function playerTurn() {
         if (battleEnded) return;
         if (mobs.length === 0) return endBattle();
-        advanceLogTurn();
         const actionDiv = document.createElement('div');
         actionDiv.id = 'action-buttons';
 
