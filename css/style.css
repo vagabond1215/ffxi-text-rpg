@@ -561,7 +561,7 @@ body.portrait .main-layout {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .char-menu-controls {
