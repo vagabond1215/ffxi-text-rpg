@@ -485,8 +485,6 @@ export function renderMainMenu() {
             });
         }
 
-        profile.appendChild(imgNav.wrapper);
-
         const group = document.createElement('div');
         group.className = 'profile-group';
 
@@ -499,6 +497,8 @@ export function renderMainMenu() {
         details.id = 'character-details';
         details.classList.add('hidden');
         charBtn.addEventListener('click', () => toggleDetails(details));
+
+        details.appendChild(imgNav.wrapper);
 
         const invBtn = document.createElement('button');
         invBtn.textContent = 'Inventory';

@@ -392,6 +392,11 @@ body.portrait .main-layout {
     flex-direction: column;
 }
 
+#character-details button {
+    margin: 2px auto;
+    width: 160px;
+}
+
 .profile-group {
     display: flex;
     flex-direction: column;
@@ -412,6 +417,7 @@ body.portrait .main-layout {
 .profile-btn {
     display: block;
     margin: 0 auto;
+    width: 160px;
 }
 
 .image-container {
