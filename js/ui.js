@@ -397,6 +397,7 @@ function statusEffectsDisplay() {
 }
 
 export function renderMainMenu() {
+    document.body.classList.remove('combat-active');
     hideBackButton();
     const container = document.createElement('div');
 
@@ -413,9 +414,14 @@ export function renderMainMenu() {
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     if (loc) {
         updateNearbyMonsters(loc.name, container);
+        let navSection = null;
+        let restBtn = null;
         if (loc.distance > 0) {
             const actions = createActionPanel(container, loc);
-            if (actions) menu.appendChild(actions);
+            if (actions) {
+                restBtn = actions.restBtn;
+                navSection = actions.navSection;
+            }
         }
         const grid = createAreaGrid(container, loc);
         areaDiv.appendChild(grid);
@@ -490,7 +496,7 @@ export function renderMainMenu() {
 
         const charBtn = document.createElement('button');
         charBtn.className = 'profile-btn';
-        charBtn.textContent = activeCharacter.name;
+        charBtn.textContent = `${activeCharacter.name} (${activeCharacter.hp} HP)`;
         group.appendChild(charBtn);
 
         const details = document.createElement('div');
@@ -523,6 +529,7 @@ export function renderMainMenu() {
         details.appendChild(equipBtn);
         group.appendChild(details);
         profile.appendChild(group);
+        if (restBtn) profile.appendChild(restBtn);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -530,6 +537,7 @@ export function renderMainMenu() {
         // buttons have been removed to simplify the profile view. The character
         // information now only shows the basic profile lines above.
     }
+    if (navSection) layout.appendChild(navSection);
     layout.appendChild(menu);
     container.appendChild(layout);
     return container;
@@ -1169,8 +1177,6 @@ function stepInDirection(coord, dx, dy) {
 
 function createActionPanel(root, loc) {
     if (!loc || loc.distance <= 0) return null;
-    const actionWrap = document.createElement('div');
-    actionWrap.id = 'area-actions';
 
     const restBtn = document.createElement('button');
     restBtn.textContent = 'Rest';
@@ -1181,7 +1187,6 @@ function createActionPanel(root, loc) {
         }
         refreshMainMenu(root);
     });
-    actionWrap.appendChild(restBtn);
 
     updateNearbyMonsters(loc.name, root);
     const dirGrid = document.createElement('div');
@@ -1234,7 +1239,7 @@ function createActionPanel(root, loc) {
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
             const btn = document.createElement('button');
-            btn.textContent = m.name;
+            btn.textContent = `${m.name} HP:${m.hp}`;
             btn.className = 'monster-btn';
             if (m.defeated) btn.classList.add('defeated');
             if (m.aggro) btn.classList.add('aggro');
@@ -1251,8 +1256,8 @@ function createActionPanel(root, loc) {
 
     renderMonsters();
 
-    const navRow = document.createElement('div');
-    navRow.className = 'nav-row';
+    const navSection = document.createElement('div');
+    navSection.className = 'nav-section';
     const navCol = document.createElement('div');
     navCol.className = 'nav-column';
     navCol.appendChild(dirGrid);
@@ -1268,17 +1273,17 @@ function createActionPanel(root, loc) {
     mobCol.className = 'mob-column';
     mobCol.appendChild(monsterList);
 
-    navRow.appendChild(navCol);
-    navRow.appendChild(mobCol);
-    actionWrap.appendChild(navRow);
+    navSection.appendChild(navCol);
+    navSection.appendChild(mobCol);
 
-    return actionWrap;
+    return { restBtn, navSection };
 }
 
 
 function renderCombatScreen(root, mobs, destination) {
     if (!activeCharacter) return;
     if (!Array.isArray(mobs)) mobs = [mobs];
+    document.body.classList.add('combat-active');
     root.innerHTML = '';
     root.appendChild(statusEffectsDisplay());
     const container = document.createElement('div');
@@ -1656,16 +1661,21 @@ function renderCombatScreen(root, mobs, destination) {
 
         function attemptFlee() {
             const playerAgi = activeCharacter.stats.agi;
-            const mobAgi = currentTarget.agi !== undefined ? currentTarget.agi : (currentTarget.vit ?? parseLevel(currentTarget.level) * 2) + 1;
-            let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
-            chance = Math.max(0.05, Math.min(0.95, chance));
-            if (Math.random() < chance) {
-                log(`${activeCharacter.name} fled successfully!`);
-                endBattle();
-                return true;
-            }
-            log(`${activeCharacter.name} failed to flee.`);
-            return false;
+            mobs.forEach(m => {
+                const mobAgi = m.agi !== undefined ? m.agi : (m.vit ?? parseLevel(m.level) * 2) + 1;
+                let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
+                chance = Math.max(0.05, Math.min(0.95, chance));
+                if (Math.random() < chance) {
+                    log(`${activeCharacter.name} fled from ${m.name}.`);
+                    if (m.listIndex !== undefined && nearbyMonsters[m.listIndex]) {
+                        nearbyMonsters[m.listIndex].aggro = false;
+                    }
+                } else {
+                    log(`${m.name} keeps chase.`);
+                }
+            });
+            endBattle();
+            return true;
         }
 
         function afterAction() {
