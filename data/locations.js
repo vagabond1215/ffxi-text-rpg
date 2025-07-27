@@ -98,6 +98,7 @@ export const zonesByCity = {
     {
       name: 'North Gustaberg (East)',
       city: 'Bastok',
+      region: 'Gustaberg',
       distance: 1,
       subAreas: [],
       connectedAreas: ['South Gustaberg', 'Port Bastok', 'Oldton Movalpolos', 'Palborough Mines'],
@@ -107,6 +108,7 @@ export const zonesByCity = {
     {
       name: 'North Gustaberg (West)',
       city: 'Bastok',
+      region: 'Gustaberg',
       distance: 1,
       subAreas: [],
       connectedAreas: ['South Gustaberg', 'Konschtat Highlands'],
@@ -116,6 +118,7 @@ export const zonesByCity = {
     {
       name: 'South Gustaberg',
       city: 'Bastok',
+      region: 'Gustaberg',
       distance: 1,
       subAreas: ['Vomp Hill'],
       coordinates: {
@@ -128,12 +131,22 @@ export const zonesByCity = {
         'Cavernous Maw (Abyssea – Altepa)': 'J-10'
       },
       connectedAreas: ['Bastok Markets', 'North Gustaberg (East)', 'North Gustaberg (West)', 'Dangruf Wadi', 'Vomp Hill'],
-      pointsOfInterest: ['Outpost', 'Selt Steel Mines', 'Vomp Hill Ramp'],
+      pointsOfInterest: [
+        'Outpost',
+        'Selt Steel Mines',
+        'Vomp Hill Ramp',
+        'Bastok Markets Gate',
+        'Bastok Mines Gate',
+        'Morhen Lighthouse',
+        'Stone Monument',
+        'Goblin Camp'
+      ],
       importantNPCs: []
     },
     {
       name: 'Vomp Hill',
       city: 'Bastok',
+      region: 'Gustaberg',
       distance: 1,
       parent: 'South Gustaberg',
       coordinates: { 'South Gustaberg': 'I-9' },

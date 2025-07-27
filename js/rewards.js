@@ -3,6 +3,7 @@ import { experienceForKill } from '../data/experience.js';
 import { hasSignet } from '../data/characters.js';
 import { parseLevel } from './encounter.js';
 import { handleMonsterKill } from './notorious.js';
+import { getSubArea } from '../data/maps.js';
 
 export function findItemIdByName(name) {
   for (const [id, data] of Object.entries(items)) {
@@ -60,7 +61,11 @@ export function calculateBattleRewards(character, defeated) {
       const crystalId = Object.keys(items).find(k => /Crystal/i.test(items[k].name));
       if (crystalId) drops.push({ id: crystalId, qty: 1 });
     }
-    const notes = handleMonsterKill(character.currentLocation, mob.name);
+    const notes = handleMonsterKill(
+      character.currentLocation,
+      mob.name,
+      getSubArea(character.currentLocation, character.coordinates)
+    );
     if (notes.length) messages.push(...notes);
   }
 

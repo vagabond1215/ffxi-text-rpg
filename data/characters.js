@@ -125,6 +125,7 @@ export const characters = [
     homeCity: startingCities['Hume'],
     spawnPoint: zonesByCity[startingCities['Hume']][0].name,
     currentLocation: zonesByCity[startingCities['Hume']][0].name,
+    subArea: null,
     lastZone: null,
     level: 99,
     stats: { str: 70, dex: 90, vit: 70, agi: 80, int: 60, mnd: 60, chr: 70 },
@@ -201,6 +202,7 @@ export const characters = [
     homeCity: startingCities['Tarutaru'],
     spawnPoint: zonesByCity[startingCities['Tarutaru']][0].name,
     currentLocation: zonesByCity[startingCities['Tarutaru']][0].name,
+    subArea: null,
     lastZone: null,
     level: 99,
     stats: { str: 40, dex: 60, vit: 50, agi: 60, int: 95, mnd: 80, chr: 70 },
@@ -285,6 +287,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     homeCity: startingCities[selectedRace],
     spawnPoint: zonesByCity[startingCities[selectedRace]][0].name,
     currentLocation: zonesByCity[startingCities[selectedRace]][0].name,
+    subArea: null,
     lastZone: null,
     level: 1,
     stats: { str: 10, dex: 10, vit: 10, agi: 10, int: 10, mnd: 10, chr: 10 },
@@ -681,6 +684,7 @@ export function setLocation(character, name, from) {
   if (!character) return;
   character.lastZone = character.currentLocation;
   character.currentLocation = name;
+  character.subArea = null;
   if (character.lastZone !== name) character.huntTarget = '';
   const zone = locations.find(l => l.name === name);
   if (zone) {
