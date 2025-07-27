@@ -33,6 +33,20 @@ button {
     transform: scale(var(--ui-scale));
     transform-origin: top left;
     width: calc(100% / var(--ui-scale));
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+body.portrait #app {
+    flex-direction: column;
+    align-items: center;
+}
+
+#main-screen {
+    flex: 1 1 auto;
+    width: fit-content;
 }
 
 #scale-controls {
@@ -652,7 +666,7 @@ body.portrait .main-layout {
     padding: 4px;
     align-items: start;
 }
-.enemy-column, .log-column {
+.enemy-column, .action-column {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -667,12 +681,6 @@ body.portrait .main-layout {
     width: 100%;
 }
 
-#combat-log {
-    max-height: 200px;
-    overflow-y: auto;
-    width: 100%;
-    text-align: left;
-}
 
 #game-log {
     position: fixed;
