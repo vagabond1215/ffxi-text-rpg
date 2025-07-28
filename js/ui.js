@@ -285,7 +285,11 @@ export function hideBackButton() {
 
 function refreshMainMenu(container = document.getElementById('app')) {
     container.innerHTML = '';
-    container.appendChild(renderMainMenu());
+    const main = renderMainMenu();
+    container.appendChild(main);
+    if (activeCharacter?.currentLocation) {
+        updateNearbyMonsters(activeCharacter.currentLocation, main);
+    }
     updateTimeDisplay();
 }
 
@@ -504,7 +508,6 @@ export function renderMainMenu() {
     let navSection = null;
     let restBtn = null;
     if (loc) {
-        updateNearbyMonsters(loc.name, container);
         if (loc.distance > 0) {
             const actions = createActionPanel(container, loc);
             if (actions) {
@@ -520,6 +523,10 @@ export function renderMainMenu() {
 
     const layout = document.createElement('div');
     layout.className = 'main-layout';
+
+    const combatCol = document.createElement('div');
+    combatCol.id = 'combat-column';
+    layout.appendChild(combatCol);
 
     if (activeCharacter) {
         const profile = document.createElement('div');
@@ -629,7 +636,7 @@ export function renderMainMenu() {
         // buttons have been removed to simplify the profile view. The character
         // information now only shows the basic profile lines above.
     }
-    if (navSection) layout.appendChild(navSection);
+    if (navSection) layout.insertBefore(navSection, combatCol);
     layout.appendChild(menu);
     container.appendChild(layout);
     return container;
@@ -1392,10 +1399,10 @@ function renderCombatScreen(app, mobs, destination) {
     if (!activeCharacter) return;
     if (!Array.isArray(mobs)) mobs = [mobs];
     document.body.classList.add('combat-active');
-    const container = document.createElement('div');
-    container.id = 'combat-screen';
+    const container = app.querySelector('#combat-column');
+    if (!container) return;
+    container.innerHTML = '';
     container.appendChild(statusEffectsDisplay());
-    app.appendChild(container);
 
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';

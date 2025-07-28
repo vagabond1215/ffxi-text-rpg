@@ -195,10 +195,7 @@ body.landscape #area-grid {
     content: '\25BC';
 }
 
-body.combat-active .area-header,
-body.combat-active #area-grid {
-    display: none !important;
-}
+
 
 .explore-btn {
     margin-bottom: 10px;
@@ -658,8 +655,8 @@ body.portrait .main-layout {
     color: salmon;
 }
 
-/* Combat screen layout */
-#combat-screen {
+/* Combat column layout */
+#combat-column {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
