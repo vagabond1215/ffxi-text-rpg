@@ -1312,11 +1312,15 @@ function createAreaGrid(root, loc) {
     return grid;
 }
 
-function stepInDirection(coord, dx, dy) {
+function nextCoord(coord, dx, dy) {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const x = Math.min(Math.max(0, coord.letter.toUpperCase().charCodeAt(0) - 65 + dx), letters.length - 1);
     const y = Math.max(1, coord.number + dy);
-    const next = { letter: letters[x], number: y };
+    return { letter: letters[x], number: y };
+}
+
+function stepInDirection(coord, dx, dy) {
+    const next = nextCoord(coord, dx, dy);
     if (!canMove(activeCharacter.currentLocation, coord, next)) return coord;
     activeCharacter.subArea = getSubArea(activeCharacter.currentLocation, next);
     return next;
@@ -1367,6 +1371,14 @@ function createActionPanel(root, loc) {
             });
         } else {
             b.textContent = d.l;
+            if (activeCharacter?.coordinates) {
+                const candidate = nextCoord(activeCharacter.coordinates, d.dx, d.dy);
+                if (!canMove(loc.name, activeCharacter.coordinates, candidate)) {
+                    b.disabled = true;
+                }
+            } else {
+                b.disabled = true;
+            }
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
