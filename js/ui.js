@@ -102,12 +102,48 @@ function updateTimePopup() {
         status = 'Shops closed';
         nextChange = `Opens at ${openHour.toString().padStart(2,'0')}:00`;
     }
-    const nextFerry = `${((vt.hour + 1) % 24).toString().padStart(2,'0')}:00`;
-    timePopupElement.innerHTML = `
-        <div>${icon} ${formatVanaTime(vt)} - ${vt.weekday}</div>
-        <div>${status} - ${nextChange}</div>
-        <div>Next ferry departure: ${nextFerry}</div>
-    `;
+    function nextScheduledTime(times) {
+        const minutes = vt.hour * 60 + vt.minute;
+        for (const t of times) {
+            const [h, m] = t.split(':').map(Number);
+            const tm = h * 60 + m;
+            if (tm > minutes) return t;
+        }
+        return times[0];
+    }
+
+    const airshipSchedules = {
+        "San d'Oria - Jeuno": ['04:12', '10:12', '16:12', '22:12'],
+        'Bastok - Jeuno': ['01:12', '07:12', '13:12', '19:12'],
+        'Windurst - Jeuno': ['05:43', '11:43', '17:43', '23:43'],
+        'Kazham - Jeuno': ['02:42', '08:42', '14:42', '20:42']
+    };
+
+    const ferrySchedules = {
+        'Selbina - Mhaura': ['00:00', '08:00', '16:00'],
+        'Mhaura - Aht Urhgan': ['04:00', '12:00', '20:00']
+    };
+
+    const manaclipperSchedules = {
+        'Bibiki Bay - Purgonorgo Isle': ['05:30', '17:30'],
+        'Purgonorgo Isle - Bibiki Bay': ['09:15', '21:15'],
+        'Bibiki Bay - Maliyakaleya Reef': ['12:50'],
+        'Bibiki Bay - Dhalmel Rock': ['00:50']
+    };
+
+    const lines = [];
+    lines.push(`${icon} ${formatVanaTime(vt)} - ${vt.weekday}`);
+    lines.push(`${status} - ${nextChange}`);
+    for (const [route, times] of Object.entries(airshipSchedules)) {
+        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
+    }
+    for (const [route, times] of Object.entries(ferrySchedules)) {
+        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
+    }
+    for (const [route, times] of Object.entries(manaclipperSchedules)) {
+        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
+    }
+    timePopupElement.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
 }
 
 function updateLogFont() {
