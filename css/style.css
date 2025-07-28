@@ -536,16 +536,18 @@ body.portrait .main-layout {
     text-align: left;
 }
 
+
 .inventory-section {
-    width: fit-content;
-    margin: 0 auto 10px auto;
+    width: 100%;
+    margin: 0 0 10px 0;
 }
 
 .inventory-header {
     display: block;
-    margin: 20px auto 5px auto;
+    margin: 20px 0 5px 0;
     font-size: 1.2em;
     font-weight: bold;
+    text-align: left;
 }
 
 .inventory-list {
@@ -569,7 +571,7 @@ body.portrait .main-layout {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
 }
 
 .item-actions {
