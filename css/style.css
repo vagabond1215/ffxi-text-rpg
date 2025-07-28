@@ -9,7 +9,7 @@ body {
     color: #eee;
     text-align: center;
     margin: 0;
-    padding: 60px 0 0 0;
+    padding: 0 0 60px 0;
     font-size: clamp(14px, 2vw, 20px);
 }
 
@@ -51,7 +51,7 @@ body.portrait #app {
 
 #scale-controls {
     position: fixed;
-    top: 5px;
+    bottom: 5px;
     right: 5px;
     z-index: 1100;
     display: flex;
@@ -72,7 +72,7 @@ body.portrait #app {
 #time-popup {
     position: fixed;
     right: 5px;
-    top: 40px;
+    bottom: 40px;
     background: rgba(0, 0, 0, 0.8);
     padding: 8px;
     border-radius: 4px;
@@ -212,7 +212,9 @@ body.landscape #area-grid {
 }
 
 #rest-button {
-    width: 128px;
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .mob-column {
@@ -233,6 +235,7 @@ body.landscape #area-grid {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center;
 }
 
 body.portrait .nav-row {
@@ -243,11 +246,11 @@ body.portrait .nav-row {
 #nearby-monsters {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 10px;
 }
 
 .monster-btn {
-    width: 120px;
+    width: 150px;
 }
 
 .monster-btn.defeated {
@@ -463,7 +466,7 @@ body.portrait .main-layout {
 .profile-btn {
     display: block;
     margin: 0 auto;
-    width: 128px;
+    width: 150px;
 }
 
 .image-container {
@@ -693,7 +696,7 @@ body.portrait .main-layout {
 
 #game-log {
     position: fixed;
-    top: 40px;
+    bottom: 40px;
     left: 5px;
     right: 5px;
     max-height: 200px;

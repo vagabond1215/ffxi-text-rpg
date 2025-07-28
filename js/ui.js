@@ -64,12 +64,12 @@ let monsterListElement = null;
 let updateMonsterDisplay = () => {};
 let navColumnElement = null;
 
-const BASE_TOP_PADDING = 60;
+const BASE_BOTTOM_PADDING = 60;
 
 function updateGameLogPadding() {
     if (!logPanelElement) return;
     const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
-    document.body.style.paddingTop = (BASE_TOP_PADDING + height) + 'px';
+    document.body.style.paddingBottom = (BASE_BOTTOM_PADDING + height) + 'px';
 }
 
 export function setupTimeDisplay(el, popup) {
