@@ -25,6 +25,7 @@ button {
     background-color: #333;
     color: #fff;
     border: 1px solid #555;
+    border-radius: 4px;
     cursor: pointer;
     min-height: 28px;
 }
@@ -213,8 +214,8 @@ body.landscape #area-grid {
 
 #rest-button {
     width: 150px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .mob-column {
@@ -268,16 +269,21 @@ body.portrait .nav-row {
 
 #direction-grid {
     display: grid;
-    grid-template-columns: repeat(3, 40px);
-    grid-template-rows: repeat(3, 40px);
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
     gap: 4px;
     margin-top: 6px;
 }
 
 #direction-grid button {
-    width: 40px;
-    height: 40px;
+    width: 150px;
+    height: 150px;
     padding: 0;
+}
+
+#direction-grid button:disabled {
+    background-color: #222;
+    color: #777;
 }
 
 #attack-button {
