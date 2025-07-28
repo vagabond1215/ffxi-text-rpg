@@ -247,11 +247,12 @@ body.portrait .nav-row {
 #nearby-monsters {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0;
 }
 
 .monster-btn {
     width: 150px;
+    margin: 1px 0;
 }
 
 .monster-btn.defeated {
@@ -273,13 +274,14 @@ body.portrait .nav-row {
     grid-template-rows: repeat(3, 1fr);
     width: 150px;
     gap: 4px;
-    margin-top: 6px;
+    margin: 6px 5px;
 }
 
 #direction-grid button {
     width: 100%;
     aspect-ratio: 1 / 1;
     padding: 0;
+    margin: 0;
 }
 
 #direction-grid button:disabled {
