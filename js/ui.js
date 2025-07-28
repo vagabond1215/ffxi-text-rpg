@@ -1318,6 +1318,7 @@ function createActionPanel(root, loc) {
     if (!loc || loc.distance <= 0) return null;
 
     const restBtn = document.createElement('button');
+    restBtn.id = 'rest-button';
     restBtn.textContent = 'Rest';
     restBtn.addEventListener('click', () => {
         if (activeCharacter) {
@@ -1406,6 +1407,8 @@ function createActionPanel(root, loc) {
 
     const navSection = document.createElement('div');
     navSection.className = 'nav-section';
+    const navRow = document.createElement('div');
+    navRow.className = 'nav-row';
     const navCol = document.createElement('div');
     navCol.className = 'nav-column';
     navCol.appendChild(restBtn);
@@ -1422,8 +1425,26 @@ function createActionPanel(root, loc) {
     mobCol.className = 'mob-column';
     mobCol.appendChild(monsterList);
 
-    navSection.appendChild(navCol);
-    navSection.appendChild(mobCol);
+    navRow.appendChild(navCol);
+    navRow.appendChild(mobCol);
+    navSection.appendChild(navRow);
+
+    // Action buttons beneath navigation
+    const actionDiv = document.createElement('div');
+    actionDiv.id = 'action-buttons';
+
+    const attackBtn = document.createElement('button');
+    attackBtn.textContent = 'Attack';
+    attackBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex === null) return;
+        const mob = nearbyMonsters[selectedMonsterIndex];
+        if (mob && !mob.defeated) {
+            renderCombatScreen(root.parentElement, [{ ...mob, listIndex: selectedMonsterIndex }]);
+        }
+    });
+
+    actionDiv.appendChild(attackBtn);
+    navSection.appendChild(actionDiv);
 
     return { navSection };
 }
@@ -1484,6 +1505,7 @@ function renderCombatScreen(app, mobs, destination) {
     function log(msg) {
         addGameLog(msg);
         updateGameLogPadding();
+        showGameLogTemporarily(2000);
     }
 
     function addItemsToInventory(list) {
@@ -1544,40 +1566,40 @@ function renderCombatScreen(app, mobs, destination) {
             addGameLog(name + (it.qty > 1 ? ` x${it.qty}` : ''));
         });
         showGameLogTemporarily();
-        const btn = document.createElement('button');
-        btn.textContent = 'Claim Loot';
-        btn.addEventListener('click', () => {
-            if (exp > 0) {
-                if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
-                    activeCharacter.capacityPoints = (activeCharacter.capacityPoints || 0) + exp;
-                    while (activeCharacter.capacityPoints >= 30000) {
-                        activeCharacter.capacityPoints -= 30000;
-                        activeCharacter.jobPoints = (activeCharacter.jobPoints || 0) + 1;
-                    }
-                } else if (activeCharacter.level >= 75 && activeCharacter.xpMode === 'LP') {
-                    activeCharacter.limitPoints = (activeCharacter.limitPoints || 0) + exp;
-                    while (activeCharacter.limitPoints >= 10000) {
-                        activeCharacter.limitPoints -= 10000;
-                        activeCharacter.meritPoints = (activeCharacter.meritPoints || 0) + 1;
-                    }
-                } else {
-                    activeCharacter.experience = (activeCharacter.experience || 0) + exp;
-                    checkLevelUp();
+        if (exp > 0) {
+            if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
+                activeCharacter.capacityPoints = (activeCharacter.capacityPoints || 0) + exp;
+                while (activeCharacter.capacityPoints >= 30000) {
+                    activeCharacter.capacityPoints -= 30000;
+                    activeCharacter.jobPoints = (activeCharacter.jobPoints || 0) + 1;
                 }
+            } else if (activeCharacter.level >= 75 && activeCharacter.xpMode === 'LP') {
+                activeCharacter.limitPoints = (activeCharacter.limitPoints || 0) + exp;
+                while (activeCharacter.limitPoints >= 10000) {
+                    activeCharacter.limitPoints -= 10000;
+                    activeCharacter.meritPoints = (activeCharacter.meritPoints || 0) + 1;
+                }
+            } else {
+                activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+                checkLevelUp();
             }
-            activeCharacter.gil += gil;
-            activeCharacter.conquestPoints = (activeCharacter.conquestPoints || 0) + cp;
-            addItemsToInventory(itemDrops);
-            defeated.forEach(m => {
-                let idx = m.listIndex;
-                if (idx === undefined) idx = nearbyMonsters.indexOf(m);
-                if (idx !== -1) nearbyMonsters[idx].defeated = true;
-            });
-            selectedMonsterIndex = null;
-            if (destination && activeCharacter.hp > 0) {
-                setLocation(activeCharacter, destination);
-            }
-            persistCharacter(activeCharacter);
+        }
+        activeCharacter.gil += gil;
+        activeCharacter.conquestPoints = (activeCharacter.conquestPoints || 0) + cp;
+        addItemsToInventory(itemDrops);
+        defeated.forEach(m => {
+            let idx = m.listIndex;
+            if (idx === undefined) idx = nearbyMonsters.indexOf(m);
+            if (idx !== -1) nearbyMonsters[idx].defeated = true;
+        });
+        selectedMonsterIndex = null;
+        if (destination && activeCharacter.hp > 0) {
+            setLocation(activeCharacter, destination);
+        }
+        persistCharacter(activeCharacter);
+        const btn = document.createElement('button');
+        btn.textContent = 'Continue';
+        btn.addEventListener('click', () => {
             refreshMainMenu(app);
         });
         lootDiv.appendChild(btn);
@@ -1669,9 +1691,9 @@ function renderCombatScreen(app, mobs, destination) {
 
     function endBattle() {
         if (activeCharacter.hp <= 0) {
-            activeCharacter.hp = 1;
             setLocation(activeCharacter, activeCharacter.spawnPoint || activeCharacter.homeCity);
             clearTemporaryEffects(activeCharacter);
+            updateDerivedStats(activeCharacter);
             log('You were defeated and return to your home point.');
         }
         battleEnded = true;
