@@ -60,6 +60,10 @@ let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
 
+let monsterListElement = null;
+let updateMonsterDisplay = () => {};
+let navColumnElement = null;
+
 const BASE_TOP_PADDING = 60;
 
 function updateGameLogPadding() {
@@ -662,7 +666,11 @@ export function renderMainMenu() {
         group.appendChild(equipBtn);
         group.appendChild(details);
         profile.appendChild(group);
-        layout.appendChild(profile);
+        if (navColumnElement) {
+            navColumnElement.insertBefore(profile, navColumnElement.firstChild);
+        } else {
+            layout.appendChild(profile);
+        }
 
         // Previously the main menu displayed several buttons that allowed the
         // player to inspect traits, abilities, skills and other details. Those
@@ -1404,6 +1412,8 @@ function createActionPanel(root, loc) {
     }
 
     renderMonsters();
+    monsterListElement = monsterList;
+    updateMonsterDisplay = renderMonsters;
 
     const navSection = document.createElement('div');
     navSection.className = 'nav-section';
@@ -1412,6 +1422,7 @@ function createActionPanel(root, loc) {
     const navCol = document.createElement('div');
     navCol.className = 'nav-column';
     navCol.appendChild(restBtn);
+    navColumnElement = navCol;
     navCol.appendChild(dirGrid);
 
     const coordDisp = document.createElement('div');
@@ -1540,8 +1551,6 @@ function renderCombatScreen(app, mobs, destination) {
     function victory(exp, gil, cp, itemDrops, notes = []) {
         update();
         battleEnded = true;
-        const lootDiv = document.createElement('div');
-        lootDiv.className = 'loot-display';
         const enemyNames = defeated.map(m => m.name).join(', ');
         addGameLog(`You defeated the ${enemyNames}.`);
         if (exp > 0) addGameLog(`${exp} EXP`);
@@ -1584,23 +1593,25 @@ function renderCombatScreen(app, mobs, destination) {
             setLocation(activeCharacter, destination);
         }
         persistCharacter(activeCharacter);
-        const btn = document.createElement('button');
-        btn.textContent = 'Continue';
-        btn.addEventListener('click', () => {
-            refreshMainMenu(app);
-        });
-        lootDiv.appendChild(btn);
-        container.appendChild(lootDiv);
+        updateMonsterDisplay();
+        refreshMainMenu(app);
     }
 
     function update() {
-        // Enemy list removed; nothing to update
+        updateMonsterDisplay();
     }
 
     function monsterDefeated(idx) {
         const mob = mobs[idx];
         defeated.push(mob);
         mobs.splice(idx, 1);
+        let listIdx = mob.listIndex;
+        if (listIdx === undefined) listIdx = nearbyMonsters.indexOf(mob);
+        if (listIdx !== -1) {
+            nearbyMonsters[listIdx].defeated = true;
+            nearbyMonsters[listIdx].hp = 0;
+        }
+        updateMonsterDisplay();
         if (mobs.length === 0) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
             victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
@@ -1660,6 +1671,10 @@ function renderCombatScreen(app, mobs, destination) {
                 activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
             } else {
                 defender.currentHP = Math.max(0, defender.currentHP - dmg);
+                defender.hp = defender.currentHP;
+                if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
+                    nearbyMonsters[defender.listIndex].hp = defender.currentHP;
+                }
             }
             if (isCrit) {
                 log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
@@ -1684,16 +1699,11 @@ function renderCombatScreen(app, mobs, destination) {
             log('You were defeated and return to your home point.');
         }
         battleEnded = true;
-        const btn = document.createElement('button');
-        btn.textContent = 'Continue';
-        btn.addEventListener('click', () => {
-            if (destination && activeCharacter.hp > 0) {
-                setLocation(activeCharacter, destination);
-            }
-            persistCharacter(activeCharacter);
-            refreshMainMenu(app);
-        });
-        container.appendChild(btn);
+        if (destination && activeCharacter.hp > 0) {
+            setLocation(activeCharacter, destination);
+        }
+        persistCharacter(activeCharacter);
+        refreshMainMenu(app);
     }
 
     function monsterTurn() {
