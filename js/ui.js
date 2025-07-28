@@ -33,6 +33,7 @@ import {
     bestiaryByZone,
     spawnNearbyMonsters,
     calculateBattleRewards,
+    huntEncounter,
     parseCoordinate,
     coordinateDistance,
     stepToward,
@@ -1552,7 +1553,25 @@ function createActionPanel(root, loc) {
 
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
-    const { actionDiv } = createActionButtons(true);
+    const { actionDiv, attackBtn } = createActionButtons(true);
+    attackBtn.disabled = false;
+    attackBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex === null) return;
+        const target = nearbyMonsters[selectedMonsterIndex];
+        if (!target || target.defeated) return;
+        target.aggro = true;
+        target.listIndex = selectedMonsterIndex;
+        updateMonsterDisplay();
+        const zone = loc.name;
+        const sub = getSubArea(zone, activeCharacter.coordinates);
+        const group = huntEncounter(zone, target.name, sub);
+        if (group.length) {
+            group[0] = target;
+        } else {
+            group.push(target);
+        }
+        renderCombatScreen(root.parentElement, group);
+    });
     actionColumn.appendChild(actionDiv);
     navCol.appendChild(actionColumn);
 
