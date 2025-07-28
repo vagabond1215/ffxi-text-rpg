@@ -123,11 +123,16 @@ function zoneSlug(name) {
 
 export function showMap(zone) {
     if (!mapOverlayElement || !mapImageElement) return;
-    const path = `img/maps/${zoneSlug(zone)}.svg`;
-    mapImageElement.src = path;
-    if (!mapImageElement.complete) {
-        mapImageElement.onerror = () => { mapImageElement.src = 'img/maps/default_map.svg'; };
-    }
+    const slug = zoneSlug(zone);
+    const jpgPath = `img/maps/${slug}.jpg`;
+    const svgPath = `img/maps/${slug}.svg`;
+    mapImageElement.onerror = () => {
+        mapImageElement.onerror = () => {
+            mapImageElement.src = 'img/maps/default_map.svg';
+        };
+        mapImageElement.src = svgPath;
+    };
+    mapImageElement.src = jpgPath;
     if (mapPanzoomInstance) mapPanzoomInstance.reset();
     mapOverlayElement.classList.remove('hidden');
 }
@@ -342,6 +347,20 @@ function createImageContainer() {
         },
         img
     };
+}
+
+function updateHPDisplay() {
+    if (!activeCharacter) return;
+    const hpLine = document.getElementById('hp-line');
+    const hpBar = document.getElementById('char-hp-bar');
+    if (hpLine) {
+        hpLine.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
+    }
+    if (hpBar) {
+        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
+        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
+        hpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+    }
 }
 
 export function setupBackButton(element) {
@@ -622,6 +641,7 @@ export function renderMainMenu() {
         line2.textContent = jobText;
 
         const line3 = document.createElement('div');
+        line3.id = 'hp-line';
         line3.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
 
         const line4 = document.createElement('div');
@@ -670,6 +690,7 @@ export function renderMainMenu() {
 
         const charBtn = document.createElement('button');
         charBtn.className = 'profile-btn';
+        charBtn.id = 'char-hp-bar';
         charBtn.textContent = activeCharacter.name;
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
         const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
@@ -1755,6 +1776,7 @@ function renderCombatScreen(app, mobs, destination) {
 
     function update() {
         updateMonsterDisplay();
+        updateHPDisplay();
     }
 
     function monsterDefeated(idx) {
