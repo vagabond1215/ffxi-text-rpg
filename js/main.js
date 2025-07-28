@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -55,6 +55,13 @@ function init() {
     if (timeEl) {
         setupTimeDisplay(timeEl, timePopup);
         updateTimeDisplay();
+    }
+
+    const mapOverlay = document.getElementById('map-overlay');
+    const mapImage = document.getElementById('map-image');
+    const mapClose = document.getElementById('map-close');
+    if (mapOverlay && mapImage && mapClose) {
+        setupMapOverlay(mapOverlay, mapImage, mapClose);
     }
 
     const charBtn = document.getElementById('character-select');

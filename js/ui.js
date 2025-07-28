@@ -53,6 +53,10 @@ let logButtonElement = null;
 let logPanelElement = null;
 let timeDisplayElement = null;
 let timePopupElement = null;
+let mapOverlayElement = null;
+let mapImageElement = null;
+let mapCloseElement = null;
+let mapPanzoomInstance = null;
 const gameLogMessages = [];
 let currentTurn = 0;
 let logFontSize = 14;
@@ -93,6 +97,38 @@ export function updateTimeDisplay() {
     const vt = currentVanaTime();
     const icon = dayElements[vt.weekday] || '';
     timeDisplayElement.textContent = `${icon} ${vt.hour.toString().padStart(2, '0')}:${vt.minute.toString().padStart(2, '0')}`;
+}
+
+export function setupMapOverlay(el, img, closeBtn) {
+    mapOverlayElement = el;
+    mapImageElement = img;
+    mapCloseElement = closeBtn;
+    if (!mapOverlayElement) return;
+    if (mapCloseElement) {
+        mapCloseElement.addEventListener('click', () => {
+            mapOverlayElement.classList.add('hidden');
+            if (mapPanzoomInstance) mapPanzoomInstance.reset();
+        });
+    }
+    if (window.Panzoom && mapImageElement) {
+        mapPanzoomInstance = Panzoom(mapImageElement, { maxScale: 5 });
+        mapOverlayElement.addEventListener('wheel', mapPanzoomInstance.zoomWithWheel);
+    }
+}
+
+function zoneSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+}
+
+export function showMap(zone) {
+    if (!mapOverlayElement || !mapImageElement) return;
+    const path = `img/maps/${zoneSlug(zone)}.svg`;
+    mapImageElement.src = path;
+    if (!mapImageElement.complete) {
+        mapImageElement.onerror = () => { mapImageElement.src = 'img/maps/default_map.svg'; };
+    }
+    if (mapPanzoomInstance) mapPanzoomInstance.reset();
+    mapOverlayElement.classList.remove('hidden');
 }
 
 function updateTimePopup() {
@@ -633,7 +669,12 @@ export function renderMainMenu() {
 
         const charBtn = document.createElement('button');
         charBtn.className = 'profile-btn';
-        charBtn.textContent = `${activeCharacter.name} (${activeCharacter.hp} HP)`;
+        charBtn.textContent = activeCharacter.name;
+        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
+        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
+        charBtn.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+        const fontSize = Math.max(12, Math.min(18, Math.floor(140 / activeCharacter.name.length)));
+        charBtn.style.fontSize = `${fontSize}px`;
         group.appendChild(charBtn);
 
         const details = document.createElement('div');
@@ -1424,6 +1465,11 @@ function createActionPanel(root, loc) {
             if (activeCharacter.coordinates) {
                 b.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
             }
+            b.addEventListener('click', () => {
+                if (activeCharacter?.currentLocation) {
+                    showMap(activeCharacter.currentLocation);
+                }
+            });
         } else {
             b.textContent = d.l;
             if (activeCharacter?.coordinates) {
