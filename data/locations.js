@@ -131,16 +131,7 @@ export const zonesByCity = {
         'Cavernous Maw (Abyssea – Altepa)': 'J-10'
       },
       connectedAreas: ['Bastok Markets', 'North Gustaberg (East)', 'North Gustaberg (West)', 'Dangruf Wadi', 'Vomp Hill'],
-      pointsOfInterest: [
-        'Outpost',
-        'Selt Steel Mines',
-        'Vomp Hill Ramp',
-        'Bastok Markets Gate',
-        'Bastok Mines Gate',
-        'Morhen Lighthouse',
-        'Stone Monument',
-        'Goblin Camp'
-      ],
+      pointsOfInterest: [],
       importantNPCs: []
     },
     {

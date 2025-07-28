@@ -53,7 +53,7 @@ body.portrait #app {
     position: fixed;
     top: 5px;
     right: 5px;
-    z-index: 1000;
+    z-index: 1100;
     display: flex;
     align-items: center;
     background: rgba(0, 0, 0, 0.6);
@@ -76,7 +76,8 @@ body.portrait #app {
     background: rgba(0, 0, 0, 0.8);
     padding: 8px;
     border-radius: 4px;
-    max-width: 200px;
+    min-width: 140px;
+    max-width: 260px;
     z-index: 1000;
     text-align: left;
     color: #fff;
@@ -447,7 +448,7 @@ body.portrait .main-layout {
 .profile-btn {
     display: block;
     margin: 0 auto;
-    width: 180px;
+    width: clamp(138px, 23vw, 230px);
 }
 
 .image-container {
@@ -699,13 +700,15 @@ body.portrait .main-layout {
 
 #game-log .font-controls {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 5px;
+    right: 5px;
 }
 #game-log .font-controls button {
     width: 28px;
     height: 28px;
     margin-left: 2px;
+    padding: 2px 6px;
+    font-size: 14px;
 }
 
 #action-buttons {
