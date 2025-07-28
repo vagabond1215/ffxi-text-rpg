@@ -542,20 +542,19 @@ export function renderMainMenu() {
 
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     let navSection = null;
-    let restBtn = null;
     if (loc) {
         if (loc.distance > 0) {
             const actions = createActionPanel(container, loc);
             if (actions) {
-                restBtn = actions.restBtn;
                 navSection = actions.navSection;
             }
+        } else {
+            const grid = createAreaGrid(container, loc);
+            areaDiv.appendChild(grid);
+            menu.appendChild(areaBtn);
+            menu.appendChild(areaDiv);
         }
-        const grid = createAreaGrid(container, loc);
-        areaDiv.appendChild(grid);
     }
-    menu.appendChild(areaBtn);
-    menu.appendChild(areaDiv);
 
     const layout = document.createElement('div');
     layout.className = 'main-layout';
@@ -641,12 +640,14 @@ export function renderMainMenu() {
         details.appendChild(imgNav.wrapper);
 
         const invBtn = document.createElement('button');
+        invBtn.className = 'profile-btn';
         invBtn.textContent = 'Inventory';
         invBtn.addEventListener('click', () => {
             renderInventoryScreen(container);
         });
 
         const equipBtn = document.createElement('button');
+        equipBtn.className = 'profile-btn';
         equipBtn.textContent = 'Equipment';
         equipBtn.addEventListener('click', () => {
             renderEquipmentScreen(container);
@@ -660,11 +661,10 @@ export function renderMainMenu() {
         details.appendChild(lineCp);
         details.appendChild(line6);
         if (modeBtn) details.appendChild(modeBtn);
-        details.appendChild(invBtn);
-        details.appendChild(equipBtn);
+        group.appendChild(invBtn);
+        group.appendChild(equipBtn);
         group.appendChild(details);
         profile.appendChild(group);
-        if (restBtn) profile.appendChild(restBtn);
         layout.appendChild(profile);
 
         // Previously the main menu displayed several buttons that allowed the
@@ -1411,6 +1411,7 @@ function createActionPanel(root, loc) {
     navSection.className = 'nav-section';
     const navCol = document.createElement('div');
     navCol.className = 'nav-column';
+    navCol.appendChild(restBtn);
     navCol.appendChild(dirGrid);
 
     const coordDisp = document.createElement('div');
@@ -1427,7 +1428,7 @@ function createActionPanel(root, loc) {
     navSection.appendChild(navCol);
     navSection.appendChild(mobCol);
 
-    return { restBtn, navSection };
+    return { navSection };
 }
 
 
