@@ -53,7 +53,7 @@ body.portrait #app {
     position: fixed;
     bottom: 5px;
     right: 5px;
-    z-index: 1100;
+    z-index: 1300;
     display: flex;
     align-items: center;
     background: rgba(0, 0, 0, 0.6);
@@ -696,7 +696,7 @@ body.portrait .main-layout {
 
 #game-log {
     position: fixed;
-    bottom: 40px;
+    bottom: 60px;
     left: 5px;
     right: 5px;
     max-height: 200px;
@@ -722,7 +722,7 @@ body.portrait .main-layout {
 #action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 1px;
     width: 100%;
 }
 
@@ -750,6 +750,11 @@ body.portrait .main-layout {
     background: #222;
     color: #fff;
     margin-top: -1px;
+}
+
+#action-buttons button,
+#action-buttons select {
+    margin: 0;
 }
 
 
