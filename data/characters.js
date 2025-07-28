@@ -746,7 +746,7 @@ const dayNames = [
 
 export const dayElements = {
   Firesday: '🔥',
-  Earthsday: '🌍',
+  Earthsday: '🪨',
   Watersday: '💧',
   Windsday: '💨',
   Iceday: '❄️',

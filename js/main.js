@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, updateTimeDisplay } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -11,8 +11,12 @@ function applyOrientation() {
 }
 
 function updateScale(delta) {
-    uiScale = Math.max(0.5, Math.min(2, uiScale + delta));
-    document.documentElement.style.setProperty('--ui-scale', uiScale);
+    if (isLogFullscreen()) {
+        adjustLogFontSize(delta * 20);
+    } else {
+        uiScale = Math.max(0.5, Math.min(2, uiScale + delta));
+        document.documentElement.style.setProperty('--ui-scale', uiScale);
+    }
 }
 
 function init() {

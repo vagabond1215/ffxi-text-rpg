@@ -687,7 +687,7 @@ body.portrait .main-layout {
     padding: 4px;
     border-radius: 4px;
     text-align: left;
-    z-index: 1000;
+    z-index: 1200;
     font-size: var(--log-font-size);
 }
 
@@ -700,18 +700,6 @@ body.portrait .main-layout {
     max-height: none;
 }
 
-#game-log .font-controls {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-#game-log .font-controls button {
-    width: 28px;
-    height: 28px;
-    margin-left: 2px;
-    padding: 2px 6px;
-    font-size: 14px;
-}
 
 #action-buttons {
     display: flex;
