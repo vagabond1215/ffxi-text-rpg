@@ -1429,22 +1429,9 @@ function createActionPanel(root, loc) {
     navRow.appendChild(mobCol);
     navSection.appendChild(navRow);
 
-    // Action buttons beneath navigation
-    const actionDiv = document.createElement('div');
-    actionDiv.id = 'action-buttons';
-
-    const attackBtn = document.createElement('button');
-    attackBtn.textContent = 'Attack';
-    attackBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex === null) return;
-        const mob = nearbyMonsters[selectedMonsterIndex];
-        if (mob && !mob.defeated) {
-            renderCombatScreen(root.parentElement, [{ ...mob, listIndex: selectedMonsterIndex }]);
-        }
-    });
-
-    actionDiv.appendChild(attackBtn);
-    navSection.appendChild(actionDiv);
+    // Previously an attack button was placed here. Combat actions
+    // are now handled within the navigation column when combat starts,
+    // so no action buttons are needed on the field menu itself.
 
     return { navSection };
 }
@@ -1459,15 +1446,15 @@ function renderCombatScreen(app, mobs, destination) {
     container.innerHTML = '';
     container.appendChild(statusEffectsDisplay());
 
+    const navColumn = app.querySelector('.nav-column');
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
+    if (navColumn) navColumn.appendChild(actionColumn); else container.appendChild(actionColumn);
 
     mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
     });
     let currentTarget = mobs[0];
-
-    container.appendChild(actionColumn);
 
     let battleEnded = false;
     const defeated = [];
