@@ -1346,6 +1346,7 @@ function createActionPanel(root, loc) {
     updateNearbyMonsters(loc.name, root);
     const dirGrid = document.createElement('div');
     dirGrid.id = 'direction-grid';
+    let coordBtn;
     const dirs = [
         { l: 'NW', dx: -1, dy: -1 },
         { l: 'N', dx: 0, dy: -1 },
@@ -1360,15 +1361,11 @@ function createActionPanel(root, loc) {
     dirs.forEach(d => {
         const b = document.createElement('button');
         if (d.attack) {
-            b.textContent = '🗡';
             b.id = 'attack-button';
-            b.addEventListener('click', () => {
-                if (selectedMonsterIndex === null) return;
-                const mob = nearbyMonsters[selectedMonsterIndex];
-                if (mob && !mob.defeated) {
-                    renderCombatScreen(root.parentElement, [{ ...mob, listIndex: selectedMonsterIndex }]);
-                }
-            });
+            coordBtn = b;
+            if (activeCharacter.coordinates) {
+                b.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
+            }
         } else {
             b.textContent = d.l;
             if (activeCharacter?.coordinates) {
@@ -1382,6 +1379,7 @@ function createActionPanel(root, loc) {
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
+                if (coordBtn) coordBtn.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
                 advanceTime(activeCharacter, loc.name);
                 incrementTurn();
                 persistCharacter(activeCharacter);
@@ -1437,13 +1435,6 @@ function createActionPanel(root, loc) {
     navColumnElement = navCol;
     navCol.appendChild(dirGrid);
 
-    const coordDisp = document.createElement('div');
-    coordDisp.id = 'coord-display';
-    if (activeCharacter.coordinates) {
-        coordDisp.textContent = `${activeCharacter.coordinates.letter}-${activeCharacter.coordinates.number}`;
-    }
-    navCol.appendChild(coordDisp);
-
     const mobCol = document.createElement('div');
     mobCol.className = 'mob-column';
     mobCol.appendChild(monsterList);
@@ -1473,6 +1464,55 @@ function renderCombatScreen(app, mobs, destination) {
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
     if (navColumn) navColumn.appendChild(actionColumn); else container.appendChild(actionColumn);
+
+    const actionDiv = document.createElement('div');
+    actionDiv.id = 'action-buttons';
+
+    const attackBtn = document.createElement('button');
+    attackBtn.textContent = 'Attack';
+
+    const abilitySelect = document.createElement('select');
+    const abilityBtn = document.createElement('button');
+    abilityBtn.textContent = 'Ability';
+    const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
+    const availableAbilities = (jobData.abilities || [])
+        .filter(a => a.level <= activeCharacter.level);
+    availableAbilities.forEach(a => abilitySelect.appendChild(new Option(a.name, a.name)));
+
+    const magicSelect = document.createElement('select');
+    const magicBtn = document.createElement('button');
+    magicBtn.textContent = 'Magic';
+    const spells = activeCharacter.spells || [];
+    spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
+    if (!spells.length) magicBtn.disabled = true;
+
+    const fleeBtn = document.createElement('button');
+    fleeBtn.textContent = 'Flee';
+
+    const attackWrap = document.createElement('div');
+    attackWrap.className = 'action-cell';
+    attackWrap.appendChild(attackBtn);
+
+    const abilityWrap = document.createElement('div');
+    abilityWrap.className = 'action-cell with-select';
+    abilityWrap.appendChild(abilityBtn);
+    abilityWrap.appendChild(abilitySelect);
+
+    const magicWrap = document.createElement('div');
+    magicWrap.className = 'action-cell with-select';
+    magicWrap.appendChild(magicBtn);
+    magicWrap.appendChild(magicSelect);
+
+    const fleeWrap = document.createElement('div');
+    fleeWrap.className = 'action-cell';
+    fleeWrap.appendChild(fleeBtn);
+
+    actionDiv.appendChild(attackWrap);
+    actionDiv.appendChild(abilityWrap);
+    actionDiv.appendChild(fleeWrap);
+    actionDiv.appendChild(magicWrap);
+
+    actionColumn.appendChild(actionDiv);
 
     mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
@@ -1733,113 +1773,72 @@ function renderCombatScreen(app, mobs, destination) {
         }
     }
 
+    function setActionsEnabled(enabled) {
+        attackBtn.disabled = !enabled;
+        abilityBtn.disabled = !enabled;
+        abilitySelect.disabled = !enabled;
+        magicBtn.disabled = !enabled || !spells.length;
+        magicSelect.disabled = !enabled || !spells.length;
+        fleeBtn.disabled = !enabled;
+    }
+
+    function attemptFlee() {
+        const playerAgi = activeCharacter.stats.agi;
+        mobs.forEach(m => {
+            const mobAgi = m.agi !== undefined ? m.agi : (m.vit ?? parseLevel(m.level) * 2) + 1;
+            let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
+            chance = Math.max(0.05, Math.min(0.95, chance));
+            if (Math.random() < chance) {
+                log(`${activeCharacter.name} fled from ${m.name}.`);
+                if (m.listIndex !== undefined && nearbyMonsters[m.listIndex]) {
+                    nearbyMonsters[m.listIndex].aggro = false;
+                }
+            } else {
+                log(`${m.name} keeps chase.`);
+            }
+        });
+        endBattle();
+        return true;
+    }
+
+    function afterAction() {
+        if (battleEnded) return;
+        setActionsEnabled(false);
+        if (mobs.length > 0) {
+            monsterTurn();
+        } else {
+            endBattle();
+        }
+    }
+
+    attackBtn.addEventListener('click', () => {
+        attack(activeCharacter, currentTarget);
+        afterAction();
+    });
+
+    abilityBtn.addEventListener('click', () => {
+        const name = abilitySelect.value || 'Ability';
+        log(`${activeCharacter.name} uses ${name}.`);
+        attack(activeCharacter, currentTarget);
+        afterAction();
+    });
+
+    magicBtn.addEventListener('click', () => {
+        const spell = magicSelect.value || 'Spell';
+        log(`${activeCharacter.name} casts ${spell}.`);
+        attack(activeCharacter, currentTarget);
+        afterAction();
+    });
+
+    fleeBtn.addEventListener('click', () => {
+        if (attemptFlee()) return;
+        monsterTurn();
+    });
+
     function playerTurn() {
         if (battleEnded) return;
         if (mobs.length === 0) return endBattle();
-        const actionDiv = document.createElement('div');
-        actionDiv.id = 'action-buttons';
-
-        const attackBtn = document.createElement('button');
-        attackBtn.textContent = 'Attack';
-
-        const abilitySelect = document.createElement('select');
-        const abilityBtn = document.createElement('button');
-        abilityBtn.textContent = 'Ability';
-        const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
-        const availableAbilities = (jobData.abilities || [])
-            .filter(a => a.level <= activeCharacter.level);
-        availableAbilities.forEach(a => abilitySelect.appendChild(new Option(a.name, a.name)));
-
-        const magicSelect = document.createElement('select');
-        const magicBtn = document.createElement('button');
-        magicBtn.textContent = 'Magic';
-        const spells = activeCharacter.spells || [];
-        spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
-        if (!spells.length) magicBtn.disabled = true;
-
-        const fleeBtn = document.createElement('button');
-        fleeBtn.textContent = 'Flee';
-
-        const attackWrap = document.createElement('div');
-        attackWrap.className = 'action-cell';
-        attackWrap.appendChild(attackBtn);
-
-        const abilityWrap = document.createElement('div');
-        abilityWrap.className = 'action-cell with-select';
-        abilityWrap.appendChild(abilityBtn);
-        abilityWrap.appendChild(abilitySelect);
-
-        const magicWrap = document.createElement('div');
-        magicWrap.className = 'action-cell with-select';
-        magicWrap.appendChild(magicBtn);
-        magicWrap.appendChild(magicSelect);
-
-        const fleeWrap = document.createElement('div');
-        fleeWrap.className = 'action-cell';
-        fleeWrap.appendChild(fleeBtn);
-
-        actionDiv.appendChild(attackWrap);
-        actionDiv.appendChild(abilityWrap);
-        actionDiv.appendChild(fleeWrap);
-        actionDiv.appendChild(magicWrap);
-
-        actionColumn.appendChild(actionDiv);
-
-        function attemptFlee() {
-            const playerAgi = activeCharacter.stats.agi;
-            mobs.forEach(m => {
-                const mobAgi = m.agi !== undefined ? m.agi : (m.vit ?? parseLevel(m.level) * 2) + 1;
-                let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
-                chance = Math.max(0.05, Math.min(0.95, chance));
-                if (Math.random() < chance) {
-                    log(`${activeCharacter.name} fled from ${m.name}.`);
-                    if (m.listIndex !== undefined && nearbyMonsters[m.listIndex]) {
-                        nearbyMonsters[m.listIndex].aggro = false;
-                    }
-                } else {
-                    log(`${m.name} keeps chase.`);
-                }
-            });
-            endBattle();
-            return true;
-        }
-
-        function afterAction() {
-            if (battleEnded) return;
-            if (mobs.length > 0) {
-                monsterTurn();
-            } else {
-                endBattle();
-            }
-        }
-
-        attackBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
-            attack(activeCharacter, currentTarget);
-            afterAction();
-        });
-
-        abilityBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
-            const name = abilitySelect.value || 'Ability';
-            log(`${activeCharacter.name} uses ${name}.`);
-            attack(activeCharacter, currentTarget);
-            afterAction();
-        });
-
-        magicBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
-            const spell = magicSelect.value || 'Spell';
-            log(`${activeCharacter.name} casts ${spell}.`);
-            attack(activeCharacter, currentTarget);
-            afterAction();
-        });
-
-        fleeBtn.addEventListener('click', () => {
-            actionColumn.removeChild(actionDiv);
-            if (attemptFlee()) return;
-            monsterTurn();
-        });
+        setActionsEnabled(true);
     }
 
     log(`A ${mobs.map(m=>m.name).join(', ')} appear!`);
