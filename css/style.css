@@ -210,6 +210,7 @@ body.landscape #area-grid {
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    width: 150px;
 }
 
 #rest-button {
@@ -223,6 +224,7 @@ body.landscape #area-grid {
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    width: 150px;
 }
 
 .nav-section {
@@ -239,9 +241,14 @@ body.landscape #area-grid {
     align-items: center;
 }
 
-body.portrait .nav-row {
+body.landscape .nav-row {
     flex-direction: row;
     align-items: flex-start;
+}
+
+body.portrait .nav-row {
+    flex-direction: column;
+    align-items: center;
 }
 
 #nearby-monsters {
@@ -694,7 +701,7 @@ body.portrait .main-layout {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    width: 100%;
+    width: 150px;
 }
 
 
@@ -727,7 +734,7 @@ body.portrait .main-layout {
     display: flex;
     flex-direction: column;
     gap: 1px;
-    width: 100%;
+    width: 150px;
 }
 
 #action-buttons .action-cell {
