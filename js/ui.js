@@ -169,28 +169,25 @@ export function setupLogControls(btn, panel) {
     logButtonElement = btn;
     logPanelElement = panel;
     if (!logButtonElement || !logPanelElement) return;
-    const fontControls = document.createElement('div');
-    fontControls.className = 'font-controls hidden';
-    const dec = document.createElement('button');
-    dec.textContent = '-';
-    const inc = document.createElement('button');
-    inc.textContent = '+';
-    fontControls.appendChild(dec);
-    fontControls.appendChild(inc);
-    logPanelElement.appendChild(fontControls);
     updateLogFont();
 
     const toggle = () => {
         const fs = logPanelElement.classList.toggle('fullscreen');
         logPanelElement.classList.toggle('hidden', false);
-        fontControls.classList.toggle('hidden', !fs);
         pruneLog();
         updateGameLogPadding();
     };
     logButtonElement.addEventListener('click', toggle);
-    dec.addEventListener('click', e => { e.stopPropagation(); logFontSize = Math.max(8, logFontSize - 2); updateLogFont(); });
-    inc.addEventListener('click', e => { e.stopPropagation(); logFontSize = Math.min(32, logFontSize + 2); updateLogFont(); });
     pruneLog();
+}
+
+export function adjustLogFontSize(delta) {
+    logFontSize = Math.max(8, Math.min(32, logFontSize + delta));
+    updateLogFont();
+}
+
+export function isLogFullscreen() {
+    return !!(logPanelElement && logPanelElement.classList.contains('fullscreen'));
 }
 
 export function addGameLog(msg) {
