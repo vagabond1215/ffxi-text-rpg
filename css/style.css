@@ -211,6 +211,10 @@ body.landscape #area-grid {
     gap: 4px;
 }
 
+#rest-button {
+    width: 120px;
+}
+
 .mob-column {
     display: flex;
     flex-direction: column;
@@ -225,6 +229,17 @@ body.landscape #area-grid {
     gap: 10px;
 }
 
+.nav-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+body.portrait .nav-row {
+    flex-direction: row;
+    align-items: flex-start;
+}
+
 #nearby-monsters {
     display: flex;
     flex-direction: column;
@@ -232,7 +247,7 @@ body.landscape #area-grid {
 }
 
 .monster-btn {
-    width: 100px;
+    width: 120px;
 }
 
 .monster-btn.defeated {
