@@ -215,8 +215,8 @@ body.landscape #area-grid {
 
 #rest-button {
     width: 150px;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .mob-column {

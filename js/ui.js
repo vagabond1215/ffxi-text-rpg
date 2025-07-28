@@ -1432,6 +1432,12 @@ function createActionPanel(root, loc) {
     const restBtn = document.createElement('button');
     restBtn.id = 'rest-button';
     restBtn.textContent = 'Rest';
+    if (activeCharacter) {
+        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
+        const pct = activeCharacter.hp / maxHp;
+        if (pct < 0.25) restBtn.style.backgroundColor = 'orange';
+        else if (pct < 0.5) restBtn.style.backgroundColor = 'yellow';
+    }
     restBtn.addEventListener('click', () => {
         if (activeCharacter) {
             updateDerivedStats(activeCharacter);
@@ -1591,7 +1597,13 @@ function renderCombatScreen(app, mobs, destination) {
     const navColumn = app.querySelector('.nav-column');
     const actionColumn = document.createElement('div');
     actionColumn.className = 'action-column';
-    if (navColumn) navColumn.appendChild(actionColumn); else container.appendChild(actionColumn);
+    if (navColumn) {
+        const existing = navColumn.querySelectorAll('.action-column');
+        existing.forEach(el => el.remove());
+        navColumn.appendChild(actionColumn);
+    } else {
+        container.appendChild(actionColumn);
+    }
 
     const { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn } = createActionButtons(false);
     actionColumn.appendChild(actionDiv);
