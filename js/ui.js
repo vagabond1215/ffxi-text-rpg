@@ -60,6 +60,9 @@ let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
 
+// Optional callback invoked when a monster is highlighted
+let monsterSelectHandler = null;
+
 let monsterListElement = null;
 let updateMonsterDisplay = () => {};
 let navColumnElement = null;
@@ -1469,6 +1472,9 @@ function createActionPanel(root, loc) {
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 selectedMonsterIndex = i;
+                if (typeof monsterSelectHandler === 'function') {
+                    monsterSelectHandler(i);
+                }
                 renderMonsters();
             });
             btn.disabled = m.defeated;
@@ -1528,8 +1534,17 @@ function renderCombatScreen(app, mobs, destination) {
     mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
     });
-    let currentTarget = mobs[0];
-
+    if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
+        selectedMonsterIndex = 0;
+    }
+    let currentTarget = mobs[selectedMonsterIndex] || mobs[0];
+    monsterSelectHandler = idx => {
+        if (mobs[idx]) {
+            selectedMonsterIndex = idx;
+            currentTarget = mobs[idx];
+        }
+    };
+    
     let battleEnded = false;
     const defeated = [];
 
@@ -1614,6 +1629,7 @@ function renderCombatScreen(app, mobs, destination) {
     function victory(exp, gil, cp, itemDrops, notes = []) {
         update();
         battleEnded = true;
+        monsterSelectHandler = null;
         const enemyNames = defeated.map(m => m.name).join(', ');
         addGameLog(`You defeated the ${enemyNames}.`);
         if (exp > 0) addGameLog(`${exp} EXP`);
@@ -1679,7 +1695,12 @@ function renderCombatScreen(app, mobs, destination) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
             victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
         } else {
-            currentTarget = mobs[0];
+            if (selectedMonsterIndex === idx) {
+                selectedMonsterIndex = 0;
+            } else if (selectedMonsterIndex > idx) {
+                selectedMonsterIndex--;
+            }
+            currentTarget = mobs[selectedMonsterIndex] || mobs[0];
             update();
         }
     }
@@ -1762,6 +1783,7 @@ function renderCombatScreen(app, mobs, destination) {
             log('You were defeated and return to your home point.');
         }
         battleEnded = true;
+        monsterSelectHandler = null;
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
         }
