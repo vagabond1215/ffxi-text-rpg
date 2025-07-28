@@ -1326,6 +1326,61 @@ function stepInDirection(coord, dx, dy) {
     return next;
 }
 
+function createActionButtons(disabled = false) {
+    const actionDiv = document.createElement('div');
+    actionDiv.id = 'action-buttons';
+
+    const attackBtn = document.createElement('button');
+    attackBtn.textContent = 'Attack';
+
+    const abilitySelect = document.createElement('select');
+    const abilityBtn = document.createElement('button');
+    abilityBtn.textContent = 'Ability';
+    const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
+    const availableAbilities = (jobData.abilities || [])
+        .filter(a => a.level <= activeCharacter.level);
+    availableAbilities.forEach(a => abilitySelect.appendChild(new Option(a.name, a.name)));
+
+    const magicSelect = document.createElement('select');
+    const magicBtn = document.createElement('button');
+    magicBtn.textContent = 'Magic';
+    const spells = activeCharacter.spells || [];
+    spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
+    if (!spells.length) magicBtn.disabled = true;
+
+    const fleeBtn = document.createElement('button');
+    fleeBtn.textContent = 'Flee';
+
+    const attackWrap = document.createElement('div');
+    attackWrap.className = 'action-cell';
+    attackWrap.appendChild(attackBtn);
+
+    const abilityWrap = document.createElement('div');
+    abilityWrap.className = 'action-cell with-select';
+    abilityWrap.appendChild(abilityBtn);
+    abilityWrap.appendChild(abilitySelect);
+
+    const magicWrap = document.createElement('div');
+    magicWrap.className = 'action-cell with-select';
+    magicWrap.appendChild(magicBtn);
+    magicWrap.appendChild(magicSelect);
+
+    const fleeWrap = document.createElement('div');
+    fleeWrap.className = 'action-cell';
+    fleeWrap.appendChild(fleeBtn);
+
+    actionDiv.appendChild(attackWrap);
+    actionDiv.appendChild(abilityWrap);
+    actionDiv.appendChild(fleeWrap);
+    actionDiv.appendChild(magicWrap);
+
+    [attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn].forEach(el => {
+        el.disabled = disabled || el.disabled;
+    });
+
+    return { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn };
+}
+
 function createActionPanel(root, loc) {
     if (!loc || loc.distance <= 0) return null;
 
@@ -1443,9 +1498,11 @@ function createActionPanel(root, loc) {
     navRow.appendChild(mobCol);
     navSection.appendChild(navRow);
 
-    // Previously an attack button was placed here. Combat actions
-    // are now handled within the navigation column when combat starts,
-    // so no action buttons are needed on the field menu itself.
+    const actionColumn = document.createElement('div');
+    actionColumn.className = 'action-column';
+    const { actionDiv } = createActionButtons(true);
+    actionColumn.appendChild(actionDiv);
+    navCol.appendChild(actionColumn);
 
     return { navSection };
 }
@@ -1465,53 +1522,7 @@ function renderCombatScreen(app, mobs, destination) {
     actionColumn.className = 'action-column';
     if (navColumn) navColumn.appendChild(actionColumn); else container.appendChild(actionColumn);
 
-    const actionDiv = document.createElement('div');
-    actionDiv.id = 'action-buttons';
-
-    const attackBtn = document.createElement('button');
-    attackBtn.textContent = 'Attack';
-
-    const abilitySelect = document.createElement('select');
-    const abilityBtn = document.createElement('button');
-    abilityBtn.textContent = 'Ability';
-    const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
-    const availableAbilities = (jobData.abilities || [])
-        .filter(a => a.level <= activeCharacter.level);
-    availableAbilities.forEach(a => abilitySelect.appendChild(new Option(a.name, a.name)));
-
-    const magicSelect = document.createElement('select');
-    const magicBtn = document.createElement('button');
-    magicBtn.textContent = 'Magic';
-    const spells = activeCharacter.spells || [];
-    spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
-    if (!spells.length) magicBtn.disabled = true;
-
-    const fleeBtn = document.createElement('button');
-    fleeBtn.textContent = 'Flee';
-
-    const attackWrap = document.createElement('div');
-    attackWrap.className = 'action-cell';
-    attackWrap.appendChild(attackBtn);
-
-    const abilityWrap = document.createElement('div');
-    abilityWrap.className = 'action-cell with-select';
-    abilityWrap.appendChild(abilityBtn);
-    abilityWrap.appendChild(abilitySelect);
-
-    const magicWrap = document.createElement('div');
-    magicWrap.className = 'action-cell with-select';
-    magicWrap.appendChild(magicBtn);
-    magicWrap.appendChild(magicSelect);
-
-    const fleeWrap = document.createElement('div');
-    fleeWrap.className = 'action-cell';
-    fleeWrap.appendChild(fleeBtn);
-
-    actionDiv.appendChild(attackWrap);
-    actionDiv.appendChild(abilityWrap);
-    actionDiv.appendChild(fleeWrap);
-    actionDiv.appendChild(magicWrap);
-
+    const { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn } = createActionButtons(false);
     actionColumn.appendChild(actionDiv);
 
     mobs.forEach(m => {
