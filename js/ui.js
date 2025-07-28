@@ -2259,9 +2259,6 @@ export function renderInventoryScreen(root) {
     if (!activeCharacter) return;
     root.innerHTML = '';
     resetDetails();
-    const title = document.createElement('h2');
-    title.textContent = 'Inventory';
-    root.appendChild(title);
     const categories = {
         Weapons: [],
         Armor: [],
