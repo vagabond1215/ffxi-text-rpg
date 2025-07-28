@@ -293,11 +293,6 @@ body.portrait .nav-row {
     font-size: 20px;
 }
 
-#coord-display {
-    margin-top: 6px;
-}
-
-
 .form-header {
     display: flex;
     justify-content: center;
