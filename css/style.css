@@ -269,15 +269,16 @@ body.portrait .nav-row {
 
 #direction-grid {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 150px;
     gap: 4px;
     margin-top: 6px;
 }
 
 #direction-grid button {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     padding: 0;
 }
 
