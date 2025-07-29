@@ -2026,6 +2026,22 @@ function renderCombatScreen(app, mobs, destination) {
         return Math.max(1, Math.floor(baseDamage * pdif));
     }
 
+    function tpFromDelay(delay) {
+        if (delay <= 180) return Math.floor(61 + (delay - 180) * 63 / 360);
+        if (delay <= 540) return Math.floor(61 + (delay - 180) * 88 / 360);
+        if (delay <= 630) return Math.floor(149 + (delay - 540) * 20 / 360);
+        if (delay <= 720) return Math.floor(154 + (delay - 630) * 28 / 360);
+        if (delay <= 900) return Math.floor(161 + (delay - 720) * 24 / 360);
+        return Math.floor(173 + (delay - 900) * 28 / 360);
+    }
+
+    function gainTP(character, base) {
+        if (!character) return;
+        const store = character.storeTp || 0;
+        const total = Math.floor(base) + Math.floor(base * store / 100);
+        character.tp = Math.min(1000, Math.max(0, (character.tp || 0) + Math.floor(total)));
+    }
+
     function attack(attacker, defender) {
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
@@ -2036,12 +2052,18 @@ function renderCombatScreen(app, mobs, destination) {
             const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit);
             if (defender === activeCharacter) {
                 activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+                const mobDelay = attacker.delay || 240;
+                gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
             } else {
                 defender.currentHP = Math.max(0, defender.currentHP - dmg);
                 defender.hp = defender.currentHP;
                 if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
                     nearbyMonsters[defender.listIndex].hp = defender.currentHP;
                 }
+            }
+            if (attacker === activeCharacter) {
+                const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
+                gainTP(activeCharacter, tpFromDelay(weaponDelay));
             }
             if (isCrit) {
                 log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
