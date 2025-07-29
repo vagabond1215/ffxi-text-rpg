@@ -291,6 +291,7 @@ function updateNearbyMonsters(zone, root) {
         nearbyMonsters = list;
         monsterCoordKey = key;
         selectedMonsterIndex = null;
+        if (activeCharacter) activeCharacter.targetIndex = null;
         if (aggro.length) {
             const app = root.parentElement || root;
             renderCombatScreen(app, aggro);
@@ -587,6 +588,9 @@ function statusEffectsDisplay() {
 export function renderMainMenu() {
     document.body.classList.remove('combat-active');
     hideBackButton();
+    if (activeCharacter && activeCharacter.targetIndex !== undefined) {
+        selectedMonsterIndex = activeCharacter.targetIndex;
+    }
     const container = document.createElement('div');
     container.id = 'main-screen';
 
@@ -1535,6 +1539,12 @@ function createActionPanel(root, loc) {
     monsterList.id = 'nearby-monsters';
 
     function renderMonsters() {
+        if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
+            selectedMonsterIndex = activeCharacter.targetIndex;
+        }
+        if (selectedMonsterIndex !== null && selectedMonsterIndex >= nearbyMonsters.length) {
+            selectedMonsterIndex = nearbyMonsters.length ? 0 : null;
+        }
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
             const btn = document.createElement('button');
@@ -1546,6 +1556,10 @@ function createActionPanel(root, loc) {
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 selectedMonsterIndex = i;
+                if (activeCharacter) {
+                    activeCharacter.targetIndex = i;
+                    persistCharacter(activeCharacter);
+                }
                 if (typeof monsterSelectHandler === 'function') {
                     monsterSelectHandler(i);
                 }
@@ -1588,6 +1602,10 @@ function createActionPanel(root, loc) {
         if (!target || target.defeated) return;
         target.aggro = true;
         target.listIndex = selectedMonsterIndex;
+        if (activeCharacter) {
+            activeCharacter.targetIndex = selectedMonsterIndex;
+            persistCharacter(activeCharacter);
+        }
         updateMonsterDisplay();
         const zone = loc.name;
         const sub = getSubArea(zone, activeCharacter.coordinates);
@@ -1632,14 +1650,22 @@ function renderCombatScreen(app, mobs, destination) {
     mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
     });
+    if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
+        selectedMonsterIndex = activeCharacter.targetIndex;
+    }
     if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
         selectedMonsterIndex = 0;
     }
+    if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     let currentTarget = mobs[selectedMonsterIndex] || mobs[0];
     monsterSelectHandler = idx => {
         if (mobs[idx]) {
             selectedMonsterIndex = idx;
             currentTarget = mobs[idx];
+            if (activeCharacter) {
+                activeCharacter.targetIndex = idx;
+                persistCharacter(activeCharacter);
+            }
         }
     };
     
@@ -1766,6 +1792,9 @@ function renderCombatScreen(app, mobs, destination) {
             if (idx !== -1) nearbyMonsters[idx].defeated = true;
         });
         selectedMonsterIndex = null;
+        if (activeCharacter) {
+            activeCharacter.targetIndex = null;
+        }
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
         }
@@ -1800,6 +1829,10 @@ function renderCombatScreen(app, mobs, destination) {
                 selectedMonsterIndex--;
             }
             currentTarget = mobs[selectedMonsterIndex] || mobs[0];
+            if (activeCharacter) {
+                activeCharacter.targetIndex = selectedMonsterIndex;
+                persistCharacter(activeCharacter);
+            }
             update();
         }
     }
@@ -1883,6 +1916,8 @@ function renderCombatScreen(app, mobs, destination) {
         }
         battleEnded = true;
         monsterSelectHandler = null;
+        selectedMonsterIndex = null;
+        if (activeCharacter) activeCharacter.targetIndex = null;
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
         }
