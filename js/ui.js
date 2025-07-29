@@ -1689,14 +1689,15 @@ function createActionPanel(root, loc) {
     const { actionDiv, attackBtn } = createActionButtons(true);
     attackBtn.disabled = false;
     attackBtn.addEventListener('click', () => {
-        let idx = activeCharacter ? activeCharacter.targetIndex : null;
-        let target = currentTargetMonster;
-        if (!target && idx !== null) target = nearbyMonsters[idx];
-        if (idx === null && target) {
-            const found = nearbyMonsters.indexOf(target);
+        let idx = selectedMonsterIndex;
+        if (idx === null && activeCharacter) idx = activeCharacter.targetIndex;
+        let target = idx !== null ? nearbyMonsters[idx] : currentTargetMonster;
+        if (!target && currentTargetMonster) {
+            const found = nearbyMonsters.indexOf(currentTargetMonster);
             if (found !== -1) {
                 setTargetIndex(found);
                 idx = found;
+                target = nearbyMonsters[found];
             }
         }
         if (!target || idx === null || target.defeated) return;
@@ -2086,6 +2087,9 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     attackBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
+            currentTarget = mobs[selectedMonsterIndex];
+        }
         if (!currentTarget) {
             log('No target selected.');
             return;
@@ -2095,6 +2099,9 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     abilityBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
+            currentTarget = mobs[selectedMonsterIndex];
+        }
         if (!currentTarget) {
             log('No target selected.');
             return;
@@ -2106,6 +2113,9 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     magicBtn.addEventListener('click', () => {
+        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
+            currentTarget = mobs[selectedMonsterIndex];
+        }
         if (!currentTarget) {
             log('No target selected.');
             return;
