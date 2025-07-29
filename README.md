@@ -54,3 +54,5 @@ Open `index.html` in a browser. No build step is required.
   at Gate Guards on special items.
 - Areas with monsters now include a Hunt option to target specific enemies and
   immediately engage them.
+- Attacks and taking damage now generate Tactical Points (TP) based on weapon
+  delay.
