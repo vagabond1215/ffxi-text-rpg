@@ -1584,8 +1584,7 @@ function createActionPanel(root, loc) {
             btn.textContent = `${m.name} HP:${m.hp}`;
             btn.className = 'monster-btn';
             if (m.defeated) btn.classList.add('defeated');
-            if (m.aggro) btn.classList.add('aggro');
-            if (i === (activeCharacter ? activeCharacter.targetIndex : null)) btn.classList.add('selected');
+            if (m.aggro && !m.defeated) btn.classList.add('aggro');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 selectedMonsterIndex = i;
@@ -1858,8 +1857,10 @@ function renderCombatScreen(app, mobs, destination) {
         if (listIdx === undefined) listIdx = nearbyMonsters.indexOf(mob);
         if (listIdx !== -1) {
             nearbyMonsters[listIdx].defeated = true;
+            nearbyMonsters[listIdx].aggro = false;
             nearbyMonsters[listIdx].hp = 0;
         }
+        mob.aggro = false;
         updateMonsterDisplay();
         if (mobs.length === 0) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
