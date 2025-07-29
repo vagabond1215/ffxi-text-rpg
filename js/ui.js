@@ -102,6 +102,18 @@ export function updateTargetIndicator() {
     });
 }
 
+// Ensure selectedMonsterIndex and character target stay in sync
+export function setTargetIndex(idx) {
+    if (idx === null || idx === undefined || idx < 0 || idx >= nearbyMonsters.length) {
+        selectedMonsterIndex = null;
+        if (activeCharacter) activeCharacter.targetIndex = null;
+    } else {
+        selectedMonsterIndex = idx;
+        if (activeCharacter) activeCharacter.targetIndex = idx;
+    }
+    updateTargetIndicator();
+}
+
 function updateGameLogPadding() {
     if (!logPanelElement) return;
     const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
@@ -425,11 +437,14 @@ export function hideBackButton() {
 }
 
 function refreshMainMenu(container = document.getElementById('app')) {
+    const prevIndex = selectedMonsterIndex;
     container.innerHTML = '';
     const main = renderMainMenu();
     container.appendChild(main);
     if (activeCharacter?.currentLocation) {
         updateNearbyMonsters(activeCharacter.currentLocation, main);
+        setTargetIndex(prevIndex);
+        updateMonsterDisplay();
     }
     updateTimeDisplay();
 }
