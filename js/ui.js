@@ -1568,7 +1568,13 @@ function createActionPanel(root, loc) {
             if (activeCharacter.targetIndex !== null && activeCharacter.targetIndex >= nearbyMonsters.length) {
                 activeCharacter.targetIndex = nearbyMonsters.length ? 0 : null;
             }
-            selectedMonsterIndex = activeCharacter.targetIndex;
+            if (selectedMonsterIndex === null || selectedMonsterIndex === undefined) {
+                selectedMonsterIndex = activeCharacter.targetIndex;
+            } else if (activeCharacter.targetIndex === null || activeCharacter.targetIndex === undefined) {
+                activeCharacter.targetIndex = selectedMonsterIndex;
+            } else {
+                selectedMonsterIndex = activeCharacter.targetIndex;
+            }
         } else {
             selectedMonsterIndex = null;
         }
