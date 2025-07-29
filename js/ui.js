@@ -40,6 +40,7 @@ import {
     checkForNM,
     getSubArea,
     canMove,
+    zoneMaps,
     advanceTime,
     formatTime,
     currentVanaTime,
@@ -1465,6 +1466,40 @@ function stepInDirection(coord, dx, dy) {
     return next;
 }
 
+function getCoordinatePOIs(loc, root) {
+    const list = [];
+    if (!activeCharacter?.coordinates) return list;
+    const key = coordKey(activeCharacter.coordinates).toUpperCase();
+
+    const zmap = zoneMaps[loc.name];
+    if (zmap && zmap[key]) {
+        const cell = zmap[key];
+        if (cell.entryTo) {
+            list.push({ label: cell.entryTo, action: () => {
+                setLocation(activeCharacter, cell.entryTo, loc.name);
+                persistCharacter(activeCharacter);
+                refreshMainMenu(root.parentElement);
+            }});
+        }
+        if (Array.isArray(cell.pois)) {
+            cell.pois.forEach(p => list.push({ label: p, action: () => openMenu(p) }));
+        }
+    }
+
+    if (loc.coordinates) {
+        for (const [area, coord] of Object.entries(loc.coordinates)) {
+            if (coord.toUpperCase() === key) {
+                list.push({ label: area, action: () => {
+                    setLocation(activeCharacter, area, loc.name);
+                    persistCharacter(activeCharacter);
+                    refreshMainMenu(root.parentElement);
+                }});
+            }
+        }
+    }
+    return list;
+}
+
 function createActionButtons(disabled = false) {
     const actionDiv = document.createElement('div');
     actionDiv.id = 'action-buttons';
@@ -1711,6 +1746,17 @@ function createActionPanel(root, loc) {
         renderCombatScreen(root.parentElement, group);
     });
     actionColumn.appendChild(actionDiv);
+    const poiList = document.createElement('div');
+    poiList.id = 'poi-list';
+    const pois = getCoordinatePOIs(loc, root);
+    pois.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'poi-btn';
+        btn.textContent = p.label;
+        btn.addEventListener('click', p.action);
+        poiList.appendChild(btn);
+    });
+    actionColumn.appendChild(poiList);
     navCol.appendChild(actionColumn);
 
     return { navSection };
