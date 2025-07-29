@@ -1544,17 +1544,17 @@ function createActionPanel(root, loc) {
     monsterList.id = 'nearby-monsters';
 
     function renderMonsters() {
-        // Preserve scroll position to avoid jarring resets when the list refreshes
         const prevScroll = monsterList.scrollTop;
-        // Reset stored monster info arrays
         monsterIndexList = [];
         monsterNameList = [];
         monsterHpList = [];
-        if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
+        if (activeCharacter) {
+            if (activeCharacter.targetIndex !== null && activeCharacter.targetIndex >= nearbyMonsters.length) {
+                activeCharacter.targetIndex = nearbyMonsters.length ? 0 : null;
+            }
             selectedMonsterIndex = activeCharacter.targetIndex;
-        }
-        if (selectedMonsterIndex !== null && selectedMonsterIndex >= nearbyMonsters.length) {
-            selectedMonsterIndex = nearbyMonsters.length ? 0 : null;
+        } else {
+            selectedMonsterIndex = null;
         }
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
@@ -1563,7 +1563,7 @@ function createActionPanel(root, loc) {
             btn.className = 'monster-btn';
             if (m.defeated) btn.classList.add('defeated');
             if (m.aggro) btn.classList.add('aggro');
-            if (i === selectedMonsterIndex) btn.classList.add('selected');
+            if (i === (activeCharacter ? activeCharacter.targetIndex : null)) btn.classList.add('selected');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 selectedMonsterIndex = i;
@@ -1578,13 +1578,12 @@ function createActionPanel(root, loc) {
             });
             btn.disabled = m.defeated;
             monsterList.appendChild(btn);
-            // Record monster details for debugging or external access
             monsterIndexList.push(i);
             monsterNameList.push(m.name);
             monsterHpList.push(m.hp);
         });
-        if (selectedMonsterIndex !== null) {
-            const focusBtn = monsterList.children[selectedMonsterIndex];
+        if (activeCharacter && activeCharacter.targetIndex !== null) {
+            const focusBtn = monsterList.children[activeCharacter.targetIndex];
             if (focusBtn) focusBtn.focus();
         }
         monsterList.scrollTop = prevScroll;
@@ -1617,13 +1616,14 @@ function createActionPanel(root, loc) {
     const { actionDiv, attackBtn } = createActionButtons(true);
     attackBtn.disabled = false;
     attackBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex === null) return;
-        const target = nearbyMonsters[selectedMonsterIndex];
+        const idx = activeCharacter ? activeCharacter.targetIndex : null;
+        if (idx === null) return;
+        const target = nearbyMonsters[idx];
         if (!target || target.defeated) return;
         target.aggro = true;
-        target.listIndex = selectedMonsterIndex;
+        target.listIndex = idx;
         if (activeCharacter) {
-            activeCharacter.targetIndex = selectedMonsterIndex;
+            activeCharacter.targetIndex = idx;
             persistCharacter(activeCharacter);
         }
         updateMonsterDisplay();
