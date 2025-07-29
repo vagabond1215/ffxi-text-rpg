@@ -79,6 +79,29 @@ let monsterHpList = [];
 
 const BASE_BOTTOM_PADDING = 60;
 
+// Apply a lightened style while a button is actively pressed
+export function setupPressFeedback(root = document.body) {
+    function add(e) {
+        const btn = e.target.closest('button');
+        if (btn) btn.classList.add('pressed');
+    }
+    function remove() {
+        root.querySelectorAll('button.pressed').forEach(b => b.classList.remove('pressed'));
+    }
+    root.addEventListener('mousedown', add);
+    root.addEventListener('touchstart', add, { passive: true });
+    ['mouseup','mouseleave','touchend','touchcancel'].forEach(ev =>
+        root.addEventListener(ev, remove));
+}
+
+// Highlight the selected monster in the nearby monster list
+export function updateTargetIndicator() {
+    if (!monsterListElement) return;
+    Array.from(monsterListElement.children).forEach((btn, idx) => {
+        btn.classList.toggle('target', idx === selectedMonsterIndex);
+    });
+}
+
 function updateGameLogPadding() {
     if (!logPanelElement) return;
     const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
@@ -1585,6 +1608,7 @@ function createActionPanel(root, loc) {
             btn.className = 'monster-btn';
             if (m.defeated) btn.classList.add('defeated');
             if (m.aggro && !m.defeated) btn.classList.add('aggro');
+            if (i === selectedMonsterIndex) btn.classList.add('target');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 selectedMonsterIndex = i;
@@ -1607,6 +1631,7 @@ function createActionPanel(root, loc) {
             const focusBtn = monsterList.children[activeCharacter.targetIndex];
             if (focusBtn) focusBtn.focus();
         }
+        updateTargetIndicator();
         monsterList.scrollTop = prevScroll;
     }
 

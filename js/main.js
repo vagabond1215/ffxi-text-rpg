@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -28,6 +28,7 @@ function init() {
     app.innerHTML = '';
     const menu = renderMainMenu();
     app.appendChild(menu);
+    setupPressFeedback(document.body);
     if (!activeCharacter) {
         renderCharacterMenu(menu);
     }

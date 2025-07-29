@@ -126,6 +126,9 @@ body.portrait #app {
     width: 28px;
 }
 
+button.pressed {
+    filter: brightness(1.2);
+}
 button:hover {
     background-color: #444;
 }
@@ -271,6 +274,10 @@ body.portrait .nav-row {
     background-color: darkred;
 }
 
+
+.monster-btn.target {
+    outline: 2px solid yellow;
+}
 #direction-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
