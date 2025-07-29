@@ -47,8 +47,8 @@ registerZoneMap('South Gustaberg', {
   'H-5': { noDiagonal: true },
   'H-6': { noDiagonal: true },
   'H-7': {}, 'H-8': {}, 'H-9': { entryTo: 'Vomp Hill' }, 'H-10': {},
-  'I-7': {}, 'I-9': {}, 'I-10': {},
-  'J-7': {}, 'J-8': {}, 'J-9': {}, 'J-10': {},
+  'I-7': { pois: ['Cave Entrance'] }, 'I-9': {}, 'I-10': {},
+  'J-7': { pois: ['Home Point Crystal'] }, 'J-8': {}, 'J-9': {}, 'J-10': { pois: ['Cavernous Maw'] },
   'K-7': {}, 'K-8': {}, 'K-9': {}, 'K-10': {},
   'L-8': {}, 'L-9': {}, 'L-10': {},
   'M-10': {}
@@ -60,7 +60,7 @@ registerZoneMap('Vomp Hill', {
   'H-9': { subArea: 'Vomp Hill' },
   'I-7': { subArea: 'Vomp Hill' },
   'I-8': { subArea: 'Vomp Hill' },
-  'I-9': { subArea: 'Vomp Hill' },
+  'I-9': { subArea: 'Vomp Hill', pois: ['Vomp Hill Ramp'] },
   'J-8': { subArea: 'Vomp Hill' },
   'J-9': { subArea: 'Vomp Hill' }
 });
