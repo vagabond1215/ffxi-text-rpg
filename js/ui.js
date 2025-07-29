@@ -1792,19 +1792,17 @@ function renderCombatScreen(app, mobs, destination) {
     if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
         selectedMonsterIndex = activeCharacter.targetIndex;
     }
-    if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
-        selectedMonsterIndex = null;
-        currentTargetMonster = null;
-    } else {
-        currentTargetMonster = mobs[selectedMonsterIndex];
-    }
+    const foundTarget = mobs.find(m => m.listIndex === selectedMonsterIndex);
+    currentTargetMonster = foundTarget || null;
+    if (!foundTarget) selectedMonsterIndex = null;
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     monsterSelectHandler = idx => {
-        if (mobs[idx]) {
-            selectedMonsterIndex = idx;
-            currentTargetMonster = mobs[idx];
+        const mob = mobs[idx];
+        if (mob) {
+            selectedMonsterIndex = mob.listIndex ?? idx;
+            currentTargetMonster = mob;
             if (activeCharacter) {
-                activeCharacter.targetIndex = idx;
+                activeCharacter.targetIndex = selectedMonsterIndex;
                 persistCharacter(activeCharacter);
             }
         }
@@ -1967,15 +1965,14 @@ function renderCombatScreen(app, mobs, destination) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
             victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
         } else {
-            if (selectedMonsterIndex === idx) {
+            if (selectedMonsterIndex === listIdx) {
                 selectedMonsterIndex = null;
                 if (activeCharacter) activeCharacter.targetIndex = null;
                 currentTargetMonster = null;
-            } else if (selectedMonsterIndex !== null && selectedMonsterIndex > idx) {
-                selectedMonsterIndex--;
+            } else {
+                currentTargetMonster = mobs.find(m => m.listIndex === selectedMonsterIndex) || null;
                 if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
             }
-            currentTargetMonster = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
             if (activeCharacter) persistCharacter(activeCharacter);
             update();
         }
@@ -2124,7 +2121,7 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     attackBtn.addEventListener('click', () => {
-        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        const target = selectedMonsterIndex !== null ? mobs.find(m => m.listIndex === selectedMonsterIndex) : null;
         if (!target) {
             log('No target selected.');
             return;
@@ -2134,7 +2131,7 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     abilityBtn.addEventListener('click', () => {
-        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        const target = selectedMonsterIndex !== null ? mobs.find(m => m.listIndex === selectedMonsterIndex) : null;
         if (!target) {
             log('No target selected.');
             return;
@@ -2146,7 +2143,7 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     magicBtn.addEventListener('click', () => {
-        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        const target = selectedMonsterIndex !== null ? mobs.find(m => m.listIndex === selectedMonsterIndex) : null;
         if (!target) {
             log('No target selected.');
             return;
