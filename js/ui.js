@@ -1892,15 +1892,14 @@ function renderCombatScreen(app, mobs, destination) {
             victory(rewards.exp, rewards.gil, rewards.cp, rewards.drops, rewards.messages);
         } else {
             if (selectedMonsterIndex === idx) {
-                selectedMonsterIndex = 0;
+                selectedMonsterIndex = null;
+                if (activeCharacter) activeCharacter.targetIndex = null;
             } else if (selectedMonsterIndex > idx) {
                 selectedMonsterIndex--;
+                if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
             }
             currentTarget = mobs[selectedMonsterIndex] || mobs[0];
-            if (activeCharacter) {
-                activeCharacter.targetIndex = selectedMonsterIndex;
-                persistCharacter(activeCharacter);
-            }
+            if (activeCharacter) persistCharacter(activeCharacter);
             update();
         }
     }
