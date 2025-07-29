@@ -193,7 +193,8 @@ export const characters = [
     travelTurns: { [startingCities['Hume']]: 0 },
     signetUntil: 0,
     conquestPoints: 0,
-    minutes: 0
+    minutes: 0,
+    targetIndex: null
   },
   {
     name: 'Shantotto',
@@ -271,7 +272,8 @@ export const characters = [
     travelTurns: { [startingCities['Tarutaru']]: 0 },
     signetUntil: 0,
     conquestPoints: 0,
-    minutes: 0
+    minutes: 0,
+    targetIndex: null
   }
 ];
 
@@ -356,7 +358,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     travelTurns: { [startingCities[selectedRace]]: 0 },
     signetUntil: 0,
     conquestPoints: 0,
-    minutes: 0
+    minutes: 0,
+    targetIndex: null
   };
   updateDerivedStats(character);
   return character;
@@ -552,6 +555,7 @@ export function loadCharacters() {
     characters.length = 0;
     loaded.forEach(c => {
       if (c.conquestPoints === undefined) c.conquestPoints = 0;
+      if (c.targetIndex === undefined) c.targetIndex = null;
       characters.push(c);
       updateDerivedStats(c);
     });
