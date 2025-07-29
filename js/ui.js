@@ -291,12 +291,28 @@ function coordKey(coord) {
 
 function updateNearbyMonsters(zone, root) {
     const key = coordKey(activeCharacter.coordinates);
-    if (key !== monsterCoordKey) {
+    if (!activeCharacter.monsters) activeCharacter.monsters = [];
+    if (activeCharacter.monsterCoord === undefined) activeCharacter.monsterCoord = '';
+
+    if (key !== activeCharacter.monsterCoord || !activeCharacter.monsters.length) {
         const { list, aggro } = spawnNearbyMonsters(activeCharacter, zone);
+        list.forEach((m, i) => { m.listIndex = i; });
         nearbyMonsters = list;
+        activeCharacter.monsters = list;
+        activeCharacter.monsterCoord = key;
         monsterCoordKey = key;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        persistCharacter(activeCharacter);
+        if (aggro.length) {
+            const app = root.parentElement || root;
+            renderCombatScreen(app, aggro);
+            return true;
+        }
+    } else {
+        nearbyMonsters = activeCharacter.monsters;
+        monsterCoordKey = key;
+        const aggro = nearbyMonsters.filter(m => m.aggro && !m.defeated);
         if (aggro.length) {
             const app = root.parentElement || root;
             renderCombatScreen(app, aggro);
