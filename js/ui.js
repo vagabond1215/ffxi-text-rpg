@@ -72,6 +72,11 @@ let monsterListElement = null;
 let updateMonsterDisplay = () => {};
 let navColumnElement = null;
 
+// Store details about the current monster list for debugging/consistency
+let monsterIndexList = [];
+let monsterNameList = [];
+let monsterHpList = [];
+
 const BASE_BOTTOM_PADDING = 60;
 
 function updateGameLogPadding() {
@@ -1539,6 +1544,12 @@ function createActionPanel(root, loc) {
     monsterList.id = 'nearby-monsters';
 
     function renderMonsters() {
+        // Preserve scroll position to avoid jarring resets when the list refreshes
+        const prevScroll = monsterList.scrollTop;
+        // Reset stored monster info arrays
+        monsterIndexList = [];
+        monsterNameList = [];
+        monsterHpList = [];
         if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
             selectedMonsterIndex = activeCharacter.targetIndex;
         }
@@ -1567,11 +1578,16 @@ function createActionPanel(root, loc) {
             });
             btn.disabled = m.defeated;
             monsterList.appendChild(btn);
+            // Record monster details for debugging or external access
+            monsterIndexList.push(i);
+            monsterNameList.push(m.name);
+            monsterHpList.push(m.hp);
         });
         if (selectedMonsterIndex !== null) {
             const focusBtn = monsterList.children[selectedMonsterIndex];
             if (focusBtn) focusBtn.focus();
         }
+        monsterList.scrollTop = prevScroll;
     }
 
     renderMonsters();
