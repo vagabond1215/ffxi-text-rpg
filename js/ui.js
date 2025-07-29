@@ -1568,6 +1568,10 @@ function createActionPanel(root, loc) {
             btn.disabled = m.defeated;
             monsterList.appendChild(btn);
         });
+        if (selectedMonsterIndex !== null) {
+            const focusBtn = monsterList.children[selectedMonsterIndex];
+            if (focusBtn) focusBtn.focus();
+        }
     }
 
     renderMonsters();
