@@ -247,8 +247,8 @@ body.landscape .nav-row {
 }
 
 body.portrait .nav-row {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 #nearby-monsters {
