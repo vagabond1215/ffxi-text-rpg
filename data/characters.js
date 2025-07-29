@@ -194,7 +194,9 @@ export const characters = [
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
-    targetIndex: null
+    targetIndex: null,
+    monsterCoord: '',
+    monsters: []
   },
   {
     name: 'Shantotto',
@@ -273,7 +275,9 @@ export const characters = [
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
-    targetIndex: null
+    targetIndex: null,
+    monsterCoord: '',
+    monsters: []
   }
 ];
 
@@ -359,7 +363,9 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
-    targetIndex: null
+    targetIndex: null,
+    monsterCoord: '',
+    monsters: []
   };
   updateDerivedStats(character);
   return character;
@@ -556,6 +562,8 @@ export function loadCharacters() {
     loaded.forEach(c => {
       if (c.conquestPoints === undefined) c.conquestPoints = 0;
       if (c.targetIndex === undefined) c.targetIndex = null;
+      if (!Array.isArray(c.monsters)) c.monsters = [];
+      if (c.monsterCoord === undefined) c.monsterCoord = '';
       characters.push(c);
       updateDerivedStats(c);
     });
