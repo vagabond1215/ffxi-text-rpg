@@ -64,6 +64,7 @@ let logFontSize = 14;
 let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
+let currentTargetMonster = null;
 
 // Optional callback invoked when a monster is highlighted
 let monsterSelectHandler = null;
@@ -107,9 +108,12 @@ export function setTargetIndex(idx) {
     if (idx === null || idx === undefined || idx < 0 || idx >= nearbyMonsters.length) {
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        currentTargetMonster = null;
     } else {
         selectedMonsterIndex = idx;
         if (activeCharacter) activeCharacter.targetIndex = idx;
+        currentTargetMonster = nearbyMonsters[idx];
+        if (activeCharacter) persistCharacter(activeCharacter);
     }
     updateTargetIndicator();
 }
@@ -338,6 +342,7 @@ function updateNearbyMonsters(zone, root) {
         monsterCoordKey = key;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        currentTargetMonster = null;
         persistCharacter(activeCharacter);
         if (aggro.length) {
             const app = root.parentElement || root;
@@ -347,6 +352,11 @@ function updateNearbyMonsters(zone, root) {
     } else {
         nearbyMonsters = activeCharacter.monsters;
         monsterCoordKey = key;
+        if (selectedMonsterIndex !== null && nearbyMonsters[selectedMonsterIndex]) {
+            currentTargetMonster = nearbyMonsters[selectedMonsterIndex];
+        } else {
+            currentTargetMonster = null;
+        }
         const aggro = nearbyMonsters.filter(m => m.aggro && !m.defeated);
         if (aggro.length) {
             const app = root.parentElement || root;
@@ -1613,8 +1623,12 @@ function createActionPanel(root, loc) {
             } else {
                 selectedMonsterIndex = activeCharacter.targetIndex;
             }
+            if (selectedMonsterIndex !== null && nearbyMonsters[selectedMonsterIndex]) {
+                currentTargetMonster = nearbyMonsters[selectedMonsterIndex];
+            }
         } else {
             selectedMonsterIndex = null;
+            currentTargetMonster = null;
         }
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
@@ -1626,11 +1640,9 @@ function createActionPanel(root, loc) {
             if (i === selectedMonsterIndex) btn.classList.add('target');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
-                selectedMonsterIndex = i;
-                if (activeCharacter) {
-                    activeCharacter.targetIndex = i;
-                    persistCharacter(activeCharacter);
-                }
+                setTargetIndex(i);
+                currentTargetMonster = nearbyMonsters[i];
+                if (activeCharacter) persistCharacter(activeCharacter);
                 if (typeof monsterSelectHandler === 'function') {
                     monsterSelectHandler(i);
                 }
@@ -1677,8 +1689,12 @@ function createActionPanel(root, loc) {
     const { actionDiv, attackBtn } = createActionButtons(true);
     attackBtn.disabled = false;
     attackBtn.addEventListener('click', () => {
-        const idx = activeCharacter ? activeCharacter.targetIndex : null;
-        if (idx === null) return;
+        let idx = activeCharacter ? activeCharacter.targetIndex : null;
+        if ((idx === null || idx === undefined) && currentTargetMonster) {
+            idx = currentTargetMonster.listIndex;
+        }
+        if (idx === null || idx === undefined || !nearbyMonsters[idx]) return;
+        setTargetIndex(idx);
         const target = nearbyMonsters[idx];
         if (!target || target.defeated) return;
         target.aggro = true;
@@ -1736,13 +1752,16 @@ function renderCombatScreen(app, mobs, destination) {
     }
     if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
         selectedMonsterIndex = null;
+        currentTargetMonster = null;
     }
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     let currentTarget = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+    if (currentTarget) currentTargetMonster = currentTarget;
     monsterSelectHandler = idx => {
         if (mobs[idx]) {
             selectedMonsterIndex = idx;
             currentTarget = mobs[idx];
+            currentTargetMonster = mobs[idx];
             if (activeCharacter) {
                 activeCharacter.targetIndex = idx;
                 persistCharacter(activeCharacter);
@@ -1876,6 +1895,7 @@ function renderCombatScreen(app, mobs, destination) {
         if (activeCharacter) {
             activeCharacter.targetIndex = null;
         }
+        currentTargetMonster = null;
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
         }
@@ -1909,6 +1929,7 @@ function renderCombatScreen(app, mobs, destination) {
             if (selectedMonsterIndex === idx) {
                 selectedMonsterIndex = null;
                 if (activeCharacter) activeCharacter.targetIndex = null;
+                currentTargetMonster = null;
             } else if (selectedMonsterIndex !== null && selectedMonsterIndex > idx) {
                 selectedMonsterIndex--;
                 if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
@@ -2000,6 +2021,7 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        currentTargetMonster = null;
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
         }
