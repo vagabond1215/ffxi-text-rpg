@@ -270,6 +270,7 @@ body.portrait .nav-row {
     display: flex;
     flex-direction: column;
     gap: 0;
+    margin-top: 3px;
 }
 
 .monster-btn {
@@ -443,7 +444,7 @@ body.portrait .character-form {
 
 /* Active character profile */
 #active-profile {
-    margin-top: 20px;
+    margin-top: 3px;
 }
 
 .main-layout {
