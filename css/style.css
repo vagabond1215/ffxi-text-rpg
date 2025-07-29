@@ -263,16 +263,12 @@ body.portrait .nav-row {
 }
 
 .monster-btn.defeated {
-    background-color: #555;
-    color: #aaa;
+    background-color: lightgray;
+    color: #333;
 }
 
 .monster-btn.aggro {
     background-color: darkred;
-}
-
-.monster-btn.selected {
-    outline: 4px solid yellow;
 }
 
 #direction-grid {
