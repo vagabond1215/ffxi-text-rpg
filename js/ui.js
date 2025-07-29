@@ -1589,7 +1589,7 @@ function createActionPanel(root, loc) {
         monsterHpList = [];
         if (activeCharacter) {
             if (activeCharacter.targetIndex !== null && activeCharacter.targetIndex >= nearbyMonsters.length) {
-                activeCharacter.targetIndex = nearbyMonsters.length ? 0 : null;
+                activeCharacter.targetIndex = null;
             }
             if (selectedMonsterIndex === null || selectedMonsterIndex === undefined) {
                 selectedMonsterIndex = activeCharacter.targetIndex;
@@ -1720,10 +1720,10 @@ function renderCombatScreen(app, mobs, destination) {
         selectedMonsterIndex = activeCharacter.targetIndex;
     }
     if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
-        selectedMonsterIndex = 0;
+        selectedMonsterIndex = null;
     }
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
-    let currentTarget = mobs[selectedMonsterIndex] || mobs[0];
+    let currentTarget = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
     monsterSelectHandler = idx => {
         if (mobs[idx]) {
             selectedMonsterIndex = idx;
@@ -1894,11 +1894,11 @@ function renderCombatScreen(app, mobs, destination) {
             if (selectedMonsterIndex === idx) {
                 selectedMonsterIndex = null;
                 if (activeCharacter) activeCharacter.targetIndex = null;
-            } else if (selectedMonsterIndex > idx) {
+            } else if (selectedMonsterIndex !== null && selectedMonsterIndex > idx) {
                 selectedMonsterIndex--;
                 if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
             }
-            currentTarget = mobs[selectedMonsterIndex] || mobs[0];
+            currentTarget = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
             if (activeCharacter) persistCharacter(activeCharacter);
             update();
         }
@@ -2046,11 +2046,19 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     attackBtn.addEventListener('click', () => {
+        if (!currentTarget) {
+            log('No target selected.');
+            return;
+        }
         attack(activeCharacter, currentTarget);
         afterAction();
     });
 
     abilityBtn.addEventListener('click', () => {
+        if (!currentTarget) {
+            log('No target selected.');
+            return;
+        }
         const name = abilitySelect.value || 'Ability';
         log(`${activeCharacter.name} uses ${name}.`);
         attack(activeCharacter, currentTarget);
@@ -2058,6 +2066,10 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     magicBtn.addEventListener('click', () => {
+        if (!currentTarget) {
+            log('No target selected.');
+            return;
+        }
         const spell = magicSelect.value || 'Spell';
         log(`${activeCharacter.name} casts ${spell}.`);
         attack(activeCharacter, currentTarget);
