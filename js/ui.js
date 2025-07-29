@@ -250,11 +250,23 @@ function updateLogFont() {
 }
 
 function pruneLog() {
-    const cutoff = currentTurn - 1;
+    const full = logPanelElement.classList.contains('fullscreen');
+    let shown = 0;
     gameLogMessages.forEach(obj => {
-        const show = logPanelElement.classList.contains('fullscreen') || obj.turn >= cutoff;
+        let show;
+        if (full) {
+            show = true;
+        } else if (obj.turn === currentTurn && shown < 5) {
+            show = true;
+            shown++;
+        } else {
+            show = false;
+        }
         obj.div.style.display = show ? '' : 'none';
     });
+    if (!full && shown === 0 && gameLogMessages.length) {
+        gameLogMessages[0].div.style.display = '';
+    }
     updateGameLogPadding();
 }
 
