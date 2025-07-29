@@ -1691,16 +1691,8 @@ function createActionPanel(root, loc) {
     attackBtn.addEventListener('click', () => {
         let idx = selectedMonsterIndex;
         if (idx === null && activeCharacter) idx = activeCharacter.targetIndex;
-        let target = idx !== null ? nearbyMonsters[idx] : currentTargetMonster;
-        if (!target && currentTargetMonster) {
-            const found = nearbyMonsters.indexOf(currentTargetMonster);
-            if (found !== -1) {
-                setTargetIndex(found);
-                idx = found;
-                target = nearbyMonsters[found];
-            }
-        }
-        if (!target || idx === null || target.defeated) return;
+        if (idx === null || !nearbyMonsters[idx] || nearbyMonsters[idx].defeated) return;
+        const target = nearbyMonsters[idx];
         target.aggro = true;
         target.listIndex = idx;
         if (activeCharacter) {
@@ -1757,14 +1749,13 @@ function renderCombatScreen(app, mobs, destination) {
     if (selectedMonsterIndex === null || selectedMonsterIndex >= mobs.length) {
         selectedMonsterIndex = null;
         currentTargetMonster = null;
+    } else {
+        currentTargetMonster = mobs[selectedMonsterIndex];
     }
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
-    let currentTarget = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
-    if (currentTarget) currentTargetMonster = currentTarget;
     monsterSelectHandler = idx => {
         if (mobs[idx]) {
             selectedMonsterIndex = idx;
-            currentTarget = mobs[idx];
             currentTargetMonster = mobs[idx];
             if (activeCharacter) {
                 activeCharacter.targetIndex = idx;
@@ -1938,7 +1929,7 @@ function renderCombatScreen(app, mobs, destination) {
                 selectedMonsterIndex--;
                 if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
             }
-            currentTarget = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+            currentTargetMonster = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
             if (activeCharacter) persistCharacter(activeCharacter);
             update();
         }
@@ -2087,42 +2078,36 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     attackBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
-            currentTarget = mobs[selectedMonsterIndex];
-        }
-        if (!currentTarget) {
+        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        if (!target) {
             log('No target selected.');
             return;
         }
-        attack(activeCharacter, currentTarget);
+        attack(activeCharacter, target);
         afterAction();
     });
 
     abilityBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
-            currentTarget = mobs[selectedMonsterIndex];
-        }
-        if (!currentTarget) {
+        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        if (!target) {
             log('No target selected.');
             return;
         }
         const name = abilitySelect.value || 'Ability';
         log(`${activeCharacter.name} uses ${name}.`);
-        attack(activeCharacter, currentTarget);
+        attack(activeCharacter, target);
         afterAction();
     });
 
     magicBtn.addEventListener('click', () => {
-        if (selectedMonsterIndex !== null && mobs[selectedMonsterIndex]) {
-            currentTarget = mobs[selectedMonsterIndex];
-        }
-        if (!currentTarget) {
+        const target = selectedMonsterIndex !== null ? mobs[selectedMonsterIndex] : null;
+        if (!target) {
             log('No target selected.');
             return;
         }
         const spell = magicSelect.value || 'Spell';
         log(`${activeCharacter.name} casts ${spell}.`);
-        attack(activeCharacter, currentTarget);
+        attack(activeCharacter, target);
         afterAction();
     });
 
