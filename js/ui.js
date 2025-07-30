@@ -121,7 +121,11 @@ export function setTargetIndex(idx) {
 
 export function getSelectedMonster(list = nearbyMonsters) {
     if (selectedMonsterIndex === null || !Array.isArray(list)) return null;
-    return list.find(m => m.listIndex === selectedMonsterIndex) || list[selectedMonsterIndex] || null;
+    let mob = list.find(m => m.listIndex === selectedMonsterIndex) || list[selectedMonsterIndex];
+    if (!mob && list !== nearbyMonsters) {
+        mob = nearbyMonsters[selectedMonsterIndex];
+    }
+    return mob || null;
 }
 
 function updateGameLogPadding() {
@@ -1821,7 +1825,7 @@ function renderCombatScreen(app, mobs, destination) {
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     monsterSelectHandler = idx => {
         let mob = mobs.find(m => m.listIndex === idx);
-        if (!mob) mob = mobs[idx];
+        if (!mob) mob = nearbyMonsters[idx];
         if (mob) {
             selectedMonsterIndex = mob.listIndex ?? idx;
             currentTargetMonster = mob;
