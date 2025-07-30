@@ -540,7 +540,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 1,
-      spawnChance: 0.02,
+      spawnChance: 0,
+      fishingOnly: true,
       notes: 'Fishing only'
     },
     {
@@ -602,7 +603,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 1,
-      spawnChance: 0.02,
+      spawnChance: 0,
+      fishingOnly: true,
       notes: 'Fishing only'
     },
     {
@@ -751,7 +753,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 1,
-      spawnChance: 0.02,
+      spawnChance: 0,
+      fishingOnly: true,
       notes: 'Fishing only'
     },
     {
@@ -789,8 +792,9 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 1,
-      spawnChance: 0.02,
+      spawnChance: 0,
       coords: ['E-8', 'E-9'],
+      fishingOnly: true,
       notes: 'Fishing only'
     }
   ],
