@@ -1754,6 +1754,15 @@ function createActionPanel(root, loc) {
         } else {
             group.push(target);
         }
+        // Assign listIndex for additional group members so targeting works
+        group.forEach(m => {
+            if (m.listIndex === undefined) {
+                m.listIndex = nearbyMonsters.length;
+                m.hp = m.hp || parseLevel(m.level) * 20;
+                nearbyMonsters.push(m);
+                if (activeCharacter) activeCharacter.monsters.push(m);
+            }
+        });
         renderCombatScreen(root.parentElement, group);
     });
     actionColumn.appendChild(actionDiv);
