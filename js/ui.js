@@ -1776,7 +1776,11 @@ function createActionPanel(root, loc) {
 
 function renderCombatScreen(app, mobs, destination) {
     if (!activeCharacter) return;
-    if (!Array.isArray(mobs)) mobs = [mobs];
+    if (!Array.isArray(mobs)) {
+        mobs = [mobs];
+    } else {
+        mobs = [...mobs];
+    }
     document.body.classList.add('combat-active');
     const container = app.querySelector('#combat-column');
     if (!container) return;
@@ -1807,7 +1811,8 @@ function renderCombatScreen(app, mobs, destination) {
     if (!currentTargetMonster) selectedMonsterIndex = null;
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     monsterSelectHandler = idx => {
-        const mob = mobs[idx];
+        let mob = mobs.find(m => m.listIndex === idx);
+        if (!mob) mob = mobs[idx];
         if (mob) {
             selectedMonsterIndex = mob.listIndex ?? idx;
             currentTargetMonster = mob;
