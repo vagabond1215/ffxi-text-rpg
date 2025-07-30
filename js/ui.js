@@ -99,7 +99,8 @@ export function setupPressFeedback(root = document.body) {
 // Highlight the selected monster in the nearby monster list
 export function updateTargetIndicator() {
     if (!monsterListElement) return;
-    Array.from(monsterListElement.children).forEach((btn, idx) => {
+    Array.from(monsterListElement.children).forEach(btn => {
+        const idx = Number(btn.dataset.idx);
         btn.classList.toggle('target', idx === selectedMonsterIndex);
     });
 }
@@ -463,6 +464,8 @@ export function hideBackButton() {
 function refreshMainMenu(container = document.getElementById('app')) {
     const prevIndex = selectedMonsterIndex;
     container.innerHTML = '';
+    navColumnElement = null;
+    monsterListElement = null;
     const main = renderMainMenu();
     container.appendChild(main);
     if (activeCharacter?.currentLocation) {
@@ -1678,25 +1681,27 @@ function createActionPanel(root, loc) {
         }
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
+            const idxVal = m.listIndex ?? i;
             const btn = document.createElement('button');
+            btn.dataset.idx = idxVal;
             btn.textContent = `${m.name} HP:${m.hp}`;
             btn.className = 'monster-btn';
             if (m.defeated) btn.classList.add('defeated');
             if (m.aggro && !m.defeated) btn.classList.add('aggro');
-            if (i === selectedMonsterIndex) btn.classList.add('target');
+            if (idxVal === selectedMonsterIndex) btn.classList.add('target');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
-                setTargetIndex(i);
-                currentTargetMonster = nearbyMonsters[i];
+                setTargetIndex(idxVal);
+                currentTargetMonster = nearbyMonsters.find(n => (n.listIndex ?? nearbyMonsters.indexOf(n)) === idxVal) || m;
                 if (activeCharacter) persistCharacter(activeCharacter);
                 if (typeof monsterSelectHandler === 'function') {
-                    monsterSelectHandler(i);
+                    monsterSelectHandler(idxVal);
                 }
                 renderMonsters();
             });
             btn.disabled = m.defeated;
             monsterList.appendChild(btn);
-            monsterIndexList.push(i);
+            monsterIndexList.push(idxVal);
             monsterNameList.push(m.name);
             monsterHpList.push(m.hp);
         });
