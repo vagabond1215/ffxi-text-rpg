@@ -115,6 +115,12 @@ export function setTargetIndex(idx) {
         selectedMonsterIndex = idx;
         if (activeCharacter) activeCharacter.targetIndex = idx;
         currentTargetMonster = nearbyMonsters[idx];
+        if (currentTargetMonster && (currentTargetMonster.hp === undefined || currentTargetMonster.hp === null)) {
+            currentTargetMonster.hp = currentTargetMonster.currentHP ?? parseLevel(currentTargetMonster.level) * 20;
+        }
+        if (currentTargetMonster && currentTargetMonster.currentHP === undefined) {
+            currentTargetMonster.currentHP = currentTargetMonster.hp;
+        }
         if (activeCharacter) persistCharacter(activeCharacter);
     }
     updateTargetIndicator();
@@ -125,6 +131,14 @@ export function getSelectedMonster(list = nearbyMonsters) {
     let mob = list.find(m => m.listIndex === selectedMonsterIndex) || list[selectedMonsterIndex];
     if (!mob && list !== nearbyMonsters) {
         mob = nearbyMonsters[selectedMonsterIndex];
+    }
+    if (mob) {
+        if (mob.hp === undefined || mob.hp === null) {
+            mob.hp = mob.currentHP ?? parseLevel(mob.level) * 20;
+        }
+        if (mob.currentHP === undefined) {
+            mob.currentHP = mob.hp;
+        }
     }
     return mob || null;
 }
