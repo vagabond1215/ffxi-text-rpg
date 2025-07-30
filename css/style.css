@@ -212,18 +212,19 @@ body.landscape #area-grid {
 
 
 
+
 .nav-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 1px;
     width: 150px;
 }
 
 #rest-button {
     width: 150px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 .mob-column {
@@ -448,7 +449,7 @@ body.portrait .character-form {
 
 /* Active character profile */
 #active-profile {
-    margin-top: 3px;
+    margin-top: 1px;
 }
 
 .main-layout {
@@ -464,7 +465,7 @@ body.portrait .main-layout {
 }
 
 #active-profile div {
-    margin-top: 6px;
+    margin-top: 1px;
 }
 
 #character-details {
@@ -473,7 +474,7 @@ body.portrait .main-layout {
 }
 
 #character-details button {
-    margin: 2px auto;
+    margin: 1px auto;
     width: 128px;
 }
 
@@ -487,7 +488,7 @@ body.portrait .main-layout {
     width: clamp(120px, 20vw, 200px);
     height: auto;
     display: block;
-    margin: 0 auto 10px auto;
+    margin: 0 auto 1px auto;
 }
 
 .character-img {
@@ -496,7 +497,7 @@ body.portrait .main-layout {
 
 .profile-btn {
     display: block;
-    margin: 5px auto;
+    margin: 1px auto;
     width: 150px;
     white-space: nowrap;
     overflow: hidden;
