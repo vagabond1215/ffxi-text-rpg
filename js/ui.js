@@ -2431,7 +2431,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         sellBtn.addEventListener('click', () => {
             const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
             sellItem(entry.id, q);
-            renderVendorScreen(root, vendor, backFn);
+            renderVendorScreen(root, vendor, backFn, 'sell');
         });
         top.appendChild(sellBtn);
         row.appendChild(top);
