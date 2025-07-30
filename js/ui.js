@@ -1811,7 +1811,8 @@ function renderCombatScreen(app, mobs, destination) {
     if (!currentTargetMonster) selectedMonsterIndex = null;
     if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
     monsterSelectHandler = idx => {
-        const mob = mobs[idx];
+        let mob = mobs.find(m => m.listIndex === idx);
+        if (!mob) mob = mobs[idx];
         if (mob) {
             selectedMonsterIndex = mob.listIndex ?? idx;
             currentTargetMonster = mob;
