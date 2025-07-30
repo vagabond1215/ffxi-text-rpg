@@ -30,6 +30,10 @@ button {
     min-height: 28px;
 }
 
+select {
+    padding: 3px 6px;
+}
+
 #app {
     transform: scale(var(--ui-scale));
     transform-origin: top left;
@@ -218,8 +222,8 @@ body.landscape #area-grid {
 
 #rest-button {
     width: 150px;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .mob-column {
@@ -492,7 +496,7 @@ body.portrait .main-layout {
 
 .profile-btn {
     display: block;
-    margin: 0 auto;
+    margin: 5px auto;
     width: 150px;
     white-space: nowrap;
     overflow: hidden;
