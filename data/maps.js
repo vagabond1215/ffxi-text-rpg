@@ -43,24 +43,49 @@ registerZoneMap('South Gustaberg', {
   'D-9': { allowedFrom: ['E-9'] },
   'E-6': {}, 'E-7': {}, 'E-8': {}, 'E-9': {},
   'F-7': {}, 'F-8': {}, 'F-9': {},
-  'G-7': {}, 'G-8': {}, 'G-9': {},
+  'G-7': {}, 'G-8': {}, 'G-9': { allowedFrom: ['G-8', 'H-8', 'H-9'] },
   'H-5': { noDiagonal: true },
   'H-6': { noDiagonal: true },
-  'H-7': {}, 'H-8': {}, 'H-9': { entryTo: 'Vomp Hill' }, 'H-10': {},
+  'H-7': {}, 'H-8': {}, 'H-9': { entryTo: 'Vomp Hill L1', entryLabel: 'Vomp Hill' }, 'H-10': {},
   'I-7': { pois: ['Cave Entrance'] }, 'I-9': {}, 'I-10': {},
-  'J-7': {}, 'J-8': {}, 'J-9': {}, 'J-10': { pois: ['Cavernous Maw'] },
-  'K-7': {}, 'K-8': {}, 'K-9': {}, 'K-10': {},
-  'L-8': {}, 'L-9': {}, 'L-10': {},
+  'J-7': {}, 'J-8': { entryTo: 'Vomp Hill L1', entryLabel: 'Vomp Hill' }, 'J-9': {}, 'J-10': { pois: ['Cavernous Maw'] },
+  'K-7': {}, 'K-8': {}, 'K-9': { subArea: 'Goblin Camp' },
+  'K-10': { subArea: 'Goblin Camp', entryTo: 'Goblin Camp', entryLabel: 'Goblin Camp' },
+  'L-8': { allowedFrom: ['K-8', 'K-9', 'L-9'] }, 'L-9': {}, 'L-10': {},
   'M-10': {}
 });
 
-// Register Vomp Hill map
-registerZoneMap('Vomp Hill', {
+// Register Vomp Hill level 1 map
+registerZoneMap('Vomp Hill L1', {
   'H-8': { subArea: 'Vomp Hill' },
-  'H-9': { subArea: 'Vomp Hill' },
+  'H-9': { subArea: 'Vomp Hill', entryTo: 'South Gustaberg', entryLabel: 'Ramp Down' },
   'I-7': { subArea: 'Vomp Hill' },
   'I-8': { subArea: 'Vomp Hill' },
-  'I-9': { subArea: 'Vomp Hill', pois: ['Vomp Hill Ramp'] },
-  'J-8': { subArea: 'Vomp Hill' },
+  'I-9': { subArea: 'Vomp Hill' },
+  'J-8': { subArea: 'Vomp Hill', entries: [
+    { to: 'South Gustaberg', label: 'Ramp Down' },
+    { to: 'Vomp Hill L2', label: 'Ramp Up' }
+  ] },
   'J-9': { subArea: 'Vomp Hill' }
+});
+
+// Register Vomp Hill level 2 map
+registerZoneMap('Vomp Hill L2', {
+  'I-8': { subArea: 'Vomp Hill' },
+  'I-9': { subArea: 'Vomp Hill', entries: [{ to: 'Vomp Hill L3', label: 'Ramp Up' }] },
+  'J-8': { subArea: 'Vomp Hill', entryTo: 'Vomp Hill L1', entryLabel: 'Ramp Down' },
+  'J-9': { subArea: 'Vomp Hill' }
+});
+
+// Register Vomp Hill level 3 map
+registerZoneMap('Vomp Hill L3', {
+  'I-8': { subArea: 'Vomp Hill' },
+  'I-9': { subArea: 'Vomp Hill', entryTo: 'Vomp Hill L2', entryLabel: 'Ramp Down' },
+  'J-8': { subArea: 'Vomp Hill' }
+});
+
+// Register Goblin Camp map
+registerZoneMap('Goblin Camp', {
+  'K-9': { subArea: 'Goblin Camp' },
+  'K-10': { subArea: 'Goblin Camp', entryTo: 'South Gustaberg', entryLabel: 'Ramp Down' }
 });

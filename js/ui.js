@@ -703,12 +703,12 @@ export function renderMainMenu() {
 
     const areaBtn = document.createElement('button');
     areaBtn.className = 'area-header';
-    areaBtn.textContent = activeCharacter?.currentLocation || 'Area';
+    const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
+    areaBtn.textContent = loc?.displayName || activeCharacter?.currentLocation || 'Area';
     const areaDiv = document.createElement('div');
     areaDiv.classList.add('hidden');
     areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
 
-    const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
     let navSection = null;
     if (loc) {
         if (loc.distance > 0) {
@@ -1321,8 +1321,8 @@ function createAreaGrid(root, loc) {
     const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
 
     loc.connectedAreas.forEach(area => {
-        if (loc.name === 'South Gustaberg' && area === 'Vomp Hill') return;
-        if (loc.name === 'Vomp Hill' && area === 'South Gustaberg') return;
+        if (loc.name.startsWith('South Gustaberg') && area.startsWith('Vomp Hill')) return;
+        if (loc.name.startsWith('Vomp Hill') && (area.startsWith('South Gustaberg') || area.startsWith('Vomp Hill'))) return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
         const destCoordStr = loc.coordinates?.[area];
@@ -1335,10 +1335,12 @@ function createAreaGrid(root, loc) {
             activeCharacter.travel.destination === area
             ? activeCharacter.travel.remaining
             : total;
+        const destLoc = locations.find(l => l.name === area);
+        const display = destLoc?.displayName || area;
         if (total > 1) {
-            btn.textContent = `${area} (${travel}/${total})`;
+            btn.textContent = `${display} (${travel}/${total})`;
         } else {
-            btn.textContent = area;
+            btn.textContent = display;
         }
         btn.addEventListener('click', () => {
             const destCoordStrClick = loc.coordinates?.[area];
@@ -1382,29 +1384,7 @@ function createAreaGrid(root, loc) {
         travelList.appendChild(li);
     });
 
-    if (loc.name === 'South Gustaberg') {
-        const li = document.createElement('li');
-        const btn = document.createElement('button');
-        btn.textContent = 'Vomp Hill Ramp';
-        btn.addEventListener('click', () => {
-            setLocation(activeCharacter, 'Vomp Hill', loc.name);
-            persistCharacter(activeCharacter);
-            refreshMainMenu(root.parentElement);
-        });
-        li.appendChild(btn);
-        travelList.appendChild(li);
-    } else if (loc.name === 'Vomp Hill') {
-        const li = document.createElement('li');
-        const btn = document.createElement('button');
-        btn.textContent = 'Vomp Hill Ramp';
-        btn.addEventListener('click', () => {
-            setLocation(activeCharacter, 'South Gustaberg', loc.name);
-            persistCharacter(activeCharacter);
-            refreshMainMenu(root.parentElement);
-        });
-        li.appendChild(btn);
-        travelList.appendChild(li);
-    }
+    // zone-specific travel handled via map entries
 
     travelPOIs.forEach(p => {
         const li = document.createElement('li');
@@ -1450,7 +1430,6 @@ function createAreaGrid(root, loc) {
 
     loc.pointsOfInterest.forEach(p => {
         if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
-        if ((loc.name === 'South Gustaberg' || loc.name === 'Vomp Hill') && p === 'Vomp Hill Ramp') return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
         btn.textContent = p;
@@ -1508,8 +1487,19 @@ function getCoordinatePOIs(loc, root) {
     const zmap = zoneMaps[loc.name];
     if (zmap && zmap[key]) {
         const cell = zmap[key];
+        if (Array.isArray(cell.entries)) {
+            cell.entries.forEach(e => {
+                const lbl = e.label || e.to;
+                list.push({ label: lbl, action: () => {
+                    setLocation(activeCharacter, e.to, loc.name);
+                    persistCharacter(activeCharacter);
+                    refreshMainMenu(root.parentElement);
+                }});
+            });
+        }
         if (cell.entryTo) {
-            list.push({ label: cell.entryTo, action: () => {
+            const lbl = cell.entryLabel || cell.entryTo;
+            list.push({ label: lbl, action: () => {
                 setLocation(activeCharacter, cell.entryTo, loc.name);
                 persistCharacter(activeCharacter);
                 refreshMainMenu(root.parentElement);
