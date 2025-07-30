@@ -2128,6 +2128,15 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        nearbyMonsters = [];
+        monsterIndexList = [];
+        monsterNameList = [];
+        monsterHpList = [];
+        monsterCoordKey = '';
+        if (activeCharacter) {
+            activeCharacter.monsters = [];
+            activeCharacter.monsterCoord = '';
+        }
         currentTargetMonster = null;
         if (destination && activeCharacter.hp > 0) {
             setLocation(activeCharacter, destination);
