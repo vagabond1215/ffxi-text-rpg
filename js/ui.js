@@ -1776,7 +1776,11 @@ function createActionPanel(root, loc) {
 
 function renderCombatScreen(app, mobs, destination) {
     if (!activeCharacter) return;
-    if (!Array.isArray(mobs)) mobs = [mobs];
+    if (!Array.isArray(mobs)) {
+        mobs = [mobs];
+    } else {
+        mobs = [...mobs];
+    }
     document.body.classList.add('combat-active');
     const container = app.querySelector('#combat-column');
     if (!container) return;
