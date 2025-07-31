@@ -59,8 +59,12 @@ function spawnChanceFor(monster, zone) {
 export function monstersByDistance(zone, subArea = null) {
   zone = getBaseZone(zone);
   let mobs = bestiaryByZone[zone] || [];
-  if (subArea) mobs = mobs.filter(m => m.subArea === subArea);
-  else mobs = mobs.filter(m => !m.subArea);
+  if (subArea) {
+    const subMobs = mobs.filter(m => m.subArea === subArea);
+    mobs = subMobs.length ? subMobs : mobs.filter(m => !m.subArea);
+  } else {
+    mobs = mobs.filter(m => !m.subArea);
+  }
   const loc = locations.find(l => l.name === zone);
   const dist = loc?.distance ?? 0;
   if (!mobs.length) return [];
