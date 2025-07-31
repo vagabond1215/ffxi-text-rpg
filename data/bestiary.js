@@ -490,7 +490,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sight & Scent',
       spawns: 26,
-      spawnChance: 0.531
+      spawnChance: 0.531,
+      areas: [null, 'Vomp Hill']
     },
     {
       name: 'Tunnel Worm',
@@ -503,7 +504,8 @@ export const bestiaryByZone = {
       detection: 'Sound',
       spawns: 14,
       spawnChance: 0.286,
-      coords: ['I-7', 'J-7', 'J-8', 'K-7', 'K-8']
+      coords: ['I-7', 'J-7', 'J-8', 'K-7', 'K-8'],
+      areas: [null]
     },
     {
       name: 'Ding Bats',
@@ -516,7 +518,8 @@ export const bestiaryByZone = {
       detection: 'Sound',
       nightOnly: true,
       spawns: 25,
-      spawnChance: 0.51
+      spawnChance: 0.51,
+      areas: [null]
     },
     {
       name: 'Stone Eater',
@@ -528,7 +531,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 68,
-      spawnChance: 1.388
+      spawnChance: 1.388,
+      areas: [null]
     },
     {
       name: 'Stone Crab',
@@ -554,7 +558,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sight & Scent',
       spawns: 30,
-      spawnChance: 0.612
+      spawnChance: 0.612,
+      areas: [null, 'Vomp Hill']
     },
     {
       name: 'Vulture',
@@ -566,7 +571,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 42,
-      spawnChance: 0.857
+      spawnChance: 0.857,
+      areas: [null]
     },
     {
       name: 'Walking Sapling',
@@ -578,7 +584,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 49,
-      spawnChance: 1.0
+      spawnChance: 1.0,
+      areas: [null]
     },
     {
       name: 'Goblin Fisher',
@@ -591,7 +598,8 @@ export const bestiaryByZone = {
       detection: 'Sight',
       spawns: 6,
       spawnChance: 0.122,
-      coords: ['E-8', 'E-9', 'K-10', 'L-8', 'L-9', 'L-10']
+      coords: ['E-8', 'E-9', 'K-10', 'L-8', 'L-9', 'L-10'],
+      areas: [null, 'Goblin Camp']
     },
     {
       name: 'Sand Crab',
@@ -618,7 +626,8 @@ export const bestiaryByZone = {
       detection: 'Sound',
       nightOnly: true,
       spawns: 12,
-      spawnChance: 0.245
+      spawnChance: 0.245,
+      areas: ['Vomp Hill']
     },
     {
       name: 'Amber Quadav',
@@ -630,7 +639,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 13,
-      spawnChance: 0.265
+      spawnChance: 0.265,
+      areas: [null]
     },
     {
       name: 'Amethyst Quadav',
@@ -642,7 +652,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 11,
-      spawnChance: 0.224
+      spawnChance: 0.224,
+      areas: [null]
     },
     {
       name: 'Goblin Thug',
@@ -654,7 +665,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sight',
       spawns: 17,
-      spawnChance: 0.347
+      spawnChance: 0.347,
+      areas: ['Vomp Hill', 'Goblin Camp']
     },
     {
       name: 'Goblin Weaver',
@@ -666,7 +678,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sight',
       spawns: 11,
-      spawnChance: 0.224
+      spawnChance: 0.224,
+      areas: ['Vomp Hill', 'Goblin Camp']
     },
     {
       name: 'Rock Lizard',
@@ -678,7 +691,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 33,
-      spawnChance: 0.673
+      spawnChance: 0.673,
+      areas: [null]
     },
     {
       name: 'Young Quadav',
@@ -690,7 +704,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 23,
-      spawnChance: 0.469
+      spawnChance: 0.469,
+      areas: [null]
     },
     {
       name: 'Enchanted Bones',
@@ -703,7 +718,8 @@ export const bestiaryByZone = {
       detection: 'Sound & Low HP',
       nightOnly: true,
       spawns: 8,
-      spawnChance: 0.163
+      spawnChance: 0.163,
+      areas: ['Vomp Hill']
     },
     {
       name: 'Land Crab',
@@ -716,7 +732,8 @@ export const bestiaryByZone = {
       detection: 'Sound',
       spawns: 16,
       spawnChance: 0.327,
-      coords: ['E-8', 'E-9', 'L-9', 'L-10']
+      coords: ['E-8', 'E-9', 'L-9', 'L-10'],
+      areas: [null]
     },
     {
       name: 'Black Wolf',
@@ -729,7 +746,8 @@ export const bestiaryByZone = {
       detection: 'Sound & Low HP',
       nightOnly: true,
       spawns: 10,
-      spawnChance: 0.204
+      spawnChance: 0.204,
+      areas: ['Vomp Hill']
     },
     {
       name: 'Goblin Digger',
@@ -741,7 +759,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sight',
       spawns: 1,
-      spawnChance: 0.02
+      spawnChance: 0.02,
+      areas: ['Vomp Hill']
     },
     {
       name: 'Mole Crab',
@@ -767,7 +786,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sight',
       spawns: 21,
-      spawnChance: 0.429
+      spawnChance: 0.429,
+      areas: ['Vomp Hill']
     },
     {
       name: 'Shrapnel',
@@ -780,7 +800,8 @@ export const bestiaryByZone = {
       detection: 'Sight & Magic',
       spawns: 6,
       spawnChance: 0.122,
-      notes: 'Foggy weather only'
+      notes: 'Foggy weather only',
+      areas: [null]
     },
     {
       name: 'Passage Crab',
@@ -795,7 +816,8 @@ export const bestiaryByZone = {
       spawnChance: 0,
       coords: ['E-8', 'E-9'],
       fishingOnly: true,
-      notes: 'Fishing only'
+      notes: 'Fishing only',
+      areas: [null]
     }
   ],
   'West Sarutabaruta': [
