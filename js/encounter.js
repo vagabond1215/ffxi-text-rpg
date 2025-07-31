@@ -194,7 +194,9 @@ export function spawnNearbyMonsters(character, zone) {
   const pool = monstersByDistance(zone, subArea);
   if (!pool.length) return { list: [], aggro: [] };
   const coordStr = `${character.coordinates.letter}-${character.coordinates.number}`;
-  const available = pool.filter(m => !m.coords || m.coords.includes(coordStr));
+  const available = pool.filter(m =>
+    !m.fishingOnly && (!m.coords || m.coords.includes(coordStr))
+  );
   if (!available.length) return { list: [], aggro: [] };
   const count = Math.floor(Math.random() * 6) + 1;
   const list = [];
