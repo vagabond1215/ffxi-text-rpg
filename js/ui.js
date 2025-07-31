@@ -1648,8 +1648,8 @@ function createCityAreaGrid(root, loc) {
         sections[0].list.classList.remove('hidden');
         listCol.appendChild(sections[0].list);
     }
-
     return wrapper;
+}
 
 function nextCoord(coord, dx, dy) {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
