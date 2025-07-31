@@ -868,9 +868,42 @@ export const items = {
         sellPrice: 34,
     stack: 1,
     description: 'A simple copper ring.',
-    levelRequirement: 0,
+    levelRequirement: 1,
     slot: 'leftRing',
-    jobs: baseJobNames
+    jobs: jobNames
+  },
+  brassRing: {
+    name: 'Brass Ring',
+    price: 194,
+        sellPrice: 97,
+    stack: 1,
+    description: 'A ring forged from brass.',
+    defense: 1,
+    levelRequirement: 7,
+    slot: 'leftRing',
+    jobs: jobNames
+  },
+  silverRing: {
+    name: 'Silver Ring',
+    price: 1212,
+        sellPrice: 606,
+    stack: 1,
+    description: 'A polished silver band.',
+    defense: 1,
+    levelRequirement: 14,
+    slot: 'leftRing',
+    jobs: jobNames
+  },
+  silverEarring: {
+    name: 'Silver Earring',
+    price: 1212,
+        sellPrice: 606,
+    stack: 1,
+    description: 'A simple silver earring.',
+    defense: 1,
+    levelRequirement: 14,
+    slot: 'leftEar',
+    jobs: jobNames
   },
   bastokMap: {
     name: 'Map of Bastok',
@@ -3668,6 +3701,7 @@ export const vendorInventories = {
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   'Ciqala': ['bronzeKnuckles', 'brassKnuckles', 'metalKnuckles', 'bronzeHammer', 'brassHammer', 'warhammer', 'mapleWand'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
+  Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
   "Olwyn's General Goods": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote'],
   'Hortense': ['scrollFoeRequiemI', 'scrollFoeRequiemII', 'scrollFoeRequiemIII', 'scrollFoeRequiemIV', 'scrollArmysPaeon', 'scrollArmysPaeonII', 'scrollArmysPaeonIII', 'scrollArmysPaeonIV', 'scrollValorMinuet', 'scrollValorMinuetII', 'scrollValorMinuetIII'],
@@ -3689,7 +3723,7 @@ vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
 export const shopNpcs = {
   'Brunhilde\'s Armourer': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
   "Dragon's Claw Weaponry": ['Ciqala'],
-  "Carmelide's Jewelry Store": ['Carmelide'],
+  "Carmelide's Jewelry Store": ['Carmelide', 'Raghd'],
   "Harmodios's Music Shop": ['Hortense'],
   'Scribe & Notary': ['Sororo'],
   "Galvin's Travel Gear": ['Galvin', 'Ilita', 'Numa'],
@@ -3716,6 +3750,7 @@ export const vendorGreetings = {
   'Charging Chocobo': 'Armor fit for any rider.',
   'Ciqala': 'Looking for a new weapon? Take your pick.',
   'Carmelide': 'Only the finest jewels for sale here.',
+  Raghd: 'Rings and trinkets for discerning buyers.',
   'Hortense': 'Care to peruse my collection of scores?',
   'Sororo': 'Official documents and scrolls, right this way.',
   'Galvin': 'Travel gear for every journey!',
@@ -3747,6 +3782,7 @@ export const vendorTypes = {
   'Charging Chocobo': 'armor',
   'Ciqala': 'weapons',
   'Carmelide': 'jewelry',
+  Raghd: 'jewelry',
   'Hortense': 'music',
   'Sororo': 'scribery',
   'Galvin': 'travel gear',
