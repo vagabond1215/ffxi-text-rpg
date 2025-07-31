@@ -216,6 +216,7 @@ export function spawnNearbyMonsters(character, zone) {
   });
 
   candidates.forEach(group => {
+    if (!group[0].aggressive) return;
     const baseLevel = parseLevel(group[0].level);
     let baseChance = encounterChance(character.level, baseLevel);
     let chance = baseChance;

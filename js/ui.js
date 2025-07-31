@@ -193,15 +193,16 @@ function zoneSlug(name) {
 export function showMap(zone) {
     if (!mapOverlayElement || !mapImageElement) return;
     const slug = zoneSlug(zone);
+    const pngPath = `img/maps/${slug}.png`;
     const jpgPath = `img/maps/${slug}.jpg`;
     const svgPath = `img/maps/${slug}.svg`;
     mapImageElement.onerror = () => {
         mapImageElement.onerror = () => {
             mapImageElement.src = 'img/maps/default_map.svg';
         };
-        mapImageElement.src = svgPath;
+        mapImageElement.src = jpgPath;
     };
-    mapImageElement.src = jpgPath;
+    mapImageElement.src = pngPath;
     if (mapPanzoomInstance) mapPanzoomInstance.reset();
     mapOverlayElement.classList.remove('hidden');
 }
@@ -1588,8 +1589,13 @@ function createActionPanel(root, loc) {
     if (activeCharacter) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
         const pct = activeCharacter.hp / maxHp;
-        if (pct < 0.25) restBtn.style.backgroundColor = 'orange';
-        else if (pct < 0.5) restBtn.style.backgroundColor = 'yellow';
+        if (pct < 0.25) {
+            restBtn.style.backgroundColor = 'orange';
+            restBtn.style.color = 'black';
+        } else if (pct < 0.5) {
+            restBtn.style.backgroundColor = 'yellow';
+            restBtn.style.color = 'black';
+        }
     }
     restBtn.addEventListener('click', () => {
         if (activeCharacter) {
@@ -1640,6 +1646,7 @@ function createActionPanel(root, loc) {
             } else {
                 b.disabled = true;
             }
+            if (b.disabled) b.textContent = '';
             b.addEventListener('click', () => {
                 if (!activeCharacter?.coordinates) return;
                 activeCharacter.coordinates = stepInDirection(activeCharacter.coordinates, d.dx, d.dy);
@@ -1687,6 +1694,8 @@ function createActionPanel(root, loc) {
             selectedMonsterIndex = null;
             currentTargetMonster = null;
         }
+        const hasAggro = nearbyMonsters.some(m => m.aggro && !m.defeated);
+        restBtn.disabled = hasAggro;
         monsterList.innerHTML = '';
         nearbyMonsters.forEach((m, i) => {
             const idxVal = m.listIndex ?? i;
@@ -2107,7 +2116,7 @@ function renderCombatScreen(app, mobs, destination) {
         update();
     }
 
-    function endBattle() {
+    function endBattle(clearList = true) {
         if (activeCharacter.hp <= 0) {
             setLocation(activeCharacter, activeCharacter.spawnPoint || activeCharacter.homeCity);
             clearTemporaryEffects(activeCharacter);
@@ -2118,14 +2127,16 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
-        nearbyMonsters = [];
-        monsterIndexList = [];
-        monsterNameList = [];
-        monsterHpList = [];
-        monsterCoordKey = '';
-        if (activeCharacter) {
-            activeCharacter.monsters = [];
-            activeCharacter.monsterCoord = '';
+        if (clearList) {
+            nearbyMonsters = [];
+            monsterIndexList = [];
+            monsterNameList = [];
+            monsterHpList = [];
+            monsterCoordKey = '';
+            if (activeCharacter) {
+                activeCharacter.monsters = [];
+                activeCharacter.monsterCoord = '';
+            }
         }
         currentTargetMonster = null;
         if (destination && activeCharacter.hp > 0) {
@@ -2174,7 +2185,7 @@ function renderCombatScreen(app, mobs, destination) {
                 log(`${m.name} keeps chase.`);
             }
         });
-        endBattle();
+        endBattle(false);
         return true;
     }
 
