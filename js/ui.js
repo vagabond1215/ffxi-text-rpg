@@ -209,6 +209,10 @@ export function showMap(zone) {
 
 function updateTimePopup() {
     if (!timePopupElement) return;
+    const controls = document.getElementById('scale-controls');
+    if (controls) {
+        timePopupElement.style.width = controls.offsetWidth + 'px';
+    }
     const vt = currentVanaTime();
     const icon = dayElements[vt.weekday] || '';
     const openHour = 8;
@@ -1339,7 +1343,10 @@ function createAreaGrid(root, loc) {
             ? activeCharacter.travel.remaining
             : total;
         const destLoc = locations.find(l => l.name === area);
-        const display = destLoc?.displayName || area;
+        let display = destLoc?.displayName || area;
+        if (!destLoc?.displayName) {
+            display = display.replace(/^North\s/, 'N. ').replace(/^South\s/, 'S. ');
+        }
         if (total > 1) {
             btn.textContent = `${display} (${travel}/${total})`;
         } else {
@@ -1517,7 +1524,10 @@ function createCityAreaGrid(root, loc) {
             ? activeCharacter.travel.remaining
             : total;
         const destLoc = locations.find(l => l.name === area);
-        const display = destLoc?.displayName || area;
+        let display = destLoc?.displayName || area;
+        if (!destLoc?.displayName) {
+            display = display.replace(/^North\s/, 'N. ').replace(/^South\s/, 'S. ');
+        }
         if (total > 1) {
             btn.textContent = `${display} (${travel}/${total})`;
         } else {

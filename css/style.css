@@ -82,7 +82,7 @@ body.portrait #app {
     padding: 8px;
     border-radius: 4px;
     min-width: 140px;
-    max-width: 260px;
+    max-width: none;
     z-index: 1000;
     text-align: left;
     color: #fff;
@@ -200,6 +200,10 @@ body.landscape #area-grid {
     margin-right: 4px;
 }
 
+.city-subheader::before {
+    margin-right: 8px;
+}
+
 .area-header.expanded::before {
     content: '\25BC';
 }
@@ -223,6 +227,12 @@ body.landscape #area-grid {
     gap: 1px;
 }
 
+.city-area-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
 .city-list-column button {
     width: 160px;
     margin: 1px 0;
@@ -231,6 +241,8 @@ body.landscape #area-grid {
 .city-subheader {
     margin: 1px 0;
     width: 160px;
+    justify-content: flex-start;
+    padding-left: 4px;
 }
 
 .main-area-header {
@@ -487,7 +499,7 @@ body.portrait .character-form {
 
 /* Active character profile */
 #active-profile {
-    margin-top: 1px;
+    margin: 0 0 1px 0;
 }
 
 .main-layout {
