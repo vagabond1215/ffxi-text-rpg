@@ -1481,18 +1481,20 @@ function createCityAreaGrid(root, loc) {
     wrapper.appendChild(listCol);
 
     const sections = [];
-    function makeSection(title) {
+    function makeSection(title, expanded = false) {
         const btn = document.createElement('button');
         btn.className = 'area-header city-subheader';
         btn.textContent = title;
+        if (expanded) btn.classList.add('expanded');
         navCol.appendChild(btn);
         const list = document.createElement('ul');
-        list.className = 'city-area-list hidden';
+        list.className = 'city-area-list';
+        if (!expanded) list.classList.add('hidden');
         sections.push({ btn, list });
         return list;
     }
 
-    const travelList = makeSection('Zone');
+    const travelList = makeSection('Zone', true);
     const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
     const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
 
@@ -1643,6 +1645,7 @@ function createCityAreaGrid(root, loc) {
 
     if (sections.length) {
         sections[0].btn.classList.add('expanded');
+        sections[0].list.classList.remove('hidden');
         listCol.appendChild(sections[0].list);
     }
 
