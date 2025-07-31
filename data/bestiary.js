@@ -531,7 +531,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 68,
-      spawnChance: 1.388,
+      spawnChance: 2.615,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -571,7 +572,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 42,
-      spawnChance: 0.857,
+      spawnChance: 1.615,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -584,7 +586,8 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sound',
       spawns: 49,
-      spawnChance: 1.0,
+      spawnChance: 1.885,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -639,7 +642,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 13,
-      spawnChance: 0.265,
+      spawnChance: 0.5,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -652,7 +656,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 11,
-      spawnChance: 0.224,
+      spawnChance: 0.423,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -691,7 +696,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 33,
-      spawnChance: 0.673,
+      spawnChance: 1.269,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
@@ -704,7 +710,8 @@ export const bestiaryByZone = {
       linking: true,
       detection: 'Sound',
       spawns: 23,
-      spawnChance: 0.469,
+      spawnChance: 0.885,
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
