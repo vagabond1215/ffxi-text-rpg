@@ -705,6 +705,10 @@ export function setLocation(character, name, from) {
   character.currentLocation = name;
   character.subArea = null;
   if (character.lastZone !== name) character.huntTarget = '';
+  if (character.lastZone !== name) {
+    character.monsters = [];
+    character.monsterCoord = '';
+  }
   const zone = locations.find(l => l.name === name);
   if (zone) {
     if (!character.travelTurns) character.travelTurns = {};
