@@ -1,4 +1,4 @@
-import { baseJobNames } from './jobs.js';
+import { jobNames, baseJobNames } from './jobs.js';
 
 export const items = {
   bronzeDagger: {
@@ -2180,6 +2180,116 @@ export const items = {
     slot: 'feet',
     jobs: baseJobNames
   },
+  poetsCirclet: {
+    name: "Poet's Circlet",
+    price: 1904,
+        sellPrice: 952,
+    stack: 1,
+    description: 'A fine circlet favored by traveling bards.',
+    defense: 5,
+    levelRequirement: 12,
+    slot: 'head',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+  },
+  tunic: {
+    name: 'Tunic',
+    price: 1288,
+        sellPrice: 644,
+    stack: 1,
+    description: 'A plain cloth tunic.',
+    defense: 9,
+    levelRequirement: 8,
+    slot: 'body',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+  },
+  linenRobe: {
+    name: 'Linen Robe',
+    price: 2838,
+        sellPrice: 1419,
+    stack: 1,
+    description: 'A robe woven from linen cloth.',
+    defense: 10,
+    levelRequirement: 12,
+    slot: 'body',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+  },
+  mitts: {
+    name: 'Mitts',
+    price: 602,
+        sellPrice: 301,
+    stack: 1,
+    description: 'Simple cloth mitts.',
+    defense: 2,
+    levelRequirement: 8,
+    slot: 'hands',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+  },
+  linenCuffs: {
+    name: 'Linen Cuffs',
+    price: 1605,
+        sellPrice: 802,
+    stack: 1,
+    description: 'Arm cuffs sewn from linen.',
+    defense: 3,
+    levelRequirement: 12,
+    slot: 'hands',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+  },
+  slacks: {
+    name: 'Slacks',
+    price: 860,
+        sellPrice: 430,
+    stack: 1,
+    description: 'Basic cloth slacks.',
+    defense: 5,
+    levelRequirement: 8,
+    slot: 'legs',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+  },
+  linenSlops: {
+    name: 'Linen Slops',
+    price: 2318,
+        sellPrice: 1159,
+    stack: 1,
+    description: 'Loose linen slops.',
+    defense: 7,
+    levelRequirement: 12,
+    slot: 'legs',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+  },
+  solea: {
+    name: 'Solea',
+    price: 556,
+        sellPrice: 278,
+    stack: 1,
+    description: 'Simple footwear for travelers.',
+    defense: 2,
+    levelRequirement: 8,
+    slot: 'feet',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+  },
+  hollyClogs: {
+    name: 'Holly Clogs',
+    price: 1495,
+        sellPrice: 748,
+    stack: 1,
+    description: 'Clogs carved from holly wood.',
+    defense: 3,
+    levelRequirement: 12,
+    slot: 'feet',
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+  },
+  leatherRing: {
+    name: 'Leather Ring',
+    price: 1150,
+        sellPrice: 575,
+    stack: 1,
+    description: 'A simple leather band for the finger.',
+    defense: 1,
+    levelRequirement: 14,
+    slot: 'leftRing',
+    jobs: jobNames
+  },
   paddedCap: {
     name: 'Padded Cap',
     price: 18360,
@@ -3553,6 +3663,8 @@ export const vendorInventories = {
   Haggleblix: mapInventory,
   Lootblox: mapInventory,
   Riyadahf: mapInventory,
+  Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
+  'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   'Ciqala': ['bronzeKnuckles', 'brassKnuckles', 'metalKnuckles', 'bronzeHammer', 'brassHammer', 'warhammer', 'mapleWand'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
@@ -3575,7 +3687,7 @@ vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
 vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
 
 export const shopNpcs = {
-  'Brunhilde\'s Armourer': ['Brunhilde the Armourer'],
+  'Brunhilde\'s Armourer': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
   "Dragon's Claw Weaponry": ['Ciqala'],
   "Carmelide's Jewelry Store": ['Carmelide'],
   "Harmodios's Music Shop": ['Hortense'],
@@ -3600,6 +3712,8 @@ export const shopNpcs = {
 
 export const vendorGreetings = {
   'Brunhilde the Armourer': "Welcome to my armoury, traveler!",
+  Balthilda: 'Quality attire at fair prices.',
+  'Charging Chocobo': 'Armor fit for any rider.',
   'Ciqala': 'Looking for a new weapon? Take your pick.',
   'Carmelide': 'Only the finest jewels for sale here.',
   'Hortense': 'Care to peruse my collection of scores?',
@@ -3629,6 +3743,8 @@ export const vendorGreetings = {
 
 export const vendorTypes = {
   'Brunhilde the Armourer': 'armor',
+  Balthilda: 'clothing',
+  'Charging Chocobo': 'armor',
   'Ciqala': 'weapons',
   'Carmelide': 'jewelry',
   'Hortense': 'music',
