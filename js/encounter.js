@@ -29,9 +29,35 @@ export function encounterChance(playerLevel, monsterLevel) {
 
 import { bestiaryByZone } from '../data/bestiary.js';
 import { locations } from '../data/locations.js';
-import { getSubArea } from '../data/maps.js';
+import { getSubArea, zoneMaps } from '../data/maps.js';
+
+function getBaseZone(zone) {
+  const loc = locations.find(l => l.name === zone);
+  return loc?.parent || zone;
+}
+
+function zoneCoordinates(zone, subArea = null) {
+  const map = zoneMaps[zone];
+  if (!map) return [];
+  return Object.entries(map)
+    .filter(([_, info]) =>
+      subArea ? info.subArea === subArea : !info.subArea)
+    .map(([key]) => key);
+}
+
+function spawnChanceFor(monster, zone) {
+  if (monster.spawns != null) {
+    let coords = monster.coords && monster.coords.length
+      ? monster.coords
+      : zoneCoordinates(zone, monster.subArea);
+    const count = coords.length || 1;
+    return monster.spawns / count;
+  }
+  return typeof monster.spawnChance === 'number' ? monster.spawnChance : 1;
+}
 
 export function monstersByDistance(zone, subArea = null) {
+  zone = getBaseZone(zone);
   let mobs = bestiaryByZone[zone] || [];
   if (subArea) mobs = mobs.filter(m => m.subArea === subArea);
   else mobs = mobs.filter(m => !m.subArea);
@@ -62,24 +88,26 @@ export function monstersByDistance(zone, subArea = null) {
   return pool.sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
 }
 
-function weightedPick(mobs) {
-  const total = mobs.reduce((sum, m) => sum + (m.spawnChance || 1), 0);
+function weightedPick(mobs, zone) {
+  const total = mobs.reduce((sum, m) => sum + spawnChanceFor(m, zone), 0);
   if (total <= 0) return null;
   let roll = Math.random() * total;
   for (const m of mobs) {
-    roll -= (m.spawnChance || 1);
+    roll -= spawnChanceFor(m, zone);
     if (roll <= 0) return m;
   }
   return mobs[mobs.length - 1];
 }
 
 export function randomMonster(zone, subArea = null) {
-  const pool = monstersByDistance(zone, subArea);
-  return weightedPick(pool);
+  const baseZone = getBaseZone(zone);
+  const pool = monstersByDistance(baseZone, subArea);
+  return weightedPick(pool, baseZone);
 }
 
 export function getAggressiveMonsters(zone, subArea = null) {
-  return monstersByDistance(zone, subArea).filter(m => m.aggressive);
+  const baseZone = getBaseZone(zone);
+  return monstersByDistance(baseZone, subArea).filter(m => m.aggressive);
 }
 
 export function baseEncounterChanceForZone(playerLevel, zone, subArea = null) {
@@ -136,7 +164,8 @@ export function rollForEncounter(character, zone, options = {}) {
   const sub = getSubArea(zone, character.coordinates);
   const mobs = getAggressiveMonsters(zone, sub);
   if (!mobs.length) return null;
-  const mob = weightedPick(mobs);
+  const baseZone = getBaseZone(zone);
+  const mob = weightedPick(mobs, baseZone);
   let chance = encounterChance(character.level, parseLevel(mob.level));
   if (usingMount) chance = Math.max(0, chance - 0.2);
   if (Math.random() < chance) {
@@ -153,7 +182,8 @@ export function walkAcrossZone(character, zone, options = {}) {
   for (let t = 1; t <= turns; t++) {
     const mobs = getAggressiveMonsters(zone, sub);
     if (!mobs.length) break;
-    const mob = weightedPick(mobs);
+    const baseZone = getBaseZone(zone);
+    const mob = weightedPick(mobs, baseZone);
     let chance = encounterChance(character.level, parseLevel(mob.level));
     if (usingMount) chance = Math.max(0, chance - 0.2);
     if (Math.random() < chance) {
@@ -164,13 +194,15 @@ export function walkAcrossZone(character, zone, options = {}) {
 }
 
 export function exploreEncounter(zone, subArea = null) {
-  const mobs = monstersByDistance(zone, subArea);
+  const baseZone = getBaseZone(zone);
+  const mobs = monstersByDistance(baseZone, subArea);
   if (!mobs.length) return null;
-  return weightedPick(mobs);
+  return weightedPick(mobs, baseZone);
 }
 
 export function huntEncounter(zone, targetName, subArea = null) {
-  const mobs = (bestiaryByZone[zone] || []).filter(m =>
+  const baseZone = getBaseZone(zone);
+  const mobs = (bestiaryByZone[baseZone] || []).filter(m =>
     subArea ? m.subArea === subArea : !m.subArea
   );
   const matches = mobs.filter(m => m.name.startsWith(targetName));
@@ -191,7 +223,8 @@ export function huntEncounter(zone, targetName, subArea = null) {
 
 export function spawnNearbyMonsters(character, zone) {
   const subArea = getSubArea(zone, character.coordinates);
-  const pool = monstersByDistance(zone, subArea);
+  const baseZone = getBaseZone(zone);
+  const pool = monstersByDistance(baseZone, subArea);
   if (!pool.length) return { list: [], aggro: [] };
   const coordStr = `${character.coordinates.letter}-${character.coordinates.number}`;
   const available = pool.filter(m =>
@@ -201,9 +234,9 @@ export function spawnNearbyMonsters(character, zone) {
   const count = Math.floor(Math.random() * 6) + 1;
   const list = [];
   for (let i = 0; i < count; i++) {
-    const base = weightedPick(available);
-    const mob = { ...base };
-    mob.hp = base.hp || parseLevel(base.level) * 20;
+    const pick = weightedPick(available, baseZone);
+    const mob = { ...pick };
+    mob.hp = pick.hp || parseLevel(pick.level) * 20;
     list.push(mob);
   }
   const linkGroups = {};
