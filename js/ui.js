@@ -702,13 +702,16 @@ export function renderMainMenu() {
     const menu = document.createElement('div');
     menu.id = 'menu';
 
-    const areaBtn = document.createElement('button');
-    areaBtn.className = 'area-header';
     const loc = activeCharacter && locations.find(l => l.name === activeCharacter.currentLocation);
+    const areaBtn = document.createElement(loc && loc.distance <= 0 ? 'div' : 'button');
+    areaBtn.className = 'area-header';
+    if (loc && loc.distance <= 0) areaBtn.classList.add('main-area-header');
     areaBtn.textContent = loc?.displayName || activeCharacter?.currentLocation || 'Area';
     const areaDiv = document.createElement('div');
-    areaDiv.classList.add('hidden');
-    areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
+    if (loc && loc.distance > 0) {
+        areaDiv.classList.add('hidden');
+        areaBtn.addEventListener('click', () => areaDiv.classList.toggle('hidden'));
+    }
 
     let navSection = null;
     if (loc) {
@@ -718,10 +721,9 @@ export function renderMainMenu() {
                 navSection = actions.navSection;
             }
         } else {
-            const grid = createAreaGrid(container, loc);
-            areaDiv.appendChild(grid);
+            const grid = createCityAreaGrid(container, loc);
             menu.appendChild(areaBtn);
-            menu.appendChild(areaDiv);
+            menu.appendChild(grid);
         }
     }
 
@@ -1465,6 +1467,186 @@ function createAreaGrid(root, loc) {
 
     return grid;
 }
+
+function createCityAreaGrid(root, loc) {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'city-area-grid';
+    wrapper.className = 'city-area-grid';
+
+    const navCol = document.createElement('div');
+    navCol.className = 'city-nav-column';
+    const listCol = document.createElement('div');
+    listCol.className = 'city-list-column';
+    wrapper.appendChild(navCol);
+    wrapper.appendChild(listCol);
+
+    const sections = [];
+    function makeSection(title) {
+        const btn = document.createElement('button');
+        btn.className = 'area-header city-subheader';
+        btn.textContent = title;
+        navCol.appendChild(btn);
+        const list = document.createElement('ul');
+        list.className = 'city-area-list hidden';
+        sections.push({ btn, list });
+        return list;
+    }
+
+    const travelList = makeSection('Zone');
+    const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
+    const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
+
+    const craftingKeywords = /guild/i;
+    const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
+
+    loc.connectedAreas.forEach(area => {
+        if (loc.name.startsWith('South Gustaberg') && area.startsWith('Vomp Hill')) return;
+        if (loc.name.startsWith('Vomp Hill') && (area.startsWith('South Gustaberg') || area.startsWith('Vomp Hill'))) return;
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        const destCoordStr = loc.coordinates?.[area];
+        let total = getZoneTravelTurns(area, loc.name);
+        if (activeCharacter.coordinates && destCoordStr) {
+            total = coordinateDistance(activeCharacter.coordinates, parseCoordinate(destCoordStr));
+        }
+        const travel = activeCharacter.travel &&
+            activeCharacter.travel.start === loc.name &&
+            activeCharacter.travel.destination === area
+            ? activeCharacter.travel.remaining
+            : total;
+        const destLoc = locations.find(l => l.name === area);
+        const display = destLoc?.displayName || area;
+        if (total > 1) {
+            btn.textContent = `${display} (${travel}/${total})`;
+        } else {
+            btn.textContent = display;
+        }
+        btn.addEventListener('click', () => {
+            const destCoordStrClick = loc.coordinates?.[area];
+            if (!activeCharacter.travel || activeCharacter.travel.start !== loc.name || activeCharacter.travel.destination !== area) {
+                let t = getZoneTravelTurns(area, loc.name);
+                let destC = null;
+                if (activeCharacter.coordinates && destCoordStrClick) {
+                    destC = parseCoordinate(destCoordStrClick);
+                    t = coordinateDistance(activeCharacter.coordinates, destC);
+                }
+                activeCharacter.travel = { start: loc.name, destination: area, remaining: t, total: t, destCoord: destC };
+            }
+            if (updateNearbyMonsters(loc.name, root)) return;
+            if (activeCharacter.travel.destCoord && activeCharacter.coordinates) {
+                const next = stepToward(activeCharacter.coordinates, activeCharacter.travel.destCoord);
+                if (canMove(loc.name, activeCharacter.coordinates, next)) {
+                    activeCharacter.coordinates = next;
+                    activeCharacter.subArea = getSubArea(loc.name, next);
+                }
+            }
+            activeCharacter.travel.remaining -= 1;
+            advanceTime(activeCharacter, loc.name);
+            incrementTurn();
+            if (activeCharacter.travel.remaining <= 0) {
+                setLocation(activeCharacter, area, loc.name);
+                activeCharacter.travel = null;
+            }
+            const nm = checkForNM(
+                loc.name,
+                activeCharacter.coordinates,
+                getSubArea(loc.name, activeCharacter.coordinates)
+            );
+            if (nm) {
+                renderCombatScreen(root.parentElement, [nm]);
+                return;
+            }
+            persistCharacter(activeCharacter);
+            refreshMainMenu(root.parentElement);
+        });
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    });
+
+    travelPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        travelList.appendChild(li);
+    });
+
+    const craftPOIs = [];
+    craftingPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        craftPOIs.push(li);
+    });
+    const craftList = craftPOIs.length ? makeSection('Crafting') : null;
+    if (craftList) {
+        craftPOIs.forEach(li => craftList.appendChild(li));
+    }
+
+    const marketKeywords = /(shop|store|auction|merchant|market|armor|armour|weapon|smith|vendor|goods|gear|scribe|notary)/i;
+    const marketPOIs = loc.pointsOfInterest.filter(p => marketKeywords.test(p) && !travelPOIs.includes(p) && !craftingPOIs.includes(p));
+    const marketItems = [];
+    marketPOIs.forEach(p => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        marketItems.push(li);
+    });
+    let marketList = null;
+    if (marketItems.length) {
+        marketList = makeSection('Marketplace');
+        marketItems.forEach(li => marketList.appendChild(li));
+    }
+
+    const otherList = makeSection('Other');
+
+    loc.pointsOfInterest.forEach(p => {
+        if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.addEventListener('click', () => openMenu(p));
+        li.appendChild(btn);
+        otherList.appendChild(li);
+    });
+    const merchantNPC = /(merchant|shop|store|auction|vendor|goods|gear|scribe|notary)/i;
+    loc.importantNPCs.forEach(n => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = n;
+        btn.addEventListener('click', () => openMenu(n));
+        li.appendChild(btn);
+        if (merchantNPC.test(n) && marketList) {
+            marketList.appendChild(li);
+        } else {
+            otherList.appendChild(li);
+        }
+    });
+
+    sections.forEach(s => {
+        s.btn.addEventListener('click', () => {
+            sections.forEach(o => {
+                o.list.classList.add('hidden');
+                o.btn.classList.remove('expanded');
+            });
+            listCol.innerHTML = '';
+            listCol.appendChild(s.list);
+            s.list.classList.remove('hidden');
+            s.btn.classList.add('expanded');
+        });
+    });
+
+    if (sections.length) {
+        sections[0].btn.classList.add('expanded');
+        listCol.appendChild(sections[0].list);
+    }
+
+    return wrapper;
 
 function nextCoord(coord, dx, dy) {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -2409,6 +2591,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         buyBtn.addEventListener('click', () => {
             const q = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
             buyItem(id, q);
+            renderVendorScreen(root, vendor, backFn, 'buy');
         });
         top.appendChild(buyBtn);
         row.appendChild(top);
@@ -2633,6 +2816,7 @@ export function renderEquipmentScreen(root) {
 
 function getItemCategory(item) {
     if (item.damage !== undefined || item.delay !== undefined) return 'Weapons';
+    if (item.slot === 'offHand' && item.defense !== undefined) return 'Weapons';
     if (item.defense !== undefined) return 'Armor';
     if (/crystal/i.test(item.name)) return 'Crystals';
     if (/potion|ether|antidote|pie|jerky|water/i.test(item.name)) return 'Consumables';

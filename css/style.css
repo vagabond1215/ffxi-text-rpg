@@ -204,6 +204,44 @@ body.landscape #area-grid {
     content: '\25BC';
 }
 
+.city-area-grid {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.city-nav-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.city-list-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.city-list-column button {
+    width: 160px;
+    margin: 1px 0;
+}
+
+.city-subheader {
+    margin: 1px 0;
+    width: 160px;
+}
+
+.main-area-header {
+    margin: 1px 0;
+    padding: 1px;
+}
+
+.main-area-header::before {
+    content: none;
+}
+
 
 
 .explore-btn {
