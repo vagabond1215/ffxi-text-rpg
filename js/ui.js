@@ -2340,7 +2340,6 @@ function renderVendorMenu(root, vendor, backFn = null, shopName = null) {
     const greet = document.createElement('p');
     greet.textContent = vendorGreetings[vendor] || 'Welcome, traveler.';
     root.appendChild(greet);
-    root.appendChild(characterSummary());
     const buyBtn = document.createElement('button');
     buyBtn.textContent = 'Buy';
     buyBtn.addEventListener('click', () => {
@@ -2363,7 +2362,6 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
     const title = document.createElement('h2');
     title.textContent = vendor;
     root.appendChild(title);
-    root.appendChild(characterSummary());
     if (mode === 'buy') {
         const list = document.createElement('div');
         list.className = 'vendor-list';
@@ -2506,7 +2504,6 @@ export function renderConquestShop(root, backFn = null) {
     const title = document.createElement('h2');
     title.textContent = 'Conquest Rewards';
     root.appendChild(title);
-    root.appendChild(characterSummary());
     const list = document.createElement('div');
     list.className = 'vendor-list';
     Object.entries(conquestRewards).forEach(([id, cost]) => {
@@ -2799,7 +2796,11 @@ function openMenu(name, backFn) {
         title.textContent = name;
         root.appendChild(title);
         const intro = document.createElement('p');
-        intro.textContent = `You enter ${name}. Inside you see:`;
+        if (name === "Deegis's Armour") {
+            intro.textContent = `You step into Deegis\u2019 Armor, torchlight dancing on steel-clad walls.\nDeegis nods from behind a rack of padded gambesons as Zemedars polishes a sturdy targe beside him.\n\n\"Welcome, friend!\"`;
+        } else {
+            intro.textContent = `You enter ${name}. Inside you see:`;
+        }
         root.appendChild(intro);
         const list = document.createElement('ul');
         npcs.forEach(npc => {
