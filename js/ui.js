@@ -2824,7 +2824,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         });
         root.appendChild(sellList);
     }
-    showBackButton(() => renderVendorMenu(root, vendor, backFn));
+    showBackButton(backFn || (() => renderVendorMenu(root, vendor, backFn)));
 }
 
 export function renderConquestShop(root, backFn = null) {
