@@ -45,7 +45,8 @@ import {
     formatTime,
     currentVanaTime,
     formatVanaTime,
-    dayElements
+    dayElements,
+    changeJob
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -81,6 +82,15 @@ let monsterNameList = [];
 let monsterHpList = [];
 
 const BASE_BOTTOM_PADDING = 60;
+
+function itemProtected(id) {
+    const presets = activeCharacter?.jobPresets || {};
+    for (const set of Object.values(presets)) {
+        if (Object.values(set).includes(id)) return true;
+    }
+    const item = items[id];
+    return item && (item.keyItem || item.sellable === false && item.keyItem !== false);
+}
 
 // Apply a lightened style while a button is actively pressed
 export function setupPressFeedback(root = document.body) {
@@ -871,6 +881,13 @@ export function renderMainMenu() {
             renderEquipmentScreen(container);
         });
 
+        const jobBtn = document.createElement('button');
+        jobBtn.className = 'profile-btn';
+        jobBtn.textContent = 'Change Job';
+        jobBtn.addEventListener('click', () => {
+            renderJobChangeScreen(container);
+        });
+
         details.appendChild(line2);
         details.appendChild(line3);
         details.appendChild(line4);
@@ -881,6 +898,7 @@ export function renderMainMenu() {
         if (modeBtn) details.appendChild(modeBtn);
         group.appendChild(invBtn);
         group.appendChild(equipBtn);
+        group.appendChild(jobBtn);
         group.appendChild(details);
         profile.appendChild(group);
         if (navColumnElement) {
@@ -2545,6 +2563,10 @@ function buyItem(id, qty = 1) {
 function sellItem(id, qty = 1) {
     const entry = activeCharacter.inventory.find(i => i.id === id);
     if (!entry) return;
+    if (itemProtected(id) || items[id].sellable === false) {
+        alert('This item cannot be sold.');
+        return;
+    }
     qty = Math.min(qty, entry.qty);
     if (qty <= 0) return;
     const item = items[id];
@@ -2689,7 +2711,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         sellList.className = 'vendor-list';
         const equipped = new Set(Object.values(activeCharacter.equipment || {}));
         activeCharacter.inventory.forEach(entry => {
-        if (equipped.has(entry.id)) return;
+        if (equipped.has(entry.id) || itemProtected(entry.id) || items[entry.id].sellable === false) return;
         const item = items[entry.id];
         const row = document.createElement('div');
         row.className = 'vendor-item';
@@ -2919,6 +2941,29 @@ export function renderEquipmentScreen(root) {
     showBackButton(() => refreshMainMenu(root.parentElement));
 }
 
+function renderJobChangeScreen(root) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = 'Change Job';
+    root.appendChild(title);
+    const select = document.createElement('select');
+    baseJobNames.forEach(j => {
+        const opt = new Option(j, j);
+        select.appendChild(opt);
+    });
+    select.value = activeCharacter.job;
+    root.appendChild(select);
+    const btn = document.createElement('button');
+    btn.textContent = 'Set Job';
+    btn.addEventListener('click', () => {
+        changeJob(activeCharacter, select.value);
+        refreshMainMenu(root.parentElement);
+    });
+    root.appendChild(btn);
+    showBackButton(() => refreshMainMenu(root.parentElement));
+}
+
 function getItemCategory(item) {
     if (item.damage !== undefined || item.delay !== undefined) return 'Weapons';
     if (item.slot === 'offHand' && item.defense !== undefined) return 'Weapons';
@@ -2985,6 +3030,7 @@ export function renderInventoryScreen(root) {
     };
     activeCharacter.inventory.forEach(entry => {
         const item = items[entry.id];
+        if (item.keyItem) return;
         const cat = getItemCategory(item);
         categories[cat].push({ item, qty: entry.qty, id: entry.id });
     });
@@ -3033,14 +3079,12 @@ export function renderInventoryScreen(root) {
             actions.appendChild(detailsBtn);
 
             if (canEquipItem(ent.item)) {
-                const eq = document.createElement('button');
-                if (activeCharacter.equipment[ent.item.slot] === ent.id) {
-                    eq.textContent = 'Equipped';
-                } else {
+                if (activeCharacter.equipment[ent.item.slot] !== ent.id) {
+                    const eq = document.createElement('button');
                     eq.textContent = 'Equip';
                     eq.addEventListener('click', () => equipItem(ent.id, root));
+                    actions.appendChild(eq);
                 }
-                actions.appendChild(eq);
             } else if (/^Scroll of/i.test(ent.item.name)) {
                 const learnBtn = document.createElement('button');
                 learnBtn.textContent = 'Use';
@@ -3091,7 +3135,40 @@ export function renderInventoryScreen(root) {
             ul.appendChild(li);
         });
     });
+    const keyBtn = document.createElement('button');
+    keyBtn.textContent = 'Key Items';
+    keyBtn.addEventListener('click', () => renderKeyItemsScreen(root));
+    root.appendChild(keyBtn);
     showBackButton(() => refreshMainMenu(root.parentElement));
+}
+
+function renderKeyItemsScreen(root) {
+    if (!activeCharacter) return;
+    root.innerHTML = '';
+    resetDetails();
+    const categories = {};
+    activeCharacter.inventory.forEach(entry => {
+        const item = items[entry.id];
+        if (!item.keyItem) return;
+        const cat = /^Map of/i.test(item.name) ? 'Maps' : 'Key Items';
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push({ item, qty: entry.qty });
+    });
+    Object.keys(categories).forEach(cat => {
+        const header = document.createElement('h3');
+        header.textContent = cat;
+        root.appendChild(header);
+        const ul = document.createElement('ul');
+        ul.className = 'inventory-list';
+        categories[cat].forEach(ent => {
+            const li = document.createElement('li');
+            li.className = 'inventory-item';
+            li.textContent = ent.item.name;
+            ul.appendChild(li);
+        });
+        root.appendChild(ul);
+    });
+    showBackButton(() => renderInventoryScreen(root));
 }
 
 function openMenu(name, backFn) {

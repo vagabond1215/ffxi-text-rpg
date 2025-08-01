@@ -4345,3 +4345,12 @@ export const conquestRewards = {
   emperorBand: 2000,
   warpRing: 5000
 };
+
+// Apply default flags and mark map items as key items
+Object.values(items).forEach(it => {
+  if (it.sellable === undefined) it.sellable = true;
+  if (/^Map of/i.test(it.name)) {
+    it.keyItem = true;
+    it.sellable = false;
+  }
+});
