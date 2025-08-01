@@ -230,6 +230,11 @@ body.landscape #area-grid {
     content: '\25BC';
 }
 
+.area-header.expanded,
+.city-subheader.expanded {
+    background-color: #444;
+}
+
 .city-area-grid {
     display: flex;
     align-items: flex-start;

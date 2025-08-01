@@ -32,7 +32,6 @@ export const zonesByCity = {
       pointsOfInterest: [
         'Auction House',
         "Goldsmiths' Guild",
-        "Blacksmiths' Guild",
         "Brunhilde's Armory",
         "Dragon's Claw Weaponry",
         "Carmelide's Jewelry Store",
@@ -73,7 +72,7 @@ export const zonesByCity = {
       distance: 0,
       subAreas: [],
       connectedAreas: ['Bastok Mines'],
-      pointsOfInterest: ["President's Office", 'Mission/Rank NPCs', 'Cid', 'Home Point Crystal'],
+      pointsOfInterest: ["President's Office", 'Mission/Rank NPCs', 'Cid', "Blacksmiths' Guild", 'Home Point Crystal'],
       importantNPCs: []
     },
     {
