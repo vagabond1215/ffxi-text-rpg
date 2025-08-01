@@ -631,7 +631,20 @@ body.portrait .main-layout {
 .vendor-menu {
     display: flex;
     flex-direction: column;
+}
+
+.shop-menu {
     align-items: center;
+}
+
+.vendor-menu {
+    align-items: flex-start;
+}
+
+.vendor-menu > h2 {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0 0 0;
 }
 
 .vendor-item {
@@ -643,7 +656,7 @@ body.portrait .main-layout {
 
 .vendor-row-top {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr 80px 90px;
     align-items: center;
     gap: 4px;
     width: 100%;
@@ -656,11 +669,14 @@ body.portrait .main-layout {
     align-items: center;
     gap: 4px;
     padding: 0 4px;
+    width: 90px;
 }
 
 .sell-buttons {
     display: flex;
+    flex-direction: column;
     gap: 4px;
+    width: 100%;
 }
 
 .vendor-item span,
@@ -685,7 +701,7 @@ body.portrait .main-layout {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    min-width: 60px;
+    width: 80px;
 }
 
 .vendor-qty {
