@@ -225,15 +225,17 @@ export const items = {
     sellPrice: 2,
     stack: 99,
     description: 'Simple arrows made of wood.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    slot: 'ammo'
   },
   bambooFishingRod: {
     name: 'Bamboo Fishing Rod',
     price: 500,
-        sellPrice: 250,
+    sellPrice: 250,
     stack: 1,
     description: 'A basic bamboo fishing rod.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    slot: 'ranged'
   },
   pickaxe: {
     name: 'Pickaxe',
@@ -524,7 +526,8 @@ export const items = {
     sellPrice: 4,
     stack: 99,
     description: 'Sturdy iron arrows.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ammo'
   },
   silverArrow: {
     name: 'Silver Arrow',
@@ -532,7 +535,8 @@ export const items = {
     sellPrice: 8,
     stack: 99,
     description: 'High-quality silver arrows.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ammo'
   },
   crossbowBolt: {
     name: 'Crossbow Bolt',
@@ -540,7 +544,8 @@ export const items = {
     sellPrice: 3,
     stack: 99,
     description: 'Bolts used with crossbows.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ammo'
   },
   lightCrossbow: {
     name: 'Light Crossbow',
@@ -2104,7 +2109,8 @@ export const items = {
         sellPrice: 108,
     stack: 1,
     description: 'A sturdy fishing rod made of yew.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    slot: 'ranged'
   },
   willowFishingRod: {
     name: 'Willow Fishing Rod',
@@ -2112,7 +2118,8 @@ export const items = {
         sellPrice: 33,
     stack: 1,
     description: 'A light fishing rod crafted from willow.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    slot: 'ranged'
   },
   robe: {
     name: 'Robe',
@@ -3732,7 +3739,8 @@ export const items = {
     sellPrice: 533,
     stack: 1,
     description: 'A small flute used by bards.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ranged'
   },
   cornette: {
     name: 'Cornette',
@@ -3740,7 +3748,8 @@ export const items = {
     sellPrice: 118,
     stack: 1,
     description: 'A brass instrument favored by novice bards.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ranged'
   },
   mapleHarp: {
     name: 'Maple Harp',
@@ -3748,7 +3757,8 @@ export const items = {
     sellPrice: 23,
     stack: 1,
     description: 'A small harp crafted from maple.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ranged'
   },
   scrollVitalEtude: {
     name: 'Scroll of Vital Etude',
@@ -3804,7 +3814,8 @@ export const items = {
     sellPrice: 2502,
     stack: 1,
     description: 'A curved horn instrument.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ranged'
   },
   flute: {
     name: 'Flute',
@@ -3812,7 +3823,8 @@ export const items = {
     sellPrice: 23,
     stack: 1,
     description: 'A simple wooden flute.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    slot: 'ranged'
   },
   scrollBewitchingEtude: {
     name: 'Scroll of Bewitching Etude',
