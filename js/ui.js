@@ -2599,6 +2599,9 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         row.className = 'vendor-item';
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
+
+        const info = document.createElement('div');
+        info.className = 'vendor-info';
         const name = document.createElement('span');
         name.textContent = item.name;
         if (!meetsRequirements(item)) name.style.color = 'red';
@@ -2613,14 +2616,18 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
                 name.style.color = 'lightskyblue';
             }
         }
-        top.appendChild(name);
+        info.appendChild(name);
         const price = document.createElement('span');
         price.textContent = ` - ${item.price} gil`;
         if (item.price > activeCharacter.gil) price.style.color = 'red';
-        top.appendChild(price);
+        info.appendChild(price);
+        top.appendChild(info);
+
+        const actions = document.createElement('div');
+        actions.className = 'vendor-actions';
         const detail = document.createElement('button');
         detail.textContent = 'Details';
-        top.appendChild(detail);
+        actions.appendChild(detail);
         let qtyInput = null;
         if (item.stack > 1) {
             qtyInput = document.createElement('input');
@@ -2629,7 +2636,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             qtyInput.max = String(item.stack);
             qtyInput.value = '1';
             qtyInput.className = 'vendor-qty';
-            top.appendChild(qtyInput);
+            actions.appendChild(qtyInput);
         }
         const buyBtn = document.createElement('button');
         buyBtn.textContent = 'Buy';
@@ -2638,7 +2645,8 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             buyItem(id, q);
             renderVendorScreen(root, vendor, backFn, 'buy');
         });
-        top.appendChild(buyBtn);
+        actions.appendChild(buyBtn);
+        top.appendChild(actions);
         row.appendChild(top);
         const detailsWrap = document.createElement('div');
         detailsWrap.className = 'item-details hidden';
@@ -2681,14 +2689,21 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         row.className = 'vendor-item';
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
+
+        const info = document.createElement('div');
+        info.className = 'vendor-info';
         const name = document.createElement('span');
         const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
         name.textContent = item.name + qtyText;
-        top.appendChild(name);
+        info.appendChild(name);
         const price = document.createElement('span');
         const sp = item.sellPrice || Math.floor(item.price / 2);
         price.textContent = ` - ${sp} gil`;
-        top.appendChild(price);
+        info.appendChild(price);
+        top.appendChild(info);
+
+        const actions = document.createElement('div');
+        actions.className = 'vendor-actions';
         let qtyInput = null;
         if ((item.stack > 1 || entry.qty > 1) && entry.qty > 1) {
             qtyInput = document.createElement('input');
@@ -2697,7 +2712,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             qtyInput.max = String(entry.qty);
             qtyInput.value = '1';
             qtyInput.className = 'vendor-qty';
-            top.appendChild(qtyInput);
+            actions.appendChild(qtyInput);
         }
         const sellBtn = document.createElement('button');
         sellBtn.textContent = 'Sell';
@@ -2706,8 +2721,25 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             sellItem(entry.id, q);
             renderVendorScreen(root, vendor, backFn, 'sell');
         });
-        top.appendChild(sellBtn);
+        let sellGroup = document.createElement('div');
+        sellGroup.className = 'sell-buttons';
+        sellGroup.appendChild(sellBtn);
+        if (entry.qty > 1) {
+            const sellAllBtn = document.createElement('button');
+            sellAllBtn.textContent = 'Sell all';
+            sellAllBtn.addEventListener('click', () => {
+                sellItem(entry.id, entry.qty);
+                renderVendorScreen(root, vendor, backFn, 'sell');
+            });
+            sellGroup.appendChild(sellAllBtn);
+        }
+        actions.appendChild(sellGroup);
+        const detailBtn = document.createElement('button');
+        detailBtn.textContent = 'Details';
+        actions.appendChild(detailBtn);
+        top.appendChild(actions);
         row.appendChild(top);
+
         const detailsWrap = document.createElement('div');
         detailsWrap.className = 'item-details hidden';
         const desc = document.createElement('div');
@@ -2715,11 +2747,8 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         desc.textContent = item.description || item.name;
         detailsWrap.appendChild(desc);
         row.appendChild(detailsWrap);
-        const detailBtn = document.createElement('button');
-        detailBtn.textContent = 'Details';
         detailBtn.addEventListener('click', () => toggleDetails(detailsWrap));
-        top.appendChild(detailBtn);
-            sellList.appendChild(row);
+        sellList.appendChild(row);
         });
         root.appendChild(sellList);
     }
@@ -2740,16 +2769,23 @@ export function renderConquestShop(root, backFn = null) {
         row.className = 'vendor-item';
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
+
+        const info = document.createElement('div');
+        info.className = 'vendor-info';
         const name = document.createElement('span');
         name.textContent = item.name;
-        top.appendChild(name);
+        info.appendChild(name);
         const price = document.createElement('span');
         price.textContent = ` - ${cost} CP`;
         if (cost > (activeCharacter.conquestPoints || 0)) price.style.color = 'red';
-        top.appendChild(price);
+        info.appendChild(price);
+        top.appendChild(info);
+
+        const actions = document.createElement('div');
+        actions.className = 'vendor-actions';
         const detail = document.createElement('button');
         detail.textContent = 'Details';
-        top.appendChild(detail);
+        actions.appendChild(detail);
         const buyBtn = document.createElement('button');
         buyBtn.textContent = 'Buy';
         buyBtn.addEventListener('click', () => {
@@ -2764,7 +2800,8 @@ export function renderConquestShop(root, backFn = null) {
             alert(`Purchased ${item.name}.`);
             renderConquestShop(root, backFn);
         });
-        top.appendChild(buyBtn);
+        actions.appendChild(buyBtn);
+        top.appendChild(actions);
         row.appendChild(top);
         const detailsWrap = document.createElement('div');
         detailsWrap.className = 'item-details hidden';
@@ -2808,39 +2845,22 @@ export function renderEquipmentScreen(root) {
             top.className = 'equipment-row-top';
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
+
+            const info = document.createElement('div');
+            info.className = 'equipment-info';
             const nameDiv = document.createElement('span');
             nameDiv.textContent = `${slots[key]}: ${item ? item.name : itemId || 'Empty'}`;
             if (item && !meetsRequirements(item)) nameDiv.style.color = 'red';
-            top.appendChild(nameDiv);
+            info.appendChild(nameDiv);
+            top.appendChild(info);
+
+            const actions = document.createElement('div');
+            actions.className = 'equipment-actions';
+            let detailsBtn = null;
             if (item) {
-                const detailsBtn = document.createElement('button');
+                detailsBtn = document.createElement('button');
                 detailsBtn.textContent = 'Details';
-                top.appendChild(detailsBtn);
-                li.appendChild(top);
-                const detailsWrap = document.createElement('div');
-                detailsWrap.className = 'item-details hidden';
-                const desc = document.createElement('div');
-                desc.className = 'item-description';
-                desc.textContent = item.description || item.name;
-                detailsWrap.appendChild(desc);
-                const stats = basicStatsText(item);
-                if (stats) {
-                    const s = document.createElement('div');
-                    s.className = 'item-stats';
-                    s.textContent = stats;
-                    detailsWrap.appendChild(s);
-                }
-                const reqTxt = requirementText(item);
-                if (reqTxt) {
-                    const r = document.createElement('div');
-                    r.className = 'item-req';
-                    r.textContent = reqTxt;
-                    detailsWrap.appendChild(r);
-                }
-                li.appendChild(detailsWrap);
-                detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
-            } else {
-                li.appendChild(top);
+                actions.appendChild(detailsBtn);
             }
             if (itemId) {
                 const unequip = document.createElement('button');
@@ -2850,8 +2870,44 @@ export function renderEquipmentScreen(root) {
                     persistCharacter(activeCharacter);
                     renderEquipmentScreen(root);
                 });
-                top.appendChild(unequip);
+                actions.appendChild(unequip);
             }
+            top.appendChild(actions);
+            li.appendChild(top);
+            const detailsWrap = document.createElement('div');
+            detailsWrap.className = 'item-details hidden';
+            const desc = document.createElement('div');
+            desc.className = 'item-description';
+            desc.textContent = item.description || item.name;
+            detailsWrap.appendChild(desc);
+            if (item.effects) {
+                const eff = document.createElement('div');
+                eff.className = 'item-effects';
+                eff.textContent = 'Effects: ' + item.effects.join(', ');
+                detailsWrap.appendChild(eff);
+            }
+            if (item.abilities) {
+                const ab = document.createElement('div');
+                ab.className = 'item-abilities';
+                ab.textContent = 'Abilities: ' + item.abilities.join(', ');
+                detailsWrap.appendChild(ab);
+            }
+            const stats = basicStatsText(item);
+            if (stats) {
+                const s = document.createElement('div');
+                s.className = 'item-stats';
+                s.textContent = stats;
+                detailsWrap.appendChild(s);
+            }
+            const reqTxt = requirementText(item);
+            if (reqTxt) {
+                const r = document.createElement('div');
+                r.className = 'item-req';
+                r.textContent = reqTxt;
+                detailsWrap.appendChild(r);
+            }
+            li.appendChild(detailsWrap);
+            if (detailsBtn) detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
             list.appendChild(li);
         }
         root.appendChild(list);
@@ -2996,12 +3052,35 @@ export function renderInventoryScreen(root) {
 
             const detailsWrap = document.createElement('div');
             detailsWrap.className = 'item-details hidden';
+            const desc = document.createElement('div');
+            desc.className = 'item-description';
+            desc.textContent = ent.item.description || ent.item.name;
+            detailsWrap.appendChild(desc);
+            if (ent.item.effects) {
+                const eff = document.createElement('div');
+                eff.className = 'item-effects';
+                eff.textContent = 'Effects: ' + ent.item.effects.join(', ');
+                detailsWrap.appendChild(eff);
+            }
+            if (ent.item.abilities) {
+                const ab = document.createElement('div');
+                ab.className = 'item-abilities';
+                ab.textContent = 'Abilities: ' + ent.item.abilities.join(', ');
+                detailsWrap.appendChild(ab);
+            }
             const stats = basicStatsText(ent.item);
             if (stats) {
                 const s = document.createElement('div');
                 s.className = 'item-stats';
                 s.textContent = stats;
                 detailsWrap.appendChild(s);
+            }
+            const req = requirementText(ent.item);
+            if (req) {
+                const r = document.createElement('div');
+                r.className = 'item-req';
+                r.textContent = req;
+                detailsWrap.appendChild(r);
             }
             li.appendChild(detailsWrap);
             detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));

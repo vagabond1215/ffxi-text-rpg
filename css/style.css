@@ -633,10 +633,30 @@ body.portrait .main-layout {
 }
 
 .vendor-row-top {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     width: 100%;
+}
+
+.vendor-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+.vendor-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 4px;
+}
+
+.sell-buttons {
+    display: flex;
+    gap: 4px;
 }
 
 .vendor-item span {
@@ -646,6 +666,7 @@ body.portrait .main-layout {
 
 .vendor-qty {
     width: 60px;
+    height: 28px;
 }
 
 .equipment-list {
@@ -697,9 +718,18 @@ body.portrait .main-layout {
     gap: 4px;
 }
 
+.item-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
 .item-actions {
     display: flex;
+    flex-direction: column;
     gap: 4px;
+    padding: 0 4px;
 }
 
 .inventory-row-top button {
@@ -716,10 +746,25 @@ body.portrait .main-layout {
 }
 
 .equipment-row-top {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     width: 100%;
+}
+
+.equipment-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 4px;
+}
+
+.equipment-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
 }
 
 .hidden {
