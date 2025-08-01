@@ -2666,7 +2666,8 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
     root.innerHTML = '';
     resetDetails();
     const title = document.createElement('h2');
-    title.textContent = vendor;
+    const displayName = vendor.includes(' the ') ? vendor.split(' the ')[0] : vendor;
+    title.textContent = displayName;
     root.appendChild(title);
     if (mode === 'buy') {
         const list = document.createElement('div');
