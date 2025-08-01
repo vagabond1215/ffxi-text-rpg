@@ -632,10 +632,10 @@ body.portrait .main-layout {
 
 .vendor-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 8px;
+    grid-template-columns: 1fr 80px 90px;
+    column-gap: 8px;
+    row-gap: 4px;
     margin-top: 20px;
-    justify-items: start;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -663,18 +663,11 @@ body.portrait .main-layout {
 }
 
 .vendor-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    display: contents;
 }
 
 .vendor-row-top {
-    display: grid;
-    grid-template-columns: 1fr 80px 90px;
-    align-items: center;
-    gap: 4px;
-    width: 100%;
+    display: contents;
 }
 
 
@@ -701,7 +694,6 @@ body.portrait .main-layout {
 
 .vendor-item span,
 .vendor-item button.vendor-name-btn {
-    flex: 1;
     text-align: left;
 }
 
@@ -867,6 +859,7 @@ body.portrait .main-layout {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+    grid-column: 1 / -1;
 }
 
 .item-stats {
