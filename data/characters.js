@@ -195,6 +195,7 @@ export const characters = [
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
+    uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
     monsters: []
@@ -277,6 +278,7 @@ export const characters = [
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
+    uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
     monsters: []
@@ -366,6 +368,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     signetUntil: 0,
     conquestPoints: 0,
     minutes: 0,
+    uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
     monsters: []
@@ -567,6 +570,7 @@ export function loadCharacters() {
       if (c.targetIndex === undefined) c.targetIndex = null;
       if (!Array.isArray(c.monsters)) c.monsters = [];
       if (c.monsterCoord === undefined) c.monsterCoord = '';
+      if (c.uiScale === undefined) c.uiScale = 1;
       characters.push(c);
       updateDerivedStats(c);
     });
@@ -585,6 +589,7 @@ export function loadCharacterSlot(index) {
     if (!saved[index]) return;
     characters[index] = saved[index];
     if (characters[index].conquestPoints === undefined) characters[index].conquestPoints = 0;
+    if (characters[index].uiScale === undefined) characters[index].uiScale = 1;
     updateDerivedStats(characters[index]);
     setActiveCharacter(characters[index]);
     saveCharacters();

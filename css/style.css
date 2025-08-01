@@ -653,6 +653,7 @@ body.portrait .main-layout {
 .vendor-actions {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 4px;
     padding: 0 4px;
 }
@@ -669,11 +670,16 @@ body.portrait .main-layout {
 
 .vendor-name {
     text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 .vendor-price {
     text-align: right;
     width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .vendor-qty {
