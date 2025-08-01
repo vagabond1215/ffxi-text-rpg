@@ -46,16 +46,16 @@ export const items = {
   },
   potion: {
     name: 'Potion',
-    price: 300,
-        sellPrice: 150,
+    price: 892,
+    sellPrice: 446,
     stack: 12,
     description: 'Restores a small amount of HP.',
     levelRequirement: 0
   },
   antidote: {
     name: 'Antidote',
-    price: 60,
-        sellPrice: 30,
+    price: 309,
+    sellPrice: 155,
     stack: 12,
     description: 'Cures poison.',
     levelRequirement: 0
@@ -86,8 +86,8 @@ export const items = {
   },
   scrollCure: {
     name: 'Scroll of Cure',
-    price: 600,
-        sellPrice: 300,
+    price: 66,
+    sellPrice: 33,
     stack: 1,
     description: 'Teaches the white magic Cure.',
     levelRequirement: 1
@@ -135,8 +135,8 @@ export const items = {
   },
   ether: {
     name: 'Ether',
-    price: 540,
-        sellPrice: 270,
+    price: 4735,
+    sellPrice: 2367,
     stack: 12,
     description: 'Restores a small amount of MP.',
     levelRequirement: 0
@@ -221,8 +221,8 @@ export const items = {
   },
   woodenArrow: {
     name: 'Wooden Arrow',
-    price: 3,
-        sellPrice: 1,
+    price: 4,
+    sellPrice: 2,
     stack: 99,
     description: 'Simple arrows made of wood.',
     levelRequirement: 0
@@ -245,8 +245,8 @@ export const items = {
   },
   copperOre: {
     name: 'Copper Ore',
-    price: 50,
-        sellPrice: 25,
+    price: 12,
+    sellPrice: 6,
     stack: 12,
     description: 'Ore used in smithing.',
     levelRequirement: 0
@@ -520,32 +520,32 @@ export const items = {
   },
   ironArrow: {
     name: 'Iron Arrow',
-    price: 7,
-        sellPrice: 3,
+    price: 8,
+    sellPrice: 4,
     stack: 99,
     description: 'Sturdy iron arrows.',
     levelRequirement: 1
   },
   silverArrow: {
     name: 'Silver Arrow',
-    price: 16,
-        sellPrice: 8,
+    price: 17,
+    sellPrice: 8,
     stack: 99,
     description: 'High-quality silver arrows.',
     levelRequirement: 1
   },
   crossbowBolt: {
     name: 'Crossbow Bolt',
-    price: 5,
-        sellPrice: 2,
+    price: 6,
+    sellPrice: 3,
     stack: 99,
     description: 'Bolts used with crossbows.',
     levelRequirement: 1
   },
   lightCrossbow: {
     name: 'Light Crossbow',
-    price: 165,
-        sellPrice: 82,
+    price: 176,
+    sellPrice: 88,
     stack: 1,
     description: 'A lightweight crossbow.',
     damage: 10,
@@ -556,8 +556,8 @@ export const items = {
   },
   crossbow: {
     name: 'Crossbow',
-    price: 2166,
-        sellPrice: 1083,
+    price: 2308,
+    sellPrice: 1154,
     stack: 1,
     description: 'A standard crossbow.',
     damage: 15,
@@ -568,296 +568,296 @@ export const items = {
   },
   scrollDarkThrenody: {
     name: 'Scroll of Dark Threnody',
-    price: 199,
-        sellPrice: 99,
+    price: 212,
+    sellPrice: 106,
     stack: 1,
     description: 'Teaches the song Dark Threnody.',
     levelRequirement: 15
   },
   scrollIceThrenody: {
     name: 'Scroll of Ice Threnody',
-    price: 1000,
-        sellPrice: 500,
+    price: 1066,
+    sellPrice: 533,
     stack: 1,
     description: 'Teaches the song Ice Threnody.',
     levelRequirement: 45
   },
   scrollFoeRequiemI: {
     name: 'Scroll of Foe Requiem I',
-    price: 64,
-        sellPrice: 32,
+    price: 69,
+    sellPrice: 34,
     stack: 1,
     description: 'Teaches Foe Requiem I.',
     levelRequirement: 7
   },
   scrollFoeRequiemII: {
     name: 'Scroll of Foe Requiem II',
-    price: 441,
-        sellPrice: 220,
+    price: 475,
+    sellPrice: 238,
     stack: 1,
     description: 'Teaches Foe Requiem II.',
     levelRequirement: 17
   },
   scrollFoeRequiemIII: {
     name: 'Scroll of Foe Requiem III',
-    price: 3960,
-        sellPrice: 1980,
+    price: 4268,
+    sellPrice: 2134,
     stack: 1,
     description: 'Teaches Foe Requiem III.',
     levelRequirement: 37
   },
   scrollFoeRequiemIV: {
     name: 'Scroll of Foe Requiem IV',
-    price: 6912,
-        sellPrice: 3456,
+    price: 7449,
+    sellPrice: 3724,
     stack: 1,
     description: 'Teaches Foe Requiem IV.',
     levelRequirement: 47
   },
   scrollArmysPaeon: {
-    name: "Scroll of Army's Paeon", 
-    price: 37,
-        sellPrice: 18,
+    name: "Scroll of Army's Paeon",
+    price: 40,
+    sellPrice: 20,
     stack: 1,
     description: "Teaches Army's Paeon.",
     levelRequirement: 5
   },
   scrollArmysPaeonII: {
     name: "Scroll of Army's Paeon II",
-    price: 321,
-        sellPrice: 160,
+    price: 346,
+    sellPrice: 173,
     stack: 1,
     description: "Teaches Army's Paeon II.",
     levelRequirement: 15
   },
   scrollArmysPaeonIII: {
     name: "Scroll of Army's Paeon III",
-    price: 3240,
-        sellPrice: 1620,
+    price: 3492,
+    sellPrice: 1746,
     stack: 1,
     description: "Teaches Army's Paeon III.",
     levelRequirement: 35
   },
   scrollArmysPaeonIV: {
     name: "Scroll of Army's Paeon IV",
-    price: 5940,
-        sellPrice: 2970,
+    price: 6402,
+    sellPrice: 3201,
     stack: 1,
     description: "Teaches Army's Paeon IV.",
     levelRequirement: 45
   },
   scrollValorMinuet: {
     name: 'Scroll of Valor Minuet',
-    price: 21,
-        sellPrice: 10,
+    price: 23,
+    sellPrice: 11,
     stack: 1,
     description: 'Teaches Valor Minuet.',
     levelRequirement: 3
   },
   scrollValorMinuetII: {
     name: 'Scroll of Valor Minuet II',
-    price: 1101,
-        sellPrice: 550,
+    price: 1187,
+    sellPrice: 594,
     stack: 1,
     description: 'Teaches Valor Minuet II.',
     levelRequirement: 23
   },
   scrollValorMinuetIII: {
     name: 'Scroll of Valor Minuet III',
-    price: 5544,
-        sellPrice: 2772,
+    price: 5975,
+    sellPrice: 2987,
     stack: 1,
     description: 'Teaches Valor Minuet III.',
     levelRequirement: 43
   },
   scrollCureII: {
     name: 'Scroll of Cure II',
-    price: 585,
-        sellPrice: 292,
+    price: 631,
+    sellPrice: 315,
     stack: 1,
     description: 'Teaches the white magic Cure II.',
     levelRequirement: 11
   },
   scrollCuraga: {
     name: 'Scroll of Curaga',
-    price: 1363,
-        sellPrice: 681,
+    price: 1469,
+    sellPrice: 734,
     stack: 1,
     description: 'Teaches the white magic Curaga.',
     levelRequirement: 43
   },
   scrollPoisona: {
     name: 'Scroll of Poisona',
-    price: 180,
-        sellPrice: 90,
+    price: 194,
+    sellPrice: 97,
     stack: 1,
     description: 'Teaches the white magic Poisona.',
     levelRequirement: 15
   },
   scrollParalyna: {
     name: 'Scroll of Paralyna',
-    price: 324,
-        sellPrice: 162,
+    price: 349,
+    sellPrice: 174,
     stack: 1,
     description: 'Teaches the white magic Paralyna.',
     levelRequirement: 21
   },
   scrollBlindna: {
     name: 'Scroll of Blindna',
-    price: 990,
-        sellPrice: 495,
+    price: 1067,
+    sellPrice: 534,
     stack: 1,
     description: 'Teaches the white magic Blindna.',
     levelRequirement: 47
   },
   scrollDia: {
     name: 'Scroll of Dia',
-    price: 82,
-        sellPrice: 41,
+    price: 89,
+    sellPrice: 44,
     stack: 1,
     description: 'Teaches the white magic Dia.',
     levelRequirement: 27
   },
   scrollDiaga: {
     name: 'Scroll of Diaga',
-    price: 1165,
-        sellPrice: 582,
+    price: 1256,
+    sellPrice: 628,
     stack: 1,
     description: 'Teaches the white magic Diaga.',
     levelRequirement: 73
   },
   scrollBanish: {
     name: 'Scroll of Banish',
-    price: 140,
-        sellPrice: 70,
+    price: 151,
+    sellPrice: 75,
     stack: 1,
     description: 'Teaches Banish.',
     levelRequirement: 1
   },
   scrollBanishga: {
     name: 'Scroll of Banishga',
-    price: 1165,
-        sellPrice: 582,
+    price: 1280,
+    sellPrice: 640,
     stack: 1,
     description: 'Teaches Banishga.',
     levelRequirement: 35
   },
   scrollBlink: {
     name: 'Scroll of Blink',
-    price: 2097,
-        sellPrice: 1048,
+    price: 2260,
+    sellPrice: 1130,
     stack: 1,
     description: 'Teaches Blink.',
     levelRequirement: 15
   },
   scrollProtect: {
     name: 'Scroll of Protect',
-    price: 219,
-        sellPrice: 109,
+    price: 236,
+    sellPrice: 118,
     stack: 1,
     description: 'Teaches Protect.',
     levelRequirement: 20
   },
   scrollShell: {
     name: 'Scroll of Shell',
-    price: 1584,
-        sellPrice: 792,
+    price: 1707,
+    sellPrice: 854,
     stack: 1,
     description: 'Teaches Shell.',
     levelRequirement: 35
   },
   scrollStoneskin: {
     name: 'Scroll of Stoneskin',
-    price: 7025,
-        sellPrice: 3512,
+    price: 7572,
+    sellPrice: 3786,
     stack: 1,
     description: 'Teaches Stoneskin.',
     levelRequirement: 49
   },
   scrollSlow: {
     name: 'Scroll of Slow',
-    price: 837,
-        sellPrice: 418,
+    price: 902,
+    sellPrice: 451,
     stack: 1,
     description: 'Teaches Slow.',
     levelRequirement: 13
   },
   echoDrops: {
     name: 'Echo Drops',
-    price: 736,
-        sellPrice: 368,
+    price: 784,
+    sellPrice: 392,
     stack: 12,
     description: 'Cures silence.',
     levelRequirement: 0
   },
   eyeDrops: {
     name: 'Eye Drops',
-    price: 2387,
-        sellPrice: 1193,
+    price: 2543,
+    sellPrice: 1271,
     stack: 12,
     description: 'Cures blindness.',
     levelRequirement: 0
   },
   tourmaline: {
     name: 'Tourmaline',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A pink gemstone.',
     levelRequirement: 0
   },
   sardonyx: {
     name: 'Sardonyx',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A striped gemstone.',
     levelRequirement: 0
   },
   amethyst: {
     name: 'Amethyst',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A purple gemstone.',
     levelRequirement: 0
   },
   amber: {
     name: 'Amber',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A golden gemstone.',
     levelRequirement: 0
   },
   lapisLazuli: {
     name: 'Lapis Lazuli',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A blue gemstone.',
     levelRequirement: 0
   },
   clearTopaz: {
     name: 'Clear Topaz',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A transparent gem.',
     levelRequirement: 0
   },
   onyx: {
     name: 'Onyx',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A jet-black gem.',
     levelRequirement: 0
   },
   lightOpal: {
     name: 'Light Opal',
-    price: 1676,
-        sellPrice: 838,
+    price: 1863,
+    sellPrice: 932,
     stack: 1,
     description: 'A brilliant opal.',
     levelRequirement: 0
@@ -3269,8 +3269,8 @@ export const items = {
   },
   mandrel: {
     name: 'Mandrel',
-    price: 60,
-        sellPrice: 30,
+    price: 75,
+    sellPrice: 38,
     stack: 1,
     description: 'A forging mandrel.',
     levelRequirement: 0
@@ -3726,6 +3726,390 @@ export const items = {
     slot: 'mainHand',
     jobs: baseJobNames
   },
+  piccolo: {
+    name: 'Piccolo',
+    price: 1067,
+    sellPrice: 533,
+    stack: 1,
+    description: 'A small flute used by bards.',
+    levelRequirement: 1
+  },
+  cornette: {
+    name: 'Cornette',
+    price: 236,
+    sellPrice: 118,
+    stack: 1,
+    description: 'A brass instrument favored by novice bards.',
+    levelRequirement: 1
+  },
+  mapleHarp: {
+    name: 'Maple Harp',
+    price: 46,
+    sellPrice: 23,
+    stack: 1,
+    description: 'A small harp crafted from maple.',
+    levelRequirement: 1
+  },
+  scrollVitalEtude: {
+    name: 'Scroll of Vital Etude',
+    price: 74496,
+    sellPrice: 37248,
+    stack: 1,
+    description: 'Teaches the song Vital Etude.',
+    levelRequirement: 55
+  },
+  scrollSwiftEtude: {
+    name: 'Scroll of Swift Etude',
+    price: 71392,
+    sellPrice: 35696,
+    stack: 1,
+    description: 'Teaches the song Swift Etude.',
+    levelRequirement: 55
+  },
+  scrollSageEtude: {
+    name: 'Scroll of Sage Etude',
+    price: 68288,
+    sellPrice: 34144,
+    stack: 1,
+    description: 'Teaches the song Sage Etude.',
+    levelRequirement: 55
+  },
+  scrollLogicalEtude: {
+    name: 'Scroll of Logical Etude',
+    price: 61110,
+    sellPrice: 30555,
+    stack: 1,
+    description: 'Teaches the song Logical Etude.',
+    levelRequirement: 55
+  },
+  scrollHerculeanEtude: {
+    name: 'Scroll of Herculean Etude',
+    price: 85748,
+    sellPrice: 42874,
+    stack: 1,
+    description: 'Teaches the song Herculean Etude.',
+    levelRequirement: 55
+  },
+  scrollUncannyEtude: {
+    name: 'Scroll of Uncanny Etude',
+    price: 82450,
+    sellPrice: 41225,
+    stack: 1,
+    description: 'Teaches the song Uncanny Etude.',
+    levelRequirement: 55
+  },
+  gemshorn: {
+    name: 'Gemshorn',
+    price: 5005,
+    sellPrice: 2502,
+    stack: 1,
+    description: 'A curved horn instrument.',
+    levelRequirement: 1
+  },
+  flute: {
+    name: 'Flute',
+    price: 46,
+    sellPrice: 23,
+    stack: 1,
+    description: 'A simple wooden flute.',
+    levelRequirement: 1
+  },
+  scrollBewitchingEtude: {
+    name: 'Scroll of Bewitching Etude',
+    price: 58200,
+    sellPrice: 29100,
+    stack: 1,
+    description: 'Teaches the song Bewitching Etude.',
+    levelRequirement: 55
+  },
+  foeSirvente: {
+    name: 'Foe Sirvente',
+    price: 91425,
+    sellPrice: 45712,
+    stack: 1,
+    description: 'Teaches the song Foe Sirvente.',
+    levelRequirement: 55
+  },
+  adventurersDirge: {
+    name: "Adventurer's Dirge",
+    price: 91425,
+    sellPrice: 45712,
+    stack: 1,
+    description: "Teaches the song Adventurer's Dirge.",
+    levelRequirement: 55
+  },
+  scrollFoeRequiemVII: {
+    name: 'Scroll of Foe Requiem VII',
+    price: 47196,
+    sellPrice: 23598,
+    stack: 1,
+    description: 'Teaches Foe Requiem VII.',
+    levelRequirement: 75
+  },
+  scrollArmysPaeonVI: {
+    name: "Scroll of Army's Paeon VI",
+    price: 48944,
+    sellPrice: 24472,
+    stack: 1,
+    description: "Teaches Army's Paeon VI.",
+    levelRequirement: 55
+  },
+  scrollValorMinuetV: {
+    name: 'Scroll of Valor Minuet V',
+    price: 53820,
+    sellPrice: 26910,
+    stack: 1,
+    description: 'Teaches Valor Minuet V.',
+    levelRequirement: 55
+  },
+  scrollRepose: {
+    name: 'Scroll of Repose',
+    price: 32010,
+    sellPrice: 16005,
+    stack: 1,
+    description: 'Teaches the white magic Repose.',
+    levelRequirement: 55
+  },
+  scrollBlind: {
+    name: 'Scroll of Blind',
+    price: 124,
+    sellPrice: 62,
+    stack: 1,
+    description: 'Teaches the black magic Blind.',
+    levelRequirement: 5
+  },
+  scrollBio: {
+    name: 'Scroll of Bio',
+    price: 400,
+    sellPrice: 200,
+    stack: 1,
+    description: 'Teaches the black magic Bio.',
+    levelRequirement: 5
+  },
+  scrollPoison: {
+    name: 'Scroll of Poison',
+    price: 92,
+    sellPrice: 46,
+    stack: 1,
+    description: 'Teaches the black magic Poison.',
+    levelRequirement: 5
+  },
+  scrollSleep: {
+    name: 'Scroll of Sleep',
+    price: 2500,
+    sellPrice: 1250,
+    stack: 1,
+    description: 'Teaches the black magic Sleep.',
+    levelRequirement: 20
+  },
+  scrollAero: {
+    name: 'Scroll of Aero',
+    price: 349,
+    sellPrice: 175,
+    stack: 1,
+    description: 'Teaches the black magic Aero.',
+    levelRequirement: 1
+  },
+  scrollBlizzard: {
+    name: 'Scroll of Blizzard',
+    price: 1707,
+    sellPrice: 853,
+    stack: 1,
+    description: 'Teaches the black magic Blizzard.',
+    levelRequirement: 11
+  },
+  scrollBurn: {
+    name: 'Scroll of Burn',
+    price: 5005,
+    sellPrice: 2502,
+    stack: 1,
+    description: 'Teaches the black magic Burn.',
+    levelRequirement: 55
+  },
+  scrollChoke: {
+    name: 'Scroll of Choke',
+    price: 2425,
+    sellPrice: 1212,
+    stack: 1,
+    description: 'Teaches the black magic Choke.',
+    levelRequirement: 35
+  },
+  scrollDrown: {
+    name: 'Scroll of Drown',
+    price: 6861,
+    sellPrice: 3430,
+    stack: 1,
+    description: 'Teaches the black magic Drown.',
+    levelRequirement: 55
+  },
+  scrollFrost: {
+    name: 'Scroll of Frost',
+    price: 3975,
+    sellPrice: 1987,
+    stack: 1,
+    description: 'Teaches the black magic Frost.',
+    levelRequirement: 35
+  },
+  scrollRasp: {
+    name: 'Scroll of Rasp',
+    price: 1969,
+    sellPrice: 984,
+    stack: 1,
+    description: 'Teaches the black magic Rasp.',
+    levelRequirement: 15
+  },
+  scrollShock: {
+    name: 'Scroll of Shock',
+    price: 1469,
+    sellPrice: 734,
+    stack: 1,
+    description: 'Teaches the black magic Shock.',
+    levelRequirement: 25
+  },
+  scrollStone: {
+    name: 'Scroll of Stone',
+    price: 66,
+    sellPrice: 33,
+    stack: 1,
+    description: 'Teaches the black magic Stone.',
+    levelRequirement: 1
+  },
+  scrollThunder: {
+    name: 'Scroll of Thunder',
+    price: 3515,
+    sellPrice: 1757,
+    stack: 1,
+    description: 'Teaches the black magic Thunder.',
+    levelRequirement: 17
+  },
+  scrollWater: {
+    name: 'Scroll of Water',
+    price: 151,
+    sellPrice: 75,
+    stack: 1,
+    description: 'Teaches the black magic Water.',
+    levelRequirement: 1
+  },
+  zincOre: {
+    name: 'Zinc Ore',
+    price: 200,
+    sellPrice: 100,
+    stack: 12,
+    description: 'A chunk of zinc-bearing ore.',
+    levelRequirement: 0
+  },
+  brassNugget: {
+    name: 'Brass Nugget',
+    price: 40,
+    sellPrice: 20,
+    stack: 12,
+    description: 'A nugget of brass.',
+    levelRequirement: 0
+  },
+  brassSheet: {
+    name: 'Brass Sheet',
+    price: 300,
+    sellPrice: 150,
+    stack: 12,
+    description: 'A sheet of hammered brass.',
+    levelRequirement: 0
+  },
+  silverOre: {
+    name: 'Silver Ore',
+    price: 450,
+    sellPrice: 225,
+    stack: 12,
+    description: 'Ore containing traces of silver.',
+    levelRequirement: 0
+  },
+  silverNugget: {
+    name: 'Silver Nugget',
+    price: 200,
+    sellPrice: 100,
+    stack: 12,
+    description: 'A small silver nugget.',
+    levelRequirement: 0
+  },
+  brassScales: {
+    name: 'Brass Scales',
+    price: 210,
+    sellPrice: 105,
+    stack: 12,
+    description: 'Scales fashioned from brass.',
+    levelRequirement: 0
+  },
+  mythrilChain: {
+    name: 'Mythril Chain',
+    price: 10500,
+    sellPrice: 5250,
+    stack: 12,
+    description: 'A length of mythril chain.',
+    levelRequirement: 0
+  },
+  redRock: {
+    name: 'Red Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A red-colored rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  blueRock: {
+    name: 'Blue Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A blue-colored rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  yellowRock: {
+    name: 'Yellow Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A yellow-colored rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  greenRock: {
+    name: 'Green Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A green-colored rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  translucentRock: {
+    name: 'Translucent Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A faintly glowing rock.',
+    levelRequirement: 0
+  },
+  purpleRock: {
+    name: 'Purple Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A purple-colored rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  blackRock: {
+    name: 'Black Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A pitch-black rock used in goldsmithing.',
+    levelRequirement: 0
+  },
+  whiteRock: {
+    name: 'White Rock',
+    price: 6440,
+    sellPrice: 3220,
+    stack: 1,
+    description: 'A white rock used in goldsmithing.',
+    levelRequirement: 0
+  },
   warpRing: {
     name: 'Warp Ring',
     price: 0,
@@ -3835,8 +4219,12 @@ export const vendorInventories = {
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
   "Olwyn's General Goods": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote'],
-  'Hortense': ['scrollFoeRequiemI', 'scrollFoeRequiemII', 'scrollFoeRequiemIII', 'scrollFoeRequiemIV', 'scrollArmysPaeon', 'scrollArmysPaeonII', 'scrollArmysPaeonIII', 'scrollArmysPaeonIV', 'scrollValorMinuet', 'scrollValorMinuetII', 'scrollValorMinuetIII'],
-  'Sororo': ['scrollCure', 'scrollCureII', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollDiaga', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollProtect', 'scrollShell', 'scrollStoneskin', 'scrollSlow']
+  Harmodios: ['piccolo', 'cornette', 'mapleHarp', 'scrollVitalEtude', 'scrollSwiftEtude', 'scrollSageEtude', 'scrollLogicalEtude', 'scrollHerculeanEtude', 'scrollUncannyEtude', 'gemshorn', 'flute', 'scrollBewitchingEtude', 'foeSirvente', 'adventurersDirge'],
+  Hortense: ['scrollFoeRequiemI', 'scrollFoeRequiemII', 'scrollFoeRequiemIII', 'scrollFoeRequiemIV', 'scrollFoeRequiemVII', 'scrollArmysPaeon', 'scrollArmysPaeonII', 'scrollArmysPaeonIII', 'scrollArmysPaeonIV', 'scrollArmysPaeonVI', 'scrollValorMinuet', 'scrollValorMinuetII', 'scrollValorMinuetIII', 'scrollValorMinuetV'],
+  Sororo: ['scrollDiaga', 'scrollStoneskin', 'scrollSlow', 'scrollCureII', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollCure', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollProtect', 'scrollShell', 'scrollRepose'],
+  Zaira: ['scrollBlind', 'scrollBio', 'scrollPoison', 'scrollSleep', 'scrollAero', 'scrollBlizzard', 'scrollBurn', 'scrollChoke', 'scrollDrown', 'scrollFire', 'scrollFrost', 'scrollRasp', 'scrollShock', 'scrollStone', 'scrollThunder', 'scrollWater'],
+  Teerth: ['workshopAnvil', 'mandrel', 'zincOre', 'copperOre', 'brassNugget', 'brassSheet', 'silverOre', 'silverNugget', 'tourmaline', 'sardonyx', 'clearTopaz', 'amethyst', 'lapisLazuli', 'amber', 'onyx'],
+  Visala: ['silverOre', 'mythrilOre', 'brassScales', 'mythrilChain', 'redRock', 'blueRock', 'yellowRock', 'greenRock', 'translucentRock', 'purpleRock', 'blackRock', 'whiteRock', 'lapisLazuli', 'lightOpal', 'onyx', 'amethyst', 'tourmaline', 'sardonyx', 'clearTopaz']
 };
 
 // Map vendor NPCs to their shop inventories
@@ -3855,8 +4243,8 @@ export const shopNpcs = {
   'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
   "Dragon's Claw Weaponry": ['Ciqala', 'Peritrage', 'Zhikkom'],
   "Carmelide's Jewelry Store": ['Carmelide', 'Raghd'],
-  "Harmodios's Music Shop": ['Hortense'],
-  'Scribe & Notary': ['Sororo'],
+  "Harmodios's Music Shop": ['Harmodios', 'Hortense'],
+  'Scribe & Notary': ['Sororo', 'Zaira'],
   "Galvin's Travel Gear": ['Galvin', 'Ilita', 'Numa'],
   'Steaming Sheep Restaurant': ['Melloa', 'Sawyer'],
   "Boytz's Knickknacks": ['Boytz'],
@@ -3866,6 +4254,7 @@ export const shopNpcs = {
   "Neigepance's Chocobo Stables": ['Neigepance'],
   "Griselda's Tavern": ['Griselda'],
   "Blacksmith's Guild": ['Amulya'],
+  "Goldsmiths' Guild": ['Teerth', 'Visala'],
   'Blacksmith Supplies': ['Vicious Eye'],
   'Gunpowder Room': ['Nogga', 'Olaf'],
   "Craftsmen's Eatery": ['Tomasa'],

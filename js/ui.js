@@ -2561,16 +2561,18 @@ function sellItem(id, qty = 1) {
 
 function renderVendorMenu(root, vendor, backFn = null, shopName = null) {
     root.innerHTML = '';
+    const screen = document.createElement('div');
+    screen.className = 'vendor-menu';
     const title = document.createElement('h2');
     title.textContent = shopName || vendor;
-    root.appendChild(title);
+    screen.appendChild(title);
     const intro = document.createElement('p');
     if (shopName) intro.textContent = `You enter ${shopName} and approach ${vendor}.`;
     else intro.textContent = `You approach ${vendor}.`;
-    root.appendChild(intro);
+    screen.appendChild(intro);
     const greet = document.createElement('p');
     greet.textContent = vendorGreetings[vendor] || 'Welcome, traveler.';
-    root.appendChild(greet);
+    screen.appendChild(greet);
     const buyBtn = document.createElement('button');
     buyBtn.textContent = 'Buy';
     buyBtn.addEventListener('click', () => {
@@ -2581,8 +2583,9 @@ function renderVendorMenu(root, vendor, backFn = null, shopName = null) {
     sellBtn.addEventListener('click', () => {
         renderVendorScreen(root, vendor, backFn, 'sell');
     });
-    root.appendChild(buyBtn);
-    root.appendChild(sellBtn);
+    screen.appendChild(buyBtn);
+    screen.appendChild(sellBtn);
+    root.appendChild(screen);
     const handler = backFn || (() => refreshMainMenu(root.parentElement));
     showBackButton(handler);
 }
@@ -3104,18 +3107,22 @@ function openMenu(name, backFn) {
             return;
         }
         root.innerHTML = '';
+        const screen = document.createElement('div');
+        screen.className = 'shop-menu';
         const title = document.createElement('h2');
         title.textContent = name;
-        root.appendChild(title);
+        screen.appendChild(title);
         const intro = document.createElement('p');
         if (name === "Deegis's Armour") {
             intro.textContent = `You step into Deegis\u2019 Armor, torchlight dancing on steel-clad walls.\nDeegis nods from behind a rack of padded gambesons as Zemedars polishes a sturdy targe beside him.\n\n\"Welcome, friend!\"`;
         } else if (name === "Brunhilde's Armory") {
             intro.textContent = "You step into Brunhilde's Armory, torchlight dancing off rows of gleaming plate mail, supple leather harnesses, padded gambesons and more. Brunhilde herself stands by displays of hefty breastplates and sallets, while Balthilda arranges lighter gauntlets and scale mail on nearby racks, Charging Chocobo arranging belts and leggings.\n\n\"Welcome adventurer, what are you looking for today?\"";
+        } else if (name === "Dragon's Claw Weaponry") {
+            intro.textContent = "You step into Dragon\u2019s Claw Weaponry, steel ringing softly as the door closes behind you.\n\"Welcome to our shop!\" Ciqala greets you from a rack of knuckles, clubs, and polished rods.\nPeritrage stands beside great-axes and hunting knives, while Zhikkom polishes swords and daggers with calm precision.";
         } else {
             intro.textContent = `You enter ${name}. Inside you see:`;
         }
-        root.appendChild(intro);
+        screen.appendChild(intro);
         const list = document.createElement('ul');
         list.style.listStyle = 'none';
         list.style.paddingLeft = '0';
@@ -3128,7 +3135,8 @@ function openMenu(name, backFn) {
             li.appendChild(btn);
             list.appendChild(li);
         });
-        root.appendChild(list);
+        screen.appendChild(list);
+        root.appendChild(screen);
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
         renderVendorMenu(root, name, backHandler);
