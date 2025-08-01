@@ -625,6 +625,9 @@ body.portrait .main-layout {
     gap: 8px;
     margin-top: 20px;
     justify-items: start;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .shop-menu,
@@ -639,6 +642,7 @@ body.portrait .main-layout {
 
 .vendor-menu {
     align-items: center;
+    width: 100%;
 }
 
 .vendor-menu > h2 {
@@ -670,12 +674,17 @@ body.portrait .main-layout {
     gap: 4px;
     padding: 0 4px;
     width: 90px;
+    box-sizing: border-box;
 }
 
 .sell-buttons {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    width: 100%;
+}
+
+.vendor-actions button {
     width: 100%;
 }
 
@@ -694,6 +703,8 @@ body.portrait .main-layout {
     color: inherit;
     padding: 0;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .vendor-price {
@@ -702,6 +713,7 @@ body.portrait .main-layout {
     align-items: center;
     justify-content: flex-end;
     width: 80px;
+    box-sizing: border-box;
 }
 
 .vendor-qty {
