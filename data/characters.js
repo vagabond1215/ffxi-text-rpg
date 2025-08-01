@@ -764,14 +764,14 @@ const dayNames = [
 ];
 
 export const dayElements = {
-  Firesday: '🔥',
-  Earthsday: '🪨',
-  Watersday: '💧',
-  Windsday: '💨',
-  Iceday: '❄️',
-  Lightningday: '⚡',
-  Lightsday: '✨',
-  Darksday: '🌑'
+  Firesday: '<img src="img/Elements/Fire-Icon.png" class="element-icon">',
+  Earthsday: '<img src="img/Elements/Earth-Icon.png" class="element-icon">',
+  Watersday: '<img src="img/Elements/Water-Icon.png" class="element-icon">',
+  Windsday: '<img src="img/Elements/Wind-Icon.png" class="element-icon">',
+  Iceday: '<img src="img/Elements/Ice-Icon.png" class="element-icon">',
+  Lightningday: '<img src="img/Elements/Lightning-Icon.png" class="element-icon">',
+  Lightsday: '<img src="img/Elements/Light-Icon.png" class="element-icon">',
+  Darksday: '<img src="img/Elements/Dark-Icon.png" class="element-icon">'
 };
 
 export function currentVanaTime(date = new Date()) {

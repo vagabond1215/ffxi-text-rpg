@@ -55,6 +55,7 @@ let logButtonElement = null;
 let logPanelElement = null;
 let timeDisplayElement = null;
 let timePopupElement = null;
+let timePopupFontSize = 12;
 let mapOverlayElement = null;
 let mapImageElement = null;
 let mapCloseElement = null;
@@ -154,6 +155,18 @@ export function setupTimeDisplay(el, popup) {
     timePopupElement = popup;
     if (!timeDisplayElement) return;
     if (timePopupElement) {
+        const controls = document.createElement('div');
+        controls.className = 'font-controls';
+        const dec = document.createElement('button');
+        dec.textContent = '-';
+        dec.addEventListener('click', e => { e.stopPropagation(); adjustTimePopupFontSize(-2); });
+        const inc = document.createElement('button');
+        inc.textContent = '+';
+        inc.addEventListener('click', e => { e.stopPropagation(); adjustTimePopupFontSize(2); });
+        controls.appendChild(dec);
+        controls.appendChild(inc);
+        timePopupElement.appendChild(controls);
+        updateTimePopupFont();
         timeDisplayElement.addEventListener('click', () => {
             updateTimePopup();
             toggleDetails(timePopupElement);
@@ -166,7 +179,7 @@ export function updateTimeDisplay() {
     if (!timeDisplayElement) return;
     const vt = currentVanaTime();
     const icon = dayElements[vt.weekday] || '';
-    timeDisplayElement.textContent = `${icon} ${vt.hour.toString().padStart(2, '0')}:${vt.minute.toString().padStart(2, '0')}`;
+    timeDisplayElement.innerHTML = `${icon} ${vt.hour.toString().padStart(2, '0')}:${vt.minute.toString().padStart(2, '0')}`;
 }
 
 export function setupMapOverlay(el, img, closeBtn) {
@@ -266,11 +279,19 @@ function updateTimePopup() {
     for (const [route, times] of Object.entries(manaclipperSchedules)) {
         lines.push(`${route} departs: ${nextScheduledTime(times)}`);
     }
-    timePopupElement.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+    const controlsDiv = timePopupElement.querySelector('.font-controls');
+    const content = lines.map(l => `<div>${l}</div>`).join('');
+    timePopupElement.innerHTML = '';
+    if (controlsDiv) timePopupElement.appendChild(controlsDiv);
+    timePopupElement.insertAdjacentHTML('beforeend', content);
 }
 
 function updateLogFont() {
     document.documentElement.style.setProperty('--log-font-size', `${logFontSize}px`);
+}
+
+function updateTimePopupFont() {
+    document.documentElement.style.setProperty('--time-popup-font-size', `${timePopupFontSize}px`);
 }
 
 function pruneLog() {
@@ -321,6 +342,11 @@ export function adjustLogFontSize(delta) {
     updateLogFont();
 }
 
+export function adjustTimePopupFontSize(delta) {
+    timePopupFontSize = Math.max(8, Math.min(32, timePopupFontSize + delta));
+    updateTimePopupFont();
+}
+
 export function isLogFullscreen() {
     return !!(logPanelElement && logPanelElement.classList.contains('fullscreen'));
 }
@@ -340,9 +366,15 @@ export function addGameLog(msg) {
 
 export function showGameLogTemporarily(ms = 3000) {
     if (!logPanelElement) return;
+    if (logPanelElement.classList.contains('fullscreen')) return;
     logPanelElement.classList.remove('hidden');
     pruneLog();
-    setTimeout(() => { logPanelElement.classList.add('hidden'); updateGameLogPadding(); }, ms);
+    setTimeout(() => {
+        if (!logPanelElement.classList.contains('fullscreen')) {
+            logPanelElement.classList.add('hidden');
+            updateGameLogPadding();
+        }
+    }, ms);
 }
 
 function resetDetails() {
@@ -2995,6 +3027,8 @@ function openMenu(name, backFn) {
         const intro = document.createElement('p');
         if (name === "Deegis's Armour") {
             intro.textContent = `You step into Deegis\u2019 Armor, torchlight dancing on steel-clad walls.\nDeegis nods from behind a rack of padded gambesons as Zemedars polishes a sturdy targe beside him.\n\n\"Welcome, friend!\"`;
+        } else if (name === "Brunhilde's Armory") {
+            intro.textContent = "You step into Brunhilde's Armory, torchlight dancing off rows of gleaming plate mail, supple leather harnesses, padded gambesons and more. Brunhilde herself stands by displays of hefty breastplates and sallets, while Balthilda arranges lighter gauntlets and scale mail on nearby racks, Charging Chocobo arranging belts and leggings.\n\n\"Welcome adventurer, what are you looking for today?\"";
         } else {
             intro.textContent = `You enter ${name}. Inside you see:`;
         }
