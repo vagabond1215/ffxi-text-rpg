@@ -37,7 +37,6 @@ export const zonesByCity = {
         "Dragon's Claw Weaponry",
         "Carmelide's Jewelry Store",
         "Mjoll's General Goods",
-        "Olwyn's General Goods",
         "Harmodios's Music Shop",
         'Scribe & Notary',
         'Tenshodo Entrance',

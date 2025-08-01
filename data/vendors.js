@@ -4218,7 +4218,6 @@ export const vendorInventories = {
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
-  "Olwyn's General Goods": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote'],
   Harmodios: ['piccolo', 'cornette', 'mapleHarp', 'scrollVitalEtude', 'scrollSwiftEtude', 'scrollSageEtude', 'scrollLogicalEtude', 'scrollHerculeanEtude', 'scrollUncannyEtude', 'gemshorn', 'flute', 'scrollBewitchingEtude', 'foeSirvente', 'adventurersDirge'],
   Hortense: ['scrollFoeRequiemI', 'scrollFoeRequiemII', 'scrollFoeRequiemIII', 'scrollFoeRequiemIV', 'scrollFoeRequiemVII', 'scrollArmysPaeon', 'scrollArmysPaeonII', 'scrollArmysPaeonIII', 'scrollArmysPaeonIV', 'scrollArmysPaeonVI', 'scrollValorMinuet', 'scrollValorMinuetII', 'scrollValorMinuetIII', 'scrollValorMinuetV'],
   Sororo: ['scrollDiaga', 'scrollStoneskin', 'scrollSlow', 'scrollCureII', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollCure', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollProtect', 'scrollShell', 'scrollRepose'],

@@ -1,5 +1,5 @@
 import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
-import { loadCharacters, initCurrentUser, initNotorious, activeCharacter } from '../data/index.js';
+import { loadCharacters, initCurrentUser, initNotorious, activeCharacter, persistCharacter } from '../data/index.js';
 
 // Entry point: initialize application
 let uiScale = 1;
@@ -16,12 +16,18 @@ function updateScale(delta) {
     } else {
         uiScale = Math.max(0.5, Math.min(2, uiScale + delta));
         document.documentElement.style.setProperty('--ui-scale', uiScale);
+        if (activeCharacter) {
+            activeCharacter.uiScale = uiScale;
+            persistCharacter(activeCharacter);
+        }
     }
 }
 
 function init() {
     initCurrentUser();
     loadCharacters();
+    uiScale = activeCharacter && activeCharacter.uiScale ? activeCharacter.uiScale : 1;
+    document.documentElement.style.setProperty('--ui-scale', uiScale);
     initNotorious();
     renderUserControls();
     const app = document.getElementById('app');
