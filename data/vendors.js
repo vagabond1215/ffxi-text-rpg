@@ -15,8 +15,8 @@ export const items = {
   },
   bronzeSword: {
     name: 'Bronze Sword',
-    price: 240,
-        sellPrice: 120,
+    price: 246,
+        sellPrice: 123,
     stack: 1,
     description: 'A simple bronze sword.',
     damage: 6,
@@ -2033,11 +2033,11 @@ export const items = {
         sellPrice: 4703,
     stack: 1,
     description: 'A well-balanced broadsword.',
-    damage: 20,
-    delay: 240,
+    damage: 14,
+    delay: 224,
     levelRequirement: 20,
     slot: 'mainHand',
-    jobs: ['Warrior','Monk','Red Mage','Paladin','Bard','Dragoon','Corsair','Dancer']
+    jobs: ['Warrior','Red Mage','Paladin','Bard','Dragoon','Corsair','Dancer']
   },
   worldPass: {
     name: 'World Pass',
@@ -2921,15 +2921,15 @@ export const items = {
   },
   bilbo: {
     name: 'Bilbo',
-    price: 1200,
-        sellPrice: 600,
+    price: 3215,
+        sellPrice: 1607,
     stack: 1,
     description: 'A well-balanced sword.',
-    damage: 10,
-    delay: 240,
+    damage: 11,
+    delay: 226,
     slot: 'mainHand',
-    levelRequirement: 1,
-    jobs: baseJobNames
+    levelRequirement: 13,
+    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer']
   },
   bronzeBed: {
     name: 'Bronze Bed',
@@ -3167,15 +3167,15 @@ export const items = {
   },
   falchion: {
     name: 'Falchion',
-    price: 2400,
-        sellPrice: 1200,
+    price: 62560,
+        sellPrice: 31280,
     stack: 1,
     description: 'A single-edged sword.',
-    damage: 11,
-    delay: 240,
+    damage: 28,
+    delay: 236,
     slot: 'mainHand',
-    levelRequirement: 1,
-    jobs: baseJobNames
+    levelRequirement: 44,
+    jobs: ['Warrior','Thief','Dark Knight','Beastmaster','Ranger','Samurai','Blue Mage']
   },
   gorget: {
     name: 'Gorget',
@@ -4122,6 +4122,102 @@ export const items = {
     description: 'A white rock used in goldsmithing.',
     levelRequirement: 0
   },
+  ironSword: {
+    name: 'Iron Sword',
+    price: 7286,
+        sellPrice: 3643,
+    stack: 1,
+    description: 'A sword forged of iron.',
+    damage: 14,
+    delay: 231,
+    levelRequirement: 18,
+    slot: 'mainHand',
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer']
+  },
+  mythrilSword: {
+    name: 'Mythril Sword',
+    price: 31648,
+        sellPrice: 15824,
+    stack: 1,
+    description: 'A sword forged of mythril.',
+    damage: 21,
+    delay: 231,
+    levelRequirement: 36,
+    slot: 'mainHand',
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer']
+  },
+  broadsword: {
+    name: 'Broadsword',
+    price: 21535,
+        sellPrice: 10767,
+    stack: 1,
+    description: 'A heavy broadsword.',
+    damage: 19,
+    delay: 233,
+    levelRequirement: 30,
+    slot: 'mainHand',
+    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Blue Mage','Corsair','Rune Fencer']
+  },
+  tuck: {
+    name: 'Tuck',
+    price: 11845,
+        sellPrice: 5922,
+    stack: 1,
+    description: 'A slender thrusting sword.',
+    damage: 15,
+    delay: 226,
+    levelRequirement: 23,
+    slot: 'mainHand',
+    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer']
+  },
+  sapara: {
+    name: 'Sapara',
+    price: 713,
+        sellPrice: 356,
+    stack: 1,
+    description: 'A short curved sword.',
+    damage: 9,
+    delay: 236,
+    levelRequirement: 7,
+    slot: 'mainHand',
+    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage']
+  },
+  scimitar: {
+    name: 'Scimitar',
+    price: 4163,
+        sellPrice: 2081,
+    stack: 1,
+    description: 'A curved sword favored in deserts.',
+    damage: 13,
+    delay: 236,
+    levelRequirement: 13,
+    slot: 'mainHand',
+    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage']
+  },
+  xiphos: {
+    name: 'Xiphos',
+    price: 618,
+        sellPrice: 309,
+    stack: 1,
+    description: 'A short stabbing sword.',
+    damage: 8,
+    delay: 228,
+    levelRequirement: 7,
+    slot: 'mainHand',
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Blue Mage','Corsair','Rune Fencer']
+  },
+  spatha: {
+    name: 'Spatha',
+    price: 1711,
+        sellPrice: 855,
+    stack: 1,
+    description: 'A straight double-edged sword.',
+    damage: 11,
+    delay: 240,
+    levelRequirement: 9,
+    slot: 'mainHand',
+    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Rune Fencer']
+  },
   warpRing: {
     name: 'Warp Ring',
     price: 0,
@@ -4226,7 +4322,7 @@ export const vendorInventories = {
     'bronzeAxe', 'brassAxe', 'battleaxe', 'butterflyAxe', 'greataxe',
     'bronzeKnife', 'knife', 'kukri', 'bronzeDagger', 'brassDagger'
   ],
-  'Zhikkom': ['bronzeKnife', 'bronzeDagger', 'brassDagger'],
+  'Zhikkom': ['bronzeSword', 'ironSword', 'mythrilSword', 'broadsword', 'degen', 'tuck', 'sapara', 'scimitar', 'falchion', 'xiphos', 'spatha', 'bilbo'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
@@ -4249,6 +4345,7 @@ vendorInventories['Vicious Eye'] = vendorInventories['Blacksmith Supplies'];
 vendorInventories.Odoba = vendorInventories["Alchemists' Guild"];
 vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
 vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
+vendorInventories.Olwyn = vendorInventories["Mjoll's General Goods"];
 
 export const shopNpcs = {
   'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
@@ -4270,6 +4367,7 @@ export const shopNpcs = {
   'Gunpowder Room': ['Nogga', 'Olaf'],
   "Craftsmen's Eatery": ['Tomasa'],
   'Qufim Regional Goods': ['Takiyah'],
+  "Mjoll's General Goods": ['Olwyn'],
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
   "Rodellieux's Stall": ['Rodellieux'],
   'Map Vendor': ['Karine', 'Rex', 'Elesca', 'Violitte', 'Mhoji Roccoruh', 'Pehki Machumaht', 'Ludwig', 'Lombaria', 'Promurouve', 'Rusese', 'Antiqix', 'Haggleblix', 'Lootblox', 'Riyadahf']
@@ -4300,6 +4398,7 @@ export const vendorGreetings = {
   'Vicious Eye': 'Tools and metals, sharp and true.',
   'Nogga': 'Handle these explosives with care!',
   'Olaf': 'Ammunition and powder ready to go.',
+  'Olwyn': 'Take a look at our fine goods.',
   'Tomasa': 'A warm meal will do you good.',
   'Takiyah': 'Goods from distant Qufim, just in.',
   'Odoba': 'Potions brewed to perfection.',
@@ -4334,6 +4433,7 @@ export const vendorTypes = {
   'Vicious Eye': 'smithing supplies',
   'Nogga': 'explosives',
   'Olaf': 'ammunition',
+  'Olwyn': 'general goods',
   'Tomasa': 'meals',
   'Takiyah': 'regional goods',
   'Odoba': 'alchemy',
