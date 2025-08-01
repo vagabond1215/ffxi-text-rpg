@@ -200,6 +200,7 @@ export const characters = [
     uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
+    citySections: {},
     monsters: []
   },
   {
@@ -283,6 +284,7 @@ export const characters = [
     uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
+    citySections: {},
     monsters: []
   }
 ];
@@ -375,6 +377,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     uiScale: 1,
     targetIndex: null,
     monsterCoord: '',
+    citySections: {},
     monsters: []
   };
   updateDerivedStats(character);
@@ -575,6 +578,7 @@ export function loadCharacters() {
       if (!Array.isArray(c.monsters)) c.monsters = [];
       if (c.monsterCoord === undefined) c.monsterCoord = '';
       if (c.uiScale === undefined) c.uiScale = 1;
+      if (!c.citySections) c.citySections = {};
       if (!c.jobPresets) c.jobPresets = {};
       if (!c.jobPresets[c.job]) c.jobPresets[c.job] = { ...(c.equipment || {}) };
       characters.push(c);
@@ -596,6 +600,7 @@ export function loadCharacterSlot(index) {
     characters[index] = saved[index];
     if (characters[index].conquestPoints === undefined) characters[index].conquestPoints = 0;
     if (characters[index].uiScale === undefined) characters[index].uiScale = 1;
+    if (!characters[index].citySections) characters[index].citySections = {};
     if (!characters[index].jobPresets) characters[index].jobPresets = {};
     if (!characters[index].jobPresets[characters[index].job]) {
       characters[index].jobPresets[characters[index].job] = { ...(characters[index].equipment || {}) };
@@ -821,6 +826,7 @@ export function equipJobPreset(character, job) {
 
 export function changeJob(character, job) {
   if (!character || !job || character.job === job) return;
+  if (!/Residential Area/i.test(character.currentLocation || '')) return;
   saveJobPreset(character);
   character.job = job;
   if (!character.jobs) character.jobs = { [job]: 1 };
