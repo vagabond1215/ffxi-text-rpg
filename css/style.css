@@ -643,7 +643,7 @@ body.portrait .main-layout {
 
 .vendor-row-top {
     display: grid;
-    grid-template-columns: 1fr 80px auto;
+    grid-template-columns: 1fr auto auto;
     align-items: center;
     gap: 4px;
     width: 100%;
@@ -682,10 +682,10 @@ body.portrait .main-layout {
 
 .vendor-price {
     text-align: right;
-    width: 80px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    min-width: 60px;
 }
 
 .vendor-qty {
