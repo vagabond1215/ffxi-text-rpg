@@ -935,6 +935,10 @@ export function renderMainMenu() {
         jobBtn.className = 'profile-btn';
         jobBtn.textContent = 'Change Job';
         jobBtn.addEventListener('click', () => {
+            if (!/Residential Area/i.test(activeCharacter.currentLocation)) {
+                alert('You must be inside a residential area to change jobs.');
+                return;
+            }
             renderJobChangeScreen(container);
         });
 
@@ -1592,6 +1596,7 @@ function createCityAreaGrid(root, loc) {
     wrapper.appendChild(listCol);
 
     const sections = [];
+    const saved = activeCharacter?.citySections?.[loc.name] || 'Zone';
     function makeSection(title, expanded = false) {
         const btn = document.createElement('button');
         btn.className = 'area-header city-subheader';
@@ -1605,7 +1610,7 @@ function createCityAreaGrid(root, loc) {
         return list;
     }
 
-    const travelList = makeSection('Zone', true);
+    const travelList = makeSection('Zone', saved === 'Zone');
     const travelKeywords = /(airship|ferry|chocobo|rental|home point|dock|boat|stable|crystal)/i;
     const travelPOIs = loc.pointsOfInterest.filter(p => travelKeywords.test(p));
 
@@ -1697,7 +1702,7 @@ function createCityAreaGrid(root, loc) {
         li.appendChild(btn);
         craftPOIs.push(li);
     });
-    const craftList = craftPOIs.length ? makeSection('Crafting') : null;
+    const craftList = craftPOIs.length ? makeSection('Crafting', saved === 'Crafting') : null;
     if (craftList) {
         craftPOIs.forEach(li => craftList.appendChild(li));
     }
@@ -1715,11 +1720,11 @@ function createCityAreaGrid(root, loc) {
     });
     let marketList = null;
     if (marketItems.length) {
-        marketList = makeSection('Marketplace');
+        marketList = makeSection('Marketplace', saved === 'Marketplace');
         marketItems.forEach(li => marketList.appendChild(li));
     }
 
-    const otherList = makeSection('Other');
+    const otherList = makeSection('Other', saved === 'Other');
 
     loc.pointsOfInterest.forEach(p => {
         if (travelPOIs.includes(p) || craftingPOIs.includes(p) || marketPOIs.includes(p)) return;
@@ -1754,13 +1759,19 @@ function createCityAreaGrid(root, loc) {
             listCol.appendChild(s.list);
             s.list.classList.remove('hidden');
             s.btn.classList.add('expanded');
+            if (activeCharacter) {
+                if (!activeCharacter.citySections) activeCharacter.citySections = {};
+                activeCharacter.citySections[loc.name] = s.btn.textContent;
+                persistCharacter(activeCharacter);
+            }
         });
     });
 
     if (sections.length) {
-        sections[0].btn.classList.add('expanded');
-        sections[0].list.classList.remove('hidden');
-        listCol.appendChild(sections[0].list);
+        const initial = sections.find(o => o.btn.classList.contains('expanded')) || sections[0];
+        initial.btn.classList.add('expanded');
+        initial.list.classList.remove('hidden');
+        listCol.appendChild(initial.list);
     }
     return wrapper;
 }
@@ -2987,6 +2998,11 @@ export function renderEquipmentScreen(root) {
 
 function renderJobChangeScreen(root) {
     if (!activeCharacter) return;
+    if (!/Residential Area/i.test(activeCharacter.currentLocation)) {
+        alert('You must be inside a residential area to change jobs.');
+        refreshMainMenu(root.parentElement);
+        return;
+    }
     root.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = 'Change Job';

@@ -4346,6 +4346,7 @@ vendorInventories.Odoba = vendorInventories["Alchemists' Guild"];
 vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
 vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
 vendorInventories.Olwyn = vendorInventories["Mjoll's General Goods"];
+vendorInventories.Mjoll = vendorInventories["Mjoll's General Goods"];
 
 export const shopNpcs = {
   'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
@@ -4367,7 +4368,7 @@ export const shopNpcs = {
   'Gunpowder Room': ['Nogga', 'Olaf'],
   "Craftsmen's Eatery": ['Tomasa'],
   'Qufim Regional Goods': ['Takiyah'],
-  "Mjoll's General Goods": ['Olwyn'],
+  "Mjoll's General Goods": ['Mjoll', 'Olwyn'],
   "Alchemists' Guild": ['Odoba', 'Maymunah'],
   "Rodellieux's Stall": ['Rodellieux'],
   'Map Vendor': ['Karine', 'Rex', 'Elesca', 'Violitte', 'Mhoji Roccoruh', 'Pehki Machumaht', 'Ludwig', 'Lombaria', 'Promurouve', 'Rusese', 'Antiqix', 'Haggleblix', 'Lootblox', 'Riyadahf']
@@ -4399,6 +4400,7 @@ export const vendorGreetings = {
   'Nogga': 'Handle these explosives with care!',
   'Olaf': 'Ammunition and powder ready to go.',
   'Olwyn': 'Take a look at our fine goods.',
+  'Mjoll': 'Take a look at our fine goods.',
   'Tomasa': 'A warm meal will do you good.',
   'Takiyah': 'Goods from distant Qufim, just in.',
   'Odoba': 'Potions brewed to perfection.',
@@ -4434,6 +4436,7 @@ export const vendorTypes = {
   'Nogga': 'explosives',
   'Olaf': 'ammunition',
   'Olwyn': 'general goods',
+  'Mjoll': 'general goods',
   'Tomasa': 'meals',
   'Takiyah': 'regional goods',
   'Odoba': 'alchemy',
