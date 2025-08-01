@@ -61,6 +61,9 @@ let mapOverlayElement = null;
 let mapImageElement = null;
 let mapCloseElement = null;
 let mapPanzoomInstance = null;
+let itemPopupCloseElement = null;
+let itemPopupElement = null;
+let itemPopupContentElement = null;
 const gameLogMessages = [];
 let currentTurn = 0;
 let logFontSize = 14;
@@ -207,6 +210,53 @@ export function setupMapOverlay(el, img, closeBtn) {
         mapPanzoomInstance = Panzoom(mapImageElement, { maxScale: 5 });
         mapOverlayElement.addEventListener('wheel', mapPanzoomInstance.zoomWithWheel);
     }
+}
+
+export function setupItemPopup(el, content, closeBtn) {
+    itemPopupElement = el;
+    itemPopupContentElement = content;
+    itemPopupCloseElement = closeBtn;
+    if (itemPopupCloseElement) {
+        itemPopupCloseElement.addEventListener('click', () => {
+            if (itemPopupElement) itemPopupElement.classList.add('hidden');
+        });
+    }
+}
+
+export function showItemPopup(item) {
+    if (!itemPopupElement || !itemPopupContentElement) return;
+    itemPopupContentElement.innerHTML = '';
+    const desc = document.createElement('div');
+    desc.className = 'item-description';
+    desc.textContent = item.description || item.name;
+    itemPopupContentElement.appendChild(desc);
+    if (item.effects) {
+        const eff = document.createElement('div');
+        eff.className = 'item-effects';
+        eff.textContent = 'Effects: ' + item.effects.join(', ');
+        itemPopupContentElement.appendChild(eff);
+    }
+    if (item.abilities) {
+        const ab = document.createElement('div');
+        ab.className = 'item-abilities';
+        ab.textContent = 'Abilities: ' + item.abilities.join(', ');
+        itemPopupContentElement.appendChild(ab);
+    }
+    const stats = basicStatsText(item);
+    if (stats) {
+        const s = document.createElement('div');
+        s.className = 'item-stats';
+        s.textContent = stats;
+        itemPopupContentElement.appendChild(s);
+    }
+    const req = requirementText(item);
+    if (req) {
+        const r = document.createElement('div');
+        r.className = 'item-req';
+        r.textContent = req;
+        itemPopupContentElement.appendChild(r);
+    }
+    itemPopupElement.classList.remove('hidden');
 }
 
 function zoneSlug(name) {
@@ -2629,9 +2679,10 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const name = document.createElement('span');
-        name.className = 'vendor-name';
+        const name = document.createElement('button');
+        name.className = 'vendor-name vendor-name-btn';
         name.textContent = item.name;
+        name.addEventListener('click', () => showItemPopup(item));
         if (!meetsRequirements(item)) name.style.color = 'red';
         else if (canEquipItem(item) && isBetterItem(item)) name.style.color = 'lightgreen';
         if (/^scroll/i.test(id)) {
@@ -2653,9 +2704,6 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
 
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
-        const detail = document.createElement('button');
-        detail.textContent = 'Details';
-        actions.appendChild(detail);
         let qtyInput = null;
         if (item.stack > 1) {
             qtyInput = document.createElement('input');
@@ -2697,7 +2745,6 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             detailsWrap.appendChild(r);
         }
         row.appendChild(detailsWrap);
-        detail.addEventListener('click', () => toggleDetails(detailsWrap));
             list.appendChild(row);
         });
         root.appendChild(list);
@@ -2718,10 +2765,11 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const name = document.createElement('span');
-        name.className = 'vendor-name';
+        const name = document.createElement('button');
+        name.className = 'vendor-name vendor-name-btn';
         const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
         name.textContent = item.name + qtyText;
+        name.addEventListener('click', () => showItemPopup(item));
         const price = document.createElement('span');
         const sp = item.sellPrice || Math.floor(item.price / 2);
         price.className = 'vendor-price';
@@ -2761,9 +2809,6 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
             sellGroup.appendChild(sellAllBtn);
         }
         actions.appendChild(sellGroup);
-        const detailBtn = document.createElement('button');
-        detailBtn.textContent = 'Details';
-        actions.appendChild(detailBtn);
         top.appendChild(actions);
         row.appendChild(top);
 
@@ -2774,7 +2819,6 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         desc.textContent = item.description || item.name;
         detailsWrap.appendChild(desc);
         row.appendChild(detailsWrap);
-        detailBtn.addEventListener('click', () => toggleDetails(detailsWrap));
         sellList.appendChild(row);
         });
         root.appendChild(sellList);
@@ -2797,9 +2841,10 @@ export function renderConquestShop(root, backFn = null) {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const name = document.createElement('span');
-        name.className = 'vendor-name';
+        const name = document.createElement('button');
+        name.className = 'vendor-name vendor-name-btn';
         name.textContent = item.name;
+        name.addEventListener('click', () => showItemPopup(item));
         const price = document.createElement('span');
         price.className = 'vendor-price';
         price.textContent = `${cost} CP`;
@@ -2809,9 +2854,6 @@ export function renderConquestShop(root, backFn = null) {
 
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
-        const detail = document.createElement('button');
-        detail.textContent = 'Details';
-        actions.appendChild(detail);
         const buyBtn = document.createElement('button');
         buyBtn.textContent = 'Buy';
         buyBtn.addEventListener('click', () => {
@@ -2836,7 +2878,6 @@ export function renderConquestShop(root, backFn = null) {
         desc.textContent = item.description || item.name;
         detailsWrap.appendChild(desc);
         row.appendChild(detailsWrap);
-        detail.addEventListener('click', () => toggleDetails(detailsWrap));
         list.appendChild(row);
     });
     root.appendChild(list);
@@ -2875,19 +2916,22 @@ export function renderEquipmentScreen(root) {
             const info = document.createElement('div');
             info.className = 'equipment-info';
             const nameDiv = document.createElement('span');
-            nameDiv.textContent = `${slots[key]}: ${item ? item.name : itemId || 'Empty'}`;
-            if (item && !meetsRequirements(item)) nameDiv.style.color = 'red';
+            if (item) {
+                nameDiv.textContent = `${slots[key]}: `;
+                const nameBtn = document.createElement('button');
+                nameBtn.className = 'item-name-btn';
+                nameBtn.textContent = item.name;
+                if (!meetsRequirements(item)) nameBtn.style.color = 'red';
+                nameBtn.addEventListener('click', () => showItemPopup(item));
+                nameDiv.appendChild(nameBtn);
+            } else {
+                nameDiv.textContent = `${slots[key]}: ${itemId || 'Empty'}`;
+            }
             info.appendChild(nameDiv);
             top.appendChild(info);
 
             const actions = document.createElement('div');
             actions.className = 'equipment-actions';
-            let detailsBtn = null;
-            if (item) {
-                detailsBtn = document.createElement('button');
-                detailsBtn.textContent = 'Details';
-                actions.appendChild(detailsBtn);
-            }
             if (itemId) {
                 const unequip = document.createElement('button');
                 unequip.textContent = 'Unequip';
@@ -2933,7 +2977,6 @@ export function renderEquipmentScreen(root) {
                 detailsWrap.appendChild(r);
             }
             li.appendChild(detailsWrap);
-            if (detailsBtn) detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
             list.appendChild(li);
         }
         root.appendChild(list);
@@ -3066,17 +3109,18 @@ export function renderInventoryScreen(root) {
             info.className = 'item-info';
             const qtyText = ent.item.stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
             const statsInline = basicStatsText(ent.item);
-            info.textContent = ent.item.name + qtyText + (statsInline ? ` (${statsInline})` : '');
-            if (!meetsRequirements(ent.item)) info.style.color = 'red';
-            else if (canEquipItem(ent.item) && isBetterItem(ent.item)) info.style.color = 'lightgreen';
+            const nameBtn = document.createElement('button');
+            nameBtn.className = 'item-name-btn';
+            nameBtn.textContent = ent.item.name + qtyText + (statsInline ? ` (${statsInline})` : '');
+            if (!meetsRequirements(ent.item)) nameBtn.style.color = 'red';
+            else if (canEquipItem(ent.item) && isBetterItem(ent.item)) nameBtn.style.color = 'lightgreen';
+            nameBtn.addEventListener('click', () => showItemPopup(ent.item));
+            info.appendChild(nameBtn);
             row.appendChild(info);
 
             const actions = document.createElement('div');
             actions.className = 'item-actions';
 
-            const detailsBtn = document.createElement('button');
-            detailsBtn.textContent = 'Details';
-            actions.appendChild(detailsBtn);
 
             if (canEquipItem(ent.item)) {
                 if (activeCharacter.equipment[ent.item.slot] !== ent.id) {
@@ -3131,7 +3175,6 @@ export function renderInventoryScreen(root) {
                 detailsWrap.appendChild(r);
             }
             li.appendChild(detailsWrap);
-            detailsBtn.addEventListener('click', () => toggleDetails(detailsWrap));
             ul.appendChild(li);
         });
     });

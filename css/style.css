@@ -663,7 +663,8 @@ body.portrait .main-layout {
     gap: 4px;
 }
 
-.vendor-item span {
+.vendor-item span,
+.vendor-item button.vendor-name-btn {
     flex: 1;
     text-align: left;
 }
@@ -672,6 +673,11 @@ body.portrait .main-layout {
     text-align: left;
     display: flex;
     align-items: center;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
 }
 
 .vendor-price {
@@ -754,6 +760,15 @@ body.portrait .main-layout {
     width: 90px;
     padding: 2px 6px;
     min-height: 0;
+}
+
+.item-name-btn {
+    width: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
 }
 
 .equipment-item {
@@ -951,6 +966,39 @@ body.portrait .main-layout {
     cursor: grab;
 }
 #map-overlay .map-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Item popup */
+#item-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1240;
+}
+#item-popup-content {
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 4px;
+    color: #fff;
+    text-align: left;
+    max-width: 300px;
+}
+#item-popup-close {
     position: absolute;
     top: 10px;
     right: 10px;
