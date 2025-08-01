@@ -361,6 +361,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
       ...(gear.weapon ? [{ id: gear.weapon, qty: 1 }] : []),
       ...(gear.armor ? [{ id: gear.armor, qty: 1 }] : [])
     ],
+    storage: [],
+    wardrobe: [],
     equipment,
     jobPresets: { [selectedJob]: { ...equipment } },
     buffs: [],
@@ -581,6 +583,8 @@ export function loadCharacters() {
       if (!c.citySections) c.citySections = {};
       if (!c.jobPresets) c.jobPresets = {};
       if (!c.jobPresets[c.job]) c.jobPresets[c.job] = { ...(c.equipment || {}) };
+      if (!Array.isArray(c.storage)) c.storage = [];
+      if (!Array.isArray(c.wardrobe)) c.wardrobe = [];
       characters.push(c);
       updateDerivedStats(c);
     });
@@ -605,6 +609,8 @@ export function loadCharacterSlot(index) {
     if (!characters[index].jobPresets[characters[index].job]) {
       characters[index].jobPresets[characters[index].job] = { ...(characters[index].equipment || {}) };
     }
+    if (!Array.isArray(characters[index].storage)) characters[index].storage = [];
+    if (!Array.isArray(characters[index].wardrobe)) characters[index].wardrobe = [];
     updateDerivedStats(characters[index]);
     setActiveCharacter(characters[index]);
     saveCharacters();

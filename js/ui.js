@@ -64,6 +64,9 @@ let mapPanzoomInstance = null;
 let itemPopupCloseElement = null;
 let itemPopupElement = null;
 let itemPopupContentElement = null;
+let storagePopupCloseElement = null;
+let storagePopupElement = null;
+let storagePopupContentElement = null;
 const gameLogMessages = [];
 let currentTurn = 0;
 let logFontSize = 14;
@@ -257,6 +260,97 @@ export function showItemPopup(item) {
         itemPopupContentElement.appendChild(r);
     }
     itemPopupElement.classList.remove('hidden');
+}
+
+export function setupStoragePopup(el, content, closeBtn) {
+    storagePopupElement = el;
+    storagePopupContentElement = content;
+    storagePopupCloseElement = closeBtn;
+    if (storagePopupCloseElement) {
+        storagePopupCloseElement.addEventListener('click', () => {
+            if (storagePopupElement) storagePopupElement.classList.add('hidden');
+        });
+    }
+}
+
+function addItem(list, id, qty) {
+    const existing = list.find(i => i.id === id);
+    if (existing) existing.qty += qty; else list.push({ id, qty });
+}
+
+function removeItem(list, id, qty) {
+    const entry = list.find(i => i.id === id);
+    if (!entry) return;
+    entry.qty -= qty;
+    if (entry.qty <= 0) list.splice(list.indexOf(entry), 1);
+}
+
+function renderTransferPopup(type) {
+    if (!storagePopupContentElement || !activeCharacter) return;
+    storagePopupContentElement.innerHTML = '';
+    const filter = type === 'wardrobe' ? canEquipItem : (it => !canEquipItem(it));
+    const dest = type === 'wardrobe' ? activeCharacter.wardrobe : activeCharacter.storage;
+    const invDiv = document.createElement('div');
+    const destDiv = document.createElement('div');
+    const invTitle = document.createElement('h3');
+    invTitle.textContent = 'Inventory';
+    invDiv.appendChild(invTitle);
+    const invList = document.createElement('ul');
+    invList.className = 'inventory-list';
+    activeCharacter.inventory.filter(e => filter(items[e.id])).forEach(ent => {
+        const li = document.createElement('li');
+        li.className = 'inventory-item';
+        const span = document.createElement('span');
+        span.textContent = `${items[ent.id].name} x${ent.qty}`;
+        const btn = document.createElement('button');
+        btn.textContent = '→';
+        btn.addEventListener('click', () => {
+            removeItem(activeCharacter.inventory, ent.id, ent.qty);
+            addItem(dest, ent.id, ent.qty);
+            persistCharacter(activeCharacter);
+            renderTransferPopup(type);
+        });
+        li.appendChild(span);
+        li.appendChild(btn);
+        invList.appendChild(li);
+    });
+    invDiv.appendChild(invList);
+
+    const destTitle = document.createElement('h3');
+    destTitle.textContent = type === 'wardrobe' ? 'Wardrobe' : 'Storage';
+    destDiv.appendChild(destTitle);
+    const destList = document.createElement('ul');
+    destList.className = 'inventory-list';
+    dest.forEach(ent => {
+        const li = document.createElement('li');
+        li.className = 'inventory-item';
+        const span = document.createElement('span');
+        span.textContent = `${items[ent.id].name} x${ent.qty}`;
+        const btn = document.createElement('button');
+        btn.textContent = '←';
+        btn.addEventListener('click', () => {
+            removeItem(dest, ent.id, ent.qty);
+            addItem(activeCharacter.inventory, ent.id, ent.qty);
+            persistCharacter(activeCharacter);
+            renderTransferPopup(type);
+        });
+        li.appendChild(btn);
+        li.appendChild(span);
+        destList.appendChild(li);
+    });
+    destDiv.appendChild(destList);
+    storagePopupContentElement.appendChild(invDiv);
+    storagePopupContentElement.appendChild(destDiv);
+}
+
+export function showStoragePopup() {
+    renderTransferPopup('storage');
+    if (storagePopupElement) storagePopupElement.classList.remove('hidden');
+}
+
+export function showWardrobePopup() {
+    renderTransferPopup('wardrobe');
+    if (storagePopupElement) storagePopupElement.classList.remove('hidden');
 }
 
 function zoneSlug(name) {
@@ -935,11 +1029,21 @@ export function renderMainMenu() {
         jobBtn.className = 'profile-btn';
         jobBtn.textContent = 'Change Job';
         jobBtn.addEventListener('click', () => {
-            if (!/Residential Area/i.test(activeCharacter.currentLocation)) {
-                alert('You must be inside a residential area to change jobs.');
-                return;
-            }
             renderJobChangeScreen(container);
+        });
+
+        const storageBtn = document.createElement('button');
+        storageBtn.className = 'profile-btn';
+        storageBtn.textContent = 'Storage';
+        storageBtn.addEventListener('click', () => {
+            showStoragePopup();
+        });
+
+        const wardrobeBtn = document.createElement('button');
+        wardrobeBtn.className = 'profile-btn';
+        wardrobeBtn.textContent = 'Wardrobe';
+        wardrobeBtn.addEventListener('click', () => {
+            showWardrobePopup();
         });
 
         details.appendChild(line2);
@@ -952,7 +1056,11 @@ export function renderMainMenu() {
         if (modeBtn) details.appendChild(modeBtn);
         group.appendChild(invBtn);
         group.appendChild(equipBtn);
-        group.appendChild(jobBtn);
+        if (/Residential Area/i.test(activeCharacter.currentLocation)) {
+            group.appendChild(jobBtn);
+            group.appendChild(wardrobeBtn);
+            group.appendChild(storageBtn);
+        }
         group.appendChild(details);
         profile.appendChild(group);
         if (navColumnElement) {
@@ -2385,7 +2493,7 @@ function renderCombatScreen(app, mobs, destination) {
         if (!character) return;
         const store = character.storeTp || 0;
         const total = Math.floor(base) + Math.floor(base * store / 100);
-        character.tp = Math.min(1000, Math.max(0, (character.tp || 0) + Math.floor(total)));
+        character.tp = Math.min(3000, Math.max(0, (character.tp || 0) + Math.floor(total)));
     }
 
     function attack(attacker, defender) {
@@ -2902,6 +3010,12 @@ export function renderEquipmentScreen(root) {
     const title = document.createElement('h2');
     title.textContent = 'Equipment';
     root.appendChild(title);
+    const wardBtn = document.createElement('button');
+    wardBtn.textContent = 'Wardrobe';
+    wardBtn.addEventListener('click', () => {
+        showWardrobePopup();
+    });
+    root.appendChild(wardBtn);
     root.appendChild(characterSummary());
     if (!activeCharacter) {
         const p = document.createElement('p');
