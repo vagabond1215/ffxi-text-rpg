@@ -4224,9 +4224,9 @@ export const vendorInventories = {
   ],
   'Peritrage': [
     'bronzeAxe', 'brassAxe', 'battleaxe', 'butterflyAxe', 'greataxe',
-    'bronzeKnife', 'knife', 'kukri', 'bronzeDagger', 'brassDagger', 'dagger'
+    'bronzeKnife', 'knife', 'kukri', 'bronzeDagger', 'brassDagger'
   ],
-  'Zhikkom': ['bronzeKnife', 'bronzeDagger', 'brassDagger', 'dagger'],
+  'Zhikkom': ['bronzeKnife', 'bronzeDagger', 'brassDagger'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
