@@ -218,7 +218,7 @@ body.landscape #area-grid {
 }
 
 .area-header::before {
-    content: '\25B6';
+    display: none;
     margin-right: 4px;
 }
 
@@ -227,7 +227,13 @@ body.landscape #area-grid {
 }
 
 .area-header.expanded::before {
-    content: '\25BC';
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('../img/Icons/Home%20Point%20Crystal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .area-header.expanded,

@@ -571,6 +571,18 @@ export const items = {
     slot: 'ranged',
     jobs: baseJobNames
   },
+  zamburak: {
+    name: 'Zamburak',
+    price: 14158,
+    sellPrice: 7079,
+    stack: 1,
+    description: 'A powerful crossbow for seasoned fighters.',
+    damage: 19,
+    delay: 288,
+    levelRequirement: 30,
+    slot: 'ranged',
+    jobs: baseJobNames
+  },
   scrollDarkThrenody: {
     name: 'Scroll of Dark Threnody',
     price: 212,
@@ -3314,6 +3326,17 @@ export const items = {
     description: 'Bolts made of mythril.',
     levelRequirement: 1
   },
+  tathlum: {
+    name: 'Tathlum',
+    price: 294,
+    sellPrice: 147,
+    stack: 99,
+    description: 'A smooth stone used as throwing ammo.',
+    damage: 24,
+    delay: 276,
+    levelRequirement: 35,
+    slot: 'ammo'
+  },
   mythrilIngot: {
     name: 'Mythril Ingot',
     price: 130,
@@ -4325,7 +4348,13 @@ export const vendorInventories = {
   'Zhikkom': ['bronzeSword', 'ironSword', 'mythrilSword', 'broadsword', 'degen', 'tuck', 'sapara', 'scimitar', 'falchion', 'xiphos', 'spatha', 'bilbo'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
-  "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
+  "Mjoll's General Goods": [
+    'woodenArrow', 'ironArrow', 'silverArrow', 'scrollDarkThrenody', 'scrollIceThrenody',
+    'lightCrossbow', 'crossbow', 'zamburak', 'crossbowBolt', 'mythrilBolt', 'tathlum',
+    'eyeDrops', 'antidote', 'echoDrops', 'potion', 'ether'
+  ],
+  Mjoll: ['woodenArrow', 'ironArrow', 'silverArrow', 'scrollDarkThrenody', 'scrollIceThrenody', 'lightCrossbow', 'crossbow', 'zamburak', 'crossbowBolt', 'mythrilBolt', 'tathlum'],
+  Olwyn: ['eyeDrops', 'antidote', 'echoDrops', 'potion', 'ether'],
   Harmodios: ['piccolo', 'cornette', 'mapleHarp', 'scrollVitalEtude', 'scrollSwiftEtude', 'scrollSageEtude', 'scrollLogicalEtude', 'scrollHerculeanEtude', 'scrollUncannyEtude', 'gemshorn', 'flute', 'scrollBewitchingEtude', 'foeSirvente', 'adventurersDirge'],
   Hortense: ['scrollFoeRequiemI', 'scrollFoeRequiemII', 'scrollFoeRequiemIII', 'scrollFoeRequiemIV', 'scrollFoeRequiemVII', 'scrollArmysPaeon', 'scrollArmysPaeonII', 'scrollArmysPaeonIII', 'scrollArmysPaeonIV', 'scrollArmysPaeonVI', 'scrollValorMinuet', 'scrollValorMinuetII', 'scrollValorMinuetIII', 'scrollValorMinuetV'],
   Sororo: ['scrollDiaga', 'scrollStoneskin', 'scrollSlow', 'scrollCureII', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollCure', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollProtect', 'scrollShell', 'scrollRepose'],
@@ -4345,8 +4374,6 @@ vendorInventories['Vicious Eye'] = vendorInventories['Blacksmith Supplies'];
 vendorInventories.Odoba = vendorInventories["Alchemists' Guild"];
 vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
 vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
-vendorInventories.Olwyn = vendorInventories["Mjoll's General Goods"];
-vendorInventories.Mjoll = vendorInventories["Mjoll's General Goods"];
 
 export const shopNpcs = {
   'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
