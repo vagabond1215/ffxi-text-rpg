@@ -184,6 +184,8 @@ export const characters = [
       leftRing: null,
       rightRing: null
     },
+    jobPresets: { 'Black Mage': { head: null, body: 'leatherVest', hands: null, legs: null, feet: null, mainHand: 'bronzeDagger', offHand: null, ranged: null, ammo: null, back: null, waist: null, neck: null, leftEar: null, rightEar: null, leftRing: null, rightRing: null } },
+    jobPresets: { Thief: { head: null, body: 'leatherVest', hands: null, legs: null, feet: null, mainHand: 'bronzeDagger', offHand: null, ranged: null, ammo: null, back: null, waist: null, neck: null, leftEar: null, rightEar: null, leftRing: null, rightRing: null } },
     buffs: [],
     debuffs: [],
     temporaryBuffs: [],
@@ -291,6 +293,24 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
   const selectedRace = race || raceNames[Math.floor(Math.random() * raceNames.length)];
   const selectedJob = job || jobNames[Math.floor(Math.random() * jobNames.length)];
   const gear = startingGearByJob[selectedJob] || {};
+  const equipment = {
+    head: null,
+    body: gear.armor || null,
+    hands: null,
+    legs: null,
+    feet: null,
+    mainHand: gear.weapon || null,
+    offHand: null,
+    ranged: null,
+    ammo: null,
+    back: null,
+    waist: null,
+    neck: null,
+    leftEar: null,
+    rightEar: null,
+    leftRing: null,
+    rightRing: null
+  };
   const character = {
     name,
     race: selectedRace,
@@ -339,24 +359,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
       ...(gear.weapon ? [{ id: gear.weapon, qty: 1 }] : []),
       ...(gear.armor ? [{ id: gear.armor, qty: 1 }] : [])
     ],
-    equipment: {
-      head: null,
-      body: gear.armor || null,
-      hands: null,
-      legs: null,
-      feet: null,
-      mainHand: gear.weapon || null,
-      offHand: null,
-      ranged: null,
-      ammo: null,
-      back: null,
-      waist: null,
-      neck: null,
-      leftEar: null,
-      rightEar: null,
-      leftRing: null,
-      rightRing: null
-    },
+    equipment,
+    jobPresets: { [selectedJob]: { ...equipment } },
     buffs: [],
     debuffs: [],
     temporaryBuffs: [],
@@ -571,6 +575,8 @@ export function loadCharacters() {
       if (!Array.isArray(c.monsters)) c.monsters = [];
       if (c.monsterCoord === undefined) c.monsterCoord = '';
       if (c.uiScale === undefined) c.uiScale = 1;
+      if (!c.jobPresets) c.jobPresets = {};
+      if (!c.jobPresets[c.job]) c.jobPresets[c.job] = { ...(c.equipment || {}) };
       characters.push(c);
       updateDerivedStats(c);
     });
@@ -590,6 +596,10 @@ export function loadCharacterSlot(index) {
     characters[index] = saved[index];
     if (characters[index].conquestPoints === undefined) characters[index].conquestPoints = 0;
     if (characters[index].uiScale === undefined) characters[index].uiScale = 1;
+    if (!characters[index].jobPresets) characters[index].jobPresets = {};
+    if (!characters[index].jobPresets[characters[index].job]) {
+      characters[index].jobPresets[characters[index].job] = { ...(characters[index].equipment || {}) };
+    }
     updateDerivedStats(characters[index]);
     setActiveCharacter(characters[index]);
     saveCharacters();
@@ -794,4 +804,28 @@ export function currentVanaTime(date = new Date()) {
 
 export function formatVanaTime(vanaObj) {
   return `Day ${vanaObj.day} ${vanaObj.hour.toString().padStart(2, '0')}:${vanaObj.minute.toString().padStart(2, '0')}`;
+}
+
+export function saveJobPreset(character) {
+  if (!character) return;
+  if (!character.jobPresets) character.jobPresets = {};
+  character.jobPresets[character.job] = { ...(character.equipment || {}) };
+}
+
+export function equipJobPreset(character, job) {
+  if (!character) return;
+  const base = character.equipment ? Object.keys(character.equipment).reduce((o,k)=>{o[k]=null;return o;}, {}) : {};
+  const preset = character.jobPresets?.[job];
+  character.equipment = preset ? { ...base, ...preset } : base;
+}
+
+export function changeJob(character, job) {
+  if (!character || !job || character.job === job) return;
+  saveJobPreset(character);
+  character.job = job;
+  if (!character.jobs) character.jobs = { [job]: 1 };
+  if (!character.jobs[job]) character.jobs[job] = 1;
+  equipJobPreset(character, job);
+  updateDerivedStats(character);
+  persistCharacter(character);
 }

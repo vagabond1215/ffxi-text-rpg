@@ -31,7 +31,10 @@ export {
   formatTime,
   currentVanaTime,
   formatVanaTime,
-  dayElements
+  dayElements,
+  saveJobPreset,
+  equipJobPreset,
+  changeJob
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
