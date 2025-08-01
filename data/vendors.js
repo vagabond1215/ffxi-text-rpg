@@ -3721,7 +3721,7 @@ vendorInventories.Maymunah = vendorInventories["Alchemists' Guild"];
 vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
 
 export const shopNpcs = {
-  'Brunhilde\'s Armourer': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
+  'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
   "Dragon's Claw Weaponry": ['Ciqala'],
   "Carmelide's Jewelry Store": ['Carmelide', 'Raghd'],
   "Harmodios's Music Shop": ['Hortense'],

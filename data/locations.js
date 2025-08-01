@@ -33,7 +33,7 @@ export const zonesByCity = {
         'Auction House',
         "Goldsmiths' Guild",
         "Blacksmiths' Guild",
-        "Brunhilde's Armourer",
+        "Brunhilde's Armory",
         "Dragon's Claw Weaponry",
         "Carmelide's Jewelry Store",
         "Mjoll's General Goods",

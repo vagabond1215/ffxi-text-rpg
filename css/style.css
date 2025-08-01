@@ -1,6 +1,7 @@
 :root {
     --ui-scale: 1;
     --log-font-size: 14px;
+    --time-popup-font-size: 12px;
 }
 
 body {
@@ -86,6 +87,25 @@ body.portrait #app {
     z-index: 1000;
     text-align: left;
     color: #fff;
+    font-size: var(--time-popup-font-size);
+}
+
+#time-popup .font-controls {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+}
+
+#time-popup .font-controls button {
+    padding: 0 4px;
+    margin-left: 2px;
+    font-size: 12px;
+}
+
+.element-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
 }
 
 #user-controls {
