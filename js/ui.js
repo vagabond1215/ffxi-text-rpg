@@ -434,7 +434,7 @@ function updateNearbyMonsters(zone, root) {
         persistCharacter(activeCharacter);
         if (aggro.length) {
             const app = root.parentElement || root;
-            renderCombatScreen(app, list);
+            renderCombatScreen(app, aggro);
             return true;
         }
     } else {
@@ -444,7 +444,7 @@ function updateNearbyMonsters(zone, root) {
         const aggro = nearbyMonsters.filter(m => m.aggro && !m.defeated);
         if (aggro.length) {
             const app = root.parentElement || root;
-            renderCombatScreen(app, nearbyMonsters);
+            renderCombatScreen(app, aggro);
             return true;
         }
     }
