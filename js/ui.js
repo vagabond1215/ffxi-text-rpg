@@ -2607,9 +2607,8 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const info = document.createElement('div');
-        info.className = 'vendor-info';
         const name = document.createElement('span');
+        name.className = 'vendor-name';
         name.textContent = item.name;
         if (!meetsRequirements(item)) name.style.color = 'red';
         else if (canEquipItem(item) && isBetterItem(item)) name.style.color = 'lightgreen';
@@ -2623,12 +2622,12 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
                 name.style.color = 'lightskyblue';
             }
         }
-        info.appendChild(name);
         const price = document.createElement('span');
-        price.textContent = ` - ${item.price} gil`;
+        price.className = 'vendor-price';
+        price.textContent = `${item.price} gil`;
         if (item.price > activeCharacter.gil) price.style.color = 'red';
-        info.appendChild(price);
-        top.appendChild(info);
+        top.appendChild(name);
+        top.appendChild(price);
 
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
@@ -2697,17 +2696,16 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const info = document.createElement('div');
-        info.className = 'vendor-info';
         const name = document.createElement('span');
+        name.className = 'vendor-name';
         const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
         name.textContent = item.name + qtyText;
-        info.appendChild(name);
         const price = document.createElement('span');
         const sp = item.sellPrice || Math.floor(item.price / 2);
-        price.textContent = ` - ${sp} gil`;
-        info.appendChild(price);
-        top.appendChild(info);
+        price.className = 'vendor-price';
+        price.textContent = `${sp} gil`;
+        top.appendChild(name);
+        top.appendChild(price);
 
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
@@ -2777,16 +2775,15 @@ export function renderConquestShop(root, backFn = null) {
         const top = document.createElement('div');
         top.className = 'vendor-row-top';
 
-        const info = document.createElement('div');
-        info.className = 'vendor-info';
         const name = document.createElement('span');
+        name.className = 'vendor-name';
         name.textContent = item.name;
-        info.appendChild(name);
         const price = document.createElement('span');
-        price.textContent = ` - ${cost} CP`;
+        price.className = 'vendor-price';
+        price.textContent = `${cost} CP`;
         if (cost > (activeCharacter.conquestPoints || 0)) price.style.color = 'red';
-        info.appendChild(price);
-        top.appendChild(info);
+        top.appendChild(name);
+        top.appendChild(price);
 
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
@@ -3131,11 +3128,19 @@ function openMenu(name, backFn) {
             const btn = document.createElement('button');
             const displayName = npc.includes(' the ') ? npc.split(' the ')[0] : npc;
             btn.textContent = displayName;
-            btn.addEventListener('click', () => openMenu(npc, () => openMenu(name, backFn)));
+            btn.addEventListener('click', () => {
+                renderVendorScreen(root, npc, () => openMenu(name, backFn), 'buy');
+            });
             li.appendChild(btn);
             list.appendChild(li);
         });
         screen.appendChild(list);
+        const sellBtn = document.createElement('button');
+        sellBtn.textContent = 'Sell';
+        sellBtn.addEventListener('click', () => {
+            renderVendorScreen(root, npcs[0], () => openMenu(name, backFn), 'sell');
+        });
+        screen.appendChild(sellBtn);
         root.appendChild(screen);
         showBackButton(backHandler);
     } else if (vendorInventories[name]) {
