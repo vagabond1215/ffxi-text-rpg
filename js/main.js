@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter, persistCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -69,6 +69,13 @@ function init() {
     const mapClose = document.getElementById('map-close');
     if (mapOverlay && mapImage && mapClose) {
         setupMapOverlay(mapOverlay, mapImage, mapClose);
+    }
+
+    const itemPopup = document.getElementById('item-popup');
+    const itemPopupContent = document.getElementById('item-popup-content');
+    const itemPopupClose = document.getElementById('item-popup-close');
+    if (itemPopup && itemPopupContent && itemPopupClose) {
+        setupItemPopup(itemPopup, itemPopupContent, itemPopupClose);
     }
 
     const charBtn = document.getElementById('character-select');
