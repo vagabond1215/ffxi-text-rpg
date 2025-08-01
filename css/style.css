@@ -627,6 +627,13 @@ body.portrait .main-layout {
     margin-top: 20px;
 }
 
+.shop-menu,
+.vendor-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .vendor-item {
     display: flex;
     flex-direction: column;
@@ -859,6 +866,10 @@ body.portrait .main-layout {
     text-align: left;
     z-index: 1200;
     font-size: var(--log-font-size);
+}
+
+#game-log:empty {
+    display: none;
 }
 
 #game-log.fullscreen {
