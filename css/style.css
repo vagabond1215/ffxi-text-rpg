@@ -97,9 +97,11 @@ body.portrait #app {
 }
 
 #time-popup .font-controls button {
-    padding: 0 4px;
+    padding: 2px 6px;
     margin-left: 2px;
-    font-size: 12px;
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
 }
 
 .element-icon {

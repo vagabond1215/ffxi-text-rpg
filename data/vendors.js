@@ -3606,6 +3606,126 @@ export const items = {
     levelRequirement: 0,
     jobs: baseJobNames
   },
+  cesti: {
+    name: 'Cesti',
+    price: 132,
+    sellPrice: 66,
+    stack: 1,
+    description: 'Lightweight striking weapons.',
+    damage: 1,
+    delay: 48,
+    levelRequirement: 1,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  brassBaghnakhs: {
+    name: 'Brass Baghnakhs',
+    price: 1554,
+    sellPrice: 777,
+    stack: 1,
+    description: 'Clawed brass knuckles.',
+    damage: 4,
+    delay: 60,
+    levelRequirement: 11,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  catBaghnakhs: {
+    name: 'Cat Baghnakhs',
+    price: 106,
+    sellPrice: 53,
+    stack: 1,
+    description: 'Small baghnakhs favored by beastmasters.',
+    damage: 2,
+    delay: 60,
+    levelRequirement: 1,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  ashClub: {
+    name: 'Ash Club',
+    price: 66,
+    sellPrice: 33,
+    stack: 1,
+    description: 'A club carved from ash wood.',
+    damage: 4,
+    delay: 264,
+    levelRequirement: 1,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  bronzeRod: {
+    name: 'Bronze Rod',
+    price: 92,
+    sellPrice: 46,
+    stack: 1,
+    description: 'A simple bronze rod.',
+    damage: 5,
+    delay: 288,
+    levelRequirement: 5,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  brassRod: {
+    name: 'Brass Rod',
+    price: 634,
+    sellPrice: 317,
+    stack: 1,
+    description: 'A polished brass rod.',
+    damage: 8,
+    delay: 288,
+    levelRequirement: 12,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  ashStaff: {
+    name: 'Ash Staff',
+    price: 58,
+    sellPrice: 29,
+    stack: 1,
+    description: 'A staff made of ash.',
+    damage: 4,
+    delay: 264,
+    levelRequirement: 1,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  ashPole: {
+    name: 'Ash Pole',
+    price: 386,
+    sellPrice: 193,
+    stack: 1,
+    description: 'A long ash polearm.',
+    damage: 6,
+    delay: 408,
+    levelRequirement: 1,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  brassAxe: {
+    name: 'Brass Axe',
+    price: 1528,
+    sellPrice: 764,
+    stack: 1,
+    description: 'A sturdy brass axe.',
+    damage: 12,
+    delay: 276,
+    levelRequirement: 8,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
+  brassDagger: {
+    name: 'Brass Dagger',
+    price: 855,
+    sellPrice: 427,
+    stack: 1,
+    description: 'A dagger forged from brass.',
+    damage: 6,
+    delay: 178,
+    levelRequirement: 9,
+    slot: 'mainHand',
+    jobs: baseJobNames
+  },
   warpRing: {
     name: 'Warp Ring',
     price: 0,
@@ -3699,7 +3819,18 @@ export const vendorInventories = {
   Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
   'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
-  'Ciqala': ['bronzeKnuckles', 'brassKnuckles', 'metalKnuckles', 'bronzeHammer', 'brassHammer', 'warhammer', 'mapleWand'],
+  'Ciqala': [
+    'bronzeKnuckles', 'brassKnuckles', 'metalKnuckles',
+    'cesti', 'brassBaghnakhs', 'catBaghnakhs',
+    'bronzeHammer', 'brassHammer', 'warhammer',
+    'mapleWand', 'ashClub', 'bronzeRod', 'brassRod',
+    'ashStaff', 'ashPole'
+  ],
+  'Peritrage': [
+    'bronzeAxe', 'brassAxe', 'battleaxe', 'butterflyAxe', 'greataxe',
+    'bronzeKnife', 'knife', 'kukri', 'bronzeDagger', 'brassDagger', 'dagger'
+  ],
+  'Zhikkom': ['bronzeKnife', 'bronzeDagger', 'brassDagger', 'dagger'],
   'Carmelide': ['tourmaline', 'sardonyx', 'amethyst', 'amber', 'lapisLazuli', 'clearTopaz', 'onyx', 'lightOpal', 'copperRing'],
   Raghd: ['silverRing', 'silverEarring', 'brassRing', 'copperRing'],
   "Mjoll's General Goods": ['woodenArrow', 'ironArrow', 'silverArrow', 'crossbowBolt', 'lightCrossbow', 'crossbow', 'scrollDarkThrenody', 'scrollIceThrenody'],
@@ -3722,7 +3853,7 @@ vendorInventories.Rodellieux = vendorInventories["Rodellieux's Stall"];
 
 export const shopNpcs = {
   'Brunhilde\'s Armory': ['Brunhilde the Armourer', 'Balthilda', 'Charging Chocobo'],
-  "Dragon's Claw Weaponry": ['Ciqala'],
+  "Dragon's Claw Weaponry": ['Ciqala', 'Peritrage', 'Zhikkom'],
   "Carmelide's Jewelry Store": ['Carmelide', 'Raghd'],
   "Harmodios's Music Shop": ['Hortense'],
   'Scribe & Notary': ['Sororo'],
@@ -3773,7 +3904,9 @@ export const vendorGreetings = {
   'Takiyah': 'Goods from distant Qufim, just in.',
   'Odoba': 'Potions brewed to perfection.',
   'Maymunah': 'Alchemical supplies for any venture.',
-  'Rodellieux': 'Fresh produce and lumber, take your pick.'
+  'Rodellieux': 'Fresh produce and lumber, take your pick.',
+  'Peritrage': 'Axes and blades for every adventurer.',
+  'Zhikkom': 'Quality daggers at a fair price.'
 };
 
 export const vendorTypes = {
@@ -3806,6 +3939,8 @@ export const vendorTypes = {
   'Odoba': 'alchemy',
   'Maymunah': 'alchemy',
   'Rodellieux': 'produce',
+  'Peritrage': 'weapons',
+  'Zhikkom': 'weapons',
   'Karine': 'maps', 'Rex': 'maps', 'Elesca': 'maps', 'Violitte': 'maps',
   'Mhoji Roccoruh': 'maps', 'Pehki Machumaht': 'maps', 'Ludwig': 'maps',
   'Lombaria': 'maps', 'Promurouve': 'maps', 'Rusese': 'maps', 'Antiqix': 'maps',

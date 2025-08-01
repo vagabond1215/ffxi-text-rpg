@@ -270,10 +270,14 @@ function updateTimePopup() {
     const lines = [];
     lines.push(`${icon} ${formatVanaTime(vt)} - ${vt.weekday}`);
     lines.push(`${status} - ${nextChange}`);
-    for (const [route, times] of Object.entries(airshipSchedules)) {
+    lines.push('');
+    lines.push('Airships:');
+    for (const [route, times] of Object.entries(airshipSchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
         lines.push(`${route} departs: ${nextScheduledTime(times)}`);
     }
-    for (const [route, times] of Object.entries(ferrySchedules)) {
+    lines.push('');
+    lines.push('Ferries:');
+    for (const [route, times] of Object.entries(ferrySchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
         lines.push(`${route} departs: ${nextScheduledTime(times)}`);
     }
     for (const [route, times] of Object.entries(manaclipperSchedules)) {
@@ -3113,10 +3117,13 @@ function openMenu(name, backFn) {
         }
         root.appendChild(intro);
         const list = document.createElement('ul');
+        list.style.listStyle = 'none';
+        list.style.paddingLeft = '0';
         npcs.forEach(npc => {
             const li = document.createElement('li');
             const btn = document.createElement('button');
-            btn.textContent = npc + (vendorTypes[npc] ? ` - ${vendorTypes[npc]}` : '');
+            const displayName = npc.includes(' the ') ? npc.split(' the ')[0] : npc;
+            btn.textContent = displayName;
             btn.addEventListener('click', () => openMenu(npc, () => openMenu(name, backFn)));
             li.appendChild(btn);
             list.appendChild(li);
