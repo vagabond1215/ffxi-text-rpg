@@ -1366,8 +1366,12 @@ export const expToLevel = (() => {
   return table;
 })();
 
-export function expNeeded(character) {
-  const next = expToLevel[character.level + 1];
+export function expNeeded(character, jobName = character.job) {
+  const level = jobName === character.job
+    ? character.level
+    : character.jobs?.[jobName] || 1;
+  const next = expToLevel[level + 1];
   if (next === undefined) return 0;
-  return Math.max(next - (character.experience || 0), 0);
+  const current = character.jobExp?.[jobName] || 0;
+  return Math.max(next - current, 0);
 }

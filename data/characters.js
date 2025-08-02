@@ -134,7 +134,7 @@ export const characters = [
     mp: 200,
     tp: 0,
     storeTp: 0,
-    experience: 0,
+    jobExp: { Thief: 0, Ninja: 0 },
     xpMode: 'EXP',
     limitPoints: 0,
     meritPoints: 0,
@@ -220,7 +220,7 @@ export const characters = [
     mp: 1500,
     tp: 0,
     storeTp: 0,
-    experience: 0,
+    jobExp: { 'Black Mage': 0, 'White Mage': 0 },
     xpMode: 'EXP',
     limitPoints: 0,
     meritPoints: 0,
@@ -330,7 +330,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     mp: 30,
     tp: 0,
     storeTp: 0,
-    experience: 0,
+    jobExp: { [selectedJob]: 0 },
     xpMode: 'EXP',
     limitPoints: 0,
     meritPoints: 0,
@@ -588,6 +588,13 @@ export function loadCharacters() {
       if (!c.jobPresets[c.job]) c.jobPresets[c.job] = { ...(c.equipment || {}) };
       if (!Array.isArray(c.storage)) c.storage = [];
       if (!Array.isArray(c.wardrobe)) c.wardrobe = [];
+      if (!c.jobExp) {
+        c.jobExp = {};
+        if (c.job && c.experience !== undefined) {
+          c.jobExp[c.job] = c.experience;
+          delete c.experience;
+        }
+      }
       characters.push(c);
       updateDerivedStats(c);
     });
@@ -611,6 +618,13 @@ export function loadCharacterSlot(index) {
     if (!characters[index].jobPresets) characters[index].jobPresets = {};
     if (!characters[index].jobPresets[characters[index].job]) {
       characters[index].jobPresets[characters[index].job] = { ...(characters[index].equipment || {}) };
+    }
+    if (!characters[index].jobExp) {
+      characters[index].jobExp = {};
+      if (characters[index].job && characters[index].experience !== undefined) {
+        characters[index].jobExp[characters[index].job] = characters[index].experience;
+        delete characters[index].experience;
+      }
     }
     if (!Array.isArray(characters[index].storage)) characters[index].storage = [];
     if (!Array.isArray(characters[index].wardrobe)) characters[index].wardrobe = [];
@@ -840,6 +854,8 @@ export function changeJob(character, job) {
   character.job = job;
   if (!character.jobs) character.jobs = { [job]: 1 };
   if (!character.jobs[job]) character.jobs[job] = 1;
+  if (!character.jobExp) character.jobExp = {};
+  if (character.jobExp[job] === undefined) character.jobExp[job] = 0;
   if (character.subJob === job) character.subJob = null;
   equipJobPreset(character, job);
   updateDerivedStats(character);
@@ -855,6 +871,8 @@ export function changeSubJob(character, job) {
     if (job) {
       if (!character.jobs) character.jobs = { [job]: 1 };
       if (!character.jobs[job]) character.jobs[job] = 1;
+      if (!character.jobExp) character.jobExp = {};
+      if (character.jobExp[job] === undefined) character.jobExp[job] = 0;
     }
   }
   updateDerivedStats(character);
