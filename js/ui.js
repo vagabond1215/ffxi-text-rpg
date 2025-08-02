@@ -507,9 +507,15 @@ function updateTimePopupFont() {
 }
 
 function pruneLog() {
+    if (!logPanelElement) return;
     const full = logPanelElement.classList.contains('fullscreen');
     let shown = 0;
     gameLogMessages.forEach(obj => {
+        if (!obj.div) {
+            obj.div = document.createElement('div');
+            obj.div.textContent = obj.msg;
+            logPanelElement.prepend(obj.div);
+        }
         let show;
         if (full) {
             show = true;
@@ -522,7 +528,8 @@ function pruneLog() {
         obj.div.style.display = show ? '' : 'none';
     });
     if (!full && shown === 0 && gameLogMessages.length) {
-        gameLogMessages[0].div.style.display = '';
+        const first = gameLogMessages[0];
+        if (first.div) first.div.style.display = '';
     }
     updateGameLogPadding();
 }
@@ -538,6 +545,15 @@ export function setupLogControls(btn, panel) {
     logPanelElement = panel;
     if (!logButtonElement || !logPanelElement) return;
     updateLogFont();
+
+    for (let i = gameLogMessages.length - 1; i >= 0; i--) {
+        const obj = gameLogMessages[i];
+        if (!obj.div) {
+            obj.div = document.createElement('div');
+            obj.div.textContent = obj.msg;
+            logPanelElement.prepend(obj.div);
+        }
+    }
 
     const toggle = () => {
         const fs = logPanelElement.classList.toggle('fullscreen');
@@ -564,16 +580,18 @@ export function isLogFullscreen() {
 }
 
 export function addGameLog(msg) {
-    if (!logPanelElement) return;
-    const div = document.createElement('div');
-    div.textContent = msg;
-    logPanelElement.prepend(div);
-    gameLogMessages.unshift({ div, turn: currentTurn });
+    const obj = { msg, div: null, turn: currentTurn };
+    gameLogMessages.unshift(obj);
     if (gameLogMessages.length > 50) {
         const old = gameLogMessages.pop();
-        if (old && old.div.parentElement) old.div.parentElement.remove();
+        if (old.div && old.div.parentElement) old.div.parentElement.remove();
     }
-    pruneLog();
+    if (logPanelElement) {
+        obj.div = document.createElement('div');
+        obj.div.textContent = msg;
+        logPanelElement.prepend(obj.div);
+        pruneLog();
+    }
 }
 
 export function showGameLogTemporarily(ms = 3000) {
