@@ -589,6 +589,18 @@ body.portrait .main-layout {
     color: #fff;
 }
 
+.job-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.job-icon {
+    width: 16px;
+    height: 16px;
+}
+
 .race-img, .job-img, .city-img, .character-img {
     width: clamp(120px, 20vw, 200px);
     height: auto;

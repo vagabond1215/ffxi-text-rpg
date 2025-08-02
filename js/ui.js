@@ -684,8 +684,10 @@ function updateHPDisplay() {
 
     if (xpBar && activeCharacter.xpMode === 'EXP') {
         const current = activeCharacter.jobExp?.[activeCharacter.job] || 0;
-        const next = expToLevel[activeCharacter.level + 1] || current;
-        const pct = next > 0 ? Math.max(0, Math.min(100, Math.round((current / next) * 100))) : 0;
+        const prev = expToLevel[activeCharacter.level] || 0;
+        const next = expToLevel[activeCharacter.level + 1] || prev;
+        const pct = next > prev ? Math.max(0, Math.min(100, Math.round(((current - prev) / (next - prev)) * 100))) : 0;
+        xpBar.textContent = `XP: ${current}/${next}`;
         xpBar.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
     }
 }
@@ -971,6 +973,7 @@ export function renderMainMenu() {
         imgNav.setImages(characterImages[activeCharacter.race]?.[activeCharacter.sex]?.[activeCharacter.job]);
 
     const line2 = document.createElement('div');
+        line2.className = 'job-line';
 
         const subJob = activeCharacter.subJob;
         const subLvl = subJob ? activeCharacter.jobs[subJob] || 1 : 0;
@@ -980,7 +983,14 @@ export function renderMainMenu() {
             const subAbbr = jobs.find(j => j.name === subJob)?.abbr || subJob.slice(0,3).toUpperCase();
             jobText = `${mainAbbr}/${subAbbr} ${activeCharacter.level}/${subLvl}`;
         }
-        line2.textContent = jobText;
+        const jobIcon = document.createElement('img');
+        jobIcon.className = 'job-icon';
+        jobIcon.src = `img/Icons/Job icons/${mainAbbr.toLowerCase()}.png`;
+        jobIcon.alt = mainAbbr;
+        line2.appendChild(jobIcon);
+        const jobTextSpan = document.createElement('span');
+        jobTextSpan.textContent = jobText;
+        line2.appendChild(jobTextSpan);
 
         const hpLine = document.createElement('div');
         hpLine.id = 'hp-bar';
@@ -994,13 +1004,14 @@ export function renderMainMenu() {
         tpLine.id = 'tp-bar';
         tpLine.className = 'stat-bar tp';
 
-        const line4 = document.createElement('div');
-        line4.textContent = `ATK: ${getAttack(activeCharacter)} DEF: ${getDefense(activeCharacter)}`;
-        const line5 = document.createElement('div');
-        line5.textContent = `Gil: ${activeCharacter.gil}`;
+        const atkLine = document.createElement('div');
+        atkLine.textContent = `ATK: ${getAttack(activeCharacter)}`;
+        const defLine = document.createElement('div');
+        defLine.textContent = `DEF: ${getDefense(activeCharacter)}`;
 
-        const lineCp = document.createElement('div');
-        lineCp.textContent = `CP: ${activeCharacter.conquestPoints || 0}`;
+        const statsLine = document.createElement('div');
+        const { str = 0, dex = 0, vit = 0, agi = 0, int = 0, mnd = 0, chr = 0 } = activeCharacter.stats || {};
+        statsLine.textContent = `STR ${str} DEX ${dex} VIT ${vit} AGI ${agi} INT ${int} MND ${mnd} CHR ${chr}`;
 
         const xpLine = document.createElement('div');
         xpLine.id = 'xp-bar';
@@ -1014,8 +1025,11 @@ export function renderMainMenu() {
             progressText = `LP to Next Merit: ${needed}`;
         } else {
             const current = activeCharacter.jobExp?.[activeCharacter.job] || 0;
+            const prev = expToLevel[activeCharacter.level] || 0;
             const next = expToLevel[activeCharacter.level + 1];
-            const pct = next ? Math.max(0, Math.min(100, Math.round((current / next) * 100))) : 0;
+            const pct = next && next > prev
+                ? Math.max(0, Math.min(100, Math.round(((current - prev) / (next - prev)) * 100)))
+                : 0;
             progressText = `XP: ${current}/${next}`;
             xpLine.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
         }
@@ -1101,9 +1115,9 @@ export function renderMainMenu() {
 
         details.appendChild(invBtn);
         details.appendChild(equipBtn);
-        details.appendChild(line4);
-        details.appendChild(line5);
-        details.appendChild(lineCp);
+        details.appendChild(atkLine);
+        details.appendChild(defLine);
+        details.appendChild(statsLine);
         if (modeBtn) details.appendChild(modeBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
@@ -1592,12 +1606,18 @@ function createAreaGrid(root, loc) {
     const craftingKeywords = /guild/i;
     const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
 
+    const seenAreas = new Set();
+    const seenCoords = new Set();
     loc.connectedAreas.forEach(area => {
+        if (seenAreas.has(area)) return;
+        const destCoordStr = loc.coordinates?.[area];
+        if (destCoordStr && seenCoords.has(destCoordStr)) return;
+        seenAreas.add(area);
+        if (destCoordStr) seenCoords.add(destCoordStr);
         if (loc.name.startsWith('South Gustaberg') && area.startsWith('Vomp Hill')) return;
         if (loc.name.startsWith('Vomp Hill') && (area.startsWith('South Gustaberg') || area.startsWith('Vomp Hill'))) return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
-        const destCoordStr = loc.coordinates?.[area];
         let total = getZoneTravelTurns(area, loc.name);
         if (activeCharacter.coordinates && destCoordStr) {
             total = coordinateDistance(activeCharacter.coordinates, parseCoordinate(destCoordStr));
@@ -1774,12 +1794,18 @@ function createCityAreaGrid(root, loc) {
     const craftingKeywords = /guild/i;
     const craftingPOIs = loc.pointsOfInterest.filter(p => craftingKeywords.test(p) && !travelPOIs.includes(p));
 
+    const seenAreasCity = new Set();
+    const seenCoordsCity = new Set();
     loc.connectedAreas.forEach(area => {
+        if (seenAreasCity.has(area)) return;
+        const destCoordStr = loc.coordinates?.[area];
+        if (destCoordStr && seenCoordsCity.has(destCoordStr)) return;
+        seenAreasCity.add(area);
+        if (destCoordStr) seenCoordsCity.add(destCoordStr);
         if (loc.name.startsWith('South Gustaberg') && area.startsWith('Vomp Hill')) return;
         if (loc.name.startsWith('Vomp Hill') && (area.startsWith('South Gustaberg') || area.startsWith('Vomp Hill'))) return;
         const li = document.createElement('li');
         const btn = document.createElement('button');
-        const destCoordStr = loc.coordinates?.[area];
         let total = getZoneTravelTurns(area, loc.name);
         if (activeCharacter.coordinates && destCoordStr) {
             total = coordinateDistance(activeCharacter.coordinates, parseCoordinate(destCoordStr));
