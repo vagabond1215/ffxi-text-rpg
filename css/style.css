@@ -215,6 +215,7 @@ body.landscape #area-grid {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .area-header::before {
@@ -233,10 +234,12 @@ body.landscape #area-grid {
 .area-header.expanded::after,
 .city-subheader.expanded::after {
     content: '';
-    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
     width: 32px;
     height: 32px;
-    margin-left: 8px;
     background-image: url('../img/Icons/Home%20Point%20Crystal.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -282,6 +285,7 @@ body.landscape #area-grid {
     width: 160px;
     justify-content: flex-start;
     padding-left: 4px;
+    position: relative;
 }
 
 .main-area-header {
@@ -817,6 +821,20 @@ body.portrait .main-layout {
     color: inherit;
     padding: 0;
     cursor: pointer;
+}
+
+.transfer-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.transfer-arrow {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    min-height: 0;
+    line-height: 1;
 }
 
 .equipment-item {

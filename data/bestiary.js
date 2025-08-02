@@ -560,13 +560,22 @@ export const bestiaryByZone = {
       detection: 'Sight & Scent',
       spawns: 30,
       spawnChance: 0.612,
-      coords: [
-        'D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9',
-        'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10',
-        'I-7', 'I-8', 'I-9', 'I-10', 'J-8', 'J-9', 'J-10',
-        'L-8', 'L-9', 'L-10', 'M-10'
-      ],
-      areas: [null, 'Vomp Hill']
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9', 'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10', 'I-9', 'I-10', 'J-9', 'J-10', 'L-9', 'L-10', 'M-10'],
+      areas: [null]
+    },
+    {
+      name: 'Maneating Hornet',
+      level: '2-6',
+      str: 3,
+      vit: 2,
+      drops: ['Beehive Chip'],
+      aggressive: false,
+      linking: false,
+      detection: 'Sight & Scent',
+      spawns: 30,
+      spawnChance: 0.612,
+      coords: ['H-8', 'H-9', 'I-7', 'I-8', 'I-9', 'J-8', 'J-9'],
+      areas: ['Vomp Hill']
     },
     {
       name: 'Vulture',
