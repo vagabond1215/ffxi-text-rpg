@@ -46,7 +46,8 @@ import {
     currentVanaTime,
     formatVanaTime,
     dayElements,
-    changeJob
+    changeJob,
+    changeSubJob
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -857,7 +858,7 @@ function meetsRequirements(item) {
     if (item.levelRequirement > activeCharacter.level) return false;
     if (item.sex && item.sex !== activeCharacter.sex) return false;
     if (item.races && !item.races.includes(activeCharacter.race)) return false;
-    if (item.jobs && !item.jobs.includes(activeCharacter.job)) return false;
+    if (item.jobs && !(item.jobs.includes(activeCharacter.job) || item.jobs.includes(activeCharacter.subJob))) return false;
     return true;
 }
 
@@ -879,7 +880,9 @@ function characterSummary() {
     const div = document.createElement('div');
     div.className = 'character-summary';
     const line1 = document.createElement('div');
-    line1.textContent = `${activeCharacter.name} - Lv.${activeCharacter.level} ${activeCharacter.sex} ${activeCharacter.race} ${activeCharacter.job}`;
+    const subLvl = activeCharacter.subJob ? activeCharacter.jobs[activeCharacter.subJob] || 1 : 0;
+    const jobText = activeCharacter.subJob ? `${activeCharacter.job}/${activeCharacter.subJob} ${activeCharacter.level}/${subLvl}` : `${activeCharacter.job}`;
+    line1.textContent = `${activeCharacter.name} - Lv.${activeCharacter.level} ${activeCharacter.sex} ${activeCharacter.race} ${jobText}`;
     const line2 = document.createElement('div');
     line2.textContent = `Gil: ${activeCharacter.gil} CP: ${activeCharacter.conquestPoints || 0}`;
     div.appendChild(line1);
@@ -968,8 +971,8 @@ export function renderMainMenu() {
 
     const line2 = document.createElement('div');
 
-        const subJob = Object.keys(activeCharacter.jobs || {}).find(j => j !== activeCharacter.job);
-        const subLvl = subJob ? activeCharacter.jobs[subJob] : 0;
+        const subJob = activeCharacter.subJob;
+        const subLvl = subJob ? activeCharacter.jobs[subJob] || 1 : 0;
         const mainAbbr = jobs.find(j => j.name === activeCharacter.job)?.abbr || activeCharacter.job.slice(0,3).toUpperCase();
         let jobText = `${mainAbbr} Lv.${activeCharacter.level}`;
         if (subJob) {
@@ -3167,22 +3170,54 @@ function renderJobChangeScreen(root) {
     }
     root.innerHTML = '';
     const title = document.createElement('h2');
-    title.textContent = 'Change Job';
+    title.textContent = 'Change Jobs';
     root.appendChild(title);
-    const select = document.createElement('select');
+
+    const mainSelect = document.createElement('select');
     baseJobNames.forEach(j => {
         const opt = new Option(j, j);
-        select.appendChild(opt);
+        mainSelect.appendChild(opt);
     });
-    select.value = activeCharacter.job;
-    root.appendChild(select);
-    const btn = document.createElement('button');
-    btn.textContent = 'Set Job';
-    btn.addEventListener('click', () => {
-        changeJob(activeCharacter, select.value);
+    mainSelect.value = activeCharacter.job;
+    const mainLabel = document.createElement('label');
+    mainLabel.textContent = 'Main Job:';
+    mainLabel.appendChild(mainSelect);
+    root.appendChild(mainLabel);
+    const mainBtn = document.createElement('button');
+    mainBtn.textContent = 'Set Main Job';
+    mainBtn.addEventListener('click', () => {
+        changeJob(activeCharacter, mainSelect.value);
         refreshMainMenu(root.parentElement);
     });
-    root.appendChild(btn);
+    root.appendChild(mainBtn);
+
+    const subSelect = document.createElement('select');
+    subSelect.appendChild(new Option('(None)', ''));
+    baseJobNames.forEach(j => {
+        const opt = new Option(j, j);
+        subSelect.appendChild(opt);
+    });
+    subSelect.value = activeCharacter.subJob || '';
+    if (!activeCharacter.subJobUnlocked) {
+        subSelect.disabled = true;
+    }
+    const subLabel = document.createElement('label');
+    subLabel.textContent = 'Sub Job:';
+    subLabel.appendChild(subSelect);
+    root.appendChild(subLabel);
+    const subBtn = document.createElement('button');
+    subBtn.textContent = 'Set Sub Job';
+    subBtn.disabled = !activeCharacter.subJobUnlocked;
+    subBtn.addEventListener('click', () => {
+        changeSubJob(activeCharacter, subSelect.value || null);
+        refreshMainMenu(root.parentElement);
+    });
+    root.appendChild(subBtn);
+    if (!activeCharacter.subJobUnlocked) {
+        const note = document.createElement('p');
+        note.textContent = 'Subjob locked';
+        root.appendChild(note);
+    }
     showBackButton(() => refreshMainMenu(root.parentElement));
 }
 

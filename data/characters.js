@@ -340,6 +340,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     traits: [],
     abilities: [],
     jobs: { [selectedJob]: 1 },
+    subJob: null,
+    subJobUnlocked: false,
     gil: STARTING_GIL,
     combatSkills: {},
     magicSkills: {},
@@ -429,8 +431,9 @@ export function calculateCharacterStats(character) {
 
 export function updateDerivedStats(character) {
   const mainLevel = character.jobs?.[character.job] || character.level || 1;
-  const subJobName = Object.keys(character.jobs || {}).find(j => j !== character.job);
-  const subLevel = subJobName ? character.jobs[subJobName] : 0;
+  character.level = mainLevel;
+  const subJobName = character.subJobUnlocked ? character.subJob : null;
+  const subLevel = subJobName ? character.jobs?.[subJobName] || 1 : 0;
 
   const raceInfo = races.find(r => r.name === character.race);
   const jobInfo = jobs.find(j => j.name === character.job);
@@ -837,7 +840,23 @@ export function changeJob(character, job) {
   character.job = job;
   if (!character.jobs) character.jobs = { [job]: 1 };
   if (!character.jobs[job]) character.jobs[job] = 1;
+  if (character.subJob === job) character.subJob = null;
   equipJobPreset(character, job);
+  updateDerivedStats(character);
+  persistCharacter(character);
+}
+
+export function changeSubJob(character, job) {
+  if (!character || !character.subJobUnlocked) return;
+  if (job === character.job) {
+    character.subJob = null;
+  } else {
+    character.subJob = job || null;
+    if (job) {
+      if (!character.jobs) character.jobs = { [job]: 1 };
+      if (!character.jobs[job]) character.jobs[job] = 1;
+    }
+  }
   updateDerivedStats(character);
   persistCharacter(character);
 }

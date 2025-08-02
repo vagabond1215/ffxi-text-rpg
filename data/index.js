@@ -34,7 +34,8 @@ export {
   dayElements,
   saveJobPreset,
   equipJobPreset,
-  changeJob
+  changeJob,
+  changeSubJob
 } from './characters.js';
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
