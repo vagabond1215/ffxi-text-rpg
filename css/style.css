@@ -560,6 +560,7 @@ body.portrait .main-layout {
 #character-details {
     display: flex;
     flex-direction: column;
+    font-size: 0.8em;
 }
 
 #character-details button {
@@ -573,6 +574,16 @@ body.portrait .main-layout {
     align-items: center;
 }
 
+.stat-bar {
+    width: 150px;
+    margin: 1px auto;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+}
+
 .race-img, .job-img, .city-img, .character-img {
     width: clamp(120px, 20vw, 200px);
     height: auto;
@@ -581,7 +592,7 @@ body.portrait .main-layout {
 }
 
 .character-img {
-    width: clamp(138px, 23vw, 230px);
+    width: 150px;
 }
 
 .profile-btn {

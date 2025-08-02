@@ -812,8 +812,11 @@ export const bestiaryByZone = {
       linking: false,
       detection: 'Sight & Magic',
       spawns: 6,
-      spawnChance: 0.122,
-      notes: 'Foggy weather only',
+      spawnChance: 0,
+      notes: 'Foggy weather only (disabled)',
+      coords: ['D-8', 'D-9', 'E-6', 'E-7', 'E-8', 'E-9', 'F-7', 'F-8', 'F-9',
+        'G-7', 'G-8', 'G-9', 'H-5', 'H-6', 'H-7', 'H-8', 'H-9', 'H-10',
+        'I-9', 'I-10', 'J-9', 'J-10', 'L-8', 'L-9', 'L-10', 'M-10'],
       areas: [null]
     },
     {
