@@ -383,11 +383,6 @@ body.portrait .nav-row {
     color: #333;
 }
 
-.monster-btn.aggro {
-    background-color: darkred;
-}
-
-
 .monster-btn.target {
     outline: 2px solid yellow;
 }
@@ -398,6 +393,10 @@ body.portrait .nav-row {
     bottom: 0;
     height: 5px;
     background-color: darkred;
+}
+
+.monster-btn .aggro-icon {
+    margin-right: 4px;
 }
 
 .party-btn {
