@@ -299,10 +299,11 @@ function renderTransferPopup(type) {
     invList.className = 'inventory-list';
     activeCharacter.inventory.filter(e => filter(items[e.id])).forEach(ent => {
         const li = document.createElement('li');
-        li.className = 'inventory-item';
+        li.className = 'transfer-item';
         const span = document.createElement('span');
         span.textContent = `${items[ent.id].name} x${ent.qty}`;
         const btn = document.createElement('button');
+        btn.className = 'transfer-arrow';
         btn.textContent = '→';
         btn.addEventListener('click', () => {
             removeItem(activeCharacter.inventory, ent.id, ent.qty);
@@ -323,10 +324,11 @@ function renderTransferPopup(type) {
     destList.className = 'inventory-list';
     dest.forEach(ent => {
         const li = document.createElement('li');
-        li.className = 'inventory-item';
+        li.className = 'transfer-item';
         const span = document.createElement('span');
         span.textContent = `${items[ent.id].name} x${ent.qty}`;
         const btn = document.createElement('button');
+        btn.className = 'transfer-arrow';
         btn.textContent = '←';
         btn.addEventListener('click', () => {
             removeItem(dest, ent.id, ent.qty);
@@ -709,6 +711,7 @@ function refreshMainMenu(container = document.getElementById('app')) {
     monsterListElement = null;
     const main = renderMainMenu();
     container.appendChild(main);
+    updateHPDisplay();
     if (activeCharacter?.currentLocation) {
         updateNearbyMonsters(activeCharacter.currentLocation, main);
         setTargetIndex(prevIndex);
@@ -1898,9 +1901,12 @@ function createCityAreaGrid(root, loc) {
         }
     });
 
-    sections.forEach(s => {
+    const validSections = sections.filter(s => s.list.children.length > 0);
+    sections.filter(s => !s.list.children.length).forEach(s => s.btn.remove());
+
+    validSections.forEach(s => {
         s.btn.addEventListener('click', () => {
-            sections.forEach(o => {
+            validSections.forEach(o => {
                 o.list.classList.add('hidden');
                 o.btn.classList.remove('expanded');
             });
@@ -1916,8 +1922,9 @@ function createCityAreaGrid(root, loc) {
         });
     });
 
-    if (sections.length) {
-        const initial = sections.find(o => o.btn.classList.contains('expanded')) || sections[0];
+    if (validSections.length) {
+        const initial =
+            validSections.find(o => o.btn.classList.contains('expanded')) || validSections[0];
         initial.btn.classList.add('expanded');
         initial.list.classList.remove('hidden');
         listCol.appendChild(initial.list);
