@@ -275,6 +275,21 @@ export function showProfilePopup(details) {
     const clone = details.cloneNode(true);
     clone.classList.remove('hidden');
     profilePopupContentElement.appendChild(clone);
+    const root = document.getElementById('app')?.firstElementChild;
+    const invBtn = Array.from(clone.querySelectorAll('button')).find(b => b.textContent === 'Inventory');
+    if (invBtn) {
+        invBtn.addEventListener('click', () => {
+            profilePopupElement.classList.add('hidden');
+            if (root) renderInventoryScreen(root);
+        });
+    }
+    const equipBtn = Array.from(clone.querySelectorAll('button')).find(b => b.textContent === 'Equipment');
+    if (equipBtn) {
+        equipBtn.addEventListener('click', () => {
+            profilePopupElement.classList.add('hidden');
+            if (root) renderEquipmentScreen(root);
+        });
+    }
     profilePopupElement.classList.remove('hidden');
 }
 
@@ -2271,7 +2286,15 @@ function createActionPanel(root, loc) {
         partyMembers.forEach((p, i) => {
             const btn = document.createElement('button');
             btn.className = 'party-btn';
-            btn.textContent = `${p.name} HP:${p.hp}`;
+            const jobAbbr = jobs.find(j => j.name === p.job)?.abbr || p.job.slice(0,3).toUpperCase();
+            const icon = document.createElement('img');
+            icon.className = 'job-icon';
+            icon.src = `img/Icons/Job icons/${jobAbbr.toLowerCase()}.png`;
+            icon.alt = jobAbbr;
+            const label = document.createElement('span');
+            label.textContent = `${p.name} HP:${p.hp}`;
+            btn.appendChild(icon);
+            btn.appendChild(label);
             btn.addEventListener('click', () => {
                 setPartyTarget(i);
                 renderParty();
@@ -2725,6 +2748,11 @@ function renderCombatScreen(app, mobs, destination) {
                 activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
                 const mobDelay = attacker.delay || 240;
                 gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
+                if (activeCharacter.hp <= 0) {
+                    stopAutoAttack();
+                    endBattle();
+                    return;
+                }
             } else {
                 defender.currentHP = Math.max(0, defender.currentHP - dmg);
                 defender.hp = defender.currentHP;
@@ -2761,7 +2789,6 @@ function renderCombatScreen(app, mobs, destination) {
         playerTimer = setTimeout(() => {
             const target = getSelectedMonster(mobs);
             if (!target) {
-                stopAutoAttack();
                 return;
             }
             attack(activeCharacter, target);
@@ -2785,7 +2812,7 @@ function renderCombatScreen(app, mobs, destination) {
 
     function stopAutoAttack() {
         autoAttacking = false;
-        attackBtn.textContent = 'Auto Attack';
+        attackBtn.classList.remove('auto-on');
         clearTimeout(playerTimer);
         monsterTimers.forEach((t, mob) => {
             if (!mob.aggro) {
@@ -2807,7 +2834,7 @@ function renderCombatScreen(app, mobs, destination) {
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
         autoAttacking = false;
-        attackBtn.textContent = 'Auto Attack';
+        attackBtn.classList.remove('auto-on');
         clearTimeout(playerTimer);
         monsterTimers.forEach(t => clearTimeout(t));
         monsterTimers.clear();
@@ -2842,7 +2869,8 @@ function renderCombatScreen(app, mobs, destination) {
 
     function attemptFlee() {
         const playerAgi = activeCharacter.stats.agi;
-        mobs.forEach(m => {
+        for (let i = mobs.length - 1; i >= 0; i--) {
+            const m = mobs[i];
             const mobAgi = m.agi !== undefined ? m.agi : (m.vit ?? parseLevel(m.level) * 2) + 1;
             let chance = 0.5 + (playerAgi - mobAgi) * 0.05;
             chance = Math.max(0.05, Math.min(0.95, chance));
@@ -2851,28 +2879,40 @@ function renderCombatScreen(app, mobs, destination) {
                 if (m.listIndex !== undefined && nearbyMonsters[m.listIndex]) {
                     nearbyMonsters[m.listIndex].aggro = false;
                 }
+                const t = monsterTimers.get(m);
+                if (t) {
+                    clearTimeout(t);
+                    monsterTimers.delete(m);
+                }
+                mobs.splice(i, 1);
+                if (selectedMonsterIndex === m.listIndex) {
+                    selectedMonsterIndex = null;
+                    if (activeCharacter) activeCharacter.targetIndex = null;
+                    currentTargetMonster = null;
+                }
             } else {
                 log(`${m.name} keeps chase.`);
             }
-        });
-        endBattle(false);
+        }
+        if (mobs.length === 0) {
+            endBattle(false);
+        } else {
+            update();
+        }
         return true;
     }
 
     attackBtn.addEventListener('click', () => {
         if (autoAttacking) {
             stopAutoAttack();
-            return;
+        } else {
+            autoAttacking = true;
+            attackBtn.classList.add('auto-on');
+            const target = getSelectedMonster(mobs);
+            if (target) {
+                schedulePlayerAttack();
+            }
         }
-        const target = getSelectedMonster(mobs);
-        if (!target) {
-            log('No target selected.');
-            return;
-        }
-        autoAttacking = true;
-        attackBtn.textContent = 'Stop Auto';
-        attack(activeCharacter, target);
-        schedulePlayerAttack();
     });
 
     abilityBtn.addEventListener('click', () => {
