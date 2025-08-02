@@ -569,13 +569,14 @@ body.portrait .main-layout {
 
 #character-details button {
     margin: 1px auto;
-    width: 128px;
+    width: 150px;
 }
 
 .profile-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    width: 150px;
 }
 
 .stat-bar {

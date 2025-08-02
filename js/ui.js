@@ -683,8 +683,9 @@ function updateHPDisplay() {
     }
 
     if (xpBar && activeCharacter.xpMode === 'EXP') {
-        const next = expToLevel[activeCharacter.level + 1] || activeCharacter.experience;
-        const pct = next > 0 ? Math.max(0, Math.min(100, Math.round((activeCharacter.experience / next) * 100))) : 0;
+        const current = activeCharacter.jobExp?.[activeCharacter.job] || 0;
+        const next = expToLevel[activeCharacter.level + 1] || current;
+        const pct = next > 0 ? Math.max(0, Math.min(100, Math.round((current / next) * 100))) : 0;
         xpBar.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
     }
 }
@@ -1012,9 +1013,10 @@ export function renderMainMenu() {
             const needed = 10000 - ((activeCharacter.limitPoints || 0) % 10000);
             progressText = `LP to Next Merit: ${needed}`;
         } else {
+            const current = activeCharacter.jobExp?.[activeCharacter.job] || 0;
             const next = expToLevel[activeCharacter.level + 1];
-            const pct = next ? Math.max(0, Math.min(100, Math.round((activeCharacter.experience / next) * 100))) : 0;
-            progressText = `XP: ${activeCharacter.experience}/${next}`;
+            const pct = next ? Math.max(0, Math.min(100, Math.round((current / next) * 100))) : 0;
+            progressText = `XP: ${current}/${next}`;
             xpLine.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
         }
         xpLine.textContent = progressText;
@@ -2382,9 +2384,11 @@ function renderCombatScreen(app, mobs, destination) {
             mp: activeCharacter.mp,
             ...activeCharacter.stats
         };
+        const current = activeCharacter.jobExp?.[activeCharacter.job] || 0;
         while (activeCharacter.level < 99 &&
-            activeCharacter.experience >= expToLevel[activeCharacter.level + 1]) {
+            current >= expToLevel[activeCharacter.level + 1]) {
             activeCharacter.level++;
+            activeCharacter.jobs[activeCharacter.job] = activeCharacter.level;
             leveled = true;
         }
         if (leveled) {
@@ -2433,7 +2437,9 @@ function renderCombatScreen(app, mobs, destination) {
                     activeCharacter.meritPoints = (activeCharacter.meritPoints || 0) + 1;
                 }
             } else {
-                activeCharacter.experience = (activeCharacter.experience || 0) + exp;
+                const job = activeCharacter.job;
+                if (!activeCharacter.jobExp) activeCharacter.jobExp = {};
+                activeCharacter.jobExp[job] = (activeCharacter.jobExp[job] || 0) + exp;
                 checkLevelUp();
             }
         }
