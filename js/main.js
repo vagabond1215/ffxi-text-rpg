@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, setupStoragePopup, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, setupStoragePopup, setupProfilePopup, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter, persistCharacter } from '../data/index.js';
 
 // Entry point: initialize application
@@ -83,6 +83,13 @@ function init() {
     const storagePopupClose = document.getElementById('storage-popup-close');
     if (storagePopup && storagePopupContent && storagePopupClose) {
         setupStoragePopup(storagePopup, storagePopupContent, storagePopupClose);
+    }
+
+    const profilePopup = document.getElementById('profile-popup');
+    const profilePopupContent = document.getElementById('profile-popup-content');
+    const profilePopupClose = document.getElementById('profile-popup-close');
+    if (profilePopup && profilePopupContent && profilePopupClose) {
+        setupProfilePopup(profilePopup, profilePopupContent, profilePopupClose);
     }
 
     const charBtn = document.getElementById('character-select');

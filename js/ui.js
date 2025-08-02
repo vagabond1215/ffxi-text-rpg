@@ -75,6 +75,9 @@ let nearbyMonsters = [];
 let monsterCoordKey = '';
 let selectedMonsterIndex = null;
 let currentTargetMonster = null;
+let partyMembers = [];
+let selectedPartyIndex = null;
+let partyListElement = null;
 
 // Optional callback invoked when a monster is highlighted
 let monsterSelectHandler = null;
@@ -116,11 +119,17 @@ export function setupPressFeedback(root = document.body) {
 
 // Highlight the selected monster in the nearby monster list
 export function updateTargetIndicator() {
-    if (!monsterListElement) return;
-    Array.from(monsterListElement.children).forEach(btn => {
-        const idx = Number(btn.dataset.idx);
-        btn.classList.toggle('target', idx === selectedMonsterIndex);
-    });
+    if (monsterListElement) {
+        Array.from(monsterListElement.children).forEach(btn => {
+            const idx = Number(btn.dataset.idx);
+            btn.classList.toggle('target', idx === selectedMonsterIndex);
+        });
+    }
+    if (partyListElement) {
+        Array.from(partyListElement.children).forEach((btn, idx) => {
+            btn.classList.toggle('target', idx === selectedPartyIndex);
+        });
+    }
 }
 
 // Ensure selectedMonsterIndex and character target stay in sync
@@ -131,6 +140,7 @@ export function setTargetIndex(idx) {
         currentTargetMonster = null;
     } else {
         selectedMonsterIndex = idx;
+        selectedPartyIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = idx;
         currentTargetMonster = nearbyMonsters[idx];
         if (currentTargetMonster && (currentTargetMonster.hp === undefined || currentTargetMonster.hp === null)) {
@@ -159,6 +169,23 @@ export function getSelectedMonster(list = nearbyMonsters) {
         }
     }
     return mob || null;
+}
+
+export function setPartyTarget(idx) {
+    if (idx === null || idx === undefined || idx < 0 || idx >= partyMembers.length) {
+        selectedPartyIndex = null;
+    } else {
+        selectedPartyIndex = idx;
+        selectedMonsterIndex = null;
+        currentTargetMonster = null;
+        if (activeCharacter) activeCharacter.targetIndex = null;
+    }
+    updateTargetIndicator();
+}
+
+export function getSelectedPartyMember() {
+    if (selectedPartyIndex === null) return null;
+    return partyMembers[selectedPartyIndex] || null;
 }
 
 function updateGameLogPadding() {
@@ -225,6 +252,30 @@ export function setupItemPopup(el, content, closeBtn) {
             if (itemPopupElement) itemPopupElement.classList.add('hidden');
         });
     }
+}
+
+let profilePopupElement = null;
+let profilePopupContentElement = null;
+let profilePopupCloseElement = null;
+
+export function setupProfilePopup(el, content, closeBtn) {
+    profilePopupElement = el;
+    profilePopupContentElement = content;
+    profilePopupCloseElement = closeBtn;
+    if (profilePopupCloseElement) {
+        profilePopupCloseElement.addEventListener('click', () => {
+            if (profilePopupElement) profilePopupElement.classList.add('hidden');
+        });
+    }
+}
+
+export function showProfilePopup(details) {
+    if (!profilePopupElement || !profilePopupContentElement) return;
+    profilePopupContentElement.innerHTML = '';
+    const clone = details.cloneNode(true);
+    clone.classList.remove('hidden');
+    profilePopupContentElement.appendChild(clone);
+    profilePopupElement.classList.remove('hidden');
 }
 
 export function showItemPopup(item) {
@@ -1009,9 +1060,21 @@ export function renderMainMenu() {
         const defLine = document.createElement('div');
         defLine.textContent = `DEF: ${getDefense(activeCharacter)}`;
 
-        const statsLine = document.createElement('div');
+        const statsLines = document.createElement('div');
         const { str = 0, dex = 0, vit = 0, agi = 0, int = 0, mnd = 0, chr = 0 } = activeCharacter.stats || {};
-        statsLine.textContent = `STR ${str} DEX ${dex} VIT ${vit} AGI ${agi} INT ${int} MND ${mnd} CHR ${chr}`;
+        [
+            ['STR', str],
+            ['DEX', dex],
+            ['VIT', vit],
+            ['AGI', agi],
+            ['INT', int],
+            ['MND', mnd],
+            ['CHR', chr]
+        ].forEach(([label, val]) => {
+            const line = document.createElement('div');
+            line.textContent = `${label} ${Math.round(val)}`;
+            statsLines.appendChild(line);
+        });
 
         const xpLine = document.createElement('div');
         xpLine.id = 'xp-bar';
@@ -1058,12 +1121,8 @@ export function renderMainMenu() {
         const charBtn = document.createElement('button');
         charBtn.className = 'profile-btn';
         charBtn.id = 'char-hp-bar';
-        charBtn.textContent = activeCharacter.name;
-        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
-        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
-        charBtn.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
-        const fontSize = Math.max(12, Math.min(18, Math.floor(140 / activeCharacter.name.length)));
-        charBtn.style.fontSize = `${fontSize}px`;
+        charBtn.textContent = 'Profile';
+        charBtn.style.fontSize = '18px';
         group.appendChild(charBtn);
         group.appendChild(line2);
         group.appendChild(xpLine);
@@ -1074,9 +1133,21 @@ export function renderMainMenu() {
         const details = document.createElement('div');
         details.id = 'character-details';
         details.classList.add('hidden');
-        charBtn.addEventListener('click', () => toggleDetails(details));
 
         details.appendChild(imgNav.wrapper);
+        const nameLine = document.createElement('div');
+        nameLine.textContent = activeCharacter.name;
+        details.appendChild(nameLine);
+
+        let holdTimer;
+        const startHold = () => {
+            holdTimer = setTimeout(() => showProfilePopup(details), 500);
+        };
+        const cancelHold = () => clearTimeout(holdTimer);
+        charBtn.addEventListener('mousedown', startHold);
+        charBtn.addEventListener('touchstart', startHold);
+        ['mouseup','mouseleave','touchend','touchcancel'].forEach(ev =>
+            charBtn.addEventListener(ev, cancelHold));
 
         const invBtn = document.createElement('button');
         invBtn.className = 'profile-btn';
@@ -1117,7 +1188,7 @@ export function renderMainMenu() {
         details.appendChild(equipBtn);
         details.appendChild(atkLine);
         details.appendChild(defLine);
-        details.appendChild(statsLine);
+        details.appendChild(statsLines);
         if (modeBtn) details.appendChild(modeBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
@@ -2040,9 +2111,11 @@ function createActionButtons(disabled = false) {
     const magicSelect = document.createElement('select');
     const magicBtn = document.createElement('button');
     magicBtn.textContent = 'Magic';
+    const castBtn = document.createElement('button');
+    castBtn.textContent = 'Cast';
     const spells = activeCharacter.spells || [];
     spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
-    if (!spells.length) magicBtn.disabled = true;
+    if (!spells.length) { magicBtn.disabled = true; castBtn.disabled = true; }
 
     const fleeBtn = document.createElement('button');
     fleeBtn.textContent = 'Flee';
@@ -2057,9 +2130,10 @@ function createActionButtons(disabled = false) {
     abilityWrap.appendChild(abilitySelect);
 
     const magicWrap = document.createElement('div');
-    magicWrap.className = 'action-cell with-select';
+    magicWrap.className = 'action-cell with-select with-cast';
     magicWrap.appendChild(magicBtn);
     magicWrap.appendChild(magicSelect);
+    magicWrap.appendChild(castBtn);
 
     const fleeWrap = document.createElement('div');
     fleeWrap.className = 'action-cell';
@@ -2070,11 +2144,11 @@ function createActionButtons(disabled = false) {
     actionDiv.appendChild(fleeWrap);
     actionDiv.appendChild(magicWrap);
 
-    [attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn].forEach(el => {
+    [attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn].forEach(el => {
         el.disabled = disabled || el.disabled;
     });
 
-    return { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn };
+    return { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn };
 }
 
 function createActionPanel(root, loc) {
@@ -2170,6 +2244,26 @@ function createActionPanel(root, loc) {
     const monsterList = document.createElement('div');
     monsterList.id = 'nearby-monsters';
 
+    const partyList = document.createElement('div');
+    partyList.id = 'party-list';
+
+    function renderParty() {
+        partyList.innerHTML = '';
+        partyMembers = [activeCharacter];
+        partyMembers.forEach((p, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'party-btn';
+            btn.textContent = `${p.name} HP:${p.hp}`;
+            btn.addEventListener('click', () => {
+                setPartyTarget(i);
+                renderParty();
+            });
+            partyList.appendChild(btn);
+        });
+        partyListElement = partyList;
+        updateTargetIndicator();
+    }
+
     function renderMonsters() {
         const prevScroll = monsterList.scrollTop;
         monsterIndexList = [];
@@ -2225,6 +2319,7 @@ function createActionPanel(root, loc) {
         }
         updateTargetIndicator();
         monsterList.scrollTop = prevScroll;
+        renderParty();
     }
 
     renderMonsters();
@@ -2244,6 +2339,7 @@ function createActionPanel(root, loc) {
     const mobCol = document.createElement('div');
     mobCol.className = 'mob-column';
     mobCol.appendChild(monsterList);
+    mobCol.appendChild(partyList);
 
     navRow.appendChild(navCol);
     navRow.appendChild(mobCol);
@@ -2326,8 +2422,9 @@ function renderCombatScreen(app, mobs, destination) {
         container.appendChild(actionColumn);
     }
 
-    const { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, fleeBtn } = createActionButtons(false);
+    const { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn } = createActionButtons(false);
     actionColumn.appendChild(actionDiv);
+    const spells = activeCharacter.spells || [];
 
     mobs.forEach(m => {
         m.currentHP = (m.hp || parseLevel(m.level) * 20);
@@ -2668,6 +2765,7 @@ function renderCombatScreen(app, mobs, destination) {
         abilitySelect.disabled = !enabled;
         magicBtn.disabled = !enabled || !spells.length;
         magicSelect.disabled = !enabled || !spells.length;
+        castBtn.disabled = !enabled || !spells.length;
         fleeBtn.disabled = !enabled;
     }
 
@@ -2722,15 +2820,15 @@ function renderCombatScreen(app, mobs, destination) {
         afterAction();
     });
 
-    magicBtn.addEventListener('click', () => {
-        const target = getSelectedMonster(mobs);
+    castBtn.addEventListener('click', () => {
+        const target = getSelectedMonster(mobs) || getSelectedPartyMember();
         if (!target) {
             log('No target selected.');
             return;
         }
         const spell = magicSelect.value || 'Spell';
-        log(`${activeCharacter.name} casts ${spell}.`);
-        attack(activeCharacter, target);
+        const tName = target.name || target;
+        log(`${activeCharacter.name} casts ${spell} on ${tName}.`);
         afterAction();
     });
 

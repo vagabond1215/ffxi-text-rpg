@@ -389,6 +389,15 @@ body.portrait .nav-row {
 .monster-btn.target {
     outline: 2px solid yellow;
 }
+
+.party-btn {
+    width: 150px;
+    margin: 1px 0;
+}
+
+.party-btn.target {
+    outline: 2px solid yellow;
+}
 #direction-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1005,7 +1014,7 @@ body.portrait .main-layout {
     width: 100%;
 }
 
-#action-buttons .with-select button {
+#action-buttons .with-select button:first-child {
     border-bottom: none;
     border-radius: 4px 4px 0 0;
 }
@@ -1017,6 +1026,16 @@ body.portrait .main-layout {
     background: #222;
     color: #fff;
     margin-top: -1px;
+}
+
+#action-buttons .with-select.with-cast select {
+    border-bottom: none;
+    border-radius: 0;
+}
+
+#action-buttons .with-select.with-cast button:last-child {
+    border-top: none;
+    border-radius: 0 0 4px 4px;
 }
 
 #action-buttons button,
@@ -1058,7 +1077,7 @@ body.portrait .main-layout {
 }
 
 /* Item popup */
-#item-popup {
+#item-popup { 
     position: fixed;
     top: 0;
     left: 0;
@@ -1069,6 +1088,37 @@ body.portrait .main-layout {
     align-items: center;
     justify-content: center;
     z-index: 1240;
+}
+#profile-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1240;
+}
+#profile-popup-content {
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 4px;
+    color: #fff;
+    text-align: left;
+    max-width: 300px;
+}
+#profile-popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    font-size: 20px;
+    cursor: pointer;
 }
 #item-popup-content {
     background: rgba(0,0,0,0.9);
