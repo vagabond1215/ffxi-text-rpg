@@ -82,6 +82,9 @@ let partyListElement = null;
 // Optional callback invoked when a monster is highlighted
 let monsterSelectHandler = null;
 
+// Global toggle for auto attacking
+let autoAttacking = false;
+
 let monsterListElement = null;
 let updateMonsterDisplay = () => {};
 let navColumnElement = null;
@@ -2190,6 +2193,7 @@ function createActionButtons(disabled = false) {
 
     const attackBtn = document.createElement('button');
     attackBtn.textContent = 'Auto Attack';
+    if (autoAttacking) attackBtn.classList.add('auto-on');
 
     const abilitySelect = document.createElement('select');
     const abilityBtn = document.createElement('button');
@@ -2244,6 +2248,8 @@ function createActionButtons(disabled = false) {
 
 function createActionPanel(root, loc) {
     if (!loc || loc.distance <= 0) return null;
+
+    autoAttacking = activeCharacter?.autoAttack || false;
 
     const restBtn = document.createElement('button');
     restBtn.id = 'rest-button';
@@ -2365,6 +2371,37 @@ function createActionPanel(root, loc) {
         updateTargetIndicator();
     }
 
+    function engageSelectedMonster() {
+        let idx = selectedMonsterIndex;
+        if (idx === null && activeCharacter) idx = activeCharacter.targetIndex;
+        if (idx === null || !nearbyMonsters[idx] || nearbyMonsters[idx].defeated) return;
+        const target = nearbyMonsters[idx];
+        target.aggro = true;
+        target.listIndex = idx;
+        if (activeCharacter) {
+            activeCharacter.targetIndex = idx;
+            persistCharacter(activeCharacter);
+        }
+        updateMonsterDisplay();
+        const zone = loc.name;
+        const sub = getSubArea(zone, activeCharacter.coordinates);
+        const group = huntEncounter(zone, target.name, sub);
+        if (group.length) {
+            group[0] = target;
+        } else {
+            group.push(target);
+        }
+        group.forEach(m => {
+            if (m.listIndex === undefined) {
+                m.listIndex = nearbyMonsters.length;
+                m.hp = m.hp || parseLevel(m.level) * 20;
+                nearbyMonsters.push(m);
+                if (activeCharacter) activeCharacter.monsters.push(m);
+            }
+        });
+        renderCombatScreen(root.parentElement, group);
+    }
+
     function renderMonsters() {
         const prevScroll = monsterList.scrollTop;
         monsterIndexList = [];
@@ -2393,8 +2430,16 @@ function createActionPanel(root, loc) {
             const idxVal = m.listIndex ?? i;
             const btn = document.createElement('button');
             btn.dataset.idx = idxVal;
-            btn.textContent = m.name;
             btn.className = 'monster-btn';
+            if (m.aggro && !m.defeated) {
+                const icon = document.createElement('span');
+                icon.className = 'aggro-icon';
+                icon.textContent = '⚔';
+                btn.appendChild(icon);
+            }
+            const label = document.createElement('span');
+            label.textContent = m.name;
+            btn.appendChild(label);
             if (m.maxHp === undefined) m.maxHp = m.hp;
             const pct = m.maxHp > 0 ? Math.max(0, Math.min(100, (m.hp / m.maxHp) * 100)) : 0;
             const hpBar = document.createElement('div');
@@ -2402,13 +2447,16 @@ function createActionPanel(root, loc) {
             hpBar.style.width = `${pct}%`;
             btn.appendChild(hpBar);
             if (m.defeated) btn.classList.add('defeated');
-            if (m.aggro && !m.defeated) btn.classList.add('aggro');
             if (idxVal === selectedMonsterIndex) btn.classList.add('target');
             btn.addEventListener('click', () => {
                 if (m.defeated) return;
                 setTargetIndex(idxVal);
                 currentTargetMonster = nearbyMonsters.find(n => (n.listIndex ?? nearbyMonsters.indexOf(n)) === idxVal) || m;
                 if (activeCharacter) persistCharacter(activeCharacter);
+                if (autoAttacking) {
+                    engageSelectedMonster();
+                    return;
+                }
                 if (typeof monsterSelectHandler === 'function') {
                     monsterSelectHandler(idxVal);
                 }
@@ -2456,36 +2504,24 @@ function createActionPanel(root, loc) {
     actionColumn.className = 'action-column';
     const { actionDiv, attackBtn } = createActionButtons(true);
     attackBtn.disabled = false;
+    attackBtn.classList.toggle('auto-on', autoAttacking);
     attackBtn.addEventListener('click', () => {
-        let idx = selectedMonsterIndex;
-        if (idx === null && activeCharacter) idx = activeCharacter.targetIndex;
-        if (idx === null || !nearbyMonsters[idx] || nearbyMonsters[idx].defeated) return;
-        const target = nearbyMonsters[idx];
-        target.aggro = true;
-        target.listIndex = idx;
-        if (activeCharacter) {
-            activeCharacter.targetIndex = idx;
-            persistCharacter(activeCharacter);
-        }
-        updateMonsterDisplay();
-        const zone = loc.name;
-        const sub = getSubArea(zone, activeCharacter.coordinates);
-        const group = huntEncounter(zone, target.name, sub);
-        if (group.length) {
-            group[0] = target;
-        } else {
-            group.push(target);
-        }
-        // Assign listIndex for additional group members so targeting works
-        group.forEach(m => {
-            if (m.listIndex === undefined) {
-                m.listIndex = nearbyMonsters.length;
-                m.hp = m.hp || parseLevel(m.level) * 20;
-                nearbyMonsters.push(m);
-                if (activeCharacter) activeCharacter.monsters.push(m);
+        if (autoAttacking) {
+            autoAttacking = false;
+            attackBtn.classList.remove('auto-on');
+            if (activeCharacter) {
+                activeCharacter.autoAttack = false;
+                persistCharacter(activeCharacter);
             }
-        });
-        renderCombatScreen(root.parentElement, group);
+        } else {
+            autoAttacking = true;
+            attackBtn.classList.add('auto-on');
+            if (activeCharacter) {
+                activeCharacter.autoAttack = true;
+                persistCharacter(activeCharacter);
+            }
+            engageSelectedMonster();
+        }
     });
     actionColumn.appendChild(actionDiv);
     const poiList = document.createElement('div');
@@ -2555,10 +2591,13 @@ function renderCombatScreen(app, mobs, destination) {
             if (autoAttacking) schedulePlayerAttack();
         }
     };
+
+    if (autoAttacking && currentTargetMonster) {
+        schedulePlayerAttack();
+    }
     
     let battleEnded = false;
     const defeated = [];
-    let autoAttacking = false;
     let playerTimer = null;
     const monsterTimers = new Map();
 
@@ -2644,7 +2683,8 @@ function renderCombatScreen(app, mobs, destination) {
                     : f === 'mp' ? activeCharacter.mp
                     : activeCharacter.stats[f];
                 const diff = after - before;
-                if (diff !== 0) diffs.push(`${f.toUpperCase()} ${diff > 0 ? '+'+diff : diff}`);
+                const shown = Math.round(diff);
+                if (shown !== 0) diffs.push(`${f.toUpperCase()} ${shown > 0 ? '+'+shown : shown}`);
             });
             addGameLog(`Level up! ${oldLevel} → ${activeCharacter.level} | ${diffs.join(', ')}`);
             showGameLogTemporarily();
@@ -2814,7 +2854,7 @@ function renderCombatScreen(app, mobs, destination) {
                 const mobDelay = attacker.delay || 240;
                 gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
                 if (activeCharacter.hp <= 0) {
-                    stopAutoAttack();
+                    stopAutoAttack(false);
                     endBattle();
                     return;
                 }
@@ -2853,11 +2893,9 @@ function renderCombatScreen(app, mobs, destination) {
         clearTimeout(playerTimer);
         playerTimer = setTimeout(() => {
             const target = getSelectedMonster(mobs);
-            if (!target) {
-                return;
-            }
+            if (!target) return;
             attack(activeCharacter, target);
-            if (!battleEnded) schedulePlayerAttack();
+            if (!battleEnded && autoAttacking && getSelectedMonster(mobs)) schedulePlayerAttack();
         }, weaponDelayMs() + extra);
     }
 
@@ -2875,9 +2913,7 @@ function renderCombatScreen(app, mobs, destination) {
         monsterTimers.set(mob, t);
     }
 
-    function stopAutoAttack() {
-        autoAttacking = false;
-        attackBtn.classList.remove('auto-on');
+    function stopAutoAttack(reset = false) {
         clearTimeout(playerTimer);
         monsterTimers.forEach((t, mob) => {
             if (!mob.aggro) {
@@ -2885,6 +2921,14 @@ function renderCombatScreen(app, mobs, destination) {
                 monsterTimers.delete(mob);
             }
         });
+        if (reset) {
+            autoAttacking = false;
+            attackBtn.classList.remove('auto-on');
+            if (activeCharacter) {
+                activeCharacter.autoAttack = false;
+                persistCharacter(activeCharacter);
+            }
+        }
     }
 
     function endBattle(clearList = true) {
@@ -2898,9 +2942,7 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
-        autoAttacking = false;
-        attackBtn.classList.remove('auto-on');
-        clearTimeout(playerTimer);
+        stopAutoAttack(false);
         monsterTimers.forEach(t => clearTimeout(t));
         monsterTimers.clear();
         if (clearList) {
@@ -2969,10 +3011,14 @@ function renderCombatScreen(app, mobs, destination) {
 
     attackBtn.addEventListener('click', () => {
         if (autoAttacking) {
-            stopAutoAttack();
+            stopAutoAttack(true);
         } else {
             autoAttacking = true;
             attackBtn.classList.add('auto-on');
+            if (activeCharacter) {
+                activeCharacter.autoAttack = true;
+                persistCharacter(activeCharacter);
+            }
             const target = getSelectedMonster(mobs);
             if (target) {
                 schedulePlayerAttack();
@@ -3016,7 +3062,7 @@ function renderCombatScreen(app, mobs, destination) {
     });
 
     fleeBtn.addEventListener('click', () => {
-        stopAutoAttack();
+        stopAutoAttack(false);
         attemptFlee();
     });
 
