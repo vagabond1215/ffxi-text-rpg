@@ -849,7 +849,17 @@ export function equipJobPreset(character, job) {
   if (!character) return;
   const base = character.equipment ? Object.keys(character.equipment).reduce((o,k)=>{o[k]=null;return o;}, {}) : {};
   const preset = character.jobPresets?.[job];
-  character.equipment = preset ? { ...base, ...preset } : base;
+  if (preset) {
+    character.equipment = { ...base };
+    for (const [slot, id] of Object.entries(preset)) {
+      if (!id) continue;
+      const hasItem = character.inventory?.some(e => e.id === id) ||
+        character.wardrobe?.some(e => e.id === id);
+      character.equipment[slot] = hasItem ? id : null;
+    }
+  } else {
+    character.equipment = base;
+  }
 }
 
 export function changeJob(character, job) {
