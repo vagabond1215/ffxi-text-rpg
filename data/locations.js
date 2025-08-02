@@ -125,7 +125,6 @@ export const zonesByCity = {
         'Dangruf Wadi': 'D-9',
         'North Gustaberg (West)': 'E-6',
         'North Gustaberg (East)': 'H-5',
-        'Vomp Hill L1': 'J-8',
         'Goblin Camp': 'K-10',
         'Cavernous Maw (Abyssea – Altepa)': 'J-10'
       },
@@ -134,7 +133,6 @@ export const zonesByCity = {
         'North Gustaberg (East)',
         'North Gustaberg (West)',
         'Dangruf Wadi',
-        'Vomp Hill L1',
         'Goblin Camp'
       ],
       pointsOfInterest: [],
@@ -147,8 +145,8 @@ export const zonesByCity = {
       region: 'Gustaberg',
       distance: 1,
       parent: 'South Gustaberg',
-      coordinates: { 'South Gustaberg': 'J-8', 'Vomp Hill L2': 'J-8' },
-      connectedAreas: ['South Gustaberg', 'Vomp Hill L2'],
+      coordinates: { 'Vomp Hill L2': 'J-8' },
+      connectedAreas: ['Vomp Hill L2'],
       pointsOfInterest: [],
       importantNPCs: []
     },
