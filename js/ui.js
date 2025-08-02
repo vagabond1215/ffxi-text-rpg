@@ -646,15 +646,43 @@ function createImageContainer() {
 
 function updateHPDisplay() {
     if (!activeCharacter) return;
-    const hpLine = document.getElementById('hp-line');
-    const hpBar = document.getElementById('char-hp-bar');
-    if (hpLine) {
-        hpLine.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
-    }
+    const hpBar = document.getElementById('hp-bar');
+    const mpBar = document.getElementById('mp-bar');
+    const tpBar = document.getElementById('tp-bar');
+    const charHpBar = document.getElementById('char-hp-bar');
+    const xpBar = document.getElementById('xp-bar');
+
     if (hpBar) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
         const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
-        hpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+        hpBar.textContent = `HP ${activeCharacter.hp}/${maxHp}`;
+        hpBar.style.backgroundImage = `linear-gradient(to right, darkred ${pct}%, #333 ${pct}%)`;
+    }
+
+    if (mpBar) {
+        const maxMp = activeCharacter.raceMP + activeCharacter.jobMP + activeCharacter.sJobMP;
+        const pct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((activeCharacter.mp / maxMp) * 100))) : 0;
+        mpBar.textContent = `MP ${activeCharacter.mp}/${maxMp}`;
+        mpBar.style.backgroundImage = `linear-gradient(to right, lightblue ${pct}%, #333 ${pct}%)`;
+    }
+
+    if (tpBar) {
+        const maxTp = 3000;
+        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.tp / maxTp) * 100)));
+        tpBar.textContent = `TP ${activeCharacter.tp}/${maxTp}`;
+        tpBar.style.backgroundImage = `linear-gradient(to right, yellowgreen ${pct}%, #333 ${pct}%)`;
+    }
+
+    if (charHpBar) {
+        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
+        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
+        charHpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+    }
+
+    if (xpBar && activeCharacter.xpMode === 'EXP') {
+        const next = expToLevel[activeCharacter.level + 1] || activeCharacter.experience;
+        const pct = next > 0 ? Math.max(0, Math.min(100, Math.round((activeCharacter.experience / next) * 100))) : 0;
+        xpBar.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
     }
 }
 
@@ -939,39 +967,51 @@ export function renderMainMenu() {
 
         const subJob = Object.keys(activeCharacter.jobs || {}).find(j => j !== activeCharacter.job);
         const subLvl = subJob ? activeCharacter.jobs[subJob] : 0;
-        let jobText = `${activeCharacter.job} Lv.${activeCharacter.level}`;
+        const mainAbbr = jobs.find(j => j.name === activeCharacter.job)?.abbr || activeCharacter.job.slice(0,3).toUpperCase();
+        let jobText = `${mainAbbr} Lv.${activeCharacter.level}`;
         if (subJob) {
-            jobText = `${activeCharacter.job}/${subJob} ${activeCharacter.level}/${subLvl}`;
+            const subAbbr = jobs.find(j => j.name === subJob)?.abbr || subJob.slice(0,3).toUpperCase();
+            jobText = `${mainAbbr}/${subAbbr} ${activeCharacter.level}/${subLvl}`;
         }
         line2.textContent = jobText;
 
-        const line3 = document.createElement('div');
-        line3.id = 'hp-line';
-        line3.textContent = `HP: ${activeCharacter.hp} MP: ${activeCharacter.mp} TP: ${activeCharacter.tp}`;
+        const hpLine = document.createElement('div');
+        hpLine.id = 'hp-bar';
+        hpLine.className = 'stat-bar hp';
+
+        const mpLine = document.createElement('div');
+        mpLine.id = 'mp-bar';
+        mpLine.className = 'stat-bar mp';
+
+        const tpLine = document.createElement('div');
+        tpLine.id = 'tp-bar';
+        tpLine.className = 'stat-bar tp';
 
         const line4 = document.createElement('div');
         line4.textContent = `ATK: ${getAttack(activeCharacter)} DEF: ${getDefense(activeCharacter)}`;
         const line5 = document.createElement('div');
         line5.textContent = `Gil: ${activeCharacter.gil}`;
 
-        const lineTime = document.createElement('div');
-        lineTime.textContent = `Time: ${formatVanaTime(currentVanaTime())}`;
-
         const lineCp = document.createElement('div');
-        lineCp.textContent = `Conquest Points: ${activeCharacter.conquestPoints || 0}`;
+        lineCp.textContent = `CP: ${activeCharacter.conquestPoints || 0}`;
 
-        const line6 = document.createElement('div');
+        const xpLine = document.createElement('div');
+        xpLine.id = 'xp-bar';
+        xpLine.className = 'stat-bar xp';
         let progressText;
         if (activeCharacter.level >= 99 && activeCharacter.xpMode === 'CP') {
             const needed = 30000 - ((activeCharacter.capacityPoints || 0) % 30000);
-            progressText = `CP to Next Job Point: ${needed}`;
+            progressText = `CP to Next JP: ${needed}`;
         } else if (activeCharacter.level >= 75 && activeCharacter.xpMode === 'LP') {
             const needed = 10000 - ((activeCharacter.limitPoints || 0) % 10000);
             progressText = `LP to Next Merit: ${needed}`;
         } else {
-            progressText = `EXP to Next Level: ${expNeeded(activeCharacter)}`;
+            const next = expToLevel[activeCharacter.level + 1];
+            const pct = next ? Math.max(0, Math.min(100, Math.round((activeCharacter.experience / next) * 100))) : 0;
+            progressText = `XP: ${activeCharacter.experience}/${next}`;
+            xpLine.style.backgroundImage = `linear-gradient(to right, orange ${pct}%, #333 ${pct}%)`;
         }
-        line6.textContent = progressText;
+        xpLine.textContent = progressText;
 
         let modeBtn = null;
         if (activeCharacter.level >= 75) {
@@ -1047,12 +1087,13 @@ export function renderMainMenu() {
         });
 
         details.appendChild(line2);
-        details.appendChild(line3);
+        details.appendChild(hpLine);
+        details.appendChild(mpLine);
+        details.appendChild(tpLine);
         details.appendChild(line4);
         details.appendChild(line5);
-        details.appendChild(lineTime);
         details.appendChild(lineCp);
-        details.appendChild(line6);
+        details.appendChild(xpLine);
         if (modeBtn) details.appendChild(modeBtn);
         group.appendChild(invBtn);
         group.appendChild(equipBtn);

@@ -1,6 +1,7 @@
 export const jobs = [
   {
     name: 'Warrior',
+    abbr: 'WAR',
     proficiencies: { hp: 'B', mp: 'X', str: 'A', dex: 'C', vit: 'D', agi: 'C', int: 'F', mnd: 'F', chr: 'E' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -62,6 +63,7 @@ export const jobs = [
   },
   {
     name: 'Monk',
+    abbr: 'MNK',
     proficiencies: { hp: 'A', mp: 'X', str: 'C', dex: 'B', vit: 'A', agi: 'F', int: 'G', mnd: 'D', chr: 'E' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -122,6 +124,7 @@ export const jobs = [
   },
   {
     name: 'White Mage',
+    abbr: 'WHM',
     proficiencies: { hp: 'E', mp: 'C', str: 'D', dex: 'F', vit: 'D', agi: 'E', int: 'E', mnd: 'A', chr: 'C' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -161,6 +164,7 @@ export const jobs = [
   },
   {
     name: 'Black Mage',
+    abbr: 'BLM',
     proficiencies: { hp: 'F', mp: 'B', str: 'F', dex: 'C', vit: 'F', agi: 'C', int: 'A', mnd: 'E', chr: 'D' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -203,6 +207,7 @@ export const jobs = [
   },
   {
     name: 'Red Mage',
+    abbr: 'RDM',
     proficiencies: { hp: 'D', mp: 'D', str: 'D', dex: 'D', vit: 'E', agi: 'E', int: 'C', mnd: 'C', chr: 'D' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -242,6 +247,7 @@ export const jobs = [
   },
   {
     name: 'Thief',
+    abbr: 'THF',
     proficiencies: { hp: 'D', mp: 'X', str: 'D', dex: 'A', vit: 'D', agi: 'B', int: 'C', mnd: 'G', chr: 'G' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -294,6 +300,7 @@ export const jobs = [
   },
   {
     name: 'Paladin',
+    abbr: 'PLD',
     proficiencies: { hp: 'C', mp: 'F', str: 'B', dex: 'E', vit: 'A', agi: 'G', int: 'G', mnd: 'C', chr: 'C' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -344,6 +351,7 @@ export const jobs = [
   },
   {
     name: 'Dark Knight',
+    abbr: 'DRK',
     proficiencies: { hp: 'C', mp: 'F', str: 'A', dex: 'C', vit: 'C', agi: 'D', int: 'C', mnd: 'G', chr: 'G' },
     traits: [
       { name: 'Attack Bonus I', effect: 'Increases attack', level: 10 },
@@ -370,6 +378,7 @@ export const jobs = [
   },
   {
     name: 'Beastmaster',
+    abbr: 'BST',
     proficiencies: { hp: 'C', mp: 'X', str: 'D', dex: 'C', vit: 'D', agi: 'F', int: 'E', mnd: 'E', chr: 'A' },
     traits: [
       { name: 'Resist Slow I', effect: 'Reduces duration of Slow', level: 15 },
@@ -395,6 +404,7 @@ export const jobs = [
   },
   {
     name: 'Bard',
+    abbr: 'BRD',
     proficiencies: { hp: 'D', mp: 'X', str: 'D', dex: 'D', vit: 'D', agi: 'F', int: 'D', mnd: 'D', chr: 'B' },
     verified: { traits: true, abilities: true },
     traits: [
@@ -422,6 +432,7 @@ export const jobs = [
   },
   {
     name: 'Ranger',
+    abbr: 'RNG',
     proficiencies: { hp: 'E', mp: 'X', str: 'E', dex: 'D', vit: 'D', agi: 'A', int: 'E', mnd: 'D', chr: 'E' },
     traits: [
       { name: 'Wide Scan III', effect: 'Allows tracking of distant foes', level: 1 },
@@ -450,6 +461,7 @@ export const jobs = [
   },
   {
     name: 'Samurai',
+    abbr: 'SAM',
     proficiencies: { hp: 'B', mp: 'X', str: 'C', dex: 'C', vit: 'C', agi: 'D', int: 'E', mnd: 'E', chr: 'D' },
     traits: [
       { name: 'Resist Blind I', effect: 'Improves blind resistance', level: 5 },
@@ -477,6 +489,7 @@ export const jobs = [
   },
   {
     name: 'Ninja',
+    abbr: 'NIN',
     proficiencies: { hp: 'D', mp: 'X', str: 'C', dex: 'B', vit: 'C', agi: 'B', int: 'D', mnd: 'G', chr: 'F' },
     traits: [
       { name: 'Stealth I', effect: 'Reduces sound detection', level: 5 },
@@ -529,6 +542,7 @@ export const jobs = [
   },
   {
     name: 'Dragoon',
+    abbr: 'DRG',
     proficiencies: { hp: 'C', mp: 'X', str: 'C', dex: 'E', vit: 'C', agi: 'E', int: 'F', mnd: 'E', chr: 'C' },
     traits: [
       { name: 'Attack Bonus I', effect: 'Increases attack', level: 10 },
@@ -556,6 +570,7 @@ export const jobs = [
   },
   {
     name: 'Summoner',
+    abbr: 'SMN',
     proficiencies: { hp: 'G', mp: 'A', str: 'G', dex: 'D', vit: 'G', agi: 'D', int: 'B', mnd: 'C', chr: 'C' },
     traits: [
       { name: 'Max MP Boost I', effect: 'Raises maximum MP', level: 10 },
@@ -574,6 +589,7 @@ export const jobs = [
   },
   {
     name: 'Blue Mage',
+    abbr: 'BLU',
     proficiencies: { hp: 'C', mp: 'D', str: 'C', dex: 'C', vit: 'C', agi: 'D', int: 'D', mnd: 'D', chr: 'C' },
     traits: [
       { name: 'Blue Magic Attack Bonus', effect: 'Boosts blue magic', level: 30 },
@@ -593,6 +609,7 @@ export const jobs = [
   },
   {
     name: 'Corsair',
+    abbr: 'COR',
     proficiencies: { hp: 'D', mp: 'E', str: 'E', dex: 'C', vit: 'D', agi: 'B', int: 'D', mnd: 'D', chr: 'B' },
     traits: [
       { name: 'Resist Paralyze I', effect: 'Improves paralyze resistance', level: 5 },
@@ -616,6 +633,7 @@ export const jobs = [
   },
   {
     name: 'Puppetmaster',
+    abbr: 'PUP',
     proficiencies: { hp: 'C', mp: 'E', str: 'D', dex: 'C', vit: 'D', agi: 'C', int: 'D', mnd: 'D', chr: 'C' },
     traits: [
       { name: 'Resist Slow I', effect: 'Improves Slow resistance', level: 10 },
@@ -636,6 +654,7 @@ export const jobs = [
   },
   {
     name: 'Dancer',
+    abbr: 'DNC',
     proficiencies: { hp: 'D', mp: 'X', str: 'D', dex: 'A', vit: 'C', agi: 'C', int: 'C', mnd: 'G', chr: 'C' },
     traits: [
       { name: 'Resist Slow I', effect: 'Improves Slow resistance', level: 20 },
@@ -656,6 +675,7 @@ export const jobs = [
   },
   {
     name: 'Scholar',
+    abbr: 'SCH',
     proficiencies: { hp: 'E', mp: 'B', str: 'E', dex: 'D', vit: 'D', agi: 'D', int: 'B', mnd: 'A', chr: 'D' },
     traits: [
       { name: 'Resist Silence I', effect: 'Improves silence resistance', level: 10 },
@@ -677,6 +697,7 @@ export const jobs = [
   },
   {
     name: 'Geomancer',
+    abbr: 'GEO',
     proficiencies: { hp: 'E', mp: 'B', str: 'E', dex: 'D', vit: 'D', agi: 'D', int: 'C', mnd: 'A', chr: 'D' },
     traits: [
       { name: 'Conserve MP', effect: 'Chance to use less MP', level: 10 },
@@ -701,6 +722,7 @@ export const jobs = [
   },
   {
     name: 'Rune Fencer',
+    abbr: 'RUN',
     proficiencies: { hp: 'B', mp: 'D', str: 'C', dex: 'C', vit: 'B', agi: 'D', int: 'C', mnd: 'D', chr: 'C' },
     traits: [
       { name: 'Tenacity', effect: 'Reduces physical damage taken', level: 1 },
