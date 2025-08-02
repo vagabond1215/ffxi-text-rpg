@@ -341,15 +341,31 @@ export function setupStoragePopup(el, content, closeBtn) {
 }
 
 function addItem(list, id, qty) {
-    const existing = list.find(i => i.id === id);
-    if (existing) existing.qty += qty; else list.push({ id, qty });
+    const item = items[id];
+    if (!item) return;
+    if (item.stack === 1) {
+        for (let i = 0; i < qty; i++) list.push({ id, qty: 1 });
+    } else {
+        const existing = list.find(i => i.id === id);
+        if (existing) existing.qty = Math.min(item.stack, existing.qty + qty);
+        else list.push({ id, qty: Math.min(item.stack, qty) });
+    }
 }
 
 function removeItem(list, id, qty) {
-    const entry = list.find(i => i.id === id);
-    if (!entry) return;
-    entry.qty -= qty;
-    if (entry.qty <= 0) list.splice(list.indexOf(entry), 1);
+    const item = items[id];
+    if (!item) return;
+    if (item.stack === 1) {
+        for (let i = 0; i < qty; i++) {
+            const idx = list.findIndex(e => e.id === id);
+            if (idx !== -1) list.splice(idx, 1);
+        }
+    } else {
+        const entry = list.find(i => i.id === id);
+        if (!entry) return;
+        entry.qty -= qty;
+        if (entry.qty <= 0) list.splice(list.indexOf(entry), 1);
+    }
 }
 
 function renderTransferPopup(type) {
@@ -357,6 +373,14 @@ function renderTransferPopup(type) {
     storagePopupContentElement.innerHTML = '';
     const filter = type === 'wardrobe' ? canEquipItem : (it => !canEquipItem(it));
     const dest = type === 'wardrobe' ? activeCharacter.wardrobe : activeCharacter.storage;
+    const invItems = activeCharacter.inventory.map(e => ({ ...e }));
+    const destItems = dest.map(e => ({ ...e }));
+    Object.values(activeCharacter.equipment || {}).forEach(id => {
+        if (id) {
+            removeItem(invItems, id, 1);
+            removeItem(destItems, id, 1);
+        }
+    });
     const invDiv = document.createElement('div');
     const destDiv = document.createElement('div');
     const invTitle = document.createElement('h3');
@@ -364,11 +388,13 @@ function renderTransferPopup(type) {
     invDiv.appendChild(invTitle);
     const invList = document.createElement('ul');
     invList.className = 'inventory-list';
-    activeCharacter.inventory.filter(e => filter(items[e.id])).forEach(ent => {
+    invItems.filter(e => filter(items[e.id])).forEach(ent => {
         const li = document.createElement('li');
         li.className = 'transfer-item';
         const span = document.createElement('span');
-        span.textContent = `${items[ent.id].name} x${ent.qty}`;
+        const stack = items[ent.id].stack;
+        const qtyText = stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
+        span.textContent = `${items[ent.id].name}${qtyText}`;
         const btn = document.createElement('button');
         btn.className = 'transfer-arrow';
         btn.textContent = '→';
@@ -389,11 +415,13 @@ function renderTransferPopup(type) {
     destDiv.appendChild(destTitle);
     const destList = document.createElement('ul');
     destList.className = 'inventory-list';
-    dest.forEach(ent => {
+    destItems.forEach(ent => {
         const li = document.createElement('li');
         li.className = 'transfer-item';
         const span = document.createElement('span');
-        span.textContent = `${items[ent.id].name} x${ent.qty}`;
+        const stack = items[ent.id].stack;
+        const qtyText = stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
+        span.textContent = `${items[ent.id].name}${qtyText}`;
         const btn = document.createElement('button');
         btn.className = 'transfer-arrow';
         btn.textContent = '←';
@@ -404,6 +432,16 @@ function renderTransferPopup(type) {
             renderTransferPopup(type);
         });
         li.appendChild(btn);
+        if (type === 'wardrobe' && canEquipItem(items[ent.id])) {
+            const eq = document.createElement('button');
+            eq.textContent = 'Equip';
+            eq.addEventListener('click', () => {
+                activeCharacter.equipment[items[ent.id].slot] = ent.id;
+                persistCharacter(activeCharacter);
+                renderTransferPopup(type);
+            });
+            li.appendChild(eq);
+        }
         li.appendChild(span);
         destList.appendChild(li);
     });
@@ -1095,12 +1133,13 @@ export function renderMainMenu() {
         tpLine.id = 'tp-bar';
         tpLine.className = 'stat-bar tp';
 
+        const statsWrap = document.createElement('div');
         const atkLine = document.createElement('div');
         atkLine.textContent = `ATK: ${getAttack(activeCharacter)}`;
         const defLine = document.createElement('div');
         defLine.textContent = `DEF: ${getDefense(activeCharacter)}`;
-
-        const statsLines = document.createElement('div');
+        statsWrap.appendChild(atkLine);
+        statsWrap.appendChild(defLine);
         const { str = 0, dex = 0, vit = 0, agi = 0, int = 0, mnd = 0, chr = 0 } = activeCharacter.stats || {};
         [
             ['STR', str],
@@ -1113,7 +1152,7 @@ export function renderMainMenu() {
         ].forEach(([label, val]) => {
             const line = document.createElement('div');
             line.textContent = `${label} ${Math.round(val)}`;
-            statsLines.appendChild(line);
+            statsWrap.appendChild(line);
         });
 
         const xpLine = document.createElement('div');
@@ -1174,10 +1213,16 @@ export function renderMainMenu() {
         details.id = 'character-details';
         details.classList.add('hidden');
 
-        details.appendChild(imgNav.wrapper);
         const nameLine = document.createElement('div');
-        nameLine.textContent = activeCharacter.name;
+        nameLine.className = 'profile-name-line';
+        nameLine.textContent = `${activeCharacter.name} - ${activeCharacter.job} Lv.${activeCharacter.level}`;
         details.appendChild(nameLine);
+        const infoRow = document.createElement('div');
+        infoRow.className = 'profile-info';
+        infoRow.appendChild(imgNav.wrapper);
+        statsWrap.classList.add('profile-stats');
+        infoRow.appendChild(statsWrap);
+        details.appendChild(infoRow);
 
         let holdTimer;
         const startHold = () => {
@@ -1226,9 +1271,6 @@ export function renderMainMenu() {
 
         details.appendChild(invBtn);
         details.appendChild(equipBtn);
-        details.appendChild(atkLine);
-        details.appendChild(defLine);
-        details.appendChild(statsLines);
         if (modeBtn) details.appendChild(modeBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
@@ -2351,8 +2393,14 @@ function createActionPanel(root, loc) {
             const idxVal = m.listIndex ?? i;
             const btn = document.createElement('button');
             btn.dataset.idx = idxVal;
-            btn.textContent = `${m.name} HP:${m.hp}`;
+            btn.textContent = m.name;
             btn.className = 'monster-btn';
+            if (m.maxHp === undefined) m.maxHp = m.hp;
+            const pct = m.maxHp > 0 ? Math.max(0, Math.min(100, (m.hp / m.maxHp) * 100)) : 0;
+            const hpBar = document.createElement('div');
+            hpBar.className = 'monster-hp-bar';
+            hpBar.style.width = `${pct}%`;
+            btn.appendChild(hpBar);
             if (m.defeated) btn.classList.add('defeated');
             if (m.aggro && !m.defeated) btn.classList.add('aggro');
             if (idxVal === selectedMonsterIndex) btn.classList.add('target');
@@ -2562,8 +2610,7 @@ function renderCombatScreen(app, mobs, destination) {
 
     function addItemsToInventory(list) {
         list.forEach(({ id, qty }) => {
-            const existing = activeCharacter.inventory.find(i => i.id === id);
-            if (existing) existing.qty += qty; else activeCharacter.inventory.push({ id, qty });
+            addItem(activeCharacter.inventory, id, qty);
         });
         activeCharacter.inventory.sort((a, b) => {
             const n1 = items[a.id]?.name || a.id;
@@ -3034,12 +3081,7 @@ function buyItem(id, qty = 1) {
         return;
     }
     activeCharacter.gil -= cost;
-    const existing = activeCharacter.inventory.find(i => i.id === id);
-    if (existing) {
-        existing.qty += qty;
-    } else {
-        activeCharacter.inventory.push({ id, qty });
-    }
+    addItem(activeCharacter.inventory, id, qty);
     persistCharacter(activeCharacter);
     alert(`Purchased ${qty} x ${item.name}.`);
 }
@@ -3202,7 +3244,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
 
         const name = document.createElement('button');
         name.className = 'vendor-name vendor-name-btn';
-        const qtyText = item.stack > 1 || entry.qty > 1 ? ` x${entry.qty}` : '';
+        const qtyText = item.stack > 1 && entry.qty > 1 ? ` x${entry.qty}` : '';
         name.textContent = item.name + qtyText;
         name.addEventListener('click', () => showItemPopup(item));
         const price = document.createElement('span');
@@ -3215,7 +3257,7 @@ export function renderVendorScreen(root, vendor, backFn = null, mode = 'buy') {
         const actions = document.createElement('div');
         actions.className = 'vendor-actions';
         let qtyInput = null;
-        if ((item.stack > 1 || entry.qty > 1) && entry.qty > 1) {
+        if (item.stack > 1 && entry.qty > 1) {
             qtyInput = document.createElement('input');
             qtyInput.type = 'number';
             qtyInput.min = '1';

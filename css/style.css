@@ -374,6 +374,8 @@ body.portrait .nav-row {
 .monster-btn {
     width: 150px;
     margin: 1px 0;
+    position: relative;
+    padding-bottom: 5px;
 }
 
 .monster-btn.defeated {
@@ -388,6 +390,14 @@ body.portrait .nav-row {
 
 .monster-btn.target {
     outline: 2px solid yellow;
+}
+
+.monster-hp-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    background-color: darkred;
 }
 
 .party-btn {
@@ -1132,6 +1142,24 @@ body.portrait .main-layout {
     padding: 4px 8px;
     font-size: 20px;
     cursor: pointer;
+}
+
+.profile-name-line {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: stretch;
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10px;
+    height: 100%;
 }
 #item-popup-content {
     background: rgba(0,0,0,0.9);
