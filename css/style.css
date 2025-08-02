@@ -393,10 +393,23 @@ body.portrait .nav-row {
 .party-btn {
     width: 150px;
     margin: 1px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-start;
 }
 
 .party-btn.target {
     outline: 2px solid yellow;
+}
+
+#party-list {
+    margin-top: 8px;
+}
+
+.auto-on {
+    background-color: #DAA520;
+    color: black;
 }
 #direction-grid {
     display: grid;
