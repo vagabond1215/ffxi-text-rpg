@@ -29,7 +29,7 @@ export function encounterChance(playerLevel, monsterLevel) {
 
 import { bestiaryByZone } from '../data/bestiary.js';
 import { locations } from '../data/locations.js';
-import { getSubArea, zoneMaps } from '../data/maps.js';
+import { zoneMaps } from '../data/maps.js';
 
 function getBaseZone(zone) {
   const loc = locations.find(l => l.name === zone);
@@ -158,7 +158,8 @@ export function getZoneTravelTurns(zone, baseZone = zone) {
 
 export function rollForEncounter(character, zone, options = {}) {
   const usingMount = !!options.mount;
-  const sub = getSubArea(zone, character.coordinates);
+  const loc = locations.find(l => l.name === zone);
+  const sub = loc?.parent ? loc.name : null;
   const mobs = getAggressiveMonsters(zone, sub);
   if (!mobs.length) return null;
   const mob = weightedPick(mobs);
@@ -172,7 +173,8 @@ export function rollForEncounter(character, zone, options = {}) {
 
 export function walkAcrossZone(character, zone, options = {}) {
   const usingMount = !!options.mount;
-  const sub = getSubArea(zone, character.coordinates);
+  const loc = locations.find(l => l.name === zone);
+  const sub = loc?.parent ? loc.name : null;
   const turns = Math.ceil(getZoneTravelTurns(zone) / (usingMount ? 2 : 1));
   const encounters = [];
   for (let t = 1; t <= turns; t++) {
@@ -217,7 +219,8 @@ export function huntEncounter(zone, targetName, subArea = null) {
 }
 
 export function spawnNearbyMonsters(character, zone) {
-  const subArea = getSubArea(zone, character.coordinates);
+  const loc = locations.find(l => l.name === zone);
+  const subArea = loc?.parent ? loc.name : null;
   const pool = monstersByDistance(zone, subArea);
   if (!pool.length) return { list: [], aggro: [] };
   const coordStr = `${character.coordinates.letter}-${character.coordinates.number}`;

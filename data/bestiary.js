@@ -616,8 +616,8 @@ export const bestiaryByZone = {
       detection: 'Sight',
       spawns: 6,
       spawnChance: 0.122,
-      coords: ['E-8', 'E-9', 'K-10', 'L-8', 'L-9', 'L-10'],
-      areas: [null, 'Goblin Camp']
+      coords: ['E-8', 'E-9', 'L-8', 'L-9', 'L-10'],
+      areas: [null]
     },
     {
       name: 'Sand Crab',
