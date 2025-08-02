@@ -772,6 +772,11 @@ export function setLocation(character, name, from) {
       character.coordinates = parseCoordinate(coordStr);
     }
   }
+  const maxHp = (character.raceHP || 0) + (character.jobHP || 0) + (character.sJobHP || 0);
+  if (character.hp == null) character.hp = maxHp;
+  const maxMp = (character.raceMP || 0) + (character.jobMP || 0) + (character.sJobMP || 0);
+  if (character.mp == null) character.mp = maxMp;
+  if (character.tp == null) character.tp = 0;
   persistCharacter(character);
 }
 

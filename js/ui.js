@@ -708,28 +708,35 @@ function updateHPDisplay() {
 
     if (hpBar) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
-        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
-        hpBar.textContent = `HP ${activeCharacter.hp}/${maxHp}`;
+        const hpVal = activeCharacter.hp ?? maxHp;
+        if (activeCharacter.hp == null) activeCharacter.hp = hpVal;
+        const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
+        hpBar.textContent = `HP ${hpVal}/${maxHp}`;
         hpBar.style.backgroundImage = `linear-gradient(to right, darkred ${pct}%, #333 ${pct}%)`;
     }
 
     if (mpBar) {
         const maxMp = activeCharacter.raceMP + activeCharacter.jobMP + activeCharacter.sJobMP;
-        const pct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((activeCharacter.mp / maxMp) * 100))) : 0;
-        mpBar.textContent = `MP ${activeCharacter.mp}/${maxMp}`;
+        const mpVal = activeCharacter.mp ?? maxMp;
+        if (activeCharacter.mp == null) activeCharacter.mp = mpVal;
+        const pct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((mpVal / maxMp) * 100))) : 0;
+        mpBar.textContent = `MP ${mpVal}/${maxMp}`;
         mpBar.style.backgroundImage = `linear-gradient(to right, lightblue ${pct}%, #333 ${pct}%)`;
     }
 
     if (tpBar) {
         const maxTp = 3000;
-        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.tp / maxTp) * 100)));
-        tpBar.textContent = `TP ${activeCharacter.tp}/${maxTp}`;
+        const tpVal = activeCharacter.tp ?? 0;
+        if (activeCharacter.tp == null) activeCharacter.tp = tpVal;
+        const pct = Math.max(0, Math.min(100, Math.round((tpVal / maxTp) * 100)));
+        tpBar.textContent = `TP ${tpVal}/${maxTp}`;
         tpBar.style.backgroundImage = `linear-gradient(to right, yellowgreen ${pct}%, #333 ${pct}%)`;
     }
 
     if (charHpBar) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
-        const pct = Math.max(0, Math.min(100, Math.round((activeCharacter.hp / maxHp) * 100)));
+        const hpVal = activeCharacter.hp ?? maxHp;
+        const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
         charHpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
     }
 
@@ -2063,6 +2070,9 @@ function getCoordinatePOIs(loc, root) {
                     setLocation(activeCharacter, e.to, loc.name);
                     persistCharacter(activeCharacter);
                     refreshMainMenu(root.parentElement);
+                    const dest = locations.find(l => l.name === e.to);
+                    const mapName = dest?.displayName || dest?.name;
+                    if (mapName) showMap(mapName);
                 }});
             });
         }
@@ -2072,6 +2082,9 @@ function getCoordinatePOIs(loc, root) {
                 setLocation(activeCharacter, cell.entryTo, loc.name);
                 persistCharacter(activeCharacter);
                 refreshMainMenu(root.parentElement);
+                const dest = locations.find(l => l.name === cell.entryTo);
+                const mapName = dest?.displayName || dest?.name;
+                if (mapName) showMap(mapName);
             }});
         }
         if (Array.isArray(cell.pois)) {
@@ -2086,6 +2099,9 @@ function getCoordinatePOIs(loc, root) {
                     setLocation(activeCharacter, area, loc.name);
                     persistCharacter(activeCharacter);
                     refreshMainMenu(root.parentElement);
+                    const dest = locations.find(l => l.name === area);
+                    const mapName = dest?.displayName || dest?.name;
+                    if (mapName) showMap(mapName);
                 }});
             }
         }
@@ -2098,7 +2114,7 @@ function createActionButtons(disabled = false) {
     actionDiv.id = 'action-buttons';
 
     const attackBtn = document.createElement('button');
-    attackBtn.textContent = 'Attack';
+    attackBtn.textContent = 'Auto Attack';
 
     const abilitySelect = document.createElement('select');
     const abilityBtn = document.createElement('button');
@@ -2204,7 +2220,9 @@ function createActionPanel(root, loc) {
             }
             b.addEventListener('click', () => {
                 if (activeCharacter?.currentLocation) {
-                    showMap(activeCharacter.currentLocation);
+                    const loc = locations.find(l => l.name === activeCharacter.currentLocation);
+                    const mapName = loc?.displayName || loc?.name;
+                    if (mapName) showMap(mapName);
                 }
             });
         } else {
@@ -2445,11 +2463,25 @@ function renderCombatScreen(app, mobs, destination) {
                 activeCharacter.targetIndex = selectedMonsterIndex;
                 persistCharacter(activeCharacter);
             }
+            if (autoAttacking) schedulePlayerAttack();
         }
     };
     
     let battleEnded = false;
     const defeated = [];
+    let autoAttacking = false;
+    let playerTimer = null;
+    const monsterTimers = new Map();
+
+    function weaponDelayMs() {
+        const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
+        return weaponDelay * 1000 / 60;
+    }
+
+    function monsterDelayMs(mob) {
+        const mobDelay = mob.delay || 240;
+        return mobDelay * 1000 / 60;
+    }
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -2604,6 +2636,11 @@ function renderCombatScreen(app, mobs, destination) {
             nearbyMonsters[listIdx].hp = 0;
         }
         mob.aggro = false;
+        const t = monsterTimers.get(mob);
+        if (t) {
+            clearTimeout(t);
+            monsterTimers.delete(mob);
+        }
         updateMonsterDisplay();
         if (mobs.length === 0) {
             const rewards = calculateBattleRewards(activeCharacter, defeated);
@@ -2711,7 +2748,51 @@ function renderCombatScreen(app, mobs, destination) {
         } else {
             log(`${attacker.name} misses.`);
         }
+        if (attacker === activeCharacter && defender !== activeCharacter) {
+            defender.aggro = true;
+            if (!monsterTimers.has(defender)) scheduleMonsterAttack(defender);
+        }
         update();
+    }
+
+    function schedulePlayerAttack(extra = 0) {
+        if (!autoAttacking || battleEnded) return;
+        clearTimeout(playerTimer);
+        playerTimer = setTimeout(() => {
+            const target = getSelectedMonster(mobs);
+            if (!target) {
+                stopAutoAttack();
+                return;
+            }
+            attack(activeCharacter, target);
+            if (!battleEnded) schedulePlayerAttack();
+        }, weaponDelayMs() + extra);
+    }
+
+    function scheduleMonsterAttack(mob, extra = 0) {
+        if (battleEnded || mob.currentHP <= 0) return;
+        clearTimeout(monsterTimers.get(mob));
+        const t = setTimeout(() => {
+            if (mob.currentHP > 0 && activeCharacter.hp > 0) {
+                attack(mob, activeCharacter);
+                if (!battleEnded && (autoAttacking || mob.aggro)) {
+                    scheduleMonsterAttack(mob);
+                }
+            }
+        }, monsterDelayMs(mob) + extra);
+        monsterTimers.set(mob, t);
+    }
+
+    function stopAutoAttack() {
+        autoAttacking = false;
+        attackBtn.textContent = 'Auto Attack';
+        clearTimeout(playerTimer);
+        monsterTimers.forEach((t, mob) => {
+            if (!mob.aggro) {
+                clearTimeout(t);
+                monsterTimers.delete(mob);
+            }
+        });
     }
 
     function endBattle(clearList = true) {
@@ -2725,6 +2806,11 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
+        autoAttacking = false;
+        attackBtn.textContent = 'Auto Attack';
+        clearTimeout(playerTimer);
+        monsterTimers.forEach(t => clearTimeout(t));
+        monsterTimers.clear();
         if (clearList) {
             nearbyMonsters = [];
             monsterIndexList = [];
@@ -2744,23 +2830,8 @@ function renderCombatScreen(app, mobs, destination) {
         refreshMainMenu(app);
     }
 
-    function monsterTurn() {
-        if (battleEnded) return;
-        for (const m of mobs) {
-            if (m.currentHP > 0) {
-                attack(m, activeCharacter);
-                if (activeCharacter.hp <= 0) break;
-            }
-        }
-        if (activeCharacter.hp > 0 && mobs.length > 0) {
-            playerTurn();
-        } else {
-            endBattle();
-        }
-    }
-
     function setActionsEnabled(enabled) {
-        attackBtn.disabled = !enabled;
+        attackBtn.disabled = false;
         abilityBtn.disabled = !enabled;
         abilitySelect.disabled = !enabled;
         magicBtn.disabled = !enabled || !spells.length;
@@ -2788,24 +2859,20 @@ function renderCombatScreen(app, mobs, destination) {
         return true;
     }
 
-    function afterAction() {
-        if (battleEnded) return;
-        setActionsEnabled(false);
-        if (mobs.length > 0) {
-            monsterTurn();
-        } else {
-            endBattle();
-        }
-    }
-
     attackBtn.addEventListener('click', () => {
+        if (autoAttacking) {
+            stopAutoAttack();
+            return;
+        }
         const target = getSelectedMonster(mobs);
         if (!target) {
             log('No target selected.');
             return;
         }
+        autoAttacking = true;
+        attackBtn.textContent = 'Stop Auto';
         attack(activeCharacter, target);
-        afterAction();
+        schedulePlayerAttack();
     });
 
     abilityBtn.addEventListener('click', () => {
@@ -2816,8 +2883,15 @@ function renderCombatScreen(app, mobs, destination) {
         }
         const name = abilitySelect.value || 'Ability';
         log(`${activeCharacter.name} uses ${name}.`);
-        attack(activeCharacter, target);
-        afterAction();
+        clearTimeout(playerTimer);
+        const jobData = jobs.find(j => j.name === activeCharacter.job) || {};
+        const abilityData = (jobData.abilities || []).find(a => a.name === name);
+        const castMs = abilityData?.castTime ? abilityData.castTime * 1000 : 0;
+        const run = () => {
+            attack(activeCharacter, target);
+            if (autoAttacking) schedulePlayerAttack();
+        };
+        if (castMs > 0) setTimeout(run, castMs); else run();
     });
 
     castBtn.addEventListener('click', () => {
@@ -2829,23 +2903,25 @@ function renderCombatScreen(app, mobs, destination) {
         const spell = magicSelect.value || 'Spell';
         const tName = target.name || target;
         log(`${activeCharacter.name} casts ${spell} on ${tName}.`);
-        afterAction();
+        clearTimeout(playerTimer);
+        const spellData = spells.find(s => s.name === spell);
+        const castMs = spellData?.castTime ? spellData.castTime * 1000 : 0;
+        const run = () => { if (autoAttacking) schedulePlayerAttack(); };
+        if (castMs > 0) setTimeout(run, castMs); else run();
     });
 
     fleeBtn.addEventListener('click', () => {
-        if (attemptFlee()) return;
-        monsterTurn();
+        stopAutoAttack();
+        attemptFlee();
     });
 
-    function playerTurn() {
-        if (battleEnded) return;
-        if (mobs.length === 0) return endBattle();
-        setActionsEnabled(true);
-    }
+    mobs.forEach(m => {
+        if (m.aggro) scheduleMonsterAttack(m);
+    });
 
     log(`A ${mobs.map(m=>m.name).join(', ')} appear!`);
     update();
-    playerTurn();
+    setActionsEnabled(true);
 }
 
 // Legacy function no longer used
