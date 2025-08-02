@@ -1049,6 +1049,11 @@ export function renderMainMenu() {
         const fontSize = Math.max(12, Math.min(18, Math.floor(140 / activeCharacter.name.length)));
         charBtn.style.fontSize = `${fontSize}px`;
         group.appendChild(charBtn);
+        group.appendChild(line2);
+        group.appendChild(xpLine);
+        group.appendChild(hpLine);
+        group.appendChild(mpLine);
+        group.appendChild(tpLine);
 
         const details = document.createElement('div');
         details.id = 'character-details';
@@ -1092,17 +1097,12 @@ export function renderMainMenu() {
             showWardrobePopup();
         });
 
-        details.appendChild(line2);
-        details.appendChild(hpLine);
-        details.appendChild(mpLine);
-        details.appendChild(tpLine);
+        details.appendChild(invBtn);
+        details.appendChild(equipBtn);
         details.appendChild(line4);
         details.appendChild(line5);
         details.appendChild(lineCp);
-        details.appendChild(xpLine);
         if (modeBtn) details.appendChild(modeBtn);
-        group.appendChild(invBtn);
-        group.appendChild(equipBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
             group.appendChild(wardrobeBtn);
