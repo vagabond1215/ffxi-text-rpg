@@ -2609,6 +2609,11 @@ function renderCombatScreen(app, mobs, destination) {
         activeCharacter.targetIndex = selectedMonsterIndex;
         persistCharacter(activeCharacter);
     }
+    let battleEnded = false;
+    const defeated = [];
+    let playerTimer = null;
+    const monsterTimers = new Map();
+
     monsterSelectHandler = idx => {
         let mob = mobs.find(m => m.listIndex === idx);
         if (!mob) mob = nearbyMonsters[idx];
@@ -2626,11 +2631,6 @@ function renderCombatScreen(app, mobs, destination) {
     if (autoAttacking && currentTargetMonster) {
         schedulePlayerAttack();
     }
-    
-    let battleEnded = false;
-    const defeated = [];
-    let playerTimer = null;
-    const monsterTimers = new Map();
 
     function weaponDelayMs() {
         const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
