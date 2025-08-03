@@ -400,7 +400,7 @@ body.portrait .nav-row {
 }
 
 .party-btn {
-    width: 150px;
+    width: 160px;
     margin: 1px 0;
     display: flex;
     align-items: center;
@@ -418,13 +418,13 @@ body.portrait .nav-row {
     display: flex;
     flex-direction: column;
     gap: 1px;
-    width: 40px;
+    width: 50px;
     background: #000;
 }
 
 .party-bars .bar {
     background: #333;
-    height: 5px;
+    height: 7px;
 }
 
 .party-bars .bar-fill {
