@@ -789,42 +789,13 @@ function createImageContainer() {
 
 function updateHPDisplay() {
     if (!activeCharacter) return;
-    const hpBar = document.getElementById('hp-bar');
-    const mpBar = document.getElementById('mp-bar');
-    const tpBar = document.getElementById('tp-bar');
     const charHpBar = document.getElementById('char-hp-bar');
     const xpBar = document.getElementById('xp-bar');
-
-    if (hpBar) {
-        const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
-        const hpVal = activeCharacter.hp ?? maxHp;
-        if (activeCharacter.hp == null) activeCharacter.hp = hpVal;
-        const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
-        hpBar.textContent = `HP ${hpVal}/${maxHp}`;
-        hpBar.style.backgroundImage = `linear-gradient(to right, darkred ${pct}%, #333 ${pct}%)`;
-    }
-
-    if (mpBar) {
-        const maxMp = activeCharacter.raceMP + activeCharacter.jobMP + activeCharacter.sJobMP;
-        const mpVal = activeCharacter.mp ?? maxMp;
-        if (activeCharacter.mp == null) activeCharacter.mp = mpVal;
-        const pct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((mpVal / maxMp) * 100))) : 0;
-        mpBar.textContent = `MP ${mpVal}/${maxMp}`;
-        mpBar.style.backgroundImage = `linear-gradient(to right, lightblue ${pct}%, #333 ${pct}%)`;
-    }
-
-    if (tpBar) {
-        const maxTp = 3000;
-        const tpVal = activeCharacter.tp ?? 0;
-        if (activeCharacter.tp == null) activeCharacter.tp = tpVal;
-        const pct = Math.max(0, Math.min(100, Math.round((tpVal / maxTp) * 100)));
-        tpBar.textContent = `TP ${tpVal}/${maxTp}`;
-        tpBar.style.backgroundImage = `linear-gradient(to right, yellowgreen ${pct}%, #333 ${pct}%)`;
-    }
 
     if (charHpBar) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
         const hpVal = activeCharacter.hp ?? maxHp;
+        if (activeCharacter.hp == null) activeCharacter.hp = hpVal;
         const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
         charHpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
     }
@@ -1139,18 +1110,6 @@ export function renderMainMenu() {
         jobTextSpan.textContent = jobText;
         line2.appendChild(jobTextSpan);
 
-        const hpLine = document.createElement('div');
-        hpLine.id = 'hp-bar';
-        hpLine.className = 'stat-bar hp';
-
-        const mpLine = document.createElement('div');
-        mpLine.id = 'mp-bar';
-        mpLine.className = 'stat-bar mp';
-
-        const tpLine = document.createElement('div');
-        tpLine.id = 'tp-bar';
-        tpLine.className = 'stat-bar tp';
-
         const statsWrap = document.createElement('div');
         const atkLine = document.createElement('div');
         atkLine.textContent = `ATK: ${getAttack(activeCharacter)}`;
@@ -1223,9 +1182,6 @@ export function renderMainMenu() {
         group.appendChild(charBtn);
         group.appendChild(line2);
         group.appendChild(xpLine);
-        group.appendChild(hpLine);
-        group.appendChild(mpLine);
-        group.appendChild(tpLine);
 
         const details = document.createElement('div');
         details.id = 'character-details';
@@ -2447,14 +2403,11 @@ function createActionPanel(root, loc) {
     function engageSelectedMonster() {
         let idx = selectedMonsterIndex;
         if (idx === null && activeCharacter) idx = activeCharacter.targetIndex;
-        if (idx === null || !nearbyMonsters[idx] || nearbyMonsters[idx].defeated) return;
+        if (idx === null || idx === -1 || !nearbyMonsters[idx] || nearbyMonsters[idx].defeated) return;
+        setTargetIndex(idx);
         const target = nearbyMonsters[idx];
         target.aggro = true;
         target.listIndex = idx;
-        if (activeCharacter) {
-            activeCharacter.targetIndex = idx;
-            persistCharacter(activeCharacter);
-        }
         updateMonsterDisplay();
         const zone = loc.name;
         const sub = getSubArea(zone, activeCharacter.coordinates);
@@ -2649,8 +2602,13 @@ function renderCombatScreen(app, mobs, destination) {
         selectedMonsterIndex = activeCharacter.targetIndex;
     }
     currentTargetMonster = getSelectedMonster(mobs);
-    if (!currentTargetMonster) selectedMonsterIndex = null;
-    if (activeCharacter) activeCharacter.targetIndex = selectedMonsterIndex;
+    if (!currentTargetMonster) {
+        selectedMonsterIndex = null;
+    }
+    if (activeCharacter) {
+        activeCharacter.targetIndex = selectedMonsterIndex;
+        persistCharacter(activeCharacter);
+    }
     monsterSelectHandler = idx => {
         let mob = mobs.find(m => m.listIndex === idx);
         if (!mob) mob = nearbyMonsters[idx];
@@ -3098,6 +3056,9 @@ function renderCombatScreen(app, mobs, destination) {
             const target = getSelectedMonster(mobs);
             if (target) {
                 schedulePlayerAttack();
+            } else {
+                log('No target selected.');
+                stopAutoAttack(true);
             }
         }
     });
