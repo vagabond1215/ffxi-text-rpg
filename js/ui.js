@@ -2119,9 +2119,6 @@ function getCoordinatePOIs(loc, root) {
                     setLocation(activeCharacter, e.to, loc.name);
                     persistCharacter(activeCharacter);
                     refreshMainMenu(root.parentElement);
-                    const dest = locations.find(l => l.name === e.to);
-                    const mapName = dest?.displayName || dest?.name;
-                    if (mapName) showMap(mapName);
                 }});
             });
         }
@@ -2131,9 +2128,6 @@ function getCoordinatePOIs(loc, root) {
                 setLocation(activeCharacter, cell.entryTo, loc.name);
                 persistCharacter(activeCharacter);
                 refreshMainMenu(root.parentElement);
-                const dest = locations.find(l => l.name === cell.entryTo);
-                const mapName = dest?.displayName || dest?.name;
-                if (mapName) showMap(mapName);
             }});
         }
         if (Array.isArray(cell.pois)) {
@@ -2148,9 +2142,6 @@ function getCoordinatePOIs(loc, root) {
                     setLocation(activeCharacter, area, loc.name);
                     persistCharacter(activeCharacter);
                     refreshMainMenu(root.parentElement);
-                    const dest = locations.find(l => l.name === area);
-                    const mapName = dest?.displayName || dest?.name;
-                    if (mapName) showMap(mapName);
                 }});
             }
         }
@@ -2420,7 +2411,7 @@ function createActionPanel(root, loc) {
         group.forEach(m => {
             if (m.listIndex === undefined) {
                 m.listIndex = nearbyMonsters.length;
-                m.hp = m.hp || parseLevel(m.level) * 20;
+                m.hp = m.hp ?? parseLevel(m.level) * 20;
                 nearbyMonsters.push(m);
                 if (activeCharacter) activeCharacter.monsters.push(m);
             }
@@ -2466,12 +2457,14 @@ function createActionPanel(root, loc) {
             const label = document.createElement('span');
             label.textContent = m.name;
             btn.appendChild(label);
-            if (m.maxHp === undefined) m.maxHp = m.hp;
-            const pct = m.maxHp > 0 ? Math.max(0, Math.min(100, (m.hp / m.maxHp) * 100)) : 0;
-            const hpBar = document.createElement('div');
-            hpBar.className = 'monster-hp-bar';
-            hpBar.style.width = `${pct}%`;
-            btn.appendChild(hpBar);
+            const maxHp = m.maxHp ?? parseLevel(m.level) * 20;
+            const pct = maxHp > 0 ? Math.max(0, Math.min(100, (m.hp / maxHp) * 100)) : 0;
+            if (m.aggro || m.defeated) {
+                const hpBar = document.createElement('div');
+                hpBar.className = 'monster-hp-bar';
+                hpBar.style.width = `${pct}%`;
+                btn.appendChild(hpBar);
+            }
             if (m.defeated) btn.classList.add('defeated');
             if (idxVal === selectedMonsterIndex) btn.classList.add('target');
             btn.addEventListener('click', () => {
@@ -2596,7 +2589,7 @@ function renderCombatScreen(app, mobs, destination) {
     const spells = activeCharacter.spells || [];
 
     mobs.forEach(m => {
-        m.currentHP = (m.hp || parseLevel(m.level) * 20);
+        m.currentHP = (m.hp ?? parseLevel(m.level) * 20);
     });
     if (selectedMonsterIndex === null && activeCharacter && activeCharacter.targetIndex !== null) {
         selectedMonsterIndex = activeCharacter.targetIndex;
@@ -2958,7 +2951,7 @@ function renderCombatScreen(app, mobs, destination) {
     function stopAutoAttack(reset = false) {
         clearTimeout(playerTimer);
         monsterTimers.forEach((t, mob) => {
-            if (!mob.aggro) {
+            if (reset || !mob.aggro) {
                 clearTimeout(t);
                 monsterTimers.delete(mob);
             }

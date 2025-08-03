@@ -234,6 +234,7 @@ export function spawnNearbyMonsters(character, zone) {
     const pick = weightedPick(available);
     const mob = { ...pick };
     mob.hp = pick.hp || parseLevel(pick.level) * 20;
+    mob.maxHp = mob.hp;
     list.push(mob);
   }
   const linkGroups = {};
