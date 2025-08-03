@@ -2885,7 +2885,7 @@ function renderCombatScreen(app, mobs, destination) {
                 const mobDelay = attacker.delay || 240;
                 gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
                 if (activeCharacter.hp <= 0) {
-                    stopAutoAttack(false);
+                    stopAutoAttack(true);
                     endBattle();
                     return;
                 }
@@ -2923,11 +2923,21 @@ function renderCombatScreen(app, mobs, destination) {
         if (!autoAttacking || battleEnded) return;
         clearTimeout(playerTimer);
         playerTimer = setTimeout(() => {
-            if (coordKey(activeCharacter.coordinates) !== monsterCoordKey) return;
+            if (!autoAttacking || battleEnded || activeCharacter.hp <= 0) {
+                if (activeCharacter.hp <= 0) stopAutoAttack(true);
+                return;
+            }
+            if (coordKey(activeCharacter.coordinates) !== monsterCoordKey) {
+                schedulePlayerAttack();
+                return;
+            }
             const target = getSelectedMonster(mobs);
-            if (!target) return;
+            if (!target) {
+                schedulePlayerAttack();
+                return;
+            }
             attack(activeCharacter, target);
-            if (!battleEnded && autoAttacking && getSelectedMonster(mobs)) schedulePlayerAttack();
+            if (!battleEnded && autoAttacking) schedulePlayerAttack();
         }, weaponDelayMs() + extra);
     }
 
@@ -2974,7 +2984,7 @@ function renderCombatScreen(app, mobs, destination) {
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;
-        stopAutoAttack(false);
+        stopAutoAttack(activeCharacter.hp <= 0);
         monsterTimers.forEach(t => clearTimeout(t));
         monsterTimers.clear();
         if (clearList) {
@@ -3053,13 +3063,7 @@ function renderCombatScreen(app, mobs, destination) {
                 activeCharacter.autoAttack = true;
                 persistCharacter(activeCharacter);
             }
-            const target = getSelectedMonster(mobs);
-            if (target) {
-                schedulePlayerAttack();
-            } else {
-                log('No target selected.');
-                stopAutoAttack(true);
-            }
+            schedulePlayerAttack();
         }
     });
 
