@@ -404,8 +404,31 @@ body.portrait .nav-row {
     margin: 1px 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.party-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
     gap: 4px;
-    justify-content: flex-start;
+}
+
+.party-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 40px;
+    background: #000;
+}
+
+.party-bars .bar {
+    background: #333;
+    height: 5px;
+}
+
+.party-bars .bar-fill {
+    height: 100%;
 }
 
 .party-btn.target {

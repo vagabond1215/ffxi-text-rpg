@@ -85,6 +85,21 @@ let monsterSelectHandler = null;
 // Global toggle for auto attacking
 let autoAttacking = false;
 
+// Basic weaponskill options by weapon type
+const weaponSkillsByType = {
+    dagger: ['Wasp Sting', 'Viper Bite'],
+    sword: ['Fast Blade', 'Burning Blade']
+};
+
+function getWeaponSkillOptions() {
+    const weapon = items[activeCharacter?.equipment?.mainHand];
+    if (!weapon?.name) return [];
+    const name = weapon.name.toLowerCase();
+    if (name.includes('dagger')) return weaponSkillsByType.dagger;
+    if (name.includes('sword')) return weaponSkillsByType.sword;
+    return [];
+}
+
 let monsterListElement = null;
 let updateMonsterDisplay = () => {};
 let navColumnElement = null;
@@ -2195,6 +2210,13 @@ function createActionButtons(disabled = false) {
     attackBtn.textContent = 'Auto Attack';
     if (autoAttacking) attackBtn.classList.add('auto-on');
 
+    const wsSelect = document.createElement('select');
+    const wsBtn = document.createElement('button');
+    wsBtn.textContent = 'Weaponskill';
+    const wsOptions = getWeaponSkillOptions();
+    wsOptions.forEach(ws => wsSelect.appendChild(new Option(ws, ws)));
+    if (!wsOptions.length) { wsBtn.disabled = true; wsSelect.disabled = true; }
+
     const abilitySelect = document.createElement('select');
     const abilityBtn = document.createElement('button');
     abilityBtn.textContent = 'Ability';
@@ -2219,6 +2241,11 @@ function createActionButtons(disabled = false) {
     attackWrap.className = 'action-cell';
     attackWrap.appendChild(attackBtn);
 
+    const wsWrap = document.createElement('div');
+    wsWrap.className = 'action-cell with-select';
+    wsWrap.appendChild(wsBtn);
+    wsWrap.appendChild(wsSelect);
+
     const abilityWrap = document.createElement('div');
     abilityWrap.className = 'action-cell with-select';
     abilityWrap.appendChild(abilityBtn);
@@ -2235,15 +2262,16 @@ function createActionButtons(disabled = false) {
     fleeWrap.appendChild(fleeBtn);
 
     actionDiv.appendChild(attackWrap);
+    actionDiv.appendChild(wsWrap);
     actionDiv.appendChild(abilityWrap);
-    actionDiv.appendChild(fleeWrap);
     actionDiv.appendChild(magicWrap);
+    actionDiv.appendChild(fleeWrap);
 
-    [attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn].forEach(el => {
+    [attackBtn, wsBtn, wsSelect, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn].forEach(el => {
         el.disabled = disabled || el.disabled;
     });
 
-    return { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn };
+    return { actionDiv, attackBtn, wsBtn, wsSelect, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn };
 }
 
 function createActionPanel(root, loc) {
@@ -2358,9 +2386,54 @@ function createActionPanel(root, loc) {
             icon.src = `img/Icons/Job icons/${jobAbbr.toLowerCase()}.png`;
             icon.alt = jobAbbr;
             const label = document.createElement('span');
-            label.textContent = `${p.name} HP:${p.hp}`;
-            btn.appendChild(icon);
-            btn.appendChild(label);
+            label.className = 'party-name';
+            label.textContent = p.name;
+            const info = document.createElement('div');
+            info.className = 'party-info';
+            info.appendChild(icon);
+            info.appendChild(label);
+
+            const bars = document.createElement('div');
+            bars.className = 'party-bars';
+
+            const maxHp = p.raceHP + p.jobHP + p.sJobHP;
+            const hpPct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((p.hp / maxHp) * 100))) : 0;
+            const hpBar = document.createElement('div');
+            hpBar.className = 'bar hp';
+            const hpFill = document.createElement('div');
+            hpFill.className = 'bar-fill';
+            hpFill.style.width = `${hpPct}%`;
+            hpFill.style.backgroundColor = 'darkred';
+            hpBar.appendChild(hpFill);
+
+            const maxMp = p.raceMP + p.jobMP + p.sJobMP;
+            const mpVal = p.mp ?? maxMp;
+            const mpPct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((mpVal / maxMp) * 100))) : 0;
+            const mpBar = document.createElement('div');
+            mpBar.className = 'bar mp';
+            const mpFill = document.createElement('div');
+            mpFill.className = 'bar-fill';
+            mpFill.style.width = `${mpPct}%`;
+            mpFill.style.backgroundColor = 'lightblue';
+            mpBar.appendChild(mpFill);
+
+            const maxTp = 3000;
+            const tpVal = p.tp ?? 0;
+            const tpPct = Math.max(0, Math.min(100, Math.round((tpVal / maxTp) * 100)));
+            const tpBar = document.createElement('div');
+            tpBar.className = 'bar tp';
+            const tpFill = document.createElement('div');
+            tpFill.className = 'bar-fill';
+            tpFill.style.width = `${tpPct}%`;
+            tpFill.style.backgroundColor = 'yellowgreen';
+            tpBar.appendChild(tpFill);
+
+            bars.appendChild(hpBar);
+            bars.appendChild(mpBar);
+            bars.appendChild(tpBar);
+
+            btn.appendChild(info);
+            btn.appendChild(bars);
             btn.addEventListener('click', () => {
                 setPartyTarget(i);
                 renderParty();
@@ -2565,7 +2638,7 @@ function renderCombatScreen(app, mobs, destination) {
         container.appendChild(actionColumn);
     }
 
-    const { actionDiv, attackBtn, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn } = createActionButtons(false);
+    const { actionDiv, attackBtn, wsBtn, wsSelect, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn } = createActionButtons(false);
     actionColumn.appendChild(actionDiv);
     const spells = activeCharacter.spells || [];
 
@@ -2892,6 +2965,7 @@ function renderCombatScreen(app, mobs, destination) {
         if (!autoAttacking || battleEnded) return;
         clearTimeout(playerTimer);
         playerTimer = setTimeout(() => {
+            if (coordKey(activeCharacter.coordinates) !== monsterCoordKey) return;
             const target = getSelectedMonster(mobs);
             if (!target) return;
             attack(activeCharacter, target);
@@ -2966,6 +3040,8 @@ function renderCombatScreen(app, mobs, destination) {
 
     function setActionsEnabled(enabled) {
         attackBtn.disabled = false;
+        wsBtn.disabled = !enabled || wsSelect.options.length === 0;
+        wsSelect.disabled = !enabled || wsSelect.options.length === 0;
         abilityBtn.disabled = !enabled;
         abilitySelect.disabled = !enabled;
         magicBtn.disabled = !enabled || !spells.length;
@@ -3024,6 +3100,19 @@ function renderCombatScreen(app, mobs, destination) {
                 schedulePlayerAttack();
             }
         }
+    });
+
+    wsBtn.addEventListener('click', () => {
+        const target = getSelectedMonster(mobs);
+        if (!target) {
+            log('No target selected.');
+            return;
+        }
+        const name = wsSelect.value || 'Weaponskill';
+        log(`${activeCharacter.name} uses ${name}.`);
+        clearTimeout(playerTimer);
+        attack(activeCharacter, target);
+        if (autoAttacking) schedulePlayerAttack();
     });
 
     abilityBtn.addEventListener('click', () => {
