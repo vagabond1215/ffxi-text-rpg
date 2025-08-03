@@ -372,10 +372,11 @@ body.portrait .nav-row {
 }
 
 .monster-btn {
-    width: 150px;
+    width: 160px;
     margin: 1px 0;
     position: relative;
     padding-bottom: 5px;
+    overflow: hidden;
 }
 
 .monster-btn.defeated {
@@ -403,8 +404,9 @@ body.portrait .nav-row {
     width: 160px;
     margin: 1px 0;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: stretch;
+    padding: 0;
+    position: relative;
 }
 
 .party-info {
@@ -412,19 +414,33 @@ body.portrait .nav-row {
     display: flex;
     align-items: center;
     gap: 4px;
+    overflow: hidden;
+}
+
+.party-name {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
 }
 
 .party-bars {
+    flex: 0 0 33.33%;
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    width: 50px;
-    background: #000;
+    border-left: 1px solid #555;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    overflow: hidden;
 }
 
 .party-bars .bar {
+    flex: 1;
     background: #333;
-    height: 7px;
+    border-bottom: 1px solid #555;
+}
+
+.party-bars .bar:last-child {
+    border-bottom: none;
 }
 
 .party-bars .bar-fill {
@@ -651,8 +667,9 @@ body.portrait .main-layout {
 }
 
 .job-icon {
-    width: 16px;
-    height: 16px;
+    width: 32px;
+    height: 32px;
+    margin-left: 3px;
 }
 
 .race-img, .job-img, .city-img, .character-img {

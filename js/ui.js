@@ -111,6 +111,20 @@ let monsterHpList = [];
 
 const BASE_BOTTOM_PADDING = 60;
 
+function adjustTextSize(el, maxDecrease = 4, container = el) {
+    if (!el || !container) return;
+    const baseSize = parseFloat(getComputedStyle(el).fontSize);
+    let size = baseSize;
+    el.style.whiteSpace = 'nowrap';
+    while (el.scrollWidth > container.clientWidth - 4 && size > baseSize - maxDecrease) {
+        size -= 1;
+        el.style.fontSize = `${size}px`;
+    }
+    if (el.scrollWidth > container.clientWidth - 4) {
+        el.style.whiteSpace = 'normal';
+    }
+}
+
 function itemProtected(id) {
     const presets = activeCharacter?.jobPresets || {};
     for (const set of Object.values(presets)) {
@@ -1881,6 +1895,15 @@ function createAreaGrid(root, loc) {
             });
             s.list.classList.remove('hidden');
             s.header.classList.add('expanded');
+            setTimeout(() => {
+                s.list.querySelectorAll('button').forEach(b => adjustTextSize(b));
+            });
+        });
+    });
+
+    setTimeout(() => {
+        grid.querySelectorAll('button').forEach(b => {
+            if (b.offsetParent !== null) adjustTextSize(b);
         });
     });
 
@@ -2077,6 +2100,9 @@ function createCityAreaGrid(root, loc) {
                 activeCharacter.citySections[loc.name] = s.btn.textContent;
                 persistCharacter(activeCharacter);
             }
+            setTimeout(() => {
+                s.list.querySelectorAll('button').forEach(b => adjustTextSize(b));
+            });
         });
     });
 
@@ -2087,6 +2113,11 @@ function createCityAreaGrid(root, loc) {
         initial.list.classList.remove('hidden');
         listCol.appendChild(initial.list);
     }
+    setTimeout(() => {
+        wrapper.querySelectorAll('button').forEach(b => {
+            if (b.offsetParent !== null) adjustTextSize(b);
+        });
+    });
     return wrapper;
 }
 
@@ -2386,6 +2417,7 @@ function createActionPanel(root, loc) {
                 renderParty();
             });
             partyList.appendChild(btn);
+            adjustTextSize(label);
         });
         partyListElement = partyList;
         updateTargetIndicator();
@@ -2483,6 +2515,7 @@ function createActionPanel(root, loc) {
             });
             btn.disabled = m.defeated;
             monsterList.appendChild(btn);
+            adjustTextSize(label, 4, btn);
             monsterIndexList.push(idxVal);
             monsterNameList.push(m.name);
             monsterHpList.push(m.hp);
