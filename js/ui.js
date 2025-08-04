@@ -2454,10 +2454,18 @@ function createActionPanel(root, loc) {
         const race = target.name.split(' ')[0];
         const group = [target];
         if (target.linking || /(Goblin|Orc|Yagudo|Quadav)/i.test(race)) {
+            const playerLevel = parseLevel(activeCharacter?.level ?? 1);
             nearbyMonsters.forEach((m, i) => {
-                if (i !== idx && !m.defeated && m.name.startsWith(race)) {
-                    m.aggro = true;
-                    group.push(m);
+                if (i !== idx && !m.defeated && !m.aggro && m.name.startsWith(race)) {
+                    const mobLevel = parseLevel(m.level);
+                    let chance = 0.5 - (playerLevel - mobLevel) * 0.05;
+                    if (chance < 0) chance = 0;
+                    if (chance > 1) chance = 1;
+                    if (Math.random() < chance) {
+                        m.aggro = true;
+                        m.listIndex = i;
+                        group.push(m);
+                    }
                 }
             });
         }
