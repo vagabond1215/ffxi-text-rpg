@@ -49,7 +49,8 @@ import {
     changeSubJob,
     spells as spellData,
     getSpell,
-    getAvailableSpells
+    getAvailableSpells,
+    weaponSkillDetails
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -90,7 +91,7 @@ let autoAttacking = false;
 // Basic weaponskill options by weapon type
 const weaponSkillsByType = {
     dagger: ['Wasp Sting', 'Viper Bite'],
-    sword: ['Fast Blade', 'Burning Blade']
+    sword: ['Fast Blade', 'Burning Blade', 'Savage Blade']
 };
 
 function getWeaponSkillOptions() {
@@ -3043,6 +3044,96 @@ function renderCombatScreen(app, mobs, destination) {
         character.tp = Math.min(3000, Math.max(0, (character.tp || 0) + Math.floor(total)));
     }
 
+    function levelAlpha(level) {
+        level = parseLevel(level);
+        return Math.round((1 - (Math.min(level, 99) - 1) * 0.17 / 98) * 100) / 100;
+    }
+
+    function computeWSC(attacker, wsc) {
+        if (!wsc) return 0;
+        let total = 0;
+        for (const [stat, pct] of Object.entries(wsc)) {
+            total += (attacker.stats?.[stat] || 0) * pct;
+        }
+        return Math.floor(levelAlpha(attacker.level) * total);
+    }
+
+    function computeFtp(tp, ftp) {
+        const [a, b, c] = ftp;
+        if (tp <= 1000) return a;
+        if (tp <= 2000) return a + ((tp - 1000) / 1000) * (b - a);
+        if (tp <= 3000) return b + ((tp - 2000) / 1000) * (c - b);
+        return c;
+    }
+
+    function calculateWeaponSkillDamage(attacker, defender, wsData, tp) {
+        const aStats = getCombatStats(attacker);
+        const dStats = getCombatStats(defender);
+        const weaponDamage = attacker === activeCharacter
+            ? (items[activeCharacter.equipment?.mainHand]?.damage || 1)
+            : Math.max(1, Math.floor(aStats.atk / 2));
+        const str = attacker.stats?.str ?? aStats.atk;
+        const vit = defender.stats?.vit ?? dStats.def;
+        const rank = Math.floor(weaponDamage / 9);
+        let fSTR = Math.floor(((str - vit) + 4) / 4);
+        fSTR = Math.min(Math.max(fSTR, -rank), rank + 8);
+        const WSC = computeWSC(attacker, wsData.wsc);
+        const fTP = computeFtp(tp, wsData.ftp);
+        const WD = Math.floor((weaponDamage + fSTR + WSC) * fTP);
+        let ratio = aStats.atk / dStats.def;
+        ratio = Math.min(ratio, 2.25);
+        const atkLevel = attacker === activeCharacter ? activeCharacter.level : parseLevel(attacker.level);
+        const defLevel = defender === activeCharacter ? activeCharacter.level : parseLevel(defender.level);
+        if (defLevel > atkLevel) ratio -= 0.05 * (defLevel - atkLevel);
+        const p = x => Math.max(x, 0);
+        const n = x => Math.max(-x, 0);
+        const a = 1 + (10 / 9) * (p(Math.max(ratio, 0.5) - 1.5) - n(Math.max(ratio, 0.5) - 1.25));
+        const b = 1 + (10 / 9) * (p(ratio - 0.75) - n(ratio - 0.5));
+        let pdif = a + Math.random() * (b - a);
+        pdif = Math.floor(pdif * 1000) / 1000;
+        pdif = Math.floor(pdif * (1 + Math.random() * 0.05) * 1000) / 1000;
+        return Math.max(1, Math.floor(WD * pdif));
+    }
+
+    function useWeaponSkill(attacker, defender, name) {
+        const ws = weaponSkillDetails[name];
+        if (!ws) {
+            log('Unknown weaponskill.');
+            return false;
+        }
+        const tp = attacker.tp || 0;
+        if (tp < 1000) {
+            log('Not enough TP.');
+            return false;
+        }
+        const dmg = calculateWeaponSkillDamage(attacker, defender, ws, tp);
+        attacker.tp = 0;
+        if (defender === activeCharacter) {
+            activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+            if (activeCharacter.hp <= 0) {
+                stopAutoAttack(true);
+                endBattle();
+                return true;
+            }
+        } else {
+            defender.currentHP = Math.max(0, defender.currentHP - dmg);
+            defender.hp = defender.currentHP;
+            if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
+                nearbyMonsters[defender.listIndex].hp = defender.currentHP;
+            }
+        }
+        log(`${attacker.name} uses ${name} for ${dmg} damage.`);
+        if (defender.currentHP <= 0 && defender !== activeCharacter) {
+            const idx = mobs.indexOf(defender);
+            if (idx !== -1) monsterDefeated(idx);
+        } else if (attacker === activeCharacter) {
+            defender.aggro = true;
+            if (!monsterTimers.has(defender)) scheduleMonsterAttack(defender);
+        }
+        update();
+        return true;
+    }
+
     function attack(attacker, defender) {
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
@@ -3246,10 +3337,10 @@ function renderCombatScreen(app, mobs, destination) {
             return;
         }
         const name = wsSelect.value || 'Weaponskill';
-        log(`${activeCharacter.name} uses ${name}.`);
         clearTimeout(playerTimer);
-        attack(activeCharacter, target);
-        if (autoAttacking) schedulePlayerAttack();
+        if (useWeaponSkill(activeCharacter, target, name) && autoAttacking) {
+            schedulePlayerAttack();
+        }
     });
 
     abilityBtn.addEventListener('click', () => {
