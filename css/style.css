@@ -437,6 +437,10 @@ body.portrait .nav-row {
     flex: 1;
     background: #333;
     border-bottom: 1px solid #555;
+    position: relative;
+    color: white;
+    text-align: center;
+    font-size: 12px;
 }
 
 .party-bars .bar:last-child {
@@ -445,6 +449,13 @@ body.portrait .nav-row {
 
 .party-bars .bar-fill {
     height: 100%;
+}
+
+.party-bars .bar-text {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 
 .party-btn.target {

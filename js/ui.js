@@ -320,6 +320,30 @@ export function showProfilePopup(details) {
     const clone = details.cloneNode(true);
     clone.classList.remove('hidden');
     profilePopupContentElement.appendChild(clone);
+    const profDiv = document.createElement('div');
+    profDiv.className = 'profile-proficiencies';
+    const profHeader = document.createElement('h3');
+    profHeader.textContent = 'Proficiencies';
+    profDiv.appendChild(profHeader);
+    const profList = document.createElement('ul');
+    Object.entries(activeCharacter?.combatSkills || {}).forEach(([name, lvl]) => {
+        if (lvl > 0) {
+            const li = document.createElement('li');
+            li.textContent = `${name}: ${lvl}`;
+            profList.appendChild(li);
+        }
+    });
+    Object.entries(activeCharacter?.magicSkills || {}).forEach(([name, lvl]) => {
+        if (lvl > 0) {
+            const li = document.createElement('li');
+            li.textContent = `${name}: ${lvl}`;
+            profList.appendChild(li);
+        }
+    });
+    if (profList.children.length) {
+        profDiv.appendChild(profList);
+        profilePopupContentElement.appendChild(profDiv);
+    }
     const root = document.getElementById('app')?.firstElementChild;
     const invBtn = Array.from(clone.querySelectorAll('button')).find(b => b.textContent === 'Inventory');
     if (invBtn) {
@@ -1233,15 +1257,7 @@ export function renderMainMenu() {
         infoRow.appendChild(statsWrap);
         details.appendChild(infoRow);
 
-        let holdTimer;
-        const startHold = () => {
-            holdTimer = setTimeout(() => showProfilePopup(details), 500);
-        };
-        const cancelHold = () => clearTimeout(holdTimer);
-        charBtn.addEventListener('mousedown', startHold);
-        charBtn.addEventListener('touchstart', startHold);
-        ['mouseup','mouseleave','touchend','touchcancel'].forEach(ev =>
-            charBtn.addEventListener(ev, cancelHold));
+        charBtn.addEventListener('click', () => showProfilePopup(details));
 
         const invBtn = document.createElement('button');
         invBtn.className = 'profile-btn';
@@ -2413,19 +2429,24 @@ function createActionPanel(root, loc) {
             const mpFill = document.createElement('div');
             mpFill.className = 'bar-fill';
             mpFill.style.width = `${mpPct}%`;
-            mpFill.style.backgroundColor = 'lightblue';
+            mpFill.style.backgroundColor = '#0083f5';
             mpBar.appendChild(mpFill);
 
-            const maxTp = 3000;
             const tpVal = p.tp ?? 0;
-            const tpPct = Math.max(0, Math.min(100, Math.round((tpVal / maxTp) * 100)));
+            const tpPct = Math.max(0, Math.min(300, Math.round((tpVal / 1000) * 100)));
+            const tpFillPct = Math.round(((tpVal % 1000) / 1000) * 100);
             const tpBar = document.createElement('div');
             tpBar.className = 'bar tp';
             const tpFill = document.createElement('div');
             tpFill.className = 'bar-fill';
-            tpFill.style.width = `${tpPct}%`;
+            tpFill.style.width = `${tpFillPct}%`;
             tpFill.style.backgroundColor = 'yellowgreen';
+            const tpText = document.createElement('span');
+            tpText.className = 'bar-text';
+            tpText.textContent = `${tpPct}%`;
+            tpText.style.color = tpPct >= 100 ? 'darkgreen' : 'yellowgreen';
             tpBar.appendChild(tpFill);
+            tpBar.appendChild(tpText);
 
             bars.appendChild(hpBar);
             bars.appendChild(mpBar);
@@ -3626,6 +3647,7 @@ export function renderConquestShop(root, backFn = null) {
 export function renderEquipmentScreen(root) {
     root.innerHTML = '';
     resetDetails();
+    showBackButton(() => refreshMainMenu(root.parentElement));
     const title = document.createElement('h2');
     title.textContent = 'Equipment';
     root.appendChild(title);
@@ -3794,7 +3816,7 @@ function getItemCategory(item) {
     if (item.slot === 'offHand' && item.defense !== undefined) return 'Weapons';
     if (item.defense !== undefined) return 'Armor';
     if (/crystal/i.test(item.name)) return 'Crystals';
-    if (/potion|ether|antidote|pie|jerky|water/i.test(item.name)) return 'Consumables';
+    if (/potion|ether|antidote|pie|jerky|water|scroll/i.test(item.name)) return 'Consumables';
     if (/ore|ingot|thread|log|chip/i.test(item.name)) return 'Crafting Materials';
     return 'Misc Loot';
 }
