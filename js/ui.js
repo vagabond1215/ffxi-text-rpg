@@ -2454,12 +2454,13 @@ function createActionPanel(root, loc) {
         updateMonsterDisplay();
         const zone = loc.name;
         const sub = getSubArea(zone, activeCharacter.coordinates);
-        const group = huntEncounter(zone, target.name, sub);
-        if (group.length) {
-            group[0] = target;
+        const rawGroup = huntEncounter(zone, target.name, sub);
+        if (rawGroup.length) {
+            rawGroup[0] = target;
         } else {
-            group.push(target);
+            rawGroup.push(target);
         }
+        const group = [...new Set(rawGroup)];
         group.forEach(m => {
             if (m.listIndex === undefined) {
                 m.listIndex = nearbyMonsters.length;
@@ -2834,7 +2835,7 @@ function renderCombatScreen(app, mobs, destination) {
     function monsterDefeated(idx) {
         const mob = mobs[idx];
         defeated.push(mob);
-        mobs.splice(idx, 1);
+        mobs = mobs.filter(m => m !== mob);
         let listIdx = mob.listIndex;
         if (listIdx === undefined) listIdx = nearbyMonsters.indexOf(mob);
         if (listIdx !== -1) {
