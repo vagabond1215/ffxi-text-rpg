@@ -47,7 +47,8 @@ import {
     formatVanaTime,
     dayElements,
     changeJob,
-    changeSubJob
+    changeSubJob,
+    spells as spellData
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -823,6 +824,14 @@ function updateHPDisplay() {
         if (activeCharacter.hp == null) activeCharacter.hp = hpVal;
         const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
         charHpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+    }
+
+    const charMpFill = document.querySelector('#party-list .bar.mp .bar-fill');
+    if (charMpFill) {
+        const maxMp = activeCharacter.raceMP + activeCharacter.jobMP + activeCharacter.sJobMP;
+        const mpVal = activeCharacter.mp ?? maxMp;
+        const mpPct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((mpVal / maxMp) * 100))) : 0;
+        charMpFill.style.width = `${mpPct}%`;
     }
 
     if (xpBar && activeCharacter.xpMode === 'EXP') {
@@ -2219,9 +2228,9 @@ function createActionButtons(disabled = false) {
     magicBtn.textContent = 'Magic';
     const castBtn = document.createElement('button');
     castBtn.textContent = 'Cast';
-    const spells = activeCharacter.spells || [];
-    spells.forEach(s => magicSelect.appendChild(new Option(s, s)));
-    if (!spells.length) { magicBtn.disabled = true; castBtn.disabled = true; }
+    const charSpells = activeCharacter.spells || [];
+    charSpells.forEach(s => magicSelect.appendChild(new Option(s, s)));
+    if (!charSpells.length) { magicBtn.disabled = true; castBtn.disabled = true; }
 
     const fleeBtn = document.createElement('button');
     fleeBtn.textContent = 'Flee';
@@ -2893,6 +2902,50 @@ function renderCombatScreen(app, mobs, destination) {
         return Math.max(1, Math.floor(baseDamage * pdif));
     }
 
+    function calculateMagicDamage(caster, target, spell) {
+        const cInt = caster.stats?.int ?? caster.int ?? caster.level * 2;
+        const tInt = target.stats?.int ?? target.int ?? (parseLevel(target.level) * 2);
+        let dmg = spell.baseDamage + Math.floor((cInt - tInt) / 2);
+        if (target.weaknesses?.includes(spell.element)) dmg = Math.floor(dmg * 1.5);
+        if (target.resistances?.includes(spell.element)) dmg = Math.floor(dmg * 0.5);
+        return Math.max(1, dmg);
+    }
+
+    function castSpell(caster, target, spell) {
+        if (caster.mp < spell.mpCost) {
+            log('Not enough MP.');
+            return;
+        }
+        caster.mp = Math.max(0, caster.mp - spell.mpCost);
+        let dmg = 0;
+        if (target !== caster) {
+            dmg = calculateMagicDamage(caster, target, spell);
+            if (target === activeCharacter) {
+                activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+                if (activeCharacter.hp <= 0) {
+                    stopAutoAttack(true);
+                    endBattle();
+                    return;
+                }
+            } else {
+                target.currentHP = Math.max(0, (target.currentHP ?? target.hp) - dmg);
+                target.hp = target.currentHP;
+                if (target.listIndex !== undefined && nearbyMonsters[target.listIndex]) {
+                    nearbyMonsters[target.listIndex].hp = target.currentHP;
+                }
+                if (target.currentHP <= 0) {
+                    const idx = mobs.indexOf(target);
+                    if (idx !== -1) monsterDefeated(idx);
+                } else {
+                    target.aggro = true;
+                    if (!monsterTimers.has(target)) scheduleMonsterAttack(target);
+                }
+            }
+            log(`${spell.name} hits ${target.name || target} for ${dmg} damage.`);
+        }
+        update();
+    }
+
     function tpFromDelay(delay) {
         if (delay <= 180) return Math.floor(61 + (delay - 180) * 63 / 360);
         if (delay <= 540) return Math.floor(61 + (delay - 180) * 88 / 360);
@@ -3143,13 +3196,24 @@ function renderCombatScreen(app, mobs, destination) {
             log('No target selected.');
             return;
         }
-        const spell = magicSelect.value || 'Spell';
+        const spellName = magicSelect.value || 'Spell';
+        const spell = spellData.find(s => s.name === spellName);
+        if (!spell) {
+            log('Unknown spell.');
+            return;
+        }
+        if (activeCharacter.mp < spell.mpCost) {
+            log('Not enough MP.');
+            return;
+        }
         const tName = target.name || target;
-        log(`${activeCharacter.name} casts ${spell} on ${tName}.`);
+        log(`${activeCharacter.name} casts ${spellName} on ${tName}.`);
         clearTimeout(playerTimer);
-        const spellData = spells.find(s => s.name === spell);
-        const castMs = spellData?.castTime ? spellData.castTime * 1000 : 0;
-        const run = () => { if (autoAttacking) schedulePlayerAttack(); };
+        const castMs = spell.castTime ? spell.castTime * 1000 : 0;
+        const run = () => {
+            castSpell(activeCharacter, target, spell);
+            if (autoAttacking) schedulePlayerAttack();
+        };
         if (castMs > 0) setTimeout(run, castMs); else run();
     });
 
