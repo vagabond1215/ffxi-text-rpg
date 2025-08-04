@@ -1,3 +1,5 @@
+// Weapon and magic proficiency definitions based on FFXI's skill system
+// Weapon proficiencies are stored as a simple list of skill names.
 export const weaponSkills = [
   'Hand-to-Hand',
   'Dagger',
@@ -16,6 +18,8 @@ export const weaponSkills = [
   'Throwing'
 ];
 
+// Magic proficiencies are objects that specify their broader magic type and a
+// more granular subType used by spell definitions.
 export const magicSkills = [
   { name: 'Elemental Magic', magicType: 'Black Magic', subType: 'Elemental' },
   { name: 'Dark Magic', magicType: 'Black Magic', subType: 'Dark' },
