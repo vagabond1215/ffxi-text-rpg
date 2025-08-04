@@ -2905,12 +2905,68 @@ function renderCombatScreen(app, mobs, destination) {
         return Math.max(1, Math.floor(baseDamage * pdif));
     }
 
-    function calculateMagicDamage(caster, target, spell) {
+    function intMultiplier(dInt) {
+        const abs = Math.abs(dInt);
+        if (abs >= 600) return 3.0;
+        if (abs >= 500) return 2.75;
+        if (abs >= 400) return 2.5;
+        if (abs >= 300) return 2.25;
+        if (abs >= 200) return 2.0;
+        if (abs >= 100) return 1.75;
+        if (abs >= 50) return 1.5;
+        return 1.0;
+    }
+
+    function calculateMagicDamage(caster, target, spell, opts = {}) {
         const cInt = caster.stats?.int ?? caster.int ?? caster.level * 2;
         const tInt = target.stats?.int ?? target.int ?? (parseLevel(target.level) * 2);
-        let dmg = spell.baseDamage + Math.floor((cInt - tInt) / 2);
-        if (target.weaknesses?.includes(spell.element)) dmg = Math.floor(dmg * 1.5);
-        if (target.resistances?.includes(spell.element)) dmg = Math.floor(dmg * 0.5);
+
+        const tier = spell.tier || 1;
+        const dIntCap = tier * 100;
+        const dIntRaw = cInt - tInt;
+        const dInt = Math.max(-dIntCap, Math.min(dIntRaw, dIntCap));
+        const M = intMultiplier(dInt);
+
+        const mDMG = caster.magicDamage || 0;
+        const V = spell.baseDamage || 0;
+        let D = mDMG + V + Math.floor(dInt * M);
+        if (D < 0) D = 0;
+
+        const {
+            mtdr = 1,
+            staff = caster.staffBonus || 1,
+            affinity = caster.affinity || 1,
+            resist = 1,
+            resistanceRank = 1,
+            mb = 1,
+            mbb = 1,
+            dayWeather = 1,
+            tmda = 1,
+            potency = 1
+        } = opts;
+
+        let dmg = D;
+        dmg = Math.floor(dmg * mtdr);
+        dmg = Math.floor(dmg * staff);
+        dmg = Math.floor(dmg * affinity);
+
+        let resistFactor = resist;
+        if (target.weaknesses?.includes(spell.element)) resistFactor *= 1.5;
+        if (target.resistances?.includes(spell.element)) resistFactor *= 0.5;
+        dmg = Math.floor(dmg * resistFactor);
+        dmg = Math.floor(dmg * resistanceRank);
+
+        dmg = Math.floor(dmg * mb);
+        dmg = Math.floor(dmg * mbb);
+        dmg = Math.floor(dmg * dayWeather);
+
+        const cMAB = 1 + ((caster.mab || 0) / 100);
+        const tMDB = 1 + ((target.mdb || 0) / 100);
+        dmg = Math.floor(dmg * (cMAB / Math.max(tMDB, 0.5)));
+
+        dmg = Math.floor(dmg * tmda);
+        dmg = Math.floor(dmg * potency);
+
         return Math.max(1, dmg);
     }
 
