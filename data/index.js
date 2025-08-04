@@ -49,6 +49,7 @@ export { notoriousMonsters } from './nms.js';
 export { experienceTable, expToLevel, expNeeded, experienceForKill } from './experience.js';
 export { items, vendorInventories, shopNpcs, vendorGreetings, vendorTypes, conquestRewards } from './vendors.js';
 export { spells, getSpell, getAvailableSpells } from './spells.js';
+export { weaponSkillDetails } from './weaponskills.js';
 export {
   parseLevel,
   conLevel,
