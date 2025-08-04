@@ -48,7 +48,7 @@ export { regions, regionOwner, regionBonusApplies } from './regions.js';
 export { notoriousMonsters } from './nms.js';
 export { experienceTable, expToLevel, expNeeded, experienceForKill } from './experience.js';
 export { items, vendorInventories, shopNpcs, vendorGreetings, vendorTypes, conquestRewards } from './vendors.js';
-export { spells, getSpell } from './spells.js';
+export { spells, getSpell, getAvailableSpells } from './spells.js';
 export {
   parseLevel,
   conLevel,
