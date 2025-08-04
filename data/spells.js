@@ -1,3 +1,5 @@
+// Spell definitions. Each spell includes its magicType and subType which
+// correspond to the entries in magicSkills for proficiency tracking.
 export const spells = [
   {
     name: 'Stone',
