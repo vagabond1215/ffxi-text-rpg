@@ -47,7 +47,9 @@ import {
     dayElements,
     changeJob,
     changeSubJob,
-    spells as spellData
+    spells as spellData,
+    getSpell,
+    getAvailableSpells
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -2227,7 +2229,7 @@ function createActionButtons(disabled = false) {
     magicBtn.textContent = 'Magic';
     const castBtn = document.createElement('button');
     castBtn.textContent = 'Cast';
-    const charSpells = activeCharacter.spells || [];
+    const charSpells = getAvailableSpells(activeCharacter);
     charSpells.forEach(s => magicSelect.appendChild(new Option(s, s)));
     if (!charSpells.length) { magicBtn.disabled = true; castBtn.disabled = true; }
 
@@ -2641,7 +2643,7 @@ function renderCombatScreen(app, mobs, destination) {
 
     const { actionDiv, attackBtn, wsBtn, wsSelect, abilityBtn, abilitySelect, magicBtn, magicSelect, castBtn, fleeBtn } = createActionButtons(false);
     actionColumn.appendChild(actionDiv);
-    const spells = activeCharacter.spells || [];
+    const spells = getAvailableSpells(activeCharacter);
 
     mobs.forEach(m => {
         m.currentHP = (m.hp ?? parseLevel(m.level) * 20);
@@ -3822,13 +3824,16 @@ function useScroll(id, root) {
     const entry = activeCharacter.inventory.find(i => i.id === id);
     if (!entry) return;
     const item = items[id];
-    const spell = item.name.replace(/^Scroll of\s+/i, '');
+    const spellName = item.name.replace(/^Scroll of\s+/i, '');
+    const spell = getSpell(spellName);
     if (!activeCharacter.spells) activeCharacter.spells = [];
-    if (activeCharacter.spells.includes(spell)) {
-        alert(`${spell} is already learned.`);
+    if (!spell) {
+        alert('Nothing happens.');
+    } else if (activeCharacter.spells.includes(spell.name)) {
+        alert(`${spell.name} is already learned.`);
     } else {
-        activeCharacter.spells.push(spell);
-        alert(`${spell} learned!`);
+        activeCharacter.spells.push(spell.name);
+        alert(`${spell.name} learned!`);
     }
     entry.qty -= 1;
     if (entry.qty <= 0) {

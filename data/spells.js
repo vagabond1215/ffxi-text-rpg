@@ -1002,3 +1002,40 @@ export const spells = [
 export function getSpell(name) {
   return spells.find(s => s.name === name);
 }
+
+// Mapping of jobs to the types of magic they can cast
+const magicTypesByJob = {
+  'White Mage': ['White Magic'],
+  'Black Mage': ['Black Magic'],
+  'Red Mage': ['White Magic', 'Black Magic'],
+  'Paladin': ['White Magic'],
+  'Dark Knight': ['Black Magic'],
+  'Bard': ['Bard'],
+  'Summoner': ['Summoning Magic'],
+  'Scholar': ['White Magic', 'Black Magic'],
+  'Blue Mage': ['Blue Magic'],
+  'Ninja': ['Ninjutsu']
+};
+
+/**
+ * Return a list of spells the character can currently cast based on
+ * job, sub job and level requirements. Spells remain learned even if
+ * they are not currently available.
+ */
+export function getAvailableSpells(character) {
+  if (!character?.spells) return [];
+
+  const mainTypes = magicTypesByJob[character.job] || [];
+  const mainLevel = character.level || 0;
+  const subJob = character.subJob;
+  const subTypes = subJob ? (magicTypesByJob[subJob] || []) : [];
+  const subLevel = subJob ? Math.floor(mainLevel / 2) : 0;
+
+  return character.spells.filter(name => {
+    const sp = getSpell(name);
+    if (!sp) return false;
+    if (mainTypes.includes(sp.magicType) && sp.level <= mainLevel) return true;
+    if (subJob && subTypes.includes(sp.magicType) && sp.level <= subLevel) return true;
+    return false;
+  });
+}
