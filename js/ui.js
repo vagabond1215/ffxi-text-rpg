@@ -113,10 +113,21 @@ const BASE_BOTTOM_PADDING = 60;
 
 function adjustTextSize(el, maxDecrease = 4, container = el) {
     if (!el || !container) return;
-    const baseSize = parseFloat(getComputedStyle(el).fontSize);
-    let size = baseSize;
+
+    // Reset to the element's original font size to avoid cumulative shrinking
+    // when this function runs multiple times on the same node (e.g., tapping
+    // an already selected area button).
+    let baseSize = el.dataset.baseFontSize;
+    if (!baseSize) {
+        baseSize = getComputedStyle(el).fontSize;
+        el.dataset.baseFontSize = baseSize;
+    }
+
+    const base = parseFloat(baseSize);
+    let size = base;
+    el.style.fontSize = baseSize;
     el.style.whiteSpace = 'nowrap';
-    while (el.scrollWidth > container.clientWidth - 4 && size > baseSize - maxDecrease) {
+    while (el.scrollWidth > container.clientWidth - 4 && size > base - maxDecrease) {
         size -= 1;
         el.style.fontSize = `${size}px`;
     }
