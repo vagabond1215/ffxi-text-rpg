@@ -6,9 +6,6 @@ import { bestiaryByZone } from './bestiary.js';
 import { getScale, proficiencyScale } from './scales.js';
 import { weaponSkills, magicSkills } from './proficiencies.js';
 
-const aldoScale = buildScaleFields('Hume', 'Thief');
-const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
-
 const baseCombatSkills = Object.fromEntries(weaponSkills.map(s => [s, 0]));
 const baseMagicSkills = Object.fromEntries(magicSkills.map(s => [s.name, 0]));
 
@@ -120,180 +117,6 @@ function buildScaleFields(raceName, jobName) {
   return fields;
 }
 
-export const characters = [
-  {
-    name: 'Aldo',
-    race: 'Hume',
-    sex: 'Male',
-    job: 'Thief',
-    startingCity: startingCities['Hume'],
-    homeCity: startingCities['Hume'],
-    spawnPoint: zonesByCity[startingCities['Hume']][0].name,
-    currentLocation: zonesByCity[startingCities['Hume']][0].name,
-    subArea: null,
-    lastZone: null,
-    level: 99,
-    stats: { str: 70, dex: 90, vit: 70, agi: 80, int: 60, mnd: 60, chr: 70 },
-    hp: 1200,
-    mp: 200,
-    tp: 0,
-    storeTp: 0,
-    jobExp: { Thief: 0, Ninja: 0 },
-    xpMode: 'EXP',
-    limitPoints: 0,
-    meritPoints: 0,
-    capacityPoints: 0,
-    jobPoints: 0,
-    skills: [],
-    traits: [],
-    abilities: [],
-    jobs: { Thief: 99, Ninja: 49 },
-    gil: 100000,
-    combatSkills: { ...baseCombatSkills },
-    magicSkills: { ...baseMagicSkills },
-    crafting: {},
-    spells: [],
-    ...aldoScale,
-    mLvX: 0,
-    mLvXXX: 0,
-    sLvX: 0,
-    raceHP: 0,
-    jobHP: 0,
-    sJobHP: 0,
-    raceMP: 0,
-    jobMP: 0,
-    sJobMP: 0,
-    travel: null,
-    coordinates: null,
-    returnJourney: null,
-    inventory: [
-      { id: 'bronzeDagger', qty: 1 },
-      { id: 'leatherVest', qty: 1 }
-    ],
-    equipment: {
-      head: null,
-      body: 'leatherVest',
-      hands: null,
-      legs: null,
-      feet: null,
-      mainHand: 'bronzeDagger',
-      offHand: null,
-      ranged: null,
-      ammo: null,
-      back: null,
-      waist: null,
-      neck: null,
-      leftEar: null,
-      rightEar: null,
-      leftRing: null,
-      rightRing: null
-    },
-    jobPresets: { 'Black Mage': { head: null, body: 'leatherVest', hands: null, legs: null, feet: null, mainHand: 'bronzeDagger', offHand: null, ranged: null, ammo: null, back: null, waist: null, neck: null, leftEar: null, rightEar: null, leftRing: null, rightRing: null } },
-    jobPresets: { Thief: { head: null, body: 'leatherVest', hands: null, legs: null, feet: null, mainHand: 'bronzeDagger', offHand: null, ranged: null, ammo: null, back: null, waist: null, neck: null, leftEar: null, rightEar: null, leftRing: null, rightRing: null } },
-    buffs: [],
-    debuffs: [],
-    temporaryBuffs: [],
-    temporaryDebuffs: [],
-    homePoints: [zonesByCity[startingCities['Hume']][0].name],
-    ownedResidences: [startingCities['Hume']],
-    currentHomePoint: zonesByCity[startingCities['Hume']][0].name,
-    travelTurns: { [startingCities['Hume']]: 0 },
-    signetUntil: 0,
-    conquestPoints: 0,
-    minutes: 0,
-    uiScale: 1,
-    targetIndex: null,
-    monsterCoord: '',
-    citySections: {},
-    monsters: []
-  },
-  {
-    name: 'Shantotto',
-    race: 'Tarutaru',
-    sex: 'Female',
-    job: 'Black Mage',
-    startingCity: startingCities['Tarutaru'],
-    homeCity: startingCities['Tarutaru'],
-    spawnPoint: zonesByCity[startingCities['Tarutaru']][0].name,
-    currentLocation: zonesByCity[startingCities['Tarutaru']][0].name,
-    subArea: null,
-    lastZone: null,
-    level: 99,
-    stats: { str: 40, dex: 60, vit: 50, agi: 60, int: 95, mnd: 80, chr: 70 },
-    hp: 1000,
-    mp: 1500,
-    tp: 0,
-    storeTp: 0,
-    jobExp: { 'Black Mage': 0, 'White Mage': 0 },
-    xpMode: 'EXP',
-    limitPoints: 0,
-    meritPoints: 0,
-    capacityPoints: 0,
-    jobPoints: 0,
-    skills: [],
-    traits: [],
-    abilities: [],
-    jobs: { 'Black Mage': 99, 'White Mage': 49 },
-    gil: 500000,
-    combatSkills: { ...baseCombatSkills },
-    magicSkills: { ...baseMagicSkills },
-    crafting: {},
-    spells: [],
-    ...shantottoScale,
-    mLvX: 0,
-    mLvXXX: 0,
-    sLvX: 0,
-    raceHP: 0,
-    jobHP: 0,
-    sJobHP: 0,
-    raceMP: 0,
-    jobMP: 0,
-    sJobMP: 0,
-    travel: null,
-    coordinates: null,
-    returnJourney: null,
-    inventory: [
-      { id: 'bronzeDagger', qty: 1 },
-      { id: 'leatherVest', qty: 1 }
-    ],
-    equipment: {
-      head: null,
-      body: 'leatherVest',
-      hands: null,
-      legs: null,
-      feet: null,
-      mainHand: 'bronzeDagger',
-      offHand: null,
-      ranged: null,
-      ammo: null,
-      back: null,
-      waist: null,
-      neck: null,
-      leftEar: null,
-      rightEar: null,
-      leftRing: null,
-      rightRing: null
-    },
-    buffs: [],
-    debuffs: [],
-    temporaryBuffs: [],
-    temporaryDebuffs: [],
-    homePoints: [zonesByCity[startingCities['Tarutaru']][0].name],
-    ownedResidences: [startingCities['Tarutaru']],
-    currentHomePoint: zonesByCity[startingCities['Tarutaru']][0].name,
-    travelTurns: { [startingCities['Tarutaru']]: 0 },
-    signetUntil: 0,
-    conquestPoints: 0,
-    minutes: 0,
-    uiScale: 1,
-    targetIndex: null,
-    monsterCoord: '',
-    citySections: {},
-    monsters: []
-  }
-];
-
-characters.forEach(ch => updateDerivedStats(ch));
 
 export function createCharacterObject(name, job, race, sex = 'Male') {
   const selectedRace = race || raceNames[Math.floor(Math.random() * raceNames.length)];
@@ -391,6 +214,27 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
   updateDerivedStats(character);
   return character;
 }
+
+function createPresetCharacter(name, job, race, sex, overrides = {}) {
+  const character = createCharacterObject(name, job, race, sex);
+  Object.assign(character, overrides);
+  return character;
+}
+
+export const characters = [
+  createPresetCharacter('Aldo', 'Thief', 'Hume', 'Male', {
+    jobs: { Thief: 99, Ninja: 49 },
+    jobExp: { Thief: 0, Ninja: 0 },
+    gil: 100000
+  }),
+  createPresetCharacter('Shantotto', 'Black Mage', 'Tarutaru', 'Female', {
+    jobs: { 'Black Mage': 99, 'White Mage': 49 },
+    jobExp: { 'Black Mage': 0, 'White Mage': 0 },
+    gil: 500000
+  })
+];
+
+characters.forEach(ch => updateDerivedStats(ch));
 
 export function createNewCharacter(name = `Adventurer ${characters.length + 1}`, job, race, sex = 'Male') {
   const character = createCharacterObject(name, job, race, sex);
