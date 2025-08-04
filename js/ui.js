@@ -2456,7 +2456,9 @@ function createActionPanel(root, loc) {
                 m.listIndex = nearbyMonsters.length;
                 m.hp = m.hp ?? parseLevel(m.level) * 20;
                 nearbyMonsters.push(m);
-                if (activeCharacter) activeCharacter.monsters.push(m);
+                if (activeCharacter && activeCharacter.monsters !== nearbyMonsters) {
+                    activeCharacter.monsters.push(m);
+                }
             }
         });
         renderCombatScreen(root.parentElement, group);
