@@ -33,7 +33,6 @@ import {
     bestiaryByZone,
     spawnNearbyMonsters,
     calculateBattleRewards,
-    huntEncounter,
     parseCoordinate,
     coordinateDistance,
     stepToward,
@@ -2451,26 +2450,26 @@ function createActionPanel(root, loc) {
         const target = nearbyMonsters[idx];
         target.aggro = true;
         target.listIndex = idx;
-        updateMonsterDisplay();
-        const zone = loc.name;
-        const sub = getSubArea(zone, activeCharacter.coordinates);
-        const rawGroup = huntEncounter(zone, target.name, sub);
-        if (rawGroup.length) {
-            rawGroup[0] = target;
-        } else {
-            rawGroup.push(target);
-        }
-        const group = [...new Set(rawGroup)];
-        group.forEach(m => {
-            if (m.listIndex === undefined) {
-                m.listIndex = nearbyMonsters.length;
-                m.hp = m.hp ?? parseLevel(m.level) * 20;
-                nearbyMonsters.push(m);
-                if (activeCharacter && activeCharacter.monsters !== nearbyMonsters) {
-                    activeCharacter.monsters.push(m);
+        // Include other nearby monsters of the same race if they link
+        const race = target.name.split(' ')[0];
+        const group = [target];
+        if (target.linking || /(Goblin|Orc|Yagudo|Quadav)/i.test(race)) {
+            const playerLevel = parseLevel(activeCharacter?.level ?? 1);
+            nearbyMonsters.forEach((m, i) => {
+                if (i !== idx && !m.defeated && !m.aggro && m.name.startsWith(race)) {
+                    const mobLevel = parseLevel(m.level);
+                    let chance = 0.5 - (playerLevel - mobLevel) * 0.05;
+                    if (chance < 0) chance = 0;
+                    if (chance > 1) chance = 1;
+                    if (Math.random() < chance) {
+                        m.aggro = true;
+                        m.listIndex = i;
+                        group.push(m);
+                    }
                 }
-            }
-        });
+            });
+        }
+        updateMonsterDisplay();
         renderCombatScreen(root.parentElement, group);
     }
 

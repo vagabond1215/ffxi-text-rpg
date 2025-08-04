@@ -124,15 +124,13 @@ export const zonesByCity = {
         'Dangruf Wadi': 'D-9',
         'North Gustaberg (West)': 'E-6',
         'North Gustaberg (East)': 'H-5',
-        'Goblin Camp': 'K-10',
         'Cavernous Maw (Abyssea – Altepa)': 'J-10'
       },
       connectedAreas: [
         'Bastok Markets',
         'North Gustaberg (East)',
         'North Gustaberg (West)',
-        'Dangruf Wadi',
-        'Goblin Camp'
+        'Dangruf Wadi'
       ],
       pointsOfInterest: [],
       importantNPCs: []
