@@ -3072,6 +3072,7 @@ function renderCombatScreen(app, mobs, destination) {
             }
         }
         if (mobs.length === 0) {
+            stopAutoAttack(true);
             endBattle(false);
         } else {
             update();

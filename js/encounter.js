@@ -31,6 +31,17 @@ import { bestiaryByZone } from '../data/bestiary.js';
 import { locations } from '../data/locations.js';
 import { zoneMaps } from '../data/maps.js';
 
+const VANA_EPOCH = Date.UTC(2025, 0, 1, 0, 0, 0);
+const VANA_SCALE = 25;
+
+function isNight() {
+  const elapsedMs = Date.now() - VANA_EPOCH;
+  const vanaMs = elapsedMs * VANA_SCALE;
+  const totalMinutes = Math.floor(vanaMs / 60000);
+  const hour = Math.floor((totalMinutes % 1440) / 60);
+  return hour >= 18 || hour < 6;
+}
+
 function getBaseZone(zone) {
   const loc = locations.find(l => l.name === zone);
   return loc?.parent || zone;
@@ -57,9 +68,11 @@ function inSpawnArea(monster, area) {
 export function monstersByDistance(zone, subArea = null) {
   zone = getBaseZone(zone);
   const area = subArea || null;
-  let mobs = (bestiaryByZone[zone] || []).filter(m => inSpawnArea(m, area));
   const loc = locations.find(l => l.name === zone);
   const dist = loc?.distance ?? 0;
+  const indoors = loc?.indoors || loc?.underground;
+  const night = isNight();
+  let mobs = (bestiaryByZone[zone] || []).filter(m => inSpawnArea(m, area) && (!m.nightOnly || night || indoors));
   if (!mobs.length) return [];
   const groups = {};
   for (const m of mobs) {
