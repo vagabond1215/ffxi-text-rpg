@@ -13,7 +13,6 @@ export const zonesByCity = {
         "Boytz's Knickknacks",
         "Gelzerio's Stall",
         "Deegis's Armour",
-        'Zemedars',
         'Proud Beard',
         "Neigepance's Chocobo Stables",
         "Griselda's Tavern",
