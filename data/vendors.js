@@ -1188,6 +1188,383 @@ export const items = {
     slot: 'leftEar',
     jobs: jobNames
   },
+
+  cassieEarring: {
+    name: 'Cassie Earring',
+    description: 'DEF +2, STR +1, VIT +1, Converts 50 MP to HP',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['DEF +2', 'STR +1', 'VIT +1', 'Converts 50 MP to HP'],
+    keyItem: false,
+    sellable: true
+  },
+
+  judgesEarring: {
+    name: "Judge's Earring",
+    description: 'DEF +20 (GMs Only)',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['DEF +20'],
+    keyItem: false,
+    sellable: true
+  },
+
+  metalSlimeEarring: {
+    name: 'Metal Slime Earring',
+    description: 'DEF +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['DEF +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  raisingEarring: {
+    name: 'Raising Earring',
+    description: 'Enchantment: "Reraise"',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    abilities: ['Reraise'],
+    keyItem: false,
+    sellable: true
+  },
+
+  sheSlimeEarring: {
+    name: 'She-Slime Earring',
+    description: 'HP +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['HP +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  slimeEarring: {
+    name: 'Slime Earring',
+    description: 'HP +1',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['HP +1'],
+    keyItem: false,
+    sellable: true
+  },
+
+  signalPearl: {
+    name: 'Signal Pearl',
+    description: 'A magical pearl that allows you to send a signal to your adventuring fellow',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    abilities: ['Send signal to party'],
+    keyItem: false,
+    sellable: true
+  },
+
+  tacticsPearl: {
+    name: 'Tactics Pearl',
+    description: 'A magical pearl that allows you to send a code to your adventuring fellow',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    abilities: ['Send code to party'],
+    keyItem: false,
+    sellable: true
+  },
+
+  protectEarring: {
+    name: 'Protect Earring',
+    description: 'Enchantment: "Protect"',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'leftEar',
+    jobs: jobNames,
+    abilities: ['Protect'],
+    keyItem: false,
+    sellable: true
+  },
+
+  amberEarring: {
+    name: 'Amber Earring',
+    description: 'Elemental Affinity: Earth +2, Thunder +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Earth +2', 'Thunder +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  amethystEarring: {
+    name: 'Amethyst Earring',
+    description: 'Elemental Affinity: Thunder +2, Water +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Thunder +2', 'Water +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  balanceEarring: {
+    name: 'Balance Earring',
+    description: 'Elemental Affinity: Thunder +3, Water +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Thunder +3', 'Water +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  balanceEarringPlus1: {
+    name: 'Balance Earring +1',
+    description: 'Elemental Affinity: Thunder +4, Water +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Thunder +4', 'Water +4'],
+    keyItem: false,
+    sellable: true
+  },
+
+  clearEarring: {
+    name: 'Clear Earring',
+    description: 'Elemental Affinity: Ice +2, Wind +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Ice +2', 'Wind +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  courageEarring: {
+    name: 'Courage Earring',
+    description: 'Elemental Affinity: Fire +3, Ice +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Fire +3', 'Ice +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  courageEarringPlus1: {
+    name: 'Courage Earring +1',
+    description: 'Elemental Affinity: Fire +4, Ice +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Fire +4', 'Ice +4'],
+    keyItem: false,
+    sellable: true
+  },
+
+  energyEarring: {
+    name: 'Energy Earring',
+    description: 'MP +3, Elemental Affinity: Dark +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['MP +3', 'Dark +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  energyEarringPlus1: {
+    name: 'Energy Earring +1',
+    description: 'MP +4, Elemental Affinity: Dark +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['MP +4', 'Dark +4'],
+    keyItem: false,
+    sellable: true
+  },
+
+  hopeEarring: {
+    name: 'Hope Earring',
+    description: 'HP +3, Elemental Affinity: Light +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['HP +3', 'Light +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  hopeEarringPlus1: {
+    name: 'Hope Earring +1',
+    description: 'DEF +1, HP +4, Elemental Affinity: Light +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['DEF +1', 'HP +4', 'Light +4'],
+    keyItem: false,
+    sellable: true
+  },
+
+  knowledgeEarring: {
+    name: 'Knowledge Earring',
+    description: 'Elemental Affinity: Ice +3, Wind +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Ice +3', 'Wind +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  knowledgeEarringPlus1: {
+    name: 'Knowledge Earring +1',
+    description: 'Elemental Affinity: Ice +4, Wind +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Ice +4', 'Wind +4'],
+    keyItem: false,
+    sellable: true
+  },
+
+  lapisLazuliEarring: {
+    name: 'Lapis Lazuli Earring',
+    description: 'Elemental Affinity: Fire +2, Water +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Fire +2', 'Water +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  onyxEarring: {
+    name: 'Onyx Earring',
+    description: 'MP +2, Elemental Affinity: Dark +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['MP +2', 'Dark +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  opalEarring: {
+    name: 'Opal Earring',
+    description: 'HP +2, Elemental Affinity: Light +2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['HP +2', 'Light +2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  opticalEarring: {
+    name: 'Optical Earring',
+    description: 'DEF +1, Accuracy +1, Attack -2',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['DEF +1', 'Accuracy +1', 'Attack -2'],
+    keyItem: false,
+    sellable: true
+  },
+
+  physicalEarring: {
+    name: 'Physical Earring',
+    description: 'Converts 25 MP to HP',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    abilities: ['Convert 25 MP to HP'],
+    keyItem: false,
+    sellable: true
+  },
+
+  reflexEarring: {
+    name: 'Reflex Earring',
+    description: 'Elemental Affinity: Wind +3, Earth +3',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Wind +3', 'Earth +3'],
+    keyItem: false,
+    sellable: true
+  },
+
+  reflexEarringPlus1: {
+    name: 'Reflex Earring +1',
+    description: 'Elemental Affinity: Wind +4, Earth +4',
+    price: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'leftEar',
+    jobs: jobNames,
+    effects: ['Wind +4', 'Earth +4'],
+    keyItem: false,
+    sellable: true
+  },
   bastokMap: {
     name: 'Map of Bastok',
     price: 200,
