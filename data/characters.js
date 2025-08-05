@@ -6,6 +6,7 @@ import { bestiaryByZone } from './bestiary.js';
 import { getScale, proficiencyScale } from './scales.js';
 import { weaponSkills, magicSkills } from './proficiencies.js';
 import { craftNames } from './crafting.js';
+import { gatheringNames } from './gathering.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
 const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
@@ -13,6 +14,7 @@ const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
 const baseCombatSkills = Object.fromEntries(weaponSkills.map(s => [s, 0]));
 const baseMagicSkills = Object.fromEntries(magicSkills.map(s => [s.name, 0]));
 const baseCraftSkills = Object.fromEntries(craftNames.map(c => [c, 0]));
+const baseGatheringSkills = Object.fromEntries(gatheringNames.map(g => [g, 0]));
 
 const startingGearByJob = {
   'Warrior': { weapon: 'bronzeSword', armor: 'leatherVest' },
@@ -165,6 +167,9 @@ export const characters = [
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
     crafting: { ...baseCraftSkills },
+    gathering: { ...baseGatheringSkills },
+    fishCount: 0,
+    fishDay: null,
     spells: [],
     ...aldoScale,
     mLvX: 0,
@@ -251,6 +256,9 @@ export const characters = [
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
     crafting: { ...baseCraftSkills },
+    gathering: { ...baseGatheringSkills },
+    fishCount: 0,
+    fishDay: null,
     spells: [],
     ...shantottoScale,
     mLvX: 0,
@@ -363,6 +371,9 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
     crafting: { ...baseCraftSkills },
+    gathering: { ...baseGatheringSkills },
+    fishCount: 0,
+    fishDay: null,
     spells: [],
     ...buildScaleFields(selectedRace, selectedJob),
     mLvX: 0,

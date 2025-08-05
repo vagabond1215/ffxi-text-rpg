@@ -2,6 +2,7 @@ export { jobs, jobNames, baseJobNames } from './jobs.js';
 export { races, raceNames, startingCities } from './races.js';
 export { weaponSkills, magicSkills } from './proficiencies.js';
 export { crafts, craftNames } from './crafting.js';
+export { gathering, gatheringNames } from './gathering.js';
 export {
   characters,
   activeCharacter,
@@ -69,9 +70,11 @@ export {
   randomMonster,
   huntEncounter,
   spawnNearbyMonsters,
+  monstersByDistance,
   parseCoordinate,
   coordinateDistance,
   stepToward
 } from '../js/encounter.js';
 export { calculateBattleRewards, findItemIdByName } from '../js/rewards.js';
 export { initNotorious, handleMonsterKill, checkForNM } from '../js/notorious.js';
+export { attemptFishing, attemptGather } from '../js/gathering.js';
