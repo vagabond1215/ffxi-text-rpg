@@ -372,14 +372,46 @@ export const items = {
   },
   bronzeCap: {
     name: 'Bronze Cap',
-    price: 151,
-        sellPrice: 75,
+    price: 154,
+        sellPrice: 77,
     stack: 1,
-    description: 'A simple bronze cap.',
-    defense: 1,
+    description: 'Basic head armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 2,
     levelRequirement: 1,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', price: 154, currency: 'Gil' },
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', price: 154, currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', price: 154, currency: 'Gil' },
+      { npc: 'Orez-Ebrez', zone: 'Windurst Waters South (H-7)', price: 154, currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', price: 154, currency: 'Gil' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+  bronzeCapPlus1: {
+    name: 'Bronze Cap +1',
+    description: 'Reinforced bronze head armor with improved plating.',
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'head',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    keyItem: false,
+    sellable: false
   },
   faceguard: {
     name: 'Faceguard',
@@ -394,14 +426,46 @@ export const items = {
   },
   bronzeHarness: {
     name: 'Bronze Harness',
-    price: 230,
-        sellPrice: 115,
+    price: 235,
+        sellPrice: 117,
     stack: 1,
-    description: 'A light bronze cuirass.',
+    description: 'Basic body armor crafted from bronze, part of the Bronze Armor Set.',
     defense: 4,
     levelRequirement: 1,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', price: 235, currency: 'Gil' },
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', price: 235, currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', price: 235, currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', price: 235, currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', price: 235, currency: 'Gil' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+  bronzeHarnessPlus1: {
+    name: 'Bronze Harness +1',
+    description: 'Reinforced bronze body armor with improved plating.',
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'body',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 5,
+    keyItem: false,
+    sellable: false
   },
   scaleMail: {
     name: 'Scale Mail',
@@ -416,14 +480,46 @@ export const items = {
   },
   bronzeMittens: {
     name: 'Bronze Mittens',
-    price: 126,
-        sellPrice: 63,
+    price: 128,
+        sellPrice: 64,
     stack: 1,
-    description: 'Simple bronze mittens.',
+    description: 'Basic hand armor crafted from bronze, part of the Bronze Armor Set.',
     defense: 1,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', price: 128, currency: 'Gil' },
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', price: 128, currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', price: 128, currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', price: 128, currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', price: 128, currency: 'Gil' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+  bronzeMittensPlus1: {
+    name: 'Bronze Mittens +1',
+    description: 'Reinforced bronze hand armor with improved plating.',
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'hands',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 2,
+    keyItem: false,
+    sellable: false
   },
   scaleFingerGauntlets: {
     name: 'Scale Finger Gauntlets',
@@ -2545,11 +2641,41 @@ export const items = {
     price: 191,
         sellPrice: 95,
     stack: 1,
-    description: 'Bronze under-armor.',
-    defense: 1,
+    description: 'Basic leg armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 3,
     levelRequirement: 1,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    vendors: [
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', price: 191, currency: 'Gil' },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', price: 191, currency: 'Gil' },
+      { npc: 'Zemedars', zone: 'Bastok Mines (H-6)', price: 191, currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', price: 191, currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', price: 191, currency: 'Gil' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+  bronzeSubligarPlus1: {
+    name: 'Bronze Subligar +1',
+    description: 'Reinforced bronze leg armor with improved plating.',
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'legs',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 4,
+    keyItem: false,
+    sellable: false
   },
   chainHose: {
     name: 'Chain Hose',
@@ -2567,11 +2693,42 @@ export const items = {
     price: 117,
         sellPrice: 58,
     stack: 1,
-    description: 'Bronze greaves for beginners.',
-    defense: 2,
+    description: 'Basic foot armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 1,
     levelRequirement: 1,
-    slot: 'legs',
-    jobs: baseJobNames
+    slot: 'feet',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    vendors: [
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', price: 117, currency: 'Gil' },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', price: 117, currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', price: 117, currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', price: 117, currency: 'Gil' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+  bronzeLeggingsPlus1: {
+    name: 'Bronze Leggings +1',
+    description: 'Reinforced bronze foot armor with improved plating.',
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'feet',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 2,
+    keyItem: false,
+    sellable: false
   },
   greaves: {
     name: 'Greaves',
@@ -4334,6 +4491,16 @@ export const vendorInventories = {
   Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
   'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
+  Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens'],
+  Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens'],
+  'Orez-Ebrez': ['bronzeCap'],
+  Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
+  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
+  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
+  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings'],
+  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings'],
+  Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
+  Carautia: ['bronzeSubligar', 'bronzeLeggings'],
   'Ciqala': [
     'bronzeKnuckles', 'brassKnuckles', 'metalKnuckles',
     'cesti', 'brassBaghnakhs', 'catBaghnakhs',
@@ -4433,6 +4600,16 @@ export const vendorGreetings = {
   'Odoba': 'Potions brewed to perfection.',
   'Maymunah': 'Alchemical supplies for any venture.',
   'Rodellieux': 'Fresh produce and lumber, take your pick.',
+  'Miogique': 'Bronze armor for the discerning adventurer.',
+  'Brunhilde': 'Strong armor for budding heroes.',
+  'Orez-Ebrez': 'Quality gear from Windurst waters.',
+  'Graine': 'Sturdy equipment for your travels.',
+  'Rolandienne': 'Earned some sparks? Spend them here.',
+  'Isakoth': 'Sparks gear ready for you.',
+  'Fhelm Jobeizat': 'Trade your sparks for gear.',
+  'Eternal Flame': 'Sparks and armor for adventurers.',
+  'Ryan': 'Have a look at my wares.',
+  'Carautia': 'Protect your legs and feet with my goods.',
   'Peritrage': 'Axes and blades for every adventurer.',
   'Zhikkom': 'Quality daggers at a fair price.'
 };
@@ -4469,6 +4646,16 @@ export const vendorTypes = {
   'Odoba': 'alchemy',
   'Maymunah': 'alchemy',
   'Rodellieux': 'produce',
+  'Miogique': 'armor',
+  'Brunhilde': 'armor',
+  'Orez-Ebrez': 'armor',
+  'Graine': 'armor',
+  'Rolandienne': 'armor',
+  'Isakoth': 'armor',
+  'Fhelm Jobeizat': 'armor',
+  'Eternal Flame': 'armor',
+  'Ryan': 'armor',
+  'Carautia': 'armor',
   'Peritrage': 'weapons',
   'Zhikkom': 'weapons',
   'Karine': 'maps', 'Rex': 'maps', 'Elesca': 'maps', 'Violitte': 'maps',
