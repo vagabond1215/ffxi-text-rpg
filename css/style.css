@@ -518,13 +518,33 @@ body.portrait .nav-row {
 }
 
 .slot-entry button {
-    margin-left: 5px;
+    margin-left: 0;
     width: 90px;
     padding: 1px 0;
     font-size: 14px;
     line-height: 1;
     text-align: center;
     min-height: 0;
+}
+
+.square-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    line-height: 32px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.slot-entry .square-btn {
+    width: 32px;
+    padding: 0;
+}
+
+.char-menu-controls .square-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
 }
 
 #slot-container {

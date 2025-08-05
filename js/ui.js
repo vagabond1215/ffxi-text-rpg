@@ -10,6 +10,8 @@ import {
     deleteCharacterSlot,
     saveCharacterToFile,
     loadCharacterFromFile,
+    setFilePathHandle,
+    resetFilePathHandle,
     loadCharacterSlot,
     setActiveCharacter,
     locations,
@@ -1349,13 +1351,6 @@ export function renderCharacterMenu(root) {
         renderCharacterMenu(root);
     });
 
-    const newBtn = document.createElement('button');
-    newBtn.textContent = 'New Character';
-    newBtn.addEventListener('click', () => {
-        renderNewCharacterForm(root);
-    });
-    if (!currentUser) newBtn.disabled = true;
-
     const newUserBtn = document.createElement('button');
     newUserBtn.textContent = 'New User';
     newUserBtn.addEventListener('click', () => {
@@ -1367,9 +1362,35 @@ export function renderCharacterMenu(root) {
         }
     });
 
+    const fileBtn = document.createElement('button');
+    fileBtn.className = 'square-btn';
+    fileBtn.textContent = '📄';
+    let fileTimer = null;
+    let longPress = false;
+    fileBtn.addEventListener('mousedown', () => {
+        longPress = false;
+        fileTimer = setTimeout(() => {
+            longPress = true;
+            resetFilePathHandle();
+        }, 800);
+    });
+    const endPress = async () => {
+        clearTimeout(fileTimer);
+        if (!longPress) {
+            try {
+                const handle = await window.showDirectoryPicker();
+                setFilePathHandle(handle);
+            } catch (e) {
+                console.error('Failed to choose directory', e);
+            }
+        }
+    };
+    fileBtn.addEventListener('mouseup', endPress);
+    fileBtn.addEventListener('mouseleave', () => clearTimeout(fileTimer));
+
     controls.appendChild(userSelect);
-    controls.appendChild(newBtn);
     controls.appendChild(newUserBtn);
+    controls.appendChild(fileBtn);
     root.appendChild(controls);
 
     const list = document.createElement('div');
@@ -1398,26 +1419,39 @@ export function renderCharacterMenu(root) {
                 });
             }
         } else {
-            loadBtn.textContent = 'Import';
-            loadBtn.addEventListener('click', async () => {
+            loadBtn.textContent = 'Load';
+            loadBtn.disabled = true;
+        }
+        entry.appendChild(loadBtn);
+
+        const newCharBtn = document.createElement('button');
+        newCharBtn.className = 'square-btn';
+        newCharBtn.textContent = '➕';
+        newCharBtn.addEventListener('click', () => {
+            renderNewCharacterForm(root);
+        });
+        if (!currentUser) newCharBtn.disabled = true;
+        entry.appendChild(newCharBtn);
+
+        const ioBtn = document.createElement('button');
+        ioBtn.className = 'square-btn';
+        if (ch) {
+            ioBtn.textContent = '⬇️';
+            ioBtn.addEventListener('click', async () => {
+                await saveCharacterToFile(ch);
+            });
+        } else {
+            ioBtn.textContent = '📂';
+            ioBtn.addEventListener('click', async () => {
                 await loadCharacterFromFile();
                 renderCharacterMenu(root);
             });
         }
-        entry.appendChild(loadBtn);
-
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = 'Save';
-        saveBtn.addEventListener('click', async () => {
-            const ch = characters[i];
-            if (ch) {
-                await saveCharacterToFile(ch);
-            }
-        });
-        entry.appendChild(saveBtn);
+        entry.appendChild(ioBtn);
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
+        deleteBtn.className = 'square-btn';
+        deleteBtn.textContent = '🗑️';
         deleteBtn.addEventListener('click', () => {
             if (confirm('Delete this character slot?')) {
                 deleteCharacterSlot(i);
