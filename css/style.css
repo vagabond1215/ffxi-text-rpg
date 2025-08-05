@@ -1079,8 +1079,10 @@ body.portrait .main-layout {
     bottom: 60px;
     left: 5px;
     right: 5px;
-    max-height: 200px;
+    height: calc(var(--log-font-size) * 1.2 * 3);
+    min-height: calc(var(--log-font-size) * 1.2 * 3);
     overflow-y: auto;
+    resize: vertical;
     background: rgba(0, 0, 0, 0.8);
     padding: 4px;
     border-radius: 4px;
@@ -1100,6 +1102,7 @@ body.portrait .main-layout {
     bottom: 0;
     height: 100%;
     max-height: none;
+    resize: none;
 }
 
 
