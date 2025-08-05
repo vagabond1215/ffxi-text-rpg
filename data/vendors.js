@@ -483,14 +483,48 @@ export const items = {
   },
   faceguard: {
     name: 'Faceguard',
-    price: 1305,
-        sellPrice: 652,
+    description: 'Cloth head armor, part of the Scale Armor Set.',
+    price: 1334,
+    sellPrice: 667,
     stack: 1,
-    description: 'Protective face armor.',
-    defense: 4,
     levelRequirement: 10,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 5,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Victoire',       zone: 'Southern San d’Oria (K-8)', currency: 'Gil', price: 1334 },
+      { npc: 'Brunhilde',      zone: 'Bastok Markets (F-10)',      currency: 'Gil', price: 1334 },
+      { npc: 'Drozga',         zone: 'Port Windurst (H-7)',        currency: 'Gil', price: 1334 },
+      { npc: 'Rolandienne',    zone: 'Southern San d’Oria (G-10)', currency: 'Sparks', price: 60 },
+      { npc: 'Isakoth',        zone: 'Bastok Markets (E-11)',      currency: 'Sparks', price: 60 },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)',      currency: 'Sparks', price: 60 },
+      { npc: 'Eternal Flame',  zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  faceguardPlus1: {
+    name: 'Faceguard +1',
+    description: 'High quality version of the Faceguard, reinforced for better protection.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'head',
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 6,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   bronzeHarness: {
     name: 'Bronze Harness',
@@ -537,14 +571,48 @@ export const items = {
   },
   scaleMail: {
     name: 'Scale Mail',
-    price: 2007,
-        sellPrice: 1003,
+    description: 'Body armor crafted from bronze scales, part of the Scale Armor Set.',
+    price: 2051,
+    sellPrice: 1025,
     stack: 1,
-    description: 'Light armor of overlapping scales.',
-    defense: 14,
     levelRequirement: 10,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 11,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Victoire',      zone: 'Southern San d’Oria (K-8)', currency: 'Gil', price: 2051 },
+      { npc: 'Brunhilde',     zone: 'Bastok Markets (F-10)',      currency: 'Gil', price: 2051 },
+      { npc: 'Drozga',        zone: 'Port Windurst (H-7)',        currency: 'Gil', price: 2051 },
+      { npc: 'Rolandienne',   zone: 'Southern San d’Oria (G-10)', currency: 'Sparks', price: 60 },
+      { npc: 'Isakoth',       zone: 'Bastok Markets (E-11)',      currency: 'Sparks', price: 60 },
+      { npc: 'Fhelm Jobeizat',zone: 'Windurst Woods (J-10)',      currency: 'Sparks', price: 60 },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  solidMail: {
+    name: 'Solid Mail',
+    description: 'High quality body armor, reinforced version of Scale Mail.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'body',
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 12,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   bronzeMittens: {
     name: 'Bronze Mittens',
@@ -591,14 +659,48 @@ export const items = {
   },
   scaleFingerGauntlets: {
     name: 'Scale Finger Gauntlets',
-    price: 1071,
-        sellPrice: 535,
+    description: 'Hand armor crafted from bronze scales, part of the Scale Armor Set.',
+    price: 1094,
+    sellPrice: 547,
     stack: 1,
-    description: 'Finger gauntlets crafted from scales.',
-    defense: 5,
     levelRequirement: 10,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Victoire',      zone: 'Southern San d’Oria (K-8)', currency: 'Gil', price: 1094 },
+      { npc: 'Brunhilde',     zone: 'Bastok Markets (F-10)',      currency: 'Gil', price: 1094 },
+      { npc: 'Drozga',        zone: 'Port Windurst (H-7)',        currency: 'Gil', price: 1094 },
+      { npc: 'Rolandienne',   zone: 'Southern San d’Oria (G-10)', currency: 'Sparks', price: 60 },
+      { npc: 'Isakoth',       zone: 'Bastok Markets (E-11)',      currency: 'Sparks', price: 60 },
+      { npc: 'Fhelm Jobeizat',zone: 'Windurst Woods (J-10)',      currency: 'Sparks', price: 60 },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  solidFingerGauntlets: {
+    name: 'Solid Finger Gauntlets',
+    description: 'High quality hand armor, reinforced version of Scale Finger Gauntlets.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'hands',
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   bronzeKnuckles: {
     name: 'Bronze Knuckles',
@@ -3985,25 +4087,94 @@ export const items = {
   },
   scaleCuisses: {
     name: 'Scale Cuisses',
-    price: 3120,
-        sellPrice: 1560,
+    description: 'Leg armor crafted from bronze scales, part of the Scale Armor Set.',
+    price: 1646,
+    sellPrice: 823,
     stack: 1,
-    description: 'Cuisses crafted from metal scales.',
-    defense: 5,
+    levelRequirement: 10,
     slot: 'legs',
-    levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 7,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Victoire',      zone: 'Southern San d’Oria (K-8)', currency: 'Gil', price: 1646 },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)',   currency: 'Gil', price: 1646 },
+      { npc: 'Drozga',        zone: 'Port Windurst (H-7)',        currency: 'Gil', price: 1646 },
+      { npc: 'Rolandienne',   zone: 'Southern San d’Oria (G-10)', currency: 'Sparks', price: 60 },
+      { npc: 'Isakoth',       zone: 'Bastok Markets (E-11)',      currency: 'Sparks', price: 60 },
+      { npc: 'Fhelm Jobeizat',zone: 'Windurst Woods (J-10)',      currency: 'Sparks', price: 60 },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
+    ],
+    keyItem: false,
+    sellable: true
   },
+
+  solidCuisses: {
+    name: 'Solid Cuisses',
+    description: 'High quality leg armor, reinforced version of Scale Cuisses.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'legs',
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 8,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
   scaleGreaves: {
     name: 'Scale Greaves',
-    price: 3020,
-        sellPrice: 1510,
+    description: 'Foot armor crafted from bronze scales, part of the Scale Armor Set.',
+    price: 998,
+    sellPrice: 499,
     stack: 1,
-    description: 'Greaves made of overlapping scales.',
-    defense: 5,
+    levelRequirement: 10,
     slot: 'feet',
-    levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Victoire',      zone: 'Southern San d’Oria (K-8)', currency: 'Gil', price: 998 },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)',   currency: 'Gil', price: 998 },
+      { npc: 'Drozga',        zone: 'Port Windurst (H-7)',        currency: 'Gil', price: 998 },
+      { npc: 'Rolandienne',   zone: 'Southern San d’Oria (G-10)', currency: 'Sparks', price: 60 },
+      { npc: 'Isakoth',       zone: 'Bastok Markets (E-11)',      currency: 'Sparks', price: 60 },
+      { npc: 'Fhelm Jobeizat',zone: 'Windurst Woods (J-10)',      currency: 'Sparks', price: 60 },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  solidGreaves: {
+    name: 'Solid Greaves',
+    description: 'High quality foot armor, reinforced version of Scale Greaves.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 10,
+    slot: 'feet',
+    jobs: [
+      'Warrior','Red Mage','Paladin','Dark Knight','Beastmaster',
+      'Ranger','Samurai','Dragoon','Blue Mage','Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   chainmail: {
     name: 'Chainmail',
@@ -5284,13 +5455,15 @@ export const vendorInventories = {
   'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt', 'brassCap', 'brassCapPlus1', 'brassSubligar'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'leatherBandana', 'leatherVest', 'leatherGloves'],
-  Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
+  Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1', 'faceguard', 'scaleMail', 'scaleFingerGauntlets'],
+  Victoire: ['faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
+  Drozga: ['faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
   'Orez-Ebrez': ['bronzeCap', 'leatherBandana'],
   Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'leatherBandana', 'leatherVest', 'leatherGloves', 'leatherTrousers'],
-  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan'],
-  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan'],
-  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan'],
-  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan'],
+  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan', 'faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
+  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan', 'faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
+  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan', 'faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
+  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan', 'faceguard', 'scaleMail', 'scaleFingerGauntlets', 'scaleCuisses', 'scaleGreaves'],
   Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'brassLeggings', 'hachimaki', 'kenpogi', 'tekko', 'sitabaki', 'kyahan'],
   Carautia: ['bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1', 'leatherTrousers', 'leatherHighboots'],
   'Tahn Posbei': ['leatherBandana', 'leatherVest', 'leatherGloves'],
@@ -5395,6 +5568,8 @@ export const vendorGreetings = {
   'Rodellieux': 'Fresh produce and lumber, take your pick.',
   'Miogique': 'Bronze armor for the discerning adventurer.',
   'Brunhilde': 'Strong armor for budding heroes.',
+  'Victoire': 'Sturdy armor for San d\'Oria adventurers.',
+  'Drozga': 'Scale armor for Windurst\'s finest.',
   'Orez-Ebrez': 'Quality gear from Windurst waters.',
   'Graine': 'Sturdy equipment for your travels.',
   'Rolandienne': 'Earned some sparks? Spend them here.',
@@ -5456,6 +5631,8 @@ export const vendorTypes = {
   'Rodellieux': 'produce',
   'Miogique': 'armor',
   'Brunhilde': 'armor',
+  'Victoire': 'armor',
+  'Drozga': 'armor',
   'Orez-Ebrez': 'armor',
   'Graine': 'armor',
   'Rolandienne': 'armor',
