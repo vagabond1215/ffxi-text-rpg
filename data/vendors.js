@@ -2484,14 +2484,53 @@ export const items = {
   },
   brassCap: {
     name: 'Brass Cap',
-    price: 1471,
-        sellPrice: 735,
+    description: 'Basic head armor crafted from brass, part of the Brass Armor Set.',
+    price: 0,
     stack: 1,
-    description: 'A cap made of brass.',
-    defense: 4,
-    levelRequirement: 9,
+    levelRequirement: 11,
     slot: 'head',
-    jobs: ['Monk','Thief','Ranger']
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 5,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', currency: 'Sparks' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  brassCapPlus1: {
+    name: 'Brass Cap +1',
+    description: 'Reinforced brass head armor with improved plating.',
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'head',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 6,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: false
   },
   leatherBandana: {
     name: 'Leather Bandana',
@@ -2506,25 +2545,94 @@ export const items = {
   },
   brassHarness: {
     name: 'Brass Harness',
-    price: 2236,
-        sellPrice: 1118,
+    description: 'Basic body armor crafted from brass, part of the Brass Armor Set.',
+    price: 0,
     stack: 1,
-    description: 'Chest armor of polished brass.',
-    defense: 6,
-    levelRequirement: 9,
+    levelRequirement: 11,
     slot: 'body',
-    jobs: ['Monk','Thief']
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 10,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', currency: 'Sparks' },
+      { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
   },
+
+  brassHarnessPlus1: {
+    name: 'Brass Harness +1',
+    description: 'Reinforced brass body armor with improved plating.',
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'body',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 11,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: false
+  },
+
   brassMittens: {
     name: 'Brass Mittens',
-    price: 1228,
-        sellPrice: 614,
+    description: 'Basic hand armor crafted from brass, part of the Brass Armor Set.',
+    price: 0,
     stack: 1,
-    description: 'Mittens crafted from brass.',
-    defense: 3,
-    levelRequirement: 9,
+    levelRequirement: 11,
     slot: 'hands',
-    jobs: ['Monk','Thief']
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', currency: 'Gil' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', currency: 'Sparks' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  brassMittensPlus1: {
+    name: 'Brass Mittens +1',
+    description: 'Reinforced brass hand armor with improved plating.',
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'hands',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 4,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: false
   },
   ironSubligar: {
     name: 'Iron Subligar',
@@ -2583,14 +2691,46 @@ export const items = {
   },
   brassSubligar: {
     name: 'Brass Subligar',
-    price: 1840,
-        sellPrice: 920,
+    description: 'Basic leg armor crafted from brass, part of the Brass Armor Set.',
+    price: 0,
     stack: 1,
-    description: 'A subligar fashioned from brass.',
-    defense: 3,
-    levelRequirement: 9,
+    levelRequirement: 11,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 7,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  brassSubligarPlus1: {
+    name: 'Brass Subligar +1',
+    description: 'Reinforced brass leg armor with improved plating.',
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'legs',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 8,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: false
   },
   leatherTrousers: {
     name: 'Leather Trousers',
@@ -2605,14 +2745,45 @@ export const items = {
   },
   brassLeggings: {
     name: 'Brass Leggings',
-    price: 1140,
-        sellPrice: 570,
+    description: 'Basic foot armor crafted from brass, part of the Brass Armor Set.',
+    price: 0,
     stack: 1,
-    description: 'Leg armor crafted from brass.',
+    levelRequirement: 11,
+    slot: 'feet',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Ryan', zone: 'Port Windurst (H-7)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  brassLeggingsPlus1: {
+    name: 'Brass Leggings +1',
+    description: 'Reinforced brass foot armor with improved plating.',
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'feet',
+    jobs: [
+      'Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight',
+      'Beastmaster','Bard','Samurai','Ninja','Dragoon',
+      'Blue Mage','Corsair','Dancer','Rune Fencer'
+    ],
     defense: 4,
-    levelRequirement: 9,
-    slot: 'legs',
-    jobs: baseJobNames
+    vendors: [
+      { npc: 'Brunhilde', zone: 'Bastok Markets (F-10)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: false
   },
   leatherHighboots: {
     name: 'Leather Highboots',
@@ -4451,7 +4622,7 @@ export const vendorInventories = {
   Takiyah: ['magicPotShard'],
   "Boytz's Knickknacks": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote', 'woodenArrow', 'ironArrow', 'crossbowBolt', 'brassFlowerpot', 'pickaxe', 'republicWaystone', 'thievesTools', 'livingKey'],
   "Gelzerio's Stall": ['lugworm', 'littleWorm', 'bambooFishingRod', 'yewFishingRod', 'willowFishingRod', 'robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
-  "Deegis's Armour": ['paddedCap', 'ironMask', 'paddedArmor', 'ironMittens', 'brassCap', 'leatherBandana', 'brassHarness', 'leatherVest', 'brassMittens', 'leatherGloves', 'bronzeCap', 'bronzeHarness', 'chainmail', 'bronzeMittens', 'chainMittens'],
+  "Deegis's Armour": ['paddedCap', 'ironMask', 'paddedArmor', 'ironMittens', 'brassCap', 'brassCapPlus1', 'leatherBandana', 'brassHarness', 'brassHarnessPlus1', 'leatherVest', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'leatherGloves', 'bronzeCap', 'bronzeHarness', 'chainmail', 'bronzeMittens', 'chainMittens'],
   Zemedars: ['ironSubligar', 'lizardTrousers', 'leggings', 'lizardLedelsens', 'buckler', 'brassSubligar', 'leatherTrousers', 'brassLeggings', 'leatherHighboots', 'targe', 'bronzeSubligar', 'chainHose', 'bronzeLeggings', 'greaves', 'lauanShield'],
   'Proud Beard': ['humeTunic', 'humeVest', 'humeMGloves', 'humeFGloves', 'humeSlacks', 'humeMBoots', 'humeFBoots', 'galkanSurcoat', 'galkanBracers', 'galkanBraguette', 'galkanSandals'],
   "Neigepance's Chocobo Stables": ['gysahlGreens', 'chocoboFeather', 'dart', 'blackChocoboFeather', 'petFoodAlphaBiscuit', 'petFoodBetaBiscuit', 'carrotBroth', 'bugBroth', 'herbalBroth', 'carrionBroth', 'scrollChocoboMazurka'],
@@ -4489,18 +4660,18 @@ export const vendorInventories = {
   Lootblox: mapInventory,
   Riyadahf: mapInventory,
   Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
-  'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
+  'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt', 'brassCap', 'brassCapPlus1', 'brassSubligar'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens'],
-  Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens'],
+  Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
   'Orez-Ebrez': ['bronzeCap'],
-  Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
-  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
-  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
-  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings'],
-  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings'],
-  Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings'],
-  Carautia: ['bronzeSubligar', 'bronzeLeggings'],
+  Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness'],
+  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness'],
+  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens'],
+  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap'],
+  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap'],
+  Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'brassLeggings'],
+  Carautia: ['bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
   'Ciqala': [
     'bronzeKnuckles', 'brassKnuckles', 'metalKnuckles',
     'cesti', 'brassBaghnakhs', 'catBaghnakhs',
