@@ -1,6 +1,7 @@
 export { jobs, jobNames, baseJobNames } from './jobs.js';
 export { races, raceNames, startingCities } from './races.js';
 export { weaponSkills, magicSkills } from './proficiencies.js';
+export { crafts, craftNames } from './crafting.js';
 export {
   characters,
   activeCharacter,

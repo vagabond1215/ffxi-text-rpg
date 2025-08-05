@@ -54,7 +54,8 @@ import {
     getAvailableSpells,
     weaponSkillDetails,
     resolveSkillchain,
-    skillchainBonus
+    skillchainBonus,
+    crafts
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 import { onTick } from './tick.js';
@@ -1305,6 +1306,13 @@ export function renderMainMenu() {
             renderEquipmentScreen(container);
         });
 
+        const craftBtn = document.createElement('button');
+        craftBtn.className = 'profile-btn';
+        craftBtn.textContent = 'Crafting';
+        craftBtn.addEventListener('click', () => {
+            renderCraftingScreen(container);
+        });
+
         const jobBtn = document.createElement('button');
         jobBtn.className = 'profile-btn';
         jobBtn.textContent = 'Change Job';
@@ -1328,6 +1336,7 @@ export function renderMainMenu() {
 
         details.appendChild(invBtn);
         details.appendChild(equipBtn);
+        details.appendChild(craftBtn);
         if (modeBtn) details.appendChild(modeBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
@@ -4145,6 +4154,56 @@ export function renderConquestShop(root, backFn = null) {
     });
     root.appendChild(list);
     showBackButton(backFn || (() => refreshMainMenu(root.parentElement)));
+}
+
+export function renderCraftingScreen(root) {
+    root.innerHTML = '';
+    resetDetails();
+    showBackButton(() => refreshMainMenu(root.parentElement));
+    const title = document.createElement('h2');
+    title.textContent = 'Crafting';
+    root.appendChild(title);
+    root.appendChild(characterSummary());
+    if (!activeCharacter) {
+        const p = document.createElement('p');
+        p.textContent = 'No active character';
+        root.appendChild(p);
+    } else {
+        const list = document.createElement('ul');
+        list.className = 'craft-list';
+        crafts.forEach(c => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            const lvl = activeCharacter.crafting?.[c.name] || 0;
+            btn.textContent = `${c.name} (Lv.${lvl})`;
+            btn.addEventListener('click', () => {
+                renderCraftDetailScreen(root, c);
+            });
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+        root.appendChild(list);
+    }
+}
+
+function renderCraftDetailScreen(root, craft) {
+    root.innerHTML = '';
+    resetDetails();
+    showBackButton(() => renderCraftingScreen(root));
+    const title = document.createElement('h2');
+    title.textContent = craft.name;
+    root.appendChild(title);
+    const lvl = document.createElement('div');
+    lvl.textContent = `Skill Level: ${activeCharacter?.crafting?.[craft.name] || 0}`;
+    root.appendChild(lvl);
+    const desc = document.createElement('p');
+    desc.textContent = craft.description;
+    root.appendChild(desc);
+    if (craft.guild) {
+        const guild = document.createElement('div');
+        guild.textContent = `Guild: ${craft.guild}`;
+        root.appendChild(guild);
+    }
 }
 
 export function renderEquipmentScreen(root) {

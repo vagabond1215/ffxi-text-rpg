@@ -5,12 +5,14 @@ import { parseCoordinate } from '../js/encounter.js';
 import { bestiaryByZone } from './bestiary.js';
 import { getScale, proficiencyScale } from './scales.js';
 import { weaponSkills, magicSkills } from './proficiencies.js';
+import { craftNames } from './crafting.js';
 
 const aldoScale = buildScaleFields('Hume', 'Thief');
 const shantottoScale = buildScaleFields('Tarutaru', 'Black Mage');
 
 const baseCombatSkills = Object.fromEntries(weaponSkills.map(s => [s, 0]));
 const baseMagicSkills = Object.fromEntries(magicSkills.map(s => [s.name, 0]));
+const baseCraftSkills = Object.fromEntries(craftNames.map(c => [c, 0]));
 
 const startingGearByJob = {
   'Warrior': { weapon: 'bronzeSword', armor: 'leatherVest' },
@@ -162,7 +164,7 @@ export const characters = [
     gil: 100000,
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
-    crafting: {},
+    crafting: { ...baseCraftSkills },
     spells: [],
     ...aldoScale,
     mLvX: 0,
@@ -248,7 +250,7 @@ export const characters = [
     gil: 500000,
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
-    crafting: {},
+    crafting: { ...baseCraftSkills },
     spells: [],
     ...shantottoScale,
     mLvX: 0,
@@ -360,7 +362,7 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     gil: STARTING_GIL,
     combatSkills: { ...baseCombatSkills },
     magicSkills: { ...baseMagicSkills },
-    crafting: {},
+    crafting: { ...baseCraftSkills },
     spells: [],
     ...buildScaleFields(selectedRace, selectedJob),
     mLvX: 0,
