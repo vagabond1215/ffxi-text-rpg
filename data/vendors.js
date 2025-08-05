@@ -27,14 +27,48 @@ export const items = {
   },
   leatherVest: {
     name: 'Leather Vest',
-    price: 604,
-        sellPrice: 302,
+    description: 'Basic leather body armor, provides 7 defense.',
+    price: 618,
+    sellPrice: 309,
     stack: 1,
-    description: 'Basic leather armor for the body.',
-    defense: 7,
-    levelRequirement: 1,
+    levelRequirement: 7,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 7,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Tahn Posbei', zone: 'Kazham (H-9)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherVestPlus1: {
+    name: 'Leather Vest +1',
+    description: 'High quality leather body armor, provides 8 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 7,
+    slot: 'body',
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 8,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   bronzeIngot: {
     name: 'Bronze Ingot',
@@ -105,14 +139,48 @@ export const items = {
   },
   leatherGloves: {
     name: 'Leather Gloves',
-    price: 176,
-        sellPrice: 88,
+    description: 'Basic leather hand armor, provides 2 defense.',
+    price: 331,
+    sellPrice: 166,
     stack: 1,
-    description: 'Basic leather armor for the hands.',
-    defense: 4,
-    levelRequirement: 1,
+    levelRequirement: 7,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 2,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Tahn Posbei', zone: 'Kazham (H-9)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherGlovesPlus1: {
+    name: 'Leather Gloves +1',
+    description: 'High quality leather hand armor, provides 3 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 7,
+    slot: 'hands',
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   clothHeadband: {
     name: 'Cloth Headband',
@@ -2826,14 +2894,48 @@ export const items = {
   },
   leatherBandana: {
     name: 'Leather Bandana',
-    price: 396,
-        sellPrice: 198,
+    description: 'Basic leather head armor, provides 3 defense.',
+    price: 404,
+    sellPrice: 202,
     stack: 1,
-    description: 'A rugged leather bandana.',
-    defense: 1,
-    levelRequirement: 10,
+    levelRequirement: 7,
     slot: 'head',
-    jobs: ['Monk','Thief','Ranger']
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Miogique', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Deegis', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Orez-Ebrez', zone: 'Windurst Waters (H-7)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Tahn Posbei', zone: 'Kazham (H-9)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherBandanaPlus1: {
+    name: 'Leather Bandana +1',
+    description: 'High quality leather head armor, provides 4 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 7,
+    slot: 'head',
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   brassHarness: {
     name: 'Brass Harness',
@@ -3026,14 +3128,47 @@ export const items = {
   },
   leatherTrousers: {
     name: 'Leather Trousers',
+    description: 'Basic leather leg armor, provides 5 defense.',
     price: 493,
-        sellPrice: 246,
+    sellPrice: 246,
     stack: 1,
-    description: 'Simple leather trousers.',
-    defense: 2,
-    levelRequirement: 1,
+    levelRequirement: 7,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 5,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Graine', zone: 'Mhaura (H-8)', currency: 'Gil' },
+      { npc: 'Zemedars', zone: 'Bastok Mines (H-6)', currency: 'Gil' },
+      { npc: 'Kumama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherTrousersPlus1: {
+    name: 'Leather Trousers +1',
+    description: 'High quality leather leg armor, provides 6 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 7,
+    slot: 'legs',
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 6,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   brassLeggings: {
     name: 'Brass Leggings',
@@ -3079,14 +3214,45 @@ export const items = {
   },
   leatherHighboots: {
     name: 'Leather Highboots',
+    description: 'Basic leather foot armor, provides 2 defense.',
     price: 309,
-        sellPrice: 154,
+    sellPrice: 154,
     stack: 1,
-    description: 'High-cut leather boots.',
-    defense: 2,
-    levelRequirement: 1,
+    levelRequirement: 7,
     slot: 'feet',
-    jobs: baseJobNames
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 2,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [
+      { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' },
+      { npc: 'Kueh Igunahmori', zone: 'Southern San d’Oria (D-8)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherHighbootsPlus1: {
+    name: 'Leather Highboots +1',
+    description: 'High quality leather foot armor, provides 3 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 7,
+    slot: 'feet',
+    jobs: [
+      'Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster',
+      'Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair',
+      'Dancer','Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   targe: {
     name: 'Targe',
@@ -4915,13 +5081,14 @@ export const vendorInventories = {
   "Boytz's Knickknacks": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote', 'woodenArrow', 'ironArrow', 'crossbowBolt', 'brassFlowerpot', 'pickaxe', 'republicWaystone', 'thievesTools', 'livingKey'],
   "Gelzerio's Stall": ['lugworm', 'littleWorm', 'bambooFishingRod', 'yewFishingRod', 'willowFishingRod', 'robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
   Ostalie: ['robe', 'cuffs', 'slops'],
-  'Guruna-Magurama': ['robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
+  'Guruna-Magurama': ['robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters', 'leatherVest', 'leatherGloves'],
   'Kuzah Hpirohpon': ['cuffs', 'slops', 'headgear', 'doublet', 'gloves', 'gaiters'],
   'Taten-Bilten': ['cuffs', 'slops'],
   Pirvidiauce: ['ashClogs'],
   Chaupire: ['ashClogs'],
   'Dehbi Moshal': ['ashClogs'],
-  Kumama: ['brais', 'gaiters'],
+  Kumama: ['brais', 'gaiters', 'leatherTrousers'],
+  'Kueh Igunahmori': ['leatherHighboots'],
   Meriri: ['headgear', 'doublet', 'gloves', 'gaiters'],
   "Deegis's Armour": ['paddedCap', 'ironMask', 'paddedArmor', 'ironMittens', 'brassCap', 'brassCapPlus1', 'leatherBandana', 'brassHarness', 'brassHarnessPlus1', 'leatherVest', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'leatherGloves', 'bronzeCap', 'bronzeHarness', 'chainmail', 'bronzeMittens', 'chainMittens'],
   Zemedars: ['ironSubligar', 'lizardTrousers', 'leggings', 'lizardLedelsens', 'buckler', 'brassSubligar', 'leatherTrousers', 'brassLeggings', 'leatherHighboots', 'targe', 'bronzeSubligar', 'chainHose', 'bronzeLeggings', 'greaves', 'lauanShield'],
@@ -4963,16 +5130,17 @@ export const vendorInventories = {
   Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
   'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt', 'brassCap', 'brassCapPlus1', 'brassSubligar'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
-  Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens'],
+  Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'leatherBandana', 'leatherVest', 'leatherGloves'],
   Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
-  'Orez-Ebrez': ['bronzeCap'],
-  Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness'],
+  'Orez-Ebrez': ['bronzeCap', 'leatherBandana'],
+  Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'leatherBandana', 'leatherVest', 'leatherGloves', 'leatherTrousers'],
   Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'robe'],
   Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'robe'],
   'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe'],
   'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe'],
   Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'brassLeggings'],
-  Carautia: ['bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
+  Carautia: ['bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1', 'leatherTrousers', 'leatherHighboots'],
+  'Tahn Posbei': ['leatherBandana', 'leatherVest', 'leatherGloves'],
   'Ciqala': [
     'bronzeKnuckles', 'brassKnuckles', 'metalKnuckles',
     'cesti', 'brassBaghnakhs', 'catBaghnakhs',
@@ -5088,9 +5256,11 @@ export const vendorGreetings = {
   'Chaupire': 'Footwear to keep you light.',
   'Dehbi Moshal': 'Sturdy clogs for your journeys.',
   'Kumama': 'Quality legwear and footwear.',
+  'Kueh Igunahmori': 'Finely crafted boots for any traveler.',
   'Meriri': 'Cloth armor for discerning buyers.',
   'Ryan': 'Have a look at my wares.',
   'Carautia': 'Protect your legs and feet with my goods.',
+  'Tahn Posbei': 'Gear up for the jungles of Kazham.',
   'Peritrage': 'Axes and blades for every adventurer.',
   'Zhikkom': 'Quality daggers at a fair price.'
 };
@@ -5146,6 +5316,8 @@ export const vendorTypes = {
   Meriri: 'clothing',
   'Ryan': 'armor',
   'Carautia': 'armor',
+  'Tahn Posbei': 'armor',
+  'Kueh Igunahmori': 'armor',
   'Peritrage': 'weapons',
   'Zhikkom': 'weapons',
   'Karine': 'maps', 'Rex': 'maps', 'Elesca': 'maps', 'Violitte': 'maps',
