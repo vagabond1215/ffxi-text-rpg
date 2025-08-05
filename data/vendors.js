@@ -2231,102 +2231,394 @@ export const items = {
   },
   robe: {
     name: 'Robe',
+    description: 'Basic cloth body armor, provides 3 defense.',
     price: 220,
-        sellPrice: 110,
+    sellPrice: 60,
     stack: 1,
-    description: 'Simple robe for novice adventurers.',
-    defense: 3,
     levelRequirement: 1,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Ostalie', zone: 'Southern San d\'Oria (E-9)', price: 220, currency: 'Gil' },
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 220, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 220, currency: 'Gil' },
+      { npc: 'Rolandienne', zone: 'Southern San d\'Oria (G-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
+      { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
+      { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
+    ]
+  },
+  robePlus1: {
+    name: 'Robe +1',
+    description: 'High quality robe, provides 4 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'body',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   cuffs: {
     name: 'Cuffs',
-    price: 121,
-        sellPrice: 60,
+    description: 'Basic cloth hand armor, provides 1 defense.',
+    price: 118,
+    sellPrice: 32,
     stack: 1,
-    description: 'Basic arm cuffs.',
-    defense: 1,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 1,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Ostalie', zone: 'Southern San d\'Oria (E-9)', price: 118, currency: 'Gil' },
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 118, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 118, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 118, currency: 'Gil' },
+      { npc: 'Taten-Bilten', zone: 'Al Zahbi (J-10)', price: 118, currency: 'Gil' }
+    ]
+  },
+  cuffsPlus1: {
+    name: 'Cuffs +1',
+    description: 'High quality cuffs, provides 2 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'hands',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 2,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   slops: {
     name: 'Slops',
-    price: 176,
-        sellPrice: 88,
+    description: 'Basic cloth leg armor, provides 2 defense.',
+    price: 172,
+    sellPrice: 49,
     stack: 1,
-    description: 'Loose legwear for all jobs.',
-    defense: 1,
     levelRequirement: 1,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 2,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Ostalie', zone: 'Southern San d\'Oria (E-9)', price: 172, currency: 'Gil' },
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 172, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 172, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 172, currency: 'Gil' },
+      { npc: 'Taten-Bilten', zone: 'Al Zahbi (J-10)', price: 172, currency: 'Gil' }
+    ]
+  },
+  slopsPlus1: {
+    name: 'Slops +1',
+    description: 'High quality slops, provides 3 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'legs',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   ashClogs: {
     name: 'Ash Clogs',
-    price: 114,
-        sellPrice: 57,
+    description: 'Basic cloth foot armor, provides 1 defense.',
+    price: 111,
+    sellPrice: 31,
     stack: 1,
-    description: 'Wooden clogs fashioned from ash.',
-    defense: 1,
     levelRequirement: 1,
     slot: 'feet',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 1,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Pirvidiauce', zone: 'Northern San d\'Oria (D-8)', price: 111, currency: 'Gil' },
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 111, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 111, currency: 'Gil' },
+      { npc: 'Chaupire', zone: 'Northern San d\'Oria (E-3)', price: 111, currency: 'Gil' },
+      { npc: 'Dehbi Moshal', zone: 'Al Zahbi (G-10)', price: 111, currency: 'Gil' }
+    ]
+  },
+  ashClogsPlus1: {
+    name: 'Ash Clogs +1',
+    description: 'High quality clogs, provides 2 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'feet',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Dark Knight',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 2,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   headgear: {
     name: 'Headgear',
+    description: 'Basic cloth head armor, provides 5 defense.',
     price: 1781,
-        sellPrice: 890,
+    sellPrice: 890,
     stack: 1,
-    description: 'Protective headgear.',
-    defense: 5,
-    levelRequirement: 5,
+    levelRequirement: 11,
     slot: 'head',
-    jobs: ['Warrior','Monk','Thief','Ranger','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 5,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 1781, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 1781, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1781, currency: 'Gil' },
+      { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1781, currency: 'Gil' }
+    ]
+  },
+  headgearPlus1: {
+    name: 'Headgear +1',
+    description: 'High quality headgear, provides 6 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'head',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 6,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   doublet: {
     name: 'Doublet',
-    price: 2525,
-        sellPrice: 1262,
+    description: 'Basic cloth body armor, provides 10 defense.',
+    price: 2470,
+    sellPrice: 1235,
     stack: 1,
-    description: 'A simple doublet.',
-    defense: 6,
-    levelRequirement: 5,
+    levelRequirement: 11,
     slot: 'body',
-    jobs: ['Warrior','Monk','Red Mage']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 10,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 2470, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 2470, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 2470, currency: 'Gil' },
+      { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 2470, currency: 'Gil' }
+    ]
+  },
+  doubletPlus1: {
+    name: 'Doublet +1',
+    description: 'High quality doublet, provides 11 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'body',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 11,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   gloves: {
     name: 'Gloves',
-    price: 1393,
-        sellPrice: 696,
+    description: 'Basic cloth hand armor, provides 3 defense.',
+    price: 1363,
+    sellPrice: 681,
     stack: 1,
-    description: 'Light gloves for adventurers.',
-    defense: 3,
-    levelRequirement: 5,
+    levelRequirement: 11,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 1363, currency: 'Gil' },
+      { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 1363, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1363, currency: 'Gil' },
+      { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1363, currency: 'Gil' }
+    ]
+  },
+  glovesPlus1: {
+    name: 'Gloves +1',
+    description: 'High quality gloves, provides 4 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'hands',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Thief', 'Paladin',
+      'Beastmaster', 'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair',
+      'Puppetmaster', 'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   brais: {
     name: 'Brais',
-    price: 1941,
-        sellPrice: 970,
+    description: 'Basic cloth leg armor, provides 7 defense.',
+    price: 1899,
+    sellPrice: 211,
     stack: 1,
-    description: 'Light leg armor.',
-    defense: 5,
-    levelRequirement: 5,
+    levelRequirement: 11,
     slot: 'legs',
-    jobs: ['Warrior','Monk','Dragoon']
+    jobs: [
+      'Monk', 'White Mage', 'Red Mage', 'Thief', 'Paladin', 'Beastmaster',
+      'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 7,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 1899, currency: 'Gil' },
+      { npc: 'Kumama', zone: 'Port Windurst (H-9)', price: 1899, currency: 'Gil' }
+    ]
+  },
+  braisPlus1: {
+    name: 'Brais +1',
+    description: 'High quality brais, provides 8 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'legs',
+    jobs: [
+      'Monk', 'White Mage', 'Red Mage', 'Thief', 'Paladin', 'Beastmaster',
+      'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 8,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   gaiters: {
     name: 'Gaiters',
-    price: 1297,
-        sellPrice: 648,
+    description: 'Basic cloth foot armor, provides 3 defense.',
+    price: 1269,
+    sellPrice: 282,
     stack: 1,
-    description: 'Protective footwear.',
-    defense: 4,
-    levelRequirement: 5,
+    levelRequirement: 11,
     slot: 'feet',
-    jobs: baseJobNames
+    jobs: [
+      'Monk', 'White Mage', 'Red Mage', 'Thief', 'Paladin', 'Beastmaster',
+      'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 3,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: true,
+    vendors: [
+      { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 1269, currency: 'Gil' },
+      { npc: 'Kumama', zone: 'Port Windurst (H-9)', price: 1269, currency: 'Gil' },
+      { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1269, currency: 'Gil' },
+      { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1269, currency: 'Gil' }
+    ]
+  },
+  gaitersPlus1: {
+    name: 'Gaiters +1',
+    description: 'High quality gaiters, provides 4 defense.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 11,
+    slot: 'feet',
+    jobs: [
+      'Monk', 'White Mage', 'Red Mage', 'Thief', 'Paladin', 'Beastmaster',
+      'Bard', 'Dragoon', 'Summoner', 'Blue Mage', 'Corsair', 'Puppetmaster',
+      'Dancer', 'Scholar', 'Geomancer', 'Rune Fencer'
+    ],
+    defense: 4,
+    races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
+    keyItem: false,
+    sellable: false,
+    vendors: []
   },
   poetsCirclet: {
     name: "Poet's Circlet",
@@ -4622,6 +4914,15 @@ export const vendorInventories = {
   Takiyah: ['magicPotShard'],
   "Boytz's Knickknacks": ['potion', 'ether', 'echoDrops', 'eyeDrops', 'antidote', 'woodenArrow', 'ironArrow', 'crossbowBolt', 'brassFlowerpot', 'pickaxe', 'republicWaystone', 'thievesTools', 'livingKey'],
   "Gelzerio's Stall": ['lugworm', 'littleWorm', 'bambooFishingRod', 'yewFishingRod', 'willowFishingRod', 'robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
+  Ostalie: ['robe', 'cuffs', 'slops'],
+  'Guruna-Magurama': ['robe', 'cuffs', 'slops', 'ashClogs', 'headgear', 'doublet', 'gloves', 'brais', 'gaiters'],
+  'Kuzah Hpirohpon': ['cuffs', 'slops', 'headgear', 'doublet', 'gloves', 'gaiters'],
+  'Taten-Bilten': ['cuffs', 'slops'],
+  Pirvidiauce: ['ashClogs'],
+  Chaupire: ['ashClogs'],
+  'Dehbi Moshal': ['ashClogs'],
+  Kumama: ['brais', 'gaiters'],
+  Meriri: ['headgear', 'doublet', 'gloves', 'gaiters'],
   "Deegis's Armour": ['paddedCap', 'ironMask', 'paddedArmor', 'ironMittens', 'brassCap', 'brassCapPlus1', 'leatherBandana', 'brassHarness', 'brassHarnessPlus1', 'leatherVest', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'leatherGloves', 'bronzeCap', 'bronzeHarness', 'chainmail', 'bronzeMittens', 'chainMittens'],
   Zemedars: ['ironSubligar', 'lizardTrousers', 'leggings', 'lizardLedelsens', 'buckler', 'brassSubligar', 'leatherTrousers', 'brassLeggings', 'leatherHighboots', 'targe', 'bronzeSubligar', 'chainHose', 'bronzeLeggings', 'greaves', 'lauanShield'],
   'Proud Beard': ['humeTunic', 'humeVest', 'humeMGloves', 'humeFGloves', 'humeSlacks', 'humeMBoots', 'humeFBoots', 'galkanSurcoat', 'galkanBracers', 'galkanBraguette', 'galkanSandals'],
@@ -4666,10 +4967,10 @@ export const vendorInventories = {
   Brunhilde: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
   'Orez-Ebrez': ['bronzeCap'],
   Graine: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness'],
-  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness'],
-  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens'],
-  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap'],
-  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap'],
+  Rolandienne: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'robe'],
+  Isakoth: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'robe'],
+  'Fhelm Jobeizat': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe'],
+  'Eternal Flame': ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'bronzeLeggings', 'brassCap', 'robe'],
   Ryan: ['bronzeHarness', 'bronzeMittens', 'bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassHarness', 'brassMittens', 'brassLeggings'],
   Carautia: ['bronzeSubligar', 'bronzeLeggings', 'brassCap', 'brassCapPlus1', 'brassHarness', 'brassHarnessPlus1', 'brassMittens', 'brassMittensPlus1', 'brassSubligar', 'brassSubligarPlus1', 'brassLeggings', 'brassLeggingsPlus1'],
   'Ciqala': [
@@ -4779,6 +5080,15 @@ export const vendorGreetings = {
   'Isakoth': 'Sparks gear ready for you.',
   'Fhelm Jobeizat': 'Trade your sparks for gear.',
   'Eternal Flame': 'Sparks and armor for adventurers.',
+  'Ostalie': 'Robes and starter gear for mages.',
+  'Guruna-Magurama': 'Cloth armor for any adventurer.',
+  'Kuzah Hpirohpon': 'Eastern styles at fair prices.',
+  'Taten-Bilten': 'Gear fresh from Aht Urhgan.',
+  'Pirvidiauce': 'Need new clogs? I have them.',
+  'Chaupire': 'Footwear to keep you light.',
+  'Dehbi Moshal': 'Sturdy clogs for your journeys.',
+  'Kumama': 'Quality legwear and footwear.',
+  'Meriri': 'Cloth armor for discerning buyers.',
   'Ryan': 'Have a look at my wares.',
   'Carautia': 'Protect your legs and feet with my goods.',
   'Peritrage': 'Axes and blades for every adventurer.',
@@ -4825,6 +5135,15 @@ export const vendorTypes = {
   'Isakoth': 'armor',
   'Fhelm Jobeizat': 'armor',
   'Eternal Flame': 'armor',
+  Ostalie: 'clothing',
+  'Guruna-Magurama': 'clothing',
+  'Kuzah Hpirohpon': 'clothing',
+  'Taten-Bilten': 'clothing',
+  Pirvidiauce: 'clothing',
+  Chaupire: 'clothing',
+  'Dehbi Moshal': 'clothing',
+  Kumama: 'clothing',
+  Meriri: 'clothing',
   'Ryan': 'armor',
   'Carautia': 'armor',
   'Peritrage': 'weapons',
