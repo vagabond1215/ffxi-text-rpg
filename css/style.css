@@ -444,7 +444,7 @@ body.portrait .nav-row {
 }
 
 .party-bars {
-    flex: 0 0 33.33%;
+    flex: 0 0 40%;
     display: flex;
     flex-direction: column;
     border-left: 1px solid #555;
@@ -460,7 +460,7 @@ body.portrait .nav-row {
     position: relative;
     color: white;
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .party-bars .bar:last-child {
@@ -895,17 +895,27 @@ body.portrait .main-layout {
     height: 28px;
 }
 
+
 .equipment-list {
     list-style: none;
     padding: 0;
     margin-top: 20px;
+    display: inline-grid;
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    column-gap: 8px;
+    row-gap: 4px;
 }
 
-.equipment-list li {
-    margin-top: 4px;
+.equipment-name {
     text-align: left;
 }
 
+.equipment-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
 
 .inventory-section {
     width: 100%;
@@ -923,43 +933,25 @@ body.portrait .main-layout {
 .inventory-list {
     list-style: none;
     padding: 0;
+    margin: 0 auto;
+    display: inline-grid;
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    column-gap: 8px;
+    row-gap: 4px;
+}
+
+.inventory-name {
     text-align: left;
-    margin: 0;
-}
-
-.inventory-list li {
-    margin-top: 4px;
-}
-
-.inventory-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.inventory-row-top {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 4px;
-}
-
-.item-info {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px;
 }
 
 .item-actions {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 0 4px;
 }
 
-.inventory-row-top button {
-    width: 90px;
+.item-actions button {
     padding: 2px 6px;
     min-height: 0;
 }
@@ -971,12 +963,24 @@ body.portrait .main-layout {
     color: inherit;
     padding: 0;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .transfer-item {
     display: flex;
     align-items: center;
     gap: 4px;
+}
+
+.transfer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.transfer-list li {
+    margin-top: 4px;
 }
 
 .transfer-arrow {
@@ -987,34 +991,6 @@ body.portrait .main-layout {
     line-height: 1;
 }
 
-.equipment-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-}
-
-.equipment-row-top {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 4px;
-    width: 100%;
-}
-
-.equipment-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 0 4px;
-}
-
-.equipment-info {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px;
-}
 
 .hidden {
     display: none !important;
