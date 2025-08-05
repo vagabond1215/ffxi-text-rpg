@@ -454,6 +454,21 @@ export function showItemPopup(item) {
     itemPopupElement.classList.remove('hidden');
 }
 
+function hideItemPopup() {
+    if (itemPopupElement) itemPopupElement.classList.add('hidden');
+}
+
+function setupItemHoldDetails(btn, item) {
+    const show = () => showItemPopup(item);
+    const hide = () => hideItemPopup();
+    btn.addEventListener('mousedown', show);
+    btn.addEventListener('touchstart', show);
+    btn.addEventListener('mouseup', hide);
+    btn.addEventListener('mouseleave', hide);
+    btn.addEventListener('touchend', hide);
+    btn.addEventListener('touchcancel', hide);
+}
+
 export function setupStoragePopup(el, content, closeBtn) {
     storagePopupElement = el;
     storagePopupContentElement = content;
@@ -512,7 +527,7 @@ function renderTransferPopup(type) {
     invTitle.textContent = 'Inventory';
     invDiv.appendChild(invTitle);
     const invList = document.createElement('ul');
-    invList.className = 'inventory-list';
+    invList.className = 'transfer-list';
     invItems.filter(e => filter(items[e.id])).forEach(ent => {
         const li = document.createElement('li');
         li.className = 'transfer-item';
@@ -539,7 +554,7 @@ function renderTransferPopup(type) {
     destTitle.textContent = type === 'wardrobe' ? 'Wardrobe' : 'Storage';
     destDiv.appendChild(destTitle);
     const destList = document.createElement('ul');
-    destList.className = 'inventory-list';
+    destList.className = 'transfer-list';
     destItems.forEach(ent => {
         const li = document.createElement('li');
         li.className = 'transfer-item';
@@ -4211,32 +4226,27 @@ export function renderEquipmentScreen(root) {
             leftRing: 'Left Ring', rightRing: 'Right Ring'
         };
         for (const key of Object.keys(slots)) {
-            const li = document.createElement('li');
-            li.className = 'equipment-item';
-            const top = document.createElement('div');
-            top.className = 'equipment-row-top';
             const itemId = activeCharacter.equipment?.[key];
             const item = items[itemId];
 
-            const info = document.createElement('div');
-            info.className = 'equipment-info';
-            const nameDiv = document.createElement('span');
+            const nameLi = document.createElement('li');
+            nameLi.className = 'equipment-name';
+            const nameSpan = document.createElement('span');
             if (item) {
-                nameDiv.textContent = `${slots[key]}: `;
+                nameSpan.textContent = `${slots[key]}: `;
                 const nameBtn = document.createElement('button');
                 nameBtn.className = 'item-name-btn';
                 nameBtn.textContent = item.name;
                 if (!meetsRequirements(item)) nameBtn.style.color = 'red';
-                nameBtn.addEventListener('click', () => showItemPopup(item));
-                nameDiv.appendChild(nameBtn);
+                setupItemHoldDetails(nameBtn, item);
+                nameSpan.appendChild(nameBtn);
             } else {
-                nameDiv.textContent = `${slots[key]}: ${itemId || 'Empty'}`;
+                nameSpan.textContent = `${slots[key]}: ${itemId || 'Empty'}`;
             }
-            info.appendChild(nameDiv);
-            top.appendChild(info);
+            nameLi.appendChild(nameSpan);
 
-            const actions = document.createElement('div');
-            actions.className = 'equipment-actions';
+            const actionLi = document.createElement('li');
+            actionLi.className = 'equipment-actions';
             if (itemId) {
                 const unequip = document.createElement('button');
                 unequip.textContent = 'Unequip';
@@ -4245,44 +4255,11 @@ export function renderEquipmentScreen(root) {
                     persistCharacter(activeCharacter);
                     renderEquipmentScreen(root);
                 });
-                actions.appendChild(unequip);
+                actionLi.appendChild(unequip);
             }
-            top.appendChild(actions);
-            li.appendChild(top);
-            const detailsWrap = document.createElement('div');
-            detailsWrap.className = 'item-details hidden';
-            const desc = document.createElement('div');
-            desc.className = 'item-description';
-            desc.textContent = item.description || item.name;
-            detailsWrap.appendChild(desc);
-            if (item.effects) {
-                const eff = document.createElement('div');
-                eff.className = 'item-effects';
-                eff.textContent = 'Effects: ' + item.effects.join(', ');
-                detailsWrap.appendChild(eff);
-            }
-            if (item.abilities) {
-                const ab = document.createElement('div');
-                ab.className = 'item-abilities';
-                ab.textContent = 'Abilities: ' + item.abilities.join(', ');
-                detailsWrap.appendChild(ab);
-            }
-            const stats = basicStatsText(item);
-            if (stats) {
-                const s = document.createElement('div');
-                s.className = 'item-stats';
-                s.textContent = stats;
-                detailsWrap.appendChild(s);
-            }
-            const reqTxt = requirementText(item);
-            if (reqTxt) {
-                const r = document.createElement('div');
-                r.className = 'item-req';
-                r.textContent = reqTxt;
-                detailsWrap.appendChild(r);
-            }
-            li.appendChild(detailsWrap);
-            list.appendChild(li);
+
+            list.appendChild(nameLi);
+            list.appendChild(actionLi);
         }
         root.appendChild(list);
     }
@@ -4444,35 +4421,27 @@ export function renderInventoryScreen(root) {
         });
 
         list.forEach(ent => {
-            const li = document.createElement('li');
-            li.className = 'inventory-item';
-
-            const row = document.createElement('div');
-            row.className = 'inventory-row-top';
-
-            const info = document.createElement('div');
-            info.className = 'item-info';
             const qtyText = ent.item.stack > 1 && ent.qty > 1 ? ` x${ent.qty}` : '';
             const statsInline = basicStatsText(ent.item);
+
+            const nameLi = document.createElement('li');
+            nameLi.className = 'inventory-name';
             const nameBtn = document.createElement('button');
             nameBtn.className = 'item-name-btn';
             nameBtn.textContent = ent.item.name + qtyText + (statsInline ? ` (${statsInline})` : '');
             if (!meetsRequirements(ent.item)) nameBtn.style.color = 'red';
             else if (canEquipItem(ent.item) && isBetterItem(ent.item)) nameBtn.style.color = 'lightgreen';
-            nameBtn.addEventListener('click', () => showItemPopup(ent.item));
-            info.appendChild(nameBtn);
-            row.appendChild(info);
+            setupItemHoldDetails(nameBtn, ent.item);
+            nameLi.appendChild(nameBtn);
 
-            const actions = document.createElement('div');
-            actions.className = 'item-actions';
-
-
+            const actionLi = document.createElement('li');
+            actionLi.className = 'item-actions';
             if (canEquipItem(ent.item)) {
                 if (activeCharacter.equipment[ent.item.slot] !== ent.id) {
                     const eq = document.createElement('button');
                     eq.textContent = 'Equip';
                     eq.addEventListener('click', () => equipItem(ent.id, root));
-                    actions.appendChild(eq);
+                    actionLi.appendChild(eq);
                 }
             } else if (/^Scroll of/i.test(ent.item.name)) {
                 const learnBtn = document.createElement('button');
@@ -4481,46 +4450,11 @@ export function renderInventoryScreen(root) {
                 if (activeCharacter.spells && activeCharacter.spells.includes(ent.item.name.replace(/^Scroll of\s+/i, ''))) {
                     learnBtn.disabled = true;
                 }
-                actions.appendChild(learnBtn);
+                actionLi.appendChild(learnBtn);
             }
 
-            row.appendChild(actions);
-            li.appendChild(row);
-
-            const detailsWrap = document.createElement('div');
-            detailsWrap.className = 'item-details hidden';
-            const desc = document.createElement('div');
-            desc.className = 'item-description';
-            desc.textContent = ent.item.description || ent.item.name;
-            detailsWrap.appendChild(desc);
-            if (ent.item.effects) {
-                const eff = document.createElement('div');
-                eff.className = 'item-effects';
-                eff.textContent = 'Effects: ' + ent.item.effects.join(', ');
-                detailsWrap.appendChild(eff);
-            }
-            if (ent.item.abilities) {
-                const ab = document.createElement('div');
-                ab.className = 'item-abilities';
-                ab.textContent = 'Abilities: ' + ent.item.abilities.join(', ');
-                detailsWrap.appendChild(ab);
-            }
-            const stats = basicStatsText(ent.item);
-            if (stats) {
-                const s = document.createElement('div');
-                s.className = 'item-stats';
-                s.textContent = stats;
-                detailsWrap.appendChild(s);
-            }
-            const req = requirementText(ent.item);
-            if (req) {
-                const r = document.createElement('div');
-                r.className = 'item-req';
-                r.textContent = req;
-                detailsWrap.appendChild(r);
-            }
-            li.appendChild(detailsWrap);
-            ul.appendChild(li);
+            ul.appendChild(nameLi);
+            ul.appendChild(actionLi);
         });
     });
     const keyBtn = document.createElement('button');
@@ -4549,10 +4483,13 @@ function renderKeyItemsScreen(root) {
         const ul = document.createElement('ul');
         ul.className = 'inventory-list';
         categories[cat].forEach(ent => {
-            const li = document.createElement('li');
-            li.className = 'inventory-item';
-            li.textContent = ent.item.name;
-            ul.appendChild(li);
+            const nameLi = document.createElement('li');
+            nameLi.className = 'inventory-name';
+            nameLi.textContent = ent.item.name;
+            ul.appendChild(nameLi);
+            const filler = document.createElement('li');
+            filler.className = 'item-actions';
+            ul.appendChild(filler);
         });
         root.appendChild(ul);
     });
