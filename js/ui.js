@@ -118,6 +118,28 @@ let monsterHpList = [];
 
 const BASE_BOTTOM_PADDING = 60;
 
+function showSelectCharacterPopup() {
+    let popup = document.getElementById('no-character-popup');
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'no-character-popup';
+        const btn = document.createElement('button');
+        btn.textContent = 'Select a character';
+        btn.addEventListener('click', () => {
+            const root = document.getElementById('app').firstElementChild;
+            if (root) renderCharacterMenu(root);
+            hideSelectCharacterPopup();
+        });
+        popup.appendChild(btn);
+        document.body.appendChild(popup);
+    }
+}
+
+function hideSelectCharacterPopup() {
+    const popup = document.getElementById('no-character-popup');
+    if (popup) popup.remove();
+}
+
 function adjustTextSize(el, maxDecrease = 4, container = el) {
     if (!el || !container) return;
 
@@ -1112,6 +1134,9 @@ export function renderMainMenu() {
     const container = document.createElement('div');
     container.id = 'main-screen';
 
+    if (!activeCharacter) showSelectCharacterPopup();
+    else hideSelectCharacterPopup();
+
     const menu = document.createElement('div');
     menu.id = 'menu';
 
@@ -1327,6 +1352,7 @@ export function renderMainMenu() {
 }
 
 export function renderCharacterMenu(root) {
+    hideSelectCharacterPopup();
     root.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = 'Characters';
@@ -1405,26 +1431,26 @@ export function renderCharacterMenu(root) {
         const label = document.createElement('span');
         label.className = 'slot-label';
         const ch = characters[i];
-        label.textContent = ch ? `${ch.name} - ${ch.race} ${ch.job} Lv.${ch.level}` : 'No Save';
-        entry.appendChild(label);
 
-        const loadBtn = document.createElement('button');
-        if (ch) {
-            if (ch === activeCharacter) {
-                loadBtn.textContent = 'Active';
-                loadBtn.disabled = true;
-            } else {
-                loadBtn.textContent = 'Load';
-                loadBtn.addEventListener('click', () => {
-                    setActiveCharacter(ch);
-                    renderCharacterMenu(root);
-                });
-            }
-        } else {
-            loadBtn.textContent = 'Load';
-            loadBtn.disabled = true;
+        const icon = document.createElement('span');
+        icon.className = 'slot-icon';
+        if (ch && ch === activeCharacter) {
+            icon.style.backgroundImage = "url('img/Icons/Home%20Point%20Crystal.png')";
         }
-        entry.appendChild(loadBtn);
+        label.appendChild(icon);
+
+        const text = document.createElement('span');
+        text.textContent = ch ? `${ch.name} - ${ch.race} ${ch.job} Lv.${ch.level}` : 'No Save';
+        label.appendChild(text);
+
+        if (ch) {
+            label.classList.add('selectable');
+            label.addEventListener('click', () => {
+                setActiveCharacter(ch);
+                renderCharacterMenu(root);
+            });
+        }
+        entry.appendChild(label);
 
         const newCharBtn = document.createElement('button');
         newCharBtn.className = 'square-btn';

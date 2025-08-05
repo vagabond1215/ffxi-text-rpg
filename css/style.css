@@ -515,6 +515,21 @@ body.portrait .nav-row {
 .slot-label {
     flex-grow: 1;
     text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.slot-label.selectable {
+    cursor: pointer;
+}
+
+.slot-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
 }
 
 .slot-entry button {
@@ -1284,6 +1299,23 @@ body.portrait .main-layout {
     padding: 4px 8px;
     font-size: 20px;
     cursor: pointer;
+}
+
+#no-character-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 15px;
+    border: 1px solid #fff;
+    z-index: 2000;
+    text-align: center;
+}
+
+#no-character-popup button {
+    margin-top: 5px;
 }
 
 

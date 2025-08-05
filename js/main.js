@@ -1,8 +1,23 @@
 import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, setupStoragePopup, setupProfilePopup, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter, persistCharacter } from '../data/index.js';
+import { startTicks, onTick } from './tick.js';
 
 // Entry point: initialize application
 let uiScale = 1;
+
+onTick(() => {
+    const ch = activeCharacter;
+    if (!ch) return;
+    const maxHp = (ch.raceHP || 0) + (ch.jobHP || 0) + (ch.sJobHP || 0);
+    const maxMp = (ch.raceMP || 0) + (ch.jobMP || 0) + (ch.sJobMP || 0);
+    const newHp = Math.min(maxHp, (ch.hp ?? maxHp) + 1);
+    const newMp = Math.min(maxMp, (ch.mp ?? maxMp) + 1);
+    if (newHp !== ch.hp || newMp !== ch.mp) {
+        ch.hp = newHp;
+        ch.mp = newMp;
+        persistCharacter(ch);
+    }
+});
 
 function applyOrientation() {
     const portrait = window.innerHeight > window.innerWidth;
@@ -101,6 +116,8 @@ function init() {
             }
         });
     }
+
+    startTicks();
 }
 
 document.addEventListener('DOMContentLoaded', init);
