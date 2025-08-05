@@ -4204,13 +4204,6 @@ export function renderEquipmentScreen(root) {
     const title = document.createElement('h2');
     title.textContent = 'Equipment';
     root.appendChild(title);
-    const wardBtn = document.createElement('button');
-    wardBtn.textContent = 'Wardrobe';
-    wardBtn.addEventListener('click', () => {
-        showWardrobePopup();
-    });
-    root.appendChild(wardBtn);
-    root.appendChild(characterSummary());
     if (!activeCharacter) {
         const p = document.createElement('p');
         p.textContent = 'No active character';
@@ -4485,7 +4478,11 @@ function renderKeyItemsScreen(root) {
         categories[cat].forEach(ent => {
             const nameLi = document.createElement('li');
             nameLi.className = 'inventory-name';
-            nameLi.textContent = ent.item.name;
+            const nameBtn = document.createElement('button');
+            nameBtn.className = 'item-name-btn';
+            nameBtn.textContent = ent.item.name;
+            setupItemHoldDetails(nameBtn, ent.item);
+            nameLi.appendChild(nameBtn);
             ul.appendChild(nameLi);
             const filler = document.createElement('li');
             filler.className = 'item-actions';

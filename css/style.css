@@ -917,9 +917,16 @@ body.portrait .main-layout {
     gap: 4px;
 }
 
+.equipment-actions button {
+    padding: 0 4px;
+    margin: 0;
+    min-height: 0;
+    width: auto;
+}
+
 .inventory-section {
     width: fit-content;
-    margin: 0 auto 10px;
+    margin: 0 0 10px 0;
 }
 
 .inventory-header {
