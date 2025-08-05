@@ -52,7 +52,9 @@ import {
     spells as spellData,
     getSpell,
     getAvailableSpells,
-    weaponSkillDetails
+    weaponSkillDetails,
+    resolveSkillchain,
+    skillchainBonus
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
 
@@ -2719,6 +2721,7 @@ function renderCombatScreen(app, mobs, destination) {
     const defeated = [];
     let playerTimer = null;
     const monsterTimers = new Map();
+    let skillchainState = null;
 
     monsterSelectHandler = idx => {
         let mob = mobs.find(m => m.listIndex === idx);
@@ -2831,6 +2834,7 @@ function renderCombatScreen(app, mobs, destination) {
     function victory(exp, gil, cp, itemDrops, notes = []) {
         update();
         battleEnded = true;
+        skillchainState = null;
         monsterSelectHandler = null;
         const enemyNames = defeated.map(m => m.name).join(', ');
         addGameLog(`You defeated the ${enemyNames}.`);
@@ -3129,6 +3133,40 @@ function renderCombatScreen(app, mobs, destination) {
         return Math.max(1, Math.floor(WD * pdif));
     }
 
+    function handleSkillchain(attacker, defender, wsData, baseDamage) {
+        const props = wsData.sc || [];
+        if (!props.length) {
+            skillchainState = null;
+            return;
+        }
+        const now = Date.now();
+        if (skillchainState && now - skillchainState.time <= 10000) {
+            const result = resolveSkillchain(skillchainState.props, props);
+            if (result) {
+                const step = skillchainState.step + 1;
+                const mult = skillchainBonus(result.level, step);
+                const extra = Math.floor(baseDamage * mult);
+                if (defender === activeCharacter) {
+                    activeCharacter.hp = Math.max(0, activeCharacter.hp - extra);
+                } else {
+                    defender.currentHP = Math.max(0, defender.currentHP - extra);
+                    defender.hp = defender.currentHP;
+                    if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
+                        nearbyMonsters[defender.listIndex].hp = defender.currentHP;
+                    }
+                }
+                log(`${result.name} skillchain for ${extra} damage.`);
+                if (result.level >= 4) {
+                    skillchainState = null;
+                } else {
+                    skillchainState = { props: [result.name], step, time: now };
+                }
+                return;
+            }
+        }
+        skillchainState = { props, step: 1, time: now };
+    }
+
     function useWeaponSkill(attacker, defender, name) {
         const ws = weaponSkillDetails[name];
         if (!ws) {
@@ -3144,11 +3182,6 @@ function renderCombatScreen(app, mobs, destination) {
         attacker.tp = 0;
         if (defender === activeCharacter) {
             activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
-            if (activeCharacter.hp <= 0) {
-                stopAutoAttack(true);
-                endBattle();
-                return true;
-            }
         } else {
             defender.currentHP = Math.max(0, defender.currentHP - dmg);
             defender.hp = defender.currentHP;
@@ -3157,12 +3190,21 @@ function renderCombatScreen(app, mobs, destination) {
             }
         }
         log(`${attacker.name} uses ${name} for ${dmg} damage.`);
-        if (defender.currentHP <= 0 && defender !== activeCharacter) {
-            const idx = mobs.indexOf(defender);
-            if (idx !== -1) monsterDefeated(idx);
-        } else if (attacker === activeCharacter) {
-            defender.aggro = true;
-            if (!monsterTimers.has(defender)) scheduleMonsterAttack(defender);
+        handleSkillchain(attacker, defender, ws, dmg);
+        if (defender === activeCharacter) {
+            if (activeCharacter.hp <= 0) {
+                stopAutoAttack(true);
+                endBattle();
+                return true;
+            }
+        } else {
+            if (defender.currentHP <= 0) {
+                const idx = mobs.indexOf(defender);
+                if (idx !== -1) monsterDefeated(idx);
+            } else if (attacker === activeCharacter) {
+                defender.aggro = true;
+                if (!monsterTimers.has(defender)) scheduleMonsterAttack(defender);
+            }
         }
         update();
         return true;
@@ -3277,6 +3319,7 @@ function renderCombatScreen(app, mobs, destination) {
             log('You were defeated and return to your home point.');
         }
         battleEnded = true;
+        skillchainState = null;
         monsterSelectHandler = null;
         selectedMonsterIndex = null;
         if (activeCharacter) activeCharacter.targetIndex = null;

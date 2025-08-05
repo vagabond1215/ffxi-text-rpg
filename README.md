@@ -56,3 +56,4 @@ Open `index.html` in a browser. No build step is required.
   immediately engage them.
 - Attacks and taking damage now generate Tactical Points (TP) based on weapon
   delay.
+- Weapon skills can form skillchains that deal extra damage based on chain level.

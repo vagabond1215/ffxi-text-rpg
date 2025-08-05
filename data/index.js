@@ -53,6 +53,7 @@ export { experienceTable, expToLevel, expNeeded, experienceForKill } from './exp
 export { items, vendorInventories, shopNpcs, vendorGreetings, vendorTypes, conquestRewards } from './vendors.js';
 export { spells, getSpell, getAvailableSpells } from './spells.js';
 export { weaponSkillDetails } from './weaponskills.js';
+export { resolveSkillchain, skillchainBonus } from './skillchains.js';
 export {
   parseLevel,
   conLevel,
