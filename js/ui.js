@@ -981,7 +981,7 @@ function getAttack(character) {
 }
 
 function getDefense(character) {
-    let def = character.stats.vit + character.level;
+    let def = character.stats.vit + character.level + (character.defenseMod || 0);
     for (const slot of Object.values(character.equipment || {})) {
         const it = items[slot];
         if (it?.defense) def += it.defense;
@@ -2772,14 +2772,16 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     function weaponDelayMs() {
-        const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
-        return weaponDelay * 1000 / 60;
-    }
+    const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
+    const slow = activeCharacter.slowMultiplier || 0;
+    return weaponDelay * (1 + slow) * 1000 / 60;
+}
 
-    function monsterDelayMs(mob) {
-        const mobDelay = mob.delay || 240;
-        return mobDelay * 1000 / 60;
-    }
+function monsterDelayMs(mob) {
+    const mobDelay = mob.delay || 240;
+    const slow = mob.slowMultiplier || 0;
+    return mobDelay * (1 + slow) * 1000 / 60;
+}
 
     function getCombatStats(target) {
         if (target === activeCharacter) {
@@ -3077,53 +3079,262 @@ function renderCombatScreen(app, mobs, destination) {
         }
     }
 
+    function applyBuffEffect(target, buff) {
+        if (buff.defense) target.defenseMod = (target.defenseMod || 0) + buff.defense;
+        if (buff.mdb) target.mdb = (target.mdb || 0) + buff.mdb;
+        if (buff.shadows) target.blinkShadows = buff.shadows;
+        if (buff.stoneskin) target.stoneskinHP = buff.stoneskin;
+    }
+
+    function removeBuffEffect(target, buff) {
+        if (buff.defense) target.defenseMod = (target.defenseMod || 0) - buff.defense;
+        if (buff.mdb) target.mdb = (target.mdb || 0) - buff.mdb;
+        if (buff.shadows) target.blinkShadows = 0;
+        if (buff.stoneskin) target.stoneskinHP = 0;
+    }
+
+    function applyDebuffEffect(target, debuff) {
+        if (debuff.defense) target.defenseMod = (target.defenseMod || 0) - debuff.defense;
+        if (debuff.mdb) target.mdb = (target.mdb || 0) - debuff.mdb;
+        if (debuff.slow) target.slowMultiplier = debuff.slow;
+        if (debuff.sleep) target.asleep = true;
+    }
+
+    function removeDebuffEffect(target, debuff) {
+        if (debuff.defense) target.defenseMod = (target.defenseMod || 0) + debuff.defense;
+        if (debuff.mdb) target.mdb = (target.mdb || 0) + debuff.mdb;
+        if (debuff.slow) target.slowMultiplier = 0;
+        if (debuff.sleep) {
+            target.asleep = false;
+            if (target !== activeCharacter && target.currentHP > 0 && target.aggro && !monsterTimers.has(target)) {
+                scheduleMonsterAttack(target);
+            }
+        }
+    }
+
+    function applyBuff(target, effect) {
+        if (!effect) return;
+        if (!target.temporaryBuffs) target.temporaryBuffs = [];
+        const now = Date.now();
+        const existingIndex = target.temporaryBuffs.findIndex(b => b.name === effect.name);
+        if (existingIndex !== -1) {
+            removeBuffEffect(target, target.temporaryBuffs[existingIndex]);
+            target.temporaryBuffs.splice(existingIndex, 1);
+        }
+        const entry = { ...effect, expiresAt: now + (effect.duration || 0) * 1000 };
+        target.temporaryBuffs.push(entry);
+        applyBuffEffect(target, entry);
+        if (target === activeCharacter) {
+            if (!activeCharacter.buffs) activeCharacter.buffs = [];
+            if (!activeCharacter.buffs.includes(effect.name)) activeCharacter.buffs.push(effect.name);
+        }
+    }
+
+    function applyDebuff(target, effect) {
+        if (!effect) return;
+        if (!target.temporaryDebuffs) target.temporaryDebuffs = [];
+        const now = Date.now();
+        const existingIndex = target.temporaryDebuffs.findIndex(d => d.name === effect.name);
+        if (existingIndex !== -1) {
+            removeDebuffEffect(target, target.temporaryDebuffs[existingIndex]);
+            target.temporaryDebuffs.splice(existingIndex, 1);
+        }
+        const entry = { ...effect, expiresAt: now + (effect.duration || 0) * 1000 };
+        target.temporaryDebuffs.push(entry);
+        applyDebuffEffect(target, entry);
+        if (effect.sleep) {
+            if (target === activeCharacter) {
+                stopAutoAttack(true);
+            } else {
+                clearTimeout(monsterTimers.get(target));
+                monsterTimers.delete(target);
+            }
+        }
+        if (target === activeCharacter) {
+            if (!activeCharacter.debuffs) activeCharacter.debuffs = [];
+            if (!activeCharacter.debuffs.includes(effect.name)) activeCharacter.debuffs.push(effect.name);
+        } else {
+            target.aggro = true;
+            if (!monsterTimers.has(target) && !effect.sleep) scheduleMonsterAttack(target);
+        }
+    }
+
+    function removeDebuffs(target, list) {
+        if (!list || list.length === 0) return;
+        if (target.dotEffects) {
+            for (let i = target.dotEffects.length - 1; i >= 0; i--) {
+                const name = target.dotEffects[i].name;
+                if (list.includes(name)) {
+                    target.dotEffects.splice(i, 1);
+                    if (target === activeCharacter && activeCharacter.debuffs) {
+                        const idx = activeCharacter.debuffs.indexOf(name);
+                        if (idx !== -1) activeCharacter.debuffs.splice(idx, 1);
+                    }
+                }
+            }
+        }
+        if (target.temporaryDebuffs) {
+            for (let i = target.temporaryDebuffs.length - 1; i >= 0; i--) {
+                const debuff = target.temporaryDebuffs[i];
+                if (list.includes(debuff.name)) {
+                    removeDebuffEffect(target, debuff);
+                    target.temporaryDebuffs.splice(i, 1);
+                    if (target === activeCharacter && activeCharacter.debuffs) {
+                        const idx = activeCharacter.debuffs.indexOf(debuff.name);
+                        if (idx !== -1) activeCharacter.debuffs.splice(idx, 1);
+                    }
+                }
+            }
+        }
+        if (target === activeCharacter && activeCharacter.debuffs) {
+            list.forEach(name => {
+                const idx = activeCharacter.debuffs.indexOf(name);
+                if (idx !== -1) activeCharacter.debuffs.splice(idx, 1);
+            });
+        }
+    }
+
+    function calculateHealing(caster, spell) {
+        const mnd = caster.stats?.mnd ?? caster.mnd ?? caster.level * 2;
+        const base = spell.healing?.base || 0;
+        const scale = spell.healing?.mnd || 0;
+        return base + Math.floor(mnd * scale);
+    }
+
+    function applyDamage(target, dmg) {
+        if (target.blinkShadows && target.blinkShadows > 0) {
+            target.blinkShadows -= 1;
+            log('The attack is absorbed by Blink.');
+            if (target.blinkShadows <= 0 && target.temporaryBuffs) {
+                const idx = target.temporaryBuffs.findIndex(b => b.name === 'Blink');
+                if (idx !== -1) target.temporaryBuffs.splice(idx, 1);
+            }
+            return 0;
+        }
+        if (target.stoneskinHP && target.stoneskinHP > 0) {
+            const absorbed = Math.min(dmg, target.stoneskinHP);
+            target.stoneskinHP -= absorbed;
+            dmg -= absorbed;
+            log(`Stoneskin absorbs ${absorbed} damage.`);
+            if (target.stoneskinHP <= 0 && target.temporaryBuffs) {
+                const idx = target.temporaryBuffs.findIndex(b => b.name === 'Stoneskin');
+                if (idx !== -1) target.temporaryBuffs.splice(idx, 1);
+            }
+            if (dmg <= 0) return 0;
+        }
+        if (target.asleep) {
+            target.asleep = false;
+            if (target.temporaryDebuffs) {
+                const idx = target.temporaryDebuffs.findIndex(d => d.sleep);
+                if (idx !== -1) target.temporaryDebuffs.splice(idx, 1);
+            }
+            if (target === activeCharacter && activeCharacter.debuffs) {
+                const dIdx = activeCharacter.debuffs.indexOf('Sleep');
+                if (dIdx !== -1) activeCharacter.debuffs.splice(dIdx, 1);
+            }
+        }
+        return dmg;
+    }
+
+    function pruneTimedEffects(target) {
+        const now = Date.now();
+        target.temporaryBuffs = (target.temporaryBuffs || []).filter(b => {
+            if (b.expiresAt > now) return true;
+            removeBuffEffect(target, b);
+            if (target === activeCharacter && activeCharacter.buffs) {
+                const idx = activeCharacter.buffs.indexOf(b.name);
+                if (idx !== -1) activeCharacter.buffs.splice(idx, 1);
+            }
+            return false;
+        });
+        target.temporaryDebuffs = (target.temporaryDebuffs || []).filter(d => {
+            if (d.expiresAt > now) return true;
+            removeDebuffEffect(target, d);
+            if (target === activeCharacter && activeCharacter.debuffs) {
+                const idx = activeCharacter.debuffs.indexOf(d.name);
+                if (idx !== -1) activeCharacter.debuffs.splice(idx, 1);
+            }
+            return false;
+        });
+    }
+
     function castSpell(caster, target, spell) {
         if (caster.mp < spell.mpCost) {
             log('Not enough MP.');
             return;
         }
         caster.mp = Math.max(0, caster.mp - spell.mpCost);
-        let didDamage = false;
-        if (target !== caster && (!spell.dot || !spell.noInitialDamage)) {
-            const dmg = calculateMagicDamage(caster, target, spell);
+        let didEffect = false;
+        if (spell.healing) {
+            const amount = calculateHealing(caster, spell);
+            const maxHp = (target.raceHP || 0) + (target.jobHP || 0) + (target.sJobHP || 0) || target.maxHP || target.hp;
             if (target === activeCharacter) {
-                activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
-                if (activeCharacter.hp <= 0) {
-                    stopAutoAttack(true);
-                    endBattle();
-                    return;
-                }
+                activeCharacter.hp = Math.min(maxHp, activeCharacter.hp + amount);
             } else {
-                target.currentHP = Math.max(0, (target.currentHP ?? target.hp) - dmg);
+                target.currentHP = Math.min(maxHp, (target.currentHP ?? target.hp) + amount);
                 target.hp = target.currentHP;
-                if (target.listIndex !== undefined && nearbyMonsters[target.listIndex]) {
-                    nearbyMonsters[target.listIndex].hp = target.currentHP;
-                }
-                if (target.currentHP <= 0) {
-                    const idx = mobs.indexOf(target);
-                    if (idx !== -1) monsterDefeated(idx);
-                } else {
-                    target.aggro = true;
-                    if (!monsterTimers.has(target)) scheduleMonsterAttack(target);
-                }
             }
-            log(`${spell.name} hits ${target.name || target} for ${dmg} damage.`);
-            didDamage = true;
+            log(`${spell.name} restores ${amount} HP to ${target.name || target}.`);
+            didEffect = true;
+        }
+        if (!spell.healing && target !== caster && (!spell.dot || !spell.noInitialDamage)) {
+            let dmg = calculateMagicDamage(caster, target, spell);
+            dmg = applyDamage(target, dmg);
+            if (dmg > 0) {
+                if (target === activeCharacter) {
+                    activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+                    if (activeCharacter.hp <= 0) {
+                        stopAutoAttack(true);
+                        endBattle();
+                        return;
+                    }
+                } else {
+                    target.currentHP = Math.max(0, (target.currentHP ?? target.hp) - dmg);
+                    target.hp = target.currentHP;
+                    if (target.listIndex !== undefined && nearbyMonsters[target.listIndex]) {
+                        nearbyMonsters[target.listIndex].hp = target.currentHP;
+                    }
+                    if (target.currentHP <= 0) {
+                        const idx = mobs.indexOf(target);
+                        if (idx !== -1) monsterDefeated(idx);
+                    } else {
+                        target.aggro = true;
+                        if (!monsterTimers.has(target)) scheduleMonsterAttack(target);
+                    }
+                }
+                log(`${spell.name} hits ${target.name || target} for ${dmg} damage.`);
+                didEffect = true;
+            }
+        }
+        if (spell.removeDebuffs) {
+            removeDebuffs(target, spell.removeDebuffs);
+            didEffect = true;
+        }
+        if (spell.buff) {
+            applyBuff(target, { name: spell.name, ...spell.buff });
+            didEffect = true;
+        }
+        if (spell.debuff && target !== caster) {
+            applyDebuff(target, { name: spell.name, ...spell.debuff });
+            didEffect = true;
         }
         if (spell.dot && target !== caster) {
             applyDot(target, spell);
             target.aggro = true;
             if (!monsterTimers.has(target)) scheduleMonsterAttack(target);
             log(`${target.name || target} is afflicted with ${spell.name}.`);
+            didEffect = true;
         }
-        if (!didDamage && (!spell.dot || target === caster)) {
+        if (!didEffect) {
             log(`${spell.name} has no effect.`);
         }
         update();
     }
 
     function processDot(target) {
-        if (!target?.dotEffects || target.dotEffects.length === 0) return;
+        if (!target) return;
+        pruneTimedEffects(target);
+        if (!target.dotEffects || target.dotEffects.length === 0) return;
         for (let i = target.dotEffects.length - 1; i >= 0; i--) {
             const effect = target.dotEffects[i];
             const dmg = effect.potency;
@@ -3306,41 +3517,45 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     function attack(attacker, defender) {
+        if (attacker.asleep) return;
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
         const hitChance = calculateHitChance(aStats.acc, dStats.eva, aStats.level, dStats.level);
         if (Math.random() < hitChance) {
             const critChance = calculateCriticalChance(attacker, defender);
             const isCrit = Math.random() < critChance;
-            const dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit);
-            if (defender === activeCharacter) {
-                activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
-                const mobDelay = attacker.delay || 240;
-                gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
-                if (activeCharacter.hp <= 0) {
-                    stopAutoAttack(true);
-                    endBattle();
-                    return;
+            let dmg = calculatePhysicalDamage(attacker, defender, aStats, dStats, isCrit);
+            dmg = applyDamage(defender, dmg);
+            if (dmg > 0) {
+                if (defender === activeCharacter) {
+                    activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+                    const mobDelay = attacker.delay || 240;
+                    gainTP(activeCharacter, tpFromDelay(mobDelay) / 3);
+                    if (activeCharacter.hp <= 0) {
+                        stopAutoAttack(true);
+                        endBattle();
+                        return;
+                    }
+                } else {
+                    defender.currentHP = Math.max(0, defender.currentHP - dmg);
+                    defender.hp = defender.currentHP;
+                    if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
+                        nearbyMonsters[defender.listIndex].hp = defender.currentHP;
+                    }
+                    if (defender.currentHP <= 0) {
+                        const idx = mobs.indexOf(defender);
+                        if (idx !== -1) monsterDefeated(idx);
+                    }
                 }
-            } else {
-                defender.currentHP = Math.max(0, defender.currentHP - dmg);
-                defender.hp = defender.currentHP;
-                if (defender.listIndex !== undefined && nearbyMonsters[defender.listIndex]) {
-                    nearbyMonsters[defender.listIndex].hp = defender.currentHP;
+                if (attacker === activeCharacter) {
+                    const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
+                    gainTP(activeCharacter, tpFromDelay(weaponDelay));
                 }
-            }
-            if (attacker === activeCharacter) {
-                const weaponDelay = items[activeCharacter.equipment?.mainHand]?.delay || 240;
-                gainTP(activeCharacter, tpFromDelay(weaponDelay));
-            }
-            if (isCrit) {
-                log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
-            } else {
-                log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
-            }
-            if (defender.currentHP <= 0 && defender !== activeCharacter) {
-                const idx = mobs.indexOf(defender);
-                if (idx !== -1) monsterDefeated(idx);
+                if (isCrit) {
+                    log(`${attacker.name} critically hits ${defender.name} for ${dmg} damage.`);
+                } else {
+                    log(`${attacker.name} hits ${defender.name} for ${dmg} damage.`);
+                }
             }
         } else {
             log(`${attacker.name} misses.`);
@@ -3353,10 +3568,10 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     function schedulePlayerAttack(extra = 0) {
-        if (!autoAttacking || battleEnded) return;
+        if (!autoAttacking || battleEnded || activeCharacter.asleep) return;
         clearTimeout(playerTimer);
         playerTimer = setTimeout(() => {
-            if (!autoAttacking || battleEnded || activeCharacter.hp <= 0) {
+            if (!autoAttacking || battleEnded || activeCharacter.hp <= 0 || activeCharacter.asleep) {
                 if (activeCharacter.hp <= 0) stopAutoAttack(true);
                 return;
             }
@@ -3375,10 +3590,10 @@ function renderCombatScreen(app, mobs, destination) {
     }
 
     function scheduleMonsterAttack(mob, extra = 0) {
-        if (battleEnded || mob.currentHP <= 0) return;
+        if (battleEnded || mob.currentHP <= 0 || mob.asleep) return;
         clearTimeout(monsterTimers.get(mob));
         const t = setTimeout(() => {
-            if (mob.currentHP > 0 && activeCharacter.hp > 0) {
+            if (mob.currentHP > 0 && activeCharacter.hp > 0 && !mob.asleep) {
                 attack(mob, activeCharacter);
                 if (!battleEnded && (autoAttacking || mob.aggro)) {
                     scheduleMonsterAttack(mob);

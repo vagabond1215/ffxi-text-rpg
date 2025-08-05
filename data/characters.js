@@ -742,13 +742,41 @@ export function clearTemporaryEffects(character) {
   if (!character) return;
   character.temporaryBuffs = [];
   character.temporaryDebuffs = [];
+  character.defenseMod = 0;
+  character.mdb = 0;
+  character.blinkShadows = 0;
+  character.stoneskinHP = 0;
+  character.slowMultiplier = 0;
+  character.asleep = false;
 }
 
 export function pruneExpiredEffects(character) {
   if (!character) return;
   const now = Date.now();
-  character.temporaryBuffs = (character.temporaryBuffs || []).filter(b => b.expiresAt > now);
-  character.temporaryDebuffs = (character.temporaryDebuffs || []).filter(d => d.expiresAt > now);
+  character.temporaryBuffs = (character.temporaryBuffs || []).filter(b => {
+    if (b.expiresAt > now) return true;
+    if (b.defense) character.defenseMod = (character.defenseMod || 0) - b.defense;
+    if (b.mdb) character.mdb = (character.mdb || 0) - b.mdb;
+    if (b.shadows) character.blinkShadows = 0;
+    if (b.stoneskin) character.stoneskinHP = 0;
+    if (character.buffs) {
+      const idx = character.buffs.indexOf(b.name);
+      if (idx !== -1) character.buffs.splice(idx, 1);
+    }
+    return false;
+  });
+  character.temporaryDebuffs = (character.temporaryDebuffs || []).filter(d => {
+    if (d.expiresAt > now) return true;
+    if (d.defense) character.defenseMod = (character.defenseMod || 0) + d.defense;
+    if (d.mdb) character.mdb = (character.mdb || 0) + d.mdb;
+    if (d.slow) character.slowMultiplier = 0;
+    if (d.sleep) character.asleep = false;
+    if (character.debuffs) {
+      const idx = character.debuffs.indexOf(d.name);
+      if (idx !== -1) character.debuffs.splice(idx, 1);
+    }
+    return false;
+  });
 }
 
 export async function persistCharacter(character) {
