@@ -3098,6 +3098,7 @@ function monsterDelayMs(mob) {
         if (debuff.mdb) target.mdb = (target.mdb || 0) - debuff.mdb;
         if (debuff.slow) target.slowMultiplier = debuff.slow;
         if (debuff.sleep) target.asleep = true;
+        if (debuff.stun) target.stunned = true;
     }
 
     function removeDebuffEffect(target, debuff) {
@@ -3106,6 +3107,12 @@ function monsterDelayMs(mob) {
         if (debuff.slow) target.slowMultiplier = 0;
         if (debuff.sleep) {
             target.asleep = false;
+            if (target !== activeCharacter && target.currentHP > 0 && target.aggro && !monsterTimers.has(target)) {
+                scheduleMonsterAttack(target);
+            }
+        }
+        if (debuff.stun) {
+            target.stunned = false;
             if (target !== activeCharacter && target.currentHP > 0 && target.aggro && !monsterTimers.has(target)) {
                 scheduleMonsterAttack(target);
             }
@@ -3150,12 +3157,20 @@ function monsterDelayMs(mob) {
                 monsterTimers.delete(target);
             }
         }
+        if (effect.stun) {
+            if (target === activeCharacter) {
+                stopAutoAttack(true);
+            } else {
+                clearTimeout(monsterTimers.get(target));
+                monsterTimers.delete(target);
+            }
+        }
         if (target === activeCharacter) {
             if (!activeCharacter.debuffs) activeCharacter.debuffs = [];
             if (!activeCharacter.debuffs.includes(effect.name)) activeCharacter.debuffs.push(effect.name);
         } else {
             target.aggro = true;
-            if (!monsterTimers.has(target) && !effect.sleep) scheduleMonsterAttack(target);
+            if (!monsterTimers.has(target) && !effect.sleep && !effect.stun) scheduleMonsterAttack(target);
         }
     }
 
@@ -3259,6 +3274,10 @@ function monsterDelayMs(mob) {
     }
 
     function castSpell(caster, target, spell) {
+        if (caster.asleep || caster.stunned) {
+            log(`${caster.name || 'Caster'} cannot act right now.`);
+            return;
+        }
         if (caster.mp < spell.mpCost) {
             log('Not enough MP.');
             return;
@@ -3517,7 +3536,7 @@ function monsterDelayMs(mob) {
     }
 
     function attack(attacker, defender) {
-        if (attacker.asleep) return;
+        if (attacker.asleep || attacker.stunned) return;
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
         const hitChance = calculateHitChance(aStats.acc, dStats.eva, aStats.level, dStats.level);
@@ -3568,10 +3587,10 @@ function monsterDelayMs(mob) {
     }
 
     function schedulePlayerAttack(extra = 0) {
-        if (!autoAttacking || battleEnded || activeCharacter.asleep) return;
+        if (!autoAttacking || battleEnded || activeCharacter.asleep || activeCharacter.stunned) return;
         clearTimeout(playerTimer);
         playerTimer = setTimeout(() => {
-            if (!autoAttacking || battleEnded || activeCharacter.hp <= 0 || activeCharacter.asleep) {
+            if (!autoAttacking || battleEnded || activeCharacter.hp <= 0 || activeCharacter.asleep || activeCharacter.stunned) {
                 if (activeCharacter.hp <= 0) stopAutoAttack(true);
                 return;
             }
@@ -3590,10 +3609,10 @@ function monsterDelayMs(mob) {
     }
 
     function scheduleMonsterAttack(mob, extra = 0) {
-        if (battleEnded || mob.currentHP <= 0 || mob.asleep) return;
+        if (battleEnded || mob.currentHP <= 0 || mob.asleep || mob.stunned) return;
         clearTimeout(monsterTimers.get(mob));
         const t = setTimeout(() => {
-            if (mob.currentHP > 0 && activeCharacter.hp > 0 && !mob.asleep) {
+            if (mob.currentHP > 0 && activeCharacter.hp > 0 && !mob.asleep && !mob.stunned) {
                 attack(mob, activeCharacter);
                 if (!battleEnded && (autoAttacking || mob.aggro)) {
                     scheduleMonsterAttack(mob);
