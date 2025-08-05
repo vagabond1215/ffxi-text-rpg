@@ -1001,6 +1001,243 @@ export const spells = [
 
 ];
 
+const dotSpells = [];
+
+// Poison line
+dotSpells.push(
+  {
+    name: 'Poison',
+    level: 5,
+    element: 'Water',
+    target: 'ST',
+    mpCost: 9,
+    castTime: 3,
+    recastTime: 5,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    noInitialDamage: true,
+    dot: { potency: 1, ticks: 10, type: 'Poison' }
+  },
+  {
+    name: 'Poison II',
+    level: 40,
+    element: 'Water',
+    target: 'ST',
+    mpCost: 36,
+    castTime: 3,
+    recastTime: 10,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 2,
+    noInitialDamage: true,
+    dot: { potency: 3, ticks: 15, type: 'Poison' }
+  },
+  {
+    name: 'Poison III',
+    level: 80,
+    element: 'Water',
+    target: 'ST',
+    mpCost: 90,
+    castTime: 3,
+    recastTime: 10,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 3,
+    noInitialDamage: true,
+    dot: { potency: 6, ticks: 15, type: 'Poison' }
+  }
+);
+
+// Dia and Bio
+dotSpells.push(
+  {
+    name: 'Dia',
+    level: 1,
+    element: 'Light',
+    target: 'ST',
+    mpCost: 8,
+    castTime: 2.5,
+    recastTime: 5,
+    magicType: 'White Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    noInitialDamage: true,
+    dot: { potency: 1, ticks: 10, type: 'Dia' }
+  },
+  {
+    name: 'Dia II',
+    level: 23,
+    element: 'Light',
+    target: 'ST',
+    mpCost: 21,
+    castTime: 2.5,
+    recastTime: 5,
+    magicType: 'White Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 2,
+    noInitialDamage: true,
+    dot: { potency: 2, ticks: 10, type: 'Dia' }
+  },
+  {
+    name: 'Dia III',
+    level: 47,
+    element: 'Light',
+    target: 'ST',
+    mpCost: 36,
+    castTime: 2.5,
+    recastTime: 5,
+    magicType: 'White Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 3,
+    noInitialDamage: true,
+    dot: { potency: 3, ticks: 10, type: 'Dia' }
+  },
+  {
+    name: 'Bio',
+    level: 7,
+    element: 'Dark',
+    target: 'ST',
+    mpCost: 10,
+    castTime: 2.5,
+    recastTime: 10,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    noInitialDamage: true,
+    dot: { potency: 1, ticks: 10, type: 'Bio' }
+  },
+  {
+    name: 'Bio II',
+    level: 47,
+    element: 'Dark',
+    target: 'ST',
+    mpCost: 22,
+    castTime: 2.5,
+    recastTime: 10,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 2,
+    noInitialDamage: true,
+    dot: { potency: 2, ticks: 10, type: 'Bio' }
+  },
+  {
+    name: 'Bio III',
+    level: 75,
+    element: 'Dark',
+    target: 'ST',
+    mpCost: 45,
+    castTime: 2.5,
+    recastTime: 10,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 3,
+    noInitialDamage: true,
+    dot: { potency: 3, ticks: 10, type: 'Bio' }
+  }
+);
+
+// Requiem (Bard song)
+;[1,2,3,4,5].forEach(tier => {
+  dotSpells.push({
+    name: tier === 1 ? 'Foe Requiem' : `Foe Requiem ${tier}`,
+    level: 5 + (tier - 1) * 10,
+    element: 'Light',
+    target: 'AoE',
+    mpCost: 8 * tier,
+    castTime: 8,
+    recastTime: 20,
+    magicType: 'Bard',
+    subType: 'Requiem',
+    proficiency: 'Singing',
+    tier,
+    noInitialDamage: true,
+    dot: { potency: tier, ticks: 20, type: 'Requiem' }
+  });
+});
+
+// Elemental debuffs
+[
+  ['Burn', 'Fire'],
+  ['Frost', 'Ice'],
+  ['Choke', 'Wind'],
+  ['Rasp', 'Earth'],
+  ['Shock', 'Lightning'],
+  ['Drown', 'Water']
+].forEach(([name, element]) => {
+  dotSpells.push({
+    name,
+    level: 25,
+    element,
+    target: 'ST',
+    mpCost: 21,
+    castTime: 4,
+    recastTime: 30,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    baseDamage: 20,
+    dot: { potency: 2, ticks: 10, type: name }
+  });
+});
+
+// Helix spells
+[
+  ['Pyrohelix', 'Fire'],
+  ['Cryohelix', 'Ice'],
+  ['Anemohelix', 'Wind'],
+  ['Geohelix', 'Earth'],
+  ['Hydrohelix', 'Water'],
+  ['Ionohelix', 'Lightning'],
+  ['Luminohelix', 'Light'],
+  ['Noctohelix', 'Dark']
+].forEach(([name, element]) => {
+  dotSpells.push({
+    name,
+    level: 75,
+    element,
+    target: 'ST',
+    mpCost: 60,
+    castTime: 3.5,
+    recastTime: 45,
+    magicType: 'Black Magic',
+    subType: 'Helix',
+    proficiency: 'Elemental Magic',
+    tier: 1,
+    baseDamage: 60,
+    dot: { potency: 8, ticks: 10, type: 'Helix' }
+  });
+});
+
+// Kaustra
+dotSpells.push({
+  name: 'Kaustra',
+  level: 95,
+  element: 'Dark',
+  target: 'ST',
+  mpCost: 90,
+  castTime: 4,
+  recastTime: 60,
+  magicType: 'Black Magic',
+  subType: 'Dark',
+  proficiency: 'Dark Magic',
+  tier: 1,
+  baseDamage: 80,
+  dot: { potency: 15, ticks: 8, type: 'Kaustra' }
+});
+
+spells.push(...dotSpells);
+
 export function getSpell(name) {
   return spells.find(s => s.name === name);
 }

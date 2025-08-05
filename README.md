@@ -57,3 +57,4 @@ Open `index.html` in a browser. No build step is required.
 - Attacks and taking damage now generate Tactical Points (TP) based on weapon
   delay.
 - Weapon skills can form skillchains that deal extra damage based on chain level.
+- Damage over time effects tick every three seconds and support spells such as Poison, Dia/Bio, Requiem, elemental debuffs, Helix spells, and Kaustra.

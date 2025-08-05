@@ -57,6 +57,7 @@ import {
     skillchainBonus
 } from '../data/index.js';
 import { randomName, raceInfo, jobInfo, cityImages, characterImages, getZoneTravelTurns, exploreEncounter, parseLevel, expNeeded, expToLevel} from '../data/index.js';
+import { onTick } from './tick.js';
 
 let backButtonElement = null;
 let openDetailElement = null;
@@ -1108,7 +1109,8 @@ function statusEffectsDisplay() {
     ];
     const debuffs = [
         ...(activeCharacter.debuffs || []),
-        ...((activeCharacter.temporaryDebuffs || []).map(d => d.name))
+        ...((activeCharacter.temporaryDebuffs || []).map(d => d.name)),
+        ...((activeCharacter.dotEffects || []).map(d => d.name))
     ];
     if (!hasSignet(activeCharacter)) {
         const idx = buffs.indexOf('Signet');
@@ -2729,6 +2731,8 @@ function renderCombatScreen(app, mobs, destination) {
     actionColumn.appendChild(actionDiv);
     const spells = getAvailableSpells(activeCharacter);
 
+    let removeDotTick = null;
+
     mobs.forEach(m => {
         m.currentHP = (m.hp ?? parseLevel(m.level) * 20);
     });
@@ -3057,15 +3061,31 @@ function renderCombatScreen(app, mobs, destination) {
         return Math.max(1, dmg);
     }
 
+    function applyDot(target, spell) {
+        if (!spell.dot) return;
+        if (!target.dotEffects) target.dotEffects = [];
+        const existing = target.dotEffects.find(e => e.name === spell.name);
+        if (existing) {
+            existing.ticks = spell.dot.ticks;
+            existing.potency = spell.dot.potency;
+        } else {
+            target.dotEffects.push({ name: spell.name, potency: spell.dot.potency, ticks: spell.dot.ticks });
+        }
+        if (target === activeCharacter) {
+            if (!activeCharacter.debuffs) activeCharacter.debuffs = [];
+            if (!activeCharacter.debuffs.includes(spell.name)) activeCharacter.debuffs.push(spell.name);
+        }
+    }
+
     function castSpell(caster, target, spell) {
         if (caster.mp < spell.mpCost) {
             log('Not enough MP.');
             return;
         }
         caster.mp = Math.max(0, caster.mp - spell.mpCost);
-        let dmg = 0;
-        if (target !== caster) {
-            dmg = calculateMagicDamage(caster, target, spell);
+        let didDamage = false;
+        if (target !== caster && (!spell.dot || !spell.noInitialDamage)) {
+            const dmg = calculateMagicDamage(caster, target, spell);
             if (target === activeCharacter) {
                 activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
                 if (activeCharacter.hp <= 0) {
@@ -3088,8 +3108,57 @@ function renderCombatScreen(app, mobs, destination) {
                 }
             }
             log(`${spell.name} hits ${target.name || target} for ${dmg} damage.`);
+            didDamage = true;
+        }
+        if (spell.dot && target !== caster) {
+            applyDot(target, spell);
+            target.aggro = true;
+            if (!monsterTimers.has(target)) scheduleMonsterAttack(target);
+            log(`${target.name || target} is afflicted with ${spell.name}.`);
+        }
+        if (!didDamage && (!spell.dot || target === caster)) {
+            log(`${spell.name} has no effect.`);
         }
         update();
+    }
+
+    function processDot(target) {
+        if (!target?.dotEffects || target.dotEffects.length === 0) return;
+        for (let i = target.dotEffects.length - 1; i >= 0; i--) {
+            const effect = target.dotEffects[i];
+            const dmg = effect.potency;
+            if (target === activeCharacter) {
+                activeCharacter.hp = Math.max(0, activeCharacter.hp - dmg);
+                log(`${activeCharacter.name} suffers ${dmg} damage from ${effect.name}.`);
+                if (activeCharacter.hp <= 0) {
+                    stopAutoAttack(true);
+                    endBattle();
+                    return;
+                }
+            } else {
+                target.currentHP = Math.max(0, (target.currentHP ?? target.hp) - dmg);
+                target.hp = target.currentHP;
+                if (target.listIndex !== undefined && nearbyMonsters[target.listIndex]) {
+                    nearbyMonsters[target.listIndex].hp = target.currentHP;
+                }
+                log(`${target.name} takes ${dmg} damage from ${effect.name}.`);
+                if (target.currentHP <= 0) {
+                    const idx = mobs.indexOf(target);
+                    if (idx !== -1) {
+                        monsterDefeated(idx);
+                        return;
+                    }
+                }
+            }
+            effect.ticks -= 1;
+            if (effect.ticks <= 0) {
+                target.dotEffects.splice(i, 1);
+                if (target === activeCharacter && activeCharacter.debuffs) {
+                    const dIdx = activeCharacter.debuffs.indexOf(effect.name);
+                    if (dIdx !== -1) activeCharacter.debuffs.splice(dIdx, 1);
+                }
+            }
+        }
     }
 
     function tpFromDelay(delay) {
@@ -3352,6 +3421,7 @@ function renderCombatScreen(app, mobs, destination) {
         stopAutoAttack(activeCharacter.hp <= 0);
         monsterTimers.forEach(t => clearTimeout(t));
         monsterTimers.clear();
+        if (removeDotTick) removeDotTick();
         if (clearList) {
             nearbyMonsters = [];
             monsterIndexList = [];
@@ -3495,6 +3565,11 @@ function renderCombatScreen(app, mobs, destination) {
     fleeBtn.addEventListener('click', () => {
         stopAutoAttack(false);
         attemptFlee();
+    });
+
+    removeDotTick = onTick(() => {
+        processDot(activeCharacter);
+        mobs.forEach(processDot);
     });
 
     mobs.forEach(m => {
