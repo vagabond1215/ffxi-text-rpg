@@ -547,6 +547,7 @@ export const bestiaryByZone = {
       spawns: 1,
       spawnChance: 0,
       fishingOnly: true,
+      fishingSkill: 0,
       notes: 'Fishing only'
     },
     {
@@ -631,6 +632,7 @@ export const bestiaryByZone = {
       spawns: 1,
       spawnChance: 0,
       fishingOnly: true,
+      fishingSkill: 10,
       notes: 'Fishing only'
     },
     {
@@ -796,6 +798,7 @@ export const bestiaryByZone = {
       spawns: 1,
       spawnChance: 0,
       fishingOnly: true,
+      fishingSkill: 20,
       notes: 'Fishing only'
     },
     {
@@ -841,6 +844,7 @@ export const bestiaryByZone = {
       spawnChance: 0,
       coords: ['E-8', 'E-9'],
       fishingOnly: true,
+      fishingSkill: 30,
       notes: 'Fishing only',
       areas: [null]
     }
