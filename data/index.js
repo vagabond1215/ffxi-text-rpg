@@ -45,6 +45,7 @@ export {
 export { proficiencyScale, getScale } from './scales.js';
 export { names, randomName } from './names.js';
 export { raceInfo, jobInfo, cityImages, characterImages } from './descriptions.js';
+export { continentLore, zoneLore } from './lore.js';
 export { cityList, zonesByCity, locations, zoneNames } from './locations.js';
 export { bestiaryByZone, allMonsters } from './bestiary.js';
 export { zoneMaps, registerZoneMap, getSubArea, canMove } from './maps.js';
