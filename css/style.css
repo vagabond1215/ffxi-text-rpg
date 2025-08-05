@@ -104,6 +104,26 @@ body.portrait #app {
     height: 28px;
 }
 
+#menu-popup {
+    position: fixed;
+    right: 5px;
+    bottom: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 8px;
+    border-radius: 4px;
+    z-index: 1400;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#menu-popup button {
+    padding: 2px 6px;
+    font-size: 14px;
+    height: 28px;
+    margin: 2px 0;
+}
+
 .element-icon {
     width: 16px;
     height: 16px;
@@ -128,7 +148,7 @@ body.portrait #app {
     height: auto;
 }
 
-#character-select {
+#menu-button {
     padding: 2px 6px;
     font-size: 14px;
     margin: 0 2px;
@@ -372,10 +392,10 @@ body.portrait .nav-row {
 }
 
 .monster-btn {
-    width: 160px;
+    width: 168px;
     margin: 1px 0;
     position: relative;
-    padding-bottom: 5px;
+    padding: 3px 0 8px;
     overflow: hidden;
 }
 
@@ -401,11 +421,11 @@ body.portrait .nav-row {
 }
 
 .party-btn {
-    width: 160px;
+    width: 168px;
     margin: 1px 0;
     display: flex;
     align-items: stretch;
-    padding: 0;
+    padding: 3px 0;
     position: relative;
 }
 

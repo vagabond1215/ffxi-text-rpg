@@ -100,6 +100,26 @@ const weaponSkillsByType = {
     sword: ['Fast Blade', 'Burning Blade', 'Savage Blade']
 };
 
+function getContrastColor(colorName) {
+    const map = {
+        yellowgreen: '#9ACD32',
+        darkgreen: '#006400'
+    };
+    let hex = map[colorName] || colorName;
+    if (hex.startsWith('rgb')) {
+        const [r, g, b] = hex.match(/\d+/g).map(Number);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness > 140 ? '#000' : '#fff';
+    }
+    if (hex.startsWith('#')) hex = hex.slice(1);
+    if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 140 ? '#000' : '#fff';
+}
+
 function getWeaponSkillOptions() {
     const weapon = items[activeCharacter?.equipment?.mainHand];
     if (!weapon?.name) return [];
@@ -336,6 +356,35 @@ export function setupProfilePopup(el, content, closeBtn) {
     }
 }
 
+export function setupMenuButton(btn, popup) {
+    if (!btn || !popup) return;
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        popup.classList.toggle('hidden');
+    });
+    document.addEventListener('click', e => {
+        if (!popup.contains(e.target) && e.target !== btn) {
+            popup.classList.add('hidden');
+        }
+    });
+
+    const root = () => document.getElementById('app').firstElementChild;
+    const actions = [
+        { text: 'Character', handler: () => { const r = root(); if (r) renderCharacterMenu(r); } },
+        { text: 'Inventory', handler: () => { const r = root(); if (r) renderInventoryScreen(r); } },
+        { text: 'Equipment', handler: () => { const r = root(); if (r) renderEquipmentScreen(r); } },
+        { text: 'Crafting', handler: () => { const r = root(); if (r) renderCraftingScreen(r); } },
+        { text: 'Wardrobe', handler: () => { showWardrobePopup(); } },
+        { text: 'Macro', handler: () => { alert('Macro interface coming soon.'); } }
+    ];
+    actions.forEach(({ text, handler }) => {
+        const b = document.createElement('button');
+        b.textContent = text;
+        b.addEventListener('click', () => { handler(); popup.classList.add('hidden'); });
+        popup.appendChild(b);
+    });
+}
+
 export function showProfilePopup(details) {
     if (!profilePopupElement || !profilePopupContentElement) return;
     profilePopupContentElement.innerHTML = '';
@@ -365,21 +414,6 @@ export function showProfilePopup(details) {
     if (profList.children.length) {
         profDiv.appendChild(profList);
         profilePopupContentElement.appendChild(profDiv);
-    }
-    const root = document.getElementById('app')?.firstElementChild;
-    const invBtn = Array.from(clone.querySelectorAll('button')).find(b => b.textContent === 'Inventory');
-    if (invBtn) {
-        invBtn.addEventListener('click', () => {
-            profilePopupElement.classList.add('hidden');
-            if (root) renderInventoryScreen(root);
-        });
-    }
-    const equipBtn = Array.from(clone.querySelectorAll('button')).find(b => b.textContent === 'Equipment');
-    if (equipBtn) {
-        equipBtn.addEventListener('click', () => {
-            profilePopupElement.classList.add('hidden');
-            if (root) renderEquipmentScreen(root);
-        });
     }
     profilePopupElement.classList.remove('hidden');
 }
@@ -1259,27 +1293,6 @@ export function renderMainMenu() {
 
         charBtn.addEventListener('click', () => showProfilePopup(details));
 
-        const invBtn = document.createElement('button');
-        invBtn.className = 'profile-btn';
-        invBtn.textContent = 'Inventory';
-        invBtn.addEventListener('click', () => {
-            renderInventoryScreen(container);
-        });
-
-        const equipBtn = document.createElement('button');
-        equipBtn.className = 'profile-btn';
-        equipBtn.textContent = 'Equipment';
-        equipBtn.addEventListener('click', () => {
-            renderEquipmentScreen(container);
-        });
-
-        const craftBtn = document.createElement('button');
-        craftBtn.className = 'profile-btn';
-        craftBtn.textContent = 'Crafting';
-        craftBtn.addEventListener('click', () => {
-            renderCraftingScreen(container);
-        });
-
         const jobBtn = document.createElement('button');
         jobBtn.className = 'profile-btn';
         jobBtn.textContent = 'Change Job';
@@ -1294,20 +1307,9 @@ export function renderMainMenu() {
             showStoragePopup();
         });
 
-        const wardrobeBtn = document.createElement('button');
-        wardrobeBtn.className = 'profile-btn';
-        wardrobeBtn.textContent = 'Wardrobe';
-        wardrobeBtn.addEventListener('click', () => {
-            showWardrobePopup();
-        });
-
-        details.appendChild(invBtn);
-        details.appendChild(equipBtn);
-        details.appendChild(craftBtn);
         if (modeBtn) details.appendChild(modeBtn);
         if (/Residential Area/i.test(activeCharacter.currentLocation)) {
             group.appendChild(jobBtn);
-            group.appendChild(wardrobeBtn);
             group.appendChild(storageBtn);
         }
         group.appendChild(details);
@@ -2481,11 +2483,12 @@ function createActionPanel(root, loc) {
             const tpFill = document.createElement('div');
             tpFill.className = 'bar-fill';
             tpFill.style.width = `${tpFillPct}%`;
-            tpFill.style.backgroundColor = 'yellowgreen';
+            const tpFillColor = tpPct >= 100 ? 'darkgreen' : 'yellowgreen';
+            tpFill.style.backgroundColor = tpFillColor;
             const tpText = document.createElement('span');
             tpText.className = 'bar-text';
             tpText.textContent = `${tpPct}%`;
-            tpText.style.color = tpPct >= 100 ? 'darkgreen' : 'yellowgreen';
+            tpText.style.color = getContrastColor(tpFillColor);
             tpBar.appendChild(tpFill);
             tpBar.appendChild(tpText);
 
