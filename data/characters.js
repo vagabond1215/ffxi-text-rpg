@@ -748,6 +748,7 @@ export function clearTemporaryEffects(character) {
   character.stoneskinHP = 0;
   character.slowMultiplier = 0;
   character.asleep = false;
+  character.stunned = false;
 }
 
 export function pruneExpiredEffects(character) {
@@ -771,6 +772,7 @@ export function pruneExpiredEffects(character) {
     if (d.mdb) character.mdb = (character.mdb || 0) + d.mdb;
     if (d.slow) character.slowMultiplier = 0;
     if (d.sleep) character.asleep = false;
+    if (d.stun) character.stunned = false;
     if (character.debuffs) {
       const idx = character.debuffs.indexOf(d.name);
       if (idx !== -1) character.debuffs.splice(idx, 1);

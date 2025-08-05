@@ -1244,6 +1244,86 @@ const whiteMagicSpells = [
 
 spells.push(...whiteMagicSpells);
 
+const blackEnfeeblingSpells = [
+  {
+    name: 'Sleep',
+    level: 20,
+    element: 'Dark',
+    target: 'ST',
+    mpCost: 19,
+    castTime: 2.5,
+    recastTime: 30,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    noInitialDamage: true,
+    debuff: { duration: 60, sleep: true }
+  },
+  {
+    name: 'Sleep II',
+    level: 41,
+    element: 'Dark',
+    target: 'ST',
+    mpCost: 29,
+    castTime: 3,
+    recastTime: 30,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 2,
+    noInitialDamage: true,
+    debuff: { duration: 90, sleep: true }
+  },
+  {
+    name: 'Sleepga',
+    level: 31,
+    element: 'Dark',
+    target: 'AoE',
+    mpCost: 38,
+    castTime: 3,
+    recastTime: 30,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 1,
+    noInitialDamage: true,
+    debuff: { duration: 60, sleep: true }
+  },
+  {
+    name: 'Sleepga II',
+    level: 56,
+    element: 'Dark',
+    target: 'AoE',
+    mpCost: 58,
+    castTime: 3.5,
+    recastTime: 45,
+    magicType: 'Black Magic',
+    subType: 'Enfeebling',
+    proficiency: 'Enfeebling Magic',
+    tier: 2,
+    noInitialDamage: true,
+    debuff: { duration: 90, sleep: true }
+  },
+  {
+    name: 'Stun',
+    level: 45,
+    element: 'Lightning',
+    target: 'ST',
+    mpCost: 25,
+    castTime: 0.5,
+    recastTime: 45,
+    magicType: 'Black Magic',
+    subType: 'Dark',
+    proficiency: 'Dark Magic',
+    tier: 1,
+    baseDamage: 10,
+    debuff: { duration: 5, stun: true }
+  }
+];
+
+spells.push(...blackEnfeeblingSpells);
+
 const dotSpells = [];
 
 // Poison line
