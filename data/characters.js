@@ -410,7 +410,8 @@ export function createCharacterObject(name, job, race, sex = 'Male') {
     targetIndex: null,
     monsterCoord: '',
     citySections: {},
-    monsters: []
+    monsters: [],
+    recentLogs: []
   };
   updateDerivedStats(character);
   return character;

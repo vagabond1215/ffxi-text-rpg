@@ -103,7 +103,8 @@ const weaponSkillsByType = {
 function getContrastColor(colorName) {
     const map = {
         yellowgreen: '#9ACD32',
-        darkgreen: '#006400'
+        darkgreen: '#006400',
+        darkred: '#8B0000'
     };
     let hex = map[colorName] || colorName;
     if (hex.startsWith('rgb')) {
@@ -370,6 +371,7 @@ export function setupMenuButton(btn, popup) {
 
     const root = () => document.getElementById('app').firstElementChild;
     const actions = [
+        { text: 'Profile', handler: () => { const d = document.getElementById('character-details'); if (d) showProfilePopup(d); } },
         { text: 'Character', handler: () => { const r = root(); if (r) renderCharacterMenu(r); } },
         { text: 'Inventory', handler: () => { const r = root(); if (r) renderInventoryScreen(r); } },
         { text: 'Equipment', handler: () => { const r = root(); if (r) renderEquipmentScreen(r); } },
@@ -762,6 +764,11 @@ export function addGameLog(msg) {
         const old = gameLogMessages.pop();
         if (old.div && old.div.parentElement) old.div.parentElement.remove();
     }
+    if (activeCharacter) {
+        activeCharacter.recentLogs = activeCharacter.recentLogs || [];
+        activeCharacter.recentLogs.unshift(msg);
+        if (activeCharacter.recentLogs.length > 10) activeCharacter.recentLogs.pop();
+    }
     if (logPanelElement) {
         obj.div = document.createElement('div');
         obj.div.textContent = msg;
@@ -885,23 +892,31 @@ function createImageContainer() {
 
 function updateHPDisplay() {
     if (!activeCharacter) return;
-    const charHpBar = document.getElementById('char-hp-bar');
     const xpBar = document.getElementById('xp-bar');
 
-    if (charHpBar) {
+    const hpFill = document.querySelector('#party-list .bar.hp .bar-fill');
+    const hpText = document.querySelector('#party-list .bar.hp .bar-text');
+    if (hpFill && hpText) {
         const maxHp = activeCharacter.raceHP + activeCharacter.jobHP + activeCharacter.sJobHP;
         const hpVal = activeCharacter.hp ?? maxHp;
-        if (activeCharacter.hp == null) activeCharacter.hp = hpVal;
-        const pct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
-        charHpBar.style.backgroundImage = `linear-gradient(to right, green ${pct}%, #333 ${pct}%)`;
+        const hpPct = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / maxHp) * 100))) : 0;
+        hpFill.style.width = `${hpPct}%`;
+        const hpColor = 'darkred';
+        hpFill.style.backgroundColor = hpColor;
+        hpText.textContent = `${hpVal}`;
+        hpText.style.color = getContrastColor(hpColor);
     }
 
-    const charMpFill = document.querySelector('#party-list .bar.mp .bar-fill');
-    if (charMpFill) {
+    const mpFill = document.querySelector('#party-list .bar.mp .bar-fill');
+    const mpText = document.querySelector('#party-list .bar.mp .bar-text');
+    if (mpFill && mpText) {
         const maxMp = activeCharacter.raceMP + activeCharacter.jobMP + activeCharacter.sJobMP;
         const mpVal = activeCharacter.mp ?? maxMp;
         const mpPct = maxMp > 0 ? Math.max(0, Math.min(100, Math.round((mpVal / maxMp) * 100))) : 0;
-        charMpFill.style.width = `${mpPct}%`;
+        mpFill.style.width = `${mpPct}%`;
+        mpFill.style.backgroundColor = '#0083f5';
+        mpText.textContent = `${mpVal}`;
+        mpText.style.color = getContrastColor('#0083f5');
     }
 
     if (xpBar && activeCharacter.xpMode === 'EXP') {
@@ -1281,13 +1296,6 @@ export function renderMainMenu() {
 
         const group = document.createElement('div');
         group.className = 'profile-group';
-
-        const charBtn = document.createElement('button');
-        charBtn.className = 'profile-btn';
-        charBtn.id = 'char-hp-bar';
-        charBtn.textContent = 'Profile';
-        charBtn.style.fontSize = '18px';
-        group.appendChild(charBtn);
         group.appendChild(line2);
         group.appendChild(xpLine);
 
@@ -1305,8 +1313,6 @@ export function renderMainMenu() {
         statsWrap.classList.add('profile-stats');
         infoRow.appendChild(statsWrap);
         details.appendChild(infoRow);
-
-        charBtn.addEventListener('click', () => showProfilePopup(details));
 
         const jobBtn = document.createElement('button');
         jobBtn.className = 'profile-btn';
@@ -2477,7 +2483,12 @@ function createActionPanel(root, loc) {
             hpFill.className = 'bar-fill';
             hpFill.style.width = `${hpPct}%`;
             hpFill.style.backgroundColor = 'darkred';
+            const hpText = document.createElement('span');
+            hpText.className = 'bar-text';
+            hpText.textContent = `${p.hp ?? maxHp}`;
+            hpText.style.color = getContrastColor('darkred');
             hpBar.appendChild(hpFill);
+            hpBar.appendChild(hpText);
 
             const maxMp = p.raceMP + p.jobMP + p.sJobMP;
             const mpVal = p.mp ?? maxMp;
@@ -2488,7 +2499,12 @@ function createActionPanel(root, loc) {
             mpFill.className = 'bar-fill';
             mpFill.style.width = `${mpPct}%`;
             mpFill.style.backgroundColor = '#0083f5';
+            const mpText = document.createElement('span');
+            mpText.className = 'bar-text';
+            mpText.textContent = `${mpVal}`;
+            mpText.style.color = getContrastColor('#0083f5');
             mpBar.appendChild(mpFill);
+            mpBar.appendChild(mpText);
 
             const tpVal = p.tp ?? 0;
             const tpPct = Math.max(0, Math.min(300, Math.round((tpVal / 1000) * 100)));
