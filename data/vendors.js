@@ -372,14 +372,25 @@ export const items = {
   },
   bronzeCap: {
     name: 'Bronze Cap',
-    price: 151,
-        sellPrice: 75,
+    price: 174,
+        sellPrice: 87,
     stack: 1,
-    description: 'A simple bronze cap.',
-    defense: 1,
+    description: 'Basic head armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 2,
     levelRequirement: 1,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+  },
+  bronzeCapPlus1: {
+    name: 'Bronze Cap +1',
+    price: 0,
+    stack: 1,
+    description: 'Upgraded bronze head armor with improved defense.',
+    defense: 3,
+    levelRequirement: 1,
+    slot: 'head',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    sellable: false
   },
   faceguard: {
     name: 'Faceguard',
@@ -394,14 +405,25 @@ export const items = {
   },
   bronzeHarness: {
     name: 'Bronze Harness',
-    price: 230,
-        sellPrice: 115,
+    price: 251,
+        sellPrice: 125,
     stack: 1,
-    description: 'A light bronze cuirass.',
+    description: 'Basic body armor crafted from bronze, part of the Bronze Armor Set.',
     defense: 4,
     levelRequirement: 1,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+  },
+  bronzeHarnessPlus1: {
+    name: 'Bronze Harness +1',
+    price: 0,
+    stack: 1,
+    description: 'Upgraded bronze body armor with improved defense.',
+    defense: 5,
+    levelRequirement: 1,
+    slot: 'body',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    sellable: false
   },
   scaleMail: {
     name: 'Scale Mail',
@@ -416,14 +438,25 @@ export const items = {
   },
   bronzeMittens: {
     name: 'Bronze Mittens',
-    price: 126,
-        sellPrice: 63,
+    price: 136,
+        sellPrice: 68,
     stack: 1,
-    description: 'Simple bronze mittens.',
+    description: 'Basic hand armor crafted from bronze, part of the Bronze Armor Set.',
     defense: 1,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+  },
+  bronzeMittensPlus1: {
+    name: 'Bronze Mittens +1',
+    price: 0,
+    stack: 1,
+    description: 'Upgraded bronze hand armor with improved defense.',
+    defense: 2,
+    levelRequirement: 1,
+    slot: 'hands',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    sellable: false
   },
   scaleFingerGauntlets: {
     name: 'Scale Finger Gauntlets',
@@ -2542,14 +2575,25 @@ export const items = {
   },
   bronzeSubligar: {
     name: 'Bronze Subligar',
-    price: 191,
-        sellPrice: 95,
+    price: 204,
+        sellPrice: 102,
     stack: 1,
-    description: 'Bronze under-armor.',
-    defense: 1,
+    description: 'Basic leg armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 3,
     levelRequirement: 1,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+  },
+  bronzeSubligarPlus1: {
+    name: 'Bronze Subligar +1',
+    price: 0,
+    stack: 1,
+    description: 'Upgraded bronze leg armor with improved defense.',
+    defense: 4,
+    levelRequirement: 1,
+    slot: 'legs',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    sellable: false
   },
   chainHose: {
     name: 'Chain Hose',
@@ -2564,14 +2608,25 @@ export const items = {
   },
   bronzeLeggings: {
     name: 'Bronze Leggings',
-    price: 117,
-        sellPrice: 58,
+    price: 128,
+        sellPrice: 64,
     stack: 1,
-    description: 'Bronze greaves for beginners.',
+    description: 'Basic foot armor crafted from bronze, part of the Bronze Armor Set.',
+    defense: 1,
+    levelRequirement: 1,
+    slot: 'feet',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+  },
+  bronzeLeggingsPlus1: {
+    name: 'Bronze Leggings +1',
+    price: 0,
+    stack: 1,
+    description: 'Upgraded bronze foot armor with improved defense.',
     defense: 2,
     levelRequirement: 1,
-    slot: 'legs',
-    jobs: baseJobNames
+    slot: 'feet',
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    sellable: false
   },
   greaves: {
     name: 'Greaves',
