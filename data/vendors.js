@@ -2850,14 +2850,40 @@ export const items = {
   },
   tunic: {
     name: 'Tunic',
-    price: 1288,
-        sellPrice: 644,
+    description: 'Cloth body armor made from cotton and grasses, part of the Tunic Set.',
+    price: 0,
+    sellPrice: 0,
     stack: 1,
-    description: 'A plain cloth tunic.',
-    defense: 9,
     levelRequirement: 8,
     slot: 'body',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 9,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  tunicPlus1: {
+    name: 'Tunic +1',
+    description: 'High quality version of the Tunic, reinforced for better protection.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 8,
+    slot: 'body',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 10,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   linenRobe: {
     name: 'Linen Robe',
@@ -2872,14 +2898,40 @@ export const items = {
   },
   mitts: {
     name: 'Mitts',
-    price: 602,
-        sellPrice: 301,
+    description: 'Cloth hand armor, part of the Tunic Set.',
+    price: 0,
+    sellPrice: 0,
     stack: 1,
-    description: 'Simple cloth mitts.',
-    defense: 2,
     levelRequirement: 8,
     slot: 'hands',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 2,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  mittsPlus1: {
+    name: 'Mitts +1',
+    description: 'High quality version of the Mitts, reinforced for better protection.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 8,
+    slot: 'hands',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   linenCuffs: {
     name: 'Linen Cuffs',
@@ -2894,14 +2946,40 @@ export const items = {
   },
   slacks: {
     name: 'Slacks',
-    price: 860,
-        sellPrice: 430,
+    description: 'Cloth leg armor, part of the Tunic Set.',
+    price: 0,
+    sellPrice: 0,
     stack: 1,
-    description: 'Basic cloth slacks.',
-    defense: 5,
     levelRequirement: 8,
     slot: 'legs',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 5,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  slacksPlus1: {
+    name: 'Slacks +1',
+    description: 'High quality version of the Slacks, reinforced for better protection.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 8,
+    slot: 'legs',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 6,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   linenSlops: {
     name: 'Linen Slops',
@@ -2916,14 +2994,40 @@ export const items = {
   },
   solea: {
     name: 'Solea',
-    price: 556,
-        sellPrice: 278,
+    description: 'Cloth foot armor, part of the Tunic Set.',
+    price: 0,
+    sellPrice: 0,
     stack: 1,
-    description: 'Simple footwear for travelers.',
-    defense: 2,
     levelRequirement: 8,
     slot: 'feet',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Paladin','Bard','Ranger','Summoner','Blue Mage','Puppetmaster','Scholar','Geomancer','Rune Fencer']
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 2,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  soleaPlus1: {
+    name: 'Solea +1',
+    description: 'High quality version of the Solea, reinforced for better protection.',
+    price: 0,
+    sellPrice: 0,
+    stack: 1,
+    levelRequirement: 8,
+    slot: 'feet',
+    jobs: [
+      'Monk', 'White Mage', 'Black Mage', 'Red Mage', 'Paladin',
+      'Bard', 'Ranger', 'Summoner', 'Blue Mage', 'Puppetmaster', 'Scholar'
+    ],
+    defense: 3,
+    races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
   },
   hollyClogs: {
     name: 'Holly Clogs',
@@ -5280,7 +5384,7 @@ export const vendorInventories = {
   Haggleblix: mapInventory,
   Lootblox: mapInventory,
   Riyadahf: mapInventory,
-  Balthilda: ['poetsCirclet', 'tunic', 'linenRobe', 'mitts', 'linenCuffs', 'slacks', 'linenSlops', 'solea', 'hollyClogs', 'leatherRing'],
+  Balthilda: ['poetsCirclet', 'linenRobe', 'linenCuffs', 'linenSlops', 'hollyClogs', 'leatherRing'],
   'Charging Chocobo': ['mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt', 'brassCap', 'brassCapPlus1', 'brassSubligar'],
   'Brunhilde the Armourer': ['mythrilSallet', 'breastplate', 'gauntlets', 'brassMask', 'sallet', 'brassScaleMail', 'brassFingerGauntlets', 'bronzeCap', 'faceguard', 'bronzeHarness', 'scaleMail', 'bronzeMittens', 'scaleFingerGauntlets', 'mythrilCuisses', 'mythrilLeggings', 'brassCuisses', 'cuisses', 'brassGreaves', 'plateLeggings', 'gorget', 'bronzeSubligar', 'scaleCuisses', 'bronzeLeggings', 'scaleGreaves', 'leatherBelt', 'silverBelt'],
   Miogique: ['bronzeCap', 'bronzeHarness', 'bronzeMittens', 'leatherBandana', 'leatherVest', 'leatherGloves'],
