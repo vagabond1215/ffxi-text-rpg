@@ -1,4 +1,4 @@
-import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, setupStoragePopup, setupProfilePopup, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
+import { renderMainMenu, renderCharacterMenu, setupBackButton, renderUserControls, setupLogControls, setupTimeDisplay, setupMapOverlay, setupItemPopup, setupStoragePopup, setupProfilePopup, setupMenuButton, updateTimeDisplay, isLogFullscreen, adjustLogFontSize, setupPressFeedback } from './ui.js';
 import { loadCharacters, initCurrentUser, initNotorious, activeCharacter, persistCharacter } from '../data/index.js';
 import { startTicks, onTick } from './tick.js';
 
@@ -107,14 +107,10 @@ function init() {
         setupProfilePopup(profilePopup, profilePopupContent, profilePopupClose);
     }
 
-    const charBtn = document.getElementById('character-select');
-    if (charBtn) {
-        charBtn.addEventListener('click', () => {
-            const root = document.getElementById('app').firstElementChild;
-            if (root) {
-                renderCharacterMenu(root);
-            }
-        });
+    const menuBtn = document.getElementById('menu-button');
+    const menuPopup = document.getElementById('menu-popup');
+    if (menuBtn && menuPopup) {
+        setupMenuButton(menuBtn, menuPopup);
     }
 
     startTicks();
