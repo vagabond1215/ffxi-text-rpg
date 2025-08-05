@@ -1790,11 +1790,18 @@ export const items = {
   },
   pendantCompass: {
     name: 'Pendant Compass',
+    description: 'Small compass on a necklace, shows city orientation.',
     price: 375,
-        sellPrice: 187,
+    sellPrice: 187,
     stack: 1,
-    description: 'A simple compass pendant.',
-    levelRequirement: 0
+    levelRequirement: 1,
+    slot: 'neck',
+    abilities: ['Show compass in HUD'],
+    vendors: [
+      { npc: 'Ilita', zone: 'Port Bastok (E-7)', currency: 'Gil' }
+    ],
+    keyItem: false,
+    sellable: true
   },
   cottonHachimaki: {
     name: 'Cotton Hachimaki',
@@ -5593,6 +5600,649 @@ export const items = {
     slot: 'leftRing',
     levelRequirement: 0,
     jobs: baseJobNames
+  },
+
+  beastCollar: {
+    name: 'Beast Collar',
+    description: 'Necklace that boosts pet health when equipped.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Pet HP +20%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  judgesGorget: {
+    name: "Judge's Gorget",
+    description: 'Sturdy gorget worn by magistrates, increases defense.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['DEF +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  minersPendant: {
+    name: "Miner's Pendant",
+    description: 'Pendant favored by miners, boosts mining yield.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Mining yield +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  portafurnace: {
+    name: 'Portafurnace',
+    description: 'Portable furnace that provides heat to craft on the go.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    jobs: jobNames,
+    abilities: ['Enable furnace crafting anywhere'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  chocoboPullusTorque: {
+    name: 'Chocobo Pullus Torque',
+    description: 'Necklace that increases chocobo sprint speed.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Chocobo Sprint +15%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  pileChain: {
+    name: 'Pile Chain',
+    description: 'Heavy chain necklace, grants resistance to earth magic.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Earth resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  buffoonsCollar: {
+    name: "Buffoon's Collar",
+    description: 'Necklace granting occasional evasion boost.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Occasional Evasion +5%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  buffoonsCollarPlus1: {
+    name: "Buffoon's Collar +1",
+    description: 'Enhanced version of Buffoon’s Collar with improved evasion.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Occasional Evasion +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  featherCollar: {
+    name: 'Feather Collar',
+    description: 'Light collar that boosts ranged attack speed.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Ranged Attack Delay -5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  featherCollarPlus1: {
+    name: 'Feather Collar +1',
+    description: 'Enhanced Feather Collar with greater speed boost.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Ranged Attack Delay -10'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  justiceBadge: {
+    name: 'Justice Badge',
+    description: 'Badge symbolizing civic duty, increases reputation gain.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Reputation gain +10%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  leatherGorget: {
+    name: 'Leather Gorget',
+    description: 'Sturdy leather gorget providing moderate defense.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    defense: 2,
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  leatherGorgetPlus1: {
+    name: 'Leather Gorget +1',
+    description: 'Reinforced Leather Gorget with improved defense.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    defense: 3,
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  rabbitCharm: {
+    name: 'Rabbit Charm',
+    description: 'Lucky charm that slightly increases critical hit rate.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Critical Hit Rate +1%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  regenCollar: {
+    name: 'Regen Collar',
+    description: 'Collar that provides a slow HP regeneration effect.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['HP Regen Rate +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  silverNameTag: {
+    name: 'Silver Name Tag',
+    description: 'Tag identifying mercenary troops, boosts reputation.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Mercenary Fame +5'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  wingPendant: {
+    name: 'Wing Pendant',
+    description: 'Pendant with feather motif, increases movement speed.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Movement Speed +3%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  armigersLace: {
+    name: "Armiger's Lace",
+    description: 'Lace used in crafting high-tier weaponry; key crafting material.',
+    price: 0,
+    stack: 99,
+    levelRequirement: 1,
+    keyItem: false,
+    sellable: true
+  },
+
+  dogCollar: {
+    name: 'Dog Collar',
+    description: 'Collar that slightly boosts pet defense.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    jobs: jobNames,
+    effects: ['Pet DEF +5%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  greenScarf: {
+    name: 'Green Scarf',
+    description: 'Scarf that grants minor wind resistance.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Wind Resist +5%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  republicanBronzeMedal: {
+    name: 'Republican Bronze Medal',
+    description: 'Medal awarded by Bastok Republic; increases EXP gain slightly.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['EXP +1%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  scaleGorget: {
+    name: 'Scale Gorget',
+    description: 'Metal gorget crafted from bronze scales, part of Scale Set.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    defense: 4,
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  rangersNecklace: {
+    name: "Ranger's Necklace",
+    description: 'Necklace that boosts ranged accuracy.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Ranged Accuracy +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  vanPendant: {
+    name: 'Van Pendant',
+    description: 'Pendant inscribed with Vanadiel sigil, grants minor magic boost.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Magic Accuracy +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  birdWhistle: {
+    name: 'Bird Whistle',
+    description: 'Tool used to summon and guide chocobos.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    abilities: ['Summon Chocobo'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  federationStablesScarf: {
+    name: 'Federation Stables Scarf',
+    description: 'Scarf awarded by San d’Oria stables, grants pet speed boost.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Pet Speed +10%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  kingdomStablesCollar: {
+    name: 'Kingdom Stables Collar',
+    description: 'Collar awarded by Windurst stables, boosts pet MP.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Pet MP +20%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  republicStablesMedal: {
+    name: 'Republic Stables Medal',
+    description: 'Medal awarded by Bastok stables, boosts pet HP.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Pet HP +20%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  ceruleanPendant: {
+    name: 'Cerulean Pendant',
+    description: 'Pendant that grants water resistance.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Water Resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  focusCollar: {
+    name: 'Focus Collar',
+    description: 'Collar that increases magic focus for casters.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Magic Crit Rate +1%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  focusCollarPlus1: {
+    name: 'Focus Collar +1',
+    description: 'Enhanced Focus Collar with improved magic focus.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Magic Crit Rate +2%'],
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  blackSilkNeckerchief: {
+    name: 'Black Silk Neckerchief',
+    description: 'Silken neckerchief, increases evasion.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Evasion +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  bloodbeadAmulet: {
+    name: 'Bloodbead Amulet',
+    description: 'Amulet with magical bead, grants slight HP drain on attack.',
+    price: 0,
+    stack: 1,
+    levelRequirement: 1,
+    slot: 'neck',
+    effects: ['Life Steal +2%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  chocoboWhistle: {
+    name: 'Chocobo Whistle',
+    description: 'Whistle used to summon chocobos in the field.',
+    price: 0,
+    stack: 1,
+    abilities: ['Summon Chocobo'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  beetleGorget: {
+    name: 'Beetle Gorget',
+    description: 'Gorget made from beetle shell, increases poison resistance.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Poison Resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  fangNecklace: {
+    name: 'Fang Necklace',
+    description: 'Necklace made from monster fang, increases attack.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Attack +5'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  greenGorget: {
+    name: 'Green Gorget',
+    description: 'Gorget dyed green, increases wind resistance.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Wind Resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  spikeNecklace: {
+    name: 'Spike Necklace',
+    description: 'Necklace with metal spikes, grants HP bonus.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Max HP +20'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  hempGorget: {
+    name: 'Hemp Gorget',
+    description: 'Light gorget woven from hemp, provides minor defense.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    defense: 1,
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  hempGorgetPlus1: {
+    name: 'Hemp Gorget +1',
+    description: 'Reinforced Hemp Gorget with better defense.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    defense: 2,
+    vendors: [],
+    keyItem: false,
+    sellable: false
+  },
+
+  beastWhistle: {
+    name: 'Beast Whistle',
+    description: 'Whistle used to call and calm wild beasts.',
+    price: 0,
+    stack: 1,
+    abilities: ['Calm Beast'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  chainChoker: {
+    name: 'Chain Choker',
+    description: 'Metal choker granting small defense boost.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    defense: 2,
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  chainGorget: {
+    name: 'Chain Gorget',
+    description: 'Sturdy chain gorget, increases physical defense.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    defense: 4,
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  fineGorget: {
+    name: 'Fine Gorget',
+    description: 'Elegantly crafted gorget, grants charisma bonus.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Charisma +2'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  redChoker: {
+    name: 'Red Choker',
+    description: 'Choker with red gem, increases fire resistance.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Fire Resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  tigerStole: {
+    name: 'Tiger Stole',
+    description: 'Fur stole granting minor attack bonus.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Attack +3'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  holyPhial: {
+    name: 'Holy Phial',
+    description: 'Sacred flask that provides instant full HP restoration.',
+    price: 0,
+    stack: 1,
+    abilities: ['Instant Full HP'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  buburimuGorget: {
+    name: 'Buburimu Gorget',
+    description: 'Gorget awarded for service in Buburimu Peninsula.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['EXP +2%'],
+    vendors: [],
+    keyItem: true,
+    sellable: false
+  },
+
+  flowerNecklace: {
+    name: 'Flower Necklace',
+    description: 'Necklace garland of flowers, increases wind resistance.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Wind Resist +5%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
+  },
+
+  sandCharm: {
+    name: 'Sand Charm',
+    description: 'Charm made from desert sand, grants earth resistance.',
+    price: 0,
+    stack: 1,
+    slot: 'neck',
+    effects: ['Earth Resist +10%'],
+    vendors: [],
+    keyItem: false,
+    sellable: true
   }
 };
 
