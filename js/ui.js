@@ -118,7 +118,6 @@ let monsterIndexList = [];
 let monsterNameList = [];
 let monsterHpList = [];
 
-const BASE_BOTTOM_PADDING = 60;
 
 function showSelectCharacterPopup() {
     let popup = document.getElementById('no-character-popup');
@@ -260,12 +259,6 @@ export function setPartyTarget(idx) {
 export function getSelectedPartyMember() {
     if (selectedPartyIndex === null) return null;
     return partyMembers[selectedPartyIndex] || null;
-}
-
-function updateGameLogPadding() {
-    if (!logPanelElement) return;
-    const height = logPanelElement.classList.contains('hidden') ? 0 : logPanelElement.offsetHeight;
-    document.body.style.paddingBottom = (BASE_BOTTOM_PADDING + height) + 'px';
 }
 
 export function setupTimeDisplay(el, popup) {
@@ -660,29 +653,14 @@ function updateTimePopupFont() {
 function pruneLog() {
     if (!logPanelElement) return;
     const full = logPanelElement.classList.contains('fullscreen');
-    let shown = 0;
-    gameLogMessages.forEach(obj => {
+    gameLogMessages.forEach((obj, idx) => {
         if (!obj.div) {
             obj.div = document.createElement('div');
             obj.div.textContent = obj.msg;
             logPanelElement.prepend(obj.div);
         }
-        let show;
-        if (full) {
-            show = true;
-        } else if (obj.turn === currentTurn && shown < 5) {
-            show = true;
-            shown++;
-        } else {
-            show = false;
-        }
-        obj.div.style.display = show ? '' : 'none';
+        obj.div.style.display = full || idx < 3 ? '' : 'none';
     });
-    if (!full && shown === 0 && gameLogMessages.length) {
-        const first = gameLogMessages[0];
-        if (first.div) first.div.style.display = '';
-    }
-    updateGameLogPadding();
 }
 
 export function incrementTurn() {
@@ -707,10 +685,8 @@ export function setupLogControls(btn, panel) {
     }
 
     const toggle = () => {
-        const fs = logPanelElement.classList.toggle('fullscreen');
-        logPanelElement.classList.toggle('hidden', false);
+        logPanelElement.classList.toggle('fullscreen');
         pruneLog();
-        updateGameLogPadding();
     };
     logButtonElement.addEventListener('click', toggle);
     pruneLog();
@@ -745,17 +721,8 @@ export function addGameLog(msg) {
     }
 }
 
-export function showGameLogTemporarily(ms = 3000) {
-    if (!logPanelElement) return;
-    if (logPanelElement.classList.contains('fullscreen')) return;
-    logPanelElement.classList.remove('hidden');
+export function showGameLogTemporarily() {
     pruneLog();
-    setTimeout(() => {
-        if (!logPanelElement.classList.contains('fullscreen')) {
-            logPanelElement.classList.add('hidden');
-            updateGameLogPadding();
-        }
-    }, ms);
 }
 
 function resetDetails() {
@@ -2824,8 +2791,6 @@ function monsterDelayMs(mob) {
 
     function log(msg) {
         addGameLog(msg);
-        updateGameLogPadding();
-        showGameLogTemporarily(2000);
     }
 
     function addItemsToInventory(list) {
@@ -3360,7 +3325,7 @@ function monsterDelayMs(mob) {
     }
 
     function processDot(target) {
-        if (!target) return;
+        if (!target || battleEnded) return;
         pruneTimedEffects(target);
         if (!target.dotEffects || target.dotEffects.length === 0) return;
         for (let i = target.dotEffects.length - 1; i >= 0; i--) {
@@ -3545,6 +3510,11 @@ function monsterDelayMs(mob) {
     }
 
     function attack(attacker, defender) {
+        if (battleEnded) return;
+        if (attacker !== activeCharacter) {
+            if (!attacker.aggro) return;
+            if (coordKey(activeCharacter.coordinates) !== monsterCoordKey) return;
+        }
         if (attacker.asleep || attacker.stunned) return;
         const aStats = getCombatStats(attacker);
         const dStats = getCombatStats(defender);
@@ -3618,12 +3588,15 @@ function monsterDelayMs(mob) {
     }
 
     function scheduleMonsterAttack(mob, extra = 0) {
-        if (battleEnded || mob.currentHP <= 0 || mob.asleep || mob.stunned) return;
+        if (battleEnded || !mob.aggro || mob.currentHP <= 0 || mob.asleep || mob.stunned) return;
         clearTimeout(monsterTimers.get(mob));
         const t = setTimeout(() => {
+            if (battleEnded) return;
+            if (coordKey(activeCharacter.coordinates) !== monsterCoordKey) return;
+            if (!mob.aggro) return;
             if (mob.currentHP > 0 && activeCharacter.hp > 0 && !mob.asleep && !mob.stunned) {
                 attack(mob, activeCharacter);
-                if (!battleEnded && (autoAttacking || mob.aggro)) {
+                if (!battleEnded && coordKey(activeCharacter.coordinates) === monsterCoordKey && (autoAttacking || mob.aggro)) {
                     scheduleMonsterAttack(mob);
                 }
             }
