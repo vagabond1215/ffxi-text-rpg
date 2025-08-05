@@ -29,6 +29,17 @@ const CURRENT_USER_KEY = 'ffxiCurrentUser';
 export let activeCharacter = null;
 const LAST_ACTIVE_KEY = 'ffxiLastActiveCharacter_';
 
+let filePathHandle = null;
+export function setFilePathHandle(handle) {
+  filePathHandle = handle;
+}
+export function resetFilePathHandle() {
+  filePathHandle = null;
+}
+export function getFilePathHandle() {
+  return filePathHandle;
+}
+
 export function loadUsers() {
   try {
     return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
@@ -664,15 +675,20 @@ export async function saveCharacterToFile(character) {
       console.error('File picker API not available');
       return;
     }
-    const handle = await window.showSaveFilePicker({
+    const options = {
       suggestedName: `${character.name}.json`,
       types: [{ description: 'Character Save', accept: { 'application/json': ['.json'] } }]
-    });
+    };
+    if (character.saveFileHandle || filePathHandle) {
+      options.startIn = character.saveFileHandle || filePathHandle;
+    }
+    const handle = await window.showSaveFilePicker(options);
     const writable = await handle.createWritable();
     await writable.write(JSON.stringify(character, null, 2));
     await writable.close();
     character.saveFileHandle = handle;
     character.saveFileName = handle.name;
+    setFilePathHandle(handle);
   } catch (e) {
     console.error('Failed to save character to file', e);
   }
@@ -684,15 +700,18 @@ export async function loadCharacterFromFile() {
       console.error('File picker API not available');
       return null;
     }
-    const [handle] = await window.showOpenFilePicker({
+    const options = {
       types: [{ description: 'Character Save', accept: { 'application/json': ['.json'] } }]
-    });
+    };
+    if (filePathHandle) options.startIn = filePathHandle;
+    const [handle] = await window.showOpenFilePicker(options);
     const file = await handle.getFile();
     const text = await file.text();
     const character = JSON.parse(text);
     updateDerivedStats(character);
     character.saveFileHandle = handle;
     character.saveFileName = handle.name;
+    setFilePathHandle(handle);
     characters.unshift(character);
     setActiveCharacter(character);
     saveCharacters();
