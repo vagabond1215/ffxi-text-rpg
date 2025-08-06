@@ -5355,45 +5355,50 @@ export const items = {
     price: 0,
     stack: 1,
     description: 'Outpost warp ring with 10 charges.',
-    slot: 'leftRing',
+    slot: 'ring',
     levelRequirement: 0,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    abilities: ['Outpost Warp (10 charges, 3600s cooldown)']
   },
   homingRing: {
     name: 'Homing Ring',
     price: 0,
     stack: 1,
     description: 'Outpost warp ring with 30 charges.',
-    slot: 'leftRing',
+    slot: 'ring',
     levelRequirement: 0,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    abilities: ['Outpost Warp (30 charges, 3600s cooldown)']
   },
   chariotBand: {
     name: 'Chariot Band',
     price: 0,
     stack: 1,
     description: 'Grants +75% EXP up to 10,000.',
-    slot: 'leftRing',
+    slot: 'ring',
     levelRequirement: 0,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    abilities: ['EXP Bonus +75% (7 charges, 900s cooldown)']
   },
   empressBand: {
     name: 'Empress Band',
     price: 0,
     stack: 1,
-    description: 'Grants +50% EXP up to 1,000 per charge.',
-    slot: 'leftRing',
+    description: 'Grants +50% EXP up to 15,000 per charge.',
+    slot: 'ring',
     levelRequirement: 0,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    abilities: ['EXP Bonus +50% (7 charges, 900s cooldown, max 15,000)']
   },
   emperorBand: {
     name: 'Emperor Band',
     price: 0,
     stack: 1,
     description: 'Grants +50% EXP up to 30,000 per charge.',
-    slot: 'leftRing',
+    slot: 'ring',
     levelRequirement: 0,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    abilities: ['EXP Bonus +50% (3 charges, 900s cooldown, max 30,000)']
   },
   cesti: {
     name: 'Cesti',
@@ -6000,16 +6005,6 @@ export const items = {
     slot: 'mainHand',
     jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Rune Fencer']
   },
-  warpRing: {
-    name: 'Warp Ring',
-    price: 0,
-    stack: 1,
-    description: 'Warp to Home Point.',
-    slot: 'leftRing',
-    levelRequirement: 0,
-    jobs: baseJobNames
-  },
-
   beastCollar: {
     name: 'Beast Collar',
     description: 'Necklace that boosts pet health when equipped.',
@@ -8452,19 +8447,6 @@ export const items = {
     keyItem: false,
     sellable: true
   },
-  chariotBand: {
-    name: 'Chariot Band',
-    description: 'Increases enmity buildup by 3%.',
-    price: 0,
-    stack: 1,
-    levelRequirement: 1,
-    slot: 'ring',
-    jobs: jobNames,
-    effects: ['Enmity +3'],
-    vendors: [],
-    keyItem: false,
-    sellable: true
-  },
   chefsRing: {
     name: "Chef's Ring",
     description: 'Grants Advanced Synthesis Image Support for Cooking (adds +3)',
@@ -8575,22 +8557,6 @@ export const items = {
     keyItem: false,
     sellable: true
   },
-  emperorBand: {
-    name: 'Emperor Band',
-    description: 'Commemorative ring for Empire Day, no effect.',
-    price: 0,
-    stack: 1,
-    keyItem: true,
-    sellable: false
-  },
-  empressBand: {
-    name: 'Empress Band',
-    description: 'Commemorative ring for Empress Day, no effect.',
-    price: 0,
-    stack: 1,
-    keyItem: true,
-    sellable: false
-  },
   goldsmithsRing: {
     name: "Goldsmith's Ring",
     description: 'Grants Advanced Synthesis Image Support for Goldsmithing (adds +3)',
@@ -8611,16 +8577,6 @@ export const items = {
     stack: 1,
     slot: 'ring',
     effects: ['Silent Cast'],
-    keyItem: false,
-    sellable: true
-  },
-  homingRing: {
-    name: 'Homing Ring',
-    description: 'Allows recall to bind point (1 charge, 1h cooldown).',
-    price: 0,
-    stack: 1,
-    slot: 'ring',
-    abilities: ['Recall (3600s cooldown)'],
     keyItem: false,
     sellable: true
   },
@@ -8723,16 +8679,6 @@ export const items = {
     keyItem: false,
     sellable: true
   },
-  returnRing: {
-    name: 'Return Ring',
-    description: 'Enables return to home point (1 charge, no cooldown).',
-    price: 0,
-    stack: 1,
-    slot: 'ring',
-    abilities: ['Return'],
-    keyItem: false,
-    sellable: true
-  },
   sandorianRing: {
     name: "San d'Orian Ring",
     description: "Increases experience gain in San d'Oria by 5%.",
@@ -8804,11 +8750,11 @@ export const items = {
   },
   warpRing: {
     name: 'Warp Ring',
-    description: 'Enables warp to Windurst (1 charge, 1h cooldown).',
+    description: 'Enchantment: Warp to the user\'s Home Point (1 charge).',
     price: 0,
     stack: 1,
     slot: 'ring',
-    abilities: ['Warp (3600s cooldown)'],
+    abilities: ['Warp (600s cooldown)'],
     keyItem: false,
     sellable: true
   },
