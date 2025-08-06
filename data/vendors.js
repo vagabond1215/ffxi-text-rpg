@@ -6027,7 +6027,6 @@ export const items = {
     price: 0,
     stack: 1,
     levelRequirement: 1,
-    jobs: jobNames,
     abilities: ['Enable furnace crafting anywhere'],
     vendors: [],
     keyItem: true,
@@ -6221,7 +6220,6 @@ export const items = {
     description: 'Lace used in crafting high-tier weaponry; key crafting material.',
     price: 0,
     stack: 99,
-    levelRequirement: 1,
     keyItem: false,
     sellable: true
   },
@@ -6310,7 +6308,6 @@ export const items = {
     description: 'Tool used to summon and guide chocobos.',
     price: 0,
     stack: 1,
-    levelRequirement: 1,
     abilities: ['Summon Chocobo'],
     vendors: [],
     keyItem: false,
