@@ -130,6 +130,12 @@ body.portrait #app {
     vertical-align: text-bottom;
 }
 
+.nation-flag {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
 #user-controls {
     display: none;
 }
