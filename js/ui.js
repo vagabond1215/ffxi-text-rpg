@@ -651,12 +651,27 @@ function updateTimePopup() {
         return times[0];
     }
 
-    const airshipSchedules = {
-        "San d'Oria - Jeuno": ['04:12', '10:12', '16:12', '22:12'],
-        'Bastok - Jeuno': ['01:12', '07:12', '13:12', '19:12'],
-        'Windurst - Jeuno': ['05:43', '11:43', '17:43', '23:43'],
-        'Kazham - Jeuno': ['02:42', '08:42', '14:42', '20:42']
+    const nationFlagMap = {
+        "San d'Oria": 'img/Icons/Flags/Sandorian.png',
+        Bastok: 'img/Icons/Flags/Bastok.png',
+        Windurst: 'img/Icons/Flags/Windurst.png',
+        Jeuno: 'img/Icons/Flags/Jeuno.png',
+        Kazham: 'img/Icons/Flags/AhtUrghan.png',
     };
+
+     function flagifyRoute(route) {
+         return route.split(' - ').map(name => {
+             const img = nationFlagMap[name];
+             return img ? `<img src="${img}" class="nation-flag" alt="${name}">` : name;
+         }).join(' - ');
+     }
+
+     const airshipSchedules = {
+         "San d'Oria - Jeuno": ['04:12', '10:12', '16:12', '22:12'],
+         'Bastok - Jeuno': ['01:12', '07:12', '13:12', '19:12'],
+         'Windurst - Jeuno': ['05:43', '11:43', '17:43', '23:43'],
+         'Kazham - Jeuno': ['02:42', '08:42', '14:42', '20:42']
+     };
 
     const ferrySchedules = {
         'Selbina - Mhaura': ['00:00', '08:00', '16:00'],
@@ -674,18 +689,19 @@ function updateTimePopup() {
     lines.push(`${icon} ${formatVanaTime(vt)} - ${vt.weekday}`);
     lines.push(`${status} - ${nextChange}`);
     lines.push('');
-    lines.push('Airships:');
-    for (const [route, times] of Object.entries(airshipSchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
-        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
-    }
-    lines.push('');
-    lines.push('Ferries:');
-    for (const [route, times] of Object.entries(ferrySchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
-        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
-    }
-    for (const [route, times] of Object.entries(manaclipperSchedules)) {
-        lines.push(`${route} departs: ${nextScheduledTime(times)}`);
-    }
+     lines.push('Airships:');
+     for (const [route, times] of Object.entries(airshipSchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
+         const flaggedRoute = flagifyRoute(route);
+         lines.push(`${flaggedRoute}: ${nextScheduledTime(times)}`);
+     }
+     lines.push('');
+     lines.push('Ferries:');
+     for (const [route, times] of Object.entries(ferrySchedules).sort((a,b) => a[0].localeCompare(b[0]))) {
+         lines.push(`${route}: ${nextScheduledTime(times)}`);
+     }
+     for (const [route, times] of Object.entries(manaclipperSchedules)) {
+         lines.push(`${route}: ${nextScheduledTime(times)}`);
+     }
     const controlsDiv = timePopupElement.querySelector('.font-controls');
     const content = lines.map(l => `<div>${l}</div>`).join('');
     timePopupElement.innerHTML = '';

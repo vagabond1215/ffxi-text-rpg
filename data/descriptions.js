@@ -87,88 +87,88 @@ export const cityImages = {
 export const characterImages = {
   Hume: {
     Male: {
-      Warrior: ['img/Hume/Male/Male hume warrior.png'],
-      Monk: ['img/Hume/Male/Male hume monk.png'],
-      'White Mage': ['img/Hume/Male/Male hume white mage.png'],
-      'Black Mage': ['img/Hume/Male/Male hume black mage.png'],
-      'Red Mage': ['img/Hume/Male/Male hume red mage.png'],
-      Thief: ['img/Hume/Male/Male hume Thief.png']
+      Warrior: ['img/Character Pictures/Hume/Male/Male hume warrior.png'],
+      Monk: ['img/Character Pictures/Hume/Male/Male hume monk.png'],
+      'White Mage': ['img/Character Pictures/Hume/Male/Male hume white mage.png'],
+      'Black Mage': ['img/Character Pictures/Hume/Male/Male hume black mage.png'],
+      'Red Mage': ['img/Character Pictures/Hume/Male/Male hume red mage.png'],
+      Thief: ['img/Character Pictures/Hume/Male/Male hume Thief.png']
     },
     Female: {
-      Warrior: ['img/Hume/Female/Female Hume Warrior.png'],
+      Warrior: ['img/Character Pictures/Hume/Female/Female Hume Warrior.png'],
       Monk: [
-        'img/Hume/Female/Female Hume Monk.png',
-        'img/Hume/Female/Female Hume Monk 2.png'
+        'img/Character Pictures/Hume/Female/Female Hume Monk.png',
+        'img/Character Pictures/Hume/Female/Female Hume Monk 2.png'
       ],
-      'White Mage': ['img/Hume/Female/Female Hume White Mage.png'],
-      'Black Mage': ['img/Hume/Female/Female Hume Black Mage.png'],
-      'Red Mage': ['img/Hume/Female/Female Hume Red Mage.png'],
+      'White Mage': ['img/Character Pictures/Hume/Female/Female Hume White Mage.png'],
+      'Black Mage': ['img/Character Pictures/Hume/Female/Female Hume Black Mage.png'],
+      'Red Mage': ['img/Character Pictures/Hume/Female/Female Hume Red Mage.png'],
       Thief: [
-        'img/Hume/Female/Female Hume Thief 1.png',
-        'img/Hume/Female/Female Hume Thief 2.png'
+        'img/Character Pictures/Hume/Female/Female Hume Thief 1.png',
+        'img/Character Pictures/Hume/Female/Female Hume Thief 2.png'
       ]
     }
   },
   Elvaan: {
     Male: {
-      Warrior: ['img/Elvaan/Male/Male Elvaan Warrior.png'],
-      Monk: ['img/Elvaan/Male/Male Elvaan Monk.png'],
-      'White Mage': ['img/Elvaan/Male/Male Elvaan White Mage.png'],
-      'Black Mage': ['img/Elvaan/Male/Male Elvaan Black Mage.png'],
-      'Red Mage': ['img/Elvaan/Male/Male Elvaan Red Mage.png'],
-      Thief: ['img/Elvaan/Male/Male Elvaan Thief.png']
+      Warrior: ['img/Character Pictures/Elvaan/Male/Male Elvaan Warrior.png'],
+      Monk: ['img/Character Pictures/Elvaan/Male/Male Elvaan Monk.png'],
+      'White Mage': ['img/Character Pictures/Elvaan/Male/Male Elvaan White Mage.png'],
+      'Black Mage': ['img/Character Pictures/Elvaan/Male/Male Elvaan Black Mage.png'],
+      'Red Mage': ['img/Character Pictures/Elvaan/Male/Male Elvaan Red Mage.png'],
+      Thief: ['img/Character Pictures/Elvaan/Male/Male Elvaan Thief.png']
     },
     Female: {
-      Warrior: ['img/Elvaan/Female/Female elvaan warrior.png'],
-      Monk: ['img/Elvaan/Female/Female elvaan monk.png'],
-      'White Mage': ['img/Elvaan/Female/Female elvaan white mage.png'],
-      'Black Mage': ['img/Elvaan/Female/Female elvaan black mage.png'],
-      'Red Mage': ['img/Elvaan/Female/Female elvaan red mage.png'],
+      Warrior: ['img/Character Pictures/Elvaan/Female/Female elvaan warrior.png'],
+      Monk: ['img/Character Pictures/Elvaan/Female/Female elvaan monk.png'],
+      'White Mage': ['img/Character Pictures/Elvaan/Female/Female elvaan white mage.png'],
+      'Black Mage': ['img/Character Pictures/Elvaan/Female/Female elvaan black mage.png'],
+      'Red Mage': ['img/Character Pictures/Elvaan/Female/Female elvaan red mage.png'],
       Thief: [
-        'img/Elvaan/Female/Female Elvaan Thief 1.png',
-        'img/Elvaan/Female/Female Elvaan Thief 2.png'
+        'img/Character Pictures/Elvaan/Female/Female Elvaan Thief 1.png',
+        'img/Character Pictures/Elvaan/Female/Female Elvaan Thief 2.png'
       ]
     }
   },
   Tarutaru: {
     Male: {
-      Warrior: ['img/Tarutaru/Male/Male Tarutaru Warrior.png'],
-      Monk: ['img/Tarutaru/Male/Male Tarutaru Monk.png'],
-      'White Mage': ['img/Tarutaru/Male/Male Tarutaru White Mage.png'],
-      'Black Mage': ['img/Tarutaru/Male/Male Tarutaru Black Mage.png'],
-      'Red Mage': ['img/Tarutaru/Male/Male Tarutaru Red Mage.png'],
-      Thief: ['img/Tarutaru/Male/Male Tarutaru Thief.png']
+      Warrior: ['img/Character Pictures/Tarutaru/Male/Male Tarutaru Warrior.png'],
+      Monk: ['img/Character Pictures/Tarutaru/Male/Male Tarutaru Monk.png'],
+      'White Mage': ['img/Character Pictures/Tarutaru/Male/Male Tarutaru White Mage.png'],
+      'Black Mage': ['img/Character Pictures/Tarutaru/Male/Male Tarutaru Black Mage.png'],
+      'Red Mage': ['img/Character Pictures/Tarutaru/Male/Male Tarutaru Red Mage.png'],
+      Thief: ['img/Character Pictures/Tarutaru/Male/Male Tarutaru Thief.png']
     },
     Female: {
-      Warrior: ['img/Tarutaru/Female/Female Tarutaru Warrior.png'],
-      Monk: ['img/Tarutaru/Female/Female Tarutaru Monk.png'],
+      Warrior: ['img/Character Pictures/Tarutaru/Female/Female Tarutaru Warrior.png'],
+      Monk: ['img/Character Pictures/Tarutaru/Female/Female Tarutaru Monk.png'],
       'White Mage': [
-        'img/Tarutaru/Female/Female Tarutaru White Mage.png',
-        'img/Tarutaru/Female/Female Tarutaru White Mage 1.png'
+        'img/Character Pictures/Tarutaru/Female/Female Tarutaru White Mage.png',
+        'img/Character Pictures/Tarutaru/Female/Female Tarutaru White Mage 1.png'
       ],
-      'Black Mage': ['img/Tarutaru/Female/Female Tarutaru Black Mage.png'],
-      'Red Mage': ['img/Tarutaru/Female/Female Tarutaru Red Mage.png'],
-      Thief: ['img/Tarutaru/Female/Female Tarutaru Thief.png']
+      'Black Mage': ['img/Character Pictures/Tarutaru/Female/Female Tarutaru Black Mage.png'],
+      'Red Mage': ['img/Character Pictures/Tarutaru/Female/Female Tarutaru Red Mage.png'],
+      Thief: ['img/Character Pictures/Tarutaru/Female/Female Tarutaru Thief.png']
     }
   },
   Mithra: {
     Female: {
-      Warrior: ['img/Mithra/Female/Mithra warrior.png'],
-      Monk: ['img/Mithra/Female/Mithra monk.png'],
-      'White Mage': ['img/Mithra/Female/Mithra white mage.png'],
-      'Black Mage': ['img/Mithra/Female/Mithra black mage.png'],
-      'Red Mage': ['img/Mithra/Female/Mithra Red Mage.png'],
-      Thief: ['img/Mithra/Female/Mithra thief.png']
+      Warrior: ['img/Character Pictures/Mithra/Female/Mithra warrior.png'],
+      Monk: ['img/Character Pictures/Mithra/Female/Mithra monk.png'],
+      'White Mage': ['img/Character Pictures/Mithra/Female/Mithra white mage.png'],
+      'Black Mage': ['img/Character Pictures/Mithra/Female/Mithra black mage.png'],
+      'Red Mage': ['img/Character Pictures/Mithra/Female/Mithra Red Mage.png'],
+      Thief: ['img/Character Pictures/Mithra/Female/Mithra thief.png']
     }
   },
   Galka: {
     Male: {
-      Warrior: ['img/Galka/Male/Galka Warrior.png'],
-      Monk: ['img/Galka/Male/Galka Monk.png'],
-      'White Mage': ['img/Galka/Male/Galka White Mage.png'],
-      'Black Mage': ['img/Galka/Male/Galka Black Mage.png'],
-      'Red Mage': ['img/Galka/Male/Galka Red Mage.png'],
-      Thief: ['img/Galka/Male/Galka Thief.png']
+      Warrior: ['img/Character Pictures/Galka/Male/Galka Warrior.png'],
+      Monk: ['img/Character Pictures/Galka/Male/Galka Monk.png'],
+      'White Mage': ['img/Character Pictures/Galka/Male/Galka White Mage.png'],
+      'Black Mage': ['img/Character Pictures/Galka/Male/Galka Black Mage.png'],
+      'Red Mage': ['img/Character Pictures/Galka/Male/Galka Red Mage.png'],
+      Thief: ['img/Character Pictures/Galka/Male/Galka Thief.png']
     }
   }
 };
