@@ -11,7 +11,9 @@ export const items = {
     delay: 183,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeSword: {
     name: 'Bronze Sword',
@@ -23,7 +25,9 @@ export const items = {
     delay: 231,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherVest: {
     name: 'Leather Vest',
@@ -48,7 +52,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherVestPlus1: {
@@ -68,7 +74,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeIngot: {
     name: 'Bronze Ingot',
@@ -76,7 +84,9 @@ export const items = {
         sellPrice: 60,
     stack: 12,
     description: 'A bar of bronze used in crafting.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   potion: {
     name: 'Potion',
@@ -84,7 +94,9 @@ export const items = {
     sellPrice: 446,
     stack: 12,
     description: 'Restores a small amount of HP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   antidote: {
     name: 'Antidote',
@@ -92,7 +104,9 @@ export const items = {
     sellPrice: 155,
     stack: 12,
     description: 'Cures poison.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   meatJerky: {
     name: 'Meat Jerky',
@@ -100,7 +114,9 @@ export const items = {
         sellPrice: 60,
     stack: 12,
     description: 'Dried meat that slightly restores HP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   distilledWater: {
     name: 'Distilled Water',
@@ -108,7 +124,9 @@ export const items = {
         sellPrice: 6,
     stack: 12,
     description: 'Used in alchemy and cooking.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   insectPaste: {
     name: 'Insect Paste',
@@ -116,7 +134,9 @@ export const items = {
         sellPrice: 18,
     stack: 12,
     description: 'Popular fishing bait.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollCure: {
     name: 'Scroll of Cure',
@@ -124,7 +144,9 @@ export const items = {
     sellPrice: 33,
     stack: 1,
     description: 'Teaches the white magic Cure.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeShield: {
     name: 'Bronze Shield',
@@ -135,7 +157,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'offHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherGloves: {
     name: 'Leather Gloves',
@@ -160,7 +184,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherGlovesPlus1: {
@@ -180,7 +206,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   clothHeadband: {
     name: 'Cloth Headband',
@@ -191,7 +219,9 @@ export const items = {
     defense: 1,
     levelRequirement: 1,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFire: {
     name: 'Scroll of Fire',
@@ -199,7 +229,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'Teaches the black magic Fire.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ether: {
     name: 'Ether',
@@ -207,7 +239,9 @@ export const items = {
     sellPrice: 2367,
     stack: 12,
     description: 'Restores a small amount of MP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   applePie: {
     name: 'Apple Pie',
@@ -215,7 +249,9 @@ export const items = {
         sellPrice: 100,
     stack: 12,
     description: 'A sweet pie that restores MP over time.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherCap: {
     name: 'Leather Cap',
@@ -226,7 +262,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherBoots: {
     name: 'Leather Boots',
@@ -237,7 +275,9 @@ export const items = {
     defense: 3,
     levelRequirement: 1,
     slot: 'feet',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeAxe: {
     name: 'Bronze Axe',
@@ -249,7 +289,9 @@ export const items = {
     delay: 276,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeSpear: {
     name: 'Bronze Spear',
@@ -261,7 +303,9 @@ export const items = {
     delay: 303,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeKnife: {
     name: 'Bronze Knife',
@@ -273,7 +317,9 @@ export const items = {
     delay: 186,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   willowStaff: {
     name: 'Willow Staff',
@@ -285,7 +331,9 @@ export const items = {
     delay: 366,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   woodenArrow: {
     name: 'Wooden Arrow',
@@ -294,7 +342,9 @@ export const items = {
     stack: 99,
     description: 'Simple arrows made of wood.',
     levelRequirement: 0,
-    slot: 'ammo'
+    slot: 'ammo',
+    additionalEffects: [],
+    latentEffects: [],
   },
   bambooFishingRod: {
     name: 'Bamboo Fishing Rod',
@@ -303,7 +353,9 @@ export const items = {
     stack: 1,
     description: 'A basic bamboo fishing rod.',
     levelRequirement: 0,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   pickaxe: {
     name: 'Pickaxe',
@@ -311,7 +363,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'Used for mining ore from deposits.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   copperOre: {
     name: 'Copper Ore',
@@ -319,7 +373,9 @@ export const items = {
     sellPrice: 6,
     stack: 12,
     description: 'Ore used in smithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   copperIngot: {
     name: 'Copper Ingot',
@@ -327,7 +383,9 @@ export const items = {
         sellPrice: 75,
     stack: 12,
     description: 'A bar of refined copper.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cottonThread: {
     name: 'Cotton Thread',
@@ -335,7 +393,9 @@ export const items = {
         sellPrice: 30,
     stack: 12,
     description: 'Thread spun from cotton.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   boneChip: {
     name: 'Bone Chip',
@@ -343,7 +403,9 @@ export const items = {
         sellPrice: 10,
     stack: 12,
     description: 'Small fragments of bone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   arrowwoodLog: {
     name: 'Arrowwood Log',
@@ -351,7 +413,9 @@ export const items = {
         sellPrice: 50,
     stack: 12,
     description: 'A log of arrowwood.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   honey: {
     name: 'Honey',
@@ -359,7 +423,9 @@ export const items = {
         sellPrice: 20,
     stack: 12,
     description: 'Sweet honey used in cooking.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilSallet: {
     name: 'Mythril Sallet',
@@ -370,7 +436,9 @@ export const items = {
     defense: 15,
     levelRequirement: 20,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   breastplate: {
     name: 'Breastplate',
@@ -381,7 +449,9 @@ export const items = {
     defense: 27,
     levelRequirement: 18,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   gauntlets: {
     name: 'Gauntlets',
@@ -392,7 +462,9 @@ export const items = {
     defense: 12,
     levelRequirement: 16,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassMask: {
     name: 'Brass Mask',
@@ -403,7 +475,9 @@ export const items = {
     defense: 8,
     levelRequirement: 14,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sallet: {
     name: 'Sallet',
@@ -414,7 +488,9 @@ export const items = {
     defense: 12,
     levelRequirement: 16,
     slot: 'head',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassScaleMail: {
     name: 'Brass Scale Mail',
@@ -425,7 +501,9 @@ export const items = {
     defense: 17,
     levelRequirement: 14,
     slot: 'body',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassFingerGauntlets: {
     name: 'Brass Finger Gauntlets',
@@ -436,7 +514,9 @@ export const items = {
     defense: 8,
     levelRequirement: 14,
     slot: 'hands',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeCap: {
     name: 'Bronze Cap',
@@ -464,7 +544,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeCapPlus1: {
     name: 'Bronze Cap +1',
@@ -479,7 +561,9 @@ export const items = {
     ],
     defense: 3,
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   faceguard: {
     name: 'Faceguard',
@@ -505,7 +589,9 @@ export const items = {
       { npc: 'Eternal Flame',  zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   faceguardPlus1: {
@@ -524,7 +610,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeHarness: {
     name: 'Bronze Harness',
@@ -552,7 +640,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeHarnessPlus1: {
     name: 'Bronze Harness +1',
@@ -567,7 +657,9 @@ export const items = {
     ],
     defense: 5,
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scaleMail: {
     name: 'Scale Mail',
@@ -593,7 +685,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   solidMail: {
@@ -612,7 +706,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeMittens: {
     name: 'Bronze Mittens',
@@ -640,7 +736,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeMittensPlus1: {
     name: 'Bronze Mittens +1',
@@ -655,7 +753,9 @@ export const items = {
     ],
     defense: 2,
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scaleFingerGauntlets: {
     name: 'Scale Finger Gauntlets',
@@ -681,7 +781,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   solidFingerGauntlets: {
@@ -700,7 +802,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeKnuckles: {
     name: 'Bronze Knuckles',
@@ -712,7 +816,9 @@ export const items = {
     delay: 96,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassKnuckles: {
     name: 'Brass Knuckles',
@@ -724,7 +830,9 @@ export const items = {
     delay: 96,
     levelRequirement: 7,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   metalKnuckles: {
     name: 'Metal Knuckles',
@@ -736,7 +844,9 @@ export const items = {
     delay: 96,
     levelRequirement: 18,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeHammer: {
     name: 'Bronze Hammer',
@@ -748,7 +858,9 @@ export const items = {
     delay: 288,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassHammer: {
     name: 'Brass Hammer',
@@ -760,7 +872,9 @@ export const items = {
     delay: 288,
     levelRequirement: 13,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   warhammer: {
     name: 'Warhammer',
@@ -772,7 +886,9 @@ export const items = {
     delay: 312,
     levelRequirement: 20,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mapleWand: {
     name: 'Maple Wand',
@@ -784,7 +900,9 @@ export const items = {
     delay: 240,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironArrow: {
     name: 'Iron Arrow',
@@ -793,7 +911,9 @@ export const items = {
     stack: 99,
     description: 'Sturdy iron arrows.',
     levelRequirement: 1,
-    slot: 'ammo'
+    slot: 'ammo',
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverArrow: {
     name: 'Silver Arrow',
@@ -802,7 +922,9 @@ export const items = {
     stack: 99,
     description: 'High-quality silver arrows.',
     levelRequirement: 1,
-    slot: 'ammo'
+    slot: 'ammo',
+    additionalEffects: [],
+    latentEffects: [],
   },
   crossbowBolt: {
     name: 'Crossbow Bolt',
@@ -811,7 +933,9 @@ export const items = {
     stack: 99,
     description: 'Bolts used with crossbows.',
     levelRequirement: 1,
-    slot: 'ammo'
+    slot: 'ammo',
+    additionalEffects: [],
+    latentEffects: [],
   },
   lightCrossbow: {
     name: 'Light Crossbow',
@@ -823,7 +947,9 @@ export const items = {
     delay: 288,
     levelRequirement: 1,
     slot: 'ranged',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   crossbow: {
     name: 'Crossbow',
@@ -835,7 +961,9 @@ export const items = {
     delay: 300,
     levelRequirement: 14,
     slot: 'ranged',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   zamburak: {
     name: 'Zamburak',
@@ -847,7 +975,9 @@ export const items = {
     delay: 288,
     levelRequirement: 30,
     slot: 'ranged',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollDarkThrenody: {
     name: 'Scroll of Dark Threnody',
@@ -855,7 +985,9 @@ export const items = {
     sellPrice: 106,
     stack: 1,
     description: 'Teaches the song Dark Threnody.',
-    levelRequirement: 15
+    levelRequirement: 15,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollIceThrenody: {
     name: 'Scroll of Ice Threnody',
@@ -863,7 +995,9 @@ export const items = {
     sellPrice: 533,
     stack: 1,
     description: 'Teaches the song Ice Threnody.',
-    levelRequirement: 45
+    levelRequirement: 45,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFoeRequiemI: {
     name: 'Scroll of Foe Requiem I',
@@ -871,7 +1005,9 @@ export const items = {
     sellPrice: 34,
     stack: 1,
     description: 'Teaches Foe Requiem I.',
-    levelRequirement: 7
+    levelRequirement: 7,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFoeRequiemII: {
     name: 'Scroll of Foe Requiem II',
@@ -879,7 +1015,9 @@ export const items = {
     sellPrice: 238,
     stack: 1,
     description: 'Teaches Foe Requiem II.',
-    levelRequirement: 17
+    levelRequirement: 17,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFoeRequiemIII: {
     name: 'Scroll of Foe Requiem III',
@@ -887,7 +1025,9 @@ export const items = {
     sellPrice: 2134,
     stack: 1,
     description: 'Teaches Foe Requiem III.',
-    levelRequirement: 37
+    levelRequirement: 37,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFoeRequiemIV: {
     name: 'Scroll of Foe Requiem IV',
@@ -895,7 +1035,9 @@ export const items = {
     sellPrice: 3724,
     stack: 1,
     description: 'Teaches Foe Requiem IV.',
-    levelRequirement: 47
+    levelRequirement: 47,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollArmysPaeon: {
     name: "Scroll of Army's Paeon",
@@ -903,7 +1045,9 @@ export const items = {
     sellPrice: 20,
     stack: 1,
     description: "Teaches Army's Paeon.",
-    levelRequirement: 5
+    levelRequirement: 5,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollArmysPaeonII: {
     name: "Scroll of Army's Paeon II",
@@ -911,7 +1055,9 @@ export const items = {
     sellPrice: 173,
     stack: 1,
     description: "Teaches Army's Paeon II.",
-    levelRequirement: 15
+    levelRequirement: 15,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollArmysPaeonIII: {
     name: "Scroll of Army's Paeon III",
@@ -919,7 +1065,9 @@ export const items = {
     sellPrice: 1746,
     stack: 1,
     description: "Teaches Army's Paeon III.",
-    levelRequirement: 35
+    levelRequirement: 35,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollArmysPaeonIV: {
     name: "Scroll of Army's Paeon IV",
@@ -927,7 +1075,9 @@ export const items = {
     sellPrice: 3201,
     stack: 1,
     description: "Teaches Army's Paeon IV.",
-    levelRequirement: 45
+    levelRequirement: 45,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollValorMinuet: {
     name: 'Scroll of Valor Minuet',
@@ -935,7 +1085,9 @@ export const items = {
     sellPrice: 11,
     stack: 1,
     description: 'Teaches Valor Minuet.',
-    levelRequirement: 3
+    levelRequirement: 3,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollValorMinuetII: {
     name: 'Scroll of Valor Minuet II',
@@ -943,7 +1095,9 @@ export const items = {
     sellPrice: 594,
     stack: 1,
     description: 'Teaches Valor Minuet II.',
-    levelRequirement: 23
+    levelRequirement: 23,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollValorMinuetIII: {
     name: 'Scroll of Valor Minuet III',
@@ -951,7 +1105,9 @@ export const items = {
     sellPrice: 2987,
     stack: 1,
     description: 'Teaches Valor Minuet III.',
-    levelRequirement: 43
+    levelRequirement: 43,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollCureII: {
     name: 'Scroll of Cure II',
@@ -959,7 +1115,9 @@ export const items = {
     sellPrice: 315,
     stack: 1,
     description: 'Teaches the white magic Cure II.',
-    levelRequirement: 11
+    levelRequirement: 11,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollCuraga: {
     name: 'Scroll of Curaga',
@@ -967,7 +1125,9 @@ export const items = {
     sellPrice: 734,
     stack: 1,
     description: 'Teaches the white magic Curaga.',
-    levelRequirement: 43
+    levelRequirement: 43,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollPoisona: {
     name: 'Scroll of Poisona',
@@ -975,7 +1135,9 @@ export const items = {
     sellPrice: 97,
     stack: 1,
     description: 'Teaches the white magic Poisona.',
-    levelRequirement: 15
+    levelRequirement: 15,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollParalyna: {
     name: 'Scroll of Paralyna',
@@ -983,7 +1145,9 @@ export const items = {
     sellPrice: 174,
     stack: 1,
     description: 'Teaches the white magic Paralyna.',
-    levelRequirement: 21
+    levelRequirement: 21,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBlindna: {
     name: 'Scroll of Blindna',
@@ -991,7 +1155,9 @@ export const items = {
     sellPrice: 534,
     stack: 1,
     description: 'Teaches the white magic Blindna.',
-    levelRequirement: 47
+    levelRequirement: 47,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollDia: {
     name: 'Scroll of Dia',
@@ -999,7 +1165,9 @@ export const items = {
     sellPrice: 44,
     stack: 1,
     description: 'Teaches the white magic Dia.',
-    levelRequirement: 27
+    levelRequirement: 27,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollDiaga: {
     name: 'Scroll of Diaga',
@@ -1007,7 +1175,9 @@ export const items = {
     sellPrice: 628,
     stack: 1,
     description: 'Teaches the white magic Diaga.',
-    levelRequirement: 73
+    levelRequirement: 73,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBanish: {
     name: 'Scroll of Banish',
@@ -1015,7 +1185,9 @@ export const items = {
     sellPrice: 75,
     stack: 1,
     description: 'Teaches Banish.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBanishga: {
     name: 'Scroll of Banishga',
@@ -1023,7 +1195,9 @@ export const items = {
     sellPrice: 640,
     stack: 1,
     description: 'Teaches Banishga.',
-    levelRequirement: 35
+    levelRequirement: 35,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBlink: {
     name: 'Scroll of Blink',
@@ -1031,7 +1205,9 @@ export const items = {
     sellPrice: 1130,
     stack: 1,
     description: 'Teaches Blink.',
-    levelRequirement: 15
+    levelRequirement: 15,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollProtect: {
     name: 'Scroll of Protect',
@@ -1039,7 +1215,9 @@ export const items = {
     sellPrice: 118,
     stack: 1,
     description: 'Teaches Protect.',
-    levelRequirement: 20
+    levelRequirement: 20,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollShell: {
     name: 'Scroll of Shell',
@@ -1047,7 +1225,9 @@ export const items = {
     sellPrice: 854,
     stack: 1,
     description: 'Teaches Shell.',
-    levelRequirement: 35
+    levelRequirement: 35,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollStoneskin: {
     name: 'Scroll of Stoneskin',
@@ -1055,7 +1235,9 @@ export const items = {
     sellPrice: 3786,
     stack: 1,
     description: 'Teaches Stoneskin.',
-    levelRequirement: 49
+    levelRequirement: 49,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollSlow: {
     name: 'Scroll of Slow',
@@ -1063,7 +1245,9 @@ export const items = {
     sellPrice: 451,
     stack: 1,
     description: 'Teaches Slow.',
-    levelRequirement: 13
+    levelRequirement: 13,
+    additionalEffects: [],
+    latentEffects: [],
   },
   echoDrops: {
     name: 'Echo Drops',
@@ -1071,7 +1255,9 @@ export const items = {
     sellPrice: 392,
     stack: 12,
     description: 'Cures silence.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   eyeDrops: {
     name: 'Eye Drops',
@@ -1079,7 +1265,9 @@ export const items = {
     sellPrice: 1271,
     stack: 12,
     description: 'Cures blindness.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tourmaline: {
     name: 'Tourmaline',
@@ -1087,7 +1275,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A pink gemstone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sardonyx: {
     name: 'Sardonyx',
@@ -1095,7 +1285,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A striped gemstone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   amethyst: {
     name: 'Amethyst',
@@ -1103,7 +1295,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A purple gemstone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   amber: {
     name: 'Amber',
@@ -1111,7 +1305,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A golden gemstone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lapisLazuli: {
     name: 'Lapis Lazuli',
@@ -1119,7 +1315,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A blue gemstone.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   clearTopaz: {
     name: 'Clear Topaz',
@@ -1127,7 +1325,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A transparent gem.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   onyx: {
     name: 'Onyx',
@@ -1135,7 +1335,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A jet-black gem.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lightOpal: {
     name: 'Light Opal',
@@ -1143,7 +1345,9 @@ export const items = {
     sellPrice: 932,
     stack: 1,
     description: 'A brilliant opal.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   copperRing: {
     name: 'Copper Ring',
@@ -1153,10 +1357,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['HP +10'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +10'],
+    latentEffects: [],
   },
   copperRingPlus1: {
     name: 'Copper Ring +1',
@@ -1166,10 +1371,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['HP +15'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['HP +15'],
+    latentEffects: [],
   },
   brassRing: {
     name: 'Brass Ring',
@@ -1179,10 +1385,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['DEF +1'],
     vendors: [{ npc: 'Brunhilde', location: 'Bastok Markets (F-10)', currency: 'Gil', price: 50 }],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +1'],
+    latentEffects: [],
   },
   brassRingPlus1: {
     name: 'Brass Ring +1',
@@ -1192,10 +1399,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['DEF +2'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['DEF +2'],
+    latentEffects: [],
   },
   silverRing: {
     name: 'Silver Ring',
@@ -1206,7 +1414,9 @@ export const items = {
     defense: 1,
     levelRequirement: 14,
     slot: 'leftRing',
-    jobs: jobNames
+    jobs: jobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverEarring: {
     name: 'Silver Earring',
@@ -1217,20 +1427,24 @@ export const items = {
     defense: 1,
     levelRequirement: 14,
     slot: 'leftEar',
-    jobs: jobNames
+    jobs: jobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cassieEarring: {
     name: 'Cassie Earring',
-    description: 'DEF +2, STR +1, VIT +1, Converts 50 MP to HP',
     price: 0,
     stack: 1,
+    description: 'An earring rumored to restore vitality from mana.',
+    defense: 2,
     levelRequirement: 1,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['DEF +2', 'STR +1', 'VIT +1', 'Converts 50 MP to HP'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['STR +1', 'VIT +1', 'Converts 50 MP to HP'],
+    latentEffects: [],
   },
 
   judgesEarring: {
@@ -1241,9 +1455,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['DEF +20'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +20'],
+    latentEffects: [],
   },
 
   metalSlimeEarring: {
@@ -1254,9 +1469,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['DEF +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +2'],
+    latentEffects: [],
   },
 
   raisingEarring: {
@@ -1269,7 +1485,9 @@ export const items = {
     jobs: jobNames,
     abilities: ['Reraise'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   sheSlimeEarring: {
@@ -1280,9 +1498,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['HP +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +2'],
+    latentEffects: [],
   },
 
   slimeEarring: {
@@ -1293,9 +1512,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['HP +1'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +1'],
+    latentEffects: [],
   },
 
   signalPearl: {
@@ -1308,7 +1528,9 @@ export const items = {
     jobs: jobNames,
     abilities: ['Send signal to party'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   tacticsPearl: {
@@ -1321,7 +1543,9 @@ export const items = {
     jobs: jobNames,
     abilities: ['Send code to party'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   protectEarring: {
@@ -1334,7 +1558,9 @@ export const items = {
     jobs: jobNames,
     abilities: ['Protect'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   amberEarring: {
@@ -1345,9 +1571,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Earth +2', 'Thunder +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Earth +2', 'Thunder +2'],
+    latentEffects: [],
   },
 
   amethystEarring: {
@@ -1358,9 +1585,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Thunder +2', 'Water +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Thunder +2', 'Water +2'],
+    latentEffects: [],
   },
 
   balanceEarring: {
@@ -1371,9 +1599,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Thunder +3', 'Water +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Thunder +3', 'Water +3'],
+    latentEffects: [],
   },
 
   balanceEarringPlus1: {
@@ -1384,9 +1613,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Thunder +4', 'Water +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Thunder +4', 'Water +4'],
+    latentEffects: [],
   },
 
   clearEarring: {
@@ -1397,9 +1627,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Ice +2', 'Wind +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ice +2', 'Wind +2'],
+    latentEffects: [],
   },
 
   courageEarring: {
@@ -1410,9 +1641,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Fire +3', 'Ice +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Fire +3', 'Ice +3'],
+    latentEffects: [],
   },
 
   courageEarringPlus1: {
@@ -1423,9 +1655,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Fire +4', 'Ice +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Fire +4', 'Ice +4'],
+    latentEffects: [],
   },
 
   energyEarring: {
@@ -1436,9 +1669,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['MP +3', 'Dark +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['MP +3', 'Dark +3'],
+    latentEffects: [],
   },
 
   energyEarringPlus1: {
@@ -1449,9 +1683,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['MP +4', 'Dark +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['MP +4', 'Dark +4'],
+    latentEffects: [],
   },
 
   hopeEarring: {
@@ -1462,9 +1697,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['HP +3', 'Light +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +3', 'Light +3'],
+    latentEffects: [],
   },
 
   hopeEarringPlus1: {
@@ -1475,9 +1711,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['DEF +1', 'HP +4', 'Light +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +1', 'HP +4', 'Light +4'],
+    latentEffects: [],
   },
 
   knowledgeEarring: {
@@ -1488,9 +1725,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Ice +3', 'Wind +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ice +3', 'Wind +3'],
+    latentEffects: [],
   },
 
   knowledgeEarringPlus1: {
@@ -1501,9 +1739,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Ice +4', 'Wind +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ice +4', 'Wind +4'],
+    latentEffects: [],
   },
 
   lapisLazuliEarring: {
@@ -1514,9 +1753,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Fire +2', 'Water +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Fire +2', 'Water +2'],
+    latentEffects: [],
   },
 
   onyxEarring: {
@@ -1527,9 +1767,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['MP +2', 'Dark +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['MP +2', 'Dark +2'],
+    latentEffects: [],
   },
 
   opalEarring: {
@@ -1540,9 +1781,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['HP +2', 'Light +2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +2', 'Light +2'],
+    latentEffects: [],
   },
 
   opticalEarring: {
@@ -1553,9 +1795,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['DEF +1', 'Accuracy +1', 'Attack -2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +1', 'Accuracy +1', 'Attack -2'],
+    latentEffects: [],
   },
 
   physicalEarring: {
@@ -1568,7 +1811,9 @@ export const items = {
     jobs: jobNames,
     abilities: ['Convert 25 MP to HP'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   reflexEarring: {
@@ -1579,9 +1824,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Wind +3', 'Earth +3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Wind +3', 'Earth +3'],
+    latentEffects: [],
   },
 
   reflexEarringPlus1: {
@@ -1592,9 +1838,10 @@ export const items = {
     levelRequirement: 10,
     slot: 'leftEar',
     jobs: jobNames,
-    effects: ['Wind +4', 'Earth +4'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Wind +4', 'Earth +4'],
+    latentEffects: [],
   },
   bastokMap: {
     name: 'Map of Bastok',
@@ -1602,7 +1849,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'A detailed map of Bastok and surrounding areas.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sandoriaMap: {
     name: "Map of San d'Oria",
@@ -1610,7 +1859,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: "A detailed map of San d'Oria and surrounding areas.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   windurstMap: {
     name: 'Map of Windurst',
@@ -1618,7 +1869,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'A detailed map of Windurst and surrounding areas.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   jeunoMap: {
     name: 'Map of the Jeuno area',
@@ -1626,7 +1879,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the Jeuno area.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   valkurmMap: {
     name: 'Map of Valkurm Dunes',
@@ -1634,7 +1889,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'A map guiding travelers through the Valkurm Dunes.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ordellesCavesMap: {
     name: 'Map of Ordelle\'s Caves',
@@ -1642,7 +1899,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of ordelle\'s caves.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ghelsbaMap: {
     name: 'Map of Ghelsba',
@@ -1650,7 +1909,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of ghelsba.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   zeruhnMinesMap: {
     name: 'Map of the Zeruhn Mines',
@@ -1658,7 +1919,9 @@ export const items = {
         sellPrice: 100,
     stack: 1,
     description: 'A detailed map of the zeruhn mines.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   palboroughMinesMap: {
     name: 'Map of the Palborough Mines',
@@ -1666,7 +1929,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the palborough mines.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   beadeauxMap: {
     name: 'Map of Beadeaux',
@@ -1674,7 +1939,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of beadeaux.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   giddeusMap: {
     name: 'Map of Giddeus',
@@ -1682,7 +1949,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of giddeus.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   castleOztrojaMap: {
     name: 'Map of Castle Oztroja',
@@ -1690,7 +1959,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of castle oztroja.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mazeOfShakhramiMap: {
     name: 'Map of the Maze of Shakhrami',
@@ -1698,7 +1969,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the maze of shakhrami.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   liTelorMap: {
     name: 'Map of the Li\'Telor region',
@@ -1706,7 +1979,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the li\'telor region.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bibikiBayMap: {
     name: 'Map of Bibiki Bay',
@@ -1714,7 +1989,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of bibiki bay.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   qufimIslandMap: {
     name: 'Map of Qufim Island',
@@ -1722,7 +1999,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of qufim island.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   elshimoMap: {
     name: 'Map of the Elshimo regions',
@@ -1730,7 +2009,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the elshimo regions.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   eldiemeNecropolisMap: {
     name: 'Map of the Eldieme Necropolis',
@@ -1738,7 +2019,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the eldieme necropolis.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   garlaigeCitadelMap: {
     name: 'Map of the Garlaige Citadel',
@@ -1746,7 +2029,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the garlaige citadel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   northlandsMap: {
     name: 'Map of the Northlands area',
@@ -1754,7 +2039,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the northlands area.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kingRanperresTombMap: {
     name: 'Map of King Ranperre\'s Tomb',
@@ -1762,7 +2049,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of king ranperre\'s tomb.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   dangrufWadiMap: {
     name: 'Map of the Dangruf Wadi',
@@ -1770,7 +2059,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the dangruf wadi.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   horutotoRuinsMap: {
     name: 'Map of the Horutoto Ruins',
@@ -1778,7 +2069,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the horutoto ruins.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bostaunieuxOublietteMap: {
     name: 'Map of Bostaunieux Oubliette',
@@ -1786,7 +2079,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of bostaunieux oubliette.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   toraimaraiCanalMap: {
     name: 'Map of the Toraimarai Canal',
@@ -1794,7 +2089,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the toraimarai canal.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   gusgenMinesMap: {
     name: 'Map of the Gusgen Mines',
@@ -1802,7 +2099,9 @@ export const items = {
         sellPrice: 300,
     stack: 1,
     description: 'A detailed map of the gusgen mines.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   crawlersNestMap: {
     name: 'Map of the Crawlers\' Nest',
@@ -1810,7 +2109,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the crawlers\' nest.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ranguemontPassMap: {
     name: 'Map of the Ranguemont Pass',
@@ -1818,7 +2119,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the ranguemont pass.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   delfkuttsTowerMap: {
     name: 'Map of Delkfutt\'s Tower',
@@ -1826,7 +2129,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of delkfutt\'s tower.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   feiyinMap: {
     name: "Map of Fei'Yin",
@@ -1834,7 +2139,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of fei'yin.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   castleZvahlMap: {
     name: 'Map of Castle Zvahl',
@@ -1842,7 +2149,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of castle zvahl.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kuzotzMap: {
     name: 'Map of the Kuzotz region',
@@ -1850,7 +2159,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the kuzotz region.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ruaunGardensMap: {
     name: "Map of the Ru'Aun Gardens",
@@ -1858,7 +2169,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of the ru'aun gardens.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   norgMap: {
     name: 'Map of Norg',
@@ -1866,7 +2179,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of norg.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   templeOfUggalepihMap: {
     name: 'Map of Temple of Uggalepih',
@@ -1874,7 +2189,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of temple of uggalepih.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   denOfRancorMap: {
     name: 'Map of the Den of Rancor',
@@ -1882,7 +2199,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the den of rancor.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   korrolokaTunnelMap: {
     name: 'Map of the Korroloka Tunnel',
@@ -1890,7 +2209,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the korroloka tunnel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kuftalTunnelMap: {
     name: 'Map of the Kuftal Tunnel',
@@ -1898,7 +2219,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the kuftal tunnel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   boyahdaTreeMap: {
     name: 'Map of the Boyahda Tree',
@@ -1906,7 +2229,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the boyahda tree.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   velugannonPalaceMap: {
     name: "Map of Ve'Lugannon Palace",
@@ -1914,7 +2239,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of ve'lugannon palace.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ifritsCauldronMap: {
     name: "Map of Ifrit's Cauldron",
@@ -1922,7 +2249,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of ifrit's cauldron.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   quicksandCavesMap: {
     name: 'Map of the Quicksand Caves',
@@ -1930,7 +2259,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the quicksand caves.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   seaSerpentGrottoMap: {
     name: 'Map of Sea Serpent Grotto',
@@ -1938,7 +2269,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of sea serpent grotto.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   vollbowRegionMap: {
     name: 'Map of the Vollbow region',
@@ -1946,7 +2279,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the vollbow region.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   labyrinthOfOnzozoMap: {
     name: 'Map of the Labyrinth of Onzozo',
@@ -1954,7 +2289,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the labyrinth of onzozo.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   uleguerandRangeMap: {
     name: 'Map of the Uleguerand Range',
@@ -1962,7 +2299,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the uleguerand range.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   attohwaChasmMap: {
     name: 'Map of the Attohwa Chasm',
@@ -1970,7 +2309,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the attohwa chasm.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   psoxjaMap: {
     name: "Map of Pso'Xja",
@@ -1978,7 +2319,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of pso'xja.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   oldtonMovalpolosMap: {
     name: 'Map of Oldton Movalpolos',
@@ -1986,7 +2329,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of oldton movalpolos.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   newtonMovalpolosMap: {
     name: 'Map of Newton Movalpolos',
@@ -1994,7 +2339,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of newton movalpolos.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tavnaziaMap: {
     name: 'Map of Tavnazia',
@@ -2002,7 +2349,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of tavnazia.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   aqueductsMap: {
     name: 'Map of the Aqueducts',
@@ -2010,7 +2359,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the aqueducts.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sacrariumMap: {
     name: 'Map of the Sacrarium',
@@ -2018,7 +2369,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of the sacrarium.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   capeRiverneMap: {
     name: 'Map of Cape Riverne',
@@ -2026,7 +2379,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: 'A detailed map of cape riverne.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   altaieuMap: {
     name: "Map of Al'Taieu",
@@ -2034,7 +2389,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of al'taieu.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   huxzoiMap: {
     name: "Map of Hu'Xzoi",
@@ -2042,7 +2399,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of hu'xzoi.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ruHmetMap: {
     name: "Map of Ru'Hmet",
@@ -2050,7 +2409,9 @@ export const items = {
         sellPrice: 1500,
     stack: 1,
     description: "A detailed map of ru'hmet.",
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashLog: {
     name: 'Ash Log',
@@ -2058,7 +2419,9 @@ export const items = {
         sellPrice: 44,
     stack: 99,
     description: 'A log cut from an ash tree.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   chestnutLog: {
     name: 'Chestnut Log',
@@ -2066,7 +2429,9 @@ export const items = {
         sellPrice: 1299,
     stack: 99,
     description: 'Wood from a chestnut tree.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   oakLog: {
     name: 'Oak Log',
@@ -2074,7 +2439,9 @@ export const items = {
         sellPrice: 2907,
     stack: 99,
     description: 'A sturdy oak log.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironOre: {
     name: 'Iron Ore',
@@ -2082,7 +2449,9 @@ export const items = {
         sellPrice: 414,
     stack: 99,
     description: 'Ore containing iron.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilOre: {
     name: 'Mythril Ore',
@@ -2090,7 +2459,9 @@ export const items = {
         sellPrice: 920,
     stack: 99,
     description: 'Ore containing mythril.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mokoGrass: {
     name: 'Moko Grass',
@@ -2098,7 +2469,9 @@ export const items = {
         sellPrice: 9,
     stack: 99,
     description: 'A clump of moko grass used in clothcraft.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   birdEgg: {
     name: 'Bird Egg',
@@ -2106,7 +2479,9 @@ export const items = {
         sellPrice: 25,
     stack: 12,
     description: 'A fresh bird egg.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   flaxFlower: {
     name: 'Flax Flower',
@@ -2114,7 +2489,9 @@ export const items = {
         sellPrice: 115,
     stack: 99,
     description: 'A delicate flax blossom.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kaiserinCosmetics: {
     name: 'Kaiserin Cosmetics',
@@ -2122,7 +2499,9 @@ export const items = {
         sellPrice: 920,
     stack: 99,
     description: 'Cosmetics from the Empire of Aht Urhgan.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blackChip: {
     name: 'Black Chip',
@@ -2130,7 +2509,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A black strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blueChip: {
     name: 'Blue Chip',
@@ -2138,7 +2519,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A blue strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   clearChip: {
     name: 'Clear Chip',
@@ -2146,7 +2529,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A clear strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   greenChip: {
     name: 'Green Chip',
@@ -2154,7 +2539,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A green strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   purpleChip: {
     name: 'Purple Chip',
@@ -2162,7 +2549,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A purple strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   redChip: {
     name: 'Red Chip',
@@ -2170,7 +2559,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A red strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   whiteChip: {
     name: 'White Chip',
@@ -2178,7 +2569,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A white strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   yellowChip: {
     name: 'Yellow Chip',
@@ -2186,7 +2579,9 @@ export const items = {
         sellPrice: 10500,
     stack: 1,
     description: 'A yellow strange apparatus chip.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   linkshell: {
     name: 'Linkshell',
@@ -2194,7 +2589,9 @@ export const items = {
         sellPrice: 3000,
     stack: 1,
     description: 'Creates a social linkshell.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pendantCompass: {
     name: 'Pendant Compass',
@@ -2209,7 +2606,9 @@ export const items = {
       { npc: 'Ilita', zone: 'Port Bastok (E-7)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cottonHachimaki: {
     name: 'Cotton Hachimaki',
@@ -2230,7 +2629,9 @@ export const items = {
       { npc: 'Tsutsuroon',         zone: 'Nashmau (G-7)',             currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonHachimakiPlus1: {
@@ -2246,7 +2647,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonDogi: {
@@ -2268,7 +2671,9 @@ export const items = {
       { npc: 'Tsutsuroon',         zone: 'Nashmau (G-7)',             currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonDogiPlus1: {
@@ -2284,7 +2689,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonTekko: {
@@ -2306,7 +2713,9 @@ export const items = {
       { npc: 'Tsutsuroon',         zone: 'Nashmau (G-7)',             currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonTekkoPlus1: {
@@ -2322,7 +2731,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonSitabaki: {
@@ -2344,7 +2755,9 @@ export const items = {
       { npc: 'Tsutsuroon',         zone: 'Nashmau (G-7)',             currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonSitabakiPlus1: {
@@ -2360,7 +2773,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonKyahan: {
@@ -2382,7 +2797,9 @@ export const items = {
       { npc: 'Tsutsuroon',         zone: 'Nashmau (G-7)',             currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   cottonKyahanPlus1: {
@@ -2398,7 +2815,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverObi: {
     name: 'Silver Obi',
@@ -2409,7 +2828,9 @@ export const items = {
     defense: 1,
     levelRequirement: 14,
     slot: 'waist',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   hachimaki: {
     name: 'Hachimaki',
@@ -2435,7 +2856,9 @@ export const items = {
       { npc: 'Eternal Flame',      zone: 'Western Adoulin (H-11)',  currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   hachimakiPlus1: {
@@ -2449,7 +2872,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   kenpogi: {
@@ -2476,7 +2901,9 @@ export const items = {
       { npc: 'Eternal Flame',      zone: 'Western Adoulin (H-11)',  currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   kenpogiPlus1: {
@@ -2490,7 +2917,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   tekko: {
@@ -2517,7 +2946,9 @@ export const items = {
       { npc: 'Eternal Flame',      zone: 'Western Adoulin (H-11)',  currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   tekkoPlus1: {
@@ -2531,7 +2962,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   sitabaki: {
@@ -2558,7 +2991,9 @@ export const items = {
       { npc: 'Eternal Flame',      zone: 'Western Adoulin (H-11)',  currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   sitabakiPlus1: {
@@ -2572,7 +3007,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   kyahan: {
@@ -2599,7 +3036,9 @@ export const items = {
       { npc: 'Eternal Flame',      zone: 'Western Adoulin (H-11)',  currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   kyahanPlus1: {
@@ -2613,7 +3052,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bambooStick: {
     name: 'Bamboo Stick',
@@ -2625,7 +3066,9 @@ export const items = {
     delay: 240,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   toolbagIno: {
     name: 'Toolbag (Ino)',
@@ -2633,7 +3076,9 @@ export const items = {
         sellPrice: 6750,
     stack: 99,
     description: 'Bundle of Ino tools for ninjutsu.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   toolbagShika: {
     name: 'Toolbag (Shika)',
@@ -2641,7 +3086,9 @@ export const items = {
         sellPrice: 9000,
     stack: 99,
     description: 'Bundle of Shika tools for ninjutsu.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   toolbagCho: {
     name: 'Toolbag (Cho)',
@@ -2649,7 +3096,9 @@ export const items = {
         sellPrice: 9000,
     stack: 99,
     description: 'Bundle of Cho tools for ninjutsu.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironBread: {
     name: 'Iron Bread',
@@ -2657,7 +3106,9 @@ export const items = {
         sellPrice: 46,
     stack: 99,
     description: 'Bread that slightly boosts vitality when eaten.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bretzel: {
     name: 'Bretzel',
@@ -2665,7 +3116,9 @@ export const items = {
         sellPrice: 11,
     stack: 99,
     description: 'A soft pretzel popular in Bastok.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pumpernickel: {
     name: 'Pumpernickel',
@@ -2673,7 +3126,9 @@ export const items = {
         sellPrice: 73,
     stack: 99,
     description: 'Dark rye bread with a mild effect.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sausage: {
     name: 'Sausage',
@@ -2681,7 +3136,9 @@ export const items = {
         sellPrice: 71,
     stack: 99,
     description: 'A grilled sausage that restores a little HP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bakedPopoto: {
     name: 'Baked Popoto',
@@ -2689,7 +3146,9 @@ export const items = {
         sellPrice: 147,
     stack: 99,
     description: 'A baked popoto that recovers HP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pebbleSoup: {
     name: 'Pebble Soup',
@@ -2697,7 +3156,9 @@ export const items = {
         sellPrice: 92,
     stack: 99,
     description: 'Soup with tiny pebbles for texture.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pineappleJuice: {
     name: 'Pineapple Juice',
@@ -2705,7 +3166,9 @@ export const items = {
         sellPrice: 184,
     stack: 99,
     description: 'A sweet juice that gradually restores MP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   melonJuice: {
     name: 'Melon Juice',
@@ -2713,7 +3176,9 @@ export const items = {
         sellPrice: 506,
     stack: 99,
     description: 'A refreshing melon juice that restores MP over time.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   roastMutton: {
     name: 'Roast Mutton',
@@ -2721,7 +3186,9 @@ export const items = {
         sellPrice: 331,
     stack: 99,
     description: 'A hearty roast of mutton.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   eggSoup: {
     name: 'Egg Soup',
@@ -2729,7 +3196,9 @@ export const items = {
         sellPrice: 1518,
     stack: 99,
     description: 'A soup made from eggs.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   derflandPear: {
     name: 'Derfland Pear',
@@ -2737,7 +3206,9 @@ export const items = {
         sellPrice: 64,
     stack: 99,
     description: 'A sweet pear from the Derfland region.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ginger: {
     name: 'Ginger',
@@ -2745,7 +3216,9 @@ export const items = {
         sellPrice: 71,
     stack: 99,
     description: 'A fragrant root used in cooking.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   gysahlGreens: {
     name: 'Gysahl Greens',
@@ -2753,7 +3226,9 @@ export const items = {
         sellPrice: 31,
     stack: 99,
     description: 'Favorite food of chocobos.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   oliveFlower: {
     name: 'Olive Flower',
@@ -2761,7 +3236,9 @@ export const items = {
         sellPrice: 828,
     stack: 99,
     description: 'A delicate olive blossom.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   oliveOil: {
     name: 'Olive Oil',
@@ -2769,7 +3246,9 @@ export const items = {
         sellPrice: 7,
     stack: 99,
     description: 'Oil pressed from olives.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   wijnruit: {
     name: 'Wijnruit',
@@ -2777,7 +3256,9 @@ export const items = {
         sellPrice: 55,
     stack: 99,
     description: 'A pungent herb used in alchemy.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kazhamPeppers: {
     name: 'Kazham Peppers',
@@ -2785,7 +3266,9 @@ export const items = {
         sellPrice: 27,
     stack: 99,
     description: 'Spicy peppers from Kazham.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kazhamPineapple: {
     name: 'Kazham Pineapple',
@@ -2793,7 +3276,9 @@ export const items = {
         sellPrice: 27,
     stack: 99,
     description: 'A tropical pineapple.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mithranTomato: {
     name: 'Mithran Tomato',
@@ -2801,7 +3286,9 @@ export const items = {
         sellPrice: 18,
     stack: 99,
     description: 'A juicy tomato cultivated by Mithra.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blackPepper: {
     name: 'Black Pepper',
@@ -2809,7 +3296,9 @@ export const items = {
         sellPrice: 117,
     stack: 99,
     description: 'A common spice used in cooking.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ogrePumpkin: {
     name: 'Ogre Pumpkin',
@@ -2817,7 +3306,9 @@ export const items = {
         sellPrice: 44,
     stack: 99,
     description: 'A large pumpkin.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kukuruBean: {
     name: 'Kukuru Bean',
@@ -2825,7 +3316,9 @@ export const items = {
         sellPrice: 55,
     stack: 99,
     description: 'A flavorful bean used in sweets.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   phalaenopsis: {
     name: 'Phalaenopsis',
@@ -2833,7 +3326,9 @@ export const items = {
         sellPrice: 828,
     stack: 99,
     description: 'A rare orchid.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cattleya: {
     name: 'Cattleya',
@@ -2841,7 +3336,9 @@ export const items = {
         sellPrice: 828,
     stack: 99,
     description: 'An exotic flower from the uplands.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cinnamon: {
     name: 'Cinnamon',
@@ -2849,7 +3346,9 @@ export const items = {
         sellPrice: 119,
     stack: 99,
     description: 'Fragrant cinnamon bark.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pamamas: {
     name: 'Pamamas',
@@ -2857,7 +3356,9 @@ export const items = {
         sellPrice: 36,
     stack: 99,
     description: 'Small sweet bananas.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   rattanLumber: {
     name: 'Rattan Lumber',
@@ -2865,7 +3366,9 @@ export const items = {
         sellPrice: 73,
     stack: 99,
     description: 'Lumber cut from rattan.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sulfur: {
     name: 'Sulfur',
@@ -2873,7 +3376,9 @@ export const items = {
         sellPrice: 351,
     stack: 99,
     description: 'Yellow sulfur used in alchemy.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   popoto: {
     name: 'Popoto',
@@ -2881,7 +3386,9 @@ export const items = {
         sellPrice: 21,
     stack: 99,
     description: 'A starchy vegetable.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ryeFlour: {
     name: 'Rye Flour',
@@ -2889,7 +3396,9 @@ export const items = {
         sellPrice: 18,
     stack: 99,
     description: 'Finely milled rye flour.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   eggplant: {
     name: 'Eggplant',
@@ -2897,7 +3406,9 @@ export const items = {
         sellPrice: 20,
     stack: 99,
     description: 'A glossy purple vegetable.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cactuarNeedle: {
     name: 'Cactuar Needle',
@@ -2905,7 +3416,9 @@ export const items = {
         sellPrice: 427,
     stack: 99,
     description: 'A sharp needle from a cactuar.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   thundermelon: {
     name: 'Thundermelon',
@@ -2913,7 +3426,9 @@ export const items = {
         sellPrice: 149,
     stack: 99,
     description: 'A melon crackling with energy.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   watermelon: {
     name: 'Watermelon',
@@ -2921,7 +3436,9 @@ export const items = {
         sellPrice: 92,
     stack: 99,
     description: 'A juicy watermelon.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   giantSheepMeat: {
     name: 'Giant Sheep Meat',
@@ -2929,7 +3446,9 @@ export const items = {
         sellPrice: 22,
     stack: 99,
     description: 'Meat from a giant sheep.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   driedMarjoram: {
     name: 'Dried Marjoram',
@@ -2937,7 +3456,9 @@ export const items = {
         sellPrice: 22,
     stack: 99,
     description: 'A bundle of dried marjoram.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sanDoriaFlour: {
     name: "San d'Oria Flour",
@@ -2945,7 +3466,9 @@ export const items = {
         sellPrice: 27,
     stack: 99,
     description: 'Flour milled in San d\'Oria.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   semolina: {
     name: 'Semolina',
@@ -2953,7 +3476,9 @@ export const items = {
         sellPrice: 920,
     stack: 99,
     description: 'High-quality wheat flour.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   laTheineCabbage: {
     name: 'La Theine Cabbage',
@@ -2961,7 +3486,9 @@ export const items = {
         sellPrice: 11,
     stack: 99,
     description: 'A crisp cabbage from La Theine.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   selbinaMilk: {
     name: 'Selbina Milk',
@@ -2969,7 +3496,9 @@ export const items = {
         sellPrice: 27,
     stack: 99,
     description: 'Fresh milk from Selbina.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   movalpolosWater: {
     name: 'Movalpolos Water',
@@ -2977,7 +3506,9 @@ export const items = {
         sellPrice: 368,
     stack: 99,
     description: 'Water from the depth of Movalpolos.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   danceshroom: {
     name: 'Danceshroom',
@@ -2985,7 +3516,9 @@ export const items = {
         sellPrice: 2060,
     stack: 99,
     description: 'A rare dancing mushroom.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   coralFungus: {
     name: 'Coral Fungus',
@@ -2993,7 +3526,9 @@ export const items = {
         sellPrice: 347,
     stack: 99,
     description: 'A fungus resembling coral.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kopparnickel: {
     name: 'Kopparnickel',
@@ -3001,7 +3536,9 @@ export const items = {
         sellPrice: 368,
     stack: 99,
     description: 'Ore rich in copper and nickel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   degen: {
     name: 'Degen',
@@ -3013,7 +3550,9 @@ export const items = {
     delay: 224,
     levelRequirement: 20,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Paladin','Bard','Dragoon','Corsair','Dancer']
+    jobs: ['Warrior','Red Mage','Paladin','Bard','Dragoon','Corsair','Dancer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   worldPass: {
     name: 'World Pass',
@@ -3021,7 +3560,9 @@ export const items = {
         sellPrice: 500,
     stack: 1,
     description: 'Allows inviting new players to your world.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   goldWorldPass: {
     name: 'Gold World Pass',
@@ -3029,7 +3570,9 @@ export const items = {
         sellPrice: 500,
     stack: 1,
     description: 'A gold pass for new characters.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassFlowerpot: {
     name: 'Brass Flowerpot',
@@ -3037,7 +3580,9 @@ export const items = {
         sellPrice: 460,
     stack: 1,
     description: 'A small brass pot for gardening.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   republicWaystone: {
     name: 'Republic Waystone',
@@ -3045,7 +3590,9 @@ export const items = {
         sellPrice: 4600,
     stack: 1,
     description: 'Teleports the user to a Bastok location.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   thievesTools: {
     name: "Thief's Tools",
@@ -3053,7 +3600,9 @@ export const items = {
         sellPrice: 1821,
     stack: 1,
     description: 'Used to pick simple locks.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   livingKey: {
     name: 'Living Key',
@@ -3061,7 +3610,9 @@ export const items = {
         sellPrice: 2760,
     stack: 1,
     description: 'Opens locked doors and chests.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lugworm: {
     name: 'Lugworm',
@@ -3069,7 +3620,9 @@ export const items = {
         sellPrice: 5,
     stack: 99,
     description: 'Common fishing bait.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   littleWorm: {
     name: 'Little Worm',
@@ -3077,7 +3630,9 @@ export const items = {
         sellPrice: 1,
     stack: 99,
     description: 'Small bait for beginner fishers.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   yewFishingRod: {
     name: 'Yew Fishing Rod',
@@ -3086,7 +3641,9 @@ export const items = {
     stack: 1,
     description: 'A sturdy fishing rod made of yew.',
     levelRequirement: 0,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   willowFishingRod: {
     name: 'Willow Fishing Rod',
@@ -3095,7 +3652,9 @@ export const items = {
     stack: 1,
     description: 'A light fishing rod crafted from willow.',
     levelRequirement: 0,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   robe: {
     name: 'Robe',
@@ -3122,7 +3681,9 @@ export const items = {
       { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' },
       { npc: 'Fhelm Jobeizat', zone: 'Windurst Woods (J-10)', price: 50, currency: 'Sparks' },
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   robePlus1: {
     name: 'Robe +1',
@@ -3141,7 +3702,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   cuffs: {
     name: 'Cuffs',
@@ -3166,7 +3729,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 118, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 118, currency: 'Gil' },
       { npc: 'Taten-Bilten', zone: 'Al Zahbi (J-10)', price: 118, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   cuffsPlus1: {
     name: 'Cuffs +1',
@@ -3185,7 +3750,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   slops: {
     name: 'Slops',
@@ -3210,7 +3777,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 172, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 172, currency: 'Gil' },
       { npc: 'Taten-Bilten', zone: 'Al Zahbi (J-10)', price: 172, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   slopsPlus1: {
     name: 'Slops +1',
@@ -3229,7 +3798,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashClogs: {
     name: 'Ash Clogs',
@@ -3254,7 +3825,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 111, currency: 'Gil' },
       { npc: 'Chaupire', zone: 'Northern San d\'Oria (E-3)', price: 111, currency: 'Gil' },
       { npc: 'Dehbi Moshal', zone: 'Al Zahbi (G-10)', price: 111, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashClogsPlus1: {
     name: 'Ash Clogs +1',
@@ -3273,7 +3846,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   headgear: {
     name: 'Headgear',
@@ -3297,7 +3872,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 1781, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1781, currency: 'Gil' },
       { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1781, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   headgearPlus1: {
     name: 'Headgear +1',
@@ -3316,7 +3893,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   doublet: {
     name: 'Doublet',
@@ -3340,7 +3919,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 2470, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 2470, currency: 'Gil' },
       { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 2470, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   doubletPlus1: {
     name: 'Doublet +1',
@@ -3359,7 +3940,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   gloves: {
     name: 'Gloves',
@@ -3383,7 +3966,9 @@ export const items = {
       { npc: 'Guruna-Magurama', zone: 'Port Windurst (H-9)', price: 1363, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1363, currency: 'Gil' },
       { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1363, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   glovesPlus1: {
     name: 'Gloves +1',
@@ -3402,7 +3987,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   brais: {
     name: 'Brais',
@@ -3424,7 +4011,9 @@ export const items = {
     vendors: [
       { npc: 'Gelzerio', zone: 'Bastok Mines (H-7)', price: 1899, currency: 'Gil' },
       { npc: 'Kumama', zone: 'Port Windurst (H-9)', price: 1899, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   braisPlus1: {
     name: 'Brais +1',
@@ -3443,7 +4032,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   gaiters: {
     name: 'Gaiters',
@@ -3467,7 +4058,9 @@ export const items = {
       { npc: 'Kumama', zone: 'Port Windurst (H-9)', price: 1269, currency: 'Gil' },
       { npc: 'Kuzah Hpirohpon', zone: 'Windurst Woods (F-12)', price: 1269, currency: 'Gil' },
       { npc: 'Meriri', zone: 'Windurst Woods (F-12)', price: 1269, currency: 'Gil' }
-    ]
+    ],
+    additionalEffects: [],
+    latentEffects: [],
   },
   gaitersPlus1: {
     name: 'Gaiters +1',
@@ -3486,7 +4079,9 @@ export const items = {
     races: ['Hume', 'Elvaan', 'Tarutaru', 'Mithra', 'Galka'],
     keyItem: false,
     sellable: false,
-    vendors: []
+    vendors: [],
+    additionalEffects: [],
+    latentEffects: [],
   },
   poetsCirclet: {
     name: "Poet's Circlet",
@@ -3497,7 +4092,9 @@ export const items = {
     defense: 5,
     levelRequirement: 12,
     slot: 'head',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   tunic: {
     name: 'Tunic',
@@ -3515,7 +4112,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   tunicPlus1: {
@@ -3534,7 +4133,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   linenRobe: {
     name: 'Linen Robe',
@@ -3545,7 +4146,9 @@ export const items = {
     defense: 10,
     levelRequirement: 12,
     slot: 'body',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   mitts: {
     name: 'Mitts',
@@ -3563,7 +4166,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   mittsPlus1: {
@@ -3582,7 +4187,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   linenCuffs: {
     name: 'Linen Cuffs',
@@ -3593,7 +4200,9 @@ export const items = {
     defense: 3,
     levelRequirement: 12,
     slot: 'hands',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   slacks: {
     name: 'Slacks',
@@ -3611,7 +4220,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   slacksPlus1: {
@@ -3630,7 +4241,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   linenSlops: {
     name: 'Linen Slops',
@@ -3641,7 +4254,9 @@ export const items = {
     defense: 7,
     levelRequirement: 12,
     slot: 'legs',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   solea: {
     name: 'Solea',
@@ -3659,7 +4274,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   soleaPlus1: {
@@ -3678,7 +4295,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   hollyClogs: {
     name: 'Holly Clogs',
@@ -3689,7 +4308,9 @@ export const items = {
     defense: 3,
     levelRequirement: 12,
     slot: 'feet',
-    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer']
+    jobs: ['Monk','White Mage','Black Mage','Red Mage','Thief','Dark Knight','Bard','Ranger','Summoner','Blue Mage','Corsair','Puppetmaster','Dancer','Scholar','Geomancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherRing: {
     name: 'Leather Ring',
@@ -3700,7 +4321,9 @@ export const items = {
     defense: 1,
     levelRequirement: 14,
     slot: 'leftRing',
-    jobs: jobNames
+    jobs: jobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   paddedCap: {
     name: 'Padded Cap',
@@ -3711,7 +4334,9 @@ export const items = {
     defense: 12,
     levelRequirement: 35,
     slot: 'head',
-    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+    jobs: ['Warrior','Monk','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironMask: {
     name: 'Iron Mask',
@@ -3722,7 +4347,9 @@ export const items = {
     defense: 7,
     levelRequirement: 15,
     slot: 'head',
-    jobs: ['Warrior','Paladin','Dark Knight']
+    jobs: ['Warrior','Paladin','Dark Knight'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   paddedArmor: {
     name: 'Padded Armor',
@@ -3733,7 +4360,9 @@ export const items = {
     defense: 24,
     levelRequirement: 35,
     slot: 'body',
-    jobs: ['Warrior','Monk','Red Mage']
+    jobs: ['Warrior','Monk','Red Mage'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironMittens: {
     name: 'Iron Mittens',
@@ -3744,7 +4373,9 @@ export const items = {
     defense: 11,
     levelRequirement: 15,
     slot: 'hands',
-    jobs: ['Warrior','Dark Knight']
+    jobs: ['Warrior','Dark Knight'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassCap: {
     name: 'Brass Cap',
@@ -3772,7 +4403,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassCapPlus1: {
@@ -3794,7 +4427,9 @@ export const items = {
       { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherBandana: {
     name: 'Leather Bandana',
@@ -3819,7 +4454,9 @@ export const items = {
       { npc: 'Tahn Posbei', zone: 'Kazham (H-9)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherBandanaPlus1: {
@@ -3839,7 +4476,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassHarness: {
     name: 'Brass Harness',
@@ -3864,7 +4503,9 @@ export const items = {
       { npc: 'Rolandienne', zone: 'Southern San d’Oria (G-10)', currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassHarnessPlus1: {
@@ -3885,7 +4526,9 @@ export const items = {
       { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassMittens: {
@@ -3909,7 +4552,9 @@ export const items = {
       { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassMittensPlus1: {
@@ -3930,7 +4575,9 @@ export const items = {
       { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironSubligar: {
     name: 'Iron Subligar',
@@ -3941,7 +4588,9 @@ export const items = {
     defense: 10,
     levelRequirement: 20,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lizardTrousers: {
     name: 'Lizard Trousers',
@@ -3952,7 +4601,9 @@ export const items = {
     defense: 3,
     levelRequirement: 10,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leggings: {
     name: 'Leggings',
@@ -3963,7 +4614,9 @@ export const items = {
     defense: 11,
     levelRequirement: 30,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lizardLedelsens: {
     name: 'Lizard Ledelsens',
@@ -3974,7 +4627,9 @@ export const items = {
     defense: 4,
     levelRequirement: 17,
     slot: 'feet',
-    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Samurai','Ninja','Dragoon','Blue Mage','Corsair','Dancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   buckler: {
     name: 'Buckler',
@@ -3985,7 +4640,9 @@ export const items = {
     defense: 12,
     levelRequirement: 40,
     slot: 'offHand',
-    jobs: ['Warrior','Paladin','Black Mage','Red Mage','Thief','Dark Knight']
+    jobs: ['Warrior','Paladin','Black Mage','Red Mage','Thief','Dark Knight'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassSubligar: {
     name: 'Brass Subligar',
@@ -4007,7 +4664,9 @@ export const items = {
       { npc: 'Charging Chocobo', zone: 'Bastok Markets (F-10)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassSubligarPlus1: {
@@ -4028,7 +4687,9 @@ export const items = {
       { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherTrousers: {
     name: 'Leather Trousers',
@@ -4052,7 +4713,9 @@ export const items = {
       { npc: 'Kumama', zone: 'Port Windurst (H-9)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherTrousersPlus1: {
@@ -4072,7 +4735,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassLeggings: {
     name: 'Brass Leggings',
@@ -4093,7 +4758,9 @@ export const items = {
       { npc: 'Ryan', zone: 'Port Windurst (H-7)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   brassLeggingsPlus1: {
@@ -4114,7 +4781,9 @@ export const items = {
       { npc: 'Carautia', zone: 'Southern San d’Oria (K-8)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherHighboots: {
     name: 'Leather Highboots',
@@ -4136,7 +4805,9 @@ export const items = {
       { npc: 'Kueh Igunahmori', zone: 'Southern San d’Oria (D-8)', currency: 'Gil' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherHighbootsPlus1: {
@@ -4156,7 +4827,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   targe: {
     name: 'Targe',
@@ -4167,7 +4840,9 @@ export const items = {
     defense: 8,
     levelRequirement: 15,
     slot: 'offHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeSubligar: {
     name: 'Bronze Subligar',
@@ -4193,7 +4868,9 @@ export const items = {
       { npc: 'Isakoth', zone: 'Bastok Markets (E-11)', price: 50, currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeSubligarPlus1: {
     name: 'Bronze Subligar +1',
@@ -4208,7 +4885,9 @@ export const items = {
     ],
     defense: 4,
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   chainHose: {
     name: 'Chain Hose',
@@ -4219,7 +4898,9 @@ export const items = {
     defense: 12,
     levelRequirement: 28,
     slot: 'legs',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeLeggings: {
     name: 'Bronze Leggings',
@@ -4246,7 +4927,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)', price: 50, currency: 'Sparks' }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeLeggingsPlus1: {
     name: 'Bronze Leggings +1',
@@ -4261,7 +4944,9 @@ export const items = {
     ],
     defense: 2,
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   greaves: {
     name: 'Greaves',
@@ -4272,7 +4957,9 @@ export const items = {
     defense: 9,
     levelRequirement: 30,
     slot: 'feet',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lauanShield: {
     name: 'Lauan Shield',
@@ -4283,7 +4970,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'offHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeTunic: {
     name: 'Hume Tunic',
@@ -4294,7 +4983,9 @@ export const items = {
     defense: 6,
     levelRequirement: 1,
     slot: 'body',
-    jobs: ['Hume M']
+    jobs: ['Hume M'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeVest: {
     name: 'Hume Vest',
@@ -4305,7 +4996,9 @@ export const items = {
     defense: 6,
     levelRequirement: 1,
     slot: 'body',
-    jobs: ['Hume F']
+    jobs: ['Hume F'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeMGloves: {
     name: 'Hume M Gloves',
@@ -4316,7 +5009,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: ['Hume M']
+    jobs: ['Hume M'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeFGloves: {
     name: 'Hume F Gloves',
@@ -4327,7 +5022,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: ['Hume F']
+    jobs: ['Hume F'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeSlacks: {
     name: 'Hume Slacks',
@@ -4338,7 +5035,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'legs',
-    jobs: ['Hume']
+    jobs: ['Hume'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeMBoots: {
     name: 'Hume M Boots',
@@ -4349,7 +5048,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'feet',
-    jobs: ['Hume M']
+    jobs: ['Hume M'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   humeFBoots: {
     name: 'Hume F Boots',
@@ -4360,7 +5061,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'feet',
-    jobs: ['Hume F']
+    jobs: ['Hume F'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   galkanSurcoat: {
     name: 'Galkan Surcoat',
@@ -4371,7 +5074,9 @@ export const items = {
     defense: 6,
     levelRequirement: 1,
     slot: 'body',
-    jobs: ['Galka']
+    jobs: ['Galka'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   galkanBracers: {
     name: 'Galkan Bracers',
@@ -4382,7 +5087,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'hands',
-    jobs: ['Galka']
+    jobs: ['Galka'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   galkanBraguette: {
     name: 'Galkan Braguette',
@@ -4393,7 +5100,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'legs',
-    jobs: ['Galka']
+    jobs: ['Galka'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   galkanSandals: {
     name: 'Galkan Sandals',
@@ -4404,7 +5113,9 @@ export const items = {
     defense: 2,
     levelRequirement: 1,
     slot: 'feet',
-    jobs: ['Galka']
+    jobs: ['Galka'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   chocoboFeather: {
     name: 'Chocobo Feather',
@@ -4412,7 +5123,9 @@ export const items = {
         sellPrice: 3,
     stack: 99,
     description: 'Feather used to revive chocobos.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   dart: {
     name: 'Dart',
@@ -4420,7 +5133,9 @@ export const items = {
         sellPrice: 4,
     stack: 99,
     description: 'A small dart for chocobo racing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blackChocoboFeather: {
     name: 'Black Chocobo Feather',
@@ -4428,7 +5143,9 @@ export const items = {
         sellPrice: 575,
     stack: 99,
     description: 'Revives a black chocobo.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   petFoodAlphaBiscuit: {
     name: 'Pet Food Alpha Biscuit',
@@ -4436,7 +5153,9 @@ export const items = {
         sellPrice: 5,
     stack: 99,
     description: 'Biscuit that boosts pet speed.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   petFoodBetaBiscuit: {
     name: 'Pet Food Beta Biscuit',
@@ -4444,7 +5163,9 @@ export const items = {
         sellPrice: 41,
     stack: 99,
     description: 'Biscuit that extends sprint duration.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   carrotBroth: {
     name: 'Carrot Broth',
@@ -4452,7 +5173,9 @@ export const items = {
         sellPrice: 41,
     stack: 99,
     description: 'Pet broth made from carrots.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bugBroth: {
     name: 'Bug Broth',
@@ -4460,7 +5183,9 @@ export const items = {
         sellPrice: 347,
     stack: 99,
     description: 'Pet broth teeming with insects.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   herbalBroth: {
     name: 'Herbal Broth',
@@ -4468,7 +5193,9 @@ export const items = {
         sellPrice: 63,
     stack: 99,
     description: 'Aromatic herb-based pet feed.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   carrionBroth: {
     name: 'Carrion Broth',
@@ -4476,7 +5203,9 @@ export const items = {
         sellPrice: 347,
     stack: 99,
     description: 'Pet feed made from carrion.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollChocoboMazurka: {
     name: 'Scroll of Chocobo Mazurka',
@@ -4484,7 +5213,9 @@ export const items = {
         sellPrice: 25392,
     stack: 1,
     description: 'Teaches the song Chocobo Mazurka.',
-    levelRequirement: 75
+    levelRequirement: 75,
+    additionalEffects: [],
+    latentEffects: [],
   },
   pickledHerring: {
     name: 'Pickled Herring',
@@ -4492,7 +5223,9 @@ export const items = {
         sellPrice: 220,
     stack: 12,
     description: 'A salty preserved fish.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   hiPotion: {
     name: 'Hi-Potion',
@@ -4500,7 +5233,9 @@ export const items = {
         sellPrice: 1687,
     stack: 12,
     description: 'Restores a large amount of HP.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   triturator: {
     name: 'Triturator',
@@ -4508,7 +5243,9 @@ export const items = {
         sellPrice: 37,
     stack: 1,
     description: 'An alchemy tool for grinding.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   beehiveChip: {
     name: 'Beehive Chip',
@@ -4516,7 +5253,9 @@ export const items = {
         sellPrice: 96,
     stack: 99,
     description: 'A chunk of honeycomb.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cobaltJellyfish: {
     name: 'Cobalt Jellyfish',
@@ -4524,7 +5263,9 @@ export const items = {
         sellPrice: 57,
     stack: 12,
     description: 'A bright blue jellyfish.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   holyWater: {
     name: 'Holy Water',
@@ -4532,7 +5273,9 @@ export const items = {
         sellPrice: 2625,
     stack: 12,
     description: 'Cures petrification.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   prismPowder: {
     name: 'Prism Powder',
@@ -4540,7 +5283,9 @@ export const items = {
         sellPrice: 525,
     stack: 12,
     description: 'Creates an invisible barrier.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bombAsh: {
     name: 'Bomb Ash',
@@ -4548,7 +5293,9 @@ export const items = {
         sellPrice: 502,
     stack: 99,
     description: 'Ash from an exploded bomb.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   beaugreens: {
     name: 'Beaugreens',
@@ -4556,7 +5303,9 @@ export const items = {
         sellPrice: 45,
     stack: 99,
     description: 'A leafy vegetable from Fauregandi.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   faerieApple: {
     name: 'Faerie Apple',
@@ -4564,7 +5313,9 @@ export const items = {
         sellPrice: 19,
     stack: 99,
     description: 'A sweet apple from Fauregandi.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mapleLog: {
     name: 'Maple Log',
@@ -4572,7 +5323,9 @@ export const items = {
         sellPrice: 27,
     stack: 99,
     description: 'A log cut from a maple tree.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   arquebus: {
     name: 'Arquebus',
@@ -4584,7 +5337,9 @@ export const items = {
     damage: 15,
     delay: 600,
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   aspis: {
     name: 'Aspis',
@@ -4595,7 +5350,9 @@ export const items = {
     defense: 4,
     slot: 'offHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   baghnakh: {
     name: 'Baghnakh',
@@ -4607,7 +5364,9 @@ export const items = {
     delay: 96,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   battleaxe: {
     name: 'Battleaxe',
@@ -4619,7 +5378,9 @@ export const items = {
     delay: 360,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bilbo: {
     name: 'Bilbo',
@@ -4631,7 +5392,9 @@ export const items = {
     delay: 226,
     slot: 'mainHand',
     levelRequirement: 13,
-    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer']
+    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeBed: {
     name: 'Bronze Bed',
@@ -4639,7 +5402,9 @@ export const items = {
         sellPrice: 45,
     stack: 1,
     description: 'A bellows used in smithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeScales: {
     name: 'Bronze Scales',
@@ -4650,7 +5415,9 @@ export const items = {
     defense: 7,
     slot: 'body',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeSheet: {
     name: 'Bronze Sheet',
@@ -4658,7 +5425,9 @@ export const items = {
         sellPrice: 35,
     stack: 99,
     description: 'A sheet of bronze for crafting.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   butterflyAxe: {
     name: 'Butterfly Axe',
@@ -4670,7 +5439,9 @@ export const items = {
     delay: 300,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cuisses: {
     name: 'Cuisses',
@@ -4681,7 +5452,9 @@ export const items = {
     defense: 6,
     slot: 'legs',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilCuisses: {
     name: 'Mythril Cuisses',
@@ -4692,7 +5465,9 @@ export const items = {
     defense: 12,
     slot: 'legs',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilLeggings: {
     name: 'Mythril Leggings',
@@ -4703,7 +5478,9 @@ export const items = {
     defense: 11,
     slot: 'feet',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassCuisses: {
     name: 'Brass Cuisses',
@@ -4714,7 +5491,9 @@ export const items = {
     defense: 7,
     slot: 'legs',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassGreaves: {
     name: 'Brass Greaves',
@@ -4725,7 +5504,9 @@ export const items = {
     defense: 7,
     slot: 'feet',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   plateLeggings: {
     name: 'Plate Leggings',
@@ -4736,7 +5517,9 @@ export const items = {
     defense: 10,
     slot: 'legs',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scaleCuisses: {
     name: 'Scale Cuisses',
@@ -4762,7 +5545,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   solidCuisses: {
@@ -4781,7 +5566,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   scaleGreaves: {
@@ -4808,7 +5595,9 @@ export const items = {
       { npc: 'Eternal Flame', zone: 'Western Adoulin (H-11)',     currency: 'Sparks', price: 60 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   solidGreaves: {
@@ -4827,7 +5616,9 @@ export const items = {
     races: ['Hume','Elvaan','Tarutaru','Mithra','Galka'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   chainmail: {
     name: 'Chainmail',
@@ -4838,7 +5629,9 @@ export const items = {
     defense: 9,
     slot: 'body',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   chainMittens: {
     name: 'Chain Mittens',
@@ -4849,7 +5642,9 @@ export const items = {
     defense: 6,
     slot: 'hands',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   leatherBelt: {
     name: 'Leather Belt',
@@ -4860,7 +5655,9 @@ export const items = {
     defense: 0,
     slot: 'waist',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverBelt: {
     name: 'Silver Belt',
@@ -4871,7 +5668,9 @@ export const items = {
     defense: 0,
     slot: 'waist',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelChain: {
     name: 'Darksteel Chain',
@@ -4882,7 +5681,9 @@ export const items = {
     defense: 9,
     slot: 'body',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelFalchion: {
     name: 'Darksteel Falchion',
@@ -4894,7 +5695,9 @@ export const items = {
     delay: 240,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelIngot: {
     name: 'Darksteel Ingot',
@@ -4902,7 +5705,9 @@ export const items = {
         sellPrice: 262,
     stack: 99,
     description: 'Refined darksteel used in smithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelKnife: {
     name: 'Darksteel Knife',
@@ -4914,7 +5719,9 @@ export const items = {
     delay: 200,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelKnuckles: {
     name: 'Darksteel Knuckles',
@@ -4926,7 +5733,9 @@ export const items = {
     delay: 96,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelSheet: {
     name: 'Darksteel Sheet',
@@ -4934,7 +5743,9 @@ export const items = {
         sellPrice: 300,
     stack: 99,
     description: 'A sheet of darksteel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   falchion: {
     name: 'Falchion',
@@ -4946,7 +5757,9 @@ export const items = {
     delay: 236,
     slot: 'mainHand',
     levelRequirement: 44,
-    jobs: ['Warrior','Thief','Dark Knight','Beastmaster','Ranger','Samurai','Blue Mage']
+    jobs: ['Warrior','Thief','Dark Knight','Beastmaster','Ranger','Samurai','Blue Mage'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   gorget: {
     name: 'Gorget',
@@ -4957,7 +5770,9 @@ export const items = {
     defense: 2,
     slot: 'neck',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   greataxe: {
     name: 'Greataxe',
@@ -4969,7 +5784,9 @@ export const items = {
     delay: 450,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   heavyAxe: {
     name: 'Heavy Axe',
@@ -4981,7 +5798,9 @@ export const items = {
     delay: 420,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironChain: {
     name: 'Iron Chain',
@@ -4992,7 +5811,9 @@ export const items = {
     defense: 7,
     slot: 'body',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironIngot: {
     name: 'Iron Ingot',
@@ -5000,7 +5821,9 @@ export const items = {
         sellPrice: 52,
     stack: 99,
     description: 'A refined bar of iron.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironScales: {
     name: 'Iron Scales',
@@ -5011,7 +5834,9 @@ export const items = {
     defense: 10,
     slot: 'body',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironSheet: {
     name: 'Iron Sheet',
@@ -5019,7 +5844,9 @@ export const items = {
         sellPrice: 175,
     stack: 99,
     description: 'A sheet of iron.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   knife: {
     name: 'Knife',
@@ -5031,7 +5858,9 @@ export const items = {
     delay: 180,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kukri: {
     name: 'Kukri',
@@ -5043,7 +5872,9 @@ export const items = {
     delay: 190,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mandrel: {
     name: 'Mandrel',
@@ -5051,7 +5882,9 @@ export const items = {
     sellPrice: 38,
     stack: 1,
     description: 'A forging mandrel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   maul: {
     name: 'Maul',
@@ -5063,7 +5896,9 @@ export const items = {
     delay: 320,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilAxe: {
     name: 'Mythril Axe',
@@ -5075,7 +5910,9 @@ export const items = {
     delay: 276,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilBolt: {
     name: 'Mythril Bolt',
@@ -5083,7 +5920,9 @@ export const items = {
         sellPrice: 6,
     stack: 99,
     description: 'Bolts made of mythril.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tathlum: {
     name: 'Tathlum',
@@ -5094,7 +5933,9 @@ export const items = {
     damage: 24,
     delay: 276,
     levelRequirement: 35,
-    slot: 'ammo'
+    slot: 'ammo',
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilIngot: {
     name: 'Mythril Ingot',
@@ -5102,7 +5943,9 @@ export const items = {
         sellPrice: 65,
     stack: 99,
     description: 'A bar of mythril.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilKnife: {
     name: 'Mythril Knife',
@@ -5114,7 +5957,9 @@ export const items = {
     delay: 180,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilKnuckles: {
     name: 'Mythril Knuckles',
@@ -5126,7 +5971,9 @@ export const items = {
     delay: 96,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilSheet: {
     name: 'Mythril Sheet',
@@ -5134,7 +5981,9 @@ export const items = {
         sellPrice: 115,
     stack: 99,
     description: 'A sheet of mythril.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tabar: {
     name: 'Tabar',
@@ -5146,7 +5995,9 @@ export const items = {
     delay: 360,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tulwar: {
     name: 'Tulwar',
@@ -5158,7 +6009,9 @@ export const items = {
     delay: 270,
     slot: 'mainHand',
     levelRequirement: 1,
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   workshopAnvil: {
     name: 'Workshop Anvil',
@@ -5166,7 +6019,9 @@ export const items = {
         sellPrice: 37,
     stack: 1,
     description: 'A portable smithing anvil.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeNugget: {
     name: 'Bronze Nugget',
@@ -5174,7 +6029,9 @@ export const items = {
         sellPrice: 35,
     stack: 99,
     description: 'A small lump of bronze.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tinOre: {
     name: 'Tin Ore',
@@ -5182,7 +6039,9 @@ export const items = {
         sellPrice: 30,
     stack: 99,
     description: 'Ore containing tin.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   kopparnickelOre: {
     name: 'Kopparnickel Ore',
@@ -5190,7 +6049,9 @@ export const items = {
         sellPrice: 400,
     stack: 99,
     description: 'Ore rich in kopparnickel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironNugget: {
     name: 'Iron Nugget',
@@ -5198,7 +6059,9 @@ export const items = {
         sellPrice: 250,
     stack: 99,
     description: 'A small lump of iron.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   steelSheet: {
     name: 'Steel Sheet',
@@ -5206,7 +6069,9 @@ export const items = {
         sellPrice: 5000,
     stack: 99,
     description: 'A sheet of steel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   steelIngot: {
     name: 'Steel Ingot',
@@ -5214,7 +6079,9 @@ export const items = {
         sellPrice: 3000,
     stack: 99,
     description: 'A bar of steel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tamaHagane: {
     name: 'Tama-Hagane',
@@ -5222,7 +6089,9 @@ export const items = {
         sellPrice: 6000,
     stack: 99,
     description: 'A special steel used in forging.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelNugget: {
     name: 'Darksteel Nugget',
@@ -5230,7 +6099,9 @@ export const items = {
         sellPrice: 1350,
     stack: 99,
     description: 'A lump of darksteel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   darksteelOre: {
     name: 'Darksteel Ore',
@@ -5238,7 +6109,9 @@ export const items = {
         sellPrice: 3500,
     stack: 99,
     description: 'Ore containing darksteel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   steelNugget: {
     name: 'Steel Nugget',
@@ -5246,7 +6119,9 @@ export const items = {
         sellPrice: 400,
     stack: 99,
     description: 'A small piece of steel.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   swampOre: {
     name: 'Swamp Ore',
@@ -5254,7 +6129,9 @@ export const items = {
         sellPrice: 2500,
     stack: 99,
     description: 'Ore found in swampy regions.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   smithingKit: {
     name: 'Smithing Kit',
@@ -5262,7 +6139,9 @@ export const items = {
         sellPrice: 150,
     stack: 1,
     description: 'A kit of smithing materials.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   niobiumOre: {
     name: 'Niobium Ore',
@@ -5270,7 +6149,9 @@ export const items = {
         sellPrice: 563062,
     stack: 99,
     description: 'Rare niobium ore.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bullet: {
     name: 'Bullet',
@@ -5278,7 +6159,9 @@ export const items = {
         sellPrice: 45,
     stack: 99,
     description: 'Ammunition for firearms.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bombArm: {
     name: 'Bomb Arm',
@@ -5286,7 +6169,9 @@ export const items = {
         sellPrice: 337,
     stack: 99,
     description: 'The arm of a bomb, used in alchemy.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   grenade: {
     name: 'Grenade',
@@ -5294,7 +6179,9 @@ export const items = {
         sellPrice: 541,
     stack: 99,
     description: 'An explosive device.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   catalyticOil: {
     name: 'Catalytic Oil',
@@ -5302,7 +6189,9 @@ export const items = {
         sellPrice: 46,
     stack: 99,
     description: 'Oil used to catalyze explosions.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   soot: {
     name: 'Soot',
@@ -5310,7 +6199,9 @@ export const items = {
         sellPrice: 6,
     stack: 99,
     description: 'Fine black powder.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sausageRoll: {
     name: 'Sausage Roll',
@@ -5318,7 +6209,9 @@ export const items = {
         sellPrice: 128,
     stack: 12,
     description: 'A savory sausage roll.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   hardBoiledEgg: {
     name: 'Hard-Boiled Egg',
@@ -5326,7 +6219,9 @@ export const items = {
         sellPrice: 36,
     stack: 12,
     description: 'A simply boiled egg.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   magicPotShard: {
     name: 'Magic Pot Shard',
@@ -5334,21 +6229,27 @@ export const items = {
         sellPrice: 307,
     stack: 99,
     description: 'Expands Mog House storage when used.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   instantReraise: {
     name: 'Instant Reraise',
     price: 0,
     stack: 1,
     description: 'Grants the Reraise effect when used.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   instantWarp: {
     name: 'Instant Warp',
     price: 0,
     stack: 1,
     description: 'Teleports you to your Home Point.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   returnRing: {
     name: 'Return Ring',
@@ -5358,7 +6259,9 @@ export const items = {
     slot: 'ring',
     levelRequirement: 0,
     jobs: baseJobNames,
-    abilities: ['Outpost Warp (10 charges, 3600s cooldown)']
+    abilities: ['Outpost Warp (10 charges, 3600s cooldown)'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   homingRing: {
     name: 'Homing Ring',
@@ -5368,7 +6271,9 @@ export const items = {
     slot: 'ring',
     levelRequirement: 0,
     jobs: baseJobNames,
-    abilities: ['Outpost Warp (30 charges, 3600s cooldown)']
+    abilities: ['Outpost Warp (30 charges, 3600s cooldown)'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   chariotBand: {
     name: 'Chariot Band',
@@ -5378,7 +6283,9 @@ export const items = {
     slot: 'ring',
     levelRequirement: 0,
     jobs: baseJobNames,
-    abilities: ['EXP Bonus +75% (7 charges, 900s cooldown)']
+    abilities: ['EXP Bonus +75% (7 charges, 900s cooldown)'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   empressBand: {
     name: 'Empress Band',
@@ -5388,7 +6295,9 @@ export const items = {
     slot: 'ring',
     levelRequirement: 0,
     jobs: baseJobNames,
-    abilities: ['EXP Bonus +50% (7 charges, 900s cooldown, max 15,000)']
+    abilities: ['EXP Bonus +50% (7 charges, 900s cooldown, max 15,000)'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   emperorBand: {
     name: 'Emperor Band',
@@ -5398,7 +6307,9 @@ export const items = {
     slot: 'ring',
     levelRequirement: 0,
     jobs: baseJobNames,
-    abilities: ['EXP Bonus +50% (3 charges, 900s cooldown, max 30,000)']
+    abilities: ['EXP Bonus +50% (3 charges, 900s cooldown, max 30,000)'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   cesti: {
     name: 'Cesti',
@@ -5410,7 +6321,9 @@ export const items = {
     delay: 48,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassBaghnakhs: {
     name: 'Brass Baghnakhs',
@@ -5422,7 +6335,9 @@ export const items = {
     delay: 60,
     levelRequirement: 11,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   catBaghnakhs: {
     name: 'Cat Baghnakhs',
@@ -5434,7 +6349,9 @@ export const items = {
     delay: 60,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashClub: {
     name: 'Ash Club',
@@ -5446,7 +6363,9 @@ export const items = {
     delay: 264,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bronzeRod: {
     name: 'Bronze Rod',
@@ -5458,7 +6377,9 @@ export const items = {
     delay: 288,
     levelRequirement: 5,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassRod: {
     name: 'Brass Rod',
@@ -5470,7 +6391,9 @@ export const items = {
     delay: 288,
     levelRequirement: 12,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashStaff: {
     name: 'Ash Staff',
@@ -5482,7 +6405,9 @@ export const items = {
     delay: 264,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ashPole: {
     name: 'Ash Pole',
@@ -5494,7 +6419,9 @@ export const items = {
     delay: 408,
     levelRequirement: 1,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassAxe: {
     name: 'Brass Axe',
@@ -5506,7 +6433,9 @@ export const items = {
     delay: 276,
     levelRequirement: 8,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassDagger: {
     name: 'Brass Dagger',
@@ -5518,7 +6447,9 @@ export const items = {
     delay: 178,
     levelRequirement: 9,
     slot: 'mainHand',
-    jobs: baseJobNames
+    jobs: baseJobNames,
+    additionalEffects: [],
+    latentEffects: [],
   },
   piccolo: {
     name: 'Piccolo',
@@ -5527,7 +6458,9 @@ export const items = {
     stack: 1,
     description: 'A small flute used by bards.',
     levelRequirement: 1,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   cornette: {
     name: 'Cornette',
@@ -5536,7 +6469,9 @@ export const items = {
     stack: 1,
     description: 'A brass instrument favored by novice bards.',
     levelRequirement: 1,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   mapleHarp: {
     name: 'Maple Harp',
@@ -5545,7 +6480,9 @@ export const items = {
     stack: 1,
     description: 'A small harp crafted from maple.',
     levelRequirement: 1,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollVitalEtude: {
     name: 'Scroll of Vital Etude',
@@ -5553,7 +6490,9 @@ export const items = {
     sellPrice: 37248,
     stack: 1,
     description: 'Teaches the song Vital Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollSwiftEtude: {
     name: 'Scroll of Swift Etude',
@@ -5561,7 +6500,9 @@ export const items = {
     sellPrice: 35696,
     stack: 1,
     description: 'Teaches the song Swift Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollSageEtude: {
     name: 'Scroll of Sage Etude',
@@ -5569,7 +6510,9 @@ export const items = {
     sellPrice: 34144,
     stack: 1,
     description: 'Teaches the song Sage Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollLogicalEtude: {
     name: 'Scroll of Logical Etude',
@@ -5577,7 +6520,9 @@ export const items = {
     sellPrice: 30555,
     stack: 1,
     description: 'Teaches the song Logical Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollHerculeanEtude: {
     name: 'Scroll of Herculean Etude',
@@ -5585,7 +6530,9 @@ export const items = {
     sellPrice: 42874,
     stack: 1,
     description: 'Teaches the song Herculean Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollUncannyEtude: {
     name: 'Scroll of Uncanny Etude',
@@ -5593,7 +6540,9 @@ export const items = {
     sellPrice: 41225,
     stack: 1,
     description: 'Teaches the song Uncanny Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   gemshorn: {
     name: 'Gemshorn',
@@ -5602,7 +6551,9 @@ export const items = {
     stack: 1,
     description: 'A curved horn instrument.',
     levelRequirement: 1,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   flute: {
     name: 'Flute',
@@ -5611,7 +6562,9 @@ export const items = {
     stack: 1,
     description: 'A simple wooden flute.',
     levelRequirement: 1,
-    slot: 'ranged'
+    slot: 'ranged',
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBewitchingEtude: {
     name: 'Scroll of Bewitching Etude',
@@ -5619,7 +6572,9 @@ export const items = {
     sellPrice: 29100,
     stack: 1,
     description: 'Teaches the song Bewitching Etude.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   foeSirvente: {
     name: 'Foe Sirvente',
@@ -5627,7 +6582,9 @@ export const items = {
     sellPrice: 45712,
     stack: 1,
     description: 'Teaches the song Foe Sirvente.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   adventurersDirge: {
     name: "Adventurer's Dirge",
@@ -5635,7 +6592,9 @@ export const items = {
     sellPrice: 45712,
     stack: 1,
     description: "Teaches the song Adventurer's Dirge.",
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFoeRequiemVII: {
     name: 'Scroll of Foe Requiem VII',
@@ -5643,7 +6602,9 @@ export const items = {
     sellPrice: 23598,
     stack: 1,
     description: 'Teaches Foe Requiem VII.',
-    levelRequirement: 75
+    levelRequirement: 75,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollArmysPaeonVI: {
     name: "Scroll of Army's Paeon VI",
@@ -5651,7 +6612,9 @@ export const items = {
     sellPrice: 24472,
     stack: 1,
     description: "Teaches Army's Paeon VI.",
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollValorMinuetV: {
     name: 'Scroll of Valor Minuet V',
@@ -5659,7 +6622,9 @@ export const items = {
     sellPrice: 26910,
     stack: 1,
     description: 'Teaches Valor Minuet V.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollRepose: {
     name: 'Scroll of Repose',
@@ -5667,7 +6632,9 @@ export const items = {
     sellPrice: 16005,
     stack: 1,
     description: 'Teaches the white magic Repose.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBlind: {
     name: 'Scroll of Blind',
@@ -5675,7 +6642,9 @@ export const items = {
     sellPrice: 62,
     stack: 1,
     description: 'Teaches the black magic Blind.',
-    levelRequirement: 5
+    levelRequirement: 5,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBio: {
     name: 'Scroll of Bio',
@@ -5683,7 +6652,9 @@ export const items = {
     sellPrice: 200,
     stack: 1,
     description: 'Teaches the black magic Bio.',
-    levelRequirement: 5
+    levelRequirement: 5,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollPoison: {
     name: 'Scroll of Poison',
@@ -5691,7 +6662,9 @@ export const items = {
     sellPrice: 46,
     stack: 1,
     description: 'Teaches the black magic Poison.',
-    levelRequirement: 5
+    levelRequirement: 5,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollSleep: {
     name: 'Scroll of Sleep',
@@ -5699,7 +6672,9 @@ export const items = {
     sellPrice: 1250,
     stack: 1,
     description: 'Teaches the black magic Sleep.',
-    levelRequirement: 20
+    levelRequirement: 20,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollAero: {
     name: 'Scroll of Aero',
@@ -5707,7 +6682,9 @@ export const items = {
     sellPrice: 175,
     stack: 1,
     description: 'Teaches the black magic Aero.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBlizzard: {
     name: 'Scroll of Blizzard',
@@ -5715,7 +6692,9 @@ export const items = {
     sellPrice: 853,
     stack: 1,
     description: 'Teaches the black magic Blizzard.',
-    levelRequirement: 11
+    levelRequirement: 11,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollBurn: {
     name: 'Scroll of Burn',
@@ -5723,7 +6702,9 @@ export const items = {
     sellPrice: 2502,
     stack: 1,
     description: 'Teaches the black magic Burn.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollChoke: {
     name: 'Scroll of Choke',
@@ -5731,7 +6712,9 @@ export const items = {
     sellPrice: 1212,
     stack: 1,
     description: 'Teaches the black magic Choke.',
-    levelRequirement: 35
+    levelRequirement: 35,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollDrown: {
     name: 'Scroll of Drown',
@@ -5739,7 +6722,9 @@ export const items = {
     sellPrice: 3430,
     stack: 1,
     description: 'Teaches the black magic Drown.',
-    levelRequirement: 55
+    levelRequirement: 55,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollFrost: {
     name: 'Scroll of Frost',
@@ -5747,7 +6732,9 @@ export const items = {
     sellPrice: 1987,
     stack: 1,
     description: 'Teaches the black magic Frost.',
-    levelRequirement: 35
+    levelRequirement: 35,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollRasp: {
     name: 'Scroll of Rasp',
@@ -5755,7 +6742,9 @@ export const items = {
     sellPrice: 984,
     stack: 1,
     description: 'Teaches the black magic Rasp.',
-    levelRequirement: 15
+    levelRequirement: 15,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollShock: {
     name: 'Scroll of Shock',
@@ -5763,7 +6752,9 @@ export const items = {
     sellPrice: 734,
     stack: 1,
     description: 'Teaches the black magic Shock.',
-    levelRequirement: 25
+    levelRequirement: 25,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollStone: {
     name: 'Scroll of Stone',
@@ -5771,7 +6762,9 @@ export const items = {
     sellPrice: 33,
     stack: 1,
     description: 'Teaches the black magic Stone.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollThunder: {
     name: 'Scroll of Thunder',
@@ -5779,7 +6772,9 @@ export const items = {
     sellPrice: 1757,
     stack: 1,
     description: 'Teaches the black magic Thunder.',
-    levelRequirement: 17
+    levelRequirement: 17,
+    additionalEffects: [],
+    latentEffects: [],
   },
   scrollWater: {
     name: 'Scroll of Water',
@@ -5787,7 +6782,9 @@ export const items = {
     sellPrice: 75,
     stack: 1,
     description: 'Teaches the black magic Water.',
-    levelRequirement: 1
+    levelRequirement: 1,
+    additionalEffects: [],
+    latentEffects: [],
   },
   zincOre: {
     name: 'Zinc Ore',
@@ -5795,7 +6792,9 @@ export const items = {
     sellPrice: 100,
     stack: 12,
     description: 'A chunk of zinc-bearing ore.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassNugget: {
     name: 'Brass Nugget',
@@ -5803,7 +6802,9 @@ export const items = {
     sellPrice: 20,
     stack: 12,
     description: 'A nugget of brass.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassSheet: {
     name: 'Brass Sheet',
@@ -5811,7 +6812,9 @@ export const items = {
     sellPrice: 150,
     stack: 12,
     description: 'A sheet of hammered brass.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverOre: {
     name: 'Silver Ore',
@@ -5819,7 +6822,9 @@ export const items = {
     sellPrice: 225,
     stack: 12,
     description: 'Ore containing traces of silver.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   silverNugget: {
     name: 'Silver Nugget',
@@ -5827,7 +6832,9 @@ export const items = {
     sellPrice: 100,
     stack: 12,
     description: 'A small silver nugget.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   brassScales: {
     name: 'Brass Scales',
@@ -5835,7 +6842,9 @@ export const items = {
     sellPrice: 105,
     stack: 12,
     description: 'Scales fashioned from brass.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilChain: {
     name: 'Mythril Chain',
@@ -5843,7 +6852,9 @@ export const items = {
     sellPrice: 5250,
     stack: 12,
     description: 'A length of mythril chain.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   redRock: {
     name: 'Red Rock',
@@ -5851,7 +6862,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A red-colored rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blueRock: {
     name: 'Blue Rock',
@@ -5859,7 +6872,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A blue-colored rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   yellowRock: {
     name: 'Yellow Rock',
@@ -5867,7 +6882,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A yellow-colored rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   greenRock: {
     name: 'Green Rock',
@@ -5875,7 +6892,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A green-colored rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   translucentRock: {
     name: 'Translucent Rock',
@@ -5883,7 +6902,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A faintly glowing rock.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   purpleRock: {
     name: 'Purple Rock',
@@ -5891,7 +6912,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A purple-colored rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   blackRock: {
     name: 'Black Rock',
@@ -5899,7 +6922,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A pitch-black rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   whiteRock: {
     name: 'White Rock',
@@ -5907,7 +6932,9 @@ export const items = {
     sellPrice: 3220,
     stack: 1,
     description: 'A white rock used in goldsmithing.',
-    levelRequirement: 0
+    levelRequirement: 0,
+    additionalEffects: [],
+    latentEffects: [],
   },
   ironSword: {
     name: 'Iron Sword',
@@ -5919,7 +6946,9 @@ export const items = {
     delay: 231,
     levelRequirement: 18,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   mythrilSword: {
     name: 'Mythril Sword',
@@ -5931,7 +6960,9 @@ export const items = {
     delay: 231,
     levelRequirement: 36,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Bard','Ranger','Ninja','Dragoon','Blue Mage','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   broadsword: {
     name: 'Broadsword',
@@ -5943,7 +6974,9 @@ export const items = {
     delay: 233,
     levelRequirement: 30,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Blue Mage','Corsair','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Blue Mage','Corsair','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   tuck: {
     name: 'Tuck',
@@ -5955,7 +6988,9 @@ export const items = {
     delay: 226,
     levelRequirement: 23,
     slot: 'mainHand',
-    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer']
+    jobs: ['Warrior','Black Mage','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Corsair','Dancer','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   sapara: {
     name: 'Sapara',
@@ -5967,7 +7002,9 @@ export const items = {
     delay: 236,
     levelRequirement: 7,
     slot: 'mainHand',
-    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage']
+    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   scimitar: {
     name: 'Scimitar',
@@ -5979,7 +7016,9 @@ export const items = {
     delay: 236,
     levelRequirement: 13,
     slot: 'mainHand',
-    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage']
+    jobs: ['Warrior','Thief','Dark Knight','Samurai','Blue Mage'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   xiphos: {
     name: 'Xiphos',
@@ -5991,7 +7030,9 @@ export const items = {
     delay: 228,
     levelRequirement: 7,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Blue Mage','Corsair','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Thief','Paladin','Dark Knight','Beastmaster','Bard','Ranger','Ninja','Dragoon','Blue Mage','Corsair','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   spatha: {
     name: 'Spatha',
@@ -6003,7 +7044,9 @@ export const items = {
     delay: 240,
     levelRequirement: 9,
     slot: 'mainHand',
-    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Rune Fencer']
+    jobs: ['Warrior','Red Mage','Paladin','Dark Knight','Rune Fencer'],
+    additionalEffects: [],
+    latentEffects: [],
   },
   beastCollar: {
     name: 'Beast Collar',
@@ -6013,10 +7056,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Pet HP +20%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Pet HP +20%'],
+    latentEffects: [],
   },
 
   judgesGorget: {
@@ -6027,10 +7071,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['DEF +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +5'],
+    latentEffects: [],
   },
 
   minersPendant: {
@@ -6041,10 +7086,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Mining yield +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Mining yield +10%'],
+    latentEffects: [],
   },
 
   portafurnace: {
@@ -6056,7 +7102,9 @@ export const items = {
     abilities: ['Enable furnace crafting anywhere'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   chocoboPullusTorque: {
@@ -6067,10 +7115,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Chocobo Sprint +15%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Chocobo Sprint +15%'],
+    latentEffects: [],
   },
 
   pileChain: {
@@ -6081,10 +7130,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Earth resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Earth resist +10%'],
+    latentEffects: [],
   },
 
   buffoonsCollar: {
@@ -6095,10 +7145,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Occasional Evasion +5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Occasional Evasion +5%'],
+    latentEffects: [],
   },
 
   buffoonsCollarPlus1: {
@@ -6109,10 +7160,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Occasional Evasion +10%'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Occasional Evasion +10%'],
+    latentEffects: [],
   },
 
   featherCollar: {
@@ -6123,10 +7175,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Ranged Attack Delay -5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ranged Attack Delay -5'],
+    latentEffects: [],
   },
 
   featherCollarPlus1: {
@@ -6137,10 +7190,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Ranged Attack Delay -10'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Ranged Attack Delay -10'],
+    latentEffects: [],
   },
 
   justiceBadge: {
@@ -6151,10 +7205,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Reputation gain +10%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Reputation gain +10%'],
+    latentEffects: [],
   },
 
   leatherGorget: {
@@ -6168,7 +7223,9 @@ export const items = {
     defense: 2,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   leatherGorgetPlus1: {
@@ -6182,7 +7239,9 @@ export const items = {
     defense: 3,
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   rabbitCharm: {
@@ -6193,10 +7252,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Critical Hit Rate +1%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Critical Hit Rate +1%'],
+    latentEffects: [],
   },
 
   regenCollar: {
@@ -6207,10 +7267,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['HP Regen Rate +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP Regen Rate +5'],
+    latentEffects: [],
   },
 
   silverNameTag: {
@@ -6221,10 +7282,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Mercenary Fame +5'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Mercenary Fame +5'],
+    latentEffects: [],
   },
 
   wingPendant: {
@@ -6235,10 +7297,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Movement Speed +3%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Movement Speed +3%'],
+    latentEffects: [],
   },
 
   armigersLace: {
@@ -6247,7 +7310,9 @@ export const items = {
     price: 0,
     stack: 99,
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   dogCollar: {
@@ -6258,10 +7323,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'neck',
     jobs: jobNames,
-    effects: ['Pet DEF +5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Pet DEF +5%'],
+    latentEffects: [],
   },
 
   greenScarf: {
@@ -6271,10 +7337,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Wind Resist +5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Wind Resist +5%'],
+    latentEffects: [],
   },
 
   republicanBronzeMedal: {
@@ -6284,10 +7351,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['EXP +1%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['EXP +1%'],
+    latentEffects: [],
   },
 
   scaleGorget: {
@@ -6300,7 +7368,9 @@ export const items = {
     defense: 4,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   rangersNecklace: {
@@ -6310,10 +7380,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Ranged Accuracy +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ranged Accuracy +5'],
+    latentEffects: [],
   },
 
   vanPendant: {
@@ -6323,10 +7394,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Magic Accuracy +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Magic Accuracy +5'],
+    latentEffects: [],
   },
 
   birdWhistle: {
@@ -6337,7 +7409,9 @@ export const items = {
     abilities: ['Summon Chocobo'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   federationStablesScarf: {
@@ -6347,10 +7421,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Pet Speed +10%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Pet Speed +10%'],
+    latentEffects: [],
   },
 
   kingdomStablesCollar: {
@@ -6360,10 +7435,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Pet MP +20%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Pet MP +20%'],
+    latentEffects: [],
   },
 
   republicStablesMedal: {
@@ -6373,10 +7449,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Pet HP +20%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Pet HP +20%'],
+    latentEffects: [],
   },
 
   ceruleanPendant: {
@@ -6386,10 +7463,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Water Resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Water Resist +10%'],
+    latentEffects: [],
   },
 
   focusCollar: {
@@ -6399,10 +7477,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Magic Crit Rate +1%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Magic Crit Rate +1%'],
+    latentEffects: [],
   },
 
   focusCollarPlus1: {
@@ -6412,10 +7491,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Magic Crit Rate +2%'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Magic Crit Rate +2%'],
+    latentEffects: [],
   },
 
   blackSilkNeckerchief: {
@@ -6425,10 +7505,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Evasion +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Evasion +5'],
+    latentEffects: [],
   },
 
   bloodbeadAmulet: {
@@ -6438,10 +7519,11 @@ export const items = {
     stack: 1,
     levelRequirement: 1,
     slot: 'neck',
-    effects: ['Life Steal +2%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Life Steal +2%'],
+    latentEffects: [],
   },
 
   chocoboWhistle: {
@@ -6452,7 +7534,9 @@ export const items = {
     abilities: ['Summon Chocobo'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   beetleGorget: {
@@ -6461,10 +7545,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Poison Resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Poison Resist +10%'],
+    latentEffects: [],
   },
 
   fangNecklace: {
@@ -6473,10 +7558,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Attack +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Attack +5'],
+    latentEffects: [],
   },
 
   greenGorget: {
@@ -6485,10 +7571,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Wind Resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Wind Resist +10%'],
+    latentEffects: [],
   },
 
   spikeNecklace: {
@@ -6497,10 +7584,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Max HP +20'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Max HP +20'],
+    latentEffects: [],
   },
 
   hempGorget: {
@@ -6512,7 +7600,9 @@ export const items = {
     defense: 1,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   hempGorgetPlus1: {
@@ -6524,7 +7614,9 @@ export const items = {
     defense: 2,
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   beastWhistle: {
@@ -6535,7 +7627,9 @@ export const items = {
     abilities: ['Calm Beast'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   chainChoker: {
@@ -6547,7 +7641,9 @@ export const items = {
     defense: 2,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   chainGorget: {
@@ -6559,7 +7655,9 @@ export const items = {
     defense: 4,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   fineGorget: {
@@ -6568,10 +7666,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Charisma +2'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Charisma +2'],
+    latentEffects: [],
   },
 
   redChoker: {
@@ -6580,10 +7679,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Fire Resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Fire Resist +10%'],
+    latentEffects: [],
   },
 
   tigerStole: {
@@ -6592,10 +7692,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Attack +3'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Attack +3'],
+    latentEffects: [],
   },
 
   holyPhial: {
@@ -6606,7 +7707,9 @@ export const items = {
     abilities: ['Instant Full HP'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
 
   buburimuGorget: {
@@ -6615,10 +7718,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['EXP +2%'],
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['EXP +2%'],
+    latentEffects: [],
   },
 
   flowerNecklace: {
@@ -6627,10 +7731,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Wind Resist +5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Wind Resist +5%'],
+    latentEffects: [],
   },
 
   sandCharm: {
@@ -6639,10 +7744,11 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'neck',
-    effects: ['Earth Resist +10%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Earth Resist +10%'],
+    latentEffects: [],
   },
 
   alchemistsBelt: {
@@ -6655,12 +7761,13 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [
       { npc: 'Hemewmew', location: 'Bastok Mines (K-7)', currency: 'Alchemy GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   blacksmithsBelt: {
     name: "Blacksmith's Belt",
@@ -6672,13 +7779,14 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [
       { npc: 'Macuillie', location: "Northern San d'Oria (E-6)", currency: 'Smithing GP', price: 10000 },
       { npc: 'Lorena', location: 'Metalworks (E-7)', currency: 'Smithing GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   bloodStone: {
     name: 'Blood Stone',
@@ -6690,12 +7798,13 @@ export const items = {
     slot: 'waist',
     jobs: ['MNK','WHM','BLM','RDM','THF','DRK','BRD','RNG','SMN','BLU','COR','PUP','DNC','SCH','GEO','RUN'],
     races: ['All'],
-    effects: ['HP +5'],
     vendors: [
       { npc: 'Toji Mumosulah', location: 'Kazham (I-8)', currency: 'Gil', price: 95 }
     ],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +5'],
+    latentEffects: [],
   },
   bloodStonePlus1: {
     name: 'Blood Stone +1',
@@ -6707,10 +7816,11 @@ export const items = {
     slot: 'waist',
     jobs: ['MNK','WHM','BLM','RDM','THF','DRK','BRD','RNG','SMN','BLU','COR','PUP','DNC','SCH','GEO','RUN'],
     races: ['All'],
-    effects: ['HP +7'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +7'],
+    latentEffects: [],
   },
   boltBelt: {
     name: 'Bolt Belt',
@@ -6722,10 +7832,11 @@ export const items = {
     slot: 'waist',
     jobs: ['WAR','DRK','RNG'],
     races: ['All'],
-    effects: ['Dispense: Bronze Bolt (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Bronze Bolt (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   boneworkersBelt: {
     name: "Boneworker's Belt",
@@ -6737,12 +7848,13 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [
       { npc: 'Samigo-Pormigo', location: 'Windurst Woods (H-12)', currency: 'Bonecraft GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   bronzeMoogleBelt: {
     name: 'Bronze Moogle Belt',
@@ -6754,10 +7866,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['HP +1%','Water +1'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +1%', 'Water +1'],
+    latentEffects: [],
   },
   carpentersBelt: {
     name: "Carpenter's Belt",
@@ -6769,12 +7882,13 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [
       { npc: 'Andreas', location: "Northern San d'Oria (F-3)", currency: 'Woodworking GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   culinariansBelt: {
     name: "Culinarian's Belt",
@@ -6786,12 +7900,13 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [
       { npc: 'Qhum Knaidjn', location: 'Windurst Waters (E-9)', currency: 'Cooking GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   dashSash: {
     name: 'Dash Sash',
@@ -6803,10 +7918,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['DEF +1','Enmity +2'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['DEF +1', 'Enmity +2'],
+    latentEffects: [],
   },
   detonatorBelt: {
     name: 'Detonator Belt',
@@ -6818,10 +7934,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Triple Bomb Cluster (1 charge, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Triple Bomb Cluster (1 charge, 3600s cooldown)'],
+    latentEffects: [],
   },
   droversBelt: {
     name: "Drover's Belt",
@@ -6833,10 +7950,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Chigoe Costume (1 charge, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Chigoe Costume (1 charge, 3600s cooldown)'],
+    latentEffects: [],
   },
   fishermansBelt: {
     name: "Fisherman's Belt",
@@ -6848,12 +7966,13 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Fishing Support'],
     vendors: [
       { npc: 'Fennella', location: 'Port Windurst (C-8)', currency: 'Fishing GP', price: 10000 }
     ],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Fishing Support'],
+    latentEffects: [],
   },
   goblinBelt: {
     name: 'Goblin Belt',
@@ -6865,10 +7984,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Goblin Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Goblin Costume'],
+    latentEffects: [],
   },
   goldMoogleBelt: {
     name: 'Gold Moogle Belt',
@@ -6880,10 +8000,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['HP +3%','Water +3'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['HP +3%', 'Water +3'],
+    latentEffects: [],
   },
   goldsmithsBelt: {
     name: "Goldsmith's Belt",
@@ -6895,10 +8016,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Advanced Synthesis Image Support'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Advanced Synthesis Image Support'],
+    latentEffects: [],
   },
   gyokutoObi: {
     name: 'Gyokuto Obi',
@@ -6910,10 +8032,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Gyokuto Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Gyokuto Costume'],
+    latentEffects: [],
   },
   hecteyesBelt: {
     name: 'Hecteyes Belt',
@@ -6925,10 +8048,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Hecteyes Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Hecteyes Costume'],
+    latentEffects: [],
   },
   judgesBelt: {
     name: "Judge's Belt",
@@ -6940,10 +8064,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['DEF +40'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['DEF +40'],
+    latentEffects: [],
   },
   leechBelt: {
     name: 'Leech Belt',
@@ -6955,10 +8080,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Leech Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Leech Costume'],
+    latentEffects: [],
   },
   littleWormBelt: {
     name: 'Little Worm Belt',
@@ -6970,10 +8096,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Little Worm (10 charges, 300s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Little Worm (10 charges, 300s cooldown)'],
+    latentEffects: [],
   },
   lugwormBelt: {
     name: 'Lugworm Belt',
@@ -6985,10 +8112,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Lugworm (10 charges, 300s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Lugworm (10 charges, 300s cooldown)'],
+    latentEffects: [],
   },
   mandragoraBelt: {
     name: 'Mandragora Belt',
@@ -7000,10 +8128,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Mandragora Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Mandragora Costume'],
+    latentEffects: [],
   },
   moogleSacoche: {
     name: 'Moogle Sacoche',
@@ -7015,10 +8144,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Moogle Sacoche Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Moogle Sacoche Costume'],
+    latentEffects: [],
   },
   orcBelt: {
     name: 'Orc Belt',
@@ -7030,10 +8160,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Orc Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Orc Costume'],
+    latentEffects: [],
   },
   pelletBelt: {
     name: 'Pellet Belt',
@@ -7045,10 +8176,11 @@ export const items = {
     slot: 'waist',
     jobs: ['WAR','MNK','WHM','BLM','RDM','THF','DRK','BST','BRD','RNG','NIN','DRG','SMN'],
     races: ['All'],
-    effects: ['Dispense: Pellet (10 charges, 300s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Pellet (10 charges, 300s cooldown)'],
+    latentEffects: [],
   },
   quadavBelt: {
     name: 'Quadav Belt',
@@ -7060,10 +8192,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Quadav Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Quadav Costume'],
+    latentEffects: [],
   },
   rabbitBelt: {
     name: 'Rabbit Belt',
@@ -7075,10 +8208,11 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Rabbit Costume'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Rabbit Costume'],
+    latentEffects: [],
   },
   redSash: {
     name: 'Red Sash',
@@ -7090,14 +8224,15 @@ export const items = {
     slot: 'waist',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Enmity +1'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Enmity +1'],
+    latentEffects: [],
   },
   silverMoogleBelt: {
     name: 'Silver Moogle Belt',
-    description: 'The Silver Moogle Belt.',
+    description: 'HP+2% Water+2',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7106,9 +8241,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['HP+2%', 'Water+2'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   slimeBelt: {
     name: 'Slime Belt',
@@ -7123,7 +8258,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   stirgeBelt: {
     name: 'Stirge Belt',
@@ -7138,7 +8273,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   tannersBelt: {
     name: "Tanner's Belt",
@@ -7153,7 +8288,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   wailingBelt: {
     name: 'Wailing Belt',
@@ -7168,7 +8303,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   weaversBelt: {
     name: "Weaver's Belt",
@@ -7183,7 +8318,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   whiteBelt: {
     name: 'White Belt',
@@ -7198,7 +8333,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   wormBelt: {
     name: 'Worm Belt',
@@ -7213,7 +8348,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   yagudoBelt: {
     name: 'Yagudo Belt',
@@ -7228,7 +8363,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   bronzeBandolier: {
     name: 'Bronze Bandolier',
@@ -7243,7 +8378,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   augmentingBelt: {
     name: 'Augmenting Belt',
@@ -7258,7 +8393,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   leatherBeltPlus1: {
     name: 'Leather Belt +1',
@@ -7273,7 +8408,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   hekoObi: {
     name: 'Heko Obi',
@@ -7288,7 +8423,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   hekoObiPlus1: {
     name: 'Heko Obi +1',
@@ -7303,7 +8438,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   talismanObi: {
     name: 'Talisman Obi',
@@ -7318,7 +8453,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   plateBelt: {
     name: 'Plate Belt',
@@ -7333,7 +8468,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   friarsRope: {
     name: "Friar's Rope",
@@ -7348,7 +8483,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   warriorsBelt: {
     name: "Warrior's Belt",
@@ -7363,7 +8498,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   warriorsBeltPlus1: {
     name: "Warrior's Belt +1",
@@ -7378,7 +8513,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   lizardBelt: {
     name: 'Lizard Belt',
@@ -7393,7 +8528,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   lizardBeltPlus1: {
     name: 'Lizard Belt +1',
@@ -7408,7 +8543,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   acrobatsBelt: {
     name: "Acrobat's Belt",
@@ -7423,11 +8558,11 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   barbariansBelt: {
     name: "Barbarian's Belt",
-    description: "The Barbarian's Belt.",
+    description: 'DEF:2 STR+1 DEX-1 VIT+1 AGI-1',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7436,13 +8571,13 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['STR+1', 'DEX-1', 'VIT+1', 'AGI-1'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   braveBelt: {
     name: 'Brave Belt',
-    description: 'The Brave Belt.',
+    description: 'DEF:3 STR+2 DEX-1 VIT+2 AGI-1',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7451,13 +8586,13 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['STR+2', 'DEX-1', 'VIT+2', 'AGI-1'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   magicBelt: {
     name: 'Magic Belt',
-    description: 'The Magic Belt.',
+    description: 'DEF:2 MP+3',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7466,9 +8601,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['MP+3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   magicBeltPlus1: {
     name: 'Magic Belt +1',
@@ -7483,11 +8618,11 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   purpleBelt: {
     name: 'Purple Belt',
-    description: 'The Purple Belt.',
+    description: 'DEF:2 STR+3 Haste+4%',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7496,9 +8631,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['STR+3', 'Haste+4%'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   runnersBelt: {
     name: "Runner's Belt",
@@ -7513,11 +8648,11 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   samsonianBelt: {
     name: 'Samsonian Belt',
-    description: 'The Samsonian Belt.',
+    description: 'DEF:2 STR+1 DEX-1 VIT+1 AGI-1 Enchantment: STR+3',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7526,9 +8661,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['STR+1', 'DEX-1', 'VIT+1', 'AGI-1', 'Enchantment: STR+3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   toughBelt: {
     name: 'Tough Belt',
@@ -7543,11 +8678,11 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   keyRingBelt: {
     name: 'Key Ring Belt',
-    description: 'The Key Ring Belt.',
+    description: 'DEF:2 DEX+1 "Steal"+1 Dispense: Skeleton Key',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7556,9 +8691,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['DEX+1', 'Steal+1', 'Dispense: Skeleton Key'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   mohbwaSash: {
     name: 'Mohbwa Sash',
@@ -7573,7 +8708,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   mohbwaSashPlus1: {
     name: 'Mohbwa Sash +1',
@@ -7588,7 +8723,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   silverObiPlus1: {
     name: 'Silver Obi +1',
@@ -7603,7 +8738,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   chainBelt: {
     name: 'Chain Belt',
@@ -7618,7 +8753,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   chainBeltPlus1: {
     name: 'Chain Belt +1',
@@ -7633,11 +8768,11 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   forceBelt: {
     name: 'Force Belt',
-    description: 'The Force Belt.',
+    description: 'DEF:3 HP+3 MP+3',
     price: 0,
     sellPrice: 0,
     stack: 1,
@@ -7646,9 +8781,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     latentEffects: [],
-    additionalEffects: [],
+    additionalEffects: ['HP+3', 'MP+3'],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   griotBelt: {
     name: 'Griot Belt',
@@ -7663,7 +8798,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   griotBeltPlus1: {
     name: 'Griot Belt +1',
@@ -7678,7 +8813,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
   },
   shamansBelt: {
     name: "Shaman's Belt",
@@ -7693,7 +8828,7 @@ export const items = {
     latentEffects: [],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   avatarBelt: {
     name: 'Avatar Belt',
@@ -7708,7 +8843,7 @@ export const items = {
     latentEffects: ['Avatar perpetuation cost -2'],
     additionalEffects: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
   },
   appleAuLaitTank: {
     name: 'Apple au Lait Tank',
@@ -7720,10 +8855,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Apple au Lait (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Apple au Lait (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   dragonTank: {
     name: 'Dragon Tank',
@@ -7735,10 +8871,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Dragon Steak (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Dragon Steak (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   elixirTank: {
     name: 'Elixir Tank',
@@ -7750,10 +8887,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Elixir (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Elixir (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   etherTank: {
     name: 'Ether Tank',
@@ -7765,10 +8903,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Ether (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Ether (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   ghostCape: {
     name: 'Ghost Cape',
@@ -7782,7 +8921,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   hiElixirTank: {
     name: 'Hi-Elixir Tank',
@@ -7794,10 +8935,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Hi-Elixir (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Hi-Elixir (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   judgesCape: {
     name: "Judge's Cape",
@@ -7809,10 +8951,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['DEF +40'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['DEF +40'],
+    latentEffects: [],
   },
   orangeAuLaitTank: {
     name: 'Orange au Lait Tank',
@@ -7824,10 +8967,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Orange au Lait (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Orange au Lait (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   pamamaAuLaitTank: {
     name: 'Pamama au Lait Tank',
@@ -7839,10 +8983,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Pamama au Lait (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Pamama au Lait (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   pearAuLaitTank: {
     name: 'Pear au Lait Tank',
@@ -7854,10 +8999,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Pear au Lait (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Pear au Lait (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   persikosAuLaitTank: {
     name: 'Persikos au Lait Tank',
@@ -7869,10 +9015,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Persikos au Lait (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Persikos au Lait (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   potionTank: {
     name: 'Potion Tank',
@@ -7884,10 +9031,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Potion (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Potion (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   superReraiserTank: {
     name: 'Super Reraiser Tank',
@@ -7899,10 +9047,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Super Reraise (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Super Reraise (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   shapersShawl: {
     name: "Shaper's Shawl",
@@ -7916,7 +9065,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tenguShawl: {
     name: 'Tengu Shawl',
@@ -7930,7 +9081,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   waterTank: {
     name: 'Water Tank',
@@ -7942,10 +9095,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Dispense: Water (12 charges, 3600s cooldown)'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dispense: Water (12 charges, 3600s cooldown)'],
+    latentEffects: [],
   },
   rabbitMantle: {
     name: 'Rabbit Mantle',
@@ -7959,7 +9113,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   rabbitMantlePlus1: {
     name: 'Rabbit Mantle +1',
@@ -7973,7 +9129,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cape: {
     name: 'Cape',
@@ -7987,7 +9145,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   capePlus1: {
     name: 'Cape +1',
@@ -8001,7 +9161,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   mistSilkCape: {
     name: 'Mist Silk Cape',
@@ -8015,7 +9177,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   travelersMantle: {
     name: "Traveler's Mantle",
@@ -8029,7 +9193,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   besiegerMantle: {
     name: 'Besieger Mantle',
@@ -8043,7 +9209,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lizardMantle: {
     name: 'Lizard Mantle',
@@ -8057,7 +9225,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   lizardMantlePlus1: {
     name: 'Lizard Mantle +1',
@@ -8071,7 +9241,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   breathMantle: {
     name: 'Breath Mantle',
@@ -8085,7 +9257,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cottonCape: {
     name: 'Cotton Cape',
@@ -8100,7 +9274,9 @@ export const items = {
     defense: 1,
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   cottonCapePlus1: {
     name: 'Cotton Cape +1',
@@ -8115,7 +9291,9 @@ export const items = {
     defense: 2,
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   dhalmelMantle: {
     name: 'Dhalmel Mantle',
@@ -8129,7 +9307,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   dhalmelMantlePlus1: {
     name: 'Dhalmel Mantle +1',
@@ -8143,7 +9323,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   talismanCape: {
     name: 'Talisman Cape',
@@ -8157,7 +9339,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   variableCape: {
     name: 'Variable Cape',
@@ -8171,7 +9355,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   variableMantle: {
     name: 'Variable Mantle',
@@ -8185,7 +9371,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   nightCape: {
     name: 'Night Cape',
@@ -8199,7 +9387,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   frugalCape: {
     name: 'Frugal Cape',
@@ -8211,10 +9401,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Item Consumption -5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Item Consumption -5%'],
+    latentEffects: [],
   },
   nomadsMantle: {
     name: "Nomad's Mantle",
@@ -8228,7 +9419,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   nomadsMantlePlus1: {
     name: "Nomad's Mantle +1",
@@ -8242,7 +9435,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   bonzeCape: {
     name: 'Bonze Cape',
@@ -8256,7 +9451,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   exactitudeMantle: {
     name: 'Exactitude Mantle',
@@ -8268,10 +9465,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Ranged Accuracy +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ranged Accuracy +5'],
+    latentEffects: [],
   },
   exactitudeMantlePlus1: {
     name: 'Exactitude Mantle +1',
@@ -8283,10 +9481,11 @@ export const items = {
     slot: 'back',
     jobs: jobNames,
     races: ['All'],
-    effects: ['Ranged Accuracy +10'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ranged Accuracy +10'],
+    latentEffects: [],
   },
   invisibleMantle: {
     name: 'Invisible Mantle',
@@ -8301,7 +9500,9 @@ export const items = {
     abilities: ['Invisibility'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   wolfMantle: {
     name: 'Wolf Mantle',
@@ -8315,7 +9516,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   wolfMantlePlus1: {
     name: 'Wolf Mantle +1',
@@ -8329,7 +9532,9 @@ export const items = {
     races: ['All'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   alchemistsRing: {
     name: "Alchemist's Ring",
@@ -8339,10 +9544,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Alchemy Skill +3'],
     vendors: [{ npc: 'Hemewmew', location: 'Bastok Mines (K-7)', currency: 'Alchemy GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Alchemy Skill +3'],
+    latentEffects: [],
   },
   anniversaryRing: {
     name: 'Anniversary Ring',
@@ -8354,7 +9560,9 @@ export const items = {
     jobs: jobNames,
     vendors: [],
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   artificersRing: {
     name: "Artificer's Ring",
@@ -8364,10 +9572,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Bonecraft Skill +3'],
     vendors: [{ npc: 'Samigo-Pormigo', location: 'Windurst Woods (H-12)', currency: 'Bonecraft GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Bonecraft Skill +3'],
+    latentEffects: [],
   },
   asceticsRing: {
     name: "Ascetic's Ring",
@@ -8377,10 +9586,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['DEF +5% when HP >80%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +5% when HP >80%'],
+    latentEffects: [],
   },
   bastokanRing: {
     name: 'Bastokan Ring',
@@ -8390,10 +9600,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['EXP +5% in Bastok'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['EXP +5% in Bastok'],
+    latentEffects: [],
   },
   bonecraftersRing: {
     name: "Bonecrafter's Ring",
@@ -8403,10 +9614,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Bonecraft Skill +3'],
     vendors: [{ npc: 'Samigo-Pormigo', location: 'Windurst Woods (H-12)', currency: 'Bonecraft GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Bonecraft Skill +3'],
+    latentEffects: [],
   },
   caliberRing: {
     name: 'Caliber Ring',
@@ -8416,10 +9628,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Ranged Accuracy +5'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Ranged Accuracy +5'],
+    latentEffects: [],
   },
   carpentersRing: {
     name: "Carpenter's Ring",
@@ -8429,10 +9642,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Woodworking Skill +3'],
     vendors: [{ npc: 'Andreas', location: 'Northern San d’Oria (F-3)', currency: 'Woodworking GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Woodworking Skill +3'],
+    latentEffects: [],
   },
   castorsRing: {
     name: "Castor's Ring",
@@ -8442,10 +9656,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Casting Speed +5%'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Casting Speed +5%'],
+    latentEffects: [],
   },
   chefsRing: {
     name: "Chef's Ring",
@@ -8455,10 +9670,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Cooking Skill +3'],
     vendors: [{ npc: 'Qhum Knaidjn', location: 'Windurst Waters (E-9)', currency: 'Cooking GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Cooking Skill +3'],
+    latentEffects: [],
   },
   confectionersRing: {
     name: "Confectioner's Ring",
@@ -8468,10 +9684,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Confectionery Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Confectionery Skill +3'],
+    latentEffects: [],
   },
   craftkeepersRing: {
     name: "Craftkeeper's Ring",
@@ -8481,10 +9698,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['General Crafting Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['General Crafting Skill +3'],
+    latentEffects: [],
   },
   craftmastersRing: {
     name: "Craftmaster's Ring",
@@ -8494,10 +9712,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['General Crafting Skill +5'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['General Crafting Skill +5'],
+    latentEffects: [],
   },
   ducalGuardsRing: {
     name: "Ducal Guard's Ring",
@@ -8507,10 +9726,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['DEF +5, Enmity +5 near Bastok'],
     vendors: [],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['DEF +5, Enmity +5 near Bastok'],
+    latentEffects: [],
   },
   decennialRing: {
     name: 'Decennial Ring',
@@ -8518,7 +9738,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   deodorizeRing: {
     name: 'Deodorize Ring',
@@ -8528,7 +9750,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Auto-Aspirate Debuffs 3600s'],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   duckRing: {
     name: 'Duck Ring',
@@ -8537,7 +9761,9 @@ export const items = {
     stack: 1,
     slot: 'ring',
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   duodecennialRing: {
     name: 'Duodecennial Ring',
@@ -8545,7 +9771,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   echadRing: {
     name: 'Echad Ring',
@@ -8553,9 +9781,10 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'ring',
-    effects: ['Dual Wield Damage +5%'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Dual Wield Damage +5%'],
+    latentEffects: [],
   },
   goldsmithsRing: {
     name: "Goldsmith's Ring",
@@ -8565,10 +9794,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Goldsmithing Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Goldsmithing Skill +3'],
+    latentEffects: [],
   },
   hermitsRing: {
     name: "Hermit's Ring",
@@ -8576,9 +9806,10 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'ring',
-    effects: ['Silent Cast'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Silent Cast'],
+    latentEffects: [],
   },
   invisibleRing: {
     name: 'Invisible Ring',
@@ -8588,7 +9819,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Invisibility (3600s cooldown)'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   judgesRing: {
     name: "Judge's Ring",
@@ -8596,9 +9829,10 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'ring',
-    effects: ['DEF +20'],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['DEF +20'],
+    latentEffects: [],
   },
   kupofriedsRing: {
     name: "Kupofried's Ring",
@@ -8606,9 +9840,10 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'ring',
-    effects: ['Auto-MP Restore +10 every 60s'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Auto-MP Restore +10 every 60s'],
+    latentEffects: [],
   },
   matrimonyBand: {
     name: 'Matrimony Band',
@@ -8616,7 +9851,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   matrimonyRing: {
     name: 'Matrimony Ring',
@@ -8626,7 +9863,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Love Boost'],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   najisLoop: {
     name: "Naji's Loop",
@@ -8636,7 +9875,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Sneak (1800s cooldown)'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   novennialRing: {
     name: 'Novennial Ring',
@@ -8644,7 +9885,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   patissieresRing: {
     name: "Patissiere's Ring",
@@ -8654,10 +9897,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Confectionery Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Confectionery Skill +3'],
+    latentEffects: [],
   },
   polluxsRing: {
     name: "Pollux's Ring",
@@ -8665,9 +9909,10 @@ export const items = {
     price: 0,
     stack: 1,
     slot: 'ring',
-    effects: ['Attack +5', 'Accuracy +5'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['Attack +5', 'Accuracy +5'],
+    latentEffects: [],
   },
   reraiseRing: {
     name: 'Reraise Ring',
@@ -8677,7 +9922,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Reraise'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   sandorianRing: {
     name: "San d'Orian Ring",
@@ -8687,9 +9934,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ["EXP +5% in San d'Oria"],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['EXP +5% in San d'Oria'],
+    latentEffects: [],
   },
   smithsRing: {
     name: "Smith's Ring",
@@ -8699,10 +9947,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Smithing Skill +3'],
     vendors: [{ npc: 'Lorena', location: 'Metalworks (E-7)', currency: 'Smithing GP', price: 10000 }],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Smithing Skill +3'],
+    latentEffects: [],
   },
   sneakRing: {
     name: 'Sneak Ring',
@@ -8712,7 +9961,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Sneak (1800s cooldown)'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   tailorsRing: {
     name: "Tailor's Ring",
@@ -8722,10 +9973,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Tailoring Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Tailoring Skill +3'],
+    latentEffects: [],
   },
   tannersRing: {
     name: "Tanner's Ring",
@@ -8735,10 +9987,11 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['Tanning Skill +3'],
     vendors: [],
     keyItem: false,
-    sellable: false
+    sellable: false,
+    additionalEffects: ['Tanning Skill +3'],
+    latentEffects: [],
   },
   undecennialRing: {
     name: 'Undecennial Ring',
@@ -8746,7 +9999,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   warpRing: {
     name: 'Warp Ring',
@@ -8756,7 +10011,9 @@ export const items = {
     slot: 'ring',
     abilities: ['Warp (600s cooldown)'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: [],
+    latentEffects: [],
   },
   weddingRing: {
     name: 'Wedding Ring',
@@ -8764,7 +10021,9 @@ export const items = {
     price: 0,
     stack: 1,
     keyItem: true,
-    sellable: false
+    sellable: false,
+    additionalEffects: [],
+    latentEffects: [],
   },
   windurstianRing: {
     name: 'Windurstian Ring',
@@ -8774,9 +10033,10 @@ export const items = {
     levelRequirement: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['EXP +5% in Windurst'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['EXP +5% in Windurst'],
+    latentEffects: [],
   },
   blindRing: {
     name: 'Blind Ring',
@@ -8785,9 +10045,10 @@ export const items = {
     stack: 1,
     slot: 'ring',
     jobs: jobNames,
-    effects: ['3% chance to inflict Blind'],
     keyItem: false,
-    sellable: true
+    sellable: true,
+    additionalEffects: ['3% chance to inflict Blind'],
+    latentEffects: [],
   }
 };
 
