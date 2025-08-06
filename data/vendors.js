@@ -6662,7 +6662,7 @@ export const items = {
     races: ['All'],
     effects: ['Advanced Synthesis Image Support'],
     vendors: [
-      { npc: 'Hemewmew', zone: 'Bastok Mines (K-7)', currency: 'Alchemy GP', price: 10000 }
+      { npc: 'Hemewmew', location: 'Bastok Mines (K-7)', currency: 'Alchemy GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -6679,8 +6679,8 @@ export const items = {
     races: ['All'],
     effects: ['Advanced Synthesis Image Support'],
     vendors: [
-      { npc: 'Macuillie', zone: "Northern San d'Oria (E-6)", currency: 'Smithing GP', price: 10000 },
-      { npc: 'Lorena', zone: 'Metalworks (E-7)', currency: 'Smithing GP', price: 10000 }
+      { npc: 'Macuillie', location: "Northern San d'Oria (E-6)", currency: 'Smithing GP', price: 10000 },
+      { npc: 'Lorena', location: 'Metalworks (E-7)', currency: 'Smithing GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -6697,7 +6697,7 @@ export const items = {
     races: ['All'],
     effects: ['HP +5'],
     vendors: [
-      { npc: 'Toji Mumosulah', zone: 'Kazham (I-8)', currency: 'Gil', price: 95 }
+      { npc: 'Toji Mumosulah', location: 'Kazham (I-8)', currency: 'Gil', price: 95 }
     ],
     keyItem: false,
     sellable: true
@@ -6744,7 +6744,7 @@ export const items = {
     races: ['All'],
     effects: ['Advanced Synthesis Image Support'],
     vendors: [
-      { npc: 'Samigo-Pormigo', zone: 'Windurst Woods (H-12)', currency: 'Bonecraft GP', price: 10000 }
+      { npc: 'Samigo-Pormigo', location: 'Windurst Woods (H-12)', currency: 'Bonecraft GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -6776,7 +6776,7 @@ export const items = {
     races: ['All'],
     effects: ['Advanced Synthesis Image Support'],
     vendors: [
-      { npc: 'Andreas', zone: "Northern San d'Oria (F-3)", currency: 'Woodworking GP', price: 10000 }
+      { npc: 'Andreas', location: "Northern San d'Oria (F-3)", currency: 'Woodworking GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -6793,7 +6793,7 @@ export const items = {
     races: ['All'],
     effects: ['Advanced Synthesis Image Support'],
     vendors: [
-      { npc: 'Qhum Knaidjn', zone: 'Windurst Waters (E-9)', currency: 'Cooking GP', price: 10000 }
+      { npc: 'Qhum Knaidjn', location: 'Windurst Waters (E-9)', currency: 'Cooking GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -6855,7 +6855,7 @@ export const items = {
     races: ['All'],
     effects: ['Fishing Support'],
     vendors: [
-      { npc: 'Fennella', zone: 'Port Windurst (C-8)', currency: 'Fishing GP', price: 10000 }
+      { npc: 'Fennella', location: 'Port Windurst (C-8)', currency: 'Fishing GP', price: 10000 }
     ],
     keyItem: false,
     sellable: false
@@ -8120,7 +8120,7 @@ export const items = {
   },
   sandorianRing: {
     name: "San d'Orian Ring",
-    description: 'Increases experience gain in San d'Oria by 5%.',
+    description: "Increases experience gain in San d'Oria by 5%.",
     price: 0,
     stack: 1,
     levelRequirement: 1,
