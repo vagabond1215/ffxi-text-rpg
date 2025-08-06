@@ -9936,7 +9936,7 @@ export const items = {
     jobs: jobNames,
     keyItem: false,
     sellable: true,
-    additionalEffects: ['EXP +5% in San d'Oria'],
+    additionalEffects: ["EXP +5% in San d'Oria"],
     latentEffects: [],
   },
   smithsRing: {
