@@ -7209,8 +7209,7 @@ export const vendorInventories = {
   Sororo: ['scrollDiaga', 'scrollStoneskin', 'scrollSlow', 'scrollCureII', 'scrollBanish', 'scrollBanishga', 'scrollBlink', 'scrollCure', 'scrollCuraga', 'scrollPoisona', 'scrollParalyna', 'scrollBlindna', 'scrollDia', 'scrollProtect', 'scrollShell', 'scrollRepose'],
   Zaira: ['scrollBlind', 'scrollBio', 'scrollPoison', 'scrollSleep', 'scrollAero', 'scrollBlizzard', 'scrollBurn', 'scrollChoke', 'scrollDrown', 'scrollFire', 'scrollFrost', 'scrollRasp', 'scrollShock', 'scrollStone', 'scrollThunder', 'scrollWater'],
   Teerth: ['workshopAnvil', 'mandrel', 'zincOre', 'copperOre', 'brassNugget', 'brassSheet', 'silverOre', 'silverNugget', 'tourmaline', 'sardonyx', 'clearTopaz', 'amethyst', 'lapisLazuli', 'amber', 'onyx'],
-  Visala: ['silverOre', 'mythrilOre', 'brassScales', 'mythrilChain', 'redRock', 'blueRock', 'yellowRock', 'greenRock', 'translucentRock', 'purpleRock', 'blackRock', 'whiteRock', 'lapisLazuli', 'lightOpal', 'onyx', 'amethyst', 'tourmaline', 'sardonyx', 'clearTopaz']
-  ,
+  Visala: ['silverOre', 'mythrilOre', 'brassScales', 'mythrilChain', 'redRock', 'blueRock', 'yellowRock', 'greenRock', 'translucentRock', 'purpleRock', 'blackRock', 'whiteRock', 'lapisLazuli', 'lightOpal', 'onyx', 'amethyst', 'tourmaline', 'sardonyx', 'clearTopaz'],
   Hemewmew: ['alchemistsBelt'],
   Macuillie: ['blacksmithsBelt'],
   Lorena: ['blacksmithsBelt'],
