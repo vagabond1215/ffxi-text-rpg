@@ -25,6 +25,8 @@ load('data/races.js', context);
 load('data/locations.js', context);
 load('data/vendors.js', context);
 load('data/proficiencies.js', context);
+load('data/crafting.js', context);
+load('data/gathering.js', context);
 load('data/characters.js', context);
 load('data/bestiary.js', context);
 load('js/encounter.js', context);
