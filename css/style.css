@@ -938,6 +938,7 @@ body.portrait .main-layout {
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
+    width: 200px;
 }
 
 .inventory-list {
