@@ -4352,9 +4352,12 @@ function renderJobChangeScreen(root) {
 }
 
 function getItemCategory(item) {
-    if (item.damage !== undefined || item.delay !== undefined) return 'Weapons';
-    if (item.slot === 'offHand' && item.defense !== undefined) return 'Weapons';
-    if (item.defense !== undefined) return 'Armor';
+    const weaponSlots = ['mainHand', 'offHand', 'ranged', 'ammo'];
+    const armorSlots = ['head', 'body', 'hands', 'legs', 'feet'];
+    const accessorySlots = ['neck', 'leftEar', 'rightEar', 'ear', 'leftRing', 'rightRing', 'ring', 'back', 'waist'];
+    if (weaponSlots.includes(item.slot)) return 'Weapons';
+    if (armorSlots.includes(item.slot)) return 'Armor';
+    if (accessorySlots.includes(item.slot)) return 'Accessories';
     if (/crystal/i.test(item.name)) return 'Crystals';
     if (/potion|ether|antidote|pie|jerky|water|scroll/i.test(item.name)) return 'Consumables';
     if (/ore|ingot|thread|log|chip/i.test(item.name)) return 'Crafting Materials';
@@ -4374,10 +4377,11 @@ function requirementText(item) {
     return parts.join(' ');
 }
 
-function equipItem(id, root) {
+function equipItem(id, root, slotOverride) {
     const item = items[id];
     if (!canEquipItem(item)) return;
-    activeCharacter.equipment[item.slot] = id;
+    const slot = slotOverride || item.slot;
+    activeCharacter.equipment[slot] = id;
     persistCharacter(activeCharacter);
     renderInventoryScreen(root);
 }
@@ -4413,6 +4417,7 @@ export function renderInventoryScreen(root) {
     const categories = {
         Weapons: [],
         Armor: [],
+        Accessories: [],
         'Crafting Materials': [],
         Crystals: [],
         Consumables: [],
@@ -4462,7 +4467,34 @@ export function renderInventoryScreen(root) {
             const actionLi = document.createElement('li');
             actionLi.className = 'item-actions';
             if (canEquipItem(ent.item)) {
-                if (activeCharacter.equipment[ent.item.slot] !== ent.id) {
+                const slot = ent.item.slot;
+                if (slot === 'ring' || slot === 'leftRing' || slot === 'rightRing') {
+                    if (activeCharacter.equipment.leftRing !== ent.id) {
+                        const left = document.createElement('button');
+                        left.textContent = 'Equip Left';
+                        left.addEventListener('click', () => equipItem(ent.id, root, 'leftRing'));
+                        actionLi.appendChild(left);
+                    }
+                    if (activeCharacter.equipment.rightRing !== ent.id) {
+                        const right = document.createElement('button');
+                        right.textContent = 'Equip Right';
+                        right.addEventListener('click', () => equipItem(ent.id, root, 'rightRing'));
+                        actionLi.appendChild(right);
+                    }
+                } else if (slot === 'ear' || slot === 'leftEar' || slot === 'rightEar') {
+                    if (activeCharacter.equipment.leftEar !== ent.id) {
+                        const left = document.createElement('button');
+                        left.textContent = 'Equip Left';
+                        left.addEventListener('click', () => equipItem(ent.id, root, 'leftEar'));
+                        actionLi.appendChild(left);
+                    }
+                    if (activeCharacter.equipment.rightEar !== ent.id) {
+                        const right = document.createElement('button');
+                        right.textContent = 'Equip Right';
+                        right.addEventListener('click', () => equipItem(ent.id, root, 'rightEar'));
+                        actionLi.appendChild(right);
+                    }
+                } else if (activeCharacter.equipment[slot] !== ent.id) {
                     const eq = document.createElement('button');
                     eq.textContent = 'Equip';
                     eq.addEventListener('click', () => equipItem(ent.id, root));
