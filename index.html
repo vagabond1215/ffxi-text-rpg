@@ -3,43 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FFXI Adventures</title>
+    <title>FFXI Text RPG</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="scale-controls">
-        <button id="time-display"></button>
-        <button id="back-button">Back</button>
-        <button id="log-button">Log</button>
-        <button id="menu-button">Menu</button>
-        <button class="scale-btn" id="scale-dec">-</button>
-        <button class="scale-btn" id="scale-inc">+</button>
-    </div>
-    <div id="user-controls"></div>
-    <div id="app">
-        <!-- UI will be rendered here -->
-    </div>
-    <div id="time-popup" class="hidden"></div>
-    <div id="menu-popup" class="hidden"></div>
-    <div id="game-log" class="log-overlay hidden"></div>
-    <div id="map-overlay" class="hidden">
-        <button id="map-close" class="map-close">X</button>
-        <img id="map-image" src="" alt="map">
-    </div>
-    <div id="item-popup" class="hidden">
-        <button id="item-popup-close" class="item-popup-close">X</button>
-        <div id="item-popup-content" class="item-popup-content"></div>
-    </div>
-    <div id="storage-popup" class="hidden">
-        <button id="storage-popup-close" class="storage-popup-close">X</button>
-        <div id="storage-popup-content" class="storage-popup-content"></div>
-    </div>
-    <div id="profile-popup" class="hidden">
-        <button id="profile-popup-close" class="profile-popup-close">X</button>
-        <div id="profile-popup-content" class="profile-popup-content"></div>
-    </div>
+    <main id="app" class="text-shell" aria-label="FFXI Text RPG">
+        <section class="terminal-panel">
+            <header class="terminal-header">
+                <p class="eyebrow">Text-only foundation</p>
+                <h1>FFXI Text RPG</h1>
+                <p class="subtitle">A stable command shell for rebuilding the game one system at a time.</p>
+            </header>
 
-    <script src="js/panzoom.min.js"></script>
+            <pre id="output" class="terminal-output" aria-live="polite"></pre>
+
+            <form id="command-form" class="command-form" autocomplete="off">
+                <label for="command-input">Command</label>
+                <div class="command-row">
+                    <span aria-hidden="true">&gt;</span>
+                    <input id="command-input" name="command" type="text" autofocus spellcheck="false" />
+                    <button type="submit">Enter</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
