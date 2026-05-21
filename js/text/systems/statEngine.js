@@ -1,12 +1,7 @@
-import {
-    ATTRIBUTE_KEYS,
-    DERIVED_STAT_KEYS,
-    ELEMENT_KEYS,
-    SKILL_KEYS,
-    createZeroBlock,
-} from '../data/systemConstants.js';
+import { ATTRIBUTE_KEYS, DERIVED_STAT_KEYS, ELEMENT_KEYS, SKILL_KEYS, createZeroBlock } from '../data/systemConstants.js';
 import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
+import { calculateFfxiBaseProfile, canUseFfxiStatFormula } from './ffxiStatFormula.js';
 
 const BASE_ATTRIBUTE_VALUE = 6;
 const BASE_HP = 24;
@@ -20,46 +15,38 @@ export function calculateCombatProfile(entity) {
     const statusModifiers = collectStatusModifiers(entity.statuses);
     const resources = calculateResources(entity, level, attributes, equipmentModifiers, statusModifiers);
     const derived = calculateDerivedStats(entity, level, attributes, skills, equipmentModifiers, statusModifiers);
-
-    return {
-        level,
-        attributes,
-        resources,
-        derived,
-        skills,
-        resistances: calculateResistances(equipmentModifiers, statusModifiers),
-    };
+    return { level, attributes, resources, derived, skills, resistances: calculateResistances(equipmentModifiers, statusModifiers) };
 }
 
 export function calculateAttributes(entity, level = getEntityLevel(entity)) {
+    if (canUseFfxiStatFormula(entity)) {
+        return addBlocks(calculateFfxiBaseProfile(entity).attributes, collectEquipmentModifiers(entity.equipment).attributes, collectStatusModifiers(entity.statuses).attributes);
+    }
     const race = entity.type === 'player' ? getRace(entity.identity?.raceId) : null;
     const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
     const base = createZeroBlock(ATTRIBUTE_KEYS);
-
     for (const key of ATTRIBUTE_KEYS) {
-        const raceBias = race?.attributeBias?.[key] ?? 0;
-        const jobBias = mainJob?.primaryAttributes?.includes(key) ? 2 : 0;
-        const enemyBias = entity.baseAttributes?.[key] ?? 0;
-        base[key] = BASE_ATTRIBUTE_VALUE + Math.floor(level * 0.85) + raceBias + jobBias + enemyBias;
+        base[key] = BASE_ATTRIBUTE_VALUE + Math.floor(level * 0.85) + (race?.attributeBias?.[key] ?? 0) + (mainJob?.primaryAttributes?.includes(key) ? 2 : 0) + (entity.baseAttributes?.[key] ?? 0);
     }
-
-    const equipment = collectEquipmentModifiers(entity.equipment).attributes;
-    const statuses = collectStatusModifiers(entity.statuses).attributes;
-
-    return addBlocks(base, equipment, statuses);
+    return addBlocks(base, collectEquipmentModifiers(entity.equipment).attributes, collectStatusModifiers(entity.statuses).attributes);
 }
 
 export function calculateResources(entity, level = getEntityLevel(entity), attributes = calculateAttributes(entity, level), equipment = collectEquipmentModifiers(entity.equipment), statuses = collectStatusModifiers(entity.statuses)) {
+    if (canUseFfxiStatFormula(entity)) {
+        const base = calculateFfxiBaseProfile(entity).resources;
+        return {
+            maxHp: Math.max(1, base.maxHp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
+            maxMp: Math.max(0, base.maxMp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
+            maxTp: base.maxTp + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0),
+        };
+    }
     const race = entity.type === 'player' ? getRace(entity.identity?.raceId) : null;
     const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
-    const hpBias = race?.resourceBias?.hp ?? 0;
-    const mpBias = race?.resourceBias?.mp ?? 0;
     const isCaster = ['whiteMage', 'blackMage', 'redMage', 'summoner', 'blueMage', 'scholar', 'geomancer'].includes(mainJob?.id);
     const enemyHpBonus = entity.type === 'enemy' ? level * 6 : 0;
-
     return {
-        maxHp: Math.max(1, BASE_HP + level * 8 + attributes.vit * 2 + hpBias * level + enemyHpBonus + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
-        maxMp: Math.max(0, BASE_MP + (isCaster ? level * 5 : level) + attributes.mnd + attributes.int + mpBias * level + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
+        maxHp: Math.max(1, BASE_HP + level * 8 + attributes.vit * 2 + (race?.resourceBias?.hp ?? 0) * level + enemyHpBonus + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
+        maxMp: Math.max(0, BASE_MP + (isCaster ? level * 5 : level) + attributes.mnd + attributes.int + (race?.resourceBias?.mp ?? 0) * level + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
         maxTp: 3000,
     };
 }
@@ -67,27 +54,19 @@ export function calculateResources(entity, level = getEntityLevel(entity), attri
 export function calculateSkills(entity, level = getEntityLevel(entity)) {
     const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
     const skills = createZeroBlock(SKILL_KEYS);
-
     for (const key of SKILL_KEYS) {
-        const focused = mainJob?.skillFocus?.includes(key);
         const enemySkill = entity.skills?.[key];
-        if (typeof enemySkill === 'number') {
-            skills[key] = enemySkill;
-        } else {
-            skills[key] = focused ? level * 3 : Math.floor(level * 1.5);
-        }
+        skills[key] = typeof enemySkill === 'number' ? enemySkill : (mainJob?.skillFocus?.includes(key) ? level * 3 : Math.floor(level * 1.5));
     }
-
     return skills;
 }
 
 export function calculateDerivedStats(entity, level = getEntityLevel(entity), attributes = calculateAttributes(entity, level), skills = calculateSkills(entity, level), equipment = collectEquipmentModifiers(entity.equipment), statuses = collectStatusModifiers(entity.statuses)) {
     const derived = createZeroBlock(DERIVED_STAT_KEYS);
-    const mainWeaponSkill = Math.max(skills.sword, skills.dagger, skills.axe, skills.handToHand, skills.staff, skills.club, skills.greatSword, skills.greatAxe, skills.scythe, skills.polearm, skills.katana, skills.greatKatana);
-
-    derived.attack = level + attributes.str * 2 + Math.floor(mainWeaponSkill / 2);
+    const meleeSkill = Math.max(skills.sword, skills.dagger, skills.axe, skills.handToHand, skills.staff, skills.club, skills.greatSword, skills.greatAxe, skills.scythe, skills.polearm, skills.katana, skills.greatKatana);
+    derived.attack = level + attributes.str * 2 + Math.floor(meleeSkill / 2);
     derived.defense = level + attributes.vit * 2;
-    derived.accuracy = level + attributes.dex * 2 + Math.floor(mainWeaponSkill / 2);
+    derived.accuracy = level + attributes.dex * 2 + Math.floor(meleeSkill / 2);
     derived.evasion = level + attributes.agi * 2 + Math.floor(skills.evasion / 2);
     derived.rangedAttack = level + attributes.agi + Math.floor(Math.max(skills.archery, skills.marksmanship, skills.throwing) / 2);
     derived.rangedAccuracy = level + attributes.agi + attributes.dex + Math.floor(Math.max(skills.archery, skills.marksmanship, skills.throwing) / 2);
@@ -110,33 +89,23 @@ export function calculateDerivedStats(entity, level = getEntityLevel(entity), at
     derived.magicDamageTaken = 0;
     derived.breathDamageTaken = 0;
     derived.movementSpeed = 100;
-
     return addBlocks(derived, equipment.derived, statuses.derived);
 }
 
 export function collectEquipmentModifiers(equipment = {}) {
     const block = createModifierBlock();
-    for (const item of Object.values(equipment ?? {})) {
-        mergeModifierBlock(block, item?.modifiers);
-    }
+    for (const item of Object.values(equipment ?? {})) mergeModifierBlock(block, item?.modifiers);
     return block;
 }
 
 export function collectStatusModifiers(statuses = []) {
     const block = createModifierBlock();
-    for (const status of statuses ?? []) {
-        mergeModifierBlock(block, status?.modifiers);
-    }
+    for (const status of statuses ?? []) mergeModifierBlock(block, status?.modifiers);
     return block;
 }
 
 export function createModifierBlock() {
-    return {
-        attributes: createZeroBlock(ATTRIBUTE_KEYS),
-        resources: { hp: 0, mp: 0, tp: 0 },
-        derived: createZeroBlock(DERIVED_STAT_KEYS),
-        resistances: createZeroBlock(ELEMENT_KEYS),
-    };
+    return { attributes: createZeroBlock(ATTRIBUTE_KEYS), resources: { hp: 0, mp: 0, tp: 0 }, derived: createZeroBlock(DERIVED_STAT_KEYS), resistances: createZeroBlock(ELEMENT_KEYS) };
 }
 
 export function calculateResistances(equipment = collectEquipmentModifiers(), statuses = collectStatusModifiers()) {
@@ -160,9 +129,7 @@ function addBlocks(...blocks) {
     const result = {};
     for (const block of blocks) {
         if (!block) continue;
-        for (const [key, value] of Object.entries(block)) {
-            result[key] = (result[key] ?? 0) + (Number(value) || 0);
-        }
+        for (const [key, value] of Object.entries(block)) result[key] = (result[key] ?? 0) + (Number(value) || 0);
     }
     return result;
 }
