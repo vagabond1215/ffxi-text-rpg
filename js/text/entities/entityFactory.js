@@ -1,6 +1,7 @@
 import { ENTITY_TYPES, CURRENCY_KEYS, EQUIPMENT_SLOTS, createZeroBlock } from '../data/systemConstants.js';
 import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
+import { createInventoryState } from '../systems/inventoryEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 
 export function createPlayerCharacter(options = {}) {
@@ -8,6 +9,7 @@ export function createPlayerCharacter(options = {}) {
     const mainJob = getJob(options.mainJobId);
     const supportJob = options.supportJobId ? getJob(options.supportJobId) : null;
     const level = clampLevel(options.level ?? 1);
+    const inventoryState = options.inventoryState ?? createInventoryState(options.inventoryOptions ?? {});
 
     const entity = {
         id: options.id ?? 'player-1',
@@ -37,7 +39,8 @@ export function createPlayerCharacter(options = {}) {
         progression: createProgression(options.progression),
         wallet: createWallet(options.wallet),
         equipment: createEquipmentSet(options.equipment),
-        inventory: options.inventory ?? [],
+        inventoryState,
+        inventory: inventoryState.containers.inventory.items,
         keyItems: options.keyItems ?? [],
         statuses: options.statuses ?? [],
         flags: options.flags ?? {},
