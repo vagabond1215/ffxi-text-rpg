@@ -6,6 +6,7 @@ import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeControls, NAV_KEYPAD } from '../js/text/data/actionControls.js';
 import { evaluateAggroForGrid } from '../js/text/systems/aggroEngine.js';
 import { describeAtlas, hasVisited, setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
+import { startEncounter } from '../js/text/systems/combatActionEngine.js';
 
 
 test('initial state starts with discovered atlas coordinate', () => {
@@ -58,4 +59,18 @@ test('router exposes controls atlas grid and move commands', () => {
     assert.match(router('atlas'), /Southern San/);
     assert.match(router('grid'), /grid/);
     assert.match(router('move e'), /Moved to/);
+});
+
+test('movement is blocked while in active battle', () => {
+    const state = createInitialState();
+    const router = createCommandRouter(state, {
+        saveGame: () => true,
+        clearSave: () => {},
+        reload: () => {},
+    });
+
+    startEncounter(state, 'Forest Hare');
+
+    assert.match(router('move e'), /cannot move while engaged/);
+    assert.match(router('travel West Ronfaure'), /cannot travel while engaged/);
 });
