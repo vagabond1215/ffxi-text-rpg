@@ -75,6 +75,43 @@ export function addItemToContainer(inventoryState, containerId, item, context = 
     return { ok: true, item, containerId };
 }
 
+export function findItemInContainer(inventoryState, containerId, itemQuery) {
+    const container = inventoryState?.containers?.[containerId];
+    if (!container) return { ok: false, reason: `Unknown container: ${containerId}` };
+    const normalized = normalize(itemQuery);
+    if (!normalized) return { ok: false, reason: 'No item specified.' };
+    const index = container.items.findIndex((item) => normalize(item.id) === normalized || normalize(item.name).includes(normalized));
+    if (index < 0) return { ok: false, reason: `No matching item in ${containerId}: ${itemQuery}` };
+    return { ok: true, item: container.items[index], index, container };
+}
+
+export function transferItemBetweenContainers(state, itemQuery, fromContainerId = 'inventory', toContainerId = 'inventory', context = {}) {
+    const inventoryState = state.player?.inventoryState ?? state.inventoryState;
+    if (!inventoryState) return 'No inventory container state found.';
+    if (fromContainerId === toContainerId) return 'Source and destination containers must be different.';
+
+    const fromDefinition = getContainerDefinition(fromContainerId);
+    const toDefinition = getContainerDefinition(toContainerId);
+    if (!fromDefinition) return `Unknown source container: ${fromContainerId}`;
+    if (!toDefinition) return `Unknown destination container: ${toContainerId}`;
+    if (!isContainerAccessible(inventoryState, fromContainerId, context)) return `${fromDefinition.label} is not accessible from here.`;
+
+    const found = findItemInContainer(inventoryState, fromContainerId, itemQuery);
+    if (!found.ok) return found.reason;
+
+    const storeCheck = canStoreItemInContainer(inventoryState, toContainerId, found.item, context);
+    if (!storeCheck.ok) return storeCheck.reason;
+
+    const [item] = found.container.items.splice(found.index, 1);
+    inventoryState.containers[toContainerId].items.push(item);
+
+    return [
+        `Transferred ${item.name ?? item.id}.`,
+        `From: ${fromDefinition.label}`,
+        `To: ${toDefinition.label}`,
+    ].join('\n');
+}
+
 export function describeInventoryContainers(state, context = {}) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';
@@ -128,4 +165,8 @@ function describeContainerLine(inventoryState, containerId, context = {}) {
     const capacity = getContainerCapacity(inventoryState, containerId);
     const accessible = isContainerAccessible(inventoryState, containerId, context) ? 'accessible' : 'locked/inaccessible';
     return `- ${definition.label}: ${container.items.length}/${capacity}, ${accessible}, access=${definition.access}`;
+}
+
+function normalize(value) {
+    return String(value ?? '').trim().toLowerCase().replace(/[’']/g, '').replace(/\s+/g, '-');
 }
