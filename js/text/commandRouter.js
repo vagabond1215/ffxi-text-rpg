@@ -33,6 +33,7 @@ import {
     describeContainerContents,
     describeInventoryContainers,
     setMogHouseAccess,
+    transferItemBetweenContainers,
 } from './systems/inventoryEngine.js';
 import {
     describeBestiary,
@@ -97,6 +98,7 @@ const HELP_TEXT = [
     '  inventory            Show carried items.',
     '  containers           Show all inventory/storage containers and access state.',
     '  container <id>       Inspect a specific container.',
+    '  transfer <item> from <source> to <destination>  Move items between containers.',
     '  moghouse enter|leave Toggle Mog House access context for storage testing.',
     '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show known spell placeholder data.',
@@ -201,6 +203,7 @@ export function createCommandRouter(state, services = {}) {
             case 'items': return describeInventory(state);
             case 'containers': return describeInventoryContainers(state);
             case 'container': return describeContainerContents(state, parsed.args[0] ?? 'inventory');
+            case 'transfer': return describeTransferCommand(state, parsed.args);
             case 'moghouse': return describeMogHouseCommand(state, parsed.args[0]);
             case 'equipment':
             case 'equip': return describeEquipment(state);
@@ -247,6 +250,18 @@ export function createCommandRouter(state, services = {}) {
             default: return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
+}
+
+function describeTransferCommand(state, args) {
+    const fromIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'from');
+    const toIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'to');
+    if (fromIndex <= 0 || toIndex <= fromIndex + 1 || toIndex >= args.length - 1) {
+        return 'Usage: transfer <item> from <sourceContainer> to <destinationContainer>';
+    }
+    const itemQuery = args.slice(0, fromIndex).join(' ');
+    const fromContainer = args[fromIndex + 1];
+    const toContainer = args[toIndex + 1];
+    return transferItemBetweenContainers(state, itemQuery, fromContainer, toContainer);
 }
 
 function describeMogHouseCommand(state, action = 'status') {
@@ -397,5 +412,4 @@ function describeValidation(state) {
 function describeLog(state, limitArg = '20') {
     if (!state.log.length) return 'No command history yet.';
     const limit = Math.max(1, Math.min(100, Number.parseInt(limitArg, 10) || 20));
-    return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`).join('\n');
-}
+    return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`,
