@@ -1,5 +1,6 @@
 import { getMap, listMaps } from '../data/maps.js';
 import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
+import { listPointsOfInterest } from '../data/pointsOfInterest.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -24,6 +25,7 @@ export function validateGameState(state) {
         issues.push(`position (${state.position.x}, ${state.position.y}) is outside ${place.name}.`);
     }
     if (!isObject(state.atlas)) issues.push('atlas must be an object.');
+    if (!isObject(state.discoveredPois)) issues.push('discoveredPois must be an object.');
     if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
 
     if (!state.player) {
@@ -79,6 +81,20 @@ export function validateWorldData() {
         }
         if (to && connection.arriveAt && !isCoordinateInsidePlace(to, connection.arriveAt)) {
             issues.push(`${connection.id} arriveAt is outside ${to.name}.`);
+        }
+    }
+
+    for (const poi of listPointsOfInterest()) {
+        const place = getPlace(poi.placeId);
+        if (!place) {
+            issues.push(`${poi.id} references unknown place ${poi.placeId}.`);
+            continue;
+        }
+        if (!isCoordinateInsidePlace(place, poi.coordinate)) {
+            issues.push(`${poi.id} coordinate (${poi.coordinate.x}, ${poi.coordinate.y}) is outside ${place.name}.`);
+        }
+        if (!Array.isArray(poi.actions) || !poi.actions.length) {
+            issues.push(`${poi.id} has no actions.`);
         }
     }
 
