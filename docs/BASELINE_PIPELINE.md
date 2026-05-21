@@ -25,10 +25,12 @@ Inputs:
 - Existing legacy repo data, treated as source material until migrated.
 
 Output:
-- Source notes.
-- Confidence level.
-- Simplification decision.
-- Target version assignment.
+- mechanic name
+- source links
+- confidence level: confirmed, strongly inferred, approximate, placeholder
+- simplification decision
+- implementation scope: now, later, defer
+- target version assignment
 
 ### 2. System ticketing
 
@@ -46,9 +48,12 @@ Every system must be assigned to one of these version tracks:
 
 Before gameplay behavior, define:
 - IDs and naming rules.
-- Ownership: save state, static data, temporary battle state, runtime timer state.
+- Entity fields.
+- State ownership: save state, static data, temporary battle state, runtime timer state.
 - Relationships to other databases.
+- Persistence concerns.
 - Validation rules.
+- Text output needs.
 - Version impact.
 
 ### 4. Database population
@@ -83,7 +88,16 @@ Each database needs:
 
 ### 5. Engine integration
 
-Engines should be added in this order:
+Engines should be pure or mostly pure functions.
+
+Rules:
+- accept state/entity inputs
+- return calculated values or mutate clearly documented state slices
+- avoid DOM access
+- avoid hidden globals
+- avoid direct persistence side effects
+
+Recommended order:
 1. validation
 2. lookup/indexing
 3. calculation
@@ -92,7 +106,29 @@ Engines should be added in this order:
 6. tests
 7. benchmark coverage
 
-### 6. Live tick integration
+### 6. Command exposure
+
+Commands should expose only stable slices of systems.
+
+Command output should be readable and compact. Long detail screens should be split into targeted commands.
+
+Examples:
+- `databases`
+- `version`
+- `systems`
+- `tick`
+- `zones`
+- `travel <destination>`
+- `quest list`
+- `item inspect <id>`
+- `magic list`
+- `cast <spell> <target>`
+- `attack <target>`
+- `trust summon <id>`
+- `craft <recipe>`
+- `mount <id>`
+
+### 7. Live tick integration
 
 The live tick timer is the backbone for time-based systems.
 
@@ -118,27 +154,15 @@ Tick rules:
 - The timer should be pausable.
 - Deterministic test hooks should exist before complex combat is added.
 
-### 7. Command exposure
+### 8. Tests
 
-Commands should expose only stable slices of systems.
+Every new engine should get tests for:
+- happy path
+- boundary values
+- invalid/missing data
+- one regression case if replacing old behavior
 
-Examples:
-- `databases`
-- `version`
-- `systems`
-- `tick`
-- `zones`
-- `travel <destination>`
-- `quest list`
-- `item inspect <id>`
-- `magic list`
-- `cast <spell> <target>`
-- `attack <target>`
-- `trust summon <id>`
-- `craft <recipe>`
-- `mount <id>`
-
-### 8. Benchmarks
+### 9. Benchmarks
 
 Every new runtime-heavy system should add or update benchmarks.
 
@@ -159,7 +183,21 @@ Benchmark command:
 npm run benchmark
 ```
 
-### 9. Version release gate
+### 10. Documentation
+
+Update at least one of:
+- README.md for user-facing usage
+- CHANGELOG.md for notable changes
+- docs/ARCHITECTURE.md for structural changes
+- docs/ROADMAP.md for milestone status
+- docs/SYSTEM_CATALOG.md for system status/version changes
+- docs/BASELINE_PIPELINE.md for process changes
+
+### 11. Migration policy
+
+Backwards compatibility is off by default. If old data is reused, migrate it forward intentionally and document the conversion.
+
+### 12. Version release gate
 
 Before increasing app/data/save version:
 - tests pass
@@ -168,6 +206,17 @@ Before increasing app/data/save version:
 - roadmap updated
 - architecture/pipeline docs updated
 - save compatibility decision documented
+
+## Pull request / implementation checklist
+
+- [ ] No graphical dependency added to the active text runtime.
+- [ ] Game logic does not touch the DOM.
+- [ ] New state shape is documented.
+- [ ] Tests cover the new engine or schema.
+- [ ] Benchmarks cover runtime-heavy changes.
+- [ ] Placeholder formulas are labeled as placeholders.
+- [ ] README/changelog/roadmap updated where appropriate.
+- [ ] Save/data/app version impact considered.
 
 ## External implementation references to review
 
