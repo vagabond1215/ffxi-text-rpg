@@ -1,5 +1,7 @@
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
+import { getPlace } from './data/places.js';
+import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 
@@ -10,11 +12,15 @@ export function createInitialState() {
         mainJobId: 'warrior',
         level: 1,
     });
+    const startPlace = getPlace('southern-sandoria');
+    const startCoordinate = startPlace.coordinateSystem.start;
 
     return {
         version: 2,
-        currentPlaceId: 'southern-sandoria',
-        location: 'Southern San d\u2019Oria',
+        currentPlaceId: startPlace.id,
+        location: startPlace.name,
+        position: { placeId: startPlace.id, ...startCoordinate },
+        atlas: createAtlasState(startPlace.id, startCoordinate),
         travel: null,
         player,
         npcs: createSeedNpcs(),
@@ -35,9 +41,27 @@ export function describeLocation(state) {
     return [
         describePlace(currentPlaceId),
         '',
+        describeCurrentGrid(state),
+        '',
         'Visible NPCs:',
         ...(npcsHere.length ? npcsHere : ['- None']),
     ].join('\n');
+}
+
+export function moveWithinCurrentPlace(state, delta) {
+    const place = getPlace(state.currentPlaceId);
+    if (!place) return { ok: false, reason: `Unknown place: ${state.currentPlaceId}` };
+
+    const current = state.position ?? { placeId: place.id, ...place.coordinateSystem.start };
+    const next = {
+        x: current.x + delta.dx,
+        y: current.y + delta.dy,
+    };
+
+    const result = setPositionAndDiscover(state, place.id, next);
+    return result.ok
+        ? { ok: true, place, coordinate: next, message: `Moved to ${place.name} grid (${next.x}, ${next.y}).` }
+        : result;
 }
 
 export function describeCharacter(state) {
@@ -57,6 +81,7 @@ export function describeCharacter(state) {
         `TP: ${player.resources.tp}/${combat.resources.maxTp}`,
         `Gil: ${player.wallet.gil}`,
         `Location: ${state.location}`,
+        `Grid: (${state.position?.x ?? '?'}, ${state.position?.y ?? '?'})`,
     ].join('\n');
 }
 
