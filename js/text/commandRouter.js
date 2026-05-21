@@ -14,6 +14,7 @@ import { parseCommand } from './commands/parser.js';
 import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
 import { listJobs } from './data/jobs.js';
+import { describeLegacyRecoveredData } from './data/legacyRecoveredData.js';
 import { describeMap, describeMaps } from './data/maps.js';
 import { describeNations, findNation } from './data/nations.js';
 import { RACES } from './data/races.js';
@@ -51,6 +52,7 @@ const HELP_TEXT = [
     '  grid                 Inspect current grid.',
     '  move <dir>           Move within the current zone grid using n/ne/e/se/s/sw/w/nw.',
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
+    '  recovered            Summarize useful data recovered from stale branches.',
     '  travel <destination> Start direct travel to a connected zone.',
     '  wait [seconds]       Advance time manually for travel/tick testing.',
     '  databases            List planned/seeded/implemented data registries.',
@@ -119,6 +121,9 @@ export function createCommandRouter(state, services = {}) {
             case 'controls':
             case 'hud':
                 return describeControls();
+            case 'recovered':
+            case 'legacy':
+                return describeLegacyRecoveredData();
             case 'travel':
                 return describeTravelStart(state, parsed.args.join(' '));
             case 'wait':
@@ -268,6 +273,9 @@ function inspectTarget(state, target = 'player') {
         case 'controls':
         case 'hud':
             return describeControls();
+        case 'recovered':
+        case 'legacy':
+            return describeLegacyRecoveredData();
         case 'state':
             return JSON.stringify(state, null, 2);
         case 'log':
@@ -280,7 +288,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
