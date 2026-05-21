@@ -41,5 +41,27 @@ export function createSeedEnemies() {
             baseAttributes: { agi: 2, vit: -1 },
             aggro: { sight: false, sound: false, magic: false, lowHp: false },
         }),
+        createEnemy({
+            id: 'enemy-forest-goblin',
+            name: 'Forest Goblin',
+            family: 'goblin',
+            ecosystem: 'beastman',
+            zoneId: 'west-ronfaure',
+            level: 3,
+            expValue: 75,
+            baseAttributes: { str: 1, dex: 1 },
+            aggro: { sight: true, sound: false, magic: false, lowHp: false },
+        }),
+        createEnemy({
+            id: 'enemy-ghelsba-orc',
+            name: 'Ghelsba Orc',
+            family: 'orc',
+            ecosystem: 'beastman',
+            zoneId: 'ghelsba-outpost',
+            level: 5,
+            expValue: 120,
+            baseAttributes: { str: 2, vit: 1 },
+            aggro: { sight: true, sound: true, magic: false, lowHp: false },
+        }),
     ];
 }
