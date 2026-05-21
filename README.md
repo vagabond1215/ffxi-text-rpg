@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Running
 
@@ -25,9 +25,13 @@ npm test
 - `inventory` - show carried items
 - `npcs` - list loaded NPCs
 - `enemies` - list loaded enemies
-- `log` - show recent command history
-- `save` - save local state
+- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `state`, or `log`
+- `validate` - validate the current game state
+- `log [limit]` - show recent command history
+- `save` - save local state if validation passes
 - `reset` - clear local save and reload
+
+Command aliases are supported for common short forms, such as `?`, `l`, `char`, `status`, `stat`, `i`, `inv`, `npc`, and `enemy`.
 
 ## Current architecture
 
@@ -40,6 +44,8 @@ js/text/
   gameState.js
   save.js
   textShell.js
+  commands/
+    parser.js
   data/
     jobs.js
     races.js
@@ -51,7 +57,9 @@ js/text/
     battleEngine.js
     statEngine.js
     statusEngine.js
+    validation.js
 tests/
+  commandParser.test.js
   statEngine.test.js
 docs/
   ARCHITECTURE.md
@@ -62,6 +70,7 @@ docs/
 ## Implemented foundation
 
 - Text-only browser shell.
+- Argument-aware command parser.
 - Structured player character entity.
 - Structured NPC entity.
 - Structured enemy entity.
@@ -71,6 +80,8 @@ docs/
 - Conservative stat calculation engine.
 - Simple battle-state engine.
 - Status effect lifecycle engine.
+- Game-state validation helpers.
+- Safe save/load behavior that rejects incompatible local saves.
 - Seed NPCs and enemies.
 - Node test harness using the built-in `node:test` runner.
 
