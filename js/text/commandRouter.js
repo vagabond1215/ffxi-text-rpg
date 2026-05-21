@@ -19,6 +19,13 @@ import { describeNations, findNation } from './data/nations.js';
 import { RACES } from './data/races.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
+import {
+    castSpell,
+    describeBattle,
+    performPlayerAttack,
+    performWeaponSkill,
+    startEncounter,
+} from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
 import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
 import {
@@ -69,6 +76,11 @@ const HELP_TEXT = [
     '  weaponSkills         Show recovered weapon skill source data.',
     '  jobAbilities         Show recovered job abilities and traits for the current job.',
     '  bestiary             Show recovered bestiary notes for the current zone.',
+    '  encounter <enemy>    Start a battle against a loaded enemy seed.',
+    '  battle               Show the active battle state.',
+    '  attack [target]      Perform a basic attack in battle.',
+    '  weaponSkill <name>   Use a TP-gated placeholder weapon skill.',
+    '  cast <spell>         Cast a simple placeholder spell in battle.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
     '  maps                 List known starter map records.',
@@ -81,7 +93,7 @@ const HELP_TEXT = [
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
     '  recovered            Summarize useful data recovered from stale branches.',
     '  /macrohelp           Show FFXI-style macro/text command reference.',
-    '  /ma /ja /ws /item    Accept FFXI-style action command forms as stubs.',
+    '  /ma /ja /ws /item    Accept FFXI-style action command forms.',
     '  /equip /equipset     Accept FFXI-style equipment command forms as stubs.',
     '  travel <destination> Start direct travel to a connected zone.',
     '  wait [seconds]       Advance time manually for travel/tick testing.',
@@ -156,6 +168,11 @@ export function createCommandRouter(state, services = {}) {
             case 'abilities':
             case 'ja': return describeJobAbilities(state);
             case 'bestiary': return describeBestiary(state);
+            case 'encounter': return describeEncounterStart(state, parsed.args.join(' '));
+            case 'battle': return describeBattle(state.activeBattle);
+            case 'attack': return performPlayerAttack(state, parsed.args[0]);
+            case 'weaponskill': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Skill');
+            case 'cast': return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
             case 'npcs': return describeNpcs(state);
             case 'enemies': return describeEnemies(state);
             case 'maps': return describeMaps();
@@ -186,6 +203,12 @@ export function createCommandRouter(state, services = {}) {
             default: return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
+}
+
+function describeEncounterStart(state, enemyQuery) {
+    if (!enemyQuery) return 'Encounter what? Try `enemies` to see loaded enemy seeds.';
+    const result = startEncounter(state, enemyQuery, { source: 'command' });
+    return result.message;
 }
 
 function hasFastCreateArgs(parsed) {
@@ -264,6 +287,7 @@ function inspectTarget(state, target = 'player') {
         case 'abilities':
         case 'ja': return describeJobAbilities(state);
         case 'bestiary': return describeBestiary(state);
+        case 'battle': return describeBattle(state.activeBattle);
         case 'npcs':
         case 'npc': return describeNpcs(state);
         case 'enemies':
@@ -292,7 +316,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, npcs, enemies, nations, races, jobs, statFormula, raceGrades, jobGrades, hpmpGrades, hpmpCompare, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, statFormula, raceGrades, jobGrades, hpmpGrades, hpmpCompare, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
