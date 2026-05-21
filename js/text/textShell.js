@@ -1,4 +1,4 @@
-export function createTextShell({ output, form, input, router }) {
+export function createTextShell({ output, form, input, router, afterCommand }) {
     if (!output || !form || !input || !router) {
         throw new Error('Text shell is missing required DOM elements or command router.');
     }
@@ -15,28 +15,34 @@ export function createTextShell({ output, form, input, router }) {
         output.scrollTop = output.scrollHeight;
     }
 
+    function submitCommand(command) {
+        if (!command.trim()) return '';
+
+        const response = router(command);
+        append(`> ${command}\n${response}`);
+        afterCommand?.({ command, response });
+        return response;
+    }
+
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const command = input.value;
         input.value = '';
-
-        if (!command.trim()) return;
-
-        const response = router(command);
-        append(`> ${command}\n${response}`);
+        submitCommand(command);
     });
 
     return {
         printIntro() {
             write([
-                'FFXI Text RPG reset shell initialized.',
+                'FFXI Text RPG shell initialized.',
                 '',
-                'This branch intentionally strips the old graphical/interface layer.',
+                'Type "create" to start the prompt-based character creator.',
                 'Type "help" to see available commands.',
             ].join('\n'));
         },
         focus() {
             input.focus();
         },
+        submitCommand,
     };
 }
