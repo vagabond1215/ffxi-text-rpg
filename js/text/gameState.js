@@ -1,5 +1,6 @@
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
+import { describePlace } from './systems/travelEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 
 export function createInitialState() {
@@ -12,7 +13,9 @@ export function createInitialState() {
 
     return {
         version: 2,
+        currentPlaceId: 'southern-sandoria',
         location: 'Southern San d\u2019Oria',
+        travel: null,
         player,
         npcs: createSeedNpcs(),
         enemies: createSeedEnemies(),
@@ -24,15 +27,13 @@ export function createInitialState() {
 }
 
 export function describeLocation(state) {
+    const currentPlaceId = state.currentPlaceId ?? 'southern-sandoria';
     const npcsHere = (state.npcs ?? [])
-        .filter((npc) => npc.identity.locationId === 'southern-sandoria')
+        .filter((npc) => npc.identity.locationId === currentPlaceId)
         .map((npc) => `- ${npc.identity.name}${npc.identity.title ? `, ${npc.identity.title}` : ''}`);
 
     return [
-        `You are in ${state.location}.`,
-        '',
-        'The old interface has been stripped back to a text-only command shell.',
-        'Systems will be rebuilt here deliberately: state, commands, travel, combat, vendors, quests, and persistence.',
+        describePlace(currentPlaceId),
         '',
         'Visible NPCs:',
         ...(npcsHere.length ? npcsHere : ['- None']),
