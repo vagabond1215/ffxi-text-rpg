@@ -1,15 +1,15 @@
 export const VERSION = Object.freeze({
-    app: '0.3.6',
+    app: '0.3.7',
     save: 2,
     data: 6,
     benchmark: 1,
-    codename: 'Inventory Container Foundation',
+    codename: 'Shop Transaction Foundation',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.6',
+    commandShell: '0.3.7',
     parser: '0.2.0',
     validation: '0.3.6',
     playerEntity: '0.3.6',
@@ -33,7 +33,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     poiDiscovery: '0.3.4',
     poiFastTravel: '0.3.4',
     zoneFastTravel: '0.3.4',
-    shops: '0.3.5',
+    shops: '0.3.7',
+    shopTransactions: '0.3.7',
     guilds: '0.3.5',
     questHooks: '0.3.5',
     inventoryContainers: '0.3.6',
