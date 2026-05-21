@@ -1,4 +1,4 @@
-import { getPlace } from '../data/places.js';
+import { getPlace, isCoordinateInsidePlace } from '../data/places.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -14,8 +14,15 @@ export function validateGameState(state) {
         issues.push(`Expected state version ${CURRENT_SAVE_VERSION}, received ${String(state.version)}.`);
     }
 
+    const place = getPlace(state.currentPlaceId);
     if (!state.currentPlaceId) issues.push('currentPlaceId is required.');
-    if (state.currentPlaceId && !getPlace(state.currentPlaceId)) issues.push(`currentPlaceId references unknown place ${state.currentPlaceId}.`);
+    if (state.currentPlaceId && !place) issues.push(`currentPlaceId references unknown place ${state.currentPlaceId}.`);
+    if (!isObject(state.position)) {
+        issues.push('position must be an object.');
+    } else if (place && !isCoordinateInsidePlace(place, state.position)) {
+        issues.push(`position (${state.position.x}, ${state.position.y}) is outside ${place.name}.`);
+    }
+    if (!isObject(state.atlas)) issues.push('atlas must be an object.');
     if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
 
     if (!state.player) {
