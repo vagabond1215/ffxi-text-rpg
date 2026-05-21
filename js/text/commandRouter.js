@@ -22,6 +22,7 @@ import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
 import {
     castSpell,
     describeBattle,
+    isActiveBattle,
     performPlayerAttack,
     performWeaponSkill,
     startEncounter,
@@ -245,16 +246,26 @@ function describeJobs() {
 }
 
 function describeMove(state, direction) {
+    if (isActiveBattle(state.activeBattle)) return 'You cannot move while engaged in battle.';
     if (!direction) return 'Move where? Use n, ne, e, se, s, sw, w, or nw.';
     const nav = NAV_KEYPAD.find((item) => item.id === String(direction).toLowerCase());
     if (!nav) return `Unknown direction: ${direction}. Use n, ne, e, se, s, sw, w, or nw.`;
     const result = moveWithinCurrentPlace(state, nav);
     if (!result.ok) return result.reason;
     const aggro = evaluateAggroForGrid(state, { travelMode: 'foot' });
-    return [result.message, '', describeCurrentGrid(state), '', describeAggroResult(aggro)].join('\n');
+    const lines = [result.message, '', describeCurrentGrid(state), '', describeAggroResult(aggro)];
+    if (aggro.triggered) {
+        const encounter = startEncounter(state, aggro.encounter.enemyId, {
+            source: 'aggro',
+            reason: `${aggro.encounter.enemyId} noticed you by ${aggro.encounter.aggroTypes.join('/')}`,
+        });
+        lines.push('', encounter.message);
+    }
+    return lines.join('\n');
 }
 
 function describeTravelStart(state, destination) {
+    if (isActiveBattle(state.activeBattle)) return 'You cannot travel while engaged in battle.';
     if (!destination) return 'Travel where? Try `zones` to see known places.';
     const result = startTravel(state, destination);
     return result.ok ? result.message : result.reason;
