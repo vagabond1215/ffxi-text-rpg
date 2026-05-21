@@ -1,10 +1,12 @@
 import { listGuildServices } from '../data/guildServices.js';
+import { listContainerDefinitions } from '../data/inventoryContainers.js';
 import { getMap, listMaps } from '../data/maps.js';
 import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
 import { getPointOfInterest, listPointsOfInterest } from '../data/pointsOfInterest.js';
 import { listQuestHooks } from '../data/questHooks.js';
 import { listShopCatalogs } from '../data/shopCatalogs.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
+import { getContainerCapacity } from './inventoryEngine.js';
 
 export const CURRENT_SAVE_VERSION = 2;
 
@@ -142,9 +144,37 @@ export function validatePlayer(player) {
             if (!(slot in player.equipment)) issues.push(`equipment.${slot} is missing.`);
         }
     }
+    if (!isObject(player.inventoryState)) issues.push('inventoryState must be an object.');
+    if (isObject(player.inventoryState)) issues.push(...validateInventoryState(player.inventoryState).map((issue) => `inventoryState.${issue}`));
     if (!Array.isArray(player.inventory)) issues.push('inventory must be an array.');
+    if (player.inventoryState?.containers?.inventory && player.inventory !== player.inventoryState.containers.inventory.items) {
+        issues.push('inventory must reference inventoryState.containers.inventory.items.');
+    }
     if (!Array.isArray(player.statuses)) issues.push('statuses must be an array.');
 
+    return issues;
+}
+
+export function validateInventoryState(inventoryState) {
+    const issues = [];
+    if (!isObject(inventoryState.containers)) issues.push('containers must be an object.');
+    if (!isObject(inventoryState.mogHouse)) issues.push('mogHouse must be an object.');
+
+    for (const definition of listContainerDefinitions()) {
+        const container = inventoryState.containers?.[definition.id];
+        if (!container) {
+            issues.push(`containers.${definition.id} is missing.`);
+            continue;
+        }
+        if (!Array.isArray(container.items)) issues.push(`containers.${definition.id}.items must be an array.`);
+        if (typeof container.unlocked !== 'boolean') issues.push(`containers.${definition.id}.unlocked must be boolean.`);
+        if (Array.isArray(container.items) && container.items.length > getContainerCapacity(inventoryState, definition.id)) {
+            issues.push(`containers.${definition.id} exceeds capacity.`);
+        }
+    }
+
+    if (!Array.isArray(inventoryState.mogHouse?.placedFurniture)) issues.push('mogHouse.placedFurniture must be an array.');
+    if (typeof inventoryState.mogHouse?.isInMogHouse !== 'boolean') issues.push('mogHouse.isInMogHouse must be boolean.');
     return issues;
 }
 
