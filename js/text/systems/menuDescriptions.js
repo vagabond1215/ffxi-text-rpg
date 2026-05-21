@@ -4,11 +4,10 @@ import {
     RECOVERED_JOB_TRAITS,
     RECOVERED_WEAPON_SKILLS,
 } from '../data/legacyRecoveredData.js';
+import { describeEquipmentAndWardrobes } from './inventoryEngine.js';
 
 export function describeEquipment(state) {
-    const equipment = state.player?.equipment ?? {};
-    const lines = Object.entries(equipment).map(([slot, item]) => `- ${slot}: ${item?.name ?? item ?? 'empty'}`);
-    return ['Equipment:', ...(lines.length ? lines : ['- No equipment slots found.'])].join('\n');
+    return describeEquipmentAndWardrobes(state);
 }
 
 export function describeSpells(state) {
