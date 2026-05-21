@@ -11,6 +11,7 @@ import {
 import { parseCommand } from './commands/parser.js';
 import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
+import { describeMap, describeMaps } from './data/maps.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
 import { validateGameState } from './systems/validation.js';
@@ -33,6 +34,8 @@ const HELP_TEXT = [
     '  inventory            Show carried items.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
+    '  maps                 List known starter map records.',
+    '  map <id>             Inspect a starter map record.',
     '  zones                List known seeded places.',
     '  zone [id/name]       Inspect current or named zone.',
     '  atlas [id/name]      Show discovered zone atlas grids.',
@@ -79,6 +82,10 @@ export function createCommandRouter(state, services = {}) {
                 return describeNpcs(state);
             case 'enemies':
                 return describeEnemies(state);
+            case 'maps':
+                return describeMaps();
+            case 'map':
+                return describeMap(parsed.args.join(' '));
             case 'zones':
             case 'places':
                 return describePlaces();
@@ -186,6 +193,8 @@ function inspectTarget(state, target = 'player') {
         case 'enemies':
         case 'enemy':
             return describeEnemies(state);
+        case 'maps':
+            return describeMaps();
         case 'zone':
         case 'place':
             return describeLocation(state);
@@ -210,7 +219,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, maps, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
     }
 }
 
