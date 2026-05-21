@@ -7,82 +7,113 @@ import {
     describeNpcs,
     describeStats,
 } from './gameState.js';
+import { parseCommand } from './commands/parser.js';
+import { validateGameState } from './systems/validation.js';
 
 const HELP_TEXT = [
     'Available commands:',
-    '  help       Show this command list.',
-    '  look       Describe the current location.',
-    '  character  Show the current character summary.',
-    '  stats      Show attributes and derived combat stats.',
-    '  inventory  Show carried items.',
-    '  npcs       List loaded NPCs.',
-    '  enemies    List loaded enemies.',
-    '  log        Show recent command history.',
-    '  save       Save the current local game state.',
-    '  reset      Clear local save data and reload the page.',
+    '  help                 Show this command list.',
+    '  look                 Describe the current location.',
+    '  character            Show the current character summary.',
+    '  stats                Show attributes and derived combat stats.',
+    '  inventory            Show carried items.',
+    '  npcs                 List loaded NPCs.',
+    '  enemies              List loaded enemies.',
+    '  inspect <target>     Inspect player, npcs, enemies, state, or log.',
+    '  validate             Validate current game state.',
+    '  log                  Show recent command history.',
+    '  save                 Save the current local game state.',
+    '  reset                Clear local save data and reload the page.',
 ].join('\n');
 
 export function createCommandRouter(state, services = {}) {
-    const saveGame = services.saveGame ?? (() => {});
+    const saveGame = services.saveGame ?? (() => false);
+    const clearSave = services.clearSave ?? (() => window.localStorage?.removeItem('ffxiTextRpgSave'));
+    const reload = services.reload ?? (() => window.location.reload());
 
     return function routeCommand(rawCommand) {
-        const command = normalizeCommand(rawCommand);
-        if (!command) return '';
+        const parsed = parseCommand(rawCommand);
+        if (!parsed.command) return '';
 
-        appendLog(state, `> ${rawCommand}`);
+        appendLog(state, `> ${parsed.input}`);
 
-        switch (command) {
+        switch (parsed.command) {
             case 'help':
-            case '?':
                 return HELP_TEXT;
             case 'look':
-            case 'l':
                 return describeLocation(state);
             case 'character':
-            case 'char':
-            case 'status':
                 return describeCharacter(state);
             case 'stats':
-            case 'stat':
                 return describeStats(state);
             case 'inventory':
-            case 'inv':
-            case 'i':
                 return describeInventory(state);
             case 'npcs':
-            case 'npc':
                 return describeNpcs(state);
             case 'enemies':
-            case 'enemy':
                 return describeEnemies(state);
+            case 'inspect':
+                return inspectTarget(state, parsed.args[0]);
+            case 'validate':
+                return describeValidation(state);
             case 'log':
-                return describeLog(state);
+                return describeLog(state, parsed.args[0]);
             case 'save':
-                saveGame(state);
-                return 'Game saved locally.';
+                return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
             case 'reset':
-                window.localStorage?.removeItem('ffxiTextRpgSave');
-                window.location.reload();
+                clearSave();
+                reload();
                 return 'Resetting local save...';
             default:
-                return `Unknown command: ${rawCommand}\nType \"help\" for available commands.`;
+                return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
 }
 
-function normalizeCommand(rawCommand) {
-    return String(rawCommand ?? '')
-        .trim()
-        .toLowerCase();
+function inspectTarget(state, target = 'player') {
+    switch (String(target).toLowerCase()) {
+        case 'player':
+        case 'character':
+        case 'char':
+            return describeCharacter(state);
+        case 'stats':
+            return describeStats(state);
+        case 'inventory':
+        case 'inv':
+            return describeInventory(state);
+        case 'npcs':
+        case 'npc':
+            return describeNpcs(state);
+        case 'enemies':
+        case 'enemy':
+            return describeEnemies(state);
+        case 'state':
+            return JSON.stringify(state, null, 2);
+        case 'log':
+            return describeLog(state);
+        default:
+            return `Nothing to inspect for \"${target}\". Try: player, stats, inventory, npcs, enemies, state, log.`;
+    }
 }
 
-function describeLog(state) {
+function describeValidation(state) {
+    const issues = validateGameState(state);
+    if (!issues.length) return 'Game state is valid.';
+
+    return [
+        'Game state has validation issues:',
+        ...issues.map((issue) => `- ${issue}`),
+    ].join('\n');
+}
+
+function describeLog(state, limitArg = '20') {
     if (!state.log.length) {
         return 'No command history yet.';
     }
 
+    const limit = Math.max(1, Math.min(100, Number.parseInt(limitArg, 10) || 20));
     return state.log
-        .slice(-20)
+        .slice(-limit)
         .map((item) => `${item.at} ${item.entry}`)
         .join('\n');
 }
