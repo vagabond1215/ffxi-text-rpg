@@ -51,6 +51,7 @@ import {
     performPoiAction,
     talkAtCurrentGrid,
 } from './systems/poiEngine.js';
+import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
     describeHpMpGradeComparisons,
     describeInferredJobHpMpGrades,
@@ -84,6 +85,8 @@ const HELP_TEXT = [
     '  pois [zone]          List seeded POIs for current or named zone.',
     '  talk [name]          Talk/interact with a POI at this grid and discover it.',
     '  shop [name]          Use shop action at this grid where supported.',
+    '  buy <item>           Buy an item from the current shop POI into Inventory.',
+    '  sell <item>          Placeholder for future sell flow.',
     '  guild [name]         Use guild action at this grid where supported.',
     '  quest [name]         Use quest/mission action at this grid where supported.',
     '  discovered           List discovered POIs in this zone.',
@@ -183,6 +186,8 @@ export function createCommandRouter(state, services = {}) {
             case 'pois': return describePlacePois(parsed.args.join(' ') || state.currentPlaceId);
             case 'talk': return talkAtCurrentGrid(state, parsed.args.join(' '));
             case 'shop': return performPoiAction(state, 'shop', parsed.args.join(' '));
+            case 'buy': return buyFromCurrentShop(state, parsed.args.join(' '));
+            case 'sell': return sellToCurrentShop(state, parsed.args.join(' '));
             case 'guild': return performPoiAction(state, 'guild', parsed.args.join(' '));
             case 'quest': return performPoiAction(state, 'quest', parsed.args.join(' '));
             case 'storage': return performPoiAction(state, 'storage', parsed.args.join(' '));
