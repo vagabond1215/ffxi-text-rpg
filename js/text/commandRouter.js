@@ -8,7 +8,10 @@ import {
     describeStats,
 } from './gameState.js';
 import { parseCommand } from './commands/parser.js';
+import { describeDatabases } from './data/databaseRegistry.js';
 import { validateGameState } from './systems/validation.js';
+import { createTickEngine } from './systems/tickEngine.js';
+import { describeSystemVersions, describeVersion } from './version.js';
 
 const HELP_TEXT = [
     'Available commands:',
@@ -19,6 +22,10 @@ const HELP_TEXT = [
     '  inventory            Show carried items.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
+    '  databases            List planned/seeded/implemented data registries.',
+    '  version              Show app/save/data version tracking.',
+    '  systems              Show system version map.',
+    '  tick                 Inspect live tick engine baseline.',
     '  inspect <target>     Inspect player, npcs, enemies, state, or log.',
     '  validate             Validate current game state.',
     '  log                  Show recent command history.',
@@ -30,6 +37,7 @@ export function createCommandRouter(state, services = {}) {
     const saveGame = services.saveGame ?? (() => false);
     const clearSave = services.clearSave ?? (() => window.localStorage?.removeItem('ffxiTextRpgSave'));
     const reload = services.reload ?? (() => window.location.reload());
+    const tickEngine = services.tickEngine ?? createTickEngine();
 
     return function routeCommand(rawCommand) {
         const parsed = parseCommand(rawCommand);
@@ -52,6 +60,15 @@ export function createCommandRouter(state, services = {}) {
                 return describeNpcs(state);
             case 'enemies':
                 return describeEnemies(state);
+            case 'databases':
+            case 'db':
+                return describeDatabases();
+            case 'version':
+                return describeVersion();
+            case 'systems':
+                return describeSystemVersions();
+            case 'tick':
+                return tickEngine.describe();
             case 'inspect':
                 return inspectTarget(state, parsed.args[0]);
             case 'validate':
@@ -91,8 +108,15 @@ function inspectTarget(state, target = 'player') {
             return JSON.stringify(state, null, 2);
         case 'log':
             return describeLog(state);
+        case 'version':
+            return describeVersion();
+        case 'systems':
+            return describeSystemVersions();
+        case 'databases':
+        case 'db':
+            return describeDatabases();
         default:
-            return `Nothing to inspect for \"${target}\". Try: player, stats, inventory, npcs, enemies, state, log.`;
+            return `Nothing to inspect for \"${target}\". Try: player, stats, inventory, npcs, enemies, state, log, version, systems, databases.`;
     }
 }
 
