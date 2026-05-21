@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, travel scaffold, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Running
 
@@ -27,11 +27,15 @@ npm run check
 - `inventory` - show carried items
 - `npcs` - list loaded NPCs
 - `enemies` - list loaded enemies
+- `zones` - list known seeded places
+- `zone [id/name]` - inspect current or named zone
+- `travel <destination>` - start direct travel to a connected zone
+- `wait [seconds]` - manually advance time for travel/tick testing
 - `databases` - list planned/seeded/implemented data registries
 - `version` - show app/save/data/benchmark versions
 - `systems` - show per-system version tracking
 - `tick` - inspect the live tick engine baseline
-- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `state`, `log`, `version`, `systems`, or `databases`
+- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `zone`, `travel`, `state`, `log`, `version`, `systems`, or `databases`
 - `validate` - validate the current game state
 - `log [limit]` - show recent command history
 - `save` - save local state if validation passes
@@ -56,6 +60,7 @@ js/text/
   data/
     databaseRegistry.js
     jobs.js
+    places.js
     races.js
     seedEntities.js
     systemConstants.js
@@ -66,6 +71,7 @@ js/text/
     statEngine.js
     statusEngine.js
     tickEngine.js
+    travelEngine.js
     validation.js
 scripts/
   benchmark.js
@@ -73,6 +79,7 @@ tests/
   commandParser.test.js
   pipeline.test.js
   statEngine.test.js
+  travelEngine.test.js
 docs/
   ARCHITECTURE.md
   BASELINE_PIPELINE.md
@@ -90,6 +97,8 @@ docs/
 - Structured enemy entity.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
+- Seeded places and zone connections.
+- Direct travel engine with restrictions and manual time advancement.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Simple battle-state engine.
