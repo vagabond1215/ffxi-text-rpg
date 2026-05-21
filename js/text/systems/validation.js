@@ -1,4 +1,5 @@
-import { getPlace, isCoordinateInsidePlace } from '../data/places.js';
+import { getMap, listMaps } from '../data/maps.js';
+import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -34,6 +35,52 @@ export function validateGameState(state) {
     if (!Array.isArray(state.npcs)) issues.push('npcs must be an array.');
     if (!Array.isArray(state.enemies)) issues.push('enemies must be an array.');
     if (!Array.isArray(state.log)) issues.push('log must be an array.');
+
+    return issues;
+}
+
+export function validateWorldData() {
+    const issues = [];
+    const places = listPlaces();
+    const placeIds = new Set(places.map((place) => place.id));
+    const maps = listMaps();
+    const mapIds = new Set(maps.map((map) => map.id));
+
+    for (const place of places) {
+        if (!place.mapId) issues.push(`${place.id} is missing mapId.`);
+        if (place.mapId && !mapIds.has(place.mapId)) issues.push(`${place.id} references unknown map ${place.mapId}.`);
+        if (!isObject(place.coordinateSystem)) issues.push(`${place.id} is missing coordinateSystem.`);
+        if (place.coordinateSystem && !isCoordinateInsidePlace(place, place.coordinateSystem.start)) {
+            issues.push(`${place.id} start coordinate is outside its grid.`);
+        }
+        for (const rule of place.spawnRules ?? []) {
+            for (const key of rule.grids ?? []) {
+                const [x, y] = key.split(',').map(Number);
+                if (!isCoordinateInsidePlace(place, { x, y })) {
+                    issues.push(`${place.id} spawn ${rule.enemyId} references out-of-bounds grid ${key}.`);
+                }
+            }
+        }
+    }
+
+    for (const map of maps) {
+        for (const placeId of map.placeIds) {
+            if (!placeIds.has(placeId)) issues.push(`${map.id} references unknown place ${placeId}.`);
+        }
+    }
+
+    for (const connection of ZONE_CONNECTIONS) {
+        const from = getPlace(connection.from);
+        const to = getPlace(connection.to);
+        if (!from) issues.push(`${connection.id} has unknown from place ${connection.from}.`);
+        if (!to) issues.push(`${connection.id} has unknown to place ${connection.to}.`);
+        if (from && connection.departFrom && !isCoordinateInsidePlace(from, connection.departFrom)) {
+            issues.push(`${connection.id} departFrom is outside ${from.name}.`);
+        }
+        if (to && connection.arriveAt && !isCoordinateInsidePlace(to, connection.arriveAt)) {
+            issues.push(`${connection.id} arriveAt is outside ${to.name}.`);
+        }
+    }
 
     return issues;
 }
