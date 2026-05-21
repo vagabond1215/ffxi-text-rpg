@@ -1,6 +1,9 @@
+import { listGuildServices } from '../data/guildServices.js';
 import { getMap, listMaps } from '../data/maps.js';
 import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
-import { listPointsOfInterest } from '../data/pointsOfInterest.js';
+import { getPointOfInterest, listPointsOfInterest } from '../data/pointsOfInterest.js';
+import { listQuestHooks } from '../data/questHooks.js';
+import { listShopCatalogs } from '../data/shopCatalogs.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -96,6 +99,24 @@ export function validateWorldData() {
         if (!Array.isArray(poi.actions) || !poi.actions.length) {
             issues.push(`${poi.id} has no actions.`);
         }
+    }
+
+    for (const catalog of listShopCatalogs()) {
+        const poi = getPointOfInterest(catalog.poiId);
+        if (!poi) issues.push(`shop catalog ${catalog.name} references unknown POI ${catalog.poiId}.`);
+        if (poi && !poi.actions.includes('shop')) issues.push(`shop catalog ${catalog.name} references POI without shop action.`);
+    }
+
+    for (const guild of listGuildServices()) {
+        const poi = getPointOfInterest(guild.poiId);
+        if (!poi) issues.push(`guild service ${guild.name} references unknown POI ${guild.poiId}.`);
+        if (poi && !poi.actions.includes('guild')) issues.push(`guild service ${guild.name} references POI without guild action.`);
+    }
+
+    for (const hook of listQuestHooks()) {
+        const poi = getPointOfInterest(hook.poiId);
+        if (!poi) issues.push(`quest hook ${hook.name} references unknown POI ${hook.poiId}.`);
+        if (poi && !poi.actions.includes('quest')) issues.push(`quest hook ${hook.name} references POI without quest action.`);
     }
 
     return issues;
