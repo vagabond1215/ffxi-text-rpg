@@ -1,5 +1,6 @@
 import { describeFfxiMacroReference, findFfxiMacroCommand } from '../data/ffxiMacroCommands.js';
 import { describeEquipment, describeJobAbilities, describeSpells, describeWeaponSkills } from './menuDescriptions.js';
+import { castSpell, performPlayerAttack, performWeaponSkill } from './combatActionEngine.js';
 
 const COMMAND_ALIASES = Object.freeze({
     '/magic': '/ma',
@@ -22,13 +23,13 @@ export function routeFfxiSlashCommand(state, parsed) {
         case '/commands':
             return describeFfxiMacroReference();
         case '/ma':
-            return describeActionStub('Magic', parsed.args, '<t>', describeSpells(state));
+            return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
         case '/ja':
             return describeActionStub('Job Ability', parsed.args, '<me>', describeJobAbilities(state));
         case '/ws':
-            return describeActionStub('Weapon Skill', parsed.args, '<t>', describeWeaponSkills());
+            return performWeaponSkill(state, parsed.args[0] ?? 'Weapon Skill', parsed.args[1]);
         case '/ra':
-            return `Ranged attack queued against ${parsed.args[0] ?? '<t>'}. Combat execution is not implemented yet.`;
+            return `Ranged attack queued against ${parsed.args[0] ?? '<t>'}. Ranged combat is not implemented yet.`;
         case '/item':
             return describeActionStub('Item', parsed.args, '<me>', 'Item use will route through inventory and consumable systems later.');
         case '/equip':
@@ -45,7 +46,7 @@ export function routeFfxiSlashCommand(state, parsed) {
         case '/assist':
             return `Target command accepted: ${command} ${parsed.args.join(' ')}. Target state is not implemented yet.`.trim();
         case '/attack':
-            return `Attack command accepted against ${parsed.args[0] ?? '<t>'}. Battle targeting hookup is not implemented yet.`;
+            return performPlayerAttack(state, parsed.args[0]);
         case '/check':
             return `Check command requested for ${parsed.args[0] ?? '<t>'}. Detailed target inspection is not implemented yet.`;
         case '/echo':
