@@ -14,7 +14,7 @@ Status: mostly complete.
 
 ## Phase 1: Entity foundation
 
-Status: in progress.
+Status: mostly complete.
 
 - [x] Define player, NPC, and enemy entities.
 - [x] Define identity, job, equipment, wallet, progression, status, and combat containers.
@@ -22,9 +22,9 @@ Status: in progress.
 - [x] Add conservative stat engine.
 - [x] Add status engine.
 - [x] Add simple battle-state engine.
-- [ ] Add schema validation helpers.
+- [x] Add schema validation helpers.
+- [x] Add command parser with arguments instead of whole-command matching.
 - [ ] Add state migration/reset tooling.
-- [ ] Add command parser with arguments instead of whole-command matching.
 
 ## Phase 2: Character creation and inspection
 
