@@ -37,6 +37,16 @@ import {
     describeWeaponSkills,
 } from './systems/menuDescriptions.js';
 import {
+    describeDiscoveredPois,
+    describeCurrentPois,
+    describePlacePois,
+    describePoiSummary,
+    describeZoneFastTravelOptions,
+    fastTravelToPoi,
+    performPoiAction,
+    talkAtCurrentGrid,
+} from './systems/poiEngine.js';
+import {
     describeHpMpGradeComparisons,
     describeInferredJobHpMpGrades,
     describeJobStatGrades,
@@ -63,12 +73,17 @@ const HELP_TEXT = [
     '  nations              List available starting nations.',
     '  races                List available races.',
     '  jobs                 List available starting jobs.',
-    '  statFormula          Explain the FFXI-style stat grade formula model.',
-    '  raceGrades           Show race HP/MP/stat grades.',
-    '  jobGrades            Show known classic full job grades.',
-    '  hpmpGrades           Show inferred newer-job HP/MP grades.',
-    '  hpmpCompare          Compare HP/MP grade formula values by level.',
-    '  look                 Describe the current location.',
+    '  look                 Describe the current location, grid, and contextual POIs.',
+    '  here                 Show context-aware POIs/actions at the current grid.',
+    '  poi                  Summarize seeded POIs by zone.',
+    '  pois [zone]          List seeded POIs for current or named zone.',
+    '  talk [name]          Talk/interact with a POI at this grid and discover it.',
+    '  shop [name]          Use shop action at this grid where supported.',
+    '  guild [name]         Use guild action at this grid where supported.',
+    '  quest [name]         Use quest/mission action at this grid where supported.',
+    '  discovered           List discovered POIs in this zone.',
+    '  fastpoi <name>       Fast travel to a discovered POI in this same zone.',
+    '  zonefast             List known usable zone exits from current zone.',
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
     '  inventory            Show carried items.',
@@ -155,6 +170,18 @@ export function createCommandRouter(state, services = {}) {
             case 'hpmpgrades': return describeInferredJobHpMpGrades();
             case 'hpmpcompare': return describeHpMpGradeComparisons();
             case 'look': return describeLocation(state);
+            case 'here': return describeCurrentPois(state);
+            case 'poi': return describePoiSummary();
+            case 'pois': return describePlacePois(parsed.args.join(' ') || state.currentPlaceId);
+            case 'talk': return talkAtCurrentGrid(state, parsed.args.join(' '));
+            case 'shop': return performPoiAction(state, 'shop', parsed.args.join(' '));
+            case 'guild': return performPoiAction(state, 'guild', parsed.args.join(' '));
+            case 'quest': return performPoiAction(state, 'quest', parsed.args.join(' '));
+            case 'storage': return performPoiAction(state, 'storage', parsed.args.join(' '));
+            case 'trust': return performPoiAction(state, 'trust', parsed.args.join(' '));
+            case 'discovered': return describeDiscoveredPois(state);
+            case 'fastpoi': return fastTravelToPoi(state, parsed.args.join(' '));
+            case 'zonefast': return describeZoneFastTravelOptions(state);
             case 'character': return describeCharacter(state);
             case 'stats': return describeStats(state);
             case 'inventory':
@@ -312,6 +339,11 @@ function inspectTarget(state, target = 'player') {
         case 'hpmpgrades': return describeInferredJobHpMpGrades();
         case 'hpmpcompare': return describeHpMpGradeComparisons();
         case 'maps': return describeMaps();
+        case 'here': return describeCurrentPois(state);
+        case 'poi':
+        case 'pois': return describePlacePois(state.currentPlaceId);
+        case 'discovered': return describeDiscoveredPois(state);
+        case 'zonefast': return describeZoneFastTravelOptions(state);
         case 'zone':
         case 'place': return describeLocation(state);
         case 'atlas': return describeAtlas(state);
@@ -327,7 +359,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, statFormula, raceGrades, jobGrades, hpmpGrades, hpmpCompare, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
