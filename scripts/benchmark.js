@@ -1,9 +1,11 @@
 import { performance } from 'node:perf_hooks';
 
 import { createEnemy, createPlayerCharacter } from '../js/text/entities/entityFactory.js';
-import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
+import { createInitialState } from '../js/text/gameState.js';
 import { createBattleState, performBasicAttack } from '../js/text/systems/battleEngine.js';
+import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
 import { createTickEngine } from '../js/text/systems/tickEngine.js';
+import { findTravelRoute } from '../js/text/systems/travelEngine.js';
 import { describeVersion } from '../js/text/version.js';
 
 const BENCHMARKS = [
@@ -27,6 +29,10 @@ const BENCHMARKS = [
             tickEngine.subscribe(`subscriber-${index}`, () => {});
         }
         tickEngine.tick();
+    }),
+    benchmark('resolve 10,000 direct travel route lookups', 10000, () => {
+        const state = createInitialState();
+        findTravelRoute(state, 'West Ronfaure');
     }),
 ];
 
