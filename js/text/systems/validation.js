@@ -1,3 +1,4 @@
+import { getPlace } from '../data/places.js';
 import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -12,6 +13,10 @@ export function validateGameState(state) {
     if (state.version !== CURRENT_SAVE_VERSION) {
         issues.push(`Expected state version ${CURRENT_SAVE_VERSION}, received ${String(state.version)}.`);
     }
+
+    if (!state.currentPlaceId) issues.push('currentPlaceId is required.');
+    if (state.currentPlaceId && !getPlace(state.currentPlaceId)) issues.push(`currentPlaceId references unknown place ${state.currentPlaceId}.`);
+    if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
 
     if (!state.player) {
         issues.push('State is missing player.');
