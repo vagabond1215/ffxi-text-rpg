@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, travel scaffold, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, coordinate atlas, travel scaffold, text HUD/control metadata, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Running
 
@@ -21,7 +21,7 @@ npm run check
 ## Current commands
 
 - `help` - show command list
-- `look` - describe the current location
+- `look` - describe the current location and current grid
 - `character` - show the player summary
 - `stats` - show attributes and derived combat stats
 - `inventory` - show carried items
@@ -29,13 +29,17 @@ npm run check
 - `enemies` - list loaded enemies
 - `zones` - list known seeded places
 - `zone [id/name]` - inspect current or named zone
+- `atlas [id/name]` - show discovered zone atlas grids; unknown grids remain hidden as `?`
+- `grid` - inspect the current grid and known local spawn pressure
+- `move <direction>` - move within the current zone grid using `n`, `ne`, `e`, `se`, `s`, `sw`, `w`, or `nw`
+- `controls` - show resource bars, live tick bar, 8-way keypad, and action control groups
 - `travel <destination>` - start direct travel to a connected zone
 - `wait [seconds]` - manually advance time for travel/tick testing
 - `databases` - list planned/seeded/implemented data registries
 - `version` - show app/save/data/benchmark versions
 - `systems` - show per-system version tracking
 - `tick` - inspect the live tick engine baseline
-- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `zone`, `travel`, `state`, `log`, `version`, `systems`, or `databases`
+- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `zone`, `atlas`, `grid`, `travel`, `controls`, `state`, `log`, `version`, `systems`, or `databases`
 - `validate` - validate the current game state
 - `log [limit]` - show recent command history
 - `save` - save local state if validation passes
@@ -58,6 +62,7 @@ js/text/
   commands/
     parser.js
   data/
+    actionControls.js
     databaseRegistry.js
     jobs.js
     places.js
@@ -67,6 +72,8 @@ js/text/
   entities/
     entityFactory.js
   systems/
+    aggroEngine.js
+    atlasEngine.js
     battleEngine.js
     statEngine.js
     statusEngine.js
@@ -76,6 +83,7 @@ js/text/
 scripts/
   benchmark.js
 tests/
+  atlasAndControls.test.js
   commandParser.test.js
   pipeline.test.js
   statEngine.test.js
@@ -97,8 +105,12 @@ docs/
 - Structured enemy entity.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
-- Seeded places and zone connections.
-- Direct travel engine with restrictions and manual time advancement.
+- Seeded places, coordinate systems, and zone connections.
+- Zone atlas discovery where unvisited grids remain unknown until visited.
+- 8-way grid movement inside zones.
+- Foot-travel aggro risk scaffold based on grid spawn rules, spawn count, and aggro types.
+- Text HUD/control metadata for HP/MP/TP bars, live tick bar, 8-way nav keypad, and action groups.
+- Direct travel engine with restrictions, arrival coordinates, atlas recording, and manual time advancement.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Simple battle-state engine.
