@@ -1,18 +1,20 @@
 export const VERSION = Object.freeze({
-    app: '0.3.0',
+    app: '0.3.1',
     save: 2,
     data: 3,
     benchmark: 1,
-    codename: 'Starter City Map Foundation',
+    codename: 'Nation Start Foundation',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.0',
+    commandShell: '0.3.1',
     parser: '0.2.0',
     validation: '0.3.1',
-    playerEntity: '0.1.0',
+    playerEntity: '0.3.1',
+    characterCreation: '0.3.1',
+    nations: '0.3.1',
     npcEntity: '0.1.0',
     enemyEntity: '0.1.0',
     statEngine: '0.1.0',
