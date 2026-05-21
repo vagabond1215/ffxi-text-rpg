@@ -3,6 +3,7 @@ import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
 import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
+import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 
@@ -35,6 +36,7 @@ export function createNewGameState(options = {}) {
         location: startPlace.name,
         position: { placeId: startPlace.id, ...startCoordinate },
         atlas: createAtlasState(startPlace.id, startCoordinate),
+        discoveredPois: createPoiDiscoveryState(),
         travel: null,
         player,
         npcs: createSeedNpcs(),
@@ -64,6 +66,8 @@ export function describeLocation(state) {
         describePlace(currentPlaceId),
         '',
         describeCurrentGrid(state),
+        '',
+        describeCurrentPois(state),
         '',
         'Visible NPCs:',
         ...(npcsHere.length ? npcsHere : ['- None']),
