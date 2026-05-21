@@ -6,9 +6,13 @@ import {
     describeLocation,
     describeNpcs,
     describeStats,
+    moveWithinCurrentPlace,
 } from './gameState.js';
 import { parseCommand } from './commands/parser.js';
+import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
+import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
+import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
 import { validateGameState } from './systems/validation.js';
 import { createTickEngine } from './systems/tickEngine.js';
 import {
@@ -31,6 +35,10 @@ const HELP_TEXT = [
     '  enemies              List loaded enemies.',
     '  zones                List known seeded places.',
     '  zone [id/name]       Inspect current or named zone.',
+    '  atlas [id/name]      Show discovered zone atlas grids.',
+    '  grid                 Inspect current grid.',
+    '  move <dir>           Move within the current zone grid using n/ne/e/se/s/sw/w/nw.',
+    '  controls             Show resource bars, tick bar, keypad, and action groups.',
     '  travel <destination> Start direct travel to a connected zone.',
     '  wait [seconds]       Advance time manually for travel/tick testing.',
     '  databases            List planned/seeded/implemented data registries.',
@@ -77,6 +85,15 @@ export function createCommandRouter(state, services = {}) {
             case 'zone':
             case 'place':
                 return describePlace(parsed.args.join(' ') || state.currentPlaceId);
+            case 'atlas':
+                return describeAtlas(state, parsed.args.join(' ') || state.currentPlaceId);
+            case 'grid':
+                return describeCurrentGrid(state);
+            case 'move':
+                return describeMove(state, parsed.args[0]);
+            case 'controls':
+            case 'hud':
+                return describeControls();
             case 'travel':
                 return describeTravelStart(state, parsed.args.join(' '));
             case 'wait':
@@ -106,6 +123,24 @@ export function createCommandRouter(state, services = {}) {
                 return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
+}
+
+function describeMove(state, direction) {
+    if (!direction) return 'Move where? Use n, ne, e, se, s, sw, w, or nw.';
+    const nav = NAV_KEYPAD.find((item) => item.id === String(direction).toLowerCase());
+    if (!nav) return `Unknown direction: ${direction}. Use n, ne, e, se, s, sw, w, or nw.`;
+
+    const result = moveWithinCurrentPlace(state, nav);
+    if (!result.ok) return result.reason;
+
+    const aggro = evaluateAggroForGrid(state, { travelMode: 'foot' });
+    return [
+        result.message,
+        '',
+        describeCurrentGrid(state),
+        '',
+        describeAggroResult(aggro),
+    ].join('\n');
 }
 
 function describeTravelStart(state, destination) {
@@ -154,8 +189,15 @@ function inspectTarget(state, target = 'player') {
         case 'zone':
         case 'place':
             return describeLocation(state);
+        case 'atlas':
+            return describeAtlas(state);
+        case 'grid':
+            return describeCurrentGrid(state);
         case 'travel':
             return describeTravel(state);
+        case 'controls':
+        case 'hud':
+            return describeControls();
         case 'state':
             return JSON.stringify(state, null, 2);
         case 'log':
@@ -168,7 +210,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, zone, travel, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
     }
 }
 
