@@ -162,9 +162,7 @@ export function createCommandRouter(state, services = {}) {
             return result.message;
         }
 
-        if (isFfxiSlashCommand(parsed)) {
-            return routeFfxiSlashCommand(state, parsed);
-        }
+        if (isFfxiSlashCommand(parsed)) return routeFfxiSlashCommand(state, parsed);
 
         switch (parsed.command) {
             case 'help': return HELP_TEXT;
@@ -247,7 +245,7 @@ export function createCommandRouter(state, services = {}) {
             case 'log': return describeLog(state, parsed.args[0]);
             case 'save': return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
             case 'reset': clearSave(); reload(); return 'Resetting local save...';
-            default: return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
+            default: return `Unknown command: ${parsed.input}\nType "help" for available commands.`;
         }
     };
 }
@@ -412,4 +410,5 @@ function describeValidation(state) {
 function describeLog(state, limitArg = '20') {
     if (!state.log.length) return 'No command history yet.';
     const limit = Math.max(1, Math.min(100, Number.parseInt(limitArg, 10) || 20));
-    return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`,
+    return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`).join('\n');
+}
