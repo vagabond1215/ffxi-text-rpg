@@ -1,15 +1,15 @@
 export const VERSION = Object.freeze({
-    app: '0.3.2',
+    app: '0.3.3',
     save: 2,
     data: 3,
     benchmark: 1,
-    codename: 'Combat Action Foundation',
+    codename: 'Aggro Encounter Integration',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.2',
+    commandShell: '0.3.3',
     parser: '0.2.0',
     validation: '0.3.1',
     playerEntity: '0.3.1',
@@ -25,10 +25,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     maps: '0.3.1',
     zones: '0.3.1',
     zoneAtlas: '0.3.0',
-    gridMovement: '0.3.0',
+    gridMovement: '0.3.3',
     hudControls: '0.3.0',
-    aggro: '0.3.0',
-    travel: '0.3.1',
+    aggro: '0.3.3',
+    travel: '0.3.3',
     quests: 'planned',
     achievements: 'planned',
     items: 'planned',
