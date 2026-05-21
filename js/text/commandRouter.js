@@ -20,6 +20,15 @@ import { describeNations, findNation } from './data/nations.js';
 import { RACES } from './data/races.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
+import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
+import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
+import {
+    describeBestiary,
+    describeEquipment,
+    describeJobAbilities,
+    describeSpells,
+    describeWeaponSkills,
+} from './systems/menuDescriptions.js';
 import { validateGameState } from './systems/validation.js';
 import { createTickEngine } from './systems/tickEngine.js';
 import {
@@ -34,7 +43,9 @@ import { describeSystemVersions, describeVersion } from './version.js';
 const HELP_TEXT = [
     'Available commands:',
     '  help                 Show this command list.',
-    '  create --nation=<id> --race=<id> --job=<id> --name=<name>  Start a new character.',
+    '  create               Start prompt-based character creation.',
+    '  create --nation=<id> --race=<id> --sex=<id> --job=<id> --name=<name>  Fast-create a character.',
+    '  cancel               Cancel prompt-based character creation.',
     '  nations              List available starting nations.',
     '  races                List available races.',
     '  jobs                 List available starting jobs.',
@@ -42,6 +53,11 @@ const HELP_TEXT = [
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
     '  inventory            Show carried items.',
+    '  equipment            Show equipped gear slots.',
+    '  spells               Show known spell placeholder data.',
+    '  weaponSkills         Show recovered weapon skill source data.',
+    '  jobAbilities         Show recovered job abilities and traits for the current job.',
+    '  bestiary             Show recovered bestiary notes for the current zone.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
     '  maps                 List known starter map records.',
@@ -53,6 +69,9 @@ const HELP_TEXT = [
     '  move <dir>           Move within the current zone grid using n/ne/e/se/s/sw/w/nw.',
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
     '  recovered            Summarize useful data recovered from stale branches.',
+    '  /macrohelp           Show FFXI-style macro/text command reference.',
+    '  /ma /ja /ws /item    Accept FFXI-style action command forms as stubs.',
+    '  /equip /equipset     Accept FFXI-style equipment command forms as stubs.',
     '  travel <destination> Start direct travel to a connected zone.',
     '  wait [seconds]       Advance time manually for travel/tick testing.',
     '  databases            List planned/seeded/implemented data registries.',
@@ -71,6 +90,7 @@ export function createCommandRouter(state, services = {}) {
     const clearSave = services.clearSave ?? (() => window.localStorage?.removeItem('ffxiTextRpgSave'));
     const reload = services.reload ?? (() => window.location.reload());
     const tickEngine = services.tickEngine ?? createTickEngine();
+    let creator = null;
 
     return function routeCommand(rawCommand) {
         const parsed = parseCommand(rawCommand);
@@ -78,12 +98,33 @@ export function createCommandRouter(state, services = {}) {
 
         appendLog(state, `> ${parsed.input}`);
 
+        if (creator && !['cancel', 'help'].includes(parsed.command)) {
+            const result = handleCreatorInput(creator, parsed.input);
+            if (result.restart) creator = result.creator;
+            if (result.confirmed) {
+                const nextState = createNewGameState(result.answers);
+                replaceState(state, nextState);
+                creator = null;
+                return describeCreatedCharacter(state);
+            }
+            return result.message;
+        }
+
+        if (isFfxiSlashCommand(parsed)) {
+            return routeFfxiSlashCommand(state, parsed);
+        }
+
         switch (parsed.command) {
             case 'help':
                 return HELP_TEXT;
             case 'create':
             case 'new':
-                return describeCreateCharacter(state, parsed);
+                if (hasFastCreateArgs(parsed)) return describeCreateCharacter(state, parsed);
+                creator = createCreatorSession();
+                return renderCreatorPrompt(creator);
+            case 'cancel':
+                creator = null;
+                return 'Character creation cancelled.';
             case 'nations':
                 return describeNations();
             case 'races':
@@ -97,7 +138,25 @@ export function createCommandRouter(state, services = {}) {
             case 'stats':
                 return describeStats(state);
             case 'inventory':
+            case 'items':
                 return describeInventory(state);
+            case 'equipment':
+            case 'equip':
+                return describeEquipment(state);
+            case 'spells':
+            case 'magic':
+                return describeSpells(state);
+            case 'weaponskills':
+            case 'weaponSkills':
+            case 'ws':
+                return describeWeaponSkills();
+            case 'jobabilities':
+            case 'jobAbilities':
+            case 'abilities':
+            case 'ja':
+                return describeJobAbilities(state);
+            case 'bestiary':
+                return describeBestiary(state);
             case 'npcs':
                 return describeNpcs(state);
             case 'enemies':
@@ -155,6 +214,10 @@ export function createCommandRouter(state, services = {}) {
     };
 }
 
+function hasFastCreateArgs(parsed) {
+    return Object.keys(parsed.named).length > 0 || parsed.args.length > 0;
+}
+
 function describeCreateCharacter(state, parsed) {
     const nationQuery = parsed.named.nation ?? parsed.args[0] ?? 'sandoria';
     const nation = findNation(nationQuery);
@@ -169,7 +232,10 @@ function describeCreateCharacter(state, parsed) {
     });
 
     replaceState(state, nextState);
+    return describeCreatedCharacter(state);
+}
 
+function describeCreatedCharacter(state) {
     return [
         `Created ${state.player.identity.name}.`,
         describeCharacter(state),
@@ -181,14 +247,13 @@ function describeCreateCharacter(state, parsed) {
 
 function describeRaces() {
     return Object.values(RACES)
-        .map((race) => `${race.id} - ${race.name}: ${race.description}`)
+        .map((race, index) => `${index + 1}. ${race.id} - ${race.name}: ${race.description}`)
         .join('\n');
 }
 
 function describeJobs() {
-    return listJobs()
-        .filter((job) => job.unlockedByDefault)
-        .map((job) => `${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`)
+    return listStartingJobs()
+        .map((job, index) => `${index + 1}. ${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`)
         .join('\n');
 }
 
@@ -246,7 +311,23 @@ function inspectTarget(state, target = 'player') {
             return describeStats(state);
         case 'inventory':
         case 'inv':
+        case 'items':
             return describeInventory(state);
+        case 'equipment':
+        case 'equip':
+            return describeEquipment(state);
+        case 'spells':
+        case 'magic':
+            return describeSpells(state);
+        case 'weaponskills':
+        case 'ws':
+            return describeWeaponSkills();
+        case 'jobabilities':
+        case 'abilities':
+        case 'ja':
+            return describeJobAbilities(state);
+        case 'bestiary':
+            return describeBestiary(state);
         case 'npcs':
         case 'npc':
             return describeNpcs(state);
@@ -288,7 +369,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
