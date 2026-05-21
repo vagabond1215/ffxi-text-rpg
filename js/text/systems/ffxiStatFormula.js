@@ -52,7 +52,8 @@ export function calculateFfxiResources({ raceGrades, mainJobGrades, supportJobGr
     const raceHp = calculateRaceHp(raceGrades.hp, mainLevel);
     const jobHp = calculateJobHp(mainJobGrades.hp, mainLevel, mainJobId);
     const supportHp = calculateSupportJobHp(supportJobGrades?.hp, supportLevel, supportJobId);
-    const raceMp = calculateRaceMp(raceGrades.mp, mainLevel);
+    const hasMpSource = hasNativeMp(mainJobGrades.mp) || hasNativeMp(supportJobGrades?.mp);
+    const raceMp = hasMpSource ? calculateRaceMp(raceGrades.mp, mainLevel) : 0;
     const jobMp = calculateJobMp(mainJobGrades.mp, mainLevel, mainJobId);
     const supportMp = calculateSupportJobMp(supportJobGrades?.mp, supportLevel, supportJobId);
 
@@ -90,14 +91,14 @@ export function calculateRaceMp(grade, level) {
 }
 
 export function calculateJobMp(grade, level, jobId = null) {
-    if (isNoMpGrade(grade)) return 0;
+    if (!hasNativeMp(grade)) return 0;
     const scale = getGradeScale(grade);
     if (!scale) return 0;
     return scale.mpScale * (level - 1) + scale.mpBase + summonerMpBonus(jobId, level, false);
 }
 
 export function calculateSupportJobMp(grade, level, jobId = null) {
-    if (!grade || level <= 0 || isNoMpGrade(grade)) return 0;
+    if (!grade || level <= 0 || !hasNativeMp(grade)) return 0;
     const scale = getGradeScale(grade);
     if (!scale) return 0;
     return (scale.mpScale * (level - 1) + scale.mpBase) / 2 + summonerMpBonus(jobId, level, true);
@@ -117,6 +118,10 @@ export function calculateSupportJobStatus(grade, level) {
     if (!grade || level <= 0) return 0;
     const scale = requireGradeScale(grade, 'support job status');
     return (scale.statusScale * (level - 1) + scale.statusBase) / 2;
+}
+
+function hasNativeMp(grade) {
+    return Boolean(grade) && !isNoMpGrade(grade) && Boolean(getGradeScale(grade));
 }
 
 function requireGradeScale(grade, label) {
