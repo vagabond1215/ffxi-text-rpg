@@ -1,3 +1,4 @@
+import { getNation } from './data/nations.js';
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
 import { getPlace } from './data/places.js';
@@ -6,14 +7,27 @@ import { describePlace } from './systems/travelEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 
 export function createInitialState() {
-    const player = createPlayerCharacter({
-        name: 'Adventurer',
-        raceId: 'hume',
-        mainJobId: 'warrior',
-        level: 1,
-    });
-    const startPlace = getPlace('southern-sandoria');
+    return createNewGameState();
+}
+
+export function createNewGameState(options = {}) {
+    const nation = getNation(options.nationId);
+    const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
     const startCoordinate = startPlace.coordinateSystem.start;
+    const player = createPlayerCharacter({
+        name: options.name ?? 'Adventurer',
+        raceId: options.raceId ?? 'hume',
+        sex: options.sex,
+        mainJobId: options.mainJobId ?? 'warrior',
+        level: 1,
+        nation: nation.name,
+        startingCity: startPlace.name,
+        keyItems: [...nation.startingKeyItems],
+        progression: {
+            unlockedMaps: [...nation.startingMapIds],
+            unlockedHomePoints: [startPlace.id],
+        },
+    });
 
     return {
         version: 2,
@@ -30,6 +44,14 @@ export function createInitialState() {
         log: [],
         activeBattle: null,
     };
+}
+
+export function replaceState(target, nextState) {
+    for (const key of Object.keys(target)) {
+        delete target[key];
+    }
+    Object.assign(target, nextState);
+    return target;
 }
 
 export function describeLocation(state) {
