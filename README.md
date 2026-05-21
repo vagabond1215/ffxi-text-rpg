@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Running
 
@@ -10,10 +10,12 @@ Open `index.html` in a browser. No build step is required for the browser shell.
 
 ## Development
 
-Node 20+ is recommended for tests.
+Node 20+ is recommended for tests and benchmarks.
 
 ```bash
 npm test
+npm run benchmark
+npm run check
 ```
 
 ## Current commands
@@ -25,7 +27,11 @@ npm test
 - `inventory` - show carried items
 - `npcs` - list loaded NPCs
 - `enemies` - list loaded enemies
-- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `state`, or `log`
+- `databases` - list planned/seeded/implemented data registries
+- `version` - show app/save/data/benchmark versions
+- `systems` - show per-system version tracking
+- `tick` - inspect the live tick engine baseline
+- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `state`, `log`, `version`, `systems`, or `databases`
 - `validate` - validate the current game state
 - `log [limit]` - show recent command history
 - `save` - save local state if validation passes
@@ -44,9 +50,11 @@ js/text/
   gameState.js
   save.js
   textShell.js
+  version.js
   commands/
     parser.js
   data/
+    databaseRegistry.js
     jobs.js
     races.js
     seedEntities.js
@@ -57,14 +65,21 @@ js/text/
     battleEngine.js
     statEngine.js
     statusEngine.js
+    tickEngine.js
     validation.js
+scripts/
+  benchmark.js
 tests/
   commandParser.test.js
+  pipeline.test.js
   statEngine.test.js
 docs/
   ARCHITECTURE.md
-  ROADMAP.md
+  BASELINE_PIPELINE.md
   PIPELINE.md
+  RESEARCH_REFERENCES.md
+  ROADMAP.md
+  SYSTEM_CATALOG.md
 ```
 
 ## Implemented foundation
@@ -80,6 +95,10 @@ docs/
 - Conservative stat calculation engine.
 - Simple battle-state engine.
 - Status effect lifecycle engine.
+- Live tick engine scaffold.
+- Version manifest and system version tracking.
+- Database registry for enemies, NPCs, places, zones, travel, quests, achievements, items, key items, magic, loot, leveling, trusts, crafting, mounts, and tick channels.
+- Baseline benchmark harness.
 - Game-state validation helpers.
 - Safe save/load behavior that rejects incompatible local saves.
 - Seed NPCs and enemies.
@@ -97,10 +116,14 @@ Current formulas are conservative placeholders. They exist to make the architect
 - Preserve reusable legacy data only when it can be migrated cleanly.
 - Do not preserve backwards compatibility unless explicitly instructed.
 - Document every new engine, schema, or pipeline change.
+- Every major runtime system should have validation, tests, benchmark coverage, and version tracking.
 
 ## Planning documents
 
 - `docs/ARCHITECTURE.md`
-- `docs/ROADMAP.md`
+- `docs/BASELINE_PIPELINE.md`
 - `docs/PIPELINE.md`
+- `docs/RESEARCH_REFERENCES.md`
+- `docs/ROADMAP.md`
+- `docs/SYSTEM_CATALOG.md`
 - `CHANGELOG.md`
