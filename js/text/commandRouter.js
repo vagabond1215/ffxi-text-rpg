@@ -30,6 +30,11 @@ import {
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
 import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
 import {
+    describeContainerContents,
+    describeInventoryContainers,
+    setMogHouseAccess,
+} from './systems/inventoryEngine.js';
+import {
     describeBestiary,
     describeEquipment,
     describeJobAbilities,
@@ -87,7 +92,10 @@ const HELP_TEXT = [
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
     '  inventory            Show carried items.',
-    '  equipment            Show equipped gear slots.',
+    '  containers           Show all inventory/storage containers and access state.',
+    '  container <id>       Inspect a specific container.',
+    '  moghouse enter|leave Toggle Mog House access context for storage testing.',
+    '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show known spell placeholder data.',
     '  weaponSkills         Show recovered weapon skill source data.',
     '  jobAbilities         Show recovered job abilities and traits for the current job.',
@@ -186,6 +194,9 @@ export function createCommandRouter(state, services = {}) {
             case 'stats': return describeStats(state);
             case 'inventory':
             case 'items': return describeInventory(state);
+            case 'containers': return describeInventoryContainers(state);
+            case 'container': return describeContainerContents(state, parsed.args[0] ?? 'inventory');
+            case 'moghouse': return describeMogHouseCommand(state, parsed.args[0]);
             case 'equipment':
             case 'equip': return describeEquipment(state);
             case 'spells':
@@ -231,6 +242,13 @@ export function createCommandRouter(state, services = {}) {
             default: return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
+}
+
+function describeMogHouseCommand(state, action = 'status') {
+    const normalized = String(action).toLowerCase();
+    if (['enter', 'in', 'on'].includes(normalized)) return setMogHouseAccess(state, true).message;
+    if (['leave', 'exit', 'out', 'off'].includes(normalized)) return setMogHouseAccess(state, false).message;
+    return describeInventoryContainers(state);
 }
 
 function describeEncounterStart(state, enemyQuery) {
@@ -315,6 +333,8 @@ function inspectTarget(state, target = 'player') {
         case 'inventory':
         case 'inv':
         case 'items': return describeInventory(state);
+        case 'containers': return describeInventoryContainers(state);
+        case 'container': return describeContainerContents(state, 'inventory');
         case 'equipment':
         case 'equip': return describeEquipment(state);
         case 'spells':
@@ -359,7 +379,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
