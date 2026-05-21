@@ -1,0 +1,35 @@
+export const DATABASES = Object.freeze({
+    players: database('players', 'Player characters and account-local save state.', 'implemented', '0.1.0'),
+    npcs: database('npcs', 'Non-player characters, services, dialogue hooks, shops, quest givers.', 'seeded', '0.1.0'),
+    enemies: database('enemies', 'Enemy definitions, families, ecosystems, aggro rules, drops, EXP hooks.', 'seeded', '0.1.0'),
+    places: database('places', 'Continents, regions, zones, landmarks, cities, dungeons, interiors.', 'planned', '0.0.0'),
+    zoneConnections: database('zoneConnections', 'Graph edges between places including directionality, travel time, and restrictions.', 'planned', '0.0.0'),
+    travel: database('travel', 'Travel methods, movement rules, mounts, teleports, ferries, airships, home points.', 'planned', '0.0.0'),
+    quests: database('quests', 'Quest definitions, objectives, prerequisites, rewards, repeatability, flags.', 'planned', '0.0.0'),
+    achievements: database('achievements', 'Milestones, account/local accomplishments, titles, rewards.', 'planned', '0.0.0'),
+    items: database('items', 'Equipment, consumables, materials, tools, currencies-as-items where needed.', 'planned', '0.0.0'),
+    keyItems: database('keyItems', 'Persistent unlocks, permissions, quest objects, maps, licenses, mounts, trusts.', 'planned', '0.0.0'),
+    magic: database('magic', 'Spells, magic skills, costs, cast times, recasts, elements, targeting, effects.', 'planned', '0.0.0'),
+    abilities: database('abilities', 'Job abilities, traits, weapon skills, trust abilities, enemy abilities.', 'planned', '0.0.0'),
+    lootTables: database('lootTables', 'Drop pools, drop rates, treasure rules, currency drops, quest drops.', 'planned', '0.0.0'),
+    leveling: database('leveling', 'EXP curves, level caps, skill caps, job levels, limit breaks, merits/job points.', 'planned', '0.0.0'),
+    trusts: database('trusts', 'AI companion unlocks, behavior profiles, roles, spells, abilities, progression.', 'planned', '0.0.0'),
+    crafting: database('crafting', 'Recipes, crystals, ingredients, skill checks, HQ tiers, guild support.', 'planned', '0.0.0'),
+    mounts: database('mounts', 'Mount unlocks, travel modifiers, restrictions, zone permission rules.', 'planned', '0.0.0'),
+    statusEffects: database('statusEffects', 'Buffs, debuffs, food, songs, rolls, DoTs, regen/refresh/regain, KO states.', 'seeded', '0.1.0'),
+    ticks: database('ticks', 'Live tick subscriptions for combat, travel, magic, status effects, respawns, cooldowns.', 'planned', '0.0.0'),
+});
+
+export function listDatabases() {
+    return Object.values(DATABASES);
+}
+
+export function describeDatabases() {
+    return listDatabases()
+        .map((db) => `${db.id} [${db.status} ${db.version}] - ${db.description}`)
+        .join('\n');
+}
+
+function database(id, description, status, version) {
+    return Object.freeze({ id, description, status, version });
+}
