@@ -13,8 +13,13 @@ All notable reset-branch changes are tracked here.
 - Baseline benchmark harness for stat profile calculation, enemy profiles, battle attacks, tick dispatch, and direct travel route lookup.
 - Database registry covering players, NPCs, enemies, places, zone connections, travel, quests, achievements, items, key items, magic, abilities, loot, leveling, trusts, crafting, mounts, status effects, and ticks.
 - Live tick engine scaffold with subscriptions, manual ticks, start/stop, enabled state, and standard tick channels.
-- Seeded places and zone connections for early San d’Oria/Ronfaure travel testing.
-- Direct travel engine with connection lookup, restrictions, active travel state, manual time advancement, arrival handling, and zone descriptions.
+- Seeded places, coordinate grids, start coordinates, arrival coordinates, and zone connections for early San d’Oria/Ronfaure travel testing.
+- Zone atlas discovery where unvisited grids are unknown until visited and visited grids become visible through the atlas.
+- Text HUD/control metadata for HP/MP/TP resource bars, visual tick timer bar, 8-button navigation keypad, and action control groups.
+- Grid movement commands using 8-way navigation.
+- Foot-travel aggro scaffold based on grid spawn rules, spawn count, and aggro type such as sight or sound.
+- Seed aggressive enemies for grid-spawn testing.
+- Direct travel engine with connection lookup, restrictions, active travel state, manual time advancement, arrival coordinates, atlas recording, and zone descriptions.
 - Core constants for attributes, resources, elements, derived stats, skills, equipment slots, currencies, entity types, and status categories.
 - Race seed definitions for Hume, Elvaan, Tarutaru, Mithra, and Galka.
 - Job seed definitions for all standard FFXI player jobs through Rune Fencer.
@@ -24,18 +29,18 @@ All notable reset-branch changes are tracked here.
 - Status effect engine with apply/remove/advance behavior and basic tick support.
 - Game-state and entity validation helpers.
 - Seed NPCs and enemies for early command-shell verification.
-- `inspect <target>` command for player, stats, inventory, NPC, enemy, state, log, version, systems, database, zone, and travel inspection.
+- `inspect <target>` command for player, stats, inventory, NPC, enemy, state, log, version, systems, database, zone, atlas, grid, travel, and controls inspection.
 - `validate` command for current state validation.
-- `version`, `systems`, `databases`, `tick`, `zones`, `zone`, `travel`, and `wait` commands.
-- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, travel flow, and basic battle flow.
+- `version`, `systems`, `databases`, `tick`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, and `wait` commands.
+- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, travel flow, atlas discovery, controls, aggro checks, and basic battle flow.
 - Architecture, roadmap, baseline pipeline, system catalog, and research reference documents for the rebuild.
 
 ### Changed
 - Replaced the old graphical/menu-heavy entry path with a minimal text-first foundation.
-- Expanded command shell with `stats`, `npcs`, `enemies`, `inspect`, `validate`, `version`, `systems`, `databases`, `tick`, `zones`, `zone`, `travel`, and `wait` commands.
-- Rebuilt initial game state around structured player, NPC, enemy, place, and travel state.
+- Expanded command shell with `stats`, `npcs`, `enemies`, `inspect`, `validate`, `version`, `systems`, `databases`, `tick`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, and `wait` commands.
+- Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, and travel state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated package version to `0.2.0` and added `benchmark`, `bench`, and `check` scripts.
+- Updated app version to `0.3.0`, data version to `2`, and codename to `Coordinate Atlas Foundation`.
 - Consolidated pipeline documentation into `docs/BASELINE_PIPELINE.md`.
 
 ### Removed
