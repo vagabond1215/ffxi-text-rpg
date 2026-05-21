@@ -2,6 +2,7 @@ import { ATTRIBUTE_KEYS, DERIVED_STAT_KEYS, ELEMENT_KEYS, SKILL_KEYS, createZero
 import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
 import { calculateFfxiBaseProfile, canUseFfxiStatFormula } from './ffxiStatFormula.js';
+import { calculateInferredJobResources, canUseInferredJobResourceFormula } from './inferredJobResourceFormula.js';
 
 const BASE_ATTRIBUTE_VALUE = 6;
 const BASE_HP = 24;
@@ -34,6 +35,14 @@ export function calculateAttributes(entity, level = getEntityLevel(entity)) {
 export function calculateResources(entity, level = getEntityLevel(entity), attributes = calculateAttributes(entity, level), equipment = collectEquipmentModifiers(entity.equipment), statuses = collectStatusModifiers(entity.statuses)) {
     if (canUseFfxiStatFormula(entity)) {
         const base = calculateFfxiBaseProfile(entity).resources;
+        return {
+            maxHp: Math.max(1, base.maxHp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
+            maxMp: Math.max(0, base.maxMp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
+            maxTp: base.maxTp + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0),
+        };
+    }
+    if (canUseInferredJobResourceFormula(entity)) {
+        const base = calculateInferredJobResources(entity).resources;
         return {
             maxHp: Math.max(1, base.maxHp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
             maxMp: Math.max(0, base.maxMp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
