@@ -1,4 +1,5 @@
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
+import { setPositionAndDiscover } from './atlasEngine.js';
 
 export function describePlace(placeId) {
     const place = getPlace(placeId);
@@ -16,6 +17,7 @@ export function describePlace(placeId) {
         `Type: ${place.type}`,
         `Region: ${place.region}`,
         `Danger Level: ${place.dangerLevel}`,
+        `Grid: ${place.coordinateSystem.width}x${place.coordinateSystem.height}`,
         place.description,
         '',
         'Exits:',
@@ -25,7 +27,7 @@ export function describePlace(placeId) {
 
 export function describePlaces() {
     return listPlaces()
-        .map((place) => `${place.id} - ${place.name} [${place.type}, danger ${place.dangerLevel}]`)
+        .map((place) => `${place.id} - ${place.name} [${place.type}, danger ${place.dangerLevel}, grid ${place.coordinateSystem.width}x${place.coordinateSystem.height}]`)
         .join('\n');
 }
 
@@ -75,6 +77,7 @@ export function startTravel(state, destinationQuery) {
         mode: route.connection.mode,
         totalSeconds: route.connection.travelSeconds,
         remainingSeconds: route.connection.travelSeconds,
+        arriveAt: route.connection.arriveAt ?? route.destination.coordinateSystem.start,
     };
 
     return {
@@ -93,16 +96,22 @@ export function advanceTravel(state, elapsedSeconds) {
     }
 
     const destination = getPlace(state.travel.to);
-    state.currentPlaceId = state.travel.to;
-    state.location = destination?.name ?? state.travel.to;
     const completed = state.travel;
+    const arrival = completed.arriveAt ?? destination?.coordinateSystem.start ?? { x: 0, y: 0 };
+    if (destination) {
+        setPositionAndDiscover(state, destination.id, arrival, { important: ['Zone arrival'] });
+    } else {
+        state.currentPlaceId = completed.to;
+        state.location = completed.to;
+        state.position = { placeId: completed.to, ...arrival };
+    }
     state.travel = null;
 
     return {
         completed: true,
         travel: completed,
         destination,
-        message: `Arrived at ${destination?.name ?? completed.to}.`,
+        message: `Arrived at ${destination?.name ?? completed.to} grid (${arrival.x}, ${arrival.y}).`,
     };
 }
 
@@ -113,6 +122,7 @@ export function describeTravel(state) {
         `Traveling to ${destination?.name ?? state.travel.to}.`,
         `Mode: ${state.travel.mode}`,
         `Remaining: ${state.travel.remainingSeconds}/${state.travel.totalSeconds}s`,
+        `Arrival Grid: (${state.travel.arriveAt?.x ?? '?'}, ${state.travel.arriveAt?.y ?? '?'})`,
     ].join('\n');
 }
 
