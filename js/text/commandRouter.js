@@ -1,5 +1,6 @@
 import {
     appendLog,
+    createNewGameState,
     describeCharacter,
     describeEnemies,
     describeInventory,
@@ -7,11 +8,15 @@ import {
     describeNpcs,
     describeStats,
     moveWithinCurrentPlace,
+    replaceState,
 } from './gameState.js';
 import { parseCommand } from './commands/parser.js';
 import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
+import { listJobs } from './data/jobs.js';
 import { describeMap, describeMaps } from './data/maps.js';
+import { describeNations, findNation } from './data/nations.js';
+import { RACES } from './data/races.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
 import { validateGameState } from './systems/validation.js';
@@ -28,6 +33,10 @@ import { describeSystemVersions, describeVersion } from './version.js';
 const HELP_TEXT = [
     'Available commands:',
     '  help                 Show this command list.',
+    '  create --nation=<id> --race=<id> --job=<id> --name=<name>  Start a new character.',
+    '  nations              List available starting nations.',
+    '  races                List available races.',
+    '  jobs                 List available starting jobs.',
     '  look                 Describe the current location.',
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
@@ -70,6 +79,15 @@ export function createCommandRouter(state, services = {}) {
         switch (parsed.command) {
             case 'help':
                 return HELP_TEXT;
+            case 'create':
+            case 'new':
+                return describeCreateCharacter(state, parsed);
+            case 'nations':
+                return describeNations();
+            case 'races':
+                return describeRaces();
+            case 'jobs':
+                return describeJobs();
             case 'look':
                 return describeLocation(state);
             case 'character':
@@ -130,6 +148,43 @@ export function createCommandRouter(state, services = {}) {
                 return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
+}
+
+function describeCreateCharacter(state, parsed) {
+    const nationQuery = parsed.named.nation ?? parsed.args[0] ?? 'sandoria';
+    const nation = findNation(nationQuery);
+    if (!nation) return `Unknown nation: ${nationQuery}. Try: nations`;
+
+    const nextState = createNewGameState({
+        nationId: nation.id,
+        raceId: parsed.named.race ?? 'hume',
+        sex: parsed.named.sex,
+        mainJobId: parsed.named.job ?? parsed.named.mainJob ?? 'warrior',
+        name: parsed.named.name ?? 'Adventurer',
+    });
+
+    replaceState(state, nextState);
+
+    return [
+        `Created ${state.player.identity.name}.`,
+        describeCharacter(state),
+        '',
+        'Starting maps:',
+        ...state.player.progression.unlockedMaps.map((mapId) => `- ${mapId}`),
+    ].join('\n');
+}
+
+function describeRaces() {
+    return Object.values(RACES)
+        .map((race) => `${race.id} - ${race.name}: ${race.description}`)
+        .join('\n');
+}
+
+function describeJobs() {
+    return listJobs()
+        .filter((job) => job.unlockedByDefault)
+        .map((job) => `${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`)
+        .join('\n');
 }
 
 function describeMove(state, direction) {
@@ -193,6 +248,12 @@ function inspectTarget(state, target = 'player') {
         case 'enemies':
         case 'enemy':
             return describeEnemies(state);
+        case 'nations':
+            return describeNations();
+        case 'races':
+            return describeRaces();
+        case 'jobs':
+            return describeJobs();
         case 'maps':
             return describeMaps();
         case 'zone':
@@ -219,7 +280,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, maps, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, state, log, version, systems, databases.`;
     }
 }
 
