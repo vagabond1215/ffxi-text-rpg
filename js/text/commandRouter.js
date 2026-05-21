@@ -13,7 +13,6 @@ import {
 import { parseCommand } from './commands/parser.js';
 import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
-import { listJobs } from './data/jobs.js';
 import { describeLegacyRecoveredData } from './data/legacyRecoveredData.js';
 import { describeMap, describeMaps } from './data/maps.js';
 import { describeNations, findNation } from './data/nations.js';
@@ -29,6 +28,13 @@ import {
     describeSpells,
     describeWeaponSkills,
 } from './systems/menuDescriptions.js';
+import {
+    describeHpMpGradeComparisons,
+    describeInferredJobHpMpGrades,
+    describeJobStatGrades,
+    describeRaceStatGrades,
+    describeStatFormulaOverview,
+} from './systems/statFormulaDescriptions.js';
 import { validateGameState } from './systems/validation.js';
 import { createTickEngine } from './systems/tickEngine.js';
 import {
@@ -49,6 +55,11 @@ const HELP_TEXT = [
     '  nations              List available starting nations.',
     '  races                List available races.',
     '  jobs                 List available starting jobs.',
+    '  statFormula          Explain the FFXI-style stat grade formula model.',
+    '  raceGrades           Show race HP/MP/stat grades.',
+    '  jobGrades            Show known classic full job grades.',
+    '  hpmpGrades           Show inferred newer-job HP/MP grades.',
+    '  hpmpCompare          Compare HP/MP grade formula values by level.',
     '  look                 Describe the current location.',
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
@@ -115,101 +126,64 @@ export function createCommandRouter(state, services = {}) {
         }
 
         switch (parsed.command) {
-            case 'help':
-                return HELP_TEXT;
+            case 'help': return HELP_TEXT;
             case 'create':
             case 'new':
                 if (hasFastCreateArgs(parsed)) return describeCreateCharacter(state, parsed);
                 creator = createCreatorSession();
                 return renderCreatorPrompt(creator);
-            case 'cancel':
-                creator = null;
-                return 'Character creation cancelled.';
-            case 'nations':
-                return describeNations();
-            case 'races':
-                return describeRaces();
-            case 'jobs':
-                return describeJobs();
-            case 'look':
-                return describeLocation(state);
-            case 'character':
-                return describeCharacter(state);
-            case 'stats':
-                return describeStats(state);
+            case 'cancel': creator = null; return 'Character creation cancelled.';
+            case 'nations': return describeNations();
+            case 'races': return describeRaces();
+            case 'jobs': return describeJobs();
+            case 'statformula': return describeStatFormulaOverview();
+            case 'racegrades': return describeRaceStatGrades();
+            case 'jobgrades': return describeJobStatGrades();
+            case 'hpmpgrades': return describeInferredJobHpMpGrades();
+            case 'hpmpcompare': return describeHpMpGradeComparisons();
+            case 'look': return describeLocation(state);
+            case 'character': return describeCharacter(state);
+            case 'stats': return describeStats(state);
             case 'inventory':
-            case 'items':
-                return describeInventory(state);
+            case 'items': return describeInventory(state);
             case 'equipment':
-            case 'equip':
-                return describeEquipment(state);
+            case 'equip': return describeEquipment(state);
             case 'spells':
-            case 'magic':
-                return describeSpells(state);
+            case 'magic': return describeSpells(state);
             case 'weaponskills':
-            case 'weaponSkills':
-            case 'ws':
-                return describeWeaponSkills();
+            case 'ws': return describeWeaponSkills();
             case 'jobabilities':
-            case 'jobAbilities':
             case 'abilities':
-            case 'ja':
-                return describeJobAbilities(state);
-            case 'bestiary':
-                return describeBestiary(state);
-            case 'npcs':
-                return describeNpcs(state);
-            case 'enemies':
-                return describeEnemies(state);
-            case 'maps':
-                return describeMaps();
-            case 'map':
-                return describeMap(parsed.args.join(' '));
+            case 'ja': return describeJobAbilities(state);
+            case 'bestiary': return describeBestiary(state);
+            case 'npcs': return describeNpcs(state);
+            case 'enemies': return describeEnemies(state);
+            case 'maps': return describeMaps();
+            case 'map': return describeMap(parsed.args.join(' '));
             case 'zones':
-            case 'places':
-                return describePlaces();
+            case 'places': return describePlaces();
             case 'zone':
-            case 'place':
-                return describePlace(parsed.args.join(' ') || state.currentPlaceId);
-            case 'atlas':
-                return describeAtlas(state, parsed.args.join(' ') || state.currentPlaceId);
-            case 'grid':
-                return describeCurrentGrid(state);
-            case 'move':
-                return describeMove(state, parsed.args[0]);
+            case 'place': return describePlace(parsed.args.join(' ') || state.currentPlaceId);
+            case 'atlas': return describeAtlas(state, parsed.args.join(' ') || state.currentPlaceId);
+            case 'grid': return describeCurrentGrid(state);
+            case 'move': return describeMove(state, parsed.args[0]);
             case 'controls':
-            case 'hud':
-                return describeControls();
+            case 'hud': return describeControls();
             case 'recovered':
-            case 'legacy':
-                return describeLegacyRecoveredData();
-            case 'travel':
-                return describeTravelStart(state, parsed.args.join(' '));
-            case 'wait':
-                return describeWait(state, tickEngine, parsed.args[0]);
+            case 'legacy': return describeLegacyRecoveredData();
+            case 'travel': return describeTravelStart(state, parsed.args.join(' '));
+            case 'wait': return describeWait(state, tickEngine, parsed.args[0]);
             case 'databases':
-            case 'db':
-                return describeDatabases();
-            case 'version':
-                return describeVersion();
-            case 'systems':
-                return describeSystemVersions();
-            case 'tick':
-                return tickEngine.describe();
-            case 'inspect':
-                return inspectTarget(state, parsed.args[0]);
-            case 'validate':
-                return describeValidation(state);
-            case 'log':
-                return describeLog(state, parsed.args[0]);
-            case 'save':
-                return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
-            case 'reset':
-                clearSave();
-                reload();
-                return 'Resetting local save...';
-            default:
-                return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
+            case 'db': return describeDatabases();
+            case 'version': return describeVersion();
+            case 'systems': return describeSystemVersions();
+            case 'tick': return tickEngine.describe();
+            case 'inspect': return inspectTarget(state, parsed.args[0]);
+            case 'validate': return describeValidation(state);
+            case 'log': return describeLog(state, parsed.args[0]);
+            case 'save': return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
+            case 'reset': clearSave(); reload(); return 'Resetting local save...';
+            default: return `Unknown command: ${parsed.input}\nType \"help\" for available commands.`;
         }
     };
 }
@@ -236,43 +210,25 @@ function describeCreateCharacter(state, parsed) {
 }
 
 function describeCreatedCharacter(state) {
-    return [
-        `Created ${state.player.identity.name}.`,
-        describeCharacter(state),
-        '',
-        'Starting maps:',
-        ...state.player.progression.unlockedMaps.map((mapId) => `- ${mapId}`),
-    ].join('\n');
+    return [`Created ${state.player.identity.name}.`, describeCharacter(state), '', 'Starting maps:', ...state.player.progression.unlockedMaps.map((mapId) => `- ${mapId}`)].join('\n');
 }
 
 function describeRaces() {
-    return Object.values(RACES)
-        .map((race, index) => `${index + 1}. ${race.id} - ${race.name}: ${race.description}`)
-        .join('\n');
+    return Object.values(RACES).map((race, index) => `${index + 1}. ${race.id} - ${race.name}: ${race.description}`).join('\n');
 }
 
 function describeJobs() {
-    return listStartingJobs()
-        .map((job, index) => `${index + 1}. ${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`)
-        .join('\n');
+    return listStartingJobs().map((job, index) => `${index + 1}. ${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`).join('\n');
 }
 
 function describeMove(state, direction) {
     if (!direction) return 'Move where? Use n, ne, e, se, s, sw, w, or nw.';
     const nav = NAV_KEYPAD.find((item) => item.id === String(direction).toLowerCase());
     if (!nav) return `Unknown direction: ${direction}. Use n, ne, e, se, s, sw, w, or nw.`;
-
     const result = moveWithinCurrentPlace(state, nav);
     if (!result.ok) return result.reason;
-
     const aggro = evaluateAggroForGrid(state, { travelMode: 'foot' });
-    return [
-        result.message,
-        '',
-        describeCurrentGrid(state),
-        '',
-        describeAggroResult(aggro),
-    ].join('\n');
+    return [result.message, '', describeCurrentGrid(state), '', describeAggroResult(aggro)].join('\n');
 }
 
 function describeTravelStart(state, destination) {
@@ -285,112 +241,69 @@ function describeWait(state, tickEngine, secondsArg = '1') {
     const seconds = Math.max(1, Math.min(3600, Number.parseInt(secondsArg, 10) || 1));
     tickEngine.tick({ state, manual: true, seconds });
     const travelResult = advanceTravel(state, seconds);
-
-    if (travelResult.completed) {
-        return [
-            `Advanced ${seconds}s.`,
-            travelResult.message,
-            '',
-            describeLocation(state),
-        ].join('\n');
-    }
-
-    return [
-        `Advanced ${seconds}s.`,
-        describeTravel(state),
-    ].join('\n');
+    if (travelResult.completed) return [`Advanced ${seconds}s.`, travelResult.message, '', describeLocation(state)].join('\n');
+    return [`Advanced ${seconds}s.`, describeTravel(state)].join('\n');
 }
 
 function inspectTarget(state, target = 'player') {
     switch (String(target).toLowerCase()) {
         case 'player':
         case 'character':
-        case 'char':
-            return describeCharacter(state);
-        case 'stats':
-            return describeStats(state);
+        case 'char': return describeCharacter(state);
+        case 'stats': return describeStats(state);
         case 'inventory':
         case 'inv':
-        case 'items':
-            return describeInventory(state);
+        case 'items': return describeInventory(state);
         case 'equipment':
-        case 'equip':
-            return describeEquipment(state);
+        case 'equip': return describeEquipment(state);
         case 'spells':
-        case 'magic':
-            return describeSpells(state);
+        case 'magic': return describeSpells(state);
         case 'weaponskills':
-        case 'ws':
-            return describeWeaponSkills();
+        case 'ws': return describeWeaponSkills();
         case 'jobabilities':
         case 'abilities':
-        case 'ja':
-            return describeJobAbilities(state);
-        case 'bestiary':
-            return describeBestiary(state);
+        case 'ja': return describeJobAbilities(state);
+        case 'bestiary': return describeBestiary(state);
         case 'npcs':
-        case 'npc':
-            return describeNpcs(state);
+        case 'npc': return describeNpcs(state);
         case 'enemies':
-        case 'enemy':
-            return describeEnemies(state);
-        case 'nations':
-            return describeNations();
-        case 'races':
-            return describeRaces();
-        case 'jobs':
-            return describeJobs();
-        case 'maps':
-            return describeMaps();
+        case 'enemy': return describeEnemies(state);
+        case 'nations': return describeNations();
+        case 'races': return describeRaces();
+        case 'jobs': return describeJobs();
+        case 'statformula': return describeStatFormulaOverview();
+        case 'racegrades': return describeRaceStatGrades();
+        case 'jobgrades': return describeJobStatGrades();
+        case 'hpmpgrades': return describeInferredJobHpMpGrades();
+        case 'hpmpcompare': return describeHpMpGradeComparisons();
+        case 'maps': return describeMaps();
         case 'zone':
-        case 'place':
-            return describeLocation(state);
-        case 'atlas':
-            return describeAtlas(state);
-        case 'grid':
-            return describeCurrentGrid(state);
-        case 'travel':
-            return describeTravel(state);
+        case 'place': return describeLocation(state);
+        case 'atlas': return describeAtlas(state);
+        case 'grid': return describeCurrentGrid(state);
+        case 'travel': return describeTravel(state);
         case 'controls':
-        case 'hud':
-            return describeControls();
+        case 'hud': return describeControls();
         case 'recovered':
-        case 'legacy':
-            return describeLegacyRecoveredData();
-        case 'state':
-            return JSON.stringify(state, null, 2);
-        case 'log':
-            return describeLog(state);
-        case 'version':
-            return describeVersion();
-        case 'systems':
-            return describeSystemVersions();
+        case 'legacy': return describeLegacyRecoveredData();
+        case 'state': return JSON.stringify(state, null, 2);
+        case 'log': return describeLog(state);
+        case 'version': return describeVersion();
+        case 'systems': return describeSystemVersions();
         case 'databases':
-        case 'db':
-            return describeDatabases();
-        default:
-            return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, npcs, enemies, nations, races, jobs, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        case 'db': return describeDatabases();
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, equipment, spells, weaponSkills, jobAbilities, bestiary, npcs, enemies, nations, races, jobs, statFormula, raceGrades, jobGrades, hpmpGrades, hpmpCompare, maps, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
 function describeValidation(state) {
     const issues = validateGameState(state);
     if (!issues.length) return 'Game state is valid.';
-
-    return [
-        'Game state has validation issues:',
-        ...issues.map((issue) => `- ${issue}`),
-    ].join('\n');
+    return ['Game state has validation issues:', ...issues.map((issue) => `- ${issue}`)].join('\n');
 }
 
 function describeLog(state, limitArg = '20') {
-    if (!state.log.length) {
-        return 'No command history yet.';
-    }
-
+    if (!state.log.length) return 'No command history yet.';
     const limit = Math.max(1, Math.min(100, Number.parseInt(limitArg, 10) || 20));
-    return state.log
-        .slice(-limit)
-        .map((item) => `${item.at} ${item.entry}`)
-        .join('\n');
+    return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`).join('\n');
 }
