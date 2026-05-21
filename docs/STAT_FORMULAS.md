@@ -24,19 +24,52 @@ Derived combat stats such as attack, defense, accuracy, evasion, magic attack, a
 
 The source model is grade-based rather than a direct final-stat table.
 
-Each race has grades for HP, MP, and attributes. Each job also has grades for HP, MP, and attributes. Grades `A` through `G` map to scale/base rows in `FFXI_GRADE_SCALES`.
+Each race has grades for HP, MP, and attributes. Each classic job also has grades for HP, MP, and attributes. Grades `A` through `G` map to scale/base rows in `FFXI_GRADE_SCALES`.
 
 Data lives in:
 
 - `js/text/data/ffxiStatGrades.js`
+- `js/text/data/ffxiInferredJobGrades.js`
 
 Formula logic lives in:
 
 - `js/text/systems/ffxiStatFormula.js`
+- `js/text/systems/inferredJobResourceFormula.js`
 
-The main stat engine consumes that formula in:
+The main stat engine consumes those formulas in:
 
 - `js/text/systems/statEngine.js`
+
+## Classic Jobs vs Newer Jobs
+
+Classic jobs with full HP/MP/attribute grades use the full FFXI stat formula.
+
+Newer jobs currently use a partial resource model:
+
+- BLU, COR, PUP, DNC, SCH, GEO, and RUN have inferred HP/MP grades.
+- Their HP/MP can use the FFXI HP/MP formula through `inferredJobResourceFormula.js`.
+- Their STR/DEX/VIT/AGI/INT/MND/CHR grades are still unknown.
+- Until full attribute grades are sourced, their attributes use the local provisional fallback in `statEngine.js`.
+
+This is intentional. Do not promote inferred HP/MP data into full job grades unless the missing attribute grades are sourced.
+
+## Newer-Job HP/MP Inference
+
+The newer-job HP/MP inference is based on comparing FFXIclopedia HP and MP ranking groups against known classic grades.
+
+Current inferred HP/MP data:
+
+```text
+BLU: HP D, MP D, high confidence
+COR: HP D, MP X, high confidence
+PUP: HP D, MP X, high confidence
+DNC: HP D, MP X, high confidence
+SCH: HP E, MP D, high confidence
+GEO: HP F, MP C, medium confidence / provisional
+RUN: HP B, MP F, high confidence
+```
+
+GEO remains more provisional than the others because the HP source snapshot does not provide the same direct comparison for GEO, and the MP source marks GEO verification as needed.
 
 ## MP Grade `X`
 
@@ -130,4 +163,5 @@ Next high-value checks:
 
 - Cross-check level 1, 10, 30, and 50 race/job pairs against known examples.
 - Add support-job UI and tests once subjobs are selectable.
-- Add remaining post-launch jobs only after reliable grade data is found for them.
+- Find reliable full attribute grades for BLU, COR, PUP, DNC, SCH, GEO, and RUN before promoting them to full formula jobs.
+- Verify GEO HP/MP with stronger primary examples if possible.
