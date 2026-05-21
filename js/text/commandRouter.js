@@ -1,8 +1,11 @@
 import {
     appendLog,
     describeCharacter,
+    describeEnemies,
     describeInventory,
     describeLocation,
+    describeNpcs,
+    describeStats,
 } from './gameState.js';
 
 const HELP_TEXT = [
@@ -10,7 +13,10 @@ const HELP_TEXT = [
     '  help       Show this command list.',
     '  look       Describe the current location.',
     '  character  Show the current character summary.',
+    '  stats      Show attributes and derived combat stats.',
     '  inventory  Show carried items.',
+    '  npcs       List loaded NPCs.',
+    '  enemies    List loaded enemies.',
     '  log        Show recent command history.',
     '  save       Save the current local game state.',
     '  reset      Clear local save data and reload the page.',
@@ -36,10 +42,19 @@ export function createCommandRouter(state, services = {}) {
             case 'char':
             case 'status':
                 return describeCharacter(state);
+            case 'stats':
+            case 'stat':
+                return describeStats(state);
             case 'inventory':
             case 'inv':
             case 'i':
                 return describeInventory(state);
+            case 'npcs':
+            case 'npc':
+                return describeNpcs(state);
+            case 'enemies':
+            case 'enemy':
+                return describeEnemies(state);
             case 'log':
                 return describeLog(state);
             case 'save':
