@@ -11,6 +11,13 @@ import { parseCommand } from './commands/parser.js';
 import { describeDatabases } from './data/databaseRegistry.js';
 import { validateGameState } from './systems/validation.js';
 import { createTickEngine } from './systems/tickEngine.js';
+import {
+    advanceTravel,
+    describePlace,
+    describePlaces,
+    describeTravel,
+    startTravel,
+} from './systems/travelEngine.js';
 import { describeSystemVersions, describeVersion } from './version.js';
 
 const HELP_TEXT = [
@@ -22,6 +29,10 @@ const HELP_TEXT = [
     '  inventory            Show carried items.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
+    '  zones                List known seeded places.',
+    '  zone [id/name]       Inspect current or named zone.',
+    '  travel <destination> Start direct travel to a connected zone.',
+    '  wait [seconds]       Advance time manually for travel/tick testing.',
     '  databases            List planned/seeded/implemented data registries.',
     '  version              Show app/save/data version tracking.',
     '  systems              Show system version map.',
@@ -60,6 +71,16 @@ export function createCommandRouter(state, services = {}) {
                 return describeNpcs(state);
             case 'enemies':
                 return describeEnemies(state);
+            case 'zones':
+            case 'places':
+                return describePlaces();
+            case 'zone':
+            case 'place':
+                return describePlace(parsed.args.join(' ') || state.currentPlaceId);
+            case 'travel':
+                return describeTravelStart(state, parsed.args.join(' '));
+            case 'wait':
+                return describeWait(state, tickEngine, parsed.args[0]);
             case 'databases':
             case 'db':
                 return describeDatabases();
@@ -87,6 +108,32 @@ export function createCommandRouter(state, services = {}) {
     };
 }
 
+function describeTravelStart(state, destination) {
+    if (!destination) return 'Travel where? Try `zones` to see known places.';
+    const result = startTravel(state, destination);
+    return result.ok ? result.message : result.reason;
+}
+
+function describeWait(state, tickEngine, secondsArg = '1') {
+    const seconds = Math.max(1, Math.min(3600, Number.parseInt(secondsArg, 10) || 1));
+    tickEngine.tick({ state, manual: true, seconds });
+    const travelResult = advanceTravel(state, seconds);
+
+    if (travelResult.completed) {
+        return [
+            `Advanced ${seconds}s.`,
+            travelResult.message,
+            '',
+            describeLocation(state),
+        ].join('\n');
+    }
+
+    return [
+        `Advanced ${seconds}s.`,
+        describeTravel(state),
+    ].join('\n');
+}
+
 function inspectTarget(state, target = 'player') {
     switch (String(target).toLowerCase()) {
         case 'player':
@@ -104,6 +151,11 @@ function inspectTarget(state, target = 'player') {
         case 'enemies':
         case 'enemy':
             return describeEnemies(state);
+        case 'zone':
+        case 'place':
+            return describeLocation(state);
+        case 'travel':
+            return describeTravel(state);
         case 'state':
             return JSON.stringify(state, null, 2);
         case 'log':
@@ -116,7 +168,7 @@ function inspectTarget(state, target = 'player') {
         case 'db':
             return describeDatabases();
         default:
-            return `Nothing to inspect for \"${target}\". Try: player, stats, inventory, npcs, enemies, state, log, version, systems, databases.`;
+            return `Nothing to inspect for "${target}". Try: player, stats, inventory, npcs, enemies, zone, travel, state, log, version, systems, databases.`;
     }
 }
 
