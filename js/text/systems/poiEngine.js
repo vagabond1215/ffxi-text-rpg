@@ -7,6 +7,9 @@ import {
     getPointOfInterest,
     getPoisForPlace,
 } from '../data/pointsOfInterest.js';
+import { describeGuildServiceForPoi } from '../data/guildServices.js';
+import { describeQuestHookForPoi } from '../data/questHooks.js';
+import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 
@@ -86,13 +89,13 @@ export function describePoiInteraction(state, poi, action) {
 
     switch (action) {
         case 'shop':
-            lines.push('Shop inventory is not implemented yet. This POI is ready for vendor data.');
+            lines.push('', describeShopCatalogForPoi(poi));
             break;
         case 'guild':
-            lines.push('Guild services are not implemented yet. This POI is ready for crafting/guild hooks.');
+            lines.push('', describeGuildServiceForPoi(poi));
             break;
         case 'quest':
-            lines.push('Quest state is not implemented yet. This POI is ready for quest hooks.');
+            lines.push('', describeQuestHookForPoi(poi));
             break;
         case 'travel':
             lines.push('Travel service behavior is not implemented yet unless this is a zone connection.');
