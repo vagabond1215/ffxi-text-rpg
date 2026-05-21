@@ -76,7 +76,6 @@ tests/
 docs/
   ARCHITECTURE.md
   BASELINE_PIPELINE.md
-  PIPELINE.md
   RESEARCH_REFERENCES.md
   ROADMAP.md
   SYSTEM_CATALOG.md
@@ -122,7 +121,6 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 - `docs/ARCHITECTURE.md`
 - `docs/BASELINE_PIPELINE.md`
-- `docs/PIPELINE.md`
 - `docs/RESEARCH_REFERENCES.md`
 - `docs/ROADMAP.md`
 - `docs/SYSTEM_CATALOG.md`
