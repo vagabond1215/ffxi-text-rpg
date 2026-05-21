@@ -7,7 +7,9 @@
     --muted: #a8adba;
     --accent: #d7c27a;
     --danger: #e08a8a;
+    --good: #8bd39b;
     --input: #0a0c10;
+    --bar-bg: #090b10;
 }
 
 * {
@@ -45,23 +47,104 @@ button:focus-visible {
     border-color: var(--accent);
 }
 
-.text-shell {
+.app-shell {
     min-height: 100vh;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    gap: 1rem;
     padding: 1rem;
 }
 
+.character-sidebar,
 .terminal-panel {
-    width: min(100%, 960px);
+    border: 1px solid var(--panel-border);
+    background: var(--panel);
+}
+
+.character-sidebar {
+    min-height: calc(100vh - 2rem);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
+}
+
+.sidebar-section {
+    border: 1px solid var(--panel-border);
+    background: #10141d;
+    padding: 0.75rem;
+}
+
+.sidebar-section h2,
+.sidebar-section h3 {
+    margin: 0 0 0.5rem;
+    color: var(--accent);
+}
+
+.character-name {
+    font-size: 1.25rem;
+}
+
+.sidebar-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--muted);
+}
+
+.sidebar-line strong {
+    color: var(--text);
+    font-weight: 400;
+}
+
+.bar-block {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.meter {
+    width: 100%;
+    height: 0.75rem;
+    border: 1px solid var(--panel-border);
+    background: var(--bar-bg);
+    overflow: hidden;
+}
+
+.meter-fill {
+    display: block;
+    height: 100%;
+    width: var(--value, 0%);
+    background: linear-gradient(90deg, #6f7f5f, var(--accent));
+}
+
+.sidebar-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.sidebar-menu button {
+    padding: 0.45rem;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.terminal-panel {
     min-height: calc(100vh - 2rem);
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    border: 1px solid var(--panel-border);
-    background: var(--panel);
+    min-width: 0;
 }
 
 .terminal-header {
@@ -131,17 +214,25 @@ h1 {
     color: var(--text);
 }
 
-@media (max-width: 640px) {
-    .text-shell {
+@media (max-width: 900px) {
+    .app-shell {
+        grid-template-columns: 1fr;
         padding: 0;
     }
 
+    .character-sidebar,
     .terminal-panel {
-        min-height: 100vh;
+        min-height: auto;
         border-left: 0;
         border-right: 0;
     }
 
+    .character-sidebar {
+        max-height: none;
+    }
+}
+
+@media (max-width: 640px) {
     .command-row {
         grid-template-columns: auto 1fr;
     }
