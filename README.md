@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, coordinate atlas, travel scaffold, text HUD/control metadata, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Running
 
@@ -27,6 +27,8 @@ npm run check
 - `inventory` - show carried items
 - `npcs` - list loaded NPCs
 - `enemies` - list loaded enemies
+- `maps` - list known starter map records
+- `map <id>` - inspect a starter map record
 - `zones` - list known seeded places
 - `zone [id/name]` - inspect current or named zone
 - `atlas [id/name]` - show discovered zone atlas grids; unknown grids remain hidden as `?`
@@ -39,7 +41,7 @@ npm run check
 - `version` - show app/save/data/benchmark versions
 - `systems` - show per-system version tracking
 - `tick` - inspect the live tick engine baseline
-- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `zone`, `atlas`, `grid`, `travel`, `controls`, `state`, `log`, `version`, `systems`, or `databases`
+- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `maps`, `zone`, `atlas`, `grid`, `travel`, `controls`, `state`, `log`, `version`, `systems`, or `databases`
 - `validate` - validate the current game state
 - `log [limit]` - show recent command history
 - `save` - save local state if validation passes
@@ -65,6 +67,7 @@ js/text/
     actionControls.js
     databaseRegistry.js
     jobs.js
+    maps.js
     places.js
     races.js
     seedEntities.js
@@ -105,12 +108,14 @@ docs/
 - Structured enemy entity.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
-- Seeded places, coordinate systems, and zone connections.
+- Three starter city clusters: San d’Oria, Bastok, and Windurst.
+- Starter city maps, starter region maps, and starter dungeon-hook maps.
+- Seeded places, coordinate systems, map IDs, connection grids, and zone connections.
 - Zone atlas discovery where unvisited grids remain unknown until visited.
 - 8-way grid movement inside zones.
 - Foot-travel aggro risk scaffold based on grid spawn rules, spawn count, and aggro types.
 - Text HUD/control metadata for HP/MP/TP bars, live tick bar, 8-way nav keypad, and action groups.
-- Direct travel engine with restrictions, arrival coordinates, atlas recording, and manual time advancement.
+- Direct travel engine with restrictions, departure coordinates, arrival coordinates, atlas recording, and manual time advancement.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Simple battle-state engine.
@@ -119,7 +124,7 @@ docs/
 - Version manifest and system version tracking.
 - Database registry for enemies, NPCs, places, zones, travel, quests, achievements, items, key items, magic, loot, leveling, trusts, crafting, mounts, and tick channels.
 - Baseline benchmark harness.
-- Game-state validation helpers.
+- Game-state and world-data validation helpers.
 - Safe save/load behavior that rejects incompatible local saves.
 - Seed NPCs and enemies.
 - Node test harness using the built-in `node:test` runner.
