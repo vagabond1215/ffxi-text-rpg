@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { createInitialState } from '../js/text/gameState.js';
 import {
     classifyCommandFeedback,
     renderCharacterCards,
     renderCommandChips,
     renderMainMenuPanel,
+    renderTopBar,
 } from '../js/text/uiPanels.js';
 
 test('renderMainMenuPanel exposes primary slash commands', () => {
@@ -30,6 +32,17 @@ test('renderCharacterCards shows empty state and load buttons', () => {
     const html = renderCharacterCards([{ index: 2, name: 'Tester', race: 'Hume', job: 'Warrior', level: 1, nation: 'San d’Oria', location: 'Southern San d’Oria' }]);
     assert.match(html, /Tester/);
     assert.match(html, /data-command="\/load 2"/);
+});
+
+test('renderTopBar exposes identity status and quick actions', () => {
+    const state = createInitialState();
+    const html = renderTopBar(state, { kind: 'success', message: 'Character saved.' });
+
+    assert.match(html, /FFXI/);
+    assert.match(html, /Adventurer/);
+    assert.match(html, /Character saved\./);
+    assert.match(html, /data-command="\/menu"/);
+    assert.match(html, /data-command="\/save"/);
 });
 
 test('classifyCommandFeedback identifies success error and info responses', () => {
