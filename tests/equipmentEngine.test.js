@@ -218,6 +218,7 @@ test('enrichEquipmentItem ignores malformed runtime list fields without spreadin
         latentEffects: 'latentEffect',
         enchantments: 'enchantment',
         augments: 'augment',
+        requirements: 'bad-requirements',
     });
     const objectMalformed = enrichEquipmentItem({
         ...bronzeSword(),
@@ -225,15 +226,19 @@ test('enrichEquipmentItem ignores malformed runtime list fields without spreadin
         latentEffects: { id: 'bad-latent' },
         enchantments: { id: 'bad-enchantment' },
         augments: { id: 'bad-augment' },
+        requirements: { allowedJobs: { job: 'whiteMage' }, allowedRaces: 'hume' },
     });
 
     assert.deepEqual(stringMalformed.allowedSlots, ['mainHand', 'offHand']);
     assert.equal(stringMalformed.allowedSlots.includes('o'), false);
+    assert.deepEqual(stringMalformed.requirements.allowedJobs, ['warrior', 'redMage', 'paladin']);
     assert.deepEqual(stringMalformed.latentEffects, []);
     assert.deepEqual(stringMalformed.enchantments, []);
     assert.deepEqual(stringMalformed.augments, []);
     assert.deepEqual(objectMalformed.allowedSlots, ['mainHand']);
     assert.equal(objectMalformed.allowedSlots.includes('[object Object]'), false);
+    assert.deepEqual(objectMalformed.requirements.allowedJobs, ['warrior', 'redMage', 'paladin']);
+    assert.deepEqual(objectMalformed.requirements.allowedRaces, ['hume']);
     assert.deepEqual(objectMalformed.latentEffects, []);
     assert.deepEqual(objectMalformed.enchantments, []);
     assert.deepEqual(objectMalformed.augments, []);

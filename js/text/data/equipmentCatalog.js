@@ -138,8 +138,8 @@ export function enrichEquipmentItem(item) {
     const alreadyEnriched = isCatalogEnrichedItem(item, entry);
     const requirements = alreadyEnriched
         ? runtimeItem.requirements
-        : hasExplicitRequirements(item.requirements)
-        ? normalizeRequirements({ ...entry.requirements, ...item.requirements })
+        : hasExplicitRequirements(runtimeItem.requirements)
+        ? mergeRequirements(entry.requirements, runtimeItem.requirements)
         : entry.requirements;
     const allowedSlots = alreadyEnriched
         ? runtimeItem.allowedSlots
@@ -277,6 +277,22 @@ function hasExplicitRequirements(requirements = null) {
         'requiredKeyItems',
         'requiredQuestFlags',
     ].some((key) => Array.isArray(requirements[key]) && requirements[key].length > 0);
+}
+
+function mergeRequirements(baseRequirements, runtimeRequirements) {
+    const base = normalizeRequirements(baseRequirements);
+    const runtime = normalizeRequirements(runtimeRequirements);
+    return normalizeRequirements({
+        ...base,
+        minLevel: runtime.minLevel > 1 ? runtime.minLevel : base.minLevel,
+        allowedJobs: runtime.allowedJobs.length ? runtime.allowedJobs : base.allowedJobs,
+        allowedRaces: runtime.allowedRaces.length ? runtime.allowedRaces : base.allowedRaces,
+        allowedSexes: runtime.allowedSexes.length ? runtime.allowedSexes : base.allowedSexes,
+        requiredNations: runtime.requiredNations.length ? runtime.requiredNations : base.requiredNations,
+        requiredFame: runtime.requiredFame.length ? runtime.requiredFame : base.requiredFame,
+        requiredKeyItems: runtime.requiredKeyItems.length ? runtime.requiredKeyItems : base.requiredKeyItems,
+        requiredQuestFlags: runtime.requiredQuestFlags.length ? runtime.requiredQuestFlags : base.requiredQuestFlags,
+    });
 }
 
 function isCatalogEnrichedItem(item, entry) {
