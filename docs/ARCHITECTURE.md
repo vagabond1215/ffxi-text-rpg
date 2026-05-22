@@ -114,6 +114,7 @@ js/text/
     races.js
     seedEntities.js
     shopCatalogs.js
+    skillCaps.js
     systemConstants.js
 
   entities/
@@ -209,7 +210,15 @@ The equipment engine owns:
 - unequipping to valid containers
 - source/destination capacity checks
 - slot inference from item metadata or tags
+- eligibility checks for equipment kind, allowed slot, main-job level, allowed jobs, allowed races, simple sex/nation/key-item/quest requirements, two-handed/offhand conflicts, and ranged/ammo slot constraints
+- text-first item inspection for accessible inventory, wardrobe, and equipped items
 - safe replacement behavior
+
+Equipment catalog entries are static templates. Runtime inventory records remain item instances with quantity, source, and future instance-specific fields. Template-sensitive fields such as weapon delay, requirements, modifiers, and starter eligibility carry confidence/source metadata and should not be treated as exact retail data unless marked that way.
+
+### Skill caps
+
+`js/text/data/skillCaps.js` owns the current sparse skill rank/cap scaffold. It exposes `getSkillCap(jobId, skillId, level)` and `getEffectiveSkill(player, skillId)` for future combat and magic integration. The cap formula is explicitly placeholder metadata, so battle and command handlers should not bake it in as exact FFXI behavior.
 
 ### POI engine
 

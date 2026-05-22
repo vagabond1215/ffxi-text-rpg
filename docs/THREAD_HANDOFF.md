@@ -38,7 +38,7 @@ Current state at handoff:
 App/package: 0.4.1
 Account Save: 3
 Game State: 2
-Data: 9
+Data: 12
 Codename: Slash UI Account Saves
 ```
 
@@ -49,15 +49,22 @@ slashCommands: 0.4.1
 accountSaves: 0.4.1
 saveEncoding: 0.4.1
 statEngine: 0.4.0
-equipmentCommands: 0.4.0
-equipmentCatalog: 0.4.0
+equipmentCommands: 0.5.0
+equipmentEligibility: 0.5.0
+itemInspection: 0.5.0
+equipmentCatalog: 0.6.0
 inventoryContainers: 0.5.1
 inventoryTransfers: 0.5.1
-itemSchema: 0.5.1
+itemSchema: 0.6.0
 itemStacking: 0.5.1
+skillCaps: 0.5.0
 battleEngine: 0.5.0
 combatActions: 0.5.0
-battleRewards: 0.5.0
+battleRewards: 0.5.2
+progression: 0.5.3
+expTables: 0.5.2
+jobSwitching: 0.5.3
+leveling: 0.5.3
 loot: 0.5.0
 shops/shopTransactions: 0.3.7
 pois/poiDiscovery/poiFastTravel: 0.3.4
@@ -98,6 +105,8 @@ Gameplay examples:
 /look
 /stats
 /inventory
+/item Bronze Sword
+/inspect item Bronze Sword
 /equipment
 /containers
 /container inventory
@@ -259,6 +268,7 @@ Files:
 ```text
 js/text/data/itemSchema.js
 js/text/data/inventoryContainers.js
+js/text/data/skillCaps.js
 js/text/data/mogHouseFurniture.js
 js/text/systems/inventoryEngine.js
 ```
@@ -285,9 +295,10 @@ Rules:
 - Satchel/Sack/Case exist but are locked by default.
 - Wardrobe 1 is unlocked by default, equipment-only, accessible anywhere.
 - Wardrobes 2-8 exist but are locked by default.
-- Item normalization adds kind, quantity, stackable, maxStack, tags, source, flags, modifiers, and equipmentSlot fields.
+- Item normalization adds kind, quantity, stackable, maxStack, tags, source, template metadata, family/archetype/subtype, requirements, flags, effects, latent/enchantment/augment scaffolds, charges, modifiers, and equipmentSlot/allowedSlots fields.
 - Stackable consumables/materials/misc items merge into existing stacks when possible.
 - Container transfers are atomic and enforce source access, destination access, capacity, item-kind, and stack rules.
+- Sparse skill rank/cap helpers exist for later combat and magic skill progression.
 
 Temporary limitation: Mog House is currently a boolean access context, not a real zone/interior yet.
 
@@ -307,9 +318,11 @@ Implemented:
 - unequip to valid destination container
 - replacement gear returns safely
 - slot inference from `equipmentSlot` or tags
+- eligibility validation by job, race, level, allowed slot, two-handed/offhand conflicts, and ranged/ammo slot constraints
+- `item <query>` and `inspect item <query>` for text-first item template/runtime inspection
 - starter equipment modifiers affect combat profile
 
-Starter gear bonuses are conservative placeholders, not exact FFXI formulas. Equipment validation by job/race/level is still pending.
+Starter gear bonuses, eligibility, and delay values are conservative placeholders or intentional simplifications, not exact FFXI formulas.
 
 ### Combat, rewards, and actions
 
@@ -338,10 +351,10 @@ Implemented:
 
 Not implemented yet:
 
-- EXP tables and level-up rules
 - enemy AI turn depth
 - death/KO flow
 - real magic/recast/cast-time integration
+- combat/magic skill-up pacing and skill-cap use in damage or magic formulas
 
 ## Important tests
 
@@ -349,11 +362,13 @@ Not implemented yet:
 tests/saveAccount.test.js
 tests/slashCommandRouter.test.js
 tests/equipmentEngine.test.js
+tests/equipmentValidation.test.js
 tests/inventoryEngine.test.js
 tests/itemSchema.test.js
 tests/rewardEngine.test.js
 tests/rngEngine.test.js
 tests/shopEngine.test.js
+tests/skillCaps.test.js
 tests/poiEngine.test.js
 tests/travelEngine.test.js
 tests/atlasAndControls.test.js
@@ -385,13 +400,13 @@ docs/RESEARCH_REFERENCES.md
 
 ## Current recommended next pass
 
-The next best implementation pass is progression:
+The next best implementation pass is combat/skill integration:
 
-1. Add EXP table data and level-up rules.
-2. Update player/job progression containers when rewards grant EXP.
-3. Refresh HP/MP/resources and EXP-to-next after level-up.
-4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
-5. Update README, THREAD_HANDOFF, CHANGELOG, version map, and benchmark coverage if progression logic becomes runtime-heavy.
+1. Add current combat/magic skill state without changing the cap schema.
+2. Add isolated skill-gain hooks, but avoid random pacing until the rule is tested and confidence-labeled.
+3. Decide how skill caps feed combat and magic formulas before touching battle command handlers.
+4. Add item behavior modules for latent effects, enchantments, charges, ranged/ammo, and sell restrictions.
+5. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.
 
 ## Rules for future agents
 

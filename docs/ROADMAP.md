@@ -94,9 +94,10 @@ Status: starter framework implemented.
 - [x] New full item schema foundation.
 - [x] Inventory stack handling.
 - [ ] Key item schema for unlocks and permissions.
-- [ ] Equipment validation by job/race/level.
-- [ ] Item flags: rare, exclusive, key item, no sell, latent, enchantment, charges.
-- [ ] Item command inspection.
+- [x] Equipment validation by job/race/level.
+- [x] Item flag/effect schema foundation: rare, exclusive, key item, no sell, latent, enchantment, charges.
+- [x] Item command inspection.
+- [ ] Runtime behavior for latent effects, enchantments, charges, ranged/ammo, and restricted selling.
 - [ ] Selling and vendor restrictions.
 
 ## Phase 5: Leveling, skills, and progression
@@ -108,9 +109,10 @@ Target: 0.5.x.
 - [x] HP/MP/resource refresh after level-up.
 - [x] EXP-to-next tracking.
 - [x] Level-cap behavior.
-- [ ] Job-level state for all jobs beyond current main-job sync.
+- [x] Job-level state for all unlocked jobs with per-job EXP.
 - [ ] Level cap / limit break placeholders beyond simple cap enforcement.
-- [ ] Combat and magic skill caps.
+- [x] Combat and magic skill cap data-helper foundation.
+- [ ] Wire combat and magic skill caps into formulas and runtime state.
 - [ ] Skill gain hooks.
 - [ ] Progression flags for maps, teleport points, mounts, trusts, quests, missions, achievements.
 
@@ -210,9 +212,9 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-The next best implementation pass is job-level/progression depth:
+The next best implementation pass is combat/skill integration depth:
 
-1. Add per-job EXP and level state for all unlocked jobs.
-2. Add job switching rules that preserve each job's level/EXP.
-3. Add equipment validation by job/level before expanding loot gear.
-4. Add tests for job switch, job-specific EXP, and equipment eligibility.
+1. Add current combat/magic skill state and isolated skill-gain hooks.
+2. Wire skill caps into combat and magic formulas only after confidence labels are explicit.
+3. Implement item behavior rules for latent effects, enchantments, charges, ranged/ammo, and selling restrictions.
+4. Add validation/tests for any new item behavior before expanding loot tables.

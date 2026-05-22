@@ -1,6 +1,31 @@
 export const DEFAULT_LEVEL_CAP = 50;
 export const ABSOLUTE_LEVEL_CAP = 99;
 
+export const EXP_GUIDE_SOURCE = Object.freeze({
+    id: 'exp-guide-scaffold',
+    confidence: 'placeholder',
+    caveat: 'EXP con ranks, chain bonuses, and base rewards are scaffold values until sourced tables are migrated.',
+});
+
+export const EXP_CON_RANKS = Object.freeze({
+    TOO_WEAK: 'tooWeak',
+    EASY_PREY: 'easyPrey',
+    DECENT_CHALLENGE: 'decentChallenge',
+    EVEN_MATCH: 'evenMatch',
+    TOUGH: 'tough',
+    VERY_TOUGH: 'veryTough',
+    INCREDIBLY_TOUGH: 'incrediblyTough',
+});
+
+export const EXP_CHAIN_BONUS_PERCENT = Object.freeze({
+    0: 0,
+    1: 20,
+    2: 25,
+    3: 30,
+    4: 40,
+    5: 50,
+});
+
 export const EXP_TABLE_SOURCE = Object.freeze({
     kind: 'conservative-placeholder',
     caveat: 'Starter EXP thresholds are intentionally simplified and testable, not final retail FFXI math.',

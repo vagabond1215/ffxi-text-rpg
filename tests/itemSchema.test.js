@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import { createInitialState } from '../js/text/gameState.js';
 import { addItemToContainer, describeContainerContents, transferItemBetweenContainers } from '../js/text/systems/inventoryEngine.js';
-import { canStackItems, normalizeItem } from '../js/text/data/itemSchema.js';
+import { canStackItems, hasItemFlag, normalizeItem } from '../js/text/data/itemSchema.js';
 
 function potion(quantity = 1) {
     return { id: 'potion', name: 'Potion', kind: 'consumable', quantity, tags: ['consumable'] };
@@ -26,6 +26,24 @@ test('normalizeItem keeps equipment non-stackable', () => {
 
     assert.equal(item.stackable, false);
     assert.equal(item.maxStack, 1);
+});
+
+test('normalizeItem supports structured equipment requirements flags and effects', () => {
+    const item = normalizeItem({
+        ...bronzeSword(),
+        equipmentSlot: 'mainHand',
+        allowedSlots: ['mainHand'],
+        requirements: { minLevel: 3, allowedJobs: ['warrior'] },
+        flags: { twoHanded: true, noSell: true },
+        modifiers: { derived: { attack: 2 } },
+    });
+
+    assert.equal(item.requirements.minLevel, 3);
+    assert.deepEqual(item.requirements.allowedJobs, ['warrior']);
+    assert.equal(hasItemFlag(item, 'twoHanded'), true);
+    assert.equal(hasItemFlag(item, 'noSell'), true);
+    assert.equal(item.effects[0].trigger, 'always');
+    assert.equal(item.modifiers.derived.attack, 2);
 });
 
 test('canStackItems requires same id kind and stackable state', () => {

@@ -43,11 +43,16 @@ All notable reset-branch changes are tracked here.
 - Mog House-only access rules for Mog Safe and Storage.
 - Furniture-derived Storage capacity for Mog House furniture.
 - Common item schema helpers for item kinds, normalization, stackability, max stack, source, flags, modifiers, and item display.
+- Expanded item/equipment schema helpers for static template metadata, family/archetype/subtype, allowed slots, weapon category/delay, requirements, normalized flags, effects, latent/enchantment/augment scaffolds, charges, and confidence/source notes.
 - Stack-aware inventory insertion and transfer stacking for stackable consumables, materials, and misc items.
 - Split-stack overflow protection so failed partial stacks do not mutate existing quantities.
 - Atomic item transfer command between containers with access, capacity, item-kind, and stack-rule checks.
 - Equip/unequip commands using Inventory and accessible Wardrobes.
-- Starter equipment catalog with conservative stat modifiers.
+- Equipment eligibility validation for kind, slot, main-job level, allowed jobs, allowed races, allowed sexes, simple key item/quest flag requirements, two-handed/offhand conflicts, and ranged/ammo slot constraints.
+- Text-first `item <query>` and `inspect item <query>` commands for accessible inventory, wardrobe, and equipped item inspection.
+- Starter equipment catalog with conservative stat modifiers, placeholder weapon delay metadata, and intentional-simplification requirement notes.
+- Sparse skill rank/cap foundation with `getSkillCap` and `getEffectiveSkill` helpers for later combat and magic skill work.
+- Equipment catalog validation for requirement shapes, unknown jobs/races/slots, array-based flags/effects, modifier keys, and required confidence/source metadata.
 - Equipped gear modifiers feeding into the stat/combat profile.
 - Core constants for attributes, resources, elements, derived stats, skills, equipment slots, currencies, entity types, and status categories.
 - Race seed definitions for Hume, Elvaan, Tarutaru, Mithra, and Galka.
@@ -65,6 +70,7 @@ All notable reset-branch changes are tracked here.
 - `validate` command for current state validation.
 - `version`, `systems`, `databases`, `tick`, `maps`, `map`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, `wait`, `containers`, `container`, `transfer`, `equip`, `unequip`, `equipSources`, `here`, `talk`, `shop`, `buy`, `guild`, `quest`, `discovered`, `fastpoi`, and `zonefast` commands.
 - Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, deterministic RNG, battle rewards, item schema/stacking, and basic battle flow.
+- Node test coverage for equipment eligibility rejections, atomic failed equips, two-handed/offhand conflicts, item inspection, equipment catalog validation, and skill cap helpers.
 - Architecture, roadmap, baseline pipeline, system catalog, research reference, and thread handoff documents for the rebuild.
 
 ### Changed
@@ -78,7 +84,8 @@ All notable reset-branch changes are tracked here.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `9`, and codename to `Slash UI Account Saves`.
+- Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `12`, and codename to `Slash UI Account Saves`.
+- Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, and skill caps.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
 
 ### Removed
@@ -91,4 +98,4 @@ All notable reset-branch changes are tracked here.
 - Backwards compatibility with the old browser UI and old save shape is intentionally not preserved beyond the current raw-save migration path.
 - `base64-json-v1` save storage is encoded, not strong encryption.
 - Current formulas are conservative approximations until exact researched formulas are migrated deliberately.
-- Current recommended next pass is progression: EXP tables, level-up rules, job-level state preparation, and resource refresh on level-up.
+- Current recommended next pass is combat/skill integration: current skill state, skill-gain hooks, skill-cap formula wiring, and isolated item behavior rules.

@@ -28,7 +28,7 @@ import {
     startEncounter,
 } from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
-import { describeEquippableSources, equipItem, unequipItem } from './systems/equipmentEngine.js';
+import { describeEquippableSources, equipItem, inspectItem, unequipItem } from './systems/equipmentEngine.js';
 import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
 import {
     describeContainerContents,
@@ -100,6 +100,8 @@ const HELP_TEXT = [
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
     '  inventory            Show carried items.',
+    '  item <query>          Inspect an accessible item template/runtime record.',
+    '  inspect item <query>  Inspect an accessible item template/runtime record.',
     '  containers           Show all inventory/storage containers and access state.',
     '  container <id>       Inspect a specific container.',
     '  transfer <item> from <source> to <destination>  Move items between containers.',
@@ -207,6 +209,7 @@ export function createCommandRouter(state, services = {}) {
             case 'stats': return describeStats(state);
             case 'inventory':
             case 'items': return describeInventory(state);
+            case 'item': return inspectItem(state, parsed.args.join(' '));
             case 'containers': return describeInventoryContainers(state);
             case 'container': return describeContainerContents(state, parsed.args[0] ?? 'inventory');
             case 'transfer': return describeTransferCommand(state, parsed.args);
@@ -250,7 +253,7 @@ export function createCommandRouter(state, services = {}) {
             case 'version': return describeVersion();
             case 'systems': return describeSystemVersions();
             case 'tick': return tickEngine.describe();
-            case 'inspect': return inspectTarget(state, parsed.args[0]);
+            case 'inspect': return inspectTarget(state, parsed.args[0], parsed.args.slice(1));
             case 'validate': return describeValidation(state);
             case 'log': return describeLog(state, parsed.args[0]);
             case 'save': return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
@@ -367,8 +370,9 @@ function describeWait(state, tickEngine, secondsArg = '1') {
     return [`Advanced ${seconds}s.`, describeTravel(state)].join('\n');
 }
 
-function inspectTarget(state, target = 'player') {
+function inspectTarget(state, target = 'player', restArgs = []) {
     switch (String(target).toLowerCase()) {
+        case 'item': return inspectItem(state, restArgs.join(' '));
         case 'player':
         case 'character':
         case 'char': return describeCharacter(state);
@@ -425,7 +429,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, item, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 

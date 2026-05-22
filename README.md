@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands, deterministic combat, battle rewards, EXP tables, level-up rules, and implementation-first documentation.
+This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, skill-cap scaffolding, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
@@ -12,7 +12,7 @@ Backwards compatibility with the previous UI/save shape is not considered until 
 App/package: 0.4.1
 Account Save: 3
 Game State: 2
-Data: 10
+Data: 12
 Codename: Slash UI Account Saves
 ```
 
@@ -73,6 +73,8 @@ Gameplay commands are also slash-prefixed in the UI:
 /look
 /stats
 /inventory
+/item <query>
+/inspect item <query>
 /equipment
 /containers
 /container <id>
@@ -199,6 +201,7 @@ js/text/
     races.js
     seedEntities.js
     shopCatalogs.js
+    skillCaps.js
     systemConstants.js
   entities/
     entityFactory.js
@@ -259,12 +262,15 @@ docs/
 - Inventory container framework: Inventory, Mog Safe, Mog Safe 2, Storage, Mog Locker, Mog Satchel, Mog Sack, Mog Case, and Mog Wardrobes 1-8.
 - Mog House-only Storage/Mog Safe access and furniture-derived Storage capacity.
 - Common item schema, item normalization, stack metadata, and stack-aware container insertion.
+- Normalized equipment template fields for family/archetype/subtype, allowed slots, weapon category/delay, requirements, flags, always-on effects, latent/enchantment/augment scaffolds, charges, and confidence/source metadata.
 - Container transfer rules with access, capacity, item-kind, and stack-handling validation.
 - Shop buying into Inventory.
-- Equip/unequip commands using Inventory and accessible Wardrobes.
-- Starter equipment catalog with conservative stat modifiers.
+- Equip/unequip commands using Inventory and accessible Wardrobes, with job/race/level/slot eligibility and two-handed/offhand conflict checks.
+- Text-first `item <query>` and `inspect item <query>` inspection for accessible inventory, wardrobe, and equipped items.
+- Starter equipment catalog with conservative stat modifiers and explicit placeholder/intentional-simplification metadata.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
+- Sparse skill rank/cap helper data for future combat and magic skill progression.
 - Simple battle-state engine with deterministic RNG injection.
 - Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, duplicate payout prevention, and progression engine integration.
 - Conservative EXP table data, level-up rules, EXP-to-next tracking, level-cap behavior, and HP/MP/resource refresh after level-up.
@@ -273,7 +279,7 @@ docs/
 - Version manifest and system version tracking.
 - Database registry for enemies, NPCs, places, zones, travel, quests, achievements, items, key items, magic, loot, leveling, trusts, crafting, mounts, and tick channels.
 - Baseline benchmark harness.
-- Game-state and world-data validation helpers.
+- Game-state, world-data, equipment-catalog, item-requirement, modifier-key, flag/effect, and skill-rank validation helpers.
 - Node test harness using the built-in `node:test` runner.
 
 ## Formula policy
@@ -292,9 +298,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is job-level/progression depth:
+The current recommended next pass is combat/skill integration depth:
 
-1. Add per-job EXP and level state for all unlocked jobs.
-2. Add job switching rules that preserve each job's level/EXP.
-3. Add equipment validation by job/level before expanding loot gear.
-4. Add tests for job switch, job-specific EXP, and equipment eligibility.
+1. Add current combat/magic skill state and isolated skill-gain hooks.
+2. Wire skill caps into combat and magic calculations only after the formula confidence level is explicit.
+3. Add key-item item records and unlock/permission validation.
+4. Implement item behaviors for latent effects, enchantments, charges, ranged/ammo, and sell/vendor restrictions in small rule modules.

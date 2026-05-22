@@ -40,6 +40,7 @@ test('buyFromCurrentShop rejects insufficient gil', () => {
 
 test('buyFromCurrentShop rejects missing shop context', () => {
     const state = createInitialState();
+    setPositionAndDiscover(state, 'southern-sandoria', { x: 0, y: 0 });
     state.player.wallet.gil = 1000;
 
     assert.match(buyFromCurrentShop(state, 'Bronze Sword'), /no matching shop/i);

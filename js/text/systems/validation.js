@@ -1,11 +1,24 @@
 import { listGuildServices } from '../data/guildServices.js';
+import { listEquipmentCatalogEntries } from '../data/equipmentCatalog.js';
 import { listContainerDefinitions } from '../data/inventoryContainers.js';
+import { CONFIDENCE_LABELS, ITEM_FLAGS, ITEM_KINDS, normalizeItem } from '../data/itemSchema.js';
+import { JOB_DEFINITIONS } from '../data/jobs.js';
 import { getMap, listMaps } from '../data/maps.js';
 import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
 import { getPointOfInterest, listPointsOfInterest } from '../data/pointsOfInterest.js';
 import { listQuestHooks } from '../data/questHooks.js';
+import { RACES } from '../data/races.js';
 import { listShopCatalogs } from '../data/shopCatalogs.js';
-import { ENTITY_TYPES, EQUIPMENT_SLOTS } from '../data/systemConstants.js';
+import {
+    ATTRIBUTE_KEYS,
+    DERIVED_STAT_KEYS,
+    ELEMENT_KEYS,
+    ENTITY_TYPES,
+    EQUIPMENT_SLOTS,
+    RESOURCE_KEYS,
+    SKILL_KEYS,
+} from '../data/systemConstants.js';
+import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { getContainerCapacity } from './inventoryEngine.js';
 
 export const CURRENT_SAVE_VERSION = 2;
@@ -121,6 +134,16 @@ export function validateWorldData() {
         if (poi && !poi.actions.includes('quest')) issues.push(`quest hook ${hook.name} references POI without quest action.`);
     }
 
+    for (const entry of listEquipmentCatalogEntries()) {
+        issues.push(...validateEquipmentCatalogEntry(entry).map((issue) => `equipmentCatalog.${entry.id}: ${issue}`));
+    }
+
+    for (const entry of listSkillRankEntries()) {
+        if (!JOB_DEFINITIONS[entry.jobId]) issues.push(`skillCaps.${entry.jobId}.${entry.skillId} references unknown job.`);
+        if (!SKILL_KEYS.includes(entry.skillId)) issues.push(`skillCaps.${entry.jobId}.${entry.skillId} references unknown skill.`);
+        if (!SKILL_RANK_CAP_RULES[entry.rank]) issues.push(`skillCaps.${entry.jobId}.${entry.skillId} has unknown rank ${entry.rank}.`);
+    }
+
     return issues;
 }
 
@@ -178,6 +201,54 @@ export function validateInventoryState(inventoryState) {
     return issues;
 }
 
+export function validateEquipmentCatalogEntry(entry) {
+    const issues = [];
+    if (!isObject(entry)) return ['entry must be an object.'];
+
+    try {
+        normalizeItem(entry);
+    } catch (error) {
+        issues.push(`does not normalize cleanly: ${error.message}`);
+    }
+
+    if (!entry.id) issues.push('id is required.');
+    if (!entry.name) issues.push('name is required.');
+    if (entry.kind !== ITEM_KINDS.EQUIPMENT) issues.push('kind must be equipment.');
+    if (!entry.equipmentSlot || !EQUIPMENT_SLOTS.includes(entry.equipmentSlot)) {
+        issues.push(`equipmentSlot is unknown: ${entry.equipmentSlot}`);
+    }
+    if (!Array.isArray(entry.allowedSlots)) {
+        issues.push('allowedSlots must be an array.');
+    } else {
+        for (const slot of entry.allowedSlots) {
+            if (!EQUIPMENT_SLOTS.includes(slot)) issues.push(`allowedSlots contains unknown slot ${slot}.`);
+        }
+    }
+
+    if (!Array.isArray(entry.flags)) {
+        issues.push('flags must be an array.');
+    } else {
+        for (const flag of entry.flags) {
+            if (!ITEM_FLAGS.includes(flag)) issues.push(`flags contains unknown flag ${flag}.`);
+        }
+    }
+
+    if (!Array.isArray(entry.effects)) issues.push('effects must be an array.');
+    if (!Array.isArray(entry.latentEffects)) issues.push('latentEffects must be an array.');
+    if (!Array.isArray(entry.enchantments)) issues.push('enchantments must be an array.');
+    if (!Array.isArray(entry.augments)) issues.push('augments must be an array.');
+    if (entry.charges !== null && entry.charges !== undefined && !isObject(entry.charges)) issues.push('charges must be null or an object.');
+    if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
+        issues.push('weaponDelay must be a non-negative integer when present.');
+    }
+
+    issues.push(...validateRequirements(entry.requirements).map((issue) => `requirements.${issue}`));
+    issues.push(...validateModifierBlock(entry.modifiers, 'modifiers'));
+    issues.push(...validateMetadata(entry.metadata, 'metadata'));
+    issues.push(...validateRequiredFieldMetadata(entry));
+    return issues;
+}
+
 export function validateNpc(npc) {
     const issues = validateEntityBase(npc, ENTITY_TYPES.NPC);
     if (!npc.identity?.name) issues.push('identity.name is required.');
@@ -193,6 +264,82 @@ export function validateEnemy(enemy) {
     if (!isObject(enemy.resources)) issues.push('resources must be an object.');
     if (!isObject(enemy.combat)) issues.push('combat must be an object.');
     return issues;
+}
+
+function validateRequirements(requirements) {
+    const issues = [];
+    if (!isObject(requirements)) return ['must be an object.'];
+    if (!Number.isInteger(requirements.minLevel) || requirements.minLevel < 1) issues.push('minLevel must be an integer >= 1.');
+    validateStringArray(requirements.allowedJobs, 'allowedJobs', issues);
+    validateStringArray(requirements.allowedRaces, 'allowedRaces', issues);
+    validateStringArray(requirements.allowedSexes, 'allowedSexes', issues);
+    validateStringArray(requirements.requiredNations, 'requiredNations', issues);
+    validateStringArray(requirements.requiredFame, 'requiredFame', issues);
+    validateStringArray(requirements.requiredKeyItems, 'requiredKeyItems', issues);
+    validateStringArray(requirements.requiredQuestFlags, 'requiredQuestFlags', issues);
+
+    for (const jobId of requirements.allowedJobs ?? []) {
+        if (!JOB_DEFINITIONS[jobId]) issues.push(`allowedJobs contains unknown job ${jobId}.`);
+    }
+    for (const raceId of requirements.allowedRaces ?? []) {
+        if (!RACES[raceId]) issues.push(`allowedRaces contains unknown race ${raceId}.`);
+    }
+    return issues;
+}
+
+function validateModifierBlock(modifiers, label) {
+    const issues = [];
+    if (!isObject(modifiers)) return [`${label} must be an object.`];
+    const allowedCategories = {
+        attributes: ATTRIBUTE_KEYS,
+        resources: RESOURCE_KEYS,
+        derived: DERIVED_STAT_KEYS,
+        resistances: ELEMENT_KEYS,
+    };
+    for (const category of Object.keys(modifiers)) {
+        if (!allowedCategories[category]) {
+            issues.push(`${label}.${category} is an unknown modifier category.`);
+            continue;
+        }
+        if (!isObject(modifiers[category])) {
+            issues.push(`${label}.${category} must be an object.`);
+            continue;
+        }
+        for (const [key, value] of Object.entries(modifiers[category])) {
+            if (!allowedCategories[category].includes(key)) issues.push(`${label}.${category}.${key} is an unknown modifier key.`);
+            if (!Number.isFinite(Number(value))) issues.push(`${label}.${category}.${key} must be numeric.`);
+        }
+    }
+    return issues;
+}
+
+function validateRequiredFieldMetadata(entry) {
+    const issues = [];
+    if (!isObject(entry.fieldNotes)) return ['fieldNotes must be an object.'];
+    const requiredFields = ['requirements', 'modifiers'];
+    if (entry.weaponDelay !== null && entry.weaponDelay !== undefined) requiredFields.push('weaponDelay');
+    for (const field of requiredFields) {
+        issues.push(...validateMetadata(entry.fieldNotes?.[field], `fieldNotes.${field}`));
+    }
+    return issues;
+}
+
+function validateMetadata(metadata, label) {
+    const issues = [];
+    if (!isObject(metadata)) return [`${label} must be an object.`];
+    if (!Object.values(CONFIDENCE_LABELS).includes(metadata.confidence)) issues.push(`${label}.confidence is invalid.`);
+    if (!metadata.source) issues.push(`${label}.source is required.`);
+    return issues;
+}
+
+function validateStringArray(value, label, issues) {
+    if (!Array.isArray(value)) {
+        issues.push(`${label} must be an array.`);
+        return;
+    }
+    for (const entry of value) {
+        if (typeof entry !== 'string' || !entry.trim()) issues.push(`${label} entries must be non-empty strings.`);
+    }
 }
 
 function validateEntityBase(entity, expectedType) {
