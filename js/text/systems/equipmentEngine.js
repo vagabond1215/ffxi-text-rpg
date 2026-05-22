@@ -1,5 +1,5 @@
 import { EQUIPMENT_SLOTS } from '../data/systemConstants.js';
-import { getContainerDefinition, listWardrobeContainerIds } from '../data/inventoryContainers.js';
+import { getContainerDefinition } from '../data/inventoryContainers.js';
 import {
     canStoreItemInContainer,
     findItemInContainer,
