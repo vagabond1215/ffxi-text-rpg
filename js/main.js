@@ -25,7 +25,7 @@ function init() {
         form: document.getElementById('command-form'),
         input: document.getElementById('command-input'),
         router,
-        afterCommand: () => sidebar.render(),
+        afterCommand: ({ feedback }) => sidebar.render(feedback),
     });
 
     shell.printIntro();
