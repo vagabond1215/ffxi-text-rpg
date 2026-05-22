@@ -1,5 +1,6 @@
 import { getLootTable } from '../data/lootTables.js';
 import { addItemToContainer } from './inventoryEngine.js';
+import { awardExperience } from './progressionEngine.js';
 
 export function resolveBattleRewards(state, battle, options = {}) {
     if (!state?.player || !battle) return { ok: false, message: 'No battle rewards can be resolved.' };
@@ -14,7 +15,7 @@ export function resolveBattleRewards(state, battle, options = {}) {
     const inserted = [];
     const failed = [];
 
-    state.player.progression.exp = (state.player.progression.exp ?? 0) + exp;
+    const progression = awardExperience(state.player, exp);
     state.player.wallet.gil = (state.player.wallet.gil ?? 0) + gil;
 
     for (const loot of lootResults) {
@@ -27,6 +28,7 @@ export function resolveBattleRewards(state, battle, options = {}) {
         resolved: true,
         exp,
         gil,
+        progression,
         items: inserted,
         failedItems: failed,
     };
@@ -35,9 +37,10 @@ export function resolveBattleRewards(state, battle, options = {}) {
         ok: true,
         exp,
         gil,
+        progression,
         items: inserted,
         failedItems: failed,
-        message: describeRewardResult({ exp, gil, items: inserted, failedItems: failed }),
+        message: describeRewardResult({ exp, gil, progression, items: inserted, failedItems: failed }),
     };
 }
 
@@ -47,6 +50,9 @@ export function describeRewardResult(result) {
         `- EXP: ${result.exp}`,
         `- Gil: ${result.gil}`,
     ];
+    if (result.progression?.levelUps?.length) {
+        lines.push(`- Level up: ${result.progression.levelUps.join(', ')}`);
+    }
     if (result.items.length) lines.push(`- Loot: ${result.items.map((item) => item.name).join(', ')}`);
     else lines.push('- Loot: none');
     if (result.failedItems.length) {
