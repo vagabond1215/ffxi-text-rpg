@@ -15,6 +15,49 @@ export const COMMON_COMMAND_CHIPS = Object.freeze([
     ['/save', 'Save'],
 ]);
 
+export const TOPBAR_ACTIONS = Object.freeze([
+    ['/menu', 'Menu'],
+    ['/look', 'Look'],
+    ['/inventory', 'Inventory'],
+    ['/equipment', 'Equipment'],
+    ['/save', 'Save'],
+]);
+
+export function renderTopBar(state, feedback = null) {
+    const player = state.player;
+    const location = state.location ?? 'Unknown';
+    const grid = state.position ? `${state.position.x}:${state.position.y}` : '?:?';
+    const status = feedback?.message ?? 'Ready';
+    return `
+        <div class="topbar-brand">
+            <span class="topbar-mark">FFXI</span>
+            <span class="topbar-title">Text RPG</span>
+        </div>
+        <div class="topbar-status">
+            <span>${escapeHtml(player.identity.name)}</span>
+            <span>${escapeHtml(player.jobs.mainJobName)} Lv.${escapeHtml(player.jobs.level)}</span>
+            <span>${escapeHtml(location)} · ${escapeHtml(grid)}</span>
+            <span class="topbar-feedback topbar-feedback-${escapeHtml(feedback?.kind ?? 'info')}">${escapeHtml(status)}</span>
+        </div>
+        <nav class="topbar-actions" aria-label="Quick actions">
+            ${TOPBAR_ACTIONS.map(([command, label]) => `<button type="button" data-command="${escapeHtml(command)}">${escapeHtml(label)}</button>`).join('')}
+        </nav>
+    `;
+}
+
+export function renderSidebarHeader(player) {
+    return `
+        <section class="sidebar-hero">
+            <div class="sidebar-crest" aria-hidden="true">XI</div>
+            <div>
+                <p class="sidebar-kicker">Active Character</p>
+                <h2 class="character-name">${escapeHtml(player.identity.name)}</h2>
+                <p>${escapeHtml(player.identity.raceName)} · ${escapeHtml(player.jobs.mainJobName)} Lv.${escapeHtml(player.jobs.level)}</p>
+            </div>
+        </section>
+    `;
+}
+
 export function renderMainMenuPanel() {
     return `
         <section class="sidebar-section main-menu-panel">
@@ -52,6 +95,29 @@ export function renderCharacterCards(characters = []) {
             <div class="character-card-list">
                 ${cards}
             </div>
+        </section>
+    `;
+}
+
+export function renderLocationPanel(state) {
+    const grid = state.position ? `${state.position.x}:${state.position.y}` : '?:?';
+    const battle = state.activeBattle?.phase === 'active' ? 'In battle' : 'Safe';
+    return `
+        <section class="sidebar-section compact-panel">
+            <h3>Location</h3>
+            <div class="sidebar-line"><span>Place</span><strong>${escapeHtml(state.location)}</strong></div>
+            <div class="sidebar-line"><span>Grid</span><strong>${escapeHtml(grid)}</strong></div>
+            <div class="sidebar-line"><span>Status</span><strong>${escapeHtml(battle)}</strong></div>
+        </section>
+    `;
+}
+
+export function renderWalletPanel(player) {
+    return `
+        <section class="sidebar-section compact-panel">
+            <h3>Wallet</h3>
+            <div class="sidebar-line"><span>Gil</span><strong>${escapeHtml(player.wallet?.gil ?? 0)}</strong></div>
+            <div class="sidebar-line"><span>Title</span><strong>${escapeHtml(player.identity.title ?? 'New Adventurer')}</strong></div>
         </section>
     `;
 }
