@@ -50,7 +50,7 @@ button:focus-visible {
 .app-shell {
     min-height: 100vh;
     display: grid;
-    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
     gap: 1rem;
     padding: 1rem;
 }
@@ -80,6 +80,82 @@ button:focus-visible {
 .sidebar-section h3 {
     margin: 0 0 0.5rem;
     color: var(--accent);
+}
+
+.sidebar-note {
+    margin: 0.25rem 0 0.75rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.main-menu-panel {
+    background: linear-gradient(180deg, #18202d, #10141d);
+}
+
+.primary-actions,
+.command-chip-grid,
+.sidebar-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.primary-actions button,
+.command-chip,
+.sidebar-menu button {
+    padding: 0.45rem;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.command-chip {
+    background: #1d2433;
+}
+
+.character-card-list {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.character-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--panel-border);
+    background: #0b0f17;
+    padding: 0.6rem;
+}
+
+.character-card div {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.character-card span {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.feedback {
+    border-color: var(--accent);
+}
+
+.feedback-success {
+    border-color: var(--good);
+}
+
+.feedback-error {
+    border-color: var(--danger);
+}
+
+.feedback p {
+    margin: 0.35rem 0 0;
+}
+
+.feedback-command {
+    color: var(--muted);
+    font-size: 0.85rem;
 }
 
 .character-name {
@@ -124,18 +200,6 @@ button:focus-visible {
     height: 100%;
     width: var(--value, 0%);
     background: linear-gradient(90deg, #6f7f5f, var(--accent));
-}
-
-.sidebar-menu {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-}
-
-.sidebar-menu button {
-    padding: 0.45rem;
-    text-align: left;
-    font-size: 0.85rem;
 }
 
 .terminal-panel {
@@ -233,11 +297,13 @@ h1 {
 }
 
 @media (max-width: 640px) {
-    .command-row {
+    .command-row,
+    .character-card {
         grid-template-columns: auto 1fr;
     }
 
-    .command-row button {
+    .command-row button,
+    .character-card button {
         grid-column: 1 / -1;
     }
 }
