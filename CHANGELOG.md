@@ -18,7 +18,7 @@ All notable reset-branch changes are tracked here.
 - Account/save tests for encoding, slot listing, character loading, active character restore, save clearing, and inventory reference relinking.
 - Slash-router tests for bare-command rejection, menu/help output, gameplay forwarding, account commands, and character creation prompts.
 - Argument-aware command parser with aliases, quoted arguments, positional args, and `--named=value` args.
-- Version manifest for app, save, data, benchmark, and system versions.
+- Explicit version manifest fields for app, account save, game state, data, benchmark, and system versions.
 - Baseline benchmark harness for stat profile calculation, enemy profiles, battle attacks, tick dispatch, and direct travel route lookup.
 - Database registry covering players, NPCs, enemies, places, zone connections, travel, quests, achievements, items, key items, magic, abilities, loot, leveling, trusts, crafting, mounts, status effects, and ticks.
 - Live tick engine scaffold with subscriptions, manual ticks, start/stop, enabled state, and standard tick channels.
@@ -42,7 +42,10 @@ All notable reset-branch changes are tracked here.
 - Inventory container framework for Inventory, Mog Safe, Mog Safe 2, Storage, Mog Locker, Mog Satchel, Mog Sack, Mog Case, and Mog Wardrobes 1-8.
 - Mog House-only access rules for Mog Safe and Storage.
 - Furniture-derived Storage capacity for Mog House furniture.
-- Atomic item transfer command between containers with access, capacity, and item-kind checks.
+- Common item schema helpers for item kinds, normalization, stackability, max stack, source, flags, modifiers, and item display.
+- Stack-aware inventory insertion and transfer stacking for stackable consumables, materials, and misc items.
+- Split-stack overflow protection so failed partial stacks do not mutate existing quantities.
+- Atomic item transfer command between containers with access, capacity, item-kind, and stack-rule checks.
 - Equip/unequip commands using Inventory and accessible Wardrobes.
 - Starter equipment catalog with conservative stat modifiers.
 - Equipped gear modifiers feeding into the stat/combat profile.
@@ -51,29 +54,32 @@ All notable reset-branch changes are tracked here.
 - Job seed definitions for all standard FFXI player jobs through Rune Fencer.
 - Player, NPC, and enemy entity factories.
 - Conservative stat engine for attributes, resources, skills, derived stats, equipment modifiers, and resistances.
-- Simple battle-state engine with combatants, HP/MP/TP, hit chance, basic physical damage, victory/defeat state, and battle log.
+- Simple battle-state engine with combatants, HP/MP/TP, deterministic RNG injection, hit chance, basic physical damage, victory/defeat state, and battle log.
 - Combat action command layer for attack, placeholder weapon skills, and placeholder casting.
+- Starter loot table data and seed enemy loot table references.
+- Battle reward resolution for victory EXP, gil, deterministic loot rolls, Inventory insertion, failed loot storage reporting, and duplicate payout prevention.
 - Status effect engine with apply/remove/advance behavior and basic tick support.
 - Game-state and entity validation helpers.
 - Seed NPCs and enemies for early command-shell verification.
 - `inspect <target>` command for player, stats, inventory, NPC, enemy, state, log, version, systems, database, maps, zone, atlas, grid, travel, controls, and storage inspection.
 - `validate` command for current state validation.
 - `version`, `systems`, `databases`, `tick`, `maps`, `map`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, `wait`, `containers`, `container`, `transfer`, `equip`, `unequip`, `equipSources`, `here`, `talk`, `shop`, `buy`, `guild`, `quest`, `discovered`, `fastpoi`, and `zonefast` commands.
-- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, and basic battle flow.
+- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, deterministic RNG, battle rewards, item schema/stacking, and basic battle flow.
 - Architecture, roadmap, baseline pipeline, system catalog, research reference, and thread handoff documents for the rebuild.
 
 ### Changed
 - Moved the browser shell into an app frame with a slim top bar above the sidebar/terminal grid.
 - Preserved FFXI macro-style slash commands through the browser slash router so the FFXI command adapter can handle them.
 - Aligned character-creation docs and slash-router tests with the current name-first, confirmation-based creator flow.
+- Clarified version naming with `VERSION.accountSave` and `VERSION.gameState`; `VERSION.save` remains a temporary alias for account save version.
 - Replaced the old graphical/menu-heavy entry path with a minimal text-first foundation.
 - Replaced the UI-facing bare-command model with slash commands.
 - Updated sidebar buttons to emit slash commands and include main menu, new character, characters, save, containers, and commands actions.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
-- Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, POI, and account-save state.
+- Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.1`, save version to `3`, data version to `7`, and codename to `Slash UI Account Saves`.
-- Refreshed README, architecture, roadmap, and handoff documentation for the current repo state.
+- Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `9`, and codename to `Slash UI Account Saves`.
+- Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
 
 ### Removed
 - Active panzoom dependency from the text-only branch.
@@ -85,4 +91,4 @@ All notable reset-branch changes are tracked here.
 - Backwards compatibility with the old browser UI and old save shape is intentionally not preserved beyond the current raw-save migration path.
 - `base64-json-v1` save storage is encoded, not strong encryption.
 - Current formulas are conservative approximations until exact researched formulas are migrated deliberately.
-- Current recommended next pass is version naming cleanup, then deterministic combat RNG before battle rewards.
+- Current recommended next pass is progression: EXP tables, level-up rules, job-level state preparation, and resource refresh on level-up.
