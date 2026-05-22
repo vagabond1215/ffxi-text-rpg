@@ -1,4 +1,11 @@
+import { listCharacters } from './save.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
+import {
+    renderCharacterCards,
+    renderCommandChips,
+    renderFeedback,
+    renderMainMenuPanel,
+} from './uiPanels.js';
 
 const SIDEBAR_MENUS = Object.freeze([
     ['Main Menu', '/menu'],
@@ -22,13 +29,16 @@ export function createSidebar({ root, state, runCommand }) {
         throw new Error('Sidebar is missing root, state, or runCommand.');
     }
 
+    let lastFeedback = null;
+
     root.addEventListener('click', (event) => {
         const button = event.target.closest('[data-command]');
         if (!button) return;
         runCommand(button.dataset.command);
     });
 
-    function render() {
+    function render(feedback = lastFeedback) {
+        if (feedback !== undefined) lastFeedback = feedback;
         const player = state.player;
         const combat = calculateCombatProfile(player);
         const level = player.jobs.level;
@@ -36,8 +46,12 @@ export function createSidebar({ root, state, runCommand }) {
         const expToNext = player.progression?.expToNext ?? level * 500;
 
         root.innerHTML = [
+            renderFeedback(lastFeedback),
+            renderMainMenuPanel(),
             renderCharacterSummary(player, state, level, exp, expToNext),
             renderBars(player, combat, exp, expToNext),
+            renderCharacterCards(listCharacters()),
+            renderCommandChips(),
             renderMenus(),
         ].join('');
     }
