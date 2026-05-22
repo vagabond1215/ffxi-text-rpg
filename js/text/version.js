@@ -1,15 +1,15 @@
 export const VERSION = Object.freeze({
-    app: '0.3.8',
+    app: '0.3.9',
     save: 2,
     data: 6,
     benchmark: 1,
-    codename: 'Inventory Transfer Foundation',
+    codename: 'Equipment Command Foundation',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.8',
+    commandShell: '0.3.9',
     parser: '0.2.0',
     validation: '0.3.6',
     playerEntity: '0.3.6',
@@ -39,8 +39,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     questHooks: '0.3.5',
     inventoryContainers: '0.3.8',
     inventoryTransfers: '0.3.8',
+    equipmentCommands: '0.3.9',
     mogHouseStorage: '0.3.8',
-    wardrobes: '0.3.8',
+    wardrobes: '0.3.9',
     achievements: 'planned',
     items: 'planned',
     keyItems: 'planned',
