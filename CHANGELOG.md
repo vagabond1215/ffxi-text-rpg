@@ -9,6 +9,7 @@ All notable reset-branch changes are tracked here.
 - Slash-command UI wrapper requiring `/` commands in the browser shell.
 - `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` commands.
 - Prompt-based character creation from `/newcharacter`, with natural non-slash answers while prompts are active.
+- Slash-router tests for FFXI macro-style browser commands such as `/macrohelp`, `/ma`, `/ws`, and `/item`.
 - Encoded local account/character save model under `ffxiTextRpgAccount`.
 - Multiple local character save slots with character summaries and last-active-character tracking.
 - Legacy raw `ffxiTextRpgSave` migration into the encoded account save model.
@@ -29,7 +30,7 @@ All notable reset-branch changes are tracked here.
 - Zone atlas discovery where unvisited grids are unknown until visited and visited grids become visible through the atlas.
 - Text HUD/control metadata for HP/MP/TP resource bars, visual tick timer bar, 8-button navigation keypad, and action control groups.
 - Grid movement commands using 8-way navigation.
-- Foot-travel aggro scaffold based on grid spawn rules, spawn count, and aggro type such as sight or sound.
+- Foot-travel aggro scaffold based on grid spawn rules, count, and aggro type such as sight or sound.
 - Seed aggressive enemies for grid-spawn testing.
 - Direct travel engine with connection lookup, restrictions, active travel state, manual time advancement, arrival coordinates, atlas recording, and zone descriptions.
 - Starter-city points of interest with current-grid contextual actions.
@@ -60,6 +61,8 @@ All notable reset-branch changes are tracked here.
 - Architecture, roadmap, baseline pipeline, system catalog, research reference, and thread handoff documents for the rebuild.
 
 ### Changed
+- Preserved FFXI macro-style slash commands through the browser slash router so the FFXI command adapter can handle them.
+- Aligned character-creation docs and slash-router tests with the current name-first, confirmation-based creator flow.
 - Replaced the old graphical/menu-heavy entry path with a minimal text-first foundation.
 - Replaced the UI-facing bare-command model with slash commands.
 - Replaced single raw local save storage with encoded local account/character save slots.
