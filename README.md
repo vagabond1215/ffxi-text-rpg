@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands, deterministic combat, battle rewards, and implementation-first documentation.
+This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands, deterministic combat, battle rewards, EXP tables, level-up rules, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
@@ -12,7 +12,7 @@ Backwards compatibility with the previous UI/save shape is not considered until 
 App/package: 0.4.1
 Account Save: 3
 Game State: 2
-Data: 9
+Data: 10
 Codename: Slash UI Account Saves
 ```
 
@@ -184,6 +184,7 @@ js/text/
     actionControls.js
     databaseRegistry.js
     equipmentCatalog.js
+    expTables.js
     guildServices.js
     inventoryContainers.js
     itemSchema.js
@@ -212,6 +213,7 @@ js/text/
     inventoryEngine.js
     menuDescriptions.js
     poiEngine.js
+    progressionEngine.js
     rewardEngine.js
     rng.js
     shopEngine.js
@@ -264,7 +266,8 @@ docs/
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Simple battle-state engine with deterministic RNG injection.
-- Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, and duplicate payout prevention.
+- Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, duplicate payout prevention, and progression engine integration.
+- Conservative EXP table data, level-up rules, EXP-to-next tracking, level-cap behavior, and HP/MP/resource refresh after level-up.
 - Status effect lifecycle engine.
 - Live tick engine scaffold.
 - Version manifest and system version tracking.
@@ -289,9 +292,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is progression:
+The current recommended next pass is job-level/progression depth:
 
-1. Add EXP table data and level-up rules.
-2. Update player/job progression containers when rewards grant EXP.
-3. Refresh HP/MP/resources and EXP-to-next after level-up.
-4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
+1. Add per-job EXP and level state for all unlocked jobs.
+2. Add job switching rules that preserve each job's level/EXP.
+3. Add equipment validation by job/level before expanding loot gear.
+4. Add tests for job switch, job-specific EXP, and equipment eligibility.

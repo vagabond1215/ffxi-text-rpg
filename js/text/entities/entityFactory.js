@@ -1,6 +1,7 @@
 import { ENTITY_TYPES, CURRENCY_KEYS, EQUIPMENT_SLOTS, createZeroBlock } from '../data/systemConstants.js';
 import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
+import { getExpToNextLevel } from '../data/expTables.js';
 import { createInventoryState } from '../systems/inventoryEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 
@@ -9,6 +10,7 @@ export function createPlayerCharacter(options = {}) {
     const mainJob = getJob(options.mainJobId);
     const supportJob = options.supportJobId ? getJob(options.supportJobId) : null;
     const level = clampLevel(options.level ?? 1);
+    const levelCap = options.levelCap ?? 50;
     const inventoryState = options.inventoryState ?? createInventoryState(options.inventoryOptions ?? {});
 
     const entity = {
@@ -34,9 +36,13 @@ export function createPlayerCharacter(options = {}) {
             jobLevels: {
                 [mainJob.id]: level,
             },
-            levelCap: options.levelCap ?? 50,
+            levelCap,
         },
-        progression: createProgression(options.progression),
+        progression: createProgression({
+            exp: options.progression?.exp ?? 0,
+            expToNext: options.progression?.expToNext ?? getExpToNextLevel(level, levelCap),
+            ...options.progression,
+        }),
         wallet: createWallet(options.wallet),
         equipment: createEquipmentSet(options.equipment),
         inventoryState,
@@ -124,6 +130,8 @@ export function createEquipmentSet(overrides = {}) {
 
 export function createProgression(overrides = {}) {
     return {
+        exp: 0,
+        expToNext: getExpToNextLevel(1),
         nationRanks: {
             sandoria: 1,
             bastok: 1,
