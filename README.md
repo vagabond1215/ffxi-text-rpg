@@ -114,17 +114,18 @@ Use:
 /newcharacter
 ```
 
-The command starts prompt-based character creation. While prompts are active, answers are natural text and do not require `/`:
+The command starts prompt-based character creation. While prompts are active, answers are natural text and do not require `/`. The current prompt order is name, nation, race, sex, starting job, then confirmation:
 
 ```text
+CharacterName
 sandoria
 hume
 male
 warrior
-CharacterName
+yes
 ```
 
-A completed character is saved automatically into the local account save.
+A completed and confirmed character is saved automatically into the local account save.
 
 ## Save model
 
