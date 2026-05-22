@@ -88,6 +88,7 @@ export function describeEquippableSources(state) {
 }
 
 export function inferEquipmentSlot(item) {
+    if (item.equipmentSlot) return item.equipmentSlot;
     const tags = new Set(item.tags ?? []);
     if (tags.has('head')) return 'head';
     if (tags.has('body')) return 'body';
