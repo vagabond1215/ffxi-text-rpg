@@ -110,6 +110,8 @@ Gameplay examples:
 
 Bare commands are rejected by the browser slash router except while character-creation prompts are active. Internal engine tests may still call the bare command router directly.
 
+FFXI macro-style commands such as `/macrohelp`, `/ma`, `/ja`, `/ws`, `/item`, `/equipset`, `/recast`, and `/echo` are preserved with their leading slash and routed through the FFXI command adapter.
+
 ## Character creation flow
 
 Start with:
@@ -118,17 +120,18 @@ Start with:
 /newcharacter
 ```
 
-While prompts are active, answers do not use `/`:
+While prompts are active, answers do not use `/`. Current prompt order is name, nation, race, sex, starting job, then confirmation:
 
 ```text
+CharacterName
 sandoria
 hume
 male
 warrior
-CharacterName
+yes
 ```
 
-When completed, the character is saved automatically.
+When confirmed, the character is saved automatically.
 
 ## Save/account model
 
