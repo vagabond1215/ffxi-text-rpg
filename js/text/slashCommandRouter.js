@@ -46,6 +46,35 @@ const SLASH_ALIASES = Object.freeze({
     '/chars': '/characters',
 });
 
+const FFXI_MACRO_COMMANDS = new Set([
+    '/macrohelp',
+    '/ma',
+    '/magic',
+    '/ja',
+    '/ws',
+    '/weaponskill',
+    '/weaponskill',
+    '/ra',
+    '/rangedattack',
+    '/item',
+    '/equipset',
+    '/recast',
+    '/target',
+    '/targetnpc',
+    '/targetbnpc',
+    '/assist',
+    '/lockon',
+    '/check',
+    '/echo',
+    '/p',
+    '/l',
+    '/linkshell',
+    '/say',
+    '/s',
+    '/tell',
+    '/t',
+]);
+
 export function createSlashCommandRouter(state, services = {}) {
     const engineRouter = createCommandRouter(state, services);
     const save = services.saveGame ?? saveGame;
@@ -103,7 +132,10 @@ export function createSlashCommandRouter(state, services = {}) {
 function routeGameplaySlash(engineRouter, input) {
     const stripped = input.slice(1);
     if (!stripped.trim()) return SLASH_HELP;
-    return engineRouter(stripped);
+    const commandName = input.split(/\s+/)[0].toLowerCase();
+    return FFXI_MACRO_COMMANDS.has(commandName)
+        ? engineRouter(input)
+        : engineRouter(stripped);
 }
 
 function describeCharacters() {
