@@ -1,3 +1,4 @@
+import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { addItemToContainer } from './inventoryEngine.js';
@@ -55,7 +56,7 @@ function findCatalogItem(catalog, itemQuery) {
 }
 
 function createInventoryItemFromShopItem(item, shopPoi, catalog) {
-    return {
+    const baseItem = {
         id: item.id,
         name: item.name,
         kind: inferItemKind(item.tags),
@@ -68,6 +69,7 @@ function createInventoryItemFromShopItem(item, shopPoi, catalog) {
         valueGil: item.priceGil,
         tags: [...item.tags],
     };
+    return baseItem.kind === 'equipment' ? enrichEquipmentItem(baseItem) : baseItem;
 }
 
 function inferItemKind(tags = []) {
