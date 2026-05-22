@@ -53,6 +53,7 @@ import {
     performPoiAction,
     talkAtCurrentGrid,
 } from './systems/poiEngine.js';
+import { describeJobProgression, switchMainJob } from './systems/progressionEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
     describeHpMpGradeComparisons,
@@ -81,6 +82,8 @@ const HELP_TEXT = [
     '  nations              List available starting nations.',
     '  races                List available races.',
     '  jobs                 List available starting jobs.',
+    '  job                  Show unlocked job progression.',
+    '  job <id>             Change main job to an unlocked job.',
     '  look                 Describe the current location, grid, and contextual POIs.',
     '  here                 Show context-aware POIs/actions at the current grid.',
     '  poi                  Summarize seeded POIs by zone.',
@@ -179,6 +182,7 @@ export function createCommandRouter(state, services = {}) {
             case 'nations': return describeNations();
             case 'races': return describeRaces();
             case 'jobs': return describeJobs();
+            case 'job': return parsed.args.length ? switchMainJob(state.player, parsed.args.join(' ')).message : describeJobProgression(state.player);
             case 'statformula': return describeStatFormulaOverview();
             case 'racegrades': return describeRaceStatGrades();
             case 'jobgrades': return describeJobStatGrades();
@@ -381,6 +385,8 @@ function inspectTarget(state, target = 'player') {
         case 'magic': return describeSpells(state);
         case 'weaponskills':
         case 'ws': return describeWeaponSkills();
+        case 'job':
+        case 'progression': return describeJobProgression(state.player);
         case 'jobabilities':
         case 'abilities':
         case 'ja': return describeJobAbilities(state);
@@ -419,7 +425,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
