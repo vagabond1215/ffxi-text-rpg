@@ -4,6 +4,7 @@ import {
     getCombatant,
     performBasicAttack,
 } from './battleEngine.js';
+import { resolveBattleRewards } from './rewardEngine.js';
 
 export function startEncounter(state, enemyId, options = {}) {
     if (state.activeBattle?.phase === 'active') {
@@ -101,17 +102,22 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
 export function describeBattle(battle) {
     if (!battle) return 'No active battle.';
 
-    return [
+    const lines = [
         `Battle: ${battle.phase} round ${battle.round}`,
         ...battle.combatants.map((combatant) => {
             const tag = combatant.type === 'player' ? 'Player' : 'Enemy';
             const defeated = combatant.battle.defeated ? ' defeated' : '';
             return `${tag}: ${combatant.identity.name} HP ${combatant.resources.hp}/${combatant.combat.resources.maxHp} MP ${combatant.resources.mp}/${combatant.combat.resources.maxMp} TP ${combatant.resources.tp}/${combatant.combat.resources.maxTp}${defeated}`;
         }),
-        '',
-        'Recent log:',
-        ...battle.log.slice(-8).map((entry) => `- ${entry}`),
-    ].join('\n');
+    ];
+
+    if (battle.rewards?.resolved) {
+        lines.push('', 'Rewards:', `- EXP: ${battle.rewards.exp}`, `- Gil: ${battle.rewards.gil}`);
+        lines.push(`- Loot: ${battle.rewards.items.length ? battle.rewards.items.map((item) => item.name).join(', ') : 'none'}`);
+    }
+
+    lines.push('', 'Recent log:', ...battle.log.slice(-8).map((entry) => `- ${entry}`));
+    return lines.join('\n');
 }
 
 export function describeBattleTurn(battle) {
@@ -137,8 +143,13 @@ function syncPlayerFromBattle(state) {
     const playerCombatant = getPlayerCombatant(state.activeBattle);
     if (!playerCombatant) return;
     state.player.resources = { ...playerCombatant.resources };
-    if (state.activeBattle.phase !== 'active') {
+    if (state.activeBattle.phase === 'victory' && !state.activeBattle.rewards?.resolved) {
+        const rewards = resolveBattleRewards(state, state.activeBattle);
+        appendBattleLog(state.activeBattle, rewards.message);
+    }
+    if (state.activeBattle.phase !== 'active' && !state.activeBattle.endLogged) {
         appendBattleLog(state.activeBattle, `Battle ended: ${state.activeBattle.phase}.`);
+        state.activeBattle.endLogged = true;
     }
 }
 

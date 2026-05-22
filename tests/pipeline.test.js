@@ -11,13 +11,14 @@ test('version manifest exposes explicit app account save game state data and ben
     assert.equal(VERSION.app, '0.4.1');
     assert.equal(VERSION.accountSave, 3);
     assert.equal(VERSION.gameState, 2);
-    assert.equal(VERSION.data, 7);
+    assert.equal(VERSION.data, 8);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.accountSave);
     assert.match(describeVersion(), /App: 0.4.1/);
     assert.match(describeVersion(), /Account Save: 3/);
     assert.match(describeVersion(), /Game State: 2/);
     assert.match(describeSystemVersions(), /characterCreation/);
+    assert.match(describeSystemVersions(), /battleRewards: 0.5.0/);
 });
 
 test('database registry includes major planned systems and recovered legacy data', () => {
