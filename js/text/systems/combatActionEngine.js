@@ -18,6 +18,8 @@ export function startEncounter(state, enemyId, options = {}) {
     state.activeBattle = createBattleState({
         player: state.player,
         enemies: [{ ...enemy, id: `${enemy.id}-encounter-${Date.now()}` }],
+        rng: options.rng,
+        rngSeed: options.rngSeed ?? null,
     });
     state.activeBattle.source = options.source ?? 'manual';
     state.activeBattle.sourceEnemyId = enemy.id;
