@@ -36,8 +36,9 @@ Current state at handoff:
 
 ```text
 App/package: 0.4.1
-Save: 3
-Data: 7
+Account Save: 3
+Game State: 2
+Data: 9
 Codename: Slash UI Account Saves
 ```
 
@@ -50,8 +51,14 @@ saveEncoding: 0.4.1
 statEngine: 0.4.0
 equipmentCommands: 0.4.0
 equipmentCatalog: 0.4.0
-inventoryContainers: 0.3.8
-inventoryTransfers: 0.3.8
+inventoryContainers: 0.5.1
+inventoryTransfers: 0.5.1
+itemSchema: 0.5.1
+itemStacking: 0.5.1
+battleEngine: 0.5.0
+combatActions: 0.5.0
+battleRewards: 0.5.0
+loot: 0.5.0
 shops/shopTransactions: 0.3.7
 pois/poiDiscovery/poiFastTravel: 0.3.4
 travel/gridMovement/aggro: 0.3.3
@@ -176,6 +183,7 @@ index.html
       -> loadActiveCharacter() or createInitialState()
       -> createSlashCommandRouter(state)
           -> createCommandRouter(state)
+      -> createTopBar(...)
       -> createSidebar(...)
       -> createTextShell(...)
 ```
@@ -185,8 +193,10 @@ Relevant UI files:
 ```text
 js/main.js
 js/text/slashCommandRouter.js
+js/text/topBar.js
 js/text/textShell.js
 js/text/sidebar.js
+js/text/uiPanels.js
 css/style.css
 ```
 
@@ -242,11 +252,12 @@ Implemented:
 
 Selling is intentionally not implemented yet.
 
-### Inventory, storage, wardrobes
+### Inventory, items, storage, wardrobes
 
 Files:
 
 ```text
+js/text/data/itemSchema.js
 js/text/data/inventoryContainers.js
 js/text/data/mogHouseFurniture.js
 js/text/systems/inventoryEngine.js
@@ -274,7 +285,9 @@ Rules:
 - Satchel/Sack/Case exist but are locked by default.
 - Wardrobe 1 is unlocked by default, equipment-only, accessible anywhere.
 - Wardrobes 2-8 exist but are locked by default.
-- Container transfers are atomic and enforce source access, destination access, capacity, and item-kind rules.
+- Item normalization adds kind, quantity, stackable, maxStack, tags, source, flags, modifiers, and equipmentSlot fields.
+- Stackable consumables/materials/misc items merge into existing stacks when possible.
+- Container transfers are atomic and enforce source access, destination access, capacity, item-kind, and stack rules.
 
 Temporary limitation: Mog House is currently a boolean access context, not a real zone/interior yet.
 
@@ -296,15 +309,18 @@ Implemented:
 - slot inference from `equipmentSlot` or tags
 - starter equipment modifiers affect combat profile
 
-Starter gear bonuses are conservative placeholders, not exact FFXI formulas.
+Starter gear bonuses are conservative placeholders, not exact FFXI formulas. Equipment validation by job/race/level is still pending.
 
-### Combat and actions
+### Combat, rewards, and actions
 
 Files:
 
 ```text
+js/text/data/lootTables.js
 js/text/systems/battleEngine.js
 js/text/systems/combatActionEngine.js
+js/text/systems/rewardEngine.js
+js/text/systems/rng.js
 js/text/systems/statusEngine.js
 js/text/systems/tickEngine.js
 ```
@@ -312,33 +328,37 @@ js/text/systems/tickEngine.js
 Implemented:
 
 - basic encounter/battle state
+- deterministic RNG injection for battle attacks and tests
 - basic attack flow
 - placeholder weapon skill/cast commands
+- starter loot tables
+- victory reward resolution for EXP, gil, loot rolls, Inventory insertion, and duplicate payout prevention
 - status lifecycle scaffold
 - tick engine scaffold
 
 Not implemented yet:
 
-- battle rewards
+- EXP tables and level-up rules
 - enemy AI turn depth
-- EXP/gil/loot roll handling
 - death/KO flow
 - real magic/recast/cast-time integration
 
-## Tests added during recent passes
-
-Important test files:
+## Important tests
 
 ```text
 tests/saveAccount.test.js
 tests/slashCommandRouter.test.js
 tests/equipmentEngine.test.js
 tests/inventoryEngine.test.js
+tests/itemSchema.test.js
+tests/rewardEngine.test.js
+tests/rngEngine.test.js
 tests/shopEngine.test.js
 tests/poiEngine.test.js
 tests/travelEngine.test.js
 tests/atlasAndControls.test.js
 tests/characterCreation.test.js
+tests/uiPanels.test.js
 ```
 
 New work should add tests in the same style using Node's built-in `node:test`.
@@ -352,6 +372,7 @@ README.md
 docs/ARCHITECTURE.md
 docs/ROADMAP.md
 docs/THREAD_HANDOFF.md
+CHANGELOG.md
 ```
 
 Still useful but may need future refresh as systems deepen:
@@ -360,27 +381,17 @@ Still useful but may need future refresh as systems deepen:
 docs/BASELINE_PIPELINE.md
 docs/SYSTEM_CATALOG.md
 docs/RESEARCH_REFERENCES.md
-CHANGELOG.md
 ```
 
 ## Current recommended next pass
 
-The user paused battle rewards and asked to make the UI usable. Continue UI hardening before returning to deeper combat systems.
+The next best implementation pass is progression:
 
-Recommended next pass:
-
-1. Add visible character-slot cards/buttons in the browser UI.
-2. Add a clearer main menu panel instead of relying only on terminal text.
-3. Add command chips/buttons for common slash commands.
-4. Improve save/load UI feedback.
-5. Add tests for any new UI command wrappers or save-slot helpers.
-
-After UI hardening, resume game-system work with:
-
-1. Battle rewards: EXP, gil, loot.
-2. Loot table schema and drop roll engine.
-3. Inventory insertion through existing container rules.
-4. Level-up rules and EXP-to-next handling.
+1. Add EXP table data and level-up rules.
+2. Update player/job progression containers when rewards grant EXP.
+3. Refresh HP/MP/resources and EXP-to-next after level-up.
+4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
+5. Update README, THREAD_HANDOFF, CHANGELOG, version map, and benchmark coverage if progression logic becomes runtime-heavy.
 
 ## Rules for future agents
 
