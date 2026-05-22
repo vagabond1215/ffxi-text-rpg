@@ -1,4 +1,14 @@
+import { listCharacters } from './save.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
+import {
+    renderCharacterCards,
+    renderCommandChips,
+    renderFeedback,
+    renderLocationPanel,
+    renderMainMenuPanel,
+    renderSidebarHeader,
+    renderWalletPanel,
+} from './uiPanels.js';
 
 const SIDEBAR_MENUS = Object.freeze([
     ['Main Menu', '/menu'],
@@ -22,13 +32,16 @@ export function createSidebar({ root, state, runCommand }) {
         throw new Error('Sidebar is missing root, state, or runCommand.');
     }
 
+    let lastFeedback = null;
+
     root.addEventListener('click', (event) => {
         const button = event.target.closest('[data-command]');
         if (!button) return;
         runCommand(button.dataset.command);
     });
 
-    function render() {
+    function render(feedback = lastFeedback) {
+        if (feedback !== undefined) lastFeedback = feedback;
         const player = state.player;
         const combat = calculateCombatProfile(player);
         const level = player.jobs.level;
@@ -36,8 +49,15 @@ export function createSidebar({ root, state, runCommand }) {
         const expToNext = player.progression?.expToNext ?? level * 500;
 
         root.innerHTML = [
+            renderSidebarHeader(player),
+            renderFeedback(lastFeedback),
+            renderMainMenuPanel(),
             renderCharacterSummary(player, state, level, exp, expToNext),
             renderBars(player, combat, exp, expToNext),
+            renderLocationPanel(state),
+            renderWalletPanel(player),
+            renderCharacterCards(listCharacters()),
+            renderCommandChips(),
             renderMenus(),
         ].join('');
     }
@@ -50,13 +70,12 @@ export function createSidebar({ root, state, runCommand }) {
 function renderCharacterSummary(player, state, level, exp, expToNext) {
     return `
         <section class="sidebar-section">
-            <h2 class="character-name">${escapeHtml(player.identity.name)}</h2>
+            <h3>Character</h3>
             <div class="sidebar-line"><span>Job</span><strong>${escapeHtml(player.jobs.mainJobName)} Lv.${level}</strong></div>
             <div class="sidebar-line"><span>Nation</span><strong>${escapeHtml(player.identity.nation)}</strong></div>
             <div class="sidebar-line"><span>Location</span><strong>${escapeHtml(state.location)}</strong></div>
             <div class="sidebar-line"><span>Grid</span><strong>${state.position?.x ?? '?'}:${state.position?.y ?? '?'}</strong></div>
             <div class="sidebar-line"><span>EXP</span><strong>${exp}/${expToNext}</strong></div>
-            <div class="sidebar-line"><span>Gil</span><strong>${player.wallet.gil}</strong></div>
         </section>
     `;
 }

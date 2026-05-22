@@ -106,6 +106,32 @@ Gameplay commands are also slash-prefixed in the UI:
 
 Bare commands are rejected by the UI except while answering active character-creation prompts. The lower-level internal router still accepts bare commands for tests and engine reuse.
 
+## Browser UI panels
+
+The browser shell remains text-first, but the page now has a slim app frame with a persistent top bar and populated sidebar.
+
+The top bar includes:
+
+- compact FFXI/Text RPG branding
+- active character name
+- main job and level
+- current location and grid
+- last command feedback
+- quick actions for Menu, Look, Inventory, Equipment, and Save
+
+The sidebar includes:
+
+- active character hero panel
+- last-action feedback
+- main menu actions
+- character summary
+- HP, MP, TP, and EXP bars
+- location/status panel
+- wallet/title panel
+- character-slot load cards
+- command chips for common movement, inventory, map, atlas, travel, and save commands
+- full menu buttons
+
 ## Character creation
 
 Use:
@@ -163,7 +189,9 @@ js/text/
   gameState.js             initial state and text descriptions
   save.js                  encoded account/character localStorage adapter
   sidebar.js               DOM sidebar/HUD/menu buttons
+  topBar.js                DOM top bar/status strip renderer
   textShell.js             DOM shell only
+  uiPanels.js              reusable text-first UI panel render helpers
   version.js               app/save/data/system version manifest
   commands/
     parser.js
@@ -219,7 +247,9 @@ docs/
 ## Implemented foundation
 
 - Text-only browser shell with slash-command UI.
+- Slim top bar with character/location/status summary and quick actions.
 - Account profile and multiple encoded local character save slots.
+- Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, resources, location, wallet, and last-action feedback.
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
 - Structured player character entity.
@@ -270,10 +300,4 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is UI hardening, not new combat systems:
-
-1. Make the main menu visually clearer and less terminal-only.
-2. Add character-slot cards/buttons for `/characters` and `/load`.
-3. Add visible command chips/buttons for common slash commands.
-4. Add save/load error display in the UI.
-5. Then resume game-system work with battle rewards: EXP, gil, and loot into Inventory.
+The current recommended next pass is version naming cleanup, then deterministic combat RNG before battle rewards.

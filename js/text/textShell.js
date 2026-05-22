@@ -1,3 +1,5 @@
+import { classifyCommandFeedback } from './uiPanels.js';
+
 export function createTextShell({ output, form, input, router, afterCommand }) {
     if (!output || !form || !input || !router) {
         throw new Error('Text shell is missing required DOM elements or command router.');
@@ -20,7 +22,7 @@ export function createTextShell({ output, form, input, router, afterCommand }) {
 
         const response = router(command);
         append(`> ${command}\n${response}`);
-        afterCommand?.({ command, response });
+        afterCommand?.({ command, response, feedback: classifyCommandFeedback(command, response) });
         return response;
     }
 
