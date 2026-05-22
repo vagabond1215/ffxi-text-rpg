@@ -234,9 +234,9 @@ export function validateEquipmentCatalogEntry(entry) {
     }
 
     issues.push(...validateEffectArray(entry.effects, 'effects'));
-    issues.push(...validateEffectArray(entry.latentEffects, 'latentEffects'));
-    issues.push(...validateEffectArray(entry.enchantments, 'enchantments'));
-    issues.push(...validateEffectArray(entry.augments, 'augments'));
+    issues.push(...validateLatentEffectArray(entry.latentEffects, 'latentEffects'));
+    issues.push(...validateEffectLikeArray(entry.enchantments, 'enchantments'));
+    issues.push(...validateEffectLikeArray(entry.augments, 'augments'));
     issues.push(...validateCharges(entry.charges, 'charges'));
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
         issues.push('weaponDelay must be a non-negative integer when present.');
@@ -336,6 +336,45 @@ function validateEffectArray(effects, label) {
         }
         if (effect.type !== 'modifier' && !hasBehaviorPayload(effect)) {
             issues.push(`${path} must include modifiers or a behavior payload.`);
+        }
+    });
+    return issues;
+}
+
+function validateLatentEffectArray(latentEffects, label) {
+    const issues = [];
+    if (!Array.isArray(latentEffects)) return [`${label} must be an array.`];
+    latentEffects.forEach((effect, index) => {
+        const path = `${label}[${index}]`;
+        if (!isObject(effect)) {
+            issues.push(`${path} must be an object.`);
+            return;
+        }
+        const hasCondition = Object.hasOwn(effect, 'condition') && effect.condition !== null && effect.condition !== undefined;
+        const hasModifiers = Object.hasOwn(effect, 'modifiers');
+        const hasBehavior = hasBehaviorPayload(effect);
+        if (hasModifiers) issues.push(...validateModifierBlock(effect.modifiers, `${path}.modifiers`));
+        if (!hasCondition && !hasModifiers && !hasBehavior) {
+            issues.push(`${path} must include condition, modifiers, or a behavior payload.`);
+        }
+    });
+    return issues;
+}
+
+function validateEffectLikeArray(entries, label) {
+    const issues = [];
+    if (!Array.isArray(entries)) return [`${label} must be an array.`];
+    entries.forEach((entry, index) => {
+        const path = `${label}[${index}]`;
+        if (!isObject(entry)) {
+            issues.push(`${path} must be an object.`);
+            return;
+        }
+        const hasModifiers = Object.hasOwn(entry, 'modifiers');
+        const hasTypedBehavior = typeof entry.type === 'string' && entry.type.trim() && hasBehaviorPayload(entry);
+        if (hasModifiers) issues.push(...validateModifierBlock(entry.modifiers, `${path}.modifiers`));
+        if (!hasModifiers && !hasTypedBehavior) {
+            issues.push(`${path} must include modifiers or typed behavior/payload.`);
         }
     });
     return issues;
