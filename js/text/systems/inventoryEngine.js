@@ -1,4 +1,10 @@
 import {
+    canStackItems,
+    addToStack,
+    describeItem,
+    normalizeItem,
+} from '../data/itemSchema.js';
+import {
     getContainerDefinition,
     INVENTORY_ACCESS_CONTEXTS,
     INVENTORY_CONTAINER_DEFINITIONS,
@@ -21,7 +27,7 @@ export function createInventoryState(options = {}) {
         containers: Object.fromEntries(listContainerDefinitions().map((definition) => [definition.id, {
             id: definition.id,
             unlocked: options.unlockedContainers?.includes(definition.id) ?? definition.unlockedByDefault,
-            items: options.containers?.[definition.id]?.items ?? [],
+            items: (options.containers?.[definition.id]?.items ?? []).map(normalizeItem),
         }])),
         mogHouse,
     };
@@ -54,14 +60,16 @@ export function isContainerAccessible(inventoryState, containerId, context = {})
 }
 
 export function canStoreItemInContainer(inventoryState, containerId, item, context = {}) {
+    const normalizedItem = normalizeItem(item);
     const definition = getContainerDefinition(containerId);
     const container = inventoryState?.containers?.[containerId];
     if (!definition || !container) return { ok: false, reason: `Unknown container: ${containerId}` };
     if (!container.unlocked) return { ok: false, reason: `${definition.label} is locked.` };
     if (!isContainerAccessible(inventoryState, containerId, context)) return { ok: false, reason: `${definition.label} is not accessible from here.` };
-    if (!definition.itemKinds.includes('all') && !definition.itemKinds.includes(item.kind ?? 'misc')) {
-        return { ok: false, reason: `${definition.label} cannot store ${item.kind ?? 'misc'} items.` };
+    if (!definition.itemKinds.includes('all') && !definition.itemKinds.includes(normalizedItem.kind ?? 'misc')) {
+        return { ok: false, reason: `${definition.label} cannot store ${normalizedItem.kind ?? 'misc'} items.` };
     }
+    if (canStackIntoExistingItem(container, normalizedItem)) return { ok: true, stacks: true };
     if (container.items.length >= getContainerCapacity(inventoryState, containerId)) {
         return { ok: false, reason: `${definition.label} is full.` };
     }
@@ -69,10 +77,27 @@ export function canStoreItemInContainer(inventoryState, containerId, item, conte
 }
 
 export function addItemToContainer(inventoryState, containerId, item, context = {}) {
-    const check = canStoreItemInContainer(inventoryState, containerId, item, context);
+    const normalizedItem = normalizeItem(item);
+    const check = canStoreItemInContainer(inventoryState, containerId, normalizedItem, context);
     if (!check.ok) return check;
-    inventoryState.containers[containerId].items.push({ quantity: 1, ...item });
-    return { ok: true, item, containerId };
+
+    const container = inventoryState.containers[containerId];
+    const capacity = getContainerCapacity(inventoryState, containerId);
+    const stackTarget = container.items.find((existingItem) => canStackItems(existingItem, normalizedItem));
+    if (stackTarget) {
+        const beforeQuantity = stackTarget.quantity;
+        const result = addToStack(stackTarget, normalizedItem);
+        if (result.remaining <= 0) return { ok: true, item: stackTarget, containerId, stacked: true };
+        if (container.items.length >= capacity) {
+            stackTarget.quantity = beforeQuantity;
+            return { ok: false, reason: `${getContainerDefinition(containerId)?.label ?? containerId} is full.` };
+        }
+        container.items.push({ ...normalizedItem, quantity: result.remaining });
+        return { ok: true, item: normalizedItem, containerId, stacked: true, splitStack: true };
+    }
+
+    container.items.push(normalizedItem);
+    return { ok: true, item: normalizedItem, containerId };
 }
 
 export function findItemInContainer(inventoryState, containerId, itemQuery) {
@@ -103,7 +128,11 @@ export function transferItemBetweenContainers(state, itemQuery, fromContainerId 
     if (!storeCheck.ok) return storeCheck.reason;
 
     const [item] = found.container.items.splice(found.index, 1);
-    inventoryState.containers[toContainerId].items.push(item);
+    const addResult = addItemToContainer(inventoryState, toContainerId, item, context);
+    if (!addResult.ok) {
+        found.container.items.splice(found.index, 0, item);
+        return addResult.reason;
+    }
 
     return [
         `Transferred ${item.name ?? item.id}.`,
@@ -135,7 +164,7 @@ export function describeContainerContents(state, containerId = 'inventory', cont
     return [
         `${definition.label} (${access}) ${container.items.length}/${capacity}`,
         definition.description,
-        ...(container.items.length ? container.items.map((item, index) => `${index + 1}. ${item.name ?? item.id}${item.quantity > 1 ? ` x${item.quantity}` : ''}`) : ['- empty']),
+        ...(container.items.length ? container.items.map((item, index) => `${index + 1}. ${describeItem(normalizeItem(item))}`) : ['- empty']),
     ].join('\n');
 }
 
@@ -156,6 +185,10 @@ export function setMogHouseAccess(state, isInMogHouse) {
     if (!inventoryState) return { ok: false, message: 'No inventory container state found.' };
     inventoryState.mogHouse.isInMogHouse = Boolean(isInMogHouse);
     return { ok: true, message: `Mog House context: ${inventoryState.mogHouse.isInMogHouse ? 'entered' : 'left'}.` };
+}
+
+function canStackIntoExistingItem(container, item) {
+    return container.items.some((existingItem) => canStackItems(existingItem, item));
 }
 
 function describeContainerLine(inventoryState, containerId, context = {}) {
