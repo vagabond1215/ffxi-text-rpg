@@ -233,11 +233,11 @@ export function validateEquipmentCatalogEntry(entry) {
         }
     }
 
-    if (!Array.isArray(entry.effects)) issues.push('effects must be an array.');
-    if (!Array.isArray(entry.latentEffects)) issues.push('latentEffects must be an array.');
-    if (!Array.isArray(entry.enchantments)) issues.push('enchantments must be an array.');
-    if (!Array.isArray(entry.augments)) issues.push('augments must be an array.');
-    if (entry.charges !== null && entry.charges !== undefined && !isObject(entry.charges)) issues.push('charges must be null or an object.');
+    issues.push(...validateEffectArray(entry.effects, 'effects'));
+    issues.push(...validateEffectArray(entry.latentEffects, 'latentEffects'));
+    issues.push(...validateEffectArray(entry.enchantments, 'enchantments'));
+    issues.push(...validateEffectArray(entry.augments, 'augments'));
+    issues.push(...validateCharges(entry.charges, 'charges'));
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
         issues.push('weaponDelay must be a non-negative integer when present.');
     }
@@ -311,6 +311,38 @@ function validateModifierBlock(modifiers, label) {
         }
     }
     return issues;
+}
+
+function validateEffectArray(effects, label) {
+    const issues = [];
+    if (!Array.isArray(effects)) return [`${label} must be an array.`];
+    effects.forEach((effect, index) => {
+        const path = `${label}[${index}]`;
+        if (!isObject(effect)) {
+            issues.push(`${path} must be an object.`);
+            return;
+        }
+        issues.push(...validateModifierBlock(effect.modifiers, `${path}.modifiers`));
+    });
+    return issues;
+}
+
+function validateCharges(charges, label) {
+    const issues = [];
+    if (charges === null || charges === undefined) return issues;
+    if (!isObject(charges)) return [`${label} must be null or an object.`];
+    validateNonNegativeInteger(charges.max, `${label}.max`, issues);
+    validateNonNegativeInteger(charges.current, `${label}.current`, issues);
+    validateNonNegativeInteger(charges.recastSeconds, `${label}.recastSeconds`, issues);
+    validateNonNegativeInteger(charges.cooldownSeconds, `${label}.cooldownSeconds`, issues);
+    if (Number.isInteger(charges.current) && Number.isInteger(charges.max) && charges.current > charges.max) {
+        issues.push(`${label}.current cannot exceed ${label}.max.`);
+    }
+    return issues;
+}
+
+function validateNonNegativeInteger(value, label, issues) {
+    if (!Number.isInteger(value) || value < 0) issues.push(`${label} must be a non-negative integer.`);
 }
 
 function validateRequiredFieldMetadata(entry) {

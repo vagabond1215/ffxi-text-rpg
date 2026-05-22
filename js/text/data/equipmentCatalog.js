@@ -143,7 +143,7 @@ export function enrichEquipmentItem(item) {
         : entry.requirements;
     const allowedSlots = alreadyEnriched
         ? runtimeItem.allowedSlots
-        : item.allowedSlots?.length ? unique([...entry.allowedSlots, ...item.allowedSlots]) : entry.allowedSlots;
+        : runtimeItem.allowedSlots.length ? unique([...entry.allowedSlots, ...runtimeItem.allowedSlots]) : entry.allowedSlots;
     const flags = unique([...(entry.flags ?? []), ...(runtimeItem.flags ?? [])]);
     const modifiers = alreadyEnriched ? runtimeItem.modifiers : mergeModifierBlocks(entry.modifiers, item.modifiers);
 
@@ -168,9 +168,9 @@ export function enrichEquipmentItem(item) {
         flags,
         modifiers,
         effects: alreadyEnriched ? runtimeItem.effects : item.effects ?? entry.effects,
-        latentEffects: alreadyEnriched ? runtimeItem.latentEffects : [...(entry.latentEffects ?? []), ...(item.latentEffects ?? [])],
-        enchantments: alreadyEnriched ? runtimeItem.enchantments : [...(entry.enchantments ?? []), ...(item.enchantments ?? [])],
-        augments: alreadyEnriched ? runtimeItem.augments : [...(entry.augments ?? []), ...(item.augments ?? [])],
+        latentEffects: alreadyEnriched ? runtimeItem.latentEffects : [...(entry.latentEffects ?? []), ...runtimeItem.latentEffects],
+        enchantments: alreadyEnriched ? runtimeItem.enchantments : [...(entry.enchantments ?? []), ...runtimeItem.enchantments],
+        augments: alreadyEnriched ? runtimeItem.augments : [...(entry.augments ?? []), ...runtimeItem.augments],
         charges: item.charges ?? entry.charges,
         metadata: hasUsefulMetadata(item.metadata) ? item.metadata : entry.metadata,
         fieldNotes: { ...(entry.fieldNotes ?? {}), ...(item.fieldNotes ?? {}) },

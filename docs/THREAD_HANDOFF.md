@@ -408,6 +408,8 @@ The next best implementation pass is combat/skill integration:
 4. Add item behavior modules for latent effects, enchantments, charges, ranged/ammo, and sell restrictions.
 5. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.
 
+Important: `skillCaps.js` is scaffold-only. Do not wire those caps into combat or magic calculations until player current skill state exists and the cap/skill-gain flow is covered by tests.
+
 ## Rules for future agents
 
 - Do not reintroduce graphical map/image systems unless explicitly requested.

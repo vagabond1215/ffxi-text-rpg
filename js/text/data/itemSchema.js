@@ -291,8 +291,11 @@ function hasAnyModifier(modifiers = {}) {
 
 function normalizeStringArray(value = []) {
     if (value === null || value === undefined) return [];
-    const raw = Array.isArray(value) ? value : [value];
-    return uniqueStrings(raw.map((entry) => String(entry ?? '').trim()).filter(Boolean));
+    const raw = Array.isArray(value) ? value : (typeof value === 'string' || typeof value === 'number' ? [value] : []);
+    return uniqueStrings(raw
+        .filter((entry) => typeof entry === 'string' || typeof entry === 'number')
+        .map((entry) => String(entry).trim())
+        .filter(Boolean));
 }
 
 function uniqueStrings(values) {

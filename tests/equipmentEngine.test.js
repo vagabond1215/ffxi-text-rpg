@@ -24,6 +24,10 @@ function potion() {
     return { id: 'potion', name: 'Potion', kind: 'consumable', quantity: 1, tags: ['consumable'] };
 }
 
+function craftingMaterial() {
+    return { id: 'copper-ore', name: 'Copper Ore', kind: 'material', quantity: 1, tags: ['material'] };
+}
+
 function levelTwoSword() {
     return {
         id: 'training-sword',
@@ -207,6 +211,34 @@ test('enriched armor changes defense and hp when equipped', () => {
     assert.equal(after.resources.maxHp, before.resources.maxHp + 4);
 });
 
+test('enrichEquipmentItem ignores malformed runtime list fields without spreading garbage', () => {
+    const stringMalformed = enrichEquipmentItem({
+        ...bronzeSword(),
+        allowedSlots: 'offHand',
+        latentEffects: 'latentEffect',
+        enchantments: 'enchantment',
+        augments: 'augment',
+    });
+    const objectMalformed = enrichEquipmentItem({
+        ...bronzeSword(),
+        allowedSlots: { slot: 'offHand' },
+        latentEffects: { id: 'bad-latent' },
+        enchantments: { id: 'bad-enchantment' },
+        augments: { id: 'bad-augment' },
+    });
+
+    assert.deepEqual(stringMalformed.allowedSlots, ['mainHand', 'offHand']);
+    assert.equal(stringMalformed.allowedSlots.includes('o'), false);
+    assert.deepEqual(stringMalformed.latentEffects, []);
+    assert.deepEqual(stringMalformed.enchantments, []);
+    assert.deepEqual(stringMalformed.augments, []);
+    assert.deepEqual(objectMalformed.allowedSlots, ['mainHand']);
+    assert.equal(objectMalformed.allowedSlots.includes('[object Object]'), false);
+    assert.deepEqual(objectMalformed.latentEffects, []);
+    assert.deepEqual(objectMalformed.enchantments, []);
+    assert.deepEqual(objectMalformed.augments, []);
+});
+
 test('item inspection shows requirements flags effects and confidence notes', () => {
     const state = createInitialState();
     addItemToContainer(state.player.inventoryState, 'inventory', bronzeSword());
@@ -218,6 +250,22 @@ test('item inspection shows requirements flags effects and confidence notes', ()
     assert.match(output, /Flags: equipmentOnly/);
     assert.match(output, /Effects:/);
     assert.match(output, /weaponDelay: placeholder/);
+});
+
+test('item inspection searches accessible non-wardrobe containers for consumables and materials', () => {
+    const state = createInitialState();
+    const inventoryState = state.player.inventoryState;
+    inventoryState.mogHouse.isInMogHouse = true;
+    addItemToContainer(inventoryState, 'mogSafe', potion());
+    addItemToContainer(inventoryState, 'storage', craftingMaterial());
+
+    const potionOutput = inspectItem(state, 'Potion');
+    const materialOutput = inspectItem(state, 'Copper Ore');
+
+    assert.match(potionOutput, /Kind: consumable/);
+    assert.match(potionOutput, /Source: Mog Safe/);
+    assert.match(materialOutput, /Kind: material/);
+    assert.match(materialOutput, /Source: Storage/);
 });
 
 test('unequipItem returns gear to inventory', () => {

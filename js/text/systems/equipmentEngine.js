@@ -1,6 +1,6 @@
 import { EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
-import { getContainerDefinition } from '../data/inventoryContainers.js';
+import { getContainerDefinition, listContainerDefinitions } from '../data/inventoryContainers.js';
 import { ITEM_KINDS, hasItemFlag, normalizeItem } from '../data/itemSchema.js';
 import {
     canStoreItemInContainer,
@@ -230,8 +230,8 @@ function findInspectableItem(state, itemQuery) {
     }
 
     const inventoryState = state.player?.inventoryState;
-    for (const containerId of DEFAULT_EQUIP_SEARCH_CONTAINERS) {
-        const definition = getContainerDefinition(containerId);
+    for (const definition of listContainerDefinitions()) {
+        const containerId = definition.id;
         const container = inventoryState?.containers?.[containerId];
         if (!definition || !container || !isContainerAccessible(inventoryState, containerId)) continue;
         const item = container.items.find((entry) => itemMatches(entry, normalizedQuery));
