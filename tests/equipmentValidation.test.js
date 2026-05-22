@@ -165,3 +165,75 @@ test('equipment validation rejects malformed non-modifier effects cleanly', () =
     assert.ok(issues.some((issue) => issue.includes('effects[0] must include modifiers or a behavior payload')));
     assert.ok(issues.some((issue) => issue.includes('effects[1].type is required')));
 });
+
+test('equipment validation accepts latent effects with condition and modifiers without type', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        latentEffects: [{
+            id: 'valid-latent-condition',
+            condition: {
+                hpBelowPercent: 50,
+            },
+            modifiers: {
+                derived: {
+                    attack: 1,
+                },
+            },
+        }],
+    });
+
+    assert.deepEqual(issues, []);
+});
+
+test('equipment validation rejects empty latent effect records', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        latentEffects: [{
+            id: 'empty-latent',
+        }],
+    });
+
+    assert.ok(issues.some((issue) => issue.includes('latentEffects[0] must include condition, modifiers, or a behavior payload')));
+});
+
+test('equipment validation accepts enchantments and augments with typed behavior payloads', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        enchantments: [{
+            id: 'valid-enchantment',
+            type: 'behavior',
+            behavior: {
+                action: 'consume-charge',
+            },
+        }],
+        augments: [{
+            id: 'valid-augment',
+            modifiers: {
+                attributes: {
+                    str: 1,
+                },
+            },
+        }],
+    });
+
+    assert.deepEqual(issues, []);
+});
+
+test('equipment validation rejects empty enchantment and augment records', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        enchantments: [{
+            id: 'empty-enchantment',
+        }],
+        augments: [{
+            id: 'empty-augment',
+        }],
+    });
+
+    assert.ok(issues.some((issue) => issue.includes('enchantments[0] must include modifiers or typed behavior/payload')));
+    assert.ok(issues.some((issue) => issue.includes('augments[0] must include modifiers or typed behavior/payload')));
+});
