@@ -108,12 +108,29 @@ Bare commands are rejected by the UI except while answering active character-cre
 
 ## Browser UI panels
 
-The browser shell remains text-first, but the sidebar now includes:
+The browser shell remains text-first, but the page now has a slim app frame with a persistent top bar and populated sidebar.
 
-- A main menu panel for New Character, Characters, Save, and All Commands.
-- Character-slot cards with Load buttons for local saved characters.
-- Command chips for common commands such as `/look`, `/stats`, `/inventory`, `/equipment`, `/containers`, `/here`, `/maps`, `/atlas`, movement, travel, and save.
-- A last-action feedback panel that classifies command responses as success, error, or info.
+The top bar includes:
+
+- compact FFXI/Text RPG branding
+- active character name
+- main job and level
+- current location and grid
+- last command feedback
+- quick actions for Menu, Look, Inventory, Equipment, and Save
+
+The sidebar includes:
+
+- active character hero panel
+- last-action feedback
+- main menu actions
+- character summary
+- HP, MP, TP, and EXP bars
+- location/status panel
+- wallet/title panel
+- character-slot load cards
+- command chips for common movement, inventory, map, atlas, travel, and save commands
+- full menu buttons
 
 ## Character creation
 
@@ -172,6 +189,7 @@ js/text/
   gameState.js             initial state and text descriptions
   save.js                  encoded account/character localStorage adapter
   sidebar.js               DOM sidebar/HUD/menu buttons
+  topBar.js                DOM top bar/status strip renderer
   textShell.js             DOM shell only
   uiPanels.js              reusable text-first UI panel render helpers
   version.js               app/save/data/system version manifest
@@ -229,8 +247,9 @@ docs/
 ## Implemented foundation
 
 - Text-only browser shell with slash-command UI.
+- Slim top bar with character/location/status summary and quick actions.
 - Account profile and multiple encoded local character save slots.
-- Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, and last-action feedback.
+- Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, resources, location, wallet, and last-action feedback.
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
 - Structured player character entity.
