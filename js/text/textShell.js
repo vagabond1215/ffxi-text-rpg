@@ -36,8 +36,10 @@ export function createTextShell({ output, form, input, router, afterCommand }) {
             write([
                 'FFXI Text RPG shell initialized.',
                 '',
-                'Type "create" to start the prompt-based character creator.',
-                'Type "help" to see available commands.',
+                'Main commands now use / slash input.',
+                'Type /menu to open the main menu.',
+                'Type /newcharacter to create a character.',
+                'Type /commands or /help to see available commands.',
             ].join('\n'));
         },
         focus() {
