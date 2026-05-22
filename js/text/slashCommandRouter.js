@@ -53,7 +53,6 @@ const FFXI_MACRO_COMMANDS = new Set([
     '/ja',
     '/ws',
     '/weaponskill',
-    '/weaponskill',
     '/ra',
     '/rangedattack',
     '/item',
