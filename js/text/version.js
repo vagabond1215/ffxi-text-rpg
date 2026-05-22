@@ -1,11 +1,15 @@
 export const VERSION = Object.freeze({
     app: '0.4.1',
-    save: 3,
+    accountSave: 3,
+    gameState: 2,
     data: 7,
     benchmark: 1,
     codename: 'Slash UI Account Saves',
     compatibility: 'no-backwards-compatibility',
     released: false,
+
+    // Backward-compatible alias for older callers while they migrate.
+    save: 3,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
@@ -60,7 +64,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
 export function describeVersion() {
     return [
         `App: ${VERSION.app}`,
-        `Save: ${VERSION.save}`,
+        `Account Save: ${VERSION.accountSave}`,
+        `Game State: ${VERSION.gameState}`,
         `Data: ${VERSION.data}`,
         `Benchmark: ${VERSION.benchmark}`,
         `Codename: ${VERSION.codename}`,
