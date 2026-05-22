@@ -2,11 +2,30 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable command shell, structured entities, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, and implementation-first documentation. Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, POI discovery, starter shops/guild hooks, equipment commands, and implementation-first documentation.
+
+Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
+
+## Current version
+
+```text
+App/package: 0.4.1
+Save: 3
+Data: 7
+Codename: Slash UI Account Saves
+```
+
+See `js/text/version.js` for the authoritative runtime/system version map.
 
 ## Running
 
 Open `index.html` in a browser. No build step is required for the browser shell.
+
+Suggested local repo path for Codex desktop work:
+
+```text
+C:\Codex\ffxi-text-rpg
+```
 
 ## Development
 
@@ -18,36 +37,118 @@ npm run benchmark
 npm run check
 ```
 
-## Current commands
+## Important handoff docs
 
-- `help` - show command list
-- `look` - describe the current location and current grid
-- `character` - show the player summary
-- `stats` - show attributes and derived combat stats
-- `inventory` - show carried items
-- `npcs` - list loaded NPCs
-- `enemies` - list loaded enemies
-- `maps` - list known starter map records
-- `map <id>` - inspect a starter map record
-- `zones` - list known seeded places
-- `zone [id/name]` - inspect current or named zone
-- `atlas [id/name]` - show discovered zone atlas grids; unknown grids remain hidden as `?`
-- `grid` - inspect the current grid and known local spawn pressure
-- `move <direction>` - move within the current zone grid using `n`, `ne`, `e`, `se`, `s`, `sw`, `w`, or `nw`
-- `controls` - show resource bars, live tick bar, 8-way keypad, and action control groups
-- `travel <destination>` - start direct travel to a connected zone
-- `wait [seconds]` - manually advance time for travel/tick testing
-- `databases` - list planned/seeded/implemented data registries
-- `version` - show app/save/data/benchmark versions
-- `systems` - show per-system version tracking
-- `tick` - inspect the live tick engine baseline
-- `inspect <target>` - inspect `player`, `stats`, `inventory`, `npcs`, `enemies`, `maps`, `zone`, `atlas`, `grid`, `travel`, `controls`, `state`, `log`, `version`, `systems`, or `databases`
-- `validate` - validate the current game state
-- `log [limit]` - show recent command history
-- `save` - save local state if validation passes
-- `reset` - clear local save and reload
+Read these first in a new thread or fresh development session:
 
-Command aliases are supported for common short forms, such as `?`, `l`, `char`, `status`, `stat`, `i`, `inv`, `npc`, and `enemy`.
+1. `docs/THREAD_HANDOFF.md` - concise current-state handoff and next-pass guidance.
+2. `docs/ARCHITECTURE.md` - runtime/module boundaries.
+3. `docs/ROADMAP.md` - versioned implementation plan.
+4. `docs/BASELINE_PIPELINE.md` - full baseline pipeline expectations.
+5. `docs/SYSTEM_CATALOG.md` - system/data registry notes.
+6. `CHANGELOG.md` - notable reset-branch changes.
+
+## UI command policy
+
+The browser UI now expects slash commands.
+
+```text
+/menu
+/commands
+/help
+/newcharacter
+/characters
+/load <name|number>
+/save
+/account
+/reset
+```
+
+Gameplay commands are also slash-prefixed in the UI:
+
+```text
+/look
+/stats
+/inventory
+/equipment
+/containers
+/container <id>
+/transfer <item> from <source> to <destination>
+/equip <item> [to slot] [from container]
+/unequip <slot> [to container]
+/equipSources
+/here
+/talk <name>
+/shop <name>
+/buy <item>
+/guild <name>
+/quest <name>
+/discovered
+/fastpoi <name>
+/zonefast
+/maps
+/map <id>
+/zones
+/zone <id|name>
+/atlas <id|name>
+/grid
+/move <n|ne|e|se|s|sw|w|nw>
+/travel <destination>
+/wait <seconds>
+/controls
+/tick
+/version
+/systems
+/databases
+/validate
+/log
+```
+
+Bare commands are rejected by the UI except while answering active character-creation prompts. The lower-level internal router still accepts bare commands for tests and engine reuse.
+
+## Character creation
+
+Use:
+
+```text
+/newcharacter
+```
+
+The command starts prompt-based character creation. While prompts are active, answers are natural text and do not require `/`:
+
+```text
+sandoria
+hume
+male
+warrior
+CharacterName
+```
+
+A completed character is saved automatically into the local account save.
+
+## Save model
+
+Local saves are stored under:
+
+```text
+ffxiTextRpgAccount
+```
+
+The save payload is encoded as:
+
+```text
+base64-json-v1
+```
+
+This is encoded storage, not strong encryption. It keeps player data from being plain readable JSON at a glance, but it is not secure against anyone with browser/devtools access. Real encryption should use a password-derived key or platform key later.
+
+The old single-save key:
+
+```text
+ffxiTextRpgSave
+```
+
+is read only for migration when no account save exists, then removed after account save creation.
 
 ## Current architecture
 
@@ -56,21 +157,31 @@ index.html
 css/style.css
 js/main.js
 js/text/
-  commandRouter.js
-  gameState.js
-  save.js
-  textShell.js
-  version.js
+  slashCommandRouter.js    UI-facing slash command wrapper
+  commandRouter.js         internal command parsing and dispatch
+  gameState.js             initial state and text descriptions
+  save.js                  encoded account/character localStorage adapter
+  sidebar.js               DOM sidebar/HUD/menu buttons
+  textShell.js             DOM shell only
+  version.js               app/save/data/system version manifest
   commands/
     parser.js
   data/
     actionControls.js
     databaseRegistry.js
+    equipmentCatalog.js
+    guildServices.js
+    inventoryContainers.js
     jobs.js
     maps.js
+    mogHouseFurniture.js
+    nations.js
     places.js
+    pointsOfInterest.js
+    questHooks.js
     races.js
     seedEntities.js
+    shopCatalogs.js
     systemConstants.js
   entities/
     entityFactory.js
@@ -78,6 +189,14 @@ js/text/
     aggroEngine.js
     atlasEngine.js
     battleEngine.js
+    characterCreator.js
+    combatActionEngine.js
+    equipmentEngine.js
+    ffxiCommandAdapter.js
+    inventoryEngine.js
+    menuDescriptions.js
+    poiEngine.js
+    shopEngine.js
     statEngine.js
     statusEngine.js
     tickEngine.js
@@ -86,22 +205,21 @@ js/text/
 scripts/
   benchmark.js
 tests/
-  atlasAndControls.test.js
-  commandParser.test.js
-  pipeline.test.js
-  statEngine.test.js
-  travelEngine.test.js
+  *.test.js
 docs/
   ARCHITECTURE.md
   BASELINE_PIPELINE.md
   RESEARCH_REFERENCES.md
   ROADMAP.md
   SYSTEM_CATALOG.md
+  THREAD_HANDOFF.md
 ```
 
 ## Implemented foundation
 
-- Text-only browser shell.
+- Text-only browser shell with slash-command UI.
+- Account profile and multiple encoded local character save slots.
+- Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
 - Structured player character entity.
 - Structured NPC entity.
@@ -116,6 +234,14 @@ docs/
 - Foot-travel aggro risk scaffold based on grid spawn rules, spawn count, and aggro types.
 - Text HUD/control metadata for HP/MP/TP bars, live tick bar, 8-way nav keypad, and action groups.
 - Direct travel engine with restrictions, departure coordinates, arrival coordinates, atlas recording, and manual time advancement.
+- Starter-city POIs, same-zone POI discovery, and same-zone POI fast travel.
+- Starter shop catalogs, guild service hooks, and quest/mission hooks.
+- Inventory container framework: Inventory, Mog Safe, Mog Safe 2, Storage, Mog Locker, Mog Satchel, Mog Sack, Mog Case, and Mog Wardrobes 1-8.
+- Mog House-only Storage/Mog Safe access and furniture-derived Storage capacity.
+- Container transfer rules with capacity/access/item-kind validation.
+- Shop buying into Inventory.
+- Equip/unequip commands using Inventory and accessible Wardrobes.
+- Starter equipment catalog with conservative stat modifiers.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Simple battle-state engine.
@@ -125,8 +251,6 @@ docs/
 - Database registry for enemies, NPCs, places, zones, travel, quests, achievements, items, key items, magic, loot, leveling, trusts, crafting, mounts, and tick channels.
 - Baseline benchmark harness.
 - Game-state and world-data validation helpers.
-- Safe save/load behavior that rejects incompatible local saves.
-- Seed NPCs and enemies.
 - Node test harness using the built-in `node:test` runner.
 
 ## Formula policy
@@ -143,11 +267,12 @@ Current formulas are conservative placeholders. They exist to make the architect
 - Document every new engine, schema, or pipeline change.
 - Every major runtime system should have validation, tests, benchmark coverage, and version tracking.
 
-## Planning documents
+## Current next best pass
 
-- `docs/ARCHITECTURE.md`
-- `docs/BASELINE_PIPELINE.md`
-- `docs/RESEARCH_REFERENCES.md`
-- `docs/ROADMAP.md`
-- `docs/SYSTEM_CATALOG.md`
-- `CHANGELOG.md`
+The current recommended next pass is UI hardening, not new combat systems:
+
+1. Make the main menu visually clearer and less terminal-only.
+2. Add character-slot cards/buttons for `/characters` and `/load`.
+3. Add visible command chips/buttons for common slash commands.
+4. Add save/load error display in the UI.
+5. Then resume game-system work with battle rewards: EXP, gil, and loot into Inventory.
