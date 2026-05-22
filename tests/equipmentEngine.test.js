@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { enrichEquipmentItem } from '../js/text/data/equipmentCatalog.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { createInitialState } from '../js/text/gameState.js';
 import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
 import { equipItem, inferEquipmentSlot, unequipItem } from '../js/text/systems/equipmentEngine.js';
+import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
 
 function bronzeSword() {
     return { id: 'bronze-sword', name: 'Bronze Sword', kind: 'equipment', quantity: 1, tags: ['weapon', 'sword', 'starter'] };
@@ -22,9 +24,10 @@ function potion() {
     return { id: 'potion', name: 'Potion', kind: 'consumable', quantity: 1, tags: ['consumable'] };
 }
 
-test('inferEquipmentSlot maps basic shop tags to slots', () => {
+test('inferEquipmentSlot maps basic shop tags and explicit slot metadata to slots', () => {
     assert.equal(inferEquipmentSlot(bronzeSword()), 'mainHand');
     assert.equal(inferEquipmentSlot(bronzeCap()), 'head');
+    assert.equal(inferEquipmentSlot({ ...bronzeCap(), equipmentSlot: 'body' }), 'body');
 });
 
 test('equipItem equips gear from inventory and removes it from container', () => {
@@ -76,6 +79,30 @@ test('equipItem rejects non-equipment items without removing them', () => {
     assert.match(result, /is not equipment/);
     assert.equal(inventoryState.containers.inventory.items.length, 1);
     assert.equal(state.player.equipment.mainHand, null);
+});
+
+test('enriched equipment changes combat profile when equipped', () => {
+    const state = createInitialState();
+    const before = calculateCombatProfile(state.player);
+    addItemToContainer(state.player.inventoryState, 'inventory', enrichEquipmentItem(bronzeSword()));
+
+    equipItem(state, 'Bronze Sword');
+    const after = calculateCombatProfile(state.player);
+
+    assert.equal(after.derived.attack, before.derived.attack + 3);
+    assert.equal(after.derived.accuracy, before.derived.accuracy + 1);
+});
+
+test('enriched armor changes defense and hp when equipped', () => {
+    const state = createInitialState();
+    const before = calculateCombatProfile(state.player);
+    addItemToContainer(state.player.inventoryState, 'inventory', enrichEquipmentItem({ id: 'bronze-harness', name: 'Bronze Harness', kind: 'equipment', quantity: 1, tags: ['armor', 'body', 'starter'] }));
+
+    equipItem(state, 'Bronze Harness');
+    const after = calculateCombatProfile(state.player);
+
+    assert.equal(after.derived.defense, before.derived.defense + 5);
+    assert.equal(after.resources.maxHp, before.resources.maxHp + 4);
 });
 
 test('unequipItem returns gear to inventory', () => {
