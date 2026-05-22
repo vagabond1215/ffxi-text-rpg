@@ -102,3 +102,66 @@ test('equipment validation checks nested effect modifiers and charge bounds', ()
     assert.ok(issues.some((issue) => issue.includes('charges.recastSeconds must be a non-negative integer')));
     assert.ok(issues.some((issue) => issue.includes('charges.cooldownSeconds must be a non-negative integer')));
 });
+
+test('equipment validation accepts modifier effects with valid modifiers', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        effects: [{
+            id: 'valid-attack-modifier',
+            type: 'modifier',
+            modifiers: {
+                derived: {
+                    attack: 1,
+                },
+            },
+        }],
+    });
+
+    assert.deepEqual(issues, []);
+});
+
+test('equipment validation rejects modifier effects missing modifiers', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        effects: [{
+            id: 'missing-modifier-payload',
+            type: 'modifier',
+        }],
+    });
+
+    assert.ok(issues.some((issue) => issue.includes('effects[0].modifiers is required for modifier effects')));
+});
+
+test('equipment validation accepts non-modifier effects with behavior payload and no modifiers', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        effects: [{
+            id: 'valid-behavior-effect',
+            type: 'behavior',
+            behavior: {
+                action: 'inspect-only',
+            },
+        }],
+    });
+
+    assert.deepEqual(issues, []);
+});
+
+test('equipment validation rejects malformed non-modifier effects cleanly', () => {
+    const entry = getEquipmentCatalogEntry('bronze-sword');
+    const issues = validateEquipmentCatalogEntry({
+        ...entry,
+        effects: [{
+            id: 'missing-behavior-payload',
+            type: 'behavior',
+        }, {
+            id: 'missing-type',
+        }],
+    });
+
+    assert.ok(issues.some((issue) => issue.includes('effects[0] must include modifiers or a behavior payload')));
+    assert.ok(issues.some((issue) => issue.includes('effects[1].type is required')));
+});

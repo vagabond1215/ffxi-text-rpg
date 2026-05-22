@@ -322,9 +322,27 @@ function validateEffectArray(effects, label) {
             issues.push(`${path} must be an object.`);
             return;
         }
-        issues.push(...validateModifierBlock(effect.modifiers, `${path}.modifiers`));
+        if (typeof effect.type !== 'string' || !effect.type.trim()) {
+            issues.push(`${path}.type is required.`);
+        }
+        const hasModifiers = Object.hasOwn(effect, 'modifiers');
+        if (effect.type === 'modifier' && !hasModifiers) {
+            issues.push(`${path}.modifiers is required for modifier effects.`);
+            return;
+        }
+        if (hasModifiers) {
+            issues.push(...validateModifierBlock(effect.modifiers, `${path}.modifiers`));
+            return;
+        }
+        if (effect.type !== 'modifier' && !hasBehaviorPayload(effect)) {
+            issues.push(`${path} must include modifiers or a behavior payload.`);
+        }
     });
     return issues;
+}
+
+function hasBehaviorPayload(effect) {
+    return isObject(effect.behavior) || isObject(effect.payload);
 }
 
 function validateCharges(charges, label) {
