@@ -1,38 +1,38 @@
 export const EQUIPMENT_CATALOG = Object.freeze({
     'bronze-sword': equipment('bronze-sword', 'Bronze Sword', 'mainHand', ['weapon', 'sword', 'starter'], {
         derived: { attack: 3, accuracy: 1 },
-    }),
+    }, { jobs: ['warrior', 'redMage', 'thief', 'paladin', 'darkKnight', 'blueMage', 'runeFencer'], level: 1 }),
     'bronze-axe': equipment('bronze-axe', 'Bronze Axe', 'mainHand', ['weapon', 'axe', 'starter'], {
         derived: { attack: 4 },
-    }),
+    }, { jobs: ['warrior', 'darkKnight', 'beastmaster', 'ranger', 'runeFencer'], level: 1 }),
     'bronze-dagger': equipment('bronze-dagger', 'Bronze Dagger', 'mainHand', ['weapon', 'dagger', 'starter'], {
         derived: { attack: 2, accuracy: 2 },
-    }),
+    }, { jobs: ['warrior', 'redMage', 'thief', 'bard', 'ranger', 'ninja', 'dancer'], level: 1 }),
     'bronze-pick': equipment('bronze-pick', 'Bronze Pick', 'mainHand', ['weapon', 'axe', 'starter'], {
         derived: { attack: 3 },
-    }),
+    }, { jobs: ['warrior', 'beastmaster'], level: 1 }),
     'ash-staff': equipment('ash-staff', 'Ash Staff', 'mainHand', ['weapon', 'staff', 'starter'], {
         resources: { mp: 3 },
         derived: { attack: 2, magicAccuracy: 1 },
-    }),
+    }, { jobs: ['monk', 'whiteMage', 'blackMage', 'redMage', 'summoner', 'scholar'], level: 1 }),
     'maple-wand': equipment('maple-wand', 'Maple Wand', 'mainHand', ['weapon', 'club', 'starter'], {
         attributes: { int: 1, mnd: 1 },
         resources: { mp: 4 },
         derived: { magicAccuracy: 1 },
-    }),
+    }, { jobs: ['whiteMage', 'blackMage', 'redMage', 'summoner', 'blueMage', 'scholar'], level: 1 }),
     'bronze-cap': equipment('bronze-cap', 'Bronze Cap', 'head', ['armor', 'head', 'starter'], {
         derived: { defense: 2 },
-    }),
+    }, { jobs: ['warrior', 'monk', 'redMage', 'thief', 'paladin', 'darkKnight', 'beastmaster', 'bard', 'samurai', 'ninja', 'dragoon', 'blueMage', 'corsair', 'dancer', 'runeFencer'], level: 1 }),
     'bronze-harness': equipment('bronze-harness', 'Bronze Harness', 'body', ['armor', 'body', 'starter'], {
         resources: { hp: 4 },
         derived: { defense: 5 },
-    }),
+    }, { jobs: ['warrior', 'monk', 'redMage', 'thief', 'paladin', 'darkKnight', 'beastmaster', 'bard', 'samurai', 'ninja', 'dragoon', 'blueMage', 'corsair', 'dancer', 'runeFencer'], level: 1 }),
     'bronze-subligar': equipment('bronze-subligar', 'Bronze Subligar', 'legs', ['armor', 'legs', 'starter'], {
         derived: { defense: 3 },
-    }),
+    }, { jobs: ['warrior', 'monk', 'redMage', 'thief', 'paladin', 'darkKnight', 'beastmaster', 'bard', 'samurai', 'ninja', 'dragoon', 'blueMage', 'corsair', 'dancer', 'runeFencer'], level: 1 }),
     'bronze-mittens': equipment('bronze-mittens', 'Bronze Mittens', 'hands', ['armor', 'hands', 'starter'], {
         derived: { defense: 2, attack: 1 },
-    }),
+    }, { jobs: ['warrior', 'monk', 'redMage', 'thief', 'paladin', 'darkKnight', 'beastmaster', 'bard', 'samurai', 'ninja', 'dragoon', 'blueMage', 'corsair', 'dancer', 'runeFencer'], level: 1 }),
 });
 
 export function getEquipmentCatalogEntry(itemId) {
@@ -49,6 +49,7 @@ export function enrichEquipmentItem(item) {
         equipmentSlot: item.equipmentSlot ?? entry.slot,
         tags: Array.from(new Set([...(item.tags ?? []), ...entry.tags])),
         modifiers: mergeModifiers(entry.modifiers, item.modifiers),
+        requirements: mergeRequirements(entry.requirements, item.requirements),
     };
 }
 
@@ -56,8 +57,15 @@ export function listEquipmentCatalogEntries() {
     return Object.values(EQUIPMENT_CATALOG);
 }
 
-function equipment(id, name, slot, tags, modifiers) {
-    return Object.freeze({ id, name, slot, tags: Object.freeze(tags), modifiers: freezeModifiers(modifiers) });
+function equipment(id, name, slot, tags, modifiers, requirements = {}) {
+    return Object.freeze({
+        id,
+        name,
+        slot,
+        tags: Object.freeze(tags),
+        modifiers: freezeModifiers(modifiers),
+        requirements: freezeRequirements(requirements),
+    });
 }
 
 function freezeModifiers(modifiers = {}) {
@@ -69,11 +77,27 @@ function freezeModifiers(modifiers = {}) {
     });
 }
 
+function freezeRequirements(requirements = {}) {
+    return Object.freeze({
+        level: requirements.level ?? 1,
+        jobs: Object.freeze([...(requirements.jobs ?? [])]),
+        races: Object.freeze([...(requirements.races ?? [])]),
+    });
+}
+
 function mergeModifiers(base = {}, override = {}) {
     return {
         attributes: { ...(base.attributes ?? {}), ...(override.attributes ?? {}) },
         resources: { ...(base.resources ?? {}), ...(override.resources ?? {}) },
         derived: { ...(base.derived ?? {}), ...(override.derived ?? {}) },
         resistances: { ...(base.resistances ?? {}), ...(override.resistances ?? {}) },
+    };
+}
+
+function mergeRequirements(base = {}, override = {}) {
+    return {
+        level: override.level ?? base.level ?? 1,
+        jobs: [...(override.jobs ?? base.jobs ?? [])],
+        races: [...(override.races ?? base.races ?? [])],
     };
 }
