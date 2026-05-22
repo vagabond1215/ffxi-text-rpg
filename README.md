@@ -106,6 +106,15 @@ Gameplay commands are also slash-prefixed in the UI:
 
 Bare commands are rejected by the UI except while answering active character-creation prompts. The lower-level internal router still accepts bare commands for tests and engine reuse.
 
+## Browser UI panels
+
+The browser shell remains text-first, but the sidebar now includes:
+
+- A main menu panel for New Character, Characters, Save, and All Commands.
+- Character-slot cards with Load buttons for local saved characters.
+- Command chips for common commands such as `/look`, `/stats`, `/inventory`, `/equipment`, `/containers`, `/here`, `/maps`, `/atlas`, movement, travel, and save.
+- A last-action feedback panel that classifies command responses as success, error, or info.
+
 ## Character creation
 
 Use:
@@ -164,6 +173,7 @@ js/text/
   save.js                  encoded account/character localStorage adapter
   sidebar.js               DOM sidebar/HUD/menu buttons
   textShell.js             DOM shell only
+  uiPanels.js              reusable text-first UI panel render helpers
   version.js               app/save/data/system version manifest
   commands/
     parser.js
@@ -220,6 +230,7 @@ docs/
 
 - Text-only browser shell with slash-command UI.
 - Account profile and multiple encoded local character save slots.
+- Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, and last-action feedback.
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
 - Structured player character entity.
@@ -270,10 +281,4 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is UI hardening, not new combat systems:
-
-1. Make the main menu visually clearer and less terminal-only.
-2. Add character-slot cards/buttons for `/characters` and `/load`.
-3. Add visible command chips/buttons for common slash commands.
-4. Add save/load error display in the UI.
-5. Then resume game-system work with battle rewards: EXP, gil, and loot into Inventory.
+The current recommended next pass is version naming cleanup, then deterministic combat RNG before battle rewards.
