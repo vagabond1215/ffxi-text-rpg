@@ -55,6 +55,15 @@ test('slash router forwards slash gameplay commands to engine router', () => {
     assert.match(router('/stats'), /Attributes/);
 });
 
+test('slash router preserves FFXI macro-style slash commands for the adapter', () => {
+    const { router } = createRouterWithState();
+
+    assert.match(router('/macrohelp'), /FFXI Macro\/Text Command Reference/);
+    assert.match(router('/ma Cure'), /You are not in battle/);
+    assert.match(router('/ws "Fast Blade"'), /You are not in battle/);
+    assert.match(router('/item Potion'), /Item command accepted/);
+});
+
 test('slash router supports account character save and listing commands', () => {
     const { state, router } = createRouterWithState();
     state.player.identity.name = 'Slashsave';
@@ -65,14 +74,15 @@ test('slash router supports account character save and listing commands', () => 
     assert.match(router('/load 1'), /Loaded Slashsave/);
 });
 
-test('slash router allows natural answers during creator prompts', () => {
+test('slash router allows natural answers during creator prompts and saves after confirmation', () => {
     const { router } = createRouterWithState();
 
-    assert.match(router('/newcharacter'), /Choose a starting nation/);
-    assert.match(router('sandoria'), /Choose a race/);
-    assert.match(router('hume'), /Choose a sex/);
-    assert.match(router('male'), /Choose a starting job/);
-    assert.match(router('warrior'), /Choose a character name/);
-    assert.match(router('Prompted'), /Character saved/);
+    assert.match(router('/newcharacter'), /What is your character name/);
+    assert.match(router('Prompted'), /Choose starting nation/);
+    assert.match(router('sandoria'), /Choose race/);
+    assert.match(router('hume'), /Choose sex/);
+    assert.match(router('male'), /Choose starting job/);
+    assert.match(router('warrior'), /Confirm character/);
+    assert.match(router('yes'), /Character saved/);
     assert.match(router('/characters'), /Prompted/);
 });
