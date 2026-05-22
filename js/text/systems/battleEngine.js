@@ -1,6 +1,7 @@
+import { rollPercent } from './rng.js';
 import { calculateCombatProfile } from './statEngine.js';
 
-export function createBattleState({ player, enemies = [], rngSeed = null } = {}) {
+export function createBattleState({ player, enemies = [], rngSeed = null, rng = null } = {}) {
     if (!player) throw new Error('createBattleState requires a player entity.');
     if (!enemies.length) throw new Error('createBattleState requires at least one enemy.');
 
@@ -9,6 +10,7 @@ export function createBattleState({ player, enemies = [], rngSeed = null } = {})
         round: 1,
         phase: 'active',
         rngSeed,
+        rng,
         combatants: [refreshCombatant(player), ...enemies.map(refreshCombatant)],
         enmity: {},
         skillchain: null,
@@ -37,19 +39,20 @@ export function refreshCombatant(entity) {
     };
 }
 
-export function performBasicAttack(battle, attackerId, defenderId) {
+export function performBasicAttack(battle, attackerId, defenderId, options = {}) {
     const attacker = getCombatant(battle, attackerId);
     const defender = getCombatant(battle, defenderId);
     if (!attacker || !defender) return appendBattleLog(battle, 'Invalid combatant.');
     if (attacker.battle.defeated || defender.battle.defeated) return battle;
 
+    const rng = options.rng ?? battle.rng ?? Math.random;
     const hitChance = calculateHitChance(attacker, defender);
-    const roll = Math.random() * 100;
+    const roll = rollPercent(rng);
     if (roll > hitChance) {
         return appendBattleLog(battle, `${attacker.identity.name} misses ${defender.identity.name}.`);
     }
 
-    const damage = calculatePhysicalDamage(attacker, defender);
+    const damage = calculatePhysicalDamage(attacker, defender, { rng });
     defender.resources.hp = Math.max(0, defender.resources.hp - damage);
     attacker.resources.tp = Math.min(attacker.combat.resources.maxTp, attacker.resources.tp + 100);
     defender.resources.tp = Math.min(defender.combat.resources.maxTp, defender.resources.tp + 30);
@@ -71,12 +74,13 @@ export function calculateHitChance(attacker, defender) {
     return clamp(75 + (accuracy - evasion) / 2, 20, 95);
 }
 
-export function calculatePhysicalDamage(attacker, defender) {
+export function calculatePhysicalDamage(attacker, defender, options = {}) {
+    const rng = options.rng ?? Math.random;
     const attack = attacker.combat.derived.attack;
     const defense = Math.max(1, defender.combat.derived.defense);
     const ratio = attack / defense;
     const base = Math.max(1, Math.floor(attacker.combat.level + attacker.combat.attributes.str / 2));
-    const variance = 0.9 + Math.random() * 0.2;
+    const variance = 0.9 + rng() * 0.2;
     return Math.max(1, Math.floor(base * ratio * variance));
 }
 
