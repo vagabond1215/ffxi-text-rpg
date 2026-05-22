@@ -1,6 +1,6 @@
 {
   "name": "ffxi-text-rpg",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "private": true,
   "type": "module",
   "description": "Text-only RPG foundation inspired by Final Fantasy XI systems.",
