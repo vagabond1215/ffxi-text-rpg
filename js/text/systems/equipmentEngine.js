@@ -23,6 +23,9 @@ export function equipItem(state, itemQuery, options = {}) {
     if (!slot) return `Could not infer equipment slot for ${item.name ?? item.id}. Use: equip <item> to <slot>.`;
     if (!EQUIPMENT_SLOTS.includes(slot)) return `Unknown equipment slot: ${slot}`;
 
+    const requirementCheck = validateEquipmentRequirements(state.player, item);
+    if (!requirementCheck.ok) return requirementCheck.reason;
+
     const currentItem = state.player.equipment[slot] ?? null;
     const returnContainerId = options.returnContainerId ?? source.containerId;
     const returnDefinition = getContainerDefinition(returnContainerId);
@@ -84,6 +87,37 @@ export function describeEquippableSources(state) {
         const equipmentItems = container.items.filter((item) => (item.kind ?? 'misc') === 'equipment');
         lines.push(`- ${definition.label}: ${accessible ? 'accessible' : 'not accessible'}, equipment items=${equipmentItems.length}`);
     }
+    return lines.join('\n');
+}
+
+export function validateEquipmentRequirements(player, item) {
+    const requirements = item.requirements ?? {};
+    const itemName = item.name ?? item.id ?? 'Item';
+    const requiredLevel = Math.max(1, Number(requirements.level) || 1);
+    const playerLevel = Math.max(1, Number(player.jobs?.level) || 1);
+    if (playerLevel < requiredLevel) {
+        return { ok: false, reason: `${itemName} requires level ${requiredLevel}. Current level: ${playerLevel}.` };
+    }
+
+    const allowedJobs = requirements.jobs ?? [];
+    if (allowedJobs.length && !allowedJobs.includes(player.jobs?.mainJobId)) {
+        return { ok: false, reason: `${itemName} cannot be equipped by ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current job'}.` };
+    }
+
+    const allowedRaces = requirements.races ?? [];
+    if (allowedRaces.length && !allowedRaces.includes(player.identity?.raceId)) {
+        return { ok: false, reason: `${itemName} cannot be equipped by ${player.identity?.raceName ?? player.identity?.raceId ?? 'current race'}.` };
+    }
+
+    return { ok: true };
+}
+
+export function describeEquipmentRequirements(item) {
+    const requirements = item.requirements ?? {};
+    const lines = ['Requirements:'];
+    lines.push(`- Level: ${requirements.level ?? 1}`);
+    lines.push(`- Jobs: ${(requirements.jobs ?? []).length ? requirements.jobs.join(', ') : 'any'}`);
+    lines.push(`- Races: ${(requirements.races ?? []).length ? requirements.races.join(', ') : 'any'}`);
     return lines.join('\n');
 }
 
