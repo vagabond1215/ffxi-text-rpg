@@ -9,7 +9,7 @@ This roadmap turns the text-only reset into a stable expandable RPG foundation. 
 | 0.2.x | Foundation pipeline, version tracking, benchmarks, registries | Tests, benchmark harness, docs |
 | 0.3.x | Places, zone connections, travel restrictions, tick-based travel, POIs, starter services | Zone graph tests, POI tests, travel benchmark |
 | 0.4.x | Slash UI, account saves, character creation, inventory, equipment, starter item modifiers | Save/schema tests, UI command tests, equipment stat tests |
-| 0.5.x | Combat rewards, enemies, loot, magic basics, enemy AI | Battle benchmarks and deterministic combat tests |
+| 0.5.x | Combat rewards, enemies, loot, item schema, magic basics, enemy AI | Battle benchmarks and deterministic combat tests |
 | 0.6.x | Quests, trusts, enmity, party AI, progression flags | Quest and trust AI tests |
 | 0.7.x | Achievements, missions, skillchains, magic bursts, reputation | Formula confidence documentation |
 | 0.8.x | Crafting, mounts, advanced travel/economy | Crafting and travel benchmark coverage |
@@ -49,15 +49,15 @@ Status: mostly complete.
 
 Status: mostly complete for a starter shell.
 
-- [x] Character creation flow: name, race, sex, nation, main job.
+- [x] Character creation flow: name, nation, race, sex, starting job, confirmation.
 - [x] New Character entry from main menu via `/newcharacter`.
 - [x] Job list and race list commands.
 - [x] Full character sheet output.
 - [x] Equipment sheet output.
 - [x] Account character listing and load commands.
+- [x] UI character-slot cards/buttons.
 - [ ] Support job unlock placeholder.
-- [ ] Level and EXP progression containers need real reward integration.
-- [ ] UI character-slot cards/buttons beyond text output.
+- [ ] Level and EXP progression containers need real level-up rules.
 
 ## Phase 3: World graph, zones, and travel
 
@@ -92,9 +92,9 @@ Status: starter framework implemented.
 - [x] Stat aggregation from equipped gear.
 - [x] Equip/unequip commands.
 - [x] Shop buying into Inventory.
-- [ ] New full item schema.
+- [x] New full item schema foundation.
+- [x] Inventory stack handling.
 - [ ] Key item schema for unlocks and permissions.
-- [ ] Inventory stack handling.
 - [ ] Equipment validation by job/race/level.
 - [ ] Item flags: rare, exclusive, key item, no sell, latent, enchantment, charges.
 - [ ] Item command inspection.
@@ -102,7 +102,7 @@ Status: starter framework implemented.
 
 ## Phase 5: Leveling, skills, and progression
 
-Target: 0.4.x to 0.5.x.
+Target: 0.5.x.
 
 - [ ] EXP tables and level-up rules.
 - [ ] Job-level state for all jobs.
@@ -118,13 +118,16 @@ Target: 0.5.x.
 - [x] Encounter command.
 - [x] Basic target attack flow.
 - [x] Placeholder weapon skill and cast commands.
+- [x] Deterministic combat RNG injection.
+- [x] EXP rewards.
+- [x] Gil rewards.
+- [x] Loot table schema.
+- [x] Drop roll engine.
+- [x] Inventory insertion through existing container rules.
+- [x] Duplicate reward payout guard.
 - [ ] Target selection improvements.
 - [ ] Enemy AI turn.
 - [ ] Battle tick integration.
-- [ ] EXP rewards.
-- [ ] Gil rewards.
-- [ ] Loot table schema.
-- [ ] Drop roll engine.
 - [ ] Death/KO flow.
 - [ ] Simple rest/recovery flow.
 
@@ -204,10 +207,10 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-Pause on deeper combat rewards until the UI is more usable:
+The next best implementation pass is progression, not more UI or loot plumbing:
 
-1. Add visible character-slot cards/buttons in the browser UI.
-2. Add a clearer main menu panel rather than relying only on terminal output.
-3. Add command chips/buttons for common slash commands.
-4. Add save/load failure messages in the UI.
-5. Then resume 0.5.x battle reward handling: EXP, gil, loot rolls, and Inventory insertion.
+1. Add EXP table data and level-up rules.
+2. Update player/job progression containers when rewards grant EXP.
+3. Refresh HP/MP/resources and EXP-to-next after level-up.
+4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
+5. Update README, THREAD_HANDOFF, CHANGELOG, version map, and benchmark coverage if progression logic becomes runtime-heavy.
