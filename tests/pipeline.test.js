@@ -7,12 +7,16 @@ import { createTickEngine } from '../js/text/systems/tickEngine.js';
 import { describeSystemVersions, describeVersion, VERSION } from '../js/text/version.js';
 
 
-test('version manifest exposes app save data and benchmark versions', () => {
-    assert.equal(VERSION.app, '0.3.1');
-    assert.equal(VERSION.save, 2);
-    assert.equal(VERSION.data, 3);
+test('version manifest exposes explicit app account save game state data and benchmark versions', () => {
+    assert.equal(VERSION.app, '0.4.1');
+    assert.equal(VERSION.accountSave, 3);
+    assert.equal(VERSION.gameState, 2);
+    assert.equal(VERSION.data, 7);
     assert.equal(VERSION.benchmark, 1);
-    assert.match(describeVersion(), /App: 0.3.1/);
+    assert.equal(VERSION.save, VERSION.accountSave);
+    assert.match(describeVersion(), /App: 0.4.1/);
+    assert.match(describeVersion(), /Account Save: 3/);
+    assert.match(describeVersion(), /Game State: 2/);
     assert.match(describeSystemVersions(), /characterCreation/);
 });
 
