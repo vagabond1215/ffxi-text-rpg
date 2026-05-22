@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, POI discovery, starter shops/guild hooks, equipment commands, and implementation-first documentation.
+This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands, deterministic combat, battle rewards, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
@@ -10,10 +10,13 @@ Backwards compatibility with the previous UI/save shape is not considered until 
 
 ```text
 App/package: 0.4.1
-Save: 3
-Data: 7
+Account Save: 3
+Game State: 2
+Data: 9
 Codename: Slash UI Account Saves
 ```
+
+`VERSION.save` remains as a backward-compatible alias for `VERSION.accountSave` while callers migrate to the clearer name.
 
 See `js/text/version.js` for the authoritative runtime/system version map.
 
@@ -50,7 +53,7 @@ Read these first in a new thread or fresh development session:
 
 ## UI command policy
 
-The browser UI now expects slash commands.
+The browser UI expects slash commands.
 
 ```text
 /menu
@@ -108,29 +111,11 @@ Bare commands are rejected by the UI except while answering active character-cre
 
 ## Browser UI panels
 
-The browser shell remains text-first, but the page now has a slim app frame with a persistent top bar and populated sidebar.
+The browser shell remains text-first, but the page has a slim app frame with a persistent top bar and populated sidebar.
 
-The top bar includes:
+The top bar includes compact branding, active character name, main job and level, current location and grid, last command feedback, and quick actions for Menu, Look, Inventory, Equipment, and Save.
 
-- compact FFXI/Text RPG branding
-- active character name
-- main job and level
-- current location and grid
-- last command feedback
-- quick actions for Menu, Look, Inventory, Equipment, and Save
-
-The sidebar includes:
-
-- active character hero panel
-- last-action feedback
-- main menu actions
-- character summary
-- HP, MP, TP, and EXP bars
-- location/status panel
-- wallet/title panel
-- character-slot load cards
-- command chips for common movement, inventory, map, atlas, travel, and save commands
-- full menu buttons
+The sidebar includes active character hero, last-action feedback, main menu actions, character summary, HP/MP/TP/EXP bars, location/status, wallet/title, character-slot load cards, command chips, and full menu buttons.
 
 ## Character creation
 
@@ -192,7 +177,7 @@ js/text/
   topBar.js                DOM top bar/status strip renderer
   textShell.js             DOM shell only
   uiPanels.js              reusable text-first UI panel render helpers
-  version.js               app/save/data/system version manifest
+  version.js               app/account-save/game-state/data/system version manifest
   commands/
     parser.js
   data/
@@ -201,7 +186,9 @@ js/text/
     equipmentCatalog.js
     guildServices.js
     inventoryContainers.js
+    itemSchema.js
     jobs.js
+    lootTables.js
     maps.js
     mogHouseFurniture.js
     nations.js
@@ -225,6 +212,8 @@ js/text/
     inventoryEngine.js
     menuDescriptions.js
     poiEngine.js
+    rewardEngine.js
+    rng.js
     shopEngine.js
     statEngine.js
     statusEngine.js
@@ -252,9 +241,7 @@ docs/
 - Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, resources, location, wallet, and last-action feedback.
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
-- Structured player character entity.
-- Structured NPC entity.
-- Structured enemy entity.
+- Structured player, NPC, and enemy entities.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
 - Three starter city clusters: San d’Oria, Bastok, and Windurst.
@@ -269,13 +256,15 @@ docs/
 - Starter shop catalogs, guild service hooks, and quest/mission hooks.
 - Inventory container framework: Inventory, Mog Safe, Mog Safe 2, Storage, Mog Locker, Mog Satchel, Mog Sack, Mog Case, and Mog Wardrobes 1-8.
 - Mog House-only Storage/Mog Safe access and furniture-derived Storage capacity.
-- Container transfer rules with capacity/access/item-kind validation.
+- Common item schema, item normalization, stack metadata, and stack-aware container insertion.
+- Container transfer rules with access, capacity, item-kind, and stack-handling validation.
 - Shop buying into Inventory.
 - Equip/unequip commands using Inventory and accessible Wardrobes.
 - Starter equipment catalog with conservative stat modifiers.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
-- Simple battle-state engine.
+- Simple battle-state engine with deterministic RNG injection.
+- Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, and duplicate payout prevention.
 - Status effect lifecycle engine.
 - Live tick engine scaffold.
 - Version manifest and system version tracking.
@@ -300,4 +289,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is version naming cleanup, then deterministic combat RNG before battle rewards.
+The current recommended next pass is progression:
+
+1. Add EXP table data and level-up rules.
+2. Update player/job progression containers when rewards grant EXP.
+3. Refresh HP/MP/resources and EXP-to-next after level-up.
+4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
