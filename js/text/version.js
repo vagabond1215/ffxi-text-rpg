@@ -1,19 +1,22 @@
 export const VERSION = Object.freeze({
-    app: '0.4.0',
-    save: 2,
+    app: '0.4.1',
+    save: 3,
     data: 7,
     benchmark: 1,
-    codename: 'Equipment Modifier Foundation',
+    codename: 'Slash UI Account Saves',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.9',
+    commandShell: '0.4.1',
+    slashCommands: '0.4.1',
+    accountSaves: '0.4.1',
+    saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.3.6',
     playerEntity: '0.3.6',
-    characterCreation: '0.3.1',
+    characterCreation: '0.4.1',
     nations: '0.3.1',
     npcEntity: '0.1.0',
     enemyEntity: '0.1.0',
