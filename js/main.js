@@ -1,15 +1,19 @@
 import { createInitialState } from './text/gameState.js';
-import { createCommandRouter } from './text/commandRouter.js';
 import { createSidebar } from './text/sidebar.js';
 import { createTextShell } from './text/textShell.js';
-import { loadGame, saveGame } from './text/save.js';
+import { loadActiveCharacter, saveGame, clearSave } from './text/save.js';
+import { createSlashCommandRouter } from './text/slashCommandRouter.js';
 
 function init() {
-    const savedState = loadGame();
+    const savedState = loadActiveCharacter();
     const state = savedState ?? createInitialState();
     let shell;
 
-    const router = createCommandRouter(state, { saveGame });
+    const router = createSlashCommandRouter(state, {
+        saveGame,
+        clearSave,
+        reload: () => window.location.reload(),
+    });
     const sidebar = createSidebar({
         root: document.getElementById('sidebar'),
         state,
