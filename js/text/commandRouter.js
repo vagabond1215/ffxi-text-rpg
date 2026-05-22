@@ -28,6 +28,7 @@ import {
     startEncounter,
 } from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
+import { describeEquippableSources, equipItem, unequipItem } from './systems/equipmentEngine.js';
 import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
 import {
     describeContainerContents,
@@ -99,6 +100,9 @@ const HELP_TEXT = [
     '  containers           Show all inventory/storage containers and access state.',
     '  container <id>       Inspect a specific container.',
     '  transfer <item> from <source> to <destination>  Move items between containers.',
+    '  equip <item> [to slot] [from container]          Equip gear from Inventory/Wardrobe.',
+    '  unequip <slot> [to container]                    Unequip gear into a container.',
+    '  equipSources       Show accessible equipment source containers.',
     '  moghouse enter|leave Toggle Mog House access context for storage testing.',
     '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show known spell placeholder data.',
@@ -202,9 +206,11 @@ export function createCommandRouter(state, services = {}) {
             case 'containers': return describeInventoryContainers(state);
             case 'container': return describeContainerContents(state, parsed.args[0] ?? 'inventory');
             case 'transfer': return describeTransferCommand(state, parsed.args);
+            case 'equip': return describeEquipCommand(state, parsed.args);
+            case 'unequip': return describeUnequipCommand(state, parsed.args);
+            case 'equipsources': return describeEquippableSources(state);
             case 'moghouse': return describeMogHouseCommand(state, parsed.args[0]);
-            case 'equipment':
-            case 'equip': return describeEquipment(state);
+            case 'equipment': return describeEquipment(state);
             case 'spells':
             case 'magic': return describeSpells(state);
             case 'weaponskills':
@@ -250,12 +256,27 @@ export function createCommandRouter(state, services = {}) {
     };
 }
 
+function describeEquipCommand(state, args) {
+    const toIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'to');
+    const fromIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'from');
+    const splitIndex = [toIndex, fromIndex].filter((index) => index >= 0).sort((a, b) => a - b)[0] ?? args.length;
+    const itemQuery = args.slice(0, splitIndex).join(' ');
+    const slot = toIndex >= 0 ? args[toIndex + 1] : null;
+    const fromContainerId = fromIndex >= 0 ? args[fromIndex + 1] : null;
+    return equipItem(state, itemQuery, { slot, fromContainerId });
+}
+
+function describeUnequipCommand(state, args) {
+    const toIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'to');
+    const slot = args[0];
+    const destinationContainerId = toIndex >= 0 ? args[toIndex + 1] : 'inventory';
+    return unequipItem(state, slot, destinationContainerId);
+}
+
 function describeTransferCommand(state, args) {
     const fromIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'from');
     const toIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'to');
-    if (fromIndex <= 0 || toIndex <= fromIndex + 1 || toIndex >= args.length - 1) {
-        return 'Usage: transfer <item> from <sourceContainer> to <destinationContainer>';
-    }
+    if (fromIndex <= 0 || toIndex <= fromIndex + 1 || toIndex >= args.length - 1) return 'Usage: transfer <item> from <sourceContainer> to <destinationContainer>';
     const itemQuery = args.slice(0, fromIndex).join(' ');
     const fromContainer = args[fromIndex + 1];
     const toContainer = args[toIndex + 1];
@@ -353,6 +374,7 @@ function inspectTarget(state, target = 'player') {
         case 'items': return describeInventory(state);
         case 'containers': return describeInventoryContainers(state);
         case 'container': return describeContainerContents(state, 'inventory');
+        case 'equipsources': return describeEquippableSources(state);
         case 'equipment':
         case 'equip': return describeEquipment(state);
         case 'spells':
@@ -397,7 +419,7 @@ function inspectTarget(state, target = 'player') {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
