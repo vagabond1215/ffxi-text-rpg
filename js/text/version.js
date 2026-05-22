@@ -1,15 +1,15 @@
 export const VERSION = Object.freeze({
-    app: '0.3.7',
+    app: '0.3.8',
     save: 2,
     data: 6,
     benchmark: 1,
-    codename: 'Shop Transaction Foundation',
+    codename: 'Inventory Transfer Foundation',
     compatibility: 'no-backwards-compatibility',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.3.7',
+    commandShell: '0.3.8',
     parser: '0.2.0',
     validation: '0.3.6',
     playerEntity: '0.3.6',
@@ -37,9 +37,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     shopTransactions: '0.3.7',
     guilds: '0.3.5',
     questHooks: '0.3.5',
-    inventoryContainers: '0.3.6',
-    mogHouseStorage: '0.3.6',
-    wardrobes: '0.3.6',
+    inventoryContainers: '0.3.8',
+    inventoryTransfers: '0.3.8',
+    mogHouseStorage: '0.3.8',
+    wardrobes: '0.3.8',
     achievements: 'planned',
     items: 'planned',
     keyItems: 'planned',
