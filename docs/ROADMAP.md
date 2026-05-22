@@ -9,7 +9,7 @@ This roadmap turns the text-only reset into a stable expandable RPG foundation. 
 | 0.2.x | Foundation pipeline, version tracking, benchmarks, registries | Tests, benchmark harness, docs |
 | 0.3.x | Places, zone connections, travel restrictions, tick-based travel, POIs, starter services | Zone graph tests, POI tests, travel benchmark |
 | 0.4.x | Slash UI, account saves, character creation, inventory, equipment, starter item modifiers | Save/schema tests, UI command tests, equipment stat tests |
-| 0.5.x | Combat rewards, enemies, loot, item schema, magic basics, enemy AI | Battle benchmarks and deterministic combat tests |
+| 0.5.x | Combat rewards, leveling, enemies, loot, item schema, magic basics, enemy AI | Battle/progression benchmarks and deterministic combat tests |
 | 0.6.x | Quests, trusts, enmity, party AI, progression flags | Quest and trust AI tests |
 | 0.7.x | Achievements, missions, skillchains, magic bursts, reputation | Formula confidence documentation |
 | 0.8.x | Crafting, mounts, advanced travel/economy | Crafting and travel benchmark coverage |
@@ -57,7 +57,6 @@ Status: mostly complete for a starter shell.
 - [x] Account character listing and load commands.
 - [x] UI character-slot cards/buttons.
 - [ ] Support job unlock placeholder.
-- [ ] Level and EXP progression containers need real level-up rules.
 
 ## Phase 3: World graph, zones, and travel
 
@@ -104,9 +103,13 @@ Status: starter framework implemented.
 
 Target: 0.5.x.
 
-- [ ] EXP tables and level-up rules.
-- [ ] Job-level state for all jobs.
-- [ ] Level cap / limit break placeholders.
+- [x] EXP tables and level-up rules.
+- [x] Reward EXP routed through progression engine.
+- [x] HP/MP/resource refresh after level-up.
+- [x] EXP-to-next tracking.
+- [x] Level-cap behavior.
+- [ ] Job-level state for all jobs beyond current main-job sync.
+- [ ] Level cap / limit break placeholders beyond simple cap enforcement.
 - [ ] Combat and magic skill caps.
 - [ ] Skill gain hooks.
 - [ ] Progression flags for maps, teleport points, mounts, trusts, quests, missions, achievements.
@@ -207,10 +210,9 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-The next best implementation pass is progression, not more UI or loot plumbing:
+The next best implementation pass is job-level/progression depth:
 
-1. Add EXP table data and level-up rules.
-2. Update player/job progression containers when rewards grant EXP.
-3. Refresh HP/MP/resources and EXP-to-next after level-up.
-4. Add tests for no level-up, single level-up, multi-level-up, and level-cap behavior.
-5. Update README, THREAD_HANDOFF, CHANGELOG, version map, and benchmark coverage if progression logic becomes runtime-heavy.
+1. Add per-job EXP and level state for all unlocked jobs.
+2. Add job switching rules that preserve each job's level/EXP.
+3. Add equipment validation by job/level before expanding loot gear.
+4. Add tests for job switch, job-specific EXP, and equipment eligibility.
