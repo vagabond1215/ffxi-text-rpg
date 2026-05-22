@@ -1,14 +1,20 @@
 import { calculateCombatProfile } from './systems/statEngine.js';
 
 const SIDEBAR_MENUS = Object.freeze([
-    ['Items', 'inventory'],
-    ['Equipment', 'equipment'],
-    ['Spells', 'spells'],
-    ['Weapon Skills', 'weaponSkills'],
-    ['Job Abilities', 'jobAbilities'],
-    ['Bestiary', 'bestiary'],
-    ['Atlas', 'atlas'],
-    ['Controls', 'controls'],
+    ['Main Menu', '/menu'],
+    ['New Character', '/newcharacter'],
+    ['Characters', '/characters'],
+    ['Save', '/save'],
+    ['Items', '/inventory'],
+    ['Equipment', '/equipment'],
+    ['Containers', '/containers'],
+    ['Spells', '/spells'],
+    ['Weapon Skills', '/weaponSkills'],
+    ['Job Abilities', '/jobAbilities'],
+    ['Bestiary', '/bestiary'],
+    ['Atlas', '/atlas'],
+    ['Controls', '/controls'],
+    ['Commands', '/commands'],
 ]);
 
 export function createSidebar({ root, state, runCommand }) {
