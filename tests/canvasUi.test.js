@@ -1,9 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createCanvasUiState, applyCanvasKey, submitCommandInput } from '../js/text/ui/canvasInput.js';
+import {
+    appendOutput,
+    applyCanvasKey,
+    createCanvasUiState,
+    scrollOutput,
+    setActiveFeedback,
+    submitCommandInput,
+} from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction } from '../js/text/ui/canvasLayout.js';
+import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/canvasRenderer.js';
 import { createActionList, dispatchAction, findActionById } from '../js/text/ui/uiActions.js';
+import { createInitialState } from '../js/text/gameState.js';
 
 test('canvas action registry maps global buttons to existing commands', () => {
     assert.equal(findActionById('character').command, 'character');
@@ -74,4 +83,52 @@ test('canvas command history stores submitted commands and supports browsing', (
     assert.equal(uiState.inputBuffer, 'inventory');
     assert.equal(first.command, 'look');
     assert.equal(second.command, 'inventory');
+});
+
+test('canvas output appending trims old lines and resets scroll', () => {
+    const uiState = createCanvasUiState({ outputScrollOffset: 5 });
+
+    appendOutput(uiState, 'a\nb\nc', 2);
+
+    assert.deepEqual(uiState.outputLines, ['b', 'c']);
+    assert.equal(uiState.outputScrollOffset, 0);
+});
+
+test('canvas page keys and wheel helper adjust output scroll offset', () => {
+    const uiState = createCanvasUiState({ outputLines: Array.from({ length: 40 }, (_, index) => `line ${index}`) });
+
+    applyCanvasKey(uiState, 'PageUp');
+    assert.equal(uiState.outputScrollOffset, 10);
+    applyCanvasKey(uiState, 'PageDown');
+    assert.equal(uiState.outputScrollOffset, 0);
+    scrollOutput(uiState, 3);
+    assert.equal(uiState.outputScrollOffset, 3);
+});
+
+test('visible log lines respect scroll offset', () => {
+    const ctx = { font: '', measureText: (value) => ({ width: String(value).length * 8 }) };
+    const lines = ['one', 'two', 'three', 'four'];
+    const rect = { w: 200, h: 32 };
+    const theme = { font: '12px monospace', lineHeight: 16 };
+
+    assert.deepEqual(getVisibleLogLines(ctx, lines, rect, theme, 0), ['three', 'four']);
+    assert.deepEqual(getVisibleLogLines(ctx, lines, rect, theme, 1), ['two', 'three']);
+});
+
+test('canvas active feedback is stored for rendering', () => {
+    const uiState = createCanvasUiState();
+
+    setActiveFeedback(uiState, 'Ran: skills');
+
+    assert.equal(uiState.activeFeedback, 'Ran: skills');
+});
+
+test('canvas context snapshot recalculates derived combat values', () => {
+    const state = createInitialState();
+    state.player.combat.resources.maxHp = 1;
+
+    const snapshot = createCanvasContextSnapshot(state);
+
+    assert.notEqual(snapshot.maxHp, 1);
+    assert.equal(snapshot.playerName, state.player.identity.name);
 });
