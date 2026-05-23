@@ -2,6 +2,7 @@ import { hitTestAction, hitTestRegion } from './canvasLayout.js';
 
 export function createCanvasUiState(options = {}) {
     return {
+        screen: options.screen ?? 'menu',
         outputLines: [...(options.outputLines ?? [])],
         commandHistory: [...(options.commandHistory ?? [])],
         historyIndex: null,
@@ -20,9 +21,7 @@ export function createCanvasUiState(options = {}) {
 export function appendOutput(uiState, text, limit = 600) {
     const lines = String(text ?? '').split('\n');
     uiState.outputLines.push(...lines);
-    if (uiState.outputLines.length > limit) {
-        uiState.outputLines.splice(0, uiState.outputLines.length - limit);
-    }
+    if (uiState.outputLines.length > limit) uiState.outputLines.splice(0, uiState.outputLines.length - limit);
     uiState.outputScrollOffset = 0;
     return uiState.outputLines;
 }
@@ -30,6 +29,14 @@ export function appendOutput(uiState, text, limit = 600) {
 export function setActiveFeedback(uiState, text) {
     uiState.activeFeedback = String(text ?? '');
     return uiState.activeFeedback;
+}
+
+export function setCanvasScreen(uiState, screen) {
+    uiState.screen = screen === 'game' ? 'game' : 'menu';
+    uiState.focusedRegion = 'input';
+    uiState.hoveredActionId = null;
+    uiState.pressedActionId = null;
+    return uiState.screen;
 }
 
 export function scrollOutput(uiState, deltaLines, maxOffset = uiState.outputLines.length) {
@@ -67,6 +74,7 @@ export function applyCanvasKey(uiState, key, event = {}) {
             uiState.inputBuffer = uiState.inputBuffer.slice(0, -1);
             return { type: 'edit' };
         case 'Escape':
+            if (uiState.screen === 'game') return { type: 'menu' };
             uiState.inputBuffer = '';
             uiState.historyIndex = uiState.commandHistory.length;
             return { type: 'edit' };
