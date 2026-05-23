@@ -24,7 +24,14 @@ See `js/text/version.js` for the authoritative runtime/system version map.
 
 Do not open `index.html` directly with a `file://` URL. The browser blocks ES module imports from local files, so the canvas shell must be served over localhost.
 
-From the repo root:
+On Windows, double-click or run either launcher from the repo root:
+
+```text
+server.cmd
+server.ps1
+```
+
+Or run the npm script directly:
 
 ```bash
 npm run serve
@@ -189,6 +196,8 @@ is read only for migration when no account save exists, then removed after accou
 ```text
 index.html
 css/style.css
+server.cmd
+server.ps1
 js/main.js
 js/text/
   slashCommandRouter.js    UI-facing slash command wrapper
@@ -277,6 +286,7 @@ docs/
 - Argument-aware command parser.
 - Pure canvas UI action, layout, hit-testing, and keyboard input helpers.
 - Local static dev server for browser module loading over localhost.
+- Windows server launchers: `server.cmd` and `server.ps1`.
 - Structured player, NPC, and enemy entities.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
