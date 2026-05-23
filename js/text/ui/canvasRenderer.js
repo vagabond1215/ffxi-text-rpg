@@ -1,9 +1,43 @@
+import { calculateCombatProfile } from '../systems/statEngine.js';
 import { CANVAS_THEME } from './uiTheme.js';
+
+export function createCanvasContextSnapshot(state) {
+    const player = state.player;
+    const combat = calculateCombatProfile(player);
+    return {
+        playerName: player.identity.name,
+        raceName: player.identity.raceName,
+        jobName: player.jobs.mainJobName,
+        level: player.jobs.level,
+        hp: player.resources.hp,
+        maxHp: combat.resources.maxHp,
+        mp: player.resources.mp,
+        maxMp: combat.resources.maxMp,
+        tp: player.resources.tp,
+        maxTp: combat.resources.maxTp,
+        location: state.location,
+        gridX: state.position?.x ?? '?',
+        gridY: state.position?.y ?? '?',
+    };
+}
+
+export function getVisibleLogLines(ctx, lines, rect, theme = CANVAS_THEME, scrollOffset = 0) {
+    const wrapped = [];
+    ctx.font = theme.font;
+    for (const line of lines) {
+        wrapped.push(...wrapText(ctx, line, rect.w));
+    }
+    const visibleCount = Math.max(1, Math.floor(rect.h / theme.lineHeight));
+    const maxOffset = Math.max(0, wrapped.length - visibleCount);
+    const offset = Math.max(0, Math.min(maxOffset, Number(scrollOffset) || 0));
+    const end = wrapped.length - offset;
+    return wrapped.slice(Math.max(0, end - visibleCount), end);
+}
 
 export function renderCanvasApp(ctx, { layout, state, uiState, theme = CANVAS_THEME }) {
     ctx.clearRect(0, 0, layout.width, layout.height);
     drawBackground(ctx, layout, theme);
-    drawTopBar(ctx, layout.panels.top, state, theme);
+    drawTopBar(ctx, layout.panels.top, state, uiState, theme);
     drawSidebar(ctx, layout, uiState, theme);
     drawMainOutput(ctx, layout.panels.main, uiState, theme);
     drawContext(ctx, layout.panels.context, state, uiState, theme);
@@ -15,17 +49,20 @@ function drawBackground(ctx, layout, theme) {
     ctx.fillRect(0, 0, layout.width, layout.height);
 }
 
-function drawTopBar(ctx, rect, state, theme) {
+function drawTopBar(ctx, rect, state, uiState, theme) {
+    const snapshot = createCanvasContextSnapshot(state);
     panel(ctx, rect, theme.panelSoft, theme.border);
     ctx.font = theme.fontLarge;
     ctx.fillStyle = theme.accentBright;
     ctx.fillText('FFXI Text RPG', rect.x + 16, rect.y + 32);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
-    const player = state.player;
-    const grid = state.position ? `${state.position.x}:${state.position.y}` : '?:?';
-    const status = `${player.identity.name} | ${player.jobs.mainJobName} Lv.${player.jobs.level} | ${state.location} ${grid}`;
-    fitText(ctx, status, rect.x + 190, rect.y + 32, rect.w - 210);
+    const status = `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}`;
+    fitText(ctx, status, rect.x + 190, rect.y + 24, rect.w - 210);
+    if (uiState.activeFeedback) {
+        ctx.fillStyle = theme.accent;
+        fitText(ctx, uiState.activeFeedback, rect.x + 190, rect.y + 42, rect.w - 210);
+    }
 }
 
 function drawSidebar(ctx, layout, uiState, theme) {
@@ -55,35 +92,39 @@ function drawButton(ctx, button, uiState, theme) {
 }
 
 function drawMainOutput(ctx, rect, uiState, theme) {
-    panel(ctx, rect, theme.panelDeep, theme.border);
+    const isHovered = uiState.hoveredRegion === 'main';
+    panel(ctx, rect, theme.panelDeep, isHovered ? theme.accent : theme.border);
     ctx.font = theme.font;
     ctx.fillStyle = theme.accent;
     ctx.fillText('Output Log', rect.x + 14, rect.y + 26);
+    if (uiState.outputScrollOffset > 0) {
+        ctx.fillStyle = theme.muted;
+        fitText(ctx, `Scrolled +${uiState.outputScrollOffset} lines`, rect.x + 110, rect.y + 26, rect.w - 124);
+    }
     const inner = {
         x: rect.x + 14,
         y: rect.y + 44,
         w: rect.w - 28,
         h: rect.h - 58,
     };
-    drawWrappedLog(ctx, inner, uiState.outputLines, theme);
+    drawWrappedLog(ctx, inner, uiState.outputLines, theme, uiState.outputScrollOffset);
 }
 
 function drawContext(ctx, rect, state, uiState, theme) {
     if (!rect.w || !rect.h) return;
     panel(ctx, rect, theme.panel, theme.border);
-    const player = state.player;
-    const combat = player.combat;
+    const snapshot = createCanvasContextSnapshot(state);
     const lines = [
         'Context',
         '',
-        `${player.identity.name}`,
-        `${player.identity.raceName} ${player.jobs.mainJobName} Lv.${player.jobs.level}`,
-        `HP ${player.resources.hp}/${combat.resources.maxHp}`,
-        `MP ${player.resources.mp}/${combat.resources.maxMp}`,
-        `TP ${player.resources.tp}/${combat.resources.maxTp}`,
+        `${snapshot.playerName}`,
+        `${snapshot.raceName} ${snapshot.jobName} Lv.${snapshot.level}`,
+        `HP ${snapshot.hp}/${snapshot.maxHp}`,
+        `MP ${snapshot.mp}/${snapshot.maxMp}`,
+        `TP ${snapshot.tp}/${snapshot.maxTp}`,
         '',
-        `Location: ${state.location}`,
-        `Grid: ${state.position?.x ?? '?'}:${state.position?.y ?? '?'}`,
+        `Location: ${snapshot.location}`,
+        `Grid: ${snapshot.gridX}:${snapshot.gridY}`,
         '',
         'History',
         ...uiState.commandHistory.slice(-7).map((command) => `> ${command}`),
@@ -92,23 +133,22 @@ function drawContext(ctx, rect, state, uiState, theme) {
 }
 
 function drawInput(ctx, rect, uiState, theme) {
-    panel(ctx, rect, theme.panelSoft, uiState.focusedRegion === 'input' ? theme.accent : theme.border);
+    const focused = uiState.focusedRegion === 'input';
+    const hovered = uiState.hoveredRegion === 'input';
+    const pressed = uiState.pressedRegion === 'input';
+    const border = focused ? theme.accentBright : hovered ? theme.accent : theme.border;
+    const fill = pressed ? theme.pressed : focused ? theme.panelSoft : theme.panelDeep;
+    panel(ctx, rect, fill, border);
     ctx.font = theme.font;
-    ctx.fillStyle = theme.accentBright;
+    ctx.fillStyle = focused ? theme.accentBright : theme.accent;
     ctx.fillText('>', rect.x + 16, rect.y + 36);
     ctx.fillStyle = theme.text;
-    const cursor = uiState.focusedRegion === 'input' ? '_' : '';
+    const cursor = focused ? '_' : '';
     fitText(ctx, `${uiState.inputBuffer}${cursor}`, rect.x + 40, rect.y + 36, rect.w - 56);
 }
 
-function drawWrappedLog(ctx, rect, lines, theme) {
-    const wrapped = [];
-    ctx.font = theme.font;
-    for (const line of lines) {
-        wrapped.push(...wrapText(ctx, line, rect.w));
-    }
-    const visibleCount = Math.max(1, Math.floor(rect.h / theme.lineHeight));
-    const visible = wrapped.slice(-visibleCount);
+function drawWrappedLog(ctx, rect, lines, theme, scrollOffset = 0) {
+    const visible = getVisibleLogLines(ctx, lines, rect, theme, scrollOffset);
     ctx.fillStyle = theme.text;
     visible.forEach((line, index) => {
         ctx.fillText(line, rect.x, rect.y + theme.lineHeight * (index + 1));
