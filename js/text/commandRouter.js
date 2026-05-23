@@ -142,7 +142,7 @@ const HELP_TEXT = [
     '  version              Show app/save/data version tracking.',
     '  systems              Show system version map.',
     '  tick                 Inspect live tick engine baseline.',
-    '  inspect <target>     Inspect player, npcs, enemies, state, or log.',
+    '  inspect <target>     Inspect player, item, stats, skills, skill <id>, inventory, containers, equipment, npcs, enemies, state, or log.',
     '  validate             Validate current game state.',
     '  log                  Show recent command history.',
     '  save                 Save the current local game state.',
@@ -436,7 +436,7 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, item, stats, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: player, item, stats, skills, skill <id>, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
