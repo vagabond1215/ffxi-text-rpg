@@ -7,11 +7,18 @@ import {
     createCanvasUiState,
     scrollOutput,
     setActiveFeedback,
+    setCanvasScreen,
     submitCommandInput,
 } from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction } from '../js/text/ui/canvasLayout.js';
 import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/canvasRenderer.js';
-import { createActionList, dispatchAction, findActionById } from '../js/text/ui/uiActions.js';
+import {
+    createActionList,
+    createMenuActionList,
+    dispatchAction,
+    findActionById,
+    TOP_ACTIONS,
+} from '../js/text/ui/uiActions.js';
 import { createInitialState } from '../js/text/gameState.js';
 
 test('canvas action registry maps global buttons to existing commands', () => {
@@ -131,4 +138,41 @@ test('canvas context snapshot recalculates derived combat values', () => {
 
     assert.notEqual(snapshot.maxHp, 1);
     assert.equal(snapshot.playerName, state.player.identity.name);
+});
+
+test('canvas UI state defaults to splash menu and can switch screens', () => {
+    const uiState = createCanvasUiState();
+
+    assert.equal(uiState.screen, 'menu');
+    assert.equal(setCanvasScreen(uiState, 'game'), 'game');
+    assert.equal(setCanvasScreen(uiState, 'menu'), 'menu');
+});
+
+test('escape opens menu from game screen', () => {
+    const uiState = createCanvasUiState({ screen: 'game' });
+
+    assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'menu' });
+});
+
+test('canvas menu action list respects login state', () => {
+    const loggedOut = createMenuActionList({ loggedIn: false });
+    const loggedIn = createMenuActionList({ loggedIn: true });
+
+    assert.equal(findActionById('continue', loggedOut).disabled, true);
+    assert.equal(findActionById('logout', loggedOut).disabled, true);
+    assert.equal(findActionById('continue', loggedIn).disabled, false);
+    assert.equal(findActionById('logout', loggedIn).disabled, false);
+});
+
+test('canvas layout creates splash menu and top menu button bounds', () => {
+    const layout = createCanvasLayout({
+        width: 1200,
+        height: 800,
+        actions: createActionList({ activeBattle: null }),
+        menuActions: createMenuActionList({ loggedIn: true }),
+        topActions: TOP_ACTIONS,
+    });
+
+    assert.ok(layout.menuButtons.find((button) => button.action.id === 'login').rect.w > 100);
+    assert.ok(layout.topButtons.find((button) => button.action.id === 'menu').rect.w > 40);
 });
