@@ -6,9 +6,13 @@ export function createCanvasUiState(options = {}) {
         commandHistory: [...(options.commandHistory ?? [])],
         historyIndex: null,
         inputBuffer: options.inputBuffer ?? '',
+        outputScrollOffset: Math.max(0, Number(options.outputScrollOffset) || 0),
         activePanel: options.activePanel ?? 'main',
+        activeFeedback: options.activeFeedback ?? '',
         hoveredActionId: null,
         pressedActionId: null,
+        hoveredRegion: null,
+        pressedRegion: null,
         focusedRegion: options.focusedRegion ?? 'input',
     };
 }
@@ -19,7 +23,19 @@ export function appendOutput(uiState, text, limit = 600) {
     if (uiState.outputLines.length > limit) {
         uiState.outputLines.splice(0, uiState.outputLines.length - limit);
     }
+    uiState.outputScrollOffset = 0;
     return uiState.outputLines;
+}
+
+export function setActiveFeedback(uiState, text) {
+    uiState.activeFeedback = String(text ?? '');
+    return uiState.activeFeedback;
+}
+
+export function scrollOutput(uiState, deltaLines, maxOffset = uiState.outputLines.length) {
+    const next = Number(uiState.outputScrollOffset || 0) + Number(deltaLines || 0);
+    uiState.outputScrollOffset = Math.max(0, Math.min(Math.max(0, maxOffset), next));
+    return uiState.outputScrollOffset;
 }
 
 export function submitCommandInput(uiState, routeCommand) {
@@ -29,6 +45,7 @@ export function submitCommandInput(uiState, routeCommand) {
     uiState.historyIndex = uiState.commandHistory.length;
     uiState.inputBuffer = '';
     const response = routeCommand(command);
+    setActiveFeedback(uiState, `Ran: ${command}`);
     appendOutput(uiState, `> ${command}`);
     appendOutput(uiState, response);
     appendOutput(uiState, '');
@@ -59,6 +76,12 @@ export function applyCanvasKey(uiState, key, event = {}) {
         case 'ArrowDown':
             browseHistory(uiState, 1);
             return { type: 'history' };
+        case 'PageUp':
+            scrollOutput(uiState, 10);
+            return { type: 'scroll' };
+        case 'PageDown':
+            scrollOutput(uiState, -10);
+            return { type: 'scroll' };
         default:
             if (typeof key === 'string' && key.length === 1) {
                 uiState.inputBuffer += key;
@@ -72,13 +95,15 @@ export function applyCanvasKey(uiState, key, event = {}) {
 export function updatePointerHover(uiState, layout, x, y) {
     const hit = hitTestAction(layout, x, y);
     uiState.hoveredActionId = hit?.action?.disabled ? null : hit?.action?.id ?? null;
+    uiState.hoveredRegion = hitTestRegion(layout, x, y);
     return hit;
 }
 
 export function handlePointerDown(uiState, layout, x, y) {
     const hit = updatePointerHover(uiState, layout, x, y);
     uiState.pressedActionId = hit?.action?.disabled ? null : hit?.action?.id ?? null;
-    uiState.focusedRegion = hitTestRegion(layout, x, y) ?? uiState.focusedRegion;
+    uiState.pressedRegion = hitTestRegion(layout, x, y);
+    uiState.focusedRegion = uiState.pressedRegion ?? uiState.focusedRegion;
     return hit;
 }
 
@@ -86,6 +111,7 @@ export function handlePointerUp(uiState, layout, x, y) {
     const hit = updatePointerHover(uiState, layout, x, y);
     const pressedActionId = uiState.pressedActionId;
     uiState.pressedActionId = null;
+    uiState.pressedRegion = null;
     if (hit?.action && !hit.action.disabled && hit.action.id === pressedActionId) {
         return { type: 'action', actionId: hit.action.id, action: hit.action };
     }
