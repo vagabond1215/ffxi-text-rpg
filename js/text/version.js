@@ -14,9 +14,9 @@ export const VERSION = Object.freeze({
 
 export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.4.1',
-    canvasUi: '0.6.1',
+    canvasUi: '0.6.2',
     slashCommands: '0.4.1',
-    accountSaves: '0.4.1',
+    accountSaves: '0.4.2',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.5.1',
