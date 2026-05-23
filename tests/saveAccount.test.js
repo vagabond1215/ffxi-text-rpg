@@ -9,7 +9,11 @@ import {
     listCharacters,
     loadActiveCharacter,
     loadAccount,
+    loadAccountSession,
     loadCharacter,
+    loginAccount,
+    logoutAccount,
+    saveAccount,
     saveGame,
 } from '../js/text/save.js';
 
@@ -91,12 +95,48 @@ test('loadActiveCharacter returns last saved character', () => {
     assert.equal(loadActiveCharacter().player.identity.name, 'Second');
 });
 
-test('clearSave removes encoded account data', () => {
+test('account login persists a recognized local session', () => {
+    installStorage();
+
+    const session = loginAccount('Russell');
+
+    assert.equal(session.loggedIn, true);
+    assert.equal(session.displayName, 'Russell');
+    assert.equal(loadAccount().profile.displayName, 'Russell');
+    assert.equal(loadAccountSession().loggedIn, true);
+    assert.match(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), /^base64-json-v1:/);
+});
+
+test('account logout clears session without deleting saved account', () => {
+    installStorage();
+    loginAccount('Russell');
+
+    const session = logoutAccount();
+
+    assert.equal(session.loggedIn, false);
+    assert.equal(loadAccount().profile.displayName, 'Russell');
+    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
+});
+
+test('saveAccount keeps logged-in session display name synchronized', () => {
+    installStorage();
+    loginAccount('Old Name');
+    const account = loadAccount();
+    account.profile.displayName = 'New Name';
+
+    saveAccount(account);
+
+    assert.equal(loadAccountSession().displayName, 'New Name');
+});
+
+test('clearSave removes encoded account and session data', () => {
     installStorage();
     const state = createInitialState();
     saveGame(state);
+    loginAccount('Clear Me');
     clearSave();
 
     assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccount'), null);
+    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
     assert.equal(loadAccount().characters.length, 0);
 });
