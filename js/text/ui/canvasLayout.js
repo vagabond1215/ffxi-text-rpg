@@ -1,4 +1,4 @@
-export function createCanvasLayout({ width, height, actions = [] }) {
+export function createCanvasLayout({ width, height, actions = [], menuActions = [], topActions = [] }) {
     const safeWidth = Math.max(320, Number(width) || 320);
     const safeHeight = Math.max(360, Number(height) || 360);
     const margin = 14;
@@ -19,6 +19,7 @@ export function createCanvasLayout({ width, height, actions = [] }) {
     const mainRight = hasContextPanel ? context.x - gap : safeWidth - margin;
     const main = rect(mainX, bodyTop, Math.max(120, mainRight - mainX), bodyHeight);
     const input = rect(margin, safeHeight - margin - inputHeight, safeWidth - margin * 2, inputHeight);
+    const splash = rect(margin, margin, safeWidth - margin * 2, safeHeight - margin * 2);
 
     return {
         width: safeWidth,
@@ -31,13 +32,20 @@ export function createCanvasLayout({ width, height, actions = [] }) {
             main,
             context,
             input,
+            splash,
         },
         actionButtons: layoutActionButtons(sidebar, actions),
+        menuButtons: layoutMenuButtons(splash, menuActions),
+        topButtons: layoutTopButtons(rect(margin, margin, safeWidth - margin * 2, topHeight), topActions),
     };
 }
 
 export function hitTestAction(layout, x, y) {
-    return layout.actionButtons.find((button) => pointInRect(x, y, button.rect)) ?? null;
+    return [
+        ...layout.topButtons,
+        ...layout.menuButtons,
+        ...layout.actionButtons,
+    ].find((button) => pointInRect(x, y, button.rect)) ?? null;
 }
 
 export function hitTestRegion(layout, x, y) {
@@ -62,6 +70,33 @@ function layoutActionButtons(sidebar, actions) {
             sidebar.x + padding,
             startY + index * (buttonHeight + gap),
             sidebar.w - padding * 2,
+            buttonHeight,
+        ),
+    }));
+}
+
+function layoutMenuButtons(splash, actions) {
+    const buttonWidth = Math.max(220, Math.min(360, Math.floor(splash.w * 0.34)));
+    const buttonHeight = 38;
+    const gap = 10;
+    const startX = splash.x + Math.floor((splash.w - buttonWidth) / 2);
+    const startY = splash.y + 184;
+    return actions.map((item, index) => ({
+        action: item,
+        rect: rect(startX, startY + index * (buttonHeight + gap), buttonWidth, buttonHeight),
+    }));
+}
+
+function layoutTopButtons(top, actions) {
+    const buttonWidth = 88;
+    const buttonHeight = 32;
+    const gap = 8;
+    return actions.map((item, index) => ({
+        action: item,
+        rect: rect(
+            top.x + top.w - (buttonWidth + gap) * (index + 1),
+            top.y + Math.floor((top.h - buttonHeight) / 2),
+            buttonWidth,
             buttonHeight,
         ),
     }));
