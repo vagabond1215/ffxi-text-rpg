@@ -88,7 +88,7 @@ All notable reset-branch changes are tracked here.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
 - Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `12`, and codename to `Slash UI Account Saves`.
-- Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, and skill caps.
+- Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, skill caps, and skill progression.
 - Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
 

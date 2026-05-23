@@ -20,9 +20,8 @@ test('skills command describes character-owned skills', () => {
 
     const output = router('skills');
 
-    assert.match(output, /Skills:/);
-    assert.match(output, /Job: Warrior Lv\.1/);
-    assert.match(output, /- axe: 2\/3 \(rank A\)/);
+    assert.match(output, /Skills for Warrior Lv\.1:/);
+    assert.match(output, /- axe: learned 2 \/ Warrior cap 3 \/ effective 2 \/ rank A/);
     assert.match(output, /Confidence: placeholder/);
 });
 
@@ -31,9 +30,9 @@ test('skill command describes one requested skill', () => {
 
     const output = router('skill axe');
 
-    assert.match(output, /Skill: axe/);
-    assert.match(output, /Current: 2/);
-    assert.match(output, /Cap: 3/);
+    assert.match(output, /axe: learned 2/);
+    assert.match(output, /Warrior cap 3/);
+    assert.match(output, /effective 2/);
 });
 
 test('inspect skills aliases to skill summary', () => {
@@ -41,8 +40,8 @@ test('inspect skills aliases to skill summary', () => {
 
     const output = router('inspect skills');
 
-    assert.match(output, /Skills:/);
-    assert.match(output, /- axe: 2\/3 \(rank A\)/);
+    assert.match(output, /Skills for Warrior Lv\.1:/);
+    assert.match(output, /- axe: learned 2 \/ Warrior cap 3 \/ effective 2 \/ rank A/);
 });
 
 test('inspect skill aliases to single skill inspection', () => {
@@ -50,6 +49,6 @@ test('inspect skill aliases to single skill inspection', () => {
 
     const output = router('inspect skill axe');
 
-    assert.match(output, /Skill: axe/);
-    assert.match(output, /Rank: A/);
+    assert.match(output, /axe: learned 2/);
+    assert.match(output, /rank A/);
 });

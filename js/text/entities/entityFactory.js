@@ -132,6 +132,7 @@ export function createProgression(overrides = {}) {
     return {
         exp: 0,
         expToNext: getExpToNextLevel(1),
+        skills: {},
         nationRanks: {
             sandoria: 1,
             bastok: 1,
@@ -148,6 +149,7 @@ export function createProgression(overrides = {}) {
         merits: {},
         jobPoints: {},
         ...overrides,
+        skills: overrides.skills ?? {},
     };
 }
 

@@ -17,52 +17,12 @@ export const SKILL_RANK_CAP_RULES = deepFreeze({
 });
 
 export const JOB_SKILL_RANKS = deepFreeze({
-    warrior: {
-        sword: 'B',
-        axe: 'A',
-        greatAxe: 'A',
-        dagger: 'C',
-        shield: 'C',
-        parrying: 'C',
-        evasion: 'C',
-    },
-    monk: {
-        handToHand: 'A',
-        guard: 'B',
-        staff: 'C',
-        evasion: 'B',
-    },
-    whiteMage: {
-        club: 'B',
-        staff: 'C',
-        healingMagic: 'A',
-        divineMagic: 'B',
-        enhancingMagic: 'C',
-        enfeeblingMagic: 'D',
-    },
-    blackMage: {
-        staff: 'C',
-        club: 'D',
-        elementalMagic: 'A',
-        darkMagic: 'B',
-        enfeeblingMagic: 'C',
-    },
-    redMage: {
-        sword: 'B',
-        dagger: 'C',
-        club: 'D',
-        enhancingMagic: 'B',
-        enfeeblingMagic: 'A',
-        elementalMagic: 'C',
-        healingMagic: 'C',
-    },
-    thief: {
-        dagger: 'A',
-        sword: 'C',
-        throwing: 'C',
-        evasion: 'A',
-        parrying: 'D',
-    },
+    warrior: { sword: 'B', axe: 'A', greatAxe: 'A', dagger: 'C', shield: 'C', parrying: 'C', evasion: 'C' },
+    monk: { handToHand: 'A', guard: 'B', staff: 'C', evasion: 'B' },
+    whiteMage: { club: 'B', staff: 'C', healingMagic: 'A', divineMagic: 'B', enhancingMagic: 'C', enfeeblingMagic: 'D' },
+    blackMage: { staff: 'C', club: 'D', elementalMagic: 'A', darkMagic: 'B', enfeeblingMagic: 'C' },
+    redMage: { sword: 'B', dagger: 'C', club: 'D', enhancingMagic: 'B', enfeeblingMagic: 'A', elementalMagic: 'C', healingMagic: 'C' },
+    thief: { dagger: 'A', sword: 'C', throwing: 'C', evasion: 'A', parrying: 'D' },
 });
 
 export function getSkillRank(jobId, skillId) {
@@ -75,8 +35,8 @@ export function getSkillCap(jobId, skillId, level = 1) {
     if (!rank) return 0;
     const rule = SKILL_RANK_CAP_RULES[rank];
     if (!rule) return 0;
-    const clampedLevel = Math.max(1, Math.min(99, Number(level) || 1));
-    return Math.floor(clampedLevel * rule.perLevel);
+    const safeLevel = Math.max(1, Math.min(99, Number(level) || 1));
+    return Math.floor(safeLevel * rule.perLevel);
 }
 
 export function getEffectiveSkill(player, skillId) {
@@ -84,18 +44,22 @@ export function getEffectiveSkill(player, skillId) {
     const level = Math.max(1, Math.min(99, Number(player?.jobs?.level) || 1));
     const rank = getSkillRank(jobId, skillId);
     const cap = getSkillCap(jobId, skillId, level);
-    const stored = player?.progression?.skills?.[skillId];
-    const hasStoredSkill = Number.isFinite(Number(stored));
-    const current = hasStoredSkill ? Math.max(0, Math.min(cap, Math.floor(Number(stored)))) : 0;
+    const learned = normalizeLearnedSkill(player?.progression?.skills?.[skillId]);
+    const effective = Math.min(learned, cap);
+    const cappedForCurrentJob = cap > 0 && effective >= cap;
 
     return {
         skillId,
         jobId,
         level,
         rank,
-        current,
+        learned,
         cap,
-        capped: current >= cap,
+        effective,
+        current: effective,
+        cappedForCurrentJob,
+        capped: cappedForCurrentJob,
+        overCurrentCap: learned > cap,
         confidence: SKILL_CAP_METADATA.confidence,
         source: SKILL_CAP_METADATA.source,
     };
@@ -105,6 +69,11 @@ export function listSkillRankEntries() {
     return Object.entries(JOB_SKILL_RANKS).flatMap(([jobId, skills]) => (
         Object.entries(skills).map(([skillId, rank]) => ({ jobId, skillId, rank }))
     ));
+}
+
+function normalizeLearnedSkill(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : 0;
 }
 
 function deepFreeze(value) {
