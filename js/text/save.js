@@ -2,6 +2,7 @@ import { createInventoryState } from './systems/inventoryEngine.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 
 const ACCOUNT_KEY = 'ffxiTextRpgAccount';
+const ACCOUNT_SESSION_KEY = 'ffxiTextRpgAccountSession';
 const LEGACY_SAVE_KEY = 'ffxiTextRpgSave';
 const ACCOUNT_VERSION = 1;
 const ENCODING = 'base64-json-v1';
@@ -79,6 +80,7 @@ export function loadAccount() {
         if (!parsed || parsed.version !== ACCOUNT_VERSION || !Array.isArray(parsed.characters)) return createAccount();
         parsed.profile ??= createAccountProfile();
         parsed.profile.accountId ??= createId('account');
+        parsed.profile.displayName = normalizeDisplayName(parsed.profile.displayName);
         parsed.characters = parsed.characters.filter((record) => record?.id && record?.encodedState);
         return parsed;
     } catch (error) {
@@ -94,25 +96,71 @@ export function saveAccount(account) {
         profile: {
             ...createAccountProfile(),
             ...(account.profile ?? {}),
+            displayName: normalizeDisplayName(account.profile?.displayName),
             updatedAt: new Date().toISOString(),
         },
         characters: account.characters ?? [],
     };
     getStorage()?.setItem(ACCOUNT_KEY, encodePayload(nextAccount));
     getStorage()?.removeItem(LEGACY_SAVE_KEY);
+    syncAccountSession(nextAccount);
     return nextAccount;
+}
+
+export function loadAccountSession() {
+    const account = loadAccount();
+    const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
+    let session = null;
+    try {
+        session = raw ? decodePayload(raw) : null;
+    } catch {
+        session = null;
+    }
+
+    const loggedIn = Boolean(session?.loggedIn && session.accountId === account.profile.accountId);
+    return {
+        loggedIn,
+        accountId: account.profile.accountId,
+        displayName: account.profile.displayName,
+        lastCharacterId: account.profile.lastCharacterId ?? null,
+        characterCount: account.characters.length,
+        updatedAt: account.profile.updatedAt,
+        loggedInAt: loggedIn ? session.loggedInAt : null,
+    };
+}
+
+export function loginAccount(displayName = null) {
+    const account = loadAccount();
+    account.profile.displayName = normalizeDisplayName(displayName ?? account.profile.displayName);
+    const saved = saveAccount(account);
+    const session = {
+        loggedIn: true,
+        accountId: saved.profile.accountId,
+        displayName: saved.profile.displayName,
+        loggedInAt: new Date().toISOString(),
+    };
+    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload(session));
+    return loadAccountSession();
+}
+
+export function logoutAccount() {
+    getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
+    return loadAccountSession();
 }
 
 export function clearSave() {
     getStorage()?.removeItem(ACCOUNT_KEY);
+    getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
     getStorage()?.removeItem(LEGACY_SAVE_KEY);
 }
 
 export function describeAccount() {
     const account = loadAccount();
+    const session = loadAccountSession();
     const lines = [
         `Account: ${account.profile.displayName}`,
         `Account ID: ${account.profile.accountId}`,
+        `Logged in: ${session.loggedIn ? 'yes' : 'no'}`,
         `Characters: ${account.characters.length}`,
         `Last character: ${account.profile.lastCharacterId ?? 'none'}`,
     ];
@@ -215,6 +263,21 @@ function loadLegacySave() {
     }
 }
 
+function syncAccountSession(account) {
+    const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
+    if (!raw) return;
+    try {
+        const session = decodePayload(raw);
+        if (!session?.loggedIn || session.accountId !== account.profile.accountId) return;
+        getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload({
+            ...session,
+            displayName: account.profile.displayName,
+        }));
+    } catch {
+        getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
+    }
+}
+
 function getStorage() {
     return globalThis.localStorage ?? globalThis.window?.localStorage ?? null;
 }
@@ -238,4 +301,9 @@ function createId(prefix) {
 
 function normalize(value) {
     return String(value ?? '').trim().toLowerCase().replace(/\s+/g, '-');
+}
+
+function normalizeDisplayName(value) {
+    const normalized = String(value ?? '').trim().replace(/\s+/g, ' ');
+    return normalized || 'Local Adventurer';
 }
