@@ -52,6 +52,9 @@ All notable reset-branch changes are tracked here.
 - Text-first `item <query>` and `inspect item <query>` commands for accessible inventory, wardrobe, and equipped item inspection.
 - Starter equipment catalog with conservative stat modifiers, placeholder weapon delay metadata, and intentional-simplification requirement notes.
 - Sparse skill rank/cap foundation with `getSkillCap` and `getEffectiveSkill` helpers for later combat and magic skill work.
+- Character-owned skill progression storage under `player.progression.skills[skillId]`.
+- Text-first `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` command output.
+- Validation for flat character-owned skill ids and non-negative integer skill values, including explicit rejection of nested job-keyed skill maps.
 - Equipment catalog validation for requirement shapes, unknown jobs/races/slots, array-based flags/effects, modifier keys, and required confidence/source metadata.
 - Equipped gear modifiers feeding into the stat/combat profile.
 - Core constants for attributes, resources, elements, derived stats, skills, equipment slots, currencies, entity types, and status categories.
@@ -86,6 +89,7 @@ All notable reset-branch changes are tracked here.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
 - Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `12`, and codename to `Slash UI Account Saves`.
 - Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, and skill caps.
+- Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
 
 ### Removed
@@ -98,4 +102,5 @@ All notable reset-branch changes are tracked here.
 - Backwards compatibility with the old browser UI and old save shape is intentionally not preserved beyond the current raw-save migration path.
 - `base64-json-v1` save storage is encoded, not strong encryption.
 - Current formulas are conservative approximations until exact researched formulas are migrated deliberately.
-- Current recommended next pass is combat/skill integration: current skill state, skill-gain hooks, skill-cap formula wiring, and isolated item behavior rules.
+- `skillCaps.js` remains scaffold-only and is not wired into combat or magic calculations.
+- Current recommended next pass is item behavior modules plus conservative skill plumbing: item behavior rules, isolated skill-gain hooks, skill-cap formula wiring, and tests.

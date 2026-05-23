@@ -48,6 +48,8 @@ Major active system versions:
 slashCommands: 0.4.1
 accountSaves: 0.4.1
 saveEncoding: 0.4.1
+validation: 0.5.1
+playerEntity: 0.5.4
 statEngine: 0.4.0
 equipmentCommands: 0.5.0
 equipmentEligibility: 0.5.0
@@ -57,7 +59,8 @@ inventoryContainers: 0.5.1
 inventoryTransfers: 0.5.1
 itemSchema: 0.6.0
 itemStacking: 0.5.1
-skillCaps: 0.5.0
+skillCaps: 0.5.1
+skillProgression: 0.5.1
 battleEngine: 0.5.0
 combatActions: 0.5.0
 battleRewards: 0.5.2
@@ -104,6 +107,10 @@ Gameplay examples:
 ```text
 /look
 /stats
+/skills
+/skill axe
+/inspect skills
+/inspect skill axe
 /inventory
 /item Bronze Sword
 /inspect item Bronze Sword
@@ -299,6 +306,8 @@ Rules:
 - Stackable consumables/materials/misc items merge into existing stacks when possible.
 - Container transfers are atomic and enforce source access, destination access, capacity, item-kind, and stack rules.
 - Sparse skill rank/cap helpers exist for later combat and magic skill progression.
+- Character-owned current skills live in `player.progression.skills[skillId]`. Do not reintroduce per-job skill storage maps.
+- `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` describe current character-owned skill values against the active main-job cap scaffold.
 
 Temporary limitation: Mog House is currently a boolean access context, not a real zone/interior yet.
 
@@ -369,6 +378,8 @@ tests/rewardEngine.test.js
 tests/rngEngine.test.js
 tests/shopEngine.test.js
 tests/skillCaps.test.js
+tests/skillCommandRouter.test.js
+tests/skillProgressionValidation.test.js
 tests/poiEngine.test.js
 tests/travelEngine.test.js
 tests/atlasAndControls.test.js
@@ -400,15 +411,14 @@ docs/RESEARCH_REFERENCES.md
 
 ## Current recommended next pass
 
-The next best implementation pass is combat/skill integration:
+The next best implementation pass is item behavior modules plus conservative skill plumbing:
 
-1. Add current combat/magic skill state without changing the cap schema.
+1. Add item behavior modules for latent effects, enchantments, charges, ranged/ammo, and sell restrictions.
 2. Add isolated skill-gain hooks, but avoid random pacing until the rule is tested and confidence-labeled.
 3. Decide how skill caps feed combat and magic formulas before touching battle command handlers.
-4. Add item behavior modules for latent effects, enchantments, charges, ranged/ammo, and sell restrictions.
-5. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.
+4. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.
 
-Important: `skillCaps.js` is scaffold-only. Do not wire those caps into combat or magic calculations until player current skill state exists and the cap/skill-gain flow is covered by tests.
+Important: `skillCaps.js` is scaffold-only. Even though current skills now live on the character, do not wire those caps into combat or magic calculations until current skill semantics and the cap/skill-gain flow are covered by tests.
 
 ## Rules for future agents
 

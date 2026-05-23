@@ -21,7 +21,8 @@ test('version manifest exposes explicit app account save game state data and ben
     assert.match(describeSystemVersions(), /battleRewards: 0.5.2/);
     assert.match(describeSystemVersions(), /itemSchema: 0.6.0/);
     assert.match(describeSystemVersions(), /equipmentEligibility: 0.5.0/);
-    assert.match(describeSystemVersions(), /skillCaps: 0.5.0/);
+    assert.match(describeSystemVersions(), /skillCaps: 0.5.1/);
+    assert.match(describeSystemVersions(), /skillProgression: 0.5.1/);
     assert.match(describeSystemVersions(), /leveling: 0.5.3/);
 });
 

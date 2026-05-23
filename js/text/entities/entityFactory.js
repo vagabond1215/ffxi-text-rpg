@@ -143,6 +143,7 @@ export function createProgression(overrides = {}) {
         unlockedMaps: [],
         unlockedHomePoints: [],
         unlockedSurvivalGuides: [],
+        skills: {},
         limitBreaks: [],
         merits: {},
         jobPoints: {},

@@ -54,6 +54,7 @@ import {
     talkAtCurrentGrid,
 } from './systems/poiEngine.js';
 import { describeJobProgression, switchMainJob } from './systems/progressionEngine.js';
+import { describeSkillProgression } from './systems/skillProgressionEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
     describeHpMpGradeComparisons,
@@ -84,6 +85,8 @@ const HELP_TEXT = [
     '  jobs                 List available starting jobs.',
     '  job                  Show unlocked job progression.',
     '  job <id>             Change main job to an unlocked job.',
+    '  skills               Show current character-owned skill progression.',
+    '  skill <id>           Inspect one character-owned skill.',
     '  look                 Describe the current location, grid, and contextual POIs.',
     '  here                 Show context-aware POIs/actions at the current grid.',
     '  poi                  Summarize seeded POIs by zone.',
@@ -185,6 +188,8 @@ export function createCommandRouter(state, services = {}) {
             case 'races': return describeRaces();
             case 'jobs': return describeJobs();
             case 'job': return parsed.args.length ? switchMainJob(state.player, parsed.args.join(' ')).message : describeJobProgression(state.player);
+            case 'skills': return describeSkillProgression(state.player);
+            case 'skill': return describeSkillProgression(state.player, parsed.args[0]);
             case 'statformula': return describeStatFormulaOverview();
             case 'racegrades': return describeRaceStatGrades();
             case 'jobgrades': return describeJobStatGrades();
@@ -391,6 +396,8 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'ws': return describeWeaponSkills();
         case 'job':
         case 'progression': return describeJobProgression(state.player);
+        case 'skills': return describeSkillProgression(state.player);
+        case 'skill': return describeSkillProgression(state.player, restArgs[0]);
         case 'jobabilities':
         case 'abilities':
         case 'ja': return describeJobAbilities(state);

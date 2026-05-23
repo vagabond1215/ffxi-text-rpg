@@ -112,7 +112,9 @@ Target: 0.5.x.
 - [x] Job-level state for all unlocked jobs with per-job EXP.
 - [ ] Level cap / limit break placeholders beyond simple cap enforcement.
 - [x] Combat and magic skill cap data-helper foundation.
-- [ ] Wire combat and magic skill caps into formulas and runtime state.
+- [x] Character-owned current skill state and inspection commands.
+- [x] Validation for flat `player.progression.skills[skillId]` values.
+- [ ] Wire combat and magic skill caps into formulas.
 - [ ] Skill gain hooks.
 - [ ] Progression flags for maps, teleport points, mounts, trusts, quests, missions, achievements.
 
@@ -212,9 +214,9 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-The next best implementation pass is combat/skill integration depth:
+The next best implementation pass is item behavior modules plus conservative skill plumbing:
 
-1. Add current combat/magic skill state and isolated skill-gain hooks.
-2. Wire skill caps into combat and magic formulas only after confidence labels are explicit.
-3. Implement item behavior rules for latent effects, enchantments, charges, ranged/ammo, and selling restrictions.
+1. Implement item behavior rules for latent effects, enchantments, charges, ranged/ammo, and selling restrictions.
+2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
+3. Wire skill caps into combat and magic formulas only after current skill state, skill-gain flow, and confidence labels are explicit.
 4. Add validation/tests for any new item behavior before expanding loot tables.

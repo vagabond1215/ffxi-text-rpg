@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, skill-cap scaffolding, and implementation-first documentation.
+This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
@@ -72,6 +72,10 @@ Gameplay commands are also slash-prefixed in the UI:
 ```text
 /look
 /stats
+/skills
+/skill <id>
+/inspect skills
+/inspect skill <id>
 /inventory
 /item <query>
 /inspect item <query>
@@ -220,6 +224,7 @@ js/text/
     rewardEngine.js
     rng.js
     shopEngine.js
+    skillProgressionEngine.js
     statEngine.js
     statusEngine.js
     tickEngine.js
@@ -270,7 +275,8 @@ docs/
 - Starter equipment catalog with conservative stat modifiers and explicit placeholder/intentional-simplification metadata.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
-- Sparse skill rank/cap helper data for future combat and magic skill progression.
+- Character-owned current skill storage under `player.progression.skills[skillId]`.
+- Sparse skill rank/cap helper data and text-first `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` commands for future combat and magic skill progression.
 - Simple battle-state engine with deterministic RNG injection.
 - Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, duplicate payout prevention, and progression engine integration.
 - Conservative EXP table data, level-up rules, EXP-to-next tracking, level-cap behavior, and HP/MP/resource refresh after level-up.
@@ -279,7 +285,7 @@ docs/
 - Version manifest and system version tracking.
 - Database registry for enemies, NPCs, places, zones, travel, quests, achievements, items, key items, magic, loot, leveling, trusts, crafting, mounts, and tick channels.
 - Baseline benchmark harness.
-- Game-state, world-data, equipment-catalog, item-requirement, modifier-key, flag/effect, and skill-rank validation helpers.
+- Game-state, world-data, equipment-catalog, item-requirement, modifier-key, flag/effect, skill-rank, and character-owned skill-state validation helpers.
 - Node test harness using the built-in `node:test` runner.
 
 ## Formula policy
@@ -298,9 +304,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is combat/skill integration depth:
+The current recommended next pass is item behavior modules and conservative skill plumbing:
 
-1. Add current combat/magic skill state and isolated skill-gain hooks.
-2. Wire skill caps into combat and magic calculations only after the formula confidence level is explicit.
-3. Add key-item item records and unlock/permission validation.
-4. Implement item behaviors for latent effects, enchantments, charges, ranged/ammo, and sell/vendor restrictions in small rule modules.
+1. Implement item behaviors for latent effects, enchantments, charges, ranged/ammo, and sell/vendor restrictions in small rule modules.
+2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
+3. Wire skill caps into combat and magic calculations only after current skill state, gain flow, and formula confidence are explicit.
+4. Add key-item item records and unlock/permission validation.

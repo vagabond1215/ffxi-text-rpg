@@ -173,8 +173,30 @@ export function validatePlayer(player) {
     if (player.inventoryState?.containers?.inventory && player.inventory !== player.inventoryState.containers.inventory.items) {
         issues.push('inventory must reference inventoryState.containers.inventory.items.');
     }
+    if (!isObject(player.progression)) issues.push('progression must be an object.');
+    if (isObject(player.progression)) issues.push(...validateProgression(player.progression).map((issue) => `progression.${issue}`));
     if (!Array.isArray(player.statuses)) issues.push('statuses must be an array.');
 
+    return issues;
+}
+
+function validateProgression(progression) {
+    const issues = [];
+    if (!isObject(progression.skills)) {
+        issues.push('skills must be an object.');
+        return issues;
+    }
+
+    for (const [skillId, value] of Object.entries(progression.skills)) {
+        if (isObject(value) && JOB_DEFINITIONS[skillId]) {
+            issues.push(`skills.${skillId} appears to be a nested job-keyed skill map; use progression.skills[skillId] = value.`);
+            continue;
+        }
+        if (!SKILL_KEYS.includes(skillId)) issues.push(`skills.${skillId} references unknown skill.`);
+        if (!Number.isInteger(value) || !Number.isFinite(value) || value < 0) {
+            issues.push(`skills.${skillId} must be a non-negative finite integer.`);
+        }
+    }
     return issues;
 }
 

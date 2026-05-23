@@ -84,9 +84,9 @@ export function getEffectiveSkill(player, skillId) {
     const level = Math.max(1, Math.min(99, Number(player?.jobs?.level) || 1));
     const rank = getSkillRank(jobId, skillId);
     const cap = getSkillCap(jobId, skillId, level);
-    const stored = player?.progression?.skills?.[jobId]?.[skillId] ?? player?.skills?.[skillId];
+    const stored = player?.progression?.skills?.[skillId];
     const hasStoredSkill = Number.isFinite(Number(stored));
-    const current = hasStoredSkill ? Math.max(0, Math.min(cap, Math.floor(Number(stored)))) : cap;
+    const current = hasStoredSkill ? Math.max(0, Math.min(cap, Math.floor(Number(stored)))) : 0;
 
     return {
         skillId,

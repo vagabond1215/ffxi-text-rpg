@@ -14,9 +14,7 @@ test('skill cap helper returns stable sparse rank values', () => {
 test('effective skill reports current value cap rank and confidence metadata', () => {
     const player = createPlayerCharacter({ mainJobId: 'warrior', level: 10 });
     player.progression.skills = {
-        warrior: {
-            axe: 40,
-        },
+        axe: 40,
     };
 
     const effective = getEffectiveSkill(player, 'axe');
@@ -26,4 +24,14 @@ test('effective skill reports current value cap rank and confidence metadata', (
     assert.equal(effective.current, 30);
     assert.equal(effective.capped, true);
     assert.equal(effective.confidence, 'placeholder');
+});
+
+test('effective skill defaults missing character-owned skill values to zero', () => {
+    const player = createPlayerCharacter({ mainJobId: 'warrior', level: 10 });
+
+    const effective = getEffectiveSkill(player, 'axe');
+
+    assert.equal(effective.current, 0);
+    assert.equal(effective.cap, 30);
+    assert.equal(effective.capped, false);
 });
