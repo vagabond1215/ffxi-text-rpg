@@ -4,8 +4,8 @@ This branch is a text-first rebuild. The goal is a stable foundation that can ab
 
 ## Principles
 
-1. Text first. The browser shell renders text/HUD controls and accepts slash commands.
-2. Logic does not touch the DOM.
+1. Text first. The browser shell renders text/HUD controls in canvas and accepts command-router commands.
+2. Logic does not touch the DOM or canvas renderer.
 3. Backwards compatibility is not required unless explicitly reintroduced later.
 4. Data, state, and engines should stay separate.
 5. Exact formulas are migrated only when they are sourced and understood.
@@ -17,28 +17,33 @@ This branch is a text-first rebuild. The goal is a stable foundation that can ab
 ```text
 index.html
   -> js/main.js
-      -> loadActiveCharacter() or createInitialState()
-      -> createSlashCommandRouter(state)
+      -> createCanvasApp(canvas)
+          -> loadActiveCharacter() or createInitialState()
           -> createCommandRouter(state) for internal command dispatch
-      -> createSidebar(...)
-      -> createTextShell(...)
+          -> createSlashCommandRouter(state) for slash/account commands
+          -> canvas layout/input/render loop
 ```
 
-The UI-facing router requires slash commands. It forwards slash gameplay commands to the internal bare-command router after stripping `/`. Character-creation prompt answers are the exception: while prompts are active, natural answers are passed through without requiring `/`.
+The active browser UI is canvas-first. Buttons dispatch stable action records to existing bare commands. The canvas command input accepts bare commands and still routes leading-slash inputs through `slashCommandRouter.js` for account/menu and FFXI macro-style compatibility.
 
 ## UI layer
 
 ```text
 js/main.js
-js/text/textShell.js
-js/text/sidebar.js
+js/text/ui/canvasApp.js
+js/text/ui/canvasRenderer.js
+js/text/ui/canvasLayout.js
+js/text/ui/canvasInput.js
+js/text/ui/uiActions.js
+js/text/ui/uiTheme.js
 js/text/slashCommandRouter.js
 ```
 
-- `main.js` wires browser DOM to the current state, sidebar, shell, save services, and slash router.
-- `textShell.js` is DOM-only input/output. It should not own game logic.
-- `sidebar.js` renders the character HUD, resource bars, and slash-command menu buttons.
-- `slashCommandRouter.js` owns `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset`.
+- `main.js` mounts one canvas host.
+- `canvasApp.js` wires current state, save services, command routers, canvas event handlers, and rendering.
+- `canvasRenderer.js` draws panels, buttons, log output, context, and command input. It should not own game logic.
+- `canvasLayout.js`, `canvasInput.js`, and `uiActions.js` are pure/testable seams for bounds, hit testing, keyboard input, history, and action-to-command mapping.
+- `slashCommandRouter.js` still owns `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` when slash input is used.
 
 ## Command layer
 
@@ -91,9 +96,15 @@ js/text/
   commandRouter.js
   gameState.js
   save.js
-  sidebar.js
-  textShell.js
   version.js
+
+  ui/
+    canvasApp.js
+    canvasRenderer.js
+    canvasLayout.js
+    canvasInput.js
+    uiActions.js
+    uiTheme.js
 
   commands/
     parser.js
@@ -285,5 +296,5 @@ Existing legacy data may be reused, but each piece should be migrated deliberate
 2. Read `docs/THREAD_HANDOFF.md`.
 3. Check `js/text/version.js` for current system versions.
 4. Run `npm test` and `npm run benchmark` locally.
-5. Inspect recent systems before changing them: `slashCommandRouter.js`, `save.js`, `inventoryEngine.js`, `equipmentEngine.js`, `poiEngine.js`, `shopEngine.js`, and `commandRouter.js`.
+5. Inspect recent systems before changing them: `js/text/ui/*`, `slashCommandRouter.js`, `save.js`, `inventoryEngine.js`, `equipmentEngine.js`, `poiEngine.js`, `shopEngine.js`, and `commandRouter.js`.
 6. Update docs, tests, and version tracking with every major change.

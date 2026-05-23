@@ -6,8 +6,11 @@ All notable reset-branch changes are tracked here.
 
 ### Added
 - Text-only browser shell with command input/output.
-- Slim top bar with compact branding, active character/job/location status, last-command feedback, and quick action buttons.
-- Populated sidebar panels for active character, resources, location/status, wallet/title, character slots, command chips, main menu actions, and full menu buttons.
+- Canvas-first browser shell with one visible `#game-canvas` host.
+- Canvas-rendered title/status bar, command sidebar, output log, context/history panel, and bottom command input.
+- Pure canvas UI action registry, layout, hit-testing, keyboard input, command history, and renderer modules.
+- Legacy DOM slim top bar with compact branding, active character/job/location status, last-command feedback, and quick action buttons.
+- Legacy DOM sidebar panels for active character, resources, location/status, wallet/title, character slots, command chips, main menu actions, and full menu buttons.
 - Slash-command UI wrapper requiring `/` commands in the browser shell.
 - `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` commands.
 - Prompt-based character creation from `/newcharacter`, with natural non-slash answers while prompts are active.
@@ -73,22 +76,25 @@ All notable reset-branch changes are tracked here.
 - `validate` command for current state validation.
 - `version`, `systems`, `databases`, `tick`, `maps`, `map`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, `wait`, `containers`, `container`, `transfer`, `equip`, `unequip`, `equipSources`, `here`, `talk`, `shop`, `buy`, `guild`, `quest`, `discovered`, `fastpoi`, and `zonefast` commands.
 - Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, deterministic RNG, battle rewards, item schema/stacking, and basic battle flow.
+- Node test coverage for canvas UI action mapping, clickable layout bounds, hit testing, command dispatch, keyboard input, and command history.
 - Node test coverage for equipment eligibility rejections, atomic failed equips, two-handed/offhand conflicts, item inspection, equipment catalog validation, and skill cap helpers.
 - Architecture, roadmap, baseline pipeline, system catalog, research reference, and thread handoff documents for the rebuild.
 
 ### Changed
-- Moved the browser shell into an app frame with a slim top bar above the sidebar/terminal grid.
+- Moved the earlier DOM browser shell into an app frame with a slim top bar above the sidebar/terminal grid.
+- Replaced the active browser entry path with a canvas-first shell; previous DOM panel helpers are no longer the core visible UI.
 - Preserved FFXI macro-style slash commands through the browser slash router so the FFXI command adapter can handle them.
 - Aligned character-creation docs and slash-router tests with the current name-first, confirmation-based creator flow.
 - Clarified version naming with `VERSION.accountSave` and `VERSION.gameState`; `VERSION.save` remains a temporary alias for account save version.
 - Replaced the old graphical/menu-heavy entry path with a minimal text-first foundation.
 - Replaced the UI-facing bare-command model with slash commands.
-- Updated sidebar buttons to emit slash commands and include main menu, new character, characters, save, containers, and commands actions.
+- Updated legacy sidebar buttons to emit slash commands and include main menu, new character, characters, save, containers, and commands actions.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
 - Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `12`, and codename to `Slash UI Account Saves`.
 - Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, skill caps, and skill progression.
+- Added `canvasUi` system version tracking.
 - Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
 

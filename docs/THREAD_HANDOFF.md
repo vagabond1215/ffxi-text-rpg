@@ -9,7 +9,7 @@ The repo is being reset into a text-first, expandable FFXI-inspired RPG foundati
 Core design goals:
 
 - Stable and expandable frame first.
-- Slash-command browser UI.
+- Canvas-first text UI with command-backed buttons.
 - Local account and character save slots.
 - Zone coordinate grids with unknown unvisited grids.
 - Zone atlas reveals visited grids only.
@@ -46,6 +46,7 @@ Major active system versions:
 
 ```text
 slashCommands: 0.4.1
+canvasUi: 0.6.0
 accountSaves: 0.4.1
 saveEncoding: 0.4.1
 validation: 0.5.1
@@ -86,7 +87,27 @@ Use Node 20+.
 
 ## UI command model
 
-The browser UI uses slash commands.
+The browser UI is canvas-first. HTML provides one canvas host; all visible game UI is canvas-rendered.
+
+The left canvas sidebar has clickable global actions backed by existing `commandRouter.js` commands:
+
+```text
+character
+stats
+job
+skills
+inventory
+equipment
+maps
+look
+here
+battle
+help
+validate
+save
+```
+
+The bottom canvas input accepts bare command-router commands and still accepts slash commands where `slashCommandRouter.js` owns account/menu behavior.
 
 Main commands:
 
@@ -105,33 +126,31 @@ Main commands:
 Gameplay examples:
 
 ```text
-/look
-/stats
-/skills
-/skill axe
-/inspect skills
-/inspect skill axe
-/inventory
-/item Bronze Sword
-/inspect item Bronze Sword
-/equipment
-/containers
-/container inventory
-/transfer Bronze Sword from inventory to wardrobe1
-/equip Bronze Sword
-/unequip mainHand to wardrobe1
-/here
-/talk Ashene
-/shop Ashene
-/buy Bronze Sword
-/zonefast
-/move n
-/travel West Ronfaure
-/wait 60
-/validate
+look
+stats
+skills
+skill axe
+inspect skills
+inspect skill axe
+inventory
+item Bronze Sword
+inspect item Bronze Sword
+equipment
+containers
+container inventory
+transfer Bronze Sword from inventory to wardrobe1
+equip Bronze Sword
+unequip mainHand to wardrobe1
+here
+talk Ashene
+shop Ashene
+buy Bronze Sword
+zonefast
+move n
+travel West Ronfaure
+wait 60
+validate
 ```
-
-Bare commands are rejected by the browser slash router except while character-creation prompts are active. Internal engine tests may still call the bare command router directly.
 
 FFXI macro-style commands such as `/macrohelp`, `/ma`, `/ja`, `/ws`, `/item`, `/equipset`, `/recast`, and `/echo` are preserved with their leading slash and routed through the FFXI command adapter.
 
@@ -196,23 +215,24 @@ Legacy migration:
 ```text
 index.html
   -> js/main.js
-      -> loadActiveCharacter() or createInitialState()
-      -> createSlashCommandRouter(state)
+      -> createCanvasApp(canvas)
+          -> loadActiveCharacter() or createInitialState()
           -> createCommandRouter(state)
-      -> createTopBar(...)
-      -> createSidebar(...)
-      -> createTextShell(...)
+          -> createSlashCommandRouter(state)
+          -> canvas layout/input/render loop
 ```
 
 Relevant UI files:
 
 ```text
 js/main.js
+js/text/ui/canvasApp.js
+js/text/ui/canvasRenderer.js
+js/text/ui/canvasLayout.js
+js/text/ui/canvasInput.js
+js/text/ui/uiActions.js
+js/text/ui/uiTheme.js
 js/text/slashCommandRouter.js
-js/text/topBar.js
-js/text/textShell.js
-js/text/sidebar.js
-js/text/uiPanels.js
 css/style.css
 ```
 
@@ -370,6 +390,7 @@ Not implemented yet:
 ```text
 tests/saveAccount.test.js
 tests/slashCommandRouter.test.js
+tests/canvasUi.test.js
 tests/equipmentEngine.test.js
 tests/equipmentValidation.test.js
 tests/inventoryEngine.test.js
@@ -423,7 +444,7 @@ Important: `skillCaps.js` is scaffold-only. Even though current skills now live 
 ## Rules for future agents
 
 - Do not reintroduce graphical map/image systems unless explicitly requested.
-- Do not remove slash command UI behavior.
+- Do not remove the command router or slash-command compatibility; canvas buttons should dispatch existing commands.
 - Do not store new saves as raw plain JSON.
 - Do not break `player.inventory` compatibility without updating save revive logic and tests.
 - Do not add exact FFXI formulas unless sourced and documented.

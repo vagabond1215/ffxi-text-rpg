@@ -27,6 +27,21 @@ body {
     color: var(--text);
     font-family: Consolas, Monaco, 'Courier New', monospace;
     line-height: 1.5;
+    overflow: hidden;
+}
+
+#app {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg);
+    outline: none;
 }
 
 button,

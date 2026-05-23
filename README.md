@@ -2,7 +2,7 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable slash-command shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
+This branch intentionally resets the project around a stable canvas-first text shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
@@ -22,7 +22,7 @@ See `js/text/version.js` for the authoritative runtime/system version map.
 
 ## Running
 
-Open `index.html` in a browser. No build step is required for the browser shell.
+Open `index.html` in a browser. No build step is required for the browser shell. The visible game UI is rendered into one canvas; HTML is only the host layer.
 
 Suggested local repo path for Codex desktop work:
 
@@ -51,77 +51,79 @@ Read these first in a new thread or fresh development session:
 5. `docs/SYSTEM_CATALOG.md` - system/data registry notes.
 6. `CHANGELOG.md` - notable reset-branch changes.
 
-## UI command policy
+## Canvas UI Command Policy
 
-The browser UI expects slash commands.
+The active browser UI is canvas-first. It draws the title/status bar, command buttons, output log, context panel, and command input inside `#game-canvas`.
 
-```text
-/menu
-/commands
-/help
-/newcharacter
-/characters
-/load <name|number>
-/save
-/account
-/reset
-```
-
-Gameplay commands are also slash-prefixed in the UI:
+The left-side canvas buttons dispatch existing `commandRouter.js` commands:
 
 ```text
-/look
-/stats
-/skills
-/skill <id>
-/inspect skills
-/inspect skill <id>
-/inventory
-/item <query>
-/inspect item <query>
-/equipment
-/containers
-/container <id>
-/transfer <item> from <source> to <destination>
-/equip <item> [to slot] [from container]
-/unequip <slot> [to container]
-/equipSources
-/here
-/talk <name>
-/shop <name>
-/buy <item>
-/guild <name>
-/quest <name>
-/discovered
-/fastpoi <name>
-/zonefast
-/maps
-/map <id>
-/zones
-/zone <id|name>
-/atlas <id|name>
-/grid
-/move <n|ne|e|se|s|sw|w|nw>
-/travel <destination>
-/wait <seconds>
-/controls
-/tick
-/version
-/systems
-/databases
-/validate
-/log
+character
+stats
+job
+skills
+inventory
+equipment
+maps
+look
+here
+battle
+help
+validate
+save
 ```
 
-Bare commands are rejected by the UI except while answering active character-creation prompts. The lower-level internal router still accepts bare commands for tests and engine reuse.
+The canvas command input accepts existing bare commands and still accepts slash commands where the slash router owns account/menu behavior:
 
-## Browser UI panels
+```text
+look
+stats
+skills
+skill <id>
+inspect skills
+inspect skill <id>
+inventory
+item <query>
+inspect item <query>
+equipment
+containers
+container <id>
+transfer <item> from <source> to <destination>
+equip <item> [to slot] [from container]
+unequip <slot> [to container]
+equipSources
+here
+talk <name>
+shop <name>
+buy <item>
+guild <name>
+quest <name>
+discovered
+fastpoi <name>
+zonefast
+maps
+map <id>
+zones
+zone <id|name>
+atlas <id|name>
+grid
+move <n|ne|e|se|s|sw|w|nw>
+travel <destination>
+wait <seconds>
+controls
+tick
+version
+systems
+databases
+validate
+log
+```
 
-The browser shell remains text-first, but the page has a slim app frame with a persistent top bar and populated sidebar.
+Slash forms like `/menu`, `/commands`, `/newcharacter`, `/characters`, `/load <name|number>`, `/save`, `/account`, and `/reset` are still accepted by the canvas input.
 
-The top bar includes compact branding, active character name, main job and level, current location and grid, last command feedback, and quick actions for Menu, Look, Inventory, Equipment, and Save.
+## Canvas UI Shell
 
-The sidebar includes active character hero, last-action feedback, main menu actions, character summary, HP/MP/TP/EXP bars, location/status, wallet/title, character-slot load cards, command chips, and full menu buttons.
+The browser shell remains text-first, but the visible UI is drawn on canvas. The first pass includes a top status bar, left clickable command sidebar, main output log, right context/history panel on desktop widths, and a bottom command input row.
 
 ## Character creation
 
@@ -179,10 +181,17 @@ js/text/
   commandRouter.js         internal command parsing and dispatch
   gameState.js             initial state and text descriptions
   save.js                  encoded account/character localStorage adapter
-  sidebar.js               DOM sidebar/HUD/menu buttons
-  topBar.js                DOM top bar/status strip renderer
-  textShell.js             DOM shell only
-  uiPanels.js              reusable text-first UI panel render helpers
+  sidebar.js               legacy DOM sidebar/HUD helper, inactive in current entry path
+  topBar.js                legacy DOM top bar helper, inactive in current entry path
+  ui/
+    canvasApp.js           browser canvas shell bootstrap
+    canvasRenderer.js      canvas drawing only
+    canvasLayout.js        pure panel/button bounds and hit testing
+    canvasInput.js         canvas pointer/keyboard state helpers
+    uiActions.js           pure button-to-command registry
+    uiTheme.js             canvas color/type constants
+  textShell.js             legacy DOM shell helper, inactive in current entry path
+  uiPanels.js              legacy reusable DOM panel helpers and feedback classifier
   version.js               app/account-save/game-state/data/system version manifest
   commands/
     parser.js
@@ -245,12 +254,13 @@ docs/
 
 ## Implemented foundation
 
-- Text-only browser shell with slash-command UI.
-- Slim top bar with character/location/status summary and quick actions.
+- Canvas-first browser shell with command-backed clickable buttons and keyboard command input.
+- Canvas-rendered top bar with character/location/status summary.
 - Account profile and multiple encoded local character save slots.
-- Text-first sidebar panels for main menu actions, character-slot load buttons, command chips, resources, location, wallet, and last-action feedback.
+- Canvas-rendered action sidebar, output log, context/history panel, and bottom command row.
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
+- Pure canvas UI action, layout, hit-testing, and keyboard input helpers.
 - Structured player, NPC, and enemy entities.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
@@ -295,7 +305,7 @@ Current formulas are conservative placeholders. They exist to make the architect
 ## Rebuild rules
 
 - Keep the active runtime text based.
-- Keep game logic separate from DOM rendering.
+- Keep game logic separate from canvas/DOM rendering.
 - Prefer small modules over giant files.
 - Preserve reusable legacy data only when it can be migrated cleanly.
 - Do not preserve backwards compatibility unless explicitly instructed.

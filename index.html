@@ -7,31 +7,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <main id="app" class="app-frame" aria-label="FFXI Text RPG">
-        <header id="topbar" class="topbar" aria-label="Top status bar"></header>
-
-        <div class="app-shell">
-            <aside id="sidebar" class="character-sidebar" aria-label="Character sidebar"></aside>
-
-            <section class="terminal-panel">
-                <header class="terminal-header">
-                    <p class="eyebrow">Text foundation</p>
-                    <h1>FFXI Text RPG</h1>
-                    <p class="subtitle">Command-driven systems with persistent character HUD and quick menus.</p>
-                </header>
-
-                <pre id="output" class="terminal-output" aria-live="polite"></pre>
-
-                <form id="command-form" class="command-form" autocomplete="off">
-                    <label for="command-input">Command</label>
-                    <div class="command-row">
-                        <span aria-hidden="true">&gt;</span>
-                        <input id="command-input" name="command" type="text" autofocus spellcheck="false" />
-                        <button type="submit">Enter</button>
-                    </div>
-                </form>
-            </section>
-        </div>
+    <main id="app" aria-label="FFXI Text RPG canvas host">
+        <canvas id="game-canvas" aria-label="FFXI Text RPG canvas interface"></canvas>
     </main>
 
     <script type="module" src="js/main.js"></script>

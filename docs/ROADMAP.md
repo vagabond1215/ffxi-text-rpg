@@ -9,6 +9,7 @@ This roadmap turns the text-only reset into a stable expandable RPG foundation. 
 | 0.2.x | Foundation pipeline, version tracking, benchmarks, registries | Tests, benchmark harness, docs |
 | 0.3.x | Places, zone connections, travel restrictions, tick-based travel, POIs, starter services | Zone graph tests, POI tests, travel benchmark |
 | 0.4.x | Slash UI, account saves, character creation, inventory, equipment, starter item modifiers | Save/schema tests, UI command tests, equipment stat tests |
+| 0.6.0 | Canvas-first text UI shell | Canvas action/layout/input tests |
 | 0.5.x | Combat rewards, leveling, enemies, loot, item schema, magic basics, enemy AI | Battle/progression benchmarks and deterministic combat tests |
 | 0.6.x | Quests, trusts, enmity, party AI, progression flags | Quest and trust AI tests |
 | 0.7.x | Achievements, missions, skillchains, magic bursts, reputation | Formula confidence documentation |
@@ -21,6 +22,7 @@ Status: complete enough for current development.
 - [x] Strip active graphical UI entry path.
 - [x] Add text command shell.
 - [x] Add slash-command UI wrapper.
+- [x] Add canvas-first UI host with command-backed buttons and canvas command input.
 - [x] Add local account/character save adapter.
 - [x] Add encoded localStorage payloads.
 - [x] Add README and changelog.
