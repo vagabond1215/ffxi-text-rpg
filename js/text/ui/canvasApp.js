@@ -9,6 +9,8 @@ import {
     createCanvasUiState,
     handlePointerDown,
     handlePointerUp,
+    scrollOutput,
+    setActiveFeedback,
     updatePointerHover,
 } from './canvasInput.js';
 import { renderCanvasApp } from './canvasRenderer.js';
@@ -49,6 +51,7 @@ export function createCanvasApp({ canvas }) {
 
     function runCommand(command) {
         const response = routeCommand(command);
+        setActiveFeedback(uiState, `Ran: ${command}`);
         appendOutput(uiState, `> ${command}`);
         appendOutput(uiState, response);
         appendOutput(uiState, '');
@@ -104,6 +107,7 @@ export function createCanvasApp({ canvas }) {
         if (result.type === 'action') {
             const dispatched = dispatchAction(result.actionId, runCommand, createActionList(state));
             if (!dispatched.ok) {
+                setActiveFeedback(uiState, dispatched.reason);
                 appendOutput(uiState, dispatched.reason);
                 render();
             }
@@ -111,6 +115,16 @@ export function createCanvasApp({ canvas }) {
         }
         render();
     });
+
+    canvas.addEventListener('wheel', (event) => {
+        const point = pointerPosition(event);
+        updatePointerHover(uiState, layout, point.x, point.y);
+        if (uiState.hoveredRegion === 'main') {
+            event.preventDefault();
+            scrollOutput(uiState, event.deltaY < 0 ? 3 : -3);
+            render();
+        }
+    }, { passive: false });
 
     canvas.addEventListener('keydown', (event) => {
         const result = applyCanvasKey(uiState, event.key, event);
