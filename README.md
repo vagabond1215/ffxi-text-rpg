@@ -22,7 +22,21 @@ See `js/text/version.js` for the authoritative runtime/system version map.
 
 ## Running
 
-Open `index.html` in a browser. No build step is required for the browser shell. The visible game UI is rendered into one canvas; HTML is only the host layer.
+Do not open `index.html` directly with a `file://` URL. The browser blocks ES module imports from local files, so the canvas shell must be served over localhost.
+
+From the repo root:
+
+```bash
+npm run serve
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4173/
+```
+
+No build step is required. The visible game UI is rendered into one canvas; HTML is only the host layer.
 
 Suggested local repo path for Codex desktop work:
 
@@ -241,6 +255,7 @@ js/text/
     validation.js
 scripts/
   benchmark.js
+  serve.js
 tests/
   *.test.js
 docs/
@@ -261,6 +276,7 @@ docs/
 - Prompt-based character creation from `/newcharacter`.
 - Argument-aware command parser.
 - Pure canvas UI action, layout, hit-testing, and keyboard input helpers.
+- Local static dev server for browser module loading over localhost.
 - Structured player, NPC, and enemy entities.
 - Race seed definitions.
 - Job seed definitions for standard FFXI player jobs through Rune Fencer.
