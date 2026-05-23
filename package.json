@@ -5,6 +5,8 @@
   "type": "module",
   "description": "Text-only RPG foundation inspired by Final Fantasy XI systems.",
   "scripts": {
+    "serve": "node scripts/serve.js",
+    "start": "npm run serve",
     "test": "node --test \"tests/**/*.test.js\"",
     "benchmark": "node scripts/benchmark.js",
     "bench": "npm run benchmark",
