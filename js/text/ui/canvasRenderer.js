@@ -63,32 +63,25 @@ function drawSplashMenu(ctx, layout, uiState, session, theme) {
     ctx.fillStyle = theme.accentBright;
     ctx.textAlign = 'center';
     ctx.fillText('FFXI Text RPG', centerX, titleY);
+
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
-
     const accounts = session?.accounts ?? [];
-    const status = session?.loggedIn
-        ? `${session.displayName} · ${session.characterCount} character${session.characterCount === 1 ? '' : 's'}`
-        : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : 'No local accounts';
-    ctx.fillText(status, centerX, titleY + 26);
-
-    const infoLines = [];
-    if (!session?.loggedIn && !accounts.length) infoLines.push('Create Account: enter account name | password');
-    else if (!session?.loggedIn) infoLines.push('Select an account, enter password, then Login.');
-    else if (!session.characterCount) infoLines.push('No characters on this account. Create a character.');
-    else infoLines.push('Select a character to play.');
-    drawCenteredLines(ctx, centerX, titleY + 54, rect.w - 48, infoLines, theme);
+    const subtitle = session?.loggedIn
+        ? `${session.displayName}${session.characterCount ? ` · ${session.characterCount} character${session.characterCount === 1 ? '' : 's'}` : ''}`
+        : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : 'Create account';
+    ctx.fillText(subtitle, centerX, titleY + 26);
 
     for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
 
-    const hintY = rect.y + rect.h - (compact ? 44 : 58);
-    ctx.font = theme.font;
-    ctx.fillStyle = theme.muted;
-    ctx.textAlign = 'center';
-    fitText(ctx, `Input: ${uiState.inputBuffer || '_'}`, rect.x + 24, hintY, rect.w - 48, 'center');
-    if (uiState.activeFeedback) {
+    const hintY = rect.y + rect.h - (compact ? 36 : 48);
+    if (uiState.inputBuffer) {
+        ctx.fillStyle = theme.text;
+        fitText(ctx, uiState.inputBuffer, rect.x + 24, hintY, rect.w - 48, 'center');
+    }
+    if (shouldShowFeedback(uiState.activeFeedback)) {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 24, hintY + 22, rect.w - 48, 'center');
+        fitText(ctx, uiState.activeFeedback, rect.x + 24, hintY + (uiState.inputBuffer ? 22 : 0), rect.w - 48, 'center');
     }
     ctx.textAlign = 'left';
 }
@@ -107,14 +100,14 @@ function drawTopBar(ctx, layout, state, uiState, session, theme) {
     ctx.fillText('FFXI Text RPG', rect.x + 16, rect.y + 32);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
-    const account = session?.loggedIn ? session.displayName : 'No account';
+    const account = session?.loggedIn ? session.displayName : '';
     const status = uiState.screen === 'menu'
-        ? `Main Menu | ${account}`
-        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY} | ${account}`;
-    fitText(ctx, status, rect.x + 190, rect.y + 24, rect.w - 310);
-    if (uiState.activeFeedback) {
+        ? account
+        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}${account ? ` | ${account}` : ''}`;
+    if (status) fitText(ctx, status, rect.x + 190, rect.y + 24, rect.w - 250);
+    if (shouldShowFeedback(uiState.activeFeedback) && uiState.screen !== 'menu') {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 190, rect.y + 42, rect.w - 310);
+        fitText(ctx, uiState.activeFeedback, rect.x + 190, rect.y + 42, rect.w - 250);
     }
     for (const button of layout.topButtons) drawButton(ctx, button, uiState, theme);
 }
@@ -138,9 +131,29 @@ function drawButton(ctx, button, uiState, theme) {
     roundedRect(ctx, rect.x, rect.y, rect.w, rect.h, 6);
     ctx.fill();
     ctx.stroke();
+    if (action.id === 'menu') {
+        drawHamburgerIcon(ctx, rect, action.disabled ? theme.disabled : theme.text);
+        return;
+    }
     ctx.font = theme.font;
     ctx.fillStyle = action.disabled ? theme.disabled : theme.text;
     fitText(ctx, action.label, rect.x + 12, rect.y + 22, rect.w - 24);
+}
+
+function drawHamburgerIcon(ctx, rect, color) {
+    const lineWidth = Math.max(14, Math.floor(rect.w * 0.48));
+    const startX = rect.x + Math.floor((rect.w - lineWidth) / 2);
+    const centerY = rect.y + Math.floor(rect.h / 2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    for (const offset of [-7, 0, 7]) {
+        ctx.beginPath();
+        ctx.moveTo(startX, centerY + offset);
+        ctx.lineTo(startX + lineWidth, centerY + offset);
+        ctx.stroke();
+    }
+    ctx.lineCap = 'butt';
 }
 
 function drawMainOutput(ctx, rect, uiState, theme) {
@@ -204,12 +217,6 @@ function drawLines(ctx, x, y, maxWidth, lines, theme) {
     }
 }
 
-function drawCenteredLines(ctx, centerX, y, maxWidth, lines, theme) {
-    ctx.font = theme.font;
-    ctx.fillStyle = theme.text;
-    lines.forEach((line, index) => fitText(ctx, line, centerX - maxWidth / 2, y + index * theme.lineHeight, maxWidth, 'center'));
-}
-
 function wrapText(ctx, text, maxWidth) {
     if (!text) return [''];
     const words = String(text).split(/\s+/);
@@ -247,6 +254,11 @@ function fitText(ctx, text, x, y, maxWidth, align = 'left') {
     while (trimmed.length > 1 && ctx.measureText(`${trimmed}...`).width > maxWidth) trimmed = trimmed.slice(0, -1);
     ctx.fillText(`${trimmed}...`, drawX, y);
     ctx.textAlign = previousAlign;
+}
+
+function shouldShowFeedback(feedback) {
+    const value = String(feedback ?? '').trim();
+    return Boolean(value && value !== 'Main menu opened.');
 }
 
 function roundedRect(ctx, x, y, width, height, radius) {
