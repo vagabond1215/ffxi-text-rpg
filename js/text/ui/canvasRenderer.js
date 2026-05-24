@@ -38,12 +38,14 @@ export function renderCanvasApp(ctx, { layout, state, uiState, session = null, t
     drawTopBar(ctx, layout, state, uiState, session, theme);
     if (uiState.screen === 'menu') {
         drawSplashMenu(ctx, layout, uiState, session, theme);
+        if (uiState.modal) drawModal(ctx, layout, uiState, session, theme);
         return;
     }
     drawSidebar(ctx, layout, uiState, theme);
     drawMainOutput(ctx, layout.panels.main, uiState, theme);
     drawContext(ctx, layout.panels.context, state, uiState, theme);
     drawInput(ctx, layout.panels.input, uiState, theme);
+    if (uiState.modal) drawModal(ctx, layout, uiState, session, theme);
 }
 
 function drawSplashMenu(ctx, layout, uiState, session, theme) {
@@ -69,21 +71,59 @@ function drawSplashMenu(ctx, layout, uiState, session, theme) {
     const accounts = session?.accounts ?? [];
     const subtitle = session?.loggedIn
         ? `${session.displayName}${session.characterCount ? ` · ${session.characterCount} character${session.characterCount === 1 ? '' : 's'}` : ''}`
-        : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : 'Create account';
-    ctx.fillText(subtitle, centerX, titleY + 26);
+        : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : '';
+    if (subtitle) ctx.fillText(subtitle, centerX, titleY + 26);
 
-    for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
+    if (!uiState.modal) {
+        for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
+    }
 
     const hintY = rect.y + rect.h - (compact ? 36 : 48);
-    if (uiState.inputBuffer) {
+    if (uiState.inputBuffer && !uiState.modal) {
         ctx.fillStyle = theme.text;
         fitText(ctx, uiState.inputBuffer, rect.x + 24, hintY, rect.w - 48, 'center');
     }
-    if (shouldShowFeedback(uiState.activeFeedback)) {
+    if (shouldShowFeedback(uiState.activeFeedback) && !uiState.modal) {
         ctx.fillStyle = theme.accent;
         fitText(ctx, uiState.activeFeedback, rect.x + 24, hintY + (uiState.inputBuffer ? 22 : 0), rect.w - 48, 'center');
     }
     ctx.textAlign = 'left';
+}
+
+function drawModal(ctx, layout, uiState, session, theme) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.48)';
+    ctx.fillRect(0, 0, layout.width, layout.height);
+    const rect = layout.panels.modal;
+    panel(ctx, rect, theme.panel, theme.accent);
+    ctx.font = theme.fontLarge;
+    ctx.fillStyle = theme.accentBright;
+    fitText(ctx, modalTitle(uiState.modal), rect.x + 22, rect.y + 34, rect.w - 44);
+    ctx.font = theme.font;
+    ctx.fillStyle = theme.muted;
+    const helper = modalHelper(uiState.modal, session);
+    if (helper) fitText(ctx, helper, rect.x + 22, rect.y + 58, rect.w - 44);
+    for (const button of layout.modalButtons) drawButton(ctx, button, uiState, theme);
+    if (uiState.inputBuffer) {
+        ctx.fillStyle = theme.text;
+        fitText(ctx, uiState.inputBuffer, rect.x + 22, rect.y + rect.h - 58, rect.w - 44);
+    }
+    if (shouldShowFeedback(uiState.activeFeedback)) {
+        ctx.fillStyle = theme.accent;
+        fitText(ctx, uiState.activeFeedback, rect.x + 22, rect.y + rect.h - 30, rect.w - 44);
+    }
+}
+
+function modalTitle(modal) {
+    if (modal === 'login') return 'Select Account';
+    if (modal === 'loginPassword') return 'Login';
+    if (modal === 'settings') return 'Settings';
+    return 'Menu';
+}
+
+function modalHelper(modal, session) {
+    if (modal === 'loginPassword') return 'Enter password, then confirm.';
+    if (modal === 'settings') return session?.displayName ?? '';
+    return '';
 }
 
 function drawBackground(ctx, layout, theme) {
@@ -95,21 +135,35 @@ function drawTopBar(ctx, layout, state, uiState, session, theme) {
     const rect = layout.panels.top;
     const snapshot = createCanvasContextSnapshot(state);
     panel(ctx, rect, theme.panelSoft, theme.border);
-    ctx.font = theme.fontLarge;
-    ctx.fillStyle = theme.accentBright;
-    ctx.fillText('FFXI Text RPG', rect.x + 16, rect.y + 32);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
     const account = session?.loggedIn ? session.displayName : '';
     const status = uiState.screen === 'menu'
         ? account
         : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}${account ? ` | ${account}` : ''}`;
-    if (status) fitText(ctx, status, rect.x + 190, rect.y + 24, rect.w - 250);
+    if (status) fitText(ctx, status, rect.x + 58, rect.y + 24, rect.w - 210);
     if (shouldShowFeedback(uiState.activeFeedback) && uiState.screen !== 'menu') {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 190, rect.y + 42, rect.w - 250);
+        fitText(ctx, uiState.activeFeedback, rect.x + 58, rect.y + 42, rect.w - 210);
     }
+    drawClock(ctx, rect, session, theme);
     for (const button of layout.topButtons) drawButton(ctx, button, uiState, theme);
+}
+
+function drawClock(ctx, rect, session, theme) {
+    const settings = session?.settings ?? {};
+    if (!session?.loggedIn || settings.showClock === false) return;
+    const now = new Date();
+    const timeZone = settings.timeZone && settings.timeZone !== 'local' ? settings.timeZone : undefined;
+    const clock = new Intl.DateTimeFormat(undefined, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: settings.clockFormat !== '24h',
+        timeZone,
+    }).format(now);
+    ctx.font = theme.font;
+    ctx.fillStyle = theme.accentBright;
+    fitText(ctx, clock, rect.x + rect.w - 120, rect.y + 32, 104, 'right');
 }
 
 function drawSidebar(ctx, layout, uiState, theme) {
@@ -244,7 +298,7 @@ function fitText(ctx, text, x, y, maxWidth, align = 'left') {
     const previousAlign = ctx.textAlign;
     ctx.textAlign = align;
     const value = String(text ?? '');
-    const drawX = align === 'center' ? x + maxWidth / 2 : x;
+    const drawX = align === 'center' ? x + maxWidth / 2 : align === 'right' ? x + maxWidth : x;
     if (ctx.measureText(value).width <= maxWidth) {
         ctx.fillText(value, drawX, y);
         ctx.textAlign = previousAlign;
