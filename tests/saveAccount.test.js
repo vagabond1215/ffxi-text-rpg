@@ -4,8 +4,10 @@ import assert from 'node:assert/strict';
 import { createInitialState } from '../js/text/gameState.js';
 import {
     clearSave,
+    createAccountWithPassword,
     decodePayload,
     encodePayload,
+    listAccounts,
     listCharacters,
     loadActiveCharacter,
     loadAccount,
@@ -43,6 +45,12 @@ function installStorage() {
     globalThis.localStorage = new MemoryStorage();
 }
 
+function createLoggedInAccount(name = 'Russell', password = 'pwd') {
+    const created = createAccountWithPassword(name, password, { persistentLogin: true });
+    assert.equal(created.ok, true);
+    return created;
+}
+
 test('encodePayload and decodePayload round-trip account-safe JSON', () => {
     const value = { name: 'San d’Oria', nested: { count: 2 } };
     const encoded = encodePayload(value);
@@ -51,14 +59,23 @@ test('encodePayload and decodePayload round-trip account-safe JSON', () => {
     assert.deepEqual(decodePayload(encoded), value);
 });
 
-test('saveGame stores encoded account with character summary', () => {
+test('saveGame refuses to save without a logged-in account', () => {
     installStorage();
+    const state = createInitialState();
+
+    assert.equal(saveGame(state), false);
+    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccounts'), null);
+});
+
+test('saveGame stores encoded account registry with character summary after login', () => {
+    installStorage();
+    createLoggedInAccount();
     const state = createInitialState();
     state.player.identity.name = 'Testhero';
 
     assert.equal(saveGame(state), true);
 
-    const raw = globalThis.localStorage.getItem('ffxiTextRpgAccount');
+    const raw = globalThis.localStorage.getItem('ffxiTextRpgAccounts');
     assert.match(raw, /^base64-json-v1:/);
     assert.equal(globalThis.localStorage.getItem('ffxiTextRpgSave'), null);
 
@@ -70,6 +87,7 @@ test('saveGame stores encoded account with character summary', () => {
 
 test('loadCharacter restores state and relinks flat inventory to main container', () => {
     installStorage();
+    createLoggedInAccount();
     const state = createInitialState();
     state.player.identity.name = 'Relink';
     state.player.inventoryState.containers.inventory.items.push({ id: 'test-item', name: 'Test Item', kind: 'misc', quantity: 1 });
@@ -82,8 +100,9 @@ test('loadCharacter restores state and relinks flat inventory to main container'
     assert.equal(loaded.player.inventory[0].name, 'Test Item');
 });
 
-test('loadActiveCharacter returns last saved character', () => {
+test('loadActiveCharacter returns last saved character for logged-in account', () => {
     installStorage();
+    createLoggedInAccount();
     const first = createInitialState();
     first.player.identity.name = 'First';
     saveGame(first);
@@ -95,32 +114,55 @@ test('loadActiveCharacter returns last saved character', () => {
     assert.equal(loadActiveCharacter().player.identity.name, 'Second');
 });
 
-test('account login persists a recognized local session', () => {
+test('createAccountWithPassword persists a real local account and session', () => {
     installStorage();
 
-    const session = loginAccount('Russell');
+    const result = createAccountWithPassword('Russell', 'pwd', { persistentLogin: true });
 
-    assert.equal(session.loggedIn, true);
-    assert.equal(session.displayName, 'Russell');
+    assert.equal(result.ok, true);
+    assert.equal(result.session.loggedIn, true);
+    assert.equal(result.session.displayName, 'Russell');
+    assert.equal(result.session.persistentLogin, true);
     assert.equal(loadAccount().profile.displayName, 'Russell');
-    assert.equal(loadAccountSession().loggedIn, true);
+    assert.equal(listAccounts()[0].displayName, 'Russell');
     assert.match(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), /^base64-json-v1:/);
+});
+
+test('placeholder account names are not accepted as real accounts', () => {
+    installStorage();
+
+    const result = createAccountWithPassword('Local Adventurer', 'pwd');
+
+    assert.equal(result.ok, true);
+    assert.equal(listAccounts().length, 0);
+});
+
+test('loginAccount requires the correct password', () => {
+    installStorage();
+    createAccountWithPassword('Russell', 'pwd');
+    logoutAccount();
+
+    assert.equal(loginAccount('Russell', 'bad').ok, false);
+    const result = loginAccount('Russell', 'pwd', { persistentLogin: true });
+
+    assert.equal(result.ok, true);
+    assert.equal(loadAccountSession().loggedIn, true);
 });
 
 test('account logout clears session without deleting saved account', () => {
     installStorage();
-    loginAccount('Russell');
+    createLoggedInAccount();
 
     const session = logoutAccount();
 
     assert.equal(session.loggedIn, false);
-    assert.equal(loadAccount().profile.displayName, 'Russell');
+    assert.equal(listAccounts()[0].displayName, 'Russell');
     assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
 });
 
 test('saveAccount keeps logged-in session display name synchronized', () => {
     installStorage();
-    loginAccount('Old Name');
+    createLoggedInAccount('Old Name');
     const account = loadAccount();
     account.profile.displayName = 'New Name';
 
@@ -129,14 +171,14 @@ test('saveAccount keeps logged-in session display name synchronized', () => {
     assert.equal(loadAccountSession().displayName, 'New Name');
 });
 
-test('clearSave removes encoded account and session data', () => {
+test('clearSave removes encoded account registry and session data', () => {
     installStorage();
+    createLoggedInAccount('Clear Me');
     const state = createInitialState();
     saveGame(state);
-    loginAccount('Clear Me');
     clearSave();
 
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccount'), null);
+    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccounts'), null);
     assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
-    assert.equal(loadAccount().characters.length, 0);
+    assert.equal(listAccounts().length, 0);
 });
