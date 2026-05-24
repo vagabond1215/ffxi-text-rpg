@@ -2,6 +2,7 @@ import { createCommandRouter } from '../commandRouter.js';
 import { createInitialState, replaceState } from '../gameState.js';
 import {
     clearSave,
+    createAccountWithPassword,
     listCharacters,
     loadAccountSession,
     loadActiveCharacter,
@@ -29,35 +30,30 @@ import { createActionList, createMenuActionList, dispatchAction, TOP_ACTIONS } f
 export function createCanvasApp({ canvas }) {
     if (!canvas) throw new Error('Canvas app requires a canvas host.');
 
-    const state = loadActiveCharacter() ?? createInitialState();
+    const loadedState = loadActiveCharacter();
+    const state = loadedState ?? createInitialState();
     let session = loadAccountSession();
+    const hasPlayableCharacter = Boolean(session.loggedIn && session.characterCount > 0 && loadedState);
     const uiState = createCanvasUiState({
-        screen: session.loggedIn ? 'game' : 'menu',
-        activeFeedback: session.loggedIn ? `Welcome back, ${session.displayName}.` : 'Login or select a local account to continue.',
+        screen: hasPlayableCharacter ? 'game' : 'menu',
+        activeFeedback: getInitialFeedback(session),
         outputLines: [
             'FFXI Text RPG canvas shell initialized.',
-            'Click a command button, or type a command and press Enter.',
-            'Canvas input accepts existing commands; slash commands still work.',
+            'Use the menu to log in, create/select an account, then select a character.',
             '',
         ],
     });
-    const commandRouter = createCommandRouter(state, {
-        saveGame,
-        clearSave,
-        reload: () => window.location.reload(),
-    });
-    const slashRouter = createSlashCommandRouter(state, {
-        saveGame,
-        clearSave,
-        reload: () => window.location.reload(),
-    });
+    const commandRouter = createCommandRouter(state, { saveGame, clearSave, reload: () => window.location.reload() });
+    const slashRouter = createSlashCommandRouter(state, { saveGame, clearSave, reload: () => window.location.reload() });
 
     let layout = null;
+    let selectedAccountId = session.accounts[0]?.id ?? null;
     const ctx = canvas.getContext('2d');
     canvas.tabIndex = 0;
 
     function refreshSession() {
         session = loadAccountSession();
+        if (!selectedAccountId && session.accounts.length) selectedAccountId = session.accounts[0].id;
         return session;
     }
 
@@ -68,6 +64,13 @@ export function createCanvasApp({ canvas }) {
     }
 
     function runCommand(command) {
+        if (!session.loggedIn && !String(command).startsWith('/account')) {
+            const message = 'Login or create a local account first.';
+            setActiveFeedback(uiState, message);
+            appendOutput(uiState, message);
+            render();
+            return message;
+        }
         const response = routeCommand(command);
         refreshSession();
         setActiveFeedback(uiState, `Ran: ${command}`);
@@ -78,44 +81,88 @@ export function createCanvasApp({ canvas }) {
         return response;
     }
 
+    function parseCredentialInput() {
+        const value = uiState.inputBuffer.trim();
+        const [namePart, passwordPart] = value.split('|').map((part) => String(part ?? '').trim());
+        return { accountName: namePart, password: passwordPart };
+    }
+
     function handleUiAction(action) {
+        if (action.kind === 'selectAccount') {
+            selectedAccountId = action.command;
+            setActiveFeedback(uiState, `Selected account: ${action.label}. Enter password, then click Login.`);
+            render();
+            return true;
+        }
+        if (action.kind === 'selectCharacter') {
+            const loaded = loadCharacter(action.command);
+            if (!loaded) {
+                setActiveFeedback(uiState, `Unable to load character: ${action.label}`);
+                appendOutput(uiState, `Unable to load character: ${action.label}`);
+            } else {
+                replaceState(state, loaded);
+                refreshSession();
+                setCanvasScreen(uiState, 'game');
+                setActiveFeedback(uiState, `Loaded ${loaded.player.identity.name}.`);
+                appendOutput(uiState, `Loaded ${loaded.player.identity.name}.`);
+            }
+            render();
+            return true;
+        }
         switch (action.id) {
             case 'menu':
+                refreshSession();
                 setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, 'Main menu opened.');
                 break;
-            case 'continue':
-                setCanvasScreen(uiState, 'game');
-                setActiveFeedback(uiState, `Continuing as ${session.displayName}.`);
-                break;
             case 'login': {
-                const typedName = uiState.inputBuffer.trim();
-                session = loginAccount(typedName || session.displayName);
+                const { accountName, password } = parseCredentialInput();
+                const selector = selectedAccountId ?? accountName;
+                const result = loginAccount(selector, password, { persistentLogin: true });
+                if (!result.ok) {
+                    setActiveFeedback(uiState, result.reason);
+                    appendOutput(uiState, result.reason);
+                    break;
+                }
+                session = result.session;
                 uiState.inputBuffer = '';
-                setCanvasScreen(uiState, 'game');
+                setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, `Logged in as ${session.displayName}.`);
                 appendOutput(uiState, `Logged in as ${session.displayName}.`);
+                break;
+            }
+            case 'createAccount': {
+                const { accountName, password } = parseCredentialInput();
+                const result = createAccountWithPassword(accountName, password, { persistentLogin: true });
+                if (!result.ok) {
+                    setActiveFeedback(uiState, result.reason);
+                    appendOutput(uiState, result.reason);
+                    break;
+                }
+                session = result.session;
+                selectedAccountId = session.accountId;
+                uiState.inputBuffer = '';
+                setCanvasScreen(uiState, 'menu');
+                setActiveFeedback(uiState, `Created account: ${session.displayName}. Create a character to play.`);
+                appendOutput(uiState, `Created account: ${session.displayName}.`);
                 break;
             }
             case 'logout':
                 session = logoutAccount();
                 setCanvasScreen(uiState, 'menu');
-                setActiveFeedback(uiState, 'Logged out. Local account data remains saved.');
-                appendOutput(uiState, 'Logged out. Local account data remains saved.');
+                setActiveFeedback(uiState, 'Logged out. Local accounts and characters remain saved.');
+                appendOutput(uiState, 'Logged out. Local accounts and characters remain saved.');
                 break;
             default:
                 return false;
         }
+        refreshSession();
         render();
         return true;
     }
 
     function dispatchCanvasAction(actionId) {
-        const allActions = [
-            ...TOP_ACTIONS,
-            ...createMenuActionList(session),
-            ...createActionList(state),
-        ];
+        const allActions = [...TOP_ACTIONS, ...createMenuActionList(session), ...createActionList(state)];
         const action = allActions.find((item) => item.id === actionId);
         if (!action) {
             appendOutput(uiState, `Unknown action: ${actionId}`);
@@ -128,39 +175,35 @@ export function createCanvasApp({ canvas }) {
             render();
             return;
         }
-        if (action.kind === 'ui' && handleUiAction(action)) return;
+        if (action.kind !== 'command' && handleUiAction(action)) return;
         const dispatched = dispatchAction(action, runCommand, allActions);
         if (!dispatched.ok) {
             setActiveFeedback(uiState, dispatched.reason);
             appendOutput(uiState, dispatched.reason);
             render();
-        } else if (uiState.screen === 'menu' && ['newCharacter', 'characters', 'account'].includes(action.id)) {
-            setActiveFeedback(uiState, dispatched.command);
+        } else if (action.id === 'newCharacter') {
+            setActiveFeedback(uiState, 'Character creation started. Follow the prompts in the output log.');
+            setCanvasScreen(uiState, 'game');
         }
     }
 
     function submitFromInput(command) {
-        if (uiState.screen === 'menu' && !command.startsWith('/')) {
-            session = loginAccount(command);
-            setCanvasScreen(uiState, 'game');
-            setActiveFeedback(uiState, `Logged in as ${session.displayName}.`);
-            appendOutput(uiState, `Logged in as ${session.displayName}.`);
-            render();
-            return `Logged in as ${session.displayName}.`;
+        if (uiState.screen === 'menu') {
+            const menuActions = createMenuActionList(session);
+            const primary = session.loggedIn ? menuActions.find((action) => action.id === 'newCharacter') : menuActions.find((action) => action.id === 'login' || action.id === 'createAccount');
+            if (primary) {
+                dispatchCanvasAction(primary.id);
+                return '';
+            }
         }
         return runCommand(command);
     }
 
     function render() {
+        refreshSession();
         const actions = createActionList(state);
         const menuActions = createMenuActionList(session);
-        layout = createCanvasLayout({
-            width: canvas.clientWidth || window.innerWidth,
-            height: canvas.clientHeight || window.innerHeight,
-            actions,
-            menuActions,
-            topActions: TOP_ACTIONS,
-        });
+        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, topActions: TOP_ACTIONS });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
 
@@ -233,28 +276,23 @@ export function createCanvasApp({ canvas }) {
         uiState,
         runCommand,
         render,
-        login(displayName) {
-            session = loginAccount(displayName);
-            setCanvasScreen(uiState, 'game');
-            setActiveFeedback(uiState, `Logged in as ${session.displayName}.`);
+        login(accountSelector, passphrase) {
+            const result = loginAccount(accountSelector, passphrase, { persistentLogin: true });
+            if (result.ok) session = result.session;
             render();
-            return session;
+            return result;
         },
-        logout() {
-            session = logoutAccount();
-            setCanvasScreen(uiState, 'menu');
-            setActiveFeedback(uiState, 'Logged out.');
-            render();
-            return session;
-        },
-        loadCharacter(selector) {
-            const loaded = loadCharacter(selector);
-            if (loaded) replaceState(state, loaded);
-            render();
-            return loaded;
-        },
+        logout() { session = logoutAccount(); render(); return session; },
+        loadCharacter(selector) { const loaded = loadCharacter(selector); if (loaded) replaceState(state, loaded); render(); return loaded; },
         listCharacters,
         getSession: () => session,
         destroy() { window.removeEventListener('resize', resize); },
     };
+}
+
+function getInitialFeedback(session) {
+    if (!session.accounts.length) return 'Create a local account to begin. Enter account name | password.';
+    if (!session.loggedIn) return 'Select an account, enter password, then log in.';
+    if (!session.characterCount) return 'Create a character to begin.';
+    return `Select a character for ${session.displayName}.`;
 }
