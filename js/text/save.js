@@ -1,10 +1,11 @@
 import { createInventoryState } from './systems/inventoryEngine.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 
-const ACCOUNT_KEY = 'ffxiTextRpgAccount';
+const ACCOUNTS_KEY = 'ffxiTextRpgAccounts';
 const ACCOUNT_SESSION_KEY = 'ffxiTextRpgAccountSession';
+const LEGACY_SINGLE_ACCOUNT_KEY = 'ffxiTextRpgAccount';
 const LEGACY_SAVE_KEY = 'ffxiTextRpgSave';
-const ACCOUNT_VERSION = 1;
+const ACCOUNT_VERSION = 2;
 const ENCODING = 'base64-json-v1';
 
 export function loadGame() {
@@ -13,14 +14,14 @@ export function loadGame() {
 
 export function loadActiveCharacter() {
     const account = loadAccount();
-    if (!account.characters.length) return loadLegacySave();
-
+    if (!account?.characters?.length) return null;
     const characterId = account.profile.lastCharacterId ?? account.characters[0].id;
     return loadCharacter(characterId) ?? loadCharacter(account.characters[0].id);
 }
 
 export function loadCharacter(characterSelector) {
     const account = loadAccount();
+    if (!account) return null;
     const record = findCharacterRecord(account, characterSelector);
     if (!record) return null;
 
@@ -39,6 +40,12 @@ export function loadCharacter(characterSelector) {
 
 export function saveGame(state) {
     try {
+        const account = loadAccount();
+        if (!account) {
+            console.warn('Refusing to save without a logged-in local account.');
+            return false;
+        }
+
         const revived = reviveGameState(state, state?.meta?.characterId);
         const issues = validateGameState(revived);
         if (issues.length) {
@@ -46,7 +53,6 @@ export function saveGame(state) {
             return false;
         }
 
-        const account = loadAccount();
         const characterId = revived.meta.characterId ?? createId('character');
         revived.meta.characterId = characterId;
         revived.meta.updatedAt = new Date().toISOString();
@@ -68,79 +74,75 @@ export function saveGame(state) {
     }
 }
 
+export function listAccounts() {
+    return loadAccountRegistry().accounts.map((account, index) => ({
+        index: index + 1,
+        id: account.profile.accountId,
+        displayName: account.profile.displayName,
+        characterCount: account.characters.length,
+        lastCharacterId: account.profile.lastCharacterId ?? null,
+        persistentLogin: Boolean(account.profile.persistentLogin),
+        updatedAt: account.profile.updatedAt,
+    }));
+}
+
 export function listCharacters() {
-    return loadAccount().characters.map(({ encodedState, ...summary }, index) => ({ index: index + 1, ...summary }));
+    const account = loadAccount();
+    if (!account) return [];
+    return account.characters.map(({ encodedState, ...summary }, index) => ({ index: index + 1, ...summary }));
 }
 
 export function loadAccount() {
-    try {
-        const raw = getStorage()?.getItem(ACCOUNT_KEY);
-        if (!raw) return createAccount();
-        const parsed = decodePayload(raw);
-        if (!parsed || parsed.version !== ACCOUNT_VERSION || !Array.isArray(parsed.characters)) return createAccount();
-        parsed.profile ??= createAccountProfile();
-        parsed.profile.accountId ??= createId('account');
-        parsed.profile.displayName = normalizeDisplayName(parsed.profile.displayName);
-        parsed.characters = parsed.characters.filter((record) => record?.id && record?.encodedState);
-        return parsed;
-    } catch (error) {
-        console.warn('Unable to load account save.', error);
-        return createAccount();
-    }
+    const session = readStoredSession();
+    if (!session?.loggedIn) return null;
+    const account = findAccountRecord(loadAccountRegistry(), session.accountId);
+    if (!account) return null;
+    return cloneAccount(account);
 }
 
 export function saveAccount(account) {
-    const nextAccount = {
-        version: ACCOUNT_VERSION,
-        encoding: ENCODING,
-        profile: {
-            ...createAccountProfile(),
-            ...(account.profile ?? {}),
-            displayName: normalizeDisplayName(account.profile?.displayName),
-            updatedAt: new Date().toISOString(),
-        },
-        characters: account.characters ?? [],
-    };
-    getStorage()?.setItem(ACCOUNT_KEY, encodePayload(nextAccount));
-    getStorage()?.removeItem(LEGACY_SAVE_KEY);
+    const registry = loadAccountRegistry();
+    const nextAccount = normalizeAccount(account);
+    const existingIndex = registry.accounts.findIndex((record) => record.profile.accountId === nextAccount.profile.accountId);
+    if (existingIndex >= 0) registry.accounts[existingIndex] = nextAccount;
+    else registry.accounts.push(nextAccount);
+    saveAccountRegistry(registry);
     syncAccountSession(nextAccount);
-    return nextAccount;
+    getStorage()?.removeItem(LEGACY_SAVE_KEY);
+    getStorage()?.removeItem(LEGACY_SINGLE_ACCOUNT_KEY);
+    return cloneAccount(nextAccount);
 }
 
-export function loadAccountSession() {
-    const account = loadAccount();
-    const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
-    let session = null;
-    try {
-        session = raw ? decodePayload(raw) : null;
-    } catch {
-        session = null;
+export function createAccountWithPassword(displayName, password, options = {}) {
+    const name = normalizeDisplayName(displayName);
+    const passwordIssue = validatePassword(password);
+    if (passwordIssue) return { ok: false, reason: passwordIssue };
+
+    const registry = loadAccountRegistry();
+    if (registry.accounts.some((account) => normalize(account.profile.displayName) === normalize(name))) {
+        return { ok: false, reason: `Account already exists: ${name}` };
     }
 
-    const loggedIn = Boolean(session?.loggedIn && session.accountId === account.profile.accountId);
-    return {
-        loggedIn,
-        accountId: account.profile.accountId,
-        displayName: account.profile.displayName,
-        lastCharacterId: account.profile.lastCharacterId ?? null,
-        characterCount: account.characters.length,
-        updatedAt: account.profile.updatedAt,
-        loggedInAt: loggedIn ? session.loggedInAt : null,
-    };
+    const account = createAccount(name, password, { persistentLogin: Boolean(options.persistentLogin) });
+    registry.accounts.push(account);
+    saveAccountRegistry(registry);
+    const session = writeSession(account, { persistentLogin: Boolean(options.persistentLogin) });
+    return { ok: true, account: cloneAccount(account), session };
 }
 
-export function loginAccount(displayName = null) {
-    const account = loadAccount();
-    account.profile.displayName = normalizeDisplayName(displayName ?? account.profile.displayName);
-    const saved = saveAccount(account);
-    const session = {
-        loggedIn: true,
-        accountId: saved.profile.accountId,
-        displayName: saved.profile.displayName,
-        loggedInAt: new Date().toISOString(),
-    };
-    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload(session));
-    return loadAccountSession();
+export function loginAccount(accountSelector, password, options = {}) {
+    const registry = loadAccountRegistry();
+    const account = findAccountRecord(registry, accountSelector);
+    if (!account) return { ok: false, reason: `No local account matched: ${accountSelector}` };
+    const passwordIssue = validatePassword(password);
+    if (passwordIssue) return { ok: false, reason: passwordIssue };
+    if (account.profile.passwordHash !== hashPassword(password, account.profile.passwordSalt)) {
+        return { ok: false, reason: 'Incorrect password.' };
+    }
+    account.profile.persistentLogin = Boolean(options.persistentLogin);
+    account.profile.updatedAt = new Date().toISOString();
+    saveAccountRegistry(registry);
+    return { ok: true, account: cloneAccount(account), session: writeSession(account, { persistentLogin: Boolean(options.persistentLogin) }) };
 }
 
 export function logoutAccount() {
@@ -148,23 +150,46 @@ export function logoutAccount() {
     return loadAccountSession();
 }
 
+export function loadAccountSession() {
+    const registry = loadAccountRegistry();
+    const storedSession = readStoredSession();
+    const account = storedSession?.loggedIn ? findAccountRecord(registry, storedSession.accountId) : null;
+    const loggedIn = Boolean(account && storedSession?.loggedIn);
+    return {
+        loggedIn,
+        accountId: loggedIn ? account.profile.accountId : null,
+        displayName: loggedIn ? account.profile.displayName : null,
+        lastCharacterId: loggedIn ? account.profile.lastCharacterId ?? null : null,
+        characterCount: loggedIn ? account.characters.length : 0,
+        persistentLogin: loggedIn ? Boolean(storedSession.persistentLogin) : false,
+        updatedAt: loggedIn ? account.profile.updatedAt : null,
+        loggedInAt: loggedIn ? storedSession.loggedInAt : null,
+        accounts: listAccounts(),
+    };
+}
+
 export function clearSave() {
-    getStorage()?.removeItem(ACCOUNT_KEY);
+    getStorage()?.removeItem(ACCOUNTS_KEY);
     getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
+    getStorage()?.removeItem(LEGACY_SINGLE_ACCOUNT_KEY);
     getStorage()?.removeItem(LEGACY_SAVE_KEY);
 }
 
 export function describeAccount() {
-    const account = loadAccount();
     const session = loadAccountSession();
-    const lines = [
-        `Account: ${account.profile.displayName}`,
-        `Account ID: ${account.profile.accountId}`,
-        `Logged in: ${session.loggedIn ? 'yes' : 'no'}`,
-        `Characters: ${account.characters.length}`,
-        `Last character: ${account.profile.lastCharacterId ?? 'none'}`,
-    ];
-    return lines.join('\n');
+    if (!session.loggedIn) {
+        const accounts = listAccounts();
+        if (!accounts.length) return 'No local accounts. Create an account first.';
+        return ['Not logged in.', 'Local accounts:', ...accounts.map((account) => `${account.index}. ${account.displayName} (${account.characterCount} characters)`)].join('\n');
+    }
+    return [
+        `Account: ${session.displayName}`,
+        `Account ID: ${session.accountId}`,
+        `Logged in: yes`,
+        `Persistent login: ${session.persistentLogin ? 'yes' : 'no'}`,
+        `Characters: ${session.characterCount}`,
+        `Last character: ${session.lastCharacterId ?? 'none'}`,
+    ].join('\n');
 }
 
 export function encodePayload(value) {
@@ -193,24 +218,84 @@ export function reviveGameState(state, characterId = null) {
     return state;
 }
 
-function createAccount() {
+function loadAccountRegistry() {
+    try {
+        const raw = getStorage()?.getItem(ACCOUNTS_KEY);
+        if (!raw) return createAccountRegistry();
+        const parsed = decodePayload(raw);
+        if (!parsed || parsed.version !== ACCOUNT_VERSION || !Array.isArray(parsed.accounts)) return createAccountRegistry();
+        return {
+            version: ACCOUNT_VERSION,
+            encoding: ENCODING,
+            accounts: parsed.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)),
+        };
+    } catch (error) {
+        console.warn('Unable to load account registry.', error);
+        return createAccountRegistry();
+    }
+}
+
+function saveAccountRegistry(registry) {
+    const nextRegistry = {
+        version: ACCOUNT_VERSION,
+        encoding: ENCODING,
+        accounts: (registry.accounts ?? []).map(normalizeAccount).filter((account) => isRealAccount(account)),
+    };
+    getStorage()?.setItem(ACCOUNTS_KEY, encodePayload(nextRegistry));
+    return nextRegistry;
+}
+
+function createAccountRegistry() {
+    return { version: ACCOUNT_VERSION, encoding: ENCODING, accounts: [] };
+}
+
+function createAccount(displayName, password, options = {}) {
+    const now = new Date().toISOString();
+    const salt = createId('salt');
     return {
         version: ACCOUNT_VERSION,
         encoding: ENCODING,
-        profile: createAccountProfile(),
+        profile: {
+            accountId: createId('account'),
+            displayName: normalizeDisplayName(displayName),
+            passwordSalt: salt,
+            passwordHash: hashPassword(password, salt),
+            persistentLogin: Boolean(options.persistentLogin),
+            createdAt: now,
+            updatedAt: now,
+            lastCharacterId: null,
+        },
         characters: [],
     };
 }
 
-function createAccountProfile() {
+function normalizeAccount(account) {
     const now = new Date().toISOString();
     return {
-        accountId: createId('account'),
-        displayName: 'Local Adventurer',
-        createdAt: now,
-        updatedAt: now,
-        lastCharacterId: null,
+        version: ACCOUNT_VERSION,
+        encoding: ENCODING,
+        profile: {
+            accountId: account?.profile?.accountId ?? createId('account'),
+            displayName: normalizeDisplayName(account?.profile?.displayName),
+            passwordSalt: account?.profile?.passwordSalt ?? null,
+            passwordHash: account?.profile?.passwordHash ?? null,
+            persistentLogin: Boolean(account?.profile?.persistentLogin),
+            createdAt: account?.profile?.createdAt ?? now,
+            updatedAt: account?.profile?.updatedAt ?? now,
+            lastCharacterId: account?.profile?.lastCharacterId ?? null,
+        },
+        characters: Array.isArray(account?.characters) ? account.characters.filter((record) => record?.id && record?.encodedState) : [],
     };
+}
+
+function isRealAccount(account) {
+    return Boolean(
+        account?.profile?.accountId
+        && account.profile.displayName
+        && account.profile.displayName !== 'Local Adventurer'
+        && account.profile.passwordSalt
+        && account.profile.passwordHash,
+    );
 }
 
 function createCharacterSummary(state, characterId) {
@@ -226,6 +311,14 @@ function createCharacterSummary(state, characterId) {
         currentPlaceId: state.currentPlaceId,
         updatedAt: new Date().toISOString(),
     };
+}
+
+function findAccountRecord(registry, selector) {
+    if (!selector) return null;
+    const normalized = normalize(selector);
+    const index = Number.parseInt(selector, 10);
+    if (Number.isInteger(index) && index > 0) return registry.accounts[index - 1] ?? null;
+    return registry.accounts.find((account) => normalize(account.profile.accountId) === normalized || normalize(account.profile.displayName) === normalized) ?? null;
 }
 
 function findCharacterRecord(account, selector) {
@@ -249,37 +342,54 @@ function decodeState(encodedState) {
     }
 }
 
-function loadLegacySave() {
+function writeSession(account, options = {}) {
+    const session = {
+        loggedIn: true,
+        accountId: account.profile.accountId,
+        displayName: account.profile.displayName,
+        persistentLogin: Boolean(options.persistentLogin),
+        loggedInAt: new Date().toISOString(),
+    };
+    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload(session));
+    return loadAccountSession();
+}
+
+function readStoredSession() {
     try {
-        const raw = getStorage()?.getItem(LEGACY_SAVE_KEY);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        const revived = reviveGameState(parsed);
-        if (!isValidGameState(revived)) return null;
-        saveGame(revived);
-        return revived;
+        const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
+        return raw ? decodePayload(raw) : null;
     } catch {
+        getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
         return null;
     }
 }
 
 function syncAccountSession(account) {
-    const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
-    if (!raw) return;
-    try {
-        const session = decodePayload(raw);
-        if (!session?.loggedIn || session.accountId !== account.profile.accountId) return;
-        getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload({
-            ...session,
-            displayName: account.profile.displayName,
-        }));
-    } catch {
-        getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
-    }
+    const session = readStoredSession();
+    if (!session?.loggedIn || session.accountId !== account.profile.accountId) return;
+    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload({
+        ...session,
+        displayName: account.profile.displayName,
+    }));
 }
 
 function getStorage() {
     return globalThis.localStorage ?? globalThis.window?.localStorage ?? null;
+}
+
+function hashPassword(password, salt) {
+    return toBase64(`${salt}:${String(password)}`);
+}
+
+function validatePassword(password) {
+    const value = String(password ?? '');
+    if (!value) return 'Password is required.';
+    if (value.length < 3) return 'Password must be at least 3 characters.';
+    return null;
+}
+
+function cloneAccount(account) {
+    return JSON.parse(JSON.stringify(account));
 }
 
 function toBase64(value) {
@@ -305,5 +415,5 @@ function normalize(value) {
 
 function normalizeDisplayName(value) {
     const normalized = String(value ?? '').trim().replace(/\s+/g, ' ');
-    return normalized || 'Local Adventurer';
+    return normalized || 'Account';
 }
