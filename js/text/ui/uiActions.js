@@ -11,16 +11,7 @@ export const GLOBAL_ACTIONS = Object.freeze([
     action('battle', 'Battle', 'battle'),
     action('help', 'Help', 'help'),
     action('validate', 'Validate', 'validate'),
-    action('save', 'Save', 'save'),
-]);
-
-export const MENU_ACTIONS = Object.freeze([
-    action('continue', 'Continue', 'continue', { kind: 'ui' }),
-    action('login', 'Login / Select Account', 'login', { kind: 'ui' }),
-    action('newCharacter', 'New Character', '/newcharacter'),
-    action('characters', 'Characters', '/characters'),
-    action('account', 'Account', '/account'),
-    action('logout', 'Logout', 'logout', { kind: 'ui' }),
+    action('save', 'save'),
 ]);
 
 export const TOP_ACTIONS = Object.freeze([
@@ -34,11 +25,23 @@ export function createActionList(state, actions = GLOBAL_ACTIONS) {
     }));
 }
 
-export function createMenuActionList(session, actions = MENU_ACTIONS) {
-    return actions.map((item) => ({
-        ...item,
-        disabled: isMenuActionDisabled(item, session),
-    }));
+export function createMenuActionList(session) {
+    if (!session?.loggedIn) {
+        const accounts = session?.accounts ?? [];
+        return [
+            ...accounts.map((account) => action(`account:${account.id}`, account.displayName, account.id, { kind: 'selectAccount' })),
+            action('createAccount', 'Create Account', 'createAccount', { kind: 'ui' }),
+            action('login', 'Login', 'login', { kind: 'ui' }),
+        ];
+    }
+
+    const characters = session.characters ?? [];
+    return [
+        ...characters.map((character) => action(`character:${character.id}`, `${character.name} - ${character.job} Lv.${character.level}`, character.id, { kind: 'selectCharacter' })),
+        action('newCharacter', characters.length ? 'New Character' : 'Create Character', '/newcharacter'),
+        action('account', 'Account', '/account'),
+        action('logout', 'Logout', 'logout', { kind: 'ui' }),
+    ];
 }
 
 export function findActionById(actionId, actions = GLOBAL_ACTIONS) {
@@ -50,12 +53,7 @@ export function dispatchAction(actionId, routeCommand, actions = GLOBAL_ACTIONS)
     if (!actionRecord) return { ok: false, reason: `Unknown action: ${actionId}` };
     if (actionRecord.disabled) return { ok: false, action: actionRecord, reason: `${actionRecord.label} is unavailable.` };
     const response = routeCommand(actionRecord.command, actionRecord);
-    return {
-        ok: true,
-        action: actionRecord,
-        command: actionRecord.command,
-        response,
-    };
+    return { ok: true, action: actionRecord, command: actionRecord.command, response };
 }
 
 function action(id, label, command, options = {}) {
@@ -64,11 +62,5 @@ function action(id, label, command, options = {}) {
 
 function isActionDisabled(actionRecord, state) {
     if (actionRecord.id === 'battle') return state?.activeBattle?.phase !== 'active';
-    return false;
-}
-
-function isMenuActionDisabled(actionRecord, session) {
-    if (actionRecord.id === 'continue') return !session?.loggedIn;
-    if (actionRecord.id === 'logout') return !session?.loggedIn;
     return false;
 }
