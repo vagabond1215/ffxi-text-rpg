@@ -10,6 +10,7 @@ import {
     loginAccount,
     logoutAccount,
     saveGame,
+    updateAccountSettings,
 } from '../save.js';
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { createCanvasLayout } from './canvasLayout.js';
@@ -21,6 +22,7 @@ import {
     handlePointerUp,
     scrollOutput,
     setActiveFeedback,
+    setCanvasModal,
     setCanvasScreen,
     updatePointerHover,
 } from './canvasInput.js';
@@ -37,10 +39,7 @@ export function createCanvasApp({ canvas }) {
     const uiState = createCanvasUiState({
         screen: hasPlayableCharacter ? 'game' : 'menu',
         activeFeedback: '',
-        outputLines: [
-            'FFXI Text RPG canvas shell initialized.',
-            '',
-        ],
+        outputLines: ['FFXI Text RPG canvas shell initialized.', ''],
     });
     const commandRouter = createCommandRouter(state, { saveGame, clearSave, reload: () => window.location.reload() });
     const slashRouter = createSlashCommandRouter(state, { saveGame, clearSave, reload: () => window.location.reload() });
@@ -86,9 +85,27 @@ export function createCanvasApp({ canvas }) {
         return { accountName: namePart, password: passwordPart };
     }
 
+    function cycleSetting(actionId) {
+        const settings = session.settings ?? {};
+        const updates = {};
+        if (actionId === 'theme') updates.theme = nextValue(settings.theme, ['dark', 'light', 'highContrast']);
+        if (actionId === 'timezone') updates.timeZone = nextValue(settings.timeZone, ['local', 'UTC', 'America/New_York', 'America/Los_Angeles']);
+        if (actionId === 'clockToggle') updates.showClock = !(settings.showClock !== false);
+        if (actionId === 'clockFormat') updates.clockFormat = settings.clockFormat === '24h' ? '12h' : '24h';
+        const result = updateAccountSettings(updates);
+        if (!result.ok) {
+            setActiveFeedback(uiState, result.reason);
+            appendOutput(uiState, result.reason);
+            return;
+        }
+        session = result.session;
+        setActiveFeedback(uiState, 'Settings saved.');
+    }
+
     function handleUiAction(action) {
         if (action.kind === 'selectAccount') {
             selectedAccountId = action.command;
+            setCanvasModal(uiState, 'loginPassword');
             setActiveFeedback(uiState, `Selected ${action.label}.`);
             render();
             return true;
@@ -101,6 +118,7 @@ export function createCanvasApp({ canvas }) {
             } else {
                 replaceState(state, loaded);
                 refreshSession();
+                setCanvasModal(uiState, null);
                 setCanvasScreen(uiState, 'game');
                 setActiveFeedback(uiState, `Loaded ${loaded.player.identity.name}.`);
                 appendOutput(uiState, `Loaded ${loaded.player.identity.name}.`);
@@ -112,12 +130,17 @@ export function createCanvasApp({ canvas }) {
             case 'menu':
                 refreshSession();
                 setCanvasScreen(uiState, 'menu');
+                setCanvasModal(uiState, null);
                 setActiveFeedback(uiState, '');
                 break;
-            case 'login': {
-                const { accountName, password } = parseCredentialInput();
-                const selector = selectedAccountId ?? accountName;
-                const result = loginAccount(selector, password, { persistentLogin: true });
+            case 'login':
+                if (!session.accounts.length) break;
+                setCanvasModal(uiState, 'login');
+                setActiveFeedback(uiState, '');
+                break;
+            case 'confirmLogin': {
+                const { password } = parseCredentialInput();
+                const result = loginAccount(selectedAccountId, password, { persistentLogin: true });
                 if (!result.ok) {
                     setActiveFeedback(uiState, result.reason);
                     appendOutput(uiState, result.reason);
@@ -125,6 +148,7 @@ export function createCanvasApp({ canvas }) {
                 }
                 session = result.session;
                 uiState.inputBuffer = '';
+                setCanvasModal(uiState, null);
                 setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, `Logged in as ${session.displayName}.`);
                 appendOutput(uiState, `Logged in as ${session.displayName}.`);
@@ -141,13 +165,28 @@ export function createCanvasApp({ canvas }) {
                 session = result.session;
                 selectedAccountId = session.accountId;
                 uiState.inputBuffer = '';
+                setCanvasModal(uiState, null);
                 setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, `Created ${session.displayName}.`);
                 appendOutput(uiState, `Created account: ${session.displayName}.`);
                 break;
             }
+            case 'settings':
+                if (session.loggedIn) setCanvasModal(uiState, 'settings');
+                break;
+            case 'theme':
+            case 'timezone':
+            case 'clockToggle':
+            case 'clockFormat':
+                cycleSetting(action.id);
+                break;
+            case 'cancelModal':
+                setCanvasModal(uiState, null);
+                setActiveFeedback(uiState, '');
+                break;
             case 'logout':
                 session = logoutAccount();
+                setCanvasModal(uiState, null);
                 setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, 'Logged out.');
                 appendOutput(uiState, 'Logged out.');
@@ -161,7 +200,7 @@ export function createCanvasApp({ canvas }) {
     }
 
     function dispatchCanvasAction(actionId) {
-        const allActions = [...TOP_ACTIONS, ...createMenuActionList(session), ...createActionList(state)];
+        const allActions = [...TOP_ACTIONS, ...createMenuActionList(session, uiState.modal), ...createActionList(state)];
         const action = allActions.find((item) => item.id === actionId);
         if (!action) {
             appendOutput(uiState, `Unknown action: ${actionId}`);
@@ -188,10 +227,12 @@ export function createCanvasApp({ canvas }) {
 
     function submitFromInput(command) {
         if (uiState.screen === 'menu') {
-            const menuActions = createMenuActionList(session);
-            const primary = session.loggedIn ? menuActions.find((action) => action.id === 'newCharacter') : menuActions.find((action) => action.id === 'login' || action.id === 'createAccount');
-            if (primary) {
-                dispatchCanvasAction(primary.id);
+            if (uiState.modal === 'loginPassword') {
+                dispatchCanvasAction('confirmLogin');
+                return '';
+            }
+            if (!session.loggedIn && !session.accounts.length) {
+                dispatchCanvasAction('createAccount');
                 return '';
             }
         }
@@ -201,7 +242,7 @@ export function createCanvasApp({ canvas }) {
     function render() {
         refreshSession();
         const actions = createActionList(state);
-        const menuActions = createMenuActionList(session);
+        const menuActions = createMenuActionList(session, uiState.modal);
         layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, topActions: TOP_ACTIONS });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
@@ -260,9 +301,11 @@ export function createCanvasApp({ canvas }) {
         if (result.type !== 'ignored') event.preventDefault();
         if (result.type === 'menu') {
             setCanvasScreen(uiState, 'menu');
+            setCanvasModal(uiState, null);
             setActiveFeedback(uiState, '');
             render();
-        } else if (result.type === 'submit') submitFromInput(result.command);
+        } else if (result.type === 'modal') render();
+        else if (result.type === 'submit') submitFromInput(result.command);
         else render();
     });
 
@@ -287,4 +330,9 @@ export function createCanvasApp({ canvas }) {
         getSession: () => session,
         destroy() { window.removeEventListener('resize', resize); },
     };
+}
+
+function nextValue(current, values) {
+    const index = values.indexOf(current);
+    return values[(index + 1) % values.length];
 }
