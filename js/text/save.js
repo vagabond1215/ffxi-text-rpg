@@ -161,6 +161,7 @@ export function loadAccountSession() {
         displayName: loggedIn ? account.profile.displayName : null,
         lastCharacterId: loggedIn ? account.profile.lastCharacterId ?? null : null,
         characterCount: loggedIn ? account.characters.length : 0,
+        characters: loggedIn ? account.characters.map(({ encodedState, ...summary }, index) => ({ index: index + 1, ...summary })) : [],
         persistentLogin: loggedIn ? Boolean(storedSession.persistentLogin) : false,
         updatedAt: loggedIn ? account.profile.updatedAt : null,
         loggedInAt: loggedIn ? storedSession.loggedInAt : null,
@@ -224,11 +225,7 @@ function loadAccountRegistry() {
         if (!raw) return createAccountRegistry();
         const parsed = decodePayload(raw);
         if (!parsed || parsed.version !== ACCOUNT_VERSION || !Array.isArray(parsed.accounts)) return createAccountRegistry();
-        return {
-            version: ACCOUNT_VERSION,
-            encoding: ENCODING,
-            accounts: parsed.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)),
-        };
+        return { version: ACCOUNT_VERSION, encoding: ENCODING, accounts: parsed.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)) };
     } catch (error) {
         console.warn('Unable to load account registry.', error);
         return createAccountRegistry();
@@ -236,11 +233,7 @@ function loadAccountRegistry() {
 }
 
 function saveAccountRegistry(registry) {
-    const nextRegistry = {
-        version: ACCOUNT_VERSION,
-        encoding: ENCODING,
-        accounts: (registry.accounts ?? []).map(normalizeAccount).filter((account) => isRealAccount(account)),
-    };
+    const nextRegistry = { version: ACCOUNT_VERSION, encoding: ENCODING, accounts: (registry.accounts ?? []).map(normalizeAccount).filter((account) => isRealAccount(account)) };
     getStorage()?.setItem(ACCOUNTS_KEY, encodePayload(nextRegistry));
     return nextRegistry;
 }
@@ -255,16 +248,7 @@ function createAccount(displayName, password, options = {}) {
     return {
         version: ACCOUNT_VERSION,
         encoding: ENCODING,
-        profile: {
-            accountId: createId('account'),
-            displayName: normalizeDisplayName(displayName),
-            passwordSalt: salt,
-            passwordHash: hashPassword(password, salt),
-            persistentLogin: Boolean(options.persistentLogin),
-            createdAt: now,
-            updatedAt: now,
-            lastCharacterId: null,
-        },
+        profile: { accountId: createId('account'), displayName: normalizeDisplayName(displayName), passwordSalt: salt, passwordHash: hashPassword(password, salt), persistentLogin: Boolean(options.persistentLogin), createdAt: now, updatedAt: now, lastCharacterId: null },
         characters: [],
     };
 }
@@ -274,43 +258,18 @@ function normalizeAccount(account) {
     return {
         version: ACCOUNT_VERSION,
         encoding: ENCODING,
-        profile: {
-            accountId: account?.profile?.accountId ?? createId('account'),
-            displayName: normalizeDisplayName(account?.profile?.displayName),
-            passwordSalt: account?.profile?.passwordSalt ?? null,
-            passwordHash: account?.profile?.passwordHash ?? null,
-            persistentLogin: Boolean(account?.profile?.persistentLogin),
-            createdAt: account?.profile?.createdAt ?? now,
-            updatedAt: account?.profile?.updatedAt ?? now,
-            lastCharacterId: account?.profile?.lastCharacterId ?? null,
-        },
+        profile: { accountId: account?.profile?.accountId ?? createId('account'), displayName: normalizeDisplayName(account?.profile?.displayName), passwordSalt: account?.profile?.passwordSalt ?? null, passwordHash: account?.profile?.passwordHash ?? null, persistentLogin: Boolean(account?.profile?.persistentLogin), createdAt: account?.profile?.createdAt ?? now, updatedAt: account?.profile?.updatedAt ?? now, lastCharacterId: account?.profile?.lastCharacterId ?? null },
         characters: Array.isArray(account?.characters) ? account.characters.filter((record) => record?.id && record?.encodedState) : [],
     };
 }
 
 function isRealAccount(account) {
-    return Boolean(
-        account?.profile?.accountId
-        && account.profile.displayName
-        && account.profile.displayName !== 'Local Adventurer'
-        && account.profile.passwordSalt
-        && account.profile.passwordHash,
-    );
+    return Boolean(account?.profile?.accountId && account.profile.displayName && account.profile.displayName !== 'Local Adventurer' && account.profile.passwordSalt && account.profile.passwordHash);
 }
 
 function createCharacterSummary(state, characterId) {
     const player = state.player;
-    return {
-        id: characterId,
-        name: player.identity.name,
-        race: player.identity.raceName,
-        nation: player.identity.nation,
-        job: player.jobs.mainJobName,
-        level: player.jobs.level,
-        location: state.location,
-        currentPlaceId: state.currentPlaceId,
-        updatedAt: new Date().toISOString(),
-    };
+    return { id: characterId, name: player.identity.name, race: player.identity.raceName, nation: player.identity.nation, job: player.jobs.mainJobName, level: player.jobs.level, location: state.location, currentPlaceId: state.currentPlaceId, updatedAt: new Date().toISOString() };
 }
 
 function findAccountRecord(registry, selector) {
@@ -334,43 +293,23 @@ function encodeState(state) {
 }
 
 function decodeState(encodedState) {
-    try {
-        return decodePayload(encodedState);
-    } catch (error) {
-        console.warn('Unable to decode character state.', error);
-        return null;
-    }
+    try { return decodePayload(encodedState); } catch (error) { console.warn('Unable to decode character state.', error); return null; }
 }
 
 function writeSession(account, options = {}) {
-    const session = {
-        loggedIn: true,
-        accountId: account.profile.accountId,
-        displayName: account.profile.displayName,
-        persistentLogin: Boolean(options.persistentLogin),
-        loggedInAt: new Date().toISOString(),
-    };
+    const session = { loggedIn: true, accountId: account.profile.accountId, displayName: account.profile.displayName, persistentLogin: Boolean(options.persistentLogin), loggedInAt: new Date().toISOString() };
     getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload(session));
     return loadAccountSession();
 }
 
 function readStoredSession() {
-    try {
-        const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
-        return raw ? decodePayload(raw) : null;
-    } catch {
-        getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
-        return null;
-    }
+    try { const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY); return raw ? decodePayload(raw) : null; } catch { getStorage()?.removeItem(ACCOUNT_SESSION_KEY); return null; }
 }
 
 function syncAccountSession(account) {
     const session = readStoredSession();
     if (!session?.loggedIn || session.accountId !== account.profile.accountId) return;
-    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload({
-        ...session,
-        displayName: account.profile.displayName,
-    }));
+    getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload({ ...session, displayName: account.profile.displayName }));
 }
 
 function getStorage() {
