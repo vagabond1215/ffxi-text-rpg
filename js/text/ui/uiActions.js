@@ -11,7 +11,7 @@ export const GLOBAL_ACTIONS = Object.freeze([
     action('battle', 'Battle', 'battle'),
     action('help', 'Help', 'help'),
     action('validate', 'Validate', 'validate'),
-    action('save', 'save'),
+    action('save', 'Save', 'save'),
 ]);
 
 export const TOP_ACTIONS = Object.freeze([
