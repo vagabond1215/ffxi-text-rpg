@@ -1,22 +1,22 @@
 export const VERSION = Object.freeze({
     app: '0.4.1',
-    accountSave: 3,
+    accountSave: 4,
     gameState: 2,
     data: 12,
     benchmark: 1,
-    codename: 'Slash UI Account Saves',
+    codename: 'Passworded Local Accounts',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
     // Backward-compatible alias for older callers while they migrate.
-    save: 3,
+    save: 4,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.4.1',
-    canvasUi: '0.6.2',
+    canvasUi: '0.6.3',
     slashCommands: '0.4.1',
-    accountSaves: '0.4.2',
+    accountSaves: '0.5.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.5.1',
