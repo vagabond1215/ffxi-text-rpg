@@ -7,6 +7,7 @@ import {
     createCanvasUiState,
     scrollOutput,
     setActiveFeedback,
+    setCanvasModal,
     setCanvasScreen,
     submitCommandInput,
 } from '../js/text/ui/canvasInput.js';
@@ -140,32 +141,65 @@ test('canvas context snapshot recalculates derived combat values', () => {
     assert.equal(snapshot.playerName, state.player.identity.name);
 });
 
-test('canvas UI state defaults to splash menu and can switch screens', () => {
+test('canvas UI state defaults to splash menu and can switch screens and modals', () => {
     const uiState = createCanvasUiState();
 
     assert.equal(uiState.screen, 'menu');
+    assert.equal(uiState.modal, null);
     assert.equal(setCanvasScreen(uiState, 'game'), 'game');
+    assert.equal(setCanvasModal(uiState, 'settings'), 'settings');
+    assert.equal(setCanvasModal(uiState, null), null);
     assert.equal(setCanvasScreen(uiState, 'menu'), 'menu');
 });
 
-test('escape opens menu from game screen', () => {
+test('escape opens menu from game screen or closes a modal', () => {
     const uiState = createCanvasUiState({ screen: 'game' });
 
     assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'menu' });
+    uiState.modal = 'settings';
+    assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'modal' });
+    assert.equal(uiState.modal, null);
 });
 
-test('canvas menu action list shows account selection and login when logged out', () => {
+test('canvas menu action list shows only new account when logged out with no accounts', () => {
+    const loggedOut = createMenuActionList({ loggedIn: false, accounts: [] });
+
+    assert.equal(findActionById('login', loggedOut), null);
+    assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
+});
+
+test('canvas menu action list shows login and new account when local accounts exist', () => {
     const loggedOut = createMenuActionList({
         loggedIn: false,
         accounts: [{ id: 'account-1', displayName: 'Russell', characterCount: 0 }],
     });
 
-    assert.equal(findActionById('account:account-1', loggedOut).kind, 'selectAccount');
-    assert.equal(findActionById('createAccount', loggedOut).label, 'Create Account');
     assert.equal(findActionById('login', loggedOut).label, 'Login');
+    assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
 });
 
-test('canvas menu action list shows character selection after login', () => {
+test('canvas login modal lists local accounts and password modal confirms login', () => {
+    const session = { loggedIn: false, accounts: [{ id: 'account-1', displayName: 'Russell' }] };
+    const loginModal = createMenuActionList(session, 'login');
+    const passwordModal = createMenuActionList(session, 'loginPassword');
+
+    assert.equal(findActionById('account:account-1', loginModal).kind, 'selectAccount');
+    assert.equal(findActionById('confirmLogin', passwordModal).label, 'Login');
+});
+
+test('canvas settings modal is only available after login and includes clock controls', () => {
+    const loggedIn = createMenuActionList({ loggedIn: true, settings: { theme: 'dark', timeZone: 'local', showClock: true, clockFormat: '12h' } }, 'settings');
+    const loggedOut = createMenuActionList({ loggedIn: false }, 'settings');
+
+    assert.equal(findActionById('theme', loggedIn).label, 'Theme: dark');
+    assert.equal(findActionById('timezone', loggedIn).label, 'Time zone: local');
+    assert.equal(findActionById('clockToggle', loggedIn).label, 'Clock: Shown');
+    assert.equal(findActionById('clockFormat', loggedIn).label, 'Clock format: 12h');
+    assert.equal(loggedOut.length, 1);
+    assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
+});
+
+test('canvas menu action list shows character selection and logout after login', () => {
     const loggedIn = createMenuActionList({
         loggedIn: true,
         characters: [{ id: 'character-1', name: 'Aldo', job: 'Warrior', level: 5 }],
@@ -173,6 +207,7 @@ test('canvas menu action list shows character selection after login', () => {
 
     assert.equal(findActionById('character:character-1', loggedIn).kind, 'selectCharacter');
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
+    assert.equal(findActionById('settings', loggedIn).label, 'Settings');
     assert.equal(findActionById('logout', loggedIn).label, 'Logout');
 });
 
@@ -183,7 +218,7 @@ test('canvas menu action list prompts character creation when no characters exis
     assert.equal(loggedIn.some((action) => action.kind === 'selectCharacter'), false);
 });
 
-test('canvas layout creates splash menu and top menu button bounds', () => {
+test('canvas layout creates splash menu, modal bounds, and left top menu button bounds', () => {
     const layout = createCanvasLayout({
         width: 1200,
         height: 800,
@@ -193,5 +228,8 @@ test('canvas layout creates splash menu and top menu button bounds', () => {
     });
 
     assert.ok(layout.menuButtons.find((button) => button.action.id === 'login').rect.w > 100);
-    assert.ok(layout.topButtons.find((button) => button.action.id === 'menu').rect.w > 40);
+    assert.ok(layout.modalButtons.length > 0);
+    const menuButton = layout.topButtons.find((button) => button.action.id === 'menu');
+    assert.equal(menuButton.rect.w, 34);
+    assert.ok(menuButton.rect.x < 40);
 });
