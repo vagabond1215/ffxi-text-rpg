@@ -9,6 +9,13 @@ const ACCOUNT_VERSION = 2;
 const ENCODING = 'base64-json-v1';
 const RESERVED_ACCOUNT_NAMES = new Set(['local-adventurer', 'account', 'placeholder']);
 
+export const DEFAULT_ACCOUNT_SETTINGS = Object.freeze({
+    theme: 'dark',
+    timeZone: 'local',
+    showClock: true,
+    clockFormat: '12h',
+});
+
 export function loadGame() {
     return loadActiveCharacter();
 }
@@ -146,6 +153,18 @@ export function loginAccount(accountSelector, password, options = {}) {
     return { ok: true, account: cloneAccount(account), session: writeSession(account, { persistentLogin: Boolean(options.persistentLogin) }) };
 }
 
+export function updateAccountSettings(updates = {}) {
+    const account = loadAccount();
+    if (!account) return { ok: false, reason: 'Login required.' };
+    account.profile.settings = normalizeSettings({
+        ...account.profile.settings,
+        ...updates,
+    });
+    account.profile.updatedAt = new Date().toISOString();
+    saveAccount(account);
+    return { ok: true, settings: account.profile.settings, session: loadAccountSession() };
+}
+
 export function logoutAccount() {
     getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
     return loadAccountSession();
@@ -163,6 +182,7 @@ export function loadAccountSession() {
         lastCharacterId: loggedIn ? account.profile.lastCharacterId ?? null : null,
         characterCount: loggedIn ? account.characters.length : 0,
         characters: loggedIn ? account.characters.map(({ encodedState, ...summary }, index) => ({ index: index + 1, ...summary })) : [],
+        settings: loggedIn ? normalizeSettings(account.profile.settings) : normalizeSettings(),
         persistentLogin: loggedIn ? Boolean(storedSession.persistentLogin) : false,
         updatedAt: loggedIn ? account.profile.updatedAt : null,
         loggedInAt: loggedIn ? storedSession.loggedInAt : null,
@@ -189,6 +209,9 @@ export function describeAccount() {
         `Account ID: ${session.accountId}`,
         `Logged in: yes`,
         `Persistent login: ${session.persistentLogin ? 'yes' : 'no'}`,
+        `Clock: ${session.settings.showClock ? session.settings.clockFormat : 'hidden'}`,
+        `Time zone: ${session.settings.timeZone}`,
+        `Theme: ${session.settings.theme}`,
         `Characters: ${session.characterCount}`,
         `Last character: ${session.lastCharacterId ?? 'none'}`,
     ].join('\n');
@@ -249,7 +272,17 @@ function createAccount(displayName, password, options = {}) {
     return {
         version: ACCOUNT_VERSION,
         encoding: ENCODING,
-        profile: { accountId: createId('account'), displayName: normalizeDisplayName(displayName), passwordSalt: salt, passwordHash: hashPassword(password, salt), persistentLogin: Boolean(options.persistentLogin), createdAt: now, updatedAt: now, lastCharacterId: null },
+        profile: {
+            accountId: createId('account'),
+            displayName: normalizeDisplayName(displayName),
+            passwordSalt: salt,
+            passwordHash: hashPassword(password, salt),
+            settings: normalizeSettings(),
+            persistentLogin: Boolean(options.persistentLogin),
+            createdAt: now,
+            updatedAt: now,
+            lastCharacterId: null,
+        },
         characters: [],
     };
 }
@@ -259,8 +292,30 @@ function normalizeAccount(account) {
     return {
         version: ACCOUNT_VERSION,
         encoding: ENCODING,
-        profile: { accountId: account?.profile?.accountId ?? createId('account'), displayName: normalizeDisplayName(account?.profile?.displayName), passwordSalt: account?.profile?.passwordSalt ?? null, passwordHash: account?.profile?.passwordHash ?? null, persistentLogin: Boolean(account?.profile?.persistentLogin), createdAt: account?.profile?.createdAt ?? now, updatedAt: account?.profile?.updatedAt ?? now, lastCharacterId: account?.profile?.lastCharacterId ?? null },
+        profile: {
+            accountId: account?.profile?.accountId ?? createId('account'),
+            displayName: normalizeDisplayName(account?.profile?.displayName),
+            passwordSalt: account?.profile?.passwordSalt ?? null,
+            passwordHash: account?.profile?.passwordHash ?? null,
+            settings: normalizeSettings(account?.profile?.settings),
+            persistentLogin: Boolean(account?.profile?.persistentLogin),
+            createdAt: account?.profile?.createdAt ?? now,
+            updatedAt: account?.profile?.updatedAt ?? now,
+            lastCharacterId: account?.profile?.lastCharacterId ?? null,
+        },
         characters: Array.isArray(account?.characters) ? account.characters.filter((record) => record?.id && record?.encodedState) : [],
+    };
+}
+
+function normalizeSettings(settings = {}) {
+    const theme = ['dark', 'light', 'highContrast'].includes(settings.theme) ? settings.theme : DEFAULT_ACCOUNT_SETTINGS.theme;
+    const timeZone = ['local', 'UTC', 'America/New_York', 'America/Los_Angeles'].includes(settings.timeZone) ? settings.timeZone : DEFAULT_ACCOUNT_SETTINGS.timeZone;
+    const clockFormat = settings.clockFormat === '24h' ? '24h' : DEFAULT_ACCOUNT_SETTINGS.clockFormat;
+    return {
+        theme,
+        timeZone,
+        showClock: settings.showClock ?? DEFAULT_ACCOUNT_SETTINGS.showClock,
+        clockFormat,
     };
 }
 
