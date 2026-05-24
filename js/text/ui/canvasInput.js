@@ -3,6 +3,7 @@ import { hitTestAction, hitTestRegion } from './canvasLayout.js';
 export function createCanvasUiState(options = {}) {
     return {
         screen: options.screen ?? 'menu',
+        modal: options.modal ?? null,
         outputLines: [...(options.outputLines ?? [])],
         commandHistory: [...(options.commandHistory ?? [])],
         historyIndex: null,
@@ -37,6 +38,14 @@ export function setCanvasScreen(uiState, screen) {
     uiState.hoveredActionId = null;
     uiState.pressedActionId = null;
     return uiState.screen;
+}
+
+export function setCanvasModal(uiState, modal) {
+    uiState.modal = modal ?? null;
+    uiState.focusedRegion = 'input';
+    uiState.hoveredActionId = null;
+    uiState.pressedActionId = null;
+    return uiState.modal;
 }
 
 export function scrollOutput(uiState, deltaLines, maxOffset = uiState.outputLines.length) {
@@ -74,6 +83,10 @@ export function applyCanvasKey(uiState, key, event = {}) {
             uiState.inputBuffer = uiState.inputBuffer.slice(0, -1);
             return { type: 'edit' };
         case 'Escape':
+            if (uiState.modal) {
+                uiState.modal = null;
+                return { type: 'modal' };
+            }
             if (uiState.screen === 'game') return { type: 'menu' };
             uiState.inputBuffer = '';
             uiState.historyIndex = uiState.commandHistory.length;
