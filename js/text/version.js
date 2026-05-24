@@ -4,7 +4,7 @@ export const VERSION = Object.freeze({
     gameState: 2,
     data: 12,
     benchmark: 1,
-    codename: 'Passworded Local Accounts',
+    codename: 'Account Menu Settings',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
@@ -14,9 +14,9 @@ export const VERSION = Object.freeze({
 
 export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.4.1',
-    canvasUi: '0.6.3',
+    canvasUi: '0.6.4',
     slashCommands: '0.4.1',
-    accountSaves: '0.5.0',
+    accountSaves: '0.5.1',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.5.1',
