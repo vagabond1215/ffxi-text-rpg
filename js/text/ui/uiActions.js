@@ -29,6 +29,12 @@ export function createMenuActionList(session, modal = null) {
     if (modal === 'login') {
         return [
             ...(session?.accounts ?? []).map((account) => action(`account:${account.id}`, account.displayName, account.id, { kind: 'selectAccount' })),
+            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui' }),
+        ];
+    }
+
+    if (modal === 'loginPassword') {
+        return [
             action('confirmLogin', 'Login', 'confirmLogin', { kind: 'ui' }),
             action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui' }),
         ];
