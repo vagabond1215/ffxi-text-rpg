@@ -128,12 +128,13 @@ test('createAccountWithPassword persists a real local account and session', () =
     assert.match(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), /^base64-json-v1:/);
 });
 
-test('placeholder account names are not accepted as real accounts', () => {
+test('placeholder account names are rejected explicitly', () => {
     installStorage();
 
     const result = createAccountWithPassword('Local Adventurer', 'pwd');
 
-    assert.equal(result.ok, true);
+    assert.equal(result.ok, false);
+    assert.match(result.reason, /reserved/i);
     assert.equal(listAccounts().length, 0);
 });
 
