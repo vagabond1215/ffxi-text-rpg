@@ -36,10 +36,9 @@ export function createCanvasApp({ canvas }) {
     const hasPlayableCharacter = Boolean(session.loggedIn && session.characterCount > 0 && loadedState);
     const uiState = createCanvasUiState({
         screen: hasPlayableCharacter ? 'game' : 'menu',
-        activeFeedback: getInitialFeedback(session),
+        activeFeedback: '',
         outputLines: [
             'FFXI Text RPG canvas shell initialized.',
-            'Use the menu to log in, create/select an account, then select a character.',
             '',
         ],
     });
@@ -90,7 +89,7 @@ export function createCanvasApp({ canvas }) {
     function handleUiAction(action) {
         if (action.kind === 'selectAccount') {
             selectedAccountId = action.command;
-            setActiveFeedback(uiState, `Selected account: ${action.label}. Enter password, then click Login.`);
+            setActiveFeedback(uiState, `Selected ${action.label}.`);
             render();
             return true;
         }
@@ -113,7 +112,7 @@ export function createCanvasApp({ canvas }) {
             case 'menu':
                 refreshSession();
                 setCanvasScreen(uiState, 'menu');
-                setActiveFeedback(uiState, 'Main menu opened.');
+                setActiveFeedback(uiState, '');
                 break;
             case 'login': {
                 const { accountName, password } = parseCredentialInput();
@@ -143,15 +142,15 @@ export function createCanvasApp({ canvas }) {
                 selectedAccountId = session.accountId;
                 uiState.inputBuffer = '';
                 setCanvasScreen(uiState, 'menu');
-                setActiveFeedback(uiState, `Created account: ${session.displayName}. Create a character to play.`);
+                setActiveFeedback(uiState, `Created ${session.displayName}.`);
                 appendOutput(uiState, `Created account: ${session.displayName}.`);
                 break;
             }
             case 'logout':
                 session = logoutAccount();
                 setCanvasScreen(uiState, 'menu');
-                setActiveFeedback(uiState, 'Logged out. Local accounts and characters remain saved.');
-                appendOutput(uiState, 'Logged out. Local accounts and characters remain saved.');
+                setActiveFeedback(uiState, 'Logged out.');
+                appendOutput(uiState, 'Logged out.');
                 break;
             default:
                 return false;
@@ -182,7 +181,7 @@ export function createCanvasApp({ canvas }) {
             appendOutput(uiState, dispatched.reason);
             render();
         } else if (action.id === 'newCharacter') {
-            setActiveFeedback(uiState, 'Character creation started. Follow the prompts in the output log.');
+            setActiveFeedback(uiState, '');
             setCanvasScreen(uiState, 'game');
         }
     }
@@ -261,7 +260,7 @@ export function createCanvasApp({ canvas }) {
         if (result.type !== 'ignored') event.preventDefault();
         if (result.type === 'menu') {
             setCanvasScreen(uiState, 'menu');
-            setActiveFeedback(uiState, 'Main menu opened.');
+            setActiveFeedback(uiState, '');
             render();
         } else if (result.type === 'submit') submitFromInput(result.command);
         else render();
@@ -288,11 +287,4 @@ export function createCanvasApp({ canvas }) {
         getSession: () => session,
         destroy() { window.removeEventListener('resize', resize); },
     };
-}
-
-function getInitialFeedback(session) {
-    if (!session.accounts.length) return 'Create a local account to begin. Enter account name | password.';
-    if (!session.loggedIn) return 'Select an account, enter password, then log in.';
-    if (!session.characterCount) return 'Create a character to begin.';
-    return `Select a character for ${session.displayName}.`;
 }
