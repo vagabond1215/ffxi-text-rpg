@@ -88,16 +88,15 @@ function layoutMenuButtons(splash, actions) {
 }
 
 function layoutTopButtons(top, actions) {
-    const buttonWidth = 88;
-    const buttonHeight = 32;
+    const buttonSize = 34;
     const gap = 8;
     return actions.map((item, index) => ({
         action: item,
         rect: rect(
-            top.x + top.w - (buttonWidth + gap) * (index + 1),
-            top.y + Math.floor((top.h - buttonHeight) / 2),
-            buttonWidth,
-            buttonHeight,
+            top.x + top.w - (buttonSize + gap) * (index + 1),
+            top.y + Math.floor((top.h - buttonSize) / 2),
+            buttonSize,
+            buttonSize,
         ),
     }));
 }
