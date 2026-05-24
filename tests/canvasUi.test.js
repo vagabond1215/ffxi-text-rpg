@@ -154,14 +154,33 @@ test('escape opens menu from game screen', () => {
     assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'menu' });
 });
 
-test('canvas menu action list respects login state', () => {
-    const loggedOut = createMenuActionList({ loggedIn: false });
-    const loggedIn = createMenuActionList({ loggedIn: true });
+test('canvas menu action list shows account selection and login when logged out', () => {
+    const loggedOut = createMenuActionList({
+        loggedIn: false,
+        accounts: [{ id: 'account-1', displayName: 'Russell', characterCount: 0 }],
+    });
 
-    assert.equal(findActionById('continue', loggedOut).disabled, true);
-    assert.equal(findActionById('logout', loggedOut).disabled, true);
-    assert.equal(findActionById('continue', loggedIn).disabled, false);
-    assert.equal(findActionById('logout', loggedIn).disabled, false);
+    assert.equal(findActionById('account:account-1', loggedOut).kind, 'selectAccount');
+    assert.equal(findActionById('createAccount', loggedOut).label, 'Create Account');
+    assert.equal(findActionById('login', loggedOut).label, 'Login');
+});
+
+test('canvas menu action list shows character selection after login', () => {
+    const loggedIn = createMenuActionList({
+        loggedIn: true,
+        characters: [{ id: 'character-1', name: 'Aldo', job: 'Warrior', level: 5 }],
+    });
+
+    assert.equal(findActionById('character:character-1', loggedIn).kind, 'selectCharacter');
+    assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
+    assert.equal(findActionById('logout', loggedIn).label, 'Logout');
+});
+
+test('canvas menu action list prompts character creation when no characters exist', () => {
+    const loggedIn = createMenuActionList({ loggedIn: true, characters: [] });
+
+    assert.equal(findActionById('newCharacter', loggedIn).label, 'Create Character');
+    assert.equal(loggedIn.some((action) => action.kind === 'selectCharacter'), false);
 });
 
 test('canvas layout creates splash menu and top menu button bounds', () => {
@@ -169,7 +188,7 @@ test('canvas layout creates splash menu and top menu button bounds', () => {
         width: 1200,
         height: 800,
         actions: createActionList({ activeBattle: null }),
-        menuActions: createMenuActionList({ loggedIn: true }),
+        menuActions: createMenuActionList({ loggedIn: false, accounts: [{ id: 'account-1', displayName: 'Russell' }] }),
         topActions: TOP_ACTIONS,
     });
 
