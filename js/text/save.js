@@ -7,6 +7,7 @@ const LEGACY_SINGLE_ACCOUNT_KEY = 'ffxiTextRpgAccount';
 const LEGACY_SAVE_KEY = 'ffxiTextRpgSave';
 const ACCOUNT_VERSION = 2;
 const ENCODING = 'base64-json-v1';
+const RESERVED_ACCOUNT_NAMES = new Set(['local-adventurer', 'account', 'placeholder']);
 
 export function loadGame() {
     return loadActiveCharacter();
@@ -115,6 +116,8 @@ export function saveAccount(account) {
 
 export function createAccountWithPassword(displayName, password, options = {}) {
     const name = normalizeDisplayName(displayName);
+    const accountIssue = validateAccountName(name);
+    if (accountIssue) return { ok: false, reason: accountIssue };
     const passwordIssue = validatePassword(password);
     if (passwordIssue) return { ok: false, reason: passwordIssue };
 
@@ -136,9 +139,7 @@ export function loginAccount(accountSelector, password, options = {}) {
     if (!account) return { ok: false, reason: `No local account matched: ${accountSelector}` };
     const passwordIssue = validatePassword(password);
     if (passwordIssue) return { ok: false, reason: passwordIssue };
-    if (account.profile.passwordHash !== hashPassword(password, account.profile.passwordSalt)) {
-        return { ok: false, reason: 'Incorrect password.' };
-    }
+    if (account.profile.passwordHash !== hashPassword(password, account.profile.passwordSalt)) return { ok: false, reason: 'Incorrect password.' };
     account.profile.persistentLogin = Boolean(options.persistentLogin);
     account.profile.updatedAt = new Date().toISOString();
     saveAccountRegistry(registry);
@@ -264,7 +265,14 @@ function normalizeAccount(account) {
 }
 
 function isRealAccount(account) {
-    return Boolean(account?.profile?.accountId && account.profile.displayName && account.profile.displayName !== 'Local Adventurer' && account.profile.passwordSalt && account.profile.passwordHash);
+    return Boolean(account?.profile?.accountId && !validateAccountName(account.profile.displayName) && account.profile.passwordSalt && account.profile.passwordHash);
+}
+
+function validateAccountName(displayName) {
+    const value = normalizeDisplayName(displayName);
+    if (!value || value === 'Account') return 'Account name is required.';
+    if (RESERVED_ACCOUNT_NAMES.has(normalize(value))) return 'That account name is reserved.';
+    return null;
 }
 
 function createCharacterSummary(state, characterId) {
