@@ -15,7 +15,7 @@ export const GLOBAL_ACTIONS = Object.freeze([
 ]);
 
 export const TOP_ACTIONS = Object.freeze([
-    action('menu', 'Menu', 'menu', { kind: 'ui' }),
+    action('menu', '', 'menu', { kind: 'ui' }),
 ]);
 
 export function createActionList(state, actions = GLOBAL_ACTIONS) {
@@ -25,13 +25,31 @@ export function createActionList(state, actions = GLOBAL_ACTIONS) {
     }));
 }
 
-export function createMenuActionList(session) {
+export function createMenuActionList(session, modal = null) {
+    if (modal === 'login') {
+        return [
+            ...(session?.accounts ?? []).map((account) => action(`account:${account.id}`, account.displayName, account.id, { kind: 'selectAccount' })),
+            action('confirmLogin', 'Login', 'confirmLogin', { kind: 'ui' }),
+            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui' }),
+        ];
+    }
+
+    if (modal === 'settings' && session?.loggedIn) {
+        const settings = session.settings ?? {};
+        return [
+            action('theme', `Theme: ${settings.theme ?? 'dark'}`, 'theme', { kind: 'ui' }),
+            action('timezone', `Time zone: ${settings.timeZone ?? 'local'}`, 'timezone', { kind: 'ui' }),
+            action('clockToggle', `Clock: ${settings.showClock === false ? 'Hidden' : 'Shown'}`, 'clockToggle', { kind: 'ui' }),
+            action('clockFormat', `Clock format: ${settings.clockFormat ?? '12h'}`, 'clockFormat', { kind: 'ui' }),
+            action('cancelModal', 'Close', 'cancelModal', { kind: 'ui' }),
+        ];
+    }
+
     if (!session?.loggedIn) {
         const accounts = session?.accounts ?? [];
         return [
-            ...accounts.map((account) => action(`account:${account.id}`, account.displayName, account.id, { kind: 'selectAccount' })),
-            action('createAccount', 'Create Account', 'createAccount', { kind: 'ui' }),
-            action('login', 'Login', 'login', { kind: 'ui' }),
+            ...(accounts.length ? [action('login', 'Login', 'login', { kind: 'ui' })] : []),
+            action('createAccount', 'New Account', 'createAccount', { kind: 'ui' }),
         ];
     }
 
@@ -39,6 +57,7 @@ export function createMenuActionList(session) {
     return [
         ...characters.map((character) => action(`character:${character.id}`, `${character.name} - ${character.job} Lv.${character.level}`, character.id, { kind: 'selectCharacter' })),
         action('newCharacter', characters.length ? 'New Character' : 'Create Character', '/newcharacter'),
+        action('settings', 'Settings', 'settings', { kind: 'ui' }),
         action('account', 'Account', '/account'),
         action('logout', 'Logout', 'logout', { kind: 'ui' }),
     ];
