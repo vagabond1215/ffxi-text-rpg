@@ -35,50 +35,60 @@ export function getVisibleLogLines(ctx, lines, rect, theme = CANVAS_THEME, scrol
 export function renderCanvasApp(ctx, { layout, state, uiState, session = null, theme = CANVAS_THEME }) {
     ctx.clearRect(0, 0, layout.width, layout.height);
     drawBackground(ctx, layout, theme);
+    drawTopBar(ctx, layout, state, uiState, session, theme);
     if (uiState.screen === 'menu') {
-        drawSplashMenu(ctx, layout, state, uiState, session, theme);
+        drawSplashMenu(ctx, layout, uiState, session, theme);
         return;
     }
-    drawTopBar(ctx, layout, state, uiState, session, theme);
     drawSidebar(ctx, layout, uiState, theme);
     drawMainOutput(ctx, layout.panels.main, uiState, theme);
     drawContext(ctx, layout.panels.context, state, uiState, theme);
     drawInput(ctx, layout.panels.input, uiState, theme);
 }
 
-function drawSplashMenu(ctx, layout, state, uiState, session, theme) {
-    const rect = layout.panels.splash;
+function drawSplashMenu(ctx, layout, uiState, session, theme) {
+    const topBottom = layout.panels.top.y + layout.panels.top.h;
+    const rect = {
+        x: layout.panels.splash.x,
+        y: topBottom + layout.gap,
+        w: layout.panels.splash.w,
+        h: Math.max(120, layout.panels.splash.h - topBottom - layout.gap),
+    };
     panel(ctx, rect, theme.panelDeep, theme.border);
-    ctx.font = theme.fontTitle ?? '28px Consolas, monospace';
+    const compact = layout.width < 700 || layout.height < 560;
+    const centerX = rect.x + rect.w / 2;
+    const titleY = rect.y + (compact ? 42 : 64);
+
+    ctx.font = compact ? theme.fontLarge : theme.fontTitle ?? '28px Consolas, monospace';
     ctx.fillStyle = theme.accentBright;
     ctx.textAlign = 'center';
-    ctx.fillText('FFXI Text RPG', rect.x + rect.w / 2, rect.y + 82);
+    ctx.fillText('FFXI Text RPG', centerX, titleY);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
-    ctx.fillText('Canvas-first text foundation', rect.x + rect.w / 2, rect.y + 112);
-    ctx.textAlign = 'left';
 
-    const accountName = session?.displayName ?? 'Local Adventurer';
-    const login = session?.loggedIn ? 'Recognized / logged in' : 'Not logged in';
-    const lines = [
-        `Account: ${accountName}`,
-        `Status: ${login}`,
-        `Characters: ${session?.characterCount ?? 0}`,
-        `Last character: ${session?.lastCharacterId ?? 'none'}`,
-    ];
-    drawLines(ctx, rect.x + Math.floor(rect.w / 2) - 180, rect.y + 138, 360, lines, theme);
+    const accounts = session?.accounts ?? [];
+    const status = session?.loggedIn
+        ? `${session.displayName} · ${session.characterCount} character${session.characterCount === 1 ? '' : 's'}`
+        : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : 'No local accounts';
+    ctx.fillText(status, centerX, titleY + 26);
+
+    const infoLines = [];
+    if (!session?.loggedIn && !accounts.length) infoLines.push('Create Account: enter account name | password');
+    else if (!session?.loggedIn) infoLines.push('Select an account, enter password, then Login.');
+    else if (!session.characterCount) infoLines.push('No characters on this account. Create a character.');
+    else infoLines.push('Select a character to play.');
+    drawCenteredLines(ctx, centerX, titleY + 54, rect.w - 48, infoLines, theme);
 
     for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
 
-    const hintY = rect.y + rect.h - 70;
+    const hintY = rect.y + rect.h - (compact ? 44 : 58);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
     ctx.textAlign = 'center';
-    ctx.fillText('Type an account name, then click Login / Select Account or press Enter.', rect.x + rect.w / 2, hintY);
-    ctx.fillText(`Input: ${uiState.inputBuffer || '_'}`, rect.x + rect.w / 2, hintY + 22);
+    fitText(ctx, `Input: ${uiState.inputBuffer || '_'}`, rect.x + 24, hintY, rect.w - 48, 'center');
     if (uiState.activeFeedback) {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 80, hintY + 46, rect.w - 160);
+        fitText(ctx, uiState.activeFeedback, rect.x + 24, hintY + 22, rect.w - 48, 'center');
     }
     ctx.textAlign = 'left';
 }
@@ -97,8 +107,10 @@ function drawTopBar(ctx, layout, state, uiState, session, theme) {
     ctx.fillText('FFXI Text RPG', rect.x + 16, rect.y + 32);
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
-    const account = session?.loggedIn ? session.displayName : 'Not logged in';
-    const status = `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY} | ${account}`;
+    const account = session?.loggedIn ? session.displayName : 'No account';
+    const status = uiState.screen === 'menu'
+        ? `Main Menu | ${account}`
+        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY} | ${account}`;
     fitText(ctx, status, rect.x + 190, rect.y + 24, rect.w - 310);
     if (uiState.activeFeedback) {
         ctx.fillStyle = theme.accent;
@@ -192,6 +204,12 @@ function drawLines(ctx, x, y, maxWidth, lines, theme) {
     }
 }
 
+function drawCenteredLines(ctx, centerX, y, maxWidth, lines, theme) {
+    ctx.font = theme.font;
+    ctx.fillStyle = theme.text;
+    lines.forEach((line, index) => fitText(ctx, line, centerX - maxWidth / 2, y + index * theme.lineHeight, maxWidth, 'center'));
+}
+
 function wrapText(ctx, text, maxWidth) {
     if (!text) return [''];
     const words = String(text).split(/\s+/);
@@ -200,10 +218,7 @@ function wrapText(ctx, text, maxWidth) {
     for (const word of words) {
         const candidate = current ? `${current} ${word}` : word;
         if (ctx.measureText(candidate).width <= maxWidth || !current) current = candidate;
-        else {
-            lines.push(current);
-            current = word;
-        }
+        else { lines.push(current); current = word; }
     }
     lines.push(current);
     return lines;
@@ -218,15 +233,20 @@ function panel(ctx, rect, fillStyle, strokeStyle) {
     ctx.stroke();
 }
 
-function fitText(ctx, text, x, y, maxWidth) {
+function fitText(ctx, text, x, y, maxWidth, align = 'left') {
+    const previousAlign = ctx.textAlign;
+    ctx.textAlign = align;
     const value = String(text ?? '');
+    const drawX = align === 'center' ? x + maxWidth / 2 : x;
     if (ctx.measureText(value).width <= maxWidth) {
-        ctx.fillText(value, x, y);
+        ctx.fillText(value, drawX, y);
+        ctx.textAlign = previousAlign;
         return;
     }
     let trimmed = value;
     while (trimmed.length > 1 && ctx.measureText(`${trimmed}...`).width > maxWidth) trimmed = trimmed.slice(0, -1);
-    ctx.fillText(`${trimmed}...`, x, y);
+    ctx.fillText(`${trimmed}...`, drawX, y);
+    ctx.textAlign = previousAlign;
 }
 
 function roundedRect(ctx, x, y, width, height, radius) {
