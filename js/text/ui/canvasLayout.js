@@ -20,6 +20,7 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
     const main = rect(mainX, bodyTop, Math.max(120, mainRight - mainX), bodyHeight);
     const input = rect(margin, safeHeight - margin - inputHeight, safeWidth - margin * 2, inputHeight);
     const splash = rect(margin, margin, safeWidth - margin * 2, safeHeight - margin * 2);
+    const modal = createModalRect(safeWidth, safeHeight, margin);
 
     return {
         width: safeWidth,
@@ -33,9 +34,11 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
             context,
             input,
             splash,
+            modal,
         },
         actionButtons: layoutActionButtons(sidebar, actions),
         menuButtons: layoutMenuButtons(splash, menuActions),
+        modalButtons: layoutModalButtons(modal, menuActions),
         topButtons: layoutTopButtons(rect(margin, margin, safeWidth - margin * 2, topHeight), topActions),
     };
 }
@@ -43,6 +46,7 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
 export function hitTestAction(layout, x, y) {
     return [
         ...layout.topButtons,
+        ...layout.modalButtons,
         ...layout.menuButtons,
         ...layout.actionButtons,
     ].find((button) => pointInRect(x, y, button.rect)) ?? null;
@@ -66,12 +70,7 @@ function layoutActionButtons(sidebar, actions) {
     const startY = sidebar.y + padding + 34;
     return actions.map((item, index) => ({
         action: item,
-        rect: rect(
-            sidebar.x + padding,
-            startY + index * (buttonHeight + gap),
-            sidebar.w - padding * 2,
-            buttonHeight,
-        ),
+        rect: rect(sidebar.x + padding, startY + index * (buttonHeight + gap), sidebar.w - padding * 2, buttonHeight),
     }));
 }
 
@@ -87,18 +86,31 @@ function layoutMenuButtons(splash, actions) {
     }));
 }
 
+function layoutModalButtons(modal, actions) {
+    const buttonWidth = Math.max(220, Math.min(360, modal.w - 56));
+    const buttonHeight = 36;
+    const gap = 9;
+    const startX = modal.x + Math.floor((modal.w - buttonWidth) / 2);
+    const startY = modal.y + 88;
+    return actions.map((item, index) => ({
+        action: item,
+        rect: rect(startX, startY + index * (buttonHeight + gap), buttonWidth, buttonHeight),
+    }));
+}
+
 function layoutTopButtons(top, actions) {
     const buttonSize = 34;
     const gap = 8;
     return actions.map((item, index) => ({
         action: item,
-        rect: rect(
-            top.x + top.w - (buttonSize + gap) * (index + 1),
-            top.y + Math.floor((top.h - buttonSize) / 2),
-            buttonSize,
-            buttonSize,
-        ),
+        rect: rect(top.x + gap + index * (buttonSize + gap), top.y + Math.floor((top.h - buttonSize) / 2), buttonSize, buttonSize),
     }));
+}
+
+function createModalRect(width, height, margin) {
+    const modalWidth = Math.max(280, Math.min(520, Math.floor(width * 0.52)));
+    const modalHeight = Math.max(260, Math.min(430, Math.floor(height * 0.64)));
+    return rect(Math.floor((width - modalWidth) / 2), Math.floor((height - modalHeight) / 2), modalWidth, modalHeight);
 }
 
 function rect(x, y, w, h) {
