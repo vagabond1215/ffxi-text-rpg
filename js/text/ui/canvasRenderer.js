@@ -116,12 +116,14 @@ function drawModal(ctx, layout, uiState, session, theme) {
 function modalTitle(modal) {
     if (modal === 'login') return 'Select Account';
     if (modal === 'loginPassword') return 'Login';
+    if (modal === 'createAccount') return 'New Account';
     if (modal === 'settings') return 'Settings';
     return 'Menu';
 }
 
 function modalHelper(modal, session) {
     if (modal === 'loginPassword') return 'Enter password, then confirm.';
+    if (modal === 'createAccount') return 'Enter account name | password.';
     if (modal === 'settings') return session?.displayName ?? '';
     return '';
 }
