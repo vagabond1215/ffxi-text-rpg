@@ -85,13 +85,13 @@ export function createCanvasApp({ canvas }) {
         return { accountName: namePart, password: passwordPart };
     }
 
-    function cycleSetting(actionId) {
+    function cycleSetting(intent) {
         const settings = session.settings ?? {};
         const updates = {};
-        if (actionId === 'theme') updates.theme = nextValue(settings.theme, ['dark', 'light', 'highContrast']);
-        if (actionId === 'timezone') updates.timeZone = nextValue(settings.timeZone, ['local', 'UTC', 'America/New_York', 'America/Los_Angeles']);
-        if (actionId === 'clockToggle') updates.showClock = !(settings.showClock !== false);
-        if (actionId === 'clockFormat') updates.clockFormat = settings.clockFormat === '24h' ? '12h' : '24h';
+        if (intent === 'settings.cycleTheme') updates.theme = nextValue(settings.theme, ['dark', 'light', 'highContrast']);
+        if (intent === 'settings.cycleTimeZone') updates.timeZone = nextValue(settings.timeZone, ['local', 'UTC', 'America/New_York', 'America/Los_Angeles']);
+        if (intent === 'settings.toggleClock') updates.showClock = !(settings.showClock !== false);
+        if (intent === 'settings.toggleClockFormat') updates.clockFormat = settings.clockFormat === '24h' ? '12h' : '24h';
         const result = updateAccountSettings(updates);
         if (!result.ok) {
             setActiveFeedback(uiState, result.reason);
@@ -102,43 +102,30 @@ export function createCanvasApp({ canvas }) {
         setActiveFeedback(uiState, 'Settings saved.');
     }
 
-    function handleUiAction(action) {
-        if (action.kind === 'selectAccount') {
-            selectedAccountId = action.command;
-            setCanvasModal(uiState, 'loginPassword');
-            setActiveFeedback(uiState, `Selected ${action.label}.`);
-            render();
-            return true;
-        }
-        if (action.kind === 'selectCharacter') {
-            const loaded = loadCharacter(action.command);
-            if (!loaded) {
-                setActiveFeedback(uiState, `Unable to load character: ${action.label}`);
-                appendOutput(uiState, `Unable to load character: ${action.label}`);
-            } else {
-                replaceState(state, loaded);
-                refreshSession();
-                setCanvasModal(uiState, null);
-                setCanvasScreen(uiState, 'game');
-                setActiveFeedback(uiState, `Loaded ${loaded.player.identity.name}.`);
-                appendOutput(uiState, `Loaded ${loaded.player.identity.name}.`);
-            }
-            render();
-            return true;
-        }
-        switch (action.id) {
-            case 'menu':
+    function handleIntent(action) {
+        switch (action.intent) {
+            case 'ui.menu.open':
                 refreshSession();
                 setCanvasScreen(uiState, 'menu');
                 setCanvasModal(uiState, null);
                 setActiveFeedback(uiState, '');
                 break;
-            case 'login':
-                if (!session.accounts.length) break;
-                setCanvasModal(uiState, 'login');
+            case 'ui.modal.close':
+                setCanvasModal(uiState, null);
                 setActiveFeedback(uiState, '');
                 break;
-            case 'confirmLogin': {
+            case 'account.login.open':
+                if (session.accounts.length) {
+                    setCanvasModal(uiState, 'login');
+                    setActiveFeedback(uiState, '');
+                }
+                break;
+            case 'account.select':
+                selectedAccountId = action.payload?.accountId ?? action.command;
+                setCanvasModal(uiState, 'loginPassword');
+                setActiveFeedback(uiState, `Selected ${action.label}.`);
+                break;
+            case 'account.login.confirm': {
                 const { password } = parseCredentialInput();
                 const result = loginAccount(selectedAccountId, password, { persistentLogin: true });
                 if (!result.ok) {
@@ -154,7 +141,7 @@ export function createCanvasApp({ canvas }) {
                 appendOutput(uiState, `Logged in as ${session.displayName}.`);
                 break;
             }
-            case 'createAccount': {
+            case 'account.create': {
                 const { accountName, password } = parseCredentialInput();
                 const result = createAccountWithPassword(accountName, password, { persistentLogin: true });
                 if (!result.ok) {
@@ -171,25 +158,36 @@ export function createCanvasApp({ canvas }) {
                 appendOutput(uiState, `Created account: ${session.displayName}.`);
                 break;
             }
-            case 'settings':
-                if (session.loggedIn) setCanvasModal(uiState, 'settings');
-                break;
-            case 'theme':
-            case 'timezone':
-            case 'clockToggle':
-            case 'clockFormat':
-                cycleSetting(action.id);
-                break;
-            case 'cancelModal':
-                setCanvasModal(uiState, null);
-                setActiveFeedback(uiState, '');
-                break;
-            case 'logout':
+            case 'account.logout':
                 session = logoutAccount();
                 setCanvasModal(uiState, null);
                 setCanvasScreen(uiState, 'menu');
                 setActiveFeedback(uiState, 'Logged out.');
                 appendOutput(uiState, 'Logged out.');
+                break;
+            case 'character.select': {
+                const loaded = loadCharacter(action.payload?.characterId ?? action.command);
+                if (!loaded) {
+                    setActiveFeedback(uiState, `Unable to load character: ${action.label}`);
+                    appendOutput(uiState, `Unable to load character: ${action.label}`);
+                    break;
+                }
+                replaceState(state, loaded);
+                refreshSession();
+                setCanvasModal(uiState, null);
+                setCanvasScreen(uiState, 'game');
+                setActiveFeedback(uiState, `Loaded ${loaded.player.identity.name}.`);
+                appendOutput(uiState, `Loaded ${loaded.player.identity.name}.`);
+                break;
+            }
+            case 'settings.open':
+                if (session.loggedIn) setCanvasModal(uiState, 'settings');
+                break;
+            case 'settings.cycleTheme':
+            case 'settings.cycleTimeZone':
+            case 'settings.toggleClock':
+            case 'settings.toggleClockFormat':
+                cycleSetting(action.intent);
                 break;
             default:
                 return false;
@@ -213,7 +211,7 @@ export function createCanvasApp({ canvas }) {
             render();
             return;
         }
-        if (action.kind !== 'command' && handleUiAction(action)) return;
+        if (action.intent !== 'command.route' && handleIntent(action)) return;
         const dispatched = dispatchAction(action, runCommand, allActions);
         if (!dispatched.ok) {
             setActiveFeedback(uiState, dispatched.reason);
