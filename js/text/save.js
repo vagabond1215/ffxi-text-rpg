@@ -11,9 +11,14 @@ const RESERVED_ACCOUNT_NAMES = new Set(['local-adventurer', 'account', 'placehol
 
 export const DEFAULT_ACCOUNT_SETTINGS = Object.freeze({
     theme: 'dark',
-    timeZone: 'local',
+    uiScale: 'auto',
+    layoutMode: 'auto',
+    layoutProportion: 'standard',
     showClock: true,
     clockFormat: '12h',
+    timeZoneMode: 'auto',
+    gmtOffset: 0,
+    daylightSavings: 'auto',
 });
 
 export function loadGame() {
@@ -129,9 +134,7 @@ export function createAccountWithPassword(displayName, password, options = {}) {
     if (passwordIssue) return { ok: false, reason: passwordIssue };
 
     const registry = loadAccountRegistry();
-    if (registry.accounts.some((account) => normalize(account.profile.displayName) === normalize(name))) {
-        return { ok: false, reason: `Account already exists: ${name}` };
-    }
+    if (registry.accounts.some((account) => normalize(account.profile.displayName) === normalize(name))) return { ok: false, reason: `Account already exists: ${name}` };
 
     const account = createAccount(name, password, { persistentLogin: Boolean(options.persistentLogin) });
     registry.accounts.push(account);
@@ -156,10 +159,7 @@ export function loginAccount(accountSelector, password, options = {}) {
 export function updateAccountSettings(updates = {}) {
     const account = loadAccount();
     if (!account) return { ok: false, reason: 'Login required.' };
-    account.profile.settings = normalizeSettings({
-        ...account.profile.settings,
-        ...updates,
-    });
+    account.profile.settings = normalizeSettings({ ...account.profile.settings, ...updates });
     account.profile.updatedAt = new Date().toISOString();
     saveAccount(account);
     return { ok: true, settings: account.profile.settings, session: loadAccountSession() };
@@ -209,9 +209,12 @@ export function describeAccount() {
         `Account ID: ${session.accountId}`,
         `Logged in: yes`,
         `Persistent login: ${session.persistentLogin ? 'yes' : 'no'}`,
-        `Clock: ${session.settings.showClock ? session.settings.clockFormat : 'hidden'}`,
-        `Time zone: ${session.settings.timeZone}`,
         `Theme: ${session.settings.theme}`,
+        `Scale: ${session.settings.uiScale}`,
+        `Layout: ${session.settings.layoutMode} / ${session.settings.layoutProportion}`,
+        `Clock: ${session.settings.showClock ? session.settings.clockFormat : 'hidden'}`,
+        `Time zone: ${session.settings.timeZoneMode}${session.settings.timeZoneMode === 'manual' ? ` GMT ${formatSignedOffset(session.settings.gmtOffset)}` : ''}`,
+        `Daylight savings: ${session.settings.daylightSavings}`,
         `Characters: ${session.characterCount}`,
         `Last character: ${session.lastCharacterId ?? 'none'}`,
     ].join('\n');
@@ -308,14 +311,23 @@ function normalizeAccount(account) {
 }
 
 function normalizeSettings(settings = {}) {
-    const theme = ['dark', 'light', 'highContrast'].includes(settings.theme) ? settings.theme : DEFAULT_ACCOUNT_SETTINGS.theme;
-    const timeZone = ['local', 'UTC', 'America/New_York', 'America/Los_Angeles'].includes(settings.timeZone) ? settings.timeZone : DEFAULT_ACCOUNT_SETTINGS.timeZone;
+    const theme = oneOf(settings.theme, ['dark', 'light', 'highContrast'], DEFAULT_ACCOUNT_SETTINGS.theme);
+    const uiScale = oneOf(settings.uiScale, ['auto', '90%', '100%', '110%', '125%'], DEFAULT_ACCOUNT_SETTINGS.uiScale);
+    const layoutMode = oneOf(settings.layoutMode, ['auto', 'portrait', 'landscape'], DEFAULT_ACCOUNT_SETTINGS.layoutMode);
+    const layoutProportion = oneOf(settings.layoutProportion, ['standard', 'compact', 'wide'], DEFAULT_ACCOUNT_SETTINGS.layoutProportion);
     const clockFormat = settings.clockFormat === '24h' ? '24h' : DEFAULT_ACCOUNT_SETTINGS.clockFormat;
+    const timeZoneMode = oneOf(settings.timeZoneMode ?? settings.timeZone, ['auto', 'manual'], DEFAULT_ACCOUNT_SETTINGS.timeZoneMode);
+    const daylightSavings = oneOf(settings.daylightSavings, ['auto', 'on', 'off'], DEFAULT_ACCOUNT_SETTINGS.daylightSavings);
     return {
         theme,
-        timeZone,
+        uiScale,
+        layoutMode,
+        layoutProportion,
         showClock: settings.showClock ?? DEFAULT_ACCOUNT_SETTINGS.showClock,
         clockFormat,
+        timeZoneMode,
+        gmtOffset: clampInteger(settings.gmtOffset, -12, 14, DEFAULT_ACCOUNT_SETTINGS.gmtOffset),
+        daylightSavings,
     };
 }
 
@@ -392,6 +404,20 @@ function validatePassword(password) {
 
 function cloneAccount(account) {
     return JSON.parse(JSON.stringify(account));
+}
+
+function oneOf(value, allowed, fallback) {
+    return allowed.includes(value) ? value : fallback;
+}
+
+function clampInteger(value, min, max, fallback) {
+    const parsed = Number.parseInt(value, 10);
+    if (!Number.isFinite(parsed)) return fallback;
+    return Math.max(min, Math.min(max, parsed));
+}
+
+function formatSignedOffset(offset) {
+    return Number(offset) >= 0 ? `+${offset}` : String(offset);
 }
 
 function toBase64(value) {
