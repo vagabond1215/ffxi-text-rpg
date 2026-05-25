@@ -13,6 +13,7 @@ import {
 } from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction } from '../js/text/ui/canvasLayout.js';
 import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/canvasRenderer.js';
+import { isCommandIntent, isUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
 import {
     createActionList,
     createMenuActionList,
@@ -22,7 +23,7 @@ import {
 } from '../js/text/ui/uiActions.js';
 import { createInitialState } from '../js/text/gameState.js';
 
-test('canvas action registry maps global buttons to existing commands', () => {
+test('canvas action registry maps global buttons to command intents', () => {
     assert.equal(findActionById('character').command, 'character');
     assert.equal(findActionById('stats').command, 'stats');
     assert.equal(findActionById('skills').command, 'skills');
@@ -57,7 +58,7 @@ test('canvas hit testing returns the expected action', () => {
     assert.equal(hit.action.id, 'inventory');
 });
 
-test('dispatching a canvas action calls the command router seam', () => {
+test('dispatching a command-intent canvas action calls the command router seam', () => {
     let routedCommand = null;
     const result = dispatchAction('skills', (command) => {
         routedCommand = command;
@@ -67,6 +68,19 @@ test('dispatching a canvas action calls the command router seam', () => {
     assert.equal(result.ok, true);
     assert.equal(routedCommand, 'skills');
     assert.equal(result.response, 'skills output');
+});
+
+test('dispatching a UI intent is rejected by command dispatcher', () => {
+    const result = dispatchAction({ id: 'logout', label: 'Logout', intent: 'account.logout', payload: {}, disabled: false }, () => 'bad');
+
+    assert.equal(result.ok, false);
+    assert.match(result.reason, /not a command action/);
+});
+
+test('UI intent helper classifies command and UI intents', () => {
+    assert.equal(isCommandIntent('command.route'), true);
+    assert.equal(isUiIntent('account.logout'), true);
+    assert.equal(isUiIntent('command.route'), false);
 });
 
 test('canvas keyboard input builds and submits command strings', () => {
@@ -177,8 +191,8 @@ test('canvas menu action list shows login and new account when local accounts ex
         accounts: [{ id: 'account-1', displayName: 'Russell', characterCount: 0 }],
     });
 
-    assert.equal(findActionById('login', loggedOut).label, 'Login');
-    assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
+    assert.equal(findActionById('login', loggedOut).intent, 'account.login.open');
+    assert.equal(findActionById('createAccount', loggedOut).intent, 'account.create');
 });
 
 test('canvas login modal lists local accounts and password modal confirms login', () => {
@@ -186,8 +200,9 @@ test('canvas login modal lists local accounts and password modal confirms login'
     const loginModal = createMenuActionList(session, 'login');
     const passwordModal = createMenuActionList(session, 'loginPassword');
 
-    assert.equal(findActionById('account:account-1', loginModal).kind, 'selectAccount');
     assert.equal(findActionById('account:account-1', loginModal).intent, 'account.select');
+    assert.equal(findActionById('account:account-1', loginModal).payload.accountId, 'account-1');
+    assert.equal(findActionById('account:account-1', loginModal).payload.displayName, 'Russell');
     assert.equal(findActionById('confirmLogin', passwordModal).label, 'Login');
     assert.equal(findActionById('confirmLogin', passwordModal).intent, 'account.login.confirm');
 });
@@ -214,8 +229,9 @@ test('canvas menu action list shows character selection and logout after login',
         characters: [{ id: 'character-1', name: 'Aldo', job: 'Warrior', level: 5 }],
     });
 
-    assert.equal(findActionById('character:character-1', loggedIn).kind, 'selectCharacter');
     assert.equal(findActionById('character:character-1', loggedIn).intent, 'character.select');
+    assert.equal(findActionById('character:character-1', loggedIn).payload.characterId, 'character-1');
+    assert.equal(findActionById('character:character-1', loggedIn).payload.displayName, 'Aldo');
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
     assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
     assert.deepEqual(findActionById('newCharacter', loggedIn).payload, { command: '/newcharacter', screenAfter: 'game', clearFeedback: true });
@@ -229,7 +245,7 @@ test('canvas menu action list prompts character creation when no characters exis
     const loggedIn = createMenuActionList({ loggedIn: true, characters: [] });
 
     assert.equal(findActionById('newCharacter', loggedIn).label, 'Create Character');
-    assert.equal(loggedIn.some((action) => action.kind === 'selectCharacter'), false);
+    assert.equal(loggedIn.some((action) => action.intent === 'character.select'), false);
 });
 
 test('canvas layout creates splash menu, modal bounds, and left top menu button bounds', () => {

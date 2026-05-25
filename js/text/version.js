@@ -4,7 +4,7 @@ export const VERSION = Object.freeze({
     gameState: 2,
     data: 12,
     benchmark: 1,
-    codename: 'Account Menu Settings',
+    codename: 'Canvas UI Intents',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
@@ -14,7 +14,8 @@ export const VERSION = Object.freeze({
 
 export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.4.1',
-    canvasUi: '0.6.4',
+    canvasUi: '0.6.5',
+    uiIntents: '0.1.0',
     slashCommands: '0.4.1',
     accountSaves: '0.5.1',
     saveEncoding: '0.4.1',
