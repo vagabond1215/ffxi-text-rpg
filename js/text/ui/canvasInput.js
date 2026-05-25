@@ -1,4 +1,4 @@
-import { hitTestAction, hitTestRegion } from './canvasLayout.js';
+import { hitTestAction, hitTestModalField, hitTestRegion } from './canvasLayout.js';
 
 export function createCanvasUiState(options = {}) {
     return {
@@ -8,6 +8,11 @@ export function createCanvasUiState(options = {}) {
         commandHistory: [...(options.commandHistory ?? [])],
         historyIndex: null,
         inputBuffer: options.inputBuffer ?? '',
+        modalInputs: {
+            accountName: options.modalInputs?.accountName ?? '',
+            password: options.modalInputs?.password ?? '',
+        },
+        focusedModalField: options.focusedModalField ?? null,
         outputScrollOffset: Math.max(0, Number(options.outputScrollOffset) || 0),
         activePanel: options.activePanel ?? 'main',
         activeFeedback: options.activeFeedback ?? '',
@@ -43,10 +48,18 @@ export function setCanvasScreen(uiState, screen) {
 
 export function setCanvasModal(uiState, modal) {
     uiState.modal = modal ?? null;
-    uiState.focusedRegion = 'input';
+    uiState.focusedRegion = modal ? 'modal' : 'input';
+    uiState.focusedModalField = defaultModalField(modal);
+    if (!modal) clearModalInputs(uiState);
     uiState.hoveredActionId = null;
     uiState.pressedActionId = null;
     return uiState.modal;
+}
+
+export function clearModalInputs(uiState) {
+    uiState.modalInputs.accountName = '';
+    uiState.modalInputs.password = '';
+    uiState.focusedModalField = null;
 }
 
 export function scrollOutput(uiState, deltaLines, maxOffset = uiState.outputLines.length) {
@@ -71,6 +84,7 @@ export function submitCommandInput(uiState, routeCommand) {
 
 export function applyCanvasKey(uiState, key, event = {}) {
     if (event.ctrlKey || event.metaKey || event.altKey) return { type: 'ignored' };
+    if (uiState.modal && modalUsesFields(uiState.modal)) return applyModalKey(uiState, key);
     switch (key) {
         case 'Enter': {
             const command = uiState.inputBuffer.trim();
@@ -86,6 +100,7 @@ export function applyCanvasKey(uiState, key, event = {}) {
         case 'Escape':
             if (uiState.modal) {
                 uiState.modal = null;
+                clearModalInputs(uiState);
                 return { type: 'modal' };
             }
             if (uiState.screen === 'game') return { type: 'menu' };
@@ -123,9 +138,14 @@ export function updatePointerHover(uiState, layout, x, y) {
 
 export function handlePointerDown(uiState, layout, x, y) {
     const hit = updatePointerHover(uiState, layout, x, y);
+    const field = hitTestModalField(layout, x, y);
+    if (field) {
+        uiState.focusedModalField = field.id;
+        uiState.focusedRegion = 'modal';
+    }
     uiState.pressedActionId = hit?.action?.disabled ? null : hit?.action?.id ?? null;
     uiState.pressedRegion = hitTestRegion(layout, x, y);
-    uiState.focusedRegion = uiState.pressedRegion ?? uiState.focusedRegion;
+    uiState.focusedRegion = field ? 'modal' : uiState.pressedRegion ?? uiState.focusedRegion;
     return hit;
 }
 
@@ -138,6 +158,58 @@ export function handlePointerUp(uiState, layout, x, y) {
         return { type: 'action', actionId: hit.action.id, action: hit.action };
     }
     return { type: 'none' };
+}
+
+function applyModalKey(uiState, key) {
+    switch (key) {
+        case 'Enter':
+            return { type: 'submit', command: modalSubmitCommand(uiState.modal) };
+        case 'Tab':
+            uiState.focusedModalField = nextModalField(uiState.modal, uiState.focusedModalField);
+            return { type: 'edit' };
+        case 'Backspace':
+            editFocusedModalField(uiState, (value) => value.slice(0, -1));
+            return { type: 'edit' };
+        case 'Escape':
+            uiState.modal = null;
+            clearModalInputs(uiState);
+            return { type: 'modal' };
+        default:
+            if (typeof key === 'string' && key.length === 1) {
+                editFocusedModalField(uiState, (value) => `${value}${key}`);
+                return { type: 'edit' };
+            }
+            return { type: 'ignored' };
+    }
+}
+
+function editFocusedModalField(uiState, updater) {
+    const field = uiState.focusedModalField ?? defaultModalField(uiState.modal);
+    uiState.focusedModalField = field;
+    uiState.modalInputs[field] = updater(String(uiState.modalInputs[field] ?? ''));
+}
+
+function modalUsesFields(modal) {
+    return modal === 'createAccount' || modal === 'loginPassword';
+}
+
+function defaultModalField(modal) {
+    if (modal === 'createAccount') return 'accountName';
+    if (modal === 'loginPassword') return 'password';
+    return null;
+}
+
+function nextModalField(modal, current) {
+    const fields = modal === 'createAccount' ? ['accountName', 'password'] : [defaultModalField(modal)].filter(Boolean);
+    if (!fields.length) return null;
+    const index = fields.indexOf(current);
+    return fields[(index + 1) % fields.length];
+}
+
+function modalSubmitCommand(modal) {
+    if (modal === 'createAccount') return '__modal_create_account__';
+    if (modal === 'loginPassword') return '__modal_login__';
+    return '__modal_submit__';
 }
 
 function browseHistory(uiState, direction) {
