@@ -15,7 +15,7 @@ export const GLOBAL_ACTIONS = Object.freeze([
 ]);
 
 export const TOP_ACTIONS = Object.freeze([
-    action('menu', '', 'menu', { kind: 'ui' }),
+    action('menu', '', 'menu', { kind: 'ui', intent: 'ui.menu.open' }),
 ]);
 
 export function createActionList(state, actions = GLOBAL_ACTIONS) {
@@ -28,44 +28,52 @@ export function createActionList(state, actions = GLOBAL_ACTIONS) {
 export function createMenuActionList(session, modal = null) {
     if (modal === 'login') {
         return [
-            ...(session?.accounts ?? []).map((account) => action(`account:${account.id}`, account.displayName, account.id, { kind: 'selectAccount' })),
-            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui' }),
+            ...(session?.accounts ?? []).map((account) => action(`account:${account.id}`, account.displayName, account.id, {
+                kind: 'selectAccount',
+                intent: 'account.select',
+                payload: { accountId: account.id, displayName: account.displayName },
+            })),
+            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui', intent: 'ui.modal.close' }),
         ];
     }
 
     if (modal === 'loginPassword') {
         return [
-            action('confirmLogin', 'Login', 'confirmLogin', { kind: 'ui' }),
-            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui' }),
+            action('confirmLogin', 'Login', 'confirmLogin', { kind: 'ui', intent: 'account.login.confirm' }),
+            action('cancelModal', 'Cancel', 'cancelModal', { kind: 'ui', intent: 'ui.modal.close' }),
         ];
     }
 
     if (modal === 'settings' && session?.loggedIn) {
         const settings = session.settings ?? {};
         return [
-            action('theme', `Theme: ${settings.theme ?? 'dark'}`, 'theme', { kind: 'ui' }),
-            action('timezone', `Time zone: ${settings.timeZone ?? 'local'}`, 'timezone', { kind: 'ui' }),
-            action('clockToggle', `Clock: ${settings.showClock === false ? 'Hidden' : 'Shown'}`, 'clockToggle', { kind: 'ui' }),
-            action('clockFormat', `Clock format: ${settings.clockFormat ?? '12h'}`, 'clockFormat', { kind: 'ui' }),
-            action('cancelModal', 'Close', 'cancelModal', { kind: 'ui' }),
+            action('theme', `Theme: ${settings.theme ?? 'dark'}`, 'theme', { kind: 'ui', intent: 'settings.cycleTheme' }),
+            action('timezone', `Time zone: ${settings.timeZone ?? 'local'}`, 'timezone', { kind: 'ui', intent: 'settings.cycleTimeZone' }),
+            action('clockToggle', `Clock: ${settings.showClock === false ? 'Hidden' : 'Shown'}`, 'clockToggle', { kind: 'ui', intent: 'settings.toggleClock' }),
+            action('clockFormat', `Clock format: ${settings.clockFormat ?? '12h'}`, 'clockFormat', { kind: 'ui', intent: 'settings.toggleClockFormat' }),
+            action('cancelModal', 'Close', 'cancelModal', { kind: 'ui', intent: 'ui.modal.close' }),
         ];
     }
 
     if (!session?.loggedIn) {
         const accounts = session?.accounts ?? [];
         return [
-            ...(accounts.length ? [action('login', 'Login', 'login', { kind: 'ui' })] : []),
-            action('createAccount', 'New Account', 'createAccount', { kind: 'ui' }),
+            ...(accounts.length ? [action('login', 'Login', 'login', { kind: 'ui', intent: 'account.login.open' })] : []),
+            action('createAccount', 'New Account', 'createAccount', { kind: 'ui', intent: 'account.create' }),
         ];
     }
 
     const characters = session.characters ?? [];
     return [
-        ...characters.map((character) => action(`character:${character.id}`, `${character.name} - ${character.job} Lv.${character.level}`, character.id, { kind: 'selectCharacter' })),
-        action('newCharacter', characters.length ? 'New Character' : 'Create Character', '/newcharacter'),
-        action('settings', 'Settings', 'settings', { kind: 'ui' }),
+        ...characters.map((character) => action(`character:${character.id}`, `${character.name} - ${character.job} Lv.${character.level}`, character.id, {
+            kind: 'selectCharacter',
+            intent: 'character.select',
+            payload: { characterId: character.id, displayName: character.name },
+        })),
+        action('newCharacter', characters.length ? 'New Character' : 'Create Character', '/newcharacter', { payload: { command: '/newcharacter', screenAfter: 'game', clearFeedback: true } }),
+        action('settings', 'Settings', 'settings', { kind: 'ui', intent: 'settings.open' }),
         action('account', 'Account', '/account'),
-        action('logout', 'Logout', 'logout', { kind: 'ui' }),
+        action('logout', 'Logout', 'logout', { kind: 'ui', intent: 'account.logout' }),
     ];
 }
 
@@ -82,7 +90,10 @@ export function dispatchAction(actionId, routeCommand, actions = GLOBAL_ACTIONS)
 }
 
 function action(id, label, command, options = {}) {
-    return Object.freeze({ id, label, command, kind: options.kind ?? 'command' });
+    const kind = options.kind ?? 'command';
+    const intent = options.intent ?? 'command.route';
+    const payload = options.payload ?? (intent === 'command.route' ? { command } : {});
+    return Object.freeze({ id, label, command, kind, intent, payload: Object.freeze(payload) });
 }
 
 function isActionDisabled(actionRecord, state) {

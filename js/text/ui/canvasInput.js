@@ -11,6 +11,7 @@ export function createCanvasUiState(options = {}) {
         outputScrollOffset: Math.max(0, Number(options.outputScrollOffset) || 0),
         activePanel: options.activePanel ?? 'main',
         activeFeedback: options.activeFeedback ?? '',
+        selectedAccountId: options.selectedAccountId ?? null,
         hoveredActionId: null,
         pressedActionId: null,
         hoveredRegion: null,

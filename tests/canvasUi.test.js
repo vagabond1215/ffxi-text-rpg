@@ -27,6 +27,9 @@ test('canvas action registry maps global buttons to existing commands', () => {
     assert.equal(findActionById('stats').command, 'stats');
     assert.equal(findActionById('skills').command, 'skills');
     assert.equal(findActionById('save').command, 'save');
+    assert.equal(findActionById('stats').intent, 'command.route');
+    assert.deepEqual(findActionById('stats').payload, { command: 'stats' });
+    assert.equal(TOP_ACTIONS[0].intent, 'ui.menu.open');
 });
 
 test('canvas action list marks unavailable battle action disabled', () => {
@@ -184,7 +187,9 @@ test('canvas login modal lists local accounts and password modal confirms login'
     const passwordModal = createMenuActionList(session, 'loginPassword');
 
     assert.equal(findActionById('account:account-1', loginModal).kind, 'selectAccount');
+    assert.equal(findActionById('account:account-1', loginModal).intent, 'account.select');
     assert.equal(findActionById('confirmLogin', passwordModal).label, 'Login');
+    assert.equal(findActionById('confirmLogin', passwordModal).intent, 'account.login.confirm');
 });
 
 test('canvas settings modal is only available after login and includes clock controls', () => {
@@ -192,9 +197,13 @@ test('canvas settings modal is only available after login and includes clock con
     const loggedOut = createMenuActionList({ loggedIn: false }, 'settings');
 
     assert.equal(findActionById('theme', loggedIn).label, 'Theme: dark');
+    assert.equal(findActionById('theme', loggedIn).intent, 'settings.cycleTheme');
     assert.equal(findActionById('timezone', loggedIn).label, 'Time zone: local');
+    assert.equal(findActionById('timezone', loggedIn).intent, 'settings.cycleTimeZone');
     assert.equal(findActionById('clockToggle', loggedIn).label, 'Clock: Shown');
+    assert.equal(findActionById('clockToggle', loggedIn).intent, 'settings.toggleClock');
     assert.equal(findActionById('clockFormat', loggedIn).label, 'Clock format: 12h');
+    assert.equal(findActionById('clockFormat', loggedIn).intent, 'settings.toggleClockFormat');
     assert.equal(loggedOut.length, 1);
     assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
 });
@@ -206,9 +215,14 @@ test('canvas menu action list shows character selection and logout after login',
     });
 
     assert.equal(findActionById('character:character-1', loggedIn).kind, 'selectCharacter');
+    assert.equal(findActionById('character:character-1', loggedIn).intent, 'character.select');
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
+    assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
+    assert.deepEqual(findActionById('newCharacter', loggedIn).payload, { command: '/newcharacter', screenAfter: 'game', clearFeedback: true });
     assert.equal(findActionById('settings', loggedIn).label, 'Settings');
+    assert.equal(findActionById('settings', loggedIn).intent, 'settings.open');
     assert.equal(findActionById('logout', loggedIn).label, 'Logout');
+    assert.equal(findActionById('logout', loggedIn).intent, 'account.logout');
 });
 
 test('canvas menu action list prompts character creation when no characters exist', () => {
