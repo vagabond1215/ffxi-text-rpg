@@ -9,6 +9,7 @@ import {
     setActiveFeedback,
     setCanvasModal,
     setCanvasScreen,
+    setModalPage,
     submitCommandInput,
 } from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction, hitTestModalField } from '../js/text/ui/canvasLayout.js';
@@ -163,9 +164,14 @@ test('canvas UI state defaults to splash menu and can switch screens and modals'
 
     assert.equal(uiState.screen, 'menu');
     assert.equal(uiState.modal, null);
+    assert.equal(uiState.modalPage, null);
     assert.equal(setCanvasScreen(uiState, 'game'), 'game');
-    assert.equal(setCanvasModal(uiState, 'settings'), 'settings');
+    assert.equal(setCanvasModal(uiState, 'settings', 'clock'), 'settings');
+    assert.equal(uiState.modalPage, 'clock');
+    assert.equal(setModalPage(uiState, 'general'), 'general');
+    assert.equal(uiState.modalPage, 'general');
     assert.equal(setCanvasModal(uiState, null), null);
+    assert.equal(uiState.modalPage, null);
     assert.equal(setCanvasScreen(uiState, 'menu'), 'menu');
 });
 
@@ -199,8 +205,10 @@ test('escape opens menu from game screen or closes a modal', () => {
 
     assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'menu' });
     uiState.modal = 'settings';
+    uiState.modalPage = 'clock';
     assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'modal' });
     assert.equal(uiState.modal, null);
+    assert.equal(uiState.modalPage, null);
 });
 
 test('canvas menu action list shows only new account when logged out with no accounts', () => {
@@ -239,24 +247,47 @@ test('canvas login modal lists local accounts and password modal confirms login'
     assert.equal(findActionById('confirmLogin', passwordModal).intent, 'account.login.confirm');
 });
 
-test('canvas settings modal is only available after login and includes clock controls without close action row', () => {
-    const loggedIn = createMenuActionList({ loggedIn: true, settings: { theme: 'dark', timeZone: 'local', showClock: true, clockFormat: '12h' } }, 'settings');
+test('canvas settings modal exposes explicit root and subpage actions', () => {
+    const session = {
+        loggedIn: true,
+        displayName: 'Russell',
+        characterCount: 2,
+        settings: {
+            theme: 'dark',
+            uiScale: 'auto',
+            layoutMode: 'auto',
+            layoutProportion: 'standard',
+            showClock: true,
+            clockFormat: '12h',
+            timeZoneMode: 'manual',
+            gmtOffset: 0,
+            daylightSavings: 'auto',
+        },
+    };
+    const root = createMenuActionList(session, 'settings');
+    const general = createMenuActionList(session, 'settings', 'general');
+    const clock = createMenuActionList(session, 'settings', 'clock');
+    const account = createMenuActionList(session, 'settings', 'account');
     const loggedOut = createMenuActionList({ loggedIn: false }, 'settings');
 
-    assert.equal(findActionById('theme', loggedIn).label, 'Theme: dark');
-    assert.equal(findActionById('theme', loggedIn).intent, 'settings.cycleTheme');
-    assert.equal(findActionById('timezone', loggedIn).label, 'Time zone: local');
-    assert.equal(findActionById('timezone', loggedIn).intent, 'settings.cycleTimeZone');
-    assert.equal(findActionById('clockToggle', loggedIn).label, 'Clock: Shown');
-    assert.equal(findActionById('clockToggle', loggedIn).intent, 'settings.toggleClock');
-    assert.equal(findActionById('clockFormat', loggedIn).label, 'Clock format: 12h');
-    assert.equal(findActionById('clockFormat', loggedIn).intent, 'settings.toggleClockFormat');
-    assert.equal(findActionById('cancelModal', loggedIn), null);
+    assert.equal(findActionById('generalSettings', root).intent, 'settings.page.general');
+    assert.equal(findActionById('accountSettings', root).intent, 'settings.page.account');
+    assert.equal(findActionById('uiScale', general).label, 'Page scale: auto');
+    assert.equal(findActionById('layoutMode', general).intent, 'settings.cycleLayoutMode');
+    assert.equal(findActionById('layoutProportion', general).intent, 'settings.cycleLayoutProportion');
+    assert.equal(findActionById('clockPage', general).intent, 'settings.page.clock');
+    assert.equal(findActionById('clockToggle', clock).label, 'Clock: Shown');
+    assert.equal(findActionById('clockFormat', clock).intent, 'settings.toggleClockFormat');
+    assert.equal(findActionById('gmtDown', clock).intent, 'settings.gmtDown');
+    assert.equal(findActionById('gmtValue', clock).disabled, undefined);
+    assert.equal(findActionById('daylightSavings', clock).intent, 'settings.cycleDaylightSavings');
+    assert.equal(findActionById('accountName', account).label, 'Account: Russell');
+    assert.equal(findActionById('logout', account).intent, 'account.logout');
     assert.equal(loggedOut.length, 1);
     assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
 });
 
-test('canvas menu action list shows character selection and logout after login', () => {
+test('canvas menu action list shows character selection and creation after login', () => {
     const loggedIn = createMenuActionList({ loggedIn: true, characters: [{ id: 'character-1', name: 'Aldo', job: 'Warrior', level: 5 }] });
 
     assert.equal(findActionById('character:character-1', loggedIn).intent, 'character.select');
@@ -265,10 +296,17 @@ test('canvas menu action list shows character selection and logout after login',
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
     assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
     assert.deepEqual(findActionById('newCharacter', loggedIn).payload, { command: '/newcharacter', screenAfter: 'game', clearFeedback: true });
-    assert.equal(findActionById('settings', loggedIn).label, 'Settings');
-    assert.equal(findActionById('settings', loggedIn).intent, 'settings.open');
-    assert.equal(findActionById('logout', loggedIn).label, 'Logout');
-    assert.equal(findActionById('logout', loggedIn).intent, 'account.logout');
+    assert.equal(findActionById('settings', loggedIn), null);
+    assert.equal(findActionById('logout', loggedIn), null);
+});
+
+test('canvas main menu shows account actions after login', () => {
+    const mainMenu = createMenuActionList({ loggedIn: true, characters: [], displayName: 'Russell', characterCount: 0 }, 'mainMenu');
+
+    assert.equal(findActionById('settings', mainMenu).label, 'Settings');
+    assert.equal(findActionById('settings', mainMenu).intent, 'settings.open');
+    assert.equal(findActionById('account', mainMenu).payload.command, '/account');
+    assert.equal(findActionById('logout', mainMenu).intent, 'account.logout');
 });
 
 test('canvas menu action list prompts character creation when no characters exist', () => {

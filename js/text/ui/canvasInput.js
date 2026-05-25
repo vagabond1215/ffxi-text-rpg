@@ -7,6 +7,7 @@ export function createCanvasUiState(options = {}) {
         outputLines: [...(options.outputLines ?? [])],
         commandHistory: [...(options.commandHistory ?? [])],
         historyIndex: null,
+        modalPage: options.modalPage ?? null,
         inputBuffer: options.inputBuffer ?? '',
         modalInputs: {
             accountName: options.modalInputs?.accountName ?? '',
@@ -46,14 +47,20 @@ export function setCanvasScreen(uiState, screen) {
     return uiState.screen;
 }
 
-export function setCanvasModal(uiState, modal) {
+export function setCanvasModal(uiState, modal, page = null) {
     uiState.modal = modal ?? null;
+    uiState.modalPage = modal ? page : null;
     uiState.focusedRegion = modal ? 'modal' : 'input';
     uiState.focusedModalField = defaultModalField(modal);
     if (!modal) clearModalInputs(uiState);
     uiState.hoveredActionId = null;
     uiState.pressedActionId = null;
     return uiState.modal;
+}
+
+export function setModalPage(uiState, page) {
+    uiState.modalPage = page ?? null;
+    return uiState.modalPage;
 }
 
 export function clearModalInputs(uiState) {
@@ -99,8 +106,7 @@ export function applyCanvasKey(uiState, key, event = {}) {
             return { type: 'edit' };
         case 'Escape':
             if (uiState.modal) {
-                uiState.modal = null;
-                clearModalInputs(uiState);
+                setCanvasModal(uiState, null);
                 return { type: 'modal' };
             }
             if (uiState.screen === 'game') return { type: 'menu' };
@@ -171,8 +177,7 @@ function applyModalKey(uiState, key) {
             editFocusedModalField(uiState, (value) => value.slice(0, -1));
             return { type: 'edit' };
         case 'Escape':
-            uiState.modal = null;
-            clearModalInputs(uiState);
+            setCanvasModal(uiState, null);
             return { type: 'modal' };
         default:
             if (typeof key === 'string' && key.length === 1) {

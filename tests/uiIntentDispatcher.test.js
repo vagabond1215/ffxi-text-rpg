@@ -51,10 +51,10 @@ function accountServices() {
 test('account create intent creates a local account without a command string', () => {
     installStorage();
     const state = createInitialState();
-    const uiState = createCanvasUiState({ inputBuffer: 'Russell|pwd' });
+    const uiState = createCanvasUiState({ modalInputs: { accountName: 'Russell', password: 'pwd' } });
 
     const result = dispatchUiIntent({
-        intent: 'account.create',
+        intent: 'account.create.confirm',
         payload: {},
         state,
         uiState,
@@ -76,7 +76,7 @@ test('account select and login confirmation intents do not depend on command str
     const created = createAccountWithPassword('Russell', 'pwd');
     logoutAccount();
     const state = createInitialState();
-    const uiState = createCanvasUiState({ inputBuffer: 'pwd' });
+    const uiState = createCanvasUiState();
 
     const selected = dispatchUiIntent({
         intent: 'account.select',
@@ -86,6 +86,7 @@ test('account select and login confirmation intents do not depend on command str
         session: loadAccountSession(),
         services: accountServices(),
     });
+    uiState.modalInputs.password = 'pwd';
     const confirmed = dispatchUiIntent({
         intent: 'account.login.confirm',
         payload: {},
@@ -112,20 +113,32 @@ test('settings intents update account settings directly', () => {
 
     const opened = dispatchUiIntent({ intent: 'settings.open', state, uiState, session, services: accountServices() });
     session = opened.session;
+    const general = dispatchUiIntent({ intent: 'settings.page.general', state, uiState, session, services: accountServices() });
     const themed = dispatchUiIntent({ intent: 'settings.cycleTheme', state, uiState, session, services: accountServices() });
     session = themed.session;
-    const zoned = dispatchUiIntent({ intent: 'settings.cycleTimeZone', state, uiState, session, services: accountServices() });
-    session = zoned.session;
+    const scaled = dispatchUiIntent({ intent: 'settings.cycleUiScale', state, uiState, session, services: accountServices() });
+    session = scaled.session;
+    const clockPage = dispatchUiIntent({ intent: 'settings.page.clock', state, uiState, session, services: accountServices() });
     const clocked = dispatchUiIntent({ intent: 'settings.toggleClock', state, uiState, session, services: accountServices() });
     session = clocked.session;
     const formatted = dispatchUiIntent({ intent: 'settings.toggleClockFormat', state, uiState, session, services: accountServices() });
+    session = formatted.session;
+    const manual = dispatchUiIntent({ intent: 'settings.toggleTimeZoneMode', state, uiState, session, services: accountServices() });
+    session = manual.session;
+    const gmt = dispatchUiIntent({ intent: 'settings.gmtUp', state, uiState, session, services: accountServices() });
 
     assert.equal(opened.ok, true);
     assert.equal(uiState.modal, 'settings');
+    assert.equal(opened.session.settings.theme, 'dark');
+    assert.equal(general.ok, true);
+    assert.equal(uiState.modalPage, 'clock');
+    assert.equal(clockPage.ok, true);
     assert.equal(themed.session.settings.theme, 'light');
-    assert.equal(zoned.session.settings.timeZone, 'UTC');
+    assert.equal(scaled.session.settings.uiScale, '90%');
     assert.equal(clocked.session.settings.showClock, false);
     assert.equal(formatted.session.settings.clockFormat, '24h');
+    assert.equal(manual.session.settings.timeZoneMode, 'manual');
+    assert.equal(gmt.session.settings.gmtOffset, 1);
     assert.equal(uiState.activeFeedback, 'Settings saved.');
 });
 
@@ -183,9 +196,9 @@ test('command route intent remains routed through the command adapter', () => {
     assert.match(uiState.outputLines.join('\n'), /> stats\nadapter output/);
 });
 
-test('menu intent opens the menu without command routing', () => {
+test('menu intent opens the top menu modal without command routing', () => {
     const state = createInitialState();
-    const uiState = createCanvasUiState({ screen: 'game', modal: 'settings' });
+    const uiState = createCanvasUiState({ screen: 'game', modal: 'settings', modalPage: 'clock' });
     const session = { loggedIn: true, accounts: [], settings: {} };
 
     const result = dispatchUiIntent({
@@ -198,6 +211,7 @@ test('menu intent opens the menu without command routing', () => {
     });
 
     assert.equal(result.ok, true);
-    assert.equal(uiState.screen, 'menu');
-    assert.equal(uiState.modal, null);
+    assert.equal(uiState.screen, 'game');
+    assert.equal(uiState.modal, 'mainMenu');
+    assert.equal(uiState.modalPage, null);
 });

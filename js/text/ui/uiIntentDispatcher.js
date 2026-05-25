@@ -5,6 +5,7 @@ import {
     setActiveFeedback,
     setCanvasModal,
     setCanvasScreen,
+    setModalPage,
 } from './canvasInput.js';
 
 export function createIntentResult({ ok = true, message = '', data = null } = {}) {
@@ -176,13 +177,12 @@ function openSettings(context) {
     refreshSession(context);
     if (!context.session.loggedIn) return feedback(context, 'Login required.');
     setCanvasModal(context.uiState, 'settings');
-    context.uiState.modalPage = null;
+    setModalPage(context.uiState, null);
     return ok(context);
 }
 
 function setSettingsPage(context, page) {
-    context.uiState.modal = 'settings';
-    context.uiState.modalPage = page;
+    setCanvasModal(context.uiState, 'settings', page);
     setActiveFeedback(context.uiState, '');
     return ok(context);
 }
