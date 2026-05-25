@@ -34,6 +34,8 @@ export function dispatchUiIntent(request = {}) {
         case 'account.login.open': return openLogin(context);
         case 'account.select': return selectAccount(context);
         case 'account.login.confirm': return confirmAccountLogin(context);
+        case 'account.create.open': return openCreateAccount(context);
+        case 'account.create.confirm': return createAccount(context);
         case 'account.create': return createAccount(context);
         case 'account.logout': return logout(context);
         case 'character.select': return selectCharacter(context);
@@ -82,11 +84,19 @@ function openLogin(context) {
     return ok(context);
 }
 
+function openCreateAccount(context) {
+    context.uiState.inputBuffer = '';
+    setCanvasModal(context.uiState, 'createAccount');
+    setActiveFeedback(context.uiState, '');
+    return ok(context);
+}
+
 function selectAccount(context) {
     refreshSession(context);
     const accountId = context.payload.accountId ?? context.payload.accountSelector ?? context.payload.value;
     if (!accountId) return feedback(context, 'No account selected.');
     context.uiState.selectedAccountId = accountId;
+    context.uiState.inputBuffer = '';
     setCanvasModal(context.uiState, 'loginPassword');
     const label = context.payload.displayName ?? findAccount(context.session, accountId)?.displayName ?? accountId;
     setActiveFeedback(context.uiState, `Selected ${label}.`);
