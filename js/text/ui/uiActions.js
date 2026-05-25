@@ -1,3 +1,5 @@
+import { isCommandIntent } from './uiIntentDispatcher.js';
+
 export const GLOBAL_ACTIONS = Object.freeze([
     commandAction('character', 'Character', 'character'),
     commandAction('stats', 'Stats', 'stats'),
@@ -77,8 +79,9 @@ export function dispatchAction(actionId, routeCommand, actions = GLOBAL_ACTIONS)
     const actionRecord = typeof actionId === 'object' ? actionId : findActionById(actionId, actions);
     if (!actionRecord) return { ok: false, reason: `Unknown action: ${actionId}` };
     if (actionRecord.disabled) return { ok: false, action: actionRecord, reason: `${actionRecord.label} is unavailable.` };
-    const response = routeCommand(actionRecord.command, actionRecord);
-    return { ok: true, action: actionRecord, command: actionRecord.command, response };
+    if (!isCommandIntent(actionRecord.intent)) return { ok: false, action: actionRecord, reason: `${actionRecord.label} is not a command action.` };
+    const response = routeCommand(actionRecord.payload.command, actionRecord);
+    return { ok: true, action: actionRecord, command: actionRecord.payload.command, response };
 }
 
 function commandAction(id, label, command) {
