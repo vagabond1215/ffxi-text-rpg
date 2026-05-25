@@ -119,8 +119,12 @@ export function createCanvasApp({ canvas }) {
                 dispatchAndRender('account.login.confirm');
                 return '';
             }
+            if (uiState.modal === 'createAccount') {
+                dispatchAndRender('account.create.confirm');
+                return '';
+            }
             if (!session.loggedIn && !session.accounts.length) {
-                dispatchAndRender('account.create');
+                dispatchAndRender('account.create.open');
                 return '';
             }
         }
@@ -131,7 +135,14 @@ export function createCanvasApp({ canvas }) {
         refreshSession();
         const actions = createActionList(state);
         const menuActions = createMenuActionList(session, uiState.modal);
-        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, topActions: TOP_ACTIONS });
+        layout = createCanvasLayout({
+            width: canvas.clientWidth || window.innerWidth,
+            height: canvas.clientHeight || window.innerHeight,
+            actions,
+            menuActions,
+            topActions: TOP_ACTIONS,
+            modal: uiState.modal,
+        });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
 
