@@ -25,12 +25,15 @@ export function describeIntent(action) {
 }
 
 const THEMES = Object.freeze(['dark', 'light', 'highContrast']);
-const TIME_ZONES = Object.freeze(['local', 'UTC', 'America/New_York', 'America/Los_Angeles']);
+const UI_SCALES = Object.freeze(['auto', '90%', '100%', '110%', '125%']);
+const LAYOUT_MODES = Object.freeze(['auto', 'portrait', 'landscape']);
+const LAYOUT_PROPORTIONS = Object.freeze(['standard', 'compact', 'wide']);
+const DST_MODES = Object.freeze(['auto', 'on', 'off']);
 
 export function dispatchUiIntent(request = {}) {
     const context = createDispatchContext(request);
     switch (context.intent) {
-        case 'ui.menu.open': return openMenu(context);
+        case 'ui.menu.open': return openTopMenu(context);
         case 'ui.modal.close': return closeModal(context);
         case 'account.login.open': return openLogin(context);
         case 'account.select': return selectAccount(context);
@@ -41,10 +44,21 @@ export function dispatchUiIntent(request = {}) {
         case 'account.logout': return logout(context);
         case 'character.select': return selectCharacter(context);
         case 'settings.open': return openSettings(context);
-        case 'settings.cycleTheme': return updateSetting(context, 'theme');
-        case 'settings.cycleTimeZone': return updateSetting(context, 'timezone');
-        case 'settings.toggleClock': return updateSetting(context, 'clockToggle');
-        case 'settings.toggleClockFormat': return updateSetting(context, 'clockFormat');
+        case 'settings.page.root': return setSettingsPage(context, null);
+        case 'settings.page.general': return setSettingsPage(context, 'general');
+        case 'settings.page.clock': return setSettingsPage(context, 'clock');
+        case 'settings.page.account': return setSettingsPage(context, 'account');
+        case 'settings.cycleTheme': return updateSetting(context, { theme: nextValue(context.session.settings?.theme, THEMES) });
+        case 'settings.cycleUiScale': return updateSetting(context, { uiScale: nextValue(context.session.settings?.uiScale, UI_SCALES) });
+        case 'settings.cycleLayoutMode': return updateSetting(context, { layoutMode: nextValue(context.session.settings?.layoutMode, LAYOUT_MODES) });
+        case 'settings.cycleLayoutProportion': return updateSetting(context, { layoutProportion: nextValue(context.session.settings?.layoutProportion, LAYOUT_PROPORTIONS) });
+        case 'settings.toggleClock': return updateSetting(context, { showClock: !(context.session.settings?.showClock !== false) });
+        case 'settings.toggleClockFormat': return updateSetting(context, { clockFormat: context.session.settings?.clockFormat === '24h' ? '12h' : '24h' });
+        case 'settings.toggleTimeZoneMode': return updateSetting(context, { timeZoneMode: context.session.settings?.timeZoneMode === 'manual' ? 'auto' : 'manual' });
+        case 'settings.gmtDown': return updateSetting(context, { gmtOffset: clampGmt((context.session.settings?.gmtOffset ?? 0) - 1) });
+        case 'settings.gmtUp': return updateSetting(context, { gmtOffset: clampGmt((context.session.settings?.gmtOffset ?? 0) + 1) });
+        case 'settings.cycleDaylightSavings': return updateSetting(context, { daylightSavings: nextValue(context.session.settings?.daylightSavings, DST_MODES) });
+        case 'settings.noop': return ok(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -54,10 +68,9 @@ function createDispatchContext({ intent, payload = {}, state, uiState, session =
     return { intent: String(intent ?? ''), payload: payload ?? {}, state, uiState, session: session ?? {}, services: services ?? {} };
 }
 
-function openMenu(context) {
+function openTopMenu(context) {
     refreshSession(context);
-    setCanvasScreen(context.uiState, 'menu');
-    setCanvasModal(context.uiState, null);
+    setCanvasModal(context.uiState, 'mainMenu');
     setActiveFeedback(context.uiState, '');
     return ok(context);
 }
@@ -105,7 +118,6 @@ function confirmAccountLogin(context) {
     if (!loginAccount) return fail(context, 'Account login service unavailable.');
     const result = loginAccount(accountSelector, password, { persistentLogin: true });
     if (!result.ok) return feedback(context, result.reason);
-
     setSession(context, result.session);
     setCanvasModal(context.uiState, null);
     setCanvasScreen(context.uiState, 'menu');
@@ -122,7 +134,6 @@ function createAccount(context) {
     if (!createAccountWithPassword) return fail(context, 'Account creation service unavailable.');
     const result = createAccountWithPassword(accountName, password, { persistentLogin: true });
     if (!result.ok) return feedback(context, result.reason);
-
     setSession(context, result.session);
     context.uiState.selectedAccountId = context.session.accountId;
     setCanvasModal(context.uiState, null);
@@ -150,7 +161,6 @@ function selectCharacter(context) {
     if (!loadCharacter) return fail(context, 'Character load service unavailable.');
     const loaded = loadCharacter(characterSelector);
     if (!loaded) return feedback(context, `Unable to load character: ${context.payload.displayName ?? characterSelector}`);
-
     const replaceState = context.services.replaceState ?? replaceGameState;
     replaceState(context.state, loaded);
     refreshSession(context);
@@ -166,20 +176,21 @@ function openSettings(context) {
     refreshSession(context);
     if (!context.session.loggedIn) return feedback(context, 'Login required.');
     setCanvasModal(context.uiState, 'settings');
+    context.uiState.modalPage = null;
     return ok(context);
 }
 
-function updateSetting(context, actionId) {
+function setSettingsPage(context, page) {
+    context.uiState.modal = 'settings';
+    context.uiState.modalPage = page;
+    setActiveFeedback(context.uiState, '');
+    return ok(context);
+}
+
+function updateSetting(context, updates) {
     refreshSession(context);
     const updateAccountSettings = context.services.updateAccountSettings;
     if (!updateAccountSettings) return fail(context, 'Account settings service unavailable.');
-    const settings = context.session.settings ?? {};
-    const updates = {};
-    if (actionId === 'theme') updates.theme = nextValue(settings.theme, THEMES);
-    if (actionId === 'timezone') updates.timeZone = nextValue(settings.timeZone, TIME_ZONES);
-    if (actionId === 'clockToggle') updates.showClock = !(settings.showClock !== false);
-    if (actionId === 'clockFormat') updates.clockFormat = settings.clockFormat === '24h' ? '12h' : '24h';
-
     const result = updateAccountSettings(updates);
     if (!result.ok) return feedback(context, result.reason);
     setSession(context, result.session);
@@ -191,7 +202,6 @@ function routeCommand(context) {
     const command = String(context.payload.command ?? '').trim();
     if (!command) return fail(context, 'No command to route.');
     if (!context.session.loggedIn && !command.startsWith('/account')) return feedback(context, 'Login or create a local account first.');
-
     const commandAdapter = context.services.commandAdapter ?? context.services.routeCommand;
     if (!commandAdapter) return fail(context, 'Command adapter unavailable.');
     const response = commandAdapter(command, context.payload.action ?? null);
@@ -239,6 +249,10 @@ function findAccount(session, accountId) {
 function nextValue(current, values) {
     const index = values.indexOf(current);
     return values[(index + 1) % values.length];
+}
+
+function clampGmt(value) {
+    return Math.max(-12, Math.min(14, Number.parseInt(value, 10) || 0));
 }
 
 function ok(context, result = {}) {
