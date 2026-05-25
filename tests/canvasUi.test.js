@@ -183,6 +183,7 @@ test('canvas menu action list shows only new account when logged out with no acc
 
     assert.equal(findActionById('login', loggedOut), null);
     assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
+    assert.equal(findActionById('createAccount', loggedOut).intent, 'account.create.open');
 });
 
 test('canvas menu action list shows login and new account when local accounts exist', () => {
@@ -192,7 +193,15 @@ test('canvas menu action list shows login and new account when local accounts ex
     });
 
     assert.equal(findActionById('login', loggedOut).intent, 'account.login.open');
-    assert.equal(findActionById('createAccount', loggedOut).intent, 'account.create');
+    assert.equal(findActionById('createAccount', loggedOut).intent, 'account.create.open');
+});
+
+test('canvas create account modal confirms account creation', () => {
+    const createModal = createMenuActionList({ loggedIn: false, accounts: [] }, 'createAccount');
+
+    assert.equal(findActionById('confirmCreateAccount', createModal).label, 'Create Account');
+    assert.equal(findActionById('confirmCreateAccount', createModal).intent, 'account.create.confirm');
+    assert.equal(findActionById('cancelModal', createModal).intent, 'ui.modal.close');
 });
 
 test('canvas login modal lists local accounts and password modal confirms login', () => {
