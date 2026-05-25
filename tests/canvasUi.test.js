@@ -13,6 +13,7 @@ import {
 } from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction } from '../js/text/ui/canvasLayout.js';
 import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/canvasRenderer.js';
+import { isCommandIntent, isUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
 import {
     createActionList,
     createMenuActionList,
@@ -22,11 +23,11 @@ import {
 } from '../js/text/ui/uiActions.js';
 import { createInitialState } from '../js/text/gameState.js';
 
-test('canvas action registry maps global buttons to existing commands', () => {
-    assert.equal(findActionById('character').command, 'character');
-    assert.equal(findActionById('stats').command, 'stats');
-    assert.equal(findActionById('skills').command, 'skills');
-    assert.equal(findActionById('save').command, 'save');
+test('canvas action registry maps global buttons to command intents', () => {
+    assert.equal(findActionById('character').payload.command, 'character');
+    assert.equal(findActionById('stats').payload.command, 'stats');
+    assert.equal(findActionById('skills').intent, 'command.route');
+    assert.equal(findActionById('save').payload.command, 'save');
 });
 
 test('canvas action list marks unavailable battle action disabled', () => {
@@ -54,7 +55,7 @@ test('canvas hit testing returns the expected action', () => {
     assert.equal(hit.action.id, 'inventory');
 });
 
-test('dispatching a canvas action calls the command router seam', () => {
+test('dispatching a command-intent canvas action calls the command router seam', () => {
     let routedCommand = null;
     const result = dispatchAction('skills', (command) => {
         routedCommand = command;
@@ -64,6 +65,19 @@ test('dispatching a canvas action calls the command router seam', () => {
     assert.equal(result.ok, true);
     assert.equal(routedCommand, 'skills');
     assert.equal(result.response, 'skills output');
+});
+
+test('dispatching a UI intent is rejected by command dispatcher', () => {
+    const result = dispatchAction({ id: 'logout', label: 'Logout', intent: 'account.logout', payload: {}, disabled: false }, () => 'bad');
+
+    assert.equal(result.ok, false);
+    assert.match(result.reason, /not a command action/);
+});
+
+test('UI intent helper classifies command and UI intents', () => {
+    assert.equal(isCommandIntent('command.route'), true);
+    assert.equal(isUiIntent('account.logout'), true);
+    assert.equal(isUiIntent('command.route'), false);
 });
 
 test('canvas keyboard input builds and submits command strings', () => {
@@ -174,8 +188,8 @@ test('canvas menu action list shows login and new account when local accounts ex
         accounts: [{ id: 'account-1', displayName: 'Russell', characterCount: 0 }],
     });
 
-    assert.equal(findActionById('login', loggedOut).label, 'Login');
-    assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
+    assert.equal(findActionById('login', loggedOut).intent, 'account.login.open');
+    assert.equal(findActionById('createAccount', loggedOut).intent, 'account.create');
 });
 
 test('canvas login modal lists local accounts and password modal confirms login', () => {
@@ -183,18 +197,19 @@ test('canvas login modal lists local accounts and password modal confirms login'
     const loginModal = createMenuActionList(session, 'login');
     const passwordModal = createMenuActionList(session, 'loginPassword');
 
-    assert.equal(findActionById('account:account-1', loginModal).kind, 'selectAccount');
-    assert.equal(findActionById('confirmLogin', passwordModal).label, 'Login');
+    assert.equal(findActionById('account:account-1', loginModal).intent, 'account.select');
+    assert.equal(findActionById('account:account-1', loginModal).payload.accountId, 'account-1');
+    assert.equal(findActionById('confirmLogin', passwordModal).intent, 'account.login.confirm');
 });
 
 test('canvas settings modal is only available after login and includes clock controls', () => {
     const loggedIn = createMenuActionList({ loggedIn: true, settings: { theme: 'dark', timeZone: 'local', showClock: true, clockFormat: '12h' } }, 'settings');
     const loggedOut = createMenuActionList({ loggedIn: false }, 'settings');
 
-    assert.equal(findActionById('theme', loggedIn).label, 'Theme: dark');
-    assert.equal(findActionById('timezone', loggedIn).label, 'Time zone: local');
-    assert.equal(findActionById('clockToggle', loggedIn).label, 'Clock: Shown');
-    assert.equal(findActionById('clockFormat', loggedIn).label, 'Clock format: 12h');
+    assert.equal(findActionById('theme', loggedIn).intent, 'settings.cycleTheme');
+    assert.equal(findActionById('timezone', loggedIn).intent, 'settings.cycleTimeZone');
+    assert.equal(findActionById('clockToggle', loggedIn).intent, 'settings.toggleClock');
+    assert.equal(findActionById('clockFormat', loggedIn).intent, 'settings.toggleClockFormat');
     assert.equal(loggedOut.length, 1);
     assert.equal(findActionById('createAccount', loggedOut).label, 'New Account');
 });
@@ -205,17 +220,18 @@ test('canvas menu action list shows character selection and logout after login',
         characters: [{ id: 'character-1', name: 'Aldo', job: 'Warrior', level: 5 }],
     });
 
-    assert.equal(findActionById('character:character-1', loggedIn).kind, 'selectCharacter');
-    assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
-    assert.equal(findActionById('settings', loggedIn).label, 'Settings');
-    assert.equal(findActionById('logout', loggedIn).label, 'Logout');
+    assert.equal(findActionById('character:character-1', loggedIn).intent, 'character.select');
+    assert.equal(findActionById('character:character-1', loggedIn).payload.characterId, 'character-1');
+    assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
+    assert.equal(findActionById('settings', loggedIn).intent, 'settings.open');
+    assert.equal(findActionById('logout', loggedIn).intent, 'account.logout');
 });
 
 test('canvas menu action list prompts character creation when no characters exist', () => {
     const loggedIn = createMenuActionList({ loggedIn: true, characters: [] });
 
     assert.equal(findActionById('newCharacter', loggedIn).label, 'Create Character');
-    assert.equal(loggedIn.some((action) => action.kind === 'selectCharacter'), false);
+    assert.equal(loggedIn.some((action) => action.intent === 'character.select'), false);
 });
 
 test('canvas layout creates splash menu, modal bounds, and left top menu button bounds', () => {
