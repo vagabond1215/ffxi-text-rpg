@@ -103,14 +103,38 @@ function drawModal(ctx, layout, uiState, session, theme) {
     const helper = modalHelper(uiState.modal, session);
     if (helper) fitText(ctx, helper, rect.x + 22, rect.y + 58, rect.w - 44);
     for (const button of layout.modalButtons) drawButton(ctx, button, uiState, theme);
-    if (uiState.inputBuffer) {
-        ctx.fillStyle = theme.text;
-        fitText(ctx, uiState.inputBuffer, rect.x + 22, rect.y + rect.h - 58, rect.w - 44);
-    }
+    if (modalNeedsTextInput(uiState.modal)) drawModalInputField(ctx, rect, uiState, theme);
     if (shouldShowFeedback(uiState.activeFeedback)) {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 22, rect.y + rect.h - 30, rect.w - 44);
+        fitText(ctx, uiState.activeFeedback, rect.x + 22, rect.y + rect.h - 22, rect.w - 44);
     }
+}
+
+function drawModalInputField(ctx, modalRect, uiState, theme) {
+    const label = modalInputLabel(uiState.modal);
+    const placeholder = modalInputPlaceholder(uiState.modal);
+    const value = modalInputDisplayValue(uiState.modal, uiState.inputBuffer);
+    const field = {
+        x: modalRect.x + 22,
+        y: modalRect.y + modalRect.h - 94,
+        w: modalRect.w - 44,
+        h: 38,
+    };
+
+    ctx.font = theme.font;
+    ctx.fillStyle = theme.muted;
+    fitText(ctx, label, field.x, field.y - 8, field.w);
+
+    ctx.fillStyle = theme.panelDeep;
+    ctx.strokeStyle = theme.accentBright;
+    ctx.lineWidth = 1;
+    roundedRect(ctx, field.x, field.y, field.w, field.h, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.font = theme.font;
+    ctx.fillStyle = value ? theme.text : theme.muted;
+    fitText(ctx, `${value || placeholder}_`, field.x + 12, field.y + 24, field.w - 24);
 }
 
 function modalTitle(modal) {
@@ -126,6 +150,28 @@ function modalHelper(modal, session) {
     if (modal === 'createAccount') return 'Enter account name | password.';
     if (modal === 'settings') return session?.displayName ?? '';
     return '';
+}
+
+function modalNeedsTextInput(modal) {
+    return modal === 'loginPassword' || modal === 'createAccount';
+}
+
+function modalInputLabel(modal) {
+    if (modal === 'loginPassword') return 'Password';
+    if (modal === 'createAccount') return 'Account name and password';
+    return 'Input';
+}
+
+function modalInputPlaceholder(modal) {
+    if (modal === 'loginPassword') return 'password';
+    if (modal === 'createAccount') return 'name | password';
+    return '';
+}
+
+function modalInputDisplayValue(modal, inputBuffer) {
+    const value = String(inputBuffer ?? '');
+    if (modal !== 'loginPassword') return value;
+    return value ? '•'.repeat(Math.max(1, value.length)) : '';
 }
 
 function drawBackground(ctx, layout, theme) {
