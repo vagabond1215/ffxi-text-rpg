@@ -4,7 +4,7 @@ export const VERSION = Object.freeze({
     gameState: 2,
     data: 12,
     benchmark: 1,
-    codename: 'Canvas UI Intents',
+    codename: 'Account Settings Submenus',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
@@ -14,10 +14,10 @@ export const VERSION = Object.freeze({
 
 export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.4.1',
-    canvasUi: '0.6.5',
-    uiIntents: '0.1.0',
+    canvasUi: '0.6.6',
+    uiIntents: '0.1.1',
     slashCommands: '0.4.1',
-    accountSaves: '0.5.1',
+    accountSaves: '0.5.2',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.5.1',
