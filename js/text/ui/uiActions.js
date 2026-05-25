@@ -34,22 +34,15 @@ export function createMenuActionList(session, modal = null) {
                 accountId: account.id,
                 displayName: account.displayName,
             })),
-            uiAction('cancelModal', 'Cancel', 'ui.modal.close'),
         ];
     }
 
     if (modal === 'loginPassword') {
-        return [
-            uiAction('confirmLogin', 'Login', 'account.login.confirm'),
-            uiAction('cancelModal', 'Cancel', 'ui.modal.close'),
-        ];
+        return [uiAction('confirmLogin', 'Login', 'account.login.confirm')];
     }
 
     if (modal === 'createAccount') {
-        return [
-            uiAction('confirmCreateAccount', 'Create Account', 'account.create.confirm'),
-            uiAction('cancelModal', 'Cancel', 'ui.modal.close'),
-        ];
+        return [uiAction('confirmCreateAccount', 'Create Account', 'account.create.confirm')];
     }
 
     if (modal === 'settings' && session?.loggedIn) {
@@ -59,7 +52,6 @@ export function createMenuActionList(session, modal = null) {
             uiAction('timezone', `Time zone: ${settings.timeZone ?? 'local'}`, 'settings.cycleTimeZone'),
             uiAction('clockToggle', `Clock: ${settings.showClock === false ? 'Hidden' : 'Shown'}`, 'settings.toggleClock'),
             uiAction('clockFormat', `Clock format: ${settings.clockFormat ?? '12h'}`, 'settings.toggleClockFormat'),
-            uiAction('cancelModal', 'Close', 'ui.modal.close'),
         ];
     }
 
