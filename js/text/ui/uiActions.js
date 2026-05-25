@@ -45,6 +45,13 @@ export function createMenuActionList(session, modal = null) {
         ];
     }
 
+    if (modal === 'createAccount') {
+        return [
+            uiAction('confirmCreateAccount', 'Create Account', 'account.create.confirm'),
+            uiAction('cancelModal', 'Cancel', 'ui.modal.close'),
+        ];
+    }
+
     if (modal === 'settings' && session?.loggedIn) {
         const settings = session.settings ?? {};
         return [
@@ -60,7 +67,7 @@ export function createMenuActionList(session, modal = null) {
         const accounts = session?.accounts ?? [];
         return [
             ...(accounts.length ? [uiAction('login', 'Login', 'account.login.open')] : []),
-            uiAction('createAccount', 'New Account', 'account.create'),
+            uiAction('createAccount', 'New Account', 'account.create.open'),
         ];
     }
 
