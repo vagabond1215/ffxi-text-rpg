@@ -38,24 +38,19 @@ export function renderCanvasApp(ctx, { layout, state, uiState, session = null, t
     drawTopBar(ctx, layout, state, uiState, session, theme);
     if (uiState.screen === 'menu') {
         drawSplashMenu(ctx, layout, uiState, session, theme);
-        if (uiState.modal) drawModal(ctx, layout, uiState, session, theme);
+        if (uiState.modal) drawModal(ctx, layout, uiState, theme);
         return;
     }
     drawSidebar(ctx, layout, uiState, theme);
     drawMainOutput(ctx, layout.panels.main, uiState, theme);
     drawContext(ctx, layout.panels.context, state, uiState, theme);
     drawInput(ctx, layout.panels.input, uiState, theme);
-    if (uiState.modal) drawModal(ctx, layout, uiState, session, theme);
+    if (uiState.modal) drawModal(ctx, layout, uiState, theme);
 }
 
 function drawSplashMenu(ctx, layout, uiState, session, theme) {
     const topBottom = layout.panels.top.y + layout.panels.top.h;
-    const rect = {
-        x: layout.panels.splash.x,
-        y: topBottom + layout.gap,
-        w: layout.panels.splash.w,
-        h: Math.max(120, layout.panels.splash.h - topBottom - layout.gap),
-    };
+    const rect = { x: layout.panels.splash.x, y: topBottom + layout.gap, w: layout.panels.splash.w, h: Math.max(120, layout.panels.splash.h - topBottom - layout.gap) };
     panel(ctx, rect, theme.panelDeep, theme.border);
     const compact = layout.width < 700 || layout.height < 560;
     const centerX = rect.x + rect.w / 2;
@@ -74,9 +69,7 @@ function drawSplashMenu(ctx, layout, uiState, session, theme) {
         : accounts.length ? `${accounts.length} local account${accounts.length === 1 ? '' : 's'}` : '';
     if (subtitle) ctx.fillText(subtitle, centerX, titleY + 26);
 
-    if (!uiState.modal) {
-        for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
-    }
+    if (!uiState.modal) for (const button of layout.menuButtons) drawButton(ctx, button, uiState, theme);
 
     const hintY = rect.y + rect.h - (compact ? 36 : 48);
     if (uiState.inputBuffer && !uiState.modal) {
@@ -90,88 +83,56 @@ function drawSplashMenu(ctx, layout, uiState, session, theme) {
     ctx.textAlign = 'left';
 }
 
-function drawModal(ctx, layout, uiState, session, theme) {
+function drawModal(ctx, layout, uiState, theme) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.48)';
     ctx.fillRect(0, 0, layout.width, layout.height);
     const rect = layout.panels.modal;
     panel(ctx, rect, theme.panel, theme.accent);
-    ctx.font = theme.fontLarge;
-    ctx.fillStyle = theme.accentBright;
-    fitText(ctx, modalTitle(uiState.modal), rect.x + 22, rect.y + 34, rect.w - 44);
-    ctx.font = theme.font;
-    ctx.fillStyle = theme.muted;
-    const helper = modalHelper(uiState.modal, session);
-    if (helper) fitText(ctx, helper, rect.x + 22, rect.y + 58, rect.w - 44);
+    drawCloseButton(ctx, layout.modalCloseButton, uiState, theme);
+    for (const field of layout.modalFields) drawModalField(ctx, field, uiState, theme);
     for (const button of layout.modalButtons) drawButton(ctx, button, uiState, theme);
-    if (modalNeedsTextInput(uiState.modal)) drawModalInputField(ctx, rect, uiState, theme);
     if (shouldShowFeedback(uiState.activeFeedback)) {
         ctx.fillStyle = theme.accent;
-        fitText(ctx, uiState.activeFeedback, rect.x + 22, rect.y + rect.h - 22, rect.w - 44);
+        fitText(ctx, uiState.activeFeedback, rect.x + 18, rect.y + rect.h - 8, rect.w - 36);
     }
 }
 
-function drawModalInputField(ctx, modalRect, uiState, theme) {
-    const label = modalInputLabel(uiState.modal);
-    const placeholder = modalInputPlaceholder(uiState.modal);
-    const value = modalInputDisplayValue(uiState.modal, uiState.inputBuffer);
-    const field = {
-        x: modalRect.x + 22,
-        y: modalRect.y + modalRect.h - 94,
-        w: modalRect.w - 44,
-        h: 38,
-    };
-
-    ctx.font = theme.font;
-    ctx.fillStyle = theme.muted;
-    fitText(ctx, label, field.x, field.y - 8, field.w);
-
-    ctx.fillStyle = theme.panelDeep;
-    ctx.strokeStyle = theme.accentBright;
-    ctx.lineWidth = 1;
-    roundedRect(ctx, field.x, field.y, field.w, field.h, 6);
+function drawCloseButton(ctx, button, uiState, theme) {
+    const { rect } = button;
+    const hovered = uiState.hoveredActionId === button.action.id;
+    const pressed = uiState.pressedActionId === button.action.id;
+    ctx.fillStyle = pressed ? theme.pressed : hovered ? theme.hover : theme.panel;
+    ctx.strokeStyle = hovered ? theme.accentBright : theme.border;
+    ctx.lineWidth = hovered ? 2 : 1;
+    roundedRect(ctx, rect.x, rect.y, rect.w, rect.h, 5);
     ctx.fill();
     ctx.stroke();
+    ctx.font = '18px Consolas, monospace';
+    ctx.fillStyle = theme.text;
+    ctx.textAlign = 'center';
+    ctx.fillText('×', rect.x + rect.w / 2, rect.y + 17);
+    ctx.textAlign = 'left';
+}
 
+function drawModalField(ctx, field, uiState, theme) {
+    const focused = uiState.focusedModalField === field.id;
+    const value = modalFieldDisplayValue(field.id, uiState.modalInputs?.[field.id] ?? '');
     ctx.font = theme.font;
+    ctx.fillStyle = focused ? theme.accentBright : theme.muted;
+    fitText(ctx, field.label, field.rect.x, field.rect.y - 7, field.rect.w);
+    ctx.fillStyle = theme.panelDeep;
+    ctx.strokeStyle = focused ? theme.accentBright : theme.border;
+    ctx.lineWidth = focused ? 2 : 1;
+    roundedRect(ctx, field.rect.x, field.rect.y, field.rect.w, field.rect.h, 6);
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = value ? theme.text : theme.muted;
-    fitText(ctx, `${value || placeholder}_`, field.x + 12, field.y + 24, field.w - 24);
+    fitText(ctx, `${value}_`, field.rect.x + 12, field.rect.y + 23, field.rect.w - 24);
 }
 
-function modalTitle(modal) {
-    if (modal === 'login') return 'Select Account';
-    if (modal === 'loginPassword') return 'Login';
-    if (modal === 'createAccount') return 'New Account';
-    if (modal === 'settings') return 'Settings';
-    return 'Menu';
-}
-
-function modalHelper(modal, session) {
-    if (modal === 'loginPassword') return 'Enter password, then confirm.';
-    if (modal === 'createAccount') return 'Enter account name | password.';
-    if (modal === 'settings') return session?.displayName ?? '';
-    return '';
-}
-
-function modalNeedsTextInput(modal) {
-    return modal === 'loginPassword' || modal === 'createAccount';
-}
-
-function modalInputLabel(modal) {
-    if (modal === 'loginPassword') return 'Password';
-    if (modal === 'createAccount') return 'Account name and password';
-    return 'Input';
-}
-
-function modalInputPlaceholder(modal) {
-    if (modal === 'loginPassword') return 'password';
-    if (modal === 'createAccount') return 'name | password';
-    return '';
-}
-
-function modalInputDisplayValue(modal, inputBuffer) {
-    const value = String(inputBuffer ?? '');
-    if (modal !== 'loginPassword') return value;
-    return value ? '•'.repeat(Math.max(1, value.length)) : '';
+function modalFieldDisplayValue(fieldId, value) {
+    if (fieldId !== 'password') return String(value ?? '');
+    return value ? '•'.repeat(String(value).length) : '';
 }
 
 function drawBackground(ctx, layout, theme) {
@@ -186,9 +147,7 @@ function drawTopBar(ctx, layout, state, uiState, session, theme) {
     ctx.font = theme.font;
     ctx.fillStyle = theme.muted;
     const account = session?.loggedIn ? session.displayName : '';
-    const status = uiState.screen === 'menu'
-        ? account
-        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}${account ? ` | ${account}` : ''}`;
+    const status = uiState.screen === 'menu' ? account : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}${account ? ` | ${account}` : ''}`;
     if (status) fitText(ctx, status, rect.x + 58, rect.y + 24, rect.w - 210);
     if (shouldShowFeedback(uiState.activeFeedback) && uiState.screen !== 'menu') {
         ctx.fillStyle = theme.accent;
@@ -203,12 +162,7 @@ function drawClock(ctx, rect, session, theme) {
     if (!session?.loggedIn || settings.showClock === false) return;
     const now = new Date();
     const timeZone = settings.timeZone && settings.timeZone !== 'local' ? settings.timeZone : undefined;
-    const clock = new Intl.DateTimeFormat(undefined, {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: settings.clockFormat !== '24h',
-        timeZone,
-    }).format(now);
+    const clock = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit', hour12: settings.clockFormat !== '24h', timeZone }).format(now);
     ctx.font = theme.font;
     ctx.fillStyle = theme.accentBright;
     fitText(ctx, clock, rect.x + rect.w - 120, rect.y + 32, 104, 'right');
@@ -276,15 +230,7 @@ function drawContext(ctx, rect, state, uiState, theme) {
     if (!rect.w || !rect.h) return;
     panel(ctx, rect, theme.panel, theme.border);
     const snapshot = createCanvasContextSnapshot(state);
-    const lines = [
-        'Context', '', `${snapshot.playerName}`,
-        `${snapshot.raceName} ${snapshot.jobName} Lv.${snapshot.level}`,
-        `HP ${snapshot.hp}/${snapshot.maxHp}`,
-        `MP ${snapshot.mp}/${snapshot.maxMp}`,
-        `TP ${snapshot.tp}/${snapshot.maxTp}`,
-        '', `Location: ${snapshot.location}`, `Grid: ${snapshot.gridX}:${snapshot.gridY}`,
-        '', 'History', ...uiState.commandHistory.slice(-7).map((command) => `> ${command}`),
-    ];
+    const lines = ['Context', '', `${snapshot.playerName}`, `${snapshot.raceName} ${snapshot.jobName} Lv.${snapshot.level}`, `HP ${snapshot.hp}/${snapshot.maxHp}`, `MP ${snapshot.mp}/${snapshot.maxMp}`, `TP ${snapshot.tp}/${snapshot.maxTp}`, '', `Location: ${snapshot.location}`, `Grid: ${snapshot.gridX}:${snapshot.gridY}`, '', 'History', ...uiState.commandHistory.slice(-7).map((command) => `> ${command}`)];
     drawLines(ctx, rect.x + 14, rect.y + 26, rect.w - 28, lines, theme);
 }
 
