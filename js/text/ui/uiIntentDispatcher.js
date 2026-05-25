@@ -1,6 +1,7 @@
 import { replaceState as replaceGameState } from '../gameState.js';
 import {
     appendOutput,
+    clearModalInputs,
     setActiveFeedback,
     setCanvasModal,
     setCanvasScreen,
@@ -50,14 +51,7 @@ export function dispatchUiIntent(request = {}) {
 }
 
 function createDispatchContext({ intent, payload = {}, state, uiState, session = {}, services = {} }) {
-    return {
-        intent: String(intent ?? ''),
-        payload: payload ?? {},
-        state,
-        uiState,
-        session: session ?? {},
-        services: services ?? {},
-    };
+    return { intent: String(intent ?? ''), payload: payload ?? {}, state, uiState, session: session ?? {}, services: services ?? {} };
 }
 
 function openMenu(context) {
@@ -85,7 +79,7 @@ function openLogin(context) {
 }
 
 function openCreateAccount(context) {
-    context.uiState.inputBuffer = '';
+    clearModalInputs(context.uiState);
     setCanvasModal(context.uiState, 'createAccount');
     setActiveFeedback(context.uiState, '');
     return ok(context);
@@ -96,7 +90,7 @@ function selectAccount(context) {
     const accountId = context.payload.accountId ?? context.payload.accountSelector ?? context.payload.value;
     if (!accountId) return feedback(context, 'No account selected.');
     context.uiState.selectedAccountId = accountId;
-    context.uiState.inputBuffer = '';
+    clearModalInputs(context.uiState);
     setCanvasModal(context.uiState, 'loginPassword');
     const label = context.payload.displayName ?? findAccount(context.session, accountId)?.displayName ?? accountId;
     setActiveFeedback(context.uiState, `Selected ${label}.`);
@@ -105,7 +99,7 @@ function selectAccount(context) {
 
 function confirmAccountLogin(context) {
     refreshSession(context);
-    const password = parseLoginPassword(context.uiState.inputBuffer);
+    const password = context.uiState.modalInputs?.password ?? '';
     const accountSelector = context.payload.accountId ?? context.uiState.selectedAccountId ?? context.session.accounts?.[0]?.id;
     const loginAccount = context.services.loginAccount;
     if (!loginAccount) return fail(context, 'Account login service unavailable.');
@@ -113,7 +107,6 @@ function confirmAccountLogin(context) {
     if (!result.ok) return feedback(context, result.reason);
 
     setSession(context, result.session);
-    context.uiState.inputBuffer = '';
     setCanvasModal(context.uiState, null);
     setCanvasScreen(context.uiState, 'menu');
     const message = `Logged in as ${context.session.displayName}.`;
@@ -123,7 +116,8 @@ function confirmAccountLogin(context) {
 }
 
 function createAccount(context) {
-    const { accountName, password } = parseCredentialInput(context.uiState.inputBuffer);
+    const accountName = context.uiState.modalInputs?.accountName ?? '';
+    const password = context.uiState.modalInputs?.password ?? '';
     const createAccountWithPassword = context.services.createAccountWithPassword;
     if (!createAccountWithPassword) return fail(context, 'Account creation service unavailable.');
     const result = createAccountWithPassword(accountName, password, { persistentLogin: true });
@@ -131,7 +125,6 @@ function createAccount(context) {
 
     setSession(context, result.session);
     context.uiState.selectedAccountId = context.session.accountId;
-    context.uiState.inputBuffer = '';
     setCanvasModal(context.uiState, null);
     setCanvasScreen(context.uiState, 'menu');
     const feedbackText = `Created ${context.session.displayName}.`;
@@ -156,10 +149,7 @@ function selectCharacter(context) {
     const loadCharacter = context.services.loadCharacter;
     if (!loadCharacter) return fail(context, 'Character load service unavailable.');
     const loaded = loadCharacter(characterSelector);
-    if (!loaded) {
-        const label = context.payload.displayName ?? characterSelector;
-        return feedback(context, `Unable to load character: ${label}`);
-    }
+    if (!loaded) return feedback(context, `Unable to load character: ${context.payload.displayName ?? characterSelector}`);
 
     const replaceState = context.services.replaceState ?? replaceGameState;
     replaceState(context.state, loaded);
@@ -200,9 +190,7 @@ function updateSetting(context, actionId) {
 function routeCommand(context) {
     const command = String(context.payload.command ?? '').trim();
     if (!command) return fail(context, 'No command to route.');
-    if (!context.session.loggedIn && !command.startsWith('/account')) {
-        return feedback(context, 'Login or create a local account first.');
-    }
+    if (!context.session.loggedIn && !command.startsWith('/account')) return feedback(context, 'Login or create a local account first.');
 
     const commandAdapter = context.services.commandAdapter ?? context.services.routeCommand;
     if (!commandAdapter) return fail(context, 'Command adapter unavailable.');
@@ -217,17 +205,6 @@ function routeCommand(context) {
     return ok(context, { command, response });
 }
 
-function parseCredentialInput(inputBuffer) {
-    const value = String(inputBuffer ?? '').trim();
-    const [namePart, passwordPart] = value.split('|').map((part) => String(part ?? '').trim());
-    return { accountName: namePart, password: passwordPart };
-}
-
-function parseLoginPassword(inputBuffer) {
-    const credentials = parseCredentialInput(inputBuffer);
-    return credentials.password || credentials.accountName;
-}
-
 function feedback(context, message) {
     setActiveFeedback(context.uiState, message);
     appendOutput(context.uiState, message);
@@ -235,8 +212,7 @@ function feedback(context, message) {
 }
 
 function refreshSession(context) {
-    const nextSession = context.services.loadAccountSession?.() ?? context.session;
-    return setSession(context, nextSession);
+    return setSession(context, context.services.loadAccountSession?.() ?? context.session);
 }
 
 function setSession(context, session) {
@@ -252,9 +228,7 @@ function ensureSelectedAccount(context) {
         context.uiState.selectedAccountId = null;
         return null;
     }
-    if (!selected || !accounts.some((account) => account.id === selected)) {
-        context.uiState.selectedAccountId = accounts[0].id;
-    }
+    if (!selected || !accounts.some((account) => account.id === selected)) context.uiState.selectedAccountId = accounts[0].id;
     return context.uiState.selectedAccountId;
 }
 
@@ -268,21 +242,9 @@ function nextValue(current, values) {
 }
 
 function ok(context, result = {}) {
-    return {
-        ok: true,
-        handled: true,
-        intent: context.intent,
-        session: context.session,
-        ...result,
-    };
+    return { ok: true, handled: true, intent: context.intent, session: context.session, ...result };
 }
 
 function fail(context, reason) {
-    return {
-        ok: false,
-        handled: false,
-        intent: context.intent,
-        session: context.session,
-        reason,
-    };
+    return { ok: false, handled: false, intent: context.intent, session: context.session, reason };
 }
