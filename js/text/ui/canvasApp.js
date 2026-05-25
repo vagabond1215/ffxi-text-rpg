@@ -62,16 +62,7 @@ export function createCanvasApp({ canvas }) {
     }
 
     const commandAdapter = createCommandIntentAdapter(routeCommand);
-    const intentServices = {
-        loadAccountSession: refreshSession,
-        createAccountWithPassword,
-        loginAccount,
-        logoutAccount,
-        updateAccountSettings,
-        loadCharacter,
-        replaceState,
-        commandAdapter,
-    };
+    const intentServices = { loadAccountSession: refreshSession, createAccountWithPassword, loginAccount, logoutAccount, updateAccountSettings, loadCharacter, replaceState, commandAdapter };
 
     function runCommand(command) {
         const { intent, payload } = createCommandIntent(command);
@@ -96,7 +87,12 @@ export function createCanvasApp({ canvas }) {
     }
 
     function dispatchCanvasAction(actionId) {
-        const allActions = [...TOP_ACTIONS, ...createMenuActionList(session, uiState.modal), ...createActionList(state)];
+        const allActions = [
+            ...TOP_ACTIONS,
+            ...(layout?.modalCloseButton ? [layout.modalCloseButton.action] : []),
+            ...createMenuActionList(session, uiState.modal, uiState.modalPage),
+            ...createActionList(state),
+        ];
         const action = allActions.find((item) => item.id === actionId);
         if (!action) {
             appendOutput(uiState, `Unknown action: ${actionId}`);
@@ -134,15 +130,8 @@ export function createCanvasApp({ canvas }) {
     function render() {
         refreshSession();
         const actions = createActionList(state);
-        const menuActions = createMenuActionList(session, uiState.modal);
-        layout = createCanvasLayout({
-            width: canvas.clientWidth || window.innerWidth,
-            height: canvas.clientHeight || window.innerHeight,
-            actions,
-            menuActions,
-            topActions: TOP_ACTIONS,
-            modal: uiState.modal,
-        });
+        const menuActions = createMenuActionList(session, uiState.modal, uiState.modalPage);
+        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, topActions: TOP_ACTIONS, modal: uiState.modal });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
 
@@ -198,9 +187,8 @@ export function createCanvasApp({ canvas }) {
     canvas.addEventListener('keydown', (event) => {
         const result = applyCanvasKey(uiState, event.key, event);
         if (result.type !== 'ignored') event.preventDefault();
-        if (result.type === 'menu') {
-            dispatchAndRender('ui.menu.open');
-        } else if (result.type === 'modal') render();
+        if (result.type === 'menu') dispatchAndRender('ui.menu.open');
+        else if (result.type === 'modal') render();
         else if (result.type === 'submit') submitFromInput(result.command);
         else render();
     });
