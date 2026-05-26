@@ -1,4 +1,4 @@
-import { replaceState as replaceGameState } from '../gameState.js';
+import { createNewGameState, replaceState as replaceGameState } from '../gameState.js';
 import {
     appendOutput,
     clearModalInputs,
@@ -7,6 +7,18 @@ import {
     setCanvasScreen,
     setModalPage,
 } from './canvasInput.js';
+import {
+    advanceCreatorStep,
+    createCreatorGameOptions,
+    createGuidedCreatorState,
+    describeCreatorOpening,
+    normalizeCreatorState,
+    selectCreatorJob,
+    selectCreatorNation,
+    selectCreatorRace,
+    selectCreatorSex,
+    validateCreator,
+} from '../systems/characterCreationModel.js';
 
 export function createIntentResult({ ok = true, message = '', data = null } = {}) {
     return { ok, message, data };
@@ -60,6 +72,18 @@ export function dispatchUiIntent(request = {}) {
         case 'settings.gmtUp': return updateSetting(context, { gmtOffset: clampGmt((context.session.settings?.gmtOffset ?? 0) + 1) });
         case 'settings.cycleDaylightSavings': return updateSetting(context, { daylightSavings: nextValue(context.session.settings?.daylightSavings, DST_MODES) });
         case 'settings.noop': return ok(context);
+        case 'creator.open': return openCreator(context);
+        case 'creator.goto': return updateCreator(context, { stepIndex: context.payload.stepIndex });
+        case 'creator.selectRace': return updateCreator(context, (creator) => selectCreatorRace(creator, context.payload.raceId));
+        case 'creator.selectSex': return updateCreator(context, (creator) => selectCreatorSex(creator, context.payload.sex));
+        case 'creator.selectNation': return updateCreator(context, (creator) => selectCreatorNation(creator, context.payload.nationId));
+        case 'creator.selectJob': return updateCreator(context, (creator) => selectCreatorJob(creator, context.payload.mainJobId));
+        case 'creator.next': return updateCreator(context, (creator) => advanceCreatorStep(creator, 1));
+        case 'creator.back': return updateCreator(context, (creator) => advanceCreatorStep(creator, -1));
+        case 'creator.reset': return resetCreator(context);
+        case 'creator.cancel': return cancelCreator(context);
+        case 'creator.confirm': return confirmCreator(context);
+        case 'creator.begin': return beginCreatedCharacter(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -198,10 +222,72 @@ function updateSetting(context, updates) {
     return ok(context, { settings: result.settings });
 }
 
+function openCreator(context) {
+    refreshSession(context);
+    if (!context.session.loggedIn) return feedback(context, 'Login or create a local account first.');
+    context.uiState.creator = createGuidedCreatorState();
+    context.uiState.creatorIntro = [];
+    setCanvasModal(context.uiState, null);
+    setCanvasScreen(context.uiState, 'creator');
+    setActiveFeedback(context.uiState, 'Choose race and sex.');
+    return ok(context, { creator: context.uiState.creator });
+}
+
+function updateCreator(context, updater) {
+    context.uiState.creator ??= createGuidedCreatorState();
+    const next = typeof updater === 'function' ? updater(context.uiState.creator) : { ...context.uiState.creator, ...updater };
+    context.uiState.creator = normalizeCreatorState(next);
+    setActiveFeedback(context.uiState, '');
+    return ok(context, { creator: context.uiState.creator });
+}
+
+function resetCreator(context) {
+    context.uiState.creator = createGuidedCreatorState();
+    setActiveFeedback(context.uiState, 'Character creation reset.');
+    return ok(context, { creator: context.uiState.creator });
+}
+
+function cancelCreator(context) {
+    context.uiState.creator = null;
+    context.uiState.creatorIntro = [];
+    setCanvasScreen(context.uiState, 'menu');
+    setActiveFeedback(context.uiState, 'Character creation cancelled.');
+    return ok(context);
+}
+
+function confirmCreator(context) {
+    context.uiState.creator = normalizeCreatorState(context.uiState.creator ?? createGuidedCreatorState());
+    const issues = validateCreator(context.uiState.creator);
+    if (issues.length) return feedback(context, issues[0]);
+    const nextState = createNewGameState(createCreatorGameOptions(context.uiState.creator));
+    const replaceState = context.services.replaceState ?? replaceGameState;
+    replaceState(context.state, nextState);
+    const saveGame = context.services.saveGame;
+    const saved = saveGame ? saveGame(context.state) : false;
+    refreshSession(context);
+    context.uiState.creatorIntro = describeCreatorOpening(context.uiState.creator);
+    setCanvasScreen(context.uiState, 'creatorIntro');
+    const message = saved ? `Created ${context.state.player.identity.name}. Character saved.` : `Created ${context.state.player.identity.name}. Save unavailable.`;
+    setActiveFeedback(context.uiState, message);
+    return ok(context, { character: context.state, saved, message });
+}
+
+function beginCreatedCharacter(context) {
+    setCanvasScreen(context.uiState, 'game');
+    const message = `Begin ${context.state.player.identity.name}'s adventure.`;
+    setActiveFeedback(context.uiState, message);
+    if (context.payload.command) {
+        context.payload.command = String(context.payload.command);
+        return routeCommand(context);
+    }
+    return ok(context, { message });
+}
+
 function routeCommand(context) {
     const command = String(context.payload.command ?? '').trim();
     if (!command) return fail(context, 'No command to route.');
     if (!context.session.loggedIn && !command.startsWith('/account')) return feedback(context, 'Login or create a local account first.');
+    if (command === '/newcharacter' || command === 'newcharacter') return openCreator(context);
     const commandAdapter = context.services.commandAdapter ?? context.services.routeCommand;
     if (!commandAdapter) return fail(context, 'Command adapter unavailable.');
     const response = commandAdapter(command, context.payload.action ?? null);
