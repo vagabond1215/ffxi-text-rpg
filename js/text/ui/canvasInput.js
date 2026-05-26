@@ -1,4 +1,5 @@
 import { hitTestAction, hitTestModalField, hitTestRegion } from './canvasLayout.js';
+import { createGuidedCreatorState, setCreatorName } from '../systems/characterCreationModel.js';
 
 export function createCanvasUiState(options = {}) {
     return {
@@ -9,6 +10,8 @@ export function createCanvasUiState(options = {}) {
         historyIndex: null,
         modalPage: options.modalPage ?? null,
         inputBuffer: options.inputBuffer ?? '',
+        creator: options.creator ?? null,
+        creatorIntro: options.creatorIntro ?? [],
         modalInputs: {
             accountName: options.modalInputs?.accountName ?? '',
             password: options.modalInputs?.password ?? '',
@@ -40,17 +43,18 @@ export function setActiveFeedback(uiState, text) {
 }
 
 export function setCanvasScreen(uiState, screen) {
-    uiState.screen = screen === 'game' ? 'game' : 'menu';
-    uiState.focusedRegion = 'input';
+    uiState.screen = ['game', 'creator', 'creatorIntro'].includes(screen) ? screen : 'menu';
+    uiState.focusedRegion = uiState.screen === 'creator' ? 'creatorName' : 'input';
     uiState.hoveredActionId = null;
     uiState.pressedActionId = null;
+    if (uiState.screen === 'creator') uiState.creator ??= createGuidedCreatorState();
     return uiState.screen;
 }
 
 export function setCanvasModal(uiState, modal, page = null) {
     uiState.modal = modal ?? null;
     uiState.modalPage = modal ? page : null;
-    uiState.focusedRegion = modal ? 'modal' : 'input';
+    uiState.focusedRegion = modal ? 'modal' : uiState.screen === 'creator' ? 'creatorName' : 'input';
     uiState.focusedModalField = defaultModalField(modal);
     if (!modal) clearModalInputs(uiState);
     uiState.hoveredActionId = null;
@@ -92,6 +96,7 @@ export function submitCommandInput(uiState, routeCommand) {
 export function applyCanvasKey(uiState, key, event = {}) {
     if (event.ctrlKey || event.metaKey || event.altKey) return { type: 'ignored' };
     if (uiState.modal && modalUsesFields(uiState.modal)) return applyModalKey(uiState, key);
+    if (uiState.screen === 'creator') return applyCreatorKey(uiState, key);
     switch (key) {
         case 'Enter': {
             const command = uiState.inputBuffer.trim();
@@ -164,6 +169,25 @@ export function handlePointerUp(uiState, layout, x, y) {
         return { type: 'action', actionId: hit.action.id, action: hit.action };
     }
     return { type: 'none' };
+}
+
+function applyCreatorKey(uiState, key) {
+    uiState.creator ??= createGuidedCreatorState();
+    switch (key) {
+        case 'Enter':
+            return { type: 'creator', intent: 'creator.next' };
+        case 'Backspace':
+            uiState.creator = setCreatorName(uiState.creator, String(uiState.creator.name ?? '').slice(0, -1));
+            return { type: 'edit' };
+        case 'Escape':
+            return { type: 'creator', intent: 'creator.cancel' };
+        default:
+            if (typeof key === 'string' && key.length === 1) {
+                uiState.creator = setCreatorName(uiState.creator, `${uiState.creator.name ?? ''}${key}`);
+                return { type: 'edit' };
+            }
+            return { type: 'ignored' };
+    }
 }
 
 function applyModalKey(uiState, key) {
