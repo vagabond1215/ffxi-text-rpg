@@ -1,6 +1,7 @@
 import { isCommandIntent } from './uiIntentDispatcher.js';
 import {
     CREATOR_STEPS,
+    createGuidedCreatorState,
     getCreatorStep,
     getNationOptions,
     getRaceOptions,
@@ -34,10 +35,10 @@ export function createActionList(state, actions = GLOBAL_ACTIONS) {
 }
 
 export function createCreatorActionList(uiState) {
-    const creator = uiState.creator;
+    const creator = uiState.creator ?? createGuidedCreatorState();
     const step = getCreatorStep(creator);
     const issues = validateCreator(creator);
-    const actions = [
+    return [
         ...CREATOR_STEPS.map((item, index) => uiAction(`creatorStep:${item}`, stepLabel(item), 'creator.goto', { stepIndex: index }, { region: 'steps', selected: item === step })),
         ...choiceActionsForStep(step, creator),
         uiAction('creatorCancel', 'Cancel', 'creator.cancel', {}, { region: 'footer' }),
@@ -47,7 +48,6 @@ export function createCreatorActionList(uiState) {
             ? uiAction('creatorCreate', 'Create', 'creator.confirm', {}, { region: 'footer', disabled: issues.length > 0 })
             : uiAction('creatorNext', 'Next', 'creator.next', {}, { region: 'footer' }),
     ];
-    return actions;
 }
 
 export function createCreatorIntroActionList() {
