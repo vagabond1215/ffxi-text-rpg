@@ -1,4 +1,13 @@
 import { isCommandIntent } from './uiIntentDispatcher.js';
+import {
+    CREATOR_STEPS,
+    getCreatorStep,
+    getNationOptions,
+    getRaceOptions,
+    getSexOptions,
+    getStartingJobOptions,
+    validateCreator,
+} from '../systems/characterCreationModel.js';
 
 export const GLOBAL_ACTIONS = Object.freeze([
     commandAction('character', 'Character', 'character'),
@@ -24,6 +33,30 @@ export function createActionList(state, actions = GLOBAL_ACTIONS) {
     return actions.map((item) => ({ ...item, disabled: isActionDisabled(item, state) }));
 }
 
+export function createCreatorActionList(uiState) {
+    const creator = uiState.creator;
+    const step = getCreatorStep(creator);
+    const issues = validateCreator(creator);
+    const actions = [
+        ...CREATOR_STEPS.map((item, index) => uiAction(`creatorStep:${item}`, stepLabel(item), 'creator.goto', { stepIndex: index }, { region: 'steps', selected: item === step })),
+        ...choiceActionsForStep(step, creator),
+        uiAction('creatorCancel', 'Cancel', 'creator.cancel', {}, { region: 'footer' }),
+        uiAction('creatorBack', 'Back', 'creator.back', {}, { region: 'footer', disabled: creator.stepIndex <= 0 }),
+        uiAction('creatorReset', 'Reset', 'creator.reset', {}, { region: 'footer' }),
+        step === 'summary'
+            ? uiAction('creatorCreate', 'Create', 'creator.confirm', {}, { region: 'footer', disabled: issues.length > 0 })
+            : uiAction('creatorNext', 'Next', 'creator.next', {}, { region: 'footer' }),
+    ];
+    return actions;
+}
+
+export function createCreatorIntroActionList() {
+    return [
+        uiAction('creatorBegin', 'Begin Adventure', 'creator.begin', {}, { region: 'intro' }),
+        uiAction('creatorViewCharacter', 'View Character', 'creator.begin', { command: 'character' }, { region: 'intro' }),
+    ];
+}
+
 export function createMenuActionList(session, modal = null, modalPage = null) {
     if (modal === 'mainMenu') return createMainMenuActions(session);
     if (modal === 'login') return createLoginActions(session);
@@ -45,8 +78,20 @@ export function createMenuActionList(session, modal = null, modalPage = null) {
             characterId: character.id,
             displayName: character.name,
         })),
-        commandAction('newCharacter', characters.length ? 'New Character' : 'Create Character', '/newcharacter', { screenAfter: 'game', clearFeedback: true }),
+        uiAction('newCharacter', characters.length ? 'New Character' : 'Create Character', 'creator.open'),
     ];
+}
+
+function choiceActionsForStep(step, creator) {
+    if (step === 'identity') {
+        return [
+            ...getRaceOptions().map((race) => uiAction(`race:${race.id}`, race.name, 'creator.selectRace', { raceId: race.id }, { region: 'choices', detail: race.blurb, tags: race.tags, selected: race.id === creator.raceId })),
+            ...getSexOptions(creator).map((sex) => uiAction(`sex:${sex.id}`, `Sex: ${sex.name}`, 'creator.selectSex', { sex: sex.id }, { region: 'choices', selected: sex.id === creator.sex })),
+        ];
+    }
+    if (step === 'nation') return getNationOptions().map((nation) => uiAction(`nation:${nation.id}`, nation.name, 'creator.selectNation', { nationId: nation.id }, { region: 'choices', detail: nation.blurb, tags: nation.tags, selected: nation.id === creator.nationId }));
+    if (step === 'job') return getStartingJobOptions().map((job) => uiAction(`job:${job.id}`, `${job.name} (${job.abbreviation})`, 'creator.selectJob', { mainJobId: job.id }, { region: 'choices', detail: job.blurb, tags: job.tags, selected: job.id === creator.mainJobId }));
+    return [];
 }
 
 function createMainMenuActions(session) {
@@ -131,11 +176,20 @@ function commandAction(id, label, command, payload = {}) {
     return Object.freeze({ id, label, command, intent: 'command.route', payload: Object.freeze({ command, ...payload }), kind: 'command' });
 }
 
-function uiAction(id, label, intent, payload = {}) {
-    return Object.freeze({ id, label, command: payload.command ?? id, intent, payload: Object.freeze(payload), kind: 'ui' });
+function uiAction(id, label, intent, payload = {}, extra = {}) {
+    return Object.freeze({ id, label, command: payload.command ?? id, intent, payload: Object.freeze(payload), kind: 'ui', ...extra });
+}
+
+function stepLabel(step) {
+    if (step === 'identity') return 'Race / Sex';
+    if (step === 'nation') return 'Starting City';
+    if (step === 'job') return 'Starting Job';
+    if (step === 'summary') return 'Summary';
+    return step;
 }
 
 function isActionDisabled(actionRecord, state) {
+    if (actionRecord.disabled) return true;
     if (actionRecord.id === 'battle') return state?.activeBattle?.phase !== 'active';
     if (actionRecord.intent === 'settings.noop') return true;
     return false;
