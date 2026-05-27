@@ -294,8 +294,8 @@ test('canvas menu action list shows character selection and creation after login
     assert.equal(findActionById('character:character-1', loggedIn).payload.characterId, 'character-1');
     assert.equal(findActionById('character:character-1', loggedIn).payload.displayName, 'Aldo');
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
-    assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
-    assert.deepEqual(findActionById('newCharacter', loggedIn).payload, { command: '/newcharacter', screenAfter: 'game', clearFeedback: true });
+    assert.equal(findActionById('newCharacter', loggedIn).intent, 'creator.open');
+    assert.deepEqual(findActionById('newCharacter', loggedIn).payload, {});
     assert.equal(findActionById('settings', loggedIn), null);
     assert.equal(findActionById('logout', loggedIn), null);
 });
