@@ -96,6 +96,10 @@ export function submitCommandInput(uiState, routeCommand) {
 export function applyCanvasKey(uiState, key, event = {}) {
     if (event.ctrlKey || event.metaKey || event.altKey) return { type: 'ignored' };
     if (uiState.modal && modalUsesFields(uiState.modal)) return applyModalKey(uiState, key);
+    if (uiState.modal && key === 'Escape') {
+        setCanvasModal(uiState, null);
+        return { type: 'modal' };
+    }
     if (uiState.screen === 'creator') return applyCreatorKey(uiState, key);
     switch (key) {
         case 'Enter': {

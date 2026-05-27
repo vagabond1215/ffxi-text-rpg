@@ -211,6 +211,14 @@ test('escape opens menu from game screen or closes a modal', () => {
     assert.equal(uiState.modalPage, null);
 });
 
+test('escape closes a non-field modal before creator cancellation', () => {
+    const uiState = createCanvasUiState({ screen: 'creator', modal: 'mainMenu' });
+
+    assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'modal' });
+    assert.equal(uiState.modal, null);
+    assert.equal(uiState.screen, 'creator');
+});
+
 test('canvas menu action list shows only new account when logged out with no accounts', () => {
     const loggedOut = createMenuActionList({ loggedIn: false, accounts: [] });
 
