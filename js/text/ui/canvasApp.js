@@ -26,7 +26,7 @@ import {
 } from './canvasInput.js';
 import { renderCanvasApp } from './canvasRenderer.js';
 import { createCommandIntent, createCommandIntentAdapter } from './commandIntentAdapter.js';
-import { createActionList, createMenuActionList, TOP_ACTIONS } from './uiActions.js';
+import { createActionList, createCreatorActionList, createCreatorIntroActionList, createMenuActionList, TOP_ACTIONS } from './uiActions.js';
 import { dispatchUiIntent } from './uiIntentDispatcher.js';
 
 export function createCanvasApp({ canvas }) {
@@ -62,7 +62,7 @@ export function createCanvasApp({ canvas }) {
     }
 
     const commandAdapter = createCommandIntentAdapter(routeCommand);
-    const intentServices = { loadAccountSession: refreshSession, createAccountWithPassword, loginAccount, logoutAccount, updateAccountSettings, loadCharacter, replaceState, commandAdapter };
+    const intentServices = { loadAccountSession: refreshSession, createAccountWithPassword, loginAccount, logoutAccount, updateAccountSettings, loadCharacter, replaceState, saveGame, commandAdapter };
 
     function runCommand(command) {
         const { intent, payload } = createCommandIntent(command);
@@ -87,10 +87,12 @@ export function createCanvasApp({ canvas }) {
     }
 
     function dispatchCanvasAction(actionId) {
+        const creatorActions = uiState.screen === 'creator' ? createCreatorActionList(uiState) : uiState.screen === 'creatorIntro' ? createCreatorIntroActionList() : [];
         const allActions = [
             ...TOP_ACTIONS,
             ...(layout?.modalCloseButton ? [layout.modalCloseButton.action] : []),
             ...createMenuActionList(session, uiState.modal, uiState.modalPage),
+            ...creatorActions,
             ...createActionList(state),
         ];
         const action = allActions.find((item) => item.id === actionId);
@@ -129,9 +131,10 @@ export function createCanvasApp({ canvas }) {
 
     function render() {
         refreshSession();
-        const actions = createActionList(state);
+        const actions = uiState.screen === 'game' ? createActionList(state) : [];
         const menuActions = createMenuActionList(session, uiState.modal, uiState.modalPage);
-        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, topActions: TOP_ACTIONS, modal: uiState.modal });
+        const creatorActions = uiState.screen === 'creator' ? createCreatorActionList(uiState) : uiState.screen === 'creatorIntro' ? createCreatorIntroActionList() : [];
+        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, creatorActions, topActions: TOP_ACTIONS, modal: uiState.modal });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
 
@@ -189,6 +192,7 @@ export function createCanvasApp({ canvas }) {
         if (result.type !== 'ignored') event.preventDefault();
         if (result.type === 'menu') dispatchAndRender('ui.menu.open');
         else if (result.type === 'modal') render();
+        else if (result.type === 'creator') dispatchAndRender(result.intent);
         else if (result.type === 'submit') submitFromInput(result.command);
         else render();
     });

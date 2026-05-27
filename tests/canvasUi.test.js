@@ -211,6 +211,14 @@ test('escape opens menu from game screen or closes a modal', () => {
     assert.equal(uiState.modalPage, null);
 });
 
+test('escape closes a non-field modal before creator cancellation', () => {
+    const uiState = createCanvasUiState({ screen: 'creator', modal: 'mainMenu' });
+
+    assert.deepEqual(applyCanvasKey(uiState, 'Escape'), { type: 'modal' });
+    assert.equal(uiState.modal, null);
+    assert.equal(uiState.screen, 'creator');
+});
+
 test('canvas menu action list shows only new account when logged out with no accounts', () => {
     const loggedOut = createMenuActionList({ loggedIn: false, accounts: [] });
 
@@ -294,8 +302,8 @@ test('canvas menu action list shows character selection and creation after login
     assert.equal(findActionById('character:character-1', loggedIn).payload.characterId, 'character-1');
     assert.equal(findActionById('character:character-1', loggedIn).payload.displayName, 'Aldo');
     assert.equal(findActionById('newCharacter', loggedIn).label, 'New Character');
-    assert.equal(findActionById('newCharacter', loggedIn).intent, 'command.route');
-    assert.deepEqual(findActionById('newCharacter', loggedIn).payload, { command: '/newcharacter', screenAfter: 'game', clearFeedback: true });
+    assert.equal(findActionById('newCharacter', loggedIn).intent, 'creator.open');
+    assert.deepEqual(findActionById('newCharacter', loggedIn).payload, {});
     assert.equal(findActionById('settings', loggedIn), null);
     assert.equal(findActionById('logout', loggedIn), null);
 });

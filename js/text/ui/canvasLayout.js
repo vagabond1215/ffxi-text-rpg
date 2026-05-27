@@ -1,4 +1,4 @@
-export function createCanvasLayout({ width, height, actions = [], menuActions = [], topActions = [], modal = null }) {
+export function createCanvasLayout({ width, height, actions = [], menuActions = [], topActions = [], modal = null, creatorActions = [] }) {
     const safeWidth = Math.max(320, Number(width) || 320);
     const safeHeight = Math.max(360, Number(height) || 360);
     const margin = 14;
@@ -20,6 +20,7 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
     const main = rect(mainX, bodyTop, Math.max(120, mainRight - mainX), bodyHeight);
     const input = rect(margin, safeHeight - margin - inputHeight, safeWidth - margin * 2, inputHeight);
     const splash = rect(margin, margin, safeWidth - margin * 2, safeHeight - margin * 2);
+    const creatorName = rect(main.x + 18, Math.max(main.y + main.h - 104, main.y + 220), Math.min(360, main.w - 36), 38);
     const modalRect = createModalRect(safeWidth, safeHeight, margin, modal, menuActions.length);
 
     return {
@@ -36,8 +37,10 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
             input,
             splash,
             modal: modalRect,
+            creatorName,
         },
         actionButtons: layoutActionButtons(sidebar, actions),
+        creatorButtons: layoutCreatorButtons(sidebar, main, input, creatorActions),
         menuButtons: layoutMenuButtons(splash, menuActions),
         modalButtons: layoutModalButtons(modalRect, menuActions, modal),
         modalCloseButton: layoutModalCloseButton(modalRect),
@@ -51,6 +54,7 @@ export function hitTestAction(layout, x, y) {
         ...layout.topButtons,
         ...(layout.modal ? [layout.modalCloseButton] : []),
         ...(layout.modal ? layout.modalButtons : []),
+        ...(!layout.modal ? layout.creatorButtons ?? [] : []),
         ...(!layout.modal ? layout.menuButtons : []),
         ...layout.actionButtons,
     ].filter(Boolean).find((button) => pointInRect(x, y, button.rect)) ?? null;
@@ -81,6 +85,69 @@ function layoutActionButtons(sidebar, actions) {
         action: item,
         rect: rect(sidebar.x + padding, startY + index * (buttonHeight + gap), sidebar.w - padding * 2, buttonHeight),
     }));
+}
+
+function layoutCreatorButtons(sidebar, main, input, actions) {
+    const stepActions = actions.filter((item) => item.region === 'steps');
+    const choiceActions = actions.filter((item) => item.region === 'choices');
+    const footerActions = actions.filter((item) => item.region === 'footer');
+    const introActions = actions.filter((item) => item.region === 'intro');
+    return [
+        ...layoutCreatorStepButtons(sidebar, stepActions),
+        ...layoutCreatorChoiceButtons(main, choiceActions),
+        ...layoutCreatorFooterButtons(input, footerActions),
+        ...layoutCreatorIntroButtons(main, introActions),
+    ];
+}
+
+function layoutCreatorStepButtons(sidebar, actions) {
+    const padding = 14;
+    const buttonHeight = 34;
+    const gap = 8;
+    const startY = sidebar.y + padding + 42;
+    return actions.map((item, index) => ({
+        action: item,
+        rect: rect(sidebar.x + padding, startY + index * (buttonHeight + gap), sidebar.w - padding * 2, buttonHeight),
+    }));
+}
+
+function layoutCreatorChoiceButtons(main, actions) {
+    if (!actions.length) return [];
+    const columns = main.w >= 620 ? 2 : 1;
+    const gap = 10;
+    const buttonHeight = 72;
+    const buttonWidth = Math.floor((main.w - 36 - gap * (columns - 1)) / columns);
+    const startX = main.x + 18;
+    const startY = main.y + 118;
+    return actions.map((item, index) => {
+        const column = index % columns;
+        const row = Math.floor(index / columns);
+        return {
+            action: item,
+            rect: rect(startX + column * (buttonWidth + gap), startY + row * (buttonHeight + gap), buttonWidth, buttonHeight),
+        };
+    });
+}
+
+function layoutCreatorFooterButtons(input, actions) {
+    if (!actions.length) return [];
+    const buttonHeight = 34;
+    const gap = 10;
+    const buttonWidth = Math.max(108, Math.min(154, Math.floor((input.w - 36 - gap * (actions.length - 1)) / actions.length)));
+    const totalWidth = actions.length * buttonWidth + (actions.length - 1) * gap;
+    const startX = input.x + input.w - totalWidth - 18;
+    const y = input.y + Math.floor((input.h - buttonHeight) / 2);
+    return actions.map((item, index) => ({ action: item, rect: rect(startX + index * (buttonWidth + gap), y, buttonWidth, buttonHeight) }));
+}
+
+function layoutCreatorIntroButtons(main, actions) {
+    if (!actions.length) return [];
+    const buttonWidth = Math.max(170, Math.min(240, Math.floor(main.w * 0.28)));
+    const buttonHeight = 38;
+    const gap = 12;
+    const startX = main.x + 24;
+    const y = main.y + main.h - 66;
+    return actions.map((item, index) => ({ action: item, rect: rect(startX + index * (buttonWidth + gap), y, buttonWidth, buttonHeight) }));
 }
 
 function layoutMenuButtons(splash, actions) {
