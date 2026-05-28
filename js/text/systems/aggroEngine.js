@@ -23,7 +23,7 @@ export function evaluateAggroForGrid(state, options = {}) {
 }
 
 export function describeAggroResult(result) {
-    if (!result.rolls?.length) return 'No aggressive monsters are known to threaten this grid.';
+    if (!result.rolls?.length) return 'No aggressive monsters are known to threaten this coordinate.';
     if (!result.triggered) {
         return [
             'Aggro check: safe for now.',

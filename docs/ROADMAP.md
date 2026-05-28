@@ -73,8 +73,11 @@ Status: starter implementation complete.
 - [x] Zone inspection command.
 - [x] Travel benchmark for zone graph lookup.
 - [x] Coordinate-grid atlas discovery where unvisited grids stay unknown.
+- [x] San d’Oria city alphanumeric coordinate topology with explicit navigable coordinates and exits.
+- [x] Direction-aware coordinate navigation engine with movement timing metadata.
+- [x] Canvas 3x3 compass rose with direct movement intents and Auto Run state.
 - [x] Foot-travel aggro scaffold by grid spawn rule, spawn count, and aggro type.
-- [ ] Expand all starter city POIs and exits with higher-fidelity coordinates.
+- [ ] Expand non-San d’Oria city POIs and exits with higher-fidelity coordinates.
 - [ ] Add interior/Mog House places instead of temporary Mog House access flag.
 
 ## Phase 4: Inventory, items, key items, and equipment

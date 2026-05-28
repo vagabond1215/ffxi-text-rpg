@@ -12,6 +12,14 @@ export function createCanvasUiState(options = {}) {
         inputBuffer: options.inputBuffer ?? '',
         creator: options.creator ?? null,
         creatorIntro: options.creatorIntro ?? [],
+        autoRunEnabled: Boolean(options.autoRunEnabled),
+        heldDirection: options.heldDirection ?? null,
+        activeAutoRunDirection: options.activeAutoRunDirection ?? null,
+        movementHeldSince: options.movementHeldSince ?? null,
+        queuedMove: options.queuedMove ?? null,
+        nextMoveAt: options.nextMoveAt ?? null,
+        activeMoveEndsAt: options.activeMoveEndsAt ?? null,
+        lastMoveDurationSeconds: options.lastMoveDurationSeconds ?? null,
         modalInputs: {
             accountName: options.modalInputs?.accountName ?? '',
             password: options.modalInputs?.password ?? '',
@@ -65,6 +73,44 @@ export function setCanvasModal(uiState, modal, page = null) {
 export function setModalPage(uiState, page) {
     uiState.modalPage = page ?? null;
     return uiState.modalPage;
+}
+
+export function setAutoRunEnabled(uiState, enabled) {
+    uiState.autoRunEnabled = Boolean(enabled);
+    stopUiMovement(uiState);
+    return uiState.autoRunEnabled;
+}
+
+export function stopUiMovement(uiState) {
+    uiState.heldDirection = null;
+    uiState.activeAutoRunDirection = null;
+    uiState.movementHeldSince = null;
+    uiState.queuedMove = null;
+    clearMovementCooldown(uiState);
+}
+
+export function setMovementCooldown(uiState, durationSeconds, nowMs = Date.now()) {
+    const seconds = Math.max(0, Number(durationSeconds) || 0);
+    uiState.lastMoveDurationSeconds = seconds;
+    if (!seconds) {
+        uiState.nextMoveAt = null;
+        uiState.activeMoveEndsAt = null;
+        return null;
+    }
+    const nextMoveAt = Number(nowMs) + seconds * 1000;
+    uiState.nextMoveAt = nextMoveAt;
+    uiState.activeMoveEndsAt = nextMoveAt;
+    return nextMoveAt;
+}
+
+export function clearMovementCooldown(uiState) {
+    uiState.nextMoveAt = null;
+    uiState.activeMoveEndsAt = null;
+    uiState.lastMoveDurationSeconds = null;
+}
+
+export function isMovementOnCooldown(uiState, nowMs = Date.now()) {
+    return Number.isFinite(Number(uiState.nextMoveAt)) && Number(uiState.nextMoveAt) > Number(nowMs);
 }
 
 export function clearModalInputs(uiState) {
@@ -161,6 +207,10 @@ export function handlePointerDown(uiState, layout, x, y) {
     uiState.pressedActionId = hit?.action?.disabled ? null : hit?.action?.id ?? null;
     uiState.pressedRegion = hitTestRegion(layout, x, y);
     uiState.focusedRegion = field ? 'modal' : uiState.pressedRegion ?? uiState.focusedRegion;
+    if (hit?.action?.intent === 'navigation.move' && !hit.action.disabled && !uiState.autoRunEnabled) {
+        uiState.heldDirection = hit.action.payload?.direction ?? null;
+        uiState.movementHeldSince = Date.now();
+    }
     return hit;
 }
 
@@ -169,6 +219,11 @@ export function handlePointerUp(uiState, layout, x, y) {
     const pressedActionId = uiState.pressedActionId;
     uiState.pressedActionId = null;
     uiState.pressedRegion = null;
+    if (uiState.heldDirection && !uiState.autoRunEnabled) {
+        uiState.heldDirection = null;
+        uiState.movementHeldSince = null;
+        return { type: 'none' };
+    }
     if (hit?.action && !hit.action.disabled && hit.action.id === pressedActionId) {
         return { type: 'action', actionId: hit.action.id, action: hit.action };
     }

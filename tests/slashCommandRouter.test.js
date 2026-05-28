@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createInitialState } from '../js/text/gameState.js';
-import { clearSave, saveGame } from '../js/text/save.js';
+import { clearSave, createAccountWithPassword, saveGame } from '../js/text/save.js';
 import { createSlashCommandRouter } from '../js/text/slashCommandRouter.js';
 
 class MemoryStorage {
@@ -32,6 +32,13 @@ function createRouterWithState() {
         reload: () => {},
     });
     return { state, router };
+}
+
+function createLoggedInRouterWithState() {
+    const context = createRouterWithState();
+    const created = createAccountWithPassword('Slash Tester', 'pwd', { persistentLogin: true });
+    assert.equal(created.ok, true);
+    return context;
 }
 
 test('slash router rejects bare gameplay commands outside character creation prompts', () => {
@@ -65,7 +72,7 @@ test('slash router preserves FFXI macro-style slash commands for the adapter', (
 });
 
 test('slash router supports account character save and listing commands', () => {
-    const { state, router } = createRouterWithState();
+    const { state, router } = createLoggedInRouterWithState();
     state.player.identity.name = 'Slashsave';
 
     assert.match(router('/save'), /Character saved/);
@@ -75,7 +82,7 @@ test('slash router supports account character save and listing commands', () => 
 });
 
 test('slash router allows natural answers during creator prompts and saves after confirmation', () => {
-    const { router } = createRouterWithState();
+    const { router } = createLoggedInRouterWithState();
 
     assert.match(router('/newcharacter'), /What is your character name/);
     assert.match(router('Prompted'), /Choose starting nation/);

@@ -5,6 +5,7 @@ import { createInitialState } from '../js/text/gameState.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeMap, describeMaps, listMaps } from '../js/text/data/maps.js';
 import { getPlace, listPlaces, ZONE_CONNECTIONS } from '../js/text/data/places.js';
+import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { validateWorldData } from '../js/text/systems/validation.js';
 import {
     advanceTravel,
@@ -48,6 +49,7 @@ test('all connections reference known places', () => {
 
 test('findTravelRoute finds connected destination', () => {
     const state = createInitialState();
+    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
     const route = findTravelRoute(state, 'West Ronfaure');
 
     assert.equal(route.ok, true);
@@ -64,6 +66,7 @@ test('findTravelRoute rejects disconnected destination', () => {
 
 test('startTravel and advanceTravel move current place', () => {
     const state = createInitialState();
+    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
     const started = startTravel(state, 'West Ronfaure');
 
     assert.equal(started.ok, true);
@@ -78,6 +81,7 @@ test('startTravel and advanceTravel move current place', () => {
 
 test('router exposes maps zones travel and wait commands', () => {
     const state = createInitialState();
+    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
     const router = createCommandRouter(state, {
         saveGame: () => true,
         clearSave: () => {},

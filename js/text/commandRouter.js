@@ -7,11 +7,10 @@ import {
     describeLocation,
     describeNpcs,
     describeStats,
-    moveWithinCurrentPlace,
     replaceState,
 } from './gameState.js';
 import { parseCommand } from './commands/parser.js';
-import { describeControls, NAV_KEYPAD } from './data/actionControls.js';
+import { describeControls } from './data/actionControls.js';
 import { describeDatabases } from './data/databaseRegistry.js';
 import { describeLegacyRecoveredData } from './data/legacyRecoveredData.js';
 import { describeMap, describeMaps } from './data/maps.js';
@@ -54,6 +53,7 @@ import {
     talkAtCurrentGrid,
 } from './systems/poiEngine.js';
 import { describeJobProgression, switchMainJob } from './systems/progressionEngine.js';
+import { moveInDirection, stopTravel } from './systems/navigationEngine.js';
 import { describeSkillProgression } from './systems/skillProgressionEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
@@ -87,16 +87,16 @@ const HELP_TEXT = [
     '  job <id>             Change main job to an unlocked job.',
     '  skills               Show current character-owned skill progression.',
     '  skill <id>           Inspect one character-owned skill.',
-    '  look                 Describe the current location, grid, and contextual POIs.',
+    '  look                 Describe the current location, coordinate, and contextual POIs.',
     '  here                 Show context-aware POIs/actions at the current grid.',
     '  poi                  Summarize seeded POIs by zone.',
     '  pois [zone]          List seeded POIs for current or named zone.',
-    '  talk [name]          Talk/interact with a POI at this grid and discover it.',
-    '  shop [name]          Use shop action at this grid where supported.',
+    '  talk [name]          Talk/interact with a POI at this coordinate and discover it.',
+    '  shop [name]          Use shop action at this coordinate where supported.',
     '  buy <item>           Buy an item from the current shop POI into Inventory.',
     '  sell <item>          Placeholder for future sell flow.',
-    '  guild [name]         Use guild action at this grid where supported.',
-    '  quest [name]         Use quest/mission action at this grid where supported.',
+    '  guild [name]         Use guild action at this coordinate where supported.',
+    '  quest [name]         Use quest/mission action at this coordinate where supported.',
     '  discovered           List discovered POIs in this zone.',
     '  fastpoi <name>       Fast travel to a discovered POI in this same zone.',
     '  zonefast             List known usable zone exits from current zone.',
@@ -130,7 +130,8 @@ const HELP_TEXT = [
     '  zone [id/name]       Inspect current or named zone.',
     '  atlas [id/name]      Show discovered zone atlas grids.',
     '  grid                 Inspect current grid.',
-    '  move <dir>           Move within the current zone grid using n/ne/e/se/s/sw/w/nw.',
+    '  move <dir>           Move within the current zone coordinate using n/ne/e/se/s/sw/w/nw.',
+    '  stop                 Stop active travel or auto-run movement.',
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
     '  recovered            Summarize useful data recovered from stale branches.',
     '  /macrohelp           Show FFXI-style macro/text command reference.',
@@ -247,6 +248,7 @@ export function createCommandRouter(state, services = {}) {
             case 'atlas': return describeAtlas(state, parsed.args.join(' ') || state.currentPlaceId);
             case 'grid': return describeCurrentGrid(state);
             case 'move': return describeMove(state, parsed.args[0]);
+            case 'stop': return stopTravel(state).message;
             case 'controls':
             case 'hud': return describeControls();
             case 'recovered':
@@ -344,9 +346,7 @@ function describeJobs() {
 function describeMove(state, direction) {
     if (isActiveBattle(state.activeBattle)) return 'You cannot move while engaged in battle.';
     if (!direction) return 'Move where? Use n, ne, e, se, s, sw, w, or nw.';
-    const nav = NAV_KEYPAD.find((item) => item.id === String(direction).toLowerCase());
-    if (!nav) return `Unknown direction: ${direction}. Use n, ne, e, se, s, sw, w, or nw.`;
-    const result = moveWithinCurrentPlace(state, nav);
+    const result = moveInDirection(state, direction);
     if (!result.ok) return result.reason;
     const aggro = evaluateAggroForGrid(state, { travelMode: 'foot' });
     const lines = [result.message, '', describeCurrentGrid(state), '', describeAggroResult(aggro)];

@@ -5,6 +5,7 @@ import { CONFIDENCE_LABELS, ITEM_FLAGS, ITEM_KINDS, normalizeItem } from '../dat
 import { JOB_DEFINITIONS } from '../data/jobs.js';
 import { getMap, listMaps } from '../data/maps.js';
 import { getPlace, isCoordinateInsidePlace, listPlaces, ZONE_CONNECTIONS } from '../data/places.js';
+import { describeCoordinate, isNavigableCoordinate, isTopologyPlace } from '../data/coordinates.js';
 import { getPointOfInterest, listPointsOfInterest } from '../data/pointsOfInterest.js';
 import { listQuestHooks } from '../data/questHooks.js';
 import { RACES } from '../data/races.js';
@@ -21,7 +22,7 @@ import {
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { getContainerCapacity } from './inventoryEngine.js';
 
-export const CURRENT_SAVE_VERSION = 2;
+export const CURRENT_SAVE_VERSION = 3;
 
 export function validateGameState(state) {
     const issues = [];
@@ -40,7 +41,9 @@ export function validateGameState(state) {
     if (!isObject(state.position)) {
         issues.push('position must be an object.');
     } else if (place && !isCoordinateInsidePlace(place, state.position)) {
-        issues.push(`position (${state.position.x}, ${state.position.y}) is outside ${place.name}.`);
+        issues.push(`position ${describeCoordinate(state.position)} is outside ${place.name}.`);
+    } else if (place && isTopologyPlace(place) && !isNavigableCoordinate(place, state.position, state.position.levelId)) {
+        issues.push(`position ${describeCoordinate(state.position)} is not navigable in ${place.name}.`);
     }
     if (!isObject(state.atlas)) issues.push('atlas must be an object.');
     if (!isObject(state.discoveredPois)) issues.push('discoveredPois must be an object.');
@@ -71,11 +74,18 @@ export function validateWorldData() {
         if (place.mapId && !mapIds.has(place.mapId)) issues.push(`${place.id} references unknown map ${place.mapId}.`);
         if (!isObject(place.coordinateSystem)) issues.push(`${place.id} is missing coordinateSystem.`);
         if (place.coordinateSystem && !isCoordinateInsidePlace(place, place.coordinateSystem.start)) {
-            issues.push(`${place.id} start coordinate is outside its grid.`);
+            issues.push(`${place.id} start coordinate is outside its bounds.`);
+        }
+        if (place.coordinateSystem && isTopologyPlace(place) && !isNavigableCoordinate(place, place.coordinateSystem.start)) {
+            issues.push(`${place.id} start coordinate is not navigable.`);
         }
         for (const rule of place.spawnRules ?? []) {
             for (const key of rule.grids ?? []) {
                 const [x, y] = key.split(',').map(Number);
+                if (isTopologyPlace(place)) {
+                    issues.push(`${place.id} spawn ${rule.enemyId} uses numeric grid ${key} in a topology place.`);
+                    continue;
+                }
                 if (!isCoordinateInsidePlace(place, { x, y })) {
                     issues.push(`${place.id} spawn ${rule.enemyId} references out-of-bounds grid ${key}.`);
                 }
@@ -95,10 +105,16 @@ export function validateWorldData() {
         if (!from) issues.push(`${connection.id} has unknown from place ${connection.from}.`);
         if (!to) issues.push(`${connection.id} has unknown to place ${connection.to}.`);
         if (from && connection.departFrom && !isCoordinateInsidePlace(from, connection.departFrom)) {
-            issues.push(`${connection.id} departFrom is outside ${from.name}.`);
+            issues.push(`${connection.id} departFrom ${describeCoordinate(connection.departFrom)} is outside ${from.name}.`);
+        }
+        if (from && connection.departFrom && isTopologyPlace(from) && !isNavigableCoordinate(from, connection.departFrom, connection.departFrom.levelId)) {
+            issues.push(`${connection.id} departFrom ${describeCoordinate(connection.departFrom)} is not navigable in ${from.name}.`);
         }
         if (to && connection.arriveAt && !isCoordinateInsidePlace(to, connection.arriveAt)) {
-            issues.push(`${connection.id} arriveAt is outside ${to.name}.`);
+            issues.push(`${connection.id} arriveAt ${describeCoordinate(connection.arriveAt)} is outside ${to.name}.`);
+        }
+        if (to && connection.arriveAt && isTopologyPlace(to) && !isNavigableCoordinate(to, connection.arriveAt, connection.arriveAt.levelId)) {
+            issues.push(`${connection.id} arriveAt ${describeCoordinate(connection.arriveAt)} is not navigable in ${to.name}.`);
         }
     }
 
@@ -109,7 +125,10 @@ export function validateWorldData() {
             continue;
         }
         if (!isCoordinateInsidePlace(place, poi.coordinate)) {
-            issues.push(`${poi.id} coordinate (${poi.coordinate.x}, ${poi.coordinate.y}) is outside ${place.name}.`);
+            issues.push(`${poi.id} coordinate ${describeCoordinate(poi.coordinate)} is outside ${place.name}.`);
+        }
+        if (isTopologyPlace(place) && !isNavigableCoordinate(place, poi.coordinate, poi.coordinate.levelId)) {
+            issues.push(`${poi.id} coordinate ${describeCoordinate(poi.coordinate)} is not navigable in ${place.name}.`);
         }
         if (!Array.isArray(poi.actions) || !poi.actions.length) {
             issues.push(`${poi.id} has no actions.`);

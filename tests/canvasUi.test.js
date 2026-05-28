@@ -5,6 +5,8 @@ import {
     appendOutput,
     applyCanvasKey,
     createCanvasUiState,
+    handlePointerDown,
+    handlePointerUp,
     scrollOutput,
     setActiveFeedback,
     setCanvasModal,
@@ -14,15 +16,35 @@ import {
 } from '../js/text/ui/canvasInput.js';
 import { createCanvasLayout, hitTestAction, hitTestModalField } from '../js/text/ui/canvasLayout.js';
 import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/canvasRenderer.js';
+import { createCanvasApp } from '../js/text/ui/canvasApp.js';
 import { isCommandIntent, isUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
 import {
     createActionList,
+    createCompassActionList,
     createMenuActionList,
     dispatchAction,
     findActionById,
     TOP_ACTIONS,
 } from '../js/text/ui/uiActions.js';
 import { createInitialState } from '../js/text/gameState.js';
+
+class MemoryStorage {
+    constructor() {
+        this.values = new Map();
+    }
+
+    getItem(key) {
+        return this.values.has(key) ? this.values.get(key) : null;
+    }
+
+    setItem(key, value) {
+        this.values.set(key, String(value));
+    }
+
+    removeItem(key) {
+        this.values.delete(key);
+    }
+}
 
 test('canvas action registry maps global buttons to command intents', () => {
     assert.equal(findActionById('character').command, 'character');
@@ -157,6 +179,94 @@ test('canvas context snapshot recalculates derived combat values', () => {
 
     assert.notEqual(snapshot.maxHp, 1);
     assert.equal(snapshot.playerName, state.player.identity.name);
+    assert.equal(snapshot.coordinate, 'G-10');
+});
+
+test('canvas compass exposes uniform 3x3 movement buttons and auto-run toggle', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({ screen: 'game' });
+    const compassActions = createCompassActionList(state, uiState);
+    const layout = createCanvasLayout({ width: 1200, height: 800, actions: createActionList(state), compassActions });
+
+    assert.equal(layout.compassButtons.length, 9);
+    const first = layout.compassButtons[0].rect;
+    assert.equal(layout.compassButtons.every((button) => button.rect.w === first.w && button.rect.h === first.h), true);
+    assert.equal(layout.compassButtons[0].action.label, '↖');
+    assert.equal(layout.compassButtons[4].action.id, 'compassStop');
+    assert.equal(layout.autoRunButton.action.id, 'autoRun');
+    assert.equal(hitTestAction(layout, layout.compassButtons[1].rect.x + 2, layout.compassButtons[1].rect.y + 2).action.intent, 'navigation.move');
+});
+
+test('held compass movement clears on pointer release', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({ screen: 'game' });
+    const compassActions = createCompassActionList(state, uiState);
+    const layout = createCanvasLayout({ width: 1200, height: 800, actions: createActionList(state), compassActions });
+    const east = layout.compassButtons.find((button) => button.action.payload?.direction === 'east');
+
+    handlePointerDown(uiState, layout, east.rect.x + 2, east.rect.y + 2);
+    assert.equal(uiState.heldDirection, 'east');
+    const result = handlePointerUp(uiState, layout, 0, 0);
+
+    assert.deepEqual(result, { type: 'none' });
+    assert.equal(uiState.heldDirection, null);
+    assert.equal(uiState.movementHeldSince, null);
+});
+
+test('quick compass press moves once and release prevents further held movement', () => {
+    const harness = createCanvasAppHarness();
+    try {
+        const { app, canvas } = harness;
+        app.uiState.screen = 'game';
+        app.render();
+        const layout = createCanvasLayout({
+            width: 1200,
+            height: 800,
+            actions: createActionList(app.state),
+            compassActions: createCompassActionList(app.state, app.uiState),
+            topActions: TOP_ACTIONS,
+        });
+        const east = layout.compassButtons.find((button) => button.action.payload?.direction === 'east');
+
+        canvas.listeners.pointerdown(pointerEvent(east.rect.x + 2, east.rect.y + 2));
+        assert.equal(app.state.position.coord, 'H-10');
+        assert.equal(app.uiState.heldDirection, 'east');
+
+        canvas.listeners.pointerup(pointerEvent(east.rect.x + 2, east.rect.y + 2));
+        assert.equal(app.uiState.heldDirection, null);
+        harness.window.interval.handler();
+        assert.equal(app.state.position.coord, 'H-10');
+    } finally {
+        harness.restore();
+    }
+});
+
+test('typed stop dispatches navigation stop and clears UI movement state', () => {
+    const harness = createCanvasAppHarness();
+    try {
+        const { app, canvas } = harness;
+        app.uiState.screen = 'game';
+        app.uiState.inputBuffer = 'stop';
+        app.uiState.autoRunEnabled = true;
+        app.uiState.activeAutoRunDirection = 'east';
+        app.uiState.heldDirection = 'east';
+        app.uiState.movementHeldSince = 1;
+        app.uiState.queuedMove = { direction: 'east' };
+        app.uiState.nextMoveAt = 10000;
+        app.uiState.activeMoveEndsAt = 10000;
+        app.uiState.lastMoveDurationSeconds = 10;
+
+        canvas.listeners.keydown(keyEvent('Enter'));
+
+        assert.equal(app.uiState.activeAutoRunDirection, null);
+        assert.equal(app.uiState.heldDirection, null);
+        assert.equal(app.uiState.queuedMove, null);
+        assert.equal(app.uiState.nextMoveAt, null);
+        assert.equal(app.uiState.activeMoveEndsAt, null);
+        assert.match(app.uiState.outputLines.join('\n'), /already stopped|Stopped traveling/);
+    } finally {
+        harness.restore();
+    }
 });
 
 test('canvas UI state defaults to splash menu and can switch screens and modals', () => {
@@ -359,3 +469,107 @@ test('canvas layout creates splash menu and left top menu button bounds', () => 
     assert.equal(menuButton.rect.w, 34);
     assert.ok(menuButton.rect.x < 40);
 });
+
+function createCanvasAppHarness() {
+    const previousWindow = globalThis.window;
+    const previousStorage = globalThis.localStorage;
+    const windowListeners = {};
+    const fakeWindow = {
+        devicePixelRatio: 1,
+        innerWidth: 1200,
+        innerHeight: 800,
+        location: { reload() {} },
+        interval: null,
+        addEventListener(type, handler) {
+            windowListeners[type] = handler;
+        },
+        removeEventListener(type) {
+            delete windowListeners[type];
+        },
+        setInterval(handler, ms) {
+            this.interval = { handler, ms };
+            return 1;
+        },
+        clearInterval() {
+            this.interval = null;
+        },
+    };
+    const canvas = createFakeCanvas();
+    globalThis.window = fakeWindow;
+    globalThis.localStorage = new MemoryStorage();
+    const app = createCanvasApp({ canvas });
+    return {
+        app,
+        canvas,
+        window: fakeWindow,
+        restore() {
+            app.destroy();
+            if (previousWindow === undefined) delete globalThis.window;
+            else globalThis.window = previousWindow;
+            if (previousStorage === undefined) delete globalThis.localStorage;
+            else globalThis.localStorage = previousStorage;
+        },
+    };
+}
+
+function createFakeCanvas() {
+    const listeners = {};
+    return {
+        clientWidth: 1200,
+        clientHeight: 800,
+        width: 0,
+        height: 0,
+        style: {},
+        tabIndex: 0,
+        listeners,
+        addEventListener(type, handler) {
+            listeners[type] = handler;
+        },
+        getBoundingClientRect() {
+            return { left: 0, top: 0 };
+        },
+        getContext() {
+            return createFakeContext();
+        },
+        focus() {},
+    };
+}
+
+function createFakeContext() {
+    return {
+        font: '',
+        fillStyle: '',
+        strokeStyle: '',
+        lineWidth: 1,
+        lineCap: 'butt',
+        textAlign: 'left',
+        clearRect() {},
+        fillRect() {},
+        setTransform() {},
+        beginPath() {},
+        moveTo() {},
+        lineTo() {},
+        quadraticCurveTo() {},
+        closePath() {},
+        fill() {},
+        stroke() {},
+        fillText() {},
+        measureText(value) {
+            return { width: String(value).length * 8 };
+        },
+    };
+}
+
+function pointerEvent(x, y) {
+    return { clientX: x, clientY: y };
+}
+
+function keyEvent(key) {
+    return {
+        key,
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        preventDefault() {},
+    };
+}

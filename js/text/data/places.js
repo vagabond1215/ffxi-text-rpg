@@ -1,3 +1,6 @@
+import { isCoordinateWithinBounds } from './coordinates.js';
+import { SAN_DORIA_TOPOLOGIES } from './sandoriaCityMaps.js';
+
 export const PLACES = Object.freeze({
     southernSandoria: place({
         id: 'southern-sandoria',
@@ -9,7 +12,7 @@ export const PLACES = Object.freeze({
         dangerLevel: 0,
         description: 'A fortified San d\u2019Orian city district and current rebuild starting point.',
         services: ['gateGuard', 'training', 'shops', 'homePoint'],
-        coordinateSystem: grid(5, 5, { x: 2, y: 2 }),
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.southernSandoria,
         spawnRules: [],
         restrictions: [],
     }),
@@ -23,7 +26,7 @@ export const PLACES = Object.freeze({
         dangerLevel: 0,
         description: 'The northern district of San d\u2019Oria. Seeded for early city travel.',
         services: ['shops', 'guilds'],
-        coordinateSystem: grid(5, 5, { x: 2, y: 2 }),
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.northernSandoria,
         spawnRules: [],
         restrictions: [],
     }),
@@ -37,7 +40,7 @@ export const PLACES = Object.freeze({
         dangerLevel: 0,
         description: 'The port district of San d\u2019Oria. Future ferry and airship hooks belong here.',
         services: ['shops', 'travel'],
-        coordinateSystem: grid(5, 5, { x: 2, y: 2 }),
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.portSandoria,
         spawnRules: [],
         restrictions: [],
     }),
@@ -51,7 +54,63 @@ export const PLACES = Object.freeze({
         dangerLevel: 0,
         description: 'The royal chateau of San d\u2019Oria. Seeded as a civic interior and future mission hub.',
         services: ['missions'],
-        coordinateSystem: grid(4, 4, { x: 1, y: 3 }),
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.chateauDoraguille,
+        spawnRules: [],
+        restrictions: [],
+    }),
+    chocoboCircuit: place({
+        id: 'chocobo-circuit',
+        name: 'Chocobo Circuit',
+        type: 'travelHub',
+        region: 'Ronfaure',
+        nation: 'San d\u2019Oria',
+        mapId: 'map-san-doria',
+        dangerLevel: 0,
+        description: 'A travel hub placeholder reached from Southern San d\u2019Oria.',
+        services: ['travel'],
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.simpleH8,
+        spawnRules: [],
+        restrictions: [],
+    }),
+    carpentersLanding: place({
+        id: 'carpenters-landing',
+        name: 'Carpenters\u2019 Landing',
+        type: 'wilderness',
+        region: 'Ronfaure',
+        nation: 'San d\u2019Oria',
+        mapId: 'map-ronfaure',
+        dangerLevel: 2,
+        description: 'A Ronfaure-adjacent landing placeholder reached from Northern San d\u2019Oria.',
+        services: [],
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.simpleG7,
+        spawnRules: [],
+        restrictions: [],
+    }),
+    bostaunieuxOubliette: place({
+        id: 'bostaunieux-oubliette',
+        name: 'Bostaunieux Oubliette',
+        type: 'dungeon',
+        region: 'Ronfaure',
+        nation: 'San d\u2019Oria',
+        mapId: 'map-san-doria',
+        dangerLevel: 8,
+        description: 'A dungeon placeholder connected below Chateau d\u2019Oraguille.',
+        services: [],
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.simpleH6,
+        spawnRules: [],
+        restrictions: [],
+    }),
+    airshipJeunoSandoria: place({
+        id: 'airship-jeuno-sandoria',
+        name: 'Airship, Jeuno - San d\u2019Oria',
+        type: 'travelHub',
+        region: 'Ronfaure',
+        nation: 'San d\u2019Oria',
+        mapId: 'map-san-doria',
+        dangerLevel: 0,
+        description: 'A placeholder for future airship travel service implementation.',
+        services: ['travel'],
+        coordinateSystem: SAN_DORIA_TOPOLOGIES.simpleH5,
         spawnRules: [],
         restrictions: [],
     }),
@@ -65,7 +124,7 @@ export const PLACES = Object.freeze({
         dangerLevel: 1,
         description: 'A low-level forest zone outside San d\u2019Oria. Early enemies and travel testing live here.',
         services: [],
-        coordinateSystem: grid(8, 8, { x: 4, y: 4 }),
+        coordinateSystem: grid(8, 8, { x: 4, y: 4 }, { externalCoordinates: [{ coord: 'I-5', x: 4, y: 7 }, { coord: 'I-6', x: 4, y: 7 }] }),
         spawnRules: [
             spawn('enemy-forest-hare', { grids: rect(1, 1, 6, 6), count: 8, aggroTypes: [], baseChance: 0.05 }),
             spawn('enemy-forest-goblin', { grids: rect(3, 2, 6, 5), count: 3, aggroTypes: ['sight'], baseChance: 0.12 }),
@@ -82,7 +141,7 @@ export const PLACES = Object.freeze({
         dangerLevel: 1,
         description: 'A low-level forest zone east of San d\u2019Oria. Seeded for graph branching tests.',
         services: [],
-        coordinateSystem: grid(8, 8, { x: 4, y: 4 }),
+        coordinateSystem: grid(8, 8, { x: 4, y: 4 }, { externalCoordinates: [{ coord: 'G-4', x: 4, y: 7 }] }),
         spawnRules: [
             spawn('enemy-forest-hare', { grids: rect(1, 1, 6, 6), count: 6, aggroTypes: [], baseChance: 0.04 }),
             spawn('enemy-forest-goblin', { grids: rect(4, 2, 6, 4), count: 2, aggroTypes: ['sight'], baseChance: 0.1 }),
@@ -336,16 +395,22 @@ export const PLACES = Object.freeze({
 });
 
 export const ZONE_CONNECTIONS = Object.freeze([
-    connection('southern-sandoria', 'northern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { x: 2, y: 0 }, arriveAt: { x: 2, y: 4 } }),
-    connection('northern-sandoria', 'southern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { x: 2, y: 4 }, arriveAt: { x: 2, y: 0 } }),
-    connection('southern-sandoria', 'port-sandoria', { mode: 'walk', travelSeconds: 25, departFrom: { x: 0, y: 2 }, arriveAt: { x: 4, y: 2 } }),
-    connection('port-sandoria', 'southern-sandoria', { mode: 'walk', travelSeconds: 25, departFrom: { x: 4, y: 2 }, arriveAt: { x: 0, y: 2 } }),
-    connection('northern-sandoria', 'chateau-doraguille', { mode: 'walk', travelSeconds: 20, departFrom: { x: 2, y: 0 }, arriveAt: { x: 1, y: 3 } }),
-    connection('chateau-doraguille', 'northern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { x: 1, y: 3 }, arriveAt: { x: 2, y: 0 } }),
-    connection('southern-sandoria', 'west-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 2 }, arriveAt: { x: 4, y: 7 } }),
-    connection('west-ronfaure', 'southern-sandoria', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 7 }, arriveAt: { x: 4, y: 2 } }),
-    connection('northern-sandoria', 'east-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 2 }, arriveAt: { x: 4, y: 7 } }),
-    connection('east-ronfaure', 'northern-sandoria', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 7 }, arriveAt: { x: 4, y: 2 } }),
+    connection('southern-sandoria', 'northern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { levelId: 'main', coord: 'I-7' }, arriveAt: { levelId: 'main', coord: 'I-10' }, directions: ['north'] }),
+    connection('northern-sandoria', 'southern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { levelId: 'main', coord: 'I-10' }, arriveAt: { levelId: 'main', coord: 'I-7' }, directions: ['south'] }),
+    connection('northern-sandoria', 'port-sandoria', { mode: 'walk', travelSeconds: 25, departFrom: { levelId: 'main', coord: 'F-3' }, arriveAt: { levelId: 'main', coord: 'F-10' }, directions: ['north'] }),
+    connection('port-sandoria', 'northern-sandoria', { mode: 'walk', travelSeconds: 25, departFrom: { levelId: 'main', coord: 'F-10' }, arriveAt: { levelId: 'main', coord: 'F-3' }, directions: ['north'] }),
+    connection('northern-sandoria', 'chateau-doraguille', { mode: 'walk', travelSeconds: 20, departFrom: { levelId: 'main', coord: 'I-6' }, arriveAt: { levelId: 'main', coord: 'H-9' }, directions: ['north'] }),
+    connection('chateau-doraguille', 'northern-sandoria', { mode: 'walk', travelSeconds: 20, departFrom: { levelId: 'main', coord: 'H-9' }, arriveAt: { levelId: 'main', coord: 'I-6' }, directions: ['south'] }),
+    connection('southern-sandoria', 'west-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { levelId: 'main', coord: 'F-10' }, arriveAt: { levelId: 'main', coord: 'I-6' }, directions: ['west', 'southwest'] }),
+    connection('west-ronfaure', 'southern-sandoria', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 7 }, arriveAt: { levelId: 'main', coord: 'F-10' }, directions: ['east'] }),
+    connection('southern-sandoria', 'east-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { levelId: 'main', coord: 'L-10' }, arriveAt: { levelId: 'main', coord: 'G-4' }, directions: ['east', 'southeast'] }),
+    connection('east-ronfaure', 'southern-sandoria', { mode: 'walk', travelSeconds: 45, departFrom: { x: 4, y: 7 }, arriveAt: { levelId: 'main', coord: 'L-10' }, directions: ['west'] }),
+    connection('southern-sandoria', 'chocobo-circuit', { mode: 'walk', travelSeconds: 20, departFrom: { levelId: 'main', coord: 'H-11' }, arriveAt: { levelId: 'main', coord: 'H-8' }, directions: ['south'] }),
+    connection('northern-sandoria', 'carpenters-landing', { mode: 'walk', travelSeconds: 30, departFrom: { levelId: 'main', coord: 'F-5' }, arriveAt: { levelId: 'main', coord: 'G-7' }, directions: ['north'] }),
+    connection('northern-sandoria', 'west-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { levelId: 'main', coord: 'C-8' }, arriveAt: { levelId: 'main', coord: 'I-5' }, directions: ['west'] }),
+    connection('northern-sandoria', 'west-ronfaure', { mode: 'walk', travelSeconds: 45, departFrom: { levelId: 'main', coord: 'D-7' }, arriveAt: { levelId: 'main', coord: 'I-5' }, directions: ['west', 'southwest'], idSuffix: 'd7' }),
+    connection('port-sandoria', 'airship-jeuno-sandoria', { mode: 'airship', travelSeconds: 60, departFrom: { levelId: 'main', coord: 'H-5' }, arriveAt: { levelId: 'main', coord: 'H-5' }, directions: ['north'], flags: { externalPlaceholder: true } }),
+    connection('chateau-doraguille', 'bostaunieux-oubliette', { mode: 'walk', travelSeconds: 30, departFrom: { levelId: 'main', coord: 'I-8' }, arriveAt: { levelId: 'main', coord: 'H-6' }, directions: ['north'] }),
     connection('west-ronfaure', 'ghelsba-outpost', {
         mode: 'walk',
         travelSeconds: 90,
@@ -401,10 +466,7 @@ export function getConnectionsFrom(placeId) {
 }
 
 export function isCoordinateInsidePlace(place, coordinate) {
-    return coordinate.x >= 0
-        && coordinate.y >= 0
-        && coordinate.x < place.coordinateSystem.width
-        && coordinate.y < place.coordinateSystem.height;
+    return isCoordinateWithinBounds(place, coordinate);
 }
 
 function place(definition) {
@@ -419,20 +481,21 @@ function place(definition) {
 
 function connection(from, to, options = {}) {
     return Object.freeze({
-        id: `${from}->${to}`,
+        id: `${from}->${to}${options.idSuffix ? `#${options.idSuffix}` : ''}`,
         from,
         to,
         mode: options.mode ?? 'walk',
         travelSeconds: options.travelSeconds ?? 30,
         departFrom: options.departFrom ?? null,
         arriveAt: options.arriveAt ?? null,
+        directions: options.directions ?? [],
         restrictions: options.restrictions ?? [],
         flags: options.flags ?? {},
     });
 }
 
-function grid(width, height, start) {
-    return Object.freeze({ width, height, start });
+function grid(width, height, start, options = {}) {
+    return Object.freeze({ width, height, start, externalCoordinates: options.externalCoordinates ?? [] });
 }
 
 function spawn(enemyId, options) {

@@ -27,6 +27,9 @@ All notable reset-branch changes are tracked here.
 - Live tick engine scaffold with subscriptions, manual ticks, start/stop, enabled state, and standard tick channels.
 - Three starter city clusters: San d’Oria, Bastok, and Windurst.
 - Starter city maps, starter outdoor-region maps, and starter dungeon-hook maps.
+- San d’Oria alphanumeric coordinate topology for Southern San d’Oria, Northern San d’Oria, Port San d’Oria, Chateau d’Oraguille, and required connected placeholders.
+- Direction-aware navigation engine with movement timing metadata, topology edges, exit transitions, and stop behavior.
+- Canvas 3x3 compass rose with arrow buttons, center stop/rest action, direct navigation intents, and Auto Run toggle state.
 - Seeded places, coordinate grids, map IDs, start coordinates, departure coordinates, arrival coordinates, and zone connections for San d’Oria/Ronfaure, Bastok/Gustaberg, and Windurst/Sarutabaruta.
 - Starter NPC guard seeds for San d’Oria, Bastok, and Windurst.
 - Starter-region enemy seeds and grid spawn hooks for Ronfaure, Gustaberg, Sarutabaruta, Ghelsba, Zeruhn Mines, and Outer Horutoto Ruins.
@@ -92,7 +95,8 @@ All notable reset-branch changes are tracked here.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.1`, account save version to `3`, game state version to `2`, data version to `12`, and codename to `Slash UI Account Saves`.
+- Updated app/package version to `0.4.2`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `San d’Oria Coordinate Compass`.
+- Replaced San d’Oria placeholder numeric city grids with alphanumeric topology coordinates and direction-aware exits.
 - Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, skill caps, and skill progression.
 - Added `canvasUi` system version tracking.
 - Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
