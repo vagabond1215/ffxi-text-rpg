@@ -20,6 +20,7 @@ import {
     createCanvasUiState,
     handlePointerDown,
     handlePointerUp,
+    isMovementOnCooldown,
     scrollOutput,
     setActiveFeedback,
     updatePointerHover,
@@ -113,6 +114,11 @@ export function createCanvasApp({ canvas }) {
     }
 
     function submitFromInput(command) {
+        const value = String(command ?? '').trim();
+        if (uiState.screen === 'game' && value.toLowerCase() === 'stop') {
+            dispatchAndRender('navigation.stop');
+            return '';
+        }
         if (uiState.screen === 'menu') {
             if (uiState.modal === 'loginPassword') {
                 dispatchAndRender('account.login.confirm');
@@ -206,14 +212,16 @@ export function createCanvasApp({ canvas }) {
     window.addEventListener('resize', resize);
     const movementTimer = window.setInterval(() => {
         if (uiState.modal || uiState.screen !== 'game') return;
+        const nowMs = Date.now();
+        if (isMovementOnCooldown(uiState, nowMs)) return;
         if (uiState.activeAutoRunDirection) {
-            dispatchAndRender('navigation.move', { direction: uiState.activeAutoRunDirection, source: 'autoRun' });
+            dispatchAndRender('navigation.move', { direction: uiState.activeAutoRunDirection, source: 'autoRun', nowMs });
             return;
         }
         if (uiState.heldDirection && !uiState.autoRunEnabled) {
-            dispatchAndRender('navigation.move', { direction: uiState.heldDirection, source: 'held' });
+            dispatchAndRender('navigation.move', { direction: uiState.heldDirection, source: 'held', nowMs });
         }
-    }, 1000);
+    }, 250);
     resize();
     canvas.focus();
 

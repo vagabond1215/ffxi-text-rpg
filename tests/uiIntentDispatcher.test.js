@@ -13,6 +13,7 @@ import {
 } from '../js/text/save.js';
 import { createCanvasUiState } from '../js/text/ui/canvasInput.js';
 import { dispatchUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
+import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 
 class MemoryStorage {
     constructor() {
@@ -214,6 +215,114 @@ test('navigation intent moves through engine without a command string', () => {
     assert.equal(state.position.coord, 'H-10');
     assert.deepEqual(uiState.commandHistory, []);
     assert.match(uiState.outputLines.join('\n'), /Moved east/);
+});
+
+test('auto run waits for movement duration before moving again', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({ screen: 'game', autoRunEnabled: true });
+    const session = { loggedIn: true, accounts: [], settings: {} };
+
+    const first = dispatchUiIntent({
+        intent: 'navigation.move',
+        payload: { direction: 'east', nowMs: 1000 },
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+    const blocked = dispatchUiIntent({
+        intent: 'navigation.move',
+        payload: { direction: 'east', source: 'autoRun', nowMs: 10999 },
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+    const second = dispatchUiIntent({
+        intent: 'navigation.move',
+        payload: { direction: 'east', source: 'autoRun', nowMs: 11000 },
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+
+    assert.equal(first.ok, true);
+    assert.equal(first.movement.coordinate.coord, 'H-10');
+    assert.equal(first.movement.durationSeconds, 10);
+    assert.equal(uiState.lastMoveDurationSeconds, 10);
+    assert.equal(blocked.cooldown, true);
+    assert.equal(second.cooldown, undefined);
+    assert.equal(second.movement.coordinate.coord, 'I-10');
+    assert.equal(state.position.coord, 'I-10');
+});
+
+test('auto run clears movement state after a zone exit', () => {
+    const state = createInitialState();
+    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    const uiState = createCanvasUiState({
+        screen: 'game',
+        autoRunEnabled: true,
+        heldDirection: 'west',
+        activeAutoRunDirection: 'west',
+        movementHeldSince: 1,
+        queuedMove: { direction: 'west' },
+        nextMoveAt: 9999,
+        activeMoveEndsAt: 9999,
+        lastMoveDurationSeconds: 10,
+    });
+    const session = { loggedIn: true, accounts: [], settings: {} };
+
+    const result = dispatchUiIntent({
+        intent: 'navigation.move',
+        payload: { direction: 'west', source: 'autoRun', nowMs: 10000 },
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+
+    assert.equal(result.ok, true);
+    assert.equal(result.movement.exited, true);
+    assert.equal(state.currentPlaceId, 'west-ronfaure');
+    assert.equal(uiState.activeAutoRunDirection, null);
+    assert.equal(uiState.heldDirection, null);
+    assert.equal(uiState.movementHeldSince, null);
+    assert.equal(uiState.queuedMove, null);
+    assert.equal(uiState.nextMoveAt, null);
+    assert.equal(uiState.activeMoveEndsAt, null);
+});
+
+test('auto run toggle off clears held and queued movement state', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({
+        screen: 'game',
+        autoRunEnabled: true,
+        heldDirection: 'north',
+        activeAutoRunDirection: 'east',
+        movementHeldSince: 1,
+        queuedMove: { direction: 'east' },
+        nextMoveAt: 10000,
+        activeMoveEndsAt: 10000,
+        lastMoveDurationSeconds: 10,
+    });
+    const session = { loggedIn: true, accounts: [], settings: {} };
+
+    const result = dispatchUiIntent({
+        intent: 'navigation.toggleAutoRun',
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+
+    assert.equal(result.autoRunEnabled, false);
+    assert.equal(uiState.heldDirection, null);
+    assert.equal(uiState.activeAutoRunDirection, null);
+    assert.equal(uiState.movementHeldSince, null);
+    assert.equal(uiState.queuedMove, null);
+    assert.equal(uiState.nextMoveAt, null);
+    assert.equal(uiState.activeMoveEndsAt, null);
 });
 
 test('menu intent opens the top menu modal without command routing', () => {

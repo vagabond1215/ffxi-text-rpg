@@ -7,6 +7,8 @@ import {
     setCanvasScreen,
     setModalPage,
     setAutoRunEnabled,
+    isMovementOnCooldown,
+    setMovementCooldown,
     stopUiMovement,
 } from './canvasInput.js';
 import {
@@ -292,21 +294,29 @@ function beginCreatedCharacter(context) {
 function moveNavigation(context) {
     const direction = context.payload.direction;
     const source = context.payload.source ?? 'ui';
+    const nowMs = Number(context.payload.nowMs ?? Date.now());
+    if (['autoRun', 'held'].includes(source) && isMovementOnCooldown(context.uiState, nowMs)) {
+        return ok(context, { cooldown: true, nextMoveAt: context.uiState.nextMoveAt });
+    }
     if (context.uiState.autoRunEnabled && source !== 'autoRun') {
         if (context.uiState.activeAutoRunDirection === direction) {
-            context.uiState.activeAutoRunDirection = null;
+            stopUiMovement(context.uiState);
             setActiveFeedback(context.uiState, 'Auto Run stopped.');
             return ok(context, { message: 'Auto Run stopped.' });
         }
+        context.uiState.heldDirection = null;
+        context.uiState.movementHeldSince = null;
         context.uiState.activeAutoRunDirection = direction;
     }
     const result = moveInDirection(context.state, direction);
     if (!result.ok) {
-        if (context.uiState.activeAutoRunDirection === direction) context.uiState.activeAutoRunDirection = null;
+        if (source === 'autoRun' || source === 'held' || context.uiState.activeAutoRunDirection === direction) stopUiMovement(context.uiState);
         setActiveFeedback(context.uiState, result.reason);
         appendOutput(context.uiState, result.reason);
         return ok(context, { message: result.reason, movement: result });
     }
+    if (result.exited) stopUiMovement(context.uiState);
+    else setMovementCooldown(context.uiState, result.durationSeconds, nowMs);
     setActiveFeedback(context.uiState, result.message);
     appendOutput(context.uiState, result.message);
     appendOutput(context.uiState, '');
