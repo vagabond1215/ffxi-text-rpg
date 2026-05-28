@@ -50,8 +50,7 @@ test('talking at current grid discovers same-zone fast-travel POI', () => {
 
     setPositionAndDiscover(state, 'southern-sandoria', { x: 2, y: 2 });
     assert.match(fastTravelToPoi(state, 'Ashene'), /Fast traveled to Ashene/);
-    assert.equal(state.position.x, ashene.coordinate.x);
-    assert.equal(state.position.y, ashene.coordinate.y);
+    assert.equal(state.position.coord, ashene.coordinate.coord);
 });
 
 test('POI actions render shop guild and quest catalogs', () => {

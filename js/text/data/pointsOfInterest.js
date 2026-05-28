@@ -1,3 +1,4 @@
+import { coordinateKey, describeCoordinate, isTopologyPlace, normalizeCoordinate } from './coordinates.js';
 import { getConnectionsFrom, getPlace, listPlaces } from './places.js';
 
 export const POI_TYPES = Object.freeze({
@@ -95,7 +96,8 @@ export function getPoisForPlace(placeId) {
 }
 
 export function getPoisAtGrid(placeId, coordinate) {
-    return getPoisForPlace(placeId).filter((poi) => poi.coordinate.x === coordinate.x && poi.coordinate.y === coordinate.y);
+    const key = coordinateKey(coordinate);
+    return getPoisForPlace(placeId).filter((poi) => coordinateKey(poi.coordinate) === key);
 }
 
 export function findPoiInPlace(placeId, query) {
@@ -116,7 +118,7 @@ export function describePoisForPlace(placeId) {
 
 export function describeContextualPois(state) {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'No known points of interest at this grid.';
+    if (!pois.length) return 'No known points of interest at this coordinate.';
     return ['Points of interest here:', ...pois.map((poi) => `- ${describePoiLine(poi)} | actions: ${poi.actions.join(', ')}`)].join('\n');
 }
 
@@ -150,7 +152,7 @@ function poi(id, placeId, name, type, sourcePosition, tags, notes) {
 }
 
 function describePoiLine(poi) {
-    return `${poi.name} [${poi.type}] grid (${poi.coordinate.x}, ${poi.coordinate.y}) source ${poi.sourcePosition} - ${poi.notes}`;
+    return `${poi.name} [${poi.type}] coordinate ${describeCoordinate(poi.coordinate)} source ${poi.sourcePosition} - ${poi.notes}`;
 }
 
 function inferActions(poi) {
@@ -169,6 +171,7 @@ function mapSourcePositionToGrid(placeId, sourcePosition) {
     if (!place || !sourcePosition || sourcePosition === 'connection-grid') return { x: 0, y: 0 };
     const match = String(sourcePosition).match(/([A-Z])-?(\d+)/i);
     if (!match) return place.coordinateSystem.start;
+    if (isTopologyPlace(place)) return { levelId: 'main', coord: normalizeCoordinate(sourcePosition) };
 
     const column = match[1].toUpperCase().charCodeAt(0) - 65;
     const row = Number(match[2]) - 1;

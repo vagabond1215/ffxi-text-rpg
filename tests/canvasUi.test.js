@@ -17,6 +17,7 @@ import { createCanvasContextSnapshot, getVisibleLogLines } from '../js/text/ui/c
 import { isCommandIntent, isUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
 import {
     createActionList,
+    createCompassActionList,
     createMenuActionList,
     dispatchAction,
     findActionById,
@@ -157,6 +158,22 @@ test('canvas context snapshot recalculates derived combat values', () => {
 
     assert.notEqual(snapshot.maxHp, 1);
     assert.equal(snapshot.playerName, state.player.identity.name);
+    assert.equal(snapshot.coordinate, 'G-10');
+});
+
+test('canvas compass exposes uniform 3x3 movement buttons and auto-run toggle', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({ screen: 'game' });
+    const compassActions = createCompassActionList(state, uiState);
+    const layout = createCanvasLayout({ width: 1200, height: 800, actions: createActionList(state), compassActions });
+
+    assert.equal(layout.compassButtons.length, 9);
+    const first = layout.compassButtons[0].rect;
+    assert.equal(layout.compassButtons.every((button) => button.rect.w === first.w && button.rect.h === first.h), true);
+    assert.equal(layout.compassButtons[0].action.label, '↖');
+    assert.equal(layout.compassButtons[4].action.id, 'compassStop');
+    assert.equal(layout.autoRunButton.action.id, 'autoRun');
+    assert.equal(hitTestAction(layout, layout.compassButtons[1].rect.x + 2, layout.compassButtons[1].rect.y + 2).action.intent, 'navigation.move');
 });
 
 test('canvas UI state defaults to splash menu and can switch screens and modals', () => {

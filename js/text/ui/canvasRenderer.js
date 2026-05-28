@@ -1,11 +1,12 @@
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getCreatorStep, getCreatorSummary, validateCreator } from '../systems/characterCreationModel.js';
+import { describeCoordinate } from '../data/coordinates.js';
 import { CANVAS_THEME } from './uiTheme.js';
 
 export function createCanvasContextSnapshot(state) {
   const player = state.player;
   const combat = calculateCombatProfile(player);
-  return { playerName: player.identity.name, raceName: player.identity.raceName, jobName: player.jobs.mainJobName, level: player.jobs.level, hp: player.resources.hp, maxHp: combat.resources.maxHp, mp: player.resources.mp, maxMp: combat.resources.maxMp, tp: player.resources.tp, maxTp: combat.resources.maxTp, location: state.location, gridX: state.position?.x ?? '?', gridY: state.position?.y ?? '?' };
+  return { playerName: player.identity.name, raceName: player.identity.raceName, jobName: player.jobs.mainJobName, level: player.jobs.level, hp: player.resources.hp, maxHp: combat.resources.maxHp, mp: player.resources.mp, maxMp: combat.resources.maxMp, tp: player.resources.tp, maxTp: combat.resources.maxTp, location: state.location, coordinate: describeCoordinate(state.position) };
 }
 
 export function getVisibleLogLines(ctx, lines, rect, theme = CANVAS_THEME, scrollOffset = 0) {
@@ -78,7 +79,7 @@ function drawBackground(ctx, layout, theme) { ctx.fillStyle = theme.background; 
 function drawTopBar(ctx, layout, state, uiState, session, theme) {
   const rect = layout.panels.top; const snapshot = createCanvasContextSnapshot(state); panel(ctx, rect, theme.panelSoft, theme.border); ctx.font = theme.font; ctx.fillStyle = theme.muted;
   const account = session?.loggedIn ? session.displayName : '';
-  const status = uiState.screen === 'menu' ? account : uiState.screen === 'creator' ? `Create Adventurer${account ? ` | ${account}` : ''}` : uiState.screen === 'creatorIntro' ? `${snapshot.playerName} begins${account ? ` | ${account}` : ''}` : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.gridX}:${snapshot.gridY}${account ? ` | ${account}` : ''}`;
+  const status = uiState.screen === 'menu' ? account : uiState.screen === 'creator' ? `Create Adventurer${account ? ` | ${account}` : ''}` : uiState.screen === 'creatorIntro' ? `${snapshot.playerName} begins${account ? ` | ${account}` : ''}` : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.coordinate}${account ? ` | ${account}` : ''}`;
   if (status) fitText(ctx, status, rect.x + 58, rect.y + 24, rect.w - 210);
   if (shouldShowFeedback(uiState.activeFeedback) && uiState.screen !== 'menu') { ctx.fillStyle = theme.accent; fitText(ctx, uiState.activeFeedback, rect.x + 58, rect.y + 42, rect.w - 210); }
   drawClock(ctx, rect, session, theme); for (const button of layout.topButtons) drawButton(ctx, button, uiState, theme);
@@ -121,7 +122,12 @@ function drawCreatorIntro(ctx, layout, uiState, state, theme) {
 function creatorTitle(step) { return step === 'identity' ? 'Choose Race and Sex' : step === 'nation' ? 'Choose Starting City' : step === 'job' ? 'Choose Starting Job' : 'Review Adventurer'; }
 function creatorHelp(step) { return step === 'identity' ? 'Race changes allowed sex options. Appearance stays out of scope for this first pass.' : step === 'nation' ? 'Your city determines starting location, first region, maps, and early flavor.' : step === 'job' ? 'Only the six default starting jobs are shown. Advanced jobs remain progression unlocks.' : 'Name the character and confirm the final setup.'; }
 
-function drawSidebar(ctx, layout, uiState, theme) { const rect = layout.panels.sidebar; panel(ctx, rect, theme.panel, theme.border); ctx.font = theme.fontLarge; ctx.fillStyle = theme.accent; ctx.fillText('Actions', rect.x + 14, rect.y + 26); for (const button of layout.actionButtons) drawButton(ctx, button, uiState, theme); }
+function drawSidebar(ctx, layout, uiState, theme) { const rect = layout.panels.sidebar; panel(ctx, rect, theme.panel, theme.border); ctx.font = theme.fontLarge; ctx.fillStyle = theme.accent; ctx.fillText('Compass', rect.x + 14, rect.y + 26); drawCompass(ctx, layout, uiState, theme); ctx.font = theme.fontLarge; ctx.fillStyle = theme.accent; ctx.fillText('Actions', rect.x + 14, (layout.autoRunButton?.rect.y ?? rect.y + 124) + 56); for (const button of layout.actionButtons) drawButton(ctx, button, uiState, theme); }
+
+function drawCompass(ctx, layout, uiState, theme) {
+  for (const button of layout.compassButtons ?? []) drawButton(ctx, button, uiState, theme);
+  if (layout.autoRunButton) drawButton(ctx, layout.autoRunButton, uiState, theme);
+}
 
 function drawButton(ctx, button, uiState, theme) {
   const { action, rect } = button; const hovered = uiState.hoveredActionId === action.id; const pressed = uiState.pressedActionId === action.id; const selected = Boolean(action.selected);
@@ -134,7 +140,7 @@ function drawButton(ctx, button, uiState, theme) {
 function drawHamburgerIcon(ctx, rect, color) { const lineWidth = Math.max(14, Math.floor(rect.w * 0.48)); const startX = rect.x + Math.floor((rect.w - lineWidth) / 2); const centerY = rect.y + Math.floor(rect.h / 2); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineCap = 'round'; for (const offset of [-7, 0, 7]) { ctx.beginPath(); ctx.moveTo(startX, centerY + offset); ctx.lineTo(startX + lineWidth, centerY + offset); ctx.stroke(); } ctx.lineCap = 'butt'; }
 
 function drawMainOutput(ctx, rect, uiState, theme) { const isHovered = uiState.hoveredRegion === 'main'; panel(ctx, rect, theme.panelDeep, isHovered ? theme.accent : theme.border); ctx.font = theme.font; ctx.fillStyle = theme.accent; ctx.fillText('Output Log', rect.x + 14, rect.y + 26); const inner = { x: rect.x + 14, y: rect.y + 44, w: rect.w - 28, h: rect.h - 58 }; drawWrappedLog(ctx, inner, uiState.outputLines, theme, uiState.outputScrollOffset); }
-function drawContext(ctx, rect, state, uiState, theme) { if (!rect.w || !rect.h) return; panel(ctx, rect, theme.panel, theme.border); const s = createCanvasContextSnapshot(state); drawLines(ctx, rect.x + 14, rect.y + 26, rect.w - 28, ['Context', '', s.playerName, `${s.raceName} ${s.jobName} Lv.${s.level}`, `HP ${s.hp}/${s.maxHp}`, `MP ${s.mp}/${s.maxMp}`, `TP ${s.tp}/${s.maxTp}`, '', `Location: ${s.location}`, `Grid: ${s.gridX}:${s.gridY}`, '', 'History', ...uiState.commandHistory.slice(-7).map((command) => `> ${command}`)], theme); }
+function drawContext(ctx, rect, state, uiState, theme) { if (!rect.w || !rect.h) return; panel(ctx, rect, theme.panel, theme.border); const s = createCanvasContextSnapshot(state); drawLines(ctx, rect.x + 14, rect.y + 26, rect.w - 28, ['Context', '', s.playerName, `${s.raceName} ${s.jobName} Lv.${s.level}`, `HP ${s.hp}/${s.maxHp}`, `MP ${s.mp}/${s.maxMp}`, `TP ${s.tp}/${s.maxTp}`, '', `Location: ${s.location}`, `Coordinate: ${s.coordinate}`, '', 'History', ...uiState.commandHistory.slice(-7).map((command) => `> ${command}`)], theme); }
 function drawInput(ctx, rect, uiState, theme) { const focused = uiState.focusedRegion === 'input'; const border = focused ? theme.accentBright : uiState.hoveredRegion === 'input' ? theme.accent : theme.border; panel(ctx, rect, focused ? theme.panelSoft : theme.panelDeep, border); ctx.font = theme.font; ctx.fillStyle = focused ? theme.accentBright : theme.accent; ctx.fillText('>', rect.x + 16, rect.y + 36); ctx.fillStyle = theme.text; fitText(ctx, `${uiState.inputBuffer}${focused ? '_' : ''}`, rect.x + 40, rect.y + 36, rect.w - 56); }
 function drawWrappedLog(ctx, rect, lines, theme, scrollOffset = 0) { const visible = getVisibleLogLines(ctx, lines, rect, theme, scrollOffset); ctx.fillStyle = theme.text; visible.forEach((line, index) => ctx.fillText(line, rect.x, rect.y + theme.lineHeight * (index + 1))); }
 function drawLines(ctx, x, y, maxWidth, lines, theme) { ctx.font = theme.font; let offset = 0; for (const line of lines) { ctx.fillStyle = line === 'Context' || line === 'History' ? theme.accent : theme.text; fitText(ctx, line, x, y + offset, maxWidth); offset += theme.lineHeight; } }

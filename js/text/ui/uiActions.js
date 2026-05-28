@@ -1,4 +1,6 @@
 import { isCommandIntent } from './uiIntentDispatcher.js';
+import { DIRECTION_ARROWS, DIRECTION_ORDER } from '../data/coordinates.js';
+import { canMoveDirection } from '../systems/navigationEngine.js';
 import {
     CREATOR_STEPS,
     createGuidedCreatorState,
@@ -32,6 +34,21 @@ export const TOP_ACTIONS = Object.freeze([
 
 export function createActionList(state, actions = GLOBAL_ACTIONS) {
     return actions.map((item) => ({ ...item, disabled: isActionDisabled(item, state) }));
+}
+
+export function createCompassActionList(state, uiState = {}) {
+    const blockedByBattle = state?.activeBattle?.phase === 'active';
+    const directionActions = DIRECTION_ORDER.map((direction) => uiAction(`compass:${direction}`, DIRECTION_ARROWS[direction], 'navigation.move', { direction }, {
+        region: 'compass',
+        disabled: blockedByBattle || !canMoveDirection(state, direction),
+        selected: uiState.activeAutoRunDirection === direction,
+        title: direction,
+    }));
+    return [
+        ...directionActions,
+        uiAction('compassStop', '■', 'navigation.stop', {}, { region: 'compass', title: 'stop' }),
+        uiAction('autoRun', `Auto Run: ${uiState.autoRunEnabled ? 'On' : 'Off'}`, 'navigation.toggleAutoRun', {}, { region: 'autoRun', selected: Boolean(uiState.autoRunEnabled) }),
+    ];
 }
 
 export function createCreatorActionList(uiState) {

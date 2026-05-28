@@ -26,7 +26,7 @@ import {
 } from './canvasInput.js';
 import { renderCanvasApp } from './canvasRenderer.js';
 import { createCommandIntent, createCommandIntentAdapter } from './commandIntentAdapter.js';
-import { createActionList, createCreatorActionList, createCreatorIntroActionList, createMenuActionList, TOP_ACTIONS } from './uiActions.js';
+import { createActionList, createCompassActionList, createCreatorActionList, createCreatorIntroActionList, createMenuActionList, TOP_ACTIONS } from './uiActions.js';
 import { dispatchUiIntent } from './uiIntentDispatcher.js';
 
 export function createCanvasApp({ canvas }) {
@@ -93,6 +93,7 @@ export function createCanvasApp({ canvas }) {
             ...(layout?.modalCloseButton ? [layout.modalCloseButton.action] : []),
             ...createMenuActionList(session, uiState.modal, uiState.modalPage),
             ...creatorActions,
+            ...createCompassActionList(state, uiState),
             ...createActionList(state),
         ];
         const action = allActions.find((item) => item.id === actionId);
@@ -132,9 +133,10 @@ export function createCanvasApp({ canvas }) {
     function render() {
         refreshSession();
         const actions = uiState.screen === 'game' ? createActionList(state) : [];
+        const compassActions = uiState.screen === 'game' ? createCompassActionList(state, uiState) : [];
         const menuActions = createMenuActionList(session, uiState.modal, uiState.modalPage);
         const creatorActions = uiState.screen === 'creator' ? createCreatorActionList(uiState) : uiState.screen === 'creatorIntro' ? createCreatorIntroActionList() : [];
-        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, creatorActions, topActions: TOP_ACTIONS, modal: uiState.modal });
+        layout = createCanvasLayout({ width: canvas.clientWidth || window.innerWidth, height: canvas.clientHeight || window.innerHeight, actions, menuActions, creatorActions, compassActions, topActions: TOP_ACTIONS, modal: uiState.modal });
         renderCanvasApp(ctx, { layout, state, uiState, session });
     }
 
@@ -163,7 +165,11 @@ export function createCanvasApp({ canvas }) {
     canvas.addEventListener('pointerdown', (event) => {
         canvas.focus();
         const point = pointerPosition(event);
-        handlePointerDown(uiState, layout, point.x, point.y);
+        const hit = handlePointerDown(uiState, layout, point.x, point.y);
+        if (hit?.action?.intent === 'navigation.move' && !uiState.autoRunEnabled) {
+            dispatchCanvasAction(hit.action.id);
+            return;
+        }
         render();
     });
 
@@ -198,6 +204,16 @@ export function createCanvasApp({ canvas }) {
     });
 
     window.addEventListener('resize', resize);
+    const movementTimer = window.setInterval(() => {
+        if (uiState.modal || uiState.screen !== 'game') return;
+        if (uiState.activeAutoRunDirection) {
+            dispatchAndRender('navigation.move', { direction: uiState.activeAutoRunDirection, source: 'autoRun' });
+            return;
+        }
+        if (uiState.heldDirection && !uiState.autoRunEnabled) {
+            dispatchAndRender('navigation.move', { direction: uiState.heldDirection, source: 'held' });
+        }
+    }, 1000);
     resize();
     canvas.focus();
 
@@ -216,6 +232,6 @@ export function createCanvasApp({ canvas }) {
         loadCharacter(selector) { const loaded = loadCharacter(selector); if (loaded) replaceState(state, loaded); render(); return loaded; },
         listCharacters,
         getSession: () => session,
-        destroy() { window.removeEventListener('resize', resize); },
+        destroy() { window.removeEventListener('resize', resize); window.clearInterval(movementTimer); },
     };
 }

@@ -6,7 +6,7 @@ import { discoverPoi } from './poiEngine.js';
 
 export function buyFromCurrentShop(state, itemQuery = '', shopQuery = '') {
     const shopPoi = findCurrentShopPoi(state, shopQuery);
-    if (!shopPoi) return 'There is no matching shop at this grid.';
+    if (!shopPoi) return 'There is no matching shop at this coordinate.';
 
     const catalog = getShopCatalogForPoi(shopPoi.id);
     if (!catalog) return `${shopPoi.name} has no shop catalog yet.`;

@@ -13,6 +13,7 @@ test('initial state starts with discovered atlas coordinate', () => {
     const state = createInitialState();
 
     assert.equal(state.position.placeId, 'southern-sandoria');
+    assert.equal(state.position.coord, 'G-10');
     assert.equal(hasVisited(state.atlas, 'southern-sandoria', state.position), true);
     assert.match(describeAtlas(state), /@/);
     assert.match(describeAtlas(state), /\?/);
@@ -29,13 +30,13 @@ test('controls include resource bars tick bar keypad and action groups', () => {
     assert.match(text, /Cast Magic/);
 });
 
-test('setPositionAndDiscover records a new visited grid', () => {
+test('setPositionAndDiscover records a new visited coordinate', () => {
     const state = createInitialState();
-    const result = setPositionAndDiscover(state, 'southern-sandoria', { x: 3, y: 2 });
+    const result = setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
 
     assert.equal(result.ok, true);
-    assert.equal(state.position.x, 3);
-    assert.equal(hasVisited(state.atlas, 'southern-sandoria', { x: 3, y: 2 }), true);
+    assert.equal(state.position.coord, 'F-10');
+    assert.equal(hasVisited(state.atlas, 'southern-sandoria', { coord: 'F-10' }), true);
 });
 
 test('aggro engine can deterministically trigger on aggressive spawn grid', () => {
@@ -57,8 +58,8 @@ test('router exposes controls atlas grid and move commands', () => {
 
     assert.match(router('controls'), /Resource Bars/);
     assert.match(router('atlas'), /Southern San/);
-    assert.match(router('grid'), /grid/);
-    assert.match(router('move e'), /Moved to/);
+    assert.match(router('grid'), /coordinate/);
+    assert.match(router('move e'), /Moved east/);
 });
 
 test('movement is blocked while in active battle', () => {

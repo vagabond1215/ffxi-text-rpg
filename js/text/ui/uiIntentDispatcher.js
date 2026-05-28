@@ -6,6 +6,8 @@ import {
     setCanvasModal,
     setCanvasScreen,
     setModalPage,
+    setAutoRunEnabled,
+    stopUiMovement,
 } from './canvasInput.js';
 import {
     advanceCreatorStep,
@@ -19,6 +21,7 @@ import {
     selectCreatorSex,
     validateCreator,
 } from '../systems/characterCreationModel.js';
+import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
 
 export function createIntentResult({ ok = true, message = '', data = null } = {}) {
     return { ok, message, data };
@@ -84,6 +87,9 @@ export function dispatchUiIntent(request = {}) {
         case 'creator.cancel': return cancelCreator(context);
         case 'creator.confirm': return confirmCreator(context);
         case 'creator.begin': return beginCreatedCharacter(context);
+        case 'navigation.move': return moveNavigation(context);
+        case 'navigation.stop': return stopNavigation(context);
+        case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -281,6 +287,45 @@ function beginCreatedCharacter(context) {
         return routeCommand(context);
     }
     return ok(context, { message });
+}
+
+function moveNavigation(context) {
+    const direction = context.payload.direction;
+    const source = context.payload.source ?? 'ui';
+    if (context.uiState.autoRunEnabled && source !== 'autoRun') {
+        if (context.uiState.activeAutoRunDirection === direction) {
+            context.uiState.activeAutoRunDirection = null;
+            setActiveFeedback(context.uiState, 'Auto Run stopped.');
+            return ok(context, { message: 'Auto Run stopped.' });
+        }
+        context.uiState.activeAutoRunDirection = direction;
+    }
+    const result = moveInDirection(context.state, direction);
+    if (!result.ok) {
+        if (context.uiState.activeAutoRunDirection === direction) context.uiState.activeAutoRunDirection = null;
+        setActiveFeedback(context.uiState, result.reason);
+        appendOutput(context.uiState, result.reason);
+        return ok(context, { message: result.reason, movement: result });
+    }
+    setActiveFeedback(context.uiState, result.message);
+    appendOutput(context.uiState, result.message);
+    appendOutput(context.uiState, '');
+    return ok(context, { message: result.message, movement: result });
+}
+
+function stopNavigation(context) {
+    stopUiMovement(context.uiState);
+    const result = stopTravel(context.state);
+    setActiveFeedback(context.uiState, result.message);
+    appendOutput(context.uiState, result.message);
+    return ok(context, { message: result.message, stopped: result.stopped });
+}
+
+function toggleAutoRun(context) {
+    const enabled = setAutoRunEnabled(context.uiState, !context.uiState.autoRunEnabled);
+    const message = `Auto Run ${enabled ? 'on' : 'off'}.`;
+    setActiveFeedback(context.uiState, message);
+    return ok(context, { message, autoRunEnabled: enabled });
 }
 
 function routeCommand(context) {

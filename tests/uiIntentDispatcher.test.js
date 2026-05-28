@@ -196,6 +196,26 @@ test('command route intent remains routed through the command adapter', () => {
     assert.match(uiState.outputLines.join('\n'), /> stats\nadapter output/);
 });
 
+test('navigation intent moves through engine without a command string', () => {
+    const state = createInitialState();
+    const uiState = createCanvasUiState({ screen: 'game' });
+    const session = { loggedIn: true, accounts: [], settings: {} };
+
+    const result = dispatchUiIntent({
+        intent: 'navigation.move',
+        payload: { direction: 'east' },
+        state,
+        uiState,
+        session,
+        services: { loadAccountSession: () => session },
+    });
+
+    assert.equal(result.ok, true);
+    assert.equal(state.position.coord, 'H-10');
+    assert.deepEqual(uiState.commandHistory, []);
+    assert.match(uiState.outputLines.join('\n'), /Moved east/);
+});
+
 test('menu intent opens the top menu modal without command routing', () => {
     const state = createInitialState();
     const uiState = createCanvasUiState({ screen: 'game', modal: 'settings', modalPage: 'clock' });
