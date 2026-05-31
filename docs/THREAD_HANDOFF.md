@@ -35,11 +35,11 @@ js/text/version.js
 Current state at handoff:
 
 ```text
-App/package: 0.4.3
+App/package: 0.4.4
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: Item Behavior Selling
+Codename: Conservative Skill Gains
 ```
 
 Major active system versions:
@@ -62,9 +62,9 @@ inventoryTransfers: 0.5.1
 itemSchema: 0.6.0
 itemStacking: 0.5.1
 skillCaps: 0.5.1
-skillProgression: 0.5.1
+skillProgression: 0.5.2
 battleEngine: 0.5.0
-combatActions: 0.5.0
+combatActions: 0.5.1
 battleRewards: 0.5.2
 progression: 0.5.3
 expTables: 0.5.2
@@ -336,9 +336,10 @@ Rules:
 - Container transfers are atomic and enforce source access, destination access, capacity, item-kind, and stack rules.
 - Inventory quantity removal is used by shop selling so gil is credited only after item removal succeeds.
 - Latent effects, enchantments, charges, and ranged/ammo behavior are inspectable metadata only; they are not wired into combat formulas yet.
-- Sparse skill rank/cap helpers exist for later combat and magic skill progression.
+- Sparse skill rank/cap helpers exist for current skill-gain clamping and later combat/magic formula integration.
 - Character-owned current skills live in `player.progression.skills[skillId]`. Do not reintroduce per-job skill storage maps.
 - `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` describe current character-owned skill values against the active main-job cap scaffold.
+- Basic attacks, placeholder weapon skills, and placeholder spell casts can add deterministic +1 learned skill when the active main job has room under its current cap.
 
 Temporary limitation: Mog House is currently a boolean access context, not a real zone/interior yet.
 
@@ -384,6 +385,7 @@ Implemented:
 - deterministic RNG injection for battle attacks and tests
 - basic attack flow
 - placeholder weapon skill/cast commands
+- deterministic skill-gain hooks for basic attacks, placeholder weapon skills, and placeholder spell casts
 - starter loot tables
 - victory reward resolution for EXP, gil, loot rolls, Inventory insertion, and duplicate payout prevention
 - status lifecycle scaffold
@@ -394,7 +396,7 @@ Not implemented yet:
 - enemy AI turn depth
 - death/KO flow
 - real magic/recast/cast-time integration
-- combat/magic skill-up pacing and skill-cap use in damage or magic formulas
+- random/retail-like skill-up pacing and skill-cap use in damage or magic formulas
 
 ## Important tests
 
@@ -410,8 +412,10 @@ tests/rewardEngine.test.js
 tests/rngEngine.test.js
 tests/shopEngine.test.js
 tests/skillCaps.test.js
+tests/skillProgressionEngine.test.js
 tests/skillCommandRouter.test.js
 tests/skillProgressionValidation.test.js
+tests/combatActionEngine.test.js
 tests/poiEngine.test.js
 tests/travelEngine.test.js
 tests/atlasAndControls.test.js
@@ -443,14 +447,14 @@ docs/RESEARCH_REFERENCES.md
 
 ## Current recommended next pass
 
-The next best implementation pass is conservative skill plumbing and deeper item behavior application:
+The next best implementation pass is conservative formula and item behavior application planning:
 
 1. Keep latent effects, enchantments, charges, and ranged/ammo records metadata-only until their action/combat semantics are explicit.
-2. Add isolated skill-gain hooks, but avoid random pacing until the rule is tested and confidence-labeled.
-3. Decide how skill caps feed combat and magic formulas before touching battle command handlers.
+2. Decide how skill caps feed combat and magic formulas before using learned/effective skill values in formulas.
+3. Keep skill-gain pacing deterministic unless a tested RNG policy is added.
 4. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.
 
-Important: `skillCaps.js` is scaffold-only. Even though current skills now live on the character, do not wire those caps into combat or magic calculations until current skill semantics and the cap/skill-gain flow are covered by tests.
+Important: `skillCaps.js` still should not be treated as exact retail formula data. Current skills now live on the character and can increase through isolated hooks, but do not wire those caps into combat or magic calculations until the formula semantics are explicitly designed and tested.
 
 ## Rules for future agents
 

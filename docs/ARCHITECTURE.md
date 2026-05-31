@@ -150,6 +150,7 @@ js/text/
     menuDescriptions.js
     poiEngine.js
     shopEngine.js
+    skillProgressionEngine.js
     statEngine.js
     statusEngine.js
     statFormulaDescriptions.js
@@ -236,7 +237,9 @@ Equipment catalog entries are static templates. Runtime inventory records remain
 
 ### Skill caps
 
-`js/text/data/skillCaps.js` owns the current sparse skill rank/cap scaffold. It exposes `getSkillCap(jobId, skillId, level)` and `getEffectiveSkill(player, skillId)` for future combat and magic integration. The cap formula is explicitly placeholder metadata, so battle and command handlers should not bake it in as exact FFXI behavior.
+`js/text/data/skillCaps.js` owns the current sparse skill rank/cap scaffold. It exposes `getSkillCap(jobId, skillId, level)` and `getEffectiveSkill(player, skillId)` for skill inspection, conservative gain clamping, and future combat/magic integration. The cap formula is explicitly placeholder metadata, so battle and command handlers should not bake it in as exact FFXI behavior.
+
+`js/text/systems/skillProgressionEngine.js` owns character skill state and conservative gain resolution. It can infer main-hand, ranged/ammo, and placeholder spell skills, then add deterministic +1 learned skill for eligible combat actions while clamping to the current main-job cap. These learned/effective skill values are not used in damage, accuracy, magic potency, enemy AI, or item behavior formulas yet.
 
 ### POI engine
 
@@ -266,7 +269,7 @@ The battle engine owns battle-local state:
 - magic burst placeholder
 - log
 
-Combat actions and battle rewards exist. Rewards currently cover victory EXP, gil, deterministic loot rolls, Inventory insertion through container rules, failed loot storage reporting, progression integration, and duplicate payout prevention.
+Combat actions and battle rewards exist. Player basic attacks, placeholder weapon skills, and placeholder spell casts may append concise skill-gain log lines after eligible actions. Rewards currently cover victory EXP, gil, deterministic loot rolls, Inventory insertion through container rules, failed loot storage reporting, progression integration, and duplicate payout prevention.
 
 ### Status engine
 

@@ -1,10 +1,10 @@
 export const VERSION = Object.freeze({
-    app: '0.4.3',
+    app: '0.4.4',
     accountSave: 4,
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'Item Behavior Selling',
+    codename: 'Conservative Skill Gains',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
@@ -13,7 +13,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.4.3',
+    commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
     slashCommands: '0.4.1',
@@ -29,12 +29,12 @@ export const SYSTEM_VERSIONS = Object.freeze({
     statEngine: '0.4.0',
     statusEngine: '0.1.0',
     battleEngine: '0.5.0',
-    combatActions: '0.5.0',
+    combatActions: '0.5.1',
     battleRewards: '0.5.2',
     progression: '0.5.4',
     expTables: '0.5.2',
     jobSwitching: '0.5.3',
-    skillProgression: '0.5.1',
+    skillProgression: '0.5.2',
     liveTick: '0.2.0',
     maps: '0.4.0',
     zones: '0.4.0',

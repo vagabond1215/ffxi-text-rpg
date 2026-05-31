@@ -2,20 +2,20 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable canvas-first text shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, alphanumeric San d’Oria coordinate topology, coordinate atlas, travel scaffold, compass navigation controls, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
+This branch intentionally resets the project around a stable canvas-first text shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, alphanumeric San d’Oria coordinate topology, coordinate atlas, travel scaffold, compass navigation controls, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, isolated skill-gain hooks, skill-cap scaffolding, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
-This pass adds item behavior inspection helpers and conservative shop selling. Latent effects, enchantments, charges, and ranged/ammo behavior remain metadata-only and are not wired into combat formulas yet.
+This pass adds conservative skill-gain hooks for basic attacks, placeholder weapon skills, and placeholder spell casts. Skill gains update character-owned learned values and battle-log text, but learned skill values are not wired into damage, accuracy, magic, enemy AI, or item behavior formulas yet.
 
 ## Current version
 
 ```text
-App/package: 0.4.3
+App/package: 0.4.4
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: Item Behavior Selling
+Codename: Conservative Skill Gains
 ```
 
 `VERSION.save` remains as a backward-compatible alias for `VERSION.accountSave` while callers migrate to the clearer name.
@@ -322,7 +322,7 @@ docs/
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
 - Character-owned current skill storage under `player.progression.skills[skillId]`.
-- Sparse skill rank/cap helper data and text-first `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` commands for future combat and magic skill progression.
+- Sparse skill rank/cap helper data, deterministic +1 skill-gain hooks for eligible combat actions, and text-first `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` commands for current learned skill inspection.
 - Simple battle-state engine with deterministic RNG injection.
 - Battle reward resolution for EXP, gil, loot rolls, Inventory insertion, duplicate payout prevention, and progression engine integration.
 - Conservative EXP table data, level-up rules, EXP-to-next tracking, level-cap behavior, and HP/MP/resource refresh after level-up.
@@ -350,9 +350,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is conservative skill plumbing and deeper item behavior application:
+The current recommended next pass is conservative formula and item-behavior application planning:
 
 1. Keep latent effects, enchantments, charges, and ranged/ammo behavior metadata inspection-only until combat and action semantics are explicit.
-2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
-3. Wire skill caps into combat and magic calculations only after current skill state, gain flow, and formula confidence are explicit.
+2. Wire skill caps into combat and magic calculations only after current skill state, gain flow, and formula confidence are explicit.
+3. Keep skill-gain pacing deterministic until a tested RNG policy is introduced.
 4. Add key-item item records and unlock/permission validation.
