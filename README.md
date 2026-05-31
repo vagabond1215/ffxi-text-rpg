@@ -6,14 +6,16 @@ This branch intentionally resets the project around a stable canvas-first text s
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
+This pass adds item behavior inspection helpers and conservative shop selling. Latent effects, enchantments, charges, and ranged/ammo behavior remain metadata-only and are not wired into combat formulas yet.
+
 ## Current version
 
 ```text
-App/package: 0.4.2
+App/package: 0.4.3
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: San d’Oria Coordinate Compass
+Codename: Item Behavior Selling
 ```
 
 `VERSION.save` remains as a backward-compatible alias for `VERSION.accountSave` while callers migrate to the clearer name.
@@ -121,6 +123,7 @@ shop <name>
 move <dir>
 stop
 buy <item>
+sell <item> [quantity]
 guild <name>
 quest <name>
 discovered
@@ -173,10 +176,11 @@ A completed and confirmed character is saved automatically into the local accoun
 
 ## Save model
 
-Local saves are stored under:
+Local accounts and active-account session state are stored under:
 
 ```text
-ffxiTextRpgAccount
+ffxiTextRpgAccounts
+ffxiTextRpgAccountSession
 ```
 
 The save payload is encoded as:
@@ -311,9 +315,9 @@ docs/
 - Common item schema, item normalization, stack metadata, and stack-aware container insertion.
 - Normalized equipment template fields for family/archetype/subtype, allowed slots, weapon category/delay, requirements, flags, always-on effects, latent/enchantment/augment scaffolds, charges, and confidence/source metadata.
 - Container transfer rules with access, capacity, item-kind, and stack-handling validation.
-- Shop buying into Inventory.
+- Shop buying into Inventory and conservative shop selling from Inventory.
 - Equip/unequip commands using Inventory and accessible Wardrobes, with job/race/level/slot eligibility and two-handed/offhand conflict checks.
-- Text-first `item <query>` and `inspect item <query>` inspection for accessible inventory, wardrobe, and equipped items.
+- Text-first `item <query>` and `inspect item <query>` inspection for accessible inventory, wardrobe, equipped items, and item behavior metadata.
 - Starter equipment catalog with conservative stat modifiers and explicit placeholder/intentional-simplification metadata.
 - Attribute/resource/derived-stat/skill/equipment/currency constants.
 - Conservative stat calculation engine.
@@ -346,9 +350,9 @@ Current formulas are conservative placeholders. They exist to make the architect
 
 ## Current next best pass
 
-The current recommended next pass is item behavior modules and conservative skill plumbing:
+The current recommended next pass is conservative skill plumbing and deeper item behavior application:
 
-1. Implement item behaviors for latent effects, enchantments, charges, ranged/ammo, and sell/vendor restrictions in small rule modules.
+1. Keep latent effects, enchantments, charges, and ranged/ammo behavior metadata inspection-only until combat and action semantics are explicit.
 2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
 3. Wire skill caps into combat and magic calculations only after current skill state, gain flow, and formula confidence are explicit.
 4. Add key-item item records and unlock/permission validation.

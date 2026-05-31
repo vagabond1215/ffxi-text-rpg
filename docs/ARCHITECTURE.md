@@ -65,10 +65,11 @@ js/text/systems/ffxiCommandAdapter.js
 js/text/save.js
 ```
 
-The current browser save key is:
+The current browser account and session save keys are:
 
 ```text
-ffxiTextRpgAccount
+ffxiTextRpgAccounts
+ffxiTextRpgAccountSession
 ```
 
 The saved payload is encoded as:
@@ -145,6 +146,7 @@ js/text/
     equipmentEngine.js
     ffxiCommandAdapter.js
     inventoryEngine.js
+    itemBehaviorEngine.js
     menuDescriptions.js
     poiEngine.js
     shopEngine.js
@@ -247,7 +249,9 @@ The POI engine owns:
 
 ### Shop engine
 
-The shop engine currently supports buying only. Purchases spend gil, create/enrich items, and add them into Inventory through container rules. Selling is intentionally a placeholder until item value/flags/vendor restrictions are defined.
+The shop engine supports buying and conservative selling. Purchases spend gil, create/enrich items, and add them into Inventory through container rules. Selling requires a current shop POI, only sells from Inventory, rejects key items, `noSell`, and zero-value items by default, removes the item quantity first, and credits gil only after removal succeeds.
+
+`itemBehaviorEngine.js` owns sell eligibility/value helpers and metadata-only item behavior inspection for latent effects, enchantments, charges, and ranged/ammo flags. Those behavior records are not wired into combat formulas yet.
 
 ### Battle engine
 
@@ -262,7 +266,7 @@ The battle engine owns battle-local state:
 - magic burst placeholder
 - log
 
-Combat actions exist, but battle rewards are not implemented yet.
+Combat actions and battle rewards exist. Rewards currently cover victory EXP, gil, deterministic loot rolls, Inventory insertion through container rules, failed loot storage reporting, progression integration, and duplicate payout prevention.
 
 ### Status engine
 

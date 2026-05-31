@@ -35,11 +35,11 @@ js/text/version.js
 Current state at handoff:
 
 ```text
-App/package: 0.4.2
+App/package: 0.4.3
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: San d’Oria Coordinate Compass
+Codename: Item Behavior Selling
 ```
 
 Major active system versions:
@@ -54,7 +54,8 @@ playerEntity: 0.5.4
 statEngine: 0.4.0
 equipmentCommands: 0.5.0
 equipmentEligibility: 0.5.0
-itemInspection: 0.5.0
+itemInspection: 0.5.1
+itemBehavior: 0.1.0
 equipmentCatalog: 0.6.0
 inventoryContainers: 0.5.1
 inventoryTransfers: 0.5.1
@@ -70,7 +71,7 @@ expTables: 0.5.2
 jobSwitching: 0.5.3
 leveling: 0.5.3
 loot: 0.5.0
-shops/shopTransactions: 0.3.7
+shops/shopTransactions: 0.3.8
 coordinates/navigation: 0.1.0
 pois/poiDiscovery/poiFastTravel: 0.3.5
 travel/gridMovement/zoneAtlas: 0.4.0
@@ -146,6 +147,7 @@ here
 talk Ashene
 shop Ashene
 buy Bronze Sword
+sell Bronze Sword
 zonefast
 move n
 travel West Ronfaure
@@ -184,10 +186,11 @@ File:
 js/text/save.js
 ```
 
-LocalStorage key:
+LocalStorage keys:
 
 ```text
-ffxiTextRpgAccount
+ffxiTextRpgAccounts
+ffxiTextRpgAccountSession
 ```
 
 Encoding:
@@ -207,7 +210,7 @@ Save structure includes:
 
 Legacy migration:
 
-- Old raw `ffxiTextRpgSave` is read only if no account save exists.
+- Old raw `ffxiTextRpgSave` and legacy single-account `ffxiTextRpgAccount` are read only for migration when no current account save exists.
 - Valid legacy saves are migrated into the encoded account model.
 - Save load must call `reviveGameState()` to relink `player.inventory` to `player.inventoryState.containers.inventory.items`.
 
@@ -254,13 +257,14 @@ js/text/systems/aggroEngine.js
 Implemented:
 
 - starter cities and starter outdoor/dungeon hooks
-- coordinate grids
-- connection grids
+- San d'Oria city topology coordinates with explicit alphanumeric nodes and exits
+- legacy numeric grids for non-San d'Oria wilderness/city areas until those zones are expanded
+- connection grids / departure and arrival coordinates
 - zone graph
 - direct travel command
 - travel restrictions scaffold
-- atlas discovery with unknown unvisited grids
-- 8-way grid movement
+- atlas discovery with unknown unvisited coordinates/grids
+- 8-way coordinate movement where topology exists, with legacy numeric movement elsewhere
 - foot-travel aggro scaffold
 
 ### POIs, shops, guilds, quests
@@ -274,6 +278,7 @@ js/text/data/guildServices.js
 js/text/data/questHooks.js
 js/text/systems/poiEngine.js
 js/text/systems/shopEngine.js
+js/text/systems/itemBehaviorEngine.js
 ```
 
 Implemented:
@@ -286,8 +291,10 @@ Implemented:
 - starter guild service/recipe previews
 - starter quest/mission hooks
 - buying from shops into Inventory
+- conservative selling from Inventory at current shop POIs
+- item behavior metadata helpers for sell restrictions, latent effects, enchantments, charges, and ranged/ammo records
 
-Selling is intentionally not implemented yet.
+Selling intentionally stays conservative: key items, `noSell`, and zero-value items are rejected by default; `noTrade`, `noDrop`, and `noAuction` are described as metadata but are not enforced as shop-sale restrictions yet.
 
 ### Inventory, items, storage, wardrobes
 
@@ -299,6 +306,7 @@ js/text/data/inventoryContainers.js
 js/text/data/skillCaps.js
 js/text/data/mogHouseFurniture.js
 js/text/systems/inventoryEngine.js
+js/text/systems/itemBehaviorEngine.js
 ```
 
 Implemented containers:
@@ -326,6 +334,8 @@ Rules:
 - Item normalization adds kind, quantity, stackable, maxStack, tags, source, template metadata, family/archetype/subtype, requirements, flags, effects, latent/enchantment/augment scaffolds, charges, modifiers, and equipmentSlot/allowedSlots fields.
 - Stackable consumables/materials/misc items merge into existing stacks when possible.
 - Container transfers are atomic and enforce source access, destination access, capacity, item-kind, and stack rules.
+- Inventory quantity removal is used by shop selling so gil is credited only after item removal succeeds.
+- Latent effects, enchantments, charges, and ranged/ammo behavior are inspectable metadata only; they are not wired into combat formulas yet.
 - Sparse skill rank/cap helpers exist for later combat and magic skill progression.
 - Character-owned current skills live in `player.progression.skills[skillId]`. Do not reintroduce per-job skill storage maps.
 - `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` describe current character-owned skill values against the active main-job cap scaffold.
@@ -349,7 +359,7 @@ Implemented:
 - replacement gear returns safely
 - slot inference from `equipmentSlot` or tags
 - eligibility validation by job, race, level, allowed slot, two-handed/offhand conflicts, and ranged/ammo slot constraints
-- `item <query>` and `inspect item <query>` for text-first item template/runtime inspection
+- `item <query>` and `inspect item <query>` for text-first item template/runtime/behavior inspection
 - starter equipment modifiers affect combat profile
 
 Starter gear bonuses, eligibility, and delay values are conservative placeholders or intentional simplifications, not exact FFXI formulas.
@@ -433,9 +443,9 @@ docs/RESEARCH_REFERENCES.md
 
 ## Current recommended next pass
 
-The next best implementation pass is item behavior modules plus conservative skill plumbing:
+The next best implementation pass is conservative skill plumbing and deeper item behavior application:
 
-1. Add item behavior modules for latent effects, enchantments, charges, ranged/ammo, and sell restrictions.
+1. Keep latent effects, enchantments, charges, and ranged/ammo records metadata-only until their action/combat semantics are explicit.
 2. Add isolated skill-gain hooks, but avoid random pacing until the rule is tested and confidence-labeled.
 3. Decide how skill caps feed combat and magic formulas before touching battle command handlers.
 4. Keep formula-sensitive values labeled as exact, approximate, simplified, or placeholder.

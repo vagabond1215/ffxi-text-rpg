@@ -7,6 +7,13 @@ import {
     findItemInContainer,
     isContainerAccessible,
 } from './inventoryEngine.js';
+import {
+    describeCharges,
+    describeEnchantments,
+    describeItemBehavior,
+    describeLatentEffects,
+    describeRangedAmmoBehavior,
+} from './itemBehaviorEngine.js';
 
 const DEFAULT_EQUIP_SEARCH_CONTAINERS = Object.freeze(['inventory', 'wardrobe1', 'wardrobe2', 'wardrobe3', 'wardrobe4', 'wardrobe5', 'wardrobe6', 'wardrobe7', 'wardrobe8']);
 
@@ -197,6 +204,9 @@ function describeItemInspection(item, sourceLabel = 'unknown') {
     }
 
     lines.push(`Flags: ${normalized.flags.length ? normalized.flags.join(', ') : 'none'}`);
+    lines.push('Behavior metadata:');
+    lines.push(...splitLines(describeItemBehavior(normalized)));
+    lines.push(...splitLines(describeRangedAmmoBehavior(normalized)));
     lines.push('Always-on modifiers:');
     lines.push(...describeModifierBlock(normalized.modifiers));
     lines.push('Effects:');
@@ -276,10 +286,10 @@ function describeModifierBlock(modifiers = {}) {
 function describeEffects(item) {
     const lines = [];
     lines.push(...(item.effects?.length ? item.effects.map((effect) => `- ${effect.id}: ${effect.type} (${effect.trigger}) confidence=${effect.confidence}`) : ['- always-on effects: none beyond modifiers']));
-    lines.push(...(item.latentEffects?.length ? item.latentEffects.map((effect) => `- latent ${effect.id}: condition=${JSON.stringify(effect.condition)} confidence=${effect.confidence}`) : ['- latent: none']));
-    lines.push(...(item.enchantments?.length ? item.enchantments.map((entry) => `- enchantment ${entry.id}: ${entry.type} confidence=${entry.confidence}`) : ['- enchantments: none']));
+    lines.push(...splitLines(describeLatentEffects(item)));
+    lines.push(...splitLines(describeEnchantments(item)));
     lines.push(...(item.augments?.length ? item.augments.map((entry) => `- augment ${entry.id}: ${entry.type} confidence=${entry.confidence}`) : ['- augments: none']));
-    lines.push(item.charges ? `- charges: ${item.charges.current}/${item.charges.max}, recast ${item.charges.recastSeconds}s, cooldown ${item.charges.cooldownSeconds}s` : '- charges: none');
+    lines.push(...splitLines(describeCharges(item)));
     return lines;
 }
 
@@ -304,4 +314,8 @@ function normalizeQuery(value) {
 function formatSigned(value) {
     const number = Number(value) || 0;
     return number > 0 ? `+${number}` : String(number);
+}
+
+function splitLines(value) {
+    return String(value ?? '').split('\n').filter(Boolean);
 }
