@@ -257,6 +257,55 @@ test('item inspection shows requirements flags effects and confidence notes', ()
     assert.match(output, /weaponDelay: placeholder/);
 });
 
+test('item inspection shows behavior metadata for latent enchantment charges and ranged ammo', () => {
+    const state = createInitialState();
+    addItemToContainer(state.player.inventoryState, 'inventory', {
+        id: 'training-bow',
+        name: 'Training Bow',
+        kind: 'equipment',
+        equipmentSlot: 'ranged',
+        allowedSlots: ['ranged'],
+        weaponCategory: 'bow',
+        weaponDelay: 360,
+        valueGil: 120,
+        tags: ['weapon', 'ranged'],
+        flags: ['equipmentOnly', 'rangedWeapon', 'latent', 'enchantment', 'chargeBased'],
+        latentEffects: [{
+            id: 'latent-clear-weather',
+            condition: { weather: 'clear' },
+            modifiers: { derived: { accuracy: 2 } },
+            confidence: 'intentionalSimplification',
+            source: 'test fixture',
+            notes: 'Metadata only.',
+        }],
+        enchantments: [{
+            id: 'enchantment-focus',
+            type: 'temporaryModifier',
+            modifiers: { derived: { rangedAccuracy: 3 } },
+            confidence: 'placeholder',
+            source: 'test fixture',
+        }],
+        charges: {
+            max: 3,
+            current: 2,
+            recastSeconds: 60,
+            cooldownSeconds: 30,
+            confidence: 'placeholder',
+            source: 'test fixture',
+        },
+    });
+
+    const output = inspectItem(state, 'Training Bow');
+
+    assert.match(output, /Behavior metadata:/);
+    assert.match(output, /selling: allowed, estimated 60 gil each/);
+    assert.match(output, /ranged\/ammo: markers=rangedWeapon flag, ranged tag, ranged slot/);
+    assert.match(output, /latent latent-clear-weather: condition=\{"weather":"clear"\}/);
+    assert.match(output, /modifiers=derived\(accuracy \+2\)/);
+    assert.match(output, /enchantment enchantment-focus: type=temporaryModifier/);
+    assert.match(output, /charges: 2\/3, recast 60s, cooldown 30s/);
+});
+
 test('item inspection searches accessible non-wardrobe containers for consumables and materials', () => {
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;

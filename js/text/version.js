@@ -1,5 +1,5 @@
 export const VERSION = Object.freeze({
-    app: '0.4.2',
+    app: '0.4.3',
     accountSave: 4,
     gameState: 3,
     data: 13,
@@ -13,7 +13,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    commandShell: '0.4.2',
+    commandShell: '0.4.3',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
     slashCommands: '0.4.1',
@@ -49,17 +49,18 @@ export const SYSTEM_VERSIONS = Object.freeze({
     poiDiscovery: '0.3.5',
     poiFastTravel: '0.3.5',
     zoneFastTravel: '0.3.5',
-    shops: '0.3.7',
-    shopTransactions: '0.3.7',
+    shops: '0.3.8',
+    shopTransactions: '0.3.8',
     guilds: '0.3.5',
     questHooks: '0.3.5',
     inventoryContainers: '0.5.1',
     inventoryTransfers: '0.5.1',
     itemSchema: '0.6.0',
+    itemBehavior: '0.1.0',
     itemStacking: '0.5.1',
     equipmentCommands: '0.5.0',
     equipmentEligibility: '0.5.0',
-    itemInspection: '0.5.0',
+    itemInspection: '0.5.1',
     equipmentCatalog: '0.6.0',
     skillCaps: '0.5.1',
     mogHouseStorage: '0.3.8',

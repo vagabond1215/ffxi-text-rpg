@@ -8,20 +8,22 @@ import { describeSystemVersions, describeVersion, VERSION } from '../js/text/ver
 
 
 test('version manifest exposes explicit app account save game state data and benchmark versions', () => {
-    assert.equal(VERSION.app, '0.4.2');
+    assert.equal(VERSION.app, '0.4.3');
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 3);
     assert.equal(VERSION.data, 13);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.accountSave);
-    assert.match(describeVersion(), /App: 0.4.2/);
+    assert.match(describeVersion(), /App: 0.4.3/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 3/);
     assert.match(describeSystemVersions(), /characterCreation/);
     assert.match(describeSystemVersions(), /canvasUi: 0.7.0/);
     assert.match(describeSystemVersions(), /battleRewards: 0.5.2/);
     assert.match(describeSystemVersions(), /itemSchema: 0.6.0/);
+    assert.match(describeSystemVersions(), /itemBehavior: 0.1.0/);
     assert.match(describeSystemVersions(), /equipmentEligibility: 0.5.0/);
+    assert.match(describeSystemVersions(), /shopTransactions: 0.3.8/);
     assert.match(describeSystemVersions(), /skillCaps: 0.5.1/);
     assert.match(describeSystemVersions(), /skillProgression: 0.5.1/);
     assert.match(describeSystemVersions(), /leveling: 0.5.3/);

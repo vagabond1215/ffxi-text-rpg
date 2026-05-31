@@ -15,7 +15,7 @@ All notable reset-branch changes are tracked here.
 - `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` commands.
 - Prompt-based character creation from `/newcharacter`, with natural non-slash answers while prompts are active.
 - Slash-router tests for FFXI macro-style browser commands such as `/macrohelp`, `/ma`, `/ws`, and `/item`.
-- Encoded local account/character save model under `ffxiTextRpgAccount`.
+- Encoded local account/character save model under `ffxiTextRpgAccounts` with active session state under `ffxiTextRpgAccountSession`.
 - Multiple local character save slots with character summaries and last-active-character tracking.
 - Legacy raw `ffxiTextRpgSave` migration into the encoded account save model.
 - Account/save tests for encoding, slot listing, character loading, active character restore, save clearing, and inventory reference relinking.
@@ -45,6 +45,8 @@ All notable reset-branch changes are tracked here.
 - POI discovery and same-zone POI fast travel.
 - Starter shop catalogs, guild service hooks, and quest/mission hooks.
 - Shop buying into Inventory through the container system.
+- Runtime item behavior helpers for conservative sell eligibility/value, latent metadata, enchantment metadata, charge metadata, and ranged/ammo metadata inspection.
+- Conservative shop selling from Inventory with current-shop requirements, `noSell`/key-item/zero-value rejection, stack quantity removal, and wallet credit after successful removal.
 - Inventory container framework for Inventory, Mog Safe, Mog Safe 2, Storage, Mog Locker, Mog Satchel, Mog Sack, Mog Case, and Mog Wardrobes 1-8.
 - Mog House-only access rules for Mog Safe and Storage.
 - Furniture-derived Storage capacity for Mog House furniture.
@@ -95,9 +97,9 @@ All notable reset-branch changes are tracked here.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.2`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `San d’Oria Coordinate Compass`.
+- Updated app/package version to `0.4.3`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `San d’Oria Coordinate Compass`.
 - Replaced San d’Oria placeholder numeric city grids with alphanumeric topology coordinates and direction-aware exits.
-- Updated data/system version tracking for item schema, equipment catalog, equipment eligibility, item inspection, validation, skill caps, and skill progression.
+- Updated data/system version tracking for item schema, item behavior, equipment catalog, equipment eligibility, item inspection, shop transactions, validation, skill caps, and skill progression.
 - Added `canvasUi` system version tracking.
 - Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
@@ -113,4 +115,4 @@ All notable reset-branch changes are tracked here.
 - `base64-json-v1` save storage is encoded, not strong encryption.
 - Current formulas are conservative approximations until exact researched formulas are migrated deliberately.
 - `skillCaps.js` remains scaffold-only and is not wired into combat or magic calculations.
-- Current recommended next pass is item behavior modules plus conservative skill plumbing: item behavior rules, isolated skill-gain hooks, skill-cap formula wiring, and tests.
+- Current recommended next pass is conservative skill plumbing and deeper item behavior application: isolated skill-gain hooks, skill-cap formula wiring, and tests. Latent/enchantment/charge/ranged-ammo behavior remains metadata-only until action semantics are explicit.

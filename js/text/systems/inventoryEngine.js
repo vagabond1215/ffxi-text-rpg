@@ -110,6 +110,33 @@ export function findItemInContainer(inventoryState, containerId, itemQuery) {
     return { ok: true, item: container.items[index], index, container };
 }
 
+export function removeItemQuantityFromContainer(inventoryState, containerId, itemQuery, quantity = 1) {
+    const found = findItemInContainer(inventoryState, containerId, itemQuery);
+    if (!found.ok) return found;
+
+    const amount = Math.max(1, Number.parseInt(quantity, 10) || 1);
+    const normalizedItem = normalizeItem(found.item);
+    const available = Math.max(1, Number.parseInt(found.item.quantity, 10) || normalizedItem.quantity || 1);
+    if (amount > available) {
+        return { ok: false, reason: `Only ${available} ${normalizedItem.name} available in ${containerId}.`, item: found.item, available };
+    }
+
+    const removedItem = { ...normalizedItem, quantity: amount };
+    if (amount >= available || !normalizedItem.stackable) {
+        found.container.items.splice(found.index, 1);
+    } else {
+        found.item.quantity = available - amount;
+    }
+
+    return {
+        ok: true,
+        item: removedItem,
+        quantity: amount,
+        containerId,
+        remaining: Math.max(0, available - amount),
+    };
+}
+
 export function transferItemBetweenContainers(state, itemQuery, fromContainerId = 'inventory', toContainerId = 'inventory', context = {}) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';

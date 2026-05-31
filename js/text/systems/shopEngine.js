@@ -1,7 +1,8 @@
 import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
-import { addItemToContainer } from './inventoryEngine.js';
+import { canSellItem } from './itemBehaviorEngine.js';
+import { addItemToContainer, findItemInContainer, removeItemQuantityFromContainer } from './inventoryEngine.js';
 import { discoverPoi } from './poiEngine.js';
 
 export function buyFromCurrentShop(state, itemQuery = '', shopQuery = '') {
@@ -38,8 +39,36 @@ export function buyFromCurrentShop(state, itemQuery = '', shopQuery = '') {
     ].join('\n');
 }
 
-export function sellToCurrentShop(_state, _itemQuery = '') {
-    return 'Selling is not implemented yet. The shop transaction framework currently supports buying only.';
+export function sellToCurrentShop(state, itemQuery = '', shopQuery = '') {
+    const shopPoi = findCurrentShopPoi(state, shopQuery);
+    if (!shopPoi) return 'There is no matching shop at this coordinate.';
+
+    const catalog = getShopCatalogForPoi(shopPoi.id);
+    if (!catalog) return `${shopPoi.name} has no shop catalog yet.`;
+
+    const inventoryState = state.player?.inventoryState;
+    if (!inventoryState) return 'No inventory container state found.';
+
+    const request = parseSellRequest(itemQuery);
+    if (!request.itemQuery) return 'Sell what? Use: sell <item> [quantity].';
+
+    const found = findItemInContainer(inventoryState, 'inventory', request.itemQuery);
+    if (!found.ok) return found.reason;
+
+    const eligibility = canSellItem(found.item, { shopPoi, catalog });
+    if (!eligibility.ok) return eligibility.reason;
+
+    const removeResult = removeItemQuantityFromContainer(inventoryState, 'inventory', request.itemQuery, request.quantity);
+    if (!removeResult.ok) return removeResult.reason;
+
+    const gilEarned = eligibility.sellValueGil * removeResult.quantity;
+    state.player.wallet.gil = (state.player.wallet.gil ?? 0) + gilEarned;
+    discoverPoi(state, shopPoi);
+
+    return [
+        `Sold ${removeResult.item.name}${removeResult.quantity > 1 ? ` x${removeResult.quantity}` : ''} for ${gilEarned} gil.`,
+        `Gil now: ${state.player.wallet.gil}`,
+    ].join('\n');
 }
 
 function findCurrentShopPoi(state, shopQuery = '') {
@@ -53,6 +82,17 @@ function findCatalogItem(catalog, itemQuery) {
     const normalized = normalize(itemQuery);
     if (!normalized) return null;
     return catalog.items.find((item) => normalize(item.id) === normalized || normalize(item.name).includes(normalized)) ?? null;
+}
+
+function parseSellRequest(itemQuery) {
+    const text = String(itemQuery ?? '').trim();
+    if (!text) return { itemQuery: '', quantity: 1 };
+    const match = text.match(/^(.*?)(?:\s+x?(\d+))$/i);
+    if (!match || !match[1].trim()) return { itemQuery: text, quantity: 1 };
+    return {
+        itemQuery: match[1].trim(),
+        quantity: Math.max(1, Number.parseInt(match[2], 10) || 1),
+    };
 }
 
 function createInventoryItemFromShopItem(item, shopPoi, catalog) {

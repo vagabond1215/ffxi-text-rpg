@@ -102,8 +102,8 @@ Status: starter framework implemented.
 - [x] Equipment validation by job/race/level.
 - [x] Item flag/effect schema foundation: rare, exclusive, key item, no sell, latent, enchantment, charges.
 - [x] Item command inspection.
-- [ ] Runtime behavior for latent effects, enchantments, charges, ranged/ammo, and restricted selling.
-- [ ] Selling and vendor restrictions.
+- [x] Runtime behavior metadata inspection for latent effects, enchantments, charges, ranged/ammo, and restricted selling.
+- [x] Conservative selling and vendor restrictions.
 
 ## Phase 5: Leveling, skills, and progression
 
@@ -219,9 +219,9 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-The next best implementation pass is item behavior modules plus conservative skill plumbing:
+The next best implementation pass is conservative skill plumbing and deeper item behavior application:
 
-1. Implement item behavior rules for latent effects, enchantments, charges, ranged/ammo, and selling restrictions.
+1. Keep latent effects, enchantments, charges, and ranged/ammo records metadata-only until action/combat semantics are explicit.
 2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
 3. Wire skill caps into combat and magic formulas only after current skill state, skill-gain flow, and confidence labels are explicit.
-4. Add validation/tests for any new item behavior before expanding loot tables.
+4. Add validation/tests before expanding loot tables or applying item behavior in combat.

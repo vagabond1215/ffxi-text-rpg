@@ -94,7 +94,7 @@ const HELP_TEXT = [
     '  talk [name]          Talk/interact with a POI at this coordinate and discover it.',
     '  shop [name]          Use shop action at this coordinate where supported.',
     '  buy <item>           Buy an item from the current shop POI into Inventory.',
-    '  sell <item>          Placeholder for future sell flow.',
+    '  sell <item> [qty]    Sell one or more Inventory items to the current shop POI.',
     '  guild [name]         Use guild action at this coordinate where supported.',
     '  quest [name]         Use quest/mission action at this coordinate where supported.',
     '  discovered           List discovered POIs in this zone.',
