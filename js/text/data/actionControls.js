@@ -43,7 +43,7 @@ export const ACTION_CONTROL_GROUPS = Object.freeze({
         action('equip', 'Equip', 'Equip an item into a valid slot.'),
     ]),
     travel: group('travel', 'Travel', [
-        action('move', 'Move Grid', 'Move within the current zone grid using 8-way navigation.'),
+        action('move', 'Move Coordinate', 'Move within the current zone coordinate using 8-way navigation.'),
         action('travel', 'Travel Zone', 'Travel to a connected zone.'),
         action('mount', 'Mount', 'Use a mount where unlocked and allowed.'),
     ]),
@@ -61,7 +61,7 @@ export function describeControls() {
         '',
         `Timer Bar: ${LIVE_TIMER_BAR.label} - ${LIVE_TIMER_BAR.description}`,
         '',
-        '8-Way Navigation Keypad:',
+        '8-Way Coordinate Compass:',
         ...NAV_KEYPAD.map((item) => `- ${item.id}: ${item.label} (${item.dx}, ${item.dy})`),
         '',
         'Action Groups:',

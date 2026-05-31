@@ -7,6 +7,7 @@ import {
     getPointOfInterest,
     getPoisForPlace,
 } from '../data/pointsOfInterest.js';
+import { describeCoordinate } from '../data/coordinates.js';
 import { describeGuildServiceForPoi } from '../data/guildServices.js';
 import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
@@ -49,7 +50,7 @@ export function describeCurrentPois(state) {
 
 export function talkAtCurrentGrid(state, query = '') {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'There is no one or nothing notable to interact with at this grid.';
+    if (!pois.length) return 'There is no one or nothing notable to interact with at this coordinate.';
 
     const poi = query
         ? pois.find((candidate) => normalize(candidate.name).includes(normalize(query)) || normalize(candidate.id).includes(normalize(query)))
@@ -63,7 +64,7 @@ export function talkAtCurrentGrid(state, query = '') {
 
 export function performPoiAction(state, action, query = '') {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'There is no point of interest at this grid.';
+    if (!pois.length) return 'There is no point of interest at this coordinate.';
 
     const poi = query
         ? pois.find((candidate) => normalize(candidate.name).includes(normalize(query)) || normalize(candidate.id).includes(normalize(query)))
@@ -81,7 +82,7 @@ export function describePoiInteraction(state, poi, action) {
     const lines = [
         `${poi.name}`,
         `Type: ${poi.type}`,
-        `Grid: (${poi.coordinate.x}, ${poi.coordinate.y}) | Source position: ${poi.sourcePosition}`,
+        `Coordinate: ${describeCoordinate(poi.coordinate)} | Source position: ${poi.sourcePosition}`,
         `Action: ${action}`,
         poi.notes,
         discovered ? 'Discovered: yes. You can fast-travel to this POI while in the same zone.' : 'Discovered: no.',
@@ -120,7 +121,7 @@ export function describeDiscoveredPois(state, placeId = state.currentPlaceId) {
 
     return [
         `Discovered POIs in ${place?.name ?? placeId}:`,
-        ...pois.map((poi) => `- ${poi.name} [${poi.type}] grid (${poi.coordinate.x}, ${poi.coordinate.y}) actions: ${poi.actions.join(', ')}`),
+        ...pois.map((poi) => `- ${poi.name} [${poi.type}] coordinate ${describeCoordinate(poi.coordinate)} actions: ${poi.actions.join(', ')}`),
     ].join('\n');
 }
 
@@ -149,7 +150,7 @@ export function describeZoneFastTravelOptions(state) {
             const requirementText = connection.restrictions.length
                 ? ` requirements: ${connection.restrictions.map((restriction) => restriction.reason ?? restriction.type).join('; ')}`
                 : ' requirements: none';
-            return `- ${destination?.name ?? connection.to} via ${connection.mode} from grid (${connection.departFrom?.x ?? '?'}, ${connection.departFrom?.y ?? '?'})${requirementText}`;
+            return `- ${destination?.name ?? connection.to} via ${connection.mode} from ${describeCoordinate(connection.departFrom)}${requirementText}`;
         }),
     ].join('\n');
 }

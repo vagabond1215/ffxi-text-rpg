@@ -2,18 +2,18 @@
 
 A text-only RPG foundation inspired by Final Fantasy XI systems.
 
-This branch intentionally resets the project around a stable canvas-first text shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, coordinate atlas, travel scaffold, text HUD/control metadata, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
+This branch intentionally resets the project around a stable canvas-first text shell, structured entities, account/character save slots, conservative stat engines, parser-backed commands, validation helpers, version tracking, benchmarks, a database registry, seeded world graph, starter city maps, alphanumeric San d’Oria coordinate topology, coordinate atlas, travel scaffold, compass navigation controls, inventory/storage containers, item schema and stacking, POI discovery, starter shops/guild hooks, equipment commands and eligibility checks, deterministic combat, battle rewards, EXP tables, level-up rules, character-owned skill progression scaffolding, skill-cap scaffolding, and implementation-first documentation.
 
 Backwards compatibility with the previous UI/save shape is not considered until explicitly reintroduced.
 
 ## Current version
 
 ```text
-App/package: 0.4.1
-Account Save: 3
-Game State: 2
-Data: 12
-Codename: Slash UI Account Saves
+App/package: 0.4.2
+Account Save: 4
+Game State: 3
+Data: 13
+Codename: San d’Oria Coordinate Compass
 ```
 
 `VERSION.save` remains as a backward-compatible alias for `VERSION.accountSave` while callers migrate to the clearer name.
@@ -78,7 +78,7 @@ Read these first in a new thread or fresh development session:
 
 The active browser UI is canvas-first. It draws the title/status bar, command buttons, output log, context panel, and command input inside `#game-canvas`.
 
-The left-side canvas buttons dispatch existing `commandRouter.js` commands:
+The left-side canvas includes a 3x3 compass rose that dispatches navigation intents directly. Stable gameplay sidebar buttons still route through `commandRouter.js` commands:
 
 ```text
 character
@@ -118,6 +118,8 @@ equipSources
 here
 talk <name>
 shop <name>
+move <dir>
+stop
 buy <item>
 guild <name>
 quest <name>

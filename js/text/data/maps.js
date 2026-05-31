@@ -4,7 +4,7 @@ export const MAP_DEFINITIONS = Object.freeze({
         name: 'Map of San d\u2019Oria',
         nation: 'San d\u2019Oria',
         region: 'Ronfaure',
-        placeIds: ['southern-sandoria', 'northern-sandoria', 'port-sandoria', 'chateau-doraguille'],
+        placeIds: ['southern-sandoria', 'northern-sandoria', 'port-sandoria', 'chateau-doraguille', 'chocobo-circuit', 'bostaunieux-oubliette', 'airship-jeuno-sandoria'],
         notes: 'Starter city map covering the seeded San d\u2019Orian city districts.',
     }),
     mapRonfaure: map({
@@ -12,7 +12,7 @@ export const MAP_DEFINITIONS = Object.freeze({
         name: 'Map of Ronfaure',
         nation: 'San d\u2019Oria',
         region: 'Ronfaure',
-        placeIds: ['west-ronfaure', 'east-ronfaure'],
+        placeIds: ['west-ronfaure', 'east-ronfaure', 'carpenters-landing'],
         notes: 'Starter outdoor region map for the Ronfaure forest zones.',
     }),
     mapGhelsba: map({

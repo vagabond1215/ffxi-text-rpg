@@ -1,10 +1,12 @@
 import { getNation } from './data/nations.js';
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
+import { describeCoordinate, normalizePositionForPlace } from './data/coordinates.js';
 import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { describePlace } from './systems/travelEngine.js';
+import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 
 export function createInitialState() {
@@ -14,7 +16,7 @@ export function createInitialState() {
 export function createNewGameState(options = {}) {
     const nation = getNation(options.nationId);
     const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
-    const startCoordinate = startPlace.coordinateSystem.start;
+    const startCoordinate = normalizePositionForPlace(startPlace, startPlace.coordinateSystem.start);
     const player = createPlayerCharacter({
         name: options.name ?? 'Adventurer',
         raceId: options.raceId ?? 'hume',
@@ -31,10 +33,10 @@ export function createNewGameState(options = {}) {
     });
 
     return {
-        version: 2,
+        version: 3,
         currentPlaceId: startPlace.id,
         location: startPlace.name,
-        position: { placeId: startPlace.id, ...startCoordinate },
+        position: startCoordinate,
         atlas: createAtlasState(startPlace.id, startCoordinate),
         discoveredPois: createPoiDiscoveryState(),
         travel: null,
@@ -75,6 +77,7 @@ export function describeLocation(state) {
 }
 
 export function moveWithinCurrentPlace(state, delta) {
+    if (delta?.id || delta?.direction) return moveInDirection(state, delta.id ?? delta.direction);
     const place = getPlace(state.currentPlaceId);
     if (!place) return { ok: false, reason: `Unknown place: ${state.currentPlaceId}` };
 
@@ -86,7 +89,7 @@ export function moveWithinCurrentPlace(state, delta) {
 
     const result = setPositionAndDiscover(state, place.id, next);
     return result.ok
-        ? { ok: true, place, coordinate: next, message: `Moved to ${place.name} grid (${next.x}, ${next.y}).` }
+        ? { ok: true, place, coordinate: next, message: `Moved to ${place.name} coordinate (${next.x}, ${next.y}).` }
         : result;
 }
 
@@ -107,7 +110,7 @@ export function describeCharacter(state) {
         `TP: ${player.resources.tp}/${combat.resources.maxTp}`,
         `Gil: ${player.wallet.gil}`,
         `Location: ${state.location}`,
-        `Grid: (${state.position?.x ?? '?'}, ${state.position?.y ?? '?'})`,
+        `Coordinate: ${describeCoordinate(state.position)}`,
     ].join('\n');
 }
 

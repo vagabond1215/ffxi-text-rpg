@@ -1,3 +1,11 @@
+import {
+    coordinateKey,
+    describeCoordinate,
+    getNavigableCoordinateKeys,
+    isTopologyPlace,
+    normalizeDirection,
+    normalizePositionForPlace,
+} from '../data/coordinates.js';
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 
@@ -9,7 +17,9 @@ export function describePlace(placeId) {
         .map((connection) => {
             const destination = getPlace(connection.to);
             const restrictionText = connection.restrictions.length ? ' restricted' : ' open';
-            return `- ${destination?.name ?? connection.to} via ${connection.mode}, ${connection.travelSeconds}s,${restrictionText}`;
+            const departText = connection.departFrom ? ` from ${describeCoordinate(connection.departFrom)}` : '';
+            const directionText = connection.directions?.length ? ` ${connection.directions.join('/')}` : '';
+            return `- ${destination?.name ?? connection.to} via ${connection.mode}${departText}${directionText}, ${connection.travelSeconds}s,${restrictionText}`;
         });
 
     return [
@@ -17,7 +27,7 @@ export function describePlace(placeId) {
         `Type: ${place.type}`,
         `Region: ${place.region}`,
         `Danger Level: ${place.dangerLevel}`,
-        `Grid: ${place.coordinateSystem.width}x${place.coordinateSystem.height}`,
+        describeCoordinateSystem(place),
         place.description,
         '',
         'Exits:',
@@ -27,19 +37,21 @@ export function describePlace(placeId) {
 
 export function describePlaces() {
     return listPlaces()
-        .map((place) => `${place.id} - ${place.name} [${place.type}, danger ${place.dangerLevel}, grid ${place.coordinateSystem.width}x${place.coordinateSystem.height}]`)
+        .map((place) => `${place.id} - ${place.name} [${place.type}, danger ${place.dangerLevel}, ${describeCoordinateSystem(place)}]`)
         .join('\n');
 }
 
-export function findTravelRoute(state, destinationQuery) {
+export function findTravelRoute(state, destinationQuery, options = {}) {
     const from = state.currentPlaceId ?? 'southern-sandoria';
     const destination = findPlaceByQuery(destinationQuery);
     if (!destination) {
         return { ok: false, reason: `Unknown destination: ${destinationQuery}` };
     }
 
-    const connection = getConnectionsFrom(from).find((candidate) => candidate.to === destination.id);
+    const connections = getConnectionsFrom(from).filter((candidate) => candidate.to === destination.id);
+    const connection = selectConnectionForPosition(state, connections, options.direction);
     if (!connection) {
+        if (connections.length) return describeBlockedConnection(state, connections, destination);
         return { ok: false, reason: `No direct route from ${getPlace(from)?.name ?? from} to ${destination.name}.` };
     }
 
@@ -111,7 +123,7 @@ export function advanceTravel(state, elapsedSeconds) {
         completed: true,
         travel: completed,
         destination,
-        message: `Arrived at ${destination?.name ?? completed.to} grid (${arrival.x}, ${arrival.y}).`,
+        message: `Arrived at ${destination?.name ?? completed.to} ${describeCoordinate(arrival)}.`,
     };
 }
 
@@ -122,7 +134,7 @@ export function describeTravel(state) {
         `Traveling to ${destination?.name ?? state.travel.to}.`,
         `Mode: ${state.travel.mode}`,
         `Remaining: ${state.travel.remainingSeconds}/${state.travel.totalSeconds}s`,
-        `Arrival Grid: (${state.travel.arriveAt?.x ?? '?'}, ${state.travel.arriveAt?.y ?? '?'})`,
+        `Arrival: ${describeCoordinate(state.travel.arriveAt)}`,
     ].join('\n');
 }
 
@@ -154,4 +166,39 @@ function normalize(value) {
         .toLowerCase()
         .replace(/[’']/g, '')
         .replace(/\s+/g, '-');
+}
+
+function describeCoordinateSystem(place) {
+    if (isTopologyPlace(place)) {
+        const bounds = place.coordinateSystem.bounds;
+        return `Coordinates: ${bounds.minColumn}-${bounds.maxColumn}/${bounds.minRow}-${bounds.maxRow}, navigable ${getNavigableCoordinateKeys(place).length}`;
+    }
+    return `Grid: ${place.coordinateSystem.width}x${place.coordinateSystem.height}`;
+}
+
+function selectConnectionForPosition(state, connections, direction = null) {
+    if (!connections.length) return null;
+    const normalizedDirection = normalizeDirection(direction);
+    const positionKey = coordinateKey(state.position ?? {});
+    const matchingPosition = connections.filter((connection) => !connection.departFrom || coordinateKey(connection.departFrom) === positionKey);
+    const candidates = matchingPosition.length ? matchingPosition : connections;
+    if (normalizedDirection) {
+        return candidates.find((connection) => (connection.directions ?? []).includes(normalizedDirection)) ?? null;
+    }
+    return matchingPosition[0] ?? null;
+}
+
+function describeBlockedConnection(state, connections, destination) {
+    const place = getPlace(state.currentPlaceId);
+    const current = state.position ?? normalizePositionForPlace(place, place.coordinateSystem.start);
+    const options = connections
+        .map((connection) => {
+            const directionText = connection.directions?.length ? ` and move ${connection.directions.join(' or ')}` : '';
+            return `${describeCoordinate(connection.departFrom)}${directionText}`;
+        })
+        .join('; ');
+    return {
+        ok: false,
+        reason: `Reach ${options} to travel from ${place?.name ?? state.currentPlaceId} to ${destination.name}. Current position: ${describeCoordinate(current)}.`,
+    };
 }

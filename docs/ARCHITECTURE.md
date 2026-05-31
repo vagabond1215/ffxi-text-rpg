@@ -4,7 +4,7 @@ This branch is a text-first rebuild. The goal is a stable foundation that can ab
 
 ## Principles
 
-1. Text first. The browser shell renders text/HUD controls in canvas and accepts command-router commands.
+1. Text first. The browser shell renders text/HUD controls in canvas, accepts command-router commands, and lets UI controls dispatch intents directly where stable.
 2. Logic does not touch the DOM or canvas renderer.
 3. Backwards compatibility is not required unless explicitly reintroduced later.
 4. Data, state, and engines should stay separate.
@@ -24,7 +24,7 @@ index.html
           -> canvas layout/input/render loop
 ```
 
-The active browser UI is canvas-first. Buttons dispatch stable action records to existing bare commands. The canvas command input accepts bare commands and still routes leading-slash inputs through `slashCommandRouter.js` for account/menu and FFXI macro-style compatibility.
+The active browser UI is canvas-first. Stable UI controls dispatch intents first; typed commands remain adapters into the same gameplay systems. The canvas command input accepts bare commands and still routes leading-slash inputs through `slashCommandRouter.js` for account/menu and FFXI macro-style compatibility.
 
 ## UI layer
 
@@ -35,6 +35,7 @@ js/text/ui/canvasRenderer.js
 js/text/ui/canvasLayout.js
 js/text/ui/canvasInput.js
 js/text/ui/uiActions.js
+js/text/ui/uiIntentDispatcher.js
 js/text/ui/uiTheme.js
 js/text/slashCommandRouter.js
 ```
@@ -42,7 +43,8 @@ js/text/slashCommandRouter.js
 - `main.js` mounts one canvas host.
 - `canvasApp.js` wires current state, save services, command routers, canvas event handlers, and rendering.
 - `canvasRenderer.js` draws panels, buttons, log output, context, and command input. It should not own game logic.
-- `canvasLayout.js`, `canvasInput.js`, and `uiActions.js` are pure/testable seams for bounds, hit testing, keyboard input, history, and action-to-command mapping.
+- `canvasLayout.js`, `canvasInput.js`, and `uiActions.js` are pure/testable seams for bounds, hit testing, keyboard input, history, compass state, and action metadata.
+- `uiIntentDispatcher.js` owns direct UI intents such as account/menu/settings/creator/navigation actions. Typed commands remain available as adapters.
 - `slashCommandRouter.js` still owns `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` when slash input is used.
 
 ## Command layer
@@ -110,6 +112,8 @@ js/text/
     parser.js
 
   data/
+    coordinates.js
+    sandoriaCityMaps.js
     actionControls.js
     databaseRegistry.js
     equipmentCatalog.js
@@ -137,6 +141,7 @@ js/text/
     battleEngine.js
     characterCreator.js
     combatActionEngine.js
+    navigationEngine.js
     equipmentEngine.js
     ffxiCommandAdapter.js
     inventoryEngine.js

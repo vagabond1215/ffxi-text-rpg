@@ -1,3 +1,5 @@
+import { describeCoordinate } from './data/coordinates.js';
+
 export const COMMON_COMMAND_CHIPS = Object.freeze([
     ['/look', 'Look'],
     ['/stats', 'Stats'],
@@ -26,7 +28,7 @@ export const TOPBAR_ACTIONS = Object.freeze([
 export function renderTopBar(state, feedback = null) {
     const player = state.player;
     const location = state.location ?? 'Unknown';
-    const grid = state.position ? `${state.position.x}:${state.position.y}` : '?:?';
+    const coordinate = describeCoordinate(state.position);
     const status = feedback?.message ?? 'Ready';
     return `
         <div class="topbar-brand">
@@ -36,7 +38,7 @@ export function renderTopBar(state, feedback = null) {
         <div class="topbar-status">
             <span>${escapeHtml(player.identity.name)}</span>
             <span>${escapeHtml(player.jobs.mainJobName)} Lv.${escapeHtml(player.jobs.level)}</span>
-            <span>${escapeHtml(location)} · ${escapeHtml(grid)}</span>
+            <span>${escapeHtml(location)} · ${escapeHtml(coordinate)}</span>
             <span class="topbar-feedback topbar-feedback-${escapeHtml(feedback?.kind ?? 'info')}">${escapeHtml(status)}</span>
         </div>
         <nav class="topbar-actions" aria-label="Quick actions">
@@ -100,13 +102,13 @@ export function renderCharacterCards(characters = []) {
 }
 
 export function renderLocationPanel(state) {
-    const grid = state.position ? `${state.position.x}:${state.position.y}` : '?:?';
+    const coordinate = describeCoordinate(state.position);
     const battle = state.activeBattle?.phase === 'active' ? 'In battle' : 'Safe';
     return `
         <section class="sidebar-section compact-panel">
             <h3>Location</h3>
             <div class="sidebar-line"><span>Place</span><strong>${escapeHtml(state.location)}</strong></div>
-            <div class="sidebar-line"><span>Grid</span><strong>${escapeHtml(grid)}</strong></div>
+            <div class="sidebar-line"><span>Coordinate</span><strong>${escapeHtml(coordinate)}</strong></div>
             <div class="sidebar-line"><span>Status</span><strong>${escapeHtml(battle)}</strong></div>
         </section>
     `;

@@ -9,11 +9,11 @@ The repo is being reset into a text-first, expandable FFXI-inspired RPG foundati
 Core design goals:
 
 - Stable and expandable frame first.
-- Canvas-first text UI with command-backed buttons.
+- Canvas-first text UI with intent-backed global UI and compass controls plus command-backed gameplay buttons.
 - Local account and character save slots.
-- Zone coordinate grids with unknown unvisited grids.
-- Zone atlas reveals visited grids only.
-- Resource bars, visual tick timer metadata, and 8-button nav keypad metadata.
+- San d’Oria city zones use alphanumeric coordinate topology with explicit navigable coordinates and exits.
+- Zone atlas reveals visited coordinates/grids only.
+- Resource bars, visual tick timer metadata, and 8-way compass/keypad metadata.
 - Travel by foot can trigger grid-based aggro based on spawn rules, count, and aggro type.
 - Action controls should separate auto attack, weapon skills, magic, items, travel, interaction, etc.
 - Backwards compatibility should not be considered until explicitly requested.
@@ -35,21 +35,21 @@ js/text/version.js
 Current state at handoff:
 
 ```text
-App/package: 0.4.1
-Account Save: 3
-Game State: 2
-Data: 12
-Codename: Slash UI Account Saves
+App/package: 0.4.2
+Account Save: 4
+Game State: 3
+Data: 13
+Codename: San d’Oria Coordinate Compass
 ```
 
 Major active system versions:
 
 ```text
 slashCommands: 0.4.1
-canvasUi: 0.6.0
-accountSaves: 0.4.1
+canvasUi: 0.7.0
+accountSaves: 0.5.2
 saveEncoding: 0.4.1
-validation: 0.5.1
+validation: 0.6.0
 playerEntity: 0.5.4
 statEngine: 0.4.0
 equipmentCommands: 0.5.0
@@ -71,8 +71,9 @@ jobSwitching: 0.5.3
 leveling: 0.5.3
 loot: 0.5.0
 shops/shopTransactions: 0.3.7
-pois/poiDiscovery/poiFastTravel: 0.3.4
-travel/gridMovement/aggro: 0.3.3
+coordinates/navigation: 0.1.0
+pois/poiDiscovery/poiFastTravel: 0.3.5
+travel/gridMovement/zoneAtlas: 0.4.0
 ```
 
 ## Development commands
@@ -89,7 +90,7 @@ Use Node 20+.
 
 The browser UI is canvas-first. HTML provides one canvas host; all visible game UI is canvas-rendered.
 
-The left canvas sidebar has clickable global actions backed by existing `commandRouter.js` commands:
+The left canvas sidebar has direct compass/navigation intent actions and clickable global actions backed by existing `commandRouter.js` commands:
 
 ```text
 character
