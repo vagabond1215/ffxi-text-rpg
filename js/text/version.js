@@ -4,7 +4,7 @@ export const VERSION = Object.freeze({
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'San d’Oria Coordinate Compass',
+    codename: 'Item Behavior Selling',
     compatibility: 'no-backwards-compatibility',
     released: false,
 

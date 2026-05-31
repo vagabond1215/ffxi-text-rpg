@@ -15,7 +15,7 @@ App/package: 0.4.3
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: San d’Oria Coordinate Compass
+Codename: Item Behavior Selling
 ```
 
 `VERSION.save` remains as a backward-compatible alias for `VERSION.accountSave` while callers migrate to the clearer name.

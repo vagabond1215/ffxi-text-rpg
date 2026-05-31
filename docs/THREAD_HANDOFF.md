@@ -39,7 +39,7 @@ App/package: 0.4.3
 Account Save: 4
 Game State: 3
 Data: 13
-Codename: San d’Oria Coordinate Compass
+Codename: Item Behavior Selling
 ```
 
 Major active system versions:

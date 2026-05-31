@@ -97,7 +97,7 @@ All notable reset-branch changes are tracked here.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.3`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `San d’Oria Coordinate Compass`.
+- Updated app/package version to `0.4.3`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `Item Behavior Selling`.
 - Replaced San d’Oria placeholder numeric city grids with alphanumeric topology coordinates and direction-aware exits.
 - Updated data/system version tracking for item schema, item behavior, equipment catalog, equipment eligibility, item inspection, shop transactions, validation, skill caps, and skill progression.
 - Added `canvasUi` system version tracking.

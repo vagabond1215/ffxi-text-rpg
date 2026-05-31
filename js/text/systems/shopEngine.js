@@ -87,11 +87,11 @@ function findCatalogItem(catalog, itemQuery) {
 function parseSellRequest(itemQuery) {
     const text = String(itemQuery ?? '').trim();
     if (!text) return { itemQuery: '', quantity: 1 };
-    const match = text.match(/^(.*?)(?:\s+x?(\d+))$/i);
+    const match = text.match(/^(.*?)\s+(?:(?:x(\d+))|(?:qty\s+(\d+)))$/i);
     if (!match || !match[1].trim()) return { itemQuery: text, quantity: 1 };
     return {
         itemQuery: match[1].trim(),
-        quantity: Math.max(1, Number.parseInt(match[2], 10) || 1),
+        quantity: Math.max(1, Number.parseInt(match[2] ?? match[3], 10) || 1),
     };
 }
 
