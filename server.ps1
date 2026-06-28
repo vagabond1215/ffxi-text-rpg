@@ -11,7 +11,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 Write-Host 'Starting FFXI Text RPG local server...' -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Open this URL in your browser:' -ForegroundColor Yellow
-Write-Host 'http://127.0.0.1:4173/' -ForegroundColor Green
+Write-Host 'http://127.0.0.1:4174/' -ForegroundColor Green
 Write-Host ''
 Write-Host 'Press Ctrl+C in this window to stop the server.' -ForegroundColor Yellow
 Write-Host ''

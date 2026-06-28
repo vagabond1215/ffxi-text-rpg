@@ -14,7 +14,7 @@ title FFXI Text RPG - Start Server
 echo Starting FFXI Text RPG local server...
 echo.
 echo Open this URL in your browser, or use Play.cmd:
-echo http://127.0.0.1:4173/
+echo http://127.0.0.1:4174/
 echo.
 echo Press Ctrl+C in this window to stop the server.
 echo.
