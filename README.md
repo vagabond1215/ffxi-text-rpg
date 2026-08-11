@@ -30,7 +30,7 @@ On Windows, use these launchers from the repo root:
 
 ```text
 Start Server.cmd  - starts the local server
-Play.cmd          - opens http://127.0.0.1:4174/
+Play.cmd          - opens http://127.0.0.1:4173/
 ```
 
 Start the server first, then use `Play.cmd` to open the game. The older `server.cmd` still works as a compatibility wrapper around `Start Server.cmd`; `server.ps1` remains available for PowerShell.
@@ -44,7 +44,7 @@ npm run serve
 Then open:
 
 ```text
-http://127.0.0.1:4174/
+http://127.0.0.1:4173/
 ```
 
 No build step is required. The visible game UI is rendered into one canvas; HTML is only the host layer.

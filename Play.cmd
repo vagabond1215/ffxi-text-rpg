@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "GAME_URL=http://127.0.0.1:4174/"
+set "GAME_URL=http://127.0.0.1:4173/"
 echo Opening FFXI Text RPG...
 echo %GAME_URL%
 echo.
