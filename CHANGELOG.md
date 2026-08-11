@@ -61,6 +61,8 @@ All notable reset-branch changes are tracked here.
 - Starter equipment catalog with conservative stat modifiers, placeholder weapon delay metadata, and intentional-simplification requirement notes.
 - Sparse skill rank/cap foundation with `getSkillCap` and `getEffectiveSkill` helpers for later combat and magic skill work.
 - Character-owned skill progression storage under `player.progression.skills[skillId]`.
+- Conservative skill-gain resolver helpers for main-hand, ranged/ammo, and placeholder spell skill inference.
+- Deterministic +1 learned skill hooks for basic attacks, placeholder weapon skills, and placeholder spell casts, with concise battle-log output only when a skill increases.
 - Text-first `skills`, `skill <id>`, `inspect skills`, and `inspect skill <id>` command output.
 - Validation for flat character-owned skill ids and non-negative integer skill values, including explicit rejection of nested job-keyed skill maps.
 - Equipment catalog validation for requirement shapes, unknown jobs/races/slots, array-based flags/effects, modifier keys, and required confidence/source metadata.
@@ -80,7 +82,7 @@ All notable reset-branch changes are tracked here.
 - `inspect <target>` command for player, stats, inventory, NPC, enemy, state, log, version, systems, database, maps, zone, atlas, grid, travel, controls, and storage inspection.
 - `validate` command for current state validation.
 - `version`, `systems`, `databases`, `tick`, `maps`, `map`, `zones`, `zone`, `atlas`, `grid`, `move`, `controls`, `travel`, `wait`, `containers`, `container`, `transfer`, `equip`, `unequip`, `equipSources`, `here`, `talk`, `shop`, `buy`, `guild`, `quest`, `discovered`, `fastpoi`, and `zonefast` commands.
-- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, deterministic RNG, battle rewards, item schema/stacking, and basic battle flow.
+- Node test coverage for command parsing, validation, entity factories, stat calculations, baseline pipeline, versioning, database registry, tick dispatch, zone graph, starter maps, world-data validation, travel flow, atlas discovery, controls, aggro checks, POI discovery, shop transactions, inventory transfers, equipment commands, save accounts, slash commands, UI panel helpers, deterministic RNG, battle rewards, item schema/stacking, basic battle flow, and conservative skill gains from combat actions.
 - Node test coverage for canvas UI action mapping, clickable layout bounds, hit testing, command dispatch, keyboard input, and command history.
 - Node test coverage for equipment eligibility rejections, atomic failed equips, two-handed/offhand conflicts, item inspection, equipment catalog validation, and skill cap helpers.
 - Architecture, roadmap, baseline pipeline, system catalog, research reference, and thread handoff documents for the rebuild.
@@ -97,9 +99,9 @@ All notable reset-branch changes are tracked here.
 - Updated shell intro text to guide users toward `/menu`, `/newcharacter`, `/commands`, and `/help`.
 - Rebuilt initial game state around structured player, NPC, enemy, place, coordinate, atlas, map, travel, inventory, item, POI, and account-save state.
 - Refactored command routing to operate on parsed command objects instead of whole-command strings.
-- Updated app/package version to `0.4.3`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `Item Behavior Selling`.
+- Updated app/package version to `0.4.4`, account save version to `4`, game state version to `3`, data version to `13`, and codename to `Conservative Skill Gains`.
 - Replaced San d’Oria placeholder numeric city grids with alphanumeric topology coordinates and direction-aware exits.
-- Updated data/system version tracking for item schema, item behavior, equipment catalog, equipment eligibility, item inspection, shop transactions, validation, skill caps, and skill progression.
+- Updated data/system version tracking for item schema, item behavior, equipment catalog, equipment eligibility, item inspection, shop transactions, validation, skill caps, skill progression, and combat actions.
 - Added `canvasUi` system version tracking.
 - Updated `getEffectiveSkill` to read character-owned skill values and report missing skills as current value `0` against the active job cap.
 - Refreshed README, roadmap, and handoff documentation for the current post-0.5 foundation state.
@@ -114,5 +116,5 @@ All notable reset-branch changes are tracked here.
 - Backwards compatibility with the old browser UI and old save shape is intentionally not preserved beyond the current raw-save migration path.
 - `base64-json-v1` save storage is encoded, not strong encryption.
 - Current formulas are conservative approximations until exact researched formulas are migrated deliberately.
-- `skillCaps.js` remains scaffold-only and is not wired into combat or magic calculations.
-- Current recommended next pass is conservative skill plumbing and deeper item behavior application: isolated skill-gain hooks, skill-cap formula wiring, and tests. Latent/enchantment/charge/ranged-ammo behavior remains metadata-only until action semantics are explicit.
+- `skillCaps.js` remains formula-scaffold-only: skill gains can clamp against current job caps, but learned/effective skill values are not wired into combat or magic calculations.
+- Current recommended next pass is conservative formula and item behavior application planning: skill-cap formula wiring and metadata behavior application should remain scoped and tested. Latent/enchantment/charge/ranged-ammo behavior remains metadata-only until action semantics are explicit.

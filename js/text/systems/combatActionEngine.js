@@ -5,6 +5,7 @@ import {
     performBasicAttack,
 } from './battleEngine.js';
 import { resolveBattleRewards } from './rewardEngine.js';
+import { describeSkillGainResult, resolveSkillGainForAction } from './skillProgressionEngine.js';
 
 export function startEncounter(state, enemyId, options = {}) {
     if (state.activeBattle?.phase === 'active') {
@@ -42,6 +43,7 @@ export function performPlayerAttack(state, targetQuery = null) {
     if (!player || !target) return 'No valid target.';
 
     performBasicAttack(battle, player.id, target.id);
+    appendSkillGainLog(state, battle, { actionType: 'basicAttack' });
     if (battle.phase === 'active') performEnemyAutoActions(battle);
     syncPlayerFromBattle(state);
     return describeBattleTurn(battle);
@@ -60,6 +62,7 @@ export function performWeaponSkill(state, skillName = 'Weapon Skill', targetQuer
     appendBattleLog(battle, `${player.identity.name} uses ${skillName}.`);
     performBasicAttack(battle, player.id, target.id);
     performBasicAttack(battle, player.id, target.id);
+    appendSkillGainLog(state, battle, { actionType: 'weaponSkill', actionName: skillName });
     if (battle.phase === 'active') performEnemyAutoActions(battle);
     syncPlayerFromBattle(state);
     return describeBattleTurn(battle);
@@ -94,6 +97,7 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
         }
     }
 
+    appendSkillGainLog(state, battle, { actionType: 'spell', spellName: spellName || 'Cure' });
     if (battle.phase === 'active') performEnemyAutoActions(battle);
     syncPlayerFromBattle(state);
     return describeBattleTurn(battle);
@@ -151,6 +155,13 @@ function syncPlayerFromBattle(state) {
         appendBattleLog(state.activeBattle, `Battle ended: ${state.activeBattle.phase}.`);
         state.activeBattle.endLogged = true;
     }
+}
+
+function appendSkillGainLog(state, battle, actionContext) {
+    const result = resolveSkillGainForAction(state, actionContext);
+    const message = describeSkillGainResult(result);
+    if (message) appendBattleLog(battle, message);
+    return result;
 }
 
 function getPlayerCombatant(battle) {
