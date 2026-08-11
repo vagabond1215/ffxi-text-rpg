@@ -119,8 +119,8 @@ Target: 0.5.x.
 - [x] Combat and magic skill cap data-helper foundation.
 - [x] Character-owned current skill state and inspection commands.
 - [x] Validation for flat `player.progression.skills[skillId]` values.
+- [x] Isolated deterministic skill-gain hooks for basic attacks, placeholder weapon skills, and placeholder spell casts.
 - [ ] Wire combat and magic skill caps into formulas.
-- [ ] Skill gain hooks.
 - [ ] Progression flags for maps, teleport points, mounts, trusts, quests, missions, achievements.
 
 ## Phase 6: Combat, enemies, loot, and drops
@@ -219,9 +219,9 @@ Target: ongoing.
 
 ## Current recommended next pass
 
-The next best implementation pass is conservative skill plumbing and deeper item behavior application:
+The next best implementation pass is conservative formula and item behavior application planning:
 
 1. Keep latent effects, enchantments, charges, and ranged/ammo records metadata-only until action/combat semantics are explicit.
-2. Add isolated skill-gain hooks only after the character-owned skill-state rules are covered.
-3. Wire skill caps into combat and magic formulas only after current skill state, skill-gain flow, and confidence labels are explicit.
+2. Wire skill caps into combat and magic formulas only after current skill state, skill-gain flow, and confidence labels are explicit.
+3. Keep skill-gain pacing deterministic until a tested RNG policy is introduced.
 4. Add validation/tests before expanding loot tables or applying item behavior in combat.

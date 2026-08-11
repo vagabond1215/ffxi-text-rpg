@@ -1,5 +1,46 @@
 import { getEffectiveSkill, getSkillCap, getSkillRank, SKILL_CAP_METADATA } from '../data/skillCaps.js';
 import { SKILL_KEYS } from '../data/systemConstants.js';
+import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
+
+const MAIN_HAND_SKILL_BY_WEAPON_CATEGORY = Object.freeze({
+    handToHand: 'handToHand',
+    unarmed: 'handToHand',
+    dagger: 'dagger',
+    sword: 'sword',
+    greatSword: 'greatSword',
+    axe: 'axe',
+    greatAxe: 'greatAxe',
+    scythe: 'scythe',
+    polearm: 'polearm',
+    katana: 'katana',
+    greatKatana: 'greatKatana',
+    club: 'club',
+    staff: 'staff',
+});
+
+const RANGED_SKILL_BY_WEAPON_CATEGORY = Object.freeze({
+    bow: 'archery',
+    archery: 'archery',
+    gun: 'marksmanship',
+    crossbow: 'marksmanship',
+    firearm: 'marksmanship',
+    marksmanship: 'marksmanship',
+    throwing: 'throwing',
+});
+
+const HEALING_SPELL_TERMS = Object.freeze([
+    'cure',
+    'curaga',
+    'cura',
+    'raise',
+    'regen',
+    'poisona',
+    'paralyna',
+    'blindna',
+    'silena',
+    'erase',
+    'cursna',
+]);
 
 export function createSkillState(overrides = {}) {
     const skills = {};
@@ -43,6 +84,71 @@ export function addLearnedSkill(player, skillId, amount, options = {}) {
     return { ok: true, skillId, before: current, gained, learned, cap };
 }
 
+export function inferMainHandSkill(player) {
+    const item = player?.equipment?.mainHand;
+    if (!item) return 'handToHand';
+    return inferWeaponSkill(item, MAIN_HAND_SKILL_BY_WEAPON_CATEGORY);
+}
+
+export function inferRangedSkill(player) {
+    const ranged = player?.equipment?.ranged;
+    const ammo = player?.equipment?.ammo;
+    return inferWeaponSkill(ranged, RANGED_SKILL_BY_WEAPON_CATEGORY)
+        ?? inferWeaponSkill(ammo, RANGED_SKILL_BY_WEAPON_CATEGORY);
+}
+
+export function inferSpellSkill(spellName) {
+    const normalized = normalizeToken(spellName || '');
+    if (!normalized) return null;
+    if (HEALING_SPELL_TERMS.some((term) => normalized.includes(term))) return 'healingMagic';
+    return 'elementalMagic';
+}
+
+export function resolveSkillGainForAction(state, actionContext = {}) {
+    const player = state?.player;
+    if (!player) return { ok: false, gained: false, reason: 'No player found.' };
+
+    const skillId = resolveActionSkill(player, actionContext);
+    if (!skillId) return { ok: true, gained: false, reason: 'No eligible skill for action.' };
+    if (!SKILL_KEYS.includes(skillId)) return { ok: false, gained: false, skillId, reason: `Unknown skill: ${skillId}` };
+
+    const current = getEffectiveSkillForCurrentJob(player, skillId);
+    if (current.cap <= 0) {
+        return {
+            ok: true,
+            gained: false,
+            reason: 'Skill has no current job cap.',
+            skillId,
+            before: current.learned,
+            learned: current.learned,
+            cap: current.cap,
+        };
+    }
+    if (current.learned >= current.cap) {
+        return {
+            ok: true,
+            gained: false,
+            reason: 'Skill is capped for current job.',
+            skillId,
+            before: current.learned,
+            learned: current.learned,
+            cap: current.cap,
+        };
+    }
+
+    const gain = Math.max(1, Math.floor(Number(actionContext.amount) || 1));
+    const result = addLearnedSkill(player, skillId, gain);
+    return {
+        ...result,
+        gained: result.ok && result.learned > result.before,
+    };
+}
+
+export function describeSkillGainResult(result) {
+    if (!result?.gained) return '';
+    return `Skill gained: ${result.skillId} ${result.before} -> ${result.learned} / cap ${result.cap}.`;
+}
+
 export function getEffectiveSkillForCurrentJob(player, skillId) {
     ensureSkillState(player);
     return getEffectiveSkill(player, skillId);
@@ -82,6 +188,45 @@ function describeSkillLine(entry, player) {
 function normalizeSkillValue(value) {
     const number = Number(value);
     return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : 0;
+}
+
+function resolveActionSkill(player, actionContext = {}) {
+    if (actionContext.skillId) return actionContext.skillId;
+    const actionType = actionContext.actionType ?? actionContext.type;
+    if (actionType === 'basicAttack' || actionType === 'weaponSkill') return inferMainHandSkill(player);
+    if (actionType === 'rangedAttack') return inferRangedSkill(player);
+    if (actionType === 'spell') return inferSpellSkill(actionContext.spellName);
+    return null;
+}
+
+function inferWeaponSkill(item, skillMap) {
+    if (!item) return null;
+    const normalized = enrichEquipmentItem(item);
+    const category = normalizeCategory(normalized.weaponCategory);
+    if (category && skillMap[category]) return skillMap[category];
+
+    const tags = normalized.tags ?? [];
+    for (const tag of tags) {
+        const tagCategory = normalizeCategory(tag);
+        if (skillMap[tagCategory]) return skillMap[tagCategory];
+    }
+    return null;
+}
+
+function normalizeCategory(value) {
+    const normalized = normalizeToken(value);
+    const alias = {
+        h2h: 'handToHand',
+        handtohand: 'handToHand',
+        greatsword: 'greatSword',
+        greataxe: 'greatAxe',
+        greatkatana: 'greatKatana',
+    }[normalized];
+    return alias ?? normalized;
+}
+
+function normalizeToken(value) {
+    return String(value ?? '').trim().toLowerCase().replace(/[\s_-]+/g, '');
 }
 
 function isPlainObject(value) {
