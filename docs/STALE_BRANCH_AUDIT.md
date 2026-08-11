@@ -47,10 +47,28 @@ The reset branch deliberately abandoned the old graphical/menu-heavy UI. These b
 These may contain logic ideas that should be checked before deletion:
 
 - `codex/clear-combat-data-on-player-death` - possible death/reset behavior.
-- `codex/extend-npcinventories-mapping-and-update-openmenu` - possible NPC inventory/vendor mapping ideas.
 - `codex/fix-target-selection-issue-using-monster-list` - possible target-selection logic.
 - `codex/implement-index-system-for-current-target` - possible targeting/indexing logic.
 - `codex/add-rest-feature-and-starting-gear` - starting gear was noted but not fully imported; rest behavior may still be useful.
+
+## Discarded after second-stage salvage audit
+
+`codex/extend-npcinventories-mapping-and-update-openmenu` was inspected for its `npcInventories` mapping in `data/vendors.js`.
+The branch mixed a useful concept, NPC names pointing at vendor inventories, with obsolete DOM `openMenu` and vendor-screen runtime code in `js/ui.js`.
+
+The current runtime uses POI ids as shop catalog keys:
+
+- `js/text/data/pointsOfInterest.js`
+- `js/text/data/shopCatalogs.js`
+- `js/text/systems/poiEngine.js`
+- `js/text/systems/shopEngine.js`
+
+The old mapping overlaps the current POI/shop model only for NPCs that already have direct POI-id catalogs, including `Brunhilde`, `Ciqala`, and `Carmelide`.
+Other mapped NPCs are not currently seeded as POIs or depend on old vendor inventory ids that do not exist in the current normalized shop catalog schema.
+No runtime data was imported because doing so would require inventing new POIs, catalog ids, item normalization, and shop placement outside a narrow salvage pass.
+
+Future shop expansion should add explicit POIs first, then attach normalized `SHOP_CATALOGS` entries by POI id.
+The old `npcInventories` object should be treated as discarded source material, not a branch that needs preservation.
 
 ## Pruning rule
 
