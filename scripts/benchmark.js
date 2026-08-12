@@ -10,7 +10,7 @@ import { describeVersion } from '../js/text/version.js';
 
 const BENCHMARKS = [
     benchmark('create 1,000 player combat profiles', 1000, () => {
-        const player = createPlayerCharacter({ level: 30, raceId: 'hume', mainJobId: 'warrior' });
+        const player = createPlayerCharacter({ level: 30, raceId: 'human', mainJobId: 'vanguard' });
         calculateCombatProfile(player);
     }),
     benchmark('create 1,000 enemy combat profiles', 1000, () => {
@@ -32,11 +32,11 @@ const BENCHMARKS = [
     }),
     benchmark('resolve 10,000 direct travel route lookups', 10000, () => {
         const state = createInitialState();
-        findTravelRoute(state, 'West Ronfaure');
+        findTravelRoute(state, 'West Elderwood');
     }),
 ];
 
-console.log('FFXI Text RPG Benchmarks');
+console.log('Hearth & Horizon Benchmarks');
 console.log(describeVersion());
 console.log('');
 
