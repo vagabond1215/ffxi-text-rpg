@@ -22,10 +22,10 @@ export function createNewGameState(options = {}) {
     const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
     const startCoordinate = normalizePositionForPlace(startPlace, startPlace.coordinateSystem.start);
     const player = createPlayerCharacter({
-        name: options.name ?? 'Adventurer',
-        raceId: options.raceId ?? 'hume',
+        name: options.name ?? 'Traveler',
+        raceId: options.raceId ?? 'human',
         sex: options.sex,
-        mainJobId: options.mainJobId ?? 'warrior',
+        mainJobId: options.mainJobId ?? 'vanguard',
         level: 1,
         nation: nation.name,
         startingCity: startPlace.name,
@@ -37,7 +37,7 @@ export function createNewGameState(options = {}) {
     });
 
     return {
-        version: 4,
+        version: 5,
         worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? 0 }),
         simulation: createSimulationControlState({
             paused: options.simulationPaused ?? false,
@@ -70,7 +70,7 @@ export function replaceState(target, nextState) {
 }
 
 export function describeLocation(state) {
-    const currentPlaceId = state.currentPlaceId ?? 'southern-sandoria';
+    const currentPlaceId = state.currentPlaceId ?? 'thornwall-southgate';
     const npcsHere = (state.npcs ?? [])
         .filter((npc) => npc.identity.locationId === currentPlaceId)
         .map((npc) => `- ${npc.identity.name}${npc.identity.title ? `, ${npc.identity.title}` : ''}`);
@@ -112,10 +112,10 @@ export function describeCharacter(state) {
 
     return [
         `${identity.name}`,
-        `Race: ${identity.raceName} (${identity.sex})`,
-        `Nation: ${identity.nation}`,
+        `Ancestry: ${identity.raceName} (${identity.sex})`,
+        `Home power: ${identity.nation}`,
         `Title: ${identity.title}`,
-        `Job: ${jobs.mainJobName} Lv.${jobs.level}${jobs.supportJobName ? ` / ${jobs.supportJobName} Lv.${jobs.supportLevel}` : ''}`,
+        `Discipline: ${jobs.mainJobName} Lv.${jobs.level}${jobs.supportJobName ? ` / ${jobs.supportJobName} Lv.${jobs.supportLevel}` : ''}`,
         `HP: ${player.resources.hp}/${combat.resources.maxHp}`,
         `MP: ${player.resources.mp}/${combat.resources.maxMp}`,
         `TP: ${player.resources.tp}/${combat.resources.maxTp}`,
