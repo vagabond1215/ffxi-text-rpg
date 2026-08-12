@@ -15,25 +15,69 @@ import {
 export const GLOBAL_ACTIONS = Object.freeze([
     commandAction('character', 'Character', 'character'),
     commandAction('stats', 'Stats', 'stats'),
-    commandAction('job', 'Job', 'job'),
+    commandAction('job', 'Training', 'job'),
     commandAction('skills', 'Skills', 'skills'),
     commandAction('inventory', 'Inventory', 'inventory'),
     commandAction('equipment', 'Equipment', 'equipment'),
+    commandAction('spells', 'Known Spells', 'spells'),
+    commandAction('techniques', 'Techniques', 'techniques'),
+    commandAction('abilities', 'Abilities', 'abilities'),
+    commandAction('bestiary', 'Bestiary', 'bestiary'),
     commandAction('maps', 'Maps', 'maps'),
-    commandAction('look', 'Look', 'look'),
-    commandAction('here', 'Here', 'here'),
-    commandAction('battle', 'Battle', 'battle'),
+    commandAction('atlas', 'Local Atlas', 'atlas'),
+    commandAction('look', 'Look Around', 'look'),
+    commandAction('here', 'Nearby', 'here'),
+    commandAction('battle', 'Battle Status', 'battle'),
     commandAction('help', 'Help', 'help'),
     commandAction('validate', 'Validate', 'validate'),
     commandAction('save', 'Save', 'save'),
 ]);
 
+export const ACTION_CATEGORIES = Object.freeze([
+    category('character', 'Character', ['stats', 'job', 'skills', 'inventory', 'equipment']),
+    category('spellbook', 'Spellbook', ['spells', 'techniques', 'abilities']),
+    category('codex', 'Codex', ['bestiary', 'floraFauna', 'lootIndex', 'itemCompendium']),
+    category('world', 'World', ['look', 'here', 'atlas', 'maps']),
+    category('crafting', 'Crafting', ['recipeBook', 'craftingWorkbench', 'processing']),
+    category('combat', 'Combat', ['battle']),
+    category('system', 'System', ['help', 'save']),
+]);
+
+const PLANNED_ACTIONS = Object.freeze({
+    floraFauna: plannedAction('floraFauna', 'Flora & Fauna'),
+    lootIndex: plannedAction('lootIndex', 'Loot Index'),
+    itemCompendium: plannedAction('itemCompendium', 'Item Compendium'),
+    recipeBook: plannedAction('recipeBook', 'Recipe Book'),
+    craftingWorkbench: plannedAction('craftingWorkbench', 'Crafting Workbench'),
+    processing: plannedAction('processing', 'Processing'),
+});
+
 export const TOP_ACTIONS = Object.freeze([
     uiAction('menu', '', 'ui.menu.open'),
 ]);
 
-export function createActionList(state, actions = GLOBAL_ACTIONS) {
-    return actions.map((item) => ({ ...item, disabled: isActionDisabled(item, state) }));
+export function createActionList(state, uiState = null, actions = GLOBAL_ACTIONS) {
+    if (Array.isArray(uiState)) {
+        actions = uiState;
+        uiState = null;
+    }
+
+    if (!uiState) return actions.map((item) => ({ ...item, disabled: isActionDisabled(item, state) }));
+
+    const activeCategory = ACTION_CATEGORIES.find((item) => item.id === uiState.actionCategory) ?? null;
+    if (!activeCategory) {
+        return ACTION_CATEGORIES.map((item) => uiAction(`actionCategory:${item.id}`, item.label, 'ui.actions.openCategory', { categoryId: item.id }, { region: 'category' }));
+    }
+
+    const childActions = activeCategory.actionIds
+        .map((actionId) => findActionById(actionId, actions) ?? PLANNED_ACTIONS[actionId] ?? null)
+        .filter(Boolean)
+        .map((item) => ({ ...item, region: 'categoryItem', disabled: isActionDisabled(item, state) }));
+
+    return [
+        uiAction('actionCategoryBack', `← ${activeCategory.label}`, 'ui.actions.closeCategory', {}, { region: 'categoryBack' }),
+        ...childActions,
+    ];
 }
 
 export function createCompassActionList(state, uiState = {}) {
@@ -60,17 +104,15 @@ export function createCreatorActionList(uiState) {
         ...choiceActionsForStep(step, creator),
         uiAction('creatorCancel', 'Cancel', 'creator.cancel', {}, { region: 'footer' }),
         uiAction('creatorBack', 'Back', 'creator.back', {}, { region: 'footer', disabled: creator.stepIndex <= 0 }),
-        uiAction('creatorReset', 'Reset', 'creator.reset', {}, { region: 'footer' }),
         step === 'summary'
-            ? uiAction('creatorCreate', 'Create', 'creator.confirm', {}, { region: 'footer', disabled: issues.length > 0 })
-            : uiAction('creatorNext', 'Next', 'creator.next', {}, { region: 'footer' }),
+            ? uiAction('creatorCreate', 'Create Character', 'creator.confirm', {}, { region: 'footer', disabled: issues.length > 0 })
+            : uiAction('creatorNext', 'Continue', 'creator.next', {}, { region: 'footer' }),
     ];
 }
 
 export function createCreatorIntroActionList() {
     return [
         uiAction('creatorBegin', 'Begin Adventure', 'creator.begin', {}, { region: 'intro' }),
-        uiAction('creatorViewCharacter', 'View Character', 'creator.begin', { command: 'character' }, { region: 'intro' }),
     ];
 }
 
@@ -103,11 +145,11 @@ function choiceActionsForStep(step, creator) {
     if (step === 'identity') {
         return [
             ...getRaceOptions().map((race) => uiAction(`race:${race.id}`, race.name, 'creator.selectRace', { raceId: race.id }, { region: 'choices', detail: race.blurb, tags: race.tags, selected: race.id === creator.raceId })),
-            ...getSexOptions(creator).map((sex) => uiAction(`sex:${sex.id}`, `Sex: ${sex.name}`, 'creator.selectSex', { sex: sex.id }, { region: 'choices', selected: sex.id === creator.sex })),
+            ...getSexOptions(creator).map((sex) => uiAction(`sex:${sex.id}`, sex.name, 'creator.selectSex', { sex: sex.id }, { region: 'choices', selected: sex.id === creator.sex })),
         ];
     }
     if (step === 'nation') return getNationOptions().map((nation) => uiAction(`nation:${nation.id}`, nation.name, 'creator.selectNation', { nationId: nation.id }, { region: 'choices', detail: nation.blurb, tags: nation.tags, selected: nation.id === creator.nationId }));
-    if (step === 'job') return getStartingJobOptions().map((job) => uiAction(`job:${job.id}`, `${job.name} (${job.abbreviation})`, 'creator.selectJob', { mainJobId: job.id }, { region: 'choices', detail: job.blurb, tags: job.tags, selected: job.id === creator.mainJobId }));
+    if (step === 'job') return getStartingJobOptions().map((job) => uiAction(`job:${job.id}`, job.name, 'creator.selectJob', { mainJobId: job.id }, { region: 'choices', detail: job.blurb, tags: job.tags, selected: job.id === creator.mainJobId }));
     return [];
 }
 
@@ -197,11 +239,19 @@ function uiAction(id, label, intent, payload = {}, extra = {}) {
     return Object.freeze({ id, label, command: payload.command ?? id, intent, payload: Object.freeze(payload), kind: 'ui', ...extra });
 }
 
+function plannedAction(id, label) {
+    return Object.freeze({ id, label: `${label} · planned`, command: id, intent: 'ui.actions.placeholder', payload: Object.freeze({}), kind: 'ui', disabled: true });
+}
+
+function category(id, label, actionIds) {
+    return Object.freeze({ id, label, actionIds: Object.freeze([...actionIds]) });
+}
+
 function stepLabel(step) {
-    if (step === 'identity') return 'Race / Sex';
-    if (step === 'nation') return 'Starting City';
-    if (step === 'job') return 'Starting Job';
-    if (step === 'summary') return 'Summary';
+    if (step === 'identity') return 'Ancestry';
+    if (step === 'nation') return 'Origin';
+    if (step === 'job') return 'Discipline';
+    if (step === 'summary') return 'Review';
     return step;
 }
 
