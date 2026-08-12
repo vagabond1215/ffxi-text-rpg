@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.250.1
-Package:      0.6.250
+Product:      0.6.300.1
+Package:      0.6.300
 Account Save: 4
 Game State:   5
-Data:         20
+Data:         21
 Benchmark:    1
-Codename:     Player Interface Architecture
+Codename:     Original Magic and Abilities
 ```
 
-The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression and capability/proficiency semantics are established on top of the deterministic simulation/content substrate. `0.6.250` establishes a semantic DOM player-interface architecture before the mechanics/action catalog expands further.
+The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression, capability/proficiency semantics, semantic player-interface architecture, and the first canonical executable magic/ability layer are established on top of the deterministic simulation/content substrate.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.6.250.1
+0.6.300.1
 ```
 
 | Segment | Meaning |
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, typed/global commands retained as power-user/compatibility interfaces while semantic DOM views mature, the transitional canvas UI implementation retained for regression comparison, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, typed/global commands retained as power-user/compatibility interfaces while semantic DOM views mature, the transitional canvas UI implementation retained for regression comparison, transitional legacy `cast`/combat-technique adapters pending Combat 2.0, and `gil` pending deliberate original currency design.
 
 Additive/lazily defaulted fields do not require a Game State bump merely because a newer runtime knows about them. A Game State bump is required when the persistence contract becomes semantically incompatible, mandatory shapes cannot be reconstructed deterministically, or an ordered migration is necessary.
 
@@ -266,28 +266,82 @@ The DOM shell derives from existing Game State v5 player, atlas, simulation, POI
 - dedicated active-browser simulation-time controls until scheduler/interrupt wiring is cleanly exposed to the DOM shell;
 - deletion of canvas modules before their compatibility/regression value is exhausted.
 
+## 0.6.300 — Original magic and active ability engine — complete
+
+Resulting baseline:
+
+```text
+Product:      0.6.300.1
+Package:      0.6.300
+Account Save: 4
+Game State:   5
+Data:         21
+Benchmark:    1
+Codename:     Original Magic and Abilities
+```
+
+### Version impact
+
+- **Product:** `0.6.250.1` -> `0.6.300.1`.
+- **Package:** `0.6.250` -> `0.6.300`.
+- **Account Save:** unchanged at 4.
+- **Game State:** unchanged at 5; `state.abilities` is additive and lazily initialized by the ability runtime boundary.
+- **Data:** 20 -> 21 because original spell-school and executable ability records establish a new canonical data contract.
+- `capabilities` advanced to `0.2.0` to add original spell learning/use paths and exploration capability context.
+- New system: `abilityCatalog 0.1.0`.
+- New system: `abilityEngine 0.1.0`.
+- `magic` and `abilities` database/system contracts now exist at `0.1.0`.
+- `gameViewModels` advanced to `0.2.0` and `uiIntents` to `0.3.0` for semantic learned-ability presentation/activation.
+
+### Delivered
+
+- original Embercraft, Vital Weave, and Ward Lore traditions with stable canonical IDs;
+- executable ability records are separate from character-owned capabilities;
+- representative Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading effects;
+- deterministic self/enemy/context targeting, MP/TP cost spending, activation duration, cooldown deadlines, structured damage/heal/status/context effects, and interruption semantics;
+- non-instant activation backed by canonical timed tasks and a dedicated completion interrupt priority above generic task completion;
+- `ability.started`, `ability.resolved`, and `ability.interrupted` semantic events;
+- resource costs are spent once when activation begins; cooldown begins on successful resolution; interruption retains spent resources and does not begin cooldown;
+- Waymark Reading reports only acquired atlas knowledge and does not reveal full authored topology;
+- semantic `ability.activate` UI intent and learned-only spellbook view-model records;
+- combat contextual actions can expose ready learned canonical abilities without generating command strings;
+- bounded `invoke <ability>` command adapter for keyboard/power-user access while the old `cast` and transitional technique adapters remain isolated for Combat 2.0;
+- non-travel `wait` now advances canonical fictional world time and reconciles ability activation rather than advancing only the wall-clock tick adapter.
+
+### No Game State migration rationale
+
+The ability runtime stores cooldown deadlines and at most one active activation under an additive `state.abilities` object. Missing state can be reconstructed deterministically by lazy initialization without reinterpretation of existing saved fields. Account Save remains 4 and Game State remains 5. Data advances because the executable magic/ability catalog itself is a new canonical data contract.
+
+### Intentionally deferred
+
+- Combat 2.0 encounter/action architecture, opponent canonical ability selection, tactical action timing/recovery, and deeper interruption/status interaction;
+- AoE, multi-target, ground targeting, resistance/accuracy layers, and final combat balance;
+- broad spell/technique content expansion;
+- world-time status-expiry orchestration beyond existing status metadata;
+- multiple simultaneous/queued active ability activations;
+- complete dedicated DOM Spellbook cards; the semantic view-model/intent seam exists and should be extended incrementally;
+- removal of `combatActionEngine.castSpell()` or transitional technique commands before their compatibility value is replaced by 0.6.400.
+
 ---
 
 # Active and future milestone gates
 
-## 0.6.300 — Original magic and active ability engine — next
+## 0.6.400 — Combat 2.0 — next
 
-Deliver a bounded executable-effect layer without conflating it with character capability ownership:
+Establish canonical tactical combat on the deterministic simulation/action substrate:
 
-- define stable original ability/effect and spell-school records;
-- keep historical spell names/data out of canonical content;
-- model targeting, resource costs, cast/activation time, recast/cooldown, interruption, and effect payloads deterministically;
-- allow character-owned capabilities to enable executable effects while concrete use requirements remain under capability/loadout/preparation checks;
-- emit structured `ActionResult`/semantic events independently of prose;
-- expose new magic/ability content through the semantic player-interface seams rather than expanding a permanent button catalog;
-- preserve current battle/action behavior behind adapters until Combat 2.0 (`0.6.400`);
-- prove representative offensive, restorative/support, and non-combat/contextual effects before broad content expansion.
+- define canonical encounter/combat state without making the active discipline a hard class identity;
+- make canonical abilities first-class combat actions with deterministic target/action resolution;
+- define opponent action selection/AI and action timing/recovery/interruption semantics;
+- integrate statuses, skills, equipment, capabilities, preparation, and resources compositionally;
+- migrate `attack`, legacy `cast`, and transitional `technique` command paths behind bounded canonical-combat adapters;
+- preserve victory/defeat, EXP, provenance-aware physical resource opportunities, and reward semantics;
+- prove representative tactical combat without rolling into item/equipment breadth.
 
-Do not open Combat 2.0 inside this track.
+Do not open `0.6.500` inside this track.
 
 ## Later 0.6 tracks
 
-- `0.6.400` Combat 2.0;
 - `0.6.500` canonical item/equipment/tool breadth;
 - `0.6.600` gathering/hunting/processing/crafting/cooking/salvage;
 - `0.6.700` ecology/regional creature/resource content;
