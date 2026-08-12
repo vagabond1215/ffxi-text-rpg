@@ -2,17 +2,15 @@
 
 Read this before continuing implementation in a new ChatGPT/Codex thread.
 
-## Read order
+## Required read order
 
 1. `AGENTS.md` — direct-`main` workflow, autonomous-session budget, scope boundaries, and handoff protocol.
-2. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
-3. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, naming, legacy-data, provenance, scale, and content-pack policy.
-4. `docs/ROADMAP.md` — current implementation sequence and milestone gates.
-5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
-6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not harden into final design.
-7. `docs/ARCHITECTURE.md` — current module boundaries.
-8. `js/text/version.js` — authoritative active version values.
-9. This handoff, then relevant runtime/data/tests for the next bounded unit.
+2. `docs/THREAD_HANDOFF.md` — this current continuation state.
+3. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
+4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, legacy-data, provenance, scale, and content-pack policy.
+5. `docs/ROADMAP.md` — implementation sequence and milestone gates.
+6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
+7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md` and `js/text/version.js`.
 
 ## Workflow and session guardrail
 
@@ -36,34 +34,36 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-Maps represent acquired player knowledge rather than omniscient geography.
+Maps represent acquired player knowledge rather than omniscient geography. The player interface should present world meaning and contextual choices rather than treating command output as the game itself.
 
 ## Current baseline
 
 ```text
-Product:      0.6.200.2
-Package:      0.6.200
+Product:      0.6.250.1
+Package:      0.6.250
 Account Save: 4
 Game State:   5
 Data:         20
 Benchmark:    1
-Codename:     Character Capabilities
+Codename:     Player Interface Architecture
 ```
 
-Subsystem changes in the latest UI revision:
+Relevant subsystem contracts:
 
 ```text
-versionManifest    0.6.200.2
-canvasUi           0.8.0
-uiIntents          0.2.0
-characterCreation  0.5.2
+versionManifest  0.6.250.1
+domUi            0.1.0
+gameViewModels   0.1.0
+canvasUi         0.8.0   transitional compatibility/reference
+uiIntents        0.2.0
+characterCreation 0.5.2
 ```
 
-No Account Save, Game State, or Data bump was required.
+No Account Save, Game State, or Data bump was required for `0.6.250`.
 
 ## Completed implementation sequence
 
-The coherent sequence on `main` is:
+The coherent sequence on `main` is now:
 
 - 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events;
 - 0.5.100 deterministic world clock;
@@ -72,181 +72,180 @@ The coherent sequence on `main` is:
 - 0.5.400 deterministic interrupt model;
 - 0.5.500 day boundaries/end-of-day review;
 - 0.5.550 original-world identity/stable-ID migration;
-- 0.5.600 persistent projects and resource provenance;
+- 0.5.600 persistent projects/resource provenance;
 - 0.5.650 ecology/gathering/populations;
-- 0.5.700 canonical routes and scheduled transport;
+- 0.5.700 canonical routes/scheduled transport;
 - 0.5.800 regional content packs/normalization/scalable validation;
 - 0.5.900 simulation/content-substrate exit gate;
-- 0.6.100 continuous-character stats and progression;
+- 0.6.100 continuous-character stats/progression;
 - 0.6.200 character-owned skills/proficiencies/capabilities;
-- 0.6.200.2 bounded canvas UI/creator/navigation usability refinement.
+- 0.6.200.2 bounded canvas usability refinement;
+- **0.6.250 semantic player-interface architecture.**
 
-Phase 0.5 is complete. Phase 0.6 is active through 0.6.200. Do not reopen earlier tracks broadly without a concrete regression.
+Phase 0.5 is complete. Phase 0.6 is active through 0.6.250. Do not reopen earlier tracks broadly without a concrete regression.
 
-## Continuous-character/capability state
+## 0.6.250 — player interface architecture status
 
-`characterStatEngine.js` owns versioned original-design `player.statState`. Persistent base growth follows the highest attained discipline training level rather than the currently active discipline. Active discipline contributes contextual training/stat modifiers and explicitly is not a universal capability gate.
+The track is **complete enough to exit**.
 
-`player.progression.character` records lifetime character training metadata while per-discipline level/EXP records remain compatible.
+### Active browser shell is DOM-first
 
-`data/capabilities.js` and `capabilityEngine.js` separate capability learning paths from current-use prerequisites. Learned capabilities live under `player.progression.capabilities` and survive discipline switching. Use eligibility checks concrete proficiency/equipment/tool/preparation/resource/context requirements.
+The browser no longer mounts the full-canvas application.
 
-Skill training caps constrain **new gain** without truncating already learned character proficiency. Future executable `abilities` remain a separate responsibility from character-owned `capabilities`.
+```text
+index.html
+  -> js/main.js
+      -> createDomApp(host)
+          -> existing game/save/command/intent services
+          -> createGameViewModel(state, uiState)
+          -> renderDomApp(...)
+```
 
-Historical FFXI stat/formula modules remain explicit research/reference surfaces and are not canonical runtime authority.
+New active UI files:
 
-## 0.6.200.2 UI usability refinement
+```text
+js/text/ui/domApp.js
+js/text/ui/domRenderer.js
+js/text/ui/gameViewModel.js
+js/text/ui/uiState.js
+```
 
-The user explicitly requested less clunky character creation, a navigational visual reference, a much smaller D-pad, fewer flat buttons, categorized information surfaces, and permanent at-a-glance character stats. The bounded implementation now provides those seams.
+The existing `canvasApp.js`, `canvasRenderer.js`, `canvasLayout.js`, and related tests remain as bounded transition/reference surfaces. Do not extend Canvas as the primary browser presentation layer unless a specific compatibility reason requires it.
+
+### Semantic game presentation model
+
+`gameViewModel.js` derives disposable renderer-facing meaning from authoritative runtime state. It currently exposes:
+
+- place, region, coordinate, world time, pause/speed state;
+- compact character identity, HP/MP/TP, and primary attributes;
+- scene title/description and nearby POIs;
+- atlas-derived local map knowledge;
+- legal movement directions;
+- current travel/timed-task activity;
+- a small set of contextual actions;
+- recent display events with typed-command echoes filtered out.
+
+It is **not** a second persisted game-state schema.
+
+### World/scene is primary
+
+The normal game screen is organized around:
+
+```text
+location + fictional time header
+
+local knowledge map   world/scene or selected information view   character status
+
+contextual actions
+recent meaningful events
+Search-or-act input
+```
+
+There is no permanent player-facing `Output Log` panel. Command outputs can still feed the recent-events compatibility seam while individual domains acquire dedicated presentation models.
+
+### Local map and movement
+
+The local map is SVG rendered from existing atlas/discovery knowledge. The player sees only visited cells and bounded path stubs toward unrevealed neighboring geography. The authored full topology is not exposed.
+
+The compact D-pad remains under the local map as a secondary/fine-movement control. Keyboard movement supports arrows/WASD plus Q/E/Z/C diagonals when focus is not in an input field.
+
+### Contextual actions
+
+Normal exploration actions prioritize nearby POI interaction and basic observation, capped to a small useful set. Battle swaps to combat-shaped actions. Active travel exposes semantic `Stop Travel` rather than fabricating a malformed text command.
+
+Information surfaces such as Character, Spellbook, Journal, Codex, Craft, and World are navigation rather than world actions.
+
+Some destination views still bridge to existing command-backed output because dedicated inventory/equipment/spell/codex presentation models do not yet exist. Migrate those incrementally as their mechanics tracks mature.
 
 ### Character creation
 
-`js/text/data/characterCreationContent.js`, `js/text/ui/uiActions.js`, `js/text/ui/canvasInput.js`, `js/text/ui/canvasLayout.js`, and `js/text/ui/canvasRenderer.js` now use player-facing creator vocabulary:
+The active creator is now a **single-screen configuration surface**, not a wizard.
+
+It simultaneously exposes:
+
+- name;
+- ancestry;
+- sex;
+- origin;
+- starting discipline;
+- description/tags for the active choice;
+- continuously visible starting profile;
+- one Create Character action.
+
+Native HTML/CSS handles wrapping and focus. Starting discipline wording explicitly describes initial training rather than permanent class identity.
+
+### Search-or-act field
+
+The bottom omnibox is currently a keyboard/power-user adapter into existing typed/slash commands. It is **not yet** a fuzzy cross-database search/index. Do not describe it as one until suggestions/entity/action resolution are implemented.
+
+## 0.6.250 validation checkpoint
+
+Coherent runtime/version/test-fix head:
 
 ```text
-Ancestry -> Origin -> Discipline -> Review
+0cc3acae8a421ec0c72044bd153afc2825b5b04c
 ```
 
-Descriptions for the five canonical ancestries, three origins, and six starter disciplines were shortened and clarified. Starting discipline text explicitly says it is initial training rather than a permanent class.
-
-Creator cards now wrap descriptions rather than ellipsizing them. `wrapText()` also splits oversized single tokens so narrow canvas cards cannot overflow from one long word/string.
-
-The creator name field moved to the review area and keyboard input edits the name only while the review step is active. Earlier ancestry/origin/discipline steps no longer consume invisible name input. The creator footer is reduced to Cancel, Back, and Continue/Create rather than the previous extra reset/view controls.
-
-### Discovery-driven local minimap
-
-New file:
+GitHub Actions test completed successfully on 2026-08-12 with:
 
 ```text
-js/text/ui/minimapModel.js
-```
-
-`createMinimapModel(state)` consumes existing `state.atlas[placeId].visited` knowledge. It does not create a second geography database or new persistence shape.
-
-Behavior:
-
-- the starting map initially shows only the known/current coordinate;
-- normal navigation discovery reveals additional cells;
-- visited topology connections render fully;
-- connections toward unknown neighboring cells/exits can appear only as short local stubs from known positions;
-- alpha-coordinate topology places and numeric-grid places share the same UI model;
-- the current location and explored/total count appear in the minimap footer.
-
-This deliberately implements the old-school reveal-as-you-travel behavior rather than exposing the full authored topology.
-
-### Navigation controls
-
-The minimap occupies the former large D-pad area. The D-pad now sits centered beneath it.
-
-Movement buttons are constrained to approximately **24–30px** rather than the prior ~65px sidebar controls, exceeding the requested 50% reduction. Direction/stop symbols are centered explicitly in the buttons. Auto Run is a compact centered control under the pad.
-
-### Action categories
-
-The long flat sidebar action list is replaced in the actual game canvas with seven category buttons:
-
-```text
-Character
-Spellbook
-Codex
-World
-Crafting
-Combat
-System
-```
-
-Character contains Stats, Training, Skills, Inventory, Equipment. Spellbook exposes current Known Spells/Techniques/Abilities command surfaces. World groups Look Around/Nearby/Local Atlas/Maps. Combat contains Battle Status; System contains Help/Save.
-
-Codex and Crafting include disabled planned entries such as Flora & Fauna, Loot Index, Item Compendium, Recipe Book, Crafting Workbench, and Processing. These are navigation-architecture placeholders only; they do not pretend those gameplay systems are implemented.
-
-The direct visible `Character` summary button was removed because it duplicated information already shown in the persistent context pane. The typed/global `character` command remains available as a compatibility interface and `GLOBAL_ACTIONS` retains it for older callers/tests.
-
-### Permanent right-pane character information
-
-The context pane now renders without command injection:
-
-- character name / ancestry / active discipline / level;
-- HP, MP, TP current/max;
-- STR, DEX, VIT, AGI, INT, MND, CHR;
-- ATK, DEF, ACC, EVA;
-- M.ATK, M.DEF, M.ACC, M.EVA;
-- current location and coordinate.
-
-The main output pane remains the activity/command log. The old right-pane command-history block was removed to prioritize live character state.
-
-### Canvas shell identity
-
-The canvas splash title now says **Hearth & Horizon** rather than the stale legacy project title.
-
-## UI regression coverage
-
-New `tests/uiStreamlining.test.js` proves:
-
-- minimap begins from atlas discoveries only;
-- movement reveals cells/connections;
-- compact centered D-pad is below the minimap;
-- actual game sidebar begins with category menus and no redundant Character-summary button;
-- Character, Spellbook, Codex, and Crafting category structure;
-- disabled planned placeholders do not masquerade as working commands;
-- right-pane snapshot includes canonical attributes/derived combat values;
-- creator text wrapping handles prose and long tokens;
-- creator keyboard text edits only the visible review-name field.
-
-## Validation checkpoint
-
-Runtime UI integration head:
-
-```text
-711c494a3e8e8249241d034db91174fd79c4226e
-```
-
-The exact test result at that runtime head was:
-
-```text
-tests       377
-pass        377
+tests       383
+pass        383
 fail        0
 cancelled   0
 skipped     0
 todo        0
 ```
 
-Benchmark from that runtime head:
+Benchmark from the same successful test job:
 
 ```text
-create 1,000 player combat profiles:              482.560ms total | 0.482560ms/op
-create 1,000 enemy combat profiles:               113.377ms total | 0.113377ms/op
-resolve 1,000 basic attacks:                      549.744ms total | 0.549744ms/op
-run 10,000 tick dispatches with 5 subscribers:     45.061ms total | 0.004506ms/op
-resolve 10,000 direct travel route lookups:      7239.355ms total | 0.723935ms/op
+Product: 0.6.250.1
+Package: 0.6.250
+Account Save: 4
+Game State: 5
+Data: 20
+Benchmark: 1
+Codename: Player Interface Architecture
+
+create 1,000 player combat profiles:              464.793ms total | 0.464793ms/op
+create 1,000 enemy combat profiles:               116.485ms total | 0.116485ms/op
+resolve 1,000 basic attacks:                      549.896ms total | 0.549896ms/op
+run 10,000 tick dispatches with 5 subscribers:     47.044ms total | 0.004704ms/op
+resolve 10,000 direct travel route lookups:      7380.195ms total | 0.738020ms/op
 ```
 
-Version/pipeline synchronization head:
+On that head:
 
 ```text
-a37db888a25f06c004f1abefcc9fcc82c73b6ab5
+test                 success
+build                success
+report-build-status  success
 ```
 
-GitHub Actions on that head completed **test success, build success, report-build-status success, and deploy success**. The runtime tests at the preceding UI integration head already contained the new 377-test suite; later changes only synchronized the `0.6.200.2` manifest and pipeline expectations.
+The deploy job was still finishing at the last validation read; no test/build failure remained.
 
-The runner continues to emit the known non-blocking Node-20-actions deprecation warning. Project commands themselves run with Node 20.20.2.
+A preceding test run exposed only a test-fixture error (`state.travel` is initially null); the test was corrected to assign a minimal active-travel object. The corrected 383-test suite is green.
 
-Documentation closeout commits follow the validated version head; refetch current `main` before the next coding session.
+GitHub runners continue to emit the known non-blocking warning about Node-20-targeting checkout/setup actions being forced through Node 24. Project test/benchmark commands themselves use Node 20.20.2.
 
-## Current transitional debt / UI limitations
+## Current 0.6.250 limitations / intentional debt
 
-Do not turn these into an unbounded rewrite:
+Treat these as deliberate follow-up seams, not justification for another broad UI rewrite:
 
-- the local minimap is intentionally rough; richer landmarks/icons, multi-level presentation, world-map screens, and POI styling remain future UI work;
-- the minimap reveals atlas knowledge, but broader regional/world mapping still needs authored presentation layers;
-- planned Codex/Crafting category entries are disabled placeholders until their underlying engines/data are ready;
-- `capabilityEngine` evaluates ownership/use eligibility but does not execute generalized effects yet;
-- placeholder spell and weapon-skill actions remain in the current combat scaffold;
-- `skillCaps.js` remains sparse/placeholder-confidence;
-- active discipline still participates in legacy equipment eligibility;
-- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal names remain save/runtime compatibility seams;
-- historical FFXI research modules remain bounded reference surfaces;
-- `places.js` encounter `spawnRules` and place connections remain transitional seams;
-- `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional compatibility debt.
+- Canvas modules remain temporarily for compatibility/regression comparison.
+- `uiState.js` still reuses structural helpers from `canvasInput.js`; extract renderer-neutral UI state incrementally.
+- Inventory, equipment, skills, existing spell/technique views, and portions of Codex still bridge to command output rather than owning domain presentation models.
+- The Search-or-act field is command-capable only; fuzzy entity/action search is future work.
+- The local map is intentionally rough; richer landmarks, POI symbols, regional maps, and transport overlays should preserve atlas knowledge as authority.
+- Dedicated active-browser simulation controls are not yet exposed; add them only through the canonical simulation/interrupt scheduler rather than inventing UI clocks.
+- `capabilityEngine` evaluates ownership/use eligibility but generalized effects are still pending.
+- Existing spell and weapon-skill actions are transitional combat scaffolding.
+- `skillCaps.js` remains sparse/placeholder-confidence.
+- Active discipline still participates in legacy equipment eligibility.
+- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal names remain compatibility seams.
+- Historical FFXI modules remain bounded research/reference surfaces.
+- `places.js` spawn rules/place connections, `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional compatibility debt.
 
 ## Next target
 
@@ -254,16 +253,17 @@ Do not turn these into an unbounded rewrite:
 0.6.300 — Original magic and active ability engine
 ```
 
-**No 0.6.300 implementation started in this UI usability session.** Start it only under a new user-authorized run budget unless the user explicitly requests another UI refinement first.
+**No 0.6.300 implementation has started.** Begin it only under the next user-authorized mechanics run.
 
-Recommended first 0.6.300 unit remains:
+Recommended first bounded unit:
 
 1. refetch latest `main`, checks, required docs, architecture, and version manifest;
-2. inspect combat actions/battle, ActionResult/events, timed tasks/interrupts, statuses, capabilities, equipment/item effect metadata, and bounded historical spell research;
-3. define executable original-world ability/effect records separately from capability ownership;
-4. establish original spell schools/traditions and representative techniques with targeting, resource costs, cast/activation time, recast/cooldown, interruption, and structured effect payloads;
+2. inspect combat actions/battle, `ActionResult`/semantic events, timed tasks/interrupts, statuses, capabilities, equipment/item-effect metadata, and bounded historical spell research;
+3. define executable original-world ability/effect records separately from character capability ownership;
+4. establish original spell schools/traditions and representative techniques with targeting, cost, cast/activation duration, recast/cooldown, interruption, and structured effect payloads;
 5. keep capability/loadout/preparation/resource/context prerequisites compositional rather than making active discipline a universal gate;
-6. use canonical fictional time for non-instant activation;
-7. preserve the current battle scaffold behind bounded adapters until `0.6.400`;
-8. prove offensive, restorative/support, and non-combat/contextual effects without mass-porting historical spell catalogs;
-9. validate/version/test/benchmark/document, then stop at the coherent 0.6.300 boundary.
+6. use canonical fictional time/timed-task infrastructure for non-instant activation;
+7. expose new magic/actions through semantic UI view/context seams rather than adding another permanent button catalog;
+8. preserve the current battle scaffold behind bounded adapters until `0.6.400`;
+9. prove offensive, restorative/support, and non-combat/contextual effects without mass-porting historical spell catalogs;
+10. validate/version/test/benchmark/document and stop at the coherent 0.6.300 boundary before Combat 2.0.
