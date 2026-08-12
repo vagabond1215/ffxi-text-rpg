@@ -1,80 +1,83 @@
+import { canonicalizeMapId } from './legacyIdentity.js';
+
 export const MAP_DEFINITIONS = Object.freeze({
-    mapSanDoria: map({
-        id: 'map-san-doria',
-        name: 'Map of San d\u2019Oria',
-        nation: 'San d\u2019Oria',
-        region: 'Ronfaure',
-        placeIds: ['southern-sandoria', 'northern-sandoria', 'port-sandoria', 'chateau-doraguille', 'chocobo-circuit', 'bostaunieux-oubliette', 'airship-jeuno-sandoria'],
-        notes: 'Starter city map covering the seeded San d\u2019Orian city districts.',
+    mapThornwall: map({
+        id: 'map-thornwall',
+        name: 'Map of Thornwall',
+        nation: 'Thornwall',
+        region: 'Elderwood',
+        placeIds: ['thornwall-southgate', 'thornwall-crownward', 'thornwall-rivergate', 'thornwall-high-citadel', 'thornwall-strider-yard', 'thornwall-old-gaol', 'skyferry-waymeet-thornwall'],
+        notes: 'City map covering the currently seeded Thornwall districts and connected civic interiors.',
     }),
-    mapRonfaure: map({
-        id: 'map-ronfaure',
-        name: 'Map of Ronfaure',
-        nation: 'San d\u2019Oria',
-        region: 'Ronfaure',
-        placeIds: ['west-ronfaure', 'east-ronfaure', 'carpenters-landing'],
-        notes: 'Starter outdoor region map for the Ronfaure forest zones.',
+    mapElderwood: map({
+        id: 'map-elderwood',
+        name: 'Map of the Elderwood',
+        nation: 'Thornwall',
+        region: 'Elderwood',
+        placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
+        notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
-    mapGhelsba: map({
-        id: 'map-ghelsba',
-        name: 'Map of Ghelsba',
+    mapRedfangCamp: map({
+        id: 'map-redfang-camp',
+        name: 'Sketch of Redfang Camp',
         nation: null,
-        region: 'Ronfaure',
-        placeIds: ['ghelsba-outpost'],
-        notes: 'Starter dungeon hook map for Ghelsba Outpost.',
+        region: 'Elderwood',
+        placeIds: ['redfang-camp'],
+        notes: 'A rough expedition map for the fortified raider camp beyond the western forest.',
     }),
-    mapBastok: map({
-        id: 'map-bastok',
-        name: 'Map of Bastok',
-        nation: 'Bastok',
-        region: 'Gustaberg',
-        placeIds: ['bastok-markets', 'bastok-mines', 'port-bastok', 'metalworks'],
-        notes: 'Starter city map covering the seeded Bastok city districts.',
+    mapBrasshaven: map({
+        id: 'map-brasshaven',
+        name: 'Map of Brasshaven',
+        nation: 'Brasshaven',
+        region: 'Redstone Reach',
+        placeIds: ['brasshaven-market-ring', 'brasshaven-delvers-ward', 'brasshaven-iron-quay', 'brasshaven-foundry-hall'],
+        notes: 'City map covering Brasshaven’s primary commercial, industrial, mining, and freight districts.',
     }),
-    mapGustaberg: map({
-        id: 'map-gustaberg',
-        name: 'Map of Gustaberg',
-        nation: 'Bastok',
-        region: 'Gustaberg',
-        placeIds: ['south-gustaberg', 'north-gustaberg'],
-        notes: 'Starter outdoor region map for Gustaberg.',
+    mapRedstoneReach: map({
+        id: 'map-redstone-reach',
+        name: 'Map of Redstone Reach',
+        nation: 'Brasshaven',
+        region: 'Redstone Reach',
+        placeIds: ['south-redstone-reach', 'north-redstone-reach'],
+        notes: 'Regional map for the dry uplands, quarry roads, mine routes, and caravan approaches around Brasshaven.',
     }),
-    mapZeruhnMines: map({
-        id: 'map-zeruhn-mines',
-        name: 'Map of Zeruhn Mines',
-        nation: 'Bastok',
-        region: 'Gustaberg',
-        placeIds: ['zeruhn-mines'],
-        notes: 'Starter-adjacent mine map for Bastok.',
+    mapDeepveinMine: map({
+        id: 'map-deepvein-mine',
+        name: 'Survey of Deepvein Mine',
+        nation: 'Brasshaven',
+        region: 'Redstone Reach',
+        placeIds: ['deepvein-mine'],
+        notes: 'Mine survey covering the currently accessible Deepvein galleries.',
     }),
-    mapWindurst: map({
-        id: 'map-windurst',
-        name: 'Map of Windurst',
-        nation: 'Windurst',
-        region: 'Sarutabaruta',
-        placeIds: ['windurst-waters', 'windurst-walls', 'windurst-woods', 'port-windurst', 'heavens-tower'],
-        notes: 'Starter city map covering the seeded Windurst districts.',
+    mapMistmere: map({
+        id: 'map-mistmere',
+        name: 'Map of Mistmere',
+        nation: 'Mistmere',
+        region: 'Starfen',
+        placeIds: ['mistmere-canal-ward', 'mistmere-spire-ward', 'mistmere-garden-ward', 'mistmere-reedport', 'mistmere-observatory'],
+        notes: 'City map covering Mistmere’s canal, scholastic, garden, port, and observatory districts.',
     }),
-    mapSarutabaruta: map({
-        id: 'map-sarutabaruta',
-        name: 'Map of Sarutabaruta',
-        nation: 'Windurst',
-        region: 'Sarutabaruta',
-        placeIds: ['west-sarutabaruta', 'east-sarutabaruta'],
-        notes: 'Starter outdoor region map for Sarutabaruta.',
+    mapStarfen: map({
+        id: 'map-starfen',
+        name: 'Map of the Starfen',
+        nation: 'Mistmere',
+        region: 'Starfen',
+        placeIds: ['west-starfen', 'east-starfen'],
+        notes: 'Regional map for the marsh-grassland paths, reed routes, and gathering grounds surrounding Mistmere.',
     }),
-    mapHorutotoRuins: map({
-        id: 'map-horutoto-ruins',
-        name: 'Map of Horutoto Ruins',
-        nation: 'Windurst',
-        region: 'Sarutabaruta',
-        placeIds: ['outer-horutoto-ruins'],
-        notes: 'Starter-adjacent ruin map for Windurst.',
+    mapSunkenArchive: map({
+        id: 'map-sunken-archive',
+        name: 'Plan of the Sunken Archive',
+        nation: 'Mistmere',
+        region: 'Starfen',
+        placeIds: ['sunken-archive'],
+        notes: 'Partial plan of the half-submerged ruin currently accessible from East Starfen.',
     }),
 });
 
 export function getMap(mapId) {
-    return Object.values(MAP_DEFINITIONS).find((item) => item.id === mapId) ?? null;
+    const canonicalId = canonicalizeMapId(mapId);
+    return Object.values(MAP_DEFINITIONS).find((item) => item.id === canonicalId) ?? null;
 }
 
 export function listMaps() {
