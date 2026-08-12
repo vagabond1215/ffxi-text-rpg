@@ -54,7 +54,11 @@ export function evaluateSimulationSubstrateGate(options = {}) {
         group('originalWorldIdentity', [
             booleanCheck('game-state-identity-generation', version.gameState >= 5, `Game State ${version.gameState} must include the original-world identity migration.`),
             systemCheck(systemVersions, 'worldIdentity'),
-            booleanCheck('product-identity', /^0\.5\.900\./.test(String(version.product)), `Product ${version.product} must be on the 0.5.900 exit-gate track.`),
+            booleanCheck(
+                'product-identity',
+                productVersionAtLeast(version.product, [0, 5, 900, 0]),
+                `Product ${version.product} must be at or beyond the completed 0.5.900 exit-gate track.`,
+            ),
         ]),
         group('projectsAndProvenance', [
             systemCheck(systemVersions, 'projects'),
@@ -162,6 +166,16 @@ function minimumCheck(id, actual, minimum) {
 
 function booleanCheck(id, ready, issue) {
     return Object.freeze({ id, ready: Boolean(ready), issue: ready ? '' : issue });
+}
+
+function productVersionAtLeast(value, minimum) {
+    const parts = String(value ?? '').split('.').map((part) => Number(part));
+    if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0)) return false;
+    for (let index = 0; index < minimum.length; index += 1) {
+        if (parts[index] > minimum[index]) return true;
+        if (parts[index] < minimum[index]) return false;
+    }
+    return true;
 }
 
 function deterministicServiceDeparture(service) {
