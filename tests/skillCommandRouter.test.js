@@ -20,8 +20,8 @@ test('skills command describes character-owned skills', () => {
 
     const output = router('skills');
 
-    assert.match(output, /Skills for Warrior Lv\.1:/);
-    assert.match(output, /- axe: learned 2 \/ Warrior cap 3 \/ effective 2 \/ rank A/);
+    assert.match(output, /Skills for Vanguard Lv\.1:/);
+    assert.match(output, /- axe: learned 2 \/ Vanguard cap 3 \/ effective 2 \/ rank A/);
     assert.match(output, /Confidence: placeholder/);
 });
 
@@ -31,7 +31,7 @@ test('skill command describes one requested skill', () => {
     const output = router('skill axe');
 
     assert.match(output, /axe: learned 2/);
-    assert.match(output, /Warrior cap 3/);
+    assert.match(output, /Vanguard cap 3/);
     assert.match(output, /effective 2/);
 });
 
@@ -40,8 +40,8 @@ test('inspect skills aliases to skill summary', () => {
 
     const output = router('inspect skills');
 
-    assert.match(output, /Skills for Warrior Lv\.1:/);
-    assert.match(output, /- axe: learned 2 \/ Warrior cap 3 \/ effective 2 \/ rank A/);
+    assert.match(output, /Skills for Vanguard Lv\.1:/);
+    assert.match(output, /- axe: learned 2 \/ Vanguard cap 3 \/ effective 2 \/ rank A/);
 });
 
 test('inspect skill aliases to single skill inspection', () => {
