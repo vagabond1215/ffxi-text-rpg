@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.5.650.1';
-export const PACKAGE_VERSION = '0.5.650';
+export const PRODUCT_VERSION = '0.5.700.1';
+export const PACKAGE_VERSION = '0.5.700';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 17,
+    data: 18,
     benchmark: 1,
-    codename: 'Ecology Substrate',
+    codename: 'Routes and Transport',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.650.1',
+    versionManifest: '0.5.700.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -36,6 +36,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     populations: '0.1.0',
     gatheringSources: '0.1.0',
     resourceItems: '0.1.0',
+    routeCatalog: '0.1.0',
+    transport: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
     canvasUi: '0.7.0',
@@ -64,12 +66,12 @@ export const SYSTEM_VERSIONS = Object.freeze({
     maps: '0.5.0',
     places: '0.5.0',
     coordinates: '0.1.0',
-    navigation: '0.1.0',
+    navigation: '0.1.1',
     placeAtlas: '0.5.0',
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
-    travel: '0.4.4',
+    travel: '0.5.0',
     pois: '0.3.7',
     poiDiscovery: '0.3.6',
     poiFastTravel: '0.3.6',
