@@ -45,7 +45,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
     assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
     assert.match(describeSystemVersions(), /validation: 0\.8\.0/);
-    assert.match(describeSystemVersions(), /travel: 0\.4\.3/);
+    assert.match(describeSystemVersions(), /travel: 0\.4\.4/);
     assert.match(describeSystemVersions(), /pois: 0\.3\.7/);
     assert.match(describeSystemVersions(), /travelExits: 0\.3\.6/);
     assert.match(describeSystemVersions(), /homeStorage: 0\.3\.9/);
