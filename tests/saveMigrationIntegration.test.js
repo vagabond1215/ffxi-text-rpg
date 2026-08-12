@@ -10,6 +10,7 @@ import {
     loadCharacter,
     saveGame,
 } from '../js/text/save.js';
+import { VERSION } from '../js/text/version.js';
 
 class MemoryStorage {
     constructor() {
@@ -52,7 +53,7 @@ test('loading a version 2 account registry migrates and persists it as account s
     assert.equal(migratedRegistry.accounts[0].version, 4);
 });
 
-test('loading a version 2 character migrates and persists game state version 4 with world time', () => {
+test('loading a version 2 character migrates and persists the current game state with world time', () => {
     installStorage();
     const created = createAccountWithPassword('Legacy Character Account', 'pwd', { persistentLogin: true });
     assert.equal(created.ok, true);
@@ -75,10 +76,10 @@ test('loading a version 2 character migrates and persists game state version 4 w
     const migratedRegistry = decodePayload(globalThis.localStorage.getItem(key));
     const migratedState = decodePayload(migratedRegistry.accounts[0].characters[0].encodedState);
 
-    assert.equal(loaded.version, 4);
+    assert.equal(loaded.version, VERSION.gameState);
     assert.equal(loaded.meta.characterId, record.id);
     assert.deepEqual(loaded.worldTime, { totalSeconds: 0 });
-    assert.equal(migratedState.version, 4);
+    assert.equal(migratedState.version, VERSION.gameState);
     assert.deepEqual(migratedState.worldTime, { totalSeconds: 0 });
     assert.equal(migratedState.meta.characterId, record.id);
 });
@@ -95,6 +96,6 @@ test('world time persists through normal save and load without wall-clock recomp
 
     const loaded = loadCharacter('Clockkeeper');
 
-    assert.equal(loaded.version, 4);
+    assert.equal(loaded.version, VERSION.gameState);
     assert.equal(loaded.worldTime.totalSeconds, 123456);
 });
