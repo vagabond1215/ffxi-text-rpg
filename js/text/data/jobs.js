@@ -1,30 +1,32 @@
-const JOBS = {
-    warrior: ['Warrior', 'WAR', 'frontline physical attacker and durable weapon generalist', ['str', 'vit'], ['attack', 'defense'], ['axe', 'greatAxe', 'sword', 'shield']],
-    monk: ['Monk', 'MNK', 'hand-to-hand attacker with high HP and counter pressure', ['str', 'vit'], ['attack', 'counter'], ['handToHand', 'guard', 'evasion']],
-    whiteMage: ['White Mage', 'WHM', 'healer and defensive support caster', ['mnd'], ['curePotency', 'magicDefense'], ['healingMagic', 'divineMagic', 'enhancingMagic']],
-    blackMage: ['Black Mage', 'BLM', 'elemental damage caster', ['int'], ['magicAttack', 'magicAccuracy'], ['elementalMagic', 'darkMagic', 'enfeeblingMagic']],
-    redMage: ['Red Mage', 'RDM', 'hybrid caster with enfeebling and support tools', ['int', 'mnd'], ['magicAccuracy', 'spellInterruptionRate'], ['sword', 'enfeeblingMagic', 'enhancingMagic']],
-    thief: ['Thief', 'THF', 'agile attacker with evasion and loot utility', ['dex', 'agi'], ['accuracy', 'evasion'], ['dagger', 'evasion', 'throwing']],
-    paladin: ['Paladin', 'PLD', 'defensive tank with shield and healing support', ['vit', 'mnd'], ['defense', 'enmity', 'shieldBlock'], ['sword', 'shield', 'healingMagic']],
-    darkKnight: ['Dark Knight', 'DRK', 'heavy weapon attacker with dark magic flavor', ['str', 'int'], ['attack', 'magicAttack'], ['greatSword', 'scythe', 'darkMagic']],
-    beastmaster: ['Beastmaster', 'BST', 'pet-oriented physical solo specialist', ['str', 'chr'], ['attack'], ['axe', 'evasion']],
-    bard: ['Bard', 'BRD', 'song-based party support', ['chr'], ['magicAccuracy'], ['singing', 'stringInstrument', 'windInstrument']],
-    ranger: ['Ranger', 'RNG', 'ranged physical attacker', ['agi', 'dex'], ['rangedAttack', 'rangedAccuracy'], ['archery', 'marksmanship', 'dagger']],
-    samurai: ['Samurai', 'SAM', 'TP and weapon-skill focused attacker', ['str'], ['attack'], ['greatKatana', 'polearm', 'archery']],
-    ninja: ['Ninja', 'NIN', 'dual-wield evasive attacker with ninjutsu utility', ['agi', 'dex'], ['evasion', 'delayReduction'], ['katana', 'ninjutsu', 'throwing']],
-    dragoon: ['Dragoon', 'DRG', 'polearm attacker with jump and wyvern identity', ['str'], ['attack'], ['polearm', 'evasion']],
-    summoner: ['Summoner', 'SMN', 'avatar-based magical support and damage', ['mp', 'mnd'], ['magicAttack'], ['summoningMagic', 'staff']],
-    blueMage: ['Blue Mage', 'BLU', 'learned monster magic hybrid', ['str', 'int'], ['attack', 'magicAccuracy'], ['blueMagic', 'sword']],
-    corsair: ['Corsair', 'COR', 'ranged attacker and roll-based support', ['agi', 'chr'], ['rangedAttack', 'rangedAccuracy'], ['marksmanship', 'sword']],
-    puppetmaster: ['Puppetmaster', 'PUP', 'pet job using automaton and hand-to-hand combat', ['dex'], ['accuracy'], ['handToHand', 'evasion']],
-    dancer: ['Dancer', 'DNC', 'TP-based support and evasive melee', ['dex', 'agi'], ['evasion', 'accuracy'], ['dagger', 'evasion']],
-    scholar: ['Scholar', 'SCH', 'strategic magic job that shifts between healing and nuking', ['int', 'mnd'], ['magicAttack', 'curePotency'], ['elementalMagic', 'healingMagic', 'enhancingMagic']],
-    geomancer: ['Geomancer', 'GEO', 'area support caster with geomancy identity', ['int', 'mnd'], ['magicAttack', 'magicAccuracy'], ['geomancy', 'handbell', 'elementalMagic']],
-    runeFencer: ['Rune Fencer', 'RUN', 'magic-resistant frontline tank', ['vit', 'mnd'], ['magicDefense', 'magicEvasion', 'enmity'], ['greatSword', 'enhancingMagic', 'evasion']],
+import { canonicalizeDisciplineId } from './legacyIdentity.js';
+
+const DISCIPLINES = {
+    vanguard: ['Vanguard', 'VGD', 'frontline physical combatant and durable weapon generalist', ['str', 'vit'], ['attack', 'defense'], ['axe', 'greatAxe', 'sword', 'shield']],
+    pugilist: ['Pugilist', 'PUG', 'hand-to-hand combatant with high endurance and counter pressure', ['str', 'vit'], ['attack', 'counter'], ['handToHand', 'guard', 'evasion']],
+    lifewarden: ['Lifewarden', 'LIF', 'healer and defensive support caster', ['mnd'], ['curePotency', 'magicDefense'], ['healingMagic', 'divineMagic', 'enhancingMagic']],
+    elementalist: ['Elementalist', 'ELM', 'elemental damage caster', ['int'], ['magicAttack', 'magicAccuracy'], ['elementalMagic', 'darkMagic', 'enfeeblingMagic']],
+    spellblade: ['Spellblade', 'SPB', 'hybrid sword-and-magic combatant with control and support tools', ['int', 'mnd'], ['magicAccuracy', 'spellInterruptionRate'], ['sword', 'enfeeblingMagic', 'enhancingMagic']],
+    shadowhand: ['Shadowhand', 'SHD', 'agile combatant with evasion, precision, scouting, and opportunistic utility', ['dex', 'agi'], ['accuracy', 'evasion'], ['dagger', 'evasion', 'throwing']],
+    oathguard: ['Oathguard', 'OAT', 'defensive protector using shield discipline and restorative support', ['vit', 'mnd'], ['defense', 'enmity', 'shieldBlock'], ['sword', 'shield', 'healingMagic']],
+    duskblade: ['Duskblade', 'DSK', 'heavy-weapon combatant using dangerous occult techniques', ['str', 'int'], ['attack', 'magicAttack'], ['greatSword', 'scythe', 'darkMagic']],
+    wildbinder: ['Wildbinder', 'WLD', 'field specialist who works with beasts and fights effectively alone', ['str', 'chr'], ['attack'], ['axe', 'evasion']],
+    cantor: ['Cantor', 'CNT', 'voice-and-instrument support specialist', ['chr'], ['magicAccuracy'], ['singing', 'stringInstrument', 'windInstrument']],
+    wayfinder: ['Wayfinder', 'WAY', 'ranged hunter, scout, and wilderness combatant', ['agi', 'dex'], ['rangedAttack', 'rangedAccuracy'], ['archery', 'marksmanship', 'dagger']],
+    bladeAdept: ['Blade Adept', 'BLA', 'disciplined two-handed blade combatant focused on decisive techniques', ['str'], ['attack'], ['greatKatana', 'polearm', 'archery']],
+    veilrunner: ['Veilrunner', 'VEI', 'mobile evasive combatant using paired weapons, misdirection, and prepared arts', ['agi', 'dex'], ['evasion', 'delayReduction'], ['katana', 'ninjutsu', 'throwing']],
+    skyLancer: ['Sky Lancer', 'SKY', 'mobile polearm specialist trained in leaping attacks and aerial partnership traditions', ['str'], ['attack'], ['polearm', 'evasion']],
+    eidolist: ['Eidolist', 'EID', 'caller who forms pacts with manifested magical beings', ['mp', 'mnd'], ['magicAttack'], ['summoningMagic', 'staff']],
+    echoSage: ['Echo Sage', 'ECH', 'adaptive magic combatant who studies and reproduces creature techniques', ['str', 'int'], ['attack', 'magicAccuracy'], ['blueMagic', 'sword']],
+    freeCaptain: ['Free Captain', 'CAP', 'ranged skirmisher and battlefield coordinator drawing on luck, nerve, and command', ['agi', 'chr'], ['rangedAttack', 'rangedAccuracy'], ['marksmanship', 'sword']],
+    artificer: ['Artificer', 'ART', 'technical combatant using crafted devices and autonomous constructs', ['dex'], ['accuracy'], ['handToHand', 'evasion']],
+    rhythmblade: ['Rhythmblade', 'RHB', 'mobile support combatant whose movement converts momentum into aid and pressure', ['dex', 'agi'], ['evasion', 'accuracy'], ['dagger', 'evasion']],
+    savant: ['Savant', 'SAV', 'strategic magical scholar who shifts between restorative and destructive methods', ['int', 'mnd'], ['magicAttack', 'curePotency'], ['elementalMagic', 'healingMagic', 'enhancingMagic']],
+    leykeeper: ['Leykeeper', 'LEY', 'area-support caster attuned to terrain and ambient magical currents', ['int', 'mnd'], ['magicAttack', 'magicAccuracy'], ['geomancy', 'handbell', 'elementalMagic']],
+    wardsword: ['Wardsword', 'WRD', 'frontline protector using warding techniques against hostile magic', ['vit', 'mnd'], ['magicDefense', 'magicEvasion', 'enmity'], ['greatSword', 'enhancingMagic', 'evasion']],
 };
 
 export const JOB_DEFINITIONS = Object.freeze(Object.fromEntries(
-    Object.entries(JOBS).map(([id, [name, abbreviation, role, primaryAttributes, derivedFocus, skillFocus]]) => [
+    Object.entries(DISCIPLINES).map(([id, [name, abbreviation, role, primaryAttributes, derivedFocus, skillFocus]]) => [
         id,
         {
             id,
@@ -34,15 +36,15 @@ export const JOB_DEFINITIONS = Object.freeze(Object.fromEntries(
             primaryAttributes,
             derivedFocus,
             skillFocus,
-            unlockedByDefault: ['warrior', 'monk', 'whiteMage', 'blackMage', 'redMage', 'thief'].includes(id),
+            unlockedByDefault: ['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand'].includes(id),
         },
     ]),
 ));
 
-export const DEFAULT_JOB_ID = 'warrior';
+export const DEFAULT_JOB_ID = 'vanguard';
 
 export function getJob(jobId = DEFAULT_JOB_ID) {
-    return JOB_DEFINITIONS[jobId] ?? JOB_DEFINITIONS[DEFAULT_JOB_ID];
+    return JOB_DEFINITIONS[canonicalizeDisciplineId(jobId)] ?? JOB_DEFINITIONS[DEFAULT_JOB_ID];
 }
 
 export function listJobs() {
