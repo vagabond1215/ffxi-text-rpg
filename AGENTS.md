@@ -7,14 +7,25 @@ This file defines repository-level operating rules for ChatGPT/Codex-style imple
 Before implementing anything substantial:
 
 1. `AGENTS.md` — this operating protocol.
-2. `docs/THREAD_HANDOFF.md` — current branch/PR state, completed work, blockers, and immediate next action.
+2. `docs/THREAD_HANDOFF.md` — current repository state, completed work, blockers, and immediate next action.
 3. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
 4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world/content policy.
 5. `docs/ROADMAP.md` — implementation sequence and milestone gates.
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
 7. Relevant architecture/runtime files for the requested work.
 
-Do not restart broad discovery or design research when these documents already answer the question. Inspect the current branch, open PR, CI status, and recent commits before deciding what remains.
+Do not restart broad discovery or design research when these documents already answer the question. Inspect `main`, open PRs only when they exist, CI status, and recent commits before deciding what remains.
+
+## Default Git workflow: work on `main`
+
+This repository is currently in an early, single-maintainer development phase. **Work directly on `main` by default.**
+
+- Do not create a branch or pull request solely as a routine safety ritual.
+- Use a branch/PR only when the user explicitly asks for one, when a connector/tool requires one, or when a change is unusually risky enough that isolated review is materially useful.
+- Existing implementation branches from older runs should be merged into `main` once their state is coherent enough to continue from there; do not keep stacking follow-up work on an old branch merely because it already exists.
+- A fully green repository test suite is desirable but is **not currently a mandatory pre-merge gate** for every incremental development change. Run relevant validation when practical, distinguish stale assertions from real regressions, and record known failures in the handoff instead of using branch isolation as a substitute for progress.
+- When the project reaches a genuinely active/stabilization/release phase, this rule can be tightened to require protected branches, reviews, and green CI before merge.
+- Connector limitations may prevent remote branch deletion. If so, merge/close what can be handled through the connector, record the stale branch for manual deletion, and continue new work on `main`.
 
 ## Scope preservation
 
@@ -32,7 +43,7 @@ An autonomous repository session has a **2 hour 45 minute wall-clock maximum** f
 
 Operational checkpoints:
 
-- **2:15 elapsed — stabilization checkpoint.** Reassess remaining scope, commit durable work, and make sure the branch can be handed off.
+- **2:15 elapsed — stabilization checkpoint.** Reassess remaining scope, commit durable work, and make sure the repository can be handed off.
 - **2:30 elapsed — no new implementation unit.** Do not begin a new milestone, broad refactor, research pass, or independent follow-on task. Only finish the currently active bounded unit, run essential validation, and prepare the handoff.
 - **2:45 elapsed — hard report deadline.** Finish only the current atomic operation needed to avoid leaving the repository in a corrupt/incoherent state, persist work, update the handoff, and return a status report. Do not autonomously continue because more roadmap work is available.
 
@@ -47,7 +58,7 @@ If the execution environment cannot reliably track wall-clock elapsed time, use 
 One cycle is one bounded loop of:
 
 ```text
-inspect/plan -> implement -> test/validate -> commit/PR-or-status inspection
+inspect/plan -> implement -> test/validate -> commit-or-status inspection
 ```
 
 Rules:
@@ -60,11 +71,11 @@ The wall-clock budget is primary; the cycle limit is a fallback guardrail, not p
 
 ## Required end-of-session handoff
 
-Before returning from a substantive repo session, update `docs/THREAD_HANDOFF.md` when the branch state or immediate next work changed. The final status should make it possible for another thread to continue without reconstructing the session from chat history.
+Before returning from a substantive repo session, update `docs/THREAD_HANDOFF.md` when the repository state or immediate next work changed. The final status should make it possible for another thread to continue without reconstructing the session from chat history.
 
 Record at minimum:
 
-- branch and PR, if any;
+- current branch (`main` by default) and any relevant PR;
 - target product/subversion;
 - what was completed in this session;
 - tests/benchmarks/CI status;
