@@ -66,7 +66,7 @@ test('defeated beasts create body opportunities with recovery actions rather tha
     assert.equal(event.data.opportunityId, 'resource-000001');
 });
 
-test('skinning exposes tool time proficiency and condition hooks before recovery starts', () => {
+test('skinning exposes tool time proficiency condition and persisted outcome hooks before recovery starts', () => {
     const state = createInitialState();
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
     const opportunityId = created.data.opportunity.id;
@@ -79,26 +79,28 @@ test('skinning exposes tool time proficiency and condition hooks before recovery
     const started = startResourceRecovery(state, opportunityId, 'skin', {
         toolTags: ['cutting'],
         proficiencies: { fieldDressing: 0 },
+        rng: () => 0.25,
     });
     assert.equal(started.ok, true);
     assert.equal(started.data.task.durationSeconds, 90);
     assert.equal(started.data.opportunity.actions[0].proficiencyId, 'fieldDressing');
     assert.equal(started.data.opportunity.actions[0].minCondition, 0.15);
+    assert.deepEqual(started.data.opportunity.actions[0].outputRolls, [{ outputIndex: 0, roll: 0.25 }]);
 });
 
-test('completed recovery produces provenance-tagged material at the timed-task boundary', () => {
+test('completed recovery uses its persisted outcome roll and produces provenance-tagged material at the timed-task boundary', () => {
     const state = createInitialState();
     state.currentPlaceId = 'west-elderwood';
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
     const opportunityId = created.data.opportunity.id;
-    startResourceRecovery(state, opportunityId, 'skin', { toolTags: ['cutting'] });
+    startResourceRecovery(state, opportunityId, 'skin', { toolTags: ['cutting'], rng: () => 0 });
 
     advanceWorldTime(state, 89);
-    assert.deepEqual(reconcileResourceRecoveries(state, { rng: () => 0 }), []);
+    assert.deepEqual(reconcileResourceRecoveries(state, { rng: () => 1 }), []);
     assert.equal(state.player.inventory.length, 0);
 
     advanceWorldTime(state, 1);
-    const completed = reconcileResourceRecoveries(state, { rng: () => 0 });
+    const completed = reconcileResourceRecoveries(state, { rng: () => 1 });
     assert.equal(completed.length, 1);
     assert.equal(completed[0].items.length, 1);
     const hide = state.player.inventory.find((item) => item.id === 'wild-rabbit-hide');
@@ -112,13 +114,25 @@ test('completed recovery produces provenance-tagged material at the timed-task b
     assert.deepEqual(event.data.recoveredItemIds, ['wild-rabbit-hide']);
 });
 
+test('persisted failed outcome remains failed even if reconciliation receives a successful fallback rng', () => {
+    const state = createInitialState();
+    const created = createDefeatedEnemyResourceOpportunity(state, hare());
+    startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0.9 });
+    advanceWorldTime(state, 90);
+
+    const [completed] = reconcileResourceRecoveries(state, { rng: () => 0 });
+
+    assert.equal(completed.items.length, 0);
+    assert.equal(state.player.inventory.length, 0);
+});
+
 test('raider rewards become searchable carried-inventory opportunities', () => {
     const state = createInitialState();
     const created = createDefeatedEnemyResourceOpportunity(state, raider());
 
     assert.equal(created.data.opportunity.type, 'carriedInventory');
     assert.equal(created.data.opportunity.actions[0].id, 'search');
-    const started = startResourceRecovery(state, created.data.opportunity.id, 'search');
+    const started = startResourceRecovery(state, created.data.opportunity.id, 'search', { rng: () => 0 });
     assert.equal(started.ok, true);
     assert.equal(started.data.task.durationSeconds, 15);
 });
@@ -135,10 +149,10 @@ test('recovery records storage failure without materializing an item outside inv
         });
     }
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
-    startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'] });
+    startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0 });
     advanceWorldTime(state, 90);
 
-    const [completed] = reconcileResourceRecoveries(state, { rng: () => 0 });
+    const [completed] = reconcileResourceRecoveries(state);
 
     assert.equal(completed.items.length, 0);
     assert.equal(completed.failedItems.length, 1);
