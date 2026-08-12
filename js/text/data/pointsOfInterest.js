@@ -16,65 +16,68 @@ export const POI_TYPES = Object.freeze({
     LANDMARK: 'landmark',
 });
 
+// POI stable IDs and names are intentionally preserved for this first stable-ID
+// migration revision so shop/quest/guild hooks remain coherent. A follow-up 0.5.550
+// pass originalizes these current-content records before database expansion.
 const POI_SEEDS = [
-    poi('poi-sandoria-s-alaune', 'southern-sandoria', 'Alaune', POI_TYPES.NPC, 'G-10', ['tutorial'], 'Tutorial NPC'),
-    poi('poi-sandoria-s-ambrotien', 'southern-sandoria', 'Ambrotien', POI_TYPES.MISSION, 'K-10', ['mission', 'sanDoria'], 'San d’Oria mission NPC'),
-    poi('poi-sandoria-s-aravoge', 'southern-sandoria', 'Aravoge, T.K.', POI_TYPES.TRAVEL, 'F-10', ['conquest', 'gateGuard'], 'San d’Oria conquest guard'),
-    poi('poi-sandoria-s-ashene', 'southern-sandoria', 'Ashene', POI_TYPES.VENDOR, 'K-7', ['weapons', 'shop'], 'Weapons vendor'),
-    poi('poi-sandoria-s-aveline', 'southern-sandoria', 'Aveline', POI_TYPES.VENDOR, 'F-7', ['food', 'shop'], 'Food vendor'),
-    poi('poi-sandoria-s-benaige', 'southern-sandoria', 'Benaige', POI_TYPES.VENDOR, 'F-7', ['food', 'shop'], 'Food vendor'),
-    poi('poi-sandoria-s-capucine', 'southern-sandoria', 'Capucine', POI_TYPES.VENDOR, 'E-9', ['armor', 'shop'], 'Armor vendor'),
-    poi('poi-sandoria-s-carautia', 'southern-sandoria', 'Carautia', POI_TYPES.VENDOR, 'K-8', ['armor', 'shop'], 'Armor vendor'),
-    poi('poi-sandoria-s-faulpie', 'southern-sandoria', 'Faulpie', POI_TYPES.GUILD, 'E-8', ['tanning', 'guildMaster'], 'Tanning guild master'),
-    poi('poi-sandoria-s-gondebaud', 'southern-sandoria', 'Gondebaud', POI_TYPES.TRUST, 'L-6', ['trust'], 'Trust NPC'),
-    poi('poi-sandoria-s-corua', 'southern-sandoria', 'Corua', POI_TYPES.VENDOR, 'G-9', ['regionalVendor', 'ronfaure'], 'Regional vendor for Ronfaure'),
-    poi('poi-sandoria-s-ferdoulemiont', 'southern-sandoria', 'Ferdoulemiont', POI_TYPES.VENDOR, 'I-11', ['standardVendor', 'shop'], 'Standard vendor'),
+    poi('poi-sandoria-s-alaune', 'thornwall-southgate', 'Alaune', POI_TYPES.NPC, 'G-10', ['tutorial'], 'Tutorial NPC'),
+    poi('poi-sandoria-s-ambrotien', 'thornwall-southgate', 'Ambrotien', POI_TYPES.MISSION, 'K-10', ['mission', 'thornwall'], 'Thornwall civic mission contact'),
+    poi('poi-sandoria-s-aravoge', 'thornwall-southgate', 'Aravoge, T.K.', POI_TYPES.TRAVEL, 'F-10', ['realm', 'gateGuard'], 'Thornwall road warden'),
+    poi('poi-sandoria-s-ashene', 'thornwall-southgate', 'Ashene', POI_TYPES.VENDOR, 'K-7', ['weapons', 'shop'], 'Weapons vendor'),
+    poi('poi-sandoria-s-aveline', 'thornwall-southgate', 'Aveline', POI_TYPES.VENDOR, 'F-7', ['food', 'shop'], 'Food vendor'),
+    poi('poi-sandoria-s-benaige', 'thornwall-southgate', 'Benaige', POI_TYPES.VENDOR, 'F-7', ['food', 'shop'], 'Food vendor'),
+    poi('poi-sandoria-s-capucine', 'thornwall-southgate', 'Capucine', POI_TYPES.VENDOR, 'E-9', ['armor', 'shop'], 'Armor vendor'),
+    poi('poi-sandoria-s-carautia', 'thornwall-southgate', 'Carautia', POI_TYPES.VENDOR, 'K-8', ['armor', 'shop'], 'Armor vendor'),
+    poi('poi-sandoria-s-faulpie', 'thornwall-southgate', 'Faulpie', POI_TYPES.GUILD, 'E-8', ['tanning', 'guildMaster'], 'Tanning guild master'),
+    poi('poi-sandoria-s-gondebaud', 'thornwall-southgate', 'Gondebaud', POI_TYPES.TRUST, 'L-6', ['companion'], 'Future companion contact'),
+    poi('poi-sandoria-s-corua', 'thornwall-southgate', 'Corua', POI_TYPES.VENDOR, 'G-9', ['regionalVendor', 'elderwood'], 'Regional vendor for Elderwood goods'),
+    poi('poi-sandoria-s-ferdoulemiont', 'thornwall-southgate', 'Ferdoulemiont', POI_TYPES.VENDOR, 'I-11', ['standardVendor', 'shop'], 'Standard vendor'),
 
-    poi('poi-sandoria-n-cheupirudaux', 'northern-sandoria', 'Cheupirudaux', POI_TYPES.GUILD, 'F-3', ['woodworking', 'guildMaster'], 'Woodworking guild master'),
-    poi('poi-sandoria-n-amarefice', 'northern-sandoria', 'Amarefice', POI_TYPES.GUILD, 'E-3', ['woodworking', 'synthesisSupport'], 'Woodworking synthesis support'),
-    poi('poi-sandoria-n-chaupire', 'northern-sandoria', 'Chaupire', POI_TYPES.GUILD, 'E-3', ['woodworking', 'guildVendor'], 'Woodworking guild vendor'),
-    poi('poi-sandoria-n-mevreauche', 'northern-sandoria', 'Mevreauche', POI_TYPES.GUILD, 'E-6', ['blacksmithing', 'guildMaster'], 'Blacksmith guild master'),
-    poi('poi-sandoria-n-doggomehr', 'northern-sandoria', 'Doggomehr', POI_TYPES.GUILD, 'E-5', ['blacksmithing', 'guildVendor'], 'Blacksmith guild vendor'),
-    poi('poi-sandoria-n-arachagnon', 'northern-sandoria', 'Arachagnon', POI_TYPES.VENDOR, 'F-3', ['armor', 'shop'], 'Initial armor vendor'),
-    poi('poi-sandoria-n-arlenne', 'northern-sandoria', 'Arlenne', POI_TYPES.VENDOR, 'E-4', ['weapons', 'shop'], 'Weapons vendor'),
-    poi('poi-sandoria-n-elesca', 'northern-sandoria', 'Elesca', POI_TYPES.VENDOR, 'I-8', ['mapVendor'], 'Map vendor'),
-    poi('poi-sandoria-n-grilau', 'northern-sandoria', 'Grilau', POI_TYPES.MISSION, 'C-8', ['mission', 'sanDoria'], 'San d’Oria mission NPC'),
-    poi('poi-sandoria-n-jeanvirgaud', 'northern-sandoria', 'Jeanvirgaud', POI_TYPES.TRAVEL, 'L-10', ['outpostTeleporter'], 'Outpost teleporter'),
+    poi('poi-sandoria-n-cheupirudaux', 'thornwall-crownward', 'Cheupirudaux', POI_TYPES.GUILD, 'F-3', ['woodworking', 'guildMaster'], 'Woodworking guild master'),
+    poi('poi-sandoria-n-amarefice', 'thornwall-crownward', 'Amarefice', POI_TYPES.GUILD, 'E-3', ['woodworking', 'craftSupport'], 'Woodworking craft support'),
+    poi('poi-sandoria-n-chaupire', 'thornwall-crownward', 'Chaupire', POI_TYPES.GUILD, 'E-3', ['woodworking', 'guildVendor'], 'Woodworking guild vendor'),
+    poi('poi-sandoria-n-mevreauche', 'thornwall-crownward', 'Mevreauche', POI_TYPES.GUILD, 'E-6', ['blacksmithing', 'guildMaster'], 'Blacksmith guild master'),
+    poi('poi-sandoria-n-doggomehr', 'thornwall-crownward', 'Doggomehr', POI_TYPES.GUILD, 'E-5', ['blacksmithing', 'guildVendor'], 'Blacksmith guild vendor'),
+    poi('poi-sandoria-n-arachagnon', 'thornwall-crownward', 'Arachagnon', POI_TYPES.VENDOR, 'F-3', ['armor', 'shop'], 'Initial armor vendor'),
+    poi('poi-sandoria-n-arlenne', 'thornwall-crownward', 'Arlenne', POI_TYPES.VENDOR, 'E-4', ['weapons', 'shop'], 'Weapons vendor'),
+    poi('poi-sandoria-n-elesca', 'thornwall-crownward', 'Elesca', POI_TYPES.VENDOR, 'I-8', ['mapVendor'], 'Map vendor'),
+    poi('poi-sandoria-n-grilau', 'thornwall-crownward', 'Grilau', POI_TYPES.MISSION, 'C-8', ['mission', 'thornwall'], 'Thornwall civic mission contact'),
+    poi('poi-sandoria-n-jeanvirgaud', 'thornwall-crownward', 'Jeanvirgaud', POI_TYPES.TRAVEL, 'L-10', ['roadTravel'], 'Regional road-travel contact'),
 
-    poi('poi-bastok-markets-rabid-wolf', 'bastok-markets', 'Rabid Wolf, I.M.', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'conquest'], 'Gate guard'),
-    poi('poi-bastok-markets-brunhilde', 'bastok-markets', 'Brunhilde', POI_TYPES.VENDOR, 'F-10', ['armor', 'shop'], 'Armor vendor'),
-    poi('poi-bastok-markets-ciqala', 'bastok-markets', 'Ciqala', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapons merchant'),
-    poi('poi-bastok-markets-peritrage', 'bastok-markets', 'Peritrage', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapon vendor'),
-    poi('poi-bastok-markets-zhikkom', 'bastok-markets', 'Zhikkom', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapon vendor'),
-    poi('poi-bastok-markets-carmelide', 'bastok-markets', 'Carmelide', POI_TYPES.VENDOR, 'I-8', ['items', 'shop'], 'Item vendor'),
-    poi('poi-bastok-markets-olwyn', 'bastok-markets', 'Olwyn', POI_TYPES.VENDOR, 'E-11', ['items', 'shop'], 'Item vendor'),
-    poi('poi-bastok-markets-reinberta', 'bastok-markets', 'Reinberta', POI_TYPES.GUILD, 'I-8', ['goldsmithing', 'guildMaster'], 'Goldsmithing guild master'),
-    poi('poi-bastok-markets-teerth', 'bastok-markets', 'Teerth', POI_TYPES.GUILD, 'H-8', ['goldsmithing', 'guildVendor'], 'Goldsmithing guild vendor'),
-    poi('poi-bastok-markets-karine', 'bastok-markets', 'Karine', POI_TYPES.VENDOR, 'H-9', ['mapVendor'], 'Map vendor'),
-    poi('poi-bastok-markets-cleades', 'bastok-markets', 'Cleades', POI_TYPES.MISSION, 'D-11', ['mission', 'bastok'], 'Mission NPC'),
+    poi('poi-bastok-markets-rabid-wolf', 'brasshaven-market-ring', 'Rabid Wolf, I.M.', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'realm'], 'Gate warden'),
+    poi('poi-bastok-markets-brunhilde', 'brasshaven-market-ring', 'Brunhilde', POI_TYPES.VENDOR, 'F-10', ['armor', 'shop'], 'Armor vendor'),
+    poi('poi-bastok-markets-ciqala', 'brasshaven-market-ring', 'Ciqala', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapons merchant'),
+    poi('poi-bastok-markets-peritrage', 'brasshaven-market-ring', 'Peritrage', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapon vendor'),
+    poi('poi-bastok-markets-zhikkom', 'brasshaven-market-ring', 'Zhikkom', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapon vendor'),
+    poi('poi-bastok-markets-carmelide', 'brasshaven-market-ring', 'Carmelide', POI_TYPES.VENDOR, 'I-8', ['items', 'shop'], 'Item vendor'),
+    poi('poi-bastok-markets-olwyn', 'brasshaven-market-ring', 'Olwyn', POI_TYPES.VENDOR, 'E-11', ['items', 'shop'], 'Item vendor'),
+    poi('poi-bastok-markets-reinberta', 'brasshaven-market-ring', 'Reinberta', POI_TYPES.GUILD, 'I-8', ['goldsmithing', 'guildMaster'], 'Goldsmithing guild master'),
+    poi('poi-bastok-markets-teerth', 'brasshaven-market-ring', 'Teerth', POI_TYPES.GUILD, 'H-8', ['goldsmithing', 'guildVendor'], 'Goldsmithing guild vendor'),
+    poi('poi-bastok-markets-karine', 'brasshaven-market-ring', 'Karine', POI_TYPES.VENDOR, 'H-9', ['mapVendor'], 'Map vendor'),
+    poi('poi-bastok-markets-cleades', 'brasshaven-market-ring', 'Cleades', POI_TYPES.MISSION, 'D-11', ['mission', 'brasshaven'], 'Civic mission contact'),
 
-    poi('poi-bastok-mines-zeruhn-gate', 'bastok-mines', 'Zeruhn Mines Gate', POI_TYPES.ZONE_LINE, 'I-9', ['zoneConnection', 'zeruhnMines'], 'Passage toward Zeruhn Mines'),
-    poi('poi-bastok-mines-gate-guard', 'bastok-mines', 'Bastok Mines Guard Post', POI_TYPES.TRAVEL, 'H-6', ['gateGuard', 'conquest'], 'Bastok guard post'),
-    poi('poi-metalworks-cid', 'metalworks', 'Cid', POI_TYPES.QUEST, 'H-8', ['importantNpc', 'engineer', 'quest'], 'Important Bastok engineer'),
-    poi('poi-metalworks-cornelia', 'metalworks', 'Cornelia', POI_TYPES.MISSION, 'K-8', ['mission', 'bastok'], 'Mission NPC'),
-    poi('poi-metalworks-iron-eater', 'metalworks', 'Iron Eater', POI_TYPES.MISSION, 'J-8', ['mission', 'bastok'], 'Mission NPC'),
-    poi('poi-metalworks-raibaht', 'metalworks', 'Raibaht', POI_TYPES.QUEST, 'G-8', ['quest', 'engineer'], 'Quest NPC'),
-    poi('poi-port-bastok-travel-counter', 'port-bastok', 'Port Bastok Travel Counter', POI_TYPES.TRAVEL, 'K-7', ['travel', 'airshipFuture'], 'Port travel services placeholder'),
-    poi('poi-port-bastok-shops', 'port-bastok', 'Port Bastok Shops', POI_TYPES.SHOP, 'F-6', ['shops'], 'Port shop cluster'),
+    poi('poi-bastok-mines-zeruhn-gate', 'brasshaven-delvers-ward', 'Deepvein Mine Gate', POI_TYPES.ZONE_LINE, 'I-9', ['zoneConnection', 'deepveinMine'], 'Passage toward Deepvein Mine'),
+    poi('poi-bastok-mines-gate-guard', 'brasshaven-delvers-ward', 'Delvers’ Ward Watch', POI_TYPES.TRAVEL, 'H-6', ['gateGuard', 'realm'], 'Brasshaven watch post'),
+    poi('poi-metalworks-cid', 'brasshaven-foundry-hall', 'Cid', POI_TYPES.QUEST, 'H-8', ['importantNpc', 'engineer', 'quest'], 'Important Brasshaven engineer'),
+    poi('poi-metalworks-cornelia', 'brasshaven-foundry-hall', 'Cornelia', POI_TYPES.MISSION, 'K-8', ['mission', 'brasshaven'], 'Civic mission contact'),
+    poi('poi-metalworks-iron-eater', 'brasshaven-foundry-hall', 'Iron Eater', POI_TYPES.MISSION, 'J-8', ['mission', 'brasshaven'], 'Military mission contact'),
+    poi('poi-metalworks-raibaht', 'brasshaven-foundry-hall', 'Raibaht', POI_TYPES.QUEST, 'G-8', ['quest', 'engineer'], 'Workshop quest contact'),
+    poi('poi-port-bastok-travel-counter', 'brasshaven-iron-quay', 'Iron Quay Transit Office', POI_TYPES.TRAVEL, 'K-7', ['travel', 'futureTransit'], 'Port and caravan travel services placeholder'),
+    poi('poi-port-bastok-shops', 'brasshaven-iron-quay', 'Iron Quay Exchange', POI_TYPES.SHOP, 'F-6', ['shops'], 'Quayside shop cluster'),
 
-    poi('poi-waters-baehu-faehu', 'windurst-waters', 'Baehu-Faehu', POI_TYPES.VENDOR, 'G-5', ['regionalVendor', 'sarutabaruta'], 'Regional vendor for Sarutabaruta'),
-    poi('poi-waters-chomo-jinjahl', 'windurst-waters', 'Chomo Jinjahl', POI_TYPES.GUILD, 'E-8', ['cooking', 'guildMerchant'], 'Cooking guild merchant'),
-    poi('poi-waters-dagoza-beruza', 'windurst-waters', 'Dagoza-Beruza', POI_TYPES.MISSION, 'F-5', ['mission', 'windurst'], 'Mission NPC'),
-    poi('poi-waters-ensasa', 'windurst-waters', 'Ensasa', POI_TYPES.VENDOR, 'H-9', ['items', 'shop'], 'Sells various items'),
-    poi('poi-waters-hilkomu-makimu', 'windurst-waters', 'Hilkomu-Makimu', POI_TYPES.VENDOR, 'G-7', ['items', 'shop'], 'Sells various items'),
-    poi('poi-waters-dienger', 'windurst-waters', 'Dienger', POI_TYPES.NPC, 'F-5', ['melodyMinstrel'], 'Melody Minstrel'),
-    poi('poi-waters-ephemeral-moogle', 'windurst-waters', 'Ephemeral Moogle', POI_TYPES.STORAGE, 'E-9', ['crystalStorage'], 'Crystal storage NPC'),
+    poi('poi-waters-baehu-faehu', 'mistmere-canal-ward', 'Baehu-Faehu', POI_TYPES.VENDOR, 'G-5', ['regionalVendor', 'starfen'], 'Regional vendor for Starfen goods'),
+    poi('poi-waters-chomo-jinjahl', 'mistmere-canal-ward', 'Chomo Jinjahl', POI_TYPES.GUILD, 'E-8', ['cooking', 'guildMerchant'], 'Cooking guild merchant'),
+    poi('poi-waters-dagoza-beruza', 'mistmere-canal-ward', 'Dagoza-Beruza', POI_TYPES.MISSION, 'F-5', ['mission', 'mistmere'], 'Civic mission contact'),
+    poi('poi-waters-ensasa', 'mistmere-canal-ward', 'Ensasa', POI_TYPES.VENDOR, 'H-9', ['items', 'shop'], 'Sells various items'),
+    poi('poi-waters-hilkomu-makimu', 'mistmere-canal-ward', 'Hilkomu-Makimu', POI_TYPES.VENDOR, 'G-7', ['items', 'shop'], 'Sells various items'),
+    poi('poi-waters-dienger', 'mistmere-canal-ward', 'Dienger', POI_TYPES.NPC, 'F-5', ['minstrel'], 'Traveling minstrel'),
+    poi('poi-waters-ephemeral-moogle', 'mistmere-canal-ward', 'Ephemeral Moogle', POI_TYPES.STORAGE, 'E-9', ['specialStorage'], 'Storage service contact'),
 
-    poi('poi-woods-apururu', 'windurst-woods', 'Apururu', POI_TYPES.MISSION, 'H-9', ['importantNpc', 'mission', 'windurst'], 'Important Windurst NPC'),
-    poi('poi-woods-east-gate', 'windurst-woods', 'East Sarutabaruta Gate', POI_TYPES.ZONE_LINE, 'K-10', ['zoneConnection', 'eastSarutabaruta'], 'Gate toward East Sarutabaruta'),
-    poi('poi-walls-heavens-tower-gate', 'windurst-walls', 'Heavens Tower Gate', POI_TYPES.MISSION, 'H-7', ['mission', 'heavensTower'], 'Access to Heavens Tower'),
-    poi('poi-port-windurst-travel-counter', 'port-windurst', 'Port Windurst Travel Counter', POI_TYPES.TRAVEL, 'M-6', ['travel', 'airshipFuture'], 'Port travel services placeholder'),
-    poi('poi-heavens-tower-mission-desk', 'heavens-tower', 'Heavens Tower Mission Desk', POI_TYPES.MISSION, 'H-6', ['mission', 'windurst'], 'Windurst mission desk'),
+    poi('poi-woods-apururu', 'mistmere-garden-ward', 'Apururu', POI_TYPES.MISSION, 'H-9', ['importantNpc', 'mission', 'mistmere'], 'Important Mistmere civic contact'),
+    poi('poi-woods-east-gate', 'mistmere-garden-ward', 'East Starfen Gate', POI_TYPES.ZONE_LINE, 'K-10', ['zoneConnection', 'eastStarfen'], 'Gate toward East Starfen'),
+    poi('poi-walls-heavens-tower-gate', 'mistmere-spire-ward', 'Observatory Gate', POI_TYPES.MISSION, 'H-7', ['mission', 'observatory'], 'Access to Mistmere Observatory'),
+    poi('poi-port-windurst-travel-counter', 'mistmere-reedport', 'Reedport Transit House', POI_TYPES.TRAVEL, 'M-6', ['travel', 'futureTransit'], 'Regional travel services placeholder'),
+    poi('poi-heavens-tower-mission-desk', 'mistmere-observatory', 'Observatory Civic Desk', POI_TYPES.MISSION, 'H-6', ['mission', 'mistmere'], 'Mistmere civic mission desk'),
 ];
 
 export const POINTS_OF_INTEREST = Object.freeze(POI_SEEDS.map((item) => Object.freeze({
@@ -92,7 +95,7 @@ export function getPointOfInterest(poiId) {
 }
 
 export function getPoisForPlace(placeId) {
-    return POINTS_OF_INTEREST.filter((poi) => poi.placeId === placeId);
+    return POINTS_OF_INTEREST.filter((poi) => poi.placeId === getPlace(placeId)?.id);
 }
 
 export function getPoisAtGrid(placeId, coordinate) {
@@ -112,7 +115,7 @@ export function getContextualPois(state) {
 
 export function describePoisForPlace(placeId) {
     const pois = getPoisForPlace(placeId);
-    if (!pois.length) return `No points of interest seeded for ${placeId}.`;
+    if (!pois.length) return `No points of interest seeded for ${getPlace(placeId)?.name ?? placeId}.`;
     return pois.map(describePoiLine).join('\n');
 }
 
