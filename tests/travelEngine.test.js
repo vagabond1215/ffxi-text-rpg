@@ -5,6 +5,7 @@ import { createInitialState } from '../js/text/gameState.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeMap, describeMaps, listMaps } from '../js/text/data/maps.js';
 import { getPlace, listPlaces, ZONE_CONNECTIONS } from '../js/text/data/places.js';
+import { isActionResult } from '../js/text/systems/actionResult.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { validateWorldData } from '../js/text/systems/validation.js';
 import {
@@ -53,6 +54,7 @@ test('findTravelRoute finds connected destination', () => {
     const route = findTravelRoute(state, 'West Ronfaure');
 
     assert.equal(route.ok, true);
+    assert.equal(route.code, 'route-found');
     assert.equal(route.to, 'west-ronfaure');
 });
 
@@ -61,15 +63,23 @@ test('findTravelRoute rejects disconnected destination', () => {
     const route = findTravelRoute(state, 'Ghelsba Outpost');
 
     assert.equal(route.ok, false);
+    assert.equal(route.code, 'no-direct-route');
     assert.match(route.reason, /No direct route/);
 });
 
-test('startTravel and advanceTravel move current place', () => {
+test('startTravel returns semantic ActionResult and advanceTravel moves current place', () => {
     const state = createInitialState();
     setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
     const started = startTravel(state, 'West Ronfaure');
 
+    assert.equal(isActionResult(started), true);
     assert.equal(started.ok, true);
+    assert.equal(started.action, 'travel.start');
+    assert.equal(started.code, 'travel.started');
+    assert.equal(started.outcome, 'started');
+    assert.equal(started.data.to, 'west-ronfaure');
+    assert.equal(started.data.durationSeconds, 45);
+    assert.match(started.display.text, /Traveling to West Ronfaure/);
     assert.equal(state.travel.active, true);
 
     const advanced = advanceTravel(state, 45);
@@ -77,6 +87,20 @@ test('startTravel and advanceTravel move current place', () => {
     assert.equal(advanced.completed, true);
     assert.equal(state.currentPlaceId, 'west-ronfaure');
     assert.equal(state.location, 'West Ronfaure');
+});
+
+test('startTravel failure uses semantic code while retaining command compatibility text adapter', () => {
+    const state = createInitialState();
+    const result = startTravel(state, 'Unknown Somewhere');
+
+    assert.equal(isActionResult(result), true);
+    assert.equal(result.ok, false);
+    assert.equal(result.code, 'travel.unknown-destination');
+    assert.equal(result.outcome, 'blocked');
+    assert.equal(result.data.destinationQuery, 'Unknown Somewhere');
+    assert.match(result.display.text, /Unknown destination/);
+    assert.match(result.reason, /Unknown destination/);
+    assert.equal(Object.keys(result).includes('reason'), false);
 });
 
 test('router exposes maps zones travel and wait commands', () => {
