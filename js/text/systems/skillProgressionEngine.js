@@ -166,7 +166,7 @@ export function resolveSkillGainForAction(state, actionContext = {}) {
 
 export function describeSkillGainResult(result) {
     if (!result?.gained) return '';
-    return `Skill gained: ${result.skillId} ${result.before} -> ${result.learned} / training cap ${result.cap}.`;
+    return `Skill gained: ${result.skillId} ${result.before} -> ${result.learned} / cap ${result.cap}.`;
 }
 
 export function getEffectiveSkillForCurrentJob(player, skillId) {
@@ -191,18 +191,18 @@ export function describeSkillProgression(player, skillId = null) {
 
     const entries = listEffectiveSkillsForCurrentJob(player);
     const lines = [
-        `Skills with ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current discipline'} training context Lv.${player.jobs?.level ?? 1}:`,
+        `Skills for ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current job'} Lv.${player.jobs?.level ?? 1}:`,
         ...entries.map((entry) => `- ${describeSkillLine(entry, player)}`),
-        `Training-cap confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
+        `Skill-cap confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
     ];
     return lines.join('\n');
 }
 
 function describeSkillLine(entry, player) {
-    const disciplineLabel = `${player.jobs?.mainJobName ?? entry.jobId} training cap`;
+    const jobLabel = `${player.jobs?.mainJobName ?? entry.jobId} cap`;
     const rank = entry.rank ?? 'none';
-    const status = entry.overCurrentCap ? ' / above current training cap' : entry.cappedForCurrentJob ? ' / at current training cap' : '';
-    return `${entry.skillId}: learned ${entry.learned} / ${disciplineLabel} ${entry.cap} / effective ${entry.effective} / rank ${rank}${status}`;
+    const status = entry.overCurrentCap ? ' / over current cap' : entry.cappedForCurrentJob ? ' / at current cap' : '';
+    return `${entry.skillId}: learned ${entry.learned} / ${jobLabel} ${entry.cap} / effective ${entry.effective} / rank ${rank}${status}`;
 }
 
 function normalizeSkillValue(value) {
