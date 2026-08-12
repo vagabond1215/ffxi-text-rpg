@@ -5,6 +5,7 @@ import {
     RESOURCE_KEYS,
     createZeroBlock,
 } from './systemConstants.js';
+import { normalizeItemSinks, normalizeProvenance } from './resourceProvenance.js';
 
 export const ITEM_KINDS = Object.freeze({
     EQUIPMENT: 'equipment',
@@ -40,7 +41,7 @@ export const ITEM_FLAGS = Object.freeze([
     'chargeBased',
 ]);
 
-export const ITEM_SCHEMA_VERSION = 2;
+export const ITEM_SCHEMA_VERSION = 3;
 
 export function normalizeItem(rawItem = {}) {
     const kind = rawItem.kind ?? ITEM_KINDS.MISC;
@@ -65,6 +66,8 @@ export function normalizeItem(rawItem = {}) {
         valueGil: rawItem.valueGil ?? 0,
         tags: [...(rawItem.tags ?? [])],
         source: rawItem.source ?? null,
+        provenance: normalizeProvenance(rawItem.provenance),
+        sinks: normalizeItemSinks(rawItem.sinks),
         family: rawItem.family ?? null,
         archetype: rawItem.archetype ?? null,
         subtype: rawItem.subtype ?? null,
