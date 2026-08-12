@@ -56,22 +56,28 @@ test('event history is bounded without becoming authoritative state history', ()
     assert.equal(state.events.nextSequence, 4);
 });
 
-test('travel emits semantic start and arrival events independently of display prose', () => {
+test('travel emits semantic start and arrival events independently of display prose and adjacent task events', () => {
     const state = createInitialState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
     const started = startTravel(state, 'West Elderwood');
     assert.equal(started.ok, true);
-    assert.equal(hasSemanticEvent(state, 'travel.started', (event) => event.data.to === 'west-elderwood'), true);
-    assert.equal(started.data.eventId, 'evt-000001');
+    const [startedEvent] = listSemanticEvents(state, { type: 'travel.started' });
+    assert.ok(startedEvent);
+    assert.equal(startedEvent.id, started.data.eventId);
+    assert.equal(startedEvent.data.to, 'west-elderwood');
+    assert.equal(hasSemanticEvent(state, 'task.started', (event) => event.data.taskId === started.data.travel.taskId), true);
 
-    const advanced = advanceTravel(state, 45);
+    const advanced = advanceTravel(state, 1800);
     assert.equal(advanced.completed, true);
-    assert.equal(advanced.eventId, 'evt-000002');
-    assert.equal(hasSemanticEvent(state, 'travel.arrived', (event) => event.data.to === 'west-elderwood'), true);
+    const [arrivedEvent] = listSemanticEvents(state, { type: 'travel.arrived' });
+    assert.ok(arrivedEvent);
+    assert.equal(arrivedEvent.id, advanced.eventId);
+    assert.equal(arrivedEvent.data.to, 'west-elderwood');
+    assert.equal(hasSemanticEvent(state, 'task.completed', (event) => event.data.taskId === started.data.travel.taskId), true);
 
-    const travelEvents = listSemanticEvents(state);
-    assert.deepEqual(travelEvents.map((event) => event.type), ['travel.started', 'travel.arrived']);
+    assert.deepEqual(listSemanticEvents(state, { type: 'travel.started' }).map((event) => event.type), ['travel.started']);
+    assert.deepEqual(listSemanticEvents(state, { type: 'travel.arrived' }).map((event) => event.type), ['travel.arrived']);
 });
 
 test('state without an event container is upgraded lazily without changing its save version', () => {
