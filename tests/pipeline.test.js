@@ -14,27 +14,28 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.4.900.0');
-    assert.equal(PACKAGE_VERSION, '0.4.900');
+    assert.equal(PRODUCT_VERSION, '0.5.100.0');
+    assert.equal(PACKAGE_VERSION, '0.5.100');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
-    assert.equal(VERSION.gameState, 3);
+    assert.equal(VERSION.gameState, 4);
     assert.equal(VERSION.data, 13);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.accountSave);
-    assert.match(describeVersion(), /Product: 0\.4\.900\.0/);
-    assert.match(describeVersion(), /Package: 0\.4\.900/);
+    assert.match(describeVersion(), /Product: 0\.5\.100\.0/);
+    assert.match(describeVersion(), /Package: 0\.5\.100/);
     assert.match(describeVersion(), /Account Save: 4/);
-    assert.match(describeVersion(), /Game State: 3/);
-    assert.match(describeVersion(), /Codename: Foundation Exit Gate/);
+    assert.match(describeVersion(), /Game State: 4/);
+    assert.match(describeVersion(), /Codename: Deterministic World Clock/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.4\.900/);
-    assert.match(describeSystemVersions(), /saveMigrations: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.100/);
+    assert.match(describeSystemVersions(), /saveMigrations: 0\.2\.0/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
     assert.match(describeSystemVersions(), /semanticEvents: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /foundationReadiness: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /worldTime: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.7\.0/);
     assert.match(describeSystemVersions(), /travel: 0\.4\.2/);
     assert.match(describeSystemVersions(), /characterCreation/);
     assert.match(describeSystemVersions(), /canvasUi: 0.7.0/);
