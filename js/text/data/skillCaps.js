@@ -1,11 +1,12 @@
 import { JOB_DEFINITIONS } from './jobs.js';
+import { canonicalizeDisciplineId } from './legacyIdentity.js';
 import { CONFIDENCE_LABELS } from './itemSchema.js';
 import { SKILL_KEYS } from './systemConstants.js';
 
 export const SKILL_CAP_METADATA = Object.freeze({
     confidence: CONFIDENCE_LABELS.PLACEHOLDER,
-    source: 'Skill-cap foundation pass; rank math is a stable scaffold, not a retail cap table.',
-    notes: 'Replace with sourced rank cap tables before using this for exact combat or skill-up pacing.',
+    source: 'Skill-cap foundation pass; rank math is a stable scaffold for early progression testing.',
+    notes: 'Replace with the game’s own researched and balance-tested proficiency curves before final combat or training pacing.',
 });
 
 export const SKILL_RANK_CAP_RULES = deepFreeze({
@@ -17,17 +18,18 @@ export const SKILL_RANK_CAP_RULES = deepFreeze({
 });
 
 export const JOB_SKILL_RANKS = deepFreeze({
-    warrior: { sword: 'B', axe: 'A', greatAxe: 'A', dagger: 'C', shield: 'C', parrying: 'C', evasion: 'C' },
-    monk: { handToHand: 'A', guard: 'B', staff: 'C', evasion: 'B' },
-    whiteMage: { club: 'B', staff: 'C', healingMagic: 'A', divineMagic: 'B', enhancingMagic: 'C', enfeeblingMagic: 'D' },
-    blackMage: { staff: 'C', club: 'D', elementalMagic: 'A', darkMagic: 'B', enfeeblingMagic: 'C' },
-    redMage: { sword: 'B', dagger: 'C', club: 'D', enhancingMagic: 'B', enfeeblingMagic: 'A', elementalMagic: 'C', healingMagic: 'C' },
-    thief: { dagger: 'A', sword: 'C', throwing: 'C', evasion: 'A', parrying: 'D' },
+    vanguard: { sword: 'B', axe: 'A', greatAxe: 'A', dagger: 'C', shield: 'C', parrying: 'C', evasion: 'C' },
+    pugilist: { handToHand: 'A', guard: 'B', staff: 'C', evasion: 'B' },
+    lifewarden: { club: 'B', staff: 'C', healingMagic: 'A', divineMagic: 'B', enhancingMagic: 'C', enfeeblingMagic: 'D' },
+    elementalist: { staff: 'C', club: 'D', elementalMagic: 'A', darkMagic: 'B', enfeeblingMagic: 'C' },
+    spellblade: { sword: 'B', dagger: 'C', club: 'D', enhancingMagic: 'B', enfeeblingMagic: 'A', elementalMagic: 'C', healingMagic: 'C' },
+    shadowhand: { dagger: 'A', sword: 'C', throwing: 'C', evasion: 'A', parrying: 'D' },
 });
 
 export function getSkillRank(jobId, skillId) {
-    if (!JOB_DEFINITIONS[jobId] || !SKILL_KEYS.includes(skillId)) return null;
-    return JOB_SKILL_RANKS[jobId]?.[skillId] ?? null;
+    const canonicalJobId = canonicalizeDisciplineId(jobId);
+    if (!JOB_DEFINITIONS[canonicalJobId] || !SKILL_KEYS.includes(skillId)) return null;
+    return JOB_SKILL_RANKS[canonicalJobId]?.[skillId] ?? null;
 }
 
 export function getSkillCap(jobId, skillId, level = 1) {
@@ -40,7 +42,7 @@ export function getSkillCap(jobId, skillId, level = 1) {
 }
 
 export function getEffectiveSkill(player, skillId) {
-    const jobId = player?.jobs?.mainJobId ?? 'warrior';
+    const jobId = canonicalizeDisciplineId(player?.jobs?.mainJobId ?? 'vanguard');
     const level = Math.max(1, Math.min(99, Number(player?.jobs?.level) || 1));
     const rank = getSkillRank(jobId, skillId);
     const cap = getSkillCap(jobId, skillId, level);
