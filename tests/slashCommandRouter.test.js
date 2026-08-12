@@ -58,11 +58,11 @@ test('slash router exposes menu and command help', () => {
 test('slash router forwards slash gameplay commands to engine router', () => {
     const { router } = createRouterWithState();
 
-    assert.match(router('/look'), /Southern San/);
+    assert.match(router('/look'), /Thornwall Southgate/);
     assert.match(router('/stats'), /Attributes/);
 });
 
-test('slash router preserves FFXI macro-style slash commands for the adapter', () => {
+test('slash router preserves FFXI macro-style slash commands for the bounded legacy adapter', () => {
     const { router } = createRouterWithState();
 
     assert.match(router('/macrohelp'), /FFXI Macro\/Text Command Reference/);
@@ -85,11 +85,11 @@ test('slash router allows natural answers during creator prompts and saves after
     const { router } = createLoggedInRouterWithState();
 
     assert.match(router('/newcharacter'), /What is your character name/);
-    assert.match(router('Prompted'), /Choose starting nation/);
-    assert.match(router('sandoria'), /Choose race/);
-    assert.match(router('hume'), /Choose sex/);
-    assert.match(router('male'), /Choose starting job/);
-    assert.match(router('warrior'), /Confirm character/);
+    assert.match(router('Prompted'), /Choose your starting power/);
+    assert.match(router('thornwall'), /Choose ancestry/);
+    assert.match(router('human'), /Choose sex/);
+    assert.match(router('male'), /Choose starting discipline/);
+    assert.match(router('vanguard'), /Confirm character/);
     assert.match(router('yes'), /Character saved/);
     assert.match(router('/characters'), /Prompted/);
 });
