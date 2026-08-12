@@ -1,11 +1,11 @@
 export const ACTION_RESULT_VERSION = 1;
 
 export function actionSuccess(options = {}) {
-    return createActionResult({ ...options, ok: true });
+    return asLegacyActionResult(createActionResult({ ...options, ok: true }));
 }
 
 export function actionFailure(options = {}) {
-    return createActionResult({ ...options, ok: false });
+    return asLegacyActionResult(createActionResult({ ...options, ok: false }));
 }
 
 export function createActionResult(options = {}) {
