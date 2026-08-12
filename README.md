@@ -18,30 +18,29 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-The browser presentation is canvas-first and text-led. Prose carries most of the world while restrained maps, icons, meters, cards, and diagrams improve comprehension without requiring a full graphical-world production.
-
 ## Current version
 
 ```text
-Product:      0.5.700.1
-Package:      0.5.700
+Product:      0.5.900.1
+Package:      0.5.900
 Account Save: 4
 Game State:   5
-Data:         18
-Codename:     Routes and Transport
+Data:         19
+Benchmark:    1
+Codename:     Simulation Substrate Gate
 ```
 
-Product versions use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`. `js/text/version.js` is authoritative for runtime/system versions.
+`js/text/version.js` is authoritative for runtime and subsystem versions. Product versions use `MAJOR.PHASE.TRACK.REVISION`; `package.json.version` remains three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
 
-## Current milestone state
+## Milestone state
 
-The `0.5.700` route and scheduled-transport substrate is implemented on `main`.
+**Phase 0.5 — Simulation and Content Substrate is complete.**
 
-The current travel layer now includes stable canonical route and stop records separate from incidental place exits; fictional route duration, distance, hazards, cargo and map/knowledge metadata; walking travel represented by canonical timed tasks rather than a parallel timer; deterministic scheduled caravan and ferry services with cadence, fares, cargo allowances and stable stops; waiting/in-transit/arrival state; departure and arrival semantic events; travel-specific simulation interrupts; and route/service cross-reference validation.
+The repository now has one deterministic simulation authority for fictional time; pause/speed control; timed tasks; advance-until-interrupt behavior; day boundaries and structured reviews; original-world IDs and bounded legacy adapters; persistent projects; physical/economic/social resource provenance; persistent defeated-creature resource opportunities; canonical ecology families/species/populations and environmental gathering sources; canonical routes and scheduled transport; regional/shared content-pack manifests; stable-ID ownership and dependency validation; review-only legacy candidate normalization; generated hundreds-record validation fixtures; and an explicit simulation-substrate readiness gate.
 
-Representative service data proves transport across the current setting anchors: Thornwall/Elderwood to Brasshaven/Redstone Reach, Brasshaven toward Mistmere/Starfen, and a Mistmere/Starfen ferry case. These records are substrate examples, not a finished transport network.
+`js/text/systems/simulationSubstrateGate.js` evaluates the 0.5 exit contract as seven structured groups: deterministic simulation, original-world identity, projects/provenance, ecology/gathering, routes/transport, regional content/scale, and persistence compatibility. The production gate is green at `0.5.900.1`.
 
-The preceding ecology and provenance substrates remain in place: canonical families/species/populations, environmental gathering sources and regeneration, persistent projects, provenance-aware defeated-enemy resource opportunities, and timed recovery actions all use the same canonical world-time authority.
+This remains **pre-alpha foundation breadth, not content completion**. The next phase integrates substantial character/mechanics content rather than treating the substrate as a finished game.
 
 ### Original-world anchors
 
@@ -60,6 +59,8 @@ The project does not erase compatibility tokens by inventing replacement canon w
 - historical localStorage key names remain for save compatibility;
 - some legacy-shaped POI hook IDs remain while dependent shop/quest/guild references are migrated atomically;
 - `places.js` connection records remain a bounded fallback for travel paths not yet represented by canonical route records;
+- encounter `spawnRules` remain a bounded transitional placement layer beside canonical ecology populations;
+- `mainJobId` and related historical property names remain transitional while 0.6 moves capability ownership toward the continuous character;
 - `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules retain historical names because their purpose is explicitly compatibility/reference work;
 - legacy command aliases may still be accepted at adapter boundaries, while canonical help and new runtime records use original-world vocabulary.
 
@@ -72,7 +73,8 @@ The project does not erase compatibility tokens by inventing replacement canon w
 5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product/schema version protocol and release gates.
 6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
 7. `docs/ARCHITECTURE.md` — runtime/module boundaries.
-8. `docs/THREAD_HANDOFF.md` — implementation handoff state.
+8. `js/text/version.js` — authoritative active version values.
+9. `docs/THREAD_HANDOFF.md` — implementation handoff state.
 
 Older planning documents can preserve useful history but do not override these files.
 
@@ -119,37 +121,21 @@ GitHub Actions runs test/build checks for pushes to `main`. During the current e
 
 A discipline is a training tradition, not a magical identity swap. Learned techniques, spells, recipes, and practical capabilities ultimately belong to the continuous character. Actual use depends on real prerequisites such as proficiency, equipment, tools, ammunition, reagents, resources, injury/status, terrain, preparation, and formal training where the fiction requires it.
 
-The current `mainJobId`-shaped scaffold remains transitional until capability-centered progression replaces it incrementally behind migrations and tested interfaces.
+The current `mainJobId`-shaped scaffold remains transitional. **0.6.100** starts by strengthening canonical character stats/progression without turning discipline labels into universal capability gates; **0.6.200** then deepens skills, proficiencies, disciplines, and capabilities.
 
 ### Long fictional time without needless real waiting
 
-Simulation time and wall-clock time are separate. The game supports deterministic world time, pause, speed control, timed tasks, advance-until-interrupt semantics, and structured end-of-day review.
-
-Current `main` includes canonical deterministic world time, pause/speed control, timed tasks, deterministic interrupts, structured day review, original-world identity/stable IDs, persistent projects, provenance-aware physical resource recovery, ecology depletion/regeneration, and route/transport departure and arrival driven by the same canonical time authority.
+Simulation time and wall-clock time are separate. Canonical fictional seconds drive tasks, projects, ecology regeneration, transport schedules, travel arrival, rare/time-window conditions, interrupt discovery, and day review. Wall-clock ticks are only scheduler input.
 
 ### Travel is world activity, not a menu teleport
 
 Canonical routes carry stable stops, fictional duration, distance, hazards, transport compatibility, cargo/encumbrance hooks, and map/knowledge metadata. Walking a route creates a timed task whose completion is derived from world time. Scheduled services use deterministic departure cadence and arrival rather than wall-clock waiting.
 
-The current route catalog is intentionally representative. Old place-connection records remain as a compatibility/fallback seam until regional route coverage is broad enough to retire them safely.
-
-### A home base, not a one-city game
-
-The player may establish a room, home, workshop, farm, camp, or other foothold. A base matters for storage, recovery, preparation, relationships, and production, but the intended world also contains multiple cities, smaller settlements, roads, wilderness, mines, ports, ruins, dungeons, caravans, ferries, mounts/pack logistics, trade routes, and regional economies.
-
-Internal place/data partitions support simulation and navigation. Player-facing geography should usually feel continuous rather than like artificial loading zones.
-
-### Maps are knowledge
-
-Maps can be acquired, discovered, incomplete, or supplemented by exploration and NPC directions. Routes, landmarks, hazards, resources, services, and shortcuts should become known through play rather than omniscient navigation.
-
 ### Resource provenance instead of reward confetti
 
-A defeated creature should not automatically manufacture finished crafting materials in inventory. Combat can create a body, carried-goods opportunity, or salvage opportunity. Recovering useful material can then depend on searching, skinning, butchering, plucking, extracting, salvaging, tools, proficiency, condition, fictional time, carrying capacity, and player choice.
+A defeated creature does not automatically manufacture finished crafting materials in inventory. Combat can create a body, carried-goods opportunity, or salvage opportunity. Environmental gathering uses the same provenance model, with depletion and regeneration driven by canonical time.
 
-Environmental sources use the same provenance model for representative foraging, gathering, logging, mining, and fishing records. Their availability depletes and regenerates through canonical simulation time rather than real-world timers. Commerce, wages, contracts, reputation/social rewards, crafting, and explicitly justified exceptional magic remain valid acquisition paths.
-
-### Materials circulate through the economy
+Desired material flow remains:
 
 ```text
 world source
@@ -161,13 +147,13 @@ world source
   -> repair/recycling/salvage or replacement
 ```
 
-Items should have intentional sources and sinks. Gathering, crafting, cooking, shops, quests, construction, equipment, travel, and regional trade should consume the same material world.
+### Regional content is a validated graph
 
-### Content breadth is an engineering requirement
+`data/contentPackSchema.js`, `data/regionalContentPacks.js`, `systems/contentPackValidator.js`, and `data/legacyCandidateNormalizer.js` establish the 0.5.800 content architecture. Packs own human-meaningful stable IDs, declare dependencies, and cross-reference geography, routes/services, ecology, resources/items, NPCs, shops, recipes, quests, and relationships.
 
-The intended game eventually needs hundreds to thousands of interconnected records: places, NPCs, creatures, flora/resources, items, recipes, abilities, quests, relationships, shops, and transport routes.
+Legacy/reference normalization only produces review candidates. Successful parsing cannot make historical content canonical. Validation catches ownership conflicts, dangling references, source/sink failures, route topology problems, undeclared cross-pack dependencies, and legacy IDs leaking into canonical packs without explicit adapters.
 
-Mechanics and representative content therefore grow together through regional content packs, normalization, and cross-reference validation rather than a few toy records or giant unvalidated files. High-volume authored content remains intentionally gated behind the `0.5.800` regional content-pack and validation substrate.
+Generated fixtures currently prove validation over hundreds of interconnected records before broad hand-authored expansion begins.
 
 ## Current architecture
 
@@ -183,32 +169,20 @@ index.html
 
 Game logic stays separate from canvas/DOM rendering.
 
-Primary areas:
+Important current substrate files include:
 
 ```text
-js/text/
-  commandRouter.js
-  slashCommandRouter.js
-  gameState.js
-  save.js
-  version.js
-  data/
-  entities/
-  systems/
-  ui/
-tests/
-docs/
+js/text/data/ecologyCatalog.js
+js/text/data/resourceItems.js
+js/text/data/routeCatalog.js
+js/text/data/contentPackSchema.js
+js/text/data/regionalContentPacks.js
+js/text/data/legacyCandidateNormalizer.js
+js/text/systems/ecologyEngine.js
+js/text/systems/transportEngine.js
+js/text/systems/contentPackValidator.js
+js/text/systems/simulationSubstrateGate.js
 ```
-
-Important current substrate files include `data/ecologyCatalog.js`, `data/resourceItems.js`, `data/routeCatalog.js`, `systems/ecologyEngine.js`, `systems/transportEngine.js`, and `systems/travelEngine.js`.
-
-## Implemented foundation versus sparse content
-
-The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, canonical routes and scheduled transport, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/EXP/status/RNG scaffolds, provenance-aware battle resources, persistent projects, ecology populations and environmental gathering sources, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation hooks, benchmarks, CI, and database/system-version tracking.
-
-This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, gathering, and regional catalogs remain far below intended scale.
-
-See `docs/SYSTEM_CATALOG.md` for the system-by-system audit; where that audit lags a just-completed milestone, `ROADMAP.md`, the version manifest, and the thread handoff are authoritative.
 
 ## Save model
 
@@ -221,11 +195,7 @@ ffxiTextRpgAccountSession
 
 Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
-Project, resource-opportunity, and ecology registries are additive Game State v5 fields and lazily initialize when absent. The route/transport track adds data contracts and extends active travel state, while old active travel records are normalized at the runtime boundary; Game State therefore remains v5. The canonical route/service catalog advances the Data contract to v18.
-
-## Formula and research policy
-
-Formula confidence stays explicit: exact/sourced, researched approximation, intentional simplification, or placeholder. Historical games can inform comparison research but do not define canonical names, balance, or content.
+Account Save remains v4 and Game State remains v5. The 0.5.800 content-pack contracts advanced the canonical Data contract to v19; the 0.5.900 readiness gate adds no persisted data shape and therefore does not bump Data or Game State.
 
 ## Immediate implementation sequence
 
@@ -234,8 +204,9 @@ Formula confidence stays explicit: exact/sourced, researched approximation, inte
 0.5.600  Resource provenance + persistent projects           COMPLETE
 0.5.650  Ecology, gathering sources, spawn populations       COMPLETE
 0.5.700  Timed routes + scheduled caravans/transport         COMPLETE
-0.5.800  Regional content packs + normalization/validation   NEXT
-0.5.900  Simulation/content-substrate exit gate
+0.5.800  Regional content packs + normalization/validation   COMPLETE
+0.5.900  Simulation/content-substrate exit gate              COMPLETE
+0.6.100  Character stats and progression                     NEXT
 ```
 
-The next bounded unit should establish a regional content-pack manifest/schema, pack ownership and stable-ID conflict rules, cross-reference validation across geography/ecology/items/routes/services and future recipe/quest/social records, and reviewable legacy/reference normalization before substantial content generation begins.
+The next bounded unit is `0.6.100`: consolidate the canonical character-stat/progression contract around the continuous character, identify and quarantine historical formula dependencies, add original-world progression metadata and migration-safe adapters, and prove representative progression behavior before opening the broader capabilities track.
