@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.5.550.2';
-export const PACKAGE_VERSION = '0.5.550';
+export const PRODUCT_VERSION = '0.5.600.1';
+export const PACKAGE_VERSION = '0.5.600';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 15,
+    data: 16,
     benchmark: 1,
-    codename: 'Original World Identity',
+    codename: 'Resource Provenance',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.550.2',
+    versionManifest: '0.5.600.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -27,6 +27,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
     timedTasks: '0.1.0',
+    projects: '0.1.0',
+    resourceProvenance: '0.1.0',
+    resourceOpportunities: '0.1.0',
+    resourceRecovery: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
     canvasUi: '0.7.0',
@@ -46,7 +50,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     statusEngine: '0.1.0',
     battleEngine: '0.5.0',
     combatActions: '0.5.1',
-    battleRewards: '0.5.2',
+    battleRewards: '0.6.0',
     progression: '0.5.4',
     expTables: '0.5.2',
     disciplineSwitching: '0.5.4',
@@ -71,7 +75,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     questHooks: '0.3.5',
     inventoryContainers: '0.5.1',
     inventoryTransfers: '0.5.1',
-    itemSchema: '0.6.0',
+    itemSchema: '0.7.0',
     itemBehavior: '0.1.0',
     itemStacking: '0.5.1',
     equipmentCommands: '0.5.0',
@@ -82,10 +86,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     homeStorage: '0.3.9',
     wardrobes: '0.3.9',
     achievements: 'planned',
-    items: '0.6.0',
+    items: '0.7.0',
     keyItems: 'planned',
     magic: 'planned',
-    loot: '0.5.0',
+    loot: '0.5.1',
     leveling: '0.5.3',
     companions: 'planned',
     crafting: 'planned',
