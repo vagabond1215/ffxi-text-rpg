@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.900.1
-Package:      0.5.900
+Product:      0.6.200.1
+Package:      0.6.200
 Account Save: 4
 Game State:   5
-Data:         19
+Data:         20
 Benchmark:    1
-Codename:     Simulation Substrate Gate
+Codename:     Character Capabilities
 ```
 
-The repository is pre-alpha. **Phase 0.5 is complete:** deterministic simulation, original-world identity, persistent projects, provenance-aware resources, ecology/gathering/populations, canonical routes/scheduled transport, regional content packs, scalable cross-reference validation, and an explicit substrate readiness gate are established. Phase 0.6 now integrates substantial character and mechanics content on top of that substrate.
+The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression state and character-owned capability/proficiency semantics are now established on top of the deterministic simulation/content substrate.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.5.900.1
+0.6.200.1
 ```
 
 | Segment | Meaning |
@@ -64,7 +64,7 @@ Do not collapse these into the product version:
 
 The product version answers **what development milestone does this build represent?** Persistence versions answer **can saved data be read, migrated, or rejected safely?** Data version distinguishes canonical data-contract revisions. System versions distinguish subsystem contracts.
 
-`js/text/version.js` is authoritative for the active values.
+`js/text/version.js` is authoritative for active values.
 
 ## Runtime version-bump protocol
 
@@ -86,7 +86,9 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental 0.6 evolution, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, and `gil` pending deliberate original currency design.
+
+Additive/lazily defaulted fields do not require a Game State bump merely because a newer runtime knows about them. A Game State bump is required when the persistence contract becomes semantically incompatible, mandatory shapes cannot be reconstructed deterministically, or an ordered migration is necessary.
 
 ---
 
@@ -122,124 +124,138 @@ Delivered original powers, regions, places, maps, ancestries, transitional disci
 
 ## 0.5.600 — Resource provenance and persistent projects — complete
 
-Resulting baseline was `0.5.600.1 / Package 0.5.600 / Game State 5 / Data 16`. It delivered persistent projects, provenance/source/sink contracts, post-combat body/carried-goods/salvage opportunities, deterministic timed recovery, and provenance-tagged physical materials.
+Resulting baseline was `0.5.600.1 / Package 0.5.600 / Game State 5 / Data 16`. Delivered persistent projects, provenance/source/sink contracts, post-combat physical resource opportunities, deterministic timed recovery, and provenance-tagged materials.
 
 ## 0.5.650 — Ecology, gathering, and spawn substrate — complete
 
-Resulting baseline was `0.5.650.1 / Package 0.5.650 / Game State 5 / Data 17`. It delivered family/species separation, place-bound populations, environmental gathering sources, deterministic depletion/regeneration and rare/named conditions, resource-item provenance links, and ecology cross-reference validation.
+Resulting baseline was `0.5.650.1 / Package 0.5.650 / Game State 5 / Data 17`. Delivered family/species separation, place-bound populations, environmental gathering sources, deterministic depletion/regeneration, rare/named conditions, and ecology validation.
 
 ## 0.5.700 — Travel and scheduled transport substrate — complete
 
-Resulting baseline was `0.5.700.1 / Package 0.5.700 / Game State 5 / Data 18`. It delivered canonical routes/stops, canonical timed walking travel, scheduled service contracts, deterministic departure/arrival, travel interrupts, cancellation coupling, and route/service cross-reference validation.
+Resulting baseline was `0.5.700.1 / Package 0.5.700 / Game State 5 / Data 18`. Delivered canonical routes/stops, timed walking travel, scheduled service contracts, deterministic departure/arrival, travel interrupts, and route/service validation.
 
 ## 0.5.800 — Regional content packs, normalization, and validation — complete
+
+Resulting baseline was `0.5.800.1 / Package 0.5.800 / Game State 5 / Data 19`. Delivered regional/shared pack manifests, stable ownership/dependency semantics, unified cross-reference validation, review-only legacy candidate normalization, representative multi-pack content, and a generated 600-record scale fixture.
+
+## 0.5.900 — Simulation/content-substrate exit gate — complete
+
+Resulting baseline was `0.5.900.1 / Package 0.5.900 / Game State 5 / Data 19`. Added `simulationSubstrateGate 0.1.0` and formally closed Phase 0.5 across deterministic simulation, identity, provenance/projects, ecology/gathering, transport, regional content/scale, and persistence compatibility.
+
+The gate is intentionally evaluated as a historical minimum (`product >= 0.5.900.0`) so it remains valid during later phases rather than failing simply because the product advanced to 0.6.
+
+## 0.6.100 — Character stats and progression — complete
 
 Resulting baseline:
 
 ```text
-Product:      0.5.800.1
-Package:      0.5.800
+Product:      0.6.100.1
+Package:      0.6.100
 Account Save: 4
 Game State:   5
 Data:         19
 Benchmark:    1
-Codename:     Regional Content Packs
+Codename:     Continuous Character
 ```
 
 ### Version impact
 
-- **Product:** `0.5.700.1` -> `0.5.800.1`.
-- **Package:** `0.5.700` -> `0.5.800`.
+- **Product:** `0.5.900.1` -> `0.6.100.1`.
+- **Package:** `0.5.900` -> `0.6.100`.
 - **Account Save:** unchanged at 4.
-- **Game State:** unchanged at 5; pack manifests and validators are canonical data architecture, not mandatory persisted runtime state.
-- **Data:** 18 -> 19 for regional/shared content-pack manifests, stable ownership/dependency semantics, recipe/quest/relationship fixture contracts, and canonical validation rules.
-- New systems: `contentPackSchema 0.1.0`, `regionalContentPacks 0.1.0`, `contentPackValidation 0.1.0`, `legacyCandidateNormalization 0.1.0`.
-- Unified validation subsystem advanced to `0.9.0`.
+- **Game State:** unchanged at 5; `statState` and `progression.character` are additive/lazily reconstructible.
+- **Data:** unchanged at 19; this track changes runtime ownership/formulas rather than adding a new canonical data catalog contract.
+- New system: `characterStats 0.1.0`.
+- `playerEntity` advanced to 0.7.0.
+- `statEngine` advanced to 0.5.0.
+- `progression`, `disciplineSwitching`, and `leveling` advanced to 0.6.0.
 
 ### Delivered
 
-- content-pack manifest schema with stable IDs, shared/regional ownership, dependencies, data version, metadata, and explicit record collections;
-- pack-level ownership indexing and duplicate/conflict detection while preserving human-meaningful canonical IDs;
-- unified cross-reference validation across geography, routes/services, ecology, gathering sources, items/provenance/sinks, NPCs, shops, recipes, quests, and relationships;
-- validation of missing references, source/sink requirements, route topology, undeclared cross-pack dependencies, ownership conflicts, and legacy-ID leaks;
-- explicit legacy-adapter declarations at bounded pack boundaries;
-- review-only legacy/reference normalization whose output stays `candidate`, `canonical: false`, and `requiresOriginalityReview: true`;
-- representative shared, Elderwood, and Starfen pack manifests;
-- representative pack-defined NPC/shop/recipe/quest/relationship records and intentional cross-region resource dependencies;
-- generated scale test covering 300 items plus 300 recipes in one validated 600-record graph.
+- versioned character-owned base stat state with explicit original-design provenance/confidence;
+- persistent base growth derived from highest attained discipline training rank rather than current discipline identity;
+- active discipline represented as contextual stat/training focus with `capabilityGate: false`;
+- character-level lifetime EXP/highest-training metadata in addition to per-discipline levels/EXP;
+- lower-level discipline switching cannot reduce persistent character base growth;
+- historical FFXI stat formulas and inferred job-resource formulas retained for research/comparison but removed as canonical player runtime authority;
+- compatibility fields and save schema preserved through additive/lazy state.
 
 ### Intentionally deferred
 
-- physically relocating every established runtime catalog record into regional pack files;
-- full crafting/quest/relationship runtime engines for pack fixture records;
-- mass canonical content generation;
-- automatic canonical acceptance of legacy/reference candidates, which is intentionally prohibited.
+- final numerical stat balance;
+- removal/renaming of all internal `jobs`/`mainJobId`/`raceId` properties;
+- broader proficiency/capability ownership semantics, which move to 0.6.200;
+- Combat 2.0.
 
-## 0.5.900 — Simulation/content-substrate exit gate — complete
+## 0.6.200 — Skills, proficiencies, disciplines, and capabilities — complete
 
-Current resulting baseline:
+Resulting baseline:
 
 ```text
-Product:      0.5.900.1
-Package:      0.5.900
+Product:      0.6.200.1
+Package:      0.6.200
 Account Save: 4
 Game State:   5
-Data:         19
+Data:         20
 Benchmark:    1
-Codename:     Simulation Substrate Gate
+Codename:     Character Capabilities
 ```
 
 ### Version impact
 
-- **Product:** `0.5.800.1` -> `0.5.900.1`.
-- **Package:** `0.5.800` -> `0.5.900`.
+- **Product:** `0.6.100.1` -> `0.6.200.1`.
+- **Package:** `0.6.100` -> `0.6.200`.
 - **Account Save:** unchanged at 4.
-- **Game State:** unchanged at 5.
-- **Data:** unchanged at 19 because the readiness gate adds integration assertions, not a new canonical data shape.
-- New system: `simulationSubstrateGate 0.1.0`.
+- **Game State:** unchanged at 5; `progression.capabilities` is additive/lazily initialized.
+- **Data:** 19 -> 20 for the canonical capability catalog and learning/use requirement contract.
+- New system: `capabilities 0.1.0`.
+- `playerEntity` advanced to 0.8.0.
+- `skillProgression` advanced to 0.6.0.
+- `progression`, `disciplineSwitching`, and `characterStats` retain their 0.6.100 subsystem versions because their contracts were not replaced.
 
 ### Delivered
 
-`js/text/systems/simulationSubstrateGate.js` evaluates seven structured readiness groups:
+- stable character capability definitions separate from future executable ability/effect definitions;
+- distinct capability **learning paths** and **use requirements**;
+- discipline training can teach a capability, including qualifying training recorded while that discipline is inactive;
+- learned capabilities persist on the continuous character across discipline changes;
+- use eligibility checks learned proficiency, equipment/main-hand tags, tools, preparation, resources, flags, and action/world context;
+- active discipline is explicitly not a universal capability-use gate;
+- skill training caps limit new gain without truncating learned character proficiency when active discipline changes;
+- representative martial and practical capabilities exercise combat, resource-recovery, and gathering-shaped requirements;
+- capability state is validated and lazily initialized without a persistence migration;
+- database registry separates `capabilities` (ownership/eligibility) from planned executable `abilities` (effects/actions).
 
-1. deterministic simulation;
-2. original-world identity;
-3. projects and provenance;
-4. ecology and gathering;
-5. routes and transport;
-6. regional content and scale;
-7. persistence compatibility.
+### Intentionally deferred
 
-The gate checks required implemented subsystem versions, production route/ecology/content-pack validators, minimum representative ecology/route/service breadth, deterministic scheduled departures, multi-pack/cross-pack content dependencies, Data v19, Account Save v4, Game State v5, and the ordered migration compatibility contract.
-
-Regression tests prove both the green production gate and structured failure diagnostics when validators or required subsystems are intentionally broken.
-
-### 0.5 phase exit decision
-
-Phase 0.5 is complete. Its exit promise is now backed by both subsystem regression tests and an explicit integration gate: long fictional activities can fast-forward/interrupt/summarize; original-world identity is established; projects/provenance exist; ecology/gathering populations can represent renewable world sources; scheduled transport spans regions; and regional pack validation can safely scale content authoring.
+- mass capability/technique catalogs;
+- generalized executable effect engine;
+- original magic schools/spell catalogs;
+- universal capability-driven combat action routing;
+- trainer/quest/preparation UI;
+- capability-centered replacement of every discipline-shaped equipment restriction;
+- final proficiency-cap math; current rank/cap scaffold remains explicitly placeholder-confidence.
 
 ---
 
 # Active and future milestone gates
 
-## 0.6.100 — Character stats and progression — next
+## 0.6.300 — Original magic and active ability engine — next
 
-Deliver an original-world character-stat/progression contract centered on the continuous character while preserving migration compatibility:
+Deliver a bounded executable-effect layer without conflating it with character capability ownership:
 
-- audit and bound historical FFXI formula dependencies;
-- define canonical base/derived/resource stat ownership and progression metadata;
-- separate character-owned progression from active-discipline caps/modifiers where currently conflated;
-- ensure discipline identity describes training rather than universally enabling capabilities;
-- retain migration-safe adapters around existing persisted/internal `player.jobs`, `mainJobId`, `raceId`, and related fields instead of forcing an unbounded save rewrite;
-- add representative canonical ancestry/discipline progression tests;
-- retain historical formulas only behind explicit research/comparison boundaries.
+- define stable original ability/effect and spell-school records;
+- keep historical spell names/data out of canonical content;
+- model targeting, resource costs, cast/activation time, recast/cooldown, interruption, and effect payloads deterministically;
+- allow character-owned capabilities to enable executable effects while concrete use requirements remain under capability/loadout/preparation checks;
+- emit structured `ActionResult`/semantic events independently of prose;
+- preserve current battle/action behavior behind adapters until Combat 2.0 (`0.6.400`);
+- prove representative offensive, restorative/support, and non-combat/contextual effects before broad content expansion.
 
-Do not open the full capability/magic/combat rewrite inside this first 0.6 track.
+Do not open Combat 2.0 inside this track.
 
 ## Later 0.6 tracks
 
-- `0.6.200` skills, proficiencies, disciplines, and capabilities;
-- `0.6.300` original magic and active ability engine;
 - `0.6.400` Combat 2.0;
 - `0.6.500` canonical item/equipment/tool breadth;
 - `0.6.600` gathering/hunting/processing/crafting/cooking/salvage;
