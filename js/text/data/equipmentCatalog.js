@@ -6,10 +6,10 @@ import {
     normalizeRequirements,
 } from './itemSchema.js';
 
-const STARTER_SOURCE = 'Starter catalog schema pass; values are intentionally simplified and not asserted as exact retail data.';
-const STARTER_JOBS = Object.freeze(['warrior', 'monk', 'whiteMage', 'blackMage', 'redMage', 'thief']);
-const BRONZE_ARMOR_JOBS = Object.freeze([...STARTER_JOBS, 'paladin', 'darkKnight', 'beastmaster', 'bard', 'ranger', 'samurai', 'ninja', 'dragoon', 'blueMage', 'corsair', 'puppetmaster', 'dancer', 'runeFencer']);
-const CASTER_JOBS = Object.freeze(['whiteMage', 'blackMage', 'redMage', 'summoner', 'scholar', 'geomancer']);
+const STARTER_SOURCE = 'Starter equipment schema pass; values are intentionally simplified for systems testing and will be replaced or balanced for the original game.';
+const STARTER_DISCIPLINES = Object.freeze(['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand']);
+const BRONZE_ARMOR_DISCIPLINES = Object.freeze([...STARTER_DISCIPLINES, 'oathguard', 'duskblade', 'wildbinder', 'cantor', 'wayfinder', 'bladeAdept', 'veilrunner', 'skyLancer', 'echoSage', 'freeCaptain', 'artificer', 'rhythmblade', 'wardsword']);
+const CASTER_DISCIPLINES = Object.freeze(['lifewarden', 'elementalist', 'spellblade', 'eidolist', 'savant', 'leykeeper']);
 
 export const EQUIPMENT_CATALOG = Object.freeze({
     'bronze-sword': equipment('bronze-sword', 'Bronze Sword', {
@@ -20,7 +20,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'sword',
         weaponDelay: 236,
-        requirements: requirement({ allowedJobs: ['warrior', 'redMage', 'paladin'] }),
+        requirements: requirement({ allowedJobs: ['vanguard', 'spellblade', 'oathguard'] }),
         tags: ['weapon', 'sword', 'starter'],
         flags: ['equipmentOnly'],
         modifiers: {
@@ -36,7 +36,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'axe',
         weaponDelay: 288,
-        requirements: requirement({ allowedJobs: ['warrior', 'beastmaster'] }),
+        requirements: requirement({ allowedJobs: ['vanguard', 'wildbinder'] }),
         tags: ['weapon', 'axe', 'starter'],
         flags: ['equipmentOnly'],
         modifiers: {
@@ -52,7 +52,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'dagger',
         weaponDelay: 190,
-        requirements: requirement({ allowedJobs: ['warrior', 'redMage', 'thief', 'bard', 'ranger', 'dancer'] }),
+        requirements: requirement({ allowedJobs: ['vanguard', 'spellblade', 'shadowhand', 'cantor', 'wayfinder', 'rhythmblade'] }),
         tags: ['weapon', 'dagger', 'starter'],
         flags: ['equipmentOnly'],
         modifiers: {
@@ -68,7 +68,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'axe',
         weaponDelay: 300,
-        requirements: requirement({ allowedJobs: ['warrior', 'beastmaster'] }),
+        requirements: requirement({ allowedJobs: ['vanguard', 'wildbinder'] }),
         tags: ['weapon', 'axe', 'starter'],
         flags: ['equipmentOnly'],
         modifiers: {
@@ -84,7 +84,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'staff',
         weaponDelay: 366,
-        requirements: requirement({ allowedJobs: CASTER_JOBS }),
+        requirements: requirement({ allowedJobs: CASTER_DISCIPLINES }),
         tags: ['weapon', 'staff', 'starter', 'caster'],
         flags: ['equipmentOnly', 'twoHanded'],
         modifiers: {
@@ -101,7 +101,7 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         allowedSlots: ['mainHand'],
         weaponCategory: 'club',
         weaponDelay: 216,
-        requirements: requirement({ allowedJobs: CASTER_JOBS }),
+        requirements: requirement({ allowedJobs: CASTER_DISCIPLINES }),
         tags: ['weapon', 'club', 'starter', 'caster'],
         flags: ['equipmentOnly'],
         modifiers: {
@@ -188,7 +188,7 @@ function bronzeArmor(id, name, slot, tags, modifiers) {
         subtype: slot,
         equipmentSlot: slot,
         allowedSlots: [slot],
-        requirements: requirement({ allowedJobs: BRONZE_ARMOR_JOBS }),
+        requirements: requirement({ allowedJobs: BRONZE_ARMOR_DISCIPLINES }),
         tags,
         flags: ['equipmentOnly'],
         modifiers,
@@ -255,7 +255,7 @@ function baseFieldNotes() {
         requirements: {
             confidence: CONFIDENCE_LABELS.INTENTIONAL_SIMPLIFICATION,
             source: STARTER_SOURCE,
-            notes: 'Broad starter eligibility intended to exercise validation without retail-complete restrictions.',
+            notes: 'Broad starter eligibility intended to exercise validation before the final capability/loadout requirement model.',
         },
         modifiers: {
             confidence: CONFIDENCE_LABELS.INTENTIONAL_SIMPLIFICATION,
