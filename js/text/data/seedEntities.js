@@ -48,6 +48,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-brush-hare',
+            speciesId: 'species-brush-hare',
             name: 'Brush Hare',
             family: 'hare',
             ecosystem: 'beast',
@@ -60,6 +61,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-mossback-goblin',
+            speciesId: 'species-mossback-goblin',
             name: 'Mossback Goblin',
             family: 'goblin',
             ecosystem: 'raider',
@@ -72,6 +74,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-redfang-raider',
+            speciesId: 'species-redfang-raider',
             name: 'Redfang Raider',
             family: 'redfang',
             ecosystem: 'raider',
@@ -84,6 +87,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-redstone-burrower',
+            speciesId: 'species-redstone-burrower',
             name: 'Redstone Burrower',
             family: 'burrower',
             ecosystem: 'vermiform',
@@ -96,6 +100,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-ashcap-scavenger',
+            speciesId: 'species-ashcap-scavenger',
             name: 'Ashcap Scavenger',
             family: 'goblin',
             ecosystem: 'raider',
@@ -108,6 +113,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-sootwing-bat',
+            speciesId: 'species-sootwing-bat',
             name: 'Sootwing Bat',
             family: 'bat',
             ecosystem: 'beast',
@@ -120,6 +126,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-starfen-rootling',
+            speciesId: 'species-starfen-rootling',
             name: 'Starfen Rootling',
             family: 'rootling',
             ecosystem: 'plantoid',
@@ -132,6 +139,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-reedmask-acolyte',
+            speciesId: 'species-reedmask-acolyte',
             name: 'Reedmask Acolyte',
             family: 'reedmask',
             ecosystem: 'raider',
@@ -144,6 +152,7 @@ export function createSeedEnemies() {
         }),
         createEnemy({
             id: 'enemy-vaultwing-bat',
+            speciesId: 'species-vaultwing-bat',
             name: 'Vaultwing Bat',
             family: 'bat',
             ecosystem: 'beast',
