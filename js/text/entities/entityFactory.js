@@ -3,6 +3,7 @@ import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
 import { getExpToNextLevel } from '../data/expTables.js';
 import { createInventoryState } from '../systems/inventoryEngine.js';
+import { ensureProgressionState } from '../systems/progressionEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 
 export function createPlayerCharacter(options = {}) {
@@ -52,6 +53,7 @@ export function createPlayerCharacter(options = {}) {
         flags: options.flags ?? {},
     };
 
+    ensureProgressionState(entity);
     entity.combat = calculateCombatProfile(entity);
     entity.resources = {
         hp: entity.combat.resources.maxHp,
