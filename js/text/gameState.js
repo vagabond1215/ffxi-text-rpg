@@ -5,6 +5,7 @@ import { describeCoordinate, normalizePositionForPlace } from './data/coordinate
 import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
+import { createProjectState } from './systems/projectEngine.js';
 import { createSemanticEventState } from './systems/semanticEventEngine.js';
 import { createSimulationControlState } from './systems/simulationControlEngine.js';
 import { createTimedTaskState } from './systems/timedTaskEngine.js';
@@ -44,6 +45,7 @@ export function createNewGameState(options = {}) {
             speedMultiplier: options.simulationSpeedMultiplier ?? 1,
         }),
         tasks: createTimedTaskState(),
+        projects: createProjectState(),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
