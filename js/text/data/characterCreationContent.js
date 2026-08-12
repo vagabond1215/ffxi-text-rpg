@@ -4,26 +4,26 @@ import { getPlace } from './places.js';
 import { getRace } from './races.js';
 
 const RACE_PRESENTATION = Object.freeze({
-    human: presentation('Humans live throughout the major powers and trade roads. Their varied communities make them a flexible starting point for nearly any path.', ['Adaptable', 'Widespread']),
-    lethari: presentation('Lethari are long-lived woodland and highland people whose communities place weight on memory, craft, oath, and disciplined training.', ['Resolute', 'Traditional']),
-    miri: presentation('Miri communities are known for dense scholarship, ingenious craft, and practical magic. Their smaller frames reward preparation over brute force.', ['Scholarly', 'Arcane']),
-    veyra: presentation('Veyra clans have strong traditions of hunting, scouting, travel, and exchange. Their agility rewards mobile and precise approaches.', ['Agile', 'Perceptive']),
-    korren: presentation('Korren communities carry deep traditions of masonry, mining, engineering, and long-distance kinship. Their physical resilience suits demanding work and combat.', ['Resilient', 'Practical']),
+    human: presentation('Flexible and widespread, with a balanced starting profile and no strong attribute bias.', ['Adaptable', 'Balanced']),
+    lethari: presentation('Long-lived woodland and highland communities shaped by craft, oaths, and disciplined training.', ['Resolute', 'Disciplined']),
+    miri: presentation('Scholarly and inventive, with strong traditions of craft, study, and practical magic.', ['Scholarly', 'Arcane']),
+    veyra: presentation('Agile travelers and hunters who favor scouting, precision, mobility, and exchange.', ['Agile', 'Perceptive']),
+    korren: presentation('Resilient builders and miners with deep traditions of engineering, masonry, and hard labor.', ['Resilient', 'Practical']),
 });
 
 const NATION_PRESENTATION = Object.freeze({
-    thornwall: presentation('An old crown city beneath the Elderwood canopy, where stone keeps, craft guilds, foresters, and oath houses crowd around roads leading into the royal forests.', ['Crown City', 'Elderwood']),
-    brasshaven: presentation('A hard-driving forge republic of markets, mines, foundries, engineers, labor halls, and caravan wealth at the edge of the Redstone Reach.', ['Forge Republic', 'Redstone Reach']),
-    mistmere: presentation('A wetland city of canals, colleges, gardens, observatories, herbalists, ferry stairs, and practical magic surrounded by the Starfen.', ['Canal City', 'Starfen']),
+    thornwall: presentation('A forest crown city of guilds, foresters, stone keeps, and roads leading into Elderwood.', ['Crown City', 'Elderwood']),
+    brasshaven: presentation('A forge republic of markets, foundries, engineers, and caravan trade on the Redstone Reach.', ['Forge Republic', 'Redstone Reach']),
+    mistmere: presentation('A canal city of colleges, gardens, ferries, herbalists, and practical magic beside Starfen.', ['Canal City', 'Starfen']),
 });
 
 const JOB_PRESENTATION = Object.freeze({
-    vanguard: presentation('A broad martial discipline built around weapon familiarity, staying power, and reliable frontline pressure.', ['Frontline', 'Weaponry']),
-    pugilist: presentation('A close-quarters discipline built on body conditioning, hand-to-hand technique, and counter pressure.', ['Brawler', 'Endurance']),
-    lifewarden: presentation('A restorative discipline focused on healing, protection, and keeping a group functioning through danger.', ['Healer', 'Support']),
-    elementalist: presentation('A destructive magical discipline that studies elemental forces and converts preparation and knowledge into direct power.', ['Caster', 'Damage']),
-    spellblade: presentation('A hybrid discipline combining weapon practice with support, control, and practical battle magic.', ['Hybrid', 'Control']),
-    shadowhand: presentation('A mobile discipline built around precision, evasion, scouting, and taking advantage of openings.', ['Agile', 'Utility']),
+    vanguard: presentation('Durable frontline weapon training with broad martial fundamentals.', ['Frontline', 'Weaponry']),
+    pugilist: presentation('Close-quarters training built on conditioning, hand-to-hand technique, and counters.', ['Brawler', 'Endurance']),
+    lifewarden: presentation('Restorative training focused on healing, protection, and group endurance.', ['Healer', 'Support']),
+    elementalist: presentation('Elemental spellcraft focused on prepared, direct magical offense.', ['Caster', 'Damage']),
+    spellblade: presentation('Weapon and spell training blended for control, support, and flexible combat.', ['Hybrid', 'Control']),
+    shadowhand: presentation('Mobile training in precision, evasion, scouting, and exploiting openings.', ['Agile', 'Utility']),
 });
 
 const SEX_LABELS = Object.freeze({
@@ -67,8 +67,8 @@ export function composeStartingNarrative({ name = 'Traveler', nationId = 'thornw
     return [
         `${characterName} begins in ${nation.startingPlaceName}, with a few known streets behind them and a much larger world beyond the nearest road.`,
         nation.blurb,
-        `Your first training follows the ${discipline.name} discipline: ${discipline.role}. It is a starting tradition, not the limit of what you can eventually learn.`,
-        `The routes into ${nation.starterRegion} promise work, resources, people, and danger—provided you prepare well enough to come back with something worth keeping.`,
+        `Your first training follows the ${discipline.name} discipline. It is a starting tradition, not a permanent class or a limit on what you can learn.`,
+        `The routes into ${nation.starterRegion} promise work, resources, people, and danger—provided you prepare well enough to return with something worth keeping.`,
     ];
 }
 
