@@ -23,27 +23,34 @@ The browser presentation is canvas-first and text-led. Prose carries most of the
 ## Current version
 
 ```text
-Product:      0.5.550.2
-Package:      0.5.550
+Product:      0.5.600.1
+Package:      0.5.600
 Account Save: 4
 Game State:   5
-Data:         15
-Codename:     Original World Identity
+Data:         16
+Codename:     Resource Provenance
 ```
 
-Product versions use:
-
-```text
-MAJOR.PHASE.TRACK.REVISION
-```
-
-`package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`. `js/text/version.js` is the authoritative runtime/system version manifest.
+Product versions use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`. `js/text/version.js` is authoritative for runtime/system versions.
 
 ## Current milestone state
 
-The `0.5.550` original-world identity and canonical nomenclature migration is implemented on `main`.
+The `0.5.600` resource-provenance and persistent-project substrate is implemented on `main`.
 
-Current canonical anchors include:
+Current substrate includes:
+
+- persistent projects with stable project IDs, material contributions, labor requirements, canonical-time progress, cancellation, completion, and semantic events;
+- a normalized provenance schema for bodies, carried goods, flora, minerals, fishing, salvage, crafting, commerce, contracts/social rewards, and explicitly exceptional magic;
+- item sink/use metadata for consumption, equipment, tools, processing/crafting, construction, repair, trade, contracts/quests, salvage, decoration/collection, and key items;
+- defeated enemies creating persistent recoverable body/carried-goods/salvage opportunities instead of automatically materializing finished materials in inventory;
+- timed `search`, `skin`, `butcher`, `pluck`, `extract`, and `salvage` recovery contracts with tool, proficiency, condition, and inventory-capacity hooks;
+- recovery outcome rolls fixed when work starts and persisted with the recovery action, so later reconciliation does not reroll an already-begun activity;
+- recovered items carrying provenance metadata identifying their source, place, recovery action, and opportunity;
+- transitional starter loot tables reused as candidate resource outputs rather than direct reward-confetti tables.
+
+EXP and the current `gil` reward scaffold still resolve immediately after victory. Physical materials remain in the world until an appropriate recovery action succeeds.
+
+### Original-world anchors
 
 - **Thornwall** and the **Elderwood**;
 - **Brasshaven** and the **Redstone Reach**;
@@ -52,17 +59,15 @@ Current canonical anchors include:
 
 Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. The transitional starting disciplines are **Vanguard, Pugilist, Lifewarden, Elementalist, Spellblade, and Shadowhand**.
 
-New canonical runtime state uses original stable IDs. Older world/ancestry/discipline identifiers remain accepted only through bounded migration/input compatibility seams.
-
 ### Deliberate compatibility debt
 
-The identity track does not pretend every historical token has vanished. The following remain intentionally bounded rather than being renamed ad hoc:
+The project does not erase compatibility tokens by inventing replacement canon without design support:
 
 - `gil` remains the current currency term until an original currency design is deliberately chosen;
 - historical localStorage key names remain for save compatibility;
 - some legacy-shaped POI hook IDs remain while dependent shop/quest/guild references are migrated atomically;
 - `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules retain historical names because their purpose is explicitly compatibility/reference work;
-- legacy command aliases may still be accepted at adapter boundaries, but canonical help and new runtime records use original-world vocabulary.
+- legacy command aliases may still be accepted at adapter boundaries, while canonical help and new runtime records use original-world vocabulary.
 
 ## Read these first
 
@@ -126,14 +131,7 @@ The current `mainJobId`-shaped scaffold remains transitional until capability-ce
 
 Simulation time and wall-clock time are separate. The game supports deterministic world time, pause, speed control, timed tasks, advance-until-interrupt semantics, and structured end-of-day review.
 
-Current `main` includes:
-
-- canonical deterministic world time;
-- pause and simulation speed control;
-- canonical timed tasks;
-- deterministic simulation interrupts;
-- structured day boundaries and summaries;
-- original-world identity/stable-ID migration.
+Current `main` includes canonical deterministic world time, pause/speed control, timed tasks, deterministic interrupts, structured day review, original-world identity/stable IDs, persistent projects, and provenance-aware physical resource recovery.
 
 ### A home base, not a one-city game
 
@@ -147,9 +145,9 @@ Maps can be acquired, discovered, incomplete, or supplemented by exploration and
 
 ### Resource provenance instead of reward confetti
 
-A defeated creature should not automatically manufacture finished crafting materials in inventory. Depending on context, rewards may require searching belongings, skinning/butchering/plucking, extracting useful parts, dismantling constructs, gathering, mining, fishing, trapping, salvage, processing, commerce, wages, contracts, reputation, or explicit exceptional magic.
+A defeated creature should not automatically manufacture finished crafting materials in inventory. Combat can create a body, carried-goods opportunity, or salvage opportunity. Recovering useful material can then depend on searching, skinning, butchering, plucking, extracting, salvaging, tools, proficiency, condition, fictional time, carrying capacity, and player choice.
 
-Tools, time, proficiency, condition, carrying capacity, and player choice should matter.
+Environmental sources will extend the same provenance model to gathering, logging, mining, fishing, trapping, and related work. Commerce, wages, contracts, reputation/social rewards, crafting, and explicitly justified exceptional magic remain valid acquisition paths.
 
 ### Materials circulate through the economy
 
@@ -204,9 +202,9 @@ docs/
 
 ## Implemented foundation versus sparse content
 
-The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/reward/EXP/status/RNG scaffolds, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation, benchmarks, CI, and database/system-version tracking.
+The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/EXP/status/RNG scaffolds, provenance-aware battle resources, persistent projects, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation hooks, benchmarks, CI, and database/system-version tracking.
 
-This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, ecology, and regional catalogs remain far below intended scale.
+This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, ecology, gathering, and regional catalogs remain far below intended scale.
 
 See `docs/SYSTEM_CATALOG.md` for the system-by-system audit.
 
@@ -221,6 +219,8 @@ ffxiTextRpgAccountSession
 
 Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
+The new project and resource-opportunity registries are additive Game State v5 fields and lazily initialize when absent, so this track does not require a Game State schema bump. The item/provenance data contract advances Data to v16.
+
 ## Formula and research policy
 
 Formula confidence stays explicit: exact/sourced, researched approximation, intentional simplification, or placeholder. Historical games can inform comparison research but do not define canonical names, balance, or content.
@@ -229,11 +229,11 @@ Formula confidence stays explicit: exact/sourced, researched approximation, inte
 
 ```text
 0.5.550  Original-world identity and stable-ID migration      COMPLETE
-0.5.600  Resource provenance + persistent projects           NEXT
-0.5.650  Ecology, gathering sources, spawn populations
+0.5.600  Resource provenance + persistent projects           COMPLETE
+0.5.650  Ecology, gathering sources, spawn populations       NEXT
 0.5.700  Timed routes + scheduled caravans/transport
 0.5.800  Regional content packs + normalization/validation
 0.5.900  Simulation/content-substrate exit gate
 ```
 
-The first `0.5.600` unit should establish persistent projects and provenance/body-processing substrate before high-volume content generation begins.
+The next bounded unit should establish species/family records, habitat/population rules, environmental gathering-source definitions, and deterministic regeneration/respawn without beginning high-volume content generation prematurely.
