@@ -9,11 +9,16 @@ export const POI_TYPES = Object.freeze({
     MISSION: 'mission',
     QUEST: 'quest',
     STORAGE: 'storage',
-    TRUST: 'trust',
+    COMPANION: 'companion',
     TRAVEL: 'travel',
-    HOME_POINT: 'homePoint',
-    ZONE_LINE: 'zoneLine',
+    TRAVEL_MARKER: 'travelMarker',
+    ROUTE_EXIT: 'routeExit',
     LANDMARK: 'landmark',
+
+    // Bounded compatibility aliases for older callers; canonical records emit the values above.
+    TRUST: 'companion',
+    HOME_POINT: 'travelMarker',
+    ZONE_LINE: 'routeExit',
 });
 
 // Legacy-shaped POI stable IDs are temporarily retained as compatibility keys for
@@ -29,7 +34,7 @@ const POI_SEEDS = [
     poi('poi-sandoria-s-capucine', 'thornwall-southgate', 'Bria Holt', POI_TYPES.VENDOR, 'E-9', ['armor', 'shop'], 'Armor vendor'),
     poi('poi-sandoria-s-carautia', 'thornwall-southgate', 'Tamsin Reed', POI_TYPES.VENDOR, 'K-8', ['armor', 'shop'], 'Protective gear vendor'),
     poi('poi-sandoria-s-faulpie', 'thornwall-southgate', 'Edrin Bale', POI_TYPES.GUILD, 'E-8', ['tanning', 'guildMaster'], 'Tanning guild master'),
-    poi('poi-sandoria-s-gondebaud', 'thornwall-southgate', 'Rowan Greymark', POI_TYPES.TRUST, 'L-6', ['companion'], 'Potential future companion contact'),
+    poi('poi-sandoria-s-gondebaud', 'thornwall-southgate', 'Rowan Greymark', POI_TYPES.COMPANION, 'L-6', ['companion'], 'Potential future companion contact'),
     poi('poi-sandoria-s-corua', 'thornwall-southgate', 'Nessa Woodmere', POI_TYPES.VENDOR, 'G-9', ['regionalVendor', 'elderwood'], 'Regional vendor for Elderwood goods'),
     poi('poi-sandoria-s-ferdoulemiont', 'thornwall-southgate', 'Pell Arden', POI_TYPES.VENDOR, 'I-11', ['standardVendor', 'shop'], 'General goods vendor'),
 
@@ -56,7 +61,7 @@ const POI_SEEDS = [
     poi('poi-bastok-markets-karine', 'brasshaven-market-ring', 'Oda Chart', POI_TYPES.VENDOR, 'H-9', ['mapVendor'], 'Survey and route-map vendor'),
     poi('poi-bastok-markets-cleades', 'brasshaven-market-ring', 'Clerk Merrow', POI_TYPES.MISSION, 'D-11', ['mission', 'brasshaven'], 'Brasshaven civic commission contact'),
 
-    poi('poi-bastok-mines-zeruhn-gate', 'brasshaven-delvers-ward', 'Deepvein Mine Gate', POI_TYPES.ZONE_LINE, 'I-9', ['zoneConnection', 'deepveinMine'], 'Passage toward Deepvein Mine'),
+    poi('poi-bastok-mines-zeruhn-gate', 'brasshaven-delvers-ward', 'Deepvein Mine Gate', POI_TYPES.ROUTE_EXIT, 'I-9', ['zoneConnection', 'deepveinMine'], 'Passage toward Deepvein Mine'),
     poi('poi-bastok-mines-gate-guard', 'brasshaven-delvers-ward', 'Delvers’ Ward Watch', POI_TYPES.TRAVEL, 'H-6', ['gateGuard', 'realm'], 'Brasshaven watch post'),
     poi('poi-metalworks-cid', 'brasshaven-foundry-hall', 'Master Engineer Caldris', POI_TYPES.QUEST, 'H-8', ['importantNpc', 'engineer', 'quest'], 'Senior Brasshaven engineer and project contact'),
     poi('poi-metalworks-cornelia', 'brasshaven-foundry-hall', 'Envoy Tessa Mar', POI_TYPES.MISSION, 'K-8', ['mission', 'brasshaven'], 'Civic commission contact'),
@@ -74,7 +79,7 @@ const POI_SEEDS = [
     poi('poi-waters-ephemeral-moogle', 'mistmere-canal-ward', 'Lantern Keeper Sivi', POI_TYPES.STORAGE, 'E-9', ['specialStorage'], 'Lodging and secure-storage service contact'),
 
     poi('poi-woods-apururu', 'mistmere-garden-ward', 'Curator Lessa Rain', POI_TYPES.MISSION, 'H-9', ['importantNpc', 'mission', 'mistmere'], 'Important Mistmere garden-ward civic contact'),
-    poi('poi-woods-east-gate', 'mistmere-garden-ward', 'East Starfen Gate', POI_TYPES.ZONE_LINE, 'K-10', ['zoneConnection', 'eastStarfen'], 'Gate toward East Starfen'),
+    poi('poi-woods-east-gate', 'mistmere-garden-ward', 'East Starfen Gate', POI_TYPES.ROUTE_EXIT, 'K-10', ['zoneConnection', 'eastStarfen'], 'Gate toward East Starfen'),
     poi('poi-walls-heavens-tower-gate', 'mistmere-spire-ward', 'Observatory Gate', POI_TYPES.MISSION, 'H-7', ['mission', 'observatory'], 'Access to Mistmere Observatory'),
     poi('poi-port-windurst-travel-counter', 'mistmere-reedport', 'Reedport Transit House', POI_TYPES.TRAVEL, 'M-6', ['travel', 'futureTransit'], 'Regional travel services placeholder'),
     poi('poi-heavens-tower-mission-desk', 'mistmere-observatory', 'Observatory Civic Desk', POI_TYPES.MISSION, 'H-6', ['mission', 'mistmere'], 'Mistmere civic commission desk'),
@@ -141,7 +146,7 @@ export function createZoneConnectionPois() {
         id: `connection-${connection.id}`,
         placeId: place.id,
         name: `Exit to ${getPlace(connection.to)?.name ?? connection.to}`,
-        type: POI_TYPES.ZONE_LINE,
+        type: POI_TYPES.ROUTE_EXIT,
         sourcePosition: 'connection-grid',
         coordinate: connection.departFrom ?? place.coordinateSystem.start,
         tags: ['zoneConnection', connection.to],
@@ -163,9 +168,9 @@ function inferActions(poi) {
     if ([POI_TYPES.VENDOR, POI_TYPES.SHOP].includes(poi.type)) actions.add('shop');
     if (poi.type === POI_TYPES.GUILD) actions.add('guild');
     if ([POI_TYPES.MISSION, POI_TYPES.QUEST].includes(poi.type)) actions.add('quest');
-    if ([POI_TYPES.TRAVEL, POI_TYPES.HOME_POINT, POI_TYPES.ZONE_LINE].includes(poi.type)) actions.add('travel');
+    if ([POI_TYPES.TRAVEL, POI_TYPES.TRAVEL_MARKER, POI_TYPES.ROUTE_EXIT].includes(poi.type)) actions.add('travel');
     if (poi.type === POI_TYPES.STORAGE) actions.add('storage');
-    if (poi.type === POI_TYPES.TRUST) actions.add('trust');
+    if (poi.type === POI_TYPES.COMPANION) actions.add('companion');
     return Array.from(actions);
 }
 
