@@ -57,168 +57,165 @@ Loadouts and preparation constrain and enhance.
 ## Current baseline
 
 ```text
-Product:      0.5.600.1
-Package:      0.5.600
+Product:      0.5.650.1
+Package:      0.5.650
 Account Save: 4
 Game State:   5
-Data:         16
+Data:         17
 Benchmark:    1
-Codename:     Resource Provenance
+Codename:     Ecology Substrate
 ```
 
 `js/text/version.js` is authoritative.
 
-## 0.5.600 — exit status
+## Completed sequence
 
-The resource-provenance and persistent-project substrate is **complete enough to exit the track**.
+The current coherent sequence on `main` is:
 
-### Persistent projects
+- 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events/stabilization;
+- 0.5.100 deterministic world clock;
+- 0.5.200 pause/speed controls;
+- 0.5.300 canonical timed tasks;
+- 0.5.400 deterministic interrupt model;
+- 0.5.500 day boundaries/end-of-day review;
+- 0.5.550 original-world identity/stable-ID migration;
+- 0.5.600 persistent projects and resource provenance;
+- 0.5.650 ecology, gathering-source, and population substrate.
 
-`js/text/systems/projectEngine.js` now provides:
+Do not restart earlier tracks unless a concrete regression requires it.
 
-- versioned project registry with stable `project-000001`-style IDs;
-- planned/active/completed/cancelled states;
-- material requirements and real inventory contribution/removal;
-- canonical `project.labor` timed tasks;
-- deterministic labor progress/completion boundaries;
-- cancellation;
-- project progress inspection;
-- project-state validation;
-- structured `project.created`, `project.material-contributed`, `project.started`, `project.completed`, and `project.cancelled` events.
+## 0.5.650 — exit status
 
-New games initialize the registry. Older Game State v5 records lazily acquire it when the project system is first used, so no Game State version bump was required.
+The ecology/gathering/spawn substrate is **complete enough to exit the track**. It deliberately proves contracts with representative content rather than beginning high-volume generation.
 
-### Provenance and sinks
+### Canonical ecology catalog
 
-`js/text/data/resourceProvenance.js` now defines normalized/validated acquisition categories for:
+`js/text/data/ecologyCatalog.js` now provides:
 
-- carried inventory;
-- creature/body resources;
-- flora;
-- minerals;
-- fishing;
-- salvage;
-- crafting;
-- commerce;
-- contracts;
-- social rewards;
-- explicitly exceptional magic.
+- canonical family records;
+- canonical species records separated from encounter instances;
+- habitat tags;
+- aggression, senses, social mode, and family-link behavior metadata;
+- place-bound population records;
+- population capacity, density, rarity, and deterministic respawn rules;
+- deterministic appearance conditions using canonical day/time or explicit flags;
+- named-variant hooks without arbitrary random appearance semantics;
+- flora, mineral, and fishing gathering-source definitions;
+- source action, tool, proficiency, capacity, output, and regeneration contracts;
+- standalone cross-reference validation across families/species/populations/places/sources/actions/items/provenance.
 
-It also defines acquisition/recovery actions including search/skin/butcher/pluck/extract/salvage/gather/forage/log/mine/fish/trap/process/craft/purchase/barter/earn/receive/conjure and item sink/use categories spanning consumption, equipment, tools, crafting/processing, construction, repair, trade, contracts/quests, salvage, decoration/collection, and key items.
+Representative records span multiple distinct ecological cases: Elderwood beasts/raiders, Redstone burrowers, Deepvein cave bats, Starfen plantoids/raiders, a rare Moon-Antler Hart, forest flora/timber, upland ore/clay, wetland reeds/herbs, and fishing water.
 
-`js/text/data/itemSchema.js` advanced to schema v3 and normalizes `provenance` and `sinks` while preserving the older `source` field as a bounded compatibility note. Data contract advanced from 15 to 16.
+### Canonical raw resource items
 
-### Post-combat resource opportunities
+`js/text/data/resourceItems.js` provides representative raw-resource item templates for the ecology substrate. Each item has canonical source/place/action provenance and intentional sinks rather than existing as an isolated loot name.
 
-`js/text/systems/resourceOpportunityEngine.js` now provides a persistent resource-opportunity registry with stable `resource-*` IDs.
+Current representative items include Elderwood Sweetroot/Hardwood, Redstone Copper Ore/Clay, Starfen Reed Fiber/Marrowleaf/Silverfin.
 
-Defeated enemies with transitional output tables create one of:
+### Persistent ecology state
 
-- `body` opportunities for creatures;
-- `carriedInventory` opportunities for raider/humanoid-style enemies;
-- `salvage` opportunities for constructs.
+`js/text/systems/ecologyEngine.js` provides additive Game State v5 ecology state with:
 
-Recovery actions currently support:
+- lazy runtime records for populations and gathering sources;
+- persistent available-unit/depletion state;
+- deterministic regeneration/respawn from `worldTime.totalSeconds`;
+- population consumption;
+- environmental harvesting;
+- place, active-condition, tool, proficiency, and capacity checks;
+- atomic normal-inventory insertion before source depletion;
+- semantic events for population consumption and resource harvesting;
+- runtime ecology-state validation.
 
-- `search`;
-- `skin`;
-- `butcher`;
-- `pluck`;
-- `extract`;
-- `salvage`.
+No real-world timer is authoritative. Full sources do not accumulate unbounded hidden regeneration while already full.
 
-Action definitions expose tool tags, proficiency IDs/minimums, source-condition minimums, and canonical fictional duration. Starting recovery creates a `resource.recovery` timed task.
+### Encounter/species boundary
 
-Yield rolls are fixed **when recovery begins** and stored on the persistent recovery record. Completion therefore does not reroll already-started work if reconciliation happens later or after persistence.
+`createEnemy()` now supports `speciesId`, and canonical seed world enemies use that field to reference their species record. This keeps combat encounter templates distinct from species/ecology identity.
 
-Recovered materials are added through normal inventory/capacity rules and carry structured provenance identifying source enemy, place, recovery action, opportunity, and source condition.
+The training dummy remains an artificial test target and therefore does not require a world species record.
 
-### Battle reward change
+### Rare/named behavior
 
-`js/text/systems/rewardEngine.js` no longer rolls creature materials directly into inventory on victory.
+Rare/named hooks are deterministic or world-state driven:
 
-Current behavior:
+- the Moon-Antler Hart population uses a canonical day-modulo plus early-morning time window;
+- the Pale Ear named hook requires the explicit `elderwood.pale-ear-trail` flag.
 
-- EXP resolves immediately;
-- current `gil` scaffold resolves immediately;
-- physical candidate materials remain in the world as recoverable opportunities;
-- `battle.rewards.items` remains an empty compatibility field;
-- `battle.rewards.resourceOpportunities` records created opportunities.
+No arbitrary "roll every load until rare spawn appears" contract was introduced.
 
-Existing `lootTables.js` is now transitional candidate-output data for the provenance system rather than a direct reward-confetti mechanism.
-
-### Version/system changes
+### Version/data impact
 
 ```text
-Product             0.5.550.2 -> 0.5.600.1
-Package             0.5.550   -> 0.5.600
+Product             0.5.600.1 -> 0.5.650.1
+Package             0.5.600   -> 0.5.650
 Account Save        4         unchanged
 Game State          5         unchanged
-Data                15        -> 16
-itemSchema          0.6.0     -> 0.7.0
-battleRewards       0.5.2     -> 0.6.0
-projects            new       0.1.0
-resourceProvenance  new       0.1.0
-resourceOpportunities new     0.1.0
-resourceRecovery    new       0.1.0
+Data                16        -> 17
+enemyEntity          0.2.0    -> 0.2.1
+ecologyCatalog       new       0.1.0
+ecologyState         new       0.1.0
+populations          new       0.1.0
+gatheringSources     new       0.1.0
+resourceItems        new       0.1.0
 ```
 
-Database registry now lists `projects`, `resourceProvenance`, and `resourceOpportunities` as implemented substrate registries.
+Database registry now includes `ecologyFamilies`, `species`, `populations`, `gatheringSources`, and `resourceItems`.
 
-### Tests added/updated
+### Tests
 
-- `tests/projectEngine.test.js`
-- `tests/resourceProvenance.test.js`
-- `tests/resourceOpportunityEngine.test.js`
-- `tests/rewardEngine.test.js`
-- `tests/pipeline.test.js`
+`tests/ecologyEngine.test.js` covers:
 
-Coverage includes stable IDs, material contribution, timed completion, cancellation, provenance/sink normalization and validation, body/carried-resource opportunities, tool/condition/proficiency hooks, persisted recovery rolls, inventory-capacity failure, duplicate reward protection, and version/database contracts.
+- species/family/encounter separation;
+- multiple habitats and families;
+- gathering-source -> canonical item provenance links;
+- additive ecology state under Game State v5;
+- persistent population depletion and deterministic respawn;
+- deterministic rare day/time appearance;
+- explicit-flag named hooks;
+- atomic harvest/inventory/provenance behavior;
+- source depletion/regeneration;
+- place/tool hooks;
+- fishing time windows;
+- ecology catalog validation;
+- invalid runtime ecology references.
+
+`tests/pipeline.test.js` is synchronized to the `0.5.650.1 / Data 17` version and registry contract.
 
 ### CI checkpoint
 
-The complete runtime/version series is represented by the history through:
+Runtime/version integration head `81210ce6915f3d5f0034ee10744da91b929940df` completed the GitHub Actions **test** check successfully on 2026-08-12. Subsequent commits are documentation closeout only.
 
-```text
-43b6c54f29414795ea46a9d810778c714ed3c1dd
-```
+On continuation, inspect the newest `main` head and current check runs before coding. Do not assume a later documentation commit's build/deploy state without re-reading GitHub.
 
-At handoff preparation time, GitHub Actions for that commit had been started after prior provenance/resource commits had already reached green test/build checkpoints. **Inspect the newest `main` check runs before starting 0.5.650** and fix any real regression directly on `main`.
+## 0.5.650 bounded limitations
 
-Documentation closeout commits follow that runtime/version checkpoint.
+These are deliberate deferrals, not reasons to reopen the track broadly:
 
-## 0.5.600 bounded limitations
-
-These are deliberate deferrals, not reasons to reopen the track immediately:
-
-- broad player-facing UI/command affordances for project/resource actions are not yet exposed;
-- current starter recovered materials carry a minimal representative `trade` sink rather than a mature economy graph;
-- full item source/sink cross-reference enforcement at hundreds/thousands-of-record scale belongs to `0.5.800`;
-- environmental gathering nodes, species populations, depletion/regeneration, and respawn belong to `0.5.650`;
-- processing/crafting chains remain later work;
-- `gil` remains unchanged pending deliberate currency design;
-- legacy-shaped POI hook IDs and historical localStorage keys remain bounded compatibility debt.
+- existing `places.js` `spawnRules` remain a transitional encounter-placement layer; population definitions are established but encounter selection is not yet population-driven;
+- general player-facing gathering commands/UI are not yet exposed;
+- population dynamics currently model deterministic capacity/depletion/respawn, not seasons, weather, migration, predation, reproduction, or territory simulation;
+- representative ecology/resource records are intentionally small; do not begin hundreds-scale generation before `0.5.800` content-pack validation;
+- the ecology validator is currently a dedicated validator tested directly; high-volume unified regional validation belongs to `0.5.800`;
+- `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain bounded compatibility debt.
 
 ## Next target
 
 ```text
-0.5.650 — Ecology, gathering, and spawn substrate
+0.5.700 — Travel and scheduled transport substrate
 ```
 
-**Do not restart identity migration or reopen 0.5.600 broadly.** First verify current CI, then start one bounded ecology/gathering unit.
+**Do not start high-volume route authoring.** First prove one bounded shared transport contract.
 
 Recommended first unit:
 
-1. Define canonical species/family records separate from encounter instances.
-2. Define habitat/population records with stable IDs and references to places/biomes.
-3. Add density/rarity, aggression, senses, linking/social behavior, and environmental/time hooks without prematurely hard-coding every ecology rule.
-4. Define flora/mineral/fishing/gathering-source records that reference canonical item outputs and provenance actions.
-5. Add persistent or derivable depletion/regeneration/respawn state based on canonical world time.
-6. Add rare/named population hooks without arbitrary random appearance semantics.
-7. Add representative cross-reference validation across species, populations, places, resource sources, and item outputs.
-8. Test against several distinct families/source types, not one toy record.
-
-Do **not** begin hundreds-scale creature/flora generation yet. Prove the substrate and cross-reference validation first.
+1. Define canonical route records independent of incidental place-transition UI.
+2. Represent walking/local/overland route traversal with canonical fictional duration using the existing world-time/task/interrupt infrastructure.
+3. Add stable route stops, directionality, distance/time, hazard, map/knowledge, cargo/encumbrance hooks without prematurely solving every travel mechanic.
+4. Define scheduled caravan/service records with deterministic departure cadence, fare, cargo allowance, route/stops, and arrival time.
+5. Make the transport contract reusable by later ferries, wagons, mounts, and other scheduled modes rather than creating one caravan-only engine.
+6. Add deterministic arrival/departure and interrupt seams; no needless wall-clock waiting.
+7. Cross-validate routes/services/stops against canonical places and prove multiple representative routes before broad generation.
+8. Update version/docs/handoff and stop at a coherent 0.5.700 boundary before 0.5.800.
 
 ## Resource/economy law
 
@@ -243,8 +240,9 @@ Treat these as temporary and replace incrementally behind migrations/tested inte
 - `mainJobId` as a broad capability gate;
 - sparse placeholder skill-rank math;
 - placeholder spell/weapon-skill combat actions;
-- tiny starter equipment/shop/enemy/resource catalogs;
-- minimal current sink metadata on recovered starter materials;
+- small starter equipment/shop/enemy/resource catalogs;
+- `places.js` encounter `spawnRules` rather than population-driven spawning;
+- minimal current sink metadata on some starter materials;
 - legacy `data/` and `ffxi*` research tables;
 - historical localStorage key names;
 - legacy-shaped POI hook IDs.
