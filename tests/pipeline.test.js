@@ -14,8 +14,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.900.1');
-    assert.equal(PACKAGE_VERSION, '0.5.900');
+    assert.equal(PRODUCT_VERSION, '0.6.100.1');
+    assert.equal(PACKAGE_VERSION, '0.6.100');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -24,14 +24,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 19);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.5\.900\.1/);
-    assert.match(describeVersion(), /Package: 0\.5\.900/);
+    assert.match(describeVersion(), /Product: 0\.6\.100\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.100/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 19/);
-    assert.match(describeVersion(), /Codename: Simulation Substrate Gate/);
+    assert.match(describeVersion(), /Codename: Continuous Character/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.900\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.100\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -59,6 +59,11 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /characterStats: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerEntity: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /statEngine: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /progression: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /disciplineSwitching: 0\.6\.0/);
     assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
     assert.match(describeSystemVersions(), /validation: 0\.9\.0/);
     assert.match(describeSystemVersions(), /travel: 0\.5\.0/);
@@ -76,7 +81,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /shopTransactions: 0\.3\.8/);
     assert.match(describeSystemVersions(), /skillCaps: 0\.5\.2/);
     assert.match(describeSystemVersions(), /skillProgression: 0\.5\.3/);
-    assert.match(describeSystemVersions(), /leveling: 0\.5\.3/);
+    assert.match(describeSystemVersions(), /leveling: 0\.6\.0/);
 });
 
 test('database registry includes canonical systems plus explicitly bounded legacy research', () => {
