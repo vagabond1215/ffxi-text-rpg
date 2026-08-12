@@ -1,26 +1,27 @@
 # Development Direction
 
-This document is the design north star for the project. It defines what the game is trying to become, the design laws that should survive implementation changes, and the architectural direction that future work should follow.
+This document is the design north star for the project. It defines the product laws that should survive implementation changes and the architectural direction that future work should follow.
 
-It supersedes the earlier assumption that the project roadmap should primarily be driven by reconstructing FFXI formulas or feature breadth. FFXI remains an important source of tone, weight, progression philosophy, jobs, equipment, travel danger, and long-form accomplishment, but the project is not intended to become a text transcription of retail FFXI.
+The project is an **original text-first persistent fantasy life RPG**, currently using the working title **Hearth & Horizon**. Earlier FFXI-derived code and data remain useful research/reference material, but inherited world identity, proper nouns, class terminology, and content catalogs are not the target product.
+
+`docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` is authoritative for original-setting nomenclature, legacy-data boundaries, content provenance, scale targets, and content-pack rules.
 
 ## Product identity
 
-The target is a long-form, text-first fantasy life RPG in which an ordinary character gradually builds a livelihood, home, skills, relationships, reputation, and material capability while venturing into an increasingly dangerous world.
+The player develops one continuous person and one persistent life across a connected fantasy world.
 
-The intended experience combines:
+The game combines:
 
-- the weight, preparation, danger, mastery, and earned accomplishment associated with older FFXI;
-- the incremental life-building structure of games such as Rune Factory and Fantasy Life;
-- the measurable long-horizon progress of incremental games without requiring real-world waiting;
-- tabletop-style presentation where prose and imagination do most of the rendering while icons, tokens, cards, meters, and diagrams communicate state;
-- a deterministic, testable simulation foundation that can support large amounts of authored content without tying game logic to the UI.
+- meaningful preparation, travel danger, mastery, equipment choice, and earned accomplishment;
+- life-building through livelihood, property, tools, relationships, reputation, and infrastructure;
+- long-horizon progress without requiring avoidable real-world waiting;
+- a sandbox world where cities, smaller settlements, roads, wilderness, dungeons, caravans, ferries, resources, creatures, and economies belong to the same simulation;
+- tabletop-style presentation where prose and imagination render most of the world while restrained maps, icons, cards, meters, tokens, and diagrams make state legible;
+- deterministic, testable systems capable of supporting thousands of cross-linked content records without tying game logic to the UI.
 
-The player should feel that they are developing one continuous person and one persistent life, not switching between disconnected game modes.
+The game should not feel like several disconnected minigames joined by menus. Hunting, gathering, work, crafting, trade, quests, relationships, travel, combat, and home-building should continually feed one another.
 
 ## Core progression law
-
-The primary progression loop is:
 
 ```text
 effort -> mastery -> efficiency -> capability -> larger ambition
@@ -29,329 +30,484 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Progression should not primarily be:
 
 ```text
-effort -> arbitrary larger denominator -> same activity again
+effort -> arbitrary larger denominator -> identical activity again
 ```
 
-Repeated work may take substantial simulated time and may require substantial resources, but it should leave measurable residue: improved proficiency, better tools, better infrastructure, new options, reduced labor, improved yield, safer travel, better preparation, or access to more ambitious work.
+Repeated work may consume substantial fictional time and resources, but it should leave residue:
 
-Earlier chores should eventually consume less player attention because the character has earned ways to perform them more efficiently.
+- improved proficiency;
+- learned capabilities;
+- better tools or equipment;
+- improved infrastructure;
+- stronger relationships/reputation;
+- better maps and route knowledge;
+- reduced labor or safer travel;
+- better yield/quality;
+- access to more ambitious projects, regions, services, or training.
+
+Earlier chores should eventually demand less player attention because the character has earned ways to perform them more efficiently.
 
 ## Long-duration play without real-time punishment
 
-The game should support long fictional timescales and meaningful grind while respecting real player time.
-
 Simulation time and wall-clock time are separate concepts.
 
-A four-hour fictional task should consume four hours of world time whether the player watches it at normal speed, fast-forwards, advances directly to completion, or advances until a meaningful interrupt occurs.
+A four-hour fictional task consumes four hours of world time whether the player watches it, fast-forwards, advances directly to completion, or advances until a meaningful interrupt occurs.
 
-The player pays with character time, resources, risk, preparation, and opportunity cost. They should not be forced to pay with avoidable real-world waiting.
+The player pays with character time, resources, risk, preparation, fatigue/opportunity cost, and world consequences. The player should not be forced to pay with needless real-world waiting.
 
-### Time controls
+The simulation should support:
 
-The intended simulation eventually supports:
-
-- normal-speed ticking;
+- normal-speed progression;
 - pause;
 - configurable fast-forward;
 - advance-to-task-completion;
 - advance-to-next-event;
-- end-of-day auto-pause;
-- meaningful interrupts such as combat, exhaustion, tool failure, project completion, major NPC events, dangerous weather, or important unlocks.
+- day-boundary review;
+- meaningful interrupts such as combat, exhaustion, tool failure, dangerous weather, project completion, NPC events, transport arrival, or important discoveries.
 
-Hardcore modes may restrict pauses, saving, injury tolerance, or event handling, but should not simply force slower real-world waiting.
+Hardcore modes may restrict saving, injury tolerance, pause behavior, or information, but should not simply turn fictional duration into mandatory wall-clock waiting.
 
 ## End-of-day review
 
-Standard play should default to an end-of-day decision pause.
+Standard play defaults to an end-of-day pause/review.
 
-The day summary should make progress legible without forcing the player to watch every low-value tick. Useful summary categories include:
+A useful day summary can include:
 
-- work completed;
-- resources gained or spent;
-- skill/proficiency changes;
+- work and travel completed;
+- resources acquired/spent/processed;
+- skill/proficiency/capability gains;
 - project progress;
-- notable encounters;
+- notable encounters/discoveries;
 - relationship/reputation changes;
-- injuries, fatigue, equipment wear, or shortages;
+- injuries, fatigue, tool/equipment wear, shortages, or failed work;
 - newly available opportunities;
-- reminders for tomorrow.
+- reminders or commitments for the next day.
 
-The player should be able to inspect state, plan, save/quit, or immediately continue.
+The player can inspect, plan, save/quit, or continue.
+
+## The world is larger than the home base
+
+The player may build a meaningful foothold, home, workshop, room, farm, camp, or property, but that location is not the entire game.
+
+The world should support:
+
+- multiple major cities and regional hubs;
+- smaller towns, villages, camps, forts, mines, ports, monasteries/colleges, farms, and roadside services;
+- wilderness routes and landmarks;
+- caves, ruins, dungeons, resource sites, and dangerous regions;
+- caravan roads and scheduled transport;
+- ferries and other waterways;
+- mounts, hired transport, pack animals, or equivalent logistics where appropriate;
+- trade and production differences that create real reasons to travel.
+
+A home base creates storage, preparation, social, production, and recovery advantages. Travel expands what the character can know, acquire, learn, sell, build, and become.
+
+## Internal world partitions are not mandatory player-facing zones
+
+The engine may partition geography into places, regions, route segments, cells, maps, encounter populations, or streaming/content units. These boundaries are implementation and navigation tools.
+
+Player-facing transitions should usually be expressed naturally through geography and prose rather than artificial level-loading language.
+
+Example:
+
+A paved road narrowing into forest track, a ridge opening onto dry uplands, or cultivated outskirts giving way to marsh can mark an internal dataset transition without announcing a gamey `ZONE CHANGE`.
+
+Hard boundaries remain appropriate where the fiction calls for them: gates, ferries, passes, locked doors, border controls, dungeon entrances, magical barriers, etc.
+
+## Maps are knowledge
+
+Maps are not merely menus containing automatically known coordinates.
+
+A character may:
+
+- own or borrow maps;
+- discover routes without owning a formal map;
+- buy incomplete regional maps;
+- learn landmarks from NPC directions;
+- reveal terrain/routes through exploration;
+- annotate resource sites, hazards, shortcuts, camps, ruins, and services;
+- know that a destination exists without knowing the safest/fastest route.
+
+Map knowledge should improve navigation, planning, route confidence, and transport decisions without requiring graphical terrain rendering.
+
+## Resource provenance is gameplay
+
+Rewards should normally have a physical, economic, or social explanation.
+
+Combat against a creature can create access to a body; it does not automatically manufacture finished crafting materials in inventory.
+
+Depending on creature and context, the player may need to:
+
+- search carried belongings;
+- skin or flay;
+- butcher/dress meat;
+- recover bone, horn, teeth, feathers, shell, glands, venom, organs, or other useful parts;
+- dismantle/salvage a construct;
+- spend tools and fictional time;
+- possess enough knowledge/proficiency to recover delicate material;
+- choose which outputs are worth weight, time, spoilage, or inventory space.
+
+Likewise, environmental resources come from places that support them:
+
+- plants/fungi through foraging/harvesting;
+- timber through logging;
+- ore/stone/clay through mining/quarrying/digging;
+- fish/shellfish through fishing/trapping/shore gathering;
+- salvage through ruins, machinery, containers, wrecks, and discarded equipment.
+
+Exceptional magical creation is allowed when the world explicitly supports it, but unexplained reward confetti should not be the default economy.
+
+## Materials circulate through the world
+
+The economy spine is transformation and use:
+
+```text
+world source
+  -> raw material
+  -> processing
+  -> component/ingredient
+  -> finished good
+  -> use/wear/consumption
+  -> repair/recycling/salvage or replacement
+```
+
+A raw resource should ideally participate in multiple decisions rather than one recipe.
+
+Example:
+
+```text
+small game carcass
+  -> meat -> meals/preservation/bait/contracts
+  -> hide -> tanning -> leather -> equipment/tools
+  -> bone -> craft components/glue/medicine/decorative goods
+```
+
+Items need sources and sinks. Regional economies need demand beyond vendors buying infinite junk.
+
+## Gathering and crafting are world systems, not menu checklists
+
+Gathering depends on:
+
+- geography/habitat;
+- tool suitability;
+- proficiency;
+- time;
+- resource condition/quality;
+- depletion/regeneration or population logic where useful;
+- danger/weather/time-of-day where meaningful;
+- storage/encumbrance/logistics.
+
+Crafting/processing depends on:
+
+- real ingredients/components;
+- tools/stations/facilities;
+- time and labor;
+- proficiency/knowledge;
+- recipe/process discovery or instruction where appropriate;
+- quality and byproducts where they create useful choices;
+- regional access to materials and services.
+
+Cooking, medicine/alchemy, smithing, woodworking, leatherwork, textiles, construction, repair, and other disciplines should exchange materials rather than live in isolated inventories.
 
 ## Construction and resource economy
 
-Construction costs should follow physical and economic logic, not arbitrary exponential repetition penalties.
+Construction costs follow physical/economic logic rather than arbitrary exponential repetition penalties.
 
-If one standard barn requires a particular amount of lumber, stone, fittings, and labor, a second identical barn under comparable conditions should cost approximately the same amount.
+A second comparable barn should cost approximately what a comparable barn physically requires. Costs legitimately change because of:
 
-Costs may legitimately change because of:
-
-- different size;
-- different materials;
-- difficult terrain;
+- size/design;
+- material choice;
+- terrain;
 - transport distance;
-- labor availability;
 - regional scarcity;
-- specialized machinery or magic;
+- labor availability;
+- specialized machinery/magic;
+- renovation constraints;
 - structural upgrades;
-- capacity expansion;
-- renovation complexity;
-- prestige or regional scale.
+- capacity and prestige requirements.
 
-The game should create long-term resource demand through expansion and sophistication rather than unexplained multipliers based only on how many copies the player has already built.
+Long-term resource sinks come from larger ambition:
 
-High-value resource sinks include:
+- more/larger buildings;
+- roads and bridges;
+- irrigation;
+- carts/wagons/boats;
+- workshops and specialized facilities;
+- storage and warehouses;
+- repairs and maintenance;
+- hired labor;
+- civic/regional projects;
+- prestige and high-complexity work.
 
-- larger structures;
-- renovations;
-- specialized facilities;
-- automation and labor-saving infrastructure;
-- storage and transport capacity;
-- roads, carts, warehouses, irrigation, and workshops;
-- equipment maintenance and replacement;
-- prestige projects;
-- civic or regional projects.
+## Disciplines are training traditions, not magical transformations
 
-## Jobs are disciplines, not magical transformations
+The final design does not treat a selected class/job as a magical state that rewrites the character.
 
-The project should retain recognizable jobs such as Warrior, White Mage, Black Mage, Red Mage, Thief, Ranger, Paladin, Dark Knight, Bard, and other fantasy disciplines, but a job is not a magical character state.
+A discipline is a recognized school, profession, guild tradition, martial method, magical curriculum, or social classification.
 
-A job is a recognized archetype, curriculum, training tradition, or classification of competencies.
-
-The character remains one continuous person. Equipping an axe does not transform the character into a Warrior. Equipping a staff does not transform the character into a Mage. Removing equipment does not cause learned knowledge to disappear.
-
-### Design vocabulary
+The character remains one person. Equipping a sword does not transform them into another identity; removing a focus does not erase learned magic.
 
 Use these concepts distinctly:
 
 | Term | Meaning |
 | --- | --- |
-| Discipline / Job | A recognized school, profession, archetype, or training tradition. |
-| Capability | A learned spell, technique, skill, trait, or other action the character knows. |
-| Proficiency | How practiced or competent the character is with a capability or skill domain. |
-| Loadout | The equipment and immediately prepared state that determines what the character can effectively do now. |
-| Preparation | Ammunition, reagents, focus items, stance, memorization/prepared actions, tools, mounts, supplies, or other contextual readiness. |
+| Discipline | Recognized training school/profession/archetype. |
+| Capability | Learned spell, technique, recipe knowledge, practical skill, trait, or action. |
+| Proficiency | Degree of practice/competence in a domain. |
+| Loadout | Equipment and immediately ready tools/supplies. |
+| Preparation | Ammunition, reagents, focus, stance, memorization, tools, mounts, provisions, companions, route plans, etc. |
 
-A useful rule is:
+Core rule:
 
 ```text
-Jobs describe.
+Disciplines describe.
 Capabilities enable.
-Loadouts constrain and enhance.
+Loadouts and preparation constrain and enhance.
 ```
 
-### Ability eligibility
-
-Ability use should eventually resolve from actual prerequisites rather than primarily from `currentJob`.
+### Capability eligibility
 
 A capability check may consider:
 
-- whether the character has learned the ability;
-- relevant proficiency or mastery;
-- required or preferred equipment;
-- required free hands, weapon family, shield, focus, ammunition, or tool;
-- MP, TP, stamina, charges, reagents, or other resources;
-- silence, injury, encumbrance, status effects, or environmental restrictions;
-- mounted, workshop, travel, terrain, or other context;
-- discipline-specific advanced training where instruction is genuinely required.
+- whether the character learned it;
+- proficiency/mastery;
+- hard equipment/tool requirements;
+- preferred/enhancing equipment;
+- free hands, weapon family, shield, focus, ammunition, reagent, station, mount, etc.;
+- MP/TP/stamina/charges/material resources;
+- silence, injury, fatigue, encumbrance, statuses;
+- terrain, workshop, travel, mounted, underwater, social, or other context;
+- formal certification/training when the fiction requires it.
 
-### Hard requirements, soft requirements, and enhancers
+### Hard, soft, and enhancing requirements
 
-Abilities should support three broad equipment/preparation relationships.
+**Hard requirement:** the action makes no sense without the prerequisite.
 
-**Hard requirement:** the action does not make sense without the prerequisite. Shield Bash requires a shield. Archery techniques require a bow and usable ammunition. Some rituals may require a focus.
+**Soft requirement:** the action is possible but inefficient, slower, weaker, riskier, or more expensive without preferred preparation.
 
-**Soft requirement:** the action is still possible, but the character is poorly prepared. A learned healing spell may be cast without a preferred wand or staff at increased resource cost, longer cast time, lower potency, or higher interruption risk.
+**Enhancer:** optional preparation improves the result without enabling the basic action.
 
-**Enhancer:** the item is not required but improves the action. A healing focus may improve potency or efficiency; specialist armor may improve interruption resistance.
-
-The exact penalties and bonuses should be data-driven, confidence-labeled, and balance-tested rather than hard-coded into command handlers.
+These relationships should be data-driven and testable.
 
 ### Cross-discipline use
 
-The design intentionally does not use FFXI's single support-job limitation as the primary capability gate.
+A character may combine capabilities associated with several disciplines if they know them and satisfy actual prerequisites.
 
-A character may use capabilities associated with several disciplines at the same time if they genuinely know those capabilities and satisfy their prerequisites.
+Balance comes from equipment slots, action economy, resources, encumbrance, preparation, proficiency, context, and opportunity cost—not from pretending learned knowledge disappears when a class toggle changes.
 
-The balancing constraint is that the character cannot optimally deploy everything simultaneously. Equipment, preparation, resources, encumbrance, action economy, proficiency, and context create the build boundaries.
+Advanced training can still require mentors, guild standing, certification, quests, reputation, prerequisite proficiencies, facilities, or difficult accomplishments.
 
-A heavily armored sword-and-shield character who studied restoration magic may still cast a basic heal, but may do so less efficiently than a character equipped and prepared as a dedicated healer.
+## Origins and starting circumstances
 
-### Discipline progression still matters
-
-Jobs remain meaningful because advanced techniques may require formal instruction, certification, guild standing, milestones, quests, mentors, or minimum proficiencies.
-
-A discipline can provide:
-
-- training paths;
-- advanced techniques;
-- specialist traits;
-- trainers and guilds;
-- titles and recognition;
-- access to equipment or facilities;
-- reputation and narrative identity;
-- shorthand for describing a loadout or play style.
-
-The important rule is that discipline identity should represent earned training, not a toggle that rewrites the character.
-
-## Origins and starting conditions
-
-Character creation should eventually move from a simple starting-job choice toward origin-based starting circumstances.
+Character creation should center on **where this person begins in life**, not merely a starting combat class.
 
 Origins may provide different:
 
-- starting tools;
-- equipment;
-- seeds or materials;
-- learned beginner capabilities;
-- local relationships;
-- debts, obligations, or reputation;
-- starting property or lodging;
+- lodging/property/camp context;
+- equipment and tools;
+- food/seeds/materials;
+- beginner capabilities;
+- relationships/contacts;
+- debts/obligations;
+- reputation;
 - starting proficiencies;
-- introductory objectives.
+- local maps/route knowledge;
+- introductory opportunities.
 
-Origins should not permanently lock later play. They change the opening and early constraints while allowing a character to learn other disciplines and livelihoods over time.
+Origins alter the opening without permanently locking later play.
 
-Examples include Homesteader, Guard, Apprentice, Hunter, Drifter, Craftsperson, or similar setting-appropriate backgrounds.
+## Preparation is gameplay
 
-## Preparation should be gameplay
+Before an expedition, workday, caravan trip, dungeon descent, hunting run, gathering route, delivery, or construction job, the player should decide what they are trying to accomplish.
 
-Before an expedition, the player should think about what they are trying to accomplish rather than selecting a magical class transformation.
+Different goals naturally favor different:
 
-A hunting trip, dungeon expedition, gathering run, escort mission, or construction supply trip should naturally favor different equipment and supplies.
-
-This gives long-term value to:
-
-- storage;
-- equipment collections;
+- equipment;
 - tools;
-- crafting;
-- mounts and pack animals;
-- carts;
-- homes and workshops;
-- consumables;
-- scouting and known routes;
-- relationships and local services.
+- food/water/medicine;
+- ammunition/reagents;
+- containers and carrying capacity;
+- maps and route knowledge;
+- companions;
+- transport;
+- weather/time planning;
+- spare equipment/repair supplies.
 
-Preparation should create meaningful tradeoffs without becoming inventory busywork.
+This creates value for homes, storage, workshops, equipment collections, crafting, mounts, pack animals, caravans, local services, and relationships without turning preparation into pointless inventory micromanagement.
+
+## NPCs are persistent world participants
+
+Important NPCs should eventually have some combination of:
+
+- home/work locations;
+- schedules/availability;
+- profession/services;
+- relationships/faction ties;
+- goals/needs;
+- dialogue state;
+- quest/contract involvement;
+- reputation reactions;
+- companion/romance eligibility where appropriate.
+
+The world needs broad service populations and a smaller set of deeply authored social characters.
+
+## Relationships and romance
+
+Social progression should not collapse every person into one universal affection meter.
+
+Possible dimensions include trust, respect, familiarity, attraction, rivalry, gratitude, fear, obligation, shared history, or faction/community standing when useful.
+
+Romance-capable characters should:
+
+- have goals and routines outside the player;
+- have boundaries and preferences;
+- react to meaningful choices and shared experiences;
+- not require identical gift-spam loops;
+- remain useful/interesting characters even if romance is never pursued.
+
+## AI party systems
+
+Companions are persistent characters, not summoned combat vending machines.
+
+A party member can have:
+
+- tactical role/preferences;
+- learned capabilities/proficiency;
+- equipment and consumables;
+- resource management;
+- injury/KO/recovery;
+- relationship state;
+- personal goals/quests;
+- willingness/availability constraints;
+- progression and changing behavior.
+
+Combat AI and relationship state should be separate systems that interact deliberately.
+
+## Content scale is part of architecture
+
+The target game requires hundreds to thousands of interconnected records. A subsystem validated only against five toy records is not necessarily validated for the product.
+
+Mechanics and content therefore grow together.
+
+Examples:
+
+- a crafting engine is tested against enough recipes to reveal categorization, lookup, dependency, and balance problems;
+- an ecology engine is tested against multiple families/habitats/variants rather than two starter enemies;
+- quest validation is tested across real cross-region objectives;
+- shops and regional economies are tested with meaningful inventories and resource chains;
+- relationship and companion systems are tested with multiple distinct behavior/personality patterns.
+
+See `WORLD_IDENTITY_AND_CONTENT_POLICY.md` for planning-scale ranges.
+
+## Content-pack architecture
+
+Author dense regional content packs that cross-link:
+
+- geography/routes/maps;
+- NPCs/services/shops;
+- ecology/resources;
+- items/recipes;
+- quests/contracts/rewards;
+- relationships/companions;
+- lore/descriptive text;
+- transport/economy.
+
+Do not build one enormous global hand-edited file for each category if regional ownership and validation can keep data more comprehensible.
+
+## Original setting and legacy research
+
+Canonical runtime content is original.
+
+Historical FFXI-derived data may remain temporarily for research, migration, formula comparison, or candidate-data normalization, but:
+
+- new canonical stable IDs must not be inherited FFXI proper nouns;
+- player-facing content must not present the world as FFXI;
+- imported structures require original names/context and review;
+- legacy modules must be clearly bounded from canonical data sources.
+
+The identity/stable-ID migration is intentionally scheduled before high-volume content expansion so this separation does not become prohibitively expensive later.
 
 ## Visual presentation policy
 
 The game remains text-first and imagination-led.
 
-Limited visual polish is encouraged when it improves comprehension or identity without creating a full graphical-world burden.
+Useful restrained visuals include:
 
-Appropriate visual elements include:
-
-- icons;
-- tokens;
-- status meters;
+- icons/tokens;
+- status/resource meters;
 - equipment silhouettes;
 - cards;
-- simple node diagrams;
-- maps represented as schematic/coordinate information;
-- project progress indicators;
+- node/route diagrams;
+- schematic/cartographic maps;
+- project progress;
 - day/time indicators;
-- relationship or reputation markers.
+- relationship/reputation markers;
+- simple party/tactics displays.
 
-The project should not pivot into sprite animation, full graphical terrain, cinematic rendering, or a large asset-production pipeline unless explicitly reconsidered later.
-
-## First lovable vertical slice
-
-The first substantial playable target should prove the life/adventure intersection rather than only combat or only farming.
-
-Working concept: **A Week Beyond the West Gate**.
-
-The slice should include:
-
-1. a small set of origins with different starting circumstances;
-2. a modest home base, room, plot, workshop access, or equivalent foothold;
-3. one simple livelihood/gathering loop;
-4. a local shop/economy loop;
-5. a persistent project that accumulates materials and labor;
-6. simulated days with end-of-day review;
-7. one meaningful expedition outside the city/gate;
-8. travel risk and at least one dangerous combat encounter;
-9. measurable proficiency or capability growth;
-10. return-home recovery and preparation;
-11. completion of something permanent that did not exist when the character began;
-12. a resulting unlock that opens the next layer of play.
-
-The first slice should make the player feel that a week of fictional life produced a materially different character and world state.
+The project does not require full graphical terrain, sprite animation, cinematic rendering, or a large art-asset pipeline to deliver its core promise.
 
 ## Architecture direction
 
-The current separation of data, state, systems, and UI remains appropriate. Do not rewrite the project simply to pursue the new direction.
+The separation of data, state, systems, and UI remains appropriate. Continue evolutionary change rather than another broad rewrite.
 
-Evolutionary priorities:
+Priorities:
 
-- add explicit ordered save migrations before persistent systems proliferate;
-- separate deterministic simulation time from wall-clock timer delivery;
-- define a canonical time-consuming action/task model used by travel, work, crafting, construction, farming, and other systems;
-- move toward structured action results instead of prose-only return values;
-- add lightweight semantic game events so quests, summaries, tests, achievements, and UI can react to meaning rather than parsing strings;
-- keep command input and UI controls as adapters into the same gameplay actions;
-- keep content data-driven and stable-ID based;
-- author dense regional content packs rather than broad shallow map coverage;
-- preserve formula confidence labels: exact/sourced, researched approximation, intentional simplification, placeholder;
-- avoid full event sourcing unless a later requirement justifies its complexity.
+- ordered save migrations before persistent state proliferates;
+- deterministic canonical world time;
+- common timed-action/task/project contracts;
+- structured action results and semantic events;
+- stable canonical IDs;
+- content-pack boundaries and cross-reference validation;
+- resource provenance and item source/sink validation;
+- ecology/population data separated from encounter instances;
+- UI/command input as adapters into shared gameplay actions;
+- formulas/values carrying confidence/provenance metadata when uncertain;
+- avoid full event sourcing unless a later requirement demonstrates its necessity.
 
-## Current transitional systems
+## Transitional systems
 
-Several current systems are useful foundations but should not be mistaken for final design commitments.
+Current systems that should not be mistaken for final commitments include:
 
-In particular:
+- legacy FFXI world/place/race/job/currency terminology;
+- `mainJobId` and job-switch assumptions;
+- current sparse job skill-cap tables;
+- placeholder combat magic/weapon-skill behavior;
+- automatic battle loot behavior that predates provenance/body-processing design;
+- wall-clock tick scheduling as distinct from canonical simulation time;
+- small starter item/shop/monster catalogs;
+- legacy `data/` modules and recovered FFXI reference datasets.
 
-- `mainJobId`, support-job assumptions, job-specific current-state checks, and current job switching are transitional;
-- job level data may later become discipline training/mastery data;
-- capability eligibility should gradually migrate away from a single current-job gate;
-- the existing wall-clock tick engine is a scaffold, not the final world-time model;
-- current formulas are executable scaffolds, not a requirement to reproduce retail FFXI exactly;
-- current San d'Oria content is a foundation for a dense region, not a mandate to reproduce every FFXI zone before the core game loop is fun.
+Replace these incrementally behind tested interfaces and explicit migrations.
 
-Do not rip these systems out in one broad rewrite. Replace assumptions incrementally behind tested interfaces.
+## Current priority order
 
-## Priority order
+1. complete deterministic time/tasks/interrupt/day-boundary foundation;
+2. migrate canonical runtime identity/stable IDs to the original setting;
+3. add provenance/projects/body processing;
+4. add ecology/gathering/spawn substrate;
+5. integrate timed routes and scheduled caravans/transport;
+6. establish regional content packs, import-normalization tools, and validators;
+7. complete character stats/proficiencies/disciplines/capabilities;
+8. build magic/ability and Combat 2.0;
+9. expand item/tool/equipment and production systems at meaningful data scale;
+10. add AI party/companions;
+11. expand into multiple connected regions/cities with real NPC populations/economies;
+12. add systemic quests/contracts/reputation;
+13. deepen relationships and romance;
+14. expand infrastructure/life systems and late adventure depth;
+15. release hardening at thousands-of-record scale.
 
-The broad priority order from the present repo is:
+## Decision test for substantial features
 
-1. lock development direction and version protocol;
-2. persistence/migration foundation;
-3. deterministic world time, pause, advance, and day boundaries;
-4. canonical tasks/projects and semantic action/event contracts;
-5. capability/discipline/loadout model and origins;
-6. first livelihood plus first-week vertical slice;
-7. infrastructure, construction, tools, farming/gathering depth, crafting, relationships, taming, and logistics;
-8. deeper adventure systems, magic, combat, objectives, and regional expansion;
-9. formula refinement where it materially improves an already-compelling game loop;
-10. release hardening and 1.0 content completeness.
+Before adding a major feature or content family, ask:
 
-The detailed release sequence and version-number protocol live in `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
+1. Does it help the player build persistent life, capability, relationships, knowledge, or infrastructure?
+2. Does it create a meaningful decision, risk, preparation need, tradeoff, or long-term ambition?
+3. Does mastery make repeated use more efficient, expressive, reliable, or valuable?
+4. Does it connect to at least one other world system?
+5. Does it fit a text-first UI without requiring a graphical-engine pivot?
+6. Can its state/behavior be tested deterministically?
+7. Can it scale to the content volume the final game needs?
+8. Does it belong to this original world rather than merely reproduce another game's proper nouns/content?
 
-## Non-goals for the near term
-
-Do not let the following become the roadmap spine before the first complete loop is proven:
-
-- exact retail FFXI formula reconstruction;
-- complete FFXI job/ability/spell coverage;
-- complete FFXI item database migration;
-- full auction-house/economy simulation;
-- broad map reproduction with low interaction density;
-- full graphical world rendering;
-- massive creature or recipe catalogs before one representative instance is fun;
-- arbitrary exponential construction costs;
-- real-world idle timers as a substitute for simulation depth.
-
-## Decision test for new features
-
-Before adding a substantial feature, ask:
-
-1. Does this help the player build a persistent life or capability?
-2. Does it create a meaningful decision, risk, preparation need, or long-term ambition?
-3. Does repeated use become more efficient or more expressive through mastery?
-4. Does it integrate with at least one other system rather than exist as an isolated checklist item?
-5. Can it be represented clearly in the text-first UI without demanding a graphical-engine pivot?
-6. Can its state and behavior be tested deterministically?
-7. Is the implementation appropriately scoped for the current release milestone?
-
-If the answer to most of these is no, the feature probably belongs later or should be redesigned.
+If the answer to several is no, redesign or defer it.
