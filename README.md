@@ -21,26 +21,28 @@ Loadouts and preparation constrain and enhance.
 ## Current version
 
 ```text
-Product:      0.5.900.1
-Package:      0.5.900
+Product:      0.6.200.1
+Package:      0.6.200
 Account Save: 4
 Game State:   5
-Data:         19
+Data:         20
 Benchmark:    1
-Codename:     Simulation Substrate Gate
+Codename:     Character Capabilities
 ```
 
 `js/text/version.js` is authoritative for runtime and subsystem versions. Product versions use `MAJOR.PHASE.TRACK.REVISION`; `package.json.version` remains three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
 
 ## Milestone state
 
-**Phase 0.5 — Simulation and Content Substrate is complete.**
+**Phase 0.5 — Simulation and Content Substrate is complete. Phase 0.6 is active through 0.6.200.**
 
-The repository now has one deterministic simulation authority for fictional time; pause/speed control; timed tasks; advance-until-interrupt behavior; day boundaries and structured reviews; original-world IDs and bounded legacy adapters; persistent projects; physical/economic/social resource provenance; persistent defeated-creature resource opportunities; canonical ecology families/species/populations and environmental gathering sources; canonical routes and scheduled transport; regional/shared content-pack manifests; stable-ID ownership and dependency validation; review-only legacy candidate normalization; generated hundreds-record validation fixtures; and an explicit simulation-substrate readiness gate.
+The completed simulation substrate includes deterministic fictional time, pause/speed control, timed tasks, advance-until-interrupt behavior, day boundaries/reviews, original-world IDs, projects, resource provenance, ecology/gathering populations, canonical routes/scheduled transport, regional content packs, scalable validation, and an explicit historical 0.5 readiness gate.
 
-`js/text/systems/simulationSubstrateGate.js` evaluates the 0.5 exit contract as seven structured groups: deterministic simulation, original-world identity, projects/provenance, ecology/gathering, routes/transport, regional content/scale, and persistence compatibility. The production gate is green at `0.5.900.1`.
+`0.6.100` established character-owned stats and progression. A player now owns a versioned original-design stat state whose persistent base growth follows the highest attained discipline training rank; the active discipline supplies contextual training/stat modifiers rather than owning the person. Lifetime training progress is tracked across discipline records. Historical FFXI stat formulas remain callable at explicit research/reference boundaries but are no longer authoritative for canonical player runtime stats.
 
-This remains **pre-alpha foundation breadth, not content completion**. The next phase integrates substantial character/mechanics content rather than treating the substrate as a finished game.
+`0.6.200` established a character-owned capability layer. Disciplines can provide learning paths, but learned capabilities persist on the continuous character. Capability use checks concrete prerequisites—learned proficiency, equipment, tools, preparation, resources, flags, and world/action context—rather than universally checking the currently active discipline. Skill training caps constrain new gain without erasing already learned proficiency when the player changes discipline.
+
+This remains **pre-alpha foundation and representative mechanics, not content completion**. The next bounded track is `0.6.300`, which will establish original magic and executable active-ability contracts without opening the full Combat 2.0 rewrite.
 
 ### Original-world anchors
 
@@ -60,7 +62,8 @@ The project does not erase compatibility tokens by inventing replacement canon w
 - some legacy-shaped POI hook IDs remain while dependent shop/quest/guild references are migrated atomically;
 - `places.js` connection records remain a bounded fallback for travel paths not yet represented by canonical route records;
 - encounter `spawnRules` remain a bounded transitional placement layer beside canonical ecology populations;
-- `mainJobId` and related historical property names remain transitional while 0.6 moves capability ownership toward the continuous character;
+- `mainJobId`, `player.jobs`, `raceId`, and related persisted/internal property names remain compatibility seams while ownership semantics move to the continuous character;
+- current equipment eligibility and skill-cap data still use discipline-shaped compatibility fields where a later capability migration is required;
 - `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules retain historical names because their purpose is explicitly compatibility/reference work;
 - legacy command aliases may still be accepted at adapter boundaries, while canonical help and new runtime records use original-world vocabulary.
 
@@ -121,7 +124,29 @@ GitHub Actions runs test/build checks for pushes to `main`. During the current e
 
 A discipline is a training tradition, not a magical identity swap. Learned techniques, spells, recipes, and practical capabilities ultimately belong to the continuous character. Actual use depends on real prerequisites such as proficiency, equipment, tools, ammunition, reagents, resources, injury/status, terrain, preparation, and formal training where the fiction requires it.
 
-The current `mainJobId`-shaped scaffold remains transitional. **0.6.100** starts by strengthening canonical character stats/progression without turning discipline labels into universal capability gates; **0.6.200** then deepens skills, proficiencies, disciplines, and capabilities.
+The current runtime now reflects this distinction in two places. `characterStatEngine.js` owns persistent character base growth independently from the currently active discipline, and `capabilityEngine.js` separates **how a capability is learned** from **whether its concrete use requirements are currently satisfied**. The historical `mainJobId` field remains an internal compatibility identifier, not a new universal permission boundary.
+
+### Character progression is persistent
+
+`player.progression.character` tracks character-level training history while per-discipline records preserve discipline-specific levels and EXP. Changing active discipline can change contextual modifiers or the window in which a proficiency can improve, but it cannot erase previously learned character proficiency or reduce the character's persistent base-growth rank.
+
+Canonical player combat profiles are now produced from the original provisional character model plus active-discipline context, equipment, and status modifiers. Historical FFXI grade/formula modules remain available for comparison tests only; combat-profile metadata explicitly reports that they are not runtime authority.
+
+### Capabilities are owned; prerequisites are checked at use time
+
+`data/capabilities.js` and `systems/capabilityEngine.js` establish representative technique/practical capability contracts. A capability can have one or more discipline learning paths or an open learning path. Once learned it lives in `player.progression.capabilities`, independent of the active discipline.
+
+Use eligibility can require:
+
+- character-owned learned proficiency;
+- compatible main-hand/equipment tags;
+- tool capabilities;
+- preparation tags;
+- resources such as TP/MP/HP;
+- flags or contextual conditions;
+- an appropriate action/world context.
+
+The initial capability records are representative substrate, not a mass-authored technique catalog. Execution/effect definitions remain a separate concern for `0.6.300` and later combat integration.
 
 ### Long fictional time without needless real waiting
 
@@ -149,11 +174,9 @@ world source
 
 ### Regional content is a validated graph
 
-`data/contentPackSchema.js`, `data/regionalContentPacks.js`, `systems/contentPackValidator.js`, and `data/legacyCandidateNormalizer.js` establish the 0.5.800 content architecture. Packs own human-meaningful stable IDs, declare dependencies, and cross-reference geography, routes/services, ecology, resources/items, NPCs, shops, recipes, quests, and relationships.
+`data/contentPackSchema.js`, `data/regionalContentPacks.js`, `systems/contentPackValidator.js`, and `data/legacyCandidateNormalizer.js` establish the regional-content architecture. Packs own human-meaningful stable IDs, declare dependencies, and cross-reference geography, routes/services, ecology, resources/items, NPCs, shops, recipes, quests, and relationships.
 
-Legacy/reference normalization only produces review candidates. Successful parsing cannot make historical content canonical. Validation catches ownership conflicts, dangling references, source/sink failures, route topology problems, undeclared cross-pack dependencies, and legacy IDs leaking into canonical packs without explicit adapters.
-
-Generated fixtures currently prove validation over hundreds of interconnected records before broad hand-authored expansion begins.
+Legacy/reference normalization only produces review candidates. Successful parsing cannot make historical content canonical. Generated fixtures prove validation over hundreds of interconnected records before broad hand-authored expansion.
 
 ## Current architecture
 
@@ -172,12 +195,15 @@ Game logic stays separate from canvas/DOM rendering.
 Important current substrate files include:
 
 ```text
+js/text/systems/characterStatEngine.js
+js/text/systems/progressionEngine.js
+js/text/systems/skillProgressionEngine.js
+js/text/data/capabilities.js
+js/text/systems/capabilityEngine.js
 js/text/data/ecologyCatalog.js
-js/text/data/resourceItems.js
 js/text/data/routeCatalog.js
 js/text/data/contentPackSchema.js
 js/text/data/regionalContentPacks.js
-js/text/data/legacyCandidateNormalizer.js
 js/text/systems/ecologyEngine.js
 js/text/systems/transportEngine.js
 js/text/systems/contentPackValidator.js
@@ -195,18 +221,21 @@ ffxiTextRpgAccountSession
 
 Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
-Account Save remains v4 and Game State remains v5. The 0.5.800 content-pack contracts advanced the canonical Data contract to v19; the 0.5.900 readiness gate adds no persisted data shape and therefore does not bump Data or Game State.
+Account Save remains v4 and Game State remains v5. Character stat/progression and capability state are additive/lazily repairable Game State v5 fields. Data advanced from v19 to **v20** for the canonical capability learning/use contract; no persistence migration is required for that data-contract bump.
 
 ## Immediate implementation sequence
 
 ```text
-0.5.550  Original-world identity and stable-ID migration      COMPLETE
-0.5.600  Resource provenance + persistent projects           COMPLETE
-0.5.650  Ecology, gathering sources, spawn populations       COMPLETE
-0.5.700  Timed routes + scheduled caravans/transport         COMPLETE
-0.5.800  Regional content packs + normalization/validation   COMPLETE
 0.5.900  Simulation/content-substrate exit gate              COMPLETE
-0.6.100  Character stats and progression                     NEXT
+0.6.100  Character stats and progression                     COMPLETE
+0.6.200  Skills/proficiencies/disciplines/capabilities       COMPLETE
+0.6.300  Original magic and active ability engine            NEXT
+0.6.400  Combat 2.0
+0.6.500  Canonical item/equipment/tool breadth
+0.6.600  Gathering/hunting/processing/crafting/cooking
+0.6.700  Ecology and regional creature/resource content
+0.6.800  AI party/companion foundation
+0.6.900  Integrated-mechanics exit gate
 ```
 
-The next bounded unit is `0.6.100`: consolidate the canonical character-stat/progression contract around the continuous character, identify and quarantine historical formula dependencies, add original-world progression metadata and migration-safe adapters, and prove representative progression behavior before opening the broader capabilities track.
+The next bounded unit is `0.6.300`: establish original executable ability/magic definitions, targeting/cost/cast/recast/effect contracts, deterministic action/event seams, and representative original techniques/spells. Keep character capability ownership distinct from executable effects and preserve the existing combat scaffold behind adapters until `0.6.400`.
