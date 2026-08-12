@@ -6,10 +6,19 @@ import {
     normalizeDirection,
     normalizePositionForPlace,
 } from '../data/coordinates.js';
+import { findRouteLeg, listRoutes } from '../data/routeCatalog.js';
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
-import { actionFailure, actionSuccess } from './actionResult.js';
-import { setPositionAndDiscover } from './atlasEngine.js';
-import { emitSemanticEvent } from './semanticEventEngine.js';
+import { actionFailure } from './actionResult.js';
+import {
+    advanceTravelJourney,
+    provideTravelInterrupts,
+    reconcileTravelJourney,
+    startRouteJourney,
+    TRAVEL_STATUSES,
+} from './transportEngine.js';
+import { ensureWorldTimeState } from './worldTimeEngine.js';
+
+export { provideTravelInterrupts, reconcileTravelJourney };
 
 export function describePlace(placeId) {
     const place = getPlace(placeId);
@@ -23,6 +32,9 @@ export function describePlace(placeId) {
             const directionText = connection.directions?.length ? ` ${connection.directions.join('/')}` : '';
             return `- ${destination?.name ?? connection.to} via ${connection.mode}${departText}${directionText}, ${connection.travelSeconds}s,${restrictionText}`;
         });
+    const canonicalRoutes = listRoutes()
+        .filter((route) => route.stops.some((stop) => stop.placeId === place.id))
+        .map((route) => `- ${route.name} (${route.id}) [${route.type}; ${route.allowedModes.join(', ')}]`);
 
     return [
         place.name,
@@ -34,6 +46,9 @@ export function describePlace(placeId) {
         '',
         'Exits:',
         ...(exits.length ? exits : ['- None']),
+        '',
+        'Known route records:',
+        ...(canonicalRoutes.length ? canonicalRoutes : ['- None']),
     ].join('\n');
 }
 
@@ -48,6 +63,33 @@ export function findTravelRoute(state, destinationQuery, options = {}) {
     const destination = findPlaceByQuery(destinationQuery);
     if (!destination) {
         return { ok: false, code: 'unknown-destination', reason: `Unknown destination: ${destinationQuery}` };
+    }
+
+    const canonicalLeg = findRouteLeg(from, destination.id, { mode: options.mode ?? 'walk' });
+    if (canonicalLeg) {
+        const departureCheck = requireRouteStopPosition(state, canonicalLeg.fromStop);
+        if (!departureCheck.ok) return { ...departureCheck, from, to: destination.id };
+        const placeRestriction = findBlockingRestriction(state, destination.restrictions);
+        if (placeRestriction) {
+            return {
+                ok: false,
+                code: 'destination-restricted',
+                reason: placeRestriction.reason ?? `Entry blocked by ${placeRestriction.type}.`,
+                from,
+                to: destination.id,
+                restrictionType: placeRestriction.type,
+            };
+        }
+        return {
+            ok: true,
+            code: 'route-found',
+            from,
+            to: destination.id,
+            destination,
+            routeRecord: canonicalLeg.route,
+            routeLeg: canonicalLeg,
+            connection: null,
+        };
     }
 
     const connections = getConnectionsFrom(from).filter((candidate) => candidate.to === destination.id);
@@ -94,6 +136,8 @@ export function findTravelRoute(state, destinationQuery, options = {}) {
         to: destination.id,
         connection,
         destination,
+        routeRecord: null,
+        routeLeg: null,
     };
 }
 
@@ -125,92 +169,74 @@ export function startTravel(state, destinationQuery) {
         });
     }
 
-    state.travel = {
-        active: true,
-        from: route.from,
-        to: route.to,
-        mode: route.connection.mode,
-        totalSeconds: route.connection.travelSeconds,
-        remainingSeconds: route.connection.travelSeconds,
-        arriveAt: route.connection.arriveAt ?? route.destination.coordinateSystem.start,
-    };
-
-    const event = emitSemanticEvent(state, 'travel.started', {
-        from: route.from,
-        to: route.to,
-        destinationName: route.destination.name,
-        mode: route.connection.mode,
-        durationSeconds: route.connection.travelSeconds,
-    }, { source: 'travelEngine' });
-
-    return actionSuccess({
-        action: 'travel.start',
-        code: 'travel.started',
-        outcome: 'started',
-        data: {
+    if (route.routeLeg) {
+        return startRouteJourney(state, {
+            routeId: route.routeRecord.id,
             from: route.from,
             to: route.to,
-            destinationName: route.destination.name,
-            mode: route.connection.mode,
-            durationSeconds: route.connection.travelSeconds,
-            travel: state.travel,
-            eventId: event.id,
-        },
-        display: { text: `Traveling to ${route.destination.name}. Estimated time: ${route.connection.travelSeconds}s.` },
+            fromStopId: route.routeLeg.fromStop.id,
+            toStopId: route.routeLeg.toStop.id,
+            mode: 'walk',
+            durationSeconds: route.routeLeg.durationSeconds,
+            arriveAt: route.routeLeg.toStop.coordinate ?? route.destination.coordinateSystem.start,
+            distanceYalms: route.routeLeg.distanceYalms,
+            hazardTags: route.routeLeg.hazardTags,
+            knowledge: route.routeRecord.knowledge,
+        });
+    }
+
+    return startRouteJourney(state, {
+        routeId: null,
+        from: route.from,
+        to: route.to,
+        mode: route.connection.mode,
+        durationSeconds: route.connection.travelSeconds,
+        arriveAt: route.connection.arriveAt ?? route.destination.coordinateSystem.start,
+        distanceYalms: null,
+        hazardTags: [],
+        knowledge: null,
     });
 }
 
 export function advanceTravel(state, elapsedSeconds) {
-    if (!state.travel?.active) return { completed: false };
-
-    state.travel.remainingSeconds = Math.max(0, state.travel.remainingSeconds - elapsedSeconds);
-    if (state.travel.remainingSeconds > 0) {
-        return { completed: false, travel: state.travel };
-    }
-
-    const destination = getPlace(state.travel.to);
-    const completed = state.travel;
-    const arrival = completed.arriveAt ?? destination?.coordinateSystem.start ?? { x: 0, y: 0 };
-    if (destination) {
-        setPositionAndDiscover(state, destination.id, arrival, { important: ['Place arrival'] });
-    } else {
-        state.currentPlaceId = completed.to;
-        state.location = completed.to;
-        state.position = { placeId: completed.to, ...arrival };
-    }
-    state.travel = null;
-
-    const event = emitSemanticEvent(state, 'travel.arrived', {
-        from: completed.from,
-        to: completed.to,
-        destinationName: destination?.name ?? completed.to,
-        mode: completed.mode,
-        arrival,
-    }, { source: 'travelEngine' });
-
-    return {
-        completed: true,
-        travel: completed,
-        destination,
-        eventId: event.id,
-        message: `Arrived at ${destination?.name ?? completed.to} ${describeCoordinate(arrival)}.`,
-    };
+    return advanceTravelJourney(state, elapsedSeconds);
 }
 
 export function describeTravel(state) {
     if (!state.travel?.active) return 'You are not currently traveling.';
     const destination = getPlace(state.travel.to);
+    const now = ensureWorldTimeState(state).totalSeconds;
+    const status = state.travel.status ?? TRAVEL_STATUSES.IN_TRANSIT;
+    const remainingSeconds = state.travel.arriveAtWorldSeconds === undefined
+        ? state.travel.remainingSeconds
+        : Math.max(0, state.travel.arriveAtWorldSeconds - now);
     return [
-        `Traveling to ${destination?.name ?? state.travel.to}.`,
+        `${status === TRAVEL_STATUSES.WAITING ? 'Waiting to depart for' : 'Traveling to'} ${destination?.name ?? state.travel.to}.`,
         `Mode: ${state.travel.mode}`,
-        `Remaining: ${state.travel.remainingSeconds}/${state.travel.totalSeconds}s`,
-        `Arrival: ${describeCoordinate(state.travel.arriveAt)}`,
-    ].join('\n');
+        `Route: ${state.travel.routeId ?? 'legacy direct connection'}`,
+        `Status: ${status}`,
+        `Remaining: ${remainingSeconds}/${state.travel.totalSeconds}s`,
+        state.travel.departAtWorldSeconds !== undefined ? `Departure world time: ${state.travel.departAtWorldSeconds}` : null,
+        state.travel.arriveAtWorldSeconds !== undefined ? `Arrival world time: ${state.travel.arriveAtWorldSeconds}` : null,
+        state.travel.hazardTags?.length ? `Hazards: ${state.travel.hazardTags.join(', ')}` : null,
+    ].filter(Boolean).join('\n');
 }
 
 export function findPlaceByQuery(query) {
     const normalized = normalize(query);
     return listPlaces().find((place) => place.id === normalized || normalize(place.name) === normalized || normalize(place.name).includes(normalized)) ?? null;
+}
+
+function requireRouteStopPosition(state, routeStop) {
+    if (!routeStop?.coordinate) return { ok: true };
+    const currentKey = coordinateKey(state.position ?? {});
+    const requiredKey = coordinateKey(routeStop.coordinate);
+    if (currentKey === requiredKey) return { ok: true };
+    return {
+        ok: false,
+        code: 'departure-position-required',
+        reason: `Reach ${describeCoordinate(routeStop.coordinate)} to use ${routeStop.id}. Current position: ${describeCoordinate(state.position ?? {})}.`,
+    };
 }
 
 function findBlockingRestriction(state, restrictions = []) {
