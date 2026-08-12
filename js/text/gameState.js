@@ -7,6 +7,7 @@ import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from '.
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createSemanticEventState } from './systems/semanticEventEngine.js';
 import { createSimulationControlState } from './systems/simulationControlEngine.js';
+import { createTimedTaskState } from './systems/timedTaskEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
@@ -42,6 +43,7 @@ export function createNewGameState(options = {}) {
             paused: options.simulationPaused ?? false,
             speedMultiplier: options.simulationSpeedMultiplier ?? 1,
         }),
+        tasks: createTimedTaskState(),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
