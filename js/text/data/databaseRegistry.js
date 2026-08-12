@@ -1,7 +1,12 @@
 export const DATABASES = Object.freeze({
     players: database('players', 'Player characters and account-local save state.', 'implemented', '0.1.0'),
     npcs: database('npcs', 'Non-player characters, services, dialogue hooks, shops, quest givers.', 'seeded', '0.1.0'),
-    enemies: database('enemies', 'Enemy definitions, families, ecosystems, aggro rules, resource opportunities, and EXP hooks.', 'seeded', '0.2.0'),
+    enemies: database('enemies', 'Encounter-instance templates linked to canonical species plus combat, resource-opportunity, and EXP hooks.', 'seeded', '0.2.1'),
+    ecologyFamilies: database('ecologyFamilies', 'Canonical creature family records shared across species and population definitions.', 'seeded', '0.1.0'),
+    species: database('species', 'Canonical species records separated from encounter instances, with habitat and behavior metadata.', 'seeded', '0.1.0'),
+    populations: database('populations', 'Place-bound species populations with capacity, density, rarity, respawn, and deterministic appearance hooks.', 'seeded', '0.1.0'),
+    gatheringSources: database('gatheringSources', 'Flora, mineral, and fishing sources with place, action, tool, output, depletion, and regeneration contracts.', 'seeded', '0.1.0'),
+    resourceItems: database('resourceItems', 'Representative canonical raw-material item templates cross-linked to gathering provenance and sinks.', 'seeded', '0.1.0'),
     places: database('places', 'Continents, regions, localities, landmarks, cities, dungeons, interiors.', 'seeded', '0.3.1'),
     maps: database('maps', 'Map records connecting map knowledge/ownership to place clusters.', 'seeded', '0.3.1'),
     powers: database('powers', 'Starting power definitions, start places, and initial map/permission grants.', 'seeded', '0.3.2'),
