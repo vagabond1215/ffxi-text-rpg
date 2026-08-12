@@ -1,5 +1,5 @@
 export const DATABASES = Object.freeze({
-    players: database('players', 'Player characters and account-local save state.', 'implemented', '0.1.0'),
+    players: database('players', 'Player characters and account-local save state.', 'implemented', '0.2.0'),
     npcs: database('npcs', 'Non-player characters, services, dialogue hooks, shops, quest givers.', 'seeded', '0.1.0'),
     enemies: database('enemies', 'Encounter-instance templates linked to canonical species plus combat, resource-opportunity, and EXP hooks.', 'seeded', '0.2.1'),
     ecologyFamilies: database('ecologyFamilies', 'Canonical creature family records shared across species and population definitions.', 'seeded', '0.1.0'),
@@ -20,6 +20,7 @@ export const DATABASES = Object.freeze({
     projects: database('projects', 'Persistent project state with stable IDs, material contributions, labor, canonical time, and completion events.', 'implemented', '0.1.0'),
     resourceProvenance: database('resourceProvenance', 'Physical, economic, social, crafting, and explicitly exceptional magical acquisition metadata plus item sinks.', 'implemented', '0.1.0'),
     resourceOpportunities: database('resourceOpportunities', 'Persistent defeated-creature/body, carried-goods, and salvage opportunities with timed recovery actions.', 'implemented', '0.1.0'),
+    capabilities: database('capabilities', 'Character-owned learned techniques and practical capabilities with separate learning paths and use requirements.', 'seeded', '0.1.0'),
 
     // Explicit historical/reference registries. These names remain non-canonical by design.
     ffxiStatGrades: database('ffxiStatGrades', 'FFXI-style race/job HP MP and attribute grade tables from the historical stat calculator model.', 'seeded-reference', '0.3.2'),
@@ -33,9 +34,9 @@ export const DATABASES = Object.freeze({
     items: database('items', 'Equipment, consumables, materials, tools, provenance metadata, sinks, and currencies-as-items where needed.', 'seeded', '0.7.0'),
     keyItems: database('keyItems', 'Persistent unlocks, permissions, quest objects, maps, licenses, mounts, and companion access.', 'planned', '0.0.0'),
     magic: database('magic', 'Spells, magical proficiencies, costs, cast times, recasts, elements, targeting, effects.', 'planned', '0.0.0'),
-    abilities: database('abilities', 'Discipline abilities, traits, weapon techniques, companion abilities, and enemy abilities.', 'planned', '0.0.0'),
+    abilities: database('abilities', 'Executable active/passive effect definitions for techniques, magic, companions, and enemies; distinct from character capability ownership.', 'planned', '0.0.0'),
     lootTables: database('lootTables', 'Transitional candidate output pools consumed by provenance-aware resource opportunities.', 'seeded-transitional', '0.1.0'),
-    leveling: database('leveling', 'EXP curves, level caps, skill caps, discipline levels, and later advanced progression.', 'seeded', '0.5.0'),
+    leveling: database('leveling', 'Character growth, EXP curves, discipline training records, proficiency training caps, and later advanced progression.', 'seeded', '0.6.0'),
     companions: database('companions', 'AI companion recruitment, behavior profiles, roles, equipment, abilities, and progression.', 'planned', '0.0.0'),
     crafting: database('crafting', 'Recipes/processes, catalysts, ingredients, tools/stations, skill checks, quality, and guild support.', 'seeded-pack-fixture', '0.1.0'),
     mounts: database('mounts', 'Mount unlocks, travel modifiers, restrictions, and place/route permission rules.', 'planned', '0.0.0'),
