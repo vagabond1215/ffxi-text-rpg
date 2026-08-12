@@ -5,6 +5,7 @@ import { describeCoordinate, normalizePositionForPlace } from './data/coordinate
 import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
+import { createSemanticEventState } from './systems/semanticEventEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
@@ -33,7 +34,7 @@ export function createNewGameState(options = {}) {
     });
 
     return {
-        version: 3,
+        version: 4,
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
@@ -46,6 +47,7 @@ export function createNewGameState(options = {}) {
         inventory: player.inventory,
         flags: {},
         log: [],
+        events: createSemanticEventState(),
         activeBattle: null,
     };
 }
