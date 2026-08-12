@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createInitialState } from '../js/text/gameState.js';
+import { VERSION } from '../js/text/version.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { isActionResult } from '../js/text/systems/actionResult.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
@@ -14,28 +15,28 @@ test('current state requires valid deterministic world-time state', () => {
     const state = createInitialState();
 
     assert.deepEqual(validateGameState(state), []);
-    assert.equal(state.version, 4);
+    assert.equal(state.version, VERSION.gameState);
     assert.deepEqual(state.worldTime, { totalSeconds: 0 });
 });
 
 test('travel action and event seams can observe canonical world time without using log prose', () => {
     const state = createInitialState();
     state.worldTime.totalSeconds = 3600;
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
-    const started = startTravel(state, 'West Ronfaure');
+    const started = startTravel(state, 'West Elderwood');
     assert.equal(isActionResult(started), true);
     assert.equal(started.code, 'travel.started');
 
     const [startedEvent] = listSemanticEvents(state, { type: 'travel.started' });
     assert.equal(startedEvent.worldTimeSeconds, 3600);
-    assert.equal(startedEvent.data.to, 'west-ronfaure');
+    assert.equal(startedEvent.data.to, 'west-elderwood');
 
     state.worldTime.totalSeconds += 45;
     advanceTravel(state, 45);
     const [arrivedEvent] = listSemanticEvents(state, { type: 'travel.arrived' });
     assert.equal(arrivedEvent.worldTimeSeconds, 3645);
-    assert.equal(arrivedEvent.data.to, 'west-ronfaure');
+    assert.equal(arrivedEvent.data.to, 'west-elderwood');
 });
 
 test('character-owned skill storage is outside the active job record', () => {
