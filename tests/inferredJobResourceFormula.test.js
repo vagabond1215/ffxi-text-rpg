@@ -6,7 +6,7 @@ import { getInferredJobHpMpGrades } from '../js/text/data/ffxiInferredJobGrades.
 import { calculateInferredJobResources, canUseInferredJobResourceFormula } from '../js/text/systems/inferredJobResourceFormula.js';
 import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
 
-test('Rune Fencer uses inferred HP B and MP F resource grades', () => {
+test('Rune Fencer historical research uses inferred HP B and MP F resource grades', () => {
     const player = createPlayerCharacter({ raceId: 'hume', mainJobId: 'runeFencer', level: 1 });
     const inferred = calculateInferredJobResources(player);
 
@@ -17,24 +17,24 @@ test('Rune Fencer uses inferred HP B and MP F resource grades', () => {
     assert.equal(inferred.resources.maxMp, 16);
 });
 
-test('Blue Mage uses inferred hybrid HP and MP grades', () => {
+test('Blue Mage historical research retains inferred hybrid HP and MP grades', () => {
     const player = createPlayerCharacter({ raceId: 'hume', mainJobId: 'blueMage', level: 1 });
-    const profile = calculateCombatProfile(player);
+    const inferred = calculateInferredJobResources(player);
 
     assert.equal(getInferredJobHpMpGrades('blueMage').hp, 'D');
     assert.equal(getInferredJobHpMpGrades('blueMage').mp, 'D');
-    assert.equal(profile.resources.maxHp, 28);
-    assert.equal(profile.resources.maxMp, 20);
+    assert.equal(inferred.resources.maxHp, 28);
+    assert.equal(inferred.resources.maxMp, 20);
 });
 
-test('Dancer has inferred HP but no native MP', () => {
+test('Dancer historical research has inferred HP but no native MP', () => {
     const player = createPlayerCharacter({ raceId: 'hume', mainJobId: 'dancer', level: 1 });
-    const profile = calculateCombatProfile(player);
+    const inferred = calculateInferredJobResources(player);
 
     assert.equal(getInferredJobHpMpGrades('dancer').hp, 'D');
     assert.equal(getInferredJobHpMpGrades('dancer').mp, 'X');
-    assert.equal(profile.resources.maxHp, 28);
-    assert.equal(profile.resources.maxMp, 0);
+    assert.equal(inferred.resources.maxHp, 28);
+    assert.equal(inferred.resources.maxMp, 0);
 });
 
 test('Geomancer inferred grades remain marked provisional through confidence metadata', () => {
@@ -47,4 +47,13 @@ test('Geomancer inferred grades remain marked provisional through confidence met
     assert.equal(grades.mp, 'C');
     assert.equal(inferred.mainJobConfidence, 'medium');
     assert.equal(inferred.resources.maxMp, 28);
+});
+
+test('inferred historical resources are not canonical runtime authority', () => {
+    const player = createPlayerCharacter({ raceId: 'hume', mainJobId: 'blueMage', level: 1 });
+    const inferred = calculateInferredJobResources(player);
+    const runtime = calculateCombatProfile(player);
+
+    assert.equal(runtime.metadata.historicalReferenceRuntimeAuthority, false);
+    assert.notEqual(runtime.resources.maxHp, inferred.resources.maxHp);
 });
