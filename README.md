@@ -23,32 +23,25 @@ The browser presentation is canvas-first and text-led. Prose carries most of the
 ## Current version
 
 ```text
-Product:      0.5.600.1
-Package:      0.5.600
+Product:      0.5.650.1
+Package:      0.5.650
 Account Save: 4
 Game State:   5
-Data:         16
-Codename:     Resource Provenance
+Data:         17
+Codename:     Ecology Substrate
 ```
 
 Product versions use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`. `js/text/version.js` is authoritative for runtime/system versions.
 
 ## Current milestone state
 
-The `0.5.600` resource-provenance and persistent-project substrate is implemented on `main`.
+The `0.5.650` ecology, gathering-source, and population substrate is implemented on `main`.
 
-Current substrate includes:
+The current layer now includes canonical creature families and species separated from encounter instances; place-bound population records with habitat, density, rarity, aggression/sense/social metadata and deterministic respawn; representative flora, mineral, and fishing sources; canonical raw-resource item templates cross-linked to source provenance and sinks; persistent depletion state driven only by canonical world time; deterministic day/time/flag appearance conditions; explicit rare/named hooks that do not depend on arbitrary appearance rolls; and cross-reference validation across species, families, places, populations, sources, actions, and item outputs.
 
-- persistent projects with stable project IDs, material contributions, labor requirements, canonical-time progress, cancellation, completion, and semantic events;
-- a normalized provenance schema for bodies, carried goods, flora, minerals, fishing, salvage, crafting, commerce, contracts/social rewards, and explicitly exceptional magic;
-- item sink/use metadata for consumption, equipment, tools, processing/crafting, construction, repair, trade, contracts/quests, salvage, decoration/collection, and key items;
-- defeated enemies creating persistent recoverable body/carried-goods/salvage opportunities instead of automatically materializing finished materials in inventory;
-- timed `search`, `skin`, `butcher`, `pluck`, `extract`, and `salvage` recovery contracts with tool, proficiency, condition, and inventory-capacity hooks;
-- recovery outcome rolls fixed when work starts and persisted with the recovery action, so later reconciliation does not reroll an already-begun activity;
-- recovered items carrying provenance metadata identifying their source, place, recovery action, and opportunity;
-- transitional starter loot tables reused as candidate resource outputs rather than direct reward-confetti tables.
+Seed encounter templates now carry canonical `speciesId` references. Existing `places.js` spawn-rule arrays remain a transitional encounter-placement layer rather than the final population authority; migrating encounter selection to population-driven spawning is intentionally bounded follow-up work rather than a reason to generate large ecology catalogs now.
 
-EXP and the current `gil` reward scaffold still resolve immediately after victory. Physical materials remain in the world until an appropriate recovery action succeeds.
+The preceding `0.5.600` substrate remains in place: persistent projects, provenance-aware defeated-enemy resource opportunities, timed recovery actions, and physical/economic/social source metadata.
 
 ### Original-world anchors
 
@@ -131,7 +124,7 @@ The current `mainJobId`-shaped scaffold remains transitional until capability-ce
 
 Simulation time and wall-clock time are separate. The game supports deterministic world time, pause, speed control, timed tasks, advance-until-interrupt semantics, and structured end-of-day review.
 
-Current `main` includes canonical deterministic world time, pause/speed control, timed tasks, deterministic interrupts, structured day review, original-world identity/stable IDs, persistent projects, and provenance-aware physical resource recovery.
+Current `main` includes canonical deterministic world time, pause/speed control, timed tasks, deterministic interrupts, structured day review, original-world identity/stable IDs, persistent projects, provenance-aware physical resource recovery, and ecology depletion/regeneration driven by the same canonical time authority.
 
 ### A home base, not a one-city game
 
@@ -147,7 +140,7 @@ Maps can be acquired, discovered, incomplete, or supplemented by exploration and
 
 A defeated creature should not automatically manufacture finished crafting materials in inventory. Combat can create a body, carried-goods opportunity, or salvage opportunity. Recovering useful material can then depend on searching, skinning, butchering, plucking, extracting, salvaging, tools, proficiency, condition, fictional time, carrying capacity, and player choice.
 
-Environmental sources will extend the same provenance model to gathering, logging, mining, fishing, trapping, and related work. Commerce, wages, contracts, reputation/social rewards, crafting, and explicitly justified exceptional magic remain valid acquisition paths.
+Environmental sources now use the same provenance model for representative foraging, gathering, logging, mining, and fishing records. Their availability depletes and regenerates through canonical simulation time rather than real-world timers. Commerce, wages, contracts, reputation/social rewards, crafting, and explicitly justified exceptional magic remain valid acquisition paths.
 
 ### Materials circulate through the economy
 
@@ -167,7 +160,7 @@ Items should have intentional sources and sinks. Gathering, crafting, cooking, s
 
 The intended game eventually needs hundreds to thousands of interconnected records: places, NPCs, creatures, flora/resources, items, recipes, abilities, quests, relationships, shops, and transport routes.
 
-Mechanics and representative content therefore grow together through regional content packs, normalization, and cross-reference validation rather than a few toy records or giant unvalidated files.
+Mechanics and representative content therefore grow together through regional content packs, normalization, and cross-reference validation rather than a few toy records or giant unvalidated files. The ecology substrate deliberately proves several distinct families, habitats, and source types before hundreds-scale generation begins.
 
 ## Current architecture
 
@@ -200,11 +193,13 @@ tests/
 docs/
 ```
 
+The ecology layer is currently split between `data/ecologyCatalog.js`, `data/resourceItems.js`, and `systems/ecologyEngine.js`; encounter templates remain in `data/seedEntities.js` and refer to canonical species IDs.
+
 ## Implemented foundation versus sparse content
 
-The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/EXP/status/RNG scaffolds, provenance-aware battle resources, persistent projects, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation hooks, benchmarks, CI, and database/system-version tracking.
+The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/EXP/status/RNG scaffolds, provenance-aware battle resources, persistent projects, ecology populations and environmental gathering sources, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation hooks, benchmarks, CI, and database/system-version tracking.
 
-This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, ecology, gathering, and regional catalogs remain far below intended scale.
+This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, gathering, and regional catalogs remain far below intended scale.
 
 See `docs/SYSTEM_CATALOG.md` for the system-by-system audit.
 
@@ -219,7 +214,7 @@ ffxiTextRpgAccountSession
 
 Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
-The new project and resource-opportunity registries are additive Game State v5 fields and lazily initialize when absent, so this track does not require a Game State schema bump. The item/provenance data contract advances Data to v16.
+Project, resource-opportunity, and ecology registries are additive Game State v5 fields and lazily initialize when absent, so these tracks do not require another Game State schema bump. The canonical ecology/resource catalog advances the Data contract to v17.
 
 ## Formula and research policy
 
@@ -230,10 +225,10 @@ Formula confidence stays explicit: exact/sourced, researched approximation, inte
 ```text
 0.5.550  Original-world identity and stable-ID migration      COMPLETE
 0.5.600  Resource provenance + persistent projects           COMPLETE
-0.5.650  Ecology, gathering sources, spawn populations       NEXT
-0.5.700  Timed routes + scheduled caravans/transport
+0.5.650  Ecology, gathering sources, spawn populations       COMPLETE
+0.5.700  Timed routes + scheduled caravans/transport         NEXT
 0.5.800  Regional content packs + normalization/validation
 0.5.900  Simulation/content-substrate exit gate
 ```
 
-The next bounded unit should establish species/family records, habitat/population rules, environmental gathering-source definitions, and deterministic regeneration/respawn without beginning high-volume content generation prematurely.
+The next bounded unit should establish canonical route records and timed local/overland travel as shared transport substrate, then prove scheduled caravan stops, fares/cargo allowances, deterministic departure/arrival timing, and interruption hooks before broad route generation.
