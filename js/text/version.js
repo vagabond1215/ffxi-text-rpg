@@ -1,18 +1,24 @@
+export const PRODUCT_VERSION = '0.4.200.0';
+export const PACKAGE_VERSION = '0.4.200';
+
 export const VERSION = Object.freeze({
-    app: '0.4.4',
+    product: PRODUCT_VERSION,
+    package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'Conservative Skill Gains',
+    codename: 'Version Manifest Separation',
     compatibility: 'no-backwards-compatibility',
     released: false,
 
-    // Backward-compatible alias for older callers while they migrate.
+    // Transitional aliases for callers that still use the historical names.
+    app: PRODUCT_VERSION,
     save: 4,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
+    versionManifest: '0.4.200',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
@@ -78,7 +84,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
 
 export function describeVersion() {
     return [
-        `App: ${VERSION.app}`,
+        `Product: ${VERSION.product}`,
+        `Package: ${VERSION.package}`,
         `Account Save: ${VERSION.accountSave}`,
         `Game State: ${VERSION.gameState}`,
         `Data: ${VERSION.data}`,

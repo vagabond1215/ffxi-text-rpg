@@ -4,20 +4,32 @@ import assert from 'node:assert/strict';
 import { describeDatabases, listDatabases } from '../js/text/data/databaseRegistry.js';
 import { describeLegacyRecoveredData } from '../js/text/data/legacyRecoveredData.js';
 import { createTickEngine } from '../js/text/systems/tickEngine.js';
-import { describeSystemVersions, describeVersion, VERSION } from '../js/text/version.js';
+import {
+    describeSystemVersions,
+    describeVersion,
+    PACKAGE_VERSION,
+    PRODUCT_VERSION,
+    VERSION,
+} from '../js/text/version.js';
 
 
-test('version manifest exposes explicit app account save game state data and benchmark versions', () => {
-    assert.equal(VERSION.app, '0.4.4');
+test('version manifest separates product package and persistence versions', () => {
+    assert.equal(PRODUCT_VERSION, '0.4.200.0');
+    assert.equal(PACKAGE_VERSION, '0.4.200');
+    assert.equal(VERSION.product, PRODUCT_VERSION);
+    assert.equal(VERSION.package, PACKAGE_VERSION);
+    assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 3);
     assert.equal(VERSION.data, 13);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.accountSave);
-    assert.match(describeVersion(), /App: 0.4.4/);
+    assert.match(describeVersion(), /Product: 0\.4\.200\.0/);
+    assert.match(describeVersion(), /Package: 0\.4\.200/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 3/);
-    assert.match(describeVersion(), /Codename: Conservative Skill Gains/);
+    assert.match(describeVersion(), /Codename: Version Manifest Separation/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.4\.200/);
     assert.match(describeSystemVersions(), /characterCreation/);
     assert.match(describeSystemVersions(), /canvasUi: 0.7.0/);
     assert.match(describeSystemVersions(), /combatActions: 0.5.1/);
