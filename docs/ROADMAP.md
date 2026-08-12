@@ -14,13 +14,13 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.250.1
-Package:      0.6.250
+Product:      0.6.300.1
+Package:      0.6.300
 Account Save: 4
 Game State:   5
-Data:         20
+Data:         21
 Benchmark:    1
-Codename:     Player Interface Architecture
+Codename:     Original Magic and Abilities
 ```
 
 This remains pre-alpha product development. Milestone numbers describe active contracts; they are not completion percentages.
@@ -57,7 +57,7 @@ Key rules:
 | --- | --- | --- |
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
-| `0.6` | Integrated character/mechanics content | **Active through 0.6.250.** Character ownership/capabilities and the player-interface architecture are established; magic, Combat 2.0, item breadth, production chains, ecology content, and companions follow. |
+| `0.6` | Integrated character/mechanics content | **Active through 0.6.300.** Character ownership/capabilities, semantic player interface, and original executable magic/ability contracts are established; Combat 2.0, item breadth, production chains, ecology content, and companions follow. |
 | `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
@@ -167,7 +167,7 @@ Resulting baseline: **0.6.100.1 / Package 0.6.100 / Account Save 4 / Game State 
 
 Capability contract integrated at **0.6.200.1 / Package 0.6.200 / Account Save 4 / Game State 5 / Data 20**. Revision `0.6.200.2` was a bounded canvas-UI usability pass before the dedicated interface architecture track.
 
-- [x] Added canonical capability catalog v1 with stable capability IDs and separate learning/use contracts.
+- [x] Added canonical capability catalog with stable capability IDs and separate learning/use contracts.
 - [x] Added versioned character-owned capability state under `player.progression.capabilities`.
 - [x] Disciplines can satisfy capability learning paths, including previously attained inactive-discipline training.
 - [x] Once learned, a capability remains character-owned after discipline switching.
@@ -175,13 +175,12 @@ Capability contract integrated at **0.6.200.1 / Package 0.6.200 / Account Save 4
 - [x] The active discipline is explicitly **not** a universal capability-use gate.
 - [x] Character-owned proficiency survives discipline switching even when the current discipline has a lower or zero training cap; current discipline caps constrain new gain instead of shrinking learned proficiency.
 - [x] Representative martial and practical capabilities prove combat/resource-recovery/gathering-shaped requirements without opening a mass content catalog.
-- [x] Capability data is registered separately from future executable `abilities` definitions.
+- [x] Capability data is registered separately from executable `abilities` definitions.
 - [x] Data advanced 19 -> 20 for the canonical capability learning/use contract; Account Save remains 4 and Game State remains 5 because capability state is additive/lazy.
 
 ### 0.6.200 bounded limitations
 
-- Capability records are representative substrate, not a broad technique catalog.
-- `capabilityEngine` evaluates ownership and use eligibility; combat/action effect execution has not been universally rerouted through capability IDs.
+- Capability records remain representative substrate, not a broad technique catalog.
 - Equipment eligibility still contains discipline-shaped compatibility requirements that should migrate toward capability/loadout prerequisites incrementally.
 - Current skill-cap rank math remains explicitly placeholder-confidence research/scaffolding.
 - No broad trainer, quest-instruction, or preparation interface exists yet.
@@ -190,7 +189,7 @@ Capability contract integrated at **0.6.200.1 / Package 0.6.200 / Account Save 4
 
 Resulting baseline: **0.6.250.1 / Package 0.6.250 / Account Save 4 / Game State 5 / Data 20**.
 
-The purpose of this inserted track is to establish the intended interaction model before magic, Combat 2.0, crafting, companions, and larger content catalogs multiply the number of player actions.
+The purpose of this inserted track was to establish the intended interaction model before magic, Combat 2.0, crafting, companions, and larger content catalogs multiplied the number of player actions.
 
 - [x] Replaced the active full-canvas browser shell with semantic DOM/CSS presentation; Canvas modules remain bounded transitional regression/reference code.
 - [x] Added renderer-independent `gameViewModel.js` for scene, status, map, movement, current activity, and contextual actions.
@@ -225,22 +224,50 @@ The purpose of this inserted track is to establish the intended interaction mode
 - Simulation controls are displayed as state but a richer dedicated time-control HUD should only be added when it is wired cleanly to the active browser scheduler/interrupt flow.
 - `uiState.js` still reuses some structural helpers from the former canvas input layer; extract shared UI state incrementally rather than through a broad rewrite.
 
-## 0.6.300 — Original magic and active ability engine — next
+## 0.6.300 — Original magic and active ability engine — complete
 
-First bounded unit:
+Resulting baseline: **0.6.300.1 / Package 0.6.300 / Account Save 4 / Game State 5 / Data 21**.
 
-- [ ] Define executable ability/effect records separately from character capability ownership.
-- [ ] Establish original spell/technique schools and stable IDs with no historical spell-name canon leakage.
-- [ ] Define deterministic targeting, resource cost, cast/activation time, recast/cooldown, effect payload, interruption, and semantic event contracts.
-- [ ] Allow learned capabilities to grant/enable executable effects while preserving `capabilityEngine` as the ownership/use-prerequisite authority.
-- [ ] Integrate representative effects through `ActionResult` and semantic events without parsing display prose.
-- [ ] Preserve the existing battle/combat-action scaffold behind adapters until `0.6.400` rather than attempting Combat 2.0 inside the magic track.
-- [ ] Author only enough original magic/abilities to prove offensive, restorative/support, and non-combat/use-context seams.
-- [ ] Add validation/versioning and stop at a coherent 0.6.300 boundary before Combat 2.0.
+- [x] Added executable canonical ability/effect records separately from character capability ownership.
+- [x] Added original spell traditions Embercraft, Vital Weave, and Ward Lore with stable original IDs and no historical spell-name promotion.
+- [x] Added representative executable Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading records.
+- [x] Defined deterministic target contracts, MP/TP costs, activation durations, cooldowns, structured effects, and interruption behavior.
+- [x] Kept `capabilityEngine` as the character ownership/use-prerequisite authority while `abilityEngine` owns effect execution and cost spending.
+- [x] Backed non-instant abilities with canonical `ability.activation` timed tasks and a deterministic ability-completion interrupt above generic task completion.
+- [x] Added structured `ability.started`, `ability.resolved`, and `ability.interrupted` semantic events independent of display prose.
+- [x] Added damage, healing, status, and contextual-survey effects without opening Combat 2.0 or a mass spell catalog.
+- [x] Waymark Reading reports only already-acquired atlas knowledge rather than revealing authored topology.
+- [x] Added additive/lazy Game State v5 ability runtime state for active activation and cooldown deadlines.
+- [x] Added semantic `ability.activate` UI intents and learned-ability view-model records; combat context can surface ready learned abilities without manufacturing command strings.
+- [x] Added `invoke <ability>` as a bounded command/power-user adapter while leaving legacy `cast`/transitional combat technique behavior behind compatibility seams for 0.6.400.
+- [x] Corrected `wait` so non-travel waits advance canonical fictional world time and reconcile active abilities rather than advancing only the wall-clock tick adapter.
+- [x] Data advanced 20 -> 21 for the canonical spell-school/ability data contract; Account Save remains 4 and Game State remains 5 because runtime ability state is additive/lazily reconstructible.
+
+### 0.6.300 bounded limitations
+
+- The old `combatActionEngine.castSpell()` placeholder and transitional combat-technique adapter remain intentionally bounded until Combat 2.0.
+- Only one active ability activation is supported at a time; no action queue/concurrency model is claimed yet.
+- Enemy canonical ability selection/execution, AoE/ground targeting, resistance/accuracy layers, and deeper tactical timing belong to 0.6.400.
+- Status records can carry duration metadata, but this track does not redesign status-expiry orchestration around world time.
+- Current representative effect coefficients are provisional original balance and may be tuned by Combat 2.0 without changing capability/ability ownership boundaries.
+- Cooldown currently begins on successful resolution. Interrupted abilities retain already-spent resources and do not start cooldown.
+- The DOM Spellbook presentation still has command-backed transitional elements; the semantic view model and direct battle-context ability intents are canonical seams to extend rather than justification for another UI rewrite.
+
+## 0.6.400 — Combat 2.0 — next
+
+Recommended first bounded unit:
+
+- [ ] Inspect current battle topology/phase/combatants, action adapters, statuses, canonical ability engine, reward/resource-opportunity flow, equipment, and deterministic timing contracts.
+- [ ] Define a canonical encounter/combat-state contract that can evolve beyond placeholder action assumptions without rewriting unrelated world simulation.
+- [ ] Make canonical abilities first-class combat actions with deterministic target/action resolution.
+- [ ] Define opponent action selection/AI, action timing/recovery, interruption, and status interaction on the existing fictional-time substrate.
+- [ ] Keep skills, equipment, capabilities, preparation, and resources compositional; do not turn active discipline into a hard class gate.
+- [ ] Migrate legacy `attack`, `cast`, and `technique` commands behind bounded adapters to the canonical combat path.
+- [ ] Preserve victory/defeat, EXP, physical resource opportunities, and provenance behavior while replacing combat scaffolding.
+- [ ] Validate/version/test/benchmark and stop before `0.6.500` item/equipment breadth.
 
 ## Later planned 0.6 tracks
 
-- `0.6.400` Combat 2.0;
 - `0.6.500` canonical item/equipment/tool breadth;
 - `0.6.600` gathering, hunting, processing, crafting, cooking, salvage;
 - `0.6.700` ecology and regional creature/resource content;
