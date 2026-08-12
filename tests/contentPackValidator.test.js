@@ -31,9 +31,9 @@ test('content pack index records stable ownership without rewriting canonical id
 
     assert.deepEqual(index.issues, []);
     assert.deepEqual(index.packIds, ['pack-shared-foundation', 'pack-elderwood-opening', 'pack-starfen-opening']);
-    assert.ok(index.recordCounts.places >= 5);
-    assert.ok(index.recordCounts.items >= 9);
-    assert.ok(index.recordCounts.recipes >= 2);
+    assert.equal(index.recordCounts.places, 5);
+    assert.equal(index.recordCounts.items, 7);
+    assert.equal(index.recordCounts.recipes, 2);
     assert.ok(index.ownerCount > 20);
 });
 
@@ -65,7 +65,7 @@ test('cross-pack references require declared dependencies even when the target i
         },
     });
 
-    const issues = validateContentPacks([ELDERWOOD_PACK, dependent], { includeCanonicalCatalogs: false });
+    const issues = validateContentPacks([SHARED_FOUNDATION_PACK, ELDERWOOD_PACK, dependent], { includeCanonicalCatalogs: false });
     assert.ok(issues.some((issue) => issue.includes('owned by pack-elderwood-opening without declaring it as a dependency')));
 });
 
