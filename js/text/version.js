@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.4.900.0';
-export const PACKAGE_VERSION = '0.4.900';
+export const PRODUCT_VERSION = '0.5.100.0';
+export const PACKAGE_VERSION = '0.5.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
-    gameState: 3,
+    gameState: 4,
     data: 13,
     benchmark: 1,
-    codename: 'Foundation Exit Gate',
+    codename: 'Deterministic World Clock',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,11 +18,12 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.4.900',
-    saveMigrations: '0.1.0',
+    versionManifest: '0.5.100',
+    saveMigrations: '0.2.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
+    worldTime: '0.1.0',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
@@ -30,7 +31,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
-    validation: '0.6.0',
+    validation: '0.7.0',
     playerEntity: '0.5.4',
     characterCreation: '0.4.1',
     nations: '0.3.1',

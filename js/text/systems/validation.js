@@ -21,8 +21,9 @@ import {
 } from '../data/systemConstants.js';
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { getContainerCapacity } from './inventoryEngine.js';
+import { validateWorldTimeState } from './worldTimeEngine.js';
 
-export const CURRENT_SAVE_VERSION = 3;
+export const CURRENT_SAVE_VERSION = 4;
 
 export function validateGameState(state) {
     const issues = [];
@@ -33,6 +34,12 @@ export function validateGameState(state) {
 
     if (state.version !== CURRENT_SAVE_VERSION) {
         issues.push(`Expected state version ${CURRENT_SAVE_VERSION}, received ${String(state.version)}.`);
+    }
+
+    if (!isObject(state.worldTime)) {
+        issues.push('worldTime must be an object.');
+    } else {
+        issues.push(...validateWorldTimeState(state.worldTime));
     }
 
     const place = getPlace(state.currentPlaceId);

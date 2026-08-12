@@ -13,15 +13,15 @@ Authoritative companion documents:
 
 ## Current baseline
 
-At the 0.4 exit gate:
+Current 0.5 world-time foundation target:
 
 ```text
-Product:      0.4.900.0
-Package:      0.4.900
+Product:      0.5.100.0
+Package:      0.5.100
 Account Save: 4
-Game State:   3
+Game State:   4
 Data:         13
-Codename:     Foundation Exit Gate
+Codename:     Deterministic World Clock
 ```
 
 This remains pre-alpha product development. The version is a milestone identity, not a completion percentage.
@@ -66,21 +66,23 @@ Key rules:
 - [x] `0.4.400` Structured `ActionResult` contract; travel-start pilot.
 - [x] `0.4.500` Bounded semantic-event foundation; travel start/arrival pilot.
 - [x] `0.4.600` Foundation stabilization/readiness tests and transitional architecture rules.
-- [x] `0.4.900` Foundation exit-gate certification, contingent on green CI for the integration PR.
+- [x] `0.4.900` Foundation exit-gate certification.
 
-Existing foundations preserved through the phase include canvas-first text UI, command adapters, accounts/saves, places/navigation/atlas/travel, POIs, inventory/equipment/items/shops, combat/rewards/status/RNG scaffolds, character-owned skills, validation, tests, benchmarks, and system-version tracking.
+## 0.5 — World Time, Tasks, and Projects — active
 
-## 0.5 — World Time, Tasks, and Projects — next
+### 0.5.100 Deterministic world clock — current
 
-### 0.5.100 Deterministic world clock
+- [x] Canonical simulated seconds stored in Game State v4.
+- [x] Exact deterministic advancement independent of `Date.now()`.
+- [x] Derived day/hour/minute/second inspection and formatting.
+- [x] Deterministic minute/hour/day/multi-day rollover tests.
+- [x] `time.advanced` semantic event records structured advancement observations.
+- [x] Ordered Game State v3 -> v4 migration adds canonical world time.
+- [x] Wall-clock `tickEngine` remains only a scheduler/dispatcher and does not mutate canonical world time by itself.
 
-- [ ] Canonical simulated time stored in game state.
-- [ ] Exact advancement independent of `Date.now()`.
-- [ ] Derived day/date/time inspection and formatting.
-- [ ] Deterministic rollover tests.
-- [ ] Wall-clock `tickEngine` remains only an optional scheduler/advancement requester.
+The clock intentionally has no seasons, named months, calendar lore, or speed controls yet. One canonical non-negative integer second count is the authoritative time state; richer calendar presentation can be layered over it later without changing time arithmetic.
 
-### 0.5.200 Pause and speed control
+### 0.5.200 Pause and speed control — next
 
 - [ ] Pause/resume semantics.
 - [ ] Simulation speed settings.
@@ -213,10 +215,10 @@ Refine formulas when they materially improve a meaningful player-facing loop. Do
 
 ## Immediate next pass
 
-After the 0.4.900 exit-gate PR is green and merged:
+After the 0.5.100 deterministic-clock PR is green and merged:
 
 ```text
-0.5.100 — Deterministic world clock
+0.5.200 — Pause and simulation speed control
 ```
 
-Keep that pass narrow: exact simulated time state, exact advancement, formatting/inspection, rollover tests, and no dependence on wall-clock time for canonical simulation state.
+Keep the wall-clock scheduler optional: speed/pause controls should request deterministic world-time advancement rather than redefine the canonical clock.

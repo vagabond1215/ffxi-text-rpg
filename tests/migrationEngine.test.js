@@ -46,10 +46,11 @@ test('ordered migration engine fails deterministically on missing or future vers
     assert.equal(future.code, 'future-version');
 });
 
-test('game-state migration upgrades version 2 inventory/progression shape to version 3', () => {
+test('game-state migration upgrades version 2 through inventory and world-time migrations to version 4', () => {
     const state = createInitialState();
     const flatInventory = [{ id: 'old-item', name: 'Old Item', kind: 'misc', quantity: 1 }];
     state.version = 2;
+    delete state.worldTime;
     delete state.meta;
     delete state.player.inventoryState;
     state.player.inventory = flatInventory;
@@ -59,14 +60,31 @@ test('game-state migration upgrades version 2 inventory/progression shape to ver
     const result = migrateGameStatePayload(state);
 
     assert.equal(result.ok, true);
-    assert.deepEqual(result.applied, ['game-state-2-to-3-inventory-and-progression']);
-    assert.equal(result.value.version, 3);
+    assert.deepEqual(result.applied, [
+        'game-state-2-to-3-inventory-and-progression',
+        'game-state-3-to-4-world-time',
+    ]);
+    assert.equal(result.value.version, 4);
+    assert.deepEqual(result.value.worldTime, { totalSeconds: 0 });
     assert.equal(result.value.player.inventoryState.containers.inventory.items[0].name, 'Old Item');
     assert.deepEqual(result.value.player.progression.skills, {});
 
     const revived = reviveGameState(result.value, 'migrated-character');
     assert.equal(revived.player.inventory, revived.player.inventoryState.containers.inventory.items);
     assert.equal(isValidGameState(revived), true);
+});
+
+test('game-state version 3 migration preserves an existing valid provisional world time', () => {
+    const state = createInitialState();
+    state.version = 3;
+    state.worldTime = { totalSeconds: 9876 };
+
+    const result = migrateGameStatePayload(state);
+
+    assert.equal(result.ok, true);
+    assert.deepEqual(result.applied, ['game-state-3-to-4-world-time']);
+    assert.equal(result.value.version, 4);
+    assert.deepEqual(result.value.worldTime, { totalSeconds: 9876 });
 });
 
 test('account registry migrations advance stored version 2 records through version 4', () => {
@@ -88,7 +106,7 @@ test('account registry migrations advance stored version 2 records through versi
 test('save migration support describes current and oldest supported versions', () => {
     const support = describeSaveMigrationSupport();
 
-    assert.equal(support.gameState.currentVersion, 3);
+    assert.equal(support.gameState.currentVersion, 4);
     assert.equal(support.gameState.supportedFrom, 2);
     assert.equal(support.accountSave.currentVersion, 4);
     assert.equal(support.accountSave.supportedFrom, 2);

@@ -52,7 +52,7 @@ test('loading a version 2 account registry migrates and persists it as account s
     assert.equal(migratedRegistry.accounts[0].version, 4);
 });
 
-test('loading a version 2 character migrates and persists game state version 3', () => {
+test('loading a version 2 character migrates and persists game state version 4 with world time', () => {
     installStorage();
     const created = createAccountWithPassword('Legacy Character Account', 'pwd', { persistentLogin: true });
     assert.equal(created.ok, true);
@@ -66,6 +66,7 @@ test('loading a version 2 character migrates and persists game state version 3',
     const record = registry.accounts[0].characters[0];
     const oldState = decodePayload(record.encodedState);
     oldState.version = 2;
+    delete oldState.worldTime;
     delete oldState.meta;
     record.encodedState = encodePayload(oldState);
     globalThis.localStorage.setItem(key, encodePayload(registry));
@@ -74,8 +75,26 @@ test('loading a version 2 character migrates and persists game state version 3',
     const migratedRegistry = decodePayload(globalThis.localStorage.getItem(key));
     const migratedState = decodePayload(migratedRegistry.accounts[0].characters[0].encodedState);
 
-    assert.equal(loaded.version, 3);
+    assert.equal(loaded.version, 4);
     assert.equal(loaded.meta.characterId, record.id);
-    assert.equal(migratedState.version, 3);
+    assert.deepEqual(loaded.worldTime, { totalSeconds: 0 });
+    assert.equal(migratedState.version, 4);
+    assert.deepEqual(migratedState.worldTime, { totalSeconds: 0 });
     assert.equal(migratedState.meta.characterId, record.id);
+});
+
+test('world time persists through normal save and load without wall-clock recomputation', () => {
+    installStorage();
+    const created = createAccountWithPassword('World Time Account', 'pwd', { persistentLogin: true });
+    assert.equal(created.ok, true);
+
+    const state = createInitialState();
+    state.player.identity.name = 'Clockkeeper';
+    state.worldTime.totalSeconds = 123456;
+    assert.equal(saveGame(state), true);
+
+    const loaded = loadCharacter('Clockkeeper');
+
+    assert.equal(loaded.version, 4);
+    assert.equal(loaded.worldTime.totalSeconds, 123456);
 });

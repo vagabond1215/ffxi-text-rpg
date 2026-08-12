@@ -9,6 +9,7 @@ import { createSemanticEventState } from './systems/semanticEventEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
+import { createWorldTimeState } from './systems/worldTimeEngine.js';
 
 export function createInitialState() {
     return createNewGameState();
@@ -34,7 +35,8 @@ export function createNewGameState(options = {}) {
     });
 
     return {
-        version: 3,
+        version: 4,
+        worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? 0 }),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,

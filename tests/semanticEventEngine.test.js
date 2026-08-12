@@ -74,14 +74,14 @@ test('travel emits semantic start and arrival events independently of display pr
     assert.deepEqual(travelEvents.map((event) => event.type), ['travel.started', 'travel.arrived']);
 });
 
-test('old state without an event container is upgraded lazily without a save-version bump', () => {
+test('state without an event container is upgraded lazily without changing its save version', () => {
     const state = createInitialState();
     delete state.events;
-    assert.equal(state.version, 3);
+    assert.equal(state.version, 4);
 
     const event = emitSemanticEvent(state, 'fixture.started', { value: 1 });
 
     assert.equal(event.id, 'evt-000001');
     assert.equal(state.events.records.length, 1);
-    assert.equal(state.version, 3);
+    assert.equal(state.version, 4);
 });
