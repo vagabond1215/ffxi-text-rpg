@@ -56,7 +56,7 @@ test('historical discipline training records satisfy learning without requiring 
     const result = learnCapability(player, 'technique-guarded-cut');
 
     assert.equal(result.ok, true);
-    assert.equal(result.record.learnedFromDisciplineId, 'vanguard');
+    assert.equal(result.record.learnedFromDisciplineId, 'spellblade');
 
     const second = createPlayerCharacter({ mainJobId: 'pugilist', level: 1 });
     second.progression.jobProgression.spellblade.level = 2;
