@@ -14,24 +14,24 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.650.1');
-    assert.equal(PACKAGE_VERSION, '0.5.650');
+    assert.equal(PRODUCT_VERSION, '0.5.700.1');
+    assert.equal(PACKAGE_VERSION, '0.5.700');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 17);
+    assert.equal(VERSION.data, 18);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.5\.650\.1/);
-    assert.match(describeVersion(), /Package: 0\.5\.650/);
+    assert.match(describeVersion(), /Product: 0\.5\.700\.1/);
+    assert.match(describeVersion(), /Package: 0\.5\.700/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 17/);
-    assert.match(describeVersion(), /Codename: Ecology Substrate/);
+    assert.match(describeVersion(), /Data: 18/);
+    assert.match(describeVersion(), /Codename: Routes and Transport/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.650\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.700\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -49,12 +49,15 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /populations: 0\.1\.0/);
     assert.match(describeSystemVersions(), /gatheringSources: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceItems: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /routeCatalog: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /transport: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
     assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
     assert.match(describeSystemVersions(), /validation: 0\.8\.0/);
-    assert.match(describeSystemVersions(), /travel: 0\.4\.4/);
+    assert.match(describeSystemVersions(), /travel: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /navigation: 0\.1\.1/);
     assert.match(describeSystemVersions(), /pois: 0\.3\.7/);
     assert.match(describeSystemVersions(), /travelExits: 0\.3\.6/);
     assert.match(describeSystemVersions(), /homeStorage: 0\.3\.9/);
@@ -78,6 +81,8 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.ok(ids.includes('maps'));
     assert.ok(ids.includes('powers'));
     assert.ok(ids.includes('placeConnections'));
+    assert.ok(ids.includes('routes'));
+    assert.ok(ids.includes('transportServices'));
     assert.ok(ids.includes('travel'));
     assert.ok(ids.includes('projects'));
     assert.ok(ids.includes('resourceProvenance'));
@@ -105,6 +110,8 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.match(describeDatabases(), /resourceOpportunities/);
     assert.match(describeDatabases(), /gatheringSources/);
     assert.match(describeDatabases(), /populations/);
+    assert.match(describeDatabases(), /transportServices/);
+    assert.match(describeDatabases(), /routes/);
     assert.match(describeDatabases(), /legacyRecoveredData/);
     assert.match(describeDatabases(), /companions/);
     assert.match(describeLegacyRecoveredData(), /weapon skills/);
