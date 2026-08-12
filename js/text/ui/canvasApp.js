@@ -95,7 +95,7 @@ export function createCanvasApp({ canvas }) {
             ...createMenuActionList(session, uiState.modal, uiState.modalPage),
             ...creatorActions,
             ...createCompassActionList(state, uiState),
-            ...createActionList(state),
+            ...createActionList(state, uiState),
         ];
         const action = allActions.find((item) => item.id === actionId);
         if (!action) {
@@ -138,7 +138,7 @@ export function createCanvasApp({ canvas }) {
 
     function render() {
         refreshSession();
-        const actions = uiState.screen === 'game' ? createActionList(state) : [];
+        const actions = uiState.screen === 'game' ? createActionList(state, uiState) : [];
         const compassActions = uiState.screen === 'game' ? createCompassActionList(state, uiState) : [];
         const menuActions = createMenuActionList(session, uiState.modal, uiState.modalPage);
         const creatorActions = uiState.screen === 'creator' ? createCreatorActionList(uiState) : uiState.screen === 'creatorIntro' ? createCreatorIntroActionList() : [];
