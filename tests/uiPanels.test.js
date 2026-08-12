@@ -29,17 +29,21 @@ test('renderCommandChips exposes common command buttons', () => {
 test('renderCharacterCards shows empty state and load buttons', () => {
     assert.match(renderCharacterCards([]), /No saved characters/);
 
-    const html = renderCharacterCards([{ index: 2, name: 'Tester', race: 'Hume', job: 'Warrior', level: 1, nation: 'San d’Oria', location: 'Southern San d’Oria' }]);
+    const html = renderCharacterCards([{ index: 2, name: 'Tester', race: 'Human', job: 'Vanguard', level: 1, nation: 'Thornwall', location: 'Thornwall Southgate' }]);
     assert.match(html, /Tester/);
+    assert.match(html, /Human Vanguard/);
+    assert.match(html, /Thornwall/);
     assert.match(html, /data-command="\/load 2"/);
 });
 
-test('renderTopBar exposes identity status and quick actions', () => {
+test('renderTopBar exposes canonical identity status and quick actions', () => {
     const state = createInitialState();
     const html = renderTopBar(state, { kind: 'success', message: 'Character saved.' });
 
-    assert.match(html, /FFXI/);
-    assert.match(html, /Adventurer/);
+    assert.match(html, /Hearth &amp; Horizon/);
+    assert.doesNotMatch(html, /FFXI/);
+    assert.match(html, /Traveler/);
+    assert.match(html, /Vanguard Lv\.1/);
     assert.match(html, /Character saved\./);
     assert.match(html, /data-command="\/menu"/);
     assert.match(html, /data-command="\/save"/);
@@ -48,5 +52,5 @@ test('renderTopBar exposes identity status and quick actions', () => {
 test('classifyCommandFeedback identifies success error and info responses', () => {
     assert.equal(classifyCommandFeedback('/save', 'Character saved.').kind, 'success');
     assert.equal(classifyCommandFeedback('/load 2', 'No saved character matched: 2').kind, 'error');
-    assert.equal(classifyCommandFeedback('/look', 'Southern San d’Oria').kind, 'info');
+    assert.equal(classifyCommandFeedback('/look', 'Thornwall Southgate').kind, 'info');
 });
