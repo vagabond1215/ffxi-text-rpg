@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.700.1
-Package:      0.5.700
+Product:      0.5.900.1
+Package:      0.5.900
 Account Save: 4
 Game State:   5
-Data:         18
+Data:         19
 Benchmark:    1
-Codename:     Routes and Transport
+Codename:     Simulation Substrate Gate
 ```
 
-The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, provenance-aware physical resource recovery, ecology/population/environmental gathering, and canonical route/scheduled-transport substrates are established; content breadth and many integrated mechanics remain far below the intended game.
+The repository is pre-alpha. **Phase 0.5 is complete:** deterministic simulation, original-world identity, persistent projects, provenance-aware resources, ecology/gathering/populations, canonical routes/scheduled transport, regional content packs, scalable cross-reference validation, and an explicit substrate readiness gate are established. Phase 0.6 now integrates substantial character and mechanics content on top of that substrate.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.5.700.1
+0.5.900.1
 ```
 
 | Segment | Meaning |
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental 0.6 evolution, and `gil` pending deliberate original currency design.
 
 ---
 
@@ -130,86 +130,122 @@ Resulting baseline was `0.5.650.1 / Package 0.5.650 / Game State 5 / Data 17`. I
 
 ## 0.5.700 — Travel and scheduled transport substrate — complete
 
+Resulting baseline was `0.5.700.1 / Package 0.5.700 / Game State 5 / Data 18`. It delivered canonical routes/stops, canonical timed walking travel, scheduled service contracts, deterministic departure/arrival, travel interrupts, cancellation coupling, and route/service cross-reference validation.
+
+## 0.5.800 — Regional content packs, normalization, and validation — complete
+
 Resulting baseline:
 
 ```text
-Product:      0.5.700.1
-Package:      0.5.700
+Product:      0.5.800.1
+Package:      0.5.800
 Account Save: 4
 Game State:   5
-Data:         18
+Data:         19
 Benchmark:    1
-Codename:     Routes and Transport
+Codename:     Regional Content Packs
 ```
 
 ### Version impact
 
-- **Product:** `0.5.650.1` -> `0.5.700.1`.
-- **Package:** `0.5.650` -> `0.5.700`.
+- **Product:** `0.5.700.1` -> `0.5.800.1`.
+- **Package:** `0.5.700` -> `0.5.800`.
 - **Account Save:** unchanged at 4.
-- **Game State:** unchanged at 5. No required top-level persistence registry was added; active travel records gain a richer shape and older active-travel records are normalized lazily at the travel boundary.
-- **Data:** 17 -> 18 for canonical route, stop, segment, and scheduled-service contracts.
-- **Travel system:** `0.4.4` -> `0.5.0`.
-- **Navigation system:** `0.1.0` -> `0.1.1` so stopping movement cancels the associated canonical travel task.
-- New systems: `routeCatalog 0.1.0`, `transport 0.1.0`.
+- **Game State:** unchanged at 5; pack manifests and validators are canonical data architecture, not mandatory persisted runtime state.
+- **Data:** 18 -> 19 for regional/shared content-pack manifests, stable ownership/dependency semantics, recipe/quest/relationship fixture contracts, and canonical validation rules.
+- New systems: `contentPackSchema 0.1.0`, `regionalContentPacks 0.1.0`, `contentPackValidation 0.1.0`, `legacyCandidateNormalization 0.1.0`.
+- Unified validation subsystem advanced to `0.9.0`.
 
 ### Delivered
 
-- canonical route records independent of incidental place-transition UI;
-- stable route-stop records with place/coordinate references;
-- route segment duration, distance, hazard, directionality, supported-mode, cargo/encumbrance, and map/knowledge metadata;
-- canonical walking/overland travel using the existing timed-task and world-time authorities;
-- existing place connections retained as a bounded fallback for places not yet represented in the route catalog;
-- scheduled service records with deterministic cadence, stable stops, boarding lead, fare, cargo allowance, mode, route, and travel duration;
-- shared scheduled transport contract demonstrated by caravan and ferry services and shaped for later wagon/coach/mount use;
-- explicit waiting and in-transit journey phases;
-- deterministic departure and arrival semantic events and simulation-interrupt candidates;
-- linked task cancellation when travel stops;
-- representative interregional services plus local regional road/causeway/waterway examples;
-- standalone route/service validation and regression coverage for route cross-references, schedule calculations, fare/cargo enforcement, canonical timed travel, interrupts, arrival, and cancellation;
-- semantic-event regressions updated to filter by type rather than assuming travel owns the first event sequence after timed tasks were composed into the same action.
+- content-pack manifest schema with stable IDs, shared/regional ownership, dependencies, data version, metadata, and explicit record collections;
+- pack-level ownership indexing and duplicate/conflict detection while preserving human-meaningful canonical IDs;
+- unified cross-reference validation across geography, routes/services, ecology, gathering sources, items/provenance/sinks, NPCs, shops, recipes, quests, and relationships;
+- validation of missing references, source/sink requirements, route topology, undeclared cross-pack dependencies, ownership conflicts, and legacy-ID leaks;
+- explicit legacy-adapter declarations at bounded pack boundaries;
+- review-only legacy/reference normalization whose output stays `candidate`, `canonical: false`, and `requiresOriginalityReview: true`;
+- representative shared, Elderwood, and Starfen pack manifests;
+- representative pack-defined NPC/shop/recipe/quest/relationship records and intentional cross-region resource dependencies;
+- generated scale test covering 300 items plus 300 recipes in one validated 600-record graph.
 
 ### Intentionally deferred
 
-- broad command/UI booking flows for scheduled service;
-- fare-refund policy on cancellation;
-- calendars/service days, stop dwell, weather suspension, ticket/reservation state, vehicle/NPC actors, and capacity competition;
-- full en-route hazard/encounter/event resolution;
-- universal hard gating by route/map knowledge;
-- balanced final route distances/times and mass-authored transport networks;
-- replacement of all transitional place connections;
-- final original currency design; current fares intentionally use `gil`.
+- physically relocating every established runtime catalog record into regional pack files;
+- full crafting/quest/relationship runtime engines for pack fixture records;
+- mass canonical content generation;
+- automatic canonical acceptance of legacy/reference candidates, which is intentionally prohibited.
+
+## 0.5.900 — Simulation/content-substrate exit gate — complete
+
+Current resulting baseline:
+
+```text
+Product:      0.5.900.1
+Package:      0.5.900
+Account Save: 4
+Game State:   5
+Data:         19
+Benchmark:    1
+Codename:     Simulation Substrate Gate
+```
+
+### Version impact
+
+- **Product:** `0.5.800.1` -> `0.5.900.1`.
+- **Package:** `0.5.800` -> `0.5.900`.
+- **Account Save:** unchanged at 4.
+- **Game State:** unchanged at 5.
+- **Data:** unchanged at 19 because the readiness gate adds integration assertions, not a new canonical data shape.
+- New system: `simulationSubstrateGate 0.1.0`.
+
+### Delivered
+
+`js/text/systems/simulationSubstrateGate.js` evaluates seven structured readiness groups:
+
+1. deterministic simulation;
+2. original-world identity;
+3. projects and provenance;
+4. ecology and gathering;
+5. routes and transport;
+6. regional content and scale;
+7. persistence compatibility.
+
+The gate checks required implemented subsystem versions, production route/ecology/content-pack validators, minimum representative ecology/route/service breadth, deterministic scheduled departures, multi-pack/cross-pack content dependencies, Data v19, Account Save v4, Game State v5, and the ordered migration compatibility contract.
+
+Regression tests prove both the green production gate and structured failure diagnostics when validators or required subsystems are intentionally broken.
+
+### 0.5 phase exit decision
+
+Phase 0.5 is complete. Its exit promise is now backed by both subsystem regression tests and an explicit integration gate: long fictional activities can fast-forward/interrupt/summarize; original-world identity is established; projects/provenance exist; ecology/gathering populations can represent renewable world sources; scheduled transport spans regions; and regional pack validation can safely scale content authoring.
 
 ---
 
 # Active and future milestone gates
 
-## 0.5.800 — Regional content packs, normalization, and validation — next
+## 0.6.100 — Character stats and progression — next
 
-Deliver:
+Deliver an original-world character-stat/progression contract centered on the continuous character while preserving migration compatibility:
 
-- regional content-pack manifests with stable pack IDs, ownership/region metadata, contract version, and explicit content collections;
-- stable-ID ownership and duplicate/conflict detection across packs;
-- unified cross-reference validation across places/routes/NPCs/shops/ecology/resources/items/recipes/quests/relationships/transport;
-- source/sink graph validation and explicit exemptions;
-- detection of dangling references, invalid route/service topology, and legacy identifiers leaking into canonical packs without adapters;
-- legacy/reference normalization that produces reviewable candidate records rather than direct canonical imports;
-- representative multi-pack and cross-region references;
-- generated scale fixtures at hundreds-of-record breadth before large hand-authored content expansion.
+- audit and bound historical FFXI formula dependencies;
+- define canonical base/derived/resource stat ownership and progression metadata;
+- separate character-owned progression from active-discipline caps/modifiers where currently conflated;
+- ensure discipline identity describes training rather than universally enabling capabilities;
+- retain migration-safe adapters around existing persisted/internal `player.jobs`, `mainJobId`, `raceId`, and related fields instead of forcing an unbounded save rewrite;
+- add representative canonical ancestry/discipline progression tests;
+- retain historical formulas only behind explicit research/comparison boundaries.
 
-Do not mass-author regional catalogs until the pack contract and validators are coherent.
+Do not open the full capability/magic/combat rewrite inside this first 0.6 track.
 
-## 0.5.900 — Simulation/content-substrate exit gate
+## Later 0.6 tracks
 
-0.5 closes when long fictional activities safely fast-forward/interrupt/summarize; original-world IDs are stable; projects/provenance exist; ecology/gathering/spawn definitions can populate the world; scheduled transport connects multiple regions; and regional content packs/validators can safely support high-volume original content generation.
-
----
-
-# Later phases
-
-## 0.6 — Integrated Character and Mechanics Content
-
-Planned tracks cover character stats/progression; skills/proficiencies/disciplines/capabilities; original magic/active abilities; Combat 2.0; canonical item/equipment/tool breadth; gathering/hunting/processing/crafting/cooking/salvage; ecology/regional content; companions; and an integrated-mechanics exit gate.
+- `0.6.200` skills, proficiencies, disciplines, and capabilities;
+- `0.6.300` original magic and active ability engine;
+- `0.6.400` Combat 2.0;
+- `0.6.500` canonical item/equipment/tool breadth;
+- `0.6.600` gathering/hunting/processing/crafting/cooking/salvage;
+- `0.6.700` ecology/regional creature/resource content;
+- `0.6.800` AI party/companion foundation;
+- `0.6.900` integrated-mechanics exit gate.
 
 ## 0.7 — Multi-Region Playable Alpha
 
