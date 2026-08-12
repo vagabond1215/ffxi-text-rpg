@@ -14,13 +14,13 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.200.2
-Package:      0.6.200
+Product:      0.6.250.1
+Package:      0.6.250
 Account Save: 4
 Game State:   5
 Data:         20
 Benchmark:    1
-Codename:     Character Capabilities
+Codename:     Player Interface Architecture
 ```
 
 This remains pre-alpha product development. Milestone numbers describe active contracts; they are not completion percentages.
@@ -44,7 +44,8 @@ Key rules:
 - disciplines can describe training paths without becoming universal use gates;
 - learned capability/proficiency ownership belongs to the continuous character;
 - settlements, roads, wilderness, livelihoods, relationships, logistics, danger, and combat share one persistent world;
-- maps represent acquired knowledge and player map views should reveal rather than omnisciently expose geography;
+- maps represent acquired knowledge and player map views reveal rather than omnisciently expose geography;
+- the player interface presents world meaning and contextual choices rather than treating command output as the game itself;
 - resources and rewards have physical/economic/social provenance;
 - mechanics and representative content grow together;
 - regional content is authored as a validated cross-linked graph;
@@ -56,7 +57,7 @@ Key rules:
 | --- | --- | --- |
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
-| `0.6` | Integrated character/mechanics content | **Active through 0.6.200.** Character-owned stats/progression and the capability/proficiency foundation are established; magic, Combat 2.0, item breadth, production chains, ecology content, and companions follow. |
+| `0.6` | Integrated character/mechanics content | **Active through 0.6.250.** Character ownership/capabilities and the player-interface architecture are established; magic, Combat 2.0, item breadth, production chains, ecology content, and companions follow. |
 | `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
@@ -164,7 +165,7 @@ Resulting baseline: **0.6.100.1 / Package 0.6.100 / Account Save 4 / Game State 
 
 ## 0.6.200 — Skills, proficiencies, disciplines, and capabilities — complete
 
-Current revision: **0.6.200.2 / Package 0.6.200 / Account Save 4 / Game State 5 / Data 20**. The capability-contract track integrated at `0.6.200.1`; `0.6.200.2` is a bounded UI usability revision with no persistence/Data change.
+Capability contract integrated at **0.6.200.1 / Package 0.6.200 / Account Save 4 / Game State 5 / Data 20**. Revision `0.6.200.2` was a bounded canvas-UI usability pass before the dedicated interface architecture track.
 
 - [x] Added canonical capability catalog v1 with stable capability IDs and separate learning/use contracts.
 - [x] Added versioned character-owned capability state under `player.progression.capabilities`.
@@ -177,27 +178,52 @@ Current revision: **0.6.200.2 / Package 0.6.200 / Account Save 4 / Game State 5 
 - [x] Capability data is registered separately from future executable `abilities` definitions.
 - [x] Data advanced 19 -> 20 for the canonical capability learning/use contract; Account Save remains 4 and Game State remains 5 because capability state is additive/lazy.
 
-### 0.6.200 UI usability revision
-
-- [x] Streamlined character creation to ancestry/origin/discipline/review language with shorter descriptions and reliable canvas wrapping.
-- [x] Name entry now occurs only on the visible review field rather than consuming invisible keyboard input on earlier creator steps.
-- [x] Added a local discovery-driven minimap that reads existing atlas knowledge and reveals cells/connections through normal travel discovery.
-- [x] Moved the D-pad below the minimap, reduced movement buttons to 24–30px, and centered the direction symbols.
-- [x] Replaced the long flat sidebar action list with Character, Spellbook, Codex, World, Crafting, Combat, and System category menus.
-- [x] Removed the redundant visible Character-summary button while preserving the typed/global `character` command as a compatibility interface.
-- [x] Promoted HP/MP/TP, primary attributes, derived combat values, and location into the permanent right-pane snapshot.
-- [x] Codex/Crafting menu entries for not-yet-implemented systems are visibly disabled/planned placeholders rather than fake working commands.
-
 ### 0.6.200 bounded limitations
 
 - Capability records are representative substrate, not a broad technique catalog.
 - `capabilityEngine` evaluates ownership and use eligibility; combat/action effect execution has not been universally rerouted through capability IDs.
-- Original magic and generalized executable effect definitions belong to `0.6.300`.
-- Combat 2.0 remains `0.6.400`; the current battle/action scaffold stays behind compatibility adapters.
 - Equipment eligibility still contains discipline-shaped compatibility requirements that should migrate toward capability/loadout prerequisites incrementally.
 - Current skill-cap rank math remains explicitly placeholder-confidence research/scaffolding.
-- No broad trainer, quest-instruction, or preparation UI exists yet.
-- The minimap is deliberately rough and knowledge-driven; richer iconography, landmarks, multi-level presentation, and world/regional map screens can evolve later without changing atlas authority.
+- No broad trainer, quest-instruction, or preparation interface exists yet.
+
+## 0.6.250 — Player interface architecture — complete
+
+Resulting baseline: **0.6.250.1 / Package 0.6.250 / Account Save 4 / Game State 5 / Data 20**.
+
+The purpose of this inserted track is to establish the intended interaction model before magic, Combat 2.0, crafting, companions, and larger content catalogs multiply the number of player actions.
+
+- [x] Replaced the active full-canvas browser shell with semantic DOM/CSS presentation; Canvas modules remain bounded transitional regression/reference code.
+- [x] Added renderer-independent `gameViewModel.js` for scene, status, map, movement, current activity, and contextual actions.
+- [x] Made the world/scene the primary center view rather than a permanent player-facing `Output Log`.
+- [x] Added a discovery-driven SVG local map backed by existing atlas knowledge; authored topology is not exposed omnisciently.
+- [x] Kept a compact centered D-pad beneath the map and added direct keyboard movement for fast/fine navigation.
+- [x] Added compact primary information navigation: Scene, Character, Spellbook, Journal, Codex, Craft, and World.
+- [x] Added a situation-dependent contextual action bar capped to a small useful set rather than presenting the whole command catalog.
+- [x] Added a compact persistent status view for identity, HP/MP/TP, primary attributes, and current activity.
+- [x] Added a Search-or-act field as the keyboard/power-user adapter into existing command/slash behavior.
+- [x] Replaced the creator wizard with a single-screen native form containing name, ancestry, sex, origin, starting discipline, descriptions/tags, and a live starting-profile summary.
+- [x] Native HTML/CSS text flow now owns player-facing creator/scene wrapping instead of custom canvas truncation/wrapping logic.
+- [x] Kept unimplemented Journal/Codex/Craft depth explicit rather than pretending legacy data is a finished interface.
+- [x] Added dedicated semantic-interface tests while retaining canvas compatibility regression tests.
+
+### 0.6.250 version impact
+
+- **Product:** `0.6.200.2` -> `0.6.250.1`.
+- **Package:** `0.6.200` -> `0.6.250`.
+- **Account Save:** unchanged at 4.
+- **Game State:** unchanged at 5; interface state is ephemeral and the DOM shell consumes existing canonical runtime state.
+- **Data:** unchanged at 20; no canonical gameplay data contract changed.
+- New system: `domUi 0.1.0`.
+- New system: `gameViewModels 0.1.0`.
+- `canvasUi 0.8.0` remains tracked as a transitional compatibility/reference surface.
+
+### 0.6.250 bounded limitations
+
+- Several information views still bridge to existing typed-command outputs until those domains expose dedicated presentation models.
+- The Search-or-act field is command-capable, not yet a full fuzzy entity/action search index.
+- The local map is intentionally rough; landmark/icon/regional-map depth should grow without replacing atlas knowledge as authority.
+- Simulation controls are displayed as state but a richer dedicated time-control HUD should only be added when it is wired cleanly to the active browser scheduler/interrupt flow.
+- `uiState.js` still reuses some structural helpers from the former canvas input layer; extract shared UI state incrementally rather than through a broad rewrite.
 
 ## 0.6.300 — Original magic and active ability engine — next
 
