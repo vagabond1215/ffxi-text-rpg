@@ -34,7 +34,7 @@ export function createNewGameState(options = {}) {
     });
 
     return {
-        version: 4,
+        version: 3,
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
