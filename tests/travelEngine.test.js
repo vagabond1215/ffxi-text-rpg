@@ -17,24 +17,24 @@ import {
 
 
 test('describePlace includes exits for starting city', () => {
-    const text = describePlace('southern-sandoria');
+    const text = describePlace('thornwall-southgate');
 
-    assert.match(text, /Southern San/);
-    assert.match(text, /West Ronfaure/);
+    assert.match(text, /Thornwall Southgate/);
+    assert.match(text, /West Elderwood/);
 });
 
 test('starter cities and associated maps are populated', () => {
     const placeIds = listPlaces().map((place) => place.id);
     const mapIds = listMaps().map((map) => map.id);
 
-    assert.ok(placeIds.includes('southern-sandoria'));
-    assert.ok(placeIds.includes('bastok-markets'));
-    assert.ok(placeIds.includes('windurst-waters'));
-    assert.ok(mapIds.includes('map-san-doria'));
-    assert.ok(mapIds.includes('map-bastok'));
-    assert.ok(mapIds.includes('map-windurst'));
-    assert.match(describeMaps(), /Map of Bastok/);
-    assert.match(describeMap('map-windurst'), /windurst-waters/);
+    assert.ok(placeIds.includes('thornwall-southgate'));
+    assert.ok(placeIds.includes('brasshaven-market-ring'));
+    assert.ok(placeIds.includes('mistmere-canal-ward'));
+    assert.ok(mapIds.includes('map-thornwall'));
+    assert.ok(mapIds.includes('map-brasshaven'));
+    assert.ok(mapIds.includes('map-mistmere'));
+    assert.match(describeMaps(), /Map of Brasshaven/);
+    assert.match(describeMap('map-mistmere'), /mistmere-canal-ward/);
 });
 
 test('world data validates maps places and connection grids', () => {
@@ -50,17 +50,17 @@ test('all connections reference known places', () => {
 
 test('findTravelRoute finds connected destination', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
-    const route = findTravelRoute(state, 'West Ronfaure');
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
+    const route = findTravelRoute(state, 'West Elderwood');
 
     assert.equal(route.ok, true);
     assert.equal(route.code, 'route-found');
-    assert.equal(route.to, 'west-ronfaure');
+    assert.equal(route.to, 'west-elderwood');
 });
 
 test('findTravelRoute rejects disconnected destination', () => {
     const state = createInitialState();
-    const route = findTravelRoute(state, 'Ghelsba Outpost');
+    const route = findTravelRoute(state, 'Redfang Camp');
 
     assert.equal(route.ok, false);
     assert.equal(route.code, 'no-direct-route');
@@ -69,24 +69,24 @@ test('findTravelRoute rejects disconnected destination', () => {
 
 test('startTravel returns semantic ActionResult and advanceTravel moves current place', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
-    const started = startTravel(state, 'West Ronfaure');
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
+    const started = startTravel(state, 'West Elderwood');
 
     assert.equal(isActionResult(started), true);
     assert.equal(started.ok, true);
     assert.equal(started.action, 'travel.start');
     assert.equal(started.code, 'travel.started');
     assert.equal(started.outcome, 'started');
-    assert.equal(started.data.to, 'west-ronfaure');
+    assert.equal(started.data.to, 'west-elderwood');
     assert.equal(started.data.durationSeconds, 45);
-    assert.match(started.display.text, /Traveling to West Ronfaure/);
+    assert.match(started.display.text, /Traveling to West Elderwood/);
     assert.equal(state.travel.active, true);
 
     const advanced = advanceTravel(state, 45);
 
     assert.equal(advanced.completed, true);
-    assert.equal(state.currentPlaceId, 'west-ronfaure');
-    assert.equal(state.location, 'West Ronfaure');
+    assert.equal(state.currentPlaceId, 'west-elderwood');
+    assert.equal(state.location, 'West Elderwood');
 });
 
 test('startTravel failure uses semantic code while retaining command compatibility text adapter', () => {
@@ -103,20 +103,20 @@ test('startTravel failure uses semantic code while retaining command compatibili
     assert.equal(Object.keys(result).includes('reason'), false);
 });
 
-test('router exposes maps zones travel and wait commands', () => {
+test('router exposes maps places travel and wait commands', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const router = createCommandRouter(state, {
         saveGame: () => true,
         clearSave: () => {},
         reload: () => {},
     });
 
-    assert.match(router('maps'), /map-san-doria/);
-    assert.match(router('map map-bastok'), /Bastok/);
-    assert.match(router('zones'), /southern-sandoria/);
-    assert.match(router('zones'), /bastok-markets/);
-    assert.match(router('zones'), /windurst-waters/);
-    assert.match(router('travel West Ronfaure'), /Traveling to West Ronfaure/);
-    assert.match(router('wait 45'), /Arrived at West Ronfaure/);
+    assert.match(router('maps'), /map-thornwall/);
+    assert.match(router('map map-brasshaven'), /Brasshaven/);
+    assert.match(router('zones'), /thornwall-southgate/);
+    assert.match(router('zones'), /brasshaven-market-ring/);
+    assert.match(router('zones'), /mistmere-canal-ward/);
+    assert.match(router('travel West Elderwood'), /Traveling to West Elderwood/);
+    assert.match(router('wait 45'), /Arrived at West Elderwood/);
 });
