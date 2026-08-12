@@ -14,12 +14,12 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.600.1
-Package:      0.5.600
+Product:      0.5.650.1
+Package:      0.5.650
 Account Save: 4
 Game State:   5
-Data:         16
-Codename:     Resource Provenance
+Data:         17
+Codename:     Ecology Substrate
 ```
 
 This remains pre-alpha product development. Milestone numbers describe the active contract; they are not completion percentages.
@@ -107,49 +107,47 @@ Deliberate compatibility debt that does not block the gate remains: `gil`, histo
 
 ## 0.5.600 — Resource provenance and persistent projects — complete
 
-Implemented on `main` at product `0.5.600.1`.
+Implemented persistent projects, source/sink metadata, provenance-aware post-combat resource opportunities, deterministic timed recovery actions, and physical-resource recovery through normal inventory rules.
 
-- [x] Persistent project registry with stable `project-*` IDs.
-- [x] Project material requirements/contributions using real inventory removal.
-- [x] Project labor represented by canonical timed tasks with deterministic progress/completion boundaries.
-- [x] Project create/material/start/complete/cancel semantic events.
-- [x] Provenance schema for carried goods, bodies, flora, minerals, fishing, salvage, crafting, commerce, contracts/social rewards, and explicitly exceptional magic.
-- [x] Item source/sink metadata foundation; item schema advanced to v3 and Data contract to v16.
-- [x] Post-combat body/carried-goods/salvage opportunities replace automatic finished-material insertion.
-- [x] Timed `search`, `skin`, `butcher`, `pluck`, `extract`, and `salvage` recovery action substrate.
-- [x] Tool, proficiency, source condition, fictional-time, inventory-capacity, and yield-chance hooks.
-- [x] Recovery outcome rolls are fixed when the action begins and stored with the persistent recovery record rather than rerolled at later reconciliation.
-- [x] Recovered items carry structured source/place/action provenance.
-- [x] Existing starter loot tables are transitional candidate-output pools rather than direct reward-confetti tables.
-- [x] New project/resource registries lazily initialize under Game State v5; no persistence-version bump required.
+## 0.5.650 — Ecology, gathering, and spawn substrate — complete
 
-### 0.5.600 bounded limitations
+Implemented on `main` at product `0.5.650.1`.
 
-- Player-facing UI/command affordances for general project/resource work are deferred; the shared gameplay substrate is exercised through engine APIs/tests.
-- Current starter recovered items use a minimal representative `trade` sink; broad source/sink graph validation belongs to the content-pack/validation track.
-- Environmental gathering sources, populations, depletion/regeneration, species definitions, and respawn are intentionally deferred to `0.5.650`.
-- Existing immediate `gil` rewards remain transitional and are not treated as physical material drops.
+- [x] Canonical creature-family and species records are separate from encounter instances.
+- [x] Seed encounter templates carry canonical `speciesId` references where they represent world species.
+- [x] Habitat/population records include place/biome, capacity, density, rarity, aggression/senses/social behavior, linking-family hooks, and deterministic respawn rules.
+- [x] Representative ecology spans forest beasts/raiders, upland burrowers, cave bats, wetland plantoids/raiders, and a rare forest hart rather than one toy family.
+- [x] Flora/mineral/fishing gathering-source records reference canonical raw-resource item outputs and provenance actions.
+- [x] Representative source types include forage/gather/log/mine/fish contracts with tool/proficiency hooks.
+- [x] Persistent ecology depletion state regenerates or respawns from canonical `worldTime.totalSeconds`, not wall-clock time.
+- [x] Harvest inventory insertion is atomic: a storage failure does not silently consume source capacity.
+- [x] Rare population appearance can use deterministic day/time conditions.
+- [x] Named-variant hooks use explicit world conditions/flags rather than arbitrary random appearance rolls.
+- [x] Ecology catalog validation cross-checks family/species/population/place/source/action/item references and verifies source provenance on output items.
+- [x] Data contract advanced to 17; Game State remains 5 because ecology state is additive/lazily initializable.
 
-## 0.5.650 — Ecology, gathering, and spawn substrate — next
+### 0.5.650 bounded limitations
+
+- Existing `places.js` spawn-rule arrays remain the transitional encounter-placement layer. Population records now exist as the intended ecology authority, but encounter selection has not yet been rewritten to consume them directly.
+- Environmental harvesting is currently a shared engine/API substrate rather than a broad command/UI workflow.
+- Representative resource items prove source/sink/provenance contracts but are intentionally not a large canonical item catalog.
+- Population capacity currently models deterministic available units; richer migration, predation, weather, reproduction, territory, and season interactions remain later ecology depth.
+- The standalone ecology cross-reference validator is exercised by tests. Hundreds/thousands-scale regional validation belongs to `0.5.800`.
+- Do not begin hundreds-scale ecology/resource generation merely because the substrate exists.
+
+## 0.5.700 — Travel and scheduled transport substrate — next
 
 First bounded unit:
 
-- [ ] Canonical species/family definitions separated from individual encounter instances.
-- [ ] Habitat/population definitions with place/biome, density, rarity, aggression, senses, and social/link hooks.
-- [ ] Flora/mineral/fishing/gathering-source definitions using canonical item-output references and provenance actions.
-- [ ] Deterministic depletion/regeneration or respawn state compatible with canonical world time and interrupts.
-- [ ] Rare/named population hooks without arbitrary appearance rules.
-- [ ] Representative cross-reference validation across species, populations, places, gathering sources, and item outputs.
+- [ ] Canonical route records separated from incidental place-transition UI.
+- [ ] Timed walking/local/overland travel based on canonical world time and the existing task/interrupt substrate.
+- [ ] Road/route records that can carry distance/time, hazards, cargo/encumbrance hooks, and knowledge/discovery metadata.
+- [ ] Scheduled caravan records with stable stops, departure cadence, fare, cargo allowance, travel time, and deterministic arrival.
+- [ ] Shared transport contract suitable for later ferries, wagons, mounts, and other modes without duplicating scheduling logic.
+- [ ] Interrupt hooks for meaningful en-route events without requiring real-world waiting.
+- [ ] Representative route validation across multiple regions/stops before broad transport generation.
 
-Keep this unit substrate-focused. Do not begin hundreds-scale creature/resource generation until these contracts and validators are coherent.
-
-## 0.5.700 — Travel and scheduled transport substrate
-
-- [ ] Canonical timed walking/local routes.
-- [ ] Road/route records independent of artificial player-facing loading zones.
-- [ ] Scheduled caravans with stops, fare, cargo allowance, travel time, and interrupt hooks.
-- [ ] Shared transport contract for ferries, wagons, mounts, and later transport modes.
-- [ ] Map/route knowledge and discovery hooks.
+Keep this unit substrate-focused. Do not mass-author transport networks until route/schedule contracts and validators are coherent.
 
 ## 0.5.800 — Regional content packs, normalization, and validation
 
