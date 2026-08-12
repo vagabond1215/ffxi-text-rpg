@@ -59,20 +59,20 @@ Loadouts and preparation constrain and enhance.
 ## Current baseline
 
 ```text
-Product:      0.5.700.1
-Package:      0.5.700
+Product:      0.5.900.1
+Package:      0.5.900
 Account Save: 4
 Game State:   5
-Data:         18
+Data:         19
 Benchmark:    1
-Codename:     Routes and Transport
+Codename:     Simulation Substrate Gate
 ```
 
 `js/text/version.js` is authoritative.
 
 ## Completed sequence
 
-The current coherent sequence on `main` is:
+The coherent sequence on `main` is now:
 
 - 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events/stabilization;
 - 0.5.100 deterministic world clock;
@@ -83,164 +83,209 @@ The current coherent sequence on `main` is:
 - 0.5.550 original-world identity/stable-ID migration;
 - 0.5.600 persistent projects and resource provenance;
 - 0.5.650 ecology, gathering-source, and population substrate;
-- 0.5.700 canonical routes and scheduled transport substrate.
+- 0.5.700 canonical routes and scheduled transport substrate;
+- 0.5.800 regional content packs, candidate normalization, and scalable validation;
+- 0.5.900 explicit simulation/content-substrate exit gate.
 
-Do not restart earlier tracks unless a concrete regression requires it.
+**Phase 0.5 is complete.** Do not reopen earlier tracks broadly unless a concrete regression requires it.
 
-## 0.5.700 — exit status
+## 0.5.800 — regional content pack status
 
-The travel/transport substrate is **complete enough to exit the track**. It deliberately proves shared route/schedule contracts with representative data rather than mass-authoring the final transport network.
+`js/text/data/contentPackSchema.js` defines pack schema v1 with:
 
-### Canonical route catalog
+- stable pack IDs;
+- `shared` or `region` ownership;
+- owned region IDs/steward metadata;
+- dependencies;
+- Data-contract version;
+- explicit collections for places, routes, transport services, ecology families/species/populations/sources, items, NPCs, shops, recipes, quests, and relationships;
+- bounded explicit legacy adapters.
 
-`js/text/data/routeCatalog.js` now provides:
+`js/text/data/regionalContentPacks.js` provides representative packs:
 
-- stable canonical route IDs and route-stop IDs;
-- route types and supported modes independent of incidental place-exit UI;
-- route stops referencing canonical places and optional departure/arrival coordinates;
-- ordered segments carrying fictional duration, distance, and hazard tags;
-- bidirectionality;
-- cargo/encumbrance metadata;
-- map/knowledge discovery hooks;
-- deterministic service cadence helpers;
-- route/service cross-reference validation.
+- `pack-shared-foundation`;
+- `pack-elderwood-opening`;
+- `pack-starfen-opening`.
 
-Representative routes include local/regional roads in Elderwood, Redstone Reach, and Starfen; the Crown-Forge and Forge-Mere interregional caravan roads; and a Mistmere/Starfen waterway.
+Existing canonical runtime catalog records can be claimed with `catalogRef: true` so stable ownership/dependency contracts can be established without immediately relocating every existing data definition. This is an intentional migration seam, not the final content organization.
 
-### Scheduled transport services
+Representative pack-defined records prove a connected social/economic graph:
 
-The same catalog defines representative services:
+- Elderwood waywarden NPC, provisions shop, Sweetroot Field Tonic, recipe, road-repair quest, and relationship record;
+- Starfen ferrymaster NPC, fenmarket, Fenfield Dressing, recipe, ferry-supplies quest, and relationship record;
+- Starfen intentionally consumes Elderwood resources and declares the Elderwood pack as a dependency.
 
-- `service-crown-forge-caravan`;
-- `service-forge-mere-caravan`;
-- `service-mistmere-west-ferry`.
+### Unified content-pack validator
 
-Services use stable route stops, deterministic cadence, first-departure offset, boarding lead, fare, cargo allowance, mode, and route duration. The contract is intentionally generic enough for later caravan/ferry/wagon/coach/mount modes rather than one engine per vehicle type.
+`js/text/systems/contentPackValidator.js` provides:
 
-`gil` remains the current fare currency only because the original currency design is intentionally deferred.
+- manifest validation;
+- duplicate pack-ID detection;
+- stable-ID ownership conflict detection across packs;
+- cross-collection canonical ID collision detection;
+- dependency existence/self/cycle checks;
+- required dependency checks when a record references another pack's owned ID;
+- bounded legacy-ID leak detection;
+- canonical `catalogRef` resolution;
+- route/service topology validation;
+- species/family/population/place validation;
+- gathering-source/item/place validation;
+- item provenance/source/sink validation;
+- NPC/shop/recipe/quest/relationship cross-reference validation;
+- production route/ecology validator composition.
 
-### Canonical journey engine
+`tests/contentPackValidator.test.js` includes a generated **600-record** fixture: 300 items plus 300 recipes, all cross-validated through the pack contract.
 
-`js/text/systems/transportEngine.js` now provides:
+### Legacy candidate normalization
 
-- travel-state contract v2;
-- `route` and `scheduled` journey kinds;
-- `waiting` and `inTransit` phases;
-- route journeys backed by canonical timed tasks;
-- scheduled booking with fare/cargo validation;
-- deterministic departure and arrival world-time boundaries;
-- semantic booking/start/departure/arrival/cancellation events;
-- travel-specific departure/arrival interrupt candidates;
-- arrival through normal place/atlas discovery;
-- linked timed-task cancellation when travel stops;
-- lazy normalization of older active Game State v5 travel objects.
-
-No new top-level persistence registry was required, so Game State remains v5.
-
-### Existing travel integration
-
-`js/text/systems/travelEngine.js` now prefers canonical route legs for supported walking routes and delegates timing to the transport engine. `advanceTravel()` advances canonical world time rather than a separate travel countdown.
-
-Existing `places.js` connection records remain a **transitional fallback** where canonical route coverage has not yet been authored. Do not delete them until route coverage and dependent POI/exit behavior can migrate atomically.
-
-`navigationEngine.stopTravel()` now cancels the linked timed task instead of only clearing visible travel state.
-
-### Version/data impact
+`js/text/data/legacyCandidateNormalizer.js` is intentionally one-way into review state, not into canon. Normalized historical/reference records are always:
 
 ```text
-Product             0.5.650.1 -> 0.5.700.1
-Package             0.5.650   -> 0.5.700
-Account Save        4         unchanged
-Game State          5         unchanged
-Data                17        -> 18
-routeCatalog         new       0.1.0
-transport            new       0.1.0
-travel               0.4.4    -> 0.5.0
-navigation           0.1.0    -> 0.1.1
+reviewStatus: candidate
+canonical: false
+requiresOriginalityReview: true
+source.kind: legacyReference
 ```
 
-Database registry now includes `routes` and `transportServices`; `placeConnections` is explicitly marked transitional.
+Existing bounded identity adapters may suggest a canonical ID, but parsing/normalization success never authorizes canonical import.
 
-### Tests and CI
+### 0.5.800 version impact
 
-`tests/transportEngine.test.js` covers:
+```text
+Product                     0.5.700.1 -> 0.5.800.1
+Package                     0.5.700   -> 0.5.800
+Account Save                4         unchanged
+Game State                  5         unchanged
+Data                        18        -> 19
+contentPackSchema            new       0.1.0
+regionalContentPacks         new       0.1.0
+contentPackValidation        new       0.1.0
+legacyCandidateNormalization new       0.1.0
+validation                  0.8.x     -> 0.9.0
+```
 
-- route/service catalog cross-reference validation;
-- multi-segment service journeys and hazard aggregation;
-- deterministic service departure times;
-- canonical walking travel using a timed task and advancing world time;
-- scheduled fare and cargo enforcement;
-- exact departure/arrival simulation interrupts;
-- deterministic arrival at the destination place;
-- travel cancellation cancelling the timed task.
+Database registry now includes `contentPacks`, `contentPackValidation`, and `legacyCandidates`; representative pack fixture contracts move `quests`, `relationships`, and `crafting` out of purely planned status without claiming those gameplay engines are complete.
 
-Travel regression tests were updated for canonical route duration/world-time semantics. Semantic-event tests now filter by event type rather than assuming a travel event owns the first event sequence, because starting a journey composes with the timed-task event stream.
+## 0.5.900 — exit-gate status
 
-Runtime integration head `987393ec0b083a6e05c012dfb19e7f5f7523cfd5` completed the GitHub Actions **test** check successfully on 2026-08-12. Documentation closeout commits followed that runtime head.
+`js/text/systems/simulationSubstrateGate.js` provides `evaluateSimulationSubstrateGate()` and `validateSimulationSubstrateGate()`.
 
-On continuation, refetch the newest `main` and its check runs before coding.
+The production gate evaluates seven structured groups:
 
-## 0.5.700 bounded limitations
+1. **deterministicSimulation** — world time, simulation control, timed tasks, interrupts, day cycle, semantic events;
+2. **originalWorldIdentity** — original-world identity generation and v5 identity contract;
+3. **projectsAndProvenance** — projects, provenance, resource opportunities, recovery;
+4. **ecologyAndGathering** — production ecology validation plus representative family/species/population/source breadth and flora/mineral/fishing coverage;
+5. **routesAndTransport** — production route validation, representative route/service breadth, deterministic scheduled departures;
+6. **regionalContentScale** — valid pack/index graph, multiple regional/shared packs, cross-pack dependency, content-pack validation, candidate normalization;
+7. **persistenceCompatibility** — Account Save v4, Game State v5, Data >=19, ordered migration compatibility.
 
-These are deliberate deferrals, not reasons to reopen the track broadly:
+The current production gate reports ready. Regression tests also inject broken validator outputs and a planned required subsystem to prove failures become structured diagnostics.
 
-- scheduled transport has engine/API contracts but no broad player-facing booking command/UI yet;
-- cancellation currently has no fare-refund policy;
-- service schedules are simple periodic cadence, without weekday calendars, stop dwell, weather suspension, ticket reservations, finite passenger competition, or vehicle/NPC actors;
-- hazard tags are structured route data and interrupt hooks, not yet a full en-route event/encounter resolver;
-- route knowledge is metadata/discovery infrastructure, not a universal hard travel gate;
-- route distance/time values are representative and not final geographic balance;
-- canonical route coverage is intentionally incomplete and old place connections remain fallback infrastructure;
-- `gil`, historical localStorage keys, legacy-shaped POI IDs, `mogHouse`/`mogSafe` persisted keys, legacy command adapters, and historical research modules remain bounded compatibility debt.
+### 0.5.900 version impact
+
+```text
+Product                 0.5.800.1 -> 0.5.900.1
+Package                 0.5.800   -> 0.5.900
+Account Save            4         unchanged
+Game State              5         unchanged
+Data                    19        unchanged
+simulationSubstrateGate new       0.1.0
+```
+
+No persistence/data bump was justified by the readiness gate itself because it adds integration assertions rather than a new persisted or canonical data shape.
+
+## Validation checkpoint
+
+Runtime integration head:
+
+```text
+f0b9323c174aff31a6893cc8c487dbbae899c026
+```
+
+GitHub Actions test job `94268541659` completed successfully on 2026-08-12.
+
+Exact result:
+
+```text
+tests       351
+pass        351
+fail        0
+cancelled   0
+skipped     0
+todo        0
+```
+
+Benchmark from the same green runtime head:
+
+```text
+Product: 0.5.900.1
+Package: 0.5.900
+Account Save: 4
+Game State: 5
+Data: 19
+Benchmark: 1
+Codename: Simulation Substrate Gate
+
+create 1,000 player combat profiles:              472.834ms total | 0.472834ms/op
+create 1,000 enemy combat profiles:               117.784ms total | 0.117784ms/op
+resolve 1,000 basic attacks:                      509.460ms total | 0.509460ms/op
+run 10,000 tick dispatches with 5 subscribers:     49.618ms total | 0.004962ms/op
+resolve 10,000 direct travel route lookups:      6608.749ms total | 0.660875ms/op
+```
+
+GitHub runner still emits the known non-blocking warning that Node-20-targeting checkout/setup actions are being forced under Node 24. Project commands themselves ran with Node 20.20.2.
+
+Documentation closeout commits follow the green runtime head. On continuation, refetch `main` and its current check runs before coding.
+
+## Phase 0.5 exit decision
+
+0.5 is complete because the following commitments now coexist behind tests and an explicit integration gate:
+
+- long fictional activities can fast-forward deterministically, interrupt, and produce day summaries without wall-clock authority;
+- canonical original-world IDs and bounded legacy boundaries exist;
+- persistent projects and physical/economic/social provenance exist;
+- ecology/population/gathering sources deplete and regenerate through canonical time;
+- route/scheduled transport connects multiple setting anchors through the same time/interrupt substrate;
+- regional content packs establish ownership/dependencies and validators exercise hundreds-record scale;
+- historical/reference normalization cannot become canonical merely because it parsed successfully;
+- existing Account Save v4 and Game State v5 compatibility remain intact.
 
 ## Next target
 
 ```text
-0.5.800 — Regional content packs, normalization, and validation
+0.6.100 — Character stats and progression
 ```
 
-**Do not begin mass content authoring yet.** First prove pack ownership and unified validation.
+Do **not** start with a broad combat/class rewrite. The first 0.6 unit should establish a canonical continuous-character stat/progression contract behind migration-safe interfaces.
 
-Recommended first bounded unit:
+Recommended bounded unit:
 
-1. Define a regional content-pack manifest/schema with stable pack ID, region/ownership metadata, data-contract version, dependencies, and explicit record collections.
-2. Establish stable-ID ownership and duplicate/conflict detection across multiple packs; canonical IDs should remain human-meaningful rather than becoming opaque generated IDs.
-3. Build one validator surface that can resolve/cross-check places, routes/stops/services, species/populations/sources, items/source-sink metadata, shops/NPCs, and representative recipe/quest/relationship records or fixtures.
-4. Detect missing/duplicate IDs, dangling references, invalid source/sink graphs, invalid route/service topology, and legacy identifiers leaking into canonical packs without explicit adapters.
-5. Define normalization of legacy/reference material as a candidate-record pipeline. Candidate records must remain reviewable and cannot become canonical simply because they parsed successfully.
-6. Prove at least two regional packs plus shared/common records and at least one intentional cross-region reference.
-7. Add generated scale fixtures at hundreds-of-record breadth to exercise lookup, conflict detection, and validation complexity before hundreds of hand-authored records are created.
-8. Version appropriately, update docs/handoff, and stop at a coherent 0.5.800 boundary before the 0.5.900 exit-gate pass.
-
-## Resource/economy law
-
-Rewards should have physical, economic, or social provenance. Combat can create access to bodies, carried goods, or salvage; it should not automatically manufacture finished crafting materials in inventory.
-
-Desired material flow remains:
-
-```text
-world source
-  -> raw material
-  -> processing
-  -> component/ingredient
-  -> finished good
-  -> use/wear/consumption
-  -> repair/recycling/salvage or replacement
-```
+1. Audit `player` construction/state, progression engine, stat engine, level/EXP tables, skill cap/progression code, equipment-derived stats, save migrations, and tests to identify ownership boundaries and historical formula dependencies.
+2. Define canonical character-owned base/derived/resource stat and progression metadata. Record confidence/provenance where formulas remain transitional rather than pretending historical research is original balance.
+3. Preserve current save compatibility through adapters around `player.jobs`, `mainJobId`, `raceId`, `nationId`, and similar persisted/internal names; do not rename them atomically across the whole codebase.
+4. Separate character-owned progression from active-discipline caps/modifiers where current code still conflates them.
+5. Keep the product law explicit: disciplines describe training; capabilities and concrete prerequisites enable use. Do not make `mainJobId` the universal gate for future mechanics.
+6. Add representative canonical tests across Human/Lethari/Miri/Veyra/Korren and multiple disciplines, focusing on deterministic progression/stat ownership rather than final balance numbers.
+7. Quarantine FFXI stat-grade/formula modules behind explicit research/reference interfaces where they still feed runtime calculations; migrate incrementally rather than deleting useful research.
+8. Version and hand off at a coherent `0.6.100` boundary before opening `0.6.200` capabilities.
 
 ## Current transitional technical debt
 
 Treat these as temporary and replace incrementally behind migrations/tested interfaces:
 
-- `mainJobId` as a broad capability gate;
+- `mainJobId`, `player.jobs`, `raceId`, `nationId`, and related internal property names;
+- historical FFXI stat-grade/formula modules still used by current character calculations;
 - sparse placeholder skill-rank math;
 - placeholder spell/weapon-skill combat actions;
 - small starter equipment/shop/enemy/resource catalogs;
-- `places.js` encounter `spawnRules` rather than population-driven spawning;
+- `places.js` encounter `spawnRules` rather than population-driven encounter selection;
 - `places.js` connection records as fallback rather than complete canonical route coverage;
-- minimal current sink metadata on some starter materials;
-- legacy `data/` and `ffxi*` research tables;
+- pack manifests using `catalogRef` while established catalogs are migrated incrementally;
+- representative pack recipes/quests/relationships without full player-facing engines;
+- minimal sink metadata on some starter materials;
 - historical localStorage key names;
-- legacy-shaped POI hook IDs.
+- legacy-shaped POI hook IDs;
+- `gil` pending deliberate original currency design.
 
 Do not solve these through an unbounded rewrite.
