@@ -21,7 +21,7 @@ Loadouts and preparation constrain and enhance.
 ## Current version
 
 ```text
-Product:      0.6.200.1
+Product:      0.6.200.2
 Package:      0.6.200
 Account Save: 4
 Game State:   5
@@ -41,6 +41,8 @@ The completed simulation substrate includes deterministic fictional time, pause/
 `0.6.100` established character-owned stats and progression. A player now owns a versioned original-design stat state whose persistent base growth follows the highest attained discipline training rank; the active discipline supplies contextual training/stat modifiers rather than owning the person. Lifetime training progress is tracked across discipline records. Historical FFXI stat formulas remain callable at explicit research/reference boundaries but are no longer authoritative for canonical player runtime stats.
 
 `0.6.200` established a character-owned capability layer. Disciplines can provide learning paths, but learned capabilities persist on the continuous character. Capability use checks concrete prerequisites—learned proficiency, equipment, tools, preparation, resources, flags, and world/action context—rather than universally checking the currently active discipline. Skill training caps constrain new gain without erasing already learned proficiency when the player changes discipline.
+
+`0.6.200.2` is a focused canvas-UI usability revision. Character creation now uses shorter ancestry/origin/discipline wording and wrapped descriptions; the travel sidebar has a discovery-driven local minimap backed by the existing atlas knowledge model; the D-pad is compact and centered below it; flat action buttons are grouped into Character, Spellbook, Codex, World, Crafting, Combat, and System menus; and the right pane permanently shows character resources, attributes, and derived combat stats at a glance. Planned Codex/Crafting entries are disabled structural placeholders rather than claims of implemented gameplay systems.
 
 This remains **pre-alpha foundation and representative mechanics, not content completion**. The next bounded track is `0.6.300`, which will establish original magic and executable active-ability contracts without opening the full Combat 2.0 rewrite.
 
@@ -148,6 +150,10 @@ Use eligibility can require:
 
 The initial capability records are representative substrate, not a mass-authored technique catalog. Execution/effect definitions remain a separate concern for `0.6.300` and later combat integration.
 
+### Maps are acquired knowledge
+
+The canvas local minimap is intentionally derived from the same per-place atlas discoveries used by navigation. It begins sparse and reveals cells/connections as movement discovers them instead of exposing a complete authoritative world layout. The minimap is a player-knowledge view, not a second geography database or a new save schema.
+
 ### Long fictional time without needless real waiting
 
 Simulation time and wall-clock time are separate. Canonical fictional seconds drive tasks, projects, ecology regeneration, transport schedules, travel arrival, rare/time-window conditions, interrupt discovery, and day review. Wall-clock ticks are only scheduler input.
@@ -200,6 +206,9 @@ js/text/systems/progressionEngine.js
 js/text/systems/skillProgressionEngine.js
 js/text/data/capabilities.js
 js/text/systems/capabilityEngine.js
+js/text/ui/minimapModel.js
+js/text/ui/canvasLayout.js
+js/text/ui/canvasRenderer.js
 js/text/data/ecologyCatalog.js
 js/text/data/routeCatalog.js
 js/text/data/contentPackSchema.js
@@ -221,7 +230,7 @@ ffxiTextRpgAccountSession
 
 Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
-Account Save remains v4 and Game State remains v5. Character stat/progression and capability state are additive/lazily repairable Game State v5 fields. Data advanced from v19 to **v20** for the canonical capability learning/use contract; no persistence migration is required for that data-contract bump.
+Account Save remains v4 and Game State remains v5. Character stat/progression and capability state are additive/lazily repairable Game State v5 fields. Data advanced from v19 to **v20** for the canonical capability learning/use contract; the `0.6.200.2` UI revision adds no persistence or Data contract.
 
 ## Immediate implementation sequence
 
