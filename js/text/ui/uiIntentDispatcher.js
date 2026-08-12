@@ -2,6 +2,7 @@ import { createNewGameState, replaceState as replaceGameState } from '../gameSta
 import {
     appendOutput,
     clearModalInputs,
+    setActionCategory,
     setActiveFeedback,
     setCanvasModal,
     setCanvasScreen,
@@ -53,6 +54,8 @@ export function dispatchUiIntent(request = {}) {
     switch (context.intent) {
         case 'ui.menu.open': return openTopMenu(context);
         case 'ui.modal.close': return closeModal(context);
+        case 'ui.actions.openCategory': return openActionCategory(context);
+        case 'ui.actions.closeCategory': return closeActionCategory(context);
         case 'account.login.open': return openLogin(context);
         case 'account.select': return selectAccount(context);
         case 'account.login.confirm': return confirmAccountLogin(context);
@@ -112,6 +115,20 @@ function closeModal(context) {
     setCanvasModal(context.uiState, null);
     setActiveFeedback(context.uiState, '');
     return ok(context);
+}
+
+function openActionCategory(context) {
+    const categoryId = String(context.payload.categoryId ?? '').trim();
+    if (!categoryId) return fail(context, 'Action category is required.');
+    setActionCategory(context.uiState, categoryId);
+    setActiveFeedback(context.uiState, '');
+    return ok(context, { actionCategory: context.uiState.actionCategory });
+}
+
+function closeActionCategory(context) {
+    setActionCategory(context.uiState, null);
+    setActiveFeedback(context.uiState, '');
+    return ok(context, { actionCategory: null });
 }
 
 function openLogin(context) {
@@ -237,7 +254,7 @@ function openCreator(context) {
     context.uiState.creatorIntro = [];
     setCanvasModal(context.uiState, null);
     setCanvasScreen(context.uiState, 'creator');
-    setActiveFeedback(context.uiState, 'Choose race and sex.');
+    setActiveFeedback(context.uiState, 'Choose an ancestry.');
     return ok(context, { creator: context.uiState.creator });
 }
 
