@@ -1,34 +1,36 @@
+import { canonicalizeNationId } from './legacyIdentity.js';
+
 export const NATIONS = Object.freeze({
-    sandoria: nation({
-        id: 'sandoria',
-        name: 'San d\u2019Oria',
-        aliases: ['san-doria', 'sandoria', 'sandy', 'san'],
-        startingPlaceId: 'southern-sandoria',
-        startingMapIds: ['map-san-doria', 'map-ronfaure'],
-        startingKeyItems: ['map-san-doria', 'map-ronfaure'],
-        description: 'A proud northern kingdom with immediate access to the Ronfaure starter region.',
+    thornwall: nation({
+        id: 'thornwall',
+        name: 'Thornwall',
+        aliases: ['thornwall', 'thorn', 'western-crown'],
+        startingPlaceId: 'thornwall-southgate',
+        startingMapIds: ['map-thornwall', 'map-elderwood'],
+        startingKeyItems: ['map-thornwall', 'map-elderwood'],
+        description: 'An old forest crown city shaped by timber, hunting, stone keeps, guild craft, court politics, and oath-bound service.',
     }),
-    bastok: nation({
-        id: 'bastok',
-        name: 'Bastok',
-        aliases: ['bastok', 'basty'],
-        startingPlaceId: 'bastok-markets',
-        startingMapIds: ['map-bastok', 'map-gustaberg'],
-        startingKeyItems: ['map-bastok', 'map-gustaberg'],
-        description: 'An industrial republic with immediate access to the Gustaberg starter region.',
+    brasshaven: nation({
+        id: 'brasshaven',
+        name: 'Brasshaven',
+        aliases: ['brasshaven', 'brass', 'forge-republic'],
+        startingPlaceId: 'brasshaven-market-ring',
+        startingMapIds: ['map-brasshaven', 'map-redstone-reach'],
+        startingKeyItems: ['map-brasshaven', 'map-redstone-reach'],
+        description: 'A mercantile-industrial republic built around mines, foundries, engineering, labor, and civic competition.',
     }),
-    windurst: nation({
-        id: 'windurst',
-        name: 'Windurst',
-        aliases: ['windurst', 'windy'],
-        startingPlaceId: 'windurst-waters',
-        startingMapIds: ['map-windurst', 'map-sarutabaruta'],
-        startingKeyItems: ['map-windurst', 'map-sarutabaruta'],
-        description: 'A magical federation with immediate access to the Sarutabaruta starter region.',
+    mistmere: nation({
+        id: 'mistmere',
+        name: 'Mistmere',
+        aliases: ['mistmere', 'mist', 'canal-city'],
+        startingPlaceId: 'mistmere-canal-ward',
+        startingMapIds: ['map-mistmere', 'map-starfen'],
+        startingKeyItems: ['map-mistmere', 'map-starfen'],
+        description: 'A wetland city of colleges, gardens, observatories, canals, herbalists, practical magic, and civic scholarship.',
     }),
 });
 
-export const DEFAULT_NATION_ID = 'sandoria';
+export const DEFAULT_NATION_ID = 'thornwall';
 
 export function getNation(nationId = DEFAULT_NATION_ID) {
     return NATIONS[normalizeNationId(nationId)] ?? NATIONS[DEFAULT_NATION_ID];
@@ -54,10 +56,10 @@ function nation(definition) {
 }
 
 function normalizeNationId(value) {
-    return String(value ?? '')
+    const normalized = String(value ?? '')
         .trim()
         .toLowerCase()
         .replace(/[’']/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/^san-doria$/, 'sandoria');
+        .replace(/\s+/g, '-');
+    return canonicalizeNationId(normalized);
 }
