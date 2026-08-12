@@ -18,6 +18,8 @@ import {
 } from '../data/mogHouseFurniture.js';
 
 export function createInventoryState(options = {}) {
+    // `mogHouse` is retained as the persisted compatibility key until an ordered
+    // inventory-state schema migration renames it. Do not expose that token to players.
     const mogHouse = {
         isInMogHouse: options.isInMogHouse ?? false,
         placedFurniture: options.placedFurniture ?? [...STARTING_FURNITURE_IDS],
@@ -207,11 +209,16 @@ export function describeEquipmentAndWardrobes(state, context = {}) {
     ].join('\n');
 }
 
-export function setMogHouseAccess(state, isInMogHouse) {
+export function setHomeAccess(state, isAtHome) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return { ok: false, message: 'No inventory container state found.' };
-    inventoryState.mogHouse.isInMogHouse = Boolean(isInMogHouse);
-    return { ok: true, message: `Mog House context: ${inventoryState.mogHouse.isInMogHouse ? 'entered' : 'left'}.` };
+    inventoryState.mogHouse.isInMogHouse = Boolean(isAtHome);
+    return { ok: true, message: `Home-storage context: ${inventoryState.mogHouse.isInMogHouse ? 'entered' : 'left'}.` };
+}
+
+// Legacy API alias retained while command and save adapters are migrated.
+export function setMogHouseAccess(state, isInMogHouse) {
+    return setHomeAccess(state, isInMogHouse);
 }
 
 function canStackIntoExistingItem(container, item) {
@@ -224,7 +231,20 @@ function describeContainerLine(inventoryState, containerId, context = {}) {
     if (!definition || !container) return `- ${containerId}: missing`;
     const capacity = getContainerCapacity(inventoryState, containerId);
     const accessible = isContainerAccessible(inventoryState, containerId, context) ? 'accessible' : 'locked/inaccessible';
-    return `- ${definition.label}: ${container.items.length}/${capacity}, ${accessible}, access=${definition.access}`;
+    return `- ${definition.label}: ${container.items.length}/${capacity}, ${accessible}, access=${describeAccessContext(definition.access)}`;
+}
+
+function describeAccessContext(access) {
+    switch (access) {
+        case INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE:
+            return 'home';
+        case INVENTORY_ACCESS_CONTEXTS.EQUIPMENT_ANYWHERE:
+            return 'equipment-anywhere';
+        case INVENTORY_ACCESS_CONTEXTS.ANYWHERE:
+            return 'anywhere';
+        default:
+            return 'restricted';
+    }
 }
 
 function normalize(value) {
