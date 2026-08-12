@@ -14,15 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.700.1
-Package:      0.5.700
+Product:      0.5.900.1
+Package:      0.5.900
 Account Save: 4
 Game State:   5
-Data:         18
-Codename:     Routes and Transport
+Data:         19
+Benchmark:    1
+Codename:     Simulation Substrate Gate
 ```
 
-This remains pre-alpha product development. Milestone numbers describe the active contract; they are not completion percentages.
+This remains pre-alpha product development. Milestone numbers describe active contracts; they are not completion percentages.
 
 ## Product laws
 
@@ -44,15 +45,16 @@ Key rules:
 - maps represent acquired knowledge;
 - resources and rewards have physical/economic/social provenance;
 - mechanics and representative content grow together;
+- regional content is authored as a validated cross-linked graph;
 - legacy FFXI-derived material is research/reference/migration material only.
 
 ## Phase summary
 
-| Phase | Theme | Exit promise |
+| Phase | Theme | Status / exit promise |
 | --- | --- | --- |
-| `0.4` | Foundation and direction lock | Architecture can evolve without another broad reset. |
-| `0.5` | Simulation + original-world/content substrate | Time, interrupts, provenance, ecology, transport, projects, and scalable content validation exist. |
-| `0.6` | Integrated character/mechanics content | Character progression, capabilities, magic, combat, items, gathering/crafting, ecology, and companions form a substantial connected layer. |
+| `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
+| `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
+| `0.6` | Integrated character/mechanics content | **Next.** Character progression, capabilities, magic, combat, items, gathering/crafting, ecology, and companions become a substantial connected layer. |
 | `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
@@ -66,7 +68,7 @@ Delivered development direction/versioning, ordered persistence migrations, stru
 
 ---
 
-# 0.5 — Simulation and Content Substrate — active
+# 0.5 — Simulation and Content Substrate — complete
 
 ## 0.5.100 — Deterministic world clock — complete
 
@@ -103,8 +105,6 @@ Delivered development direction/versioning, ordered persistence migrations, stru
 
 Implemented original powers/regions/places/maps/ancestries/transitional disciplines, Game State v4 -> v5 identity migration, canonical world-facing vocabulary, bounded legacy adapters, and explicit legacy/reference quarantine.
 
-Deliberate compatibility debt that does not block the gate remains: `gil`, historical localStorage keys, legacy-shaped POI hook IDs, migration aliases/tests, and explicitly historical research modules.
-
 ## 0.5.600 — Resource provenance and persistent projects — complete
 
 Implemented persistent projects, source/sink metadata, provenance-aware post-combat resource opportunities, deterministic timed recovery actions, and physical-resource recovery through normal inventory rules.
@@ -115,64 +115,69 @@ Implemented canonical family/species records, place-bound populations, flora/min
 
 ## 0.5.700 — Travel and scheduled transport substrate — complete
 
-Implemented on `main` at product `0.5.700.1`.
+Implemented canonical routes/stops, fictional distance/duration/hazards, cargo and map/knowledge hooks, timed walking travel, shared scheduled-service contracts, deterministic caravan/ferry departures and arrivals, travel interrupts, and route/service validation. Existing place connections remain a bounded fallback where canonical route coverage is incomplete.
 
-- [x] Canonical route records are separate from incidental place-transition/exit UI.
-- [x] Stable route-stop IDs, route directionality, fictional duration, distance, hazards, transport-mode compatibility, cargo/encumbrance metadata, and map/knowledge hooks.
-- [x] Walking/local route travel uses canonical timed tasks and `worldTime.totalSeconds` rather than an independent travel clock.
-- [x] Existing place connections remain a transitional fallback where canonical route coverage is not yet authored.
-- [x] Scheduled transport services use stable route/stops, deterministic cadence, boarding lead, fare, cargo allowance, fictional journey duration, and deterministic arrival.
-- [x] Shared service contract supports caravan and ferry examples and is shaped for later wagon/coach/mount modes without separate schedule engines.
-- [x] Travel state distinguishes waiting and in-transit phases and stores route/service/task/world-time boundaries.
-- [x] Travel/task cancellation is coupled so stopping a journey does not leave a hidden active timed task.
-- [x] Structured route/service start, booking, departure, arrival, and cancellation events are emitted independently of display prose.
-- [x] Departure/arrival interrupt providers integrate scheduled movement with advance-until-event behavior.
-- [x] Route/service catalog validation checks modes, stops, places, maps, segment structure, cadence, fares, and cargo fields.
-- [x] Representative routes/services span Thornwall/Elderwood, Brasshaven/Redstone Reach, Mistmere/Starfen, two interregional caravan corridors, and a wetland ferry case.
-- [x] Data contract advanced to 18; Game State remains 5 because no new required top-level persistence registry is introduced and legacy active travel is normalized at the runtime boundary.
+## 0.5.800 — Regional content packs, normalization, and validation — complete
 
-### 0.5.700 bounded limitations
+Resulting data contract: **Data 19**.
 
-- Scheduled transport is currently an engine/API substrate rather than a broad command/UI booking workflow.
-- Cancelling scheduled service does not yet implement fare-refund policy.
-- Schedule records use periodic cadence; calendars, service days, stop dwell, weather suspension, tickets/reservations, and vehicle/NPC actors are later depth.
-- En-route hazards are structured metadata/interrupt hooks; encounter/event resolution along routes is not yet a full travel-event system.
-- Route knowledge exists as metadata/discovery hooks but is not a universal hard eligibility gate.
-- Current route/service records are representative substrate data, not balanced final geography or a mass-authored network.
-- `gil` remains the intentional transitional fare currency until a deliberate original currency design is selected.
+- [x] `contentPackSchema.js` defines stable pack IDs, shared/regional ownership, dependencies, data version, explicit content collections, and bounded legacy adapters.
+- [x] Stable-ID ownership conflicts are detected across packs without replacing human-meaningful canonical IDs with opaque generated identifiers.
+- [x] `contentPackValidator.js` cross-checks places, routes/services, ecology, gathering sources, items/provenance/sinks, NPCs, shops, recipes, quests, and relationships through one validation surface.
+- [x] The validator catches duplicate ownership, dangling references, invalid route/service topology, invalid source/sink contracts, undeclared cross-pack dependencies, and legacy identifiers leaking into canonical packs without an explicit adapter.
+- [x] `legacyCandidateNormalizer.js` converts historical/reference inputs only into review-required candidates; normalization never makes imported material canonical.
+- [x] Representative shared, Elderwood, and Starfen packs prove shared ownership, regional ownership, and intentional cross-region dependencies.
+- [x] Representative pack-defined NPC/shop/recipe/quest/relationship records prove that social/economic content can join the same dependency graph.
+- [x] Generated tests validate a 600-record fixture (300 items + 300 recipes) before broad content generation begins.
 
-## 0.5.800 — Regional content packs, normalization, and validation — next
+### 0.5.800 bounded limitations
 
-First bounded unit:
+- Representative pack manifests currently claim several established runtime records through `catalogRef`; the existing catalogs have not been physically relocated into pack files wholesale.
+- Pack-defined recipe/quest/relationship records prove data contracts, not complete player-facing crafting/quest/relationship engines.
+- Hundreds-record validation is exercised with generated fixtures; canonical hand-authored content breadth remains intentionally sparse.
+- Legacy/reference candidates still require human/originality review before any canonical adoption.
 
-- [ ] Define a regional content-pack manifest/schema with stable pack IDs, region ownership, data-contract version, and explicit record collections/references.
-- [ ] Establish pack-scoped stable-ID ownership and duplicate/conflict detection across packs without changing canonical IDs into opaque generated identifiers.
-- [ ] Cross-reference places, routes/stops/services, ecology/populations/sources, items/source-sink metadata, shops/NPCs, and representative recipe/quest/relationship placeholders through one validator surface.
-- [ ] Reject missing/duplicate IDs, dangling references, invalid source/sink graphs, invalid routes/stops, and legacy identifiers leaking into canonical packs without an explicit adapter.
-- [ ] Define legacy/reference normalization as a candidate-record pipeline requiring review/originalization; never import historical material directly into canonical packs.
-- [ ] Prove at least two regional packs plus shared/common data and cross-region references.
-- [ ] Add generated/fixture scale tests at hundreds-of-record breadth so lookup, duplicate detection, and validation behavior are tested before mass content authoring.
+## 0.5.900 — Simulation/content-substrate exit gate — complete
 
-Keep this first unit infrastructure-focused. Do not jump directly to hundreds of hand-authored creatures/items/recipes before the pack contract and validator are coherent.
+Product baseline: **0.5.900.1 / Package 0.5.900 / Game State 5 / Data 19**.
 
-## 0.5.900 — Simulation/content-substrate exit gate
+`simulationSubstrateGate.js` now evaluates seven structured readiness groups:
 
-0.5 closes when:
+- [x] deterministic simulation — world time, simulation control, timed tasks, interrupts, day cycle, semantic events;
+- [x] original-world identity — Game State v5 identity generation and canonical world-identity subsystem;
+- [x] projects and provenance — projects, provenance, resource opportunities, timed recovery;
+- [x] ecology and gathering — valid ecology catalogs plus representative family/species/population/source breadth across flora/mineral/fishing;
+- [x] routes and transport — valid route/service catalogs plus deterministic scheduled departure checks;
+- [x] regional content and scale — valid multi-pack graph, stable ownership, cross-pack dependency, content-pack validation, candidate normalization;
+- [x] persistence compatibility — Account Save v4, Game State v5, Data >=19, ordered migration compatibility contract.
 
-- long fictional activities safely fast-forward, interrupt, and summarize;
-- original-world naming/stable IDs are established;
-- persistent projects and resource provenance exist;
-- ecology/gathering/spawn definitions can populate the world;
-- scheduled transport connects multiple settlements/regions;
-- regional content packs and validators support high-volume original content generation.
+The production gate is green. Injection tests also prove that invalid catalogs and planned/missing substrate dependencies produce structured gate diagnostics rather than silently reporting readiness.
+
+### 0.5 exit decision
+
+The phase closes because long fictional activities can advance deterministically and interrupt/summarize; original-world IDs are established; projects and provenance exist; ecology/gathering/population definitions can populate the world; scheduled transport connects setting anchors; and regional content packs/validators can support high-volume original content without turning parsing success into canonical truth.
+
+Deliberate compatibility debt remains non-blocking: `gil`, historical localStorage keys, legacy-shaped POI hook IDs, transitional internal job/race/nation property names, `places.js` route fallbacks, encounter `spawnRules`, and explicitly historical research/reference modules.
 
 ---
 
-# 0.6 — Integrated Character and Mechanics Content
+# 0.6 — Integrated Character and Mechanics Content — next
 
-Planned tracks:
+## 0.6.100 — Character stats and progression — next
 
-- `0.6.100` character stats and progression;
+First bounded unit:
+
+- [ ] Audit current player stat/progression ownership and identify where historical FFXI formula tables still directly shape canonical runtime behavior.
+- [ ] Define an original-world character-stat contract owned by the continuous character, with explicit base/derived/resource fields and provenance/confidence for transitional formulas.
+- [ ] Keep discipline training/progression descriptive and contextual rather than turning `mainJobId` into a universal capability gate.
+- [ ] Establish migration-safe adapters around existing `player.jobs`, `mainJobId`, `raceId`, and related persisted/internal fields instead of a broad save rewrite.
+- [ ] Separate character-owned progression state from active-discipline modifiers/caps where the substrate still conflates them.
+- [ ] Add representative progression/stat tests across multiple ancestries and disciplines using canonical IDs and original-world vocabulary.
+- [ ] Preserve historical formula research only behind explicit reference/comparison boundaries.
+- [ ] Stop at a coherent 0.6.100 contract before opening the broader capability system.
+
+## Later planned 0.6 tracks
+
 - `0.6.200` skills, proficiencies, disciplines, and capabilities;
 - `0.6.300` original magic and active ability engine;
 - `0.6.400` Combat 2.0;
