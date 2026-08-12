@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.4.300.0';
-export const PACKAGE_VERSION = '0.4.300';
+export const PRODUCT_VERSION = '0.4.400.0';
+export const PACKAGE_VERSION = '0.4.400';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'Ordered Persistence Migrations',
+    codename: 'Structured Action Contract',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,8 +18,9 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.4.300',
+    versionManifest: '0.4.400',
     saveMigrations: '0.1.0',
+    actionResults: '0.1.0',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
@@ -51,7 +52,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.3',
-    travel: '0.4.0',
+    travel: '0.4.1',
     pois: '0.3.5',
     poiDiscovery: '0.3.5',
     poiFastTravel: '0.3.5',
