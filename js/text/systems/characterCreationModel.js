@@ -9,11 +9,11 @@ import {
     getRaceCreationPresentation,
 } from '../data/characterCreationContent.js';
 
-const STARTING_JOB_IDS = Object.freeze(['warrior', 'monk', 'whiteMage', 'blackMage', 'redMage', 'thief']);
+const STARTING_JOB_IDS = Object.freeze(['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand']);
 export const CREATOR_STEPS = Object.freeze(['identity', 'nation', 'job', 'summary']);
 
 export function createGuidedCreatorState(options = {}) {
-    const raceId = RACES[options.raceId] ? options.raceId : 'hume';
+    const raceId = RACES[options.raceId] ? options.raceId : 'human';
     const race = RACES[raceId];
     const sex = race.allowedSexes.includes(options.sex) ? options.sex : race.allowedSexes[0];
     return normalizeCreatorState({
@@ -21,17 +21,17 @@ export function createGuidedCreatorState(options = {}) {
         name: options.name ?? '',
         raceId,
         sex,
-        nationId: options.nationId ?? 'sandoria',
-        mainJobId: STARTING_JOB_IDS.includes(options.mainJobId) ? options.mainJobId : 'warrior',
+        nationId: options.nationId ?? 'thornwall',
+        mainJobId: STARTING_JOB_IDS.includes(options.mainJobId) ? options.mainJobId : 'vanguard',
     });
 }
 
 export function normalizeCreatorState(creator = {}) {
-    const raceId = RACES[creator.raceId] ? creator.raceId : 'hume';
+    const raceId = RACES[creator.raceId] ? creator.raceId : 'human';
     const race = RACES[raceId];
     const sex = race.allowedSexes.includes(creator.sex) ? creator.sex : race.allowedSexes[0];
-    const nationId = getNationOptions().some((item) => item.id === creator.nationId) ? creator.nationId : 'sandoria';
-    const mainJobId = STARTING_JOB_IDS.includes(creator.mainJobId) ? creator.mainJobId : 'warrior';
+    const nationId = getNationOptions().some((item) => item.id === creator.nationId) ? creator.nationId : 'thornwall';
+    const mainJobId = STARTING_JOB_IDS.includes(creator.mainJobId) ? creator.mainJobId : 'vanguard';
     return {
         stepIndex: clampStep(creator.stepIndex ?? 0),
         name: normalizeName(creator.name ?? ''),
@@ -68,7 +68,7 @@ export function getStartingJobOptions() {
 }
 
 export function selectCreatorRace(creator, raceId) {
-    const nextRaceId = RACES[raceId] ? raceId : 'hume';
+    const nextRaceId = RACES[raceId] ? raceId : 'human';
     const race = RACES[nextRaceId];
     return normalizeCreatorState({ ...creator, raceId: nextRaceId, sex: race.allowedSexes.includes(creator.sex) ? creator.sex : race.allowedSexes[0] });
 }
@@ -102,7 +102,7 @@ export function getCreatorSummary(creator) {
     const nation = getNationCreationPresentation(normalized.nationId);
     const job = getJobCreationPresentation(normalized.mainJobId);
     return {
-        name: normalized.name || 'Adventurer',
+        name: normalized.name || 'Traveler',
         race: race.name,
         sex: describeCreatorSex(normalized.sex),
         nation: nation.name,
@@ -120,15 +120,15 @@ export function validateCreator(creator) {
     const issues = [];
     if (!normalizeName(normalized.name)) issues.push('Name is required.');
     if (normalizeName(normalized.name).length > 24) issues.push('Name must be 24 characters or fewer.');
-    if (!RACES[normalized.raceId].allowedSexes.includes(normalized.sex)) issues.push('Selected sex is not valid for the selected race.');
-    if (!STARTING_JOB_IDS.includes(normalized.mainJobId)) issues.push('Selected job is not a starting job.');
+    if (!RACES[normalized.raceId].allowedSexes.includes(normalized.sex)) issues.push('Selected sex is not valid for the selected ancestry.');
+    if (!STARTING_JOB_IDS.includes(normalized.mainJobId)) issues.push('Selected discipline is not a starting discipline.');
     return issues;
 }
 
 export function createCreatorGameOptions(creator) {
     const normalized = normalizeCreatorState(creator);
     return {
-        name: normalizeName(normalized.name) || 'Adventurer',
+        name: normalizeName(normalized.name) || 'Traveler',
         raceId: normalized.raceId,
         sex: normalized.sex,
         nationId: normalized.nationId,
