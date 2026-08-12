@@ -222,6 +222,7 @@ function migratePlayerIdentity(player, currentPlaceId) {
     const progression = {
         ...(player.progression ?? {}),
         nationRanks: migrateObjectKeys(player.progression?.nationRanks ?? {}, normalizeNationReference),
+        jobProgression: migrateObjectKeys(player.progression?.jobProgression ?? {}, canonicalizeDisciplineId),
         unlockedMaps: migrateIdArray(player.progression?.unlockedMaps ?? [], canonicalizeMapId),
         unlockedHomePoints: migrateIdArray(player.progression?.unlockedHomePoints ?? [], canonicalizePlaceId),
     };
