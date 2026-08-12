@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.5.600.1';
-export const PACKAGE_VERSION = '0.5.600';
+export const PRODUCT_VERSION = '0.5.650.1';
+export const PACKAGE_VERSION = '0.5.650';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 16,
+    data: 17,
     benchmark: 1,
-    codename: 'Resource Provenance',
+    codename: 'Ecology Substrate',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.600.1',
+    versionManifest: '0.5.650.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -31,6 +31,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceProvenance: '0.1.0',
     resourceOpportunities: '0.1.0',
     resourceRecovery: '0.1.0',
+    ecologyCatalog: '0.1.0',
+    ecologyState: '0.1.0',
+    populations: '0.1.0',
+    gatheringSources: '0.1.0',
+    resourceItems: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
     canvasUi: '0.7.0',
@@ -45,7 +50,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
-    enemyEntity: '0.2.0',
+    enemyEntity: '0.2.1',
     statEngine: '0.4.1',
     statusEngine: '0.1.0',
     battleEngine: '0.5.0',
