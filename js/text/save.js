@@ -1,11 +1,13 @@
 import { createInventoryState } from './systems/inventoryEngine.js';
+import { migrateAccountRegistryPayload, migrateGameStatePayload } from './systems/saveMigrations.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
+import { VERSION } from './version.js';
 
 const ACCOUNTS_KEY = 'ffxiTextRpgAccounts';
 const ACCOUNT_SESSION_KEY = 'ffxiTextRpgAccountSession';
 const LEGACY_SINGLE_ACCOUNT_KEY = 'ffxiTextRpgAccount';
 const LEGACY_SAVE_KEY = 'ffxiTextRpgSave';
-const ACCOUNT_VERSION = 2;
+const ACCOUNT_VERSION = VERSION.accountSave;
 const ENCODING = 'base64-json-v1';
 const RESERVED_ACCOUNT_NAMES = new Set(['local-adventurer', 'account', 'placeholder']);
 
@@ -40,12 +42,22 @@ export function loadCharacter(characterSelector) {
 
     const state = decodeState(record.encodedState);
     if (!state) return null;
-    const revived = reviveGameState(state, record.id);
+    const migration = migrateGameStatePayload(state);
+    if (!migration.ok) {
+        console.warn('Ignoring incompatible character save.', migration.message);
+        return null;
+    }
+
+    const revived = reviveGameState(migration.value, record.id);
     if (!isValidGameState(revived)) {
         console.warn('Ignoring incompatible character save.', validateGameState(revived));
         return null;
     }
 
+    if (migration.migrated) {
+        record.encodedState = encodeState(revived);
+        record.updatedAt = new Date().toISOString();
+    }
     account.profile.lastCharacterId = record.id;
     saveAccount(account);
     return revived;
@@ -251,8 +263,22 @@ function loadAccountRegistry() {
         const raw = getStorage()?.getItem(ACCOUNTS_KEY);
         if (!raw) return createAccountRegistry();
         const parsed = decodePayload(raw);
-        if (!parsed || parsed.version !== ACCOUNT_VERSION || !Array.isArray(parsed.accounts)) return createAccountRegistry();
-        return { version: ACCOUNT_VERSION, encoding: ENCODING, accounts: parsed.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)) };
+        const migration = migrateAccountRegistryPayload(parsed);
+        if (!migration.ok) {
+            console.warn('Ignoring incompatible account registry.', migration.message);
+            return createAccountRegistry();
+        }
+        if (!Array.isArray(migration.value.accounts)) return createAccountRegistry();
+
+        const nextRegistry = {
+            version: ACCOUNT_VERSION,
+            encoding: ENCODING,
+            accounts: migration.value.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)),
+        };
+        if (migration.migrated) {
+            getStorage()?.setItem(ACCOUNTS_KEY, encodePayload(nextRegistry));
+        }
+        return nextRegistry;
     } catch (error) {
         console.warn('Unable to load account registry.', error);
         return createAccountRegistry();
