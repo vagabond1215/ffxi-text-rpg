@@ -17,8 +17,8 @@ test('new character has character-owned skill state object', () => {
     assert.deepEqual(player.progression.skills, {});
 });
 
-test('learned skills are character-owned and capped by current job', () => {
-    const player = createPlayerCharacter({ mainJobId: 'warrior', level: 10 });
+test('learned skills are character-owned and capped by current discipline', () => {
+    const player = createPlayerCharacter({ mainJobId: 'vanguard', level: 10 });
 
     setLearnedSkill(player, 'axe', 40);
     const effective = getEffectiveSkillForCurrentJob(player, 'axe');
@@ -29,21 +29,21 @@ test('learned skills are character-owned and capped by current job', () => {
     assert.equal(effective.overCurrentCap, true);
 });
 
-test('job switching changes effective cap without moving learned skill', () => {
-    const player = createPlayerCharacter({ mainJobId: 'warrior', level: 10 });
+test('discipline switching changes effective cap without moving learned skill', () => {
+    const player = createPlayerCharacter({ mainJobId: 'vanguard', level: 10 });
     setLearnedSkill(player, 'axe', 20);
 
-    switchMainJob(player, 'monk');
-    const monkAxe = getEffectiveSkillForCurrentJob(player, 'axe');
+    switchMainJob(player, 'pugilist');
+    const pugilistAxe = getEffectiveSkillForCurrentJob(player, 'axe');
 
     assert.equal(getLearnedSkill(player, 'axe'), 20);
-    assert.equal(monkAxe.cap, 0);
-    assert.equal(monkAxe.effective, 0);
-    assert.equal(monkAxe.learned, 20);
+    assert.equal(pugilistAxe.cap, 0);
+    assert.equal(pugilistAxe.effective, 0);
+    assert.equal(pugilistAxe.learned, 20);
 });
 
-test('skill gain clamps to current job cap by default', () => {
-    const player = createPlayerCharacter({ mainJobId: 'warrior', level: 1 });
+test('skill gain clamps to current discipline cap by default', () => {
+    const player = createPlayerCharacter({ mainJobId: 'vanguard', level: 1 });
 
     const result = addLearnedSkill(player, 'axe', 99);
 
@@ -54,7 +54,7 @@ test('skill gain clamps to current job cap by default', () => {
 });
 
 test('skill description shows learned cap effective rank and confidence', () => {
-    const player = createPlayerCharacter({ mainJobId: 'warrior', level: 10 });
+    const player = createPlayerCharacter({ mainJobId: 'vanguard', level: 10 });
     setLearnedSkill(player, 'axe', 40);
 
     const output = describeSkillProgression(player, 'axe');
