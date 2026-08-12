@@ -8,15 +8,15 @@ import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from '../js/text/systems/shopEngine.js';
 
-function moveToAshene(state) {
-    const ashene = getPoisForPlace('southern-sandoria').find((poi) => poi.name === 'Ashene');
-    setPositionAndDiscover(state, 'southern-sandoria', ashene.coordinate);
-    return ashene;
+function moveToSellaThorn(state) {
+    const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
+    setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
+    return vendor;
 }
 
 test('buyFromCurrentShop spends gil and adds item to inventory', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 100;
 
     const result = buyFromCurrentShop(state, 'Bronze Sword');
@@ -30,7 +30,7 @@ test('buyFromCurrentShop spends gil and adds item to inventory', () => {
 
 test('buyFromCurrentShop rejects insufficient gil', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
 
     const result = buyFromCurrentShop(state, 'Bronze Sword');
@@ -41,7 +41,7 @@ test('buyFromCurrentShop rejects insufficient gil', () => {
 
 test('buyFromCurrentShop rejects missing shop context', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { x: 0, y: 0 });
+    setPositionAndDiscover(state, 'thornwall-southgate', { levelId: 'main', coord: 'G-10' });
     state.player.wallet.gil = 1000;
 
     assert.match(buyFromCurrentShop(state, 'Bronze Sword'), /no matching shop/i);
@@ -49,7 +49,7 @@ test('buyFromCurrentShop rejects missing shop context', () => {
 
 test('buyFromCurrentShop respects inventory capacity', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10000;
     const inventory = state.player.inventoryState.containers.inventory.items;
     for (let index = 0; index < 30; index += 1) {
@@ -64,7 +64,7 @@ test('buyFromCurrentShop respects inventory capacity', () => {
 
 test('sellToCurrentShop rejects noSell item without mutating inventory or gil', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'royal-keepsake',
@@ -83,7 +83,7 @@ test('sellToCurrentShop rejects noSell item without mutating inventory or gil', 
 
 test('sellToCurrentShop rejects key items', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'gate-pass',
         name: 'Gate Pass',
@@ -99,7 +99,7 @@ test('sellToCurrentShop rejects key items', () => {
 
 test('sellToCurrentShop rejects zero-value items unless explicitly allowed', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 5;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'weathered-note',
@@ -117,7 +117,7 @@ test('sellToCurrentShop rejects zero-value items unless explicitly allowed', () 
 
 test('sellToCurrentShop removes one stack item by default and adds gil after removal', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'wild-rabbit-hide',
@@ -138,7 +138,7 @@ test('sellToCurrentShop removes one stack item by default and adds gil after rem
 
 test('sellToCurrentShop does not misparse +1 item names as quantity', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'bronze-harness-plus-one',
@@ -156,7 +156,7 @@ test('sellToCurrentShop does not misparse +1 item names as quantity', () => {
 
 test('sellToCurrentShop supports explicit x quantity syntax', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'wild-rabbit-hide',
@@ -175,7 +175,7 @@ test('sellToCurrentShop supports explicit x quantity syntax', () => {
 
 test('sellToCurrentShop supports explicit qty quantity syntax', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'wild-rabbit-hide',
@@ -194,7 +194,7 @@ test('sellToCurrentShop supports explicit qty quantity syntax', () => {
 
 test('sellToCurrentShop treats bare trailing numbers as part of the item name', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'numbered-hide-5',
@@ -213,7 +213,7 @@ test('sellToCurrentShop treats bare trailing numbers as part of the item name', 
 
 test('sellToCurrentShop does not add gil when quantity removal fails', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 10;
     addItemToContainer(state.player.inventoryState, 'inventory', {
         id: 'wild-rabbit-hide',
@@ -251,7 +251,7 @@ test('sellToCurrentShop requires a current shop POI', () => {
 
 test('router exposes buy and sell commands', () => {
     const state = createInitialState();
-    moveToAshene(state);
+    moveToSellaThorn(state);
     state.player.wallet.gil = 100;
     const router = createCommandRouter(state, {
         saveGame: () => true,
@@ -259,7 +259,7 @@ test('router exposes buy and sell commands', () => {
         reload: () => {},
     });
 
-    assert.match(router('shop Ashene'), /Bronze Sword/);
+    assert.match(router('shop Sella Thorn'), /Bronze Sword/);
     assert.match(router('buy Bronze Sword'), /Bought Bronze Sword/);
     assert.match(router('inventory'), /Bronze Sword/);
     assert.match(router('sell Bronze Sword'), /Sold Bronze Sword for 38 gil/);
