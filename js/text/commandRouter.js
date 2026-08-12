@@ -32,7 +32,7 @@ import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommand
 import {
     describeContainerContents,
     describeInventoryContainers,
-    setMogHouseAccess,
+    setHomeAccess,
     transferItemBetweenContainers,
 } from './systems/inventoryEngine.js';
 import {
@@ -78,28 +78,29 @@ const HELP_TEXT = [
     'Available commands:',
     '  help                 Show this command list.',
     '  create               Start prompt-based character creation.',
-    '  create --nation=<id> --race=<id> --sex=<id> --job=<id> --name=<name>  Fast-create a character.',
+    '  create --power=<id> --ancestry=<id> --sex=<id> --discipline=<id> --name=<name>  Fast-create a character.',
     '  cancel               Cancel prompt-based character creation.',
-    '  nations              List available starting nations.',
-    '  races                List available races.',
-    '  jobs                 List available starting jobs.',
-    '  job                  Show unlocked job progression.',
-    '  job <id>             Change main job to an unlocked job.',
+    '  powers               List available starting powers.',
+    '  ancestries           List available ancestries.',
+    '  disciplines          List available starting disciplines.',
+    '  discipline           Show unlocked discipline progression.',
+    '  discipline <id>      Change active discipline to an unlocked discipline.',
     '  skills               Show current character-owned skill progression.',
     '  skill <id>           Inspect one character-owned skill.',
     '  look                 Describe the current location, coordinate, and contextual POIs.',
     '  here                 Show context-aware POIs/actions at the current grid.',
-    '  poi                  Summarize seeded POIs by zone.',
-    '  pois [zone]          List seeded POIs for current or named zone.',
+    '  poi                  Summarize seeded POIs by place.',
+    '  pois [place]         List seeded POIs for current or named place.',
     '  talk [name]          Talk/interact with a POI at this coordinate and discover it.',
     '  shop [name]          Use shop action at this coordinate where supported.',
     '  buy <item>           Buy an item from the current shop POI into Inventory.',
     '  sell <item> [qty]    Sell one or more Inventory items to the current shop POI.',
     '  guild [name]         Use guild action at this coordinate where supported.',
-    '  quest [name]         Use quest/mission action at this coordinate where supported.',
-    '  discovered           List discovered POIs in this zone.',
-    '  fastpoi <name>       Fast travel to a discovered POI in this same zone.',
-    '  zonefast             List known usable zone exits from current zone.',
+    '  quest [name]         Use quest/commission action at this coordinate where supported.',
+    '  companion [name]     Interact with a companion/recruitment contact where supported.',
+    '  discovered           List discovered POIs in this place.',
+    '  fastpoi <name>       Fast travel to a discovered POI in this same place.',
+    '  exits                List known usable exits from the current place.',
     '  character            Show the current character summary.',
     '  stats                Show attributes and derived combat stats.',
     '  inventory            Show carried items.',
@@ -110,44 +111,43 @@ const HELP_TEXT = [
     '  transfer <item> from <source> to <destination>  Move items between containers.',
     '  equip <item> [to slot] [from container]          Equip gear from Inventory/Wardrobe.',
     '  unequip <slot> [to container]                    Unequip gear into a container.',
-    '  equipSources       Show accessible equipment source containers.',
-    '  moghouse enter|leave Toggle Mog House access context for storage testing.',
+    '  equipSources         Show accessible equipment source containers.',
+    '  home enter|leave     Toggle home-storage access context for storage testing.',
     '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show known spell placeholder data.',
-    '  weaponSkills         Show recovered weapon skill source data.',
-    '  jobAbilities         Show recovered job abilities and traits for the current job.',
-    '  bestiary             Show recovered bestiary notes for the current zone.',
+    '  techniques           Show recovered weapon-technique source data.',
+    '  abilities            Show recovered discipline abilities and traits.',
+    '  bestiary             Show recovered bestiary notes for the current place.',
     '  encounter <enemy>    Start a battle against a loaded enemy seed.',
     '  battle               Show the active battle state.',
     '  attack [target]      Perform a basic attack in battle.',
-    '  weaponSkill <name>   Use a TP-gated placeholder weapon skill.',
+    '  technique <name>     Use a TP-gated placeholder weapon technique.',
     '  cast <spell>         Cast a simple placeholder spell in battle.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
     '  maps                 List known starter map records.',
     '  map <id>             Inspect a starter map record.',
-    '  zones                List known seeded places.',
-    '  zone [id/name]       Inspect current or named zone.',
-    '  atlas [id/name]      Show discovered zone atlas grids.',
+    '  places               List known seeded places.',
+    '  place [id/name]      Inspect current or named place.',
+    '  atlas [id/name]      Show discovered place atlas grids.',
     '  grid                 Inspect current grid.',
-    '  move <dir>           Move within the current zone coordinate using n/ne/e/se/s/sw/w/nw.',
+    '  move <dir>           Move within the current place coordinate using n/ne/e/se/s/sw/w/nw.',
     '  stop                 Stop active travel or auto-run movement.',
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
-    '  recovered            Summarize useful data recovered from stale branches.',
-    '  /macrohelp           Show FFXI-style macro/text command reference.',
-    '  /ma /ja /ws /item    Accept FFXI-style action command forms.',
-    '  /equip /equipset     Accept FFXI-style equipment command forms as stubs.',
-    '  travel <destination> Start direct travel to a connected zone.',
+    '  recovered            Summarize useful data recovered from legacy research.',
+    '  travel <destination> Start direct travel to a connected place.',
     '  wait [seconds]       Advance time manually for travel/tick testing.',
     '  databases            List planned/seeded/implemented data registries.',
-    '  version              Show app/save/data version tracking.',
+    '  version              Show product/save/data version tracking.',
     '  systems              Show system version map.',
     '  tick                 Inspect live tick engine baseline.',
-    '  inspect <target>     Inspect player, item, stats, skills, skill <id>, inventory, containers, equipment, npcs, enemies, state, or log.',
+    '  inspect <target>     Inspect character, item, stats, skills, inventory, equipment, places, maps, or runtime diagnostics.',
     '  validate             Validate current game state.',
     '  log                  Show recent command history.',
     '  save                 Save the current local game state.',
     '  reset                Clear local save data and reload the page.',
+    '',
+    'Legacy command aliases remain accepted at bounded compatibility seams but are not canonical vocabulary.',
 ].join('\n');
 
 export function createCommandRouter(state, services = {}) {
@@ -185,9 +185,13 @@ export function createCommandRouter(state, services = {}) {
                 creator = createCreatorSession();
                 return renderCreatorPrompt(creator);
             case 'cancel': creator = null; return 'Character creation cancelled.';
+            case 'powers':
             case 'nations': return describeNations();
+            case 'ancestries':
             case 'races': return describeRaces();
+            case 'disciplines':
             case 'jobs': return describeJobs();
+            case 'discipline':
             case 'job': return parsed.args.length ? switchMainJob(state.player, parsed.args.join(' ')).message : describeJobProgression(state.player);
             case 'skills': return describeSkillProgression(state.player);
             case 'skill': return describeSkillProgression(state.player, parsed.args[0]);
@@ -207,9 +211,11 @@ export function createCommandRouter(state, services = {}) {
             case 'guild': return performPoiAction(state, 'guild', parsed.args.join(' '));
             case 'quest': return performPoiAction(state, 'quest', parsed.args.join(' '));
             case 'storage': return performPoiAction(state, 'storage', parsed.args.join(' '));
-            case 'trust': return performPoiAction(state, 'trust', parsed.args.join(' '));
+            case 'companion':
+            case 'trust': return performPoiAction(state, 'companion', parsed.args.join(' '));
             case 'discovered': return describeDiscoveredPois(state);
             case 'fastpoi': return fastTravelToPoi(state, parsed.args.join(' '));
+            case 'exits':
             case 'zonefast': return describeZoneFastTravelOptions(state);
             case 'character': return describeCharacter(state);
             case 'stats': return describeStats(state);
@@ -222,12 +228,15 @@ export function createCommandRouter(state, services = {}) {
             case 'equip': return describeEquipCommand(state, parsed.args);
             case 'unequip': return describeUnequipCommand(state, parsed.args);
             case 'equipsources': return describeEquippableSources(state);
-            case 'moghouse': return describeMogHouseCommand(state, parsed.args[0]);
+            case 'home':
+            case 'moghouse': return describeHomeCommand(state, parsed.args[0]);
             case 'equipment': return describeEquipment(state);
             case 'spells':
             case 'magic': return describeSpells(state);
+            case 'techniques':
             case 'weaponskills':
             case 'ws': return describeWeaponSkills();
+            case 'disciplineabilities':
             case 'jobabilities':
             case 'abilities':
             case 'ja': return describeJobAbilities(state);
@@ -235,7 +244,8 @@ export function createCommandRouter(state, services = {}) {
             case 'encounter': return describeEncounterStart(state, parsed.args.join(' '));
             case 'battle': return describeBattle(state.activeBattle);
             case 'attack': return performPlayerAttack(state, parsed.args[0]);
-            case 'weaponskill': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Skill');
+            case 'technique':
+            case 'weaponskill': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
             case 'cast': return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
             case 'npcs': return describeNpcs(state);
             case 'enemies': return describeEnemies(state);
@@ -297,10 +307,10 @@ function describeTransferCommand(state, args) {
     return transferItemBetweenContainers(state, itemQuery, fromContainer, toContainer);
 }
 
-function describeMogHouseCommand(state, action = 'status') {
+function describeHomeCommand(state, action = 'status') {
     const normalized = String(action).toLowerCase();
-    if (['enter', 'in', 'on'].includes(normalized)) return setMogHouseAccess(state, true).message;
-    if (['leave', 'exit', 'out', 'off'].includes(normalized)) return setMogHouseAccess(state, false).message;
+    if (['enter', 'in', 'on'].includes(normalized)) return setHomeAccess(state, true).message;
+    if (['leave', 'exit', 'out', 'off'].includes(normalized)) return setHomeAccess(state, false).message;
     return describeInventoryContainers(state);
 }
 
@@ -315,16 +325,16 @@ function hasFastCreateArgs(parsed) {
 }
 
 function describeCreateCharacter(state, parsed) {
-    const nationQuery = parsed.named.nation ?? parsed.args[0] ?? 'sandoria';
-    const nation = findNation(nationQuery);
-    if (!nation) return `Unknown nation: ${nationQuery}. Try: nations`;
+    const powerQuery = parsed.named.power ?? parsed.named.nation ?? parsed.args[0] ?? 'thornwall';
+    const power = findNation(powerQuery);
+    if (!power) return `Unknown starting power: ${powerQuery}. Try: powers`;
 
     const nextState = createNewGameState({
-        nationId: nation.id,
-        raceId: parsed.named.race ?? 'hume',
+        nationId: power.id,
+        raceId: parsed.named.ancestry ?? parsed.named.race ?? 'human',
         sex: parsed.named.sex,
-        mainJobId: parsed.named.job ?? parsed.named.mainJob ?? 'warrior',
-        name: parsed.named.name ?? 'Adventurer',
+        mainJobId: parsed.named.discipline ?? parsed.named.job ?? parsed.named.mainJob ?? 'vanguard',
+        name: parsed.named.name ?? 'Traveler',
     });
 
     replaceState(state, nextState);
@@ -362,7 +372,7 @@ function describeMove(state, direction) {
 
 function describeTravelStart(state, destination) {
     if (isActiveBattle(state.activeBattle)) return 'You cannot travel while engaged in battle.';
-    if (!destination) return 'Travel where? Try `zones` to see known places.';
+    if (!destination) return 'Travel where? Try `places` to see known destinations.';
     const result = startTravel(state, destination);
     return result.ok ? result.message : result.reason;
 }
@@ -375,7 +385,7 @@ function describeWait(state, tickEngine, secondsArg = '1') {
     return [`Advanced ${seconds}s.`, describeTravel(state)].join('\n');
 }
 
-function inspectTarget(state, target = 'player', restArgs = []) {
+function inspectTarget(state, target = 'character', restArgs = []) {
     switch (String(target).toLowerCase()) {
         case 'item': return inspectItem(state, restArgs.join(' '));
         case 'player':
@@ -392,12 +402,15 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'equip': return describeEquipment(state);
         case 'spells':
         case 'magic': return describeSpells(state);
+        case 'techniques':
         case 'weaponskills':
         case 'ws': return describeWeaponSkills();
+        case 'discipline':
         case 'job':
         case 'progression': return describeJobProgression(state.player);
         case 'skills': return describeSkillProgression(state.player);
         case 'skill': return describeSkillProgression(state.player, restArgs[0]);
+        case 'disciplineabilities':
         case 'jobabilities':
         case 'abilities':
         case 'ja': return describeJobAbilities(state);
@@ -407,8 +420,11 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'npc': return describeNpcs(state);
         case 'enemies':
         case 'enemy': return describeEnemies(state);
+        case 'powers':
         case 'nations': return describeNations();
+        case 'ancestries':
         case 'races': return describeRaces();
+        case 'disciplines':
         case 'jobs': return describeJobs();
         case 'statformula': return describeStatFormulaOverview();
         case 'racegrades': return describeRaceStatGrades();
@@ -420,6 +436,7 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'poi':
         case 'pois': return describePlacePois(state.currentPlaceId);
         case 'discovered': return describeDiscoveredPois(state);
+        case 'exits':
         case 'zonefast': return describeZoneFastTravelOptions(state);
         case 'zone':
         case 'place': return describeLocation(state);
@@ -436,7 +453,7 @@ function inspectTarget(state, target = 'player', restArgs = []) {
         case 'systems': return describeSystemVersions();
         case 'databases':
         case 'db': return describeDatabases();
-        default: return `Nothing to inspect for "${target}". Try: player, item, stats, skills, skill <id>, inventory, containers, equipment, equipSources, spells, weaponSkills, job, jobAbilities, bestiary, battle, npcs, enemies, nations, races, jobs, maps, here, pois, discovered, zonefast, zone, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
+        default: return `Nothing to inspect for "${target}". Try: character, item, stats, skills, skill <id>, inventory, containers, equipment, equipSources, spells, techniques, discipline, abilities, bestiary, battle, npcs, enemies, powers, ancestries, disciplines, maps, here, pois, discovered, exits, place, atlas, grid, travel, controls, recovered, state, log, version, systems, databases.`;
     }
 }
 
