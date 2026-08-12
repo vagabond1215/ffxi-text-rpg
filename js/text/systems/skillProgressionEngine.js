@@ -193,7 +193,7 @@ export function describeSkillProgression(player, skillId = null) {
     const lines = [
         `Skills for ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current job'} Lv.${player.jobs?.level ?? 1}:`,
         ...entries.map((entry) => `- ${describeSkillLine(entry, player)}`),
-        `Skill-cap confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
+        `Confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
     ];
     return lines.join('\n');
 }
