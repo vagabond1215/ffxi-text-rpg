@@ -63,7 +63,7 @@ test('legacy creation identifiers resolve at the input boundary but canonical st
     assert.equal(state.player.identity.nation, 'Brasshaven');
 });
 
-test('router create command replaces current state with requested original-world start', () => {
+test('router fast-create command uses canonical power ancestry and discipline options', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, {
         saveGame: () => true,
@@ -71,11 +71,28 @@ test('router create command replaces current state with requested original-world
         reload: () => {},
     });
 
-    const output = router('create --nation=brasshaven --race=korren --job=pugilist --name="Stone Son"');
+    const output = router('create --power=brasshaven --ancestry=korren --discipline=pugilist --name="Stone Son"');
 
     assert.match(output, /Created Stone Son/);
     assert.equal(state.currentPlaceId, 'brasshaven-market-ring');
     assert.equal(state.player.identity.nation, 'Brasshaven');
+    assert.equal(state.player.identity.raceId, 'korren');
+    assert.equal(state.player.jobs.mainJobId, 'pugilist');
     assert.equal(state.player.identity.name, 'Stone Son');
     assert.match(router('character'), /Brasshaven/);
+});
+
+test('router fast-create defaults are canonical when only a name is supplied', () => {
+    const state = createInitialState();
+    const router = createCommandRouter(state, {
+        saveGame: () => true,
+        clearSave: () => {},
+        reload: () => {},
+    });
+
+    router('create --name=Wayfarer');
+
+    assert.equal(state.currentPlaceId, 'thornwall-southgate');
+    assert.equal(state.player.identity.raceId, 'human');
+    assert.equal(state.player.jobs.mainJobId, 'vanguard');
 });
