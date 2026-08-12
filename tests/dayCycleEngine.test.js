@@ -81,7 +81,7 @@ test('day summaries aggregate structured semantic event types and categories wit
     const state = createInitialState();
     emitSemanticEvent(state, 'task.completed', { taskId: 'task-a' }, { source: 'test' });
     state.worldTime.totalSeconds = 100;
-    emitSemanticEvent(state, 'travel.arrived', { to: 'west-ronfaure' }, { source: 'test' });
+    emitSemanticEvent(state, 'travel.arrived', { to: 'west-elderwood' }, { source: 'test' });
     state.worldTime.totalSeconds = 200;
     emitSemanticEvent(state, 'project.completed', { projectId: 'shed' }, { source: 'test' });
 
@@ -136,8 +136,9 @@ test('day transition emits structured day-ended and day-started events', () => {
     assert.equal(dayEvents[1].data.day, 2);
 });
 
-test('older saves initialize day-cycle bookkeeping at the current completed-day boundary', () => {
+test('missing day-cycle bookkeeping initializes at the current completed-day boundary without changing save version', () => {
     const state = createInitialState();
+    const versionBefore = state.version;
     delete state.dayCycle;
     state.worldTime.totalSeconds = (3 * SECONDS_PER_DAY) + 500;
 
@@ -145,5 +146,5 @@ test('older saves initialize day-cycle bookkeeping at the current completed-day 
 
     assert.equal(dayCycle.lastFinalizedDay, 3);
     assert.deepEqual(dayCycle.summaries, []);
-    assert.equal(state.version, 4);
+    assert.equal(state.version, versionBefore);
 });
