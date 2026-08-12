@@ -126,6 +126,7 @@ export function describeStats(state) {
     return [
         'Attributes:',
         `STR ${attrs.str}  DEX ${attrs.dex}  VIT ${attrs.vit}  AGI ${attrs.agi}`,
+        `INT ${attrs.int}  MND ${attrs.mnd}  CHR ${attrs.chr}`,
         '',
         'Derived:',
         `Attack ${derived.attack}  Defense ${derived.defense}`,
