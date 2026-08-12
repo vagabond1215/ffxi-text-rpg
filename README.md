@@ -1,8 +1,8 @@
 # Hearth & Horizon
 
-**Working title.** This repository is a text-first persistent fantasy life RPG about building one continuous character and life across a connected world of settlements, roads, wilderness, livelihoods, relationships, trade, exploration, and danger.
+**Working title.** Hearth & Horizon is a text-first persistent fantasy life RPG about one continuous character building skills, livelihood, relationships, reputation, material capability, home/infrastructure, and geographic reach across a connected original fantasy world.
 
-Earlier versions of the project grew from FFXI-derived experiments. Those files may remain temporarily as research, migration, or comparison material, but the canonical game is now an **original setting with original world identifiers, cultures, disciplines, creatures, NPCs, quests, and content databases**.
+Earlier versions of this repository grew from FFXI-derived experiments. Those files may remain only as explicit research, migration, compatibility, or comparison material. They are **not canonical world content**.
 
 Core progression law:
 
@@ -10,17 +10,25 @@ Core progression law:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-The browser presentation is canvas-first and text-led. Prose and imagination render most of the world; restrained maps, icons, tokens, meters, cards, and diagrams can improve comprehension without turning the project into a full graphical-world production.
+Core capability law:
+
+```text
+Disciplines describe.
+Capabilities enable.
+Loadouts and preparation constrain and enhance.
+```
+
+The browser presentation is canvas-first and text-led. Prose carries most of the world while restrained maps, icons, meters, cards, and diagrams improve comprehension without requiring a full graphical-world production.
 
 ## Current version
 
 ```text
-Product:      0.5.500.0
-Package:      0.5.500
+Product:      0.5.550.2
+Package:      0.5.550
 Account Save: 4
-Game State:   4
-Data:         13
-Codename:     Day Boundary Review
+Game State:   5
+Data:         15
+Codename:     Original World Identity
 ```
 
 Product versions use:
@@ -29,25 +37,49 @@ Product versions use:
 MAJOR.PHASE.TRACK.REVISION
 ```
 
-`package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
+`package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`. `js/text/version.js` is the authoritative runtime/system version manifest.
 
-`js/text/version.js` is the authoritative runtime/system version manifest.
+## Current milestone state
+
+The `0.5.550` original-world identity and canonical nomenclature migration is implemented on `main`.
+
+Current canonical anchors include:
+
+- **Thornwall** and the **Elderwood**;
+- **Brasshaven** and the **Redstone Reach**;
+- **Mistmere** and the **Starfen**;
+- future central trade hub **Waymeet**.
+
+Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. The transitional starting disciplines are **Vanguard, Pugilist, Lifewarden, Elementalist, Spellblade, and Shadowhand**.
+
+New canonical runtime state uses original stable IDs. Older world/ancestry/discipline identifiers remain accepted only through bounded migration/input compatibility seams.
+
+### Deliberate compatibility debt
+
+The identity track does not pretend every historical token has vanished. The following remain intentionally bounded rather than being renamed ad hoc:
+
+- `gil` remains the current currency term until an original currency design is deliberately chosen;
+- historical localStorage key names remain for save compatibility;
+- some legacy-shaped POI hook IDs remain while dependent shop/quest/guild references are migrated atomically;
+- `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules retain historical names because their purpose is explicitly compatibility/reference work;
+- legacy command aliases may still be accepted at adapter boundaries, but canonical help and new runtime records use original-world vocabulary.
 
 ## Read these first
 
-1. `docs/DEVELOPMENT_DIRECTION.md` — design north star.
-2. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world naming, legacy-data boundaries, resource provenance, content scale, and content-pack rules.
-3. `docs/ROADMAP.md` — current phase and implementation sequence.
-4. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — detailed version/release gates.
-5. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
-6. `docs/ARCHITECTURE.md` — current runtime/module boundaries.
-7. `docs/THREAD_HANDOFF.md` — implementation handoff notes.
+1. `AGENTS.md` — repository operating rules and session limits.
+2. `docs/DEVELOPMENT_DIRECTION.md` — design north star.
+3. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world naming, legacy boundaries, provenance, and content-scale policy.
+4. `docs/ROADMAP.md` — current implementation status and sequence.
+5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product/schema version protocol and release gates.
+6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
+7. `docs/ARCHITECTURE.md` — runtime/module boundaries.
+8. `docs/THREAD_HANDOFF.md` — implementation handoff state.
 
-Older planning documents may describe superseded FFXI-oriented or formula-first assumptions and should not override the authoritative files above.
+Older planning documents can preserve useful history but do not override these files.
 
 ## Running
 
-Serve the repo over localhost; do not open `index.html` directly with `file://` because browser ES-module imports require an HTTP origin.
+Serve the repository over localhost; do not open `index.html` directly with `file://` because browser ES-module imports require an HTTP origin.
 
 Windows launchers:
 
@@ -68,7 +100,7 @@ Then open:
 http://127.0.0.1:4173/
 ```
 
-No build step is required.
+No build step is required for local play.
 
 ## Development gate
 
@@ -80,64 +112,42 @@ npm run benchmark
 npm run check
 ```
 
-GitHub Actions runs the test and benchmark gate for pull requests and pushes to `main`.
+GitHub Actions runs test/build checks for pushes to `main`. During the current early single-maintainer phase, repository work normally proceeds directly on `main`; branch/PR ceremony can be tightened when collaboration or release risk makes it useful.
 
 ## Product direction in brief
 
 ### One person, many disciplines
 
-Long-term rule:
+A discipline is a training tradition, not a magical identity swap. Learned techniques, spells, recipes, and practical capabilities ultimately belong to the continuous character. Actual use depends on real prerequisites such as proficiency, equipment, tools, ammunition, reagents, resources, injury/status, terrain, preparation, and formal training where the fiction requires it.
 
-```text
-Disciplines describe.
-Capabilities enable.
-Loadouts and preparation constrain and enhance.
-```
-
-The current job-switch scaffold is transitional. A learned technique, spell, recipe, or practical capability ultimately belongs to the character. Actual use depends on real prerequisites such as proficiency, equipment, focus, ammunition, tools, reagents, resources, injury/status, terrain/context, and formal advanced training where the fiction requires it.
+The current `mainJobId`-shaped scaffold remains transitional until capability-centered progression replaces it incrementally behind migrations and tested interfaces.
 
 ### Long fictional time without needless real waiting
 
-Simulation time and wall-clock time are separate.
+Simulation time and wall-clock time are separate. The game supports deterministic world time, pause, speed control, timed tasks, advance-until-interrupt semantics, and structured end-of-day review.
 
-The game can contain substantial fictional grind while still allowing pause, fast-forward, exact deterministic advancement, timed tasks, advance-until-interrupt, and end-of-day review.
-
-Current main includes:
+Current `main` includes:
 
 - canonical deterministic world time;
 - pause and simulation speed control;
 - canonical timed tasks;
 - deterministic simulation interrupts;
-- structured day boundaries and end-of-day review.
+- structured day boundaries and summaries;
+- original-world identity/stable-ID migration.
 
 ### A home base, not a one-city game
 
-The player may establish a room, home, workshop, farm, camp, or other foothold. That base matters for storage, recovery, preparation, relationships, and production, but the world extends well beyond it.
+The player may establish a room, home, workshop, farm, camp, or other foothold. A base matters for storage, recovery, preparation, relationships, and production, but the intended world also contains multiple cities, smaller settlements, roads, wilderness, mines, ports, ruins, dungeons, caravans, ferries, mounts/pack logistics, trade routes, and regional economies.
 
-The target world contains multiple major cities, smaller settlements, roads, wilderness, mines, ports, ruins, dungeons, caravans, ferries, mounts/pack logistics, trade routes, and regional economies.
-
-Internal data partitions support maps and simulation, but player-facing travel should usually read as continuous geography rather than artificial `ZONE LOADING` screens.
+Internal place/data partitions support simulation and navigation. Player-facing geography should usually feel continuous rather than like artificial loading zones.
 
 ### Maps are knowledge
 
-Maps can be owned, purchased, discovered, incomplete, or supplemented by exploration and NPC directions.
-
-The player should discover routes, landmarks, hazards, resources, services, and shortcuts rather than automatically possessing omniscient world navigation.
+Maps can be acquired, discovered, incomplete, or supplemented by exploration and NPC directions. Routes, landmarks, hazards, resources, services, and shortcuts should become known through play rather than omniscient navigation.
 
 ### Resource provenance instead of reward confetti
 
-A defeated creature should not automatically manufacture finished crafting materials in inventory.
-
-Depending on context, rewards may require:
-
-- searching carried belongings;
-- skinning/butchering/plucking;
-- recovering bone, horn, shell, glands, venom, or other useful parts;
-- dismantling constructs;
-- mining/logging/foraging/fishing/trapping;
-- salvage;
-- crafting/processing;
-- commerce, wages, contracts, reputation, or quest rewards.
+A defeated creature should not automatically manufacture finished crafting materials in inventory. Depending on context, rewards may require searching belongings, skinning/butchering/plucking, extracting useful parts, dismantling constructs, gathering, mining, fishing, trapping, salvage, processing, commerce, wages, contracts, reputation, or explicit exceptional magic.
 
 Tools, time, proficiency, condition, carrying capacity, and player choice should matter.
 
@@ -157,28 +167,9 @@ Items should have intentional sources and sinks. Gathering, crafting, cooking, s
 
 ### Content breadth is an engineering requirement
 
-The intended game ultimately needs hundreds to thousands of interconnected records: places, NPCs, creatures, flora/resources, items, recipes, abilities, quests, relationships, shops, and transport routes.
+The intended game eventually needs hundreds to thousands of interconnected records: places, NPCs, creatures, flora/resources, items, recipes, abilities, quests, relationships, shops, and transport routes.
 
-The project therefore does not treat content as a late decorative layer. Mechanics and representative content grow together, with regional content packs and cross-reference validation rather than a few toy records or giant unvalidated files.
-
-## Original setting migration
-
-The immediate next runtime track is:
-
-```text
-0.5.550 — Original-world identity and canonical nomenclature
-```
-
-Before high-volume content databases are expanded, current inherited world/race/job/currency/creature/NPC terminology and stable IDs will be migrated to the original setting described in `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`.
-
-The initial world anchors are:
-
-- **Thornwall** and the **Elderwood** region;
-- **Brasshaven** and the **Redstone Reach**;
-- **Mistmere** and the **Starfen**;
-- future central trade hub **Waymeet**.
-
-These are starting anchors, not the whole world.
+Mechanics and representative content therefore grow together through regional content packs, normalization, and cross-reference validation rather than a few toy records or giant unvalidated files.
 
 ## Current architecture
 
@@ -211,71 +202,38 @@ tests/
 docs/
 ```
 
-## What is implemented versus what is still sparse
+## Implemented foundation versus sparse content
 
-The repository already has useful foundations for:
+The repository has useful foundations for account/character saves and migrations, structured entities, places/maps/navigation/travel, POIs and shops, inventory/storage/equipment, character-owned skill scaffolds, battle/reward/EXP/status/RNG scaffolds, `ActionResult`, semantic events, deterministic simulation time/tasks/interrupts/day review, validation, benchmarks, CI, and database/system-version tracking.
 
-- account/character local saves and ordered migrations;
-- structured player/NPC/enemy entities;
-- places, maps, coordinates, navigation, travel, and aggro;
-- POIs, shops, guild/quest hooks;
-- inventory/storage/wardrobes;
-- item schema, equipment, inspection, buying/selling;
-- character-owned skills and progression scaffolds;
-- battle/reward/EXP/status/RNG scaffolds;
-- `ActionResult` and semantic events;
-- canonical simulation time/tasks/interrupts/day review;
-- validation, tests, benchmarks, CI, database registry, and system-version tracking.
+This is **foundation breadth, not content completion**. Canonical monster, item, shop, quest, magic, relationship, companion, crafting, ecology, and regional catalogs remain far below intended scale.
 
-This is **foundation breadth, not content completion**. Current canonical monster, item, shop, quest, magic, relationship, companion, crafting, and regional catalogs are far below the intended scale and several still carry inherited naming that will be migrated before expansion.
-
-See `docs/SYSTEM_CATALOG.md` for a system-by-system status audit.
-
-## Command compatibility
-
-Typed commands remain a powerful adapter/debug interface. Normal play should increasingly expose discoverable UI actions so command memorization is not required.
-
-Current examples may still contain inherited names until the 0.5.550 migration lands. After that track, examples and saved identifiers should use only canonical original-world vocabulary except inside explicit legacy adapters/migration tests.
+See `docs/SYSTEM_CATALOG.md` for the system-by-system audit.
 
 ## Save model
 
-Current localStorage keys still use historical project identifiers and may be migrated later under an explicit compatibility plan:
+Historical localStorage keys are retained under compatibility policy:
 
 ```text
 ffxiTextRpgAccounts
 ffxiTextRpgAccountSession
 ```
 
-Encoding:
-
-```text
-base64-json-v1
-```
-
-This is encoding, not cryptographic protection.
-
-Ordered migrations handle registered persistent-version transitions. `reviveGameState()` remains responsible for post-JSON reference repair such as relinking inventory container references.
+Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
 
 ## Formula and research policy
 
-Formula confidence stays explicit:
-
-- exact/sourced;
-- researched approximation;
-- intentional simplification;
-- placeholder.
-
-Historical games may inform research, pacing, or structural comparisons, but they do not define canonical names, balance, or content. Formula refinement matters when it materially improves a real player-facing loop at representative data scale.
+Formula confidence stays explicit: exact/sourced, researched approximation, intentional simplification, or placeholder. Historical games can inform comparison research but do not define canonical names, balance, or content.
 
 ## Immediate implementation sequence
 
 ```text
-0.5.550  Original-world names and stable-ID/save migration
-0.5.600  Resource provenance, body processing, persistent projects
+0.5.550  Original-world identity and stable-ID migration      COMPLETE
+0.5.600  Resource provenance + persistent projects           NEXT
 0.5.650  Ecology, gathering sources, spawn populations
-0.5.700  Timed routes and scheduled caravans/transport
-0.5.800  Regional content packs, normalization tools, cross-reference validation
+0.5.700  Timed routes + scheduled caravans/transport
+0.5.800  Regional content packs + normalization/validation
 0.5.900  Simulation/content-substrate exit gate
 ```
 
-High-volume item/monster/quest/recipe generation starts only after the canonical identity migration is complete.
+The first `0.5.600` unit should establish persistent projects and provenance/body-processing substrate before high-volume content generation begins.
