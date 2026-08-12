@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.5.800.1';
-export const PACKAGE_VERSION = '0.5.800';
+export const PRODUCT_VERSION = '0.5.900.1';
+export const PACKAGE_VERSION = '0.5.900';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 19,
     benchmark: 1,
-    codename: 'Regional Content Packs',
+    codename: 'Simulation Substrate Gate',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.800.1',
+    versionManifest: '0.5.900.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -42,6 +42,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     regionalContentPacks: '0.1.0',
     contentPackValidation: '0.1.0',
     legacyCandidateNormalization: '0.1.0',
+    simulationSubstrateGate: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
     canvasUi: '0.7.0',
