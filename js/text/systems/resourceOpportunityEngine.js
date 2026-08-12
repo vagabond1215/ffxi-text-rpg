@@ -133,6 +133,12 @@ export function startResourceRecovery(state, opportunityId, actionId, options = 
         return failure('resource.condition-too-poor', { opportunityId, actionId: action.id, condition: opportunity.condition }, `${opportunity.sourceName} is in too poor a condition for ${action.id}.`);
     }
 
+    const rng = options.rng ?? Math.random;
+    action.outputRolls = opportunity.outputs
+        .map((output, outputIndex) => ({ output, outputIndex }))
+        .filter(({ output }) => output.recoveryAction === action.id)
+        .map(({ outputIndex }) => ({ outputIndex, roll: normalizeRoll(rng()) }));
+
     const durationSeconds = Math.max(1, Math.ceil(definition.durationSeconds * conditionDurationMultiplier(opportunity.condition)));
     const task = startTimedTask(state, {
         kind: 'resource.recovery',
@@ -145,7 +151,10 @@ export function startResourceRecovery(state, opportunityId, actionId, options = 
             sourceEnemyId: opportunity.sourceEnemyId,
         },
     });
-    if (!task.ok) return task;
+    if (!task.ok) {
+        action.outputRolls = [];
+        return task;
+    }
 
     action.status = RESOURCE_RECOVERY_STATUSES.ACTIVE;
     action.taskId = task.data.task.id;
@@ -158,6 +167,7 @@ export function startResourceRecovery(state, opportunityId, actionId, options = 
         condition: opportunity.condition,
         requiredToolTags: [...definition.requiredToolTags],
         proficiencyId: definition.proficiencyId,
+        outputRollCount: action.outputRolls.length,
     }, { source: 'resourceOpportunityEngine' });
 
     return actionSuccess({
@@ -172,7 +182,7 @@ export function startResourceRecovery(state, opportunityId, actionId, options = 
 export function reconcileResourceRecoveries(state, options = {}) {
     const registry = ensureResourceOpportunityState(state);
     reconcileTimedTasks(state);
-    const rng = options.rng ?? Math.random;
+    const fallbackRng = options.rng ?? Math.random;
     const completed = [];
 
     for (const opportunity of registry.records) {
@@ -182,7 +192,7 @@ export function reconcileResourceRecoveries(state, options = {}) {
             const task = findTimedTask(state, action.taskId);
             if (!task || task.status !== TIMED_TASK_STATUSES.COMPLETED) continue;
 
-            const recovery = resolveRecoveryOutputs(state, opportunity, action.id, rng, options.containerId ?? 'inventory');
+            const recovery = resolveRecoveryOutputs(state, opportunity, action, fallbackRng, options.containerId ?? 'inventory');
             action.status = RESOURCE_RECOVERY_STATUSES.COMPLETED;
             action.completedAtWorldSeconds = task.completedAtWorldSeconds;
             const event = emitSemanticEvent(state, 'resource.recovery-completed', {
@@ -266,20 +276,32 @@ export function validateResourceOpportunityState(registry) {
             const actionPrefix = `${prefix}.actions[${actionIndex}]`;
             if (!RESOURCE_RECOVERY_ACTION_DEFINITIONS[action?.id]) issues.push(`${actionPrefix}.id is unknown.`);
             if (!Object.values(RESOURCE_RECOVERY_STATUSES).includes(action?.status)) issues.push(`${actionPrefix}.status is invalid.`);
+            if (!Array.isArray(action?.outputRolls)) {
+                issues.push(`${actionPrefix}.outputRolls must be an array.`);
+            } else {
+                for (const [rollIndex, roll] of action.outputRolls.entries()) {
+                    if (!plainObject(roll) || !nonNegativeInteger(roll.outputIndex) || !validRoll(roll.roll)) {
+                        issues.push(`${actionPrefix}.outputRolls[${rollIndex}] is invalid.`);
+                    }
+                }
+            }
         }
     }
     if (registry.nextSequence <= maxSequence) issues.push('resourceOpportunities.nextSequence must be greater than stored resource sequences.');
     return issues;
 }
 
-function resolveRecoveryOutputs(state, opportunity, actionId, rng, containerId) {
+function resolveRecoveryOutputs(state, opportunity, action, fallbackRng, containerId) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     const items = [];
     const failedItems = [];
     if (!inventoryState) return { items, failedItems };
 
-    for (const output of opportunity.outputs.filter((entry) => entry.recoveryAction === actionId)) {
-        if (rng() >= output.chance) continue;
+    for (const [outputIndex, output] of opportunity.outputs.entries()) {
+        if (output.recoveryAction !== action.id) continue;
+        const stored = action.outputRolls.find((entry) => entry.outputIndex === outputIndex);
+        const roll = stored ? stored.roll : normalizeRoll(fallbackRng());
+        if (roll >= output.chance) continue;
         const item = {
             id: output.itemId,
             name: output.name,
@@ -291,7 +313,7 @@ function resolveRecoveryOutputs(state, opportunity, actionId, rng, containerId) 
                 type: provenanceTypeForOpportunity(opportunity.type),
                 sourceId: opportunity.sourceEnemyId,
                 placeId: opportunity.placeId,
-                action: actionId,
+                action: action.id,
                 data: { opportunityId: opportunity.id, condition: opportunity.condition },
             }],
             sinks: [{ type: 'trade' }],
@@ -339,6 +361,7 @@ function createRecoveryActionState(actionId) {
         proficiencyId: definition.proficiencyId,
         minProficiency: definition.minProficiency,
         minCondition: definition.minCondition,
+        outputRolls: [],
     };
 }
 
@@ -367,7 +390,11 @@ function opportunityEventData(opportunity) {
 function snapshotOpportunity(opportunity) {
     return Object.freeze({
         ...opportunity,
-        actions: Object.freeze(opportunity.actions.map((action) => Object.freeze({ ...action, requiredToolTags: Object.freeze([...action.requiredToolTags]) }))),
+        actions: Object.freeze(opportunity.actions.map((action) => Object.freeze({
+            ...action,
+            requiredToolTags: Object.freeze([...action.requiredToolTags]),
+            outputRolls: Object.freeze(action.outputRolls.map((entry) => Object.freeze({ ...entry }))),
+        }))),
         outputs: Object.freeze(opportunity.outputs.map((output) => Object.freeze({ ...output, tags: Object.freeze([...output.tags]) }))),
     });
 }
@@ -375,7 +402,11 @@ function snapshotOpportunity(opportunity) {
 function cloneOpportunity(opportunity) {
     return {
         ...opportunity,
-        actions: Array.isArray(opportunity?.actions) ? opportunity.actions.map((action) => ({ ...action, requiredToolTags: [...(action.requiredToolTags ?? [])] })) : [],
+        actions: Array.isArray(opportunity?.actions) ? opportunity.actions.map((action) => ({
+            ...action,
+            requiredToolTags: [...(action.requiredToolTags ?? [])],
+            outputRolls: Array.isArray(action.outputRolls) ? action.outputRolls.map((entry) => ({ ...entry })) : [],
+        })) : [],
         outputs: Array.isArray(opportunity?.outputs) ? opportunity.outputs.map((output) => ({ ...output, tags: [...(output.tags ?? [])] })) : [],
     };
 }
@@ -387,8 +418,15 @@ function conditionDurationMultiplier(condition) {
 function normalizeActionId(value) {
     return String(value ?? '').trim().toLowerCase();
 }
+function normalizeRoll(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return 0;
+    return Math.max(0, Math.min(0.999999999999, number));
+}
+function validRoll(value) { return Number.isFinite(value) && value >= 0 && value < 1; }
 function clampNumber(value, min, max) { return Math.max(min, Math.min(max, Number(value) || 0)); }
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
+function nonNegativeInteger(value) { return Number.isInteger(value) && value >= 0; }
 function plainObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
 function failure(code, data, text) {
     return actionFailure({ action: 'resource', code, outcome: 'rejected', data, display: { text } });
