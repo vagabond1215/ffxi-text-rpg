@@ -32,8 +32,8 @@ export function renderTopBar(state, feedback = null) {
     const status = feedback?.message ?? 'Ready';
     return `
         <div class="topbar-brand">
-            <span class="topbar-mark">FFXI</span>
-            <span class="topbar-title">Text RPG</span>
+            <span class="topbar-mark">H&amp;H</span>
+            <span class="topbar-title">Hearth &amp; Horizon</span>
         </div>
         <div class="topbar-status">
             <span>${escapeHtml(player.identity.name)}</span>
@@ -50,7 +50,7 @@ export function renderTopBar(state, feedback = null) {
 export function renderSidebarHeader(player) {
     return `
         <section class="sidebar-hero">
-            <div class="sidebar-crest" aria-hidden="true">XI</div>
+            <div class="sidebar-crest" aria-hidden="true">HH</div>
             <div>
                 <p class="sidebar-kicker">Active Character</p>
                 <h2 class="character-name">${escapeHtml(player.identity.name)}</h2>
@@ -119,7 +119,7 @@ export function renderWalletPanel(player) {
         <section class="sidebar-section compact-panel">
             <h3>Wallet</h3>
             <div class="sidebar-line"><span>Gil</span><strong>${escapeHtml(player.wallet?.gil ?? 0)}</strong></div>
-            <div class="sidebar-line"><span>Title</span><strong>${escapeHtml(player.identity.title ?? 'New Adventurer')}</strong></div>
+            <div class="sidebar-line"><span>Title</span><strong>${escapeHtml(player.identity.title ?? 'New Traveler')}</strong></div>
         </section>
     `;
 }
