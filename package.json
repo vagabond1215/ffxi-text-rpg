@@ -1,9 +1,9 @@
 {
-  "name": "ffxi-text-rpg",
-  "version": "0.5.500",
+  "name": "hearth-and-horizon",
+  "version": "0.5.550",
   "private": true,
   "type": "module",
-  "description": "Text-first persistent fantasy life RPG with deterministic simulation, exploration, livelihoods, relationships, and dangerous travel.",
+  "description": "Original text-first persistent fantasy life RPG with deterministic simulation, exploration, livelihoods, relationships, and dangerous travel.",
   "scripts": {
     "serve": "node scripts/serve.js",
     "start": "npm run serve",
