@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createNewGameState } from '../js/text/gameState.js';
 import { createGuidedCreatorState } from '../js/text/systems/characterCreationModel.js';
 import { renderCreatorScreen, renderGameScreen } from '../js/text/ui/domRenderer.js';
-import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
+import { createContextualActions, createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
 
 test('semantic game view model presents scene map status and context without parsing command prose', () => {
@@ -38,6 +38,16 @@ test('context actions prioritize nearby world interaction over a permanent comma
     assert.ok(model.contextualActions.some((action) => action.label === 'Look Around'));
     assert.equal(model.contextualActions.some((action) => action.label === 'Character'), false);
     assert.equal(model.contextualActions.some((action) => action.label === 'Validate'), false);
+});
+
+test('travel context exposes a semantic stop action without routing an incomplete travel command', () => {
+    const state = createNewGameState({ name: 'Lark' });
+    state.travel.active = true;
+    const actions = createContextualActions(state, []);
+
+    assert.deepEqual(actions.map((action) => action.label), ['Stop Travel']);
+    assert.equal(actions[0].intent, 'navigation.stop');
+    assert.equal(actions.some((action) => action.payload?.command === 'travel'), false);
 });
 
 test('DOM game shell makes the scene primary and keeps map status actions and omnibox directly accessible', () => {
