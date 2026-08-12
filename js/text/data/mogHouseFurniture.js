@@ -1,9 +1,14 @@
-export const MOG_HOUSE_FURNITURE = Object.freeze({
+const HOME_FURNITURE_DEFINITIONS = Object.freeze({
     bronzeBed: furniture('bronze-bed', 'Bronze Bed', 1, ['bed']),
     mapleTable: furniture('maple-table', 'Maple Table', 2, ['table']),
     storageChest: furniture('storage-chest', 'Storage Chest', 5, ['chest', 'storage']),
     simpleCabinet: furniture('simple-cabinet', 'Simple Cabinet', 8, ['cabinet', 'storage']),
 });
+
+// Canonical export for new code. The legacy export is retained as a bounded compatibility alias
+// until dependent imports are migrated in a later inventory-schema revision.
+export const HOME_FURNITURE = HOME_FURNITURE_DEFINITIONS;
+export const MOG_HOUSE_FURNITURE = HOME_FURNITURE_DEFINITIONS;
 
 export const STARTING_FURNITURE_IDS = Object.freeze([
     'bronze-bed',
@@ -11,7 +16,7 @@ export const STARTING_FURNITURE_IDS = Object.freeze([
 ]);
 
 export function getFurniture(furnitureId) {
-    return Object.values(MOG_HOUSE_FURNITURE).find((item) => item.id === furnitureId) ?? null;
+    return Object.values(HOME_FURNITURE).find((item) => item.id === furnitureId) ?? null;
 }
 
 export function calculateFurnitureStorageCapacity(furnitureIds = []) {
@@ -19,12 +24,12 @@ export function calculateFurnitureStorageCapacity(furnitureIds = []) {
 }
 
 export function describeFurnitureStorage(furnitureIds = []) {
-    if (!furnitureIds.length) return 'No Mog House furniture placed.';
+    if (!furnitureIds.length) return 'No home furnishings placed.';
     return [
-        'Mog House Furniture:',
+        'Home Furnishings:',
         ...furnitureIds.map((id) => {
             const furniture = getFurniture(id);
-            return furniture ? `- ${furniture.name}: +${furniture.storageSlots} storage` : `- ${id}: unknown furniture`;
+            return furniture ? `- ${furniture.name}: +${furniture.storageSlots} storage` : `- ${id}: unknown furnishing`;
         }),
         `Total storage capacity: ${calculateFurnitureStorageCapacity(furnitureIds)}`,
     ].join('\n');
