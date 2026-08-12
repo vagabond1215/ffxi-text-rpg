@@ -16,7 +16,7 @@ import { getLearnedSkill, setLearnedSkill } from '../js/text/systems/skillProgre
 
 test('startEncounter creates an active battle', () => {
     const state = createInitialState();
-    const result = startEncounter(state, 'Forest Hare');
+    const result = startEncounter(state, 'Brush Hare');
 
     assert.equal(result.ok, true);
     assert.equal(state.activeBattle.phase, 'active');
@@ -25,7 +25,7 @@ test('startEncounter creates an active battle', () => {
 
 test('performPlayerAttack advances battle log', () => {
     const state = createInitialState();
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
     const before = state.activeBattle.log.length;
     const result = performPlayerAttack(state);
 
@@ -36,7 +36,7 @@ test('performPlayerAttack advances battle log', () => {
 test('basic attack with Bronze Sword gains sword skill', () => {
     const state = createInitialState();
     equipCatalogItem(state, 'bronze-sword', 'Bronze Sword', ['weapon', 'sword', 'starter']);
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
 
     const result = performPlayerAttack(state);
 
@@ -47,7 +47,7 @@ test('basic attack with Bronze Sword gains sword skill', () => {
 test('skills command reflects skill gains after combat actions', () => {
     const state = createInitialState();
     equipCatalogItem(state, 'bronze-sword', 'Bronze Sword', ['weapon', 'sword', 'starter']);
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
     performPlayerAttack(state);
 
     const router = createCommandRouter(state, commandServices());
@@ -58,7 +58,7 @@ test('skills command reflects skill gains after combat actions', () => {
 test('basic attack with Bronze Axe gains axe skill', () => {
     const state = createInitialState();
     equipCatalogItem(state, 'bronze-axe', 'Bronze Axe', ['weapon', 'axe', 'starter']);
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
 
     const result = performPlayerAttack(state);
 
@@ -66,9 +66,9 @@ test('basic attack with Bronze Axe gains axe skill', () => {
     assert.match(result, /Skill gained: axe 0 -> 1 \/ cap 3\./);
 });
 
-test('basic attack with no main-hand weapon gains handToHand for jobs with a cap', () => {
-    const state = createNewGameState({ mainJobId: 'monk' });
-    startEncounter(state, 'Forest Hare');
+test('basic attack with no main-hand weapon gains handToHand for disciplines with a cap', () => {
+    const state = createNewGameState({ mainJobId: 'pugilist' });
+    startEncounter(state, 'Brush Hare');
 
     const result = performPlayerAttack(state);
 
@@ -78,7 +78,7 @@ test('basic attack with no main-hand weapon gains handToHand for jobs with a cap
 
 test('weapon skill requires TP', () => {
     const state = createInitialState();
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
 
     assert.match(performWeaponSkill(state, 'Fast Blade'), /Not enough TP/);
 });
@@ -86,7 +86,7 @@ test('weapon skill requires TP', () => {
 test('weapon skill gains the equipped main-hand weapon skill once', () => {
     const state = createInitialState();
     equipCatalogItem(state, 'bronze-sword', 'Bronze Sword', ['weapon', 'sword', 'starter']);
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
     getBattlePlayer(state).resources.tp = 1000;
 
     const result = performWeaponSkill(state, 'Fast Blade');
@@ -102,8 +102,8 @@ test('cast spell requires active battle', () => {
 });
 
 test('Cure-like spells gain healing magic', () => {
-    const state = createNewGameState({ mainJobId: 'whiteMage' });
-    startEncounter(state, 'Forest Hare');
+    const state = createNewGameState({ mainJobId: 'lifewarden' });
+    startEncounter(state, 'Brush Hare');
     getBattlePlayer(state).resources.mp = 100;
 
     const result = castSpell(state, 'Cure');
@@ -113,8 +113,8 @@ test('Cure-like spells gain healing magic', () => {
 });
 
 test('offensive placeholder spells gain elemental magic', () => {
-    const state = createNewGameState({ mainJobId: 'blackMage' });
-    startEncounter(state, 'Forest Hare');
+    const state = createNewGameState({ mainJobId: 'elementalist' });
+    startEncounter(state, 'Brush Hare');
     getBattlePlayer(state).resources.mp = 100;
 
     const result = castSpell(state, 'Fire');
@@ -123,11 +123,11 @@ test('offensive placeholder spells gain elemental magic', () => {
     assert.match(result, /Skill gained: elementalMagic 0 -> 1 \/ cap 3\./);
 });
 
-test('skill gain clamps at current job cap and omits capped spam', () => {
+test('skill gain clamps at current discipline cap and omits capped spam', () => {
     const state = createInitialState();
     equipCatalogItem(state, 'bronze-axe', 'Bronze Axe', ['weapon', 'axe', 'starter']);
     setLearnedSkill(state.player, 'axe', 3);
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
 
     const result = performPlayerAttack(state);
 
@@ -139,7 +139,7 @@ test('router exposes encounter battle attack and slash commands', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, commandServices());
 
-    assert.match(router('encounter Forest Hare'), /Battle/);
+    assert.match(router('encounter Brush Hare'), /Battle/);
     assert.match(router('battle'), /Battle/);
     assert.match(router('attack'), /Battle/);
     assert.match(router('/attack'), /Battle/);
