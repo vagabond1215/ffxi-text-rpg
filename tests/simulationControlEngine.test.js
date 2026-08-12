@@ -5,18 +5,30 @@ import { createInitialState } from '../js/text/gameState.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import {
     createSimulationAdvanceDriver,
+    ensureSimulationControlState,
     pauseSimulation,
     resumeSimulation,
+    setEndOfDayPause,
     setSimulationSpeed,
     validateSimulationControlState,
 } from '../js/text/systems/simulationControlEngine.js';
 
 
-test('new games start running at normal simulation speed', () => {
+test('new games start running at normal simulation speed with end-of-day review enabled', () => {
     const state = createInitialState();
 
-    assert.deepEqual(state.simulation, { paused: false, speedMultiplier: 1 });
+    assert.deepEqual(state.simulation, { paused: false, speedMultiplier: 1, endOfDayPause: true });
     assert.deepEqual(validateSimulationControlState(state.simulation), []);
+});
+
+test('older simulation-control state lazily acquires end-of-day preference', () => {
+    const state = createInitialState();
+    delete state.simulation.endOfDayPause;
+
+    const simulation = ensureSimulationControlState(state);
+
+    assert.equal(simulation.endOfDayPause, true);
+    assert.equal(state.version, 4);
 });
 
 test('pause and resume change simulation control without advancing world time', () => {
@@ -49,6 +61,18 @@ test('speed control accepts arbitrary whole-number multipliers within the engine
     assert.equal(state.simulation.speedMultiplier, 60);
     const [event] = listSemanticEvents(state, { type: 'simulation.speed-changed' });
     assert.deepEqual(event.data, { previousSpeed: 1, speedMultiplier: 60, paused: false });
+});
+
+test('end-of-day pause preference can be disabled and emits structured change event', () => {
+    const state = createInitialState();
+
+    const result = setEndOfDayPause(state, false);
+
+    assert.equal(result.ok, true);
+    assert.equal(result.code, 'simulation.end-of-day-pause-changed');
+    assert.equal(state.simulation.endOfDayPause, false);
+    const [event] = listSemanticEvents(state, { type: 'simulation.end-of-day-pause-changed' });
+    assert.deepEqual(event.data, { previousEndOfDayPause: true, endOfDayPause: false });
 });
 
 test('scheduled advancement converts wall elapsed time into deterministic simulated seconds', () => {
@@ -107,4 +131,13 @@ test('invalid speed values are rejected without mutating simulation state', () =
         assert.equal(result.code, 'simulation.invalid-speed');
         assert.equal(state.simulation.speedMultiplier, 1);
     }
+});
+
+test('invalid end-of-day pause values are rejected without mutation', () => {
+    const state = createInitialState();
+
+    const result = setEndOfDayPause(state, 'no');
+
+    assert.equal(result.ok, false);
+    assert.equal(state.simulation.endOfDayPause, true);
 });

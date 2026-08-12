@@ -1,9 +1,9 @@
 {
   "name": "ffxi-text-rpg",
-  "version": "0.5.300",
+  "version": "0.5.500",
   "private": true,
   "type": "module",
-  "description": "Text-first fantasy life RPG foundation inspired by Final Fantasy XI systems.",
+  "description": "Text-first persistent fantasy life RPG with deterministic simulation, exploration, livelihoods, relationships, and dangerous travel.",
   "scripts": {
     "serve": "node scripts/serve.js",
     "start": "npm run serve",

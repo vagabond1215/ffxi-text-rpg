@@ -4,11 +4,13 @@ import { advanceWorldTime } from './worldTimeEngine.js';
 
 export const DEFAULT_SIMULATION_SPEED = 1;
 export const MAX_SIMULATION_SPEED = 3600;
+export const DEFAULT_END_OF_DAY_PAUSE = true;
 
 export function createSimulationControlState(options = {}) {
     const state = {
         paused: Boolean(options.paused ?? false),
         speedMultiplier: options.speedMultiplier ?? DEFAULT_SIMULATION_SPEED,
+        endOfDayPause: Boolean(options.endOfDayPause ?? DEFAULT_END_OF_DAY_PAUSE),
     };
     const issues = validateSimulationControlState(state);
     if (issues.length) throw new Error(issues.join(' '));
@@ -17,6 +19,9 @@ export function createSimulationControlState(options = {}) {
 
 export function ensureSimulationControlState(state) {
     if (!state?.simulation) state.simulation = createSimulationControlState();
+    if (typeof state.simulation.endOfDayPause !== 'boolean') {
+        state.simulation.endOfDayPause = DEFAULT_END_OF_DAY_PAUSE;
+    }
     const issues = validateSimulationControlState(state.simulation);
     if (issues.length) throw new Error(issues.join(' '));
     return state.simulation;
@@ -47,6 +52,27 @@ export function setSimulationSpeed(state, requestedSpeed) {
     simulation.speedMultiplier = speed;
     const event = emitSemanticEvent(state, 'simulation.speed-changed', { previousSpeed, speedMultiplier: speed, paused: simulation.paused }, { source: 'simulationControlEngine' });
     return result(true, 'simulation.speed', 'simulation.speed-changed', 'changed', { ...simulation, previousSpeed, eventId: event.id }, `Simulation speed set to ${speed}x.`);
+}
+
+export function setEndOfDayPause(state, enabled) {
+    const simulation = ensureSimulationControlState(state);
+    if (typeof enabled !== 'boolean') {
+        return result(false, 'simulation.end-of-day-pause', 'simulation.invalid-end-of-day-pause', 'rejected', { enabled }, 'End-of-day pause preference must be true or false.');
+    }
+    if (simulation.endOfDayPause === enabled) {
+        return result(true, 'simulation.end-of-day-pause', 'simulation.end-of-day-pause-unchanged', 'unchanged', simulation, `End-of-day pause is already ${enabled ? 'enabled' : 'disabled'}.`);
+    }
+    const previousEndOfDayPause = simulation.endOfDayPause;
+    simulation.endOfDayPause = enabled;
+    const event = emitSemanticEvent(state, 'simulation.end-of-day-pause-changed', {
+        previousEndOfDayPause,
+        endOfDayPause: enabled,
+    }, { source: 'simulationControlEngine' });
+    return result(true, 'simulation.end-of-day-pause', 'simulation.end-of-day-pause-changed', 'changed', {
+        ...simulation,
+        previousEndOfDayPause,
+        eventId: event.id,
+    }, `End-of-day pause ${enabled ? 'enabled' : 'disabled'}.`);
 }
 
 export function createSimulationAdvanceDriver(driverOptions = {}) {
@@ -102,6 +128,7 @@ export function validateSimulationControlState(simulation) {
     const issues = [];
     if (typeof simulation.paused !== 'boolean') issues.push('simulation.paused must be boolean.');
     if (!validSpeed(simulation.speedMultiplier)) issues.push(`simulation.speedMultiplier must be an integer from 1 to ${MAX_SIMULATION_SPEED}.`);
+    if (typeof simulation.endOfDayPause !== 'boolean') issues.push('simulation.endOfDayPause must be boolean.');
     return issues;
 }
 
