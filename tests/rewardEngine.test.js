@@ -15,12 +15,14 @@ function createStateWithBattle({ inventoryFill = 0, rngValues = [0], expValue = 
     const enemy = createEnemy({
         id: 'reward-hare',
         name: 'Reward Hare',
-        family: 'beast',
+        family: 'hare',
+        ecosystem: 'beast',
+        zoneId: 'west-elderwood',
         level: 1,
         expValue,
         lootTableId: 'starterBeast',
     });
-    const state = { player };
+    const state = { player, currentPlaceId: 'west-elderwood' };
     const battle = createBattleState({ player, enemies: [enemy], rng: createSequenceRng(rngValues) });
     const combatant = getCombatant(battle, 'reward-hare');
     combatant.resources.hp = 0;
@@ -29,7 +31,7 @@ function createStateWithBattle({ inventoryFill = 0, rngValues = [0], expValue = 
     return { state, battle };
 }
 
-test('resolveBattleRewards awards EXP gil and deterministic loot', () => {
+test('resolveBattleRewards awards EXP and currency while leaving creature materials as recoverable world resources', () => {
     const { state, battle } = createStateWithBattle({ rngValues: [0] });
 
     const result = resolveBattleRewards(state, battle);
@@ -39,9 +41,13 @@ test('resolveBattleRewards awards EXP gil and deterministic loot', () => {
     assert.equal(result.gil, 3);
     assert.equal(state.player.progression.exp, 35);
     assert.equal(state.player.wallet.gil, 3);
-    assert.equal(result.items.length, 1);
-    assert.equal(result.items[0].name, 'Wild Rabbit Hide');
-    assert.equal(state.player.inventoryState.containers.inventory.items.at(-1).name, 'Wild Rabbit Hide');
+    assert.deepEqual(result.items, []);
+    assert.equal(result.resourceOpportunities.length, 1);
+    assert.equal(result.resourceOpportunities[0].sourceName, 'Reward Hare');
+    assert.equal(result.resourceOpportunities[0].type, 'body');
+    assert.equal(result.resourceOpportunities[0].actions[0].id, 'skin');
+    assert.equal(state.player.inventoryState.containers.inventory.items.length, 0);
+    assert.match(result.message, /Materials remain in the world/);
 });
 
 test('resolveBattleRewards can level the player through the progression engine', () => {
@@ -58,7 +64,7 @@ test('resolveBattleRewards can level the player through the progression engine',
     assert.match(result.message, /Level up: 2/);
 });
 
-test('resolveBattleRewards does not pay twice', () => {
+test('resolveBattleRewards does not pay twice or create duplicate resource opportunities', () => {
     const { state, battle } = createStateWithBattle({ rngValues: [0] });
 
     const first = resolveBattleRewards(state, battle);
@@ -68,17 +74,17 @@ test('resolveBattleRewards does not pay twice', () => {
     assert.equal(second.duplicate, true);
     assert.equal(state.player.progression.exp, 35);
     assert.equal(state.player.wallet.gil, 3);
+    assert.equal(state.resourceOpportunities.records.length, 1);
 });
 
-test('resolveBattleRewards records loot insertion failures when inventory is full', () => {
+test('resource opportunities can be created even when inventory is full because recovery happens later', () => {
     const { state, battle } = createStateWithBattle({ inventoryFill: 30, rngValues: [0] });
 
     const result = resolveBattleRewards(state, battle);
 
     assert.equal(result.ok, true);
-    assert.equal(result.items.length, 0);
-    assert.equal(result.failedItems.length, 1);
-    assert.match(result.failedItems[0].reason, /Inventory is full/);
+    assert.equal(result.resourceOpportunities.length, 1);
+    assert.equal(state.player.inventoryState.containers.inventory.items.length, 30);
     assert.equal(state.player.progression.exp, 35);
     assert.equal(state.player.wallet.gil, 3);
 });
