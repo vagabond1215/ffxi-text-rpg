@@ -14,37 +14,17 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 8. `js/text/version.js` — authoritative active version values.
 9. This handoff, then relevant runtime/data/tests for the next bounded unit.
 
-Older planning documents preserve useful history but do not override the files above.
+## Workflow and session guardrail
 
-## Current Git workflow
+Continue directly on `main` by default. Do not create branch/PR ceremony unless the user asks, a tool requires isolation, or risk materially justifies it.
 
-The repository is in an early single-maintainer development phase. Per `AGENTS.md`, **continue directly on `main` by default**.
+Maximum autonomous work session is **2h45** with the `AGENTS.md` stabilization checkpoints; when elapsed time cannot be measured reliably, use no more than **6 work cycles**, reserving cycle 6 for stabilization/handoff. A new user message starts a new budget.
 
-Do not create a branch/PR merely as ceremony. Use isolation if the user asks, a tool requires it, or the change is unusually risky enough that isolation materially helps.
-
-Remote branch deletion is not exposed by the current GitHub connector, so stale remote branches remain a manual repository-maintenance task. Do not create replacement cleanup branches.
-
-## Autonomous work-session limit
-
-`AGENTS.md` sets the operating guardrail:
-
-- maximum autonomous session: **2 hours 45 minutes**;
-- **2:15** stabilization checkpoint;
-- **2:30** start no new implementation unit;
-- by **2:45** persist a coherent state, update this handoff, and report;
-- if elapsed time cannot be measured reliably, use the fallback maximum of **6 autonomous work cycles**, reserving cycle 6 for stabilization/handoff.
-
-A new user message starts a new budget. Roadmap `Next` sections do not authorize an endless autonomous chain.
-
-## Product identity
+## Product identity and laws
 
 Working title: **Hearth & Horizon**.
 
-This is an original text-first persistent fantasy life RPG about one continuous character building livelihood, skills, relationships, reputation, material capability, home/infrastructure, and geographic reach across a connected fantasy world.
-
-Earlier FFXI-derived material is **legacy research/reference/migration material**, not canonical world content.
-
-Core laws:
+Earlier FFXI-derived material is legacy research/reference/migration material, not canonical world content.
 
 ```text
 effort -> mastery -> efficiency -> capability -> larger ambition
@@ -56,10 +36,12 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
+Maps represent acquired player knowledge rather than omniscient geography.
+
 ## Current baseline
 
 ```text
-Product:      0.6.200.1
+Product:      0.6.200.2
 Package:      0.6.200
 Account Save: 4
 Game State:   5
@@ -68,13 +50,22 @@ Benchmark:    1
 Codename:     Character Capabilities
 ```
 
-`js/text/version.js` is authoritative.
+Subsystem changes in the latest UI revision:
 
-## Completed sequence
+```text
+versionManifest    0.6.200.2
+canvasUi           0.8.0
+uiIntents          0.2.0
+characterCreation  0.5.2
+```
 
-The coherent sequence on `main` is now:
+No Account Save, Game State, or Data bump was required.
 
-- 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events/stabilization;
+## Completed implementation sequence
+
+The coherent sequence on `main` is:
+
+- 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events;
 - 0.5.100 deterministic world clock;
 - 0.5.200 pause/speed controls;
 - 0.5.300 canonical timed tasks;
@@ -82,281 +73,180 @@ The coherent sequence on `main` is now:
 - 0.5.500 day boundaries/end-of-day review;
 - 0.5.550 original-world identity/stable-ID migration;
 - 0.5.600 persistent projects and resource provenance;
-- 0.5.650 ecology, gathering-source, and population substrate;
-- 0.5.700 canonical routes and scheduled transport substrate;
-- 0.5.800 regional content packs, candidate normalization, and scalable validation;
-- 0.5.900 explicit simulation/content-substrate exit gate;
+- 0.5.650 ecology/gathering/populations;
+- 0.5.700 canonical routes and scheduled transport;
+- 0.5.800 regional content packs/normalization/scalable validation;
+- 0.5.900 simulation/content-substrate exit gate;
 - 0.6.100 continuous-character stats and progression;
-- 0.6.200 character-owned skills/proficiencies/capability ownership and eligibility.
+- 0.6.200 character-owned skills/proficiencies/capabilities;
+- 0.6.200.2 bounded canvas UI/creator/navigation usability refinement.
 
-**Phase 0.5 is complete. Phase 0.6 is active through 0.6.200.** Do not reopen earlier tracks broadly unless a concrete regression requires it.
+Phase 0.5 is complete. Phase 0.6 is active through 0.6.200. Do not reopen earlier tracks broadly without a concrete regression.
 
-## 0.6.100 — character stats and progression status
+## Continuous-character/capability state
 
-The track is **complete enough to exit**.
+`characterStatEngine.js` owns versioned original-design `player.statState`. Persistent base growth follows the highest attained discipline training level rather than the currently active discipline. Active discipline contributes contextual training/stat modifiers and explicitly is not a universal capability gate.
 
-### Continuous-character stat state
+`player.progression.character` records lifetime character training metadata while per-discipline level/EXP records remain compatible.
 
-`js/text/systems/characterStatEngine.js` defines a versioned character-owned stat contract:
+`data/capabilities.js` and `capabilityEngine.js` separate capability learning paths from current-use prerequisites. Learned capabilities live under `player.progression.capabilities` and survive discipline switching. Use eligibility checks concrete proficiency/equipment/tool/preparation/resource/context requirements.
 
-```text
-CHARACTER_STAT_STATE_VERSION = 1
-CHARACTER_STAT_MODEL_ID       = continuous-character-core-v1
-confidence                    = provisional
-```
+Skill training caps constrain **new gain** without truncating already learned character proficiency. Future executable `abilities` remain a separate responsibility from character-owned `capabilities`.
 
-`player.statState` owns:
+Historical FFXI stat/formula modules remain explicit research/reference surfaces and are not canonical runtime authority.
 
-- canonical ancestry ID;
-- persistent growth rank;
-- original-design base attributes;
-- original-design base HP/MP/TP capacity;
-- explicit provenance/confidence metadata.
+## 0.6.200.2 UI usability refinement
 
-Persistent base growth follows the **highest attained discipline training level**, not whatever discipline is active at the moment. Changing to a lower training record does not shrink the character's base growth state.
+The user explicitly requested less clunky character creation, a navigational visual reference, a much smaller D-pad, fewer flat buttons, categorized information surfaces, and permanent at-a-glance character stats. The bounded implementation now provides those seams.
 
-The balance numbers are deliberately provisional original design. They are not presented as final balance or copied historical formulas.
+### Character creation
 
-### Active discipline is contextual
-
-`getActiveDisciplineStatContext()` derives contextual attribute/resource/training focus from the active discipline. Its metadata explicitly states:
+`js/text/data/characterCreationContent.js`, `js/text/ui/uiActions.js`, `js/text/ui/canvasInput.js`, `js/text/ui/canvasLayout.js`, and `js/text/ui/canvasRenderer.js` now use player-facing creator vocabulary:
 
 ```text
-capabilityGate: false
+Ancestry -> Origin -> Discipline -> Review
 ```
 
-The player combat profile now composes:
+Descriptions for the five canonical ancestries, three origins, and six starter disciplines were shortened and clarified. Starting discipline text explicitly says it is initial training rather than a permanent class.
+
+Creator cards now wrap descriptions rather than ellipsizing them. `wrapText()` also splits oversized single tokens so narrow canvas cards cannot overflow from one long word/string.
+
+The creator name field moved to the review area and keyboard input edits the name only while the review step is active. Earlier ancestry/origin/discipline steps no longer consume invisible name input. The creator footer is reduced to Cancel, Back, and Continue/Create rather than the previous extra reset/view controls.
+
+### Discovery-driven local minimap
+
+New file:
 
 ```text
-continuous-character base
-  + active-discipline context
-  + equipment modifiers
-  + status modifiers
+js/text/ui/minimapModel.js
 ```
 
-This moves ownership away from class/job identity without requiring an atomic rename of every persisted `player.jobs`/`mainJobId` property.
+`createMinimapModel(state)` consumes existing `state.atlas[placeId].visited` knowledge. It does not create a second geography database or new persistence shape.
 
-### Character-level progression
+Behavior:
 
-`js/text/systems/progressionEngine.js` adds:
+- the starting map initially shows only the known/current coordinate;
+- normal navigation discovery reveals additional cells;
+- visited topology connections render fully;
+- connections toward unknown neighboring cells/exits can appear only as short local stubs from known positions;
+- alpha-coordinate topology places and numeric-grid places share the same UI model;
+- the current location and explored/total count appear in the minimap footer.
+
+This deliberately implements the old-school reveal-as-you-travel behavior rather than exposing the full authored topology.
+
+### Navigation controls
+
+The minimap occupies the former large D-pad area. The D-pad now sits centered beneath it.
+
+Movement buttons are constrained to approximately **24–30px** rather than the prior ~65px sidebar controls, exceeding the requested 50% reduction. Direction/stop symbols are centered explicitly in the buttons. Auto Run is a compact centered control under the pad.
+
+### Action categories
+
+The long flat sidebar action list is replaced in the actual game canvas with seven category buttons:
 
 ```text
-CHARACTER_PROGRESSION_STATE_VERSION = 1
+Character
+Spellbook
+Codex
+World
+Crafting
+Combat
+System
 ```
 
-and character-owned training metadata under:
+Character contains Stats, Training, Skills, Inventory, Equipment. Spellbook exposes current Known Spells/Techniques/Abilities command surfaces. World groups Look Around/Nearby/Local Atlas/Maps. Combat contains Battle Status; System contains Help/Save.
 
-```text
-player.progression.character
-```
+Codex and Crafting include disabled planned entries such as Flora & Fauna, Loot Index, Item Compendium, Recipe Book, Crafting Workbench, and Processing. These are navigation-architecture placeholders only; they do not pretend those gameplay systems are implemented.
 
-It records lifetime EXP and highest attained discipline level while preserving per-discipline EXP/level records. EXP earned while a discipline is active advances that training record and lifetime character training history.
+The direct visible `Character` summary button was removed because it duplicated information already shown in the persistent context pane. The typed/global `character` command remains available as a compatibility interface and `GLOBAL_ACTIONS` retains it for older callers/tests.
 
-### Historical stat research boundary
+### Permanent right-pane character information
 
-`ffxiStatFormula.js`, `inferredJobResourceFormula.js`, and historical grade data remain usable for explicit research/comparison tests. They no longer determine canonical player runtime base stats.
+The context pane now renders without command injection:
 
-Player combat-profile metadata now includes:
+- character name / ancestry / active discipline / level;
+- HP, MP, TP current/max;
+- STR, DEX, VIT, AGI, INT, MND, CHR;
+- ATK, DEF, ACC, EVA;
+- M.ATK, M.DEF, M.ACC, M.EVA;
+- current location and coordinate.
 
-```text
-historicalReferenceRuntimeAuthority: false
-```
+The main output pane remains the activity/command log. The old right-pane command-history block was removed to prioritize live character state.
 
-Tests assert that historical profiles can still be calculated while differing from the canonical runtime profile.
+### Canvas shell identity
 
-### Persistence/version impact
+The canvas splash title now says **Hearth & Horizon** rather than the stale legacy project title.
 
-```text
-Product             0.5.900.1 -> 0.6.100.1
-Package             0.5.900   -> 0.6.100
-Account Save        4         unchanged
-Game State          5         unchanged
-Data                19        unchanged
-characterStats       new       0.1.0
-playerEntity         ->        0.7.0
-statEngine           ->        0.5.0
-progression          ->        0.6.0
-disciplineSwitching  ->        0.6.0
-leveling             ->        0.6.0
-```
+## UI regression coverage
 
-No persistence migration was required because the new character stat/progression fields are additive and can be reconstructed deterministically for existing Game State v5 records.
+New `tests/uiStreamlining.test.js` proves:
 
-## 0.6.200 — skills, proficiencies, disciplines, and capabilities status
-
-The track is **complete enough to exit**.
-
-### Capability catalog
-
-`js/text/data/capabilities.js` defines capability catalog v1. Current representative records include:
-
-- `technique-guarded-cut`;
-- `technique-shadow-feint`;
-- `practical-field-dressing`;
-- `practical-ore-survey`.
-
-These are substrate examples, not a finished technique catalog.
-
-Every capability separates:
-
-```text
-learning requirements
-```
-
-from:
-
-```text
-use requirements
-```
-
-Learning can be open or satisfied by one of multiple discipline training paths. Use requirements can independently check action/world context, learned proficiency, equipment/main-hand tags, tool tags, preparation tags, flags, and resources.
-
-### Character-owned capability state
-
-`js/text/systems/capabilityEngine.js` defines:
-
-```text
-CAPABILITY_STATE_VERSION = 1
-```
-
-with additive state under:
-
-```text
-player.progression.capabilities
-```
-
-Known capability records preserve capability ID, learning source, optional canonical world-time observation, and the discipline training path that originally qualified the learning.
-
-Once learned, the capability remains owned by the character even after active-discipline switching.
-
-### Discipline learning does not become a use gate
-
-The capability engine can resolve eligible historical/inactive discipline training when learning a capability. After learning, `canUseCapability()` checks concrete prerequisites and returns:
-
-```text
-disciplineUseGate: false
-```
-
-A technique learned while training Shadowhand, for example, can remain usable under Vanguard if its learned proficiency, equipment, resource, and context requirements are actually satisfied.
-
-### Character proficiency is non-destructive
-
-`js/text/systems/skillProgressionEngine.js` still uses the current discipline's sparse cap table as a **training window**, but `addLearnedSkill()` no longer clamps stored character proficiency downward.
-
-Example invariant:
-
-```text
-learned axe = 20
-switch to discipline with axe training cap = 0
-attempt +1 gain
-=> learned axe remains 20; gained = 0
-```
-
-This is important: a discipline can constrain what improves now without erasing what the continuous character already learned.
-
-Structured skill-gain results expose `trainingCap`; older `cap` fields/display wording remain compatibility aliases while command tests migrate incrementally.
-
-### Capability data versus executable abilities
-
-Database registry now contains:
-
-```text
-capabilities [seeded 0.1.0]
-```
-
-for character ownership/learning/use eligibility.
-
-`abilities` remains planned and is explicitly described as future executable active/passive effect definitions. Do **not** merge these two responsibilities. A character capability may enable an executable effect, but ownership/prerequisite semantics and effect execution are separate contracts.
-
-### 0.6.200 persistence/version impact
-
-```text
-Product             0.6.100.1 -> 0.6.200.1
-Package             0.6.100   -> 0.6.200
-Account Save        4         unchanged
-Game State          5         unchanged
-Data                19        -> 20
-capabilities         new       0.1.0
-playerEntity         0.7.0    -> 0.8.0
-skillProgression     0.5.3    -> 0.6.0
-```
-
-Data advanced because the canonical capability catalog/learning-use contract is a new canonical data shape. Game State did not advance because `progression.capabilities` lazily initializes when absent and existing v5 state remains interpretable.
-
-## Historical 0.5 gate compatibility
-
-Advancing product version to 0.6 initially exposed an overly strict assumption in `simulationSubstrateGate.js`: its product-identity check treated exact `0.5.900.x` as the only valid ready state.
-
-The gate now tests a semantic historical minimum:
-
-```text
-product >= 0.5.900.0
-```
-
-so the completed 0.5 readiness contract remains green in later phases. A regression test proves a pre-0.5.900 product still fails the historical gate.
+- minimap begins from atlas discoveries only;
+- movement reveals cells/connections;
+- compact centered D-pad is below the minimap;
+- actual game sidebar begins with category menus and no redundant Character-summary button;
+- Character, Spellbook, Codex, and Crafting category structure;
+- disabled planned placeholders do not masquerade as working commands;
+- right-pane snapshot includes canonical attributes/derived combat values;
+- creator text wrapping handles prose and long tokens;
+- creator keyboard text edits only the visible review-name field.
 
 ## Validation checkpoint
 
-Final runtime/version integration head for the 0.6.200 contract:
+Runtime UI integration head:
 
 ```text
-d145af43f00d6e2216827898d2a5c15b224e284d
+711c494a3e8e8249241d034db91174fd79c4226e
 ```
 
-GitHub Actions test job `94281246089` completed successfully on 2026-08-12.
-
-Exact result:
+The exact test result at that runtime head was:
 
 ```text
-tests       368
-pass        368
+tests       377
+pass        377
 fail        0
 cancelled   0
 skipped     0
 todo        0
 ```
 
-Benchmark from the same green integration head:
+Benchmark from that runtime head:
 
 ```text
-Product: 0.6.200.1
-Package: 0.6.200
-Account Save: 4
-Game State: 5
-Data: 20
-Benchmark: 1
-Codename: Character Capabilities
-
-create 1,000 player combat profiles:              429.468ms total | 0.429468ms/op
-create 1,000 enemy combat profiles:               103.899ms total | 0.103899ms/op
-resolve 1,000 basic attacks:                      521.802ms total | 0.521802ms/op
-run 10,000 tick dispatches with 5 subscribers:     48.412ms total | 0.004841ms/op
-resolve 10,000 direct travel route lookups:      6810.247ms total | 0.681025ms/op
+create 1,000 player combat profiles:              482.560ms total | 0.482560ms/op
+create 1,000 enemy combat profiles:               113.377ms total | 0.113377ms/op
+resolve 1,000 basic attacks:                      549.744ms total | 0.549744ms/op
+run 10,000 tick dispatches with 5 subscribers:     45.061ms total | 0.004506ms/op
+resolve 10,000 direct travel route lookups:      7239.355ms total | 0.723935ms/op
 ```
 
-The build check for that integration head completed successfully. The deployment job attached to that intermediate push was cancelled while subsequent direct-`main` documentation pushes superseded it; `report-build-status` still completed successfully. This is not a runtime test/build failure.
+Version/pipeline synchronization head:
 
-GitHub runner continues to emit the known non-blocking warning that Node-20-targeting checkout/setup actions are being forced under Node 24. Project commands themselves ran with Node 20.20.2.
+```text
+a37db888a25f06c004f1abefcc9fcc82c73b6ab5
+```
 
-Documentation closeout commits follow the green integration head. On continuation, refetch the newest `main` and current checks before coding.
+GitHub Actions on that head completed **test success, build success, report-build-status success, and deploy success**. The runtime tests at the preceding UI integration head already contained the new 377-test suite; later changes only synchronized the `0.6.200.2` manifest and pipeline expectations.
 
-## 0.6.200 bounded limitations / technical debt
+The runner continues to emit the known non-blocking Node-20-actions deprecation warning. Project commands themselves run with Node 20.20.2.
 
-Treat these as deliberate deferrals, not reasons to reopen the completed track broadly:
+Documentation closeout commits follow the validated version head; refetch current `main` before the next coding session.
 
-- capability records are representative substrate only;
-- `capabilityEngine` evaluates ownership and use eligibility but does not yet execute generalized effects;
-- placeholder spell and weapon-skill actions still exist in the current combat scaffold;
-- `skillCaps.js` remains sparse/placeholder-confidence and should not be mistaken for final proficiency progression balance;
-- active discipline still participates in legacy equipment eligibility; migrate incrementally toward capability/loadout requirements rather than removing every restriction in one rewrite;
+## Current transitional debt / UI limitations
+
+Do not turn these into an unbounded rewrite:
+
+- the local minimap is intentionally rough; richer landmarks/icons, multi-level presentation, world-map screens, and POI styling remain future UI work;
+- the minimap reveals atlas knowledge, but broader regional/world mapping still needs authored presentation layers;
+- planned Codex/Crafting category entries are disabled placeholders until their underlying engines/data are ready;
+- `capabilityEngine` evaluates ownership/use eligibility but does not execute generalized effects yet;
+- placeholder spell and weapon-skill actions remain in the current combat scaffold;
+- `skillCaps.js` remains sparse/placeholder-confidence;
+- active discipline still participates in legacy equipment eligibility;
 - `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal names remain save/runtime compatibility seams;
-- no broad trainer/instruction/quest/preparation UI exists yet;
-- no mass technique/capability catalog has been authored;
-- historical FFXI reference modules remain callable at explicit research boundaries;
+- historical FFXI research modules remain bounded reference surfaces;
 - `places.js` encounter `spawnRules` and place connections remain transitional seams;
 - `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional compatibility debt.
-
-Do not solve these through an unbounded rewrite.
 
 ## Next target
 
@@ -364,28 +254,16 @@ Do not solve these through an unbounded rewrite.
 0.6.300 — Original magic and active ability engine
 ```
 
-**No 0.6.300 implementation has started in the concluded session.** Start it only under a new user-authorized run budget.
+**No 0.6.300 implementation started in this UI usability session.** Start it only under a new user-authorized run budget unless the user explicitly requests another UI refinement first.
 
-Recommended first bounded unit:
+Recommended first 0.6.300 unit remains:
 
-1. Refetch latest `main`, checks, this handoff, roadmap, world/content policy, architecture, and version manifest before editing.
-2. Inspect `combatActionEngine.js`, `battleEngine.js`, `ActionResult`/semantic-event code, timed-task/interrupt infrastructure, status effects, `data/capabilities.js`, `capabilityEngine.js`, equipment/item effect metadata, and historical spell research only as a bounded reference surface.
-3. Define **executable ability/effect records separately from capability ownership**. Stable effect/ability IDs should be original-world canonical data.
-4. Establish original spell schools/traditions and representative techniques with targeting, context, cost, activation/cast duration, recast/cooldown, interruption, and structured effect payloads.
-5. Keep use authority compositional: a learned capability can enable an effect, while `capabilityEngine`/loadout/preparation/resource/context prerequisites still determine whether it is currently usable.
-6. Route representative effects through structured `ActionResult` and semantic events without making display prose authoritative.
-7. Use canonical world time/timed-task/interrupt infrastructure for non-instant activations; do not invent a parallel spell timer.
-8. Preserve the existing combat-action scaffold behind bounded adapters until `0.6.400`; do not perform Combat 2.0 inside the magic/ability track.
-9. Author only enough original effects to prove offensive, restorative/support, and non-combat/contextual seams. Do not mass-port historical spell catalogs or names.
-10. Validate stable IDs/references/costs/effects, version Data/system contracts appropriately, run tests/benchmark, synchronize docs/handoff, and stop at the coherent 0.6.300 boundary before starting 0.6.400.
-
-Design cautions for 0.6.300:
-
-- capability ownership != executable effect definition;
-- learning permission != current-use eligibility;
-- active discipline is not a universal use gate;
-- effects must be original-world content, not renamed historical spell catalogs;
-- deterministic simulation time remains the only fictional-time authority;
-- effect resolution must be structured and testable without parsing prose;
-- representative mechanics first, breadth later;
-- preserve migration compatibility and avoid a giant player-state rewrite.
+1. refetch latest `main`, checks, required docs, architecture, and version manifest;
+2. inspect combat actions/battle, ActionResult/events, timed tasks/interrupts, statuses, capabilities, equipment/item effect metadata, and bounded historical spell research;
+3. define executable original-world ability/effect records separately from capability ownership;
+4. establish original spell schools/traditions and representative techniques with targeting, resource costs, cast/activation time, recast/cooldown, interruption, and structured effect payloads;
+5. keep capability/loadout/preparation/resource/context prerequisites compositional rather than making active discipline a universal gate;
+6. use canonical fictional time for non-instant activation;
+7. preserve the current battle scaffold behind bounded adapters until `0.6.400`;
+8. prove offensive, restorative/support, and non-combat/contextual effects without mass-porting historical spell catalogs;
+9. validate/version/test/benchmark/document, then stop at the coherent 0.6.300 boundary.
