@@ -37,3 +37,23 @@ test('router supports inspect and validate commands', () => {
     assert.match(router('inspect player'), /Traveler/);
     assert.match(router('validate'), /valid/);
 });
+
+test('router help advertises canonical original-world command vocabulary', () => {
+    const state = createInitialState();
+    const router = createCommandRouter(state, {
+        saveGame: () => true,
+        clearSave: () => {},
+        reload: () => {},
+    });
+
+    const help = router('help');
+
+    assert.match(help, /powers/);
+    assert.match(help, /ancestries/);
+    assert.match(help, /disciplines/);
+    assert.match(help, /home enter\|leave/);
+    assert.match(help, /companion/);
+    assert.match(help, /exits/);
+    assert.doesNotMatch(help, /Mog House/);
+    assert.doesNotMatch(help, /FFXI-style/);
+});
