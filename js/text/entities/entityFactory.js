@@ -86,6 +86,7 @@ export function createEnemy(options = {}) {
     const entity = {
         id: options.id ?? `enemy-${cryptoSafeId()}`,
         type: ENTITY_TYPES.ENEMY,
+        speciesId: options.speciesId ?? null,
         identity: {
             name: options.name ?? 'Training Dummy',
             family: options.family ?? 'construct',
