@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.6.250.1';
-export const PACKAGE_VERSION = '0.6.250';
+export const PRODUCT_VERSION = '0.6.300.1';
+export const PACKAGE_VERSION = '0.6.300';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 20,
+    data: 21,
     benchmark: 1,
-    codename: 'Player Interface Architecture',
+    codename: 'Original Magic and Abilities',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.250.1',
+    versionManifest: '0.6.300.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -42,11 +42,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     legacyCandidateNormalization: '0.1.0',
     simulationSubstrateGate: '0.1.0',
     dayCycle: '0.1.0',
-    commandShell: '0.4.5',
+    commandShell: '0.5.0',
     domUi: '0.1.0',
-    gameViewModels: '0.1.0',
+    gameViewModels: '0.2.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.2.0',
+    uiIntents: '0.3.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
@@ -55,7 +55,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerEntity: '0.8.0',
     characterCreation: '0.5.2',
     characterStats: '0.1.0',
-    capabilities: '0.1.0',
+    capabilities: '0.2.0',
+    abilityCatalog: '0.1.0',
+    abilityEngine: '0.1.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
@@ -102,7 +104,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     achievements: 'planned',
     items: '0.7.0',
     keyItems: 'planned',
-    magic: 'planned',
+    magic: '0.1.0',
+    abilities: '0.1.0',
     loot: '0.5.1',
     leveling: '0.6.0',
     companions: 'planned',
