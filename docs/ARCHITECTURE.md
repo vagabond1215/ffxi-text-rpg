@@ -1,312 +1,241 @@
 # Architecture
 
-This branch is a text-first rebuild. The goal is a stable foundation that can absorb researched FFXI-style systems without dragging forward old UI assumptions.
+Hearth & Horizon is a text-first persistent fantasy life RPG. Runtime architecture should keep simulation authority, canonical data, player-facing presentation, and legacy compatibility boundaries distinct so each can evolve without forcing broad rewrites.
 
 ## Principles
 
-1. Text first. The browser shell renders text/HUD controls in canvas, accepts command-router commands, and lets UI controls dispatch intents directly where stable.
-2. Logic does not touch the DOM or canvas renderer.
-3. Backwards compatibility is not required unless explicitly reintroduced later.
-4. Data, state, and engines should stay separate.
-5. Exact formulas are migrated only when they are sourced and understood.
-6. Conservative approximations are acceptable when clearly marked and easy to replace.
-7. Every major runtime system should have tests, validation where practical, and version tracking.
+1. **Game state and engines are authoritative; presentation is not.** UI views consume state or semantic view models and dispatch intents/actions back into engines.
+2. **Text first, browser-native where practical.** The active application shell uses semantic HTML/CSS; SVG is used for the local discovery map. Canvas remains a bounded compatibility/reference implementation, not the active browser shell.
+3. **UI controls and typed commands are adapters into shared gameplay behavior.** New player-facing features should prefer semantic intents/view models over manufacturing command strings where a stable direct seam exists.
+4. **Simulation time is canonical fictional time.** Wall-clock callbacks are only scheduler input.
+5. **Maps represent acquired knowledge.** Player map views derive from atlas/discovery state rather than exposing complete authored topology.
+6. **Data, persistent state, engines, and presentation stay separate.** High-volume content belongs in validated data/content packs; UI code should not become content authority.
+7. **Legacy material is bounded.** Historical FFXI-derived data/names may remain only at explicit research, migration, comparison, or compatibility seams.
+8. Every major runtime contract should have tests, version tracking, and validation where practical.
 
-## Current runtime flow
+## Current browser flow
 
 ```text
 index.html
   -> js/main.js
-      -> createCanvasApp(canvas)
+      -> createDomApp(host)
           -> loadActiveCharacter() or createInitialState()
-          -> createCommandRouter(state) for internal command dispatch
-          -> createSlashCommandRouter(state) for slash/account commands
-          -> canvas layout/input/render loop
+          -> createCommandRouter(state)
+          -> createSlashCommandRouter(state)
+          -> dispatchUiIntent(...)
+          -> createGameViewModel(state, uiState)
+          -> renderDomApp(...)
+              -> semantic HTML/CSS application shell
+              -> SVG local discovery map
 ```
 
-The active browser UI is canvas-first. Stable UI controls dispatch intents first; typed commands remain adapters into the same gameplay systems. The canvas command input accepts bare commands and still routes leading-slash inputs through `slashCommandRouter.js` for account/menu and FFXI macro-style compatibility.
+The active browser shell is DOM-first as of `0.6.250`. The previous canvas application remains in `js/text/ui/canvas*` so existing compatibility tests and useful implementation seams are not destroyed during the transition. It is no longer mounted by `js/main.js`.
 
-## UI layer
+## UI architecture
 
 ```text
-js/main.js
-js/text/ui/canvasApp.js
-js/text/ui/canvasRenderer.js
-js/text/ui/canvasLayout.js
-js/text/ui/canvasInput.js
-js/text/ui/uiActions.js
-js/text/ui/uiIntentDispatcher.js
-js/text/ui/uiTheme.js
-js/text/slashCommandRouter.js
+js/text/ui/
+  domApp.js
+  domRenderer.js
+  gameViewModel.js
+  uiState.js
+  uiIntentDispatcher.js
+  commandIntentAdapter.js
+  minimapModel.js
+
+  canvasApp.js          # transitional / compatibility shell
+  canvasRenderer.js     # transitional / compatibility shell
+  canvasLayout.js       # transitional / compatibility shell
+  canvasInput.js        # shared structural helpers still used incrementally
+  uiActions.js
+  uiTheme.js
 ```
 
-- `main.js` mounts one canvas host.
-- `canvasApp.js` wires current state, save services, command routers, canvas event handlers, and rendering.
-- `canvasRenderer.js` draws panels, buttons, log output, context, and command input. It should not own game logic.
-- `canvasLayout.js`, `canvasInput.js`, and `uiActions.js` are pure/testable seams for bounds, hit testing, keyboard input, history, compass state, and action metadata.
-- `uiIntentDispatcher.js` owns direct UI intents such as account/menu/settings/creator/navigation actions. Typed commands remain available as adapters.
-- `slashCommandRouter.js` still owns `/menu`, `/commands`, `/help`, `/newcharacter`, `/characters`, `/load`, `/save`, `/account`, and `/reset` when slash input is used.
+### Semantic presentation model
 
-## Command layer
+`gameViewModel.js` converts authoritative runtime state into renderer-oriented meaning without making display prose authoritative. Its current model exposes:
+
+- place/region/coordinate and canonical fictional time;
+- compact character identity, HP/MP/TP, and primary attributes;
+- current scene description and nearby POIs;
+- discovery-derived local map state;
+- legal movement directions;
+- a small set of contextual actions;
+- current travel/timed-task activity;
+- recent display lines with command echoes filtered out.
+
+This is intentionally not a second game-state schema. View models are derived and disposable.
+
+### DOM shell
+
+`domApp.js` owns browser event delegation and wires existing save/account, command, slash-command, and direct-intent services to `domRenderer.js`.
+
+The main game surface is organized around:
+
+```text
+location/time header
+  + compact primary information navigation
+
+local discovery map     world/scene or selected information view     character status
+
+contextual actions
+recent meaningful events
+universal Search-or-act input
+```
+
+The scene is the primary presentation surface. There is no player-facing permanent "Output Log" panel. Command output can still feed recent events while systems are migrated toward dedicated view models.
+
+### Character creation
+
+The active DOM creator is a single-screen configuration surface rather than a wizard. Name, ancestry, sex, origin, and starting discipline remain visible with a continuously updated starting-profile summary. Existing `characterCreationModel.js` remains the choice/validation authority.
+
+### Context actions
+
+Context actions should answer "what can I meaningfully do here now?" rather than duplicate every command. Current derivation prioritizes nearby POI interaction, battle actions, travel stop, and basic world observation, capped to a small action set. Information destinations such as Character, Codex, World, and Craft are navigation, not world actions.
+
+### Universal input
+
+The bottom Search-or-act field currently routes typed engine/slash commands. It is the keyboard/power-user adapter. Full fuzzy entity/action search is not implemented yet and should not be confused with the current command-capable omnibox.
+
+## Command and intent layer
 
 ```text
 js/text/commandRouter.js
+js/text/slashCommandRouter.js
 js/text/commands/parser.js
+js/text/ui/uiIntentDispatcher.js
+js/text/ui/commandIntentAdapter.js
 js/text/systems/ffxiCommandAdapter.js
 ```
 
-- `commandRouter.js` is the internal engine-facing dispatcher.
-- `parser.js` handles tokenization, aliases, positional arguments, and `--named=value` args.
-- `ffxiCommandAdapter.js` accepts FFXI-style slash forms inside the internal engine path where relevant.
+- `commandRouter.js` remains the engine-facing text command dispatcher.
+- `slashCommandRouter.js` owns slash/account compatibility routes.
+- `uiIntentDispatcher.js` owns direct UI intents for account/menu/settings/creator/navigation behavior.
+- `commandIntentAdapter.js` lets a semantic UI action reach an existing command-backed feature without teaching the renderer command semantics.
+- `ffxiCommandAdapter.js` is a bounded historical compatibility seam and must not become canonical product vocabulary.
+
+As systems mature, dedicated semantic views/actions should replace command-output presentation incrementally. Commands remain useful for testing, accessibility/power use, and compatibility.
 
 ## Save/account layer
 
 ```text
 js/text/save.js
+js/text/systems/saveMigrations.js
 ```
 
-The current browser account and session save keys are:
+Current persistence contracts:
+
+```text
+Account Save: 4
+Game State:   5
+```
+
+Historical localStorage keys are retained deliberately:
 
 ```text
 ffxiTextRpgAccounts
 ffxiTextRpgAccountSession
 ```
 
-The saved payload is encoded as:
+Payload encoding is `base64-json-v1`; it is encoding, not cryptographic protection. Ordered migrations handle supported persistence-version transitions. `reviveGameState()` repairs post-JSON references such as the flat inventory compatibility reference.
 
-```text
-base64-json-v1
-```
+UI architecture state is ephemeral and does not justify a Game State migration. The `0.6.250` DOM transition consumes existing player, atlas, simulation, POI, and activity state.
 
-This is encoded local storage, not strong encryption. It prevents immediate plain JSON readability, but it is not secure against users with browser/devtools access. Strong encryption should use a password-derived key or platform-backed key later.
+## Major runtime layers
 
-Account state includes:
+### Continuous character
 
-- account profile
-- last active character ID
-- character summaries
-- encoded character game states
+Player state owns identity, character stats, progression, discipline-training records, character-owned skills/capabilities, resources, wallet, equipment, inventory/storage, flags, statuses, and related persistent records. Internal names such as `player.jobs` and `mainJobId` remain compatibility seams; active discipline does not own the person.
 
-The old key `ffxiTextRpgSave` is only used for migration when no account save exists.
+### Simulation
 
-`reviveGameState()` relinks `player.inventory` to `player.inventoryState.containers.inventory.items` after JSON load, because JSON serialization breaks object references.
+Canonical fictional seconds, simulation control, timed tasks, interrupt providers, and day-cycle reconciliation are separate from browser wall-clock time. Long actions should compose with those systems rather than inventing UI timers.
 
-## Current module layout
+### Geography and travel
+
+Places/maps/coordinates define geography. Atlas state records discovered knowledge. Navigation resolves local movement. Canonical routes and transport services own longer travel/scheduled services, with place connections retained only as bounded fallback data where needed.
+
+### Ecology and resources
+
+Species/families/populations/gathering sources define environmental substrate. Ecology runtime owns deterministic availability/depletion/regeneration. Resource provenance and opportunities prevent combat or gathering from becoming unexplained item generation.
+
+### Content packs
+
+Regional/shared content packs declare ownership and dependencies. Cross-reference validation checks geography, routes, ecology, resources/items, NPCs, shops, recipes, quests, and relationships at scale. Legacy normalization produces review candidates, never automatic canon.
+
+### Character mechanics
+
+`characterStatEngine.js`, progression/skill engines, `data/capabilities.js`, and `capabilityEngine.js` establish continuous-character ownership. Capability learning requirements and current-use requirements are separate. Executable magic/ability effects remain the next dedicated mechanics contract (`0.6.300`).
+
+### Combat and items
+
+Current battle/combat/item/equipment systems remain functional scaffolds with several transitional compatibility assumptions. Combat 2.0 is intentionally later (`0.6.400`); the UI architecture track does not rewrite combat behavior.
+
+## Current module landmarks
 
 ```text
 js/text/
-  slashCommandRouter.js
   commandRouter.js
+  slashCommandRouter.js
   gameState.js
   save.js
   version.js
 
   ui/
-    canvasApp.js
-    canvasRenderer.js
-    canvasLayout.js
-    canvasInput.js
-    uiActions.js
-    uiTheme.js
-
-  commands/
-    parser.js
+    domApp.js
+    domRenderer.js
+    gameViewModel.js
+    uiState.js
+    uiIntentDispatcher.js
+    commandIntentAdapter.js
+    minimapModel.js
+    canvas*.js
 
   data/
-    coordinates.js
-    sandoriaCityMaps.js
-    actionControls.js
-    databaseRegistry.js
-    equipmentCatalog.js
-    guildServices.js
-    inventoryContainers.js
-    jobs.js
-    maps.js
-    mogHouseFurniture.js
-    nations.js
+    capabilities.js
+    contentPackSchema.js
+    regionalContentPacks.js
+    ecologyCatalog.js
+    routeCatalog.js
+    resourceItems.js
     places.js
+    maps.js
     pointsOfInterest.js
-    questHooks.js
-    races.js
-    seedEntities.js
-    shopCatalogs.js
-    skillCaps.js
-    systemConstants.js
-
-  entities/
-    entityFactory.js
+    equipmentCatalog.js
 
   systems/
-    aggroEngine.js
-    atlasEngine.js
-    battleEngine.js
-    characterCreator.js
-    combatActionEngine.js
-    navigationEngine.js
-    equipmentEngine.js
-    ffxiCommandAdapter.js
-    inventoryEngine.js
-    itemBehaviorEngine.js
-    menuDescriptions.js
-    poiEngine.js
-    shopEngine.js
+    characterStatEngine.js
+    capabilityEngine.js
+    progressionEngine.js
     skillProgressionEngine.js
-    statEngine.js
-    statusEngine.js
-    statFormulaDescriptions.js
-    tickEngine.js
+    worldTimeEngine.js
+    simulationControlEngine.js
+    simulationInterruptEngine.js
+    timedTaskEngine.js
+    navigationEngine.js
     travelEngine.js
-    validation.js
+    transportEngine.js
+    ecologyEngine.js
+    resourceOpportunityEngine.js
+    contentPackValidator.js
+    battleEngine.js
+    combatActionEngine.js
 ```
 
-## Entity model
+## Transitional seams to preserve deliberately
 
-### Player
-
-Player entities own identity, jobs, progression, wallet, equipment, inventory state, key items, statuses, flags, resources, and calculated combat profile.
-
-Important inventory note:
-
-```text
-player.inventory
-```
-
-is intentionally a compatibility reference to:
-
-```text
-player.inventoryState.containers.inventory.items
-```
-
-After loading from localStorage, `reviveGameState()` must restore that reference.
-
-### NPC
-
-NPC entities are service/dialogue/quest/shop holders. They are not combat actors by default.
-
-### Enemy
-
-Enemy entities are combat actors with level, family, ecosystem, aggro flags, skills, loot hooks, EXP value, statuses, resources, and calculated combat profile.
-
-## Core systems
-
-### Stat engine
-
-The stat engine calculates:
-
-- attributes
-- HP/MP/TP maxima
-- skills
-- derived combat stats
-- elemental resistances
-
-Equipment modifiers from `equipmentCatalog.js` are included in the combat profile when gear is equipped.
-
-### Inventory engine
-
-The inventory engine owns:
-
-- Inventory
-- Mog Safe
-- Mog Safe 2
-- Storage
-- Mog Locker
-- Mog Satchel
-- Mog Sack
-- Mog Case
-- Mog Wardrobes 1-8
-- container access rules
-- capacity checks
-- item-kind checks
-- container transfers
-
-Storage capacity is furniture-derived and is only accessible from Mog House context. Mog Safe is also Mog House-only. Wardrobe 1 is unlocked by default and equipment-only; other wardrobes are present but locked by default.
-
-### Equipment engine
-
-The equipment engine owns:
-
-- equipping from Inventory or accessible Wardrobes
-- unequipping to valid containers
-- source/destination capacity checks
-- slot inference from item metadata or tags
-- eligibility checks for equipment kind, allowed slot, main-job level, allowed jobs, allowed races, simple sex/nation/key-item/quest requirements, two-handed/offhand conflicts, and ranged/ammo slot constraints
-- text-first item inspection for accessible inventory, wardrobe, and equipped items
-- safe replacement behavior
-
-Equipment catalog entries are static templates. Runtime inventory records remain item instances with quantity, source, and future instance-specific fields. Template-sensitive fields such as weapon delay, requirements, modifiers, and starter eligibility carry confidence/source metadata and should not be treated as exact retail data unless marked that way.
-
-### Skill caps
-
-`js/text/data/skillCaps.js` owns the current sparse skill rank/cap scaffold. It exposes `getSkillCap(jobId, skillId, level)` and `getEffectiveSkill(player, skillId)` for skill inspection, conservative gain clamping, and future combat/magic integration. The cap formula is explicitly placeholder metadata, so battle and command handlers should not bake it in as exact FFXI behavior.
-
-`js/text/systems/skillProgressionEngine.js` owns character skill state and conservative gain resolution. It can infer main-hand, ranged/ammo, and placeholder spell skills, then add deterministic +1 learned skill for eligible combat actions while clamping to the current main-job cap. These learned/effective skill values are not used in damage, accuracy, magic potency, enemy AI, or item behavior formulas yet.
-
-### POI engine
-
-The POI engine owns:
-
-- current-grid POI discovery
-- same-zone POI fast travel
-- current-grid contextual actions
-- shop/guild/quest action dispatch
-
-### Shop engine
-
-The shop engine supports buying and conservative selling. Purchases spend gil, create/enrich items, and add them into Inventory through container rules. Selling requires a current shop POI, only sells from Inventory, rejects key items, `noSell`, and zero-value items by default, removes the item quantity first, and credits gil only after removal succeeds.
-
-`itemBehaviorEngine.js` owns sell eligibility/value helpers and metadata-only item behavior inspection for latent effects, enchantments, charges, and ranged/ammo flags. Those behavior records are not wired into combat formulas yet.
-
-### Battle engine
-
-The battle engine owns battle-local state:
-
-- combatants
-- current HP/MP/TP
-- phase
-- round
-- enmity placeholder
-- skillchain placeholder
-- magic burst placeholder
-- log
-
-Combat actions and battle rewards exist. Player basic attacks, placeholder weapon skills, and placeholder spell casts may append concise skill-gain log lines after eligible actions. Rewards currently cover victory EXP, gil, deterministic loot rolls, Inventory insertion through container rules, failed loot storage reporting, progression integration, and duplicate payout prevention.
-
-### Status engine
-
-The status engine owns:
-
-- status creation
-- stacking behavior
-- replacement/ignore/stack rules
-- duration advancement
-- tick effects
-
-### Travel/atlas/aggro engines
-
-Travel and movement systems own:
-
-- zone graph lookup
-- direct travel state
-- travel restrictions
-- grid movement
-- atlas discovery
-- foot-travel aggro scaffold
-
-## Save compatibility
-
-The current save version is `3`. Backwards compatibility is not guaranteed except for one migration path from the previous raw `ffxiTextRpgSave` key into the encoded account save format.
-
-During this rebuild, it is acceptable to clear local saves when state shape changes unless explicit migration is requested.
-
-## Migration notes
-
-Existing legacy data may be reused, but each piece should be migrated deliberately into the new text-first schema. Do not blindly import legacy modules into new systems unless they are pure data and do not carry UI assumptions.
+- Canvas UI modules remain temporarily for regression coverage and migration comparison, but new browser presentation work should target the DOM shell.
+- Some DOM views still call command-backed adapters (Inventory, Equipment, Skills, existing Spell/Technique/Bestiary views) because those systems do not yet expose dedicated presentation models.
+- `uiState.js` currently reuses structural state helpers from `canvasInput.js`; extract renderer-neutral state incrementally rather than through a broad rewrite.
+- The omnibox is command-capable, not yet a true cross-database fuzzy search system.
+- The local map is intentionally rough and knowledge-driven. Richer landmarks/icons/regional maps should preserve atlas knowledge as authority.
+- Legacy POI IDs, `gil`, historical save-key names, and internal discipline/job-shaped storage remain intentional compatibility debt documented elsewhere.
 
 ## New-thread startup checklist
 
-1. Read `README.md`.
-2. Read `docs/THREAD_HANDOFF.md`.
-3. Check `js/text/version.js` for current system versions.
-4. Run `npm test` and `npm run benchmark` locally.
-5. Inspect recent systems before changing them: `js/text/ui/*`, `slashCommandRouter.js`, `save.js`, `inventoryEngine.js`, `equipmentEngine.js`, `poiEngine.js`, `shopEngine.js`, and `commandRouter.js`.
-6. Update docs, tests, and version tracking with every major change.
+1. Read `AGENTS.md` and `docs/THREAD_HANDOFF.md` first.
+2. Read development direction, world/content policy, roadmap, and versioning roadmap in the required order.
+3. Check `js/text/version.js` for the current product/schema/system versions.
+4. Inspect the relevant semantic view model/intent seam before adding UI-specific game logic.
+5. Run `npm test`, `npm run benchmark`, and relevant build checks.
+6. Update tests, version tracking, architecture, and handoff when a major contract changes.
