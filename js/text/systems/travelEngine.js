@@ -44,7 +44,7 @@ export function describePlaces() {
 }
 
 export function findTravelRoute(state, destinationQuery, options = {}) {
-    const from = state.currentPlaceId ?? 'southern-sandoria';
+    const from = state.currentPlaceId ?? 'thornwall-southgate';
     const destination = findPlaceByQuery(destinationQuery);
     if (!destination) {
         return { ok: false, code: 'unknown-destination', reason: `Unknown destination: ${destinationQuery}` };
@@ -172,7 +172,7 @@ export function advanceTravel(state, elapsedSeconds) {
     const completed = state.travel;
     const arrival = completed.arriveAt ?? destination?.coordinateSystem.start ?? { x: 0, y: 0 };
     if (destination) {
-        setPositionAndDiscover(state, destination.id, arrival, { important: ['Zone arrival'] });
+        setPositionAndDiscover(state, destination.id, arrival, { important: ['Place arrival'] });
     } else {
         state.currentPlaceId = completed.to;
         state.location = completed.to;
