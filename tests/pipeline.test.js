@@ -14,8 +14,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.200.2');
-    assert.equal(PACKAGE_VERSION, '0.6.200');
+    assert.equal(PRODUCT_VERSION, '0.6.250.1');
+    assert.equal(PACKAGE_VERSION, '0.6.250');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -24,14 +24,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 20);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.6\.200\.2/);
-    assert.match(describeVersion(), /Package: 0\.6\.200/);
+    assert.match(describeVersion(), /Product: 0\.6\.250\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.250/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 20/);
-    assert.match(describeVersion(), /Codename: Character Capabilities/);
+    assert.match(describeVersion(), /Codename: Player Interface Architecture/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.200\.2/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.250\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -58,6 +58,8 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /simulationSubstrateGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
+    assert.match(describeSystemVersions(), /domUi: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /gameViewModels: 0\.1\.0/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.2/);
     assert.match(describeSystemVersions(), /characterStats: 0\.1\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.1\.0/);
