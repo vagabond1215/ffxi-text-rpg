@@ -38,7 +38,7 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-    console.log(`FFXI Text RPG dev server running at http://${HOST}:${PORT}/`);
+    console.log(`Hearth & Horizon dev server running at http://${HOST}:${PORT}/`);
 });
 
 function safeResolve(requestedPath) {
