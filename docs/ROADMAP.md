@@ -14,7 +14,7 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.200.1
+Product:      0.6.200.2
 Package:      0.6.200
 Account Save: 4
 Game State:   5
@@ -44,7 +44,7 @@ Key rules:
 - disciplines can describe training paths without becoming universal use gates;
 - learned capability/proficiency ownership belongs to the continuous character;
 - settlements, roads, wilderness, livelihoods, relationships, logistics, danger, and combat share one persistent world;
-- maps represent acquired knowledge;
+- maps represent acquired knowledge and player map views should reveal rather than omnisciently expose geography;
 - resources and rewards have physical/economic/social provenance;
 - mechanics and representative content grow together;
 - regional content is authored as a validated cross-linked graph;
@@ -164,7 +164,7 @@ Resulting baseline: **0.6.100.1 / Package 0.6.100 / Account Save 4 / Game State 
 
 ## 0.6.200 — Skills, proficiencies, disciplines, and capabilities — complete
 
-Resulting baseline: **0.6.200.1 / Package 0.6.200 / Account Save 4 / Game State 5 / Data 20**.
+Current revision: **0.6.200.2 / Package 0.6.200 / Account Save 4 / Game State 5 / Data 20**. The capability-contract track integrated at `0.6.200.1`; `0.6.200.2` is a bounded UI usability revision with no persistence/Data change.
 
 - [x] Added canonical capability catalog v1 with stable capability IDs and separate learning/use contracts.
 - [x] Added versioned character-owned capability state under `player.progression.capabilities`.
@@ -177,6 +177,17 @@ Resulting baseline: **0.6.200.1 / Package 0.6.200 / Account Save 4 / Game State 
 - [x] Capability data is registered separately from future executable `abilities` definitions.
 - [x] Data advanced 19 -> 20 for the canonical capability learning/use contract; Account Save remains 4 and Game State remains 5 because capability state is additive/lazy.
 
+### 0.6.200 UI usability revision
+
+- [x] Streamlined character creation to ancestry/origin/discipline/review language with shorter descriptions and reliable canvas wrapping.
+- [x] Name entry now occurs only on the visible review field rather than consuming invisible keyboard input on earlier creator steps.
+- [x] Added a local discovery-driven minimap that reads existing atlas knowledge and reveals cells/connections through normal travel discovery.
+- [x] Moved the D-pad below the minimap, reduced movement buttons to 24–30px, and centered the direction symbols.
+- [x] Replaced the long flat sidebar action list with Character, Spellbook, Codex, World, Crafting, Combat, and System category menus.
+- [x] Removed the redundant visible Character-summary button while preserving the typed/global `character` command as a compatibility interface.
+- [x] Promoted HP/MP/TP, primary attributes, derived combat values, and location into the permanent right-pane snapshot.
+- [x] Codex/Crafting menu entries for not-yet-implemented systems are visibly disabled/planned placeholders rather than fake working commands.
+
 ### 0.6.200 bounded limitations
 
 - Capability records are representative substrate, not a broad technique catalog.
@@ -186,6 +197,7 @@ Resulting baseline: **0.6.200.1 / Package 0.6.200 / Account Save 4 / Game State 
 - Equipment eligibility still contains discipline-shaped compatibility requirements that should migrate toward capability/loadout prerequisites incrementally.
 - Current skill-cap rank math remains explicitly placeholder-confidence research/scaffolding.
 - No broad trainer, quest-instruction, or preparation UI exists yet.
+- The minimap is deliberately rough and knowledge-driven; richer iconography, landmarks, multi-level presentation, and world/regional map screens can evolve later without changing atlas authority.
 
 ## 0.6.300 — Original magic and active ability engine — next
 
