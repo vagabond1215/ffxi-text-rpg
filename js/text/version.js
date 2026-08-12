@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.4.600.0';
-export const PACKAGE_VERSION = '0.4.600';
+export const PRODUCT_VERSION = '0.4.900.0';
+export const PACKAGE_VERSION = '0.4.900';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'Foundation Stabilization',
+    codename: 'Foundation Exit Gate',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,11 +18,11 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.4.600',
+    versionManifest: '0.4.900',
     saveMigrations: '0.1.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
-    foundationReadiness: '0.1.0',
+    foundationReadiness: '0.2.0',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
