@@ -22,13 +22,13 @@ test('validation rejects non-integer character-owned skill values', () => {
     assert.ok(issues.some((issue) => issue.includes('player.progression.skills.axe must be a non-negative finite integer')));
 });
 
-test('validation rejects nested job-keyed skill maps clearly', () => {
+test('validation rejects nested discipline-keyed skill maps clearly', () => {
     const state = createInitialState();
-    state.player.progression.skills.warrior = {
+    state.player.progression.skills.vanguard = {
         axe: 1,
     };
 
     const issues = validateGameState(state);
 
-    assert.ok(issues.some((issue) => issue.includes('player.progression.skills.warrior appears to be a nested job-keyed skill map')));
+    assert.ok(issues.some((issue) => issue.includes('player.progression.skills.vanguard appears to be a nested job-keyed skill map')));
 });
