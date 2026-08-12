@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { enrichEquipmentItem } from '../js/text/data/equipmentCatalog.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { createInitialState, createNewGameState } from '../js/text/gameState.js';
-import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
+import { addItemToContainer, setHomeAccess } from '../js/text/systems/inventoryEngine.js';
 import { equipItem, inferEquipmentSlot, inspectItem, unequipItem } from '../js/text/systems/equipmentEngine.js';
 import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
 
@@ -39,16 +39,16 @@ function levelTwoSword() {
         subtype: 'sword',
         equipmentSlot: 'mainHand',
         allowedSlots: ['mainHand'],
-        requirements: { minLevel: 2, allowedJobs: ['warrior'], allowedRaces: [] },
+        requirements: { minLevel: 2, allowedJobs: ['vanguard'], allowedRaces: [] },
         flags: ['equipmentOnly'],
         modifiers: { derived: { attack: 1 } },
     };
 }
 
-function tarutaruHat() {
+function miriHat() {
     return {
-        id: 'tarutaru-training-hat',
-        name: 'Tarutaru Training Hat',
+        id: 'miri-training-hat',
+        name: 'Miri Training Hat',
         kind: 'equipment',
         quantity: 1,
         family: 'armor',
@@ -56,7 +56,7 @@ function tarutaruHat() {
         subtype: 'head',
         equipmentSlot: 'head',
         allowedSlots: ['head'],
-        requirements: { minLevel: 1, allowedJobs: ['warrior'], allowedRaces: ['tarutaru'] },
+        requirements: { minLevel: 1, allowedJobs: ['vanguard'], allowedRaces: ['miri'] },
         flags: ['equipmentOnly'],
         modifiers: { derived: { defense: 1 } },
     };
@@ -73,7 +73,7 @@ function trainingShield() {
         subtype: 'shield',
         equipmentSlot: 'offHand',
         allowedSlots: ['offHand'],
-        requirements: { minLevel: 1, allowedJobs: ['whiteMage'], allowedRaces: [] },
+        requirements: { minLevel: 1, allowedJobs: ['lifewarden'], allowedRaces: [] },
         flags: ['equipmentOnly'],
         modifiers: { derived: { defense: 1, shieldBlock: 1 } },
     };
@@ -97,14 +97,14 @@ test('equipItem equips gear from inventory and removes it from container', () =>
     assert.equal(inventoryState.containers.inventory.items.length, 0);
 });
 
-test('equipItem validates active job eligibility before equipping', () => {
-    const state = createNewGameState({ mainJobId: 'whiteMage' });
+test('equipItem validates active discipline eligibility before equipping', () => {
+    const state = createNewGameState({ mainJobId: 'lifewarden' });
     const inventoryState = state.player.inventoryState;
     addItemToContainer(inventoryState, 'inventory', bronzeAxe());
 
     const result = equipItem(state, 'Bronze Axe');
 
-    assert.match(result, /cannot be equipped by White Mage/);
+    assert.match(result, /cannot be equipped by Lifewarden/);
     assert.equal(state.player.equipment.mainHand, null);
     assert.equal(inventoryState.containers.inventory.items.length, 1);
 });
@@ -122,14 +122,14 @@ test('equipItem rejects low-level gear without mutating the source container', (
     assert.equal(inventoryState.containers.inventory.items[0].name, 'Training Sword');
 });
 
-test('equipItem rejects race-restricted gear atomically', () => {
+test('equipItem rejects ancestry-restricted gear atomically', () => {
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
-    addItemToContainer(inventoryState, 'inventory', tarutaruHat());
+    addItemToContainer(inventoryState, 'inventory', miriHat());
 
-    const result = equipItem(state, 'Tarutaru Training Hat');
+    const result = equipItem(state, 'Miri Training Hat');
 
-    assert.match(result, /cannot be equipped by Hume/);
+    assert.match(result, /cannot be equipped by Human/);
     assert.equal(state.player.equipment.head, null);
     assert.equal(inventoryState.containers.inventory.items.length, 1);
 });
@@ -147,7 +147,7 @@ test('equipItem equips gear from wardrobe', () => {
 });
 
 test('two-handed mainHand gear blocks incompatible offHand equips', () => {
-    const state = createNewGameState({ mainJobId: 'whiteMage' });
+    const state = createNewGameState({ mainJobId: 'lifewarden' });
     const inventoryState = state.player.inventoryState;
     addItemToContainer(inventoryState, 'inventory', { id: 'ash-staff', name: 'Ash Staff', kind: 'equipment', quantity: 1, tags: ['weapon', 'staff', 'starter'] });
     addItemToContainer(inventoryState, 'inventory', trainingShield());
@@ -226,19 +226,19 @@ test('enrichEquipmentItem ignores malformed runtime list fields without spreadin
         latentEffects: { id: 'bad-latent' },
         enchantments: { id: 'bad-enchantment' },
         augments: { id: 'bad-augment' },
-        requirements: { allowedJobs: { job: 'whiteMage' }, allowedRaces: 'hume' },
+        requirements: { allowedJobs: { job: 'lifewarden' }, allowedRaces: 'human' },
     });
 
     assert.deepEqual(stringMalformed.allowedSlots, ['mainHand', 'offHand']);
     assert.equal(stringMalformed.allowedSlots.includes('o'), false);
-    assert.deepEqual(stringMalformed.requirements.allowedJobs, ['warrior', 'redMage', 'paladin']);
+    assert.deepEqual(stringMalformed.requirements.allowedJobs, ['vanguard', 'spellblade', 'oathguard']);
     assert.deepEqual(stringMalformed.latentEffects, []);
     assert.deepEqual(stringMalformed.enchantments, []);
     assert.deepEqual(stringMalformed.augments, []);
     assert.deepEqual(objectMalformed.allowedSlots, ['mainHand']);
     assert.equal(objectMalformed.allowedSlots.includes('[object Object]'), false);
-    assert.deepEqual(objectMalformed.requirements.allowedJobs, ['warrior', 'redMage', 'paladin']);
-    assert.deepEqual(objectMalformed.requirements.allowedRaces, ['hume']);
+    assert.deepEqual(objectMalformed.requirements.allowedJobs, ['vanguard', 'spellblade', 'oathguard']);
+    assert.deepEqual(objectMalformed.requirements.allowedRaces, ['human']);
     assert.deepEqual(objectMalformed.latentEffects, []);
     assert.deepEqual(objectMalformed.enchantments, []);
     assert.deepEqual(objectMalformed.augments, []);
@@ -251,7 +251,7 @@ test('item inspection shows requirements flags effects and confidence notes', ()
     const output = inspectItem(state, 'Bronze Sword');
 
     assert.match(output, /Bronze Sword/);
-    assert.match(output, /Allowed jobs: warrior, redMage, paladin/);
+    assert.match(output, /Allowed jobs: vanguard, spellblade, oathguard/);
     assert.match(output, /Flags: equipmentOnly/);
     assert.match(output, /Effects:/);
     assert.match(output, /weaponDelay: placeholder/);
@@ -309,7 +309,7 @@ test('item inspection shows behavior metadata for latent enchantment charges and
 test('item inspection searches accessible non-wardrobe containers for consumables and materials', () => {
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
-    inventoryState.mogHouse.isInMogHouse = true;
+    setHomeAccess(state, true);
     addItemToContainer(inventoryState, 'mogSafe', potion());
     addItemToContainer(inventoryState, 'storage', craftingMaterial());
 
@@ -317,9 +317,9 @@ test('item inspection searches accessible non-wardrobe containers for consumable
     const materialOutput = inspectItem(state, 'Copper Ore');
 
     assert.match(potionOutput, /Kind: consumable/);
-    assert.match(potionOutput, /Source: Mog Safe/);
+    assert.match(potionOutput, /Source: Home Safe/);
     assert.match(materialOutput, /Kind: material/);
-    assert.match(materialOutput, /Source: Storage/);
+    assert.match(materialOutput, /Source: Furnishing Storage/);
 });
 
 test('unequipItem returns gear to inventory', () => {
@@ -343,7 +343,7 @@ test('unequipItem can return gear to wardrobe', () => {
 
     const result = unequipItem(state, 'mainHand', 'wardrobe1');
 
-    assert.match(result, /Stored in Mog Wardrobe 1/);
+    assert.match(result, /Stored in Wardrobe 1/);
     assert.equal(state.player.equipment.mainHand, null);
     assert.equal(inventoryState.containers.wardrobe1.items.length, 1);
 });
@@ -358,10 +358,10 @@ test('router exposes equip unequip and equipSources commands', () => {
     });
 
     assert.match(router('equipSources'), /Equippable item sources/);
-    assert.match(router('item Bronze Sword'), /Allowed jobs: warrior, redMage, paladin/);
+    assert.match(router('item Bronze Sword'), /Allowed jobs: vanguard, spellblade, oathguard/);
     assert.match(router('inspect item Bronze Sword'), /Flags: equipmentOnly/);
     assert.match(router('equip Bronze Sword'), /Equipped Bronze Sword/);
     assert.match(router('equipment'), /mainHand: Bronze Sword/);
-    assert.match(router('unequip mainHand to wardrobe1'), /Stored in Mog Wardrobe 1/);
+    assert.match(router('unequip mainHand to wardrobe1'), /Stored in Wardrobe 1/);
     assert.match(router('container wardrobe1'), /Bronze Sword/);
 });
