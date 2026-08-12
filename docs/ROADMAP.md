@@ -13,15 +13,15 @@ Authoritative companion documents:
 
 ## Current baseline
 
-Current 0.5 simulation-control target:
+Current 0.5 timed-task target:
 
 ```text
-Product:      0.5.200.0
-Package:      0.5.200
+Product:      0.5.300.0
+Package:      0.5.300
 Account Save: 4
 Game State:   4
 Data:         13
-Codename:     Simulation Speed Control
+Codename:     Canonical Timed Tasks
 ```
 
 This remains pre-alpha product development. The version is a milestone identity, not a completion percentage.
@@ -80,27 +80,32 @@ Key rules:
 - [x] Ordered Game State v3 -> v4 migration adds canonical world time.
 - [x] Wall-clock `tickEngine` remains only a scheduler/dispatcher and does not mutate canonical world time by itself.
 
-### 0.5.200 Pause and speed control — current
+### 0.5.200 Pause and speed control — complete
 
 - [x] Simulation pause/resume state and semantic events.
 - [x] Engine accepts whole-number simulation-speed multipliers from 1x through 3600x without hard-coding UI presets.
-- [x] A scheduler adapter converts supplied wall-clock milliseconds into exact simulated seconds.
+- [x] Scheduler adapter converts supplied wall-clock milliseconds into exact simulated seconds.
 - [x] Sub-second simulated remainder is retained deterministically rather than discarded.
 - [x] Wall-clock time observed while paused is discarded and cannot become a burst of simulation time after resume.
 - [x] Fast-forward advances the canonical world clock rather than merely changing render timing.
-- [x] Scheduler conversion does not call `Date.now()`; the existing tick engine may supply elapsed time without owning game time.
-- [x] New games initialize simulation control at running/1x while older Game State v4 saves remain valid and lazily acquire control state when used.
+- [x] Scheduler conversion does not call `Date.now()`.
+- [x] New games initialize simulation control at running/1x while older Game State v4 saves can lazily acquire control state.
 
-The simulation-control engine deliberately separates three concerns: wall-clock observation, simulation speed/pause policy, and authoritative world-time advancement. Direct exact advancement remains available for tests/tools and later advance-to-completion/advance-to-event systems.
+### 0.5.300 Canonical timed task model — current
 
-### 0.5.300 Canonical timed task model — next
+- [x] Versioned task registry with stable task IDs.
+- [x] Tasks use canonical start/completion world-time boundaries and positive whole-second durations.
+- [x] Start semantics return structured ActionResult data and emit `task.started`.
+- [x] Progress is derived from canonical world time instead of maintaining a second competing task clock.
+- [x] Reconciliation completes due tasks deterministically and emits `task.completed`.
+- [x] Cancellation freezes progress at cancellation time and emits `task.cancelled`.
+- [x] Overshoot preserves the scheduled completion time while the completion event records when the simulation observed it.
+- [x] Multiple channels may coexist; concurrency/exclusivity policy is intentionally deferred to activity-specific systems.
+- [x] New games initialize an empty task registry while older Game State v4 saves can lazily acquire one without a schema migration.
 
-- [ ] Shared duration representation.
-- [ ] Start/progress/complete/cancel semantics where appropriate.
-- [ ] Deterministic completion.
-- [ ] Travel becomes one consumer rather than the template every activity must copy.
+The timed-task engine does not own time advancement. It observes `worldTime.totalSeconds`. This keeps task semantics reusable for work, crafting, travel, construction, recovery, and later systems without making travel the universal implementation template.
 
-### 0.5.400 Interrupt model
+### 0.5.400 Interrupt model — next
 
 - [ ] Advance-until-event.
 - [ ] Deterministic interrupt priority.
@@ -219,10 +224,10 @@ Refine formulas when they materially improve a meaningful player-facing loop. Do
 
 ## Immediate next pass
 
-After the 0.5.200 simulation-control PR is green and merged:
+After the 0.5.300 timed-task PR is green and merged:
 
 ```text
-0.5.300 — Canonical timed task model
+0.5.400 — Interrupt model
 ```
 
-The task model should consume deterministic world-time deltas and emit semantic outcomes without making any one activity type—especially travel—the universal implementation template.
+The interrupt layer should coordinate advancement stopping points and priorities without moving combat, project, or tool-specific policy into the world clock itself.
