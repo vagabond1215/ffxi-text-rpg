@@ -14,25 +14,26 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.550.1');
+    assert.equal(PRODUCT_VERSION, '0.5.550.2');
     assert.equal(PACKAGE_VERSION, '0.5.550');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 14);
+    assert.equal(VERSION.data, 15);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.5\.550\.1/);
+    assert.match(describeVersion(), /Product: 0\.5\.550\.2/);
     assert.match(describeVersion(), /Package: 0\.5\.550/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
+    assert.match(describeVersion(), /Data: 15/);
     assert.match(describeVersion(), /Codename: Original World Identity/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.550\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.550\.2/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
     assert.match(describeSystemVersions(), /semanticEvents: 0\.1\.0/);
     assert.match(describeSystemVersions(), /worldTime: 0\.2\.0/);
@@ -40,9 +41,15 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /simulationInterrupts: 0\.1\.0/);
     assert.match(describeSystemVersions(), /timedTasks: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
+    assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
     assert.match(describeSystemVersions(), /validation: 0\.8\.0/);
     assert.match(describeSystemVersions(), /travel: 0\.4\.3/);
-    assert.match(describeSystemVersions(), /characterCreation: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /pois: 0\.3\.7/);
+    assert.match(describeSystemVersions(), /travelExits: 0\.3\.6/);
+    assert.match(describeSystemVersions(), /homeStorage: 0\.3\.9/);
+    assert.match(describeSystemVersions(), /companions: planned/);
     assert.match(describeSystemVersions(), /canvasUi: 0\.7\.0/);
     assert.match(describeSystemVersions(), /combatActions: 0\.5\.1/);
     assert.match(describeSystemVersions(), /battleRewards: 0\.5\.2/);
@@ -55,13 +62,13 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /leveling: 0\.5\.3/);
 });
 
-test('database registry includes major planned systems and recovered legacy data', () => {
+test('database registry includes canonical systems plus explicitly bounded legacy research', () => {
     const ids = listDatabases().map((database) => database.id);
 
     assert.ok(ids.includes('places'));
     assert.ok(ids.includes('maps'));
-    assert.ok(ids.includes('nations'));
-    assert.ok(ids.includes('zoneConnections'));
+    assert.ok(ids.includes('powers'));
+    assert.ok(ids.includes('placeConnections'));
     assert.ok(ids.includes('travel'));
     assert.ok(ids.includes('legacyRecoveredData'));
     assert.ok(ids.includes('quests'));
@@ -71,10 +78,14 @@ test('database registry includes major planned systems and recovered legacy data
     assert.ok(ids.includes('magic'));
     assert.ok(ids.includes('lootTables'));
     assert.ok(ids.includes('leveling'));
-    assert.ok(ids.includes('trusts'));
+    assert.ok(ids.includes('companions'));
     assert.ok(ids.includes('crafting'));
     assert.ok(ids.includes('mounts'));
+    assert.equal(ids.includes('nations'), false);
+    assert.equal(ids.includes('zoneConnections'), false);
+    assert.equal(ids.includes('trusts'), false);
     assert.match(describeDatabases(), /legacyRecoveredData/);
+    assert.match(describeDatabases(), /companions/);
     assert.match(describeLegacyRecoveredData(), /weapon skills/);
 });
 
