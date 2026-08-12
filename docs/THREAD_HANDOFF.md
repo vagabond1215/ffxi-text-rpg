@@ -4,15 +4,30 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 ## Read order
 
-1. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
-2. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, naming, legacy-data, provenance, scale, and content-pack policy.
-3. `docs/ROADMAP.md` — current implementation status and immediate sequence.
-4. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product-version protocol and detailed release gates.
-5. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not harden into final design.
-6. `docs/ARCHITECTURE.md` — module/runtime boundaries.
-7. `js/text/version.js` — runtime/system version manifest.
+1. `AGENTS.md` — autonomous-session budget, scope boundaries, and required handoff protocol.
+2. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
+3. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, naming, legacy-data, provenance, scale, and content-pack policy.
+4. `docs/ROADMAP.md` — current implementation status and immediate sequence.
+5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product-version protocol and detailed release gates.
+6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not harden into final design.
+7. `docs/ARCHITECTURE.md` — module/runtime boundaries.
+8. `js/text/version.js` — runtime/system version manifest.
 
 Older planning documents may preserve useful history but do not override these files.
+
+## Autonomous work-session limit
+
+Repository work must not become an effectively endless chain of safe follow-on runs.
+
+`AGENTS.md` sets the hard operating rule:
+
+- maximum autonomous session: **2 hours 45 minutes** from the start of active repo work for the user prompt;
+- at **2:15**, stabilize and make the work handoff-safe;
+- at **2:30**, start no new implementation unit;
+- by **2:45**, persist the current coherent state, update this handoff, and report even when later roadmap work could safely continue;
+- if elapsed time cannot be measured reliably, use the fallback maximum of **6 autonomous work cycles**, with cycle 6 reserved for stabilization/handoff.
+
+A new user message starts a new budget. Roadmap and `Next` sections are sequencing information, not permission to continue autonomously forever.
 
 ## Product identity
 
@@ -23,6 +38,8 @@ This is an original text-first persistent fantasy life RPG about one continuous 
 Earlier code/data contains extensive FFXI-derived experiments. Those are now **legacy research/reference/migration material**, not canonical world content.
 
 Do not author new canonical databases using inherited FFXI place, nation, race, class, currency, creature, NPC, or item proper nouns.
+
+Do not preserve FFXI-specific wording in player-facing canonical content simply because a useful mechanic or datum originated in earlier reference work. Preserve useful mechanics where appropriate, but rename and contextualize them as original project content before high-volume database growth.
 
 Core progression law:
 
@@ -37,6 +54,8 @@ Disciplines describe.
 Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
+
+A discipline/job is not a magical transformation state. Learned capabilities belong to the continuous character; actual use is gated by learned skill/proficiency plus real equipment, tool, resource, preparation, status, and situational requirements.
 
 ## Current merged baseline
 
@@ -59,6 +78,50 @@ Completed:
 - `0.5.500` day boundaries, structured day summaries, configurable end-of-day pause.
 
 The 0.5.500 merge is the point at which the roadmap was deliberately re-baselined to recognize that content breadth and data-production infrastructure are first-class engineering requirements.
+
+## In-flight checkpoint — PR #310
+
+The interrupted prior thread did produce durable work. Continue from it rather than restarting the migration from scratch.
+
+```text
+PR:      #310 — Begin 0.5.550 canonical original-world identity migration
+Branch:  codex/original-world-identity-migration
+Target:  0.5.550.1 — first runtime revision of the 0.5.550 identity/stable-ID migration
+State:   draft / not merged
+```
+
+Implemented on the branch before this handoff update:
+
+- bounded legacy-to-canonical identity adapters;
+- canonical powers migrated to Thornwall, Brasshaven, and Mistmere;
+- regions/places/maps migrated to Elderwood, Redstone Reach, Starfen, and original localities;
+- ancestries migrated to Human, Lethari, Miri, Veyra, and Korren;
+- transitional job scaffold migrated to original discipline names/IDs;
+- starter creature/NPC seed identities and spawn references originalized;
+- Thornwall topology added under canonical IDs;
+- current POI location references moved to canonical places while some POI IDs remain temporarily for dependent shop/quest/guild hooks;
+- historical stat research placed behind explicit canonical-to-legacy research boundaries;
+- starter equipment eligibility and skill-cap data migrated to canonical disciplines;
+- Game State bumped to v5 and Data to 14 on the branch;
+- ordered Game State v4 -> v5 identity migration added, including clearing obsolete active battles during migration;
+- character-creation/progression wording moved toward ancestry/discipline terminology.
+
+Compatibility intent:
+
+- old world/race/job/place/map IDs are accepted only at bounded legacy input/migration boundaries;
+- new canonical runtime records should use original IDs;
+- do not solve compatibility by maintaining two permanent full schemas.
+
+CI checkpoint from the last implementation head before the session-protocol documentation commits:
+
+- GitHub Actions `Test` step failed;
+- `Benchmark` was skipped because tests failed;
+- the exact failing assertions still need to be diagnosed from the current branch/check logs;
+- documentation commits may trigger newer checks, so inspect the latest PR status before changing code.
+
+The first bounded continuation unit should therefore be **diagnose and fix PR #310 CI without restarting the identity migration**. Once `0.5.550.1` is coherent and validated, report before automatically launching later 0.5.550 revisions.
+
+The broader 0.5.550 track still needs follow-up work to originalize retained POI/shop/quest/guild names and remove remaining player-facing inherited vocabulary such as legacy currency/storage/companion/waypoint terms before high-volume content generation begins. That follow-up is intentionally a later bounded unit, not permission to keep the same agent session running indefinitely.
 
 ## Immediate target
 
