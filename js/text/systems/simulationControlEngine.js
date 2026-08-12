@@ -49,8 +49,12 @@ export function setSimulationSpeed(state, requestedSpeed) {
     return result(true, 'simulation.speed', 'simulation.speed-changed', 'changed', { ...simulation, previousSpeed, eventId: event.id }, `Simulation speed set to ${speed}x.`);
 }
 
-export function createSimulationAdvanceDriver() {
+export function createSimulationAdvanceDriver(driverOptions = {}) {
     let remainderMs = 0;
+    const advanceSeconds = driverOptions.advanceSeconds
+        ?? ((state, seconds, options) => advanceWorldTime(state, seconds, options));
+    if (typeof advanceSeconds !== 'function') throw new Error('advanceSeconds must be a function.');
+
     return {
         advance(state, elapsedWallMilliseconds, options = {}) {
             const elapsedMs = Number(elapsedWallMilliseconds);
@@ -58,11 +62,35 @@ export function createSimulationAdvanceDriver() {
             const simulation = ensureSimulationControlState(state);
             if (simulation.paused) return result(true, 'simulation.scheduled-advance', 'simulation.paused-no-advance', 'paused', { elapsedWallMilliseconds: elapsedMs, speedMultiplier: simulation.speedMultiplier, secondsAdvanced: 0, remainderMs }, 'Simulation is paused; world time did not advance.');
             remainderMs += elapsedMs * simulation.speedMultiplier;
-            const secondsAdvanced = Math.floor(remainderMs / 1000);
+            const requestedSimulationSeconds = Math.floor(remainderMs / 1000);
             remainderMs %= 1000;
-            if (!secondsAdvanced) return result(true, 'simulation.scheduled-advance', 'simulation.accumulating', 'accumulating', { elapsedWallMilliseconds: elapsedMs, speedMultiplier: simulation.speedMultiplier, secondsAdvanced: 0, remainderMs }, 'No full simulated second elapsed yet.');
-            const timeResult = advanceWorldTime(state, secondsAdvanced, options);
-            return result(true, 'simulation.scheduled-advance', 'simulation.advanced', 'advanced', { elapsedWallMilliseconds: elapsedMs, speedMultiplier: simulation.speedMultiplier, secondsAdvanced, remainderMs, worldTime: timeResult.data }, timeResult.display.text);
+            if (!requestedSimulationSeconds) return result(true, 'simulation.scheduled-advance', 'simulation.accumulating', 'accumulating', { elapsedWallMilliseconds: elapsedMs, speedMultiplier: simulation.speedMultiplier, secondsAdvanced: 0, remainderMs }, 'No full simulated second elapsed yet.');
+
+            const advanceResult = advanceSeconds(state, requestedSimulationSeconds, options);
+            if (!advanceResult?.ok) {
+                return result(false, 'simulation.scheduled-advance', 'simulation.advance-failed', 'rejected', {
+                    elapsedWallMilliseconds: elapsedMs,
+                    speedMultiplier: simulation.speedMultiplier,
+                    requestedSimulationSeconds,
+                    secondsAdvanced: 0,
+                    remainderMs,
+                    advanceResult: advanceResult?.data ?? null,
+                }, advanceResult?.display?.text ?? 'Simulation advancement failed.');
+            }
+
+            const secondsAdvanced = Number.isInteger(advanceResult.data?.secondsAdvanced)
+                ? advanceResult.data.secondsAdvanced
+                : requestedSimulationSeconds;
+            const interrupted = advanceResult.data?.interrupted === true || advanceResult.outcome === 'interrupted';
+            return result(true, 'simulation.scheduled-advance', interrupted ? 'simulation.interrupted' : 'simulation.advanced', interrupted ? 'interrupted' : 'advanced', {
+                elapsedWallMilliseconds: elapsedMs,
+                speedMultiplier: simulation.speedMultiplier,
+                requestedSimulationSeconds,
+                secondsAdvanced,
+                remainderMs,
+                worldTime: advanceResult.data,
+                interrupted,
+            }, advanceResult.display?.text ?? `Advanced ${secondsAdvanced}s.`);
         },
         resetRemainder() { remainderMs = 0; },
         get remainderMs() { return remainderMs; },
