@@ -1,8 +1,8 @@
 # FFXI Text RPG
 
-A text-first fantasy life RPG foundation inspired by the weight, preparation, progression, jobs, equipment, travel, and earned accomplishment of Final Fantasy XI.
+A text-first fantasy life RPG foundation inspired by the weight, preparation, dangerous travel, equipment, mastery, jobs/disciplines, and earned accomplishment of Final Fantasy XI.
 
-The project is **not** intended to become a text transcription of retail FFXI. The long-term direction is a persistent life/adventure RPG built around simulated time, measurable mastery, livelihoods, projects, infrastructure, relationships, logical equipment/preparation, dangerous expeditions, and a continuous character who can develop across multiple disciplines.
+This is **not** intended to become a text transcription of retail FFXI. The long-term game is a persistent life/adventure RPG built around simulated time, measurable mastery, livelihoods, projects, infrastructure, relationships, logical loadouts, exploration, and a continuous character who can develop across multiple disciplines.
 
 Core progression law:
 
@@ -10,63 +10,55 @@ Core progression law:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-The active browser UI remains canvas-first and text-led. Limited icons, tokens, meters, cards, and diagrams are welcome when they improve comprehension without creating a full graphical-world production burden.
-
-## Read these first
-
-For a new development session, use this order:
-
-1. `docs/DEVELOPMENT_DIRECTION.md` — authoritative game/design direction.
-2. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — four-part product-version protocol and detailed path to 1.0.
-3. `docs/ROADMAP.md` — current implementation summary and phase index.
-4. `docs/THREAD_HANDOFF.md` — concise repo state and next implementation sequence.
-5. `docs/ARCHITECTURE.md` — runtime/module boundaries.
-6. `CHANGELOG.md` — notable historical changes.
-
-The older `docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` is historical planning from the earlier formula/item-behavior phase. Its milestone order is superseded.
+The browser UI is canvas-first and text-led. Restrained icons, tokens, meters, cards, and diagrams are welcome when they improve comprehension without turning the project into a full graphical-world production.
 
 ## Current version
 
-Historical runtime baseline:
+At the 0.4 foundation exit gate:
 
 ```text
-App/package: 0.4.4
+Product:      0.4.900.0
+Package:      0.4.900
 Account Save: 4
-Game State: 3
-Data: 13
-Codename: Conservative Skill Gains
+Game State:   3
+Data:         13
+Codename:     Foundation Exit Gate
 ```
 
-`js/text/version.js` remains the current runtime/system manifest.
-
-A new four-part product protocol is planned:
+Product versions use:
 
 ```text
 MAJOR.PHASE.TRACK.REVISION
 ```
 
-Example:
+`package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
 
-```text
-0.5.300.4
-```
+`js/text/version.js` is the authoritative runtime/system version manifest.
 
-The product version will be decoupled from `package.json.version` because npm uses three-part SemVer. See `docs/VERSIONING_AND_RELEASE_ROADMAP.md` before changing version numbers.
+## Read these first
+
+1. `docs/DEVELOPMENT_DIRECTION.md` — design north star.
+2. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol and detailed route to 1.0.
+3. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
+4. `docs/ROADMAP.md` — current phase index.
+5. `docs/PHASE_0_4_EXIT_GATE.md` — evidence for closing the foundation phase.
+6. `docs/THREAD_HANDOFF.md` — current repo state and immediate sequence.
+7. `docs/ARCHITECTURE.md` — current runtime/module boundaries.
+
+`docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` is superseded historical planning from the earlier formula-first direction.
 
 ## Running
 
-Do not open `index.html` directly with a `file://` URL. ES module imports require serving the project over localhost.
+Serve the repo over localhost; do not open `index.html` directly with `file://` because browser ES-module imports require an HTTP origin.
 
-On Windows, from the repo root:
+Windows launchers:
 
 ```text
-Start Server.cmd  - starts the local server
-Play.cmd          - opens http://127.0.0.1:4173/
+Start Server.cmd
+Play.cmd
 ```
 
-The older `server.cmd` remains a compatibility wrapper; `server.ps1` is also available.
-
-Or run:
+Or:
 
 ```bash
 npm run serve
@@ -80,15 +72,9 @@ http://127.0.0.1:4173/
 
 No build step is required.
 
-Suggested local repo path for Codex desktop work:
+## Development gate
 
-```text
-C:\Codex\ffxi-text-rpg
-```
-
-## Development
-
-Node 20+ is recommended.
+Use Node 20+.
 
 ```bash
 npm test
@@ -96,13 +82,13 @@ npm run benchmark
 npm run check
 ```
 
+GitHub Actions runs the test and benchmark gate for pull requests and pushes to `main`.
+
 ## Product direction in brief
 
 ### Continuous character, not magical job switching
 
-Jobs remain recognizable disciplines/training traditions, but changing equipment should not magically transform the character.
-
-Long-term vocabulary:
+Long-term rule:
 
 ```text
 Jobs describe.
@@ -110,25 +96,29 @@ Capabilities enable.
 Loadouts constrain and enhance.
 ```
 
-A character may learn capabilities associated with multiple disciplines and use them when the real prerequisites are satisfied: proficiency, equipment, focus, ammunition, tools, reagents, resources, condition, preparation, and context.
+Jobs remain recognizable disciplines/training traditions, but changing equipment should not magically replace the character's identity or erase learned knowledge.
 
-Some prerequisites are hard requirements; some allow use at a penalty; some are enhancers. The current `mainJob`/support-job model is transitional and should be migrated incrementally rather than removed in a broad rewrite.
+Capabilities may cross traditional job boundaries when their real prerequisites are met: proficiency, equipment, focus, ammunition, tools, reagents, resources, condition, preparation, context, and formal advanced training where logically required.
 
-### Long fictional time, short real waiting
+The current `mainJob`/support-job/current-job code remains transitional compatibility scaffolding until the 0.6 migration. See `docs/TRANSITIONAL_ARCHITECTURE.md` before expanding job-gated behavior.
 
-Simulation time and wall-clock time should be separate.
+### Long fictional time without unnecessary real waiting
 
-The game may contain meaningful fictional grind, but the player should be able to pause, fast-forward, advance to completion, or advance until a meaningful interrupt. End-of-day review should make slow cumulative progress legible.
+Simulation time and wall-clock time are separate.
+
+The game may contain substantial fictional grind while still allowing pause, fast-forward, exact advancement, advance-to-completion, and advance-until-interrupt. End-of-day review should make cumulative progress legible.
+
+The existing `tickEngine.js` is only a wall-clock scheduler/dispatcher. It is not the canonical game calendar.
 
 ### Logical resource scaling
 
 Repeated identical construction should not become exponentially more expensive merely because another copy already exists.
 
-Advanced resource demand should come from larger structures, renovations, specialization, logistics, automation, capacity, transport, maintenance, and prestige/regional projects.
+Resource demand should grow through physical scale, larger structures, upgrades, renovation, specialization, logistics, automation, capacity, transport, maintenance, quality, and ambitious regional/prestige projects.
 
 ### Life and adventure are one loop
 
-The first representative target is **A Week Beyond the West Gate**: a multi-day slice combining origin, home foothold, livelihood, shop/economy, project progress, preparation, travel, danger/combat, recovery, end-of-day review, and a permanent accomplishment.
+The first representative target is **A Week Beyond the West Gate**: a multi-day slice combining origin, home foothold, livelihood, local economy, project progress, preparation, travel, danger/combat, recovery, end-of-day review, and a permanent accomplishment.
 
 ## Current architecture
 
@@ -139,10 +129,10 @@ index.html
           -> loadActiveCharacter() or createInitialState()
           -> createCommandRouter(state)
           -> createSlashCommandRouter(state)
-          -> canvas layout/input/render loop
+          -> canvas render/input loop
 ```
 
-Game logic should remain separate from canvas/DOM rendering.
+Game logic stays separate from canvas/DOM rendering.
 
 Primary areas:
 
@@ -161,28 +151,31 @@ tests/
 docs/
 ```
 
-## Current implemented foundation
+## 0.4 foundation delivered
 
-The repo already contains useful scaffolds for:
+The current foundation includes:
 
 - canvas-first text UI and command adapters;
 - account/character local saves;
-- character creation;
+- four-part product versioning separated from package SemVer;
+- ordered persistence migrations;
 - structured player/NPC/enemy entities;
-- places, San d'Oria coordinates, navigation, atlas discovery, travel, and aggro;
-- POIs, shops, guild hooks, and starter quest hooks;
+- places, San d'Oria coordinates, navigation, atlas, travel and aggro scaffolds;
+- POIs, shops, guild hooks and starter quest hooks;
 - inventory/storage/wardrobes;
-- item normalization, equipment, item inspection, buying, and selling;
-- character-owned skills and deterministic skill-gain hooks;
-- battle state, attacks, placeholder WS/cast actions, rewards, EXP, gil, and loot;
-- status effects and wall-clock tick scaffold;
-- validation, tests, benchmarks, database registry, and system version tracking.
+- item schema, equipment, inspection, buying and selling;
+- character-owned skills and deterministic representative skill-gain hooks;
+- battle/reward/EXP/loot/status/RNG scaffolds;
+- versioned `ActionResult` with travel-start pilot;
+- bounded semantic events with travel start/arrival pilot;
+- validation, tests, benchmarks, CI, database registry and system-version tracking;
+- explicit transitional architecture rules for world time and future capability work.
 
-The existing breadth is a foundation, not evidence that the product is close to complete.
+This breadth is foundation code, not evidence that the product is near content completion.
 
 ## Command compatibility
 
-The canvas input accepts bare gameplay commands and leading-slash account/menu or compatible FFXI-style commands.
+The canvas input accepts bare gameplay commands plus leading-slash account/menu or compatible FFXI-style commands.
 
 Representative gameplay commands:
 
@@ -198,7 +191,6 @@ travel West Ronfaure
 wait 60
 battle
 item Bronze Sword
-inspect item Bronze Sword
 equip Bronze Sword
 shop Ashene
 buy Bronze Sword
@@ -221,23 +213,7 @@ Representative account/menu commands:
 /reset
 ```
 
-The normal game should eventually be discoverable through UI/actions without requiring command memorization; typed commands remain a powerful adapter and debugging interface.
-
-## Current character creation
-
-The current transitional flow is:
-
-```text
-/newcharacter
-CharacterName
-sandoria
-hume
-male
-warrior
-yes
-```
-
-Future 0.6 work moves toward origins/starting circumstances and discipline/capability progression rather than a magical current-job identity.
+Typed commands remain a powerful adapter/debug interface. Normal play should increasingly expose discoverable UI actions so command memorization is not required.
 
 ## Save model
 
@@ -254,45 +230,46 @@ Encoding:
 base64-json-v1
 ```
 
-This is encoded storage, not strong encryption.
+This is encoding, not cryptographic protection.
 
-`reviveGameState()` currently restores object-reference compatibility after JSON load, including relinking `player.inventory` to the Inventory container.
+Ordered migrations handle registered persistent-version transitions. `reviveGameState()` remains responsible for post-JSON reference repair such as relinking `player.inventory` to the Inventory container.
 
-Ordered save migrations are a required 0.4 closeout step before large amounts of new persistent simulation state are added.
+## New integration seams
+
+### ActionResult
+
+`js/text/systems/actionResult.js` separates semantic action outcome/code/data from display prose. Non-enumerable `.message` / `.reason` aliases exist only for transitional command compatibility.
+
+### Semantic events
+
+`js/text/systems/semanticEventEngine.js` provides bounded observational events with stable sequential IDs/types. Events are not event sourcing and are not authoritative state history.
+
+Travel currently emits:
+
+```text
+travel.started
+travel.arrived
+```
+
+Future objectives, achievements, day summaries, projects, and relationship reactions should consume structured event data rather than parse command-log prose.
 
 ## Formula policy
 
-Current formulas are conservative scaffolds.
-
-Formula confidence should be explicit:
+Formula confidence must remain explicit:
 
 - exact / sourced;
 - researched approximation;
 - intentional simplification;
 - placeholder.
 
-Formula refinement matters, but it no longer leads the product roadmap. Improve formulas when they materially improve a meaningful gameplay loop.
+Formula refinement matters, but it does not lead the roadmap. Improve formulas when they materially improve a meaningful player-facing loop.
 
-## Rebuild rules
+## Immediate next implementation target
 
-- Keep the active runtime text-first.
-- Keep game logic separate from rendering.
-- Prefer small modules over giant files.
-- Keep stable IDs and data-driven content where practical.
-- Preserve command compatibility while letting UI actions dispatch the same gameplay semantics.
-- Do not add full event sourcing merely to support lightweight semantic events.
-- Do not store new saves as raw plain JSON.
-- Add explicit migrations when persistent schema changes.
-- Do not claim exact FFXI behavior without source/confidence notes.
-- Add tests/version/docs for major runtime changes.
-- Pre-1.0 backwards compatibility is not automatic; migration/reset decisions must be explicit.
+After the 0.4.900 integration gate passes and merges:
 
-## Current next implementation target
+```text
+0.5.100 — Deterministic world clock
+```
 
-After the direction/version planning branch is reviewed and merged, the next runtime target is `0.4.200`:
-
-1. introduce the authoritative four-part product-version field;
-2. decouple it from private npm package SemVer;
-3. update version display/tests/docs;
-4. proceed to ordered persistence migrations (`0.4.300`);
-5. then add structured action/event seams before beginning deterministic world time in 0.5.
+That pass should add canonical simulated time, exact deterministic advancement, derived day/time inspection, rollover tests, and **no dependency on `Date.now()` for canonical simulation state**.
