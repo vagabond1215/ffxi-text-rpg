@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.6.200.2';
-export const PACKAGE_VERSION = '0.6.200';
+export const PRODUCT_VERSION = '0.6.250.1';
+export const PACKAGE_VERSION = '0.6.250';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 20,
     benchmark: 1,
-    codename: 'Character Capabilities',
+    codename: 'Player Interface Architecture',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.200.2',
+    versionManifest: '0.6.250.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -43,6 +43,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationSubstrateGate: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
+    domUi: '0.1.0',
+    gameViewModels: '0.1.0',
     canvasUi: '0.8.0',
     uiIntents: '0.2.0',
     slashCommands: '0.4.1',
