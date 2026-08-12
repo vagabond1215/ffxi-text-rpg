@@ -1,227 +1,222 @@
 # Roadmap
 
-This roadmap turns the text-only reset into a stable expandable RPG foundation. Backwards compatibility is intentionally out of scope until explicitly restored.
+This roadmap is the current implementation summary and release-phase index for the text-first fantasy life RPG.
 
-## Version tracks
+Authoritative companion documents:
 
-| Version | Theme | Gate |
+- `docs/DEVELOPMENT_DIRECTION.md` — design north star and non-negotiable product direction.
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — detailed four-part version protocol, sub-milestones, exit gates, and path to 1.0.
+- `docs/ARCHITECTURE.md` — current runtime/module boundaries.
+- `docs/THREAD_HANDOFF.md` — current implementation state for a new development thread.
+
+The older `docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` remains useful as historical planning context for the formula/item-behavior era, but its recommended milestone order is superseded by this roadmap and the two authoritative direction documents above.
+
+## Current baseline
+
+Historical product version:
+
+```text
+0.4.4
+```
+
+Current baseline remains a rough pre-alpha foundation rather than a nearly half-complete product.
+
+Implemented foundations include:
+
+- canvas-first text UI and command compatibility;
+- local account/character saves;
+- character creation;
+- structured player/NPC/enemy entities;
+- San d'Oria coordinate navigation and atlas discovery;
+- world places, travel, aggro, POIs, shops, guild hooks, and starter quest hooks;
+- inventory/storage/wardrobes;
+- item schema, inspection, equipment, buying, and selling;
+- character-owned skills and deterministic skill-gain hooks;
+- combat/reward/EXP/loot scaffolds;
+- status and live-tick scaffolds;
+- validation, tests, benchmarks, version/system manifests, and documentation.
+
+Important transitional assumptions:
+
+- the current wall-clock tick engine is not the final world-time model;
+- `mainJob`/support-job/current-job behavior is not the final capability model;
+- current formulas are conservative scaffolds, not the main product roadmap;
+- current broad FFXI data/system coverage is less important than proving a cohesive life/adventure loop.
+
+## Product direction summary
+
+The intended game is a long-form, text-first fantasy life RPG built around:
+
+```text
+effort -> mastery -> efficiency -> capability -> larger ambition
+```
+
+The character should remain one continuous person. Jobs become recognizable disciplines/classifications rather than magical transformations. Learned capabilities may cross discipline boundaries when the character satisfies their proficiency, equipment, preparation, resource, and context requirements.
+
+Simulation time and wall-clock time must be separable so fictional grind can retain weight without forcing unnecessary real-world waiting.
+
+Construction/resource progression should be driven by physical scale, upgrades, specialization, logistics, and infrastructure rather than arbitrary exponential costs for repeated identical work.
+
+The game remains text-first; limited icons, tokens, meters, cards, and diagrams are encouraged where they improve comprehension without creating a full graphical-world production burden.
+
+See `docs/DEVELOPMENT_DIRECTION.md` for the full policy.
+
+## Release phases
+
+| Product phase | Theme | Player-facing gate |
 | --- | --- | --- |
-| 0.2.x | Foundation pipeline, version tracking, benchmarks, registries | Tests, benchmark harness, docs |
-| 0.3.x | Places, zone connections, travel restrictions, tick-based travel, POIs, starter services | Zone graph tests, POI tests, travel benchmark |
-| 0.4.x | Slash UI, account saves, character creation, inventory, equipment, starter item modifiers | Save/schema tests, UI command tests, equipment stat tests |
-| 0.6.0 | Canvas-first text UI shell | Canvas action/layout/input tests |
-| 0.5.x | Combat rewards, leveling, enemies, loot, item schema, magic basics, enemy AI | Battle/progression benchmarks and deterministic combat tests |
-| 0.6.x | Quests, trusts, enmity, party AI, progression flags | Quest and trust AI tests |
-| 0.7.x | Achievements, missions, skillchains, magic bursts, reputation | Formula confidence documentation |
-| 0.8.x | Crafting, mounts, advanced travel/economy | Crafting and travel benchmark coverage |
+| `0.4` | Foundation closeout and direction lock | Architecture is ready for simulation/capability work without another rewrite. |
+| `0.5` | World time, tasks, projects | Multi-hour/day fictional work can be advanced, interrupted, summarized, and completed without real-time waiting. |
+| `0.6` | Capabilities, disciplines, origins, livelihood | One continuous character can mix learned disciplines logically through loadout/preparation and participate in a livelihood. |
+| `0.7` | First complete game loop | A new player can live through a representative first week combining work, preparation, travel, danger, recovery, and permanent progress. |
+| `0.8` | Life/infrastructure expansion | Buildings, tools, farming/gathering, crafting, taming, relationships, and logistics materially transform earlier work. |
+| `0.9` | Adventure depth and release hardening | Combat/magic/content/balance/UI/persistence are content-complete and release-candidate quality. |
+| `1.0` | Live Foundation | Core product promise is coherent, stable, migratable, and playable as a persistent long-form RPG. |
 
-## Phase 0: Reset shell
+Detailed sub-milestones (`0.x.100`, `0.x.200`, etc.) are defined in `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
 
-Status: complete enough for current development.
+## Version protocol summary
 
-- [x] Strip active graphical UI entry path.
-- [x] Add text command shell.
-- [x] Add slash-command UI wrapper.
-- [x] Add canvas-first UI host with command-backed buttons and canvas command input.
-- [x] Add local account/character save adapter.
-- [x] Add encoded localStorage payloads.
-- [x] Add README and changelog.
-- [x] Add basic dev package metadata and tests.
+Future product versions use:
 
-## Phase 1: Entity foundation
+```text
+MAJOR.PHASE.TRACK.REVISION
+```
 
-Status: mostly complete.
+Example:
 
-- [x] Define player, NPC, and enemy entities.
-- [x] Define identity, job, equipment, wallet, progression, status, and combat containers.
-- [x] Add seed NPCs and enemies.
-- [x] Add conservative stat engine.
-- [x] Add status engine.
-- [x] Add simple battle-state engine.
-- [x] Add schema validation helpers.
-- [x] Add command parser with arguments instead of whole-command matching.
-- [x] Add version manifest and system version map.
-- [x] Add database registry for all major planned systems.
-- [x] Add live tick engine scaffold.
-- [x] Add baseline benchmark harness.
-- [x] Add baseline pipeline, system catalog, and research reference docs.
-- [ ] Add explicit save migration/reset tooling beyond the current legacy raw-save migration.
+```text
+0.5.300.4
+```
 
-## Phase 2: Character creation and inspection
+- `MAJOR`: product stability generation (`0` pre-live, `1` live).
+- `PHASE`: major release milestone.
+- `TRACK`: three-digit scoped sub-milestone, normally in increments of 100.
+- `REVISION`: simple integration counter within the track.
 
-Status: mostly complete for a starter shell.
+The historical `0.4.4` release is not retroactively renumbered.
 
-- [x] Character creation flow: name, nation, race, sex, starting job, confirmation.
-- [x] New Character entry from main menu via `/newcharacter`.
-- [x] Job list and race list commands.
-- [x] Full character sheet output.
-- [x] Equipment sheet output.
-- [x] Account character listing and load commands.
-- [x] UI character-slot cards/buttons.
-- [ ] Support job unlock placeholder.
+Because npm package versions are three-part SemVer, the product version must be decoupled from `package.json.version` when the new protocol is implemented. Do not write a four-numeric-segment product version directly into `package.json.version`.
 
-## Phase 3: World graph, zones, and travel
+## 0.4 current work
 
-Status: starter implementation complete.
+### Complete enough
 
-- [x] Places database: starter cities, starter wilderness, starter dungeon hooks.
-- [x] Zone schema with region, type, danger level, restrictions, services, map unlocks.
-- [x] Zone connection schema with directionality, travel time, mode, and restrictions.
-- [x] Travel restrictions scaffold: level, key item, quest flag, nation/rank, mount permission, combat state, content lock.
-- [x] Travel command.
-- [x] Tick-based travel progress via manual wait/tick scaffold.
-- [x] Zone inspection command.
-- [x] Travel benchmark for zone graph lookup.
-- [x] Coordinate-grid atlas discovery where unvisited grids stay unknown.
-- [x] San d’Oria city alphanumeric coordinate topology with explicit navigable coordinates and exits.
-- [x] Direction-aware coordinate navigation engine with movement timing metadata.
-- [x] Canvas 3x3 compass rose with direct movement intents and Auto Run state.
-- [x] Foot-travel aggro scaffold by grid spawn rule, spawn count, and aggro type.
-- [ ] Expand non-San d’Oria city POIs and exits with higher-fidelity coordinates.
-- [ ] Add interior/Mog House places instead of temporary Mog House access flag.
+- [x] Text/canvas shell.
+- [x] Command adapters.
+- [x] Current account/save foundation.
+- [x] Core entity/state/data separation.
+- [x] World/travel/atlas scaffolds.
+- [x] Inventory/equipment/item/shop foundations.
+- [x] Combat/reward/progression scaffolds.
+- [x] Validation/test/benchmark infrastructure.
+- [x] Development direction documented on planning branch.
+- [x] Four-part version protocol and 1.0 milestone plan documented on planning branch.
 
-## Phase 4: Inventory, items, key items, and equipment
+### Remaining 0.4 closeout
 
-Status: starter framework implemented.
+- [ ] Implement product/package version separation.
+- [ ] Add ordered persistence migrations.
+- [ ] Introduce a small structured action-result contract.
+- [ ] Add lightweight semantic events without full event sourcing.
+- [ ] Stabilize existing systems against the new contracts.
 
-- [x] Inventory container schema.
-- [x] Main Inventory container.
-- [x] Mog Safe, Mog Safe 2, Storage, Mog Locker, Satchel, Sack, Case, Wardrobes 1-8.
-- [x] Storage capacity tied to Mog House furniture.
-- [x] Mog House-only access rules for Storage/Mog Safe.
-- [x] Anywhere/locked rules for portable containers.
-- [x] Equipment-only Wardrobe rules.
-- [x] Container transfer command.
-- [x] Starter equipment catalog.
-- [x] Stat aggregation from equipped gear.
-- [x] Equip/unequip commands.
-- [x] Shop buying into Inventory.
-- [x] New full item schema foundation.
-- [x] Inventory stack handling.
-- [ ] Key item schema for unlocks and permissions.
-- [x] Equipment validation by job/race/level.
-- [x] Item flag/effect schema foundation: rare, exclusive, key item, no sell, latent, enchantment, charges.
-- [x] Item command inspection.
-- [x] Runtime behavior metadata inspection for latent effects, enchantments, charges, ranged/ammo, and restricted selling.
-- [x] Conservative selling and vendor restrictions.
+## 0.5 focus — simulation substrate
 
-## Phase 5: Leveling, skills, and progression
+- [ ] Deterministic world clock independent of `Date.now()`.
+- [ ] Pause and speed/fast-forward semantics.
+- [ ] Canonical timed task model.
+- [ ] Meaningful interrupt model.
+- [ ] Day boundary and end-of-day auto-pause/review.
+- [ ] Persistent material/labor project model.
+- [ ] Integrate travel plus one work activity with world time.
 
-Target: 0.5.x.
+## 0.6 focus — continuous character capability
 
-- [x] EXP tables and level-up rules.
-- [x] Reward EXP routed through progression engine.
-- [x] HP/MP/resource refresh after level-up.
-- [x] EXP-to-next tracking.
-- [x] Level-cap behavior.
-- [x] Job-level state for all unlocked jobs with per-job EXP.
-- [ ] Level cap / limit break placeholders beyond simple cap enforcement.
-- [x] Combat and magic skill cap data-helper foundation.
-- [x] Character-owned current skill state and inspection commands.
-- [x] Validation for flat `player.progression.skills[skillId]` values.
-- [x] Isolated deterministic skill-gain hooks for basic attacks, placeholder weapon skills, and placeholder spell casts.
-- [ ] Wire combat and magic skill caps into formulas.
-- [ ] Progression flags for maps, teleport points, mounts, trusts, quests, missions, achievements.
+- [ ] Learned capability/proficiency model.
+- [ ] Jobs represented as disciplines/classifications rather than magical active states.
+- [ ] Hard/soft/enhancing equipment and preparation prerequisites.
+- [ ] Cross-discipline capability use where prerequisites are met.
+- [ ] Origin-based starting circumstances.
+- [ ] First complete livelihood loop.
+- [ ] Loadout UX showing enabled/penalized/blocked capabilities.
 
-## Phase 6: Combat, enemies, loot, and drops
+## 0.7 focus — first complete representative game
 
-Target: 0.5.x.
+Working slice: **A Week Beyond the West Gate**.
 
-- [x] Encounter command.
-- [x] Basic target attack flow.
-- [x] Placeholder weapon skill and cast commands.
-- [x] Deterministic combat RNG injection.
-- [x] EXP rewards.
-- [x] Gil rewards.
-- [x] Loot table schema.
-- [x] Drop roll engine.
-- [x] Inventory insertion through existing container rules.
-- [x] Duplicate reward payout guard.
-- [ ] Target selection improvements.
-- [ ] Enemy AI turn.
-- [ ] Battle tick integration.
-- [ ] Death/KO flow.
-- [ ] Simple rest/recovery flow.
+- [ ] Lightweight objective/quest state foundation.
+- [ ] Real starting foothold/home-base context.
+- [ ] One permanent project.
+- [ ] One livelihood/economy loop.
+- [ ] One meaningful West Gate expedition route.
+- [ ] Combat/KO/recovery adequate for the slice.
+- [ ] Multiple simulated days and end-of-day summaries.
+- [ ] Permanent end-of-week accomplishment/unlock.
+- [ ] At least two meaningfully different origin openings.
+- [ ] UI/action discoverability without command memorization.
 
-## Phase 7: Magic, abilities, and status systems
+## 0.8 focus — systemic life expansion
 
-Target: 0.5.x to 0.7.x.
+- [ ] Construction instances, renovations, capacity, and efficiency upgrades.
+- [ ] Gathering/farming depth.
+- [ ] Crafting/tools/facilities.
+- [ ] Taming/husbandry with practical value.
+- [ ] Persistent relationships and local/guild reputation.
+- [ ] Logistics and labor-saving infrastructure.
+- [ ] Additional disciplines/livelihood interactions.
+- [ ] Economy/resource sink balancing.
 
-- [x] Status effect lifecycle scaffold.
-- [x] Placeholder cast command.
-- [x] Recovered job ability and weapon skill display hooks.
-- [ ] Magic database.
-- [ ] Spell schema: skill, element, MP cost, cast time, recast, target, effect.
-- [ ] Cast-time tick integration.
-- [ ] Recast timers.
-- [ ] Interruption rules.
-- [ ] Job traits schema.
-- [ ] Job abilities schema.
-- [ ] Weapon skills as real combat actions.
-- [ ] TP return model.
-- [ ] Skillchains.
-- [ ] Magic bursts.
-- [ ] Food/song/roll/samba stacking rules.
+## 0.9 focus — content, adventure, and release candidate
 
-## Phase 8: Quests, achievements, missions, and reputation
+- [ ] Deeper enemy/combat behavior.
+- [ ] Structured magic and advanced capabilities consistent with the loadout model.
+- [ ] Second dense region proving content scalability.
+- [ ] Long-form progression/economy balance.
+- [ ] UI/accessibility/readability hardening.
+- [ ] Save migration/compatibility hardening.
+- [ ] Deterministic simulation/content validation/performance gates.
+- [ ] Content-complete beta.
+- [ ] Release-candidate feature freeze.
 
-Target: 0.6.x to 0.7.x.
+## 1.0 minimum promise
 
-- [x] Starter quest/mission POI hooks.
-- [ ] Quest database.
-- [ ] Quest state machine: unavailable, available, active, readyToTurnIn, completed, repeatableCooldown.
-- [ ] Quest objectives: talk, kill, collect, travel, craft, unlock, inspect.
-- [ ] Quest rewards: EXP, gil, items, key items, titles, fame, unlocks.
-- [ ] Achievements database.
-- [ ] Achievement triggers.
-- [ ] Nation mission/rank progression.
-- [ ] Fame/reputation containers.
+1.0 should not be declared merely because a checklist is large. It requires a coherent persistent game.
 
-## Phase 9: Trusts and AI companions
+At minimum, a player must be able to:
 
-Target: 0.6.x.
+- begin from meaningful starting circumstances;
+- develop one persistent character across disciplines;
+- alter practical capability through logical equipment/preparation rather than magical job changes;
+- work, learn, build, travel, prepare, fight, recover, and improve;
+- use pause/fast-forward while preserving fictional time costs and meaningful interrupts;
+- pursue long-duration projects with logical material/labor costs;
+- improve infrastructure so mastered chores consume less attention;
+- build relationships/reputation that affect available opportunities;
+- experience representative taming/creature systems if retained in the 1.0 scope;
+- play through at least two dense regional content spaces;
+- save/load under an explicit supported migration contract;
+- play normal flows without command-line expertise;
+- understand game state through text-first presentation with limited visual polish.
 
-- [x] Trust POI action placeholder.
-- [ ] Trust database.
-- [ ] Trust unlock key items/flags.
-- [ ] Party slot rules.
-- [ ] Trust summon/dismiss commands.
-- [ ] Trust role profiles: tank, healer, melee, ranged, caster, support.
-- [ ] Trust AI tick integration.
-- [ ] Enmity model.
-- [ ] Trust spell/ability access.
+## Formula policy
 
-## Phase 10: Crafting, mounts, and advanced travel
+Formula work remains important but no longer leads the product roadmap.
 
-Target: 0.8.x.
+Use formula confidence categories:
 
-- [x] Starter guild service hooks and recipe previews.
-- [ ] Crafting recipe database.
-- [ ] Crystals and ingredient rules.
-- [ ] Crafting skill checks.
-- [ ] HQ/failure model.
-- [ ] Crafting guild/support hooks.
-- [ ] Mount database.
-- [ ] Mount unlock key items.
-- [ ] Mount zone restrictions.
-- [ ] Mount travel speed modifiers.
-- [ ] Mount interaction with encounters.
+- exact / sourced;
+- researched approximation;
+- intentional simplification;
+- placeholder.
 
-## Phase 11: Formula refinement
-
-Target: ongoing.
-
-- [ ] Replace placeholder stat formulas with sourced formulas where useful.
-- [ ] Separate exact, approximate, and intentionally simplified mechanics.
-- [ ] Add formula confidence annotations.
-- [ ] Add balancing tests and golden-character snapshots.
-- [ ] Expand benchmarks as systems become runtime-heavy.
+Refine formulas when they improve a player-facing loop that already has a reason to exist. Do not delay world time, capabilities, livelihoods, objectives, projects, or the first complete slice merely to chase retail-exact combat math.
 
 ## Current recommended next pass
 
-The next best implementation pass is conservative formula and item behavior application planning:
+After this planning branch is reviewed/merged, the next runtime pass should target `0.4.200`:
 
-1. Keep latent effects, enchantments, charges, and ranged/ammo records metadata-only until action/combat semantics are explicit.
-2. Wire skill caps into combat and magic formulas only after current skill state, skill-gain flow, and confidence labels are explicit.
-3. Keep skill-gain pacing deterministic until a tested RNG policy is introduced.
-4. Add validation/tests before expanding loot tables or applying item behavior in combat.
+1. introduce an authoritative four-part product version;
+2. decouple it from the private npm package SemVer;
+3. update version display/tests/docs;
+4. then proceed to ordered persistence migrations before adding new persistent simulation state.
