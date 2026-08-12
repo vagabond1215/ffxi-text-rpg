@@ -42,13 +42,11 @@ This is an original text-first persistent fantasy life RPG about one continuous 
 
 Earlier FFXI-derived material is **legacy research/reference/migration material**, not canonical world content.
 
-Core progression law:
+Core laws:
 
 ```text
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
-
-Core capability law:
 
 ```text
 Disciplines describe.
@@ -59,178 +57,184 @@ Loadouts and preparation constrain and enhance.
 ## Current baseline
 
 ```text
-Product:      0.5.550.2
-Package:      0.5.550
+Product:      0.5.600.1
+Package:      0.5.600
 Account Save: 4
 Game State:   5
-Data:         15
+Data:         16
 Benchmark:    1
-Codename:     Original World Identity
+Codename:     Resource Provenance
 ```
 
 `js/text/version.js` is authoritative.
 
-## 0.5.550 — exit status
+## 0.5.600 — exit status
 
-The original-world identity and canonical nomenclature migration is **complete enough to exit the track**.
+The resource-provenance and persistent-project substrate is **complete enough to exit the track**.
 
-Implemented on `main`:
+### Persistent projects
 
-- canonical powers: Thornwall, Brasshaven, Mistmere;
-- canonical regions/places/maps including Elderwood, Redstone Reach, and Starfen;
-- canonical ancestries: Human, Lethari, Miri, Veyra, Korren;
-- original transitional discipline IDs/names and canonical starting disciplines;
-- bounded legacy-to-canonical identity adapters;
-- ordered Game State v4 -> v5 identity migration;
-- Data contract advanced to v15;
-- canonical character-creation defaults and fast-create vocabulary;
-- canonical normal help vocabulary (`powers`, `ancestries`, `disciplines`, `home`, `companion`, `places`, `exits`);
-- originalized starter NPC/service/world-facing names;
-- canonical POI companion and route-exit types/actions;
-- canonical home-storage player-facing terminology;
-- canonical travel fallback/arrival terminology;
-- canonical database/system diagnostic vocabulary;
-- historical FFXI-derived modules clearly isolated as legacy/reference data;
-- stale tests migrated to canonical IDs/names rather than weakening runtime canonicalization.
+`js/text/systems/projectEngine.js` now provides:
+
+- versioned project registry with stable `project-000001`-style IDs;
+- planned/active/completed/cancelled states;
+- material requirements and real inventory contribution/removal;
+- canonical `project.labor` timed tasks;
+- deterministic labor progress/completion boundaries;
+- cancellation;
+- project progress inspection;
+- project-state validation;
+- structured `project.created`, `project.material-contributed`, `project.started`, `project.completed`, and `project.cancelled` events.
+
+New games initialize the registry. Older Game State v5 records lazily acquire it when the project system is first used, so no Game State version bump was required.
+
+### Provenance and sinks
+
+`js/text/data/resourceProvenance.js` now defines normalized/validated acquisition categories for:
+
+- carried inventory;
+- creature/body resources;
+- flora;
+- minerals;
+- fishing;
+- salvage;
+- crafting;
+- commerce;
+- contracts;
+- social rewards;
+- explicitly exceptional magic.
+
+It also defines acquisition/recovery actions including search/skin/butcher/pluck/extract/salvage/gather/forage/log/mine/fish/trap/process/craft/purchase/barter/earn/receive/conjure and item sink/use categories spanning consumption, equipment, tools, crafting/processing, construction, repair, trade, contracts/quests, salvage, decoration/collection, and key items.
+
+`js/text/data/itemSchema.js` advanced to schema v3 and normalizes `provenance` and `sinks` while preserving the older `source` field as a bounded compatibility note. Data contract advanced from 15 to 16.
+
+### Post-combat resource opportunities
+
+`js/text/systems/resourceOpportunityEngine.js` now provides a persistent resource-opportunity registry with stable `resource-*` IDs.
+
+Defeated enemies with transitional output tables create one of:
+
+- `body` opportunities for creatures;
+- `carriedInventory` opportunities for raider/humanoid-style enemies;
+- `salvage` opportunities for constructs.
+
+Recovery actions currently support:
+
+- `search`;
+- `skin`;
+- `butcher`;
+- `pluck`;
+- `extract`;
+- `salvage`.
+
+Action definitions expose tool tags, proficiency IDs/minimums, source-condition minimums, and canonical fictional duration. Starting recovery creates a `resource.recovery` timed task.
+
+Yield rolls are fixed **when recovery begins** and stored on the persistent recovery record. Completion therefore does not reroll already-started work if reconciliation happens later or after persistence.
+
+Recovered materials are added through normal inventory/capacity rules and carry structured provenance identifying source enemy, place, recovery action, opportunity, and source condition.
+
+### Battle reward change
+
+`js/text/systems/rewardEngine.js` no longer rolls creature materials directly into inventory on victory.
+
+Current behavior:
+
+- EXP resolves immediately;
+- current `gil` scaffold resolves immediately;
+- physical candidate materials remain in the world as recoverable opportunities;
+- `battle.rewards.items` remains an empty compatibility field;
+- `battle.rewards.resourceOpportunities` records created opportunities.
+
+Existing `lootTables.js` is now transitional candidate-output data for the provenance system rather than a direct reward-confetti mechanism.
+
+### Version/system changes
+
+```text
+Product             0.5.550.2 -> 0.5.600.1
+Package             0.5.550   -> 0.5.600
+Account Save        4         unchanged
+Game State          5         unchanged
+Data                15        -> 16
+itemSchema          0.6.0     -> 0.7.0
+battleRewards       0.5.2     -> 0.6.0
+projects            new       0.1.0
+resourceProvenance  new       0.1.0
+resourceOpportunities new     0.1.0
+resourceRecovery    new       0.1.0
+```
+
+Database registry now lists `projects`, `resourceProvenance`, and `resourceOpportunities` as implemented substrate registries.
+
+### Tests added/updated
+
+- `tests/projectEngine.test.js`
+- `tests/resourceProvenance.test.js`
+- `tests/resourceOpportunityEngine.test.js`
+- `tests/rewardEngine.test.js`
+- `tests/pipeline.test.js`
+
+Coverage includes stable IDs, material contribution, timed completion, cancellation, provenance/sink normalization and validation, body/carried-resource opportunities, tool/condition/proficiency hooks, persisted recovery rolls, inventory-capacity failure, duplicate reward protection, and version/database contracts.
 
 ### CI checkpoint
 
-The runtime identity/nomenclature series reached a fully green GitHub Actions checkpoint at commit:
+The complete runtime/version series is represented by the history through:
 
 ```text
-96dcdd8efe3e404af68a15c126c2839934c55520
+43b6c54f29414795ea46a9d810778c714ed3c1dd
 ```
 
-At that checkpoint:
+At handoff preparation time, GitHub Actions for that commit had been started after prior provenance/resource commits had already reached green test/build checkpoints. **Inspect the newest `main` check runs before starting 0.5.650** and fix any real regression directly on `main`.
 
-- `test` — success;
-- benchmark step — success;
-- `build` — success;
-- Pages build/deploy reporting — success.
+Documentation closeout commits follow that runtime/version checkpoint.
 
-After that checkpoint, only version-manifest/test synchronization and documentation closeout commits were added. Inspect the newest `main` checks before starting the next runtime unit, and fix any real regression directly on `main` if necessary.
+## 0.5.600 bounded limitations
 
-## Deliberate bounded compatibility debt
+These are deliberate deferrals, not reasons to reopen the track immediately:
 
-Do not “clean up” these by inventing new canon casually:
-
-- **Currency:** keep `gil` unchanged until an original currency design is deliberately defined. Do not invent a replacement solely to erase the term.
-- **Save keys:** historical localStorage key names remain for compatibility.
-- **POI hook IDs:** some legacy-shaped POI stable IDs remain while shop/quest/guild dependencies still reference them; migrate these atomically later.
-- **Legacy adapters:** `legacyIdentity`, save migrations, bounded command aliases, and migration tests may contain historical IDs by design.
-- **Research modules:** `legacyRecoveredData`, `ffxi*` formula/reference modules, root historical `data/`, and historical planning/audit documents may retain FFXI terminology because they are explicitly non-canonical sources.
-
-The 0.5.550 exit rule is not “zero historical strings anywhere in the repository.” It is: **new canonical gameplay records and normal world-facing runtime state no longer depend on inherited FFXI proper nouns or stable IDs.**
-
-## Canonical world anchors
-
-- **Thornwall** — western crown realm/capital context;
-- **Elderwood** — surrounding western forest region;
-- **Brasshaven** — industrial/mercantile forge republic;
-- **Redstone Reach** — its mineral-rich hinterland;
-- **Mistmere** — scholastic canal city;
-- **Starfen** — surrounding wetland/grassland region;
-- **Waymeet** — future neutral central trade/transport hub.
-
-## Canonical ancestry mapping
-
-Historical input aliases map at bounded compatibility seams:
-
-- Hume -> Human
-- Elvaan -> Lethari
-- Tarutaru -> Miri
-- Mithra -> Veyra
-- Galka -> Korren
-
-New canonical runtime state emits only the original IDs.
-
-## Transitional discipline mapping
-
-Current player-facing discipline names include:
-
-- Warrior -> Vanguard
-- Monk -> Pugilist
-- White Mage -> Lifewarden
-- Black Mage -> Elementalist
-- Red Mage -> Spellblade
-- Thief -> Shadowhand
-- Paladin -> Oathguard
-- Dark Knight -> Duskblade
-- Beastmaster -> Wildbinder
-- Bard -> Cantor
-- Ranger -> Wayfinder
-- Samurai -> Blade Adept
-- Ninja -> Veilrunner
-- Dragoon -> Sky Lancer
-- Summoner -> Eidolist
-- Blue Mage -> Echo Sage
-- Corsair -> Free Captain
-- Puppetmaster -> Artificer
-- Dancer -> Rhythmblade
-- Scholar -> Savant
-- Geomancer -> Leykeeper
-- Rune Fencer -> Wardsword
-
-These remain transitional training disciplines, not permanent magical class locks. Long-term capability use belongs to the continuous character and is constrained by real preparation/equipment/resources/context.
+- broad player-facing UI/command affordances for project/resource actions are not yet exposed;
+- current starter recovered materials carry a minimal representative `trade` sink rather than a mature economy graph;
+- full item source/sink cross-reference enforcement at hundreds/thousands-of-record scale belongs to `0.5.800`;
+- environmental gathering nodes, species populations, depletion/regeneration, and respawn belong to `0.5.650`;
+- processing/crafting chains remain later work;
+- `gil` remains unchanged pending deliberate currency design;
+- legacy-shaped POI hook IDs and historical localStorage keys remain bounded compatibility debt.
 
 ## Next target
 
 ```text
-0.5.600 — Resource provenance and persistent projects
+0.5.650 — Ecology, gathering, and spawn substrate
 ```
 
-**Do not restart identity migration work.** Inspect current CI, then begin the first bounded 0.5.600 unit.
+**Do not restart identity migration or reopen 0.5.600 broadly.** First verify current CI, then start one bounded ecology/gathering unit.
 
 Recommended first unit:
 
-1. Define a persistent project schema/state with stable project IDs.
-2. Track material requirements/contributions, labor/time requirements, status/progress, and deterministic completion boundaries.
-3. Emit structured project semantic events rather than deriving state from prose.
-4. Define provenance/source metadata that can represent carried goods, creature bodies, flora, minerals, fishing, salvage, crafting, commerce, contracts, and deliberate exceptional magic.
-5. Introduce post-combat body/resource opportunities so creature rewards can transition away from automatic finished-item drops.
-6. Establish search/skin/butcher/pluck/extract/salvage action contracts with future hooks for tools, time, condition, and proficiency.
-7. Add item source/sink metadata and cross-reference validation hooks at representative scale.
+1. Define canonical species/family records separate from encounter instances.
+2. Define habitat/population records with stable IDs and references to places/biomes.
+3. Add density/rarity, aggression, senses, linking/social behavior, and environmental/time hooks without prematurely hard-coding every ecology rule.
+4. Define flora/mineral/fishing/gathering-source records that reference canonical item outputs and provenance actions.
+5. Add persistent or derivable depletion/regeneration/respawn state based on canonical world time.
+6. Add rare/named population hooks without arbitrary random appearance semantics.
+7. Add representative cross-reference validation across species, populations, places, resource sources, and item outputs.
+8. Test against several distinct families/source types, not one toy record.
 
-Keep this first unit substrate-focused. Do not explode into high-volume item/monster/recipe generation before the schema, provenance, and validation seams are coherent.
+Do **not** begin hundreds-scale creature/flora generation yet. Prove the substrate and cross-reference validation first.
 
-## Resource/economy design law
+## Resource/economy law
 
-Rewards should have physical, economic, or social provenance.
+Rewards should have physical, economic, or social provenance. Combat can create access to bodies, carried goods, or salvage; it should not automatically manufacture finished crafting materials in inventory.
 
-A defeated animal normally creates access to a body; it does not automatically create a finished pelt in inventory.
-
-Desired acquisition paths include:
-
-- search carried belongings;
-- skin/butcher/pluck/extract;
-- gather/forage/log/mine/dig/fish/trap;
-- dismantle/salvage;
-- craft/process/cook;
-- buy/barter/earn wages;
-- quest/contract/reputation/social rewards;
-- deliberate exceptional magic when the fiction explicitly supports it.
-
-Item chains should create source/sink graphs such as:
+Desired material flow remains:
 
 ```text
-creature/body -> raw materials -> processing -> ingredients/components -> recipes -> usable goods -> consumption/wear/repair/salvage
+world source
+  -> raw material
+  -> processing
+  -> component/ingredient
+  -> finished good
+  -> use/wear/consumption
+  -> repair/recycling/salvage or replacement
 ```
-
-## World/navigation law
-
-A home base is useful but is not the whole game. The target supports multiple cities, smaller settlements, roads, wilderness, dungeons, caravans, ferries, mounts/pack logistics, and regional trade.
-
-Internal place/map/content partitions remain useful for simulation and data management. Avoid turning those boundaries into mandatory gamey player-facing loading transitions unless a real physical/fantastical boundary requires it.
-
-Maps represent knowledge. Exploration, NPC directions, purchases, landmarks, and discovered routes should matter.
-
-## Data-scale law
-
-Do not confuse a schema with a complete system.
-
-The intended product eventually contains hundreds/thousands of cross-linked places, NPCs, creatures, resources, items, recipes, techniques/spells, quests, relationships, shops/services, and transport routes.
-
-Mechanics and representative content must grow together. Regional content packs and validation are required before large-scale generation.
 
 ## Current transitional technical debt
 
@@ -239,8 +243,8 @@ Treat these as temporary and replace incrementally behind migrations/tested inte
 - `mainJobId` as a broad capability gate;
 - sparse placeholder skill-rank math;
 - placeholder spell/weapon-skill combat actions;
-- automatic generic battle loot where provenance/body processing should replace it;
-- tiny starter equipment/shop/enemy catalogs;
+- tiny starter equipment/shop/enemy/resource catalogs;
+- minimal current sink metadata on recovered starter materials;
 - legacy `data/` and `ffxi*` research tables;
 - historical localStorage key names;
 - legacy-shaped POI hook IDs.
