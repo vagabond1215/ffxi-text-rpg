@@ -1,13 +1,13 @@
 import { ATTRIBUTE_KEYS, DERIVED_STAT_KEYS, ELEMENT_KEYS, SKILL_KEYS, createZeroBlock } from '../data/systemConstants.js';
-import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
-import { calculateFfxiBaseProfile, canUseFfxiStatFormula } from './ffxiStatFormula.js';
-import { calculateInferredJobResources, canUseInferredJobResourceFormula } from './inferredJobResourceFormula.js';
+import {
+    ensureCharacterStatState,
+    getActiveDisciplineStatContext,
+    getCharacterStatMetadata,
+} from './characterStatEngine.js';
 
 const BASE_ATTRIBUTE_VALUE = 6;
 const BASE_HP = 24;
-const BASE_MP = 0;
-const CASTER_DISCIPLINES = Object.freeze(['lifewarden', 'elementalist', 'spellblade', 'eidolist', 'echoSage', 'savant', 'leykeeper']);
 
 export function calculateCombatProfile(entity) {
     const level = getEntityLevel(entity);
@@ -17,47 +17,53 @@ export function calculateCombatProfile(entity) {
     const statusModifiers = collectStatusModifiers(entity.statuses);
     const resources = calculateResources(entity, level, attributes, equipmentModifiers, statusModifiers);
     const derived = calculateDerivedStats(entity, level, attributes, skills, equipmentModifiers, statusModifiers);
-    return { level, attributes, resources, derived, skills, resistances: calculateResistances(equipmentModifiers, statusModifiers) };
+    return {
+        level,
+        attributes,
+        resources,
+        derived,
+        skills,
+        resistances: calculateResistances(equipmentModifiers, statusModifiers),
+        metadata: entity.type === 'player'
+            ? getCharacterStatMetadata(entity)
+            : { ownership: 'entity', baseModelId: 'generic-enemy-combat-v1', baseConfidence: 'provisional' },
+    };
 }
 
 export function calculateAttributes(entity, level = getEntityLevel(entity)) {
-    if (canUseFfxiStatFormula(entity)) {
-        return addBlocks(calculateFfxiBaseProfile(entity).attributes, collectEquipmentModifiers(entity.equipment).attributes, collectStatusModifiers(entity.statuses).attributes);
+    if (entity.type === 'player') {
+        const statState = ensureCharacterStatState(entity);
+        const discipline = getActiveDisciplineStatContext(entity);
+        return addBlocks(
+            statState.base.attributes,
+            discipline.attributes,
+            collectEquipmentModifiers(entity.equipment).attributes,
+            collectStatusModifiers(entity.statuses).attributes,
+        );
     }
-    const race = entity.type === 'player' ? getRace(entity.identity?.raceId) : null;
-    const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
+
     const base = createZeroBlock(ATTRIBUTE_KEYS);
     for (const key of ATTRIBUTE_KEYS) {
-        base[key] = BASE_ATTRIBUTE_VALUE + Math.floor(level * 0.85) + (race?.attributeBias?.[key] ?? 0) + (mainJob?.primaryAttributes?.includes(key) ? 2 : 0) + (entity.baseAttributes?.[key] ?? 0);
+        base[key] = BASE_ATTRIBUTE_VALUE + Math.floor(level * 0.85) + (entity.baseAttributes?.[key] ?? 0);
     }
     return addBlocks(base, collectEquipmentModifiers(entity.equipment).attributes, collectStatusModifiers(entity.statuses).attributes);
 }
 
 export function calculateResources(entity, level = getEntityLevel(entity), attributes = calculateAttributes(entity, level), equipment = collectEquipmentModifiers(entity.equipment), statuses = collectStatusModifiers(entity.statuses)) {
-    if (canUseFfxiStatFormula(entity)) {
-        const base = calculateFfxiBaseProfile(entity).resources;
+    if (entity.type === 'player') {
+        const statState = ensureCharacterStatState(entity);
+        const discipline = getActiveDisciplineStatContext(entity);
         return {
-            maxHp: Math.max(1, base.maxHp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
-            maxMp: Math.max(0, base.maxMp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
-            maxTp: base.maxTp + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0),
+            maxHp: Math.max(1, statState.base.resources.maxHp + discipline.resources.hp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
+            maxMp: Math.max(0, statState.base.resources.maxMp + discipline.resources.mp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
+            maxTp: Math.max(0, statState.base.resources.maxTp + discipline.resources.tp + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0)),
         };
     }
-    if (canUseInferredJobResourceFormula(entity)) {
-        const base = calculateInferredJobResources(entity).resources;
-        return {
-            maxHp: Math.max(1, base.maxHp + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
-            maxMp: Math.max(0, base.maxMp + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
-            maxTp: base.maxTp + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0),
-        };
-    }
-    const race = entity.type === 'player' ? getRace(entity.identity?.raceId) : null;
-    const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
-    const isCaster = CASTER_DISCIPLINES.includes(mainJob?.id);
-    const enemyHpBonus = entity.type === 'enemy' ? level * 6 : 0;
+
     return {
-        maxHp: Math.max(1, BASE_HP + level * 8 + attributes.vit * 2 + (race?.resourceBias?.hp ?? 0) * level + enemyHpBonus + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
-        maxMp: Math.max(0, BASE_MP + (isCaster ? level * 5 : level) + attributes.mnd + attributes.int + (race?.resourceBias?.mp ?? 0) * level + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
-        maxTp: 3000,
+        maxHp: Math.max(1, BASE_HP + level * 14 + attributes.vit * 2 + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
+        maxMp: Math.max(0, attributes.mnd + attributes.int + (equipment.resources.mp ?? 0) + (statuses.resources.mp ?? 0)),
+        maxTp: 3000 + (equipment.resources.tp ?? 0) + (statuses.resources.tp ?? 0),
     };
 }
 
@@ -65,8 +71,12 @@ export function calculateSkills(entity, level = getEntityLevel(entity)) {
     const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
     const skills = createZeroBlock(SKILL_KEYS);
     for (const key of SKILL_KEYS) {
-        const enemySkill = entity.skills?.[key];
-        skills[key] = typeof enemySkill === 'number' ? enemySkill : (mainJob?.skillFocus?.includes(key) ? level * 3 : Math.floor(level * 1.5));
+        const explicitSkill = entity.type === 'player' ? entity.progression?.skills?.[key] : entity.skills?.[key];
+        if (typeof explicitSkill === 'number') {
+            skills[key] = explicitSkill;
+            continue;
+        }
+        skills[key] = mainJob?.skillFocus?.includes(key) ? level * 3 : Math.floor(level * 1.5);
     }
     return skills;
 }
