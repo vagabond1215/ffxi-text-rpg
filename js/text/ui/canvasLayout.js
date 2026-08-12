@@ -20,11 +20,13 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
     const main = rect(mainX, bodyTop, Math.max(120, mainRight - mainX), bodyHeight);
     const input = rect(margin, safeHeight - margin - inputHeight, safeWidth - margin * 2, inputHeight);
     const splash = rect(margin, margin, safeWidth - margin * 2, safeHeight - margin * 2);
-    const creatorName = rect(main.x + 18, Math.max(main.y + main.h - 104, main.y + 220), Math.min(360, main.w - 36), 38);
+    const creatorName = rect(main.x + 18, main.y + 104, Math.min(420, main.w - 36), 38);
     const modalRect = createModalRect(safeWidth, safeHeight, margin, modal, menuActions.length);
-    const compassButtons = layoutCompassButtons(sidebar, compassActions);
-    const autoRunButton = layoutAutoRunButton(sidebar, compassActions);
-    const actionStartY = autoRunButton ? autoRunButton.rect.y + autoRunButton.rect.h + 48 : sidebar.y + 48;
+    const minimap = createMinimapRect(sidebar);
+    const compassButtons = layoutCompassButtons(sidebar, compassActions, minimap);
+    const autoRunButton = layoutAutoRunButton(sidebar, compassActions, compassButtons, minimap);
+    const actionHeadingY = autoRunButton ? autoRunButton.rect.y + autoRunButton.rect.h + 34 : minimap.y + minimap.h + 34;
+    const actionStartY = actionHeadingY + 14;
 
     return {
         width: safeWidth,
@@ -32,6 +34,7 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
         margin,
         gap,
         modal,
+        actionHeadingY,
         panels: {
             top: rect(margin, margin, safeWidth - margin * 2, topHeight),
             sidebar,
@@ -41,6 +44,7 @@ export function createCanvasLayout({ width, height, actions = [], menuActions = 
             splash,
             modal: modalRect,
             creatorName,
+            minimap,
         },
         actionButtons: layoutActionButtons(sidebar, actions, actionStartY),
         compassButtons,
@@ -83,17 +87,38 @@ export function pointInRect(x, y, area) {
     return x >= area.x && x <= area.x + area.w && y >= area.y && y <= area.y + area.h;
 }
 
+function createMinimapRect(sidebar) {
+    const padding = 12;
+    const height = Math.max(118, Math.min(148, Math.floor(sidebar.w * 0.62)));
+    return rect(sidebar.x + padding, sidebar.y + 40, sidebar.w - padding * 2, height);
+}
+
 function layoutActionButtons(sidebar, actions, startY) {
     const padding = 14;
-    const buttonHeight = 34;
-    const gap = 8;
+    const gap = 7;
+    const categoryMode = actions.length > 0 && actions.every((item) => item.region === 'category');
+    if (categoryMode) {
+        const columns = 2;
+        const buttonHeight = 32;
+        const buttonWidth = Math.floor((sidebar.w - padding * 2 - gap) / columns);
+        return actions.map((item, index) => {
+            const column = index % columns;
+            const row = Math.floor(index / columns);
+            return {
+                action: item,
+                rect: rect(sidebar.x + padding + column * (buttonWidth + gap), startY + row * (buttonHeight + gap), buttonWidth, buttonHeight),
+            };
+        });
+    }
+
+    const buttonHeight = 32;
     return actions.map((item, index) => ({
         action: item,
         rect: rect(sidebar.x + padding, startY + index * (buttonHeight + gap), sidebar.w - padding * 2, buttonHeight),
     }));
 }
 
-function layoutCompassButtons(sidebar, actions) {
+function layoutCompassButtons(sidebar, actions, minimap) {
     const compassActions = actions.filter((item) => item.region === 'compass');
     if (!compassActions.length) return [];
     const byDirection = new Map(compassActions.map((item) => [item.payload?.direction ?? 'stop', item]));
@@ -103,11 +128,11 @@ function layoutCompassButtons(sidebar, actions) {
         'west', 'stop', 'east',
         'southwest', 'south', 'southeast',
     ];
-    const padding = 14;
-    const gap = 6;
-    const size = Math.floor((sidebar.w - padding * 2 - gap * 2) / 3);
-    const startX = sidebar.x + padding;
-    const startY = sidebar.y + 44;
+    const gap = 5;
+    const size = Math.max(24, Math.min(30, Math.floor(sidebar.w * 0.13)));
+    const totalWidth = size * 3 + gap * 2;
+    const startX = sidebar.x + Math.floor((sidebar.w - totalWidth) / 2);
+    const startY = minimap.y + minimap.h + 12;
     return order.map((direction, index) => {
         const action = byDirection.get(direction);
         const column = index % 3;
@@ -119,15 +144,16 @@ function layoutCompassButtons(sidebar, actions) {
     }).filter(Boolean);
 }
 
-function layoutAutoRunButton(sidebar, actions) {
+function layoutAutoRunButton(sidebar, actions, compassButtons, minimap) {
     const action = actions.find((item) => item.region === 'autoRun');
     if (!action) return null;
-    const padding = 14;
-    const gap = 6;
-    const size = Math.floor((sidebar.w - padding * 2 - gap * 2) / 3);
+    const compassBottom = compassButtons.length
+        ? Math.max(...compassButtons.map((button) => button.rect.y + button.rect.h))
+        : minimap.y + minimap.h;
+    const width = Math.min(132, sidebar.w - 28);
     return {
         action,
-        rect: rect(sidebar.x + padding, sidebar.y + 44 + size * 3 + gap * 3, sidebar.w - padding * 2, 32),
+        rect: rect(sidebar.x + Math.floor((sidebar.w - width) / 2), compassBottom + 8, width, 26),
     };
 }
 
@@ -146,8 +172,8 @@ function layoutCreatorButtons(sidebar, main, input, actions) {
 
 function layoutCreatorStepButtons(sidebar, actions) {
     const padding = 14;
-    const buttonHeight = 34;
-    const gap = 8;
+    const buttonHeight = 32;
+    const gap = 7;
     const startY = sidebar.y + padding + 42;
     return actions.map((item, index) => ({
         action: item,
@@ -157,12 +183,12 @@ function layoutCreatorStepButtons(sidebar, actions) {
 
 function layoutCreatorChoiceButtons(main, actions) {
     if (!actions.length) return [];
-    const columns = main.w >= 620 ? 2 : 1;
+    const columns = main.w >= 520 ? 2 : 1;
     const gap = 10;
-    const buttonHeight = 72;
+    const buttonHeight = 92;
     const buttonWidth = Math.floor((main.w - 36 - gap * (columns - 1)) / columns);
     const startX = main.x + 18;
-    const startY = main.y + 118;
+    const startY = main.y + 110;
     return actions.map((item, index) => {
         const column = index % columns;
         const row = Math.floor(index / columns);
@@ -189,7 +215,8 @@ function layoutCreatorIntroButtons(main, actions) {
     const buttonWidth = Math.max(170, Math.min(240, Math.floor(main.w * 0.28)));
     const buttonHeight = 38;
     const gap = 12;
-    const startX = main.x + 24;
+    const totalWidth = actions.length * buttonWidth + Math.max(0, actions.length - 1) * gap;
+    const startX = main.x + Math.floor((main.w - totalWidth) / 2);
     const y = main.y + main.h - 66;
     return actions.map((item, index) => ({ action: item, rect: rect(startX + index * (buttonWidth + gap), y, buttonWidth, buttonHeight) }));
 }
