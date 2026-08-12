@@ -1,4 +1,5 @@
 import { ATTRIBUTE_KEYS, createZeroBlock } from '../data/systemConstants.js';
+import { toLegacyDisciplineResearchId, toLegacyRaceResearchId } from '../data/legacyIdentity.js';
 import {
     FFXI_JOB_GRADES,
     FFXI_RACE_GRADES,
@@ -9,29 +10,48 @@ import {
     isNoMpGrade,
 } from '../data/ffxiStatGrades.js';
 
+// This module is a bounded adapter around historical FFXI-derived stat research.
+// Canonical runtime IDs are translated at the boundary; the legacy identifiers
+// must not leak back into player-facing or newly authored content data.
+
 export function canUseFfxiStatFormula(entity) {
+    const raceResearchId = toLegacyRaceResearchId(entity?.identity?.raceId);
+    const disciplineResearchId = toLegacyDisciplineResearchId(entity?.jobs?.mainJobId);
     return entity?.type === 'player'
-        && hasFfxiRaceGrades(entity.identity?.raceId)
-        && hasFfxiJobGrades(entity.jobs?.mainJobId);
+        && hasFfxiRaceGrades(raceResearchId)
+        && hasFfxiJobGrades(disciplineResearchId);
 }
 
 export function calculateFfxiBaseProfile(entity) {
     if (!canUseFfxiStatFormula(entity)) {
-        throw new Error('Entity is missing FFXI race/job stat grades.');
+        throw new Error('Entity is missing compatible legacy stat research grades.');
     }
 
     const mainLevel = clampLevel(entity.jobs?.level ?? entity.level ?? 1);
     const supportLevel = clampSupportLevel(entity.jobs?.supportLevel ?? 0, mainLevel);
-    const raceGrades = FFXI_RACE_GRADES[entity.identity.raceId];
-    const mainJobGrades = FFXI_JOB_GRADES[entity.jobs.mainJobId];
-    const supportJobGrades = entity.jobs?.supportJobId ? FFXI_JOB_GRADES[entity.jobs.supportJobId] : null;
+    const raceResearchId = toLegacyRaceResearchId(entity.identity.raceId);
+    const mainDisciplineResearchId = toLegacyDisciplineResearchId(entity.jobs.mainJobId);
+    const supportDisciplineResearchId = entity.jobs?.supportJobId
+        ? toLegacyDisciplineResearchId(entity.jobs.supportJobId)
+        : null;
+    const raceGrades = FFXI_RACE_GRADES[raceResearchId];
+    const mainJobGrades = FFXI_JOB_GRADES[mainDisciplineResearchId];
+    const supportJobGrades = supportDisciplineResearchId ? FFXI_JOB_GRADES[supportDisciplineResearchId] : null;
 
     return {
         source: FFXI_STAT_SOURCE.id,
         level: mainLevel,
         supportLevel,
         attributes: calculateFfxiAttributes({ raceGrades, mainJobGrades, supportJobGrades, mainLevel, supportLevel }),
-        resources: calculateFfxiResources({ raceGrades, mainJobGrades, supportJobGrades, mainLevel, supportLevel, mainJobId: entity.jobs.mainJobId, supportJobId: entity.jobs.supportJobId }),
+        resources: calculateFfxiResources({
+            raceGrades,
+            mainJobGrades,
+            supportJobGrades,
+            mainLevel,
+            supportLevel,
+            mainJobId: mainDisciplineResearchId,
+            supportJobId: supportDisciplineResearchId,
+        }),
     };
 }
 
@@ -126,7 +146,7 @@ function hasNativeMp(grade) {
 
 function requireGradeScale(grade, label) {
     const scale = getGradeScale(grade);
-    if (!scale) throw new Error(`Missing FFXI grade scale for ${label}: ${grade}`);
+    if (!scale) throw new Error(`Missing legacy grade scale for ${label}: ${grade}`);
     return scale;
 }
 
