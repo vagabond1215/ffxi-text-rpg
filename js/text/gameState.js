@@ -4,6 +4,7 @@ import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
 import { describeCoordinate, normalizePositionForPlace } from './data/coordinates.js';
 import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
+import { createEcologyState } from './systems/ecologyEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
 import { createResourceOpportunityState } from './systems/resourceOpportunityEngine.js';
@@ -48,6 +49,7 @@ export function createNewGameState(options = {}) {
         tasks: createTimedTaskState(),
         projects: createProjectState(),
         resourceOpportunities: createResourceOpportunityState(),
+        ecology: createEcologyState(),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
