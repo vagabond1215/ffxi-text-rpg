@@ -7,6 +7,7 @@ import {
     normalizePositionForPlace,
 } from '../data/coordinates.js';
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
+import { actionFailure, actionSuccess } from './actionResult.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 
 export function describePlace(placeId) {
@@ -45,28 +46,49 @@ export function findTravelRoute(state, destinationQuery, options = {}) {
     const from = state.currentPlaceId ?? 'southern-sandoria';
     const destination = findPlaceByQuery(destinationQuery);
     if (!destination) {
-        return { ok: false, reason: `Unknown destination: ${destinationQuery}` };
+        return { ok: false, code: 'unknown-destination', reason: `Unknown destination: ${destinationQuery}` };
     }
 
     const connections = getConnectionsFrom(from).filter((candidate) => candidate.to === destination.id);
     const connection = selectConnectionForPosition(state, connections, options.direction);
     if (!connection) {
         if (connections.length) return describeBlockedConnection(state, connections, destination);
-        return { ok: false, reason: `No direct route from ${getPlace(from)?.name ?? from} to ${destination.name}.` };
+        return {
+            ok: false,
+            code: 'no-direct-route',
+            reason: `No direct route from ${getPlace(from)?.name ?? from} to ${destination.name}.`,
+            from,
+            to: destination.id,
+        };
     }
 
     const restriction = findBlockingRestriction(state, connection.restrictions);
     if (restriction) {
-        return { ok: false, reason: restriction.reason ?? `Travel blocked by ${restriction.type}.` };
+        return {
+            ok: false,
+            code: 'route-restricted',
+            reason: restriction.reason ?? `Travel blocked by ${restriction.type}.`,
+            from,
+            to: destination.id,
+            restrictionType: restriction.type,
+        };
     }
 
     const placeRestriction = findBlockingRestriction(state, destination.restrictions);
     if (placeRestriction) {
-        return { ok: false, reason: placeRestriction.reason ?? `Entry blocked by ${placeRestriction.type}.` };
+        return {
+            ok: false,
+            code: 'destination-restricted',
+            reason: placeRestriction.reason ?? `Entry blocked by ${placeRestriction.type}.`,
+            from,
+            to: destination.id,
+            restrictionType: placeRestriction.type,
+        };
     }
 
     return {
         ok: true,
+        code: 'route-found',
         from,
         to: destination.id,
         connection,
@@ -76,11 +98,31 @@ export function findTravelRoute(state, destinationQuery, options = {}) {
 
 export function startTravel(state, destinationQuery) {
     if (state.travel?.active) {
-        return { ok: false, reason: `Already traveling to ${getPlace(state.travel.to)?.name ?? state.travel.to}.` };
+        const destinationName = getPlace(state.travel.to)?.name ?? state.travel.to;
+        return actionFailure({
+            action: 'travel.start',
+            code: 'travel.already-active',
+            outcome: 'blocked',
+            data: { destinationId: state.travel.to },
+            display: { text: `Already traveling to ${destinationName}.` },
+        });
     }
 
     const route = findTravelRoute(state, destinationQuery);
-    if (!route.ok) return route;
+    if (!route.ok) {
+        return actionFailure({
+            action: 'travel.start',
+            code: `travel.${route.code ?? 'blocked'}`,
+            outcome: 'blocked',
+            data: {
+                destinationQuery,
+                from: route.from ?? state.currentPlaceId ?? null,
+                to: route.to ?? null,
+                restrictionType: route.restrictionType ?? null,
+            },
+            display: { text: route.reason ?? 'Travel is blocked.' },
+        });
+    }
 
     state.travel = {
         active: true,
@@ -92,11 +134,20 @@ export function startTravel(state, destinationQuery) {
         arriveAt: route.connection.arriveAt ?? route.destination.coordinateSystem.start,
     };
 
-    return {
-        ok: true,
-        message: `Traveling to ${route.destination.name}. Estimated time: ${route.connection.travelSeconds}s.`,
-        travel: state.travel,
-    };
+    return actionSuccess({
+        action: 'travel.start',
+        code: 'travel.started',
+        outcome: 'started',
+        data: {
+            from: route.from,
+            to: route.to,
+            destinationName: route.destination.name,
+            mode: route.connection.mode,
+            durationSeconds: route.connection.travelSeconds,
+            travel: state.travel,
+        },
+        display: { text: `Traveling to ${route.destination.name}. Estimated time: ${route.connection.travelSeconds}s.` },
+    });
 }
 
 export function advanceTravel(state, elapsedSeconds) {
@@ -199,6 +250,9 @@ function describeBlockedConnection(state, connections, destination) {
         .join('; ');
     return {
         ok: false,
+        code: 'departure-position-required',
+        from: state.currentPlaceId,
+        to: destination.id,
         reason: `Reach ${options} to travel from ${place?.name ?? state.currentPlaceId} to ${destination.name}. Current position: ${describeCoordinate(current)}.`,
     };
 }
