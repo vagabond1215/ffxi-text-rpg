@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.5.700.1';
-export const PACKAGE_VERSION = '0.5.700';
+export const PRODUCT_VERSION = '0.5.800.1';
+export const PACKAGE_VERSION = '0.5.800';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 18,
+    data: 19,
     benchmark: 1,
-    codename: 'Routes and Transport',
+    codename: 'Regional Content Packs',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.700.1',
+    versionManifest: '0.5.800.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -38,6 +38,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceItems: '0.1.0',
     routeCatalog: '0.1.0',
     transport: '0.1.0',
+    contentPackSchema: '0.1.0',
+    regionalContentPacks: '0.1.0',
+    contentPackValidation: '0.1.0',
+    legacyCandidateNormalization: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.4.5',
     canvasUi: '0.7.0',
@@ -46,7 +50,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
-    validation: '0.8.0',
+    validation: '0.9.0',
     playerEntity: '0.6.0',
     characterCreation: '0.5.1',
     powers: '0.4.1',
