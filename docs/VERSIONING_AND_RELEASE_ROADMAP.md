@@ -12,7 +12,7 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.200.1
+Product:      0.6.200.2
 Package:      0.6.200
 Account Save: 4
 Game State:   5
@@ -21,7 +21,7 @@ Benchmark:    1
 Codename:     Character Capabilities
 ```
 
-The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression state and character-owned capability/proficiency semantics are now established on top of the deterministic simulation/content substrate.
+The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression state and character-owned capability/proficiency semantics are established on top of the deterministic simulation/content substrate. Revision `0.6.200.2` is a bounded canvas-UI usability pass; it does not change persistence or canonical Data contracts.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.6.200.1
+0.6.200.2
 ```
 
 | Segment | Meaning |
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, the typed/global `character` command retained after its redundant canvas button was removed, and `gil` pending deliberate original currency design.
 
 Additive/lazily defaulted fields do not require a Game State bump merely because a newer runtime knows about them. A Game State bump is required when the persistence contract becomes semantically incompatible, mandatory shapes cannot be reconstructed deterministically, or an ordered migration is necessary.
 
@@ -180,16 +180,9 @@ Codename:     Continuous Character
 - historical FFXI stat formulas and inferred job-resource formulas retained for research/comparison but removed as canonical player runtime authority;
 - compatibility fields and save schema preserved through additive/lazy state.
 
-### Intentionally deferred
-
-- final numerical stat balance;
-- removal/renaming of all internal `jobs`/`mainJobId`/`raceId` properties;
-- broader proficiency/capability ownership semantics, which move to 0.6.200;
-- Combat 2.0.
-
 ## 0.6.200 — Skills, proficiencies, disciplines, and capabilities — complete
 
-Resulting baseline:
+Capability-contract baseline:
 
 ```text
 Product:      0.6.200.1
@@ -201,7 +194,7 @@ Benchmark:    1
 Codename:     Character Capabilities
 ```
 
-### Version impact
+### Capability-track version impact
 
 - **Product:** `0.6.100.1` -> `0.6.200.1`.
 - **Package:** `0.6.100` -> `0.6.200`.
@@ -211,7 +204,6 @@ Codename:     Character Capabilities
 - New system: `capabilities 0.1.0`.
 - `playerEntity` advanced to 0.8.0.
 - `skillProgression` advanced to 0.6.0.
-- `progression`, `disciplineSwitching`, and `characterStats` retain their 0.6.100 subsystem versions because their contracts were not replaced.
 
 ### Delivered
 
@@ -226,15 +218,37 @@ Codename:     Character Capabilities
 - capability state is validated and lazily initialized without a persistence migration;
 - database registry separates `capabilities` (ownership/eligibility) from planned executable `abilities` (effects/actions).
 
-### Intentionally deferred
+### 0.6.200.2 — canvas UI usability revision
 
-- mass capability/technique catalogs;
-- generalized executable effect engine;
-- original magic schools/spell catalogs;
-- universal capability-driven combat action routing;
-- trainer/quest/preparation UI;
-- capability-centered replacement of every discipline-shaped equipment restriction;
-- final proficiency-cap math; current rank/cap scaffold remains explicitly placeholder-confidence.
+```text
+Product:      0.6.200.2
+Package:      0.6.200
+Account Save: 4
+Game State:   5
+Data:         20
+```
+
+Version impact:
+
+- **Product:** `0.6.200.1` -> `0.6.200.2`.
+- **Package / Account Save / Game State / Data:** unchanged.
+- `canvasUi` advanced to `0.8.0`.
+- `uiIntents` advanced to `0.2.0`.
+- `characterCreation` advanced to `0.5.2`.
+
+Delivered:
+
+- streamlined ancestry/origin/discipline/review creator wording and shorter original descriptions;
+- robust canvas wrapping for creator descriptions, including oversized tokens;
+- creator keyboard input constrained to the visible review-name field;
+- discovery-driven local minimap derived from existing atlas visited-coordinate knowledge;
+- compact centered D-pad below the minimap, with movement controls reduced to 24–30px;
+- categorized canvas action menus instead of a long flat command list;
+- no redundant visible Character-summary button; the command remains available as a compatibility interface;
+- permanent right-pane HP/MP/TP, attribute, derived-combat, and location snapshot;
+- disabled planned Codex/Crafting entries used only to establish navigation structure for future systems.
+
+No migration was justified because the minimap consumes existing atlas state and action-category selection is ephemeral UI state.
 
 ---
 
