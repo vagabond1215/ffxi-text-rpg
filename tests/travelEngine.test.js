@@ -21,6 +21,7 @@ test('describePlace includes exits for starting city', () => {
 
     assert.match(text, /Thornwall Southgate/);
     assert.match(text, /West Elderwood/);
+    assert.match(text, /Southgate Forest Road/);
 });
 
 test('starter cities and associated maps are populated', () => {
@@ -56,6 +57,7 @@ test('findTravelRoute finds connected destination', () => {
     assert.equal(route.ok, true);
     assert.equal(route.code, 'route-found');
     assert.equal(route.to, 'west-elderwood');
+    assert.equal(route.routeRecord.id, 'route-thornwall-west-elderwood-road');
 });
 
 test('findTravelRoute rejects disconnected destination', () => {
@@ -67,7 +69,7 @@ test('findTravelRoute rejects disconnected destination', () => {
     assert.match(route.reason, /No direct route/);
 });
 
-test('startTravel returns semantic ActionResult and advanceTravel moves current place', () => {
+test('startTravel returns semantic ActionResult and advanceTravel moves current place through canonical world time', () => {
     const state = createInitialState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const started = startTravel(state, 'West Elderwood');
@@ -78,13 +80,15 @@ test('startTravel returns semantic ActionResult and advanceTravel moves current 
     assert.equal(started.code, 'travel.started');
     assert.equal(started.outcome, 'started');
     assert.equal(started.data.to, 'west-elderwood');
-    assert.equal(started.data.durationSeconds, 45);
+    assert.equal(started.data.durationSeconds, 1800);
     assert.match(started.display.text, /Traveling to West Elderwood/);
     assert.equal(state.travel.active, true);
+    assert.equal(state.travel.routeId, 'route-thornwall-west-elderwood-road');
 
-    const advanced = advanceTravel(state, 45);
+    const advanced = advanceTravel(state, 1800);
 
     assert.equal(advanced.completed, true);
+    assert.equal(state.worldTime.totalSeconds, 1800);
     assert.equal(state.currentPlaceId, 'west-elderwood');
     assert.equal(state.location, 'West Elderwood');
 });
@@ -118,5 +122,5 @@ test('router exposes maps places travel and wait commands', () => {
     assert.match(router('zones'), /brasshaven-market-ring/);
     assert.match(router('zones'), /mistmere-canal-ward/);
     assert.match(router('travel West Elderwood'), /Traveling to West Elderwood/);
-    assert.match(router('wait 45'), /Arrived at West Elderwood/);
+    assert.match(router('wait 1800'), /Arrived at West Elderwood/);
 });
