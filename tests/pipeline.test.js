@@ -14,24 +14,24 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.100.1');
-    assert.equal(PACKAGE_VERSION, '0.6.100');
+    assert.equal(PRODUCT_VERSION, '0.6.200.1');
+    assert.equal(PACKAGE_VERSION, '0.6.200');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 19);
+    assert.equal(VERSION.data, 20);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.6\.100\.1/);
-    assert.match(describeVersion(), /Package: 0\.6\.100/);
+    assert.match(describeVersion(), /Product: 0\.6\.200\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.200/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 19/);
-    assert.match(describeVersion(), /Codename: Continuous Character/);
+    assert.match(describeVersion(), /Data: 20/);
+    assert.match(describeVersion(), /Codename: Character Capabilities/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.100\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.200\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -60,10 +60,12 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
     assert.match(describeSystemVersions(), /characterStats: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerEntity: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /capabilities: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerEntity: 0\.8\.0/);
     assert.match(describeSystemVersions(), /statEngine: 0\.5\.0/);
     assert.match(describeSystemVersions(), /progression: 0\.6\.0/);
     assert.match(describeSystemVersions(), /disciplineSwitching: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /skillProgression: 0\.6\.0/);
     assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
     assert.match(describeSystemVersions(), /validation: 0\.9\.0/);
     assert.match(describeSystemVersions(), /travel: 0\.5\.0/);
@@ -80,7 +82,6 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /equipmentEligibility: 0\.5\.1/);
     assert.match(describeSystemVersions(), /shopTransactions: 0\.3\.8/);
     assert.match(describeSystemVersions(), /skillCaps: 0\.5\.2/);
-    assert.match(describeSystemVersions(), /skillProgression: 0\.5\.3/);
     assert.match(describeSystemVersions(), /leveling: 0\.6\.0/);
 });
 
@@ -100,6 +101,7 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.ok(ids.includes('projects'));
     assert.ok(ids.includes('resourceProvenance'));
     assert.ok(ids.includes('resourceOpportunities'));
+    assert.ok(ids.includes('capabilities'));
     assert.ok(ids.includes('ecologyFamilies'));
     assert.ok(ids.includes('species'));
     assert.ok(ids.includes('populations'));
@@ -122,6 +124,7 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.equal(ids.includes('trusts'), false);
     assert.match(describeDatabases(), /resourceProvenance/);
     assert.match(describeDatabases(), /resourceOpportunities/);
+    assert.match(describeDatabases(), /capabilities/);
     assert.match(describeDatabases(), /gatheringSources/);
     assert.match(describeDatabases(), /populations/);
     assert.match(describeDatabases(), /transportServices/);
