@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.6.100.1';
-export const PACKAGE_VERSION = '0.6.100';
+export const PRODUCT_VERSION = '0.6.200.1';
+export const PACKAGE_VERSION = '0.6.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 19,
+    data: 20,
     benchmark: 1,
-    codename: 'Continuous Character',
+    codename: 'Character Capabilities',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.100.1',
+    versionManifest: '0.6.200.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -52,9 +52,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.9.0',
-    playerEntity: '0.7.0',
+    playerEntity: '0.8.0',
     characterCreation: '0.5.1',
     characterStats: '0.1.0',
+    capabilities: '0.1.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
@@ -67,7 +68,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     progression: '0.6.0',
     expTables: '0.5.2',
     disciplineSwitching: '0.6.0',
-    skillProgression: '0.5.3',
+    skillProgression: '0.6.0',
     liveTick: '0.2.0',
     maps: '0.5.0',
     places: '0.5.0',
