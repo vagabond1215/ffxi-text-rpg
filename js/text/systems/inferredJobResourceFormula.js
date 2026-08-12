@@ -1,5 +1,6 @@
 import { FFXI_JOB_GRADES, FFXI_RACE_GRADES, hasFfxiRaceGrades, isNoMpGrade } from '../data/ffxiStatGrades.js';
 import { getInferredJobHpMpGrades } from '../data/ffxiInferredJobGrades.js';
+import { toLegacyDisciplineResearchId, toLegacyRaceResearchId } from '../data/legacyIdentity.js';
 import {
     calculateJobHp,
     calculateJobMp,
@@ -9,34 +10,46 @@ import {
     calculateSupportJobMp,
 } from './ffxiStatFormula.js';
 
+// Bounded compatibility adapter for historical inferred resource research.
+// Canonical disciplines remain the runtime identity.
+
 export function canUseInferredJobResourceFormula(entity) {
+    const raceResearchId = toLegacyRaceResearchId(entity?.identity?.raceId);
+    const disciplineResearchId = toLegacyDisciplineResearchId(entity?.jobs?.mainJobId);
     return entity?.type === 'player'
-        && hasFfxiRaceGrades(entity.identity?.raceId)
-        && !FFXI_JOB_GRADES[entity.jobs?.mainJobId]
-        && Boolean(getInferredJobHpMpGrades(entity.jobs?.mainJobId));
+        && hasFfxiRaceGrades(raceResearchId)
+        && !FFXI_JOB_GRADES[disciplineResearchId]
+        && Boolean(getInferredJobHpMpGrades(disciplineResearchId));
 }
 
 export function calculateInferredJobResources(entity) {
     if (!canUseInferredJobResourceFormula(entity)) {
-        throw new Error('Entity is missing inferred newer-job HP/MP grades.');
+        throw new Error('Entity is missing compatible inferred legacy HP/MP research grades.');
     }
 
     const mainLevel = clampLevel(entity.jobs?.level ?? entity.level ?? 1);
     const supportLevel = clampSupportLevel(entity.jobs?.supportLevel ?? 0, mainLevel);
-    const raceGrades = FFXI_RACE_GRADES[entity.identity.raceId];
-    const mainJobGrades = resolveHpMpGrades(entity.jobs.mainJobId);
-    const supportJobGrades = entity.jobs?.supportJobId ? resolveHpMpGrades(entity.jobs.supportJobId) : null;
+    const raceResearchId = toLegacyRaceResearchId(entity.identity.raceId);
+    const mainDisciplineResearchId = toLegacyDisciplineResearchId(entity.jobs.mainJobId);
+    const supportDisciplineResearchId = entity.jobs?.supportJobId
+        ? toLegacyDisciplineResearchId(entity.jobs.supportJobId)
+        : null;
+    const raceGrades = FFXI_RACE_GRADES[raceResearchId];
+    const mainJobGrades = resolveHpMpGrades(mainDisciplineResearchId, { alreadyLegacy: true });
+    const supportJobGrades = supportDisciplineResearchId
+        ? resolveHpMpGrades(supportDisciplineResearchId, { alreadyLegacy: true })
+        : null;
     const hasMpSource = hasNativeMp(mainJobGrades.mp) || hasNativeMp(supportJobGrades?.mp);
 
     const raceHp = calculateRaceHp(raceGrades.hp, mainLevel);
-    const jobHp = calculateJobHp(mainJobGrades.hp, mainLevel, entity.jobs.mainJobId);
-    const supportHp = calculateSupportJobHp(supportJobGrades?.hp, supportLevel, entity.jobs.supportJobId);
+    const jobHp = calculateJobHp(mainJobGrades.hp, mainLevel, mainDisciplineResearchId);
+    const supportHp = calculateSupportJobHp(supportJobGrades?.hp, supportLevel, supportDisciplineResearchId);
     const raceMp = hasMpSource ? calculateRaceMp(raceGrades.mp, mainLevel) : 0;
-    const jobMp = calculateJobMp(mainJobGrades.mp, mainLevel, entity.jobs.mainJobId);
-    const supportMp = calculateSupportJobMp(supportJobGrades?.mp, supportLevel, entity.jobs.supportJobId);
+    const jobMp = calculateJobMp(mainJobGrades.mp, mainLevel, mainDisciplineResearchId);
+    const supportMp = calculateSupportJobMp(supportJobGrades?.mp, supportLevel, supportDisciplineResearchId);
 
     return {
-        source: 'ffxi-inferred-newer-job-hp-mp',
+        source: 'legacy-inferred-discipline-hp-mp-research',
         level: mainLevel,
         supportLevel,
         mainJobConfidence: mainJobGrades.confidence ?? 'known',
@@ -46,17 +59,18 @@ export function calculateInferredJobResources(entity) {
             maxTp: 3000,
         },
         notes: [
-            'HP/MP use inferred newer-job grades.',
-            'Attributes still use provisional fallback until full STR/DEX/VIT/AGI/INT/MND/CHR grades are sourced.',
+            'HP/MP currently reuse mapped historical research as a transitional balance reference.',
+            'Canonical discipline balance will replace this adapter during the dedicated progression/stat pass.',
         ],
     };
 }
 
-export function resolveHpMpGrades(jobId) {
-    const known = FFXI_JOB_GRADES[jobId];
-    if (known) return { id: jobId, hp: known.hp, mp: known.mp, confidence: 'known' };
+export function resolveHpMpGrades(jobId, options = {}) {
+    const researchId = options.alreadyLegacy ? jobId : toLegacyDisciplineResearchId(jobId);
+    const known = FFXI_JOB_GRADES[researchId];
+    if (known) return { id: researchId, hp: known.hp, mp: known.mp, confidence: 'known' };
 
-    const inferred = getInferredJobHpMpGrades(jobId);
+    const inferred = getInferredJobHpMpGrades(researchId);
     if (inferred) return inferred;
 
     return null;
