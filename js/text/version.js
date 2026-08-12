@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.5.900.1';
-export const PACKAGE_VERSION = '0.5.900';
+export const PRODUCT_VERSION = '0.6.100.1';
+export const PACKAGE_VERSION = '0.6.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 19,
     benchmark: 1,
-    codename: 'Simulation Substrate Gate',
+    codename: 'Continuous Character',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,7 +18,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.900.1',
+    versionManifest: '0.6.100.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -52,20 +52,21 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.9.0',
-    playerEntity: '0.6.0',
+    playerEntity: '0.7.0',
     characterCreation: '0.5.1',
+    characterStats: '0.1.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
     enemyEntity: '0.2.1',
-    statEngine: '0.4.1',
+    statEngine: '0.5.0',
     statusEngine: '0.1.0',
     battleEngine: '0.5.0',
     combatActions: '0.5.1',
     battleRewards: '0.6.0',
-    progression: '0.5.4',
+    progression: '0.6.0',
     expTables: '0.5.2',
-    disciplineSwitching: '0.5.4',
+    disciplineSwitching: '0.6.0',
     skillProgression: '0.5.3',
     liveTick: '0.2.0',
     maps: '0.5.0',
@@ -102,7 +103,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     keyItems: 'planned',
     magic: 'planned',
     loot: '0.5.1',
-    leveling: '0.5.3',
+    leveling: '0.6.0',
     companions: 'planned',
     crafting: 'planned',
     mounts: 'planned',
