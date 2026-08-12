@@ -9,6 +9,7 @@ import {
 } from '../data/coordinates.js';
 import { getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { cancelTravelJourney } from './transportEngine.js';
 
 export function canMoveDirection(state, direction) {
     if (state?.activeBattle?.phase === 'active') return false;
@@ -68,12 +69,7 @@ export function moveInDirection(state, direction) {
 }
 
 export function stopTravel(state) {
-    if (state?.travel?.active) {
-        const destination = getPlace(state.travel.to);
-        state.travel = null;
-        return { ok: true, stopped: true, message: `Stopped traveling${destination ? ` to ${destination.name}` : ''}.` };
-    }
-    return { ok: true, stopped: false, message: 'You are already stopped.' };
+    return cancelTravelJourney(state);
 }
 
 export function calculateMoveDuration(placeOrMovement, edge = {}) {
@@ -113,7 +109,7 @@ function moveThroughExit(state, edge) {
     const destination = getPlace(edge.toPlaceId);
     if (!destination) return { ok: false, reason: `Exit points to unknown place: ${edge.toPlaceId}` };
     const arrival = { ...(edge.arriveAt ?? destination.coordinateSystem.start), facing: edge.arriveAt?.facing ?? edge.direction };
-    const result = setPositionAndDiscover(state, destination.id, arrival, { important: ['Zone arrival'] });
+    const result = setPositionAndDiscover(state, destination.id, arrival, { important: ['Place arrival'] });
     if (!result.ok) return result;
     const seconds = calculateMoveDuration(edge.place, edge);
     return {
