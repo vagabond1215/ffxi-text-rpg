@@ -1,6 +1,7 @@
 import { DIRECTION_ARROWS, DIRECTION_ORDER, describeCoordinate } from '../data/coordinates.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
+import { listAbilityAvailability } from '../systems/abilityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
@@ -22,6 +23,7 @@ export function createGameViewModel(state, uiState = {}) {
     const combat = calculateCombatProfile(state.player);
     const nearby = getContextualPois(state).map(toNearbyRecord);
     const activity = createActivityModel(state);
+    const spellbook = createSpellbookModel(state);
 
     return Object.freeze({
         header: Object.freeze({
@@ -47,19 +49,24 @@ export function createGameViewModel(state, uiState = {}) {
         map: createMinimapModel(state),
         movement: Object.freeze(createMovementActions(state)),
         contextualActions: Object.freeze(createContextualActions(state, nearby)),
+        spellbook,
         activity,
     });
 }
 
 export function createContextualActions(state, nearby = getContextualPois(state).map(toNearbyRecord)) {
     if (state.activeBattle?.phase === 'active') {
+        const readyAbilities = listAbilityAvailability(state)
+            .filter((entry) => entry.known && entry.available && entry.ability.contexts.includes('combat'))
+            .slice(0, 2)
+            .map((entry) => abilityAction(entry));
         return [
             commandAction('context:attack', 'Attack', 'attack', 'combat'),
-            commandAction('context:techniques', 'Techniques', 'techniques', 'combat'),
-            commandAction('context:magic', 'Magic', 'spells', 'combat'),
+            ...readyAbilities,
             commandAction('context:items', 'Items', 'inventory', 'utility'),
             commandAction('context:battle', 'Battle Status', 'battle', 'utility'),
-        ];
+            commandAction('context:spellbook', 'Spellbook', 'spells', 'utility'),
+        ].slice(0, 6);
     }
 
     if (state.travel?.active) {
@@ -97,6 +104,31 @@ export function createMovementActions(state) {
         payload: Object.freeze({ direction }),
         disabled: inBattle || !canMoveDirection(state, direction),
     }));
+}
+
+function createSpellbookModel(state) {
+    const entries = listAbilityAvailability(state)
+        .filter((entry) => entry.known)
+        .map((entry) => Object.freeze({
+            id: entry.ability.id,
+            name: entry.ability.name,
+            kind: entry.ability.kind,
+            schoolName: entry.school?.name ?? null,
+            tags: Object.freeze([...(entry.ability.tags ?? [])]),
+            available: entry.available,
+            reason: entry.reason,
+            cost: formatCosts(entry.ability.costs),
+            activationSeconds: entry.ability.activation.durationSeconds,
+            cooldownSeconds: entry.ability.cooldownSeconds,
+            cooldownRemainingSeconds: entry.cooldownRemainingSeconds ?? 0,
+            intent: 'ability.activate',
+            payload: Object.freeze({ abilityId: entry.ability.id }),
+        }));
+    return Object.freeze({
+        entries: Object.freeze(entries),
+        knownCount: entries.length,
+        activeAbilityId: state.abilities?.active?.abilityId ?? null,
+    });
 }
 
 function createCharacterModel(player, combat, activity) {
@@ -179,10 +211,20 @@ function commandAction(id, label, command, kind) {
     });
 }
 
+function abilityAction(entry) {
+    return Object.freeze({
+        id: `context:ability:${entry.ability.id}`,
+        label: entry.ability.name,
+        intent: 'ability.activate',
+        payload: Object.freeze({ abilityId: entry.ability.id }),
+        kind: entry.ability.kind === 'spell' ? 'magic' : 'combat',
+    });
+}
+
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
@@ -197,6 +239,11 @@ function resource(id, label, current, max) {
 
 function stat(id, label, value) {
     return Object.freeze({ id, label, value: Number(value) || 0 });
+}
+
+function formatCosts(costs = {}) {
+    const entries = Object.entries(costs);
+    return entries.length ? entries.map(([key, value]) => `${value} ${key.toUpperCase()}`).join(' + ') : 'No resource cost';
 }
 
 function clamp01(value) {
