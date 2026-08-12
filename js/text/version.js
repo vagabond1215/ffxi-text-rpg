@@ -60,7 +60,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
-    travel: '0.4.3',
+    travel: '0.4.4',
     pois: '0.3.7',
     poiDiscovery: '0.3.6',
     poiFastTravel: '0.3.6',
