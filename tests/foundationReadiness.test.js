@@ -27,15 +27,16 @@ test('travel action and event seams can observe canonical world time without usi
     const started = startTravel(state, 'West Elderwood');
     assert.equal(isActionResult(started), true);
     assert.equal(started.code, 'travel.started');
+    assert.equal(started.data.durationSeconds, 1800);
 
     const [startedEvent] = listSemanticEvents(state, { type: 'travel.started' });
     assert.equal(startedEvent.worldTimeSeconds, 3600);
     assert.equal(startedEvent.data.to, 'west-elderwood');
 
-    state.worldTime.totalSeconds += 45;
-    advanceTravel(state, 45);
+    const advanced = advanceTravel(state, 1800);
+    assert.equal(advanced.completed, true);
     const [arrivedEvent] = listSemanticEvents(state, { type: 'travel.arrived' });
-    assert.equal(arrivedEvent.worldTimeSeconds, 3645);
+    assert.equal(arrivedEvent.worldTimeSeconds, 5400);
     assert.equal(arrivedEvent.data.to, 'west-elderwood');
 });
 
