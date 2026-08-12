@@ -13,15 +13,15 @@ Authoritative companion documents:
 
 ## Current baseline
 
-Current 0.5 world-time foundation target:
+Current 0.5 simulation-control target:
 
 ```text
-Product:      0.5.100.0
-Package:      0.5.100
+Product:      0.5.200.0
+Package:      0.5.200
 Account Save: 4
 Game State:   4
 Data:         13
-Codename:     Deterministic World Clock
+Codename:     Simulation Speed Control
 ```
 
 This remains pre-alpha product development. The version is a milestone identity, not a completion percentage.
@@ -70,7 +70,7 @@ Key rules:
 
 ## 0.5 — World Time, Tasks, and Projects — active
 
-### 0.5.100 Deterministic world clock — current
+### 0.5.100 Deterministic world clock — complete
 
 - [x] Canonical simulated seconds stored in Game State v4.
 - [x] Exact deterministic advancement independent of `Date.now()`.
@@ -80,16 +80,20 @@ Key rules:
 - [x] Ordered Game State v3 -> v4 migration adds canonical world time.
 - [x] Wall-clock `tickEngine` remains only a scheduler/dispatcher and does not mutate canonical world time by itself.
 
-The clock intentionally has no seasons, named months, calendar lore, or speed controls yet. One canonical non-negative integer second count is the authoritative time state; richer calendar presentation can be layered over it later without changing time arithmetic.
+### 0.5.200 Pause and speed control — current
 
-### 0.5.200 Pause and speed control — next
+- [x] Simulation pause/resume state and semantic events.
+- [x] Engine accepts whole-number simulation-speed multipliers from 1x through 3600x without hard-coding UI presets.
+- [x] A scheduler adapter converts supplied wall-clock milliseconds into exact simulated seconds.
+- [x] Sub-second simulated remainder is retained deterministically rather than discarded.
+- [x] Wall-clock time observed while paused is discarded and cannot become a burst of simulation time after resume.
+- [x] Fast-forward advances the canonical world clock rather than merely changing render timing.
+- [x] Scheduler conversion does not call `Date.now()`; the existing tick engine may supply elapsed time without owning game time.
+- [x] New games initialize simulation control at running/1x while older Game State v4 saves remain valid and lazily acquire control state when used.
 
-- [ ] Pause/resume semantics.
-- [ ] Simulation speed settings.
-- [ ] Fast-forward advances simulation rather than merely changing render timing.
-- [ ] Clean scheduler/world-time boundary.
+The simulation-control engine deliberately separates three concerns: wall-clock observation, simulation speed/pause policy, and authoritative world-time advancement. Direct exact advancement remains available for tests/tools and later advance-to-completion/advance-to-event systems.
 
-### 0.5.300 Canonical timed task model
+### 0.5.300 Canonical timed task model — next
 
 - [ ] Shared duration representation.
 - [ ] Start/progress/complete/cancel semantics where appropriate.
@@ -215,10 +219,10 @@ Refine formulas when they materially improve a meaningful player-facing loop. Do
 
 ## Immediate next pass
 
-After the 0.5.100 deterministic-clock PR is green and merged:
+After the 0.5.200 simulation-control PR is green and merged:
 
 ```text
-0.5.200 — Pause and simulation speed control
+0.5.300 — Canonical timed task model
 ```
 
-Keep the wall-clock scheduler optional: speed/pause controls should request deterministic world-time advancement rather than redefine the canonical clock.
+The task model should consume deterministic world-time deltas and emit semantic outcomes without making any one activity type—especially travel—the universal implementation template.

@@ -6,6 +6,7 @@ import { getPlace } from './data/places.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createSemanticEventState } from './systems/semanticEventEngine.js';
+import { createSimulationControlState } from './systems/simulationControlEngine.js';
 import { describePlace } from './systems/travelEngine.js';
 import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
@@ -37,6 +38,10 @@ export function createNewGameState(options = {}) {
     return {
         version: 4,
         worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? 0 }),
+        simulation: createSimulationControlState({
+            paused: options.simulationPaused ?? false,
+            speedMultiplier: options.simulationSpeedMultiplier ?? 1,
+        }),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
