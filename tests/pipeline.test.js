@@ -14,8 +14,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.800.1');
-    assert.equal(PACKAGE_VERSION, '0.5.800');
+    assert.equal(PRODUCT_VERSION, '0.5.900.1');
+    assert.equal(PACKAGE_VERSION, '0.5.900');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -24,14 +24,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 19);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.5\.800\.1/);
-    assert.match(describeVersion(), /Package: 0\.5\.800/);
+    assert.match(describeVersion(), /Product: 0\.5\.900\.1/);
+    assert.match(describeVersion(), /Package: 0\.5\.900/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 19/);
-    assert.match(describeVersion(), /Codename: Regional Content Packs/);
+    assert.match(describeVersion(), /Codename: Simulation Substrate Gate/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.800\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.900\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -55,6 +55,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /regionalContentPacks: 0\.1\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.1\.0/);
     assert.match(describeSystemVersions(), /legacyCandidateNormalization: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /simulationSubstrateGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
