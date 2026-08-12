@@ -49,6 +49,7 @@ test('ability activation rejects unknown and unlearned executable effects', () =
     const state = createNewGameState({ mainJobId: 'elementalist' });
 
     assert.equal(activateAbility(state, 'missing-ability').code, 'ability.unknown');
+    startEncounter(state, 'Brush Hare');
     const result = activateAbility(state, 'Ember Dart');
     assert.equal(result.ok, false);
     assert.equal(result.code, 'ability.capability-requirement');
