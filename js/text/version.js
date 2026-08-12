@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.5.100.0';
-export const PACKAGE_VERSION = '0.5.100';
+export const PRODUCT_VERSION = '0.5.200.0';
+export const PACKAGE_VERSION = '0.5.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 4,
     data: 13,
     benchmark: 1,
-    codename: 'Deterministic World Clock',
+    codename: 'Simulation Speed Control',
     compatibility: 'migrate-supported-save-versions',
     released: false,
 
@@ -18,12 +18,13 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.5.100',
+    versionManifest: '0.5.200',
     saveMigrations: '0.2.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
-    worldTime: '0.1.0',
+    worldTime: '0.2.0',
+    simulationControl: '0.1.0',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
