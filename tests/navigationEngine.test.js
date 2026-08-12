@@ -12,8 +12,8 @@ import {
     moveInDirection,
 } from '../js/text/systems/navigationEngine.js';
 
-test('Southern San d’Oria topology exposes required valid and invalid coordinates', () => {
-    const place = getPlace('southern-sandoria');
+test('Thornwall Southgate topology exposes required valid and invalid coordinates', () => {
+    const place = getPlace('thornwall-southgate');
 
     assert.equal(place.coordinateSystem.start.coord, 'G-10');
     assert.equal(isNavigableCoordinate(place, { coord: 'B-2' }), false);
@@ -33,22 +33,22 @@ test('topology movement fails without an edge and succeeds on a defined edge', (
     assert.equal(canMoveDirection(state, 'w'), true);
 });
 
-test('San d’Oria exits are coordinate and direction aware', () => {
+test('Thornwall exits are coordinate and direction aware', () => {
     const state = createInitialState();
 
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
-    assert.equal(getMovementEdge(state, 'west')?.toPlaceId, 'west-ronfaure');
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
+    assert.equal(getMovementEdge(state, 'west')?.toPlaceId, 'west-elderwood');
     assert.equal(getMovementEdge(state, 'east')?.toPlaceId, undefined);
     const west = moveInDirection(state, 'west');
     assert.equal(west.ok, true);
-    assert.equal(state.currentPlaceId, 'west-ronfaure');
+    assert.equal(state.currentPlaceId, 'west-elderwood');
     assert.equal(state.position.coord, 'I-6');
 
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'L-10' });
-    assert.equal(moveInDirection(state, 'east').place.id, 'east-ronfaure');
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'L-10' });
+    assert.equal(moveInDirection(state, 'east').place.id, 'east-elderwood');
 
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'I-7' });
-    assert.equal(moveInDirection(state, 'north').place.id, 'northern-sandoria');
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'I-7' });
+    assert.equal(moveInDirection(state, 'north').place.id, 'thornwall-crownward');
 });
 
 test('movement timing rounds up to whole ticks and varies by metadata', () => {
