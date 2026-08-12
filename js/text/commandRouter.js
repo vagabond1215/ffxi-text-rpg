@@ -17,6 +17,7 @@ import { describeMap, describeMaps } from './data/maps.js';
 import { describeNations, findNation } from './data/nations.js';
 import { RACES } from './data/races.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
+import { activateAbility, describeAbilities, reconcileAbilityActivation } from './systems/abilityEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
 import {
     castSpell,
@@ -39,7 +40,6 @@ import {
     describeBestiary,
     describeEquipment,
     describeJobAbilities,
-    describeSpells,
     describeWeaponSkills,
 } from './systems/menuDescriptions.js';
 import {
@@ -72,6 +72,7 @@ import {
     describeTravel,
     startTravel,
 } from './systems/travelEngine.js';
+import { advanceWorldTime } from './systems/worldTimeEngine.js';
 import { describeSystemVersions, describeVersion } from './version.js';
 
 const HELP_TEXT = [
@@ -114,15 +115,17 @@ const HELP_TEXT = [
     '  equipSources         Show accessible equipment source containers.',
     '  home enter|leave     Toggle home-storage access context for storage testing.',
     '  equipment            Show equipped gear slots and wardrobe containers.',
-    '  spells               Show known spell placeholder data.',
+    '  spells               Show learned canonical spells and active abilities.',
+    '  abilities            Show learned canonical spells, techniques, and utility abilities.',
+    '  invoke <ability>     Activate a canonical learned ability through the 0.6.300 engine.',
     '  techniques           Show recovered weapon-technique source data.',
-    '  abilities            Show recovered discipline abilities and traits.',
+    '  jobabilities         Show bounded recovered discipline abilities and traits.',
     '  bestiary             Show recovered bestiary notes for the current place.',
     '  encounter <enemy>    Start a battle against a loaded enemy seed.',
     '  battle               Show the active battle state.',
     '  attack [target]      Perform a basic attack in battle.',
-    '  technique <name>     Use a TP-gated placeholder weapon technique.',
-    '  cast <spell>         Cast a simple placeholder spell in battle.',
+    '  technique <name>     Use the transitional TP-gated combat technique adapter.',
+    '  cast <spell>         Use the transitional legacy spell combat adapter.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
     '  maps                 List known starter map records.',
@@ -136,7 +139,7 @@ const HELP_TEXT = [
     '  controls             Show resource bars, tick bar, keypad, and action groups.',
     '  recovered            Summarize useful data recovered from legacy research.',
     '  travel <destination> Start direct travel to a connected place.',
-    '  wait [seconds]       Advance time manually for travel/tick testing.',
+    '  wait [seconds]       Advance canonical fictional time and reconcile timed actions.',
     '  databases            List planned/seeded/implemented data registries.',
     '  version              Show product/save/data version tracking.',
     '  systems              Show system version map.',
@@ -232,13 +235,14 @@ export function createCommandRouter(state, services = {}) {
             case 'moghouse': return describeHomeCommand(state, parsed.args[0]);
             case 'equipment': return describeEquipment(state);
             case 'spells':
-            case 'magic': return describeSpells(state);
+            case 'magic':
+            case 'abilities': return describeAbilities(state);
+            case 'invoke': return describeAbilityActivation(state, parsed.args.join(' '));
             case 'techniques':
             case 'weaponskills':
             case 'ws': return describeWeaponSkills();
             case 'disciplineabilities':
             case 'jobabilities':
-            case 'abilities':
             case 'ja': return describeJobAbilities(state);
             case 'bestiary': return describeBestiary(state);
             case 'encounter': return describeEncounterStart(state, parsed.args.join(' '));
@@ -320,6 +324,12 @@ function describeEncounterStart(state, enemyQuery) {
     return result.message;
 }
 
+function describeAbilityActivation(state, abilityQuery) {
+    if (!abilityQuery) return 'Invoke what? Try `abilities` to see learned canonical abilities.';
+    const result = activateAbility(state, abilityQuery);
+    return result.ok ? result.message : result.reason;
+}
+
 function hasFastCreateArgs(parsed) {
     return Object.keys(parsed.named).length > 0 || parsed.args.length > 0;
 }
@@ -380,9 +390,16 @@ function describeTravelStart(state, destination) {
 function describeWait(state, tickEngine, secondsArg = '1') {
     const seconds = Math.max(1, Math.min(3600, Number.parseInt(secondsArg, 10) || 1));
     tickEngine.tick({ state, manual: true, seconds });
-    const travelResult = advanceTravel(state, seconds);
-    if (travelResult.completed) return [`Advanced ${seconds}s.`, travelResult.message, '', describeLocation(state)].join('\n');
-    return [`Advanced ${seconds}s.`, describeTravel(state)].join('\n');
+    const travelWasActive = Boolean(state.travel?.active);
+    const travelResult = travelWasActive ? advanceTravel(state, seconds) : null;
+    if (!travelWasActive) advanceWorldTime(state, seconds, { source: 'command.wait' });
+    const abilityResult = reconcileAbilityActivation(state);
+    const lines = [`Advanced ${seconds}s.`];
+    if (travelResult?.message) lines.push(travelResult.message);
+    if (abilityResult?.message) lines.push(abilityResult.message);
+    if (travelResult?.completed) lines.push('', describeLocation(state));
+    else if (state.travel?.active) lines.push(describeTravel(state));
+    return lines.join('\n');
 }
 
 function inspectTarget(state, target = 'character', restArgs = []) {
@@ -401,7 +418,8 @@ function inspectTarget(state, target = 'character', restArgs = []) {
         case 'equipment':
         case 'equip': return describeEquipment(state);
         case 'spells':
-        case 'magic': return describeSpells(state);
+        case 'magic':
+        case 'abilities': return describeAbilities(state);
         case 'techniques':
         case 'weaponskills':
         case 'ws': return describeWeaponSkills();
@@ -412,7 +430,6 @@ function inspectTarget(state, target = 'character', restArgs = []) {
         case 'skill': return describeSkillProgression(state.player, restArgs[0]);
         case 'disciplineabilities':
         case 'jobabilities':
-        case 'abilities':
         case 'ja': return describeJobAbilities(state);
         case 'bestiary': return describeBestiary(state);
         case 'battle': return describeBattle(state.activeBattle);
