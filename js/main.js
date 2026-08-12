@@ -1,9 +1,7 @@
-import { createCanvasApp } from './text/ui/canvasApp.js';
+import { createDomApp } from './text/ui/domApp.js';
 
 function init() {
-    createCanvasApp({
-        canvas: document.getElementById('game-canvas'),
-    });
+    createDomApp({ host: document.getElementById('app') });
 }
 
 document.addEventListener('DOMContentLoaded', init);
