@@ -76,12 +76,29 @@ export function setLearnedSkill(player, skillId, value) {
 export function addLearnedSkill(player, skillId, amount, options = {}) {
     if (!SKILL_KEYS.includes(skillId)) return { ok: false, message: `Unknown skill: ${skillId}` };
     const current = getLearnedSkill(player, skillId);
-    const gained = Math.max(0, Math.floor(Number(amount) || 0));
-    const next = current + gained;
-    const cap = getSkillCap(player?.jobs?.mainJobId, skillId, player?.jobs?.level);
-    const learned = options.clampToCurrentJobCap ?? true ? Math.min(next, cap) : next;
+    const requestedGain = Math.max(0, Math.floor(Number(amount) || 0));
+    const next = current + requestedGain;
+    const trainingCap = getSkillCap(player?.jobs?.mainJobId, skillId, player?.jobs?.level);
+    let learned = next;
+
+    if (options.clampToCurrentJobCap ?? true) {
+        if (trainingCap <= 0 || current >= trainingCap) learned = current;
+        else learned = Math.min(next, trainingCap);
+    }
+
     setLearnedSkill(player, skillId, learned);
-    return { ok: true, skillId, before: current, gained, learned, cap };
+    return {
+        ok: true,
+        skillId,
+        before: current,
+        requestedGain,
+        gained: Math.max(0, learned - current),
+        learned,
+        trainingCap,
+        // Transitional aliases while callers move from job-cap terminology.
+        gain: requestedGain,
+        cap: trainingCap,
+    };
 }
 
 export function inferMainHandSkill(player) {
@@ -117,36 +134,39 @@ export function resolveSkillGainForAction(state, actionContext = {}) {
         return {
             ok: true,
             gained: false,
-            reason: 'Skill has no current job cap.',
+            reason: 'Active discipline provides no training window for this skill.',
             skillId,
             before: current.learned,
             learned: current.learned,
             cap: current.cap,
+            trainingCap: current.cap,
         };
     }
     if (current.learned >= current.cap) {
         return {
             ok: true,
             gained: false,
-            reason: 'Skill is capped for current job.',
+            reason: 'Skill is at or above the active discipline training cap.',
             skillId,
             before: current.learned,
             learned: current.learned,
             cap: current.cap,
+            trainingCap: current.cap,
         };
     }
 
-    const gain = Math.max(1, Math.floor(Number(actionContext.amount) || 1));
-    const result = addLearnedSkill(player, skillId, gain);
+    const requestedGain = Math.max(1, Math.floor(Number(actionContext.amount) || 1));
+    const result = addLearnedSkill(player, skillId, requestedGain);
     return {
         ...result,
+        gainedAmount: result.gained,
         gained: result.ok && result.learned > result.before,
     };
 }
 
 export function describeSkillGainResult(result) {
     if (!result?.gained) return '';
-    return `Skill gained: ${result.skillId} ${result.before} -> ${result.learned} / cap ${result.cap}.`;
+    return `Skill gained: ${result.skillId} ${result.before} -> ${result.learned} / training cap ${result.cap}.`;
 }
 
 export function getEffectiveSkillForCurrentJob(player, skillId) {
@@ -171,18 +191,18 @@ export function describeSkillProgression(player, skillId = null) {
 
     const entries = listEffectiveSkillsForCurrentJob(player);
     const lines = [
-        `Skills for ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current job'} Lv.${player.jobs?.level ?? 1}:`,
+        `Skills with ${player.jobs?.mainJobName ?? player.jobs?.mainJobId ?? 'current discipline'} training context Lv.${player.jobs?.level ?? 1}:`,
         ...entries.map((entry) => `- ${describeSkillLine(entry, player)}`),
-        `Confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
+        `Training-cap confidence: ${SKILL_CAP_METADATA.confidence} (${SKILL_CAP_METADATA.source})`,
     ];
     return lines.join('\n');
 }
 
 function describeSkillLine(entry, player) {
-    const jobLabel = `${player.jobs?.mainJobName ?? entry.jobId} cap`;
+    const disciplineLabel = `${player.jobs?.mainJobName ?? entry.jobId} training cap`;
     const rank = entry.rank ?? 'none';
-    const status = entry.overCurrentCap ? ' / over current cap' : entry.cappedForCurrentJob ? ' / capped for current job' : '';
-    return `${entry.skillId}: learned ${entry.learned} / ${jobLabel} ${entry.cap} / effective ${entry.effective} / rank ${rank}${status}`;
+    const status = entry.overCurrentCap ? ' / above current training cap' : entry.cappedForCurrentJob ? ' / at current training cap' : '';
+    return `${entry.skillId}: learned ${entry.learned} / ${disciplineLabel} ${entry.cap} / effective ${entry.effective} / rank ${rank}${status}`;
 }
 
 function normalizeSkillValue(value) {
