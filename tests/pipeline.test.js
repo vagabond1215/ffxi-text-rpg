@@ -14,8 +14,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.4.400.0');
-    assert.equal(PACKAGE_VERSION, '0.4.400');
+    assert.equal(PRODUCT_VERSION, '0.4.500.0');
+    assert.equal(PACKAGE_VERSION, '0.4.500');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -24,16 +24,17 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 13);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.accountSave);
-    assert.match(describeVersion(), /Product: 0\.4\.400\.0/);
-    assert.match(describeVersion(), /Package: 0\.4\.400/);
+    assert.match(describeVersion(), /Product: 0\.4\.500\.0/);
+    assert.match(describeVersion(), /Package: 0\.4\.500/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 3/);
-    assert.match(describeVersion(), /Codename: Structured Action Contract/);
+    assert.match(describeVersion(), /Codename: Semantic Event Foundation/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.4\.400/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.4\.500/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.1\.0/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /travel: 0\.4\.1/);
+    assert.match(describeSystemVersions(), /semanticEvents: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /travel: 0\.4\.2/);
     assert.match(describeSystemVersions(), /characterCreation/);
     assert.match(describeSystemVersions(), /canvasUi: 0.7.0/);
     assert.match(describeSystemVersions(), /combatActions: 0.5.1/);
