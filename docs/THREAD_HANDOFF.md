@@ -1,34 +1,23 @@
 # Thread Handoff
 
-This file is the first document a new ChatGPT/Codex thread should read before continuing work on this repo.
+This is the first document a new ChatGPT/Codex thread should read before continuing repository work.
 
 ## Read order
 
-Before planning implementation, read:
-
 1. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
-2. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — authoritative product-version protocol and path to 1.0.
-3. `docs/ROADMAP.md` — current implementation summary and release-phase index.
-4. `docs/ARCHITECTURE.md` — runtime/module boundaries.
-5. `js/text/version.js` — current runtime/system version state.
+2. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — authoritative product-version protocol and release gates.
+3. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not be mistaken for final design.
+4. `docs/ROADMAP.md` — implementation summary and phase index.
+5. `docs/ARCHITECTURE.md` — current module/runtime boundaries.
+6. `js/text/version.js` — authoritative runtime/system version state.
 
-`docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` is historical planning from the earlier formula/item-behavior direction. Its recommended milestone order is superseded.
+`docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` is superseded historical planning from the earlier formula-first direction.
 
-## Project intent
+## Product identity
 
-The project is a text-first fantasy life RPG with FFXI-inspired weight, preparation, danger, jobs/disciplines, equipment, travel, and earned accomplishment.
+The project is a long-form, text-first fantasy life RPG with FFXI-inspired weight, preparation, dangerous travel, jobs/disciplines, equipment, mastery, and earned accomplishment.
 
-It is **not** intended to become a text transcription of retail FFXI.
-
-The long-term product combines:
-
-- persistent character/life progression;
-- simulated days and long fictional timescales;
-- measurable mastery and efficiency gains;
-- livelihoods, projects, construction, infrastructure, relationships, and taming;
-- dangerous expeditions, combat, travel, equipment, and magic;
-- text/tabletop-style presentation with limited icons/tokens/meters/diagrams;
-- deterministic/testable simulation systems.
+It is not intended to become a text transcription of retail FFXI.
 
 Core progression law:
 
@@ -36,13 +25,13 @@ Core progression law:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-Avoid arbitrary exponential costs for repeated identical work. Increase resource demand through physical scale, upgrades, specialization, logistics, infrastructure, and more ambitious projects.
+Repeated identical work should not receive arbitrary exponential resource multipliers. Higher resource demand should come from physical scale, upgrades, specialization, logistics, infrastructure, quality, and more ambitious projects.
 
-Simulation time and wall-clock time are separate concepts. Fictional grind may be substantial; avoid unnecessary real-world waiting by supporting pause/fast-forward/advance semantics and end-of-day review.
+Simulation time and wall-clock time are separate. Fictional work may take hours, days, seasons, or years while the player can pause, accelerate, advance to completion, or advance to a meaningful interrupt.
 
 ## Jobs/disciplines direction
 
-The current `mainJob`/support-job/current-job architecture is transitional.
+The current `mainJob`/support-job/current-job model is transitional compatibility scaffolding.
 
 Long-term rule:
 
@@ -52,84 +41,124 @@ Capabilities enable.
 Loadouts constrain and enhance.
 ```
 
-Jobs remain recognizable disciplines/training traditions, but equipment does not magically transform the character into another job.
+Jobs remain recognizable disciplines/training traditions. Equipment does not magically transform the character into another job, and changing loadout should not erase learned knowledge.
 
-Ability eligibility should gradually depend on:
+Ability eligibility should eventually derive from learned capability, proficiency, equipment, hard/soft requirements, preparation, resources, condition, context, and formal advanced training where logically required. Characters may combine capabilities associated with several disciplines when the actual prerequisites are satisfied.
 
-- learned capability;
-- proficiency/mastery;
-- equipment;
-- hard/soft requirements;
-- focus/ammunition/reagents/tools;
-- resources;
-- status/condition;
-- preparation;
-- context;
-- formal advanced training where logically required.
+Do not broadly remove the existing job state before the 0.6 capability migration. Also do not deepen it into a permanent magical class-lock model.
 
-Characters may use capabilities associated with several disciplines at once when prerequisites are satisfied. Balance comes from loadout, resource, preparation, proficiency, encumbrance, and action-economy tradeoffs rather than one universal support-job slot.
-
-Do not rip the existing job code out in a broad rewrite. Migrate behind tested interfaces during the 0.6 capability phase.
+See `docs/TRANSITIONAL_ARCHITECTURE.md` for implementation constraints.
 
 ## Current version state
 
-Historical runtime baseline:
+Target state for the current stabilization branch:
 
 ```text
-App/package: 0.4.4
+Product:      0.4.600.0
+Package:      0.4.600
 Account Save: 4
-Game State: 3
-Data: 13
-Codename: Conservative Skill Gains
+Game State:   3
+Data:         13
+Codename:     Foundation Stabilization
 ```
 
-The historical `0.4.4` build remains on the old three-part application/package scheme.
-
-The new product protocol is:
+Product version format:
 
 ```text
 MAJOR.PHASE.TRACK.REVISION
 ```
 
-Example:
+`package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
+
+### Completed foundation tracks
+
+- `0.4.100` — direction and version-roadmap lock.
+- `0.4.200` — product/package version separation and repository CI gate.
+- `0.4.300` — ordered Account Save/Game State migration mechanism.
+- `0.4.400` — versioned `ActionResult` contract; travel-start pilot.
+- `0.4.500` — bounded semantic event foundation; travel start/arrival pilot.
+- `0.4.600` — stabilization/readiness pass and transitional architecture documentation.
+
+After this track is green, `0.4.900` is the 0.4 exit-gate certification. The next implementation phase is 0.5 deterministic world time.
+
+## New foundation contracts
+
+### Ordered persistence migrations
+
+Files:
 
 ```text
-0.5.300.4
+js/text/systems/migrationEngine.js
+js/text/systems/saveMigrations.js
+js/text/save.js
 ```
 
-Do not place a four-numeric-segment version directly into `package.json.version`; npm uses three-part SemVer. Product/package version separation is the next versioning implementation target.
+Registered migrations are applied sequentially. Unsupported old/future versions fail deterministically rather than being silently interpreted as current.
 
-See `docs/VERSIONING_AND_RELEASE_ROADMAP.md` for the complete protocol.
+`reviveGameState()` still repairs JSON-broken object references such as `player.inventory`, but it is not the migration system.
 
-## Current recommended runtime sequence
+### ActionResult
 
-From the current foundation:
+File:
 
-1. `0.4.200` — product/package version-manifest separation;
-2. `0.4.300` — ordered persistence migrations;
-3. `0.4.400` — structured action-result contract;
-4. `0.4.500` — lightweight semantic events;
-5. close 0.4 without rewriting current systems;
-6. 0.5 — deterministic world time, pause/fast-forward, tasks, interrupts, end-of-day, projects;
-7. 0.6 — continuous-character capabilities, jobs as disciplines, origins, first livelihood;
-8. 0.7 — first complete life/adventure vertical slice, **A Week Beyond the West Gate**;
-9. 0.8 — construction/life/infrastructure/taming/relationships/crafting/logistics depth;
-10. 0.9 — adventure/magic/content expansion, balance, persistence, UI, release hardening;
-11. 1.0 — Live Foundation.
-
-Formula refinement is still important, but it no longer leads the roadmap. Refine formulas when they materially improve an already-meaningful player-facing loop.
-
-## Development commands
-
-```bash
-npm test
-npm run benchmark
-npm run check
+```text
+js/text/systems/actionResult.js
 ```
 
-Use Node 20+.
+Representative semantic shape:
 
-## Current browser entry path
+```text
+contract
+version
+ok
+action
+code
+outcome
+data
+display
+```
+
+Engine consumers should use semantic fields instead of parsing prose. Non-enumerable `.message` / `.reason` aliases exist only as transitional command compatibility adapters.
+
+Travel start is the first migrated path.
+
+### Semantic events
+
+File:
+
+```text
+js/text/systems/semanticEventEngine.js
+```
+
+Events have stable sequential IDs, typed names, source, optional observed world-time seconds, and structured data. They are bounded observational history, not event sourcing and not the authoritative source of game state.
+
+Travel currently emits:
+
+```text
+travel.started
+travel.arrived
+```
+
+Objective/quest/achievement/end-of-day consumers should eventually use event types/data rather than parsing command-log prose.
+
+## World-time insertion point
+
+The current `tickEngine.js` uses wall-clock timing and is only a scheduling/dispatch scaffold.
+
+It must not become the canonical game calendar.
+
+0.5 should introduce deterministic world-time state and exact advancement independently of `Date.now()`. The desired boundary is:
+
+```text
+optional wall-clock scheduler
+        -> requests simulation advancement
+        -> deterministic world clock
+        -> tasks/travel/projects/status/events
+```
+
+Tests and commands must be able to advance simulation without sleeping or waiting for real time.
+
+## Current browser/UI architecture
 
 ```text
 index.html
@@ -138,220 +167,111 @@ index.html
           -> loadActiveCharacter() or createInitialState()
           -> createCommandRouter(state)
           -> createSlashCommandRouter(state)
-          -> canvas layout/input/render loop
+          -> canvas render/input loop
 ```
 
-The active UI is canvas-first. Game logic should remain independent of canvas/DOM rendering.
+The active UI is canvas-first and text-focused. Limited icons, tokens, meters, diagrams, cards, or similar state aids are welcome; do not rebuild a fully graphical world unless explicitly requested.
 
-## UI command model
+Logic must remain independent of rendering.
 
-The left canvas sidebar uses direct navigation intents and command-backed gameplay/global actions.
+## Existing foundations to preserve
 
-The bottom canvas input accepts bare command-router commands and leading-slash commands where `slashCommandRouter.js` owns account/menu behavior.
+### World and interaction
 
-Representative commands:
+- starter cities/wilderness/dungeon hooks;
+- San d'Oria alphanumeric topology;
+- coordinate movement and atlas discovery;
+- zone graph and travel restrictions;
+- foot-travel aggro scaffold;
+- POI discovery/actions and same-zone travel.
 
-```text
-character
-stats
-job
-skills
-inventory
-equipment
-maps
-look
-here
-battle
-help
-validate
-save
-move n
-travel West Ronfaure
-wait 60
-item Bronze Sword
-inspect item Bronze Sword
-equip Bronze Sword
-shop Ashene
-buy Bronze Sword
-sell Bronze Sword
-```
+### Inventory/equipment/economy
 
-Account/menu commands include:
+- Inventory plus Mog/storage/portable/wardrobe containers;
+- capacity/access/stack rules;
+- item normalization/schema;
+- equipment eligibility/equip/unequip;
+- item inspection;
+- shop buying/selling;
+- metadata-only latent/enchantment/charge/ranged-ammo behavior.
 
-```text
-/menu
-/commands
-/help
-/newcharacter
-/characters
-/load <name|number>
-/save
-/account
-/reset
-```
+### Progression/combat
 
-FFXI macro-style commands such as `/ma`, `/ja`, `/ws`, `/item`, `/equipset`, `/recast`, and `/echo` remain compatible adapters where supported.
+- character-owned `player.progression.skills[skillId]` values;
+- sparse skill-cap scaffolds;
+- deterministic representative skill-gain hooks;
+- EXP, leveling, reward and loot scaffolds;
+- battle state and deterministic RNG injection;
+- placeholder attacks/weapon skills/casts;
+- status lifecycle.
 
-## Current character creation
+Current FFXI formulas/caps are scaffold data unless explicitly confidence-labeled otherwise.
 
-Current flow is still transitional:
+## Save/account rules
+
+Current local keys:
 
 ```text
-/newcharacter
-CharacterName
-sandoria
-hume
-male
-warrior
-yes
-```
-
-The future 0.6 direction replaces a simple starting-job emphasis with origins/starting circumstances while preserving logical discipline training.
-
-## Save/account model
-
-Current files/state:
-
-```text
-js/text/save.js
 ffxiTextRpgAccounts
 ffxiTextRpgAccountSession
+```
+
+Encoding:
+
+```text
 base64-json-v1
 ```
 
-The payload is encoded, not cryptographically protected.
+This is encoding, not cryptographic protection.
 
-Important current compatibility rule:
-
-`reviveGameState()` relinks:
+Important compatibility reference:
 
 ```text
 player.inventory
 ```
 
-to:
+must reference:
 
 ```text
 player.inventoryState.containers.inventory.items
 ```
 
-after JSON load.
+after load/revive.
 
-Do not add large amounts of new persistent simulation state before the ordered migration mechanism planned for `0.4.300`.
+Persistent incompatible state changes require an ordered migration or an explicit reset decision.
 
-## Core systems already implemented
+## Development gate
 
-### World/travel
+Use Node 20+.
 
-Implemented foundations include:
-
-- starter cities and wilderness/dungeon hooks;
-- San d'Oria alphanumeric topology;
-- coordinate navigation and atlas discovery;
-- zone graph and travel restrictions scaffold;
-- grid movement;
-- foot-travel aggro scaffold;
-- POI discovery and same-zone fast travel.
-
-### Inventory/items/equipment/economy
-
-Implemented foundations include:
-
-- Inventory, Mog Safe/Safe 2, Storage, Locker, Satchel, Sack, Case, Wardrobes 1-8;
-- container access/capacity/stacking rules;
-- item normalization/schema;
-- equipment eligibility and stat modifiers;
-- item inspection;
-- shop buying/selling;
-- metadata-only latent/enchantment/charge/ranged-ammo behavior.
-
-### Skills/progression
-
-Implemented foundations include:
-
-- character-owned current skills in `player.progression.skills`;
-- sparse skill cap scaffolds;
-- deterministic +1 gain hooks for representative combat/cast actions;
-- EXP/leveling/reward/loot scaffolds.
-
-Current skill caps and formulas are not authoritative retail FFXI data.
-
-### Combat/status/ticks
-
-Implemented foundations include:
-
-- battle state;
-- deterministic RNG injection;
-- basic attacks;
-- placeholder weapon skill/cast actions;
-- rewards;
-- status lifecycle;
-- wall-clock tick scaffold.
-
-The current tick engine is not the final world-time engine. 0.5 should separate deterministic simulation time from wall-clock scheduling.
-
-## Important architectural rules
-
-- Keep active runtime text-first.
-- Limited icons/tokens/meters/diagrams are acceptable; do not rebuild a full graphical world unless explicitly requested.
-- Keep logic independent of rendering.
-- Keep command input/UI buttons as adapters into the same gameplay actions.
-- Prefer small modules and data-driven stable IDs.
-- Do not implement full event sourcing merely because semantic events are added.
-- Add explicit migrations when persistent schema changes.
-- Do not store new saves as raw plain JSON.
-- Preserve `player.inventory` compatibility until deliberately migrated with tests.
-- Use formula confidence labels: exact/sourced, researched approximation, intentional simplification, placeholder.
-- Add tests/version/docs for major runtime changes.
-- Do not treat backwards compatibility as guaranteed pre-1.0; migration/reset decisions must still be explicit.
-
-## Important tests
-
-Representative current tests include:
-
-```text
-tests/saveAccount.test.js
-tests/pipeline.test.js
-tests/slashCommandRouter.test.js
-tests/canvasUi.test.js
-tests/equipmentEngine.test.js
-tests/equipmentValidation.test.js
-tests/inventoryEngine.test.js
-tests/itemSchema.test.js
-tests/rewardEngine.test.js
-tests/rngEngine.test.js
-tests/shopEngine.test.js
-tests/skillCaps.test.js
-tests/skillProgressionEngine.test.js
-tests/skillCommandRouter.test.js
-tests/skillProgressionValidation.test.js
-tests/combatActionEngine.test.js
-tests/poiEngine.test.js
-tests/travelEngine.test.js
-tests/atlasAndControls.test.js
-tests/characterCreation.test.js
-tests/uiPanels.test.js
+```bash
+npm test
+npm run benchmark
+npm run check
 ```
 
-Use Node's built-in `node:test` style for new tests.
+GitHub Actions runs the test and benchmark gate for pull requests and pushes to `main`.
+
+New runtime tracks should merge only after the gate is green.
+
+## Immediate sequence after 0.4 stabilization
+
+1. `0.4.900` — certify the 0.4 exit gates and synchronize authoritative docs.
+2. `0.5.100` — deterministic world clock.
+3. `0.5.200` — pause/simulation speed boundary.
+4. `0.5.300` — canonical timed task model.
+5. `0.5.400` — interrupt model.
+6. `0.5.500` — day boundary and end-of-day review.
+7. `0.5.600` — persistent project model.
+8. `0.5.700` — integrate travel plus one non-travel activity with canonical time.
+9. `0.5.900` — 0.5 exit gate.
+
+Then 0.6 begins capability/disciplines/origins/livelihood work.
 
 ## First representative gameplay target
 
-Working 0.7 vertical slice: **A Week Beyond the West Gate**.
+0.7 working slice: **A Week Beyond the West Gate**.
 
-It should combine:
+It should combine origins, a modest foothold, one livelihood loop, local economy, one persistent material/labor project, simulated days/EoD review, preparation, one meaningful expedition, travel danger/combat, return/recovery, measurable capability growth, and one permanent end-of-week accomplishment.
 
-- multiple origins;
-- a modest starting foothold;
-- one livelihood/gathering loop;
-- local economy;
-- one persistent material/labor project;
-- simulated days and end-of-day review;
-- preparation;
-- one meaningful expedition;
-- travel danger and combat;
-- recovery/return-home loop;
-- measurable capability growth;
-- one permanent end-of-week accomplishment/unlock.
-
-The goal is to prove that life-building and adventure are one connected game rather than separate minigames.
+The purpose is to prove that life-building and adventure are one connected game rather than separate minigames.
