@@ -9,6 +9,7 @@ import {
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { emitSemanticEvent } from './semanticEventEngine.js';
 
 export function describePlace(placeId) {
     const place = getPlace(placeId);
@@ -134,6 +135,14 @@ export function startTravel(state, destinationQuery) {
         arriveAt: route.connection.arriveAt ?? route.destination.coordinateSystem.start,
     };
 
+    const event = emitSemanticEvent(state, 'travel.started', {
+        from: route.from,
+        to: route.to,
+        destinationName: route.destination.name,
+        mode: route.connection.mode,
+        durationSeconds: route.connection.travelSeconds,
+    }, { source: 'travelEngine' });
+
     return actionSuccess({
         action: 'travel.start',
         code: 'travel.started',
@@ -145,6 +154,7 @@ export function startTravel(state, destinationQuery) {
             mode: route.connection.mode,
             durationSeconds: route.connection.travelSeconds,
             travel: state.travel,
+            eventId: event.id,
         },
         display: { text: `Traveling to ${route.destination.name}. Estimated time: ${route.connection.travelSeconds}s.` },
     });
@@ -170,10 +180,19 @@ export function advanceTravel(state, elapsedSeconds) {
     }
     state.travel = null;
 
+    const event = emitSemanticEvent(state, 'travel.arrived', {
+        from: completed.from,
+        to: completed.to,
+        destinationName: destination?.name ?? completed.to,
+        mode: completed.mode,
+        arrival,
+    }, { source: 'travelEngine' });
+
     return {
         completed: true,
         travel: completed,
         destination,
+        eventId: event.id,
         message: `Arrived at ${destination?.name ?? completed.to} ${describeCoordinate(arrival)}.`,
     };
 }
