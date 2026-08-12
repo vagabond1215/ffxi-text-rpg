@@ -10,7 +10,9 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 4. `docs/ROADMAP.md` — current implementation sequence and milestone gates.
 5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
 6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not harden into final design.
-7. Relevant runtime/data/tests for the next bounded unit.
+7. `docs/ARCHITECTURE.md` — current module boundaries.
+8. `js/text/version.js` — authoritative active version values.
+9. This handoff, then relevant runtime/data/tests for the next bounded unit.
 
 Older planning documents preserve useful history but do not override the files above.
 
@@ -57,13 +59,13 @@ Loadouts and preparation constrain and enhance.
 ## Current baseline
 
 ```text
-Product:      0.5.650.1
-Package:      0.5.650
+Product:      0.5.700.1
+Package:      0.5.700
 Account Save: 4
 Game State:   5
-Data:         17
+Data:         18
 Benchmark:    1
-Codename:     Ecology Substrate
+Codename:     Routes and Transport
 ```
 
 `js/text/version.js` is authoritative.
@@ -80,142 +82,135 @@ The current coherent sequence on `main` is:
 - 0.5.500 day boundaries/end-of-day review;
 - 0.5.550 original-world identity/stable-ID migration;
 - 0.5.600 persistent projects and resource provenance;
-- 0.5.650 ecology, gathering-source, and population substrate.
+- 0.5.650 ecology, gathering-source, and population substrate;
+- 0.5.700 canonical routes and scheduled transport substrate.
 
 Do not restart earlier tracks unless a concrete regression requires it.
 
-## 0.5.650 — exit status
+## 0.5.700 — exit status
 
-The ecology/gathering/spawn substrate is **complete enough to exit the track**. It deliberately proves contracts with representative content rather than beginning high-volume generation.
+The travel/transport substrate is **complete enough to exit the track**. It deliberately proves shared route/schedule contracts with representative data rather than mass-authoring the final transport network.
 
-### Canonical ecology catalog
+### Canonical route catalog
 
-`js/text/data/ecologyCatalog.js` now provides:
+`js/text/data/routeCatalog.js` now provides:
 
-- canonical family records;
-- canonical species records separated from encounter instances;
-- habitat tags;
-- aggression, senses, social mode, and family-link behavior metadata;
-- place-bound population records;
-- population capacity, density, rarity, and deterministic respawn rules;
-- deterministic appearance conditions using canonical day/time or explicit flags;
-- named-variant hooks without arbitrary random appearance semantics;
-- flora, mineral, and fishing gathering-source definitions;
-- source action, tool, proficiency, capacity, output, and regeneration contracts;
-- standalone cross-reference validation across families/species/populations/places/sources/actions/items/provenance.
+- stable canonical route IDs and route-stop IDs;
+- route types and supported modes independent of incidental place-exit UI;
+- route stops referencing canonical places and optional departure/arrival coordinates;
+- ordered segments carrying fictional duration, distance, and hazard tags;
+- bidirectionality;
+- cargo/encumbrance metadata;
+- map/knowledge discovery hooks;
+- deterministic service cadence helpers;
+- route/service cross-reference validation.
 
-Representative records span multiple distinct ecological cases: Elderwood beasts/raiders, Redstone burrowers, Deepvein cave bats, Starfen plantoids/raiders, a rare Moon-Antler Hart, forest flora/timber, upland ore/clay, wetland reeds/herbs, and fishing water.
+Representative routes include local/regional roads in Elderwood, Redstone Reach, and Starfen; the Crown-Forge and Forge-Mere interregional caravan roads; and a Mistmere/Starfen waterway.
 
-### Canonical raw resource items
+### Scheduled transport services
 
-`js/text/data/resourceItems.js` provides representative raw-resource item templates for the ecology substrate. Each item has canonical source/place/action provenance and intentional sinks rather than existing as an isolated loot name.
+The same catalog defines representative services:
 
-Current representative items include Elderwood Sweetroot/Hardwood, Redstone Copper Ore/Clay, Starfen Reed Fiber/Marrowleaf/Silverfin.
+- `service-crown-forge-caravan`;
+- `service-forge-mere-caravan`;
+- `service-mistmere-west-ferry`.
 
-### Persistent ecology state
+Services use stable route stops, deterministic cadence, first-departure offset, boarding lead, fare, cargo allowance, mode, and route duration. The contract is intentionally generic enough for later caravan/ferry/wagon/coach/mount modes rather than one engine per vehicle type.
 
-`js/text/systems/ecologyEngine.js` provides additive Game State v5 ecology state with:
+`gil` remains the current fare currency only because the original currency design is intentionally deferred.
 
-- lazy runtime records for populations and gathering sources;
-- persistent available-unit/depletion state;
-- deterministic regeneration/respawn from `worldTime.totalSeconds`;
-- population consumption;
-- environmental harvesting;
-- place, active-condition, tool, proficiency, and capacity checks;
-- atomic normal-inventory insertion before source depletion;
-- semantic events for population consumption and resource harvesting;
-- runtime ecology-state validation.
+### Canonical journey engine
 
-No real-world timer is authoritative. Full sources do not accumulate unbounded hidden regeneration while already full.
+`js/text/systems/transportEngine.js` now provides:
 
-### Encounter/species boundary
+- travel-state contract v2;
+- `route` and `scheduled` journey kinds;
+- `waiting` and `inTransit` phases;
+- route journeys backed by canonical timed tasks;
+- scheduled booking with fare/cargo validation;
+- deterministic departure and arrival world-time boundaries;
+- semantic booking/start/departure/arrival/cancellation events;
+- travel-specific departure/arrival interrupt candidates;
+- arrival through normal place/atlas discovery;
+- linked timed-task cancellation when travel stops;
+- lazy normalization of older active Game State v5 travel objects.
 
-`createEnemy()` now supports `speciesId`, and canonical seed world enemies use that field to reference their species record. This keeps combat encounter templates distinct from species/ecology identity.
+No new top-level persistence registry was required, so Game State remains v5.
 
-The training dummy remains an artificial test target and therefore does not require a world species record.
+### Existing travel integration
 
-### Rare/named behavior
+`js/text/systems/travelEngine.js` now prefers canonical route legs for supported walking routes and delegates timing to the transport engine. `advanceTravel()` advances canonical world time rather than a separate travel countdown.
 
-Rare/named hooks are deterministic or world-state driven:
+Existing `places.js` connection records remain a **transitional fallback** where canonical route coverage has not yet been authored. Do not delete them until route coverage and dependent POI/exit behavior can migrate atomically.
 
-- the Moon-Antler Hart population uses a canonical day-modulo plus early-morning time window;
-- the Pale Ear named hook requires the explicit `elderwood.pale-ear-trail` flag.
-
-No arbitrary "roll every load until rare spawn appears" contract was introduced.
+`navigationEngine.stopTravel()` now cancels the linked timed task instead of only clearing visible travel state.
 
 ### Version/data impact
 
 ```text
-Product             0.5.600.1 -> 0.5.650.1
-Package             0.5.600   -> 0.5.650
+Product             0.5.650.1 -> 0.5.700.1
+Package             0.5.650   -> 0.5.700
 Account Save        4         unchanged
 Game State          5         unchanged
-Data                16        -> 17
-enemyEntity          0.2.0    -> 0.2.1
-ecologyCatalog       new       0.1.0
-ecologyState         new       0.1.0
-populations          new       0.1.0
-gatheringSources     new       0.1.0
-resourceItems        new       0.1.0
+Data                17        -> 18
+routeCatalog         new       0.1.0
+transport            new       0.1.0
+travel               0.4.4    -> 0.5.0
+navigation           0.1.0    -> 0.1.1
 ```
 
-Database registry now includes `ecologyFamilies`, `species`, `populations`, `gatheringSources`, and `resourceItems`.
+Database registry now includes `routes` and `transportServices`; `placeConnections` is explicitly marked transitional.
 
-### Tests
+### Tests and CI
 
-`tests/ecologyEngine.test.js` covers:
+`tests/transportEngine.test.js` covers:
 
-- species/family/encounter separation;
-- multiple habitats and families;
-- gathering-source -> canonical item provenance links;
-- additive ecology state under Game State v5;
-- persistent population depletion and deterministic respawn;
-- deterministic rare day/time appearance;
-- explicit-flag named hooks;
-- atomic harvest/inventory/provenance behavior;
-- source depletion/regeneration;
-- place/tool hooks;
-- fishing time windows;
-- ecology catalog validation;
-- invalid runtime ecology references.
+- route/service catalog cross-reference validation;
+- multi-segment service journeys and hazard aggregation;
+- deterministic service departure times;
+- canonical walking travel using a timed task and advancing world time;
+- scheduled fare and cargo enforcement;
+- exact departure/arrival simulation interrupts;
+- deterministic arrival at the destination place;
+- travel cancellation cancelling the timed task.
 
-`tests/pipeline.test.js` is synchronized to the `0.5.650.1 / Data 17` version and registry contract.
+Travel regression tests were updated for canonical route duration/world-time semantics. Semantic-event tests now filter by event type rather than assuming a travel event owns the first event sequence, because starting a journey composes with the timed-task event stream.
 
-### CI checkpoint
+Runtime integration head `987393ec0b083a6e05c012dfb19e7f5f7523cfd5` completed the GitHub Actions **test** check successfully on 2026-08-12. Documentation closeout commits followed that runtime head.
 
-Runtime/version integration head `81210ce6915f3d5f0034ee10744da91b929940df` completed the GitHub Actions **test** check successfully on 2026-08-12. Subsequent commits are documentation closeout only.
+On continuation, refetch the newest `main` and its check runs before coding.
 
-On continuation, inspect the newest `main` head and current check runs before coding. Do not assume a later documentation commit's build/deploy state without re-reading GitHub.
-
-## 0.5.650 bounded limitations
+## 0.5.700 bounded limitations
 
 These are deliberate deferrals, not reasons to reopen the track broadly:
 
-- existing `places.js` `spawnRules` remain a transitional encounter-placement layer; population definitions are established but encounter selection is not yet population-driven;
-- general player-facing gathering commands/UI are not yet exposed;
-- population dynamics currently model deterministic capacity/depletion/respawn, not seasons, weather, migration, predation, reproduction, or territory simulation;
-- representative ecology/resource records are intentionally small; do not begin hundreds-scale generation before `0.5.800` content-pack validation;
-- the ecology validator is currently a dedicated validator tested directly; high-volume unified regional validation belongs to `0.5.800`;
-- `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain bounded compatibility debt.
+- scheduled transport has engine/API contracts but no broad player-facing booking command/UI yet;
+- cancellation currently has no fare-refund policy;
+- service schedules are simple periodic cadence, without weekday calendars, stop dwell, weather suspension, ticket reservations, finite passenger competition, or vehicle/NPC actors;
+- hazard tags are structured route data and interrupt hooks, not yet a full en-route event/encounter resolver;
+- route knowledge is metadata/discovery infrastructure, not a universal hard travel gate;
+- route distance/time values are representative and not final geographic balance;
+- canonical route coverage is intentionally incomplete and old place connections remain fallback infrastructure;
+- `gil`, historical localStorage keys, legacy-shaped POI IDs, `mogHouse`/`mogSafe` persisted keys, legacy command adapters, and historical research modules remain bounded compatibility debt.
 
 ## Next target
 
 ```text
-0.5.700 — Travel and scheduled transport substrate
+0.5.800 — Regional content packs, normalization, and validation
 ```
 
-**Do not start high-volume route authoring.** First prove one bounded shared transport contract.
+**Do not begin mass content authoring yet.** First prove pack ownership and unified validation.
 
-Recommended first unit:
+Recommended first bounded unit:
 
-1. Define canonical route records independent of incidental place-transition UI.
-2. Represent walking/local/overland route traversal with canonical fictional duration using the existing world-time/task/interrupt infrastructure.
-3. Add stable route stops, directionality, distance/time, hazard, map/knowledge, cargo/encumbrance hooks without prematurely solving every travel mechanic.
-4. Define scheduled caravan/service records with deterministic departure cadence, fare, cargo allowance, route/stops, and arrival time.
-5. Make the transport contract reusable by later ferries, wagons, mounts, and other scheduled modes rather than creating one caravan-only engine.
-6. Add deterministic arrival/departure and interrupt seams; no needless wall-clock waiting.
-7. Cross-validate routes/services/stops against canonical places and prove multiple representative routes before broad generation.
-8. Update version/docs/handoff and stop at a coherent 0.5.700 boundary before 0.5.800.
+1. Define a regional content-pack manifest/schema with stable pack ID, region/ownership metadata, data-contract version, dependencies, and explicit record collections.
+2. Establish stable-ID ownership and duplicate/conflict detection across multiple packs; canonical IDs should remain human-meaningful rather than becoming opaque generated IDs.
+3. Build one validator surface that can resolve/cross-check places, routes/stops/services, species/populations/sources, items/source-sink metadata, shops/NPCs, and representative recipe/quest/relationship records or fixtures.
+4. Detect missing/duplicate IDs, dangling references, invalid source/sink graphs, invalid route/service topology, and legacy identifiers leaking into canonical packs without explicit adapters.
+5. Define normalization of legacy/reference material as a candidate-record pipeline. Candidate records must remain reviewable and cannot become canonical simply because they parsed successfully.
+6. Prove at least two regional packs plus shared/common records and at least one intentional cross-region reference.
+7. Add generated scale fixtures at hundreds-of-record breadth to exercise lookup, conflict detection, and validation complexity before hundreds of hand-authored records are created.
+8. Version appropriately, update docs/handoff, and stop at a coherent 0.5.800 boundary before the 0.5.900 exit-gate pass.
 
 ## Resource/economy law
 
@@ -242,6 +237,7 @@ Treat these as temporary and replace incrementally behind migrations/tested inte
 - placeholder spell/weapon-skill combat actions;
 - small starter equipment/shop/enemy/resource catalogs;
 - `places.js` encounter `spawnRules` rather than population-driven spawning;
+- `places.js` connection records as fallback rather than complete canonical route coverage;
 - minimal current sink metadata on some starter materials;
 - legacy `data/` and `ffxi*` research tables;
 - historical localStorage key names;
