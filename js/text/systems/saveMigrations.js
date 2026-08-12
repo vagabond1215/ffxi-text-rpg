@@ -2,6 +2,7 @@ import { VERSION } from '../version.js';
 import { createInventoryState } from './inventoryEngine.js';
 import { migrateVersionedValue } from './migrationEngine.js';
 import { CURRENT_SAVE_VERSION } from './validation.js';
+import { createWorldTimeState } from './worldTimeEngine.js';
 
 function migrateGameState2To3(state) {
     const next = { ...state, version: 3 };
@@ -48,12 +49,30 @@ function migrateGameState2To3(state) {
     return next;
 }
 
+function migrateGameState3To4(state) {
+    return {
+        ...state,
+        version: 4,
+        worldTime: createWorldTimeState({
+            totalSeconds: Number.isInteger(state.worldTime?.totalSeconds) && state.worldTime.totalSeconds >= 0
+                ? state.worldTime.totalSeconds
+                : 0,
+        }),
+    };
+}
+
 const GAME_STATE_MIGRATIONS = Object.freeze([
     Object.freeze({
         id: 'game-state-2-to-3-inventory-and-progression',
         from: 2,
         to: 3,
         migrate: migrateGameState2To3,
+    }),
+    Object.freeze({
+        id: 'game-state-3-to-4-world-time',
+        from: 3,
+        to: 4,
+        migrate: migrateGameState3To4,
     }),
 ]);
 
