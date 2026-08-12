@@ -14,12 +14,12 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.550.2
-Package:      0.5.550
+Product:      0.5.600.1
+Package:      0.5.600
 Account Save: 4
 Game State:   5
-Data:         15
-Codename:     Original World Identity
+Data:         16
+Codename:     Resource Provenance
 ```
 
 This remains pre-alpha product development. Milestone numbers describe the active contract; they are not completion percentages.
@@ -62,12 +62,7 @@ Key rules:
 
 # 0.4 — Foundation — complete
 
-- [x] Development direction and version protocol.
-- [x] Four-part product version and package-version separation.
-- [x] Ordered persistence migrations.
-- [x] Structured `ActionResult` contract.
-- [x] Bounded semantic-event foundation.
-- [x] Foundation stabilization and architecture exit gate.
+Delivered development direction/versioning, ordered persistence migrations, structured `ActionResult`, bounded semantic events, and architecture stabilization.
 
 ---
 
@@ -106,50 +101,47 @@ Key rules:
 
 ## 0.5.550 — Original-world identity and canonical nomenclature — complete
 
-Implemented on `main` at product `0.5.550.2`.
+Implemented original powers/regions/places/maps/ancestries/transitional disciplines, Game State v4 -> v5 identity migration, canonical world-facing vocabulary, bounded legacy adapters, and explicit legacy/reference quarantine.
 
-- [x] Canonical powers: Thornwall, Brasshaven, Mistmere.
-- [x] Canonical regions/places/maps under original stable IDs.
-- [x] Canonical ancestries: Human, Lethari, Miri, Veyra, Korren.
-- [x] Transitional discipline IDs/names migrated to original terminology.
-- [x] Game State v4 -> v5 identity migration.
-- [x] Data contract advanced through v15.
-- [x] Canonical character-creation defaults and help vocabulary.
-- [x] Canonical POI companion/route-exit/home-storage vocabulary.
-- [x] Canonical runtime travel fallback and arrival terminology.
-- [x] Originalized starter NPC/service/place-facing content.
-- [x] Historical FFXI-derived data quarantined behind explicit legacy/reference boundaries.
-- [x] CI baseline restored with tests, benchmark, and build green after migration cleanup.
+Deliberate compatibility debt that does not block the gate remains: `gil`, historical localStorage keys, legacy-shaped POI hook IDs, migration aliases/tests, and explicitly historical research modules.
 
-### Deliberate bounded compatibility debt
+## 0.5.600 — Resource provenance and persistent projects — complete
 
-These do **not** block the 0.5.550 exit gate:
+Implemented on `main` at product `0.5.600.1`.
 
-- `gil` remains until an original currency design is deliberately chosen;
-- historical localStorage key names remain for save compatibility;
-- some legacy-shaped POI hook IDs remain until dependent catalogs/hooks migrate atomically;
-- `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules intentionally retain historical identifiers;
-- legacy command aliases may remain at input/diagnostic boundaries while canonical help/new runtime records use original-world vocabulary.
+- [x] Persistent project registry with stable `project-*` IDs.
+- [x] Project material requirements/contributions using real inventory removal.
+- [x] Project labor represented by canonical timed tasks with deterministic progress/completion boundaries.
+- [x] Project create/material/start/complete/cancel semantic events.
+- [x] Provenance schema for carried goods, bodies, flora, minerals, fishing, salvage, crafting, commerce, contracts/social rewards, and explicitly exceptional magic.
+- [x] Item source/sink metadata foundation; item schema advanced to v3 and Data contract to v16.
+- [x] Post-combat body/carried-goods/salvage opportunities replace automatic finished-material insertion.
+- [x] Timed `search`, `skin`, `butcher`, `pluck`, `extract`, and `salvage` recovery action substrate.
+- [x] Tool, proficiency, source condition, fictional-time, inventory-capacity, and yield-chance hooks.
+- [x] Recovery outcome rolls are fixed when the action begins and stored with the persistent recovery record rather than rerolled at later reconciliation.
+- [x] Recovered items carry structured source/place/action provenance.
+- [x] Existing starter loot tables are transitional candidate-output pools rather than direct reward-confetti tables.
+- [x] New project/resource registries lazily initialize under Game State v5; no persistence-version bump required.
 
-The exit rule is therefore: **new canonical gameplay data and normal world-facing runtime state no longer depend on inherited FFXI proper nouns or stable IDs.**
+### 0.5.600 bounded limitations
 
-## 0.5.600 — Resource provenance and persistent projects — next
+- Player-facing UI/command affordances for general project/resource work are deferred; the shared gameplay substrate is exercised through engine APIs/tests.
+- Current starter recovered items use a minimal representative `trade` sink; broad source/sink graph validation belongs to the content-pack/validation track.
+- Environmental gathering sources, populations, depletion/regeneration, species definitions, and respawn are intentionally deferred to `0.5.650`.
+- Existing immediate `gil` rewards remain transitional and are not treated as physical material drops.
 
-First bounded implementation unit:
+## 0.5.650 — Ecology, gathering, and spawn substrate — next
 
-- [ ] Persistent project schema/state with stable IDs, materials, labor, canonical time, progress, completion, and semantic events.
-- [ ] Provenance/source schema for carried goods, bodies, flora, minerals, fishing, salvage, crafting, trade, contracts, and explicit exceptional magic.
-- [ ] Defeated-creature body/resource opportunities instead of automatic finished-material reward confetti where fiction does not support it.
-- [ ] Search/skin/butcher/pluck/extract/salvage action substrate with tool, time, condition, and proficiency hooks.
-- [ ] Item source/sink metadata foundation and validation hooks.
+First bounded unit:
 
-## 0.5.650 — Ecology, gathering, and spawn substrate
+- [ ] Canonical species/family definitions separated from individual encounter instances.
+- [ ] Habitat/population definitions with place/biome, density, rarity, aggression, senses, and social/link hooks.
+- [ ] Flora/mineral/fishing/gathering-source definitions using canonical item-output references and provenance actions.
+- [ ] Deterministic depletion/regeneration or respawn state compatible with canonical world time and interrupts.
+- [ ] Rare/named population hooks without arbitrary appearance rules.
+- [ ] Representative cross-reference validation across species, populations, places, gathering sources, and item outputs.
 
-- [ ] Species/family definitions separate from encounter instances.
-- [ ] Habitat/population/rarity/aggression/senses/social behavior.
-- [ ] Flora/mineral/fishing/gathering-source definitions.
-- [ ] Deterministic regeneration/respawn model.
-- [ ] Rare/named spawn hooks.
+Keep this unit substrate-focused. Do not begin hundreds-scale creature/resource generation until these contracts and validators are coherent.
 
 ## 0.5.700 — Travel and scheduled transport substrate
 
@@ -199,26 +191,13 @@ The phase exit requires one continuous character to train across disciplines, us
 
 # 0.7 — Multi-Region Playable Alpha
 
-Planned tracks cover:
-
-- multiple cities/settlements and a connected exploration graph;
-- caravans, ferries, mounts, freight, and regional logistics;
-- hundreds-scale NPC populations and regional economies;
-- systemic quests/contracts/rewards/reputation;
-- persistent relationships and romance;
-- distinct regional ecology/content packs;
-- substantial item/recipe/spell/technique/economy breadth;
-- a complete multi-city opening campaign layer.
-
-The phase closes when the project plays as a sandbox campaign rather than a systems demonstration.
+Planned tracks cover multiple cities/settlements and exploration, regional transport/logistics, hundreds-scale NPC populations, regional economies, systemic quests/contracts/reputation, relationships/romance, distinct ecology/content packs, substantial item/recipe/technique breadth, and a complete multi-city opening campaign layer.
 
 ---
 
 # 0.8 — Life and Infrastructure Expansion
 
 Deepen property, construction, farming/gardening, husbandry/taming, workshops, logistics, labor, households, civic institutions, production chains, maintenance, and earned automation.
-
-Earlier chores should become easier because the character earns tools, knowledge, infrastructure, labor, and relationships—not because identical actions receive arbitrary exponential costs.
 
 ---
 
