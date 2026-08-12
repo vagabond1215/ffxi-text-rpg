@@ -21,14 +21,15 @@ test('new games start running at normal simulation speed with end-of-day review 
     assert.deepEqual(validateSimulationControlState(state.simulation), []);
 });
 
-test('older simulation-control state lazily acquires end-of-day preference', () => {
+test('older simulation-control state lazily acquires end-of-day preference without changing save version', () => {
     const state = createInitialState();
+    const versionBefore = state.version;
     delete state.simulation.endOfDayPause;
 
     const simulation = ensureSimulationControlState(state);
 
     assert.equal(simulation.endOfDayPause, true);
-    assert.equal(state.version, 4);
+    assert.equal(state.version, versionBefore);
 });
 
 test('pause and resume change simulation control without advancing world time', () => {
