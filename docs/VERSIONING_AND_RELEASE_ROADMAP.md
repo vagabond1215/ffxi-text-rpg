@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.650.1
-Package:      0.5.650
+Product:      0.5.700.1
+Package:      0.5.700
 Account Save: 4
 Game State:   5
-Data:         17
+Data:         18
 Benchmark:    1
-Codename:     Ecology Substrate
+Codename:     Routes and Transport
 ```
 
-The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, provenance-aware physical resource recovery, and the first ecology/population/environmental gathering substrate are established; content breadth and many integrated mechanics remain far below the intended game.
+The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, provenance-aware physical resource recovery, ecology/population/environmental gathering, and canonical route/scheduled-transport substrates are established; content breadth and many integrated mechanics remain far below the intended game.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.5.650.1
+0.5.700.1
 ```
 
 | Segment | Meaning |
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, and `gil` pending deliberate original currency design.
 
 ---
 
@@ -126,70 +126,78 @@ Resulting baseline was `0.5.600.1 / Package 0.5.600 / Game State 5 / Data 16`. I
 
 ## 0.5.650 — Ecology, gathering, and spawn substrate — complete
 
+Resulting baseline was `0.5.650.1 / Package 0.5.650 / Game State 5 / Data 17`. It delivered family/species separation, place-bound populations, environmental gathering sources, deterministic depletion/regeneration and rare/named conditions, resource-item provenance links, and ecology cross-reference validation.
+
+## 0.5.700 — Travel and scheduled transport substrate — complete
+
 Resulting baseline:
 
 ```text
-Product:      0.5.650.1
-Package:      0.5.650
+Product:      0.5.700.1
+Package:      0.5.700
 Account Save: 4
 Game State:   5
-Data:         17
+Data:         18
 Benchmark:    1
-Codename:     Ecology Substrate
+Codename:     Routes and Transport
 ```
 
 ### Version impact
 
-- **Product:** `0.5.600.1` -> `0.5.650.1`.
-- **Package:** `0.5.600` -> `0.5.650`.
+- **Product:** `0.5.650.1` -> `0.5.700.1`.
+- **Package:** `0.5.650` -> `0.5.700`.
 - **Account Save:** unchanged at 4.
-- **Game State:** unchanged at 5 because ecology runtime state is additive and can lazily initialize when absent.
-- **Data:** 16 -> 17 for the new canonical family/species/population/gathering-source/resource-item data contract.
-- **Enemy entity:** `0.2.0` -> `0.2.1` to carry a canonical `speciesId` encounter link.
-- New systems: `ecologyCatalog 0.1.0`, `ecologyState 0.1.0`, `populations 0.1.0`, `gatheringSources 0.1.0`, `resourceItems 0.1.0`.
+- **Game State:** unchanged at 5. No required top-level persistence registry was added; active travel records gain a richer shape and older active-travel records are normalized lazily at the travel boundary.
+- **Data:** 17 -> 18 for canonical route, stop, segment, and scheduled-service contracts.
+- **Travel system:** `0.4.4` -> `0.5.0`.
+- **Navigation system:** `0.1.0` -> `0.1.1` so stopping movement cancels the associated canonical travel task.
+- New systems: `routeCatalog 0.1.0`, `transport 0.1.0`.
 
 ### Delivered
 
-- canonical creature-family records and species records separated from encounter instances;
-- representative population records spanning forest, upland, mine/cave, wetland, raider, beast, plantoid, and rare-population cases;
-- habitat, density, rarity, aggression, senses, social/link metadata, capacity, and respawn contracts;
-- seed encounter templates linked to canonical species through `speciesId`;
-- representative flora/mineral/fishing source records with tool/proficiency/action/output contracts;
-- canonical raw-resource items with matching source/place/action provenance and intentional sinks;
-- persistent depletion/availability records whose regeneration/respawn derives from `worldTime.totalSeconds`;
-- atomic harvesting through the normal inventory engine;
-- deterministic day/time appearance conditions and explicit flag-based named hooks instead of arbitrary appearance rolls;
-- standalone ecology cross-reference validation covering species/families, populations/places, sources/actions/items, and output provenance;
-- regression tests covering multiple families, habitats, source types, depletion/regeneration, rare conditions, named hooks, inventory behavior, and invalid runtime references.
+- canonical route records independent of incidental place-transition UI;
+- stable route-stop records with place/coordinate references;
+- route segment duration, distance, hazard, directionality, supported-mode, cargo/encumbrance, and map/knowledge metadata;
+- canonical walking/overland travel using the existing timed-task and world-time authorities;
+- existing place connections retained as a bounded fallback for places not yet represented in the route catalog;
+- scheduled service records with deterministic cadence, stable stops, boarding lead, fare, cargo allowance, mode, route, and travel duration;
+- shared scheduled transport contract demonstrated by caravan and ferry services and shaped for later wagon/coach/mount use;
+- explicit waiting and in-transit journey phases;
+- deterministic departure and arrival semantic events and simulation-interrupt candidates;
+- linked task cancellation when travel stops;
+- representative interregional services plus local regional road/causeway/waterway examples;
+- standalone route/service validation and regression coverage for route cross-references, schedule calculations, fare/cargo enforcement, canonical timed travel, interrupts, arrival, and cancellation;
+- semantic-event regressions updated to filter by type rather than assuming travel owns the first event sequence after timed tasks were composed into the same action.
 
 ### Intentionally deferred
 
-- replacing the existing `places.js` encounter `spawnRules` arrays with population-driven encounter selection;
-- broad player-facing gathering UI/commands;
-- richer weather/season/migration/predation/reproduction/territory ecology;
-- high-volume creature/flora/resource generation;
-- hundreds/thousands-scale regional content validation, which belongs to `0.5.800`.
+- broad command/UI booking flows for scheduled service;
+- fare-refund policy on cancellation;
+- calendars/service days, stop dwell, weather suspension, ticket/reservation state, vehicle/NPC actors, and capacity competition;
+- full en-route hazard/encounter/event resolution;
+- universal hard gating by route/map knowledge;
+- balanced final route distances/times and mass-authored transport networks;
+- replacement of all transitional place connections;
+- final original currency design; current fares intentionally use `gil`.
 
 ---
 
 # Active and future milestone gates
 
-## 0.5.700 — Travel and scheduled transport substrate — next
+## 0.5.800 — Regional content packs, normalization, and validation — next
 
 Deliver:
 
-- canonical route records independent of incidental place-transition UI;
-- timed local/walking/overland travel built on canonical world time, tasks, and interrupts;
-- route distance/time, hazards, encumbrance/cargo, and map/knowledge hooks;
-- scheduled caravans with stops, deterministic departure cadence, fare, cargo allowance, travel time, and arrival;
-- a shared transport contract that later ferries, wagons, mounts, and other modes can use;
-- representative cross-reference validation across routes, stops, places, schedules, and transport records.
+- regional content-pack manifests with stable pack IDs, ownership/region metadata, contract version, and explicit content collections;
+- stable-ID ownership and duplicate/conflict detection across packs;
+- unified cross-reference validation across places/routes/NPCs/shops/ecology/resources/items/recipes/quests/relationships/transport;
+- source/sink graph validation and explicit exemptions;
+- detection of dangling references, invalid route/service topology, and legacy identifiers leaking into canonical packs without adapters;
+- legacy/reference normalization that produces reviewable candidate records rather than direct canonical imports;
+- representative multi-pack and cross-region references;
+- generated scale fixtures at hundreds-of-record breadth before large hand-authored content expansion.
 
-Do not mass-author routes until the contracts and validators are coherent.
-
-## 0.5.800 — Regional content packs, normalization, and validation
-
-Deliver regional content-pack contracts across places/routes/NPCs/shops/ecology/resources/items/recipes/quests/relationships/transport; reviewable legacy/reference normalization; and high-volume cross-reference validation for stable IDs, sources/sinks, spawns, recipes, shops, quests/rewards, routes, maps, and companions.
+Do not mass-author regional catalogs until the pack contract and validators are coherent.
 
 ## 0.5.900 — Simulation/content-substrate exit gate
 
