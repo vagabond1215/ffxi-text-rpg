@@ -16,6 +16,7 @@ function migrateGameState2To3(state) {
         const player = { ...state.player };
         const defaults = createInventoryState();
         const existingInventory = Array.isArray(state.player.inventory) ? state.player.inventory : [];
+        const existingStructuredItems = state.player.inventoryState?.containers?.inventory?.items;
         const inventoryState = state.player.inventoryState && typeof state.player.inventoryState === 'object'
             ? { ...state.player.inventoryState }
             : defaults;
@@ -30,8 +31,8 @@ function migrateGameState2To3(state) {
         const inventoryContainer = inventoryState.containers.inventory && typeof inventoryState.containers.inventory === 'object'
             ? { ...inventoryState.containers.inventory }
             : { ...defaults.containers.inventory };
-        inventoryContainer.items = Array.isArray(inventoryContainer.items)
-            ? inventoryContainer.items
+        inventoryContainer.items = Array.isArray(existingStructuredItems)
+            ? existingStructuredItems
             : existingInventory;
         inventoryState.containers.inventory = inventoryContainer;
         player.inventoryState = inventoryState;
