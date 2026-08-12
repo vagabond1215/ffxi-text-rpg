@@ -24,6 +24,8 @@ test('starter POIs are populated for major cities', () => {
     assert.ok(getPoisForPlace('mistmere-canal-ward').length >= 6);
     assert.ok(listPointsOfInterest().some((poi) => poi.actions.includes('shop')));
     assert.ok(listPointsOfInterest().some((poi) => poi.actions.includes('guild')));
+    assert.ok(listPointsOfInterest().some((poi) => poi.actions.includes('companion')));
+    assert.equal(listPointsOfInterest().some((poi) => poi.actions.includes('trust')), false);
 });
 
 test('catalogs are attached to bounded legacy POI ids', () => {
@@ -53,7 +55,7 @@ test('talking at current grid discovers same-place fast-travel POI', () => {
     assert.equal(state.position.coord, vendor.coordinate.coord);
 });
 
-test('POI actions render shop guild and quest catalogs', () => {
+test('POI actions render shop guild quest and companion interactions', () => {
     const state = createInitialState();
     const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
     setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
@@ -66,9 +68,17 @@ test('POI actions render shop guild and quest catalogs', () => {
     const clerk = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Oren Vale');
     setPositionAndDiscover(state, 'thornwall-southgate', clerk.coordinate);
     assert.match(performPoiAction(state, 'quest', 'Oren Vale'), /Mission Desk/);
+
+    const companion = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Rowan Greymark');
+    setPositionAndDiscover(state, 'thornwall-southgate', companion.coordinate);
+    const companionOutput = performPoiAction(state, 'companion', 'Rowan Greymark');
+    assert.match(companionOutput, /Type: companion/);
+    assert.match(companionOutput, /Action: companion/);
+    assert.match(companionOutput, /Companion recruitment/);
+    assert.doesNotMatch(companionOutput, /Trust/);
 });
 
-test('router exposes POI discovery fast travel and catalog actions', () => {
+test('router exposes POI discovery fast travel catalog companion and exit actions', () => {
     const state = createInitialState();
     const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
     setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
@@ -83,5 +93,9 @@ test('router exposes POI discovery fast travel and catalog actions', () => {
     assert.match(router('shop Sella Thorn'), /Bronze Sword/);
     assert.match(router('discovered'), /Sella Thorn/);
     assert.match(router('fastpoi Sella Thorn'), /Fast traveled to Sella Thorn/);
-    assert.match(router('zonefast'), /Known zone exits/);
+    assert.match(router('exits'), /Known exits/);
+
+    const companion = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Rowan Greymark');
+    setPositionAndDiscover(state, 'thornwall-southgate', companion.coordinate);
+    assert.match(router('companion Rowan Greymark'), /Companion recruitment/);
 });
