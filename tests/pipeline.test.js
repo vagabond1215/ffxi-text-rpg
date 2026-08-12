@@ -14,24 +14,25 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.500.0');
-    assert.equal(PACKAGE_VERSION, '0.5.500');
+    assert.equal(PRODUCT_VERSION, '0.5.550.1');
+    assert.equal(PACKAGE_VERSION, '0.5.550');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
-    assert.equal(VERSION.gameState, 4);
-    assert.equal(VERSION.data, 13);
+    assert.equal(VERSION.gameState, 5);
+    assert.equal(VERSION.data, 14);
     assert.equal(VERSION.benchmark, 1);
-    assert.equal(VERSION.save, VERSION.accountSave);
-    assert.match(describeVersion(), /Product: 0\.5\.500\.0/);
-    assert.match(describeVersion(), /Package: 0\.5\.500/);
+    assert.equal(VERSION.save, VERSION.gameState);
+    assert.match(describeVersion(), /Product: 0\.5\.550\.1/);
+    assert.match(describeVersion(), /Package: 0\.5\.550/);
     assert.match(describeVersion(), /Account Save: 4/);
-    assert.match(describeVersion(), /Game State: 4/);
-    assert.match(describeVersion(), /Codename: Day Boundary Review/);
+    assert.match(describeVersion(), /Game State: 5/);
+    assert.match(describeVersion(), /Codename: Original World Identity/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.500/);
-    assert.match(describeSystemVersions(), /saveMigrations: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.550\.1/);
+    assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.0/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
     assert.match(describeSystemVersions(), /semanticEvents: 0\.1\.0/);
     assert.match(describeSystemVersions(), /worldTime: 0\.2\.0/);
@@ -39,19 +40,19 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /simulationInterrupts: 0\.1\.0/);
     assert.match(describeSystemVersions(), /timedTasks: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /travel: 0\.4\.2/);
-    assert.match(describeSystemVersions(), /characterCreation/);
-    assert.match(describeSystemVersions(), /canvasUi: 0.7.0/);
-    assert.match(describeSystemVersions(), /combatActions: 0.5.1/);
-    assert.match(describeSystemVersions(), /battleRewards: 0.5.2/);
-    assert.match(describeSystemVersions(), /itemSchema: 0.6.0/);
-    assert.match(describeSystemVersions(), /itemBehavior: 0.1.0/);
-    assert.match(describeSystemVersions(), /equipmentEligibility: 0.5.0/);
-    assert.match(describeSystemVersions(), /shopTransactions: 0.3.8/);
-    assert.match(describeSystemVersions(), /skillCaps: 0.5.1/);
-    assert.match(describeSystemVersions(), /skillProgression: 0.5.2/);
-    assert.match(describeSystemVersions(), /leveling: 0.5.3/);
+    assert.match(describeSystemVersions(), /validation: 0\.8\.0/);
+    assert.match(describeSystemVersions(), /travel: 0\.4\.3/);
+    assert.match(describeSystemVersions(), /characterCreation: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /canvasUi: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /combatActions: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /battleRewards: 0\.5\.2/);
+    assert.match(describeSystemVersions(), /itemSchema: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /itemBehavior: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /equipmentEligibility: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /shopTransactions: 0\.3\.8/);
+    assert.match(describeSystemVersions(), /skillCaps: 0\.5\.2/);
+    assert.match(describeSystemVersions(), /skillProgression: 0\.5\.3/);
+    assert.match(describeSystemVersions(), /leveling: 0\.5\.3/);
 });
 
 test('database registry includes major planned systems and recovered legacy data', () => {
