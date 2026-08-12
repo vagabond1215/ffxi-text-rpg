@@ -12,9 +12,9 @@ import { startEncounter } from '../js/text/systems/combatActionEngine.js';
 test('initial state starts with discovered atlas coordinate', () => {
     const state = createInitialState();
 
-    assert.equal(state.position.placeId, 'southern-sandoria');
+    assert.equal(state.position.placeId, 'thornwall-southgate');
     assert.equal(state.position.coord, 'G-10');
-    assert.equal(hasVisited(state.atlas, 'southern-sandoria', state.position), true);
+    assert.equal(hasVisited(state.atlas, 'thornwall-southgate', state.position), true);
     assert.match(describeAtlas(state), /@/);
     assert.match(describeAtlas(state), /\?/);
 });
@@ -32,20 +32,20 @@ test('controls include resource bars tick bar keypad and action groups', () => {
 
 test('setPositionAndDiscover records a new visited coordinate', () => {
     const state = createInitialState();
-    const result = setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    const result = setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
     assert.equal(result.ok, true);
     assert.equal(state.position.coord, 'F-10');
-    assert.equal(hasVisited(state.atlas, 'southern-sandoria', { coord: 'F-10' }), true);
+    assert.equal(hasVisited(state.atlas, 'thornwall-southgate', { coord: 'F-10' }), true);
 });
 
 test('aggro engine can deterministically trigger on aggressive spawn grid', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'west-ronfaure', { x: 3, y: 2 });
+    setPositionAndDiscover(state, 'west-elderwood', { x: 3, y: 2 });
     const result = evaluateAggroForGrid(state, { rng: () => 0 });
 
     assert.equal(result.triggered, true);
-    assert.equal(result.encounter.enemyId, 'enemy-forest-goblin');
+    assert.equal(result.encounter.enemyId, 'enemy-mossback-goblin');
 });
 
 test('router exposes controls atlas grid and move commands', () => {
@@ -57,7 +57,7 @@ test('router exposes controls atlas grid and move commands', () => {
     });
 
     assert.match(router('controls'), /Resource Bars/);
-    assert.match(router('atlas'), /Southern San/);
+    assert.match(router('atlas'), /Thornwall Southgate/);
     assert.match(router('grid'), /coordinate/);
     assert.match(router('move e'), /Moved east/);
 });
@@ -70,8 +70,8 @@ test('movement is blocked while in active battle', () => {
         reload: () => {},
     });
 
-    startEncounter(state, 'Forest Hare');
+    startEncounter(state, 'Brush Hare');
 
     assert.match(router('move e'), /cannot move while engaged/);
-    assert.match(router('travel West Ronfaure'), /cannot travel while engaged/);
+    assert.match(router('travel West Elderwood'), /cannot travel while engaged/);
 });
