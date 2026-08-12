@@ -35,9 +35,9 @@ test('awardExperience applies a single level-up and carries remainder EXP', () =
     assert.equal(result.ok, true);
     assert.deepEqual(result.levelUps, [2]);
     assert.equal(player.jobs.level, 2);
-    assert.equal(player.jobs.jobLevels.warrior, 2);
+    assert.equal(player.jobs.jobLevels.vanguard, 2);
     assert.equal(player.progression.exp, 25);
-    assert.equal(player.progression.jobProgression.warrior.exp, 25);
+    assert.equal(player.progression.jobProgression.vanguard.exp, 25);
     assert.equal(player.progression.expToNext, getExpToNextLevel(2, player.jobs.levelCap));
 });
 
@@ -52,9 +52,9 @@ test('awardExperience can apply multiple level-ups in one grant', () => {
     assert.equal(result.ok, true);
     assert.deepEqual(result.levelUps, [2, 3]);
     assert.equal(player.jobs.level, 3);
-    assert.equal(player.jobs.jobLevels.warrior, 3);
+    assert.equal(player.jobs.jobLevels.vanguard, 3);
     assert.equal(player.progression.exp, 10);
-    assert.equal(player.progression.jobProgression.warrior.level, 3);
+    assert.equal(player.progression.jobProgression.vanguard.level, 3);
 });
 
 test('awardExperience respects the current level cap', () => {
@@ -82,35 +82,35 @@ test('awardExperience refreshes HP MP and clamps TP after level-up', () => {
     assert.ok(player.resources.tp <= player.combat.resources.maxTp);
 });
 
-test('switchMainJob preserves independent EXP and levels per unlocked job', () => {
+test('switchMainJob preserves independent EXP and levels per unlocked discipline', () => {
     const player = createPlayer();
     awardExperience(player, getExpToNextLevel(1, player.jobs.levelCap) + 33);
 
-    const switchResult = switchMainJob(player, 'monk');
+    const switchResult = switchMainJob(player, 'pugilist');
     assert.equal(switchResult.ok, true);
-    assert.equal(player.jobs.mainJobId, 'monk');
+    assert.equal(player.jobs.mainJobId, 'pugilist');
     assert.equal(player.jobs.level, 1);
     assert.equal(player.progression.exp, 0);
 
     awardExperience(player, 44);
-    assert.equal(player.progression.jobProgression.monk.exp, 44);
+    assert.equal(player.progression.jobProgression.pugilist.exp, 44);
 
-    const back = switchMainJob(player, 'warrior');
+    const back = switchMainJob(player, 'vanguard');
     assert.equal(back.ok, true);
-    assert.equal(player.jobs.mainJobId, 'warrior');
+    assert.equal(player.jobs.mainJobId, 'vanguard');
     assert.equal(player.jobs.level, 2);
     assert.equal(player.progression.exp, 33);
-    assert.equal(player.progression.jobProgression.monk.exp, 44);
+    assert.equal(player.progression.jobProgression.pugilist.exp, 44);
 });
 
-test('switchMainJob rejects locked jobs without mutating active job', () => {
+test('switchMainJob rejects locked disciplines without mutating active discipline', () => {
     const player = createPlayer();
 
-    const result = switchMainJob(player, 'paladin');
+    const result = switchMainJob(player, 'oathguard');
 
     assert.equal(result.ok, false);
     assert.match(result.message, /not unlocked/);
-    assert.equal(player.jobs.mainJobId, 'warrior');
+    assert.equal(player.jobs.mainJobId, 'vanguard');
 });
 
 test('switchMainJob refreshes combat resources and clears TP by default', () => {
@@ -119,20 +119,21 @@ test('switchMainJob refreshes combat resources and clears TP by default', () => 
     player.resources.mp = 1;
     player.resources.tp = 1000;
 
-    switchMainJob(player, 'monk');
+    const result = switchMainJob(player, 'pugilist');
 
+    assert.equal(result.ok, true);
     assert.equal(player.resources.hp, player.combat.resources.maxHp);
     assert.equal(player.resources.mp, player.combat.resources.maxMp);
     assert.equal(player.resources.tp, 0);
 });
 
-test('describeJobProgression lists active and unlocked jobs', () => {
+test('describeJobProgression lists active and unlocked disciplines', () => {
     const player = createPlayer();
-    switchMainJob(player, 'monk');
+    switchMainJob(player, 'pugilist');
 
     const output = describeJobProgression(player);
 
-    assert.match(output, /Warrior/);
-    assert.match(output, /Monk/);
-    assert.match(output, /Monk .*\*active\*/);
+    assert.match(output, /Vanguard/);
+    assert.match(output, /Pugilist/);
+    assert.match(output, /Pugilist .*\*active\*/);
 });
