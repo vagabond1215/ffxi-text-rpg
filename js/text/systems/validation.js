@@ -23,7 +23,7 @@ import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js
 import { getContainerCapacity } from './inventoryEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
-export const CURRENT_SAVE_VERSION = 4;
+export const CURRENT_SAVE_VERSION = 5;
 
 export function validateGameState(state) {
     const issues = [];
@@ -183,8 +183,10 @@ export function validatePlayer(player) {
     if (!isObject(player.identity)) issues.push('identity must be an object.');
     if (!player.identity?.name) issues.push('identity.name is required.');
     if (!player.identity?.raceId) issues.push('identity.raceId is required.');
+    if (player.identity?.raceId && !RACES[player.identity.raceId]) issues.push(`identity.raceId references unknown ancestry ${player.identity.raceId}.`);
     if (!isObject(player.jobs)) issues.push('jobs must be an object.');
     if (!player.jobs?.mainJobId) issues.push('jobs.mainJobId is required.');
+    if (player.jobs?.mainJobId && !JOB_DEFINITIONS[player.jobs.mainJobId]) issues.push(`jobs.mainJobId references unknown discipline ${player.jobs.mainJobId}.`);
     if (!Number.isInteger(player.jobs?.level)) issues.push('jobs.level must be an integer.');
     if (!isObject(player.wallet)) issues.push('wallet must be an object.');
     if (!isObject(player.equipment)) issues.push('equipment must be an object.');
