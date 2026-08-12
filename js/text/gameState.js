@@ -3,6 +3,7 @@ import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
 import { describeCoordinate, normalizePositionForPlace } from './data/coordinates.js';
 import { getPlace } from './data/places.js';
+import { createAbilityRuntimeState } from './systems/abilityEngine.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
@@ -47,6 +48,7 @@ export function createNewGameState(options = {}) {
             speedMultiplier: options.simulationSpeedMultiplier ?? 1,
         }),
         tasks: createTimedTaskState(),
+        abilities: createAbilityRuntimeState(),
         projects: createProjectState(),
         resourceOpportunities: createResourceOpportunityState(),
         ecology: createEcologyState(),
