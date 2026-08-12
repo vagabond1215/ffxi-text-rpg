@@ -42,7 +42,7 @@ test('context actions prioritize nearby world interaction over a permanent comma
 
 test('travel context exposes a semantic stop action without routing an incomplete travel command', () => {
     const state = createNewGameState({ name: 'Lark' });
-    state.travel.active = true;
+    state.travel = { active: true };
     const actions = createContextualActions(state, []);
 
     assert.deepEqual(actions.map((action) => action.label), ['Stop Travel']);
