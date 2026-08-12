@@ -121,16 +121,16 @@ test('multiple task channels can coexist without premature concurrency policy', 
     assert.equal(listTimedTasks(state, { status: 'active' })[0].kind, 'travel.walk');
 });
 
-test('older Game State v4 records can lazily acquire an empty task registry', () => {
+test('missing timed-task registry lazily initializes without changing save version', () => {
     const state = createInitialState();
+    const versionBefore = state.version;
     delete state.tasks;
-    assert.equal(state.version, 4);
 
     const started = startTimedTask(state, { kind: 'work.test', durationSeconds: 5 });
 
     assert.equal(started.ok, true);
     assert.equal(state.tasks.version, 1);
-    assert.equal(state.version, 4);
+    assert.equal(state.version, versionBefore);
 });
 
 test('invalid task definitions are rejected without allocating task IDs', () => {
