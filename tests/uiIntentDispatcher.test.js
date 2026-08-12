@@ -259,7 +259,7 @@ test('auto run waits for movement duration before moving again', () => {
 
 test('auto run clears movement state after a zone exit', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const uiState = createCanvasUiState({
         screen: 'game',
         autoRunEnabled: true,
@@ -284,7 +284,7 @@ test('auto run clears movement state after a zone exit', () => {
 
     assert.equal(result.ok, true);
     assert.equal(result.movement.exited, true);
-    assert.equal(state.currentPlaceId, 'west-ronfaure');
+    assert.equal(state.currentPlaceId, 'west-elderwood');
     assert.equal(uiState.activeAutoRunDirection, null);
     assert.equal(uiState.heldDirection, null);
     assert.equal(uiState.movementHeldSince, null);
