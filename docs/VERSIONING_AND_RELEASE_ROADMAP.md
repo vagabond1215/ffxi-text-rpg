@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.200.2
-Package:      0.6.200
+Product:      0.6.250.1
+Package:      0.6.250
 Account Save: 4
 Game State:   5
 Data:         20
 Benchmark:    1
-Codename:     Character Capabilities
+Codename:     Player Interface Architecture
 ```
 
-The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression state and character-owned capability/proficiency semantics are established on top of the deterministic simulation/content substrate. Revision `0.6.200.2` is a bounded canvas-UI usability pass; it does not change persistence or canonical Data contracts.
+The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active. Character-owned stat/progression and capability/proficiency semantics are established on top of the deterministic simulation/content substrate. `0.6.250` establishes a semantic DOM player-interface architecture before the mechanics/action catalog expands further.
 
 ## Product version format
 
@@ -34,14 +34,14 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.6.200.2
+0.6.250.1
 ```
 
 | Segment | Meaning |
 | --- | --- |
 | `MAJOR` | Stability/compatibility generation. `0` is pre-1.0; `1` begins the live compatibility contract. |
 | `PHASE` | Major development milestone such as `0.5`, `0.6`, or `0.7`. |
-| `TRACK` | Three-digit scoped milestone within the phase. Inserted tracks such as `550` are allowed. |
+| `TRACK` | Three-digit scoped milestone within the phase. Inserted tracks such as `250` or `550` are allowed. |
 | `REVISION` | Runtime-affecting integration counter inside the active track. |
 
 Track numbers are stable planning labels, not completion percentages.
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, the typed/global `character` command retained after its redundant canvas button was removed, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, transitional place connections used as route fallbacks, internal `player.jobs`/`mainJobId`/`raceId`/`nationId`-shaped persisted properties awaiting incremental evolution, discipline-shaped equipment eligibility scaffolding, typed/global commands retained as power-user/compatibility interfaces while semantic DOM views mature, the transitional canvas UI implementation retained for regression comparison, and `gil` pending deliberate original currency design.
 
 Additive/lazily defaulted fields do not require a Game State bump merely because a newer runtime knows about them. A Game State bump is required when the persistence contract becomes semantically incompatible, mandatory shapes cannot be reconstructed deterministically, or an ordered migration is necessary.
 
@@ -158,27 +158,16 @@ Benchmark:    1
 Codename:     Continuous Character
 ```
 
-### Version impact
+Version impact:
 
 - **Product:** `0.5.900.1` -> `0.6.100.1`.
 - **Package:** `0.5.900` -> `0.6.100`.
 - **Account Save:** unchanged at 4.
 - **Game State:** unchanged at 5; `statState` and `progression.character` are additive/lazily reconstructible.
-- **Data:** unchanged at 19; this track changes runtime ownership/formulas rather than adding a new canonical data catalog contract.
+- **Data:** unchanged at 19.
 - New system: `characterStats 0.1.0`.
-- `playerEntity` advanced to 0.7.0.
-- `statEngine` advanced to 0.5.0.
-- `progression`, `disciplineSwitching`, and `leveling` advanced to 0.6.0.
 
-### Delivered
-
-- versioned character-owned base stat state with explicit original-design provenance/confidence;
-- persistent base growth derived from highest attained discipline training rank rather than current discipline identity;
-- active discipline represented as contextual stat/training focus with `capabilityGate: false`;
-- character-level lifetime EXP/highest-training metadata in addition to per-discipline levels/EXP;
-- lower-level discipline switching cannot reduce persistent character base growth;
-- historical FFXI stat formulas and inferred job-resource formulas retained for research/comparison but removed as canonical player runtime authority;
-- compatibility fields and save schema preserved through additive/lazy state.
+Delivered character-owned base stats, highest-training persistent growth, lifetime character progression, contextual active-discipline modifiers, and removal of historical FFXI stat formulas from canonical player runtime authority.
 
 ## 0.6.200 — Skills, proficiencies, disciplines, and capabilities — complete
 
@@ -194,7 +183,7 @@ Benchmark:    1
 Codename:     Character Capabilities
 ```
 
-### Capability-track version impact
+Capability-track impact:
 
 - **Product:** `0.6.100.1` -> `0.6.200.1`.
 - **Package:** `0.6.100` -> `0.6.200`.
@@ -202,21 +191,8 @@ Codename:     Character Capabilities
 - **Game State:** unchanged at 5; `progression.capabilities` is additive/lazily initialized.
 - **Data:** 19 -> 20 for the canonical capability catalog and learning/use requirement contract.
 - New system: `capabilities 0.1.0`.
-- `playerEntity` advanced to 0.8.0.
-- `skillProgression` advanced to 0.6.0.
 
-### Delivered
-
-- stable character capability definitions separate from future executable ability/effect definitions;
-- distinct capability **learning paths** and **use requirements**;
-- discipline training can teach a capability, including qualifying training recorded while that discipline is inactive;
-- learned capabilities persist on the continuous character across discipline changes;
-- use eligibility checks learned proficiency, equipment/main-hand tags, tools, preparation, resources, flags, and action/world context;
-- active discipline is explicitly not a universal capability-use gate;
-- skill training caps limit new gain without truncating learned character proficiency when active discipline changes;
-- representative martial and practical capabilities exercise combat, resource-recovery, and gathering-shaped requirements;
-- capability state is validated and lazily initialized without a persistence migration;
-- database registry separates `capabilities` (ownership/eligibility) from planned executable `abilities` (effects/actions).
+Delivered character-owned capability definitions, separate learning/use requirements, discipline-as-training-path semantics, non-destructive character proficiency, and capability/effect responsibility separation.
 
 ### 0.6.200.2 — canvas UI usability revision
 
@@ -228,27 +204,67 @@ Game State:   5
 Data:         20
 ```
 
-Version impact:
-
 - **Product:** `0.6.200.1` -> `0.6.200.2`.
 - **Package / Account Save / Game State / Data:** unchanged.
 - `canvasUi` advanced to `0.8.0`.
 - `uiIntents` advanced to `0.2.0`.
 - `characterCreation` advanced to `0.5.2`.
 
-Delivered:
+Delivered creator wording/wrapping fixes, discovery local minimap, compact D-pad, categorized canvas actions, and at-a-glance right-pane character information. This revision exposed the larger architectural problem that the browser shell was still rebuilding native layout/forms/text behavior manually in Canvas.
 
-- streamlined ancestry/origin/discipline/review creator wording and shorter original descriptions;
-- robust canvas wrapping for creator descriptions, including oversized tokens;
-- creator keyboard input constrained to the visible review-name field;
-- discovery-driven local minimap derived from existing atlas visited-coordinate knowledge;
-- compact centered D-pad below the minimap, with movement controls reduced to 24–30px;
-- categorized canvas action menus instead of a long flat command list;
-- no redundant visible Character-summary button; the command remains available as a compatibility interface;
-- permanent right-pane HP/MP/TP, attribute, derived-combat, and location snapshot;
-- disabled planned Codex/Crafting entries used only to establish navigation structure for future systems.
+## 0.6.250 — Player interface architecture — complete
 
-No migration was justified because the minimap consumes existing atlas state and action-category selection is ephemeral UI state.
+Resulting baseline:
+
+```text
+Product:      0.6.250.1
+Package:      0.6.250
+Account Save: 4
+Game State:   5
+Data:         20
+Benchmark:    1
+Codename:     Player Interface Architecture
+```
+
+### Version impact
+
+- **Product:** `0.6.200.2` -> `0.6.250.1`.
+- **Package:** `0.6.200` -> `0.6.250`.
+- **Account Save:** unchanged at 4.
+- **Game State:** unchanged at 5; new UI state is ephemeral and no authoritative persisted shape changed.
+- **Data:** unchanged at 20; no canonical gameplay/content data contract changed.
+- New system: `domUi 0.1.0`.
+- New system: `gameViewModels 0.1.0`.
+- `canvasUi 0.8.0` remains tracked as a transitional compatibility/reference implementation.
+- `uiIntents 0.2.0` remains valid; the DOM shell reuses the established intent contract rather than inventing a second dispatcher.
+
+### Delivered
+
+- active browser boot moved from `createCanvasApp(canvas)` to `createDomApp(host)`;
+- semantic HTML/CSS application shell with native text wrapping, forms, focus, responsive layout, and scroll behavior;
+- renderer-independent game presentation model for scene, status, local map, movement, activity, and contextual actions;
+- scene/world-first center presentation instead of a permanent `Output Log` surface;
+- SVG discovery map backed by existing atlas knowledge and compact D-pad/keyboard navigation;
+- primary information navigation for Scene, Character, Spellbook, Journal, Codex, Craft, and World;
+- small state-dependent contextual action set instead of presenting the entire command catalog;
+- compact persistent character resources/attributes/activity status;
+- Search-or-act command-capable omnibox for keyboard/power-user interaction;
+- single-screen character creation with ancestry/sex/origin/discipline descriptions and continuously visible summary;
+- explicit empty/planned states for unfinished Journal/Codex/Craft depth rather than presenting legacy data as complete gameplay;
+- semantic-interface regression tests while preserving canvas compatibility tests.
+
+### No migration rationale
+
+The DOM shell derives from existing Game State v5 player, atlas, simulation, POI, travel, battle, and timed-task state. It does not create a new authoritative persistent UI schema. The local map remains a view of atlas knowledge, not a new geography database. Therefore neither Game State nor Data advances.
+
+### Intentionally deferred
+
+- dedicated presentation models for every inventory/equipment/spell/codex/journal/crafting domain; several current view buttons still bridge to typed commands;
+- true fuzzy cross-database omnibox search and suggestions;
+- richer map iconography, landmarks, multi-level maps, and regional/world map composition;
+- fully extracted renderer-neutral UI state (some structural helpers are still reused from canvas input code);
+- dedicated active-browser simulation-time controls until scheduler/interrupt wiring is cleanly exposed to the DOM shell;
+- deletion of canvas modules before their compatibility/regression value is exhausted.
 
 ---
 
@@ -263,6 +279,7 @@ Deliver a bounded executable-effect layer without conflating it with character c
 - model targeting, resource costs, cast/activation time, recast/cooldown, interruption, and effect payloads deterministically;
 - allow character-owned capabilities to enable executable effects while concrete use requirements remain under capability/loadout/preparation checks;
 - emit structured `ActionResult`/semantic events independently of prose;
+- expose new magic/ability content through the semantic player-interface seams rather than expanding a permanent button catalog;
 - preserve current battle/action behavior behind adapters until Combat 2.0 (`0.6.400`);
 - prove representative offensive, restorative/support, and non-combat/contextual effects before broad content expansion.
 
