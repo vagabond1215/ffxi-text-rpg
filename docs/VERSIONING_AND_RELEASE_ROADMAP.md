@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.550.2
-Package:      0.5.550
+Product:      0.5.600.1
+Package:      0.5.600
 Account Save: 4
 Game State:   5
-Data:         15
+Data:         16
 Benchmark:    1
-Codename:     Original World Identity
+Codename:     Resource Provenance
 ```
 
-The repository is pre-alpha. Deterministic simulation and original-world identity foundations are established; content breadth and many integrated mechanics remain far below the intended game.
+The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, and the first provenance-aware physical resource recovery substrate are established; content breadth and many integrated mechanics remain far below the intended game.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.5.550.2
+0.5.600.1
 ```
 
 | Segment | Meaning |
@@ -50,13 +50,6 @@ Track numbers are stable planning labels, not completion percentages.
 
 The four-part product version is authoritative for game-development milestones. `package.json.version` remains valid three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK` while omitting the product revision.
 
-Example:
-
-```text
-Product: 0.5.550.2
-Package: 0.5.550
-```
-
 Do not put a four-part numeric product version directly into `package.json.version`.
 
 ## Independent schema/system versions
@@ -69,13 +62,7 @@ Do not collapse these into the product version:
 - Benchmark;
 - individual subsystem versions.
 
-The product version answers: **what development milestone does this build represent?**
-
-Persistence versions answer: **can saved data be read, migrated, or rejected safely?**
-
-The Data version answers: **has the canonical data contract changed in a way consumers/migrations must distinguish?**
-
-System versions answer: **what revision of one subsystem contract is present?**
+The product version answers **what development milestone does this build represent?** Persistence versions answer **can saved data be read, migrated, or rejected safely?** Data version distinguishes canonical data-contract revisions. System versions distinguish subsystem contracts.
 
 `js/text/version.js` is authoritative for the active values.
 
@@ -91,19 +78,15 @@ For a runtime integration, record:
 6. test/benchmark/build status;
 7. known limitations and intentionally deferred work.
 
-A runtime change inside an active track normally increments the fourth segment. Completing a track does not automatically advance to the next track until its exit gate is satisfied and the documentation/handoff are synchronized.
+A runtime change inside an active track normally increments the fourth segment. Completing a track does not automatically advance to the next track until its exit gate is satisfied and documentation/handoff are synchronized.
 
-Docs-only planning changes normally do not bump product version.
-
-A product-version bump never substitutes for a persistence migration. Persisted schema or stable-ID changes require an explicit migration/version decision.
+Docs-only planning changes normally do not bump product version. A product-version bump never substitutes for a persistence migration.
 
 ## Compatibility policy
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-A compatibility token may remain when changing it would create needless migration risk, provided it is not treated as canonical new content. Current examples include historical localStorage keys, legacy POI hook IDs, and explicit legacy/reference modules.
-
-`gil` is intentionally unchanged at the `0.5.550` exit. An original currency replacement must be deliberately designed rather than invented solely to remove a historical word.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, and `gil` pending deliberate original currency design.
 
 ---
 
@@ -111,14 +94,7 @@ A compatibility token may remain when changing it would create needless migratio
 
 ## 0.4 — Foundation — complete
 
-Delivered:
-
-- development direction and version protocol;
-- four-part product/package separation;
-- ordered Game State migrations;
-- structured `ActionResult` outcomes;
-- bounded semantic-event history;
-- architecture stabilization and foundation exit certification.
+Delivered development direction/versioning, ordered Game State migrations, structured action outcomes, bounded semantic events, and architecture stabilization.
 
 ## 0.5.100 — Deterministic world clock — complete
 
@@ -142,57 +118,67 @@ Delivered deterministic midnight boundaries, structured daily summaries, configu
 
 ## 0.5.550 — Original-world identity and stable-ID migration — complete
 
+Delivered original powers, regions, places, maps, ancestries, transitional disciplines, Game State v4 -> v5 migration, bounded identity adapters, canonical world-facing vocabulary, and explicit quarantine of historical research/reference data.
+
+## 0.5.600 — Resource provenance and persistent projects — complete
+
 Resulting baseline:
 
 ```text
-Product:      0.5.550.2
-Package:      0.5.550
+Product:      0.5.600.1
+Package:      0.5.600
 Account Save: 4
 Game State:   5
-Data:         15
+Data:         16
 ```
 
-Delivered:
+### Version impact
 
-- original powers, regions, places, maps, ancestries, and transitional disciplines;
-- Game State v4 -> v5 migration for persisted identity IDs;
-- bounded legacy-to-canonical input/migration adapters;
-- canonical character-creation defaults and player-facing command vocabulary;
-- originalized starter world/NPC/service content;
-- canonical home-storage, companion, place/exit, and travel terminology;
-- explicit quarantine of FFXI-derived research/reference modules;
-- canonical database/system diagnostic vocabulary;
-- restored green test, benchmark, and build baseline.
+- **Product:** `0.5.550.2` -> `0.5.600.1`.
+- **Package:** `0.5.550` -> `0.5.600`.
+- **Account Save:** unchanged at 4.
+- **Game State:** unchanged at 5 because project/resource registries are additive and lazily initialize when absent.
+- **Data:** 15 -> 16 because the item/provenance data contract changed and item schema advanced to v3.
+- **Item schema system:** `0.6.0` -> `0.7.0`.
+- **Battle rewards:** `0.5.2` -> `0.6.0` because physical material drops were replaced with recoverable world opportunities.
+- New systems: `projects 0.1.0`, `resourceProvenance 0.1.0`, `resourceOpportunities 0.1.0`, `resourceRecovery 0.1.0`.
 
-Intentional non-blocking compatibility debt:
+### Delivered
 
-- `gil` pending deliberate original currency design;
-- historical localStorage keys;
-- some legacy-shaped POI hook IDs;
-- explicit legacy/migration/research modules and tests;
-- bounded legacy command/input aliases.
+- persistent projects with stable IDs, real material contribution, canonical timed labor, progress, cancellation, completion, and semantic events;
+- provenance categories spanning physical, economic, social, crafting, and explicitly exceptional magical acquisition;
+- item sink/use metadata and validation hooks;
+- defeated-enemy body/carried-goods/salvage opportunities instead of automatic finished-material insertion;
+- timed search/skin/butcher/pluck/extract/salvage contracts with tool, proficiency, condition, time, inventory, and chance hooks;
+- resource-yield rolls fixed and persisted when recovery starts, preventing later reconciliation from rerolling the same work;
+- recovered items carry source/place/action provenance;
+- starter loot tables reinterpreted as transitional candidate-output pools;
+- regression tests for project state, provenance metadata, recovery actions, deterministic recovery outcomes, battle rewards, and version/database contracts.
 
-Exit criterion met: new canonical gameplay records and normal world-facing runtime state can be authored without inherited FFXI proper nouns or stable IDs.
+### Intentionally deferred
+
+- broad UI/command affordances for project/resource actions;
+- hundreds-scale source/sink graph validation and content generation;
+- environmental gathering nodes, species populations, depletion/regeneration, and respawn;
+- final currency design;
+- full processing/crafting chains.
 
 ---
 
 # Active and future milestone gates
 
-## 0.5.600 — Resource provenance and persistent projects — next
+## 0.5.650 — Ecology, gathering, and spawn substrate — next
 
-Deliverables:
+Deliver:
 
-- persistent project model with stable IDs, materials, labor, canonical time, progress, and completion events;
-- provenance/source schema spanning bodies, gathering, minerals, fishing, salvage, crafting, commerce, contracts, and exceptional magic;
-- post-combat body/resource opportunities instead of automatic finished-item drops where appropriate;
-- search/skin/butcher/pluck/extract/salvage substrate;
-- item source/sink metadata and validation hooks.
+- species/family definitions separated from encounter instances;
+- habitat/population data with place/biome, density, rarity, aggression, senses, social/link behavior, and environmental hooks;
+- flora/mineral/fishing/gathering-source definitions referencing canonical item outputs and provenance actions;
+- deterministic depletion/regeneration or respawn compatible with canonical world time and interrupts;
+- rare/named population hooks;
+- representative cross-reference validation among species, places, population records, resource sources, and item outputs.
 
-A Game State or Data version bump is required only if the persisted/runtime contract actually changes; make that decision from the concrete schema rather than pre-allocating a version.
-
-## 0.5.650 — Ecology, gathering, and spawn substrate
-
-Deliver species/family definitions, habitats/populations, flora/mineral/fishing sources, deterministic regeneration/respawn, and rare/named spawn hooks.
+Do not expand to high-volume creature/resource catalogs before these contracts are coherent.
 
 ## 0.5.700 — Canonical routes and scheduled transport
 
@@ -200,7 +186,7 @@ Deliver simulation-time walking/routes, scheduled caravans, shared transport con
 
 ## 0.5.800 — Regional content packs, normalization, and validation
 
-Deliver content-pack contracts, candidate import normalization, cross-reference validation, source/sink checks, and workflows proven at hundreds/thousands-of-record scale.
+Deliver content-pack contracts, candidate import normalization, broad cross-reference/source-sink validation, and workflows proven at hundreds/thousands-of-record scale.
 
 ## 0.5.900 — Simulation/content-substrate exit
 
