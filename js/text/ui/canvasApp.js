@@ -40,7 +40,7 @@ export function createCanvasApp({ canvas }) {
     const uiState = createCanvasUiState({
         screen: hasPlayableCharacter ? 'game' : 'menu',
         activeFeedback: '',
-        outputLines: ['FFXI Text RPG canvas shell initialized.', ''],
+        outputLines: ['Hearth & Horizon canvas shell initialized.', ''],
         selectedAccountId: session.accounts[0]?.id ?? null,
     });
     const commandRouter = createCommandRouter(state, { saveGame, clearSave, reload: () => window.location.reload() });
