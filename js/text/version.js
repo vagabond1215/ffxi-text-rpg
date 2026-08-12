@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.4.200.0';
-export const PACKAGE_VERSION = '0.4.200';
+export const PRODUCT_VERSION = '0.4.300.0';
+export const PACKAGE_VERSION = '0.4.300';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,8 +8,8 @@ export const VERSION = Object.freeze({
     gameState: 3,
     data: 13,
     benchmark: 1,
-    codename: 'Version Manifest Separation',
-    compatibility: 'no-backwards-compatibility',
+    codename: 'Ordered Persistence Migrations',
+    compatibility: 'migrate-supported-save-versions',
     released: false,
 
     // Transitional aliases for callers that still use the historical names.
@@ -18,12 +18,13 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.4.200',
+    versionManifest: '0.4.300',
+    saveMigrations: '0.1.0',
     commandShell: '0.4.4',
     canvasUi: '0.7.0',
     uiIntents: '0.1.1',
     slashCommands: '0.4.1',
-    accountSaves: '0.5.2',
+    accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.6.0',
