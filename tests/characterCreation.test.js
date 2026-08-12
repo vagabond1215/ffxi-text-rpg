@@ -7,49 +7,63 @@ import { describeNations, findNation } from '../js/text/data/nations.js';
 import { validateGameState } from '../js/text/systems/validation.js';
 
 
-test('nation registry lists three starting nations', () => {
-    assert.equal(findNation('sandoria').startingPlaceId, 'southern-sandoria');
-    assert.equal(findNation('bastok').startingPlaceId, 'bastok-markets');
-    assert.equal(findNation('windurst').startingPlaceId, 'windurst-waters');
-    assert.match(describeNations(), /Bastok/);
+test('power registry lists three original starting powers and accepts bounded legacy aliases', () => {
+    assert.equal(findNation('thornwall').startingPlaceId, 'thornwall-southgate');
+    assert.equal(findNation('brasshaven').startingPlaceId, 'brasshaven-market-ring');
+    assert.equal(findNation('mistmere').startingPlaceId, 'mistmere-canal-ward');
+    assert.equal(findNation('sandoria').id, 'thornwall');
+    assert.equal(findNation('bastok').id, 'brasshaven');
+    assert.equal(findNation('windurst').id, 'mistmere');
+    assert.match(describeNations(), /Brasshaven/);
 });
 
-test('createNewGameState starts in San d’Oria by default', () => {
+test('createNewGameState starts in Thornwall by default', () => {
     const state = createNewGameState();
 
-    assert.equal(state.currentPlaceId, 'southern-sandoria');
-    assert.equal(state.player.identity.nation, 'San d’Oria');
-    assert.ok(state.player.progression.unlockedMaps.includes('map-san-doria'));
+    assert.equal(state.currentPlaceId, 'thornwall-southgate');
+    assert.equal(state.player.identity.nation, 'Thornwall');
+    assert.equal(state.player.identity.raceId, 'human');
+    assert.equal(state.player.jobs.mainJobId, 'vanguard');
+    assert.ok(state.player.progression.unlockedMaps.includes('map-thornwall'));
     assert.deepEqual(validateGameState(state), []);
 });
 
-test('createNewGameState supports Bastok start', () => {
-    const state = createNewGameState({ nationId: 'bastok', raceId: 'galka', mainJobId: 'monk', name: 'Stone Son' });
+test('createNewGameState supports Brasshaven start', () => {
+    const state = createNewGameState({ nationId: 'brasshaven', raceId: 'korren', mainJobId: 'pugilist', name: 'Stone Son' });
 
-    assert.equal(state.currentPlaceId, 'bastok-markets');
+    assert.equal(state.currentPlaceId, 'brasshaven-market-ring');
     assert.equal(state.player.identity.name, 'Stone Son');
-    assert.equal(state.player.identity.raceId, 'galka');
-    assert.equal(state.player.jobs.mainJobId, 'monk');
-    assert.equal(state.player.identity.nation, 'Bastok');
-    assert.ok(state.player.progression.unlockedMaps.includes('map-bastok'));
-    assert.ok(state.player.keyItems.includes('map-gustaberg'));
+    assert.equal(state.player.identity.raceId, 'korren');
+    assert.equal(state.player.jobs.mainJobId, 'pugilist');
+    assert.equal(state.player.identity.nation, 'Brasshaven');
+    assert.ok(state.player.progression.unlockedMaps.includes('map-brasshaven'));
+    assert.ok(state.player.keyItems.includes('map-redstone-reach'));
     assert.deepEqual(validateGameState(state), []);
 });
 
-test('createNewGameState supports Windurst start', () => {
-    const state = createNewGameState({ nationId: 'windurst', raceId: 'tarutaru', mainJobId: 'blackMage', name: 'Little Star' });
+test('createNewGameState supports Mistmere start', () => {
+    const state = createNewGameState({ nationId: 'mistmere', raceId: 'miri', mainJobId: 'elementalist', name: 'Little Star' });
 
-    assert.equal(state.currentPlaceId, 'windurst-waters');
+    assert.equal(state.currentPlaceId, 'mistmere-canal-ward');
     assert.equal(state.player.identity.name, 'Little Star');
-    assert.equal(state.player.identity.raceId, 'tarutaru');
-    assert.equal(state.player.jobs.mainJobId, 'blackMage');
-    assert.equal(state.player.identity.nation, 'Windurst');
-    assert.ok(state.player.progression.unlockedMaps.includes('map-windurst'));
-    assert.ok(state.player.keyItems.includes('map-sarutabaruta'));
+    assert.equal(state.player.identity.raceId, 'miri');
+    assert.equal(state.player.jobs.mainJobId, 'elementalist');
+    assert.equal(state.player.identity.nation, 'Mistmere');
+    assert.ok(state.player.progression.unlockedMaps.includes('map-mistmere'));
+    assert.ok(state.player.keyItems.includes('map-starfen'));
     assert.deepEqual(validateGameState(state), []);
 });
 
-test('router create command replaces current state with requested nation start', () => {
+test('legacy creation identifiers resolve at the input boundary but canonical state is emitted', () => {
+    const state = createNewGameState({ nationId: 'bastok', raceId: 'galka', mainJobId: 'monk', name: 'Old Save Test' });
+
+    assert.equal(state.currentPlaceId, 'brasshaven-market-ring');
+    assert.equal(state.player.identity.raceId, 'korren');
+    assert.equal(state.player.jobs.mainJobId, 'pugilist');
+    assert.equal(state.player.identity.nation, 'Brasshaven');
+});
+
+test('router create command replaces current state with requested original-world start', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, {
         saveGame: () => true,
@@ -57,11 +71,11 @@ test('router create command replaces current state with requested nation start',
         reload: () => {},
     });
 
-    const output = router('create --nation=bastok --race=galka --job=monk --name="Stone Son"');
+    const output = router('create --nation=brasshaven --race=korren --job=pugilist --name="Stone Son"');
 
     assert.match(output, /Created Stone Son/);
-    assert.equal(state.currentPlaceId, 'bastok-markets');
-    assert.equal(state.player.identity.nation, 'Bastok');
+    assert.equal(state.currentPlaceId, 'brasshaven-market-ring');
+    assert.equal(state.player.identity.nation, 'Brasshaven');
     assert.equal(state.player.identity.name, 'Stone Son');
-    assert.match(router('character'), /Bastok/);
+    assert.match(router('character'), /Brasshaven/);
 });
