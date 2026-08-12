@@ -36,9 +36,9 @@ export function createTextShell({ output, form, input, router, afterCommand }) {
     return {
         printIntro() {
             write([
-                'FFXI Text RPG shell initialized.',
+                'Hearth & Horizon shell initialized.',
                 '',
-                'Main commands now use / slash input.',
+                'Main commands use / slash input.',
                 'Type /menu to open the main menu.',
                 'Type /newcharacter to create a character.',
                 'Type /commands or /help to see available commands.',
