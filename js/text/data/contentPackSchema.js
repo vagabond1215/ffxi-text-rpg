@@ -4,6 +4,7 @@ export const CONTENT_PACK_COLLECTIONS = Object.freeze([
     'places',
     'routes',
     'transportServices',
+    'ecologyFamilies',
     'species',
     'populations',
     'gatheringSources',
