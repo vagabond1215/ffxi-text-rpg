@@ -58,17 +58,17 @@ test('event history is bounded without becoming authoritative state history', ()
 
 test('travel emits semantic start and arrival events independently of display prose', () => {
     const state = createInitialState();
-    setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
+    setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
-    const started = startTravel(state, 'West Ronfaure');
+    const started = startTravel(state, 'West Elderwood');
     assert.equal(started.ok, true);
-    assert.equal(hasSemanticEvent(state, 'travel.started', (event) => event.data.to === 'west-ronfaure'), true);
+    assert.equal(hasSemanticEvent(state, 'travel.started', (event) => event.data.to === 'west-elderwood'), true);
     assert.equal(started.data.eventId, 'evt-000001');
 
     const advanced = advanceTravel(state, 45);
     assert.equal(advanced.completed, true);
     assert.equal(advanced.eventId, 'evt-000002');
-    assert.equal(hasSemanticEvent(state, 'travel.arrived', (event) => event.data.to === 'west-ronfaure'), true);
+    assert.equal(hasSemanticEvent(state, 'travel.arrived', (event) => event.data.to === 'west-elderwood'), true);
 
     const travelEvents = listSemanticEvents(state);
     assert.deepEqual(travelEvents.map((event) => event.type), ['travel.started', 'travel.arrived']);
@@ -76,12 +76,12 @@ test('travel emits semantic start and arrival events independently of display pr
 
 test('state without an event container is upgraded lazily without changing its save version', () => {
     const state = createInitialState();
+    const versionBefore = state.version;
     delete state.events;
-    assert.equal(state.version, 4);
 
     const event = emitSemanticEvent(state, 'fixture.started', { value: 1 });
 
     assert.equal(event.id, 'evt-000001');
     assert.equal(state.events.records.length, 1);
-    assert.equal(state.version, 4);
+    assert.equal(state.version, versionBefore);
 });
