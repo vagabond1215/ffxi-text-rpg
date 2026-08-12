@@ -20,7 +20,7 @@ export const DATABASES = Object.freeze({
     projects: database('projects', 'Persistent project state with stable IDs, material contributions, labor, canonical time, and completion events.', 'implemented', '0.1.0'),
     resourceProvenance: database('resourceProvenance', 'Physical, economic, social, crafting, and explicitly exceptional magical acquisition metadata plus item sinks.', 'implemented', '0.1.0'),
     resourceOpportunities: database('resourceOpportunities', 'Persistent defeated-creature/body, carried-goods, and salvage opportunities with timed recovery actions.', 'implemented', '0.1.0'),
-    capabilities: database('capabilities', 'Character-owned learned techniques and practical capabilities with separate learning paths and use requirements.', 'seeded', '0.1.0'),
+    capabilities: database('capabilities', 'Character-owned learned spells, techniques, and practical capabilities with separate learning paths and use requirements.', 'seeded', '0.2.0'),
 
     // Explicit historical/reference registries. These names remain non-canonical by design.
     ffxiStatGrades: database('ffxiStatGrades', 'FFXI-style race/job HP MP and attribute grade tables from the historical stat calculator model.', 'seeded-reference', '0.3.2'),
@@ -33,8 +33,8 @@ export const DATABASES = Object.freeze({
     achievements: database('achievements', 'Milestones, account/local accomplishments, titles, rewards.', 'planned', '0.0.0'),
     items: database('items', 'Equipment, consumables, materials, tools, provenance metadata, sinks, and currencies-as-items where needed.', 'seeded', '0.7.0'),
     keyItems: database('keyItems', 'Persistent unlocks, permissions, quest objects, maps, licenses, mounts, and companion access.', 'planned', '0.0.0'),
-    magic: database('magic', 'Spells, magical proficiencies, costs, cast times, recasts, elements, targeting, effects.', 'planned', '0.0.0'),
-    abilities: database('abilities', 'Executable active/passive effect definitions for techniques, magic, companions, and enemies; distinct from character capability ownership.', 'planned', '0.0.0'),
+    magic: database('magic', 'Original spell schools and executable spell definitions with costs, activation time, cooldowns, targeting, and structured effects.', 'seeded', '0.1.0'),
+    abilities: database('abilities', 'Executable active effect definitions for spells, techniques, and contextual actions; distinct from character capability ownership.', 'implemented', '0.1.0'),
     lootTables: database('lootTables', 'Transitional candidate output pools consumed by provenance-aware resource opportunities.', 'seeded-transitional', '0.1.0'),
     leveling: database('leveling', 'Character growth, EXP curves, discipline training records, proficiency training caps, and later advanced progression.', 'seeded', '0.6.0'),
     companions: database('companions', 'AI companion recruitment, behavior profiles, roles, equipment, abilities, and progression.', 'planned', '0.0.0'),
