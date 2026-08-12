@@ -1,5 +1,5 @@
 import { hitTestAction, hitTestModalField, hitTestRegion } from './canvasLayout.js';
-import { createGuidedCreatorState, setCreatorName } from '../systems/characterCreationModel.js';
+import { createGuidedCreatorState, getCreatorStep, setCreatorName } from '../systems/characterCreationModel.js';
 
 export function createCanvasUiState(options = {}) {
     return {
@@ -12,6 +12,7 @@ export function createCanvasUiState(options = {}) {
         inputBuffer: options.inputBuffer ?? '',
         creator: options.creator ?? null,
         creatorIntro: options.creatorIntro ?? [],
+        actionCategory: options.actionCategory ?? null,
         autoRunEnabled: Boolean(options.autoRunEnabled),
         heldDirection: options.heldDirection ?? null,
         activeAutoRunDirection: options.activeAutoRunDirection ?? null,
@@ -50,19 +51,37 @@ export function setActiveFeedback(uiState, text) {
     return uiState.activeFeedback;
 }
 
+export function setActionCategory(uiState, categoryId) {
+    uiState.actionCategory = categoryId ? String(categoryId) : null;
+    uiState.hoveredActionId = null;
+    uiState.pressedActionId = null;
+    return uiState.actionCategory;
+}
+
 export function setCanvasScreen(uiState, screen) {
     uiState.screen = ['game', 'creator', 'creatorIntro'].includes(screen) ? screen : 'menu';
-    uiState.focusedRegion = uiState.screen === 'creator' ? 'creatorName' : 'input';
+    uiState.focusedRegion = uiState.screen === 'creator' && getCreatorStep(uiState.creator ?? createGuidedCreatorState()) === 'summary'
+        ? 'creatorName'
+        : uiState.screen === 'game'
+            ? 'input'
+            : 'main';
     uiState.hoveredActionId = null;
     uiState.pressedActionId = null;
     if (uiState.screen === 'creator') uiState.creator ??= createGuidedCreatorState();
+    if (uiState.screen !== 'game') setActionCategory(uiState, null);
     return uiState.screen;
 }
 
 export function setCanvasModal(uiState, modal, page = null) {
     uiState.modal = modal ?? null;
     uiState.modalPage = modal ? page : null;
-    uiState.focusedRegion = modal ? 'modal' : uiState.screen === 'creator' ? 'creatorName' : 'input';
+    uiState.focusedRegion = modal
+        ? 'modal'
+        : uiState.screen === 'creator' && getCreatorStep(uiState.creator ?? createGuidedCreatorState()) === 'summary'
+            ? 'creatorName'
+            : uiState.screen === 'game'
+                ? 'input'
+                : 'main';
     uiState.focusedModalField = defaultModalField(modal);
     if (!modal) clearModalInputs(uiState);
     uiState.hoveredActionId = null;
@@ -232,16 +251,18 @@ export function handlePointerUp(uiState, layout, x, y) {
 
 function applyCreatorKey(uiState, key) {
     uiState.creator ??= createGuidedCreatorState();
+    const step = getCreatorStep(uiState.creator);
     switch (key) {
         case 'Enter':
             return { type: 'creator', intent: 'creator.next' };
         case 'Backspace':
+            if (step !== 'summary') return { type: 'ignored' };
             uiState.creator = setCreatorName(uiState.creator, String(uiState.creator.name ?? '').slice(0, -1));
             return { type: 'edit' };
         case 'Escape':
             return { type: 'creator', intent: 'creator.cancel' };
         default:
-            if (typeof key === 'string' && key.length === 1) {
+            if (step === 'summary' && typeof key === 'string' && key.length === 1) {
                 uiState.creator = setCreatorName(uiState.creator, `${uiState.creator.name ?? ''}${key}`);
                 return { type: 'edit' };
             }
