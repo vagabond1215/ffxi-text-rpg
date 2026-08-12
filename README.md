@@ -1,8 +1,8 @@
-# FFXI Text RPG
+# Hearth & Horizon
 
-A text-first fantasy life RPG foundation inspired by the weight, preparation, dangerous travel, equipment, mastery, jobs/disciplines, and earned accomplishment of Final Fantasy XI.
+**Working title.** This repository is a text-first persistent fantasy life RPG about building one continuous character and life across a connected world of settlements, roads, wilderness, livelihoods, relationships, trade, exploration, and danger.
 
-This is **not** intended to become a text transcription of retail FFXI. The long-term game is a persistent life/adventure RPG built around simulated time, measurable mastery, livelihoods, projects, infrastructure, relationships, logical loadouts, exploration, and a continuous character who can develop across multiple disciplines.
+Earlier versions of the project grew from FFXI-derived experiments. Those files may remain temporarily as research, migration, or comparison material, but the canonical game is now an **original setting with original world identifiers, cultures, disciplines, creatures, NPCs, quests, and content databases**.
 
 Core progression law:
 
@@ -10,19 +10,17 @@ Core progression law:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-The browser UI is canvas-first and text-led. Restrained icons, tokens, meters, cards, and diagrams are welcome when they improve comprehension without turning the project into a full graphical-world production.
+The browser presentation is canvas-first and text-led. Prose and imagination render most of the world; restrained maps, icons, tokens, meters, cards, and diagrams can improve comprehension without turning the project into a full graphical-world production.
 
 ## Current version
 
-At the 0.4 foundation exit gate:
-
 ```text
-Product:      0.4.900.0
-Package:      0.4.900
+Product:      0.5.500.0
+Package:      0.5.500
 Account Save: 4
-Game State:   3
+Game State:   4
 Data:         13
-Codename:     Foundation Exit Gate
+Codename:     Day Boundary Review
 ```
 
 Product versions use:
@@ -38,14 +36,14 @@ MAJOR.PHASE.TRACK.REVISION
 ## Read these first
 
 1. `docs/DEVELOPMENT_DIRECTION.md` — design north star.
-2. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol and detailed route to 1.0.
-3. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
-4. `docs/ROADMAP.md` — current phase index.
-5. `docs/PHASE_0_4_EXIT_GATE.md` — evidence for closing the foundation phase.
-6. `docs/THREAD_HANDOFF.md` — current repo state and immediate sequence.
-7. `docs/ARCHITECTURE.md` — current runtime/module boundaries.
+2. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world naming, legacy-data boundaries, resource provenance, content scale, and content-pack rules.
+3. `docs/ROADMAP.md` — current phase and implementation sequence.
+4. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — detailed version/release gates.
+5. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
+6. `docs/ARCHITECTURE.md` — current runtime/module boundaries.
+7. `docs/THREAD_HANDOFF.md` — implementation handoff notes.
 
-`docs/planning/DEVELOPMENT_PIPELINE_AND_MILESTONES.md` is superseded historical planning from the earlier formula-first direction.
+Older planning documents may describe superseded FFXI-oriented or formula-first assumptions and should not override the authoritative files above.
 
 ## Running
 
@@ -86,39 +84,101 @@ GitHub Actions runs the test and benchmark gate for pull requests and pushes to 
 
 ## Product direction in brief
 
-### Continuous character, not magical job switching
+### One person, many disciplines
 
 Long-term rule:
 
 ```text
-Jobs describe.
+Disciplines describe.
 Capabilities enable.
-Loadouts constrain and enhance.
+Loadouts and preparation constrain and enhance.
 ```
 
-Jobs remain recognizable disciplines/training traditions, but changing equipment should not magically replace the character's identity or erase learned knowledge.
+The current job-switch scaffold is transitional. A learned technique, spell, recipe, or practical capability ultimately belongs to the character. Actual use depends on real prerequisites such as proficiency, equipment, focus, ammunition, tools, reagents, resources, injury/status, terrain/context, and formal advanced training where the fiction requires it.
 
-Capabilities may cross traditional job boundaries when their real prerequisites are met: proficiency, equipment, focus, ammunition, tools, reagents, resources, condition, preparation, context, and formal advanced training where logically required.
-
-The current `mainJob`/support-job/current-job code remains transitional compatibility scaffolding until the 0.6 migration. See `docs/TRANSITIONAL_ARCHITECTURE.md` before expanding job-gated behavior.
-
-### Long fictional time without unnecessary real waiting
+### Long fictional time without needless real waiting
 
 Simulation time and wall-clock time are separate.
 
-The game may contain substantial fictional grind while still allowing pause, fast-forward, exact advancement, advance-to-completion, and advance-until-interrupt. End-of-day review should make cumulative progress legible.
+The game can contain substantial fictional grind while still allowing pause, fast-forward, exact deterministic advancement, timed tasks, advance-until-interrupt, and end-of-day review.
 
-The existing `tickEngine.js` is only a wall-clock scheduler/dispatcher. It is not the canonical game calendar.
+Current main includes:
 
-### Logical resource scaling
+- canonical deterministic world time;
+- pause and simulation speed control;
+- canonical timed tasks;
+- deterministic simulation interrupts;
+- structured day boundaries and end-of-day review.
 
-Repeated identical construction should not become exponentially more expensive merely because another copy already exists.
+### A home base, not a one-city game
 
-Resource demand should grow through physical scale, larger structures, upgrades, renovation, specialization, logistics, automation, capacity, transport, maintenance, quality, and ambitious regional/prestige projects.
+The player may establish a room, home, workshop, farm, camp, or other foothold. That base matters for storage, recovery, preparation, relationships, and production, but the world extends well beyond it.
 
-### Life and adventure are one loop
+The target world contains multiple major cities, smaller settlements, roads, wilderness, mines, ports, ruins, dungeons, caravans, ferries, mounts/pack logistics, trade routes, and regional economies.
 
-The first representative target is **A Week Beyond the West Gate**: a multi-day slice combining origin, home foothold, livelihood, local economy, project progress, preparation, travel, danger/combat, recovery, end-of-day review, and a permanent accomplishment.
+Internal data partitions support maps and simulation, but player-facing travel should usually read as continuous geography rather than artificial `ZONE LOADING` screens.
+
+### Maps are knowledge
+
+Maps can be owned, purchased, discovered, incomplete, or supplemented by exploration and NPC directions.
+
+The player should discover routes, landmarks, hazards, resources, services, and shortcuts rather than automatically possessing omniscient world navigation.
+
+### Resource provenance instead of reward confetti
+
+A defeated creature should not automatically manufacture finished crafting materials in inventory.
+
+Depending on context, rewards may require:
+
+- searching carried belongings;
+- skinning/butchering/plucking;
+- recovering bone, horn, shell, glands, venom, or other useful parts;
+- dismantling constructs;
+- mining/logging/foraging/fishing/trapping;
+- salvage;
+- crafting/processing;
+- commerce, wages, contracts, reputation, or quest rewards.
+
+Tools, time, proficiency, condition, carrying capacity, and player choice should matter.
+
+### Materials circulate through the economy
+
+```text
+world source
+  -> raw material
+  -> processing
+  -> component/ingredient
+  -> finished good
+  -> use/wear/consumption
+  -> repair/recycling/salvage or replacement
+```
+
+Items should have intentional sources and sinks. Gathering, crafting, cooking, shops, quests, construction, equipment, travel, and regional trade should consume the same material world.
+
+### Content breadth is an engineering requirement
+
+The intended game ultimately needs hundreds to thousands of interconnected records: places, NPCs, creatures, flora/resources, items, recipes, abilities, quests, relationships, shops, and transport routes.
+
+The project therefore does not treat content as a late decorative layer. Mechanics and representative content grow together, with regional content packs and cross-reference validation rather than a few toy records or giant unvalidated files.
+
+## Original setting migration
+
+The immediate next runtime track is:
+
+```text
+0.5.550 — Original-world identity and canonical nomenclature
+```
+
+Before high-volume content databases are expanded, current inherited world/race/job/currency/creature/NPC terminology and stable IDs will be migrated to the original setting described in `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`.
+
+The initial world anchors are:
+
+- **Thornwall** and the **Elderwood** region;
+- **Brasshaven** and the **Redstone Reach**;
+- **Mistmere** and the **Starfen**;
+- future central trade hub **Waymeet**.
+
+These are starting anchors, not the whole world.
 
 ## Current architecture
 
@@ -151,73 +211,35 @@ tests/
 docs/
 ```
 
-## 0.4 foundation delivered
+## What is implemented versus what is still sparse
 
-The current foundation includes:
+The repository already has useful foundations for:
 
-- canvas-first text UI and command adapters;
-- account/character local saves;
-- four-part product versioning separated from package SemVer;
-- ordered persistence migrations;
+- account/character local saves and ordered migrations;
 - structured player/NPC/enemy entities;
-- places, San d'Oria coordinates, navigation, atlas, travel and aggro scaffolds;
-- POIs, shops, guild hooks and starter quest hooks;
+- places, maps, coordinates, navigation, travel, and aggro;
+- POIs, shops, guild/quest hooks;
 - inventory/storage/wardrobes;
-- item schema, equipment, inspection, buying and selling;
-- character-owned skills and deterministic representative skill-gain hooks;
-- battle/reward/EXP/loot/status/RNG scaffolds;
-- versioned `ActionResult` with travel-start pilot;
-- bounded semantic events with travel start/arrival pilot;
-- validation, tests, benchmarks, CI, database registry and system-version tracking;
-- explicit transitional architecture rules for world time and future capability work.
+- item schema, equipment, inspection, buying/selling;
+- character-owned skills and progression scaffolds;
+- battle/reward/EXP/status/RNG scaffolds;
+- `ActionResult` and semantic events;
+- canonical simulation time/tasks/interrupts/day review;
+- validation, tests, benchmarks, CI, database registry, and system-version tracking.
 
-This breadth is foundation code, not evidence that the product is near content completion.
+This is **foundation breadth, not content completion**. Current canonical monster, item, shop, quest, magic, relationship, companion, crafting, and regional catalogs are far below the intended scale and several still carry inherited naming that will be migrated before expansion.
+
+See `docs/SYSTEM_CATALOG.md` for a system-by-system status audit.
 
 ## Command compatibility
 
-The canvas input accepts bare gameplay commands plus leading-slash account/menu or compatible FFXI-style commands.
-
-Representative gameplay commands:
-
-```text
-look
-stats
-skills
-inventory
-equipment
-here
-move n
-travel West Ronfaure
-wait 60
-battle
-item Bronze Sword
-equip Bronze Sword
-shop Ashene
-buy Bronze Sword
-sell Bronze Sword
-validate
-save
-```
-
-Representative account/menu commands:
-
-```text
-/menu
-/commands
-/help
-/newcharacter
-/characters
-/load <name|number>
-/save
-/account
-/reset
-```
-
 Typed commands remain a powerful adapter/debug interface. Normal play should increasingly expose discoverable UI actions so command memorization is not required.
+
+Current examples may still contain inherited names until the 0.5.550 migration lands. After that track, examples and saved identifiers should use only canonical original-world vocabulary except inside explicit legacy adapters/migration tests.
 
 ## Save model
 
-Current localStorage keys:
+Current localStorage keys still use historical project identifiers and may be migrated later under an explicit compatibility plan:
 
 ```text
 ffxiTextRpgAccounts
@@ -232,44 +254,28 @@ base64-json-v1
 
 This is encoding, not cryptographic protection.
 
-Ordered migrations handle registered persistent-version transitions. `reviveGameState()` remains responsible for post-JSON reference repair such as relinking `player.inventory` to the Inventory container.
+Ordered migrations handle registered persistent-version transitions. `reviveGameState()` remains responsible for post-JSON reference repair such as relinking inventory container references.
 
-## New integration seams
+## Formula and research policy
 
-### ActionResult
+Formula confidence stays explicit:
 
-`js/text/systems/actionResult.js` separates semantic action outcome/code/data from display prose. Non-enumerable `.message` / `.reason` aliases exist only for transitional command compatibility.
-
-### Semantic events
-
-`js/text/systems/semanticEventEngine.js` provides bounded observational events with stable sequential IDs/types. Events are not event sourcing and are not authoritative state history.
-
-Travel currently emits:
-
-```text
-travel.started
-travel.arrived
-```
-
-Future objectives, achievements, day summaries, projects, and relationship reactions should consume structured event data rather than parse command-log prose.
-
-## Formula policy
-
-Formula confidence must remain explicit:
-
-- exact / sourced;
+- exact/sourced;
 - researched approximation;
 - intentional simplification;
 - placeholder.
 
-Formula refinement matters, but it does not lead the roadmap. Improve formulas when they materially improve a meaningful player-facing loop.
+Historical games may inform research, pacing, or structural comparisons, but they do not define canonical names, balance, or content. Formula refinement matters when it materially improves a real player-facing loop at representative data scale.
 
-## Immediate next implementation target
-
-After the 0.4.900 integration gate passes and merges:
+## Immediate implementation sequence
 
 ```text
-0.5.100 — Deterministic world clock
+0.5.550  Original-world names and stable-ID/save migration
+0.5.600  Resource provenance, body processing, persistent projects
+0.5.650  Ecology, gathering sources, spawn populations
+0.5.700  Timed routes and scheduled caravans/transport
+0.5.800  Regional content packs, normalization tools, cross-reference validation
+0.5.900  Simulation/content-substrate exit gate
 ```
 
-That pass should add canonical simulated time, exact deterministic advancement, derived day/time inspection, rollover tests, and **no dependency on `Date.now()` for canonical simulation state**.
+High-volume item/monster/quest/recipe generation starts only after the canonical identity migration is complete.
