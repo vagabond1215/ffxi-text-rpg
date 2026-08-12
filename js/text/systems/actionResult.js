@@ -56,6 +56,35 @@ export function describeActionResult(result, fallback = '') {
     return String(result.display.text ?? fallback);
 }
 
+// Transitional adapter for callers that still read .message/.reason or a promoted
+// semantic field directly. The compatibility aliases are non-enumerable so saved,
+// logged, or inspected ActionResult data keeps prose isolated under display.
+export function asLegacyActionResult(result, promotedDataKeys = []) {
+    if (!isActionResult(result)) return result;
+    const view = { ...result };
+    const descriptors = {
+        message: {
+            enumerable: false,
+            get: () => (result.ok ? describeActionResult(result) : undefined),
+        },
+        reason: {
+            enumerable: false,
+            get: () => (!result.ok ? describeActionResult(result) : undefined),
+        },
+    };
+
+    for (const key of promotedDataKeys) {
+        if (!(key in result.data) || key in view) continue;
+        descriptors[key] = {
+            enumerable: false,
+            get: () => result.data[key],
+        };
+    }
+
+    Object.defineProperties(view, descriptors);
+    return Object.freeze(view);
+}
+
 function isNonEmptyString(value) {
     return typeof value === 'string' && value.trim().length > 0;
 }
