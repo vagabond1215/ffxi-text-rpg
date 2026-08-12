@@ -4,42 +4,43 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 ## Read order
 
-1. `AGENTS.md` — autonomous-session budget, scope boundaries, and required handoff protocol.
+1. `AGENTS.md` — direct-`main` workflow, autonomous-session budget, scope boundaries, and handoff protocol.
 2. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
 3. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, naming, legacy-data, provenance, scale, and content-pack policy.
-4. `docs/ROADMAP.md` — current implementation status and immediate sequence.
-5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product-version protocol and detailed release gates.
+4. `docs/ROADMAP.md` — implementation sequence and milestone gates.
+5. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
 6. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams that must not harden into final design.
-7. `docs/ARCHITECTURE.md` — module/runtime boundaries.
-8. `js/text/version.js` — runtime/system version manifest.
+7. Relevant runtime/data/tests for the current bounded unit.
 
-Older planning documents may preserve useful history but do not override these files.
+Older planning documents preserve useful history but do not override the files above.
+
+## Current Git workflow
+
+The repository is currently in an early single-maintainer development phase. Per `AGENTS.md`, **continue directly on `main` by default**.
+
+Do not create a branch/PR merely as routine ceremony. Use isolation only if the user asks, a tool requires it, or the change is unusually risky enough that isolation materially helps.
+
+A green full suite is desirable, but it is not currently a mandatory gate before every incremental change. Run relevant validation, distinguish stale assertions from real regressions, and record known failures. Tighten branch/review/CI rules later when the project reaches active stabilization/release work.
 
 ## Autonomous work-session limit
 
-Repository work must not become an effectively endless chain of safe follow-on runs.
+`AGENTS.md` sets the operating guardrail:
 
-`AGENTS.md` sets the hard operating rule:
+- maximum autonomous session: **2 hours 45 minutes**;
+- **2:15** stabilization checkpoint;
+- **2:30** no new implementation unit;
+- by **2:45**, persist coherent work, update this handoff, and report even if more roadmap work is available;
+- if elapsed time cannot be measured reliably, use at most **6 autonomous work cycles**, with cycle 6 reserved for stabilization/handoff.
 
-- maximum autonomous session: **2 hours 45 minutes** from the start of active repo work for the user prompt;
-- at **2:15**, stabilize and make the work handoff-safe;
-- at **2:30**, start no new implementation unit;
-- by **2:45**, persist the current coherent state, update this handoff, and report even when later roadmap work could safely continue;
-- if elapsed time cannot be measured reliably, use the fallback maximum of **6 autonomous work cycles**, with cycle 6 reserved for stabilization/handoff.
+A new explicit user message starts a fresh budget. Roadmap `Next` sections are sequencing information, not permission for an endless autonomous chain.
 
-A new user message starts a new budget. Roadmap and `Next` sections are sequencing information, not permission to continue autonomously forever.
-
-## Product identity
+## Product identity and non-negotiable intent
 
 Working title: **Hearth & Horizon**.
 
 This is an original text-first persistent fantasy life RPG about one continuous character building livelihood, skills, relationships, reputation, material capability, home/infrastructure, and geographic reach across a connected fantasy world.
 
-Earlier code/data contains extensive FFXI-derived experiments. Those are now **legacy research/reference/migration material**, not canonical world content.
-
-Do not author new canonical databases using inherited FFXI place, nation, race, class, currency, creature, NPC, or item proper nouns.
-
-Do not preserve FFXI-specific wording in player-facing canonical content simply because a useful mechanic or datum originated in earlier reference work. Preserve useful mechanics where appropriate, but rename and contextualize them as original project content before high-volume database growth.
+Earlier FFXI-derived code/data is **legacy research/reference/migration material**, not canonical player-facing world content. Useful mechanics may survive, but inherited FFXI proper nouns and wording should not be preserved merely because old data used them.
 
 Core progression law:
 
@@ -55,93 +56,130 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-A discipline/job is not a magical transformation state. Learned capabilities belong to the continuous character; actual use is gated by learned skill/proficiency plus real equipment, tool, resource, preparation, status, and situational requirements.
+A discipline/job is not a magical transformation state. Learned capabilities belong to the continuous character; actual use is constrained by learned skill/proficiency plus real equipment, tools, resources, preparation, status, and context.
 
-## Current merged baseline
-
-```text
-Product:      0.5.500.0
-Package:      0.5.500
-Account Save: 4
-Game State:   4
-Data:         13
-Codename:     Day Boundary Review
-```
-
-Completed:
-
-- `0.4` foundation: versioning, migrations, ActionResult, semantic events, architecture stabilization;
-- `0.5.100` deterministic world clock;
-- `0.5.200` pause/speed control;
-- `0.5.300` canonical timed tasks;
-- `0.5.400` deterministic simulation interrupt model;
-- `0.5.500` day boundaries, structured day summaries, configurable end-of-day pause.
-
-The 0.5.500 merge is the point at which the roadmap was deliberately re-baselined to recognize that content breadth and data-production infrastructure are first-class engineering requirements.
-
-## In-flight checkpoint — PR #310
-
-The interrupted prior thread did produce durable work. Continue from it rather than restarting the migration from scratch.
+## Current authoritative baseline
 
 ```text
-PR:      #310 — Begin 0.5.550 canonical original-world identity migration
-Branch:  codex/original-world-identity-migration
-Target:  0.5.550.1 — first runtime revision of the 0.5.550 identity/stable-ID migration
-State:   draft / not merged
+Branch:        main
+Open PRs:      none
+Product:       0.5.550.1
+Package:       0.5.550
+Account Save:  4
+Game State:    5
+Data:          14
+Codename:      Original World Identity
+Track:         0.5.550 — original-world identity and canonical nomenclature
 ```
 
-Implemented on the branch before this handoff update:
+PR #310 (`codex/original-world-identity-migration`) is no longer the continuation point. The connector could not merge it normally while it was draft, so `main` was fast-forwarded to the coherent branch head and PR #310 was closed. Continue on `main`.
+
+The connector currently exposes no remote branch-delete action. Many historical `codex/*` branches therefore remain and require manual deletion if repository branch hygiene is desired. Do not create new branches just to compensate for that limitation.
+
+## What 0.5.550.1 already delivered
 
 - bounded legacy-to-canonical identity adapters;
-- canonical powers migrated to Thornwall, Brasshaven, and Mistmere;
-- regions/places/maps migrated to Elderwood, Redstone Reach, Starfen, and original localities;
-- ancestries migrated to Human, Lethari, Miri, Veyra, and Korren;
+- canonical powers: Thornwall, Brasshaven, Mistmere;
+- canonical surrounding regions: Elderwood, Redstone Reach, Starfen;
+- original place/map identities and Thornwall topology;
+- ancestries: Human, Lethari, Miri, Veyra, Korren;
 - transitional job scaffold migrated to original discipline names/IDs;
 - starter creature/NPC seed identities and spawn references originalized;
-- Thornwall topology added under canonical IDs;
-- current POI location references moved to canonical places while some POI IDs remain temporarily for dependent shop/quest/guild hooks;
-- historical stat research placed behind explicit canonical-to-legacy research boundaries;
-- starter equipment eligibility and skill-cap data migrated to canonical disciplines;
-- Game State bumped to v5 and Data to 14 on the branch;
-- ordered Game State v4 -> v5 identity migration added, including clearing obsolete active battles during migration;
-- character-creation/progression wording moved toward ancestry/discipline terminology.
+- Game State v4 -> v5 ordered identity migration;
+- Data version 14;
+- canonical starting equipment eligibility and skill-cap data;
+- historical stat research bounded behind canonical-to-legacy adapters;
+- character-creation/progression language moved toward ancestry/discipline terminology.
 
-Compatibility intent:
+Old world/race/job/place/map IDs should be accepted only at bounded migration/input compatibility seams. Do not maintain two permanent full schemas.
 
-- old world/race/job/place/map IDs are accepted only at bounded legacy input/migration boundaries;
-- new canonical runtime records should use original IDs;
-- do not solve compatibility by maintaining two permanent full schemas.
+## Work completed in the latest direct-main session
 
-CI checkpoint from the last implementation head before the session-protocol documentation commits:
+Repository/PR cleanup:
 
-- GitHub Actions `Test` step failed;
-- `Benchmark` was skipped because tests failed;
-- the exact failing assertions still need to be diagnosed from the current branch/check logs;
-- documentation commits may trigger newer checks, so inspect the latest PR status before changing code.
+- adopted the direct-`main` policy in `AGENTS.md`;
+- fast-forwarded `main` to the completed PR #310 branch head;
+- closed PR #310;
+- verified there are no open PRs;
+- confirmed stale branch deletion is not available through the current GitHub connector.
 
-The first bounded continuation unit should therefore be **diagnose and fix PR #310 CI without restarting the identity migration**. Once `0.5.550.1` is coherent and validated, report before automatically launching later 0.5.550 revisions.
+Player-facing originalization:
 
-The broader 0.5.550 track still needs follow-up work to originalize retained POI/shop/quest/guild names and remove remaining player-facing inherited vocabulary such as legacy currency/storage/companion/waypoint terms before high-volume content generation begins. That follow-up is intentionally a later bounded unit, not permission to keep the same agent session running indefinitely.
+- replaced FFXI page/launcher/dev-server/text-shell/canvas/top-bar branding with **Hearth & Horizon**;
+- originalized starter POI/NPC/service display names across Thornwall, Brasshaven, and Mistmere while temporarily retaining legacy-shaped POI IDs needed by dependent shop/quest/guild hooks;
+- replaced player-facing Mog-storage vocabulary with Home Safe, Furnishing Storage, Home Locker, Field Satchel/Sack/Case, and Wardrobe terminology;
+- added canonical `setHomeAccess()` while retaining `setMogHouseAccess()` as a bounded API compatibility alias;
+- stopped inventory output from leaking the internal persisted `mogHouse` access token;
+- introduced canonical `HOME_FURNITURE` while retaining the older export as a compatibility alias;
+- canonicalized benchmark fixtures and branding.
 
-## Immediate target
+Actual runtime defect fixed:
+
+- `characterCreationModel.js` still used legacy `hume`/`sandoria`/`warrior` defaults and starting-job IDs after the identity migration;
+- it now defaults to Human / Thornwall / Vanguard and exposes the canonical starting disciplines Vanguard, Pugilist, Lifewarden, Elementalist, Spellblade, and Shadowhand.
+
+Stale assertion/fixture cleanup completed across:
+
+- UI panels;
+- POI engine;
+- travel engine;
+- navigation engine;
+- atlas/controls;
+- shop engine;
+- combat actions;
+- command parser;
+- guided character creation;
+- inventory engine;
+- skill command router;
+- skill progression engine;
+- skill progression validation;
+- UI intent dispatcher.
+
+## Validation checkpoint
+
+The last fully inspected completed test job, before the final batch of fixes above, was commit `e1ccac404a0caefd8a289b93427d91f7e3ea29a9`:
 
 ```text
-0.5.550 — Original-world identity and canonical nomenclature
+298 tests
+263 pass
+35 fail
 ```
 
-This runtime migration happens **before high-volume item/monster/quest/recipe database expansion**.
+That was already an improvement from the earlier 248/50 and the original PR's 239/59 state.
 
-### Initial original-world anchors
+Several fixes were committed after that snapshot, so 263/35 is intentionally conservative and stale. At the end of this session, the latest `main` check for commit `d8e6bb84f33b5b41f5a834937d77b8c7e72b774c` had both `test` and `build` **in progress**. Per the session guardrail, do not wait indefinitely for CI before reporting.
+
+The GitHub Actions warning about checkout/setup actions being forced from their Node 20 action runtime to Node 24 is not the cause of the current application-test failures.
+
+## Next bounded implementation unit
+
+Do **not** start 0.5.600 yet. Continue finishing the 0.5.550 canonicalization/compatibility cleanup on `main`.
+
+Highest-value remaining work, based on the most recently inspected failing suite:
+
+1. Inspect the latest completed CI result after `d8e6bb84f33b5b41f5a834937d77b8c7e72b774c` and work from the actual remaining failures rather than the old 35-failure list.
+2. Expected remaining stale groups include:
+   - `tests/slashCommandRouter.test.js` — old Southern San d'Oria / starting-nation wording and IDs;
+   - current-state version assertions that still expect Game State 4 instead of 5 in day-cycle/foundation/save-migration/semantic-event/simulation-control/timed-task tests, while preserving fixtures that deliberately represent pre-migration v4 input;
+   - `tests/foundationReadiness.test.js` / semantic-event fixtures still using West Ronfaure rather than West Elderwood;
+   - `tests/equipmentEngine.test.js` legacy job names/IDs and old Mog-storage display wording;
+   - progression/reward tests that may still assert pre-ActionResult return shapes or old discipline IDs; inspect `progressionEngine.js` before changing these;
+   - any other failures surfaced by the newest CI run.
+3. Continue removing player-facing inherited vocabulary, but retain legacy IDs/keys internally when an ordered persistence migration or dependent-reference migration is still required.
+4. Keep `gil` unchanged unless/until the project defines an original currency replacement; do not invent one ad hoc.
+5. Once the 0.5.550 identity/nomenclature track is coherent enough to exit, synchronize roadmap/version docs and report before moving into `0.5.600` persistent projects/resource provenance.
+
+## Original-world anchors
 
 - **Thornwall** — western crown realm/capital context;
 - **Elderwood** — surrounding western forest region;
 - **Brasshaven** — industrial/mercantile forge republic;
-- **Redstone Reach** — its mineral-rich hinterland;
+- **Redstone Reach** — mineral-rich hinterland;
 - **Mistmere** — scholastic canal city;
-- **Starfen** — surrounding wetland/grassland region;
+- **Starfen** — wetland/grassland region;
 - **Waymeet** — future neutral central trade/transport hub.
 
-### Initial ancestry migration
+## Ancestry migration
 
 - Hume -> Human
 - Elvaan -> Lethari
@@ -149,11 +187,7 @@ This runtime migration happens **before high-volume item/monster/quest/recipe da
 - Mithra -> Veyra
 - Galka -> Korren
 
-Mechanical stat behavior can remain temporarily equivalent while the canonical identity changes.
-
-### Initial discipline migration
-
-The transitional job scaffold should migrate to original player-facing names before capability database expansion:
+## Discipline migration
 
 - Warrior -> Vanguard
 - Monk -> Pugilist
@@ -178,23 +212,9 @@ The transitional job scaffold should migrate to original player-facing names bef
 - Geomancer -> Leykeeper
 - Rune Fencer -> Wardsword
 
-These remain disciplines/training traditions, not permanent magical class locks.
+These are disciplines/training traditions, not permanent magical class locks.
 
-## 0.5.550 implementation expectations
-
-The migration should update more than display strings.
-
-1. Introduce canonical stable IDs for powers/regions/places/maps/ancestries/disciplines and other renamed runtime records.
-2. Add a bounded legacy-to-canonical identifier map at save/input boundaries.
-3. Use the ordered migration engine for persisted renamed identifiers; a Game State version bump is expected if saved state uses those IDs.
-4. Update world connections, map records, POIs, shop catalogs, enemy/spawn references, starting-state definitions, command examples, tests, and validation atomically.
-5. Rename current player-facing NPC/shop/creature/landmark content into the original setting rather than leaving a mixed canon.
-6. Keep historical FFXI research modules behind explicit legacy/reference naming/boundaries.
-7. New saves and canonical runtime records should not emit legacy FFXI stable IDs after the migration.
-
-Do not solve this by maintaining two permanent full schemas.
-
-## Following 0.5 tracks
+## Following tracks — sequencing only
 
 ```text
 0.5.600  Persistent projects + resource provenance/body processing
@@ -204,73 +224,4 @@ Do not solve this by maintaining two permanent full schemas.
 0.5.900  Simulation/content-substrate exit gate
 ```
 
-Then 0.6 integrates substantial character stats/progression, skills/proficiencies/disciplines/capabilities, original magic/abilities, Combat 2.0, item/tool breadth, gathering/crafting/cooking/salvage, ecology content, and AI companions.
-
-0.7 is the first multi-region playable-alpha phase: multiple cities/settlements, transport networks, hundreds-scale NPC population, regional economies, systemic quests/contracts/rewards/reputation, relationships/romance, and substantial regional content packs.
-
-## Resource/economy design law
-
-Rewards should have physical, economic, or social provenance.
-
-A defeated animal normally creates access to a body; it does not automatically produce a finished pelt in inventory.
-
-Desired acquisition paths include:
-
-- search carried belongings;
-- skin/butcher/pluck/extract;
-- gather/forage/log/mine/dig/fish/trap;
-- dismantle/salvage;
-- craft/process/cook;
-- buy/barter/earn wages;
-- quest/contract/reputation/social rewards;
-- deliberate exceptional magic when the fiction explicitly supports it.
-
-Item chains should create meaningful source/sink graphs such as:
-
-```text
-creature/body -> raw materials -> processing -> ingredients/components -> recipes -> usable goods -> consumption/wear/repair/salvage
-```
-
-## World/navigation law
-
-A home base is useful but is not the whole game.
-
-The target supports multiple cities, smaller settlements, roads, wilderness, dungeons, caravans, ferries, mounts/pack logistics, and regional trade.
-
-Internal `place`/map/content partitions may remain for simulation and navigation. Avoid making those boundaries mandatory gamey player-facing loading transitions unless a physical/fantastical boundary actually exists.
-
-Maps represent knowledge. Exploration, NPC directions, purchases, landmarks, and discovered routes should matter.
-
-## Data-scale law
-
-Do not confuse a schema with a complete system.
-
-The intended product eventually contains hundreds/thousands of cross-linked places, NPCs, creatures, resources, items, recipes, techniques/spells, quests, relationships, shops/services, and transport routes.
-
-Mechanics and representative content must grow together. Regional content packs and validation are required before large-scale data generation.
-
-## Current transitional technical debt
-
-Treat these as temporary:
-
-- FFXI-derived world/place/nation/race/job/currency naming;
-- `mainJobId` as a universal ability gate;
-- sparse placeholder skill-rank math;
-- placeholder spell/weapon-skill combat actions;
-- automatic generic battle loot where provenance/body processing should replace it;
-- tiny starter equipment/shop/enemy catalogs;
-- legacy `data/` modules and `ffxi*` research tables;
-- historical localStorage key names.
-
-Replace them incrementally behind migrations and tested interfaces rather than through an unbounded rewrite.
-
-## CI rule
-
-Before merging runtime work:
-
-```bash
-npm test
-npm run benchmark
-```
-
-GitHub Actions must be green unless a failure is explicitly understood, fixed, and rerun.
+Do not treat this list as authorization to chain into those tracks without returning to the user.
