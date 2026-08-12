@@ -14,24 +14,24 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.5.600.1');
-    assert.equal(PACKAGE_VERSION, '0.5.600');
+    assert.equal(PRODUCT_VERSION, '0.5.650.1');
+    assert.equal(PACKAGE_VERSION, '0.5.650');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 16);
+    assert.equal(VERSION.data, 17);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.5\.600\.1/);
-    assert.match(describeVersion(), /Package: 0\.5\.600/);
+    assert.match(describeVersion(), /Product: 0\.5\.650\.1/);
+    assert.match(describeVersion(), /Package: 0\.5\.650/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 16/);
-    assert.match(describeVersion(), /Codename: Resource Provenance/);
+    assert.match(describeVersion(), /Data: 17/);
+    assert.match(describeVersion(), /Codename: Ecology Substrate/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.600\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.5\.650\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -44,6 +44,11 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /resourceProvenance: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceOpportunities: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceRecovery: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /ecologyCatalog: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /ecologyState: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /populations: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /gatheringSources: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /resourceItems: 0\.1\.0/);
     assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commandShell: 0\.4\.5/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.5\.1/);
@@ -77,6 +82,11 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.ok(ids.includes('projects'));
     assert.ok(ids.includes('resourceProvenance'));
     assert.ok(ids.includes('resourceOpportunities'));
+    assert.ok(ids.includes('ecologyFamilies'));
+    assert.ok(ids.includes('species'));
+    assert.ok(ids.includes('populations'));
+    assert.ok(ids.includes('gatheringSources'));
+    assert.ok(ids.includes('resourceItems'));
     assert.ok(ids.includes('legacyRecoveredData'));
     assert.ok(ids.includes('quests'));
     assert.ok(ids.includes('achievements'));
@@ -93,6 +103,8 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.equal(ids.includes('trusts'), false);
     assert.match(describeDatabases(), /resourceProvenance/);
     assert.match(describeDatabases(), /resourceOpportunities/);
+    assert.match(describeDatabases(), /gatheringSources/);
+    assert.match(describeDatabases(), /populations/);
     assert.match(describeDatabases(), /legacyRecoveredData/);
     assert.match(describeDatabases(), /companions/);
     assert.match(describeLegacyRecoveredData(), /weapon skills/);
