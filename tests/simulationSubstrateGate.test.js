@@ -6,13 +6,14 @@ import {
     evaluateSimulationSubstrateGate,
     validateSimulationSubstrateGate,
 } from '../js/text/systems/simulationSubstrateGate.js';
+import { VERSION } from '../js/text/version.js';
 
 
-test('0.5 simulation substrate gate passes every production readiness group', () => {
+test('0.5 simulation substrate gate remains green after later product tracks begin', () => {
     const result = evaluateSimulationSubstrateGate();
 
     assert.equal(result.ready, true);
-    assert.equal(result.productVersion, '0.5.900.1');
+    assert.equal(result.productVersion, VERSION.product);
     assert.deepEqual(result.groups.map((group) => group.id), SIMULATION_SUBSTRATE_GATE_GROUPS);
     assert.equal(result.summary.passedGroups, result.summary.totalGroups);
     assert.ok(result.summary.packCount >= 3);
@@ -65,4 +66,14 @@ test('exit gate rejects a planned deterministic-simulation dependency without mu
     assert.equal(result.ready, false);
     assert.equal(simulation.ready, false);
     assert.ok(simulation.issues.some((issue) => issue.includes('timedTasks')));
+});
+
+test('exit gate rejects product versions predating the completed 0.5.900 track', () => {
+    const result = evaluateSimulationSubstrateGate({
+        version: { ...VERSION, product: '0.5.800.9' },
+    });
+
+    assert.equal(result.ready, false);
+    const identity = result.groups.find((group) => group.id === 'originalWorldIdentity');
+    assert.ok(identity.issues.some((issue) => issue.includes('0.5.900')));
 });
