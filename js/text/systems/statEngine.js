@@ -7,6 +7,7 @@ import { calculateInferredJobResources, canUseInferredJobResourceFormula } from 
 const BASE_ATTRIBUTE_VALUE = 6;
 const BASE_HP = 24;
 const BASE_MP = 0;
+const CASTER_DISCIPLINES = Object.freeze(['lifewarden', 'elementalist', 'spellblade', 'eidolist', 'echoSage', 'savant', 'leykeeper']);
 
 export function calculateCombatProfile(entity) {
     const level = getEntityLevel(entity);
@@ -51,7 +52,7 @@ export function calculateResources(entity, level = getEntityLevel(entity), attri
     }
     const race = entity.type === 'player' ? getRace(entity.identity?.raceId) : null;
     const mainJob = entity.type === 'player' ? getJob(entity.jobs?.mainJobId) : null;
-    const isCaster = ['whiteMage', 'blackMage', 'redMage', 'summoner', 'blueMage', 'scholar', 'geomancer'].includes(mainJob?.id);
+    const isCaster = CASTER_DISCIPLINES.includes(mainJob?.id);
     const enemyHpBonus = entity.type === 'enemy' ? level * 6 : 0;
     return {
         maxHp: Math.max(1, BASE_HP + level * 8 + attributes.vit * 2 + (race?.resourceBias?.hp ?? 0) * level + enemyHpBonus + (equipment.resources.hp ?? 0) + (statuses.resources.hp ?? 0)),
