@@ -53,7 +53,7 @@ test('resolveBattleRewards can level the player through the progression engine',
     assert.equal(result.ok, true);
     assert.deepEqual(result.progression.levelUps, [2]);
     assert.equal(state.player.jobs.level, 2);
-    assert.equal(state.player.jobs.jobLevels.warrior, 2);
+    assert.equal(state.player.jobs.jobLevels.vanguard, 2);
     assert.equal(state.player.progression.exp, 15);
     assert.match(result.message, /Level up: 2/);
 });
