@@ -10,17 +10,17 @@ import { advanceTravel, startTravel } from '../js/text/systems/travelEngine.js';
 import { validateGameState } from '../js/text/systems/validation.js';
 
 
-test('current state remains valid with optional deterministic world-time state attached', () => {
+test('current state requires valid deterministic world-time state', () => {
     const state = createInitialState();
-    state.worldTime = { totalSeconds: 0 };
 
     assert.deepEqual(validateGameState(state), []);
-    assert.equal(state.version, 3);
+    assert.equal(state.version, 4);
+    assert.deepEqual(state.worldTime, { totalSeconds: 0 });
 });
 
-test('travel action and event seams can observe world time without using log prose', () => {
+test('travel action and event seams can observe canonical world time without using log prose', () => {
     const state = createInitialState();
-    state.worldTime = { totalSeconds: 3600 };
+    state.worldTime.totalSeconds = 3600;
     setPositionAndDiscover(state, 'southern-sandoria', { coord: 'F-10' });
 
     const started = startTravel(state, 'West Ronfaure');
@@ -46,9 +46,9 @@ test('character-owned skill storage is outside the active job record', () => {
     assert.equal(Object.hasOwn(state.player.jobs, 'skills'), false);
 });
 
-test('wall-clock tick scaffold can remain a scheduler rather than canonical world time', () => {
+test('wall-clock tick scaffold remains a scheduler rather than canonical world time', () => {
     const state = createInitialState();
-    state.worldTime = { totalSeconds: 1234 };
+    state.worldTime.totalSeconds = 1234;
     const tickEngine = createTickEngine({ tickLengthMs: 1000 });
 
     tickEngine.tick({ state });
