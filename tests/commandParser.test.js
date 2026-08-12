@@ -8,7 +8,7 @@ import { isValidGameState, validateGameState } from '../js/text/systems/validati
 
 
 test('tokenize preserves quoted arguments', () => {
-    assert.deepEqual(tokenize('inspect "Forest Hare" --detail=full'), ['inspect', 'Forest Hare', '--detail=full']);
+    assert.deepEqual(tokenize('inspect "Brush Hare" --detail=full'), ['inspect', 'Brush Hare', '--detail=full']);
 });
 
 test('parseCommand normalizes aliases and named args', () => {
@@ -34,6 +34,6 @@ test('router supports inspect and validate commands', () => {
         reload: () => {},
     });
 
-    assert.match(router('inspect player'), /Adventurer/);
+    assert.match(router('inspect player'), /Traveler/);
     assert.match(router('validate'), /valid/);
 });
