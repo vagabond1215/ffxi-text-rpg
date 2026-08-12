@@ -13,8 +13,8 @@ const CAPABILITY_DEFINITIONS = Object.freeze({
         tags: ['martial', 'weapon-technique', 'defensive'],
         learning: {
             anyDiscipline: [
-                { disciplineId: 'vanguard', minLevel: 1 },
                 { disciplineId: 'spellblade', minLevel: 2 },
+                { disciplineId: 'vanguard', minLevel: 1 },
             ],
         },
         use: {
