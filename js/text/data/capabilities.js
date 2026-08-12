@@ -1,11 +1,60 @@
 import { JOB_DEFINITIONS } from './jobs.js';
 import { SKILL_KEYS } from './systemConstants.js';
 
-export const CAPABILITY_CATALOG_VERSION = 1;
-export const CAPABILITY_TYPES = Object.freeze(['technique', 'practical', 'passive']);
-export const CAPABILITY_CONTEXTS = Object.freeze(['combat', 'gathering', 'resourceRecovery', 'travel', 'project']);
+export const CAPABILITY_CATALOG_VERSION = 2;
+export const CAPABILITY_TYPES = Object.freeze(['spell', 'technique', 'practical', 'passive']);
+export const CAPABILITY_CONTEXTS = Object.freeze(['combat', 'exploration', 'gathering', 'resourceRecovery', 'travel', 'project']);
 
 const CAPABILITY_DEFINITIONS = Object.freeze({
+    'spell-ember-dart': capability({
+        id: 'spell-ember-dart',
+        name: 'Ember Dart',
+        type: 'spell',
+        tags: ['magic', 'embercraft', 'offensive'],
+        learning: {
+            anyDiscipline: [
+                { disciplineId: 'elementalist', minLevel: 1 },
+                { disciplineId: 'spellblade', minLevel: 2 },
+            ],
+        },
+        use: {
+            contexts: ['combat'],
+            requiredSkills: [{ skillId: 'elementalMagic', min: 1 }],
+        },
+    }),
+    'spell-mending-thread': capability({
+        id: 'spell-mending-thread',
+        name: 'Mending Thread',
+        type: 'spell',
+        tags: ['magic', 'vital-weave', 'restorative'],
+        learning: {
+            anyDiscipline: [
+                { disciplineId: 'lifewarden', minLevel: 1 },
+                { disciplineId: 'spellblade', minLevel: 3 },
+            ],
+        },
+        use: {
+            contexts: ['combat', 'exploration'],
+            requiredSkills: [{ skillId: 'healingMagic', min: 1 }],
+        },
+    }),
+    'spell-stone-ward': capability({
+        id: 'spell-stone-ward',
+        name: 'Stone Ward',
+        type: 'spell',
+        tags: ['magic', 'ward-lore', 'defensive'],
+        learning: {
+            anyDiscipline: [
+                { disciplineId: 'oathguard', minLevel: 2 },
+                { disciplineId: 'lifewarden', minLevel: 2 },
+                { disciplineId: 'savant', minLevel: 2 },
+            ],
+        },
+        use: {
+            contexts: ['combat', 'exploration'],
+            requiredSkills: [{ skillId: 'enhancingMagic', min: 1 }],
+        },
+    }),
     'technique-guarded-cut': capability({
         id: 'technique-guarded-cut',
         name: 'Guarded Cut',
@@ -62,6 +111,21 @@ const CAPABILITY_DEFINITIONS = Object.freeze({
         use: {
             contexts: ['gathering'],
             requiredToolTags: ['mining'],
+        },
+    }),
+    'practical-waymark-reading': capability({
+        id: 'practical-waymark-reading',
+        name: 'Waymark Reading',
+        type: 'practical',
+        tags: ['fieldcraft', 'navigation', 'observation'],
+        learning: {
+            anyDiscipline: [
+                { disciplineId: 'wayfinder', minLevel: 1 },
+                { disciplineId: 'leykeeper', minLevel: 2 },
+            ],
+        },
+        use: {
+            contexts: ['exploration'],
         },
     }),
 });
