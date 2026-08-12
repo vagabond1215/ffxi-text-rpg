@@ -42,10 +42,10 @@ export function switchMainJob(player, jobQuery, options = {}) {
     ensureProgressionState(player);
 
     const job = resolveUnlockedJob(player, jobQuery);
-    if (!job) return { ok: false, message: `Job is not unlocked: ${jobQuery}` };
+    if (!job) return { ok: false, message: `Discipline is not unlocked: ${jobQuery}` };
     if (player.jobs.mainJobId === job.id) {
         refreshProgressionDerivedState(player, { preserveTp: options.preserveTp ?? false });
-        return { ok: true, unchanged: true, jobId: job.id, message: `Already set to ${job.name}.` };
+        return { ok: true, unchanged: true, jobId: job.id, message: `Already training as ${job.name}.` };
     }
 
     syncActiveJobRecord(player);
@@ -64,14 +64,14 @@ export function switchMainJob(player, jobQuery, options = {}) {
         jobId: job.id,
         level: record.level,
         exp: record.exp,
-        message: `Changed main job to ${job.name} Lv.${record.level}.`,
+        message: `Changed active discipline to ${job.name} Lv.${record.level}.`,
     };
 }
 
 export function describeJobProgression(player) {
     ensureProgressionState(player);
     const unlocked = player.jobs.unlockedJobs ?? [];
-    const lines = ['Job Progression:'];
+    const lines = ['Discipline Progression:'];
     for (const jobId of unlocked) {
         const job = getJob(jobId);
         const record = getJobProgressionRecord(player, jobId);
@@ -87,7 +87,7 @@ export function ensureProgressionState(player) {
     player.jobs.unlockedJobs ??= player.jobs.mainJobId ? [player.jobs.mainJobId] : [];
     player.progression ??= {};
     player.progression.jobProgression ??= {};
-    const activeJobId = player.jobs.mainJobId ?? 'warrior';
+    const activeJobId = player.jobs.mainJobId ?? 'vanguard';
     const activeLevel = Math.max(1, Number(player.jobs.level) || 1);
     const activeExp = Math.max(0, Math.floor(Number(player.progression.exp) || 0));
 
