@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.5.600.1
-Package:      0.5.600
+Product:      0.5.650.1
+Package:      0.5.650
 Account Save: 4
 Game State:   5
-Data:         16
+Data:         17
 Benchmark:    1
-Codename:     Resource Provenance
+Codename:     Ecology Substrate
 ```
 
-The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, and the first provenance-aware physical resource recovery substrate are established; content breadth and many integrated mechanics remain far below the intended game.
+The repository is pre-alpha. Deterministic simulation, original-world identity, persistent projects, provenance-aware physical resource recovery, and the first ecology/population/environmental gathering substrate are established; content breadth and many integrated mechanics remain far below the intended game.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.5.600.1
+0.5.650.1
 ```
 
 | Segment | Meaning |
@@ -86,7 +86,7 @@ Docs-only planning changes normally do not bump product version. A product-versi
 
 Prefer bounded adapters and ordered migrations over permanent dual schemas.
 
-Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, and `gil` pending deliberate original currency design.
+Current intentional compatibility examples include historical localStorage keys, legacy POI hook IDs, explicit legacy/reference modules, transitional encounter `spawnRules`, and `gil` pending deliberate original currency design.
 
 ---
 
@@ -122,92 +122,99 @@ Delivered original powers, regions, places, maps, ancestries, transitional disci
 
 ## 0.5.600 — Resource provenance and persistent projects — complete
 
+Resulting baseline was `0.5.600.1 / Package 0.5.600 / Game State 5 / Data 16`. It delivered persistent projects, provenance/source/sink contracts, post-combat body/carried-goods/salvage opportunities, deterministic timed recovery, and provenance-tagged physical materials.
+
+## 0.5.650 — Ecology, gathering, and spawn substrate — complete
+
 Resulting baseline:
 
 ```text
-Product:      0.5.600.1
-Package:      0.5.600
+Product:      0.5.650.1
+Package:      0.5.650
 Account Save: 4
 Game State:   5
-Data:         16
+Data:         17
+Benchmark:    1
+Codename:     Ecology Substrate
 ```
 
 ### Version impact
 
-- **Product:** `0.5.550.2` -> `0.5.600.1`.
-- **Package:** `0.5.550` -> `0.5.600`.
+- **Product:** `0.5.600.1` -> `0.5.650.1`.
+- **Package:** `0.5.600` -> `0.5.650`.
 - **Account Save:** unchanged at 4.
-- **Game State:** unchanged at 5 because project/resource registries are additive and lazily initialize when absent.
-- **Data:** 15 -> 16 because the item/provenance data contract changed and item schema advanced to v3.
-- **Item schema system:** `0.6.0` -> `0.7.0`.
-- **Battle rewards:** `0.5.2` -> `0.6.0` because physical material drops were replaced with recoverable world opportunities.
-- New systems: `projects 0.1.0`, `resourceProvenance 0.1.0`, `resourceOpportunities 0.1.0`, `resourceRecovery 0.1.0`.
+- **Game State:** unchanged at 5 because ecology runtime state is additive and can lazily initialize when absent.
+- **Data:** 16 -> 17 for the new canonical family/species/population/gathering-source/resource-item data contract.
+- **Enemy entity:** `0.2.0` -> `0.2.1` to carry a canonical `speciesId` encounter link.
+- New systems: `ecologyCatalog 0.1.0`, `ecologyState 0.1.0`, `populations 0.1.0`, `gatheringSources 0.1.0`, `resourceItems 0.1.0`.
 
 ### Delivered
 
-- persistent projects with stable IDs, real material contribution, canonical timed labor, progress, cancellation, completion, and semantic events;
-- provenance categories spanning physical, economic, social, crafting, and explicitly exceptional magical acquisition;
-- item sink/use metadata and validation hooks;
-- defeated-enemy body/carried-goods/salvage opportunities instead of automatic finished-material insertion;
-- timed search/skin/butcher/pluck/extract/salvage contracts with tool, proficiency, condition, time, inventory, and chance hooks;
-- resource-yield rolls fixed and persisted when recovery starts, preventing later reconciliation from rerolling the same work;
-- recovered items carry source/place/action provenance;
-- starter loot tables reinterpreted as transitional candidate-output pools;
-- regression tests for project state, provenance metadata, recovery actions, deterministic recovery outcomes, battle rewards, and version/database contracts.
+- canonical creature-family records and species records separated from encounter instances;
+- representative population records spanning forest, upland, mine/cave, wetland, raider, beast, plantoid, and rare-population cases;
+- habitat, density, rarity, aggression, senses, social/link metadata, capacity, and respawn contracts;
+- seed encounter templates linked to canonical species through `speciesId`;
+- representative flora/mineral/fishing source records with tool/proficiency/action/output contracts;
+- canonical raw-resource items with matching source/place/action provenance and intentional sinks;
+- persistent depletion/availability records whose regeneration/respawn derives from `worldTime.totalSeconds`;
+- atomic harvesting through the normal inventory engine;
+- deterministic day/time appearance conditions and explicit flag-based named hooks instead of arbitrary appearance rolls;
+- standalone ecology cross-reference validation covering species/families, populations/places, sources/actions/items, and output provenance;
+- regression tests covering multiple families, habitats, source types, depletion/regeneration, rare conditions, named hooks, inventory behavior, and invalid runtime references.
 
 ### Intentionally deferred
 
-- broad UI/command affordances for project/resource actions;
-- hundreds-scale source/sink graph validation and content generation;
-- environmental gathering nodes, species populations, depletion/regeneration, and respawn;
-- final currency design;
-- full processing/crafting chains.
+- replacing the existing `places.js` encounter `spawnRules` arrays with population-driven encounter selection;
+- broad player-facing gathering UI/commands;
+- richer weather/season/migration/predation/reproduction/territory ecology;
+- high-volume creature/flora/resource generation;
+- hundreds/thousands-scale regional content validation, which belongs to `0.5.800`.
 
 ---
 
 # Active and future milestone gates
 
-## 0.5.650 — Ecology, gathering, and spawn substrate — next
+## 0.5.700 — Travel and scheduled transport substrate — next
 
 Deliver:
 
-- species/family definitions separated from encounter instances;
-- habitat/population data with place/biome, density, rarity, aggression, senses, social/link behavior, and environmental hooks;
-- flora/mineral/fishing/gathering-source definitions referencing canonical item outputs and provenance actions;
-- deterministic depletion/regeneration or respawn compatible with canonical world time and interrupts;
-- rare/named population hooks;
-- representative cross-reference validation among species, places, population records, resource sources, and item outputs.
+- canonical route records independent of incidental place-transition UI;
+- timed local/walking/overland travel built on canonical world time, tasks, and interrupts;
+- route distance/time, hazards, encumbrance/cargo, and map/knowledge hooks;
+- scheduled caravans with stops, deterministic departure cadence, fare, cargo allowance, travel time, and arrival;
+- a shared transport contract that later ferries, wagons, mounts, and other modes can use;
+- representative cross-reference validation across routes, stops, places, schedules, and transport records.
 
-Do not expand to high-volume creature/resource catalogs before these contracts are coherent.
-
-## 0.5.700 — Canonical routes and scheduled transport
-
-Deliver simulation-time walking/routes, scheduled caravans, shared transport contracts, interruption/cargo/fare hooks, and route/map knowledge.
+Do not mass-author routes until the contracts and validators are coherent.
 
 ## 0.5.800 — Regional content packs, normalization, and validation
 
-Deliver content-pack contracts, candidate import normalization, broad cross-reference/source-sink validation, and workflows proven at hundreds/thousands-of-record scale.
+Deliver regional content-pack contracts across places/routes/NPCs/shops/ecology/resources/items/recipes/quests/relationships/transport; reviewable legacy/reference normalization; and high-volume cross-reference validation for stable IDs, sources/sinks, spawns, recipes, shops, quests/rewards, routes, maps, and companions.
 
-## 0.5.900 — Simulation/content-substrate exit
+## 0.5.900 — Simulation/content-substrate exit gate
 
-0.5 closes when deterministic long-duration simulation, canonical identity, provenance/projects, ecology/gathering, scheduled transport, and scalable content-pack validation are all integrated.
+0.5 closes when long fictional activities safely fast-forward/interrupt/summarize; original-world IDs are stable; projects/provenance exist; ecology/gathering/spawn definitions can populate the world; scheduled transport connects multiple regions; and regional content packs/validators can safely support high-volume original content generation.
 
-## 0.6 — Integrated character and mechanics content
+---
 
-Major gates cover character stats/progression, capability-centered disciplines, original magic/abilities, Combat 2.0, broad item/tool catalogs, gathering/crafting/cooking/salvage, ecology content, and persistent AI companions.
+# Later phases
 
-## 0.7 — Multi-region playable alpha
+## 0.6 — Integrated Character and Mechanics Content
 
-Major gates cover a multi-settlement world graph, regional transport/logistics, hundreds-scale NPC populations, functioning regional economies, systemic quests/contracts/reputation, relationships/romance, and substantial regional content packs.
+Planned tracks cover character stats/progression; skills/proficiencies/disciplines/capabilities; original magic/active abilities; Combat 2.0; canonical item/equipment/tool breadth; gathering/hunting/processing/crafting/cooking/salvage; ecology/regional content; companions; and an integrated-mechanics exit gate.
 
-## 0.8 — Life and infrastructure expansion
+## 0.7 — Multi-Region Playable Alpha
 
-Deepen property, construction, agriculture, husbandry/taming, workshops, logistics, households, civic institutions, production chains, labor, and earned automation.
+Multiple settlements/regions, transport/logistics, hundreds-scale NPC populations, regional economies, systemic quests/contracts/reputation, relationships/romance, distinct ecology/content packs, and a complete multi-city opening campaign layer.
 
-## 0.9 — Adventure depth and release hardening
+## 0.8 — Life and Infrastructure Expansion
 
-Deepen advanced combat/magic, expeditions/dungeons, high-tier professions/equipment, regional arcs, balance, accessibility, migrations, performance, and content-complete beta/RC stabilization.
+Property, construction, agriculture, husbandry/taming, workshops, logistics, labor, households, civic institutions, production chains, maintenance, and earned automation.
 
-## 1.0 — Live foundation
+## 0.9 — Adventure Depth and Release Hardening
 
-1.0 begins the explicit long-term compatibility promise. Saves, canonical IDs, persistence formats, and core gameplay contracts become live-support commitments rather than pre-alpha implementation details.
+Advanced combat/magic, bosses/dungeons/expeditions, high-tier equipment/crafting, regional/faction arcs, long-simulation balance, UI/accessibility, migrations, performance, and thousands-of-record validation.
+
+## 1.0 — Live Foundation
+
+1.0 begins the explicit compatibility/product promise for a persistent character living across a connected original fantasy world with meaningful livelihoods, relationships, exploration, material progression, danger, home/infrastructure, and long-term ambition.
