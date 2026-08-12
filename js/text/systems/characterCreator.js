@@ -2,18 +2,18 @@ import { listJobs } from '../data/jobs.js';
 import { listNations } from '../data/nations.js';
 import { RACES } from '../data/races.js';
 
-const STARTING_JOB_IDS = Object.freeze(['warrior', 'monk', 'whiteMage', 'blackMage', 'redMage', 'thief']);
+const STARTING_DISCIPLINE_IDS = Object.freeze(['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand']);
 const CREATOR_STEPS = Object.freeze(['name', 'nation', 'race', 'sex', 'job', 'confirm']);
 
 export function createCreatorSession() {
     return {
         stepIndex: 0,
         answers: {
-            name: 'Adventurer',
-            nationId: 'sandoria',
-            raceId: 'hume',
+            name: 'Traveler',
+            nationId: 'thornwall',
+            raceId: 'human',
             sex: null,
-            mainJobId: 'warrior',
+            mainJobId: 'vanguard',
         },
     };
 }
@@ -23,14 +23,14 @@ export function handleCreatorInput(creator, input) {
     const value = String(input ?? '').trim();
 
     if (step === 'name') {
-        creator.answers.name = value || 'Adventurer';
+        creator.answers.name = value || 'Traveler';
         creator.stepIndex += 1;
         return { done: false, message: renderCreatorPrompt(creator) };
     }
 
     if (step === 'nation') {
         const nation = chooseByNumberOrId(value, listNations(), (item) => item.id, (item) => item.name);
-        if (!nation) return invalidChoice(creator, 'nation', value);
+        if (!nation) return invalidChoice(creator, 'starting power', value);
         creator.answers.nationId = nation.id;
         creator.stepIndex += 1;
         return { done: false, message: renderCreatorPrompt(creator) };
@@ -38,7 +38,7 @@ export function handleCreatorInput(creator, input) {
 
     if (step === 'race') {
         const race = chooseByNumberOrId(value, Object.values(RACES), (item) => item.id, (item) => item.name);
-        if (!race) return invalidChoice(creator, 'race', value);
+        if (!race) return invalidChoice(creator, 'ancestry', value);
         creator.answers.raceId = race.id;
         creator.answers.sex = race.allowedSexes.length === 1 ? race.allowedSexes[0] : null;
         creator.stepIndex += race.allowedSexes.length === 1 ? 2 : 1;
@@ -56,9 +56,9 @@ export function handleCreatorInput(creator, input) {
     }
 
     if (step === 'job') {
-        const job = chooseByNumberOrId(value, listStartingJobs(), (item) => item.id, (item) => item.name);
-        if (!job) return invalidChoice(creator, 'job', value);
-        creator.answers.mainJobId = job.id;
+        const discipline = chooseByNumberOrId(value, listStartingJobs(), (item) => item.id, (item) => item.name);
+        if (!discipline) return invalidChoice(creator, 'discipline', value);
+        creator.answers.mainJobId = discipline.id;
         creator.stepIndex += 1;
         return { done: false, message: renderCreatorPrompt(creator) };
     }
@@ -81,19 +81,19 @@ export function handleCreatorInput(creator, input) {
 export function renderCreatorPrompt(creator) {
     const step = CREATOR_STEPS[creator.stepIndex];
     if (step === 'name') return 'Character Creator\n\nWhat is your character name?';
-    if (step === 'nation') return renderChoicePrompt('Choose starting nation:', listNations(), (nation) => `${nation.name} - ${nation.description}`);
-    if (step === 'race') return renderChoicePrompt('Choose race:', Object.values(RACES), (race) => `${race.name} - ${race.description}`);
+    if (step === 'nation') return renderChoicePrompt('Choose your starting power:', listNations(), (nation) => `${nation.name} - ${nation.description}`);
+    if (step === 'race') return renderChoicePrompt('Choose ancestry:', Object.values(RACES), (race) => `${race.name} - ${race.description}`);
     if (step === 'sex') {
         const race = RACES[creator.answers.raceId];
         return renderChoicePrompt('Choose sex:', race.allowedSexes.map((sex) => ({ id: sex, name: capitalize(sex) })), (item) => item.name);
     }
-    if (step === 'job') return renderChoicePrompt('Choose starting job:', listStartingJobs(), (job) => `${job.name} (${job.abbreviation}) - ${job.role}`);
+    if (step === 'job') return renderChoicePrompt('Choose starting discipline:', listStartingJobs(), (discipline) => `${discipline.name} (${discipline.abbreviation}) - ${discipline.role}`);
     if (step === 'confirm') return renderCreatorSummary(creator);
     return 'Character creator is ready.';
 }
 
 export function listStartingJobs() {
-    return listJobs().filter((job) => STARTING_JOB_IDS.includes(job.id));
+    return listJobs().filter((job) => STARTING_DISCIPLINE_IDS.includes(job.id));
 }
 
 function invalidChoice(creator, type, value) {
@@ -113,15 +113,15 @@ function renderChoicePrompt(title, options, describe) {
 function renderCreatorSummary(creator) {
     const nation = listNations().find((item) => item.id === creator.answers.nationId);
     const race = RACES[creator.answers.raceId];
-    const job = listStartingJobs().find((item) => item.id === creator.answers.mainJobId);
+    const discipline = listStartingJobs().find((item) => item.id === creator.answers.mainJobId);
     return [
         'Confirm character:',
         '',
         `Name: ${creator.answers.name}`,
-        `Nation: ${nation?.name ?? creator.answers.nationId}`,
-        `Race: ${race?.name ?? creator.answers.raceId}`,
+        `Starting power: ${nation?.name ?? creator.answers.nationId}`,
+        `Ancestry: ${race?.name ?? creator.answers.raceId}`,
         `Sex: ${creator.answers.sex}`,
-        `Job: ${job?.name ?? creator.answers.mainJobId}`,
+        `Discipline: ${discipline?.name ?? creator.answers.mainJobId}`,
         '',
         'Type yes to create, no to restart, or cancel.',
     ].join('\n');
