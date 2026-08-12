@@ -1,4 +1,5 @@
 import { createNewGameState, replaceState as replaceGameState } from '../gameState.js';
+import { activateAbility } from '../systems/abilityEngine.js';
 import {
     appendOutput,
     clearModalInputs,
@@ -95,6 +96,7 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.move': return moveNavigation(context);
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
+        case 'ability.activate': return activateCanonicalAbility(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -353,6 +355,20 @@ function toggleAutoRun(context) {
     const message = `Auto Run ${enabled ? 'on' : 'off'}.`;
     setActiveFeedback(context.uiState, message);
     return ok(context, { message, autoRunEnabled: enabled });
+}
+
+function activateCanonicalAbility(context) {
+    const result = activateAbility(context.state, context.payload.abilityId, {
+        targetQuery: context.payload.targetQuery,
+        toolTags: context.payload.toolTags,
+        preparationTags: context.payload.preparationTags,
+        flags: context.payload.flags,
+    });
+    const message = result.message ?? result.reason ?? `${context.payload.abilityId ?? 'Ability'} updated.`;
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { abilityResult: result, message });
 }
 
 function routeCommand(context) {
