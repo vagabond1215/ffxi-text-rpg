@@ -64,7 +64,6 @@ export function createContextualActions(state, nearby = getContextualPois(state)
 
     if (state.travel?.active) {
         return [
-            commandAction('context:travel-status', 'Travel Status', 'travel', 'primary'),
             Object.freeze({ id: 'context:stop-travel', label: 'Stop Travel', intent: 'navigation.stop', payload: Object.freeze({}), kind: 'travel' }),
         ];
     }
