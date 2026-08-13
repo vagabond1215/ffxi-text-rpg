@@ -10,30 +10,38 @@ import { createCanvasContextSnapshot, wrapText } from '../js/text/ui/canvasRende
 import { createMinimapModel } from '../js/text/ui/minimapModel.js';
 import { createActionList, createCompassActionList, findActionById } from '../js/text/ui/uiActions.js';
 
-test('local minimap begins from discovered atlas knowledge only', () => {
+test('local minimap begins from discovered knowledge without authored extent or coordinate labels', () => {
     const state = createInitialState();
     const model = createMinimapModel(state);
 
     assert.equal(model.mode, 'topology');
-    assert.equal(model.currentKey, 'G-10');
+    assert.equal(model.currentKey, 'current-area');
+    assert.equal(model.currentLabel, 'Current area');
     assert.equal(model.exploredCount, 1);
-    assert.ok(model.totalCount > model.exploredCount);
-    assert.deepEqual(model.cells.map((cell) => cell.key), ['G-10']);
+    assert.equal(model.totalCount, '?');
+    assert.equal(model.width, 3);
+    assert.equal(model.height, 3);
+    assert.equal(model.cells.length, 1);
+    assert.equal(model.cells[0].current, true);
+    assert.deepEqual({ x: model.cells[0].x, y: model.cells[0].y }, { x: 1, y: 1 });
+    assert.equal(model.cells.some((cell) => /[A-Z]-\d|\d+,\d+/.test(cell.key)), false);
 });
 
-test('moving through the world reveals additional minimap cells and known connections', () => {
+test('moving through the world expands and recenters discovered minimap geometry', () => {
     const state = createInitialState();
+    const initial = createMinimapModel(state);
 
     const moved = moveInDirection(state, 'east');
     assert.equal(moved.ok, true);
 
     const model = createMinimapModel(state);
-    const knownKeys = new Set(model.cells.map((cell) => cell.key));
-    assert.equal(model.currentKey, 'H-10');
+    assert.equal(model.currentKey, 'current-area');
     assert.equal(model.exploredCount, 2);
-    assert.equal(knownKeys.has('G-10'), true);
-    assert.equal(knownKeys.has('H-10'), true);
+    assert.ok(model.width >= initial.width);
+    assert.ok(model.height >= 1);
     assert.equal(model.connections.some((connection) => connection.targetVisited), true);
+    assert.equal(model.cells.every((cell) => cell.x >= 0 && cell.x < model.width && cell.y >= 0 && cell.y < model.height), true);
+    assert.equal(model.cells.some((cell) => /[A-Z]-\d|\d+,\d+/.test(cell.key)), false);
 });
 
 test('layout places a compact centered d-pad beneath the minimap', () => {
@@ -127,7 +135,6 @@ test('canvas text wrapping breaks long creator descriptions and oversized tokens
 
 test('creator keyboard text edits only the visible name field on the review step', () => {
     const uiState = createCanvasUiState({ screen: 'creator', creator: createGuidedCreatorState() });
-
     assert.deepEqual(applyCanvasKey(uiState, 'A'), { type: 'ignored' });
     assert.equal(uiState.creator.name, '');
 
