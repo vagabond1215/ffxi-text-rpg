@@ -9,14 +9,15 @@ import { describeAtlas, hasVisited, setPositionAndDiscover } from '../js/text/sy
 import { startEncounter } from '../js/text/systems/combatActionEngine.js';
 
 
-test('initial state starts with discovered atlas coordinate', () => {
+test('initial state keeps coordinate state internal while atlas text exposes discovery only', () => {
     const state = createInitialState();
 
     assert.equal(state.position.placeId, 'thornwall-southgate');
     assert.equal(state.position.coord, 'G-10');
     assert.equal(hasVisited(state.atlas, 'thornwall-southgate', state.position), true);
-    assert.match(describeAtlas(state), /@/);
-    assert.match(describeAtlas(state), /\?/);
+    assert.match(describeAtlas(state), /Known areas: 1/);
+    assert.match(describeAtlas(state), /total map extent remain hidden/i);
+    assert.doesNotMatch(describeAtlas(state), /G-10|A-M|13x13/);
 });
 
 test('controls include resource bars tick bar keypad and action groups', () => {
@@ -48,7 +49,7 @@ test('aggro engine can deterministically trigger on aggressive spawn grid', () =
     assert.equal(result.encounter.enemyId, 'enemy-mossback-goblin');
 });
 
-test('router exposes controls atlas grid and move commands', () => {
+test('router exposes controls atlas local area and move commands without coordinate values', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, {
         saveGame: () => true,
@@ -58,8 +59,10 @@ test('router exposes controls atlas grid and move commands', () => {
 
     assert.match(router('controls'), /Resource Bars/);
     assert.match(router('atlas'), /Thornwall Southgate/);
-    assert.match(router('grid'), /coordinate/);
+    assert.match(router('grid'), /local area/i);
+    assert.doesNotMatch(router('grid'), /G-10|\(\d+,\s*\d+\)/);
     assert.match(router('move e'), /Moved east/);
+    assert.doesNotMatch(router('move w'), /G-10|H-10|\(\d+,\s*\d+\)/);
 });
 
 test('movement is blocked while in active battle', () => {
