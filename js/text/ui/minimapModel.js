@@ -2,7 +2,6 @@ import {
     columnIndex,
     coordinateKey,
     getLevel,
-    getNavigableCoordinateKeys,
     isTopologyPlace,
     normalizeCoordinate,
     parseCoordinate,
@@ -35,38 +34,30 @@ export function createMinimapModel(state) {
 }
 
 function createTopologyModel(state, place, currentKey, visitedKeys) {
-    const system = place.coordinateSystem;
-    const bounds = system.bounds ?? { minColumn: 'A', maxColumn: 'A', minRow: 1, maxRow: 1 };
-    const minColumnIndex = columnIndex(bounds.minColumn);
-    const maxColumnIndex = columnIndex(bounds.maxColumn);
-    const width = Math.max(1, maxColumnIndex - minColumnIndex + 1);
-    const height = Math.max(1, Number(bounds.maxRow) - Number(bounds.minRow) + 1);
-    const toCell = (key) => topologyCell(key, minColumnIndex, Number(bounds.minRow));
+    const toCell = topologyCell;
     const cells = [...visitedKeys]
         .map((key) => ({ ...toCell(key), key, current: key === currentKey }))
         .filter((cell) => Number.isInteger(cell.x) && Number.isInteger(cell.y));
     const level = getLevel(place, state?.position?.levelId ?? 'main');
     const connections = buildTopologyConnections(level, visitedKeys, currentKey, toCell);
+    const visible = fitVisibleGeometry(cells, connections);
 
     return Object.freeze({
         placeId: place.id,
         placeName: place.name,
         mode: 'topology',
-        width,
-        height,
+        width: visible.width,
+        height: visible.height,
         currentKey,
         currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
         totalCount: '?',
-        cells: Object.freeze(cells.map((cell) => Object.freeze(cell))),
-        connections: Object.freeze(connections.map((connection) => Object.freeze(connection))),
+        cells: Object.freeze(visible.cells.map((cell) => Object.freeze(cell))),
+        connections: Object.freeze(visible.connections.map((connection) => Object.freeze(connection))),
     });
 }
 
 function createGridModel(state, place, currentKey, visitedKeys) {
-    const system = place.coordinateSystem;
-    const width = Math.max(1, Number(system.width) || 1);
-    const height = Math.max(1, Number(system.height) || 1);
     const cells = [...visitedKeys]
         .map((key) => {
             const parsed = parseCoordinate(key);
@@ -75,20 +66,46 @@ function createGridModel(state, place, currentKey, visitedKeys) {
                 : null;
         })
         .filter(Boolean);
+    const visible = fitVisibleGeometry(cells, []);
 
     return Object.freeze({
         placeId: place.id,
         placeName: place.name,
         mode: 'grid',
-        width,
-        height,
+        width: visible.width,
+        height: visible.height,
         currentKey,
         currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
         totalCount: '?',
-        cells: Object.freeze(cells.map((cell) => Object.freeze(cell))),
+        cells: Object.freeze(visible.cells.map((cell) => Object.freeze(cell))),
         connections: Object.freeze([]),
     });
+}
+
+function fitVisibleGeometry(cells, connections) {
+    const points = [
+        ...cells,
+        ...connections.flatMap((connection) => [connection.from, connection.to]),
+    ].filter((point) => Number.isInteger(point?.x) && Number.isInteger(point?.y));
+    if (!points.length) return { width: 1, height: 1, cells: [], connections: [] };
+
+    const minX = Math.min(...points.map((point) => point.x));
+    const maxX = Math.max(...points.map((point) => point.x));
+    const minY = Math.min(...points.map((point) => point.y));
+    const maxY = Math.max(...points.map((point) => point.y));
+    const translate = (point) => ({ x: point.x - minX, y: point.y - minY });
+
+    return {
+        width: Math.max(1, maxX - minX + 1),
+        height: Math.max(1, maxY - minY + 1),
+        cells: cells.map((cell) => ({ ...cell, ...translate(cell) })),
+        connections: connections.map((connection) => ({
+            ...connection,
+            from: translate(connection.from),
+            to: translate(connection.to),
+        })),
+    };
 }
 
 function buildTopologyConnections(level, visitedKeys, currentKey, toCell) {
@@ -140,11 +157,11 @@ function buildTopologyConnections(level, visitedKeys, currentKey, toCell) {
     return connections;
 }
 
-function topologyCell(key, minColumnIndex, minRow) {
+function topologyCell(key) {
     const parsed = parseCoordinate(key);
     if (parsed?.kind !== 'alpha') return { x: null, y: null };
     return {
-        x: columnIndex(parsed.column) - minColumnIndex,
-        y: parsed.row - minRow,
+        x: columnIndex(parsed.column),
+        y: parsed.row,
     };
 }
