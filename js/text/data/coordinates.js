@@ -71,10 +71,7 @@ export function coordinateKey(value) {
 }
 
 export function describeCoordinate(value) {
-    if (value?.coord) return normalizeCoordinate(value) ?? String(value.coord);
-    const parsed = parseCoordinate(value);
-    if (!parsed) return 'unknown';
-    return parsed.kind === 'alpha' ? `${parsed.column}-${parsed.row}` : `(${parsed.x}, ${parsed.y})`;
+    return parseCoordinate(value) ? 'local area' : 'unknown area';
 }
 
 export function getLevel(place, levelId = 'main') {
