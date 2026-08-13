@@ -1,13 +1,10 @@
 import {
     describeAllPoisSummary,
-    describeContextualPois,
-    describePoisForPlace,
     findPoiInPlace,
     getContextualPois,
     getPointOfInterest,
     getPoisForPlace,
 } from '../data/pointsOfInterest.js';
-import { describeCoordinate } from '../data/coordinates.js';
 import { describeGuildServiceForPoi } from '../data/guildServices.js';
 import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
@@ -41,16 +38,27 @@ export function describePoiSummary() {
 }
 
 export function describePlacePois(placeId) {
-    return describePoisForPlace(placeId);
+    const place = getPlace(placeId);
+    const pois = getPoisForPlace(placeId);
+    if (!pois.length) return `No points of interest seeded for ${place?.name ?? placeId}.`;
+    return [
+        `Points of interest in ${place?.name ?? placeId}:`,
+        ...pois.map((poi) => `- ${poi.name} [${poi.type}] - ${poi.notes}`),
+    ].join('\n');
 }
 
 export function describeCurrentPois(state) {
-    return describeContextualPois(state);
+    const pois = getContextualPois(state);
+    if (!pois.length) return 'No known points of interest are immediately here.';
+    return [
+        'Points of interest here:',
+        ...pois.map((poi) => `- ${poi.name} [${poi.type}] - ${poi.notes} | actions: ${poi.actions.join(', ')}`),
+    ].join('\n');
 }
 
 export function talkAtCurrentGrid(state, query = '') {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'There is no one or nothing notable to interact with at this coordinate.';
+    if (!pois.length) return 'There is no one or nothing notable to interact with here.';
 
     const poi = query
         ? pois.find((candidate) => normalize(candidate.name).includes(normalize(query)) || normalize(candidate.id).includes(normalize(query)))
@@ -65,7 +73,7 @@ export function talkAtCurrentGrid(state, query = '') {
 export function performPoiAction(state, action, query = '') {
     const canonicalAction = canonicalizePoiAction(action);
     const pois = getContextualPois(state);
-    if (!pois.length) return 'There is no point of interest at this coordinate.';
+    if (!pois.length) return 'There is no point of interest here.';
 
     const poi = query
         ? pois.find((candidate) => normalize(candidate.name).includes(normalize(query)) || normalize(candidate.id).includes(normalize(query)))
@@ -84,7 +92,6 @@ export function describePoiInteraction(state, poi, action) {
     const lines = [
         `${poi.name}`,
         `Type: ${poi.type}`,
-        `Coordinate: ${describeCoordinate(poi.coordinate)} | Source position: ${poi.sourcePosition}`,
         `Action: ${canonicalAction}`,
         poi.notes,
         discovered ? 'Discovered: yes. You can fast-travel to this POI while in the same place.' : 'Discovered: no.',
@@ -123,7 +130,7 @@ export function describeDiscoveredPois(state, placeId = state.currentPlaceId) {
 
     return [
         `Discovered POIs in ${place?.name ?? placeId}:`,
-        ...pois.map((poi) => `- ${poi.name} [${poi.type}] coordinate ${describeCoordinate(poi.coordinate)} actions: ${poi.actions.join(', ')}`),
+        ...pois.map((poi) => `- ${poi.name} [${poi.type}] actions: ${poi.actions.join(', ')}`),
     ].join('\n');
 }
 
@@ -152,7 +159,7 @@ export function describeTravelExitOptions(state) {
             const requirementText = connection.restrictions.length
                 ? ` requirements: ${connection.restrictions.map((restriction) => restriction.reason ?? restriction.type).join('; ')}`
                 : ' requirements: none';
-            return `- ${destination?.name ?? connection.to} via ${connection.mode} from ${describeCoordinate(connection.departFrom)}${requirementText}`;
+            return `- ${destination?.name ?? connection.to} via ${connection.mode}${requirementText}`;
         }),
     ].join('\n');
 }
