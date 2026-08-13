@@ -19,10 +19,12 @@ test('semantic game view model presents scene map status and context without par
     assert.equal(model.scene.title, 'Thornwall Southgate');
     assert.equal(model.header.placeName, 'Thornwall Southgate');
     assert.match(model.header.worldTime, /^Day 1,/);
+    assert.equal(model.header.coordinate, 'local area');
     assert.equal(model.character.name, 'Lark');
     assert.equal(model.character.resources.length, 3);
     assert.equal(model.character.attributes.length, 7);
     assert.equal(model.map.exploredCount, 1);
+    assert.equal(model.map.totalCount, '?');
     assert.equal(model.movement.length, 8);
     assert.ok(model.movement.some((action) => !action.disabled));
     assert.deepEqual(model.scene.recent, ['A road bell sounds.', 'Attributes:', 'STR 12']);
@@ -50,7 +52,7 @@ test('travel context exposes a semantic stop action without routing an incomplet
     assert.equal(actions.some((action) => action.payload?.command === 'travel'), false);
 });
 
-test('DOM game shell makes the scene primary and keeps map status actions and omnibox directly accessible', () => {
+test('DOM game shell makes the scene primary and keeps discovery-safe map status actions and omnibox directly accessible', () => {
     const state = createNewGameState({ name: 'Lark' });
     const uiState = createUiState({ screen: 'game', activeView: 'scene' });
     const html = renderGameScreen(createGameViewModel(state, uiState), uiState, { displayName: 'Local Player' });
@@ -61,6 +63,8 @@ test('DOM game shell makes the scene primary and keeps map status actions and om
     assert.match(html, /Search or act/);
     assert.match(html, /aria-label="Character status"/);
     assert.match(html, /<svg class="minimap"/);
+    assert.match(html, /1\/\? explored/);
+    assert.doesNotMatch(html, /G-10|A-M|1\/32 explored/);
     assert.doesNotMatch(html, /Output Log/);
     assert.doesNotMatch(html, /Command Chips/);
 });
