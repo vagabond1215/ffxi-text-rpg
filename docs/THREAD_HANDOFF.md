@@ -94,22 +94,22 @@ ability.interrupted
 
 ## Discovery-safe local map correction — 2026-08-13
 
-The local map regression was traced to `js/text/ui/minimapModel.js`: visited cells were being projected against full authored topology bounds. A one-cell map could therefore reveal that the character was globally near an edge, center, top, or bottom, and the UI also exposed authored total-map counts and raw coordinate labels.
+The local map privacy regression was traced to `js/text/ui/minimapModel.js`: visited cells were being projected against full authored topology bounds. A one-cell map could therefore reveal that the character was globally near an edge, center, top, or bottom, and the UI also exposed authored total-map counts and raw coordinate labels.
 
 The correction now on `main` does the following:
 
 - computes the minimap viewport from **discovered cells plus locally knowable path stubs only**;
 - rebases visible geometry to a knowledge-relative local origin on every render;
 - derives `model.width`/`model.height` from that visible knowledge instead of authored bounds;
-- uses synthetic presentation labels such as `Current area` / `Known area N` rather than `G-10` or numeric coordinate pairs;
+- uses synthetic presentation labels such as `Current area` / `Known area N` rather than authored coordinate identifiers;
 - hides authored total size as `?` instead of exposing values such as `1/32 explored`;
 - keeps the known portion centered/fitted by the existing DOM SVG and Canvas viewport scaling without revealing where it sits in the undiscovered authored map;
-- retains raw coordinates in internal simulation state and adds a separate `describeInternalCoordinate()` helper for internal/debug compatibility;
+- retains raw coordinates in internal simulation state and a separate `describeInternalCoordinate()` helper for internal/debug compatibility;
 - keeps the shared player-facing coordinate description generic (`local area` / `unknown area`);
 - removes coordinate output from player-facing atlas, POI, character, place-layout, DOM, and legacy panel surfaces;
 - keeps the transitional Canvas snapshot's raw coordinate only as internal regression/debug data while removing that value from Canvas rendering.
 
-Important map-fix commits in this pass include:
+Important map/privacy commits include:
 
 ```text
 c6cf1584351e4a1efb1ac30c5e3b1b64148c7a1a  Fit minimap viewport to discovered geometry
@@ -123,25 +123,48 @@ cc1130570214164b833f9acf1edb8eda3109a4c6  Keep canvas coordinates internal to sn
 5ba9b5b9a2142e9419ecdd2bf43a8227140c0383  Remove coordinate labels from legacy panels
 ```
 
-Regression coverage now verifies discovery-only minimap fitting, synthetic minimap labels, hidden total extent, player-safe atlas/DOM text, and continued internal coordinate state. The previously stale Canvas snapshot assertion again passes because raw coordinate formatting is explicitly internal and no longer rendered.
+### Grid minimap rendering regression and repair — 2026-08-13
 
-### Validation checkpoint
+A second, separate rendering defect was found after the discovery-safe projection shipped. Grid-based places could render as a solid-color SVG with no visible map geometry.
 
-At runtime head:
+Root cause: `atlasEngine` serializes internal numeric grid positions through `coordinateKey({ x, y })` as strings such as `"2,2"`. `minimapModel.createGridModel()` later called `parseCoordinate()` on those keys, but `parseCoordinate()` only accepted authored alpha topology strings or numeric coordinate objects. Every grid atlas key therefore parsed to `null`, leaving `map.cells` empty. The renderer was functioning, but it had no drawable geometry beyond its background.
+
+Repair:
+
+- `parseCoordinate()` now round-trips the existing internal numeric key serialization (`"x,y"`) back to a numeric coordinate object;
+- this is an internal parser correction only; `describeCoordinate()` remains player-safe and no numeric coordinate is exposed by the UI;
+- the discovery-relative minimap continues to rebase the parsed point to its known local origin rather than using authored map width/height;
+- `tests/minimapGridRendering.test.js` explicitly creates a Brasshaven grid-map discovery, requires a drawable current-position SVG circle, verifies the rendered map is rebased to the local known origin, keeps total extent as `?`, and asserts the internal coordinate string does not appear in rendered HTML.
+
+Repair commits:
 
 ```text
-5ba9b5b9a2142e9419ecdd2bf43a8227140c0383
+a776959ac3387882c0021567ea220bf1356d15f0  Parse internal grid atlas coordinate keys
+3092f1e91ba75231c626520a8b9d7682d107266f  Cover grid minimap rendering regression
+```
+
+### Latest validation checkpoint
+
+Runtime/test head:
+
+```text
+3092f1e91ba75231c626520a8b9d7682d107266f
 ```
 
 GitHub Actions completed successfully on 2026-08-13:
 
-- `test`: success;
-- benchmark step inside the test job: success;
-- Pages `build`: success;
-- `report-build-status`: success;
-- `deploy`: success.
+```text
+tests       398
+pass        398
+fail        0
+cancelled   0
+skipped     0
+todo        0
+```
 
-The recurring Actions warning about Node 20 action-runtime deprecation may still appear; it is warning-only and project tests still use the configured Node 20 runtime.
+The new grid-minimap regression is test 205 in that run and passed. Benchmark, Pages `build`, `report-build-status`, and `deploy` also completed successfully. The deployed build therefore contains the numeric-grid parsing repair.
+
+The recurring Actions warning about Node 20 action-runtime deprecation remains warning-only; project tests/benchmark use Node 20.20.2.
 
 ## Map/privacy follow-up rules
 
@@ -153,6 +176,7 @@ Do not regress these behaviors:
 - Internal coordinate assertions are valid in simulation/navigation tests.
 - A future full-map/completeness feature may reveal total extent only through an explicit knowledge contract; do not infer it from authored data automatically.
 - Local path stubs may be shown when they represent immediately knowable exits/paths from already-known cells; they must still be projected relative to visible knowledge.
+- Grid map rendering must round-trip internal atlas keys into drawable geometry without placing the resulting known geometry against authored bounds.
 - The active browser shell is semantic DOM. Canvas remains bounded compatibility/regression/reference code.
 
 ## Intentional debt entering 0.6.400
