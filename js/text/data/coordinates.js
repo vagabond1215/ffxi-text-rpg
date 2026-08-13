@@ -1,22 +1,10 @@
 export const DIRECTION_ORDER = Object.freeze(['northwest', 'north', 'northeast', 'west', 'east', 'southwest', 'south', 'southeast']);
 
 export const DIRECTION_ALIASES = Object.freeze({
-    n: 'north',
-    north: 'north',
-    ne: 'northeast',
-    northeast: 'northeast',
-    e: 'east',
-    east: 'east',
-    se: 'southeast',
-    southeast: 'southeast',
-    s: 'south',
-    south: 'south',
-    sw: 'southwest',
-    southwest: 'southwest',
-    w: 'west',
-    west: 'west',
-    nw: 'northwest',
-    northwest: 'northwest',
+    n: 'north', north: 'north', ne: 'northeast', northeast: 'northeast',
+    e: 'east', east: 'east', se: 'southeast', southeast: 'southeast',
+    s: 'south', south: 'south', sw: 'southwest', southwest: 'southwest',
+    w: 'west', west: 'west', nw: 'northwest', northwest: 'northwest',
 });
 
 export const DIRECTION_DELTAS = Object.freeze({
@@ -31,14 +19,7 @@ export const DIRECTION_DELTAS = Object.freeze({
 });
 
 export const DIRECTION_ARROWS = Object.freeze({
-    northwest: '↖',
-    north: '↑',
-    northeast: '↗',
-    west: '←',
-    east: '→',
-    southwest: '↙',
-    south: '↓',
-    southeast: '↘',
+    northwest: '↖', north: '↑', northeast: '↗', west: '←', east: '→', southwest: '↙', south: '↓', southeast: '↘',
 });
 
 export function normalizeDirection(value) {
@@ -74,6 +55,13 @@ export function describeCoordinate(value) {
     return parseCoordinate(value) ? 'local area' : 'unknown area';
 }
 
+export function describeInternalCoordinate(value) {
+    if (value?.coord) return normalizeCoordinate(value) ?? String(value.coord);
+    const parsed = parseCoordinate(value);
+    if (!parsed) return 'unknown';
+    return parsed.kind === 'alpha' ? `${parsed.column}-${parsed.row}` : `(${parsed.x}, ${parsed.y})`;
+}
+
 export function getLevel(place, levelId = 'main') {
     const levels = place?.coordinateSystem?.levels ?? [];
     return levels.find((level) => level.id === (levelId ?? 'main')) ?? levels[0] ?? null;
@@ -95,15 +83,11 @@ export function isCoordinateWithinBounds(place, coord) {
         if (!parsed || parsed.kind !== 'alpha') return false;
         return columnIndex(parsed.column) >= columnIndex(system.bounds.minColumn)
             && columnIndex(parsed.column) <= columnIndex(system.bounds.maxColumn)
-            && parsed.row >= system.bounds.minRow
-            && parsed.row <= system.bounds.maxRow;
+            && parsed.row >= system.bounds.minRow && parsed.row <= system.bounds.maxRow;
     }
     const parsed = parseCoordinate(coord);
     if (parsed?.kind === 'numeric') {
-        return parsed.x >= 0
-            && parsed.y >= 0
-            && parsed.x < system.width
-            && parsed.y < system.height;
+        return parsed.x >= 0 && parsed.y >= 0 && parsed.x < system.width && parsed.y < system.height;
     }
     const key = normalizeCoordinate(coord);
     return Boolean(key && resolveExternalCoordinate(system, key));
@@ -121,9 +105,7 @@ export function getNavigableCoordinateKeys(place, levelId = 'main') {
     const keys = [];
     const width = Number(place?.coordinateSystem?.width) || 0;
     const height = Number(place?.coordinateSystem?.height) || 0;
-    for (let y = 0; y < height; y += 1) {
-        for (let x = 0; x < width; x += 1) keys.push(`${x},${y}`);
-    }
+    for (let y = 0; y < height; y += 1) for (let x = 0; x < width; x += 1) keys.push(`${x},${y}`);
     return keys;
 }
 
@@ -131,12 +113,7 @@ export function normalizePositionForPlace(place, coordinate, fallbackFacing = 'n
     const system = place?.coordinateSystem;
     const levelId = coordinate?.levelId ?? system?.start?.levelId ?? 'main';
     if (isTopologyCoordinateSystem(system)) {
-        return {
-            placeId: place.id,
-            levelId,
-            coord: normalizeCoordinate(coordinate) ?? normalizeCoordinate(system.start),
-            facing: coordinate?.facing ?? fallbackFacing,
-        };
+        return { placeId: place.id, levelId, coord: normalizeCoordinate(coordinate) ?? normalizeCoordinate(system.start), facing: coordinate?.facing ?? fallbackFacing };
     }
     const parsed = parseCoordinate(coordinate ?? system?.start);
     if (parsed?.kind === 'numeric') return { placeId: place.id, x: parsed.x, y: parsed.y };
@@ -144,22 +121,10 @@ export function normalizePositionForPlace(place, coordinate, fallbackFacing = 'n
         const key = normalizeCoordinate(coordinate);
         const external = resolveExternalCoordinate(system, key);
         if (external && Number.isInteger(external.x) && Number.isInteger(external.y)) {
-            return {
-                placeId: place.id,
-                x: external.x,
-                y: external.y,
-                coord: key,
-                levelId,
-                facing: coordinate?.facing ?? fallbackFacing,
-            };
+            return { placeId: place.id, x: external.x, y: external.y, coord: key, levelId, facing: coordinate?.facing ?? fallbackFacing };
         }
     }
-    return {
-        placeId: place.id,
-        levelId,
-        coord: normalizeCoordinate(coordinate) ?? normalizeCoordinate(system?.start),
-        facing: coordinate?.facing ?? fallbackFacing,
-    };
+    return { placeId: place.id, levelId, coord: normalizeCoordinate(coordinate) ?? normalizeCoordinate(system?.start), facing: coordinate?.facing ?? fallbackFacing };
 }
 
 export function columnIndex(column) {
@@ -174,9 +139,7 @@ export function resolveExternalCoordinate(coordinateSystem, coord) {
     if (!key) return null;
     for (const entry of coordinateSystem?.externalCoordinates ?? []) {
         if (typeof entry === 'string' && normalizeCoordinate(entry) === key) return { coord: key };
-        if (entry && typeof entry === 'object' && normalizeCoordinate(entry.coord) === key) {
-            return { coord: key, x: entry.x, y: entry.y };
-        }
+        if (entry && typeof entry === 'object' && normalizeCoordinate(entry.coord) === key) return { coord: key, x: entry.x, y: entry.y };
     }
     return null;
 }
