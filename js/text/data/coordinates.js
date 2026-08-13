@@ -35,7 +35,14 @@ export function normalizeCoordinate(value) {
 
 export function parseCoordinate(value) {
     if (typeof value === 'string') {
-        const match = value.trim().match(/^([A-Z]+)\s*-?\s*(\d+)$/i);
+        const text = value.trim();
+        const numericParts = text.split(',');
+        if (numericParts.length === 2) {
+            const x = Number(numericParts[0].trim());
+            const y = Number(numericParts[1].trim());
+            if (Number.isInteger(x) && Number.isInteger(y)) return { kind: 'numeric', x, y };
+        }
+        const match = text.match(/^([A-Z]+)\s*-?\s*(\d+)$/i);
         if (!match) return null;
         return { kind: 'alpha', column: match[1].toUpperCase(), row: Number.parseInt(match[2], 10) };
     }
