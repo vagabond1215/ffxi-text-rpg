@@ -4,25 +4,21 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 ## Required read order
 
-1. `AGENTS.md` — direct-`main` workflow, autonomous-session budget, scope boundaries, and handoff protocol.
-2. `docs/THREAD_HANDOFF.md` — this current continuation state.
-3. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
-4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-setting, legacy-data, provenance, scale, and content-pack policy.
-5. `docs/ROADMAP.md` — implementation sequence and milestone gates.
-6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
+1. `AGENTS.md`
+2. `docs/THREAD_HANDOFF.md`
+3. `docs/DEVELOPMENT_DIRECTION.md`
+4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
+5. `docs/ROADMAP.md`
+6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md` and `js/text/version.js`.
 
-## Workflow and session guardrail
+## Workflow
 
-Continue directly on `main` by default. Do not create branch/PR ceremony unless the user asks, a tool requires isolation, or risk materially justifies it.
+Work directly on `main` by default. Treat each prompt as a bounded work order. Follow the `AGENTS.md` autonomous-session guardrail and update this handoff at the end of substantive work.
 
-Maximum autonomous work session is **2h45** with the `AGENTS.md` stabilization checkpoints; when elapsed time cannot be measured reliably, use no more than **6 work cycles**, reserving cycle 6 for stabilization/handoff. A new user message starts a new budget.
+## Product laws
 
-## Product identity and laws
-
-Working title: **Hearth & Horizon**.
-
-Earlier FFXI-derived material is legacy research/reference/migration material, not canonical world content.
+Working title: **Hearth & Horizon**. Earlier FFXI-derived material is legacy research/reference/migration material, not canonical world content.
 
 ```text
 effort -> mastery -> efficiency -> capability -> larger ambition
@@ -34,7 +30,13 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-Maps represent acquired player knowledge rather than omniscient geography. The player interface should present world meaning and contextual choices rather than treating command output as the game itself.
+Maps represent acquired character knowledge, not omniscient authored geography.
+
+### Hard map/privacy rule
+
+**Authored coordinates are simulation/internal data only and must not be player-facing.** The local map must render only discovered or locally knowable geometry and fit/recenter that known portion inside the viewport. It must not reveal the character's relative position inside undiscovered authored bounds, nor reveal total authored map extent before play has justified that knowledge.
+
+Internal `state.position`, atlas keys, topology edges, POI coordinates, route-stop coordinates, and other simulation geometry remain valid implementation data. Presentation layers must translate those into knowledge-relative geometry and human world descriptions.
 
 ## Current baseline
 
@@ -48,27 +50,9 @@ Benchmark:    1
 Codename:     Original Magic and Abilities
 ```
 
-Relevant subsystem contracts:
-
-```text
-versionManifest     0.6.300.1
-capabilities        0.2.0
-abilityCatalog      0.1.0
-abilityEngine       0.1.0
-magic               0.1.0
-abilities           0.1.0
-gameViewModels      0.2.0
-uiIntents           0.3.0
-commandShell        0.5.0
-timedTasks          0.1.0
-simulationInterrupts 0.1.0
-```
-
-Account Save remains 4. Game State remains 5 because the new ability runtime state is additive/lazily reconstructible. Data advanced 20 -> 21 because original spell-school and executable ability records are a new canonical data contract.
+Phase 0.5 is complete. Phase 0.6 is active through 0.6.300. The next planned mechanics track is `0.6.400 — Combat 2.0`, but do not reopen or rewrite the map/UI architecture merely as part of that track.
 
 ## Completed implementation sequence
-
-The coherent sequence on `main` is now:
 
 - 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events;
 - 0.5.100 deterministic world clock;
@@ -85,118 +69,18 @@ The coherent sequence on `main` is now:
 - 0.6.100 continuous-character stats/progression;
 - 0.6.200 character-owned skills/proficiencies/capabilities;
 - 0.6.200.2 bounded canvas usability refinement;
-- 0.6.250 semantic player-interface architecture;
-- **0.6.300 original magic and active ability engine.**
+- 0.6.250 semantic DOM player-interface architecture;
+- 0.6.300 original magic and active ability engine.
 
-Phase 0.5 is complete. Phase 0.6 is active through 0.6.300. Do not reopen earlier tracks broadly without a concrete regression.
+## 0.6.300 magic/ability state
 
-## 0.6.300 — Original magic and active ability engine
+Canonical executable ability/effect data is separate from character capability ownership. `capabilityEngine` owns learned/use prerequisites; `abilityEngine` owns concrete activation, costs, targeting, effects, fictional-time activation/cooldowns, interruption, and lifecycle events.
 
-The track is **complete enough to exit**.
+Original spell traditions include Embercraft, Vital Weave, and Ward Lore. Representative executable records include Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading. No historical spell names were promoted into canonical ability data.
 
-### Canonical ability data is separate from character ownership
+Current ability policy: costs are spent when activation begins; non-instant activation creates a canonical timed task; successful resolution starts cooldown; interruption cancels the activation task, retains already-spent resources, and does not start cooldown. Only one active player ability activation is supported in this first contract.
 
-New canonical data:
-
-```text
-js/text/data/abilities.js
-```
-
-The catalog defines executable effects and does not own whether a character has learned them. `capabilityEngine` remains the character ownership/use-prerequisite authority; `abilityEngine` executes concrete effects and spends concrete resources.
-
-Original spell traditions:
-
-```text
-school-embercraft   Embercraft
-school-vital-weave Vital Weave
-school-ward-lore   Ward Lore
-```
-
-Representative executable records:
-
-```text
-ability-ember-dart       -> spell-ember-dart
-ability-mending-thread   -> spell-mending-thread
-ability-stone-ward       -> spell-stone-ward
-ability-guarded-cut      -> technique-guarded-cut
-ability-waymark-reading  -> practical-waymark-reading
-```
-
-No historical spell names were promoted into canonical ability data.
-
-### Capability catalog evolution
-
-`js/text/data/capabilities.js` advanced to capability catalog v2 and now includes original spell learning/use paths plus exploration context.
-
-Representative semantics:
-
-- Ember Dart can be learned through Elementalist/Spellblade training and requires elemental-magic proficiency;
-- Mending Thread can be learned through Lifewarden/Spellblade training and requires healing-magic proficiency;
-- Stone Ward can be learned through Oathguard/Lifewarden/Savant training and requires enhancing-magic proficiency;
-- Waymark Reading can be learned through Wayfinder/Leykeeper training and is usable in exploration;
-- Guarded Cut retains its character-owned martial capability contract.
-
-Learning paths can be discipline-shaped. Once learned, the capability belongs to the continuous character. Active discipline is not a universal effect-use gate.
-
-### Deterministic active ability runtime
-
-New system:
-
-```text
-js/text/systems/abilityEngine.js
-```
-
-Additive Game State v5 runtime shape:
-
-```js
-{
-  version: 1,
-  cooldowns: {},
-  active: null
-}
-```
-
-The engine provides:
-
-- ability lookup and context validation;
-- capability ownership/use checks;
-- deterministic self/enemy/context targeting;
-- resource-cost checks and one-time cost spending;
-- fictional-time activation deadlines;
-- cooldown deadlines based on `worldTime.totalSeconds`;
-- non-instant activation through `ability.activation` timed tasks;
-- deterministic damage/heal/status/context effects;
-- interruption/cancellation;
-- runtime validation;
-- learned/available ability presentation data.
-
-Non-instant abilities use canonical world time. There are no real-time cast timers.
-
-### Activation, cooldown, and interruption policy
-
-Current explicit policy:
-
-- costs are spent when activation begins;
-- non-instant activation creates one canonical timed task;
-- successful resolution starts cooldown;
-- interruption cancels the underlying timed task;
-- interrupted abilities retain already-spent resources;
-- interrupted abilities do not begin cooldown;
-- only one active player ability activation is supported at a time in this first contract.
-
-Ability completion uses interrupt priority **550**, above generic timed-task completion (500) and below project completion (600), so the ability-specific semantic boundary wins a same-time generic-task tie.
-
-### Structured effects and events
-
-Representative effect types now proved:
-
-- Ember Dart — deterministic INT-scaled enemy damage;
-- Mending Thread — deterministic MND-scaled self healing;
-- Stone Ward — self defensive status payload;
-- Guarded Cut — instant STR-scaled damage plus defensive status;
-- Waymark Reading — non-combat contextual survey.
-
-Waymark Reading reports current place/coordinate and the count of **already-known atlas cells**. It deliberately does not expose total authored topology.
+Waymark Reading must report only already-acquired place/atlas knowledge. It must not expose authored coordinates, hidden total topology, or undiscovered authored placement.
 
 Lifecycle events:
 
@@ -206,97 +90,83 @@ ability.resolved
 ability.interrupted
 ```
 
-Events carry typed semantic data and do not require parsing display prose.
+`invoke <ability>` is the bounded keyboard/power-user adapter. Old `cast` and transitional weapon-technique behavior remain compatibility seams for Combat 2.0.
 
-### Command and semantic UI integration
+## Discovery-safe local map correction — 2026-08-13
 
-`commandRouter.js` now exposes canonical ability data through:
+The local map regression was traced to `js/text/ui/minimapModel.js`: visited cells were being projected against full authored topology bounds. A one-cell map could therefore reveal that the character was globally near an edge, center, top, or bottom, and the UI also exposed authored total-map counts and raw coordinate labels.
 
-```text
-abilities
-spells
-magic
-invoke <ability>
-```
+The correction now on `main` does the following:
 
-`invoke` is a bounded keyboard/power-user adapter into `abilityEngine`.
+- computes the minimap viewport from **discovered cells plus locally knowable path stubs only**;
+- rebases visible geometry to a knowledge-relative local origin on every render;
+- derives `model.width`/`model.height` from that visible knowledge instead of authored bounds;
+- uses synthetic presentation labels such as `Current area` / `Known area N` rather than `G-10` or numeric coordinate pairs;
+- hides authored total size as `?` instead of exposing values such as `1/32 explored`;
+- keeps the known portion centered/fitted by the existing DOM SVG and Canvas viewport scaling without revealing where it sits in the undiscovered authored map;
+- retains raw coordinates in internal simulation state and adds a separate `describeInternalCoordinate()` helper for internal/debug compatibility;
+- keeps the shared player-facing coordinate description generic (`local area` / `unknown area`);
+- removes coordinate output from player-facing atlas, POI, character, place-layout, DOM, and legacy panel surfaces;
+- keeps the transitional Canvas snapshot's raw coordinate only as internal regression/debug data while removing that value from Canvas rendering.
 
-The old `cast <spell>` placeholder remains a distinct legacy/transitional combat adapter until 0.6.400. Transitional weapon-technique commands also remain bounded.
-
-`wait [seconds]` now advances canonical fictional world time outside travel and reconciles active ability activation. During travel, the existing travel adapter remains world-time authority so wait does not double-advance time.
-
-The semantic UI dispatcher supports:
-
-```text
-ability.activate
-```
-
-without manufacturing a command string. `gameViewModel.js` exposes learned-only spellbook entries and can surface ready learned combat abilities as direct semantic contextual actions.
-
-The active DOM Spellbook renderer still contains some command-backed transitional presentation. Extend the semantic view-model/intent seam incrementally; do not reopen broad UI architecture merely to remove those adapters.
-
-## 0.6.300 validation checkpoint
-
-Coherent runtime/version/test head:
+Important map-fix commits in this pass include:
 
 ```text
-103507d663e91f6e3490c215d8d4159cbd320c52
+c6cf1584351e4a1efb1ac30c5e3b1b64148c7a1a  Fit minimap viewport to discovered geometry
+2c5b39709d51dde3b98aced15f8149e008e2a38b  Remove coordinate identifiers from minimap view model
+5316225b0fa625ec99637652780a17508f535c83  Make coordinate descriptions player safe
+b95b3da7ceaf5db71910ca83f4359ea8c74780b8  Keep atlas extent and coordinates undisclosed
+e7cbb8525695a9181ed8abbab9775e764a97834d  Remove coordinate data from player-facing POI text
+317fb51db80c5f6b7821b53e8604dd36129e0dad  Hide authored local-map extents from place descriptions
+82d03b19552c0f4c5359375b55ae23664333a19e  Add internal coordinate formatter
+cc1130570214164b833f9acf1edb8eda3109a4c6  Keep canvas coordinates internal to snapshot state
+5ba9b5b9a2142e9419ecdd2bf43a8227140c0383  Remove coordinate labels from legacy panels
 ```
 
-GitHub Actions `Check` completed successfully on 2026-08-12 with:
+Regression coverage now verifies discovery-only minimap fitting, synthetic minimap labels, hidden total extent, player-safe atlas/DOM text, and continued internal coordinate state. The previously stale Canvas snapshot assertion again passes because raw coordinate formatting is explicitly internal and no longer rendered.
+
+### Validation checkpoint
+
+At runtime head:
 
 ```text
-tests       397
-pass        397
-fail        0
-cancelled   0
-skipped     0
-todo        0
+5ba9b5b9a2142e9419ecdd2bf43a8227140c0383
 ```
 
-Benchmark from the same successful test job:
+GitHub Actions completed successfully on 2026-08-13:
 
-```text
-Product: 0.6.300.1
-Package: 0.6.300
-Account Save: 4
-Game State: 5
-Data: 21
-Benchmark: 1
-Codename: Original Magic and Abilities
+- `test`: success;
+- benchmark step inside the test job: success;
+- Pages `build`: success;
+- `report-build-status`: success;
+- `deploy`: success.
 
-create 1,000 player combat profiles:               483.913ms total | 0.483913ms/op
-create 1,000 enemy combat profiles:                110.088ms total | 0.110088ms/op
-resolve 1,000 basic attacks:                       555.742ms total | 0.555742ms/op
-run 10,000 tick dispatches with 5 subscribers:      49.165ms total | 0.004916ms/op
-resolve 10,000 direct travel route lookups:       7220.942ms total | 0.722094ms/op
-```
+The recurring Actions warning about Node 20 action-runtime deprecation may still appear; it is warning-only and project tests still use the configured Node 20 runtime.
 
-The GitHub Pages build/deployment for package/version head `9ba098b6914e5a3741f4a6f0a3cb2cf8fc49bc54` completed successfully. That head already contained the 0.6.300 runtime/UI integration; the later `103507...` commit synchronized test expectations only.
+## Map/privacy follow-up rules
 
-GitHub runners continue to emit the known non-blocking warning about Node-20-targeting checkout/setup actions being forced through Node 24. Project test/benchmark commands themselves use Node 20.20.2.
+Do not regress these behaviors:
 
-Documentation closeout commits follow the validated runtime/version head; refetch current `main` before the next coding session.
+- Do not use authored topology bounds to size the player-facing minimap.
+- Do not print internal coordinates in DOM headers, Canvas panels, atlas prose, POI prose, movement/travel prose, character summaries, or normal command output.
+- Do not expose `getNavigableCoordinateKeys(...).length` as map completion before the character has earned full-map knowledge.
+- Internal coordinate assertions are valid in simulation/navigation tests.
+- A future full-map/completeness feature may reveal total extent only through an explicit knowledge contract; do not infer it from authored data automatically.
+- Local path stubs may be shown when they represent immediately knowable exits/paths from already-known cells; they must still be projected relative to visible knowledge.
+- The active browser shell is semantic DOM. Canvas remains bounded compatibility/regression/reference code.
 
-## Current 0.6.300 limitations / intentional debt
+## Intentional debt entering 0.6.400
 
-Treat these as deliberate follow-up seams, not justification for another broad rewrite:
-
-- `combatActionEngine.castSpell()` is the old placeholder adapter and remains until Combat 2.0 replaces its compatibility value.
+- `combatActionEngine.castSpell()` remains the old placeholder adapter until Combat 2.0.
 - Transitional combat-technique/recovered weapon-skill command behavior remains bounded.
-- Only one active ability activation is supported; there is no generalized action queue/concurrency policy yet.
-- Enemy canonical ability selection/execution is not implemented yet.
-- AoE, multi-target/ground targeting, resistance/accuracy layers, and final tactical timing belong to 0.6.400.
-- Status effects can carry duration metadata, but 0.6.300 does not redesign status expiry around canonical world time.
-- Representative damage/heal coefficients are provisional original balance.
-- Cooldown starts on successful resolution; interruption retains spent resources and does not start cooldown.
-- The DOM Spellbook renderer still has transitional command-backed elements even though the semantic learned-ability view model and direct ability intent now exist.
-- Canvas modules remain temporarily for compatibility/regression comparison.
-- `uiState.js` still reuses structural helpers from `canvasInput.js`.
+- Only one active ability activation is supported; there is no generalized action queue/concurrency model yet.
+- Enemy canonical ability selection/execution, AoE/ground targeting, resistance/accuracy layers, and final tactical timing belong to 0.6.400.
+- Status records can carry duration metadata, but status-expiry orchestration is not yet fully redesigned around world time.
 - Equipment eligibility still contains discipline-shaped compatibility requirements.
-- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal names remain compatibility seams.
+- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related persisted/internal names remain compatibility seams.
 - Historical FFXI research modules remain bounded reference surfaces.
 - `places.js` spawn rules/place connections, `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional compatibility debt.
+- Some internal/debug helpers can still inspect authored coordinates; this is allowed only so long as presentation layers do not expose them.
 
 ## Next target
 
@@ -304,16 +174,4 @@ Treat these as deliberate follow-up seams, not justification for another broad r
 0.6.400 — Combat 2.0
 ```
 
-**No 0.6.400 implementation has started.** Begin it only under the next user-authorized mechanics run.
-
-Recommended first bounded unit:
-
-1. refetch latest `main`, checks, required docs, architecture, and version manifest;
-2. inspect battle state/phase/combatants, `combatActionEngine`, `battleEngine`, `abilityEngine`, statuses, rewards/resource opportunities, equipment, skills/capabilities, and deterministic timing;
-3. define a canonical encounter/combat-state contract without making active discipline a hard class identity;
-4. make canonical abilities first-class combat actions with deterministic target/action resolution;
-5. define opponent action selection/AI and action timing/recovery/interruption/status interaction on the existing fictional-time substrate;
-6. keep skills, equipment, capabilities, preparation, and resources compositional;
-7. migrate legacy `attack`, `cast`, and `technique` commands behind bounded adapters to the canonical combat path;
-8. preserve victory/defeat, EXP, provenance-aware physical resource opportunities, and reward semantics;
-9. validate/version/test/benchmark/document and stop at the coherent 0.6.400 boundary before item/equipment breadth.
+Recommended first bounded unit: inspect current battle topology/phase/combatants, action adapters, canonical abilities, statuses, rewards/resource opportunities, equipment/capabilities, and deterministic timing. Define a canonical encounter/combat-state contract; make canonical abilities first-class combat actions; add deterministic opponent action selection/timing/interruption/status interaction; keep skills/equipment/capabilities/preparation compositional rather than hard-gating through active discipline; migrate legacy attack/cast/technique commands behind bounded adapters; preserve victory/defeat/EXP/resource-provenance behavior; validate/version/test/benchmark/document; then stop before 0.6.500.
