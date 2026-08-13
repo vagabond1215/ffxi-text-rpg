@@ -265,11 +265,7 @@ function normalize(value) {
 }
 
 function describeCoordinateSystem(place) {
-    if (isTopologyPlace(place)) {
-        const bounds = place.coordinateSystem.bounds;
-        return `Coordinates: ${bounds.minColumn}-${bounds.maxColumn}/${bounds.minRow}-${bounds.maxRow}, navigable ${getNavigableCoordinateKeys(place).length}`;
-    }
-    return `Grid: ${place.coordinateSystem.width}x${place.coordinateSystem.height}`;
+    return 'Layout: discovery-based';
 }
 
 function selectConnectionForPosition(state, connections, direction = null) {
