@@ -1,6 +1,6 @@
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getCreatorStep, getCreatorSummary, validateCreator } from '../systems/characterCreationModel.js';
-import { describeCoordinate } from '../data/coordinates.js';
+import { describeInternalCoordinate } from '../data/coordinates.js';
 import { createMinimapModel } from './minimapModel.js';
 import { CANVAS_THEME } from './uiTheme.js';
 
@@ -21,7 +21,7 @@ export function createCanvasContextSnapshot(state) {
     attributes: { ...combat.attributes },
     derived: { ...combat.derived },
     location: state.location,
-    coordinate: describeCoordinate(state.position),
+    coordinate: describeInternalCoordinate(state.position),
   };
 }
 
@@ -129,7 +129,7 @@ function drawTopBar(ctx, layout, state, uiState, session, theme) {
       ? `Create Character${account ? ` | ${account}` : ''}`
       : uiState.screen === 'creatorIntro'
         ? `${snapshot.playerName} begins${account ? ` | ${account}` : ''}`
-        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location} ${snapshot.coordinate}${account ? ` | ${account}` : ''}`;
+        : `${snapshot.playerName} | ${snapshot.jobName} Lv.${snapshot.level} | ${snapshot.location}${account ? ` | ${account}` : ''}`;
   if (status) fitText(ctx, status, rect.x + 58, rect.y + 24, rect.w - 210);
   if (shouldShowFeedback(uiState.activeFeedback) && uiState.screen !== 'menu') { ctx.fillStyle = theme.accent; fitText(ctx, uiState.activeFeedback, rect.x + 58, rect.y + 42, rect.w - 210); }
   drawClock(ctx, rect, session, theme);
@@ -391,7 +391,6 @@ function drawContext(ctx, rect, state, theme) {
     '',
     'Location',
     s.location,
-    s.coordinate,
   ], theme);
 }
 
