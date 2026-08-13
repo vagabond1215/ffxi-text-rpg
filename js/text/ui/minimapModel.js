@@ -1,7 +1,6 @@
 import {
     columnIndex,
     coordinateKey,
-    describeCoordinate,
     getLevel,
     getNavigableCoordinateKeys,
     isTopologyPlace,
@@ -56,9 +55,9 @@ function createTopologyModel(state, place, currentKey, visitedKeys) {
         width,
         height,
         currentKey,
-        currentLabel: describeCoordinate(state?.position),
+        currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
-        totalCount: getNavigableCoordinateKeys(place, state?.position?.levelId ?? 'main').length,
+        totalCount: '?',
         cells: Object.freeze(cells.map((cell) => Object.freeze(cell))),
         connections: Object.freeze(connections.map((connection) => Object.freeze(connection))),
     });
@@ -84,9 +83,9 @@ function createGridModel(state, place, currentKey, visitedKeys) {
         width,
         height,
         currentKey,
-        currentLabel: describeCoordinate(state?.position),
+        currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
-        totalCount: getNavigableCoordinateKeys(place).length,
+        totalCount: '?',
         cells: Object.freeze(cells.map((cell) => Object.freeze(cell))),
         connections: Object.freeze([]),
     });
