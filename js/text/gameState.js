@@ -108,7 +108,7 @@ export function moveWithinCurrentPlace(state, delta) {
 
     const result = setPositionAndDiscover(state, place.id, next);
     return result.ok
-        ? { ok: true, place, coordinate: next, message: `Moved to ${place.name} coordinate (${next.x}, ${next.y}).` }
+        ? { ok: true, place, coordinate: next, message: `Moved within ${place.name}.` }
         : result;
 }
 
@@ -129,7 +129,6 @@ export function describeCharacter(state) {
         `TP: ${player.resources.tp}/${combat.resources.maxTp}`,
         `Gil: ${player.wallet.gil}`,
         `Location: ${state.location}`,
-        `Coordinate: ${describeCoordinate(state.position)}`,
     ].join('\n');
 }
 
