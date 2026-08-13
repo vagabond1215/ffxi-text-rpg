@@ -36,7 +36,7 @@ export function createMinimapModel(state) {
 function createTopologyModel(state, place, currentKey, visitedKeys) {
     const toCell = topologyCell;
     const cells = [...visitedKeys]
-        .map((key) => ({ ...toCell(key), key, current: key === currentKey }))
+        .map((key) => ({ ...toCell(key), current: key === currentKey }))
         .filter((cell) => Number.isInteger(cell.x) && Number.isInteger(cell.y));
     const level = getLevel(place, state?.position?.levelId ?? 'main');
     const connections = buildTopologyConnections(level, visitedKeys, currentKey, toCell);
@@ -48,7 +48,7 @@ function createTopologyModel(state, place, currentKey, visitedKeys) {
         mode: 'topology',
         width: visible.width,
         height: visible.height,
-        currentKey,
+        currentKey: 'current-area',
         currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
         totalCount: '?',
@@ -62,7 +62,7 @@ function createGridModel(state, place, currentKey, visitedKeys) {
         .map((key) => {
             const parsed = parseCoordinate(key);
             return parsed?.kind === 'numeric'
-                ? { x: parsed.x, y: parsed.y, key, current: key === currentKey }
+                ? { x: parsed.x, y: parsed.y, current: key === currentKey }
                 : null;
         })
         .filter(Boolean);
@@ -74,7 +74,7 @@ function createGridModel(state, place, currentKey, visitedKeys) {
         mode: 'grid',
         width: visible.width,
         height: visible.height,
-        currentKey,
+        currentKey: 'current-area',
         currentLabel: 'Current area',
         exploredCount: visitedKeys.size,
         totalCount: '?',
@@ -99,7 +99,11 @@ function fitVisibleGeometry(cells, connections) {
     return {
         width: Math.max(1, maxX - minX + 1),
         height: Math.max(1, maxY - minY + 1),
-        cells: cells.map((cell) => ({ ...cell, ...translate(cell) })),
+        cells: cells.map((cell, index) => ({
+            ...cell,
+            ...translate(cell),
+            key: cell.current ? 'Current area' : `Known area ${index + 1}`,
+        })),
         connections: connections.map((connection) => ({
             ...connection,
             from: translate(connection.from),
