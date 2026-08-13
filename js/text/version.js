@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.6.300.2';
+export const PRODUCT_VERSION = '0.6.300.1';
 export const PACKAGE_VERSION = '0.6.300';
 
 export const VERSION = Object.freeze({
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.300.2',
+    versionManifest: '0.6.300.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -44,7 +44,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     dayCycle: '0.1.0',
     commandShell: '0.5.0',
     domUi: '0.1.0',
-    gameViewModels: '0.2.1',
+    gameViewModels: '0.2.0',
     canvasUi: '0.8.0',
     uiIntents: '0.3.0',
     slashCommands: '0.4.1',
@@ -74,14 +74,14 @@ export const SYSTEM_VERSIONS = Object.freeze({
     liveTick: '0.2.0',
     maps: '0.5.0',
     places: '0.5.0',
-    coordinates: '0.1.1',
+    coordinates: '0.1.0',
     navigation: '0.1.1',
-    placeAtlas: '0.5.1',
+    placeAtlas: '0.5.0',
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
     travel: '0.5.0',
-    pois: '0.3.8',
+    pois: '0.3.7',
     poiDiscovery: '0.3.6',
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
