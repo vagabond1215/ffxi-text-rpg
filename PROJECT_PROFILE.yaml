@@ -1,0 +1,50 @@
+schema_version: 1
+repository:
+  name: vagabond1215/ffxi-text-rpg
+  default_branch: main
+project:
+  title: Hearth & Horizon
+  type: persistent-game-application
+  phase: pre-alpha-active-development
+  assurance_tier: B-plus
+authority:
+  instructions: AGENTS.md
+  handoff: docs/THREAD_HANDOFF.md
+  design_direction: docs/DEVELOPMENT_DIRECTION.md
+  roadmap: docs/ROADMAP.md
+  architecture: docs/ARCHITECTURE.md
+  runtime_version: js/text/version.js
+  quality_gates: docs/QUALITY_GATES.md
+  performance_budget: docs/PERFORMANCE_BUDGET.md
+  resource_lifecycle: docs/RESOURCE_LIFECYCLE.md
+tools:
+  github_connector: repository-inspection-and-bounded-doc-work
+  repository_capable_execution: runtime-implementation-and-executable-validation
+  principle: least-powerful-safe-tool
+git:
+  normal_work: direct-main
+  risky_or_explicit_review_work: feature-branch-pr
+  stabilization_transition: protect-default-branch-and-require-green-ci
+validation:
+  tests: npm test
+  benchmark: npm run benchmark
+  aggregate: npm run check
+  hosted_check: Check
+modules:
+  - game-runtime
+  - persistent-state
+  - web-ui
+  - deterministic-simulation
+quality:
+  deterministic_simulation: preserve
+  save_compatibility: explicit-migration-for-breaking-persisted-semantics
+  resource_lifecycle_review: required
+  long_session_stability: required-design-consideration
+  hard_performance_thresholds: baseline-required-first
+constraints:
+  - use current repository authority rather than conversation memory
+  - preserve the original-world canon and legacy/reference boundary
+  - preserve the distinction between fictional simulation time and wall-clock scheduling
+  - preserve player-facing acquired-knowledge map privacy
+  - preserve ordered save migrations and compatibility boundaries
+  - roadmap sequencing does not authorize unbounded implementation

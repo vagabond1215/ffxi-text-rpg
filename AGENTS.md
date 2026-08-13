@@ -16,6 +16,18 @@ Before implementing anything substantial:
 
 Do not restart broad discovery or design research when these documents already answer the question. Inspect `main`, open PRs only when they exist, CI status, and recent commits before deciding what remains.
 
+## Repository administration baseline
+
+`PROJECT_PROFILE.yaml` is the machine-readable repository profile for project phase, Git posture, tool routing, validation, and active quality modules. It summarizes operating posture; it does not override the authority order above or the current handoff.
+
+For implementation work, use these durable quality authorities when relevant to the changed surface:
+
+- `docs/QUALITY_GATES.md` — repository-level completion and validation expectations;
+- `docs/PERFORMANCE_BUDGET.md` — benchmark, responsiveness, and regression-baseline policy;
+- `docs/RESOURCE_LIFECYCLE.md` — ownership and cleanup rules for timers, tasks, listeners, UI resources, caches, and other long-lived runtime state.
+
+Repository evidence beats conversation memory. Do not claim tests, benchmarks, browser checks, heap/leak checks, or other executable validation ran unless they actually ran in a capable environment. Use the least-powerful safe tool that can complete and validate the bounded request; documentation or connector evidence is not a substitute for a repository-capable execution surface when correctness depends on runtime commands.
+
 ## Default Git workflow: work on `main`
 
 This repository is currently in an early, single-maintainer development phase. **Work directly on `main` by default.**
@@ -36,6 +48,19 @@ A user prompt is a bounded work order, not blanket authorization to execute the 
 - Do not turn a request to continue one track into an unbounded chain of PRs, deep-research passes, refactors, or later-version work.
 - If additional safe work is obvious after the requested unit is complete, record it in the handoff/report and stop.
 - External research should be targeted to a concrete blocker or explicitly requested question. Avoid repeated broad/deep research passes when repository evidence is sufficient.
+
+## Runtime quality discipline
+
+For runtime, persistence, UI, simulation, or performance work:
+
+- identify the authoritative state owner and the real production caller before changing a helper in isolation;
+- preserve deterministic fictional-time and simulation behavior where the existing architecture requires it;
+- define ownership and cleanup for every new long-lived timer, listener, task, observer, subscription, cache, overlay, worker, or background job;
+- do not allow repeated scene/view entry, save/load, pause/resume, combat entry/exit, or navigation cycles to accumulate duplicate resources;
+- preserve save compatibility or install an explicit versioned migration when persisted meaning changes;
+- run the relevant focused tests plus the repository validation expected by the current handoff;
+- use the existing benchmark as regression evidence and follow `docs/PERFORMANCE_BUDGET.md` before introducing hard thresholds;
+- treat long-session/soak and resource-retention coverage as a required design consideration for systems that create persistent or repeatable runtime activity, even when the automated harness for that surface has not yet been implemented.
 
 ## Hard autonomous-session budget
 
