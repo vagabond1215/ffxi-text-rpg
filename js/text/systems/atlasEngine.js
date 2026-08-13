@@ -1,6 +1,5 @@
 import {
     coordinateKey as normalizedCoordinateKey,
-    describeCoordinate,
     getNavigableCoordinateKeys,
     isNavigableCoordinate,
     isTopologyPlace,
@@ -47,19 +46,14 @@ export function describeAtlas(state, placeId = state.currentPlaceId) {
         return `${place.name} has not been visited. Atlas details are unknown.`;
     }
 
-    const rows = isTopologyPlace(place)
-        ? describeTopologyAtlasRows(state, place)
-        : describeGridAtlasRows(state, place);
-
     const visitedCount = Object.keys(atlasEntry.visited).length;
-    const total = getNavigableCoordinateKeys(place).length;
+    const currentRecorded = state.currentPlaceId === place.id && hasVisited(state.atlas, place.id, state.position);
 
     return [
         `${place.name} Atlas`,
-        `Visited: ${visitedCount}/${total} ${isTopologyPlace(place) ? 'coordinates' : 'grids'}`,
-        'Legend: @ current, . visited, ? unknown',
-        '',
-        ...rows,
+        `Known areas: ${visitedCount}`,
+        currentRecorded ? 'Your current area is recorded.' : 'Your current area is elsewhere.',
+        'Unexplored layout and total map extent remain hidden until discovered through play.',
     ].join('\n');
 }
 
@@ -68,11 +62,10 @@ export function describeCurrentGrid(state) {
     if (!place) return `Unknown place: ${state.currentPlaceId}`;
     const position = state.position ?? place.coordinateSystem.start;
     const visited = hasVisited(state.atlas, place.id, position);
-    const label = isTopologyPlace(place) ? 'coordinate' : 'grid';
 
     return [
-        `${place.name} ${label} ${describeCoordinate(position)}`,
-        visited ? `This ${label} is recorded in your atlas.` : `This ${label} has not been recorded yet.`,
+        `${place.name} local area`,
+        visited ? 'This area is recorded in your atlas.' : 'This area has not been recorded yet.',
         describeGridSpawnHints(place, position, visited),
     ].join('\n');
 }
@@ -93,10 +86,10 @@ export function setPositionAndDiscover(state, placeId, coordinate, details = {})
     const place = getPlace(placeId);
     if (!place) return { ok: false, reason: `Unknown place: ${placeId}` };
     if (!isCoordinateInsidePlace(place, coordinate)) {
-        return { ok: false, reason: `Coordinate ${describeCoordinate(coordinate)} is outside ${place.name}.` };
+        return { ok: false, reason: `That destination is outside ${place.name}.` };
     }
     if (isTopologyPlace(place) && !isNavigableCoordinate(place, coordinate, coordinate?.levelId ?? 'main')) {
-        return { ok: false, reason: `Coordinate ${describeCoordinate(coordinate)} is not navigable in ${place.name}.` };
+        return { ok: false, reason: `That destination is not navigable in ${place.name}.` };
     }
 
     state.currentPlaceId = place.id;
