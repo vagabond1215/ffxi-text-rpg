@@ -10,13 +10,13 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 5. `docs/ROADMAP.md`
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md`, `docs/QUALITY_GATES.md`, `docs/PERFORMANCE_BUDGET.md`, `docs/RESOURCE_LIFECYCLE.md`, and `js/text/version.js`.
-
-For navigation/UI work also read `docs/LOCALITY_AND_EXPLORATION_MODEL.md`.
+7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md`, `docs/LOCALITY_AND_EXPLORATION_MODEL.md`, `docs/QUALITY_GATES.md`, `docs/PERFORMANCE_BUDGET.md`, and `js/text/version.js`.
 
 ## Workflow
 
 Work directly on `main` by default. Treat each prompt as a bounded work order. Follow the `AGENTS.md` autonomous-session guardrail and update this handoff at the end of substantive work.
+
+This repository is still early/single-maintainer pre-alpha development. A coherent incremental commit may temporarily fail while the bounded unit is being assembled, but milestone checkpoints should be validated and known failures recorded. Do not create routine branches/PRs unless explicitly requested or later repository protection requires them.
 
 ## Product laws
 
@@ -32,6 +32,11 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
+```text
+Use fine movement where movement itself creates decisions.
+Use named localities and actions where destinations and relationships create decisions.
+```
+
 Maps represent acquired character knowledge, not omniscient authored geography. Resources have physical/economic/social provenance. Canonical fictional time is separate from wall-clock scheduling.
 
 ### Hard map/privacy rule
@@ -43,18 +48,19 @@ Internal `state.position`, atlas keys, topology edges, POI coordinates, route-st
 ## Current baseline
 
 ```text
-Product:      0.6.400.1
-Package:      0.6.400
+Product:      0.6.500.1
+Package:      0.6.500
 Account Save: 4
 Game State:   5
-Data:         21
+Data:         23
 Benchmark:    1
-Codename:     Combat 2.0 Foundation
+Codename:     Equipment and Tool Breadth
+Compatibility: migrate-supported-save-versions
 ```
 
-Phase 0.5 is complete. Phase 0.6 is active. **0.6.400 is not complete:** the first Combat 2.0 vertical slice is complete and green; canonical combat timing/interruption/status/enemy-ability work remains before moving on.
+Phase 0.5 is complete. Phase 0.6 is active through **0.6.500**.
 
-## Completed implementation sequence
+Completed sequence through this handoff:
 
 - 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events;
 - 0.5.100 deterministic world clock;
@@ -73,172 +79,224 @@ Phase 0.5 is complete. Phase 0.6 is active. **0.6.400 is not complete:** the fir
 - 0.6.200.2 bounded Canvas usability refinement;
 - 0.6.250 semantic DOM player-interface architecture;
 - 0.6.300 original magic and active ability engine;
-- 0.6.400.1 Combat 2.0 foundation vertical slice.
+- **0.6.400.2 Combat 2.0**;
+- **0.6.450.1 locality and exploration navigation**;
+- **0.6.500.1 equipment and tool breadth**.
 
-## Map state and accepted navigation direction
+## 0.6.400 Combat 2.0 — complete
 
-The current SVG minimap is a **functional transitional exploration substrate**, not final cartography.
+The Combat 2.0 contract now unifies basic attacks, canonical abilities, bounded legacy cast/technique adapters, and enemy actions behind structured combat action records rather than display prose.
 
-Two map regressions were corrected before this checkpoint:
-
-1. Player-facing projection previously used authored bounds. It now rebases/fits discovered geometry only, hides authored total extent, and removes coordinate labels.
-2. Numeric grid atlas keys such as `"2,2"` did not round-trip through `parseCoordinate()`, causing grid maps to render only a solid background. Internal numeric serialized keys now parse correctly and render discovered cells without exposing those coordinates in HTML.
-
-Runtime grid-map regression coverage remains green.
-
-### Accepted settlement/exploration distinction
-
-`docs/LOCALITY_AND_EXPLORATION_MODEL.md` is the accepted design direction:
+Primary files:
 
 ```text
-Use fine movement where movement itself creates decisions.
-Use named localities and actions where destinations and relationships create decisions.
+js/text/systems/battleEngine.js
+js/text/systems/combatActionEngine.js
+js/text/systems/combatTurnEngine.js
+js/text/systems/combatSimulationEngine.js
+js/text/systems/abilityEngine.js
+js/text/systems/statusEngine.js
+js/text/data/enemyAbilities.js
 ```
 
-Do **not** assume every settlement must be a fine directional grid.
-
-Future presentation contexts:
-
-```text
-settlement/locality -> locality name + nearby destinations + locality actions
-exploration         -> discovery map + movement/exploration actions
-route/transport     -> journey/progress + travel actions/interrupts
-combat              -> combat state + tactical actions
-```
-
-A guarded/safe city should usually expose named districts, wards, quarters, precincts, campuses, terraces, docks, markets, compounds, or culturally specific equivalents. These subdivisions bound UI density and provide discovery/reputation/quest/access gating without pretending every shop visit is wilderness navigation.
-
-The minimap and D-pad should therefore become **conditional**, not permanent application chrome.
-
-A safe locality remains on canonical world time. `safe` is a hazard/encounter policy, not a second clock. UI browsing consumes no fictional time; meaningful activities or district travel may consume authored coarse durations; scheduled/social/shop/transport/project/world events can still interrupt. There is no need to run continuous ambient danger or health-regeneration ticks merely because the player is standing in a guarded city.
-
-Higher-resolution, shaped, seam-compatible exploration maps remain a valid later cartography direction, especially for terrain-sensitive wilderness/dungeons. They are **deferred**; do not mass-author detailed city maps merely to compensate for using a grid in a context where a map should not be primary.
-
-Accepted insertion after Combat 2.0:
-
-```text
-0.6.450 — Locality and exploration navigation
-```
-
-Expected 0.6.450 scope is defined in `docs/LOCALITY_AND_EXPLORATION_MODEL.md`: named localities/adjacency/access, semantic locality actions, representative starter-city migration, conditional map/D-pad, safe-locality coarse time policy, preservation of atlas privacy and route/transport authority. Polished cartographic art remains later work.
-
-## 0.6.300 magic/ability state
-
-Canonical executable ability/effect data is separate from character capability ownership. `capabilityEngine` owns learned/use prerequisites; `abilityEngine` owns activation, costs, targeting, effects, canonical fictional-time activation/cooldowns, interruption, and lifecycle events.
-
-Original representative abilities remain Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading. Costs are spent when activation begins; non-instant activation uses canonical timed tasks; successful resolution starts cooldown; interruption retains already-spent resources and does not start cooldown.
-
-Ability lifecycle events remain:
-
-```text
-ability.started
-ability.resolved
-ability.interrupted
-```
-
-`invoke <ability>` is a bounded keyboard/power-user adapter. Historical spell names are not canonical ability data.
-
-## 0.6.400 Combat 2.0 foundation — complete vertical slice
-
-The pre-0.6.400 audit found three divergent combat paths:
-
-- basic attacks mutated/logged directly in `battleEngine`;
-- legacy attack/cast/weapon-technique behavior and enemy retaliation lived in `combatActionEngine`;
-- canonical 0.6.300 abilities resolved separately in `abilityEngine` and did not share the legacy enemy-response path.
-
-The first Combat 2.0 slice establishes one structured action/response seam without pretending the whole combat redesign is finished.
-
-### Canonical combat contract
-
-New `js/text/systems/combatTurnEngine.js` introduces additive battle state:
+### Combat contract v2
 
 ```js
 battle.contract = {
-  version: 1,
-  actionSequence: 0,
-  actions: [],
-  lastActionId: null
+  version: 2,
+  actionSequence,
+  actions,
+  lastActionId,
+  timeline: {
+    startedAtWorldSeconds,
+    readyAtByActorId
+  }
 }
 ```
 
-Each structured action record carries:
-
-- stable sequential action ID;
-- round;
-- actor ID/type;
-- target ID;
-- action kind;
-- source ID;
-- outcome;
-- structured data.
-
-Records emit semantic event:
+Structured actions emit:
 
 ```text
 combat.action.resolved
 ```
 
-The contract is additive runtime battle state; Account Save, Game State, and Data versions did not need to change.
+Current canonical timing constants in `combatTurnEngine.js`:
 
-### Structured basic attack
-
-`battleEngine.resolveBasicAttack()` now returns structured resolution data including hit/miss, damage, hit chance/roll, HP before/after, and defeat outcome. Existing `performBasicAttack()` remains a compatibility wrapper.
-
-### Deterministic enemy response v1
-
-Enemy action selection is explicit rather than inferred from combat prose. Current deliberately narrow policy is:
-
-```js
-{
-  kind: 'basicAttack',
-  actorId: enemy.id,
-  targetId: livingPlayer.id,
-  policy: 'basic-attack-v1'
-}
+```text
+player basic recovery: 3 fictional seconds
+enemy basic recovery:  4 fictional seconds
+enemy opening delay:    3 fictional seconds
 ```
 
-The enemy response records its own structured combat action and carries `triggerActionId` linking it to the player action that gave the enemy its response opportunity.
+Legacy cast/technique adapters currently use bounded recovery values on top of the same timeline.
 
-This is not final enemy AI. It establishes deterministic action-selection authority that later policies/abilities can replace or extend.
+### Combat time and interruption
 
-### Player action unification
+There is no second combat clock. Readiness is absolute canonical fictional time.
 
-Current flows through the contract:
+`provideCombatInterrupts()` contributes enemy-ready events to `advanceSimulationUntilInterrupt()`. `combatSimulationEngine.advanceCombatSimulation()` composes combat and ability interrupt providers. A timed player ability can therefore be struck/interrupted by an enemy before cast completion.
 
-- player basic attacks;
-- canonical ability resolution in combat;
-- legacy cast as `legacyCast` compatibility action;
-- legacy weapon technique as `legacyTechnique` compatibility action;
-- deterministic enemy basic response.
+The active DOM shell routes battle `wait` through `combatSimulationEngine` instead of bypassing combat interrupts.
 
-Canonical ability results now expose `combatActionId` and `enemyResponseActionIds`. Semantic UI `ability.activate` remains command-string independent.
+### Status timing
 
-Legacy adapters remain transitional; they no longer need to own a separate private enemy-response loop.
+Finite statuses can carry:
 
-### Battle finalization compatibility
+```text
+appliedAtWorldSeconds
+expiresAtWorldSeconds
+```
 
-Combat finalization synchronizes player resources/statuses from the battle combatant, preserves victory reward resolution, preserves resource-opportunity/provenance behavior, and retains player-facing reward log compatibility. Battle end is recorded once.
+`reconcileStatusesAtWorldTime()` lazily anchors older finite statuses and expires them against canonical fictional time.
+
+### Deterministic battle identity
+
+New encounters use additive `state.combatSequence` and IDs such as:
+
+```text
+battle-000001
+enemy-...-encounter-000001
+```
+
+The older `Date.now()` battle identity scaffold is no longer runtime authority for new encounters.
+
+### Original enemy active ability
+
+`data/enemyAbilities.js` begins the original enemy active-ability catalog with:
+
+```text
+enemy-ability-rushing-cleave
+Rushing Cleave
+```
+
+Redfang Raider owns it. Current selection policy intentionally proves deterministic enemy active-ability execution without pretending enemy AI breadth is complete.
+
+### Combat bounded limitations
+
+- Enemy tactical policy is deliberately small.
+- AoE/ground targeting, richer resistance/accuracy layers, formations, party tactics, and broad enemy technique catalogs remain later depth/breadth work.
+- `combatActionEngine.castSpell()` and transitional weapon-technique behavior remain bounded compatibility adapters.
+- Only one active player ability activation is currently supported at once.
+
+Do not reopen the canonical readiness/interruption clock without a concrete contradiction.
+
+## 0.6.450 Locality and exploration navigation — complete
+
+The accepted navigation distinction is now active behavior, not merely design direction.
+
+Primary file:
+
+```text
+js/text/systems/localityEngine.js
+```
+
+Current semantic modes:
+
+```text
+locality     -> named settlement destinations + locality/POI actions
+exploration  -> discovery map + directional movement
+route        -> journey/progress + travel controls
+combat       -> combat state + tactical actions
+```
+
+### Safe settlements
+
+Existing danger-0 city/city-interior/travel-hub `place` records act as locality nodes. No redundant city-geography database was added.
+
+Thornwall, Brasshaven, and Mistmere starter city place graphs now support named locality navigation. The active DOM renderer **omits** local-map and D-pad markup in safe locality mode. City UI is driven by named adjacent destinations and semantic POI actions.
+
+`performLocalityPoiAction()` may use the POI's internal coordinate to satisfy old location-sensitive systems, but the coordinate is not player-facing navigation identity.
+
+### Locality time
+
+Ordinary browsing is free. Adjacent locality crossing consumes the authored connection `travelSeconds` through `advanceSimulationUntilInterrupt()`. If interrupted before completion, the player remains at the origin locality.
+
+Safe therefore means ordinary ambient danger is suppressed; it does not mean world time is suspended or events cannot occur.
+
+### Exploration
+
+Wilderness/dungeons retain the acquired-knowledge SVG minimap, legal directional movement, keyboard controls, and atlas privacy. Higher-resolution shaped/seam-compatible cartography remains a valid later exploration presentation project, but it is not required to make ordinary cities usable.
+
+See `docs/LOCALITY_AND_EXPLORATION_MODEL.md` for the stable contract.
+
+## 0.6.500 Equipment and Tool Breadth — complete
+
+Equipment breadth now proves usable world tools and general gear rather than merely adding catalog rows.
+
+Primary files:
+
+```text
+js/text/data/equipmentCatalog.js
+js/text/systems/equipmentToolEngine.js
+js/text/systems/equipmentEngine.js
+js/text/systems/equipmentEligibilityEngine.js
+js/text/data/shopCatalogs.js
+js/text/systems/shopEngine.js
+js/text/systems/ecologyEngine.js
+```
+
+### Equipment catalog v3
+
+Representative breadth now includes weapons, armor, shield/accessory/travel gear, and original field tools.
+
+Field tools:
+
+```text
+Field Knife        -> cutting, dagger
+Prospector Pick    -> mining
+Woodsman Hatchet   -> woodcutting, axe
+Digging Spade      -> digging
+Reed Sickle        -> cutting
+Marsh Fishing Rod  -> fishing
+```
+
+General gear added includes Iron Buckler, Road Cloak, Field Belt, Brass Ring, Traveler Boots, Leather Vest, Traveler Gloves, and Leather Trousers.
+
+### Tool/loadout authority
+
+`equipmentToolEngine.js` exposes equipped item tags as a shared loadout requirement source.
+
+Consequences already proven:
+
+- an Elementalist can equip a Field Knife and satisfy the learned Field Dressing practical capability without changing discipline;
+- an equipped Prospector Pick automatically satisfies the mining tool requirement for the Redstone copper seam;
+- ecology gathering still accepts explicit contextual `toolTags` as a bounded adapter, but equipped gear is now the normal player loadout seam.
+
+### Shops
+
+Shop catalog v2 stocks field tools and broader gear. Purchases recognized as equipment/tool pass through `enrichEquipmentItem()` before inventory insertion and can be equipped normally.
+
+Player-facing catalog/shop text was moved to original-world wording. Stable legacy-shaped POI IDs remain internal compatibility seams.
+
+### Equipment gating direction
+
+New original equipment in this track defaults to `allowedJobs: []`. Do **not** copy active-discipline gating into new gear by default.
+
+Older starter weapons/bronze armor still contain discipline-shaped `allowedJobs` compatibility fields. Migrate them incrementally when concrete loadout/capability requirements are available; do not perform an unbounded cleanup.
+
+### Equipment bounded limitations
+
+This is representative systems breadth, not a final item game. Durability/repair, ammunition depth, charge consumption, broad enchantment use, large tiered equipment progression, and finished economic balance remain future work.
 
 ## Validation checkpoint
 
-Coherent runtime/version head:
+Authoritative runtime/version checkpoint before documentation-only synchronization:
 
 ```text
-d4e888328e414081ae753aa4b349b257218735bd
+3a30909e20ba279475803c691041f2d2d61f09f0
 ```
 
-GitHub Actions completed successfully on 2026-08-15:
+GitHub Actions on that head completed successfully:
 
 ```text
-tests       402
-pass        402
+tests       421
+pass        421
 fail        0
 cancelled   0
 skipped     0
-todo        0
 ```
 
-Pages checks:
+Build/deploy checks:
 
 ```text
 test                  success
@@ -247,59 +305,51 @@ report-build-status   success
 deploy                success
 ```
 
-Benchmark at that head:
+Benchmark at Product `0.6.500.1` / Package `0.6.500` / Data `23`:
 
 ```text
-create 1,000 player combat profiles       407.562 ms | 0.407562 ms/op
-create 1,000 enemy combat profiles        101.735 ms | 0.101735 ms/op
-resolve 1,000 basic attacks               474.025 ms | 0.474025 ms/op
-10,000 tick dispatches / 5 subscribers     46.125 ms | 0.004612 ms/op
-10,000 direct route lookups              6408.738 ms | 0.640874 ms/op
+create 1,000 player combat profiles:              421.358 ms | 0.421358 ms/op
+create 1,000 enemy combat profiles:               115.202 ms | 0.115202 ms/op
+resolve 1,000 basic attacks:                      499.732 ms | 0.499732 ms/op
+run 10,000 tick dispatches with 5 subscribers:     47.547 ms | 0.004755 ms/op
+resolve 10,000 direct travel route lookups:      6714.249 ms | 0.671425 ms/op
 ```
 
-The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. Project tests/benchmark still run with configured Node 20.20.2.
+The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. The workflow runner forces affected action internals to Node 24 while `setup-node` still installs configured Node 20.20.2 for project test/benchmark execution.
 
-## Important current combat limitations
-
-Do not describe 0.6.400 as complete yet.
-
-- Enemy action policy is only deterministic basic attack v1.
-- Player and enemy actions do not yet share a complete canonical recovery/readiness timeline.
-- A timed player ability currently receives the enemy response when the ability resolves; enemy action/interruption is not yet interleaved across the cast window.
-- General cast interruption/recovery windows remain incomplete.
-- Status records can carry duration metadata, but status expiry is not yet fully orchestrated from canonical world time.
-- Enemy canonical ability selection/execution is not implemented.
-- AoE/ground targeting, resistance/accuracy layers, and richer tactical policy remain later Combat 2.0 work.
-- The combat contract validator currently has focused tests; global `validateGameState()` does not yet validate an active battle contract.
-- Existing battle IDs still use the older `Date.now()` scaffold.
-- Only one active player ability activation is supported.
+Documentation synchronization follows that green runtime checkpoint; verify the latest docs-only head checks when starting the next session.
 
 ## Compatibility / intentional debt
 
-Do not clean these opportunistically unless they are directly in scope:
+Do not clean these opportunistically unless directly in scope:
 
-- `combatActionEngine.castSpell()` remains a legacy placeholder adapter until Combat 2.0 finishes.
-- Transitional weapon-technique/recovered weapon-skill behavior remains bounded.
-- Equipment eligibility still contains discipline-shaped compatibility requirements.
-- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related persisted/internal names remain compatibility seams.
+- `gil` remains current currency terminology until deliberate original currency design.
+- Historical localStorage keys remain for save compatibility.
+- Legacy-shaped POI stable IDs remain where catalogs depend on them.
+- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal/persisted names remain compatibility seams.
 - Historical FFXI research modules remain bounded reference surfaces.
-- `places.js` spawn rules/place connections, `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional migration/economy debt.
-- Canvas remains bounded compatibility/regression/reference code; semantic DOM is the active browser UI.
-- Internal coordinate helpers may inspect authored geometry, but presentation must not expose it.
+- Canvas modules remain regression/reference code; the active browser UI is semantic DOM.
+- Some DOM information views still bridge to command output until dedicated presentation models exist.
+- Search-or-act is command-capable, not true fuzzy cross-database/entity/action search.
+- `places.js` spawn rules and some place connections remain transitional/fallback seams.
+- Older starter equipment eligibility remains discipline-shaped compatibility debt; new original equipment should prefer concrete loadout/capability requirements.
+- Existing `bronze-pick` is a legacy-shaped combat starter item; **Prospector Pick** is the canonical field mining tool added by 0.6.500.
+- Gathering remains relatively atomic; 0.6.600 is where timed work/processing/crafting loops should deepen it.
+- High-resolution shaped exploration cartography is deferred until terrain-sensitive content justifies the authoring cost.
 
 ## Next bounded target
 
-Continue **0.6.400 — Combat 2.0**, not 0.6.450 yet.
+Start **0.6.600 — Gathering, hunting, processing, crafting, cooking, and salvage**. Do not skip directly into mass content generation.
 
-Recommended next unit:
+Recommended first unit:
 
-1. define canonical combat readiness/recovery timing against fictional world time;
-2. allow enemy actions to occur/interleave while a timed player ability is activating;
-3. route combat interruption through the existing deterministic interrupt substrate;
-4. move status duration/expiry toward canonical world-time authority;
-5. add one representative original enemy active ability and deterministic selection policy;
-6. integrate `validateCombatContract()` with state validation if the contract is now stable enough;
-7. preserve rewards, resource provenance, skills, equipment, capability composition, semantic events, and compatibility adapters;
-8. test/version/benchmark/document and stop at the next coherent 0.6.400 checkpoint.
+1. audit current ecology gathering, resource opportunities/recovery, projects/timed tasks, inventory/provenance/sinks, capabilities/proficiencies, equipment-tool tags, and representative recipes/content packs;
+2. define process/work records separately from finished item records;
+3. turn representative gathering/recovery into timed proficiency/tool-aware work where appropriate;
+4. implement one small source -> raw material -> processing -> component/ingredient -> finished-use/sink chain;
+5. prove representative crafting and cooking through canonical tasks, workstations/tools, proficiency/capability, and resource consumption;
+6. establish salvage/recycling without magical duplication;
+7. preserve locality/exploration navigation, canonical fictional time, resource provenance, regional content ownership, and continuous-character capability semantics;
+8. validate/version/benchmark/document and stop at a coherent `0.6.600` boundary.
 
-After Combat 2.0 is coherent/complete, execute **0.6.450 — Locality and exploration navigation** before broad 0.6.500+ expansion hardens the current city-grid assumptions.
+Following tracks remain `0.6.700` ecology/regional content breadth, `0.6.800` persistent companion/party foundation, and `0.6.900` integrated-mechanics exit gate.
