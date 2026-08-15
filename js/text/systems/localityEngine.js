@@ -1,6 +1,7 @@
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getPointOfInterest, getPoisForPlace } from '../data/pointsOfInterest.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { discoverPoi, performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
@@ -50,6 +51,7 @@ export function listLocalityPoints(state, options = {}) {
 export function moveWithinLocality(state, destinationId) {
     if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot cross the settlement while in battle.');
     if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
+    if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
     const current = getPlace(state?.currentPlaceId);
     if (!isSettlementLocality(current)) return fail('locality.not-locality', 'Named locality movement is only available in safe settlement areas.');
 
@@ -92,6 +94,7 @@ export function moveWithinLocality(state, destinationId) {
 
 export function performLocalityPoiAction(state, poiId, action = 'talk') {
     if (!isSettlementLocality(state?.currentPlaceId)) return fail('locality.poi-unavailable', 'Locality actions are only available in safe settlement areas.');
+    if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
     const poi = getPointOfInterest(poiId);
     if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
 
