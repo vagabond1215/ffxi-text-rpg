@@ -7,47 +7,44 @@ import {
 } from './itemSchema.js';
 
 const STARTER_SOURCE = 'Hearth & Horizon early equipment contract; values are original provisional balance for systems testing.';
-const STARTER_DISCIPLINES = Object.freeze(['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand']);
-const BRONZE_ARMOR_DISCIPLINES = Object.freeze([...STARTER_DISCIPLINES, 'oathguard', 'duskblade', 'wildbinder', 'cantor', 'wayfinder', 'bladeAdept', 'veilrunner', 'skyLancer', 'echoSage', 'freeCaptain', 'artificer', 'rhythmblade', 'wardsword']);
-const CASTER_DISCIPLINES = Object.freeze(['lifewarden', 'elementalist', 'spellblade', 'eidolist', 'savant', 'leykeeper']);
 
 export const EQUIPMENT_CATALOG_VERSION = 3;
 
 export const EQUIPMENT_CATALOG = Object.freeze({
     'bronze-sword': equipment('bronze-sword', 'Bronze Sword', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'sword', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'sword', weaponDelay: 236, requirements: requirement({ allowedJobs: ['vanguard', 'spellblade', 'oathguard'] }),
+        weaponCategory: 'sword', weaponDelay: 236, requirements: requirement(),
         tags: ['weapon', 'sword', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 3, accuracy: 1 } },
         fieldNotes: withDelayNotes('Provisional starter sword delay.'),
     }),
     'bronze-axe': equipment('bronze-axe', 'Bronze Axe', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'axe', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'axe', weaponDelay: 288, requirements: requirement({ allowedJobs: ['vanguard', 'wildbinder'] }),
+        weaponCategory: 'axe', weaponDelay: 288, requirements: requirement(),
         tags: ['weapon', 'axe', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 4 } },
         fieldNotes: withDelayNotes('Provisional starter axe delay.'),
     }),
     'bronze-dagger': equipment('bronze-dagger', 'Bronze Dagger', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'dagger', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'dagger', weaponDelay: 190, requirements: requirement({ allowedJobs: ['vanguard', 'spellblade', 'shadowhand', 'cantor', 'wayfinder', 'rhythmblade'] }),
+        weaponCategory: 'dagger', weaponDelay: 190, requirements: requirement(),
         tags: ['weapon', 'dagger', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 2, accuracy: 2 } },
         fieldNotes: withDelayNotes('Provisional starter dagger delay.'),
     }),
     'bronze-pick': equipment('bronze-pick', 'Bronze Pick', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'axe', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'axe', weaponDelay: 300, requirements: requirement({ allowedJobs: ['vanguard', 'wildbinder'] }),
+        weaponCategory: 'axe', weaponDelay: 300, requirements: requirement(),
         tags: ['weapon', 'axe', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 3 } },
         fieldNotes: withDelayNotes('Legacy-shaped starter combat pick retained for compatibility; use Prospector Pick for field mining.'),
     }),
     'ash-staff': equipment('ash-staff', 'Ash Staff', {
         family: 'weapon', archetype: 'twoHandedWeapon', subtype: 'staff', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'staff', weaponDelay: 366, requirements: requirement({ allowedJobs: CASTER_DISCIPLINES }),
+        weaponCategory: 'staff', weaponDelay: 366, requirements: requirement(),
         tags: ['weapon', 'staff', 'starter', 'caster'], flags: ['equipmentOnly', 'twoHanded'],
         modifiers: { resources: { mp: 3 }, derived: { attack: 2, magicAccuracy: 1 } },
         fieldNotes: withDelayNotes('Provisional two-handed staff delay.'),
     }),
     'maple-wand': equipment('maple-wand', 'Maple Wand', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'club', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'club', weaponDelay: 216, requirements: requirement({ allowedJobs: CASTER_DISCIPLINES }),
+        weaponCategory: 'club', weaponDelay: 216, requirements: requirement(),
         tags: ['weapon', 'club', 'starter', 'caster'], flags: ['equipmentOnly'],
         modifiers: { attributes: { int: 1, mnd: 1 }, resources: { mp: 4 }, derived: { magicAccuracy: 1 } },
         fieldNotes: withDelayNotes('Provisional starter wand delay.'),
@@ -177,7 +174,7 @@ export function listEquipmentCatalogEntries() {
 function bronzeArmor(id, name, slot, tags, modifiers) {
     return equipment(id, name, {
         family: 'armor', archetype: 'starterArmor', subtype: slot, equipmentSlot: slot, allowedSlots: [slot],
-        requirements: requirement({ allowedJobs: BRONZE_ARMOR_DISCIPLINES }), tags, flags: ['equipmentOnly'], modifiers, fieldNotes: baseFieldNotes(),
+        requirements: requirement(), tags, flags: ['equipmentOnly'], modifiers, fieldNotes: baseFieldNotes(),
     });
 }
 
@@ -254,7 +251,7 @@ function baseFieldNotes() {
         requirements: {
             confidence: CONFIDENCE_LABELS.INTENTIONAL_SIMPLIFICATION,
             source: STARTER_SOURCE,
-            notes: 'Legacy-shaped broad starter eligibility retained for compatibility while equipment gating migrates toward capability/loadout rules.',
+            notes: 'No active-discipline restriction; starter eligibility is expressed by possession, loadout, and later concrete capability/proficiency requirements.',
         },
         modifiers: {
             confidence: CONFIDENCE_LABELS.INTENTIONAL_SIMPLIFICATION,
