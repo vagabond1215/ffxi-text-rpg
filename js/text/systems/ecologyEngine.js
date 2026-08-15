@@ -1,10 +1,10 @@
 import {
-    getGatheringSource,
-    getPopulation,
-    listGatheringSources,
-    listPopulations,
-} from '../data/ecologyCatalog.js';
-import { getResourceItem } from '../data/resourceItems.js';
+    getCanonicalGatheringSource as getGatheringSource,
+    getCanonicalPopulation as getPopulation,
+    listCanonicalGatheringSources as listGatheringSources,
+    listCanonicalPopulations as listPopulations,
+} from '../data/ecologyRegistry.js';
+import { getCanonicalResourceItem as getResourceItem } from '../data/resourceItemRegistry.js';
 import { collectAvailableToolTags } from './equipmentToolEngine.js';
 import { addItemToContainer } from './inventoryEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
