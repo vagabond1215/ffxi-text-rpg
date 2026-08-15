@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.500.1
-Package:      0.6.500
+Product:      0.6.800.1
+Package:      0.6.800
 Account Save: 4
 Game State:   5
-Data:         23
+Data:         26
 Benchmark:    1
-Codename:     Equipment and Tool Breadth
+Codename:     Persistent Companions and Party
 ```
 
-The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active through `0.6.500`. Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, and usable original equipment/field-tool breadth are established on top of the deterministic simulation/content substrate.
+The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active through `0.6.800`. Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, and persistent NPC-backed companions are established on top of the deterministic simulation/content substrate.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.6.500.1
+0.6.800.1
 ```
 
 Meaning:
@@ -47,7 +47,7 @@ Meaning:
 `package.json.version` remains normal three-part SemVer and mirrors `MAJOR.PHASE.TRACK` where practical:
 
 ```text
-Product 0.6.500.1 -> Package 0.6.500
+Product 0.6.800.1 -> Package 0.6.800
 ```
 
 `js/text/version.js` is runtime authority. Documentation must be synchronized when a milestone version changes.
@@ -60,7 +60,7 @@ Product version is not a persistence schema number. Track these independently:
 | --- | ---: | --- |
 | Account Save | 4 | Local account/session/character registry compatibility |
 | Game State | 5 | Serialized character/world runtime compatibility |
-| Data | 23 | Canonical authored-data contract compatibility |
+| Data | 26 | Canonical authored-data contract compatibility |
 | Benchmark | 1 | Benchmark protocol/comparability |
 
 ### When to bump Account Save
@@ -78,7 +78,10 @@ Bump when canonical authored-data contracts or catalogs gain a meaningful versio
 - Data 20 — character capability learning/use contract;
 - Data 21 — original magic/active ability contract;
 - Data 22 — canonical enemy ability/combat data contract;
-- Data 23 — equipment/field-tool/shop breadth contract.
+- Data 23 — equipment/field-tool/shop breadth contract;
+- Data 24 — canonical production/process/output contract;
+- Data 25 — regional ecology/resource breadth and registry contract;
+- Data 26 — persistent companion definition, recruitment/tactics, and relationship-dimension contract.
 
 ### When to bump Benchmark
 
@@ -147,10 +150,10 @@ Direction lock, version protocol, ordered persistence migrations, structured act
 | 0.6.400 | Combat 2.0 timing/action/interruption contract | `0.6.400.2` / Data 22 | Complete |
 | 0.6.450 | Locality and exploration navigation | `0.6.450.1` / Data 22 | Complete |
 | 0.6.500 | Equipment and field-tool breadth | `0.6.500.1` / Data 23 | Complete |
-| 0.6.600 | Gathering/hunting/processing/crafting/cooking/salvage | TBD | **Next** |
-| 0.6.700 | Ecology/regional creature/resource content breadth | TBD | Planned |
-| 0.6.800 | Persistent companion/party foundation | TBD | Planned |
-| 0.6.900 | Integrated-mechanics exit gate | TBD | Planned |
+| 0.6.600 | Gathering/hunting/processing/crafting/cooking/salvage | `0.6.600.1` / Data 24 | Complete |
+| 0.6.700 | Ecology/regional creature/resource content breadth | `0.6.700.1` / Data 25 | Complete |
+| 0.6.800 | Persistent companion/party foundation | `0.6.800.1` / Data 26 | Complete |
+| 0.6.900 | Integrated-mechanics exit gate | TBD | **Next** |
 
 ### 0.6.400 version decision
 
@@ -164,11 +167,27 @@ Locality/exploration navigation completed at Product `0.6.450.1`, Package `0.6.4
 
 Equipment/tool breadth completed at Product `0.6.500.1`, Package `0.6.500`, Data `23`. The equipment catalog and shop-facing field-tool contract expanded materially, while ownership remains normal item/equipment state compatible with Game State 5. New original equipment avoids active-discipline gating by default; legacy starter eligibility fields remain explicit compatibility debt.
 
+### 0.6.600 version decision
+
+Production/resource loops completed at Product `0.6.600.1`, Package `0.6.600`, Data `24`. Work-task/proficiency state is additive and lazily normalizable within Game State 5, while canonical process/output records materially expanded authored-data authority and therefore advanced Data.
+
+### 0.6.700 version decision
+
+Regional ecology/resource breadth completed at Product `0.6.700.1`, Package `0.6.700`, Data `25`. Runtime ecology state remained compatible with Game State 5; Data advanced because unified regional species/population/source/resource registries and their content-pack graph became canonical authored content contracts.
+
+### 0.6.800 version decision
+
+Persistent companion/party foundation completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, with Account Save 4 and Game State 5 unchanged. `state.party` is additive/lazily reconstructible; backing NPC state can be reconstructed/synchronized from canonical companion definitions. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension records are canonical authored runtime data.
+
+## Next release gate — 0.6.900
+
+`0.6.900` is the integrated-mechanics exit audit for Phase 0.6. It should stabilize and cross-check existing systems rather than introduce another broad subsystem. The gate should cover persistence/lazy normalization, fictional-time and interrupt composition, continuous-character ownership, party/combat/travel/work coexistence, provenance and source/sink integrity, semantic UI authority, world/content validation, benchmark regression, and exact Phase 0.7 entry criteria.
+
 ## Planned later phases
 
 ### 0.7 — Multi-region playable alpha
 
-Exit only when the player can sustain a meaningful campaign across multiple connected regions with enough NPCs, shops/services, contracts/quests, relationships, transport, economy, creatures/resources, and production/adventure content that the game feels like a sandbox rather than a systems demo.
+Exit only when the player can sustain a meaningful campaign across multiple connected regions with enough NPCs, shops/services, contracts/quests, relationships, companions, transport, economy, creatures/resources, and production/adventure content that the game feels like a sandbox rather than a systems demo.
 
 ### 0.8 — Life and infrastructure expansion
 
@@ -188,6 +207,7 @@ one persistent person
 + relationships/reputation
 + material capability/home/infrastructure
 + connected travel/exploration/adventure
++ persistent companions
 + deterministic fictional time
 + original world/content
 + stable migrations/performance
