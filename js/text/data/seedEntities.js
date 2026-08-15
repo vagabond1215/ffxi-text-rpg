@@ -18,6 +18,10 @@ export function createSeedNpcs() {
             id: 'npc-mistmere-marsh-warden', name: 'Mistmere Marsh Warden', title: 'Road Warden', faction: 'Mistmere',
             locationId: 'mistmere-canal-ward', services: ['realmSeal', 'regionalRewards'],
         }),
+        createNpc({
+            id: 'npc-elderwood-waywarden', name: 'Mara Venn', title: 'Waywarden', faction: 'Thornwall',
+            locationId: 'timbercross-landing', services: ['route-guidance', 'contracts', 'companion-recruitment'],
+        }),
     ];
 }
 
