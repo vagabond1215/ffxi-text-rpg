@@ -39,32 +39,84 @@ export function refreshCombatant(entity) {
     };
 }
 
-export function performBasicAttack(battle, attackerId, defenderId, options = {}) {
+export function resolveBasicAttack(battle, attackerId, defenderId, options = {}) {
     const attacker = getCombatant(battle, attackerId);
     const defender = getCombatant(battle, defenderId);
-    if (!attacker || !defender) return appendBattleLog(battle, 'Invalid combatant.');
-    if (attacker.battle.defeated || defender.battle.defeated) return battle;
+    if (!attacker || !defender) {
+        appendBattleLog(battle, 'Invalid combatant.');
+        return {
+            ok: false,
+            outcome: 'invalid-combatant',
+            attackerId,
+            defenderId,
+            hit: false,
+            damage: 0,
+            defeatedTarget: false,
+        };
+    }
+    if (attacker.battle.defeated || defender.battle.defeated) {
+        return {
+            ok: false,
+            outcome: 'unavailable',
+            attackerId,
+            defenderId,
+            hit: false,
+            damage: 0,
+            defeatedTarget: Boolean(defender.battle.defeated),
+        };
+    }
 
     const rng = options.rng ?? battle.rng ?? Math.random;
     const hitChance = calculateHitChance(attacker, defender);
     const roll = rollPercent(rng);
     if (roll > hitChance) {
-        return appendBattleLog(battle, `${attacker.identity.name} misses ${defender.identity.name}.`);
+        appendBattleLog(battle, `${attacker.identity.name} misses ${defender.identity.name}.`);
+        return {
+            ok: true,
+            outcome: 'miss',
+            attackerId,
+            defenderId,
+            hit: false,
+            damage: 0,
+            hitChance,
+            roll,
+            defeatedTarget: false,
+        };
     }
 
     const damage = calculatePhysicalDamage(attacker, defender, { rng });
+    const hpBefore = defender.resources.hp;
     defender.resources.hp = Math.max(0, defender.resources.hp - damage);
     attacker.resources.tp = Math.min(attacker.combat.resources.maxTp, attacker.resources.tp + 100);
     defender.resources.tp = Math.min(defender.combat.resources.maxTp, defender.resources.tp + 30);
 
     appendBattleLog(battle, `${attacker.identity.name} hits ${defender.identity.name} for ${damage} damage.`);
 
+    let defeatedTarget = false;
     if (defender.resources.hp <= 0) {
         defender.battle.defeated = true;
+        defeatedTarget = true;
         appendBattleLog(battle, `${defender.identity.name} is defeated.`);
     }
 
     updateBattlePhase(battle);
+    return {
+        ok: true,
+        outcome: defeatedTarget ? 'defeated-target' : 'hit',
+        attackerId,
+        defenderId,
+        hit: true,
+        damage,
+        hpBefore,
+        hpAfter: defender.resources.hp,
+        hitChance,
+        roll,
+        defeatedTarget,
+    };
+}
+
+export function performBasicAttack(battle, attackerId, defenderId, options = {}) {
+    resolveBasicAttack(battle, attackerId, defenderId, options);
     return battle;
 }
 
@@ -94,11 +146,12 @@ export function appendBattleLog(battle, entry) {
     return battle;
 }
 
-function updateBattlePhase(battle) {
+export function updateBattlePhase(battle) {
     const playersAlive = battle.combatants.some((combatant) => combatant.type === 'player' && !combatant.battle.defeated);
     const enemiesAlive = battle.combatants.some((combatant) => combatant.type === 'enemy' && !combatant.battle.defeated);
     if (!playersAlive) battle.phase = 'defeat';
-    if (!enemiesAlive) battle.phase = 'victory';
+    else if (!enemiesAlive) battle.phase = 'victory';
+    return battle.phase;
 }
 
 function clamp(value, min, max) {
