@@ -74,7 +74,8 @@ test('POI actions render shop guild quest and companion interactions', () => {
     const companionOutput = performPoiAction(state, 'companion', 'Rowan Greymark');
     assert.match(companionOutput, /Type: companion/);
     assert.match(companionOutput, /Action: companion/);
-    assert.match(companionOutput, /Companion recruitment/);
+    assert.match(companionOutput, /party system/);
+    assert.doesNotMatch(companionOutput, /not implemented/i);
     assert.doesNotMatch(companionOutput, /Trust/);
 });
 
@@ -97,5 +98,7 @@ test('router exposes POI discovery fast travel catalog companion and exit action
 
     const companion = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Rowan Greymark');
     setPositionAndDiscover(state, 'thornwall-southgate', companion.coordinate);
-    assert.match(router('companion Rowan Greymark'), /Companion recruitment/);
+    const output = router('companion Rowan Greymark');
+    assert.match(output, /party system/);
+    assert.doesNotMatch(output, /not implemented/i);
 });
