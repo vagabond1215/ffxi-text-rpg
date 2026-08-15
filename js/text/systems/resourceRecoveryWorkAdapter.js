@@ -1,3 +1,4 @@
+import { getCanonicalResourceItem } from '../data/resourceItemRegistry.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { collectAvailableToolTags } from './equipmentToolEngine.js';
 import {
@@ -10,7 +11,7 @@ import {
     getWorkProficiencyMap,
 } from './workProficiencyEngine.js';
 
-export const RESOURCE_RECOVERY_WORK_ADAPTER_VERSION = 1;
+export const RESOURCE_RECOVERY_WORK_ADAPTER_VERSION = 2;
 
 export function startCharacterResourceRecovery(state, opportunityId, actionId, options = {}) {
     if (state.activeBattle?.phase === 'active') {
@@ -35,6 +36,7 @@ export function startCharacterResourceRecovery(state, opportunityId, actionId, o
 export function reconcileCharacterResourceRecoveries(state, options = {}) {
     const completed = reconcileResourceRecoveries(state, options);
     for (const result of completed) {
+        for (const item of result.items ?? []) restoreCanonicalResourceMetadata(item);
         const definition = RESOURCE_RECOVERY_ACTION_DEFINITIONS[result.actionId];
         if (!definition?.proficiencyId) continue;
         gainWorkProficiency(state, definition.proficiencyId, 1, {
@@ -42,6 +44,16 @@ export function reconcileCharacterResourceRecoveries(state, options = {}) {
         });
     }
     return completed;
+}
+
+function restoreCanonicalResourceMetadata(item) {
+    const canonical = getCanonicalResourceItem(item?.id);
+    if (!canonical) return item;
+    item.tags = [...canonical.tags];
+    item.sinks = canonical.sinks.map((sink) => ({ ...sink, data: { ...(sink.data ?? {}) } }));
+    item.valueGil = canonical.valueGil;
+    item.metadata = canonical.metadata ? { ...canonical.metadata } : item.metadata;
+    return item;
 }
 
 function blocked(code, text) {
