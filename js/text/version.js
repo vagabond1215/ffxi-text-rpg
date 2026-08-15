@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.6.400.2';
-export const PACKAGE_VERSION = '0.6.400';
+export const PRODUCT_VERSION = '0.6.450.1';
+export const PACKAGE_VERSION = '0.6.450';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 22,
     benchmark: 1,
-    codename: 'Combat 2.0',
+    codename: 'Locality and Exploration Navigation',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.400.2',
+    versionManifest: '0.6.450.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -43,8 +43,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationSubstrateGate: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.5.0',
-    domUi: '0.1.1',
-    gameViewModels: '0.2.0',
+    domUi: '0.2.0',
+    gameViewModels: '0.3.0',
+    localityNavigation: '0.1.0',
     canvasUi: '0.8.0',
     uiIntents: '0.3.0',
     slashCommands: '0.4.1',
