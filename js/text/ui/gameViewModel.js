@@ -2,6 +2,11 @@ import { DIRECTION_ARROWS, DIRECTION_ORDER, describeCoordinate } from '../data/c
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { listAbilityAvailability } from '../systems/abilityEngine.js';
+import {
+    getNavigationMode,
+    listLocalityDestinations,
+    listLocalityPoints,
+} from '../systems/localityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
@@ -15,22 +20,30 @@ const POI_ACTION_LABELS = Object.freeze({
     storage: 'Storage',
     companion: 'Companion',
     travel: 'Travel Desk',
+    talk: 'Talk',
 });
+
+const LOCALITY_ACTION_PRIORITY = Object.freeze(['shop', 'guild', 'quest', 'storage', 'companion', 'travel', 'talk']);
 
 export function createGameViewModel(state, uiState = {}) {
     if (!state?.player) throw new Error('Game view model requires player state.');
     const place = getPlace(state.currentPlaceId);
     const combat = calculateCombatProfile(state.player);
-    const nearby = getContextualPois(state).map(toNearbyRecord);
+    const navigationMode = getNavigationMode(state);
+    const nearbySource = navigationMode === 'locality'
+        ? listLocalityPoints(state, { limit: 8 })
+        : getContextualPois(state);
+    const nearby = nearbySource.map(toNearbyRecord);
     const activity = createActivityModel(state);
     const spellbook = createSpellbookModel(state);
+    const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
         header: Object.freeze({
             placeId: place?.id ?? state.currentPlaceId ?? null,
             placeName: place?.name ?? state.location ?? 'Unknown place',
             region: place?.region ?? '',
-            coordinate: describeCoordinate(state.position),
+            coordinate: coordinateLabel,
             worldTime: describeWorldTime(ensureWorldTimeState(state)),
             paused: Boolean(state.simulation?.paused),
             speedMultiplier: state.simulation?.speedMultiplier ?? 1,
@@ -41,20 +54,25 @@ export function createGameViewModel(state, uiState = {}) {
             region: place?.region ?? '',
             type: place?.type ?? '',
             dangerLevel: place?.dangerLevel ?? 0,
-            coordinate: describeCoordinate(state.position),
+            coordinate: coordinateLabel,
             description: place?.description ?? 'The surroundings are not yet described.',
             nearby: Object.freeze(nearby),
+            nearbyTotal: navigationMode === 'locality' ? listLocalityPoints(state, { limit: 100 }).length : nearby.length,
             recent: Object.freeze(createRecentSceneLines(uiState.outputLines ?? [])),
         }),
-        map: createMinimapModel(state),
-        movement: Object.freeze(createMovementActions(state)),
+        navigation: Object.freeze({
+            mode: navigationMode,
+            destinations: Object.freeze(navigationMode === 'locality' ? listLocalityDestinations(state) : []),
+        }),
+        map: navigationMode === 'exploration' ? createMinimapModel(state) : null,
+        movement: Object.freeze(navigationMode === 'exploration' ? createMovementActions(state) : []),
         contextualActions: Object.freeze(createContextualActions(state, nearby)),
         spellbook,
         activity,
     });
 }
 
-export function createContextualActions(state, nearby = getContextualPois(state).map(toNearbyRecord)) {
+export function createContextualActions(state, nearby = null) {
     if (state.activeBattle?.phase === 'active') {
         const readyAbilities = listAbilityAvailability(state)
             .filter((entry) => entry.known && entry.available && entry.ability.contexts.includes('combat'))
@@ -75,8 +93,36 @@ export function createContextualActions(state, nearby = getContextualPois(state)
         ];
     }
 
+    if (getNavigationMode(state) === 'locality') {
+        const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
+        const actions = listLocalityDestinations(state)
+            .slice(0, 3)
+            .map((destination) => Object.freeze({
+                id: `context:locality:${destination.id}`,
+                label: `Go · ${destination.name}`,
+                intent: 'locality.move',
+                payload: Object.freeze({ destinationId: destination.id }),
+                kind: 'travel',
+            }));
+
+        for (const poi of points) {
+            if (actions.length >= 5) break;
+            const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
+            actions.push(Object.freeze({
+                id: `context:locality-poi:${poi.id}:${action}`,
+                label: `${POI_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
+                intent: 'locality.poi',
+                payload: Object.freeze({ poiId: poi.id, action }),
+                kind: action === 'talk' ? 'social' : action,
+            }));
+        }
+        actions.push(commandAction('context:locality-list', 'All Local Places', `pois ${state.currentPlaceId}`, 'utility'));
+        return dedupeActions(actions).slice(0, 6);
+    }
+
+    const points = nearby ?? getContextualPois(state).map(toNearbyRecord);
     const actions = [];
-    for (const poi of nearby) {
+    for (const poi of points) {
         actions.push(commandAction(`context:talk:${poi.id}`, `Talk · ${poi.name}`, `talk ${poi.name}`, 'social'));
         for (const action of poi.actions) {
             if (!POI_ACTION_LABELS[action]) continue;
@@ -90,7 +136,7 @@ export function createContextualActions(state, nearby = getContextualPois(state)
     }
 
     actions.push(commandAction('context:look', 'Look Around', 'look', 'world'));
-    if (!nearby.length) actions.push(commandAction('context:nearby', 'Nearby', 'here', 'world'));
+    if (!points.length) actions.push(commandAction('context:nearby', 'Nearby', 'here', 'world'));
     return dedupeActions(actions).slice(0, 6);
 }
 
@@ -224,7 +270,7 @@ function abilityAction(entry) {
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
