@@ -8,6 +8,7 @@ import {
     listLocalityPoints,
 } from '../systems/localityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
+import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEngine.js';
@@ -36,6 +37,7 @@ export function createGameViewModel(state, uiState = {}) {
     const nearby = nearbySource.map(toNearbyRecord);
     const activity = createActivityModel(state);
     const spellbook = createSpellbookModel(state);
+    const party = createPartyModel(state);
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -68,6 +70,7 @@ export function createGameViewModel(state, uiState = {}) {
         movement: Object.freeze(navigationMode === 'exploration' ? createMovementActions(state) : []),
         contextualActions: Object.freeze(createContextualActions(state, nearby)),
         spellbook,
+        party,
         activity,
     });
 }
@@ -93,17 +96,30 @@ export function createContextualActions(state, nearby = null) {
         ];
     }
 
+    const recruitActions = listRecruitableCompanions(state)
+        .filter((entry) => entry.recruitable)
+        .map((entry) => Object.freeze({
+            id: `context:recruit:${entry.definition.id}`,
+            label: `Recruit · ${entry.definition.name}`,
+            intent: 'party.recruit',
+            payload: Object.freeze({ companionId: entry.definition.id }),
+            kind: 'social',
+        }));
+
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
-        const actions = listLocalityDestinations(state)
-            .slice(0, 3)
-            .map((destination) => Object.freeze({
-                id: `context:locality:${destination.id}`,
-                label: `Go · ${destination.name}`,
-                intent: 'locality.move',
-                payload: Object.freeze({ destinationId: destination.id }),
-                kind: 'travel',
-            }));
+        const actions = [
+            ...recruitActions,
+            ...listLocalityDestinations(state)
+                .slice(0, 3)
+                .map((destination) => Object.freeze({
+                    id: `context:locality:${destination.id}`,
+                    label: `Go · ${destination.name}`,
+                    intent: 'locality.move',
+                    payload: Object.freeze({ destinationId: destination.id }),
+                    kind: 'travel',
+                })),
+        ];
 
         for (const poi of points) {
             if (actions.length >= 5) break;
@@ -121,7 +137,7 @@ export function createContextualActions(state, nearby = null) {
     }
 
     const points = nearby ?? getContextualPois(state).map(toNearbyRecord);
-    const actions = [];
+    const actions = [...recruitActions];
     for (const poi of points) {
         actions.push(commandAction(`context:talk:${poi.id}`, `Talk · ${poi.name}`, `talk ${poi.name}`, 'social'));
         for (const action of poi.actions) {
@@ -174,6 +190,32 @@ function createSpellbookModel(state) {
         entries: Object.freeze(entries),
         knownCount: entries.length,
         activeAbilityId: state.abilities?.active?.abilityId ?? null,
+    });
+}
+
+function createPartyModel(state) {
+    const activeIds = new Set(listActiveCompanions(state).map((entry) => entry.id));
+    const entries = listRecruitedCompanions(state).map((companion) => {
+        const combat = calculateCombatProfile(companion);
+        return Object.freeze({
+            id: companion.id,
+            npcId: companion.npcId,
+            name: companion.identity.name,
+            title: companion.identity.title,
+            level: companion.level,
+            active: activeIds.has(companion.id),
+            locationId: companion.locationId,
+            role: companion.tactics.role,
+            hp: companion.resources.hp,
+            maxHp: combat.resources.maxHp,
+            relationship: Object.freeze({ ...companion.relationship }),
+        });
+    });
+    return Object.freeze({
+        capacity: state.party?.capacity ?? 2,
+        activeCount: activeIds.size,
+        recruitedCount: entries.length,
+        entries: Object.freeze(entries),
     });
 }
 
@@ -270,7 +312,7 @@ function abilityAction(entry) {
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
