@@ -14,6 +14,7 @@ import {
 } from '../save.js';
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
+import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
 import { renderDomApp } from './domRenderer.js';
@@ -49,6 +50,10 @@ export function createDomApp({ host }) {
     function routeCommand(command) {
         const value = String(command ?? '').trim();
         if (!value) return '';
+        const combatWait = /^\/?wait(?:\s+(\d+))?$/i.exec(value);
+        if (combatWait && state.activeBattle?.phase === 'active') {
+            return advanceCombatSimulation(state, combatWait[1] ?? 1).message;
+        }
         return value.startsWith('/') ? slashRouter(value) : commandRouter(value);
     }
 
