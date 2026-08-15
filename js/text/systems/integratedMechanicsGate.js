@@ -69,9 +69,13 @@ export function evaluateIntegratedMechanicsGate(options = {}) {
         group('persistenceAndNormalization', [
             issueCheck('new-game-state-valid', initialStateIssues),
             issueCheck('additive-state-normalization', normalizationIssues),
-            booleanCheck('account-save-contract', version.accountSave === 4, `Account Save ${version.accountSave} must remain compatible with v4.`),
-            booleanCheck('game-state-contract', version.gameState === 5, `Game State ${version.gameState} must remain compatible with v5.`),
-            booleanCheck('migration-contract', version.compatibility === 'migrate-supported-save-versions', `Compatibility mode ${version.compatibility} must preserve ordered supported migrations.`),
+            minimumVersionCheck('account-save-contract', version.accountSave, 4, 'Account Save'),
+            minimumVersionCheck('game-state-contract', version.gameState, 5, 'Game State'),
+            booleanCheck(
+                'compatibility-policy',
+                version.compatibility === 'pre-release-current-schema',
+                `Compatibility mode ${version.compatibility} must use the pre-release current-schema policy.`,
+            ),
         ]),
         group('fictionalTimeAndInterrupts', [
             systemCheck(systemVersions, 'worldTime'),
@@ -192,7 +196,7 @@ export function validateAdditiveStateNormalization() {
     } catch (error) {
         issues.push(`Additive normalization threw: ${error?.message ?? String(error)}`);
     }
-    if (state.version !== originalVersion) issues.push(`Lazy normalization changed Game State ${originalVersion} to ${state.version}.`);
+    if (state.version !== originalVersion) issues.push(`Runtime normalization changed Game State ${originalVersion} to ${state.version}.`);
     issues.push(...validateGameState(state).map((issue) => `normalized state: ${issue}`));
     return issues;
 }
@@ -217,6 +221,11 @@ function databaseCheck(databases, databaseId) {
 function issueCheck(id, issues) {
     const normalized = Array.isArray(issues) ? issues : [`validator returned non-array issues: ${String(issues)}`];
     return Object.freeze({ id, ready: normalized.length === 0, issue: normalized.length ? normalized.join(' | ') : '' });
+}
+
+function minimumVersionCheck(id, actual, minimum, label) {
+    const ready = Number.isInteger(actual) && actual >= minimum;
+    return booleanCheck(id, ready, `${label} ${actual} must be at least schema ${minimum}.`);
 }
 
 function booleanCheck(id, ready, issue) {

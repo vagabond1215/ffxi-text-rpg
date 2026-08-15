@@ -24,7 +24,7 @@ export const SIMULATION_SUBSTRATE_GATE_GROUPS = Object.freeze([
     'ecologyAndGathering',
     'routesAndTransport',
     'regionalContentScale',
-    'persistenceCompatibility',
+    'persistenceContract',
 ]);
 
 export function evaluateSimulationSubstrateGate(options = {}) {
@@ -52,7 +52,7 @@ export function evaluateSimulationSubstrateGate(options = {}) {
             systemCheck(systemVersions, 'semanticEvents'),
         ]),
         group('originalWorldIdentity', [
-            booleanCheck('game-state-identity-generation', version.gameState >= 5, `Game State ${version.gameState} must include the original-world identity migration.`),
+            minimumVersionCheck('game-state-identity-generation', version.gameState, 5, 'Game State'),
             systemCheck(systemVersions, 'worldIdentity'),
             booleanCheck(
                 'product-identity',
@@ -101,11 +101,15 @@ export function evaluateSimulationSubstrateGate(options = {}) {
             systemCheck(systemVersions, 'contentPackValidation'),
             systemCheck(systemVersions, 'legacyCandidateNormalization'),
         ]),
-        group('persistenceCompatibility', [
-            booleanCheck('account-save-contract', version.accountSave === 4, `Account Save ${version.accountSave} must remain compatible with the established v4 registry.`),
-            booleanCheck('game-state-contract', version.gameState === 5, `Game State ${version.gameState} must remain compatible with the established v5 runtime schema.`),
+        group('persistenceContract', [
+            minimumVersionCheck('account-save-contract', version.accountSave, 4, 'Account Save'),
+            minimumVersionCheck('game-state-contract', version.gameState, 5, 'Game State'),
             booleanCheck('data-contract', version.data >= 19, `Data ${version.data} must include regional content-pack contracts.`),
-            booleanCheck('migration-contract', version.compatibility === 'migrate-supported-save-versions', `Compatibility mode ${version.compatibility} must preserve ordered supported migrations.`),
+            booleanCheck(
+                'compatibility-policy',
+                version.compatibility === 'pre-release-current-schema',
+                `Compatibility mode ${version.compatibility} must use the pre-release current-schema policy.`,
+            ),
         ]),
     ];
 
@@ -162,6 +166,11 @@ function issueCheck(id, issues) {
 
 function minimumCheck(id, actual, minimum) {
     return booleanCheck(id, Number(actual) >= minimum, `${actual} records found; expected at least ${minimum}.`);
+}
+
+function minimumVersionCheck(id, actual, minimum, label) {
+    const ready = Number.isInteger(actual) && actual >= minimum;
+    return booleanCheck(id, ready, `${label} ${actual} must be at least schema ${minimum}.`);
 }
 
 function booleanCheck(id, ready, issue) {
