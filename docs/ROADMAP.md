@@ -15,13 +15,13 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.500.1
-Package:      0.6.500
+Product:      0.6.600.1
+Package:      0.6.600
 Account Save: 4
 Game State:   5
-Data:         23
+Data:         24
 Benchmark:    1
-Codename:     Equipment and Tool Breadth
+Codename:     Production and Resource Loops
 ```
 
 This remains pre-alpha product development. Milestone numbers describe active contracts, not completion percentages.
@@ -63,7 +63,7 @@ Key rules:
 | --- | --- | --- |
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
-| `0.6` | Integrated character/mechanics content | **Active through 0.6.500.** Character ownership, semantic UI, original abilities, Combat 2.0 timing, locality navigation, and usable equipment/tool breadth are established. Production chains, ecology content, companions, and integration follow. |
+| `0.6` | Integrated character/mechanics content | **Active through 0.6.600.** Character ownership, semantic UI, abilities, Combat 2.0, locality navigation, equipment/tools, and provenance-bearing production loops are established. Ecology breadth, companions, and integration follow. |
 | `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
@@ -166,37 +166,50 @@ Resulting baseline: **0.6.450.1 / Package 0.6.450 / Account Save 4 / Game State 
 
 Resulting baseline: **0.6.500.1 / Package 0.6.500 / Account Save 4 / Game State 5 / Data 23**.
 
-- Equipment catalog v3 now provides representative weapons, armor, shields, accessories, travel gear, and field tools instead of only a narrow starter set.
-- Added usable original field tools for cutting, mining, woodcutting, digging, and fishing: Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod.
-- Added `equipmentToolEngine` so equipped item tags are one shared loadout authority for practical capability and gathering prerequisites.
-- Gathering automatically recognizes equipped tool tags while still allowing explicit contextual tool tags as a bounded adapter.
-- Representative settlement shops stock the new tools and gear as real normalized equipment purchases.
-- Newly authored original equipment defaults to no active-discipline restriction; concrete loadout/capability/level/possession requirements are preferred. Older starter `allowedJobs` fields remain bounded compatibility debt rather than a pattern for new content.
-- Shop-facing names/descriptions use original-world vocabulary while stable legacy-shaped POI IDs remain internal compatibility seams.
+- Equipment catalog v3 provides representative weapons, armor, shields, accessories, travel gear, and field tools.
+- Original field tools cover cutting, mining, woodcutting, digging, and fishing.
+- `equipmentToolEngine` is the shared equipped-tool authority for practical capability and gathering requirements.
+- Newly authored original equipment defaults to no active-discipline restriction; older starter `allowedJobs` fields remain bounded compatibility debt.
 
-This is **systems breadth, not mass item completion**. Durability/repair, ammunition depth, enchantment charge use, and large equipment progression tables can grow incrementally when their gameplay loops require them.
+## 0.6.600 — Gathering, hunting, processing, crafting, cooking, and salvage — complete
 
-## 0.6.600 — Gathering, hunting, processing, crafting, cooking, and salvage — next
+Resulting baseline: **0.6.600.1 / Package 0.6.600 / Account Save 4 / Game State 5 / Data 24**.
 
-Recommended bounded unit:
+- Added additive character-owned work proficiencies for gathering, field dressing, salvage, metalworking, crafting, and cooking domains. Stored mastery is non-decreasing; higher mastery reduces hands-on work duration down to a bounded floor.
+- Environmental gathering now runs as canonical timed work. Equipped tool tags and persistent proficiency are composed automatically; ecology remains authority for source appearance, capacity, depletion, regeneration, and raw-resource provenance.
+- Existing defeated-creature/body recovery remains its canonical timed subsystem, with a character-facing adapter that composes equipped tools and persistent work proficiency.
+- Added a persistent work-task registry over canonical timed tasks with explicit activity ownership, completion/failure/cancellation, and pending-output state.
+- Hands-on gathering/processing/recovery blocks local movement, locality travel, direct route travel, and scheduled transport. Scheduled fares are restored atomically when work prevents booking.
+- Workstations are derived from current locality POI/service tags such as blacksmithing, cooking, woodworking, and tanning rather than from a duplicate facility database.
+- Added canonical production process data for processing, crafting, cooking, salvage, and recycling. Inputs are consumed when work begins; outputs materialize only at task completion.
+- Production outputs carry transformation provenance back to consumed input provenance. Full inventory produces persistent pending output rather than duplication or loss, and claim resolves exactly once later.
+- Representative loops prove Redstone copper ore -> ingot -> Copper Trail Clasp -> lossy salvage/remelt and Silverfin + Sweetroot -> cooked meal.
+- Data advanced to 24 because production/process/output records are now canonical authored data. Work/proficiency state remains additive/lazily normalizable in Game State 5.
 
-- turn current atomic gathering/recovery substrate into timed, proficiency-bearing work;
-- establish processing/process definitions that transform provenance-bearing raw resources into components/ingredients;
-- implement representative crafting and cooking actions through canonical tasks, tools, workstations, capability/proficiency, and resource sinks;
-- add salvage/recycling seams so finished goods can return material value without magical duplication;
-- preserve locality/exploration context, canonical fictional time, equipment-tool composition, regional content ownership, and resource provenance;
-- prove a small cross-linked source -> process -> finished-use/sink loop before broad recipe authoring;
-- validate/version/benchmark/document at a coherent `0.6.600` boundary.
+Bounded limitation: the active Craft browser view still needs a richer dedicated semantic production presentation/action surface. The canonical engine/data contract is established and tested; do not route future production authority through renderer prose or legacy craft fixtures.
+
+## 0.6.700 — Ecology and regional creature/resource content breadth — next
+
+`0.6.700` populates the proven ecology/resource/production loops; it is not a second mechanics redesign.
+
+Bounded acceptance checklist:
+
+- expand **Elderwood**, **Redstone Reach**, and **Starfen** with original species/populations that fill distinct ecological and gameplay niches rather than reskins;
+- expand flora, mineral, timber, fiber, food, hide/bone, carried-goods, and salvage resources with explicit provenance and useful sinks;
+- bind environmental sources/populations to plausible habitats, rarity, time/weather/world-state hooks where supported, and deterministic regeneration/appearance rules;
+- ensure hunting/body recovery and environmental gathering both feed the `0.6.600` production economy;
+- add enough region-specific inputs/outputs/process links that each anchor region supports at least one coherent livelihood or trade reason to visit;
+- keep content-pack ownership/dependencies explicit and pass cross-reference/source-sink validation;
+- add generic mechanics only when content proves an actually missing reusable primitive; do not add bespoke engine branches per species/resource;
+- avoid arbitrary mass generation: breadth should be coherent enough to exercise regional economy/ecology, not chase target counts prematurely;
+- validate/version/benchmark/document at a coherent `0.6.700` boundary, then stop before companion mechanics.
 
 ## Following 0.6 tracks
 
 | Track | Theme |
 | --- | --- |
-| `0.6.700` | Ecology and regional creature/resource content breadth |
 | `0.6.800` | Persistent companion/party foundation |
 | `0.6.900` | Integrated-mechanics exit gate |
-
-Do not mass-generate content before mechanics and validation contracts for the relevant domain are stable.
 
 ---
 
