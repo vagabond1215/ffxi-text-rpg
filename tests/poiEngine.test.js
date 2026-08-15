@@ -67,7 +67,9 @@ test('POI actions render shop guild quest and companion interactions', () => {
 
     const clerk = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Oren Vale');
     setPositionAndDiscover(state, 'thornwall-southgate', clerk.coordinate);
-    assert.match(performPoiAction(state, 'quest', 'Oren Vale'), /Mission Desk/);
+    const commissionOutput = performPoiAction(state, 'quest', 'Oren Vale');
+    assert.match(commissionOutput, /Thornwall Southgate Civic Commission Desk/);
+    assert.match(commissionOutput, /No formal tracked commission is posted here yet/);
 
     const companion = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Rowan Greymark');
     setPositionAndDiscover(state, 'thornwall-southgate', companion.coordinate);
