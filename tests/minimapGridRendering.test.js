@@ -7,12 +7,13 @@ import { renderMinimap } from '../js/text/ui/domRenderer.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
 
-test('grid atlas keys produce drawable discovery-relative minimap cells', () => {
+test('grid atlas keys produce drawable discovery-relative minimap cells in exploration space', () => {
     const state = createNewGameState({ name: 'Lark' });
-    setPositionAndDiscover(state, 'brasshaven-market-ring', { x: 2, y: 2 });
+    setPositionAndDiscover(state, 'west-elderwood', { x: 4, y: 4 });
 
     const model = createGameViewModel(state, createUiState({ screen: 'game' }));
 
+    assert.equal(model.navigation.mode, 'exploration');
     assert.equal(model.map.mode, 'grid');
     assert.equal(model.map.cells.length, 1);
     assert.equal(model.map.cells[0].current, true);
@@ -21,5 +22,5 @@ test('grid atlas keys produce drawable discovery-relative minimap cells', () => 
 
     const html = renderMinimap(model.map);
     assert.match(html, /<circle class="map-cell map-current"/);
-    assert.doesNotMatch(html, /2,2/);
+    assert.doesNotMatch(html, /4,4/);
 });
