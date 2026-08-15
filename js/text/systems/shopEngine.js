@@ -35,7 +35,7 @@ export function buyFromCurrentShop(state, itemQuery = '', shopQuery = '') {
     return [
         `Bought ${item.name} for ${item.priceGil} gil from ${shopPoi.name}.`,
         `Gil remaining: ${state.player.wallet.gil}`,
-        `Stored in Inventory.`,
+        'Stored in Inventory.',
     ].join('\n');
 }
 
@@ -113,7 +113,7 @@ function createInventoryItemFromShopItem(item, shopPoi, catalog) {
 }
 
 function inferItemKind(tags = []) {
-    if (tags.includes('weapon') || tags.includes('armor')) return 'equipment';
+    if (tags.includes('equipment') || tags.includes('tool') || tags.includes('weapon') || tags.includes('armor') || tags.includes('shield') || tags.includes('ring')) return 'equipment';
     if (tags.includes('consumable') || tags.includes('food')) return 'consumable';
     if (tags.includes('material')) return 'material';
     return 'misc';
