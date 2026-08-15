@@ -3,7 +3,7 @@ import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess, describeActionResult } from './actionResult.js';
 import { canUseCapability, knowsCapability } from './capabilityEngine.js';
 import { appendBattleLog } from './battleEngine.js';
-import { resolveBattleRewards } from './rewardEngine.js';
+import { finalizeCombatState, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { applyStatus } from './statusEngine.js';
@@ -303,10 +303,6 @@ function resolveActivation(state, activation, ability, startEventId = null) {
     if (activation.contextType === 'combat') {
         updateBattlePhase(state.activeBattle);
         syncPlayerActor(state, actor, 'combat');
-        if (state.activeBattle?.phase === 'victory' && !state.activeBattle.rewards?.resolved) {
-            const rewards = resolveBattleRewards(state, state.activeBattle);
-            appendBattleLog(state.activeBattle, rewards.message);
-        }
     }
 
     const now = ensureWorldTimeState(state).totalSeconds;
@@ -318,6 +314,28 @@ function resolveActivation(state, activation, ability, startEventId = null) {
         cooldownReadyAtWorldSeconds,
         effects: effectResults.map((entry) => ({ ...entry })),
     }, { source: 'abilityEngine' });
+
+    let combatAction = null;
+    let enemyResponse = null;
+    if (activation.contextType === 'combat') {
+        combatAction = recordCombatAction(state, {
+            actorId: actor?.id ?? state.player?.id ?? null,
+            actorType: 'player',
+            targetId: target?.id ?? actor?.id ?? null,
+            kind: 'ability',
+            sourceId: ability.id,
+            outcome: 'resolved',
+            data: {
+                abilityId: ability.id,
+                capabilityId: ability.capabilityId,
+                effects: effectResults.map((entry) => ({ ...entry })),
+            },
+        });
+        finalizeCombatState(state);
+        if (state.activeBattle?.phase === 'active') {
+            enemyResponse = resolveEnemyResponse(state, { triggerActionId: combatAction?.id ?? null });
+        }
+    }
 
     return actionSuccess({
         action: 'ability.activate',
@@ -331,6 +349,8 @@ function resolveActivation(state, activation, ability, startEventId = null) {
             startEventId,
             eventId: event.id,
             cooldownReadyAtWorldSeconds,
+            combatActionId: combatAction?.id ?? null,
+            enemyResponseActionIds: enemyResponse?.actions?.map((entry) => entry.id) ?? [],
         },
         display: { text: describeResolution(ability, effectResults) },
     });
