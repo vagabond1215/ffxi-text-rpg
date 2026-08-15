@@ -1,13 +1,19 @@
 import { STATUS_CATEGORIES } from '../data/systemConstants.js';
 
 export function createStatusEffect(options = {}) {
+    const appliedAtWorldSeconds = normalizeWorldSecond(options.appliedAtWorldSeconds);
+    const durationSeconds = normalizeDuration(options.durationSeconds);
+    const expiresAtWorldSeconds = normalizeWorldSecond(options.expiresAtWorldSeconds)
+        ?? (appliedAtWorldSeconds !== null && durationSeconds !== null ? appliedAtWorldSeconds + durationSeconds : null);
     return {
         id: options.id,
         name: options.name ?? options.id,
         category: options.category ?? STATUS_CATEGORIES.BUFF,
         sourceId: options.sourceId ?? null,
-        durationSeconds: options.durationSeconds ?? null,
-        remainingSeconds: options.remainingSeconds ?? options.durationSeconds ?? null,
+        durationSeconds,
+        remainingSeconds: options.remainingSeconds ?? durationSeconds,
+        appliedAtWorldSeconds,
+        expiresAtWorldSeconds,
         tickSeconds: options.tickSeconds ?? null,
         tickAccumulator: 0,
         stackGroup: options.stackGroup ?? options.id,
@@ -18,8 +24,11 @@ export function createStatusEffect(options = {}) {
     };
 }
 
-export function applyStatus(entity, status) {
-    const next = createStatusEffect(status);
+export function applyStatus(entity, status, options = {}) {
+    const next = createStatusEffect({
+        ...status,
+        appliedAtWorldSeconds: options.nowWorldSeconds ?? status.appliedAtWorldSeconds,
+    });
     entity.statuses ??= [];
 
     const existingIndex = entity.statuses.findIndex((item) => item.stackGroup === next.stackGroup);
@@ -39,6 +48,27 @@ export function applyStatus(entity, status) {
 export function removeStatus(entity, statusId) {
     entity.statuses = (entity.statuses ?? []).filter((status) => status.id !== statusId);
     return entity;
+}
+
+export function reconcileStatusesAtWorldTime(entity, nowWorldSeconds) {
+    const now = normalizeWorldSecond(nowWorldSeconds);
+    if (now === null) throw new Error('Status reconciliation requires a non-negative integer world time.');
+    const expired = [];
+
+    for (const status of entity.statuses ?? []) {
+        if (status.expiresAtWorldSeconds === null || status.expiresAtWorldSeconds === undefined) {
+            const appliedAt = normalizeWorldSecond(status.appliedAtWorldSeconds);
+            const duration = normalizeDuration(status.durationSeconds);
+            if (appliedAt !== null && duration !== null) status.expiresAtWorldSeconds = appliedAt + duration;
+        }
+        const expiresAt = normalizeWorldSecond(status.expiresAtWorldSeconds);
+        if (expiresAt === null) continue;
+        status.remainingSeconds = Math.max(0, expiresAt - now);
+        if (expiresAt <= now) expired.push(status.id);
+    }
+
+    if (expired.length) entity.statuses = (entity.statuses ?? []).filter((status) => !expired.includes(status.id));
+    return expired;
 }
 
 export function advanceStatuses(entity, elapsedSeconds) {
@@ -68,13 +98,19 @@ export function advanceStatuses(entity, elapsedSeconds) {
 
 function applyStatusTick(entity, status) {
     if (!status.tick) return;
-    if (status.tick.hp) {
-        entity.resources.hp = Math.max(0, entity.resources.hp + status.tick.hp);
-    }
-    if (status.tick.mp) {
-        entity.resources.mp = Math.max(0, entity.resources.mp + status.tick.mp);
-    }
-    if (status.tick.tp) {
-        entity.resources.tp = Math.max(0, entity.resources.tp + status.tick.tp);
-    }
+    if (status.tick.hp) entity.resources.hp = Math.max(0, entity.resources.hp + status.tick.hp);
+    if (status.tick.mp) entity.resources.mp = Math.max(0, entity.resources.mp + status.tick.mp);
+    if (status.tick.tp) entity.resources.tp = Math.max(0, entity.resources.tp + status.tick.tp);
+}
+
+function normalizeWorldSecond(value) {
+    if (value === null || value === undefined) return null;
+    const number = Number(value);
+    return Number.isInteger(number) && number >= 0 ? number : null;
+}
+
+function normalizeDuration(value) {
+    if (value === null || value === undefined) return null;
+    const number = Number(value);
+    return Number.isInteger(number) && number >= 0 ? number : null;
 }
