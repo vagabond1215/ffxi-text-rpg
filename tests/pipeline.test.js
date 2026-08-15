@@ -26,7 +26,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
-    assert.equal(VERSION.compatibility, 'migrate-supported-save-versions');
+    assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
         {
@@ -34,6 +34,7 @@ test('version manifest separates product package and persistence versions', () =
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
+            playerExperience: SYSTEM_VERSIONS.playerExperience,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
             party: SYSTEM_VERSIONS.party,
@@ -47,6 +48,7 @@ test('version manifest separates product package and persistence versions', () =
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             gameViewModels: '0.4.0',
+            playerExperience: '0.1.0',
             uiIntents: '0.4.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
@@ -62,7 +64,9 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 26/);
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
+    assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerExperience: 0\.1\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
