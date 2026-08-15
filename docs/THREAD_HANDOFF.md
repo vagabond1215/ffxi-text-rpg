@@ -16,7 +16,7 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 Work directly on `main` by default. Treat each prompt as a bounded work order. Follow the `AGENTS.md` autonomous-session guardrail and update this handoff at the end of substantive work.
 
-This repository remains early/single-maintainer pre-alpha development. Incremental commits may temporarily fail while a bounded unit is being assembled, but coherent milestone checkpoints should be validated and known failures recorded. Do not create routine branches/PRs unless explicitly requested or later repository protection requires them.
+This repository remains early/single-maintainer pre-alpha development. Incremental commits may temporarily fail while a bounded unit is assembled, but coherent milestone checkpoints should be validated and known failures recorded. Do not create routine branches/PRs unless explicitly requested or later repository protection requires them.
 
 ## Product laws
 
@@ -42,26 +42,26 @@ Maps represent acquired character knowledge, not omniscient authored geography. 
 ## Current baseline
 
 ```text
-Product:       0.6.800.1
-Package:       0.6.800
+Product:       0.6.900.1
+Package:       0.6.900
 Account Save:  4
 Game State:    5
 Data:          26
 Benchmark:     1
-Codename:      Persistent Companions and Party
+Codename:      Integrated Mechanics Gate
 Compatibility: migrate-supported-save-versions
 ```
 
-Phase 0.5 is complete. Phase 0.6 is complete through **0.6.800**; **0.6.900 integrated-mechanics exit gate is next**. No `0.6.900` implementation has started.
+**Phase 0.6 is complete. Phase 0.7 is next. No Phase 0.7 implementation has started.**
 
 Authoritative coherent runtime/version checkpoint:
 
 ```text
-073e0ef1bc26b68e0b47fea579db5525e1e26904
-Update pipeline expectations for persistent companions
+58fed55122d8058152c70c8e7b3b2565d2cbeaf9
+Test integrated mechanics gate version manifest
 ```
 
-Documentation synchronization follows that runtime checkpoint.
+Documentation-only synchronization follows that green runtime checkpoint.
 
 ## Completed Phase 0.6 sequence
 
@@ -75,153 +75,106 @@ Documentation synchronization follows that runtime checkpoint.
 - `0.6.600` gathering/hunting/processing/crafting/cooking/salvage — Data 24.
 - `0.6.700` ecology/regional creature/resource breadth — Data 25.
 - `0.6.800` persistent companion/party foundation — Data 26.
+- `0.6.900` integrated-mechanics exit gate — Data 26.
 
-## 0.6.600 production/resource loops — complete
+## 0.6.900 integrated mechanics gate — complete
 
-Primary additions include character-owned work proficiencies, timed gathering/recovery/production, activity ownership, locality-derived workstations, provenance-preserving processing/crafting/cooking/salvage/recycling, and persistent pending output when storage is full.
-
-Hands-on work blocks incompatible movement and transport. Existing ecology remains environmental source authority; equipped tool tags and persistent work proficiency compose into the work layer rather than creating a second tool or clock system.
-
-Representative loops prove regional raw material -> processing -> finished use and lossy salvage without magical duplication.
-
-## 0.6.700 regional ecology/resource breadth — complete
-
-Regional ecology/resource registries expand Elderwood, Redstone Reach, and Starfen without turning the foundation ecology module into a monolith.
-
-Environmental gathering and defeated-creature body recovery both feed the `0.6.600` production economy. Recovered regional hunt materials use canonical item metadata while retaining acquisition provenance from the defeated body/resource opportunity.
-
-Content-pack ownership/dependencies remain explicit and validated. The track populated proven systems rather than adding species-specific engine branches.
-
-## 0.6.800 persistent companions and party — complete
-
-### Primary files
+Primary additions:
 
 ```text
-js/text/data/companions.js
-js/text/data/seedEntities.js
-js/text/systems/partyEngine.js
-js/text/systems/battleEngine.js
-js/text/systems/combatActionEngine.js
-js/text/systems/combatTurnEngine.js
-js/text/systems/navigationEngine.js
-js/text/systems/localityEngine.js
-js/text/systems/transportEngine.js
-js/text/ui/gameViewModel.js
-js/text/ui/uiIntentDispatcher.js
+js/text/systems/integratedMechanicsGate.js
+tests/integratedMechanicsGate.test.js
 ```
 
-Focused tests:
+The executable gate groups the completed mechanics contract into:
 
 ```text
-tests/partyEngine.test.js
-tests/partyCombatIntegration.test.js
-tests/partyUiIntegration.test.js
+persistenceAndNormalization
+fictionalTimeAndInterrupts
+continuousCharacterOwnership
+combatPartyWorkTravel
+provenanceAndProduction
+semanticUiAuthority
+worldAndContentValidation
+phaseExitReadiness
 ```
 
-### Companion identity contract
+It consumes existing state/world/catalog/content-pack validators and subsystem/database versions rather than becoming a second mechanics authority.
 
-A companion is one persistent NPC promoted into character-like party state. Do not model companions as summons, disposable battle entities, or copies of an NPC.
+### Additive persistence proof
 
-Representative original companion:
+`validateAdditiveStateNormalization()` creates a current Game State 5 fixture, removes major additive runtime registries, and lazily reconstructs:
 
 ```text
-companion-mara-venn
-npc-elderwood-waywarden
-Mara Venn, Waywarden
-timbercross-landing
+simulation
+tasks
+events
+abilities
+party
+projects
+resourceOpportunities
+ecology
+work
 ```
 
-`companions.js` stores canonical NPC linkage, recruitment places/requirements, level/base combat traits, tactical role/policy, and relationship dimensions. The representative Mara record has no prerequisite flag so the current foundation is actually recruitable in world; future companions may use generic flag-based willingness conditions.
+The resulting state remains Game State 5 and passes current-state validation. No ordered Game State migration was required for the Phase 0.6 closure.
 
-### Party runtime contract
+### Continuous-character equipment correction
 
-```text
-PARTY_STATE_VERSION = 1
-active companion capacity = 2
-```
+The exit audit found canonical starter equipment still carrying active-discipline `allowedJobs` restrictions. Those authored gates were removed. Canonical starter/original equipment now defaults to unrestricted discipline eligibility and relies on possession/loadout/concrete requirements.
 
-`state.party` is additive/lazily normalizable within Game State 5 and contains persistent recruited records plus active membership. Companion state includes resources/statuses, relationship dimensions, tactics, home/current place, and joining time.
+The generic `allowedJobs` field remains supported at explicit legacy/migration/compatibility boundaries, with a dedicated legacy test fixture proving that adapter behavior. Do not reintroduce active discipline as a universal equipment gate.
 
-Recruit/join/leave membership changes are blocked during active combat and emit semantic events:
+### Companion authority cleanup
 
-```text
-party.companion-recruited
-party.companion-joined
-party.companion-left
-```
+The old `companion` command/POI route now resolves canonical companion definitions and delegates recruitment to `partyEngine`. It is an adapter, not authority. Focused testing proves repeated command recruitment produces only one persistent companion and one recruitment semantic event.
 
-Backing NPC identity/location is synchronized from the persistent companion. If an older Game State 5 save lacks the backing NPC, `partyEngine` can reconstruct it from the canonical companion definition rather than requiring a save-version migration.
+The unrelated Thornwall Southgate guide that previously duplicated **Mara Venn** is now **Sera Talwin**. Its stable legacy-shaped POI ID remains intact for compatibility.
 
-### Combat integration
+Legacy POI presentation helpers were also sanitized: they no longer print authored coordinates or `sourcePosition` values. Internal coordinates/source positions remain valid simulation data only.
 
-Combat 2.0 now has explicit sides:
+### Gate validation coverage
 
-```text
-ally
-enemy
-```
+The gate directly checks or composes:
 
-Player and active companions are allies. Friendly basic attacks are rejected. Battle defeat is side-based, so a living companion can keep the ally side active after the player falls.
-
-Active companions enter encounters as normal combatants. A ready companion currently contributes a deterministic structured basic-attack action through the existing Combat 2.0 action history after player action resolution. Companion resources/statuses synchronize back into persistent party state during combat finalization.
-
-This preserves the existing Combat 2.0 clock/action contract instead of creating a separate companion combat engine.
-
-### Location continuity
-
-Active companion location follows canonical place changes through:
-
-- exploration movement/place exits;
-- named locality crossings;
-- direct route travel arrivals;
-- scheduled transport arrivals.
-
-Backing NPC location follows the same persistent companion record.
-
-### Semantic UI integration
-
-`gameViewModel.js` exposes a renderer-independent party model with active/recruited counts, identity, role, HP, location, and relationship dimensions.
-
-Recruitable companions can appear as direct semantic contextual actions:
-
-```js
-{
-  intent: 'party.recruit',
-  payload: { companionId }
-}
-```
-
-`uiIntentDispatcher.js` invokes `partyEngine` directly; it does not manufacture a command string. The semantic party browser contract exists even though a large dedicated party renderer is deferred.
+- current game-state and additive normalization validity;
+- world-time, simulation control/interrupt, task, day-cycle, ability, combat, project, work, and transport subsystem readiness;
+- character stats/progression/capabilities/skills/work-proficiency ownership;
+- canonical authored equipment absence of active-discipline hard gates;
+- battle/party/travel/locality/gathering/production readiness;
+- resource provenance/opportunity/recovery/ecology/production contracts;
+- semantic events, game view models, UI intents, DOM UI, and command adapter presence;
+- world/ecology/route/production/companion/content-pack validation;
+- required Phase 0.6 database contracts;
+- Product `0.6.900.1` and Data 26 exit readiness.
 
 ## Persistence/version decision
 
-`0.6.800` completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, while Account Save 4 and Game State 5 remain unchanged.
-
-No Game State migration was required because `state.party` is additive/lazy and backing NPC state is reconstructible. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension definitions are canonical authored runtime data.
-
-Relevant system versions include:
+`0.6.900` completed at Product `0.6.900.1`, Package `0.6.900`, while these remain unchanged:
 
 ```text
-versionManifest  0.6.800.1
-transport        0.2.0
-gameViewModels   0.4.0
-uiIntents        0.4.0
-companionCatalog 0.1.0
-party            0.1.0
-enemyEntity      0.4.0
-battleEngine     0.8.0
-combatTurns      0.3.0
-combatActions    0.8.0
-companions       0.1.0
+Account Save 4
+Game State   5
+Data         26
+Benchmark    1
 ```
+
+Relevant new/confirmed system version:
+
+```text
+versionManifest          0.6.900.1
+integratedMechanicsGate  0.1.0
+```
+
+No Data bump was justified because the track repaired and validated existing Data 26 authority rather than introducing a new canonical authored-data shape.
 
 ## Validation checkpoint
 
-At runtime/version head `073e0ef1bc26b68e0b47fea579db5525e1e26904`:
+At runtime/version head `58fed55122d8058152c70c8e7b3b2565d2cbeaf9`:
 
 ```text
-tests       448
-pass        448
+tests       453
+pass        453
 fail        0
 cancelled   0
 skipped     0
@@ -237,42 +190,80 @@ report-build-status   success
 deploy                success
 ```
 
-Benchmark:
+Benchmark 1 at `0.6.900.1`:
 
 ```text
-create 1,000 player combat profiles:              467.995 ms | 0.467995 ms/op
-create 1,000 enemy combat profiles:               111.001 ms | 0.111001 ms/op
-resolve 1,000 basic attacks:                      551.000 ms | 0.551000 ms/op
-run 10,000 tick dispatches with 5 subscribers:     48.508 ms | 0.004851 ms/op
-resolve 10,000 direct travel route lookups:      8632.854 ms | 0.863285 ms/op
+create 1,000 player combat profiles:              445.494 ms | 0.445494 ms/op
+create 1,000 enemy combat profiles:               120.615 ms | 0.120615 ms/op
+resolve 1,000 basic attacks:                      563.579 ms | 0.563579 ms/op
+run 10,000 tick dispatches with 5 subscribers:     44.241 ms | 0.004424 ms/op
+resolve 10,000 direct travel route lookups:      8660.062 ms | 0.866006 ms/op
 ```
 
-The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. Actions targeting Node20 are forced through Node24 internally while `setup-node` installs Node 20.20.2 for project tests/benchmarks.
+Compared with the same Benchmark 1 workload at `0.6.800`, the measurements are broadly stable; no performance blocker was identified.
 
-## 0.6.800 bounded limitations / intentional follow-ups
+The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. Actions targeting Node 20 are forced through Node 24 internally while `setup-node` installs Node 20.20.2 for project tests/benchmarks.
 
-- Only one representative recruitable companion proves the current foundation.
-- Companion tactical policy is intentionally basic; companions are not yet independent simulation-interrupt providers. Do not create a second combat clock to solve this later.
-- Deeper relationship progression/dialogue, companion equipment/progression breadth, formation/tactical controls, and larger companion content belong later.
-- The semantic party model exists but a dedicated full party browser view is not yet required.
-- `poiEngine.js`/`commandRouter.js` still contain transitional companion compatibility text/commands. Future cleanup should route those adapters to `partyEngine`; POI prose must not become companion authority.
-- The legacy-shaped POI catalog contains an unrelated Thornwall Southgate POI also displayed as “Mara Venn”. Preserve its stable compatibility ID if needed, but give that POI a unique original display identity in a bounded content cleanup.
-- Active companion location is synchronized at canonical place-transition authorities; stationary companions remain at their stored place.
-- Existing broader compatibility debt remains: legacy localStorage keys, some legacy-shaped POI IDs, internal `player.jobs`/`mainJobId` naming, Canvas regression/reference modules, older starter discipline-shaped equipment eligibility, transitional cast/technique command adapters, and `gil` terminology.
+## Stable Phase 0.6 authority boundaries
 
-## Next bounded target — 0.6.900 integrated-mechanics exit gate
+Do not casually reopen these while building Phase 0.7:
 
-Do not treat `0.6.900` as permission for another broad subsystem. It is the Phase 0.6 integration/audit/stabilization gate.
+- one canonical fictional-time/task/interrupt substrate;
+- continuous-character ownership of stats, learned skills/capabilities, and work mastery;
+- active discipline is training/context, not universal use identity;
+- semantic DOM/view-model/intents are normal browser presentation/action direction;
+- command/slash routes are compatibility or power-user adapters;
+- map presentation is acquired knowledge; raw coordinates and hidden authored extent remain private;
+- resource acquisition/transformation/rewards preserve provenance and source/sink reasoning;
+- companions are persistent NPC-backed people whose active party state composes with Combat 2.0 and travel;
+- content-pack ownership/dependencies and cross-reference validation are the scale mechanism;
+- additive Game State 5 normalization remains preferred over unnecessary save-version churn.
 
-Recommended sequence:
+## Compatibility / deferred depth
 
-1. audit save/load and lazy normalization across abilities, work, ecology, combat, party, travel, projects, and semantic events;
-2. audit canonical fictional-time and interrupt composition across combat readiness, ability activation, work, travel/locality crossing, projects, and day review;
-3. identify remaining accidental active-discipline hard gates that contradict continuous-character ownership;
-4. exercise party/combat/travel/work coexistence and exactly-once synchronization/reward/resource behavior;
-5. audit provenance/source/sink continuity through combat recovery, gathering, production, trade, quests/rewards where implemented;
-6. audit semantic UI/view-model authority against old command/prose compatibility adapters;
-7. run world/database/content-pack validators and repair dangling/duplicate authority seams;
-8. run full tests, benchmark, build/deploy, and performance-regression review;
-9. close Phase 0.6 only after defining exact Phase 0.7 playable-alpha entry criteria;
-10. stop at the coherent `0.6.900` boundary rather than beginning 0.7 content automatically.
+Preserve deliberately unless directly in scope:
+
+- `gil` remains current currency terminology until deliberate original currency design.
+- Historical localStorage keys remain for save compatibility.
+- Legacy-shaped POI stable IDs remain where catalogs/adapters depend on them.
+- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal/persisted names remain compatibility seams.
+- Historical FFXI research modules remain bounded reference surfaces.
+- Canvas modules remain regression/reference code; active browser UI is semantic DOM.
+- Some DOM information views still bridge command output until dedicated presentation models exist.
+- Search-or-act remains command-capable rather than true fuzzy cross-entity/action search.
+- `places.js` spawn rules and some place-connection fallbacks remain transitional seams.
+- Explicit legacy equipment `allowedJobs` records may still be accepted at compatibility boundaries, but canonical authored equipment must not use active discipline as a universal gate.
+- Legacy combat cast/weapon-technique adapters remain bounded compatibility surfaces.
+- High-resolution shaped exploration cartography remains deferred.
+- Companion tactical/dialogue/equipment/progression breadth remains limited; only one representative recruitable companion proves the foundation.
+- Achievements, key-item depth, mounts, larger relationship/social systems, and broad authored content remain later work rather than Phase 0.6 blockers.
+
+## Phase 0.7 entry contract
+
+Phase 0.7 is **Multi-region playable alpha**. It must turn the proven mechanics into sustained ordinary play rather than create a new parallel mechanics foundation.
+
+A credible playable-alpha campaign must eventually provide:
+
+- several connected settlements/regions with meaningful travel reasons/costs/risks;
+- persistent named NPC communities with shops/services, contracts/quests, relationship/reputation hooks, and companions;
+- regional ecology/resources tied to work/production/trade sinks plus adventure/social hooks;
+- combat, abilities, party, work, travel, scheduled transport, day review, recovery, and production coexisting in one save under the same fictional-time contract;
+- ordinary campaign actions reachable from semantic browser UI without test-only setup or command expertise;
+- save/resume and supported migrations across the campaign;
+- green world/content-pack/source-sink/database validation as content grows;
+- enough alternative short-term goals and repeatable loops that play feels like a sandbox rather than one linear systems demo.
+
+## Next bounded target — 0.7.100 playable campaign slice
+
+No `0.7.100` code has started.
+
+Recommended first unit:
+
+1. choose one connected regional corridor using existing anchors rather than inventing a new world slice unnecessarily;
+2. audit current NPC/quest/relationship/shop/economy/UI seams needed for an ordinary player to complete a small campaign loop;
+3. define one end-to-end player flow: settlement service/social contact -> contract/goal -> travel -> regional livelihood or danger/combat -> recovery/production/trade -> return/resolution;
+4. expose that flow through semantic browser UI, using commands only as bounded adapters;
+5. add only reusable primitives proven missing by the slice; do not introduce replacement quest/economy/dialogue clocks or state models;
+6. author enough original NPC/content around the slice to make it repeatable and socially/economically legible;
+7. preserve provenance, map privacy, companion identity, fictional time, exactly-once ownership, content-pack validation, and save compatibility;
+8. validate/version/benchmark/document at a coherent `0.7.100` boundary before broad content multiplication.
