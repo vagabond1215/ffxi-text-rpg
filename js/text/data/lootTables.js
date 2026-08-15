@@ -17,6 +17,15 @@ export const LOOT_TABLES = Object.freeze({
     starterBat: lootTable('starterBat', 'Starter Bat Drops', [
         drop('bat-wing', 'Bat Wing', 'material', 0.55, { tags: ['material', 'beast'], valueGil: 9 }),
     ]),
+    elderwoodBarkboar: lootTable('elderwoodBarkboar', 'Barkboar Recoveries', [
+        drop('item-elderwood-barkboar-hide', 'Barkboar Hide', 'material', 0.78, { tags: ['material', 'hide', 'beast', 'elderwood'], valueGil: 16 }),
+    ]),
+    redstoneRidgeIbex: lootTable('redstoneRidgeIbex', 'Ridge Ibex Recoveries', [
+        drop('item-redstone-ibex-hide', 'Ridge Ibex Hide', 'material', 0.74, { tags: ['material', 'hide', 'beast', 'redstone'], valueGil: 18 }),
+    ]),
+    starfenMireHeron: lootTable('starfenMireHeron', 'Mirecrest Heron Recoveries', [
+        drop('item-starfen-heron-feather', 'Mirecrest Feather', 'material', 0.8, { tags: ['material', 'feather', 'bird', 'starfen'], valueGil: 14 }),
+    ]),
 });
 
 export function getLootTable(tableId) {
