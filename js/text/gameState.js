@@ -18,6 +18,8 @@ import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 import { createWorldTimeState } from './systems/worldTimeEngine.js';
 
+export const DEFAULT_START_WORLD_TIME_SECONDS = 8 * 60 * 60;
+
 export function createInitialState() { return createNewGameState(); }
 
 export function createNewGameState(options = {}) {
@@ -41,7 +43,7 @@ export function createNewGameState(options = {}) {
 
     return {
         version: 5,
-        worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? 0 }),
+        worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? DEFAULT_START_WORLD_TIME_SECONDS }),
         simulation: createSimulationControlState({
             paused: options.simulationPaused ?? false,
             speedMultiplier: options.simulationSpeedMultiplier ?? 1,
