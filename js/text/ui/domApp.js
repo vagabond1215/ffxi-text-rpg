@@ -15,6 +15,7 @@ import {
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
+import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
 import { renderDomApp } from './domRenderer.js';
@@ -71,9 +72,20 @@ export function createDomApp({ host }) {
     };
 
     function dispatch(intent, payload = {}, options = {}) {
-        const result = dispatchUiIntent({ intent, payload, state, uiState, session, services });
+        let result;
+        if (intent === 'locality.move') {
+            result = moveWithinLocality(state, payload.destinationId);
+            setActiveFeedback(uiState, result.message);
+            appendOutput(uiState, result.message);
+        } else if (intent === 'locality.poi') {
+            result = performLocalityPoiAction(state, payload.poiId, payload.action);
+            setActiveFeedback(uiState, result.message);
+            appendOutput(uiState, result.message);
+        } else {
+            result = dispatchUiIntent({ intent, payload, state, uiState, session, services });
+        }
         session = result.session ?? session;
-        if (!result.ok) {
+        if (!result.ok && !['locality.move', 'locality.poi'].includes(intent)) {
             setActiveFeedback(uiState, result.reason);
             appendOutput(uiState, result.reason);
         }
@@ -87,8 +99,10 @@ export function createDomApp({ host }) {
 
     function render() {
         refreshSession();
+        const model = uiState.screen === 'game' ? createGameViewModel(state, uiState) : null;
         host.innerHTML = renderDomApp({ state, uiState, session });
         host.dataset.screen = uiState.screen;
+        host.dataset.navigationMode = model?.navigation?.mode ?? '';
         if (uiState.screen === 'creator') {
             const nameInput = host.querySelector('#creator-name');
             if (nameInput && document.activeElement === host) nameInput.focus();
@@ -192,6 +206,7 @@ export function createDomApp({ host }) {
         if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable) return;
         const direction = keyDirection(event.key);
         if (!direction) return;
+        if (createGameViewModel(state, uiState).navigation.mode !== 'exploration') return;
         event.preventDefault();
         dispatch('navigation.move', { direction, source: 'keyboard', nowMs: Date.now() });
     }
@@ -203,6 +218,7 @@ export function createDomApp({ host }) {
 
     const movementTimer = window.setInterval(() => {
         if (uiState.modal || uiState.screen !== 'game' || !uiState.activeAutoRunDirection) return;
+        if (createGameViewModel(state, uiState).navigation.mode !== 'exploration') return;
         const nowMs = Date.now();
         if (isMovementOnCooldown(uiState, nowMs)) return;
         dispatch('navigation.move', { direction: uiState.activeAutoRunDirection, source: 'autoRun', nowMs });
