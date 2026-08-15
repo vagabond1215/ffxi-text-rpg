@@ -1,4 +1,4 @@
-import { coordinateKey, describeCoordinate, isTopologyPlace, normalizeCoordinate } from './coordinates.js';
+import { coordinateKey, isTopologyPlace, normalizeCoordinate } from './coordinates.js';
 import { getConnectionsFrom, getPlace, listPlaces } from './places.js';
 
 export const POI_TYPES = Object.freeze({
@@ -25,7 +25,7 @@ export const POI_TYPES = Object.freeze({
 // shop/quest/guild hooks. Player-facing names and descriptions are canonical
 // Hearth & Horizon content; later schema work can migrate the remaining IDs atomically.
 const POI_SEEDS = [
-    poi('poi-sandoria-s-alaune', 'thornwall-southgate', 'Mara Venn', POI_TYPES.NPC, 'G-10', ['tutorial'], 'Newcomer guide and Southgate orientation contact'),
+    poi('poi-sandoria-s-alaune', 'thornwall-southgate', 'Sera Talwin', POI_TYPES.NPC, 'G-10', ['tutorial'], 'Newcomer guide and Southgate orientation contact'),
     poi('poi-sandoria-s-ambrotien', 'thornwall-southgate', 'Oren Vale', POI_TYPES.MISSION, 'K-10', ['mission', 'thornwall'], 'Thornwall civic commission clerk'),
     poi('poi-sandoria-s-aravoge', 'thornwall-southgate', 'Warden Halric Dane', POI_TYPES.TRAVEL, 'F-10', ['realm', 'gateGuard'], 'Thornwall road warden'),
     poi('poi-sandoria-s-ashene', 'thornwall-southgate', 'Sella Thorn', POI_TYPES.VENDOR, 'K-7', ['weapons', 'shop'], 'Weapons vendor'),
@@ -126,7 +126,7 @@ export function describePoisForPlace(placeId) {
 
 export function describeContextualPois(state) {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'No known points of interest at this coordinate.';
+    if (!pois.length) return 'No known points of interest here.';
     return ['Points of interest here:', ...pois.map((poi) => `- ${describePoiLine(poi)} | actions: ${poi.actions.join(', ')}`)].join('\n');
 }
 
@@ -160,7 +160,7 @@ function poi(id, placeId, name, type, sourcePosition, tags, notes) {
 }
 
 function describePoiLine(poi) {
-    return `${poi.name} [${poi.type}] coordinate ${describeCoordinate(poi.coordinate)} source ${poi.sourcePosition} - ${poi.notes}`;
+    return `${poi.name} [${poi.type}] - ${poi.notes}`;
 }
 
 function inferActions(poi) {
