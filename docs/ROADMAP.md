@@ -15,13 +15,13 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.800.1
-Package:      0.6.800
+Product:      0.6.900.1
+Package:      0.6.900
 Account Save: 4
 Game State:   5
 Data:         26
 Benchmark:    1
-Codename:     Persistent Companions and Party
+Codename:     Integrated Mechanics Gate
 ```
 
 This remains pre-alpha product development. Milestone numbers describe active contracts, not completion percentages.
@@ -64,8 +64,8 @@ Key rules:
 | --- | --- | --- |
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
-| `0.6` | Integrated character/mechanics content | **Active through 0.6.800.** Continuous-character progression, semantic UI, abilities, Combat 2.0, locality navigation, equipment/tools, production, regional ecology breadth, and persistent companions are integrated. The exit audit follows. |
-| `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
+| `0.6` | Integrated character/mechanics content | **Complete.** Continuous-character progression, semantic UI, active abilities, Combat 2.0, navigation, equipment/tools, provenance-bearing work/production, regional ecology breadth, persistent companions, and an executable cross-system exit gate are established. |
+| `0.7` | Multi-region playable alpha | **Next.** Convert the proven systems into a sustained multi-region sandbox campaign with enough NPC/social/economic/adventure content and ordinary UI flow to play rather than merely demonstrate systems. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
 | `1.0` | Live foundation | The central persistent-life/adventure promise is coherent, stable, migratable, and release-ready. |
@@ -96,7 +96,7 @@ Phase 0.5 closes because long fictional activities advance deterministically and
 
 ---
 
-# 0.6 — Integrated Character and Mechanics Content — active
+# 0.6 — Integrated Character and Mechanics Content — complete
 
 ## 0.6.100 — Character stats and progression — complete
 
@@ -167,7 +167,7 @@ Resulting baseline: **0.6.500.1 / Package 0.6.500 / Account Save 4 / Game State 
 - Equipment catalog v3 provides representative weapons, armor, shields, accessories, travel gear, and field tools.
 - Original field tools cover cutting, mining, woodcutting, digging, and fishing.
 - `equipmentToolEngine` is the shared equipped-tool authority for practical capability and gathering requirements.
-- Newly authored original equipment defaults to no active-discipline restriction; older starter `allowedJobs` fields remain bounded compatibility debt.
+- Original authored equipment uses concrete possession/loadout/capability semantics rather than active-discipline identity as a universal gate. Legacy explicit `allowedJobs` input remains supported only as a compatibility seam.
 
 ## 0.6.600 — Gathering, hunting, processing, crafting, cooking, and salvage — complete
 
@@ -195,8 +195,6 @@ Resulting baseline: **0.6.700.1 / Package 0.6.700 / Account Save 4 / Game State 
 - Regional sources/populations use existing deterministic capacity/regeneration/appearance/world-state hooks rather than species-specific engine branches.
 - Content-pack ownership/dependencies were expanded and validated without duplicate ownership of existing places.
 
-The track intentionally populates proven mechanics rather than creating a second ecology or production engine.
-
 ## 0.6.800 — Persistent companion/party foundation — complete
 
 Resulting baseline: **0.6.800.1 / Package 0.6.800 / Account Save 4 / Game State 5 / Data 26**.
@@ -205,45 +203,79 @@ Resulting baseline: **0.6.800.1 / Package 0.6.800 / Account Save 4 / Game State 
 - Added additive/lazy persistent `state.party` with recruited-companion records, active membership, capacity, resources/statuses, relationship state, location continuity, and validation.
 - A companion remains one persistent NPC promoted into character-like party state; backing NPC identity/location is synchronized or reconstructible for older Game State 5 saves.
 - Recruitment, joining, and leaving emit structured semantic events and are blocked during active combat.
-- Combat uses explicit ally/enemy sides. Active companions enter encounters as allies, cannot be friendly-targeted by basic attacks, can keep the ally side alive after the player falls, and synchronize battle resources/statuses back into persistent party state.
-- Representative companion tactics contribute structured Combat 2.0 actions through the existing action history rather than special prose-only combat.
+- Combat uses explicit ally/enemy sides; active companions participate through the existing Combat 2.0 action history and synchronize resources/statuses back to persistent party state.
 - Active companions follow exploration exits, locality crossings, and canonical route/scheduled-transport arrivals.
-- The game view model exposes semantic party state and a direct `party.recruit` UI intent; recruitment does not require manufacturing a command string.
-- Data advanced to 26 because canonical companion definitions, recruitment/tactics, and relationship-dimension contracts are authored runtime data. Party runtime state remains additive/lazily reconstructible in Game State 5.
+- The game view model exposes semantic party state and a direct `party.recruit` UI intent.
 
-Bounded limitations:
+Bounded limitations: current companion breadth/tactics/dialogue/progression remain intentionally small; the foundation proves identity, persistence, combat participation, travel continuity, and semantic UI authority rather than final companion depth.
 
-- only one representative recruitable companion currently proves the foundation;
-- companion tactical policy is intentionally basic and companions are not yet independent simulation-interrupt providers;
-- deeper relationship progression/dialogue, companion-specific progression/loadouts, formations, and broad companion content remain later work;
-- the semantic party model exists, but a dedicated full party browser view is not yet required;
-- old POI/command companion compatibility text remains transitional and must eventually route to `partyEngine` rather than become authority;
-- an unrelated legacy-shaped POI currently duplicates the display name “Mara Venn”; its stable POI ID may remain, but the display-name collision should be repaired in a bounded content cleanup.
+## 0.6.900 — Integrated-mechanics exit gate — complete
 
-## 0.6.900 — Integrated-mechanics exit gate — next
+Resulting baseline: **0.6.900.1 / Package 0.6.900 / Account Save 4 / Game State 5 / Data 26 / Benchmark 1**.
 
-`0.6.900` is an integration/audit/stabilization track, not another broad mechanics subsystem.
+`js/text/systems/integratedMechanicsGate.js` is an executable Phase 0.6 gate rather than a documentation-only checklist. It groups and validates:
 
-Bounded acceptance direction:
+- persistence and additive Game State 5 normalization;
+- fictional-time/task/interrupt ownership;
+- continuous-character stat/skill/capability/work-proficiency ownership;
+- combat/party/work/travel coexistence;
+- resource provenance, recovery, ecology, and production continuity;
+- semantic event/view-model/UI-intent authority;
+- world, route, ecology, production, companion, and content-pack validators;
+- required Phase 0.6 subsystem/database readiness and the final product/data contract.
 
-- audit save/load and lazy normalization across all additive `0.6` state, including abilities, work, ecology, combat, and party;
-- audit fictional-time/interrupt interactions across combat, ability activation, work, travel, locality crossings, projects, and day review;
-- verify continuous-character ownership rules and identify remaining accidental active-discipline hard gates;
-- verify party/combat/travel/work coexistence and exactly-once state/resource synchronization;
-- validate provenance/source/sink continuity through combat recovery, gathering, production, trade, and rewards;
-- audit semantic UI intents/view models against old command/prose compatibility adapters so authority remains in engines/data;
-- run world/content-pack/database validators and repair dangling or duplicate authority seams found by the audit;
-- run the full suite, benchmark, browser build/deploy, and performance-regression review;
-- close Phase 0.6 only when the integrated mechanics baseline is coherent enough to define exact `0.7` playable-alpha entry criteria;
-- avoid using the gate as permission for mass content generation or a new broad subsystem.
+The audit repaired concrete integration seams before closing the phase:
+
+- canonical starter equipment no longer carries active-discipline `allowedJobs` hard gates; explicit legacy eligibility remains accepted only at compatibility/test/migration boundaries;
+- the legacy `companion` command/POI adapter now delegates canonical recruitment to `partyEngine`, including exactly-once recruitment event/state behavior;
+- the unrelated Thornwall guide that duplicated Mara Venn's display identity is now **Sera Talwin** while its stable compatibility POI ID remains intact;
+- exported legacy POI description helpers no longer reveal internal authored coordinates/source-position labels.
+
+Focused gate tests prove that all major additive Phase 0.6 runtime registries can be removed from a Game State 5 fixture and lazily reconstructed without changing the save version. The complete runtime checkpoint passes **453/453 tests** plus benchmark/build/deploy.
+
+Phase 0.6 is therefore closed without an Account Save, Game State, Data, or Benchmark bump beyond the already-established `4 / 5 / 26 / 1` contracts.
+
+---
+
+# 0.7 — Multi-region playable alpha — next
+
+Phase 0.7 is not another architecture reset. It turns the proven Phase 0.6 systems into sustained play across a coherent authored world.
+
+## Phase 0.7 entry contract
+
+Work may build on the Phase 0.6 gate only while preserving these authorities:
+
+- canonical fictional time/tasks/interrupts remain the common activity clock;
+- continuous-character stats, skills, capabilities, and work proficiencies remain character-owned;
+- combat, travel, work, party, ecology, economy, and social content compose through existing engines rather than parallel domain clocks/state;
+- semantic DOM/view-model/intents remain the primary player-interface direction; command adapters are compatibility/power surfaces;
+- maps remain acquired knowledge and internal coordinates remain non-player-facing;
+- provenance and source/sink validation remain mandatory for physical/economic/social rewards;
+- content-pack ownership/dependencies and cross-reference validation remain canonical scale controls;
+- save compatibility remains `migrate-supported-save-versions` unless a real schema incompatibility requires an ordered migration.
+
+## Phase 0.7 playable-alpha exit criteria
+
+A Phase 0.7 alpha slice is credible only when a normal player can sustain repeated multi-session play without test-only setup:
+
+- several connected settlements/regions form a navigable campaign space with meaningful reasons, costs, and risks for travel;
+- persistent named NPCs provide enough shops/services, contracts/quests, relationship/reputation hooks, and companion/social continuity to make settlements function as communities rather than menus;
+- each major playable region connects ecology/resources to work/production/trade sinks and also provides adventure/social reasons to visit;
+- combat, abilities, party, work, travel, scheduled transport, day review, and recovery can occur in one campaign without violating fictional-time or exactly-once ownership contracts;
+- ordinary gameplay actions needed for the campaign slice are reachable through semantic browser UI rather than requiring command-line knowledge;
+- saves can be resumed across the campaign slice with supported migrations and additive state intact;
+- world/content-pack/source-sink/database validation remains green as authored content scales;
+- authored breadth is sufficient for alternative short-term goals and repeated routes/activities, rather than one linear systems demonstration.
+
+## 0.7.100 — Playable campaign slice — next bounded target
+
+The first Phase 0.7 unit should assemble one end-to-end campaign slice from existing systems before broad content multiplication. Use a connected subset of Thornwall/Elderwood/Waymeet or another justified corridor and prove ordinary player flow across settlement services, a contract/quest, relationship/NPC continuity, regional livelihood/economy, travel, danger/combat, recovery/production, and return/resolution through semantic UI.
+
+Do **not** start by mass-generating hundreds of records or by introducing a replacement quest/economy/dialogue framework. Add only the reusable primitives that the playable slice proves are actually missing.
 
 ---
 
 # Later phases
-
-## 0.7 — Multi-region playable alpha
-
-Build enough connected settlements, regions, NPC populations, economies, quests/contracts, relationships, transport, companions, and authored content for a sustained sandbox campaign rather than isolated substrate demonstrations.
 
 ## 0.8 — Life and infrastructure expansion
 
