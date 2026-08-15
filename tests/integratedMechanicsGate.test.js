@@ -12,7 +12,7 @@ import {
     validateAdditiveStateNormalization,
 } from '../js/text/systems/integratedMechanicsGate.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
-import { VERSION } from '../js/text/version.js';
+import { SYSTEM_VERSIONS, VERSION } from '../js/text/version.js';
 
 function moveTo(state, placeId) {
     const place = getPlace(placeId);
@@ -34,7 +34,7 @@ test('Phase 0.6 integrated mechanics gate passes the completed contract when eva
 test('integrated gate reports a missing required subsystem as a grouped diagnostic', () => {
     const report = evaluateIntegratedMechanicsGate({
         version: { ...VERSION, product: '0.6.900.1' },
-        systemVersions: { ...VERSION, worldTime: 'planned' },
+        systemVersions: { ...SYSTEM_VERSIONS, worldTime: 'planned' },
     });
 
     assert.equal(report.ready, false);
