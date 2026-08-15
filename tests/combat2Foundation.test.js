@@ -8,6 +8,7 @@ import { COMBAT_CONTRACT_VERSION, selectEnemyAction, validateCombatContract } fr
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
 import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
 import { createSequenceRng } from '../js/text/systems/rng.js';
+import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { setLearnedSkill } from '../js/text/systems/skillProgressionEngine.js';
 import { createCanvasUiState } from '../js/text/ui/canvasInput.js';
 import { dispatchUiIntent } from '../js/text/ui/uiIntentDispatcher.js';
@@ -45,7 +46,7 @@ test('player basic attack and deterministic enemy response share structured comb
     assert.equal(state.player.resources.hp, player.resources.hp);
     assert.deepEqual(validateCombatContract(state.activeBattle), []);
 
-    const combatEvents = state.events.history.filter((event) => event.type === 'combat.action.resolved');
+    const combatEvents = listSemanticEvents(state, { type: 'combat.action.resolved' });
     assert.equal(combatEvents.length, 2);
     assert.deepEqual(combatEvents.map((event) => event.data.actionId), actions.map((action) => action.id));
 });
