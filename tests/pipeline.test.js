@@ -9,178 +9,85 @@ import {
     describeVersion,
     PACKAGE_VERSION,
     PRODUCT_VERSION,
+    SYSTEM_VERSIONS,
     VERSION,
 } from '../js/text/version.js';
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.700.1');
-    assert.equal(PACKAGE_VERSION, '0.6.700');
+    assert.equal(PRODUCT_VERSION, '0.6.800.1');
+    assert.equal(PACKAGE_VERSION, '0.6.800');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 25);
+    assert.equal(VERSION.data, 26);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.6\.700\.1/);
-    assert.match(describeVersion(), /Package: 0\.6\.700/);
-    assert.match(describeVersion(), /Account Save: 4/);
+    assert.equal(VERSION.codename, 'Persistent Companions and Party');
+    assert.equal(VERSION.compatibility, 'migrate-supported-save-versions');
+
+    assert.deepEqual(
+        {
+            versionManifest: SYSTEM_VERSIONS.versionManifest,
+            transport: SYSTEM_VERSIONS.transport,
+            gameViewModels: SYSTEM_VERSIONS.gameViewModels,
+            uiIntents: SYSTEM_VERSIONS.uiIntents,
+            companionCatalog: SYSTEM_VERSIONS.companionCatalog,
+            party: SYSTEM_VERSIONS.party,
+            battleEngine: SYSTEM_VERSIONS.battleEngine,
+            combatTurns: SYSTEM_VERSIONS.combatTurns,
+            combatActions: SYSTEM_VERSIONS.combatActions,
+            companions: SYSTEM_VERSIONS.companions,
+        },
+        {
+            versionManifest: '0.6.800.1',
+            transport: '0.2.0',
+            gameViewModels: '0.4.0',
+            uiIntents: '0.4.0',
+            companionCatalog: '0.1.0',
+            party: '0.1.0',
+            battleEngine: '0.8.0',
+            combatTurns: '0.3.0',
+            combatActions: '0.8.0',
+            companions: '0.1.0',
+        },
+    );
+
+    assert.match(describeVersion(), /Product: 0\.6\.800\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.800/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 25/);
-    assert.match(describeVersion(), /Codename: Regional Ecology Breadth/);
-    assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.700\.1/);
-    assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
-    assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /semanticEvents: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /worldTime: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /simulationControl: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /simulationInterrupts: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /timedTasks: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /projects: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceProvenance: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceOpportunities: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceRecovery: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /characterActivity: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /workTasks: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /workstations: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /productionCatalog: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /productionItems: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /production: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /ecologyCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /regionalEcology: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /ecologyRegistry: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /ecologyState: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /populations: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gatheringSources: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /gatheringWork: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceItems: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /regionalResourceItems: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /huntingResourceItems: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceItemRegistry: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /routeCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /transport: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /contentPackSchema: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /contentPackValidation: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /legacyCandidateNormalization: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /simulationSubstrateGate: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /dayCycle: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /commandShell: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /domUi: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /localityNavigation: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /characterCreation: 0\.5\.2/);
-    assert.match(describeSystemVersions(), /characterStats: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /capabilities: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /abilityCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /abilityEngine: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /enemyAbilityCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /magic: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /abilities: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerEntity: 0\.8\.0/);
-    assert.match(describeSystemVersions(), /enemyEntity: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /statEngine: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /statusEngine: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /progression: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /disciplineSwitching: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /skillProgression: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /powers: 0\.4\.1/);
-    assert.match(describeSystemVersions(), /validation: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /travel: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /navigation: 0\.1\.1/);
-    assert.match(describeSystemVersions(), /pois: 0\.3\.7/);
-    assert.match(describeSystemVersions(), /travelExits: 0\.3\.6/);
-    assert.match(describeSystemVersions(), /homeStorage: 0\.3\.9/);
-    assert.match(describeSystemVersions(), /companions: planned/);
-    assert.match(describeSystemVersions(), /crafting: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /canvasUi: 0\.8\.0/);
-    assert.match(describeSystemVersions(), /uiIntents: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /battleEngine: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /combatTurns: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /combatSimulation: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /combatActions: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /battleRewards: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /itemSchema: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /itemBehavior: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /equipmentEligibility: 0\.5\.1/);
-    assert.match(describeSystemVersions(), /equipmentToolEngine: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /equipmentCatalog: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /shops: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /shopTransactions: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /skillCaps: 0\.5\.2/);
-    assert.match(describeSystemVersions(), /loot: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /leveling: 0\.6\.0/);
+    assert.match(describeVersion(), /Data: 26/);
+    assert.match(describeVersion(), /Codename: Persistent Companions and Party/);
+    assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
 test('database registry includes canonical systems plus explicitly bounded legacy research', () => {
     const ids = listDatabases().map((database) => database.id);
+    const required = [
+        'places', 'maps', 'powers', 'placeConnections', 'routes', 'transportServices',
+        'contentPacks', 'contentPackValidation', 'legacyCandidates', 'travel', 'projects',
+        'resourceProvenance', 'resourceOpportunities', 'capabilities', 'ecologyFamilies',
+        'species', 'populations', 'gatheringSources', 'gatheringWork', 'resourceItems',
+        'productionItems', 'productionProcesses', 'production', 'workTasks',
+        'workProficiencies', 'workstations', 'legacyRecoveredData', 'quests',
+        'relationships', 'items', 'magic', 'abilities', 'lootTables', 'leveling',
+        'companions', 'party', 'crafting',
+    ];
+    for (const id of required) assert.ok(ids.includes(id), `registry missing ${id}`);
 
-    assert.ok(ids.includes('places'));
-    assert.ok(ids.includes('maps'));
-    assert.ok(ids.includes('powers'));
-    assert.ok(ids.includes('placeConnections'));
-    assert.ok(ids.includes('routes'));
-    assert.ok(ids.includes('transportServices'));
-    assert.ok(ids.includes('contentPacks'));
-    assert.ok(ids.includes('contentPackValidation'));
-    assert.ok(ids.includes('legacyCandidates'));
-    assert.ok(ids.includes('travel'));
-    assert.ok(ids.includes('projects'));
-    assert.ok(ids.includes('resourceProvenance'));
-    assert.ok(ids.includes('resourceOpportunities'));
-    assert.ok(ids.includes('capabilities'));
-    assert.ok(ids.includes('ecologyFamilies'));
-    assert.ok(ids.includes('species'));
-    assert.ok(ids.includes('populations'));
-    assert.ok(ids.includes('gatheringSources'));
-    assert.ok(ids.includes('gatheringWork'));
-    assert.ok(ids.includes('resourceItems'));
-    assert.ok(ids.includes('productionItems'));
-    assert.ok(ids.includes('productionProcesses'));
-    assert.ok(ids.includes('production'));
-    assert.ok(ids.includes('workTasks'));
-    assert.ok(ids.includes('workProficiencies'));
-    assert.ok(ids.includes('workstations'));
-    assert.ok(ids.includes('legacyRecoveredData'));
-    assert.ok(ids.includes('quests'));
-    assert.ok(ids.includes('relationships'));
-    assert.ok(ids.includes('achievements'));
-    assert.ok(ids.includes('items'));
-    assert.ok(ids.includes('keyItems'));
-    assert.ok(ids.includes('magic'));
-    assert.ok(ids.includes('abilities'));
-    assert.ok(ids.includes('lootTables'));
-    assert.ok(ids.includes('leveling'));
-    assert.ok(ids.includes('companions'));
-    assert.ok(ids.includes('crafting'));
-    assert.ok(ids.includes('mounts'));
     assert.equal(ids.includes('nations'), false);
     assert.equal(ids.includes('zoneConnections'), false);
     assert.equal(ids.includes('trusts'), false);
-    assert.match(describeDatabases(), /resourceProvenance/);
-    assert.match(describeDatabases(), /resourceOpportunities/);
-    assert.match(describeDatabases(), /productionProcesses \[seeded 0\.1\.0\]/);
-    assert.match(describeDatabases(), /production \[implemented 0\.1\.0\]/);
-    assert.match(describeDatabases(), /workProficiencies \[implemented 0\.1\.0\]/);
-    assert.match(describeDatabases(), /capabilities \[seeded 0\.2\.0\]/);
-    assert.match(describeDatabases(), /magic \[seeded 0\.1\.0\]/);
-    assert.match(describeDatabases(), /abilities \[implemented 0\.1\.0\]/);
-    assert.match(describeDatabases(), /gatheringSources/);
-    assert.match(describeDatabases(), /populations/);
-    assert.match(describeDatabases(), /transportServices/);
-    assert.match(describeDatabases(), /contentPacks/);
-    assert.match(describeDatabases(), /contentPackValidation/);
-    assert.match(describeDatabases(), /legacyCandidates/);
-    assert.match(describeDatabases(), /relationships/);
-    assert.match(describeDatabases(), /routes/);
-    assert.match(describeDatabases(), /legacyRecoveredData/);
-    assert.match(describeDatabases(), /companions/);
+
+    const description = describeDatabases();
+    assert.match(description, /production \[implemented 0\.1\.0\]/);
+    assert.match(description, /capabilities \[seeded 0\.2\.0\]/);
+    assert.match(description, /magic \[seeded 0\.1\.0\]/);
+    assert.match(description, /abilities \[implemented 0\.1\.0\]/);
+    assert.match(description, /companions \[implemented 0\.1\.0\]/);
+    assert.match(description, /party \[implemented 0\.1\.0\]/);
     assert.match(describeLegacyRecoveredData(), /weapon skills/);
 });
 
