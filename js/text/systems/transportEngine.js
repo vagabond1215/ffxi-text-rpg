@@ -4,6 +4,7 @@ import { actionFailure, actionSuccess } from './actionResult.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { syncActivePartyLocation } from './partyEngine.js';
 import { cancelTimedTask, findTimedTask, reconcileTimedTasks, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 import { advanceWorldTime, ensureWorldTimeState } from './worldTimeEngine.js';
 
@@ -114,6 +115,7 @@ export function reconcileTravelJourney(state) {
         state.location = completed.to;
         state.position = { placeId: completed.to, ...arrival };
     }
+    syncActivePartyLocation(state, completed.to);
     state.travel = null;
     const eventType = completed.kind === TRAVEL_KINDS.SCHEDULED ? 'transport.arrived' : 'travel.arrived';
     const event = emitSemanticEvent(state, eventType, { ...travelEventData(completed), arrival }, { source: 'transportEngine' });
