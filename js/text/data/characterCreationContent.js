@@ -1,5 +1,6 @@
 import { getJob } from './jobs.js';
 import { getNation } from './nations.js';
+import { getOriginExperienceContent } from './playerExperienceContent.js';
 import { getPlace } from './places.js';
 import { getRace } from './races.js';
 
@@ -63,12 +64,15 @@ export function describeCreatorSex(sex) {
 export function composeStartingNarrative({ name = 'Traveler', nationId = 'thornwall', mainJobId = 'vanguard' } = {}) {
     const nation = getNationCreationPresentation(nationId);
     const discipline = getJobCreationPresentation(mainJobId);
+    const experience = getOriginExperienceContent(nationId);
     const characterName = normalizeName(name) || 'Traveler';
     return [
         `${characterName} begins in ${nation.startingPlaceName}, with a few known streets behind them and a much larger world beyond the nearest road.`,
+        experience.arrival,
         nation.blurb,
         `Your first training follows the ${discipline.name} discipline. It is a starting tradition, not a permanent class or a limit on what you can learn.`,
-        `The routes into ${nation.starterRegion} promise work, resources, people, and danger—provided you prepare well enough to return with something worth keeping.`,
+        `${experience.guideName} is the first person you have been told to find. They can explain how newcomers turn small work, practice, preparation, and exploration into a real footing here.`,
+        `Beyond ${nation.startingPlaceName}, ${experience.regionalHorizon} offers the first larger test. You do not need to choose one permanent path: return from each effort with more mastery, material capability, knowledge, or useful connections than you started with.`,
     ];
 }
 

@@ -9,6 +9,7 @@ import {
 } from '../systems/localityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
 import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
+import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEngine.js';
@@ -38,6 +39,7 @@ export function createGameViewModel(state, uiState = {}) {
     const activity = createActivityModel(state);
     const spellbook = createSpellbookModel(state);
     const party = createPartyModel(state);
+    const guidance = createPlayerExperienceModel(state);
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -57,7 +59,7 @@ export function createGameViewModel(state, uiState = {}) {
             type: place?.type ?? '',
             dangerLevel: place?.dangerLevel ?? 0,
             coordinate: coordinateLabel,
-            description: place?.description ?? 'The surroundings are not yet described.',
+            description: describeScene(place, guidance),
             nearby: Object.freeze(nearby),
             nearbyTotal: navigationMode === 'locality' ? listLocalityPoints(state, { limit: 100 }).length : nearby.length,
             recent: Object.freeze(createRecentSceneLines(uiState.outputLines ?? [])),
@@ -72,6 +74,7 @@ export function createGameViewModel(state, uiState = {}) {
         spellbook,
         party,
         activity,
+        guidance,
     });
 }
 
@@ -108,7 +111,9 @@ export function createContextualActions(state, nearby = null) {
 
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
+        const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
         const actions = [
+            ...(guidanceAction ? [guidanceAction] : []),
             ...recruitActions,
             ...listLocalityDestinations(state)
                 .slice(0, 3)
@@ -277,6 +282,12 @@ function createRecentSceneLines(lines) {
         .map((line) => String(line ?? '').trim())
         .filter((line) => line && !line.startsWith('> ') && !ignored.has(line))
         .slice(-10);
+}
+
+function describeScene(place, guidance) {
+    const description = place?.description ?? 'The surroundings are not yet described.';
+    if (!guidance?.scenePrompt) return description;
+    return `${description} ${guidance.scenePrompt}`;
 }
 
 function toNearbyRecord(poi) {

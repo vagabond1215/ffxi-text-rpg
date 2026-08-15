@@ -10,6 +10,7 @@ import {
 } from '../data/characterCreationContent.js';
 
 const STARTING_JOB_IDS = Object.freeze(['vanguard', 'pugilist', 'lifewarden', 'elementalist', 'spellblade', 'shadowhand']);
+const DEFAULT_START_WORLD_TIME_SECONDS = 8 * 60 * 60;
 export const CREATOR_STEPS = Object.freeze(['identity', 'nation', 'job', 'summary']);
 
 export function createGuidedCreatorState(options = {}) {
@@ -133,6 +134,7 @@ export function createCreatorGameOptions(creator) {
         sex: normalized.sex,
         nationId: normalized.nationId,
         mainJobId: normalized.mainJobId,
+        startWorldTimeSeconds: DEFAULT_START_WORLD_TIME_SECONDS,
     };
 }
 

@@ -1,0 +1,114 @@
+# Player Experience Upgrade Path
+
+This document defines the player-facing upgrade path for Phase 0.7. It is intentionally ordered by what a normal player must understand and accomplish, not by how many underlying engines already exist.
+
+## Player promise
+
+A new player should be able to answer these questions from normal browser play:
+
+1. **Why am I here?** — the character has an origin-specific arrival circumstance and a first local connection.
+2. **What should I do next?** — the game presents one clear first contact and then several small, non-exclusive ambitions.
+3. **How does progress work?** — actions visibly connect effort to persistent mastery, efficiency, capability, preparation, knowledge, or relationships.
+4. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character’s life.
+5. **Why would I return?** — settlements convert what the character earned into recovery, trade, processing, equipment, training, social continuity, and larger ambitions.
+
+The intended loop remains:
+
+```text
+effort -> mastery -> efficiency -> capability -> larger ambition
+```
+
+No onboarding layer may create a parallel quest clock, hidden teleport graph, omniscient map, duplicate progression counter, or reward path that bypasses provenance.
+
+## PX-1 — First 30 minutes: arrival and footing
+
+**Goal:** prevent the new character from being dropped into an unexplained sandbox.
+
+Required experience:
+
+- origin-specific opening prose names the starting settlement, regional horizon, and a real first contact;
+- normal guided character creation starts at a believable morning hour rather than an unexplained world-time epoch;
+- the Scene itself states the clearest next step while the character is still un-oriented;
+- the origin contact is promoted to the first contextual action in the starting locality;
+- speaking to that contact explains, in setting-friendly terms, how combat training, livelihood work, exploration, and preparation create persistent progress;
+- after the contact is met, guidance changes from a single instruction to several non-exclusive paths;
+- player-facing commission hooks use Hearth & Horizon canon and do not leak legacy world names or implementation-schema language.
+
+**Implementation status:** landed as the first `0.7.100` in-progress slice. Guidance is derived from existing world/POI discovery state, so Game State 5 needs no new persisted onboarding registry.
+
+## PX-2 — First day: actionable opportunities
+
+**Goal:** turn explanation into ordinary semantic UI actions.
+
+Add a dedicated Journal/Opportunities presentation model that answers:
+
+- What can I pursue now?
+- Why would I care?
+- What preparation does it require?
+- What persistent progress can it produce?
+
+The first-day set should include at least one viable path in each category that the current region actually supports: livelihood/material work, training/danger, exploration/travel, and settlement/service/social preparation. Buttons should route through semantic gameplay intents; command adapters remain compatibility/power surfaces rather than required knowledge.
+
+Do not present unavailable future systems as clickable promises. A commission should either be a real trackable commitment or clearly remain an unposted/informal lead.
+
+## PX-3 — First regional loop: leave, accomplish, return
+
+**Goal:** prove one complete reason-to-travel loop.
+
+A player should be able to:
+
+```text
+settlement contact/service
+    -> accept or choose a concrete goal
+    -> prepare
+    -> travel into the region
+    -> work, gather, explore, or fight
+    -> recover/produce something with provenance
+    -> return
+    -> resolve/trade/process/report
+    -> see what persistent change now makes a larger ambition possible
+```
+
+Use the existing Phase 0.6 engines as authority. Add only the missing reusable commitment/opportunity primitives demonstrated by this slice.
+
+## PX-4 — First several fictional days: continuity
+
+**Goal:** make the world feel inhabited rather than reset after each loop.
+
+Add persistent NPC follow-up, lightweight reputation/relationship consequences, repeatable or changing local needs, day-review surfacing of gains and new opportunities, recovery costs, and reasons to choose between competing uses of character time.
+
+Earlier chores should already begin becoming easier or more skippable through earned mastery, tools, route knowledge, or services.
+
+## PX-5 — Multi-region campaign readability
+
+**Goal:** preserve clarity as choice count grows.
+
+The Journal/Opportunities layer should rank and group known opportunities without becoming an omniscient quest list. Regional knowledge, contacts, maps, reputation, travel access, and prior discoveries determine what can be surfaced.
+
+The player should be able to maintain several short-term goals while understanding their relationship to larger ambitions: better livelihood, deeper training, stronger equipment, a broader route network, social standing, companions, property/infrastructure, and dangerous expeditions.
+
+## Player-facing acceptance checks
+
+For each future Phase 0.7 slice, evaluate from a fresh save rather than from test fixtures alone:
+
+- Does the player know why the character is currently here?
+- Is one useful next action obvious without opening help or knowing commands?
+- Are at least two alternative ambitions understandable after the first orientation step?
+- Does the game explain what an activity improves, not merely what button starts it?
+- When an activity completes, is the persistent consequence legible?
+- Does the next opportunity arise from world knowledge/state rather than developer omniscience?
+- Can the same loop be resumed after save/load without duplicating rewards, contacts, or progress?
+
+## Architecture rule
+
+Player-experience guidance is a **projection over canonical state**, not a second simulation authority.
+
+The first implementation follows that rule by deriving orientation from:
+
+- chosen origin / existing player identity;
+- the canonical starting place;
+- existing POI identity and discovery state;
+- current locality/exploration context;
+- existing progression, work, travel, equipment, and map laws.
+
+When later work needs real commitments or contracts, those should be canonical gameplay state with semantic events and exactly-once reward ownership. The guidance layer may summarize that state; it must not secretly own it.

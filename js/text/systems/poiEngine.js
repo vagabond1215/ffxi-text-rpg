@@ -12,6 +12,7 @@ import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { recruitCompanion } from './partyEngine.js';
+import { describeOriginGuideDialogue } from './playerExperienceEngine.js';
 
 export function createPoiDiscoveryState() {
     return {};
@@ -98,6 +99,11 @@ export function performPoiAction(state, action, query = '') {
 
 export function describePoiInteraction(state, poi, action) {
     const canonicalAction = canonicalizePoiAction(action);
+    if (canonicalAction === 'talk') {
+        const guideDialogue = describeOriginGuideDialogue(state, poi);
+        if (guideDialogue) return guideDialogue;
+    }
+
     const discovered = hasDiscoveredPoi(state, poi.id);
     const lines = [
         `${poi.name}`,
