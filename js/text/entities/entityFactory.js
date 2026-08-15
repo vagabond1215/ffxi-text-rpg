@@ -105,6 +105,7 @@ export function createEnemy(options = {}) {
         expValue: options.expValue ?? level * 25,
         aggro: options.aggro ?? { sight: false, sound: false, magic: false, lowHp: false },
         links: options.links ?? false,
+        combatAbilityIds: [...(options.combatAbilityIds ?? [])],
         statuses: options.statuses ?? [],
         flags: options.flags ?? {},
     };
