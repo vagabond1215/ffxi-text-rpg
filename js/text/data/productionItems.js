@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const PRODUCTION_ITEM_CATALOG_VERSION = 1;
+export const PRODUCTION_ITEM_CATALOG_VERSION = 2;
 
 const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-copper-ingot': productionItem({
@@ -45,6 +45,36 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
         sourceId: 'salvage-copper-trail-clasp',
         action: 'salvage',
         sinks: ['processInput', 'trade'],
+    }),
+    'item-elderwood-resin-board': productionItem({
+        id: 'item-elderwood-resin-board',
+        name: 'Resin-Sealed Hardwood Board',
+        kind: ITEM_KINDS.MATERIAL,
+        tags: ['wood', 'component', 'sealed', 'elderwood'],
+        valueGil: 38,
+        sourceId: 'craft-elderwood-resin-board',
+        action: 'craft',
+        sinks: ['craftIngredient', 'construction', 'repair', 'trade'],
+    }),
+    'item-redstone-iron-bloom': productionItem({
+        id: 'item-redstone-iron-bloom',
+        name: 'Redstone Iron Bloom',
+        kind: ITEM_KINDS.MATERIAL,
+        tags: ['metal', 'iron', 'component', 'redstone'],
+        valueGil: 36,
+        sourceId: 'process-redstone-iron-bloom',
+        action: 'process',
+        sinks: ['craftIngredient', 'processInput', 'repair', 'trade'],
+    }),
+    'item-starfen-bluekelp-broth': productionItem({
+        id: 'item-starfen-bluekelp-broth',
+        name: 'Bluekelp Silverfin Broth',
+        kind: ITEM_KINDS.CONSUMABLE,
+        tags: ['food', 'meal', 'cooked', 'starfen'],
+        valueGil: 27,
+        sourceId: 'cook-starfen-bluekelp-broth',
+        action: 'craft',
+        sinks: ['consume', 'trade'],
     }),
 });
 
