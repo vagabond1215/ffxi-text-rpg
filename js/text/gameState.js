@@ -6,6 +6,7 @@ import { getPlace } from './data/places.js';
 import { createAbilityRuntimeState } from './systems/abilityEngine.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
+import { createPartyState } from './systems/partyEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
 import { createResourceOpportunityState } from './systems/resourceOpportunityEngine.js';
@@ -47,6 +48,7 @@ export function createNewGameState(options = {}) {
         }),
         tasks: createTimedTaskState(),
         abilities: createAbilityRuntimeState(),
+        party: createPartyState(),
         projects: createProjectState(),
         resourceOpportunities: createResourceOpportunityState(),
         ecology: createEcologyState(),
