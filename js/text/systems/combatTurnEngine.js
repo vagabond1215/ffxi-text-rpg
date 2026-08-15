@@ -1,4 +1,4 @@
-import { getCombatant, resolveBasicAttack } from './battleEngine.js';
+import { appendBattleLog, getCombatant, resolveBasicAttack } from './battleEngine.js';
 import { resolveBattleRewards } from './rewardEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 
@@ -131,12 +131,11 @@ export function finalizeCombatState(state) {
     syncPlayerFromCombat(state);
 
     if (battle.phase === 'victory' && !battle.rewards?.resolved) {
-        resolveBattleRewards(state, battle);
+        const rewardResult = resolveBattleRewards(state, battle);
+        if (rewardResult?.ok && rewardResult.message) appendBattleLog(battle, rewardResult.message);
     }
     if (battle.phase !== 'active' && !battle.endLogged) {
-        battle.log ??= [];
-        battle.log.push(`Battle ended: ${battle.phase}.`);
-        if (battle.log.length > COMBAT_ACTION_HISTORY_LIMIT) battle.log.splice(0, battle.log.length - COMBAT_ACTION_HISTORY_LIMIT);
+        appendBattleLog(battle, `Battle ended: ${battle.phase}.`);
         battle.endLogged = true;
     }
     return battle;
