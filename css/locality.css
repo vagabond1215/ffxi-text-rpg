@@ -1,0 +1,24 @@
+#app[data-navigation-mode="locality"] .map-column,
+#app[data-navigation-mode="route"] .map-column,
+#app[data-navigation-mode="combat"] .map-column {
+    display: none;
+}
+
+#app[data-navigation-mode="locality"] .game-layout,
+#app[data-navigation-mode="route"] .game-layout,
+#app[data-navigation-mode="combat"] .game-layout {
+    grid-template-columns: minmax(420px, 1fr) minmax(195px, 245px);
+    max-width: 1280px;
+}
+
+#app[data-navigation-mode="locality"] .place-heading span {
+    text-transform: none;
+}
+
+@media (max-width: 800px) {
+    #app[data-navigation-mode="locality"] .game-layout,
+    #app[data-navigation-mode="route"] .game-layout,
+    #app[data-navigation-mode="combat"] .game-layout {
+        grid-template-columns: 1fr;
+    }
+}
