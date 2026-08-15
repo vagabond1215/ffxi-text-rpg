@@ -11,11 +11,8 @@ import { listHuntingResourceItems } from './huntingResourceItems.js';
 export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 25;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
-    id: 'pack-elderwood-ecology-breadth',
-    regionId: 'elderwood',
-    steward: 'thornwall-west',
-    dependencies: ['pack-elderwood-opening'],
-    placeId: 'west-elderwood',
+    id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
+    placeId: 'west-elderwood', ownsPlace: false,
     speciesIds: ['species-elderwood-barkboar', 'species-elderwood-lantern-moth'],
     populationIds: ['population-west-elderwood-barkboars', 'population-west-elderwood-lantern-moths'],
     sourceIds: ['source-west-elderwood-amber-resin-grove', 'source-west-elderwood-duskcap-ring'],
@@ -23,11 +20,8 @@ export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
 });
 
 export const REDSTONE_ECOLOGY_PACK = regionalPack({
-    id: 'pack-redstone-ecology-breadth',
-    regionId: 'redstone-reach',
-    steward: 'brasshaven-south',
-    dependencies: ['pack-shared-foundation'],
-    placeId: 'south-redstone-reach',
+    id: 'pack-redstone-ecology-breadth', regionId: 'redstone-reach', steward: 'brasshaven-south', dependencies: ['pack-shared-foundation'],
+    placeId: 'south-redstone-reach', ownsPlace: true,
     speciesIds: ['species-redstone-ridge-ibex', 'species-redstone-glass-shell'],
     populationIds: ['population-south-redstone-ridge-ibex', 'population-south-redstone-glass-shells'],
     sourceIds: ['source-south-redstone-iron-vein', 'source-south-redstone-sunstone-scree'],
@@ -35,24 +29,17 @@ export const REDSTONE_ECOLOGY_PACK = regionalPack({
 });
 
 export const STARFEN_ECOLOGY_PACK = regionalPack({
-    id: 'pack-starfen-ecology-breadth',
-    regionId: 'starfen',
-    steward: 'mistmere-west',
-    dependencies: ['pack-starfen-opening'],
-    placeId: 'west-starfen',
+    id: 'pack-starfen-ecology-breadth', regionId: 'starfen', steward: 'mistmere-west', dependencies: ['pack-starfen-opening'],
+    placeId: 'west-starfen', ownsPlace: false,
     speciesIds: ['species-starfen-mire-heron', 'species-starfen-reed-eel'],
     populationIds: ['population-west-starfen-mire-herons', 'population-west-starfen-reed-eels'],
     sourceIds: ['source-west-starfen-bluekelp-pool', 'source-west-starfen-bogberry-brake'],
     itemIds: ['item-starfen-bluekelp', 'item-starfen-bogberry', 'item-starfen-heron-feather'],
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([
-    ELDERWOOD_ECOLOGY_PACK,
-    REDSTONE_ECOLOGY_PACK,
-    STARFEN_ECOLOGY_PACK,
-]);
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK]);
 
-function regionalPack({ id, regionId, steward, dependencies, placeId, speciesIds, populationIds, sourceIds, itemIds }) {
+function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
     const familyIds = new Set(species.map((entry) => entry.familyId));
     const families = listRegionalEcologyFamilies().filter((entry) => familyIds.has(entry.id));
@@ -64,12 +51,9 @@ function regionalPack({ id, regionId, steward, dependencies, placeId, speciesIds
         dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
         ownership: { scope: 'region', regionIds: [regionId], steward },
         dependencies,
-        metadata: {
-            name: `${regionId} ecology breadth`,
-            notes: 'Original regional ecology/resource breadth tied to the canonical timed gathering, hunting recovery, production, and provenance loops.',
-        },
+        metadata: { name: `${regionId} ecology breadth`, notes: 'Original regional ecology/resource breadth tied to canonical timed gathering, hunting recovery, production, and provenance loops.' },
         records: {
-            places: [{ id: placeId, catalogRef: true }],
+            places: ownsPlace ? [{ id: placeId, catalogRef: true }] : [],
             ecologyFamilies: families,
             species,
             populations,
