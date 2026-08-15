@@ -1,14 +1,15 @@
+import { getHuntingResourceItem, listHuntingResourceItems } from './huntingResourceItems.js';
 import { getResourceItem, listResourceItems } from './resourceItems.js';
 import { getRegionalResourceItem, listRegionalResourceItems } from './regionalResourceItems.js';
 
-export const RESOURCE_ITEM_REGISTRY_VERSION = 1;
+export const RESOURCE_ITEM_REGISTRY_VERSION = 2;
 
 export function getCanonicalResourceItem(itemId) {
-    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId);
+    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getHuntingResourceItem(itemId);
 }
 
 export function listCanonicalResourceItems() {
-    const items = [...listResourceItems(), ...listRegionalResourceItems()];
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems()];
     const ids = new Set();
     return items.filter((item) => {
         if (ids.has(item.id)) return false;
