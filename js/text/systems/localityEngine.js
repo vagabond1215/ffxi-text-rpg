@@ -2,6 +2,7 @@ import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getPointOfInterest, getPoisForPlace } from '../data/pointsOfInterest.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
+import { syncActivePartyLocation } from './partyEngine.js';
 import { discoverPoi, performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
@@ -75,6 +76,7 @@ export function moveWithinLocality(state, destinationId) {
         important: [`Entered ${place.name} by locality travel`],
     });
     if (!positioned.ok) return fail('locality.position-failed', positioned.reason);
+    syncActivePartyLocation(state, place.id);
     state.activePoiId = null;
 
     const event = emitSemanticEvent(state, 'locality.changed', {
