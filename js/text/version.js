@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.6.300.1';
-export const PACKAGE_VERSION = '0.6.300';
+export const PRODUCT_VERSION = '0.6.400.1';
+export const PACKAGE_VERSION = '0.6.400';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 21,
     benchmark: 1,
-    codename: 'Original Magic and Abilities',
+    codename: 'Combat 2.0 Foundation',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.300.1',
+    versionManifest: '0.6.400.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -57,15 +57,16 @@ export const SYSTEM_VERSIONS = Object.freeze({
     characterStats: '0.1.0',
     capabilities: '0.2.0',
     abilityCatalog: '0.1.0',
-    abilityEngine: '0.1.0',
+    abilityEngine: '0.2.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
     enemyEntity: '0.2.1',
     statEngine: '0.5.0',
     statusEngine: '0.1.0',
-    battleEngine: '0.5.0',
-    combatActions: '0.5.1',
+    battleEngine: '0.6.0',
+    combatTurns: '0.1.0',
+    combatActions: '0.6.0',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
