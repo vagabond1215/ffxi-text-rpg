@@ -2,9 +2,15 @@ import {
     appendBattleLog,
     createBattleState,
     getCombatant,
-    performBasicAttack,
+    resolveBasicAttack,
+    updateBattlePhase,
 } from './battleEngine.js';
-import { resolveBattleRewards } from './rewardEngine.js';
+import {
+    ensureCombatContract,
+    finalizeCombatState,
+    recordCombatAction,
+    resolveEnemyResponse,
+} from './combatTurnEngine.js';
 import { describeSkillGainResult, resolveSkillGainForAction } from './skillProgressionEngine.js';
 
 export function startEncounter(state, enemyId, options = {}) {
@@ -23,6 +29,7 @@ export function startEncounter(state, enemyId, options = {}) {
         rng: options.rng,
         rngSeed: options.rngSeed ?? null,
     });
+    ensureCombatContract(state.activeBattle);
     state.activeBattle.source = options.source ?? 'manual';
     state.activeBattle.sourceEnemyId = enemy.id;
     appendBattleLog(state.activeBattle, `${enemy.identity.name} engages you${options.reason ? `: ${options.reason}` : '.'}`);
@@ -42,10 +49,25 @@ export function performPlayerAttack(state, targetQuery = null) {
     const target = getTargetCombatant(battle, targetQuery);
     if (!player || !target) return 'No valid target.';
 
-    performBasicAttack(battle, player.id, target.id);
+    const resolution = resolveBasicAttack(battle, player.id, target.id);
+    const action = recordCombatAction(state, {
+        battle,
+        actorId: player.id,
+        actorType: 'player',
+        targetId: target.id,
+        kind: 'basicAttack',
+        sourceId: 'basic-attack',
+        outcome: resolution.outcome,
+        data: {
+            hit: resolution.hit,
+            damage: resolution.damage,
+            defeatedTarget: resolution.defeatedTarget,
+        },
+    });
+
     appendSkillGainLog(state, battle, { actionType: 'basicAttack' });
-    if (battle.phase === 'active') performEnemyAutoActions(battle);
-    syncPlayerFromBattle(state);
+    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
 
@@ -60,11 +82,27 @@ export function performWeaponSkill(state, skillName = 'Weapon Skill', targetQuer
 
     player.resources.tp -= 1000;
     appendBattleLog(battle, `${player.identity.name} uses ${skillName}.`);
-    performBasicAttack(battle, player.id, target.id);
-    performBasicAttack(battle, player.id, target.id);
+    const first = resolveBasicAttack(battle, player.id, target.id);
+    const second = battle.phase === 'active'
+        ? resolveBasicAttack(battle, player.id, target.id)
+        : { outcome: 'not-resolved', hit: false, damage: 0, defeatedTarget: first.defeatedTarget };
+    const action = recordCombatAction(state, {
+        battle,
+        actorId: player.id,
+        actorType: 'player',
+        targetId: target.id,
+        kind: 'legacyTechnique',
+        sourceId: String(skillName ?? 'Weapon Skill'),
+        outcome: first.defeatedTarget || second.defeatedTarget ? 'defeated-target' : 'resolved',
+        data: {
+            hits: [first, second].filter((entry) => entry.hit).length,
+            damage: (Number(first.damage) || 0) + (Number(second.damage) || 0),
+            transitional: true,
+        },
+    });
     appendSkillGainLog(state, battle, { actionType: 'weaponSkill', actionName: skillName });
-    if (battle.phase === 'active') performEnemyAutoActions(battle);
-    syncPlayerFromBattle(state);
+    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
 
@@ -80,26 +118,40 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
     if (player.resources.mp < mpCost) return `Not enough MP. ${spellName} requires ${mpCost} MP.`;
     player.resources.mp -= mpCost;
 
+    let target = player;
+    let effectType = 'heal';
+    let amount = 0;
     if (normalized.includes('cure')) {
-        const amount = Math.max(8, Math.floor(player.combat.attributes.mnd * 1.5));
+        amount = Math.max(8, Math.floor(player.combat.attributes.mnd * 1.5));
         player.resources.hp = Math.min(player.combat.resources.maxHp, player.resources.hp + amount);
         appendBattleLog(battle, `${player.identity.name} casts ${spellName} and recovers ${amount} HP.`);
     } else {
-        const target = getTargetCombatant(battle, targetQuery);
+        target = getTargetCombatant(battle, targetQuery);
         if (!target) return 'No valid target.';
-        const damage = Math.max(5, Math.floor(player.combat.attributes.int * 1.4));
-        target.resources.hp = Math.max(0, target.resources.hp - damage);
-        appendBattleLog(battle, `${player.identity.name} casts ${spellName} on ${target.identity.name} for ${damage} damage.`);
+        effectType = 'damage';
+        amount = Math.max(5, Math.floor(player.combat.attributes.int * 1.4));
+        target.resources.hp = Math.max(0, target.resources.hp - amount);
+        appendBattleLog(battle, `${player.identity.name} casts ${spellName} on ${target.identity.name} for ${amount} damage.`);
         if (target.resources.hp <= 0) {
             target.battle.defeated = true;
             appendBattleLog(battle, `${target.identity.name} is defeated.`);
-            updateBattlePhaseLoose(battle);
+            updateBattlePhase(battle);
         }
     }
 
+    const action = recordCombatAction(state, {
+        battle,
+        actorId: player.id,
+        actorType: 'player',
+        targetId: target?.id ?? null,
+        kind: 'legacyCast',
+        sourceId: String(spellName ?? 'Cure'),
+        outcome: target?.battle?.defeated ? 'defeated-target' : 'resolved',
+        data: { effectType, amount, mpCost, transitional: true },
+    });
     appendSkillGainLog(state, battle, { actionType: 'spell', spellName: spellName || 'Cure' });
-    if (battle.phase === 'active') performEnemyAutoActions(battle);
-    syncPlayerFromBattle(state);
+    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
 
@@ -132,31 +184,6 @@ export function isActiveBattle(battle) {
     return Boolean(battle && battle.phase === 'active');
 }
 
-function performEnemyAutoActions(battle) {
-    const player = getPlayerCombatant(battle);
-    if (!player || player.battle.defeated) return;
-
-    const enemies = battle.combatants.filter((combatant) => combatant.type === 'enemy' && !combatant.battle.defeated);
-    for (const enemy of enemies) {
-        performBasicAttack(battle, enemy.id, player.id);
-    }
-    battle.round += 1;
-}
-
-function syncPlayerFromBattle(state) {
-    const playerCombatant = getPlayerCombatant(state.activeBattle);
-    if (!playerCombatant) return;
-    state.player.resources = { ...playerCombatant.resources };
-    if (state.activeBattle.phase === 'victory' && !state.activeBattle.rewards?.resolved) {
-        const rewards = resolveBattleRewards(state, state.activeBattle);
-        appendBattleLog(state.activeBattle, rewards.message);
-    }
-    if (state.activeBattle.phase !== 'active' && !state.activeBattle.endLogged) {
-        appendBattleLog(state.activeBattle, `Battle ended: ${state.activeBattle.phase}.`);
-        state.activeBattle.endLogged = true;
-    }
-}
-
 function appendSkillGainLog(state, battle, actionContext) {
     const result = resolveSkillGainForAction(state, actionContext);
     const message = describeSkillGainResult(result);
@@ -178,13 +205,6 @@ function getTargetCombatant(battle, targetQuery) {
 function findEnemyDefinition(state, enemyId) {
     const normalized = normalize(enemyId);
     return (state.enemies ?? []).find((enemy) => normalize(enemy.id) === normalized || normalize(enemy.identity.name).includes(normalized)) ?? null;
-}
-
-function updateBattlePhaseLoose(battle) {
-    const playersAlive = battle.combatants.some((combatant) => combatant.type === 'player' && !combatant.battle.defeated);
-    const enemiesAlive = battle.combatants.some((combatant) => combatant.type === 'enemy' && !combatant.battle.defeated);
-    if (!playersAlive) battle.phase = 'defeat';
-    if (!enemiesAlive) battle.phase = 'victory';
 }
 
 function normalize(value) {
