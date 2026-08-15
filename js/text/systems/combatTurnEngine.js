@@ -1,5 +1,6 @@
 import { getEnemyAbility } from '../data/enemyAbilities.js';
-import { appendBattleLog, getCombatant, resolveBasicAttack, updateBattlePhase } from './battleEngine.js';
+import { appendBattleLog, COMBAT_SIDES, getCombatant, getCombatantSide, resolveBasicAttack, updateBattlePhase } from './battleEngine.js';
+import { syncCompanionsFromBattle } from './partyEngine.js';
 import { resolveBattleRewards } from './rewardEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { reconcileStatusesAtWorldTime } from './statusEngine.js';
@@ -8,6 +9,7 @@ import { ensureWorldTimeState } from './worldTimeEngine.js';
 export const COMBAT_CONTRACT_VERSION = 2;
 export const COMBAT_ACTION_HISTORY_LIMIT = 100;
 export const PLAYER_ACTION_RECOVERY_SECONDS = 3;
+export const COMPANION_ACTION_RECOVERY_SECONDS = 3;
 export const ENEMY_ACTION_RECOVERY_SECONDS = 4;
 export const ENEMY_OPENING_DELAY_SECONDS = 3;
 export const COMBAT_INTERRUPT_PRIORITY = 900;
@@ -54,7 +56,7 @@ export function initializeCombatTimeline(state, battle = state?.activeBattle) {
     if (!Number.isInteger(contract.timeline.startedAtWorldSeconds)) contract.timeline.startedAtWorldSeconds = now;
     for (const combatant of battle.combatants ?? []) {
         if (Number.isInteger(contract.timeline.readyAtByActorId[combatant.id])) continue;
-        contract.timeline.readyAtByActorId[combatant.id] = combatant.type === 'enemy'
+        contract.timeline.readyAtByActorId[combatant.id] = getCombatantSide(combatant) === COMBAT_SIDES.ENEMY
             ? now + ENEMY_OPENING_DELAY_SECONDS
             : now;
     }
@@ -137,7 +139,8 @@ export function recordCombatAction(state, definition = {}) {
 
 export function selectEnemyAction(battle, enemy) {
     if (!battle || battle.phase !== 'active' || !enemy || enemy.battle?.defeated) return null;
-    const target = battle.combatants.find((combatant) => combatant.type === 'player' && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    const livingAllies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ALLY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    const target = livingAllies.find((combatant) => combatant.type === 'player') ?? livingAllies[0] ?? null;
     if (!target) return null;
 
     const ability = (enemy.combatAbilityIds ?? []).map(getEnemyAbility).find(Boolean) ?? null;
@@ -159,12 +162,24 @@ export function selectEnemyAction(battle, enemy) {
     });
 }
 
+export function selectCompanionAction(battle, companion) {
+    if (!battle || battle.phase !== 'active' || !companion || companion.battle?.defeated) return null;
+    const target = battle.combatants.find((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    if (!target) return null;
+    return Object.freeze({
+        kind: 'basicAttack',
+        actorId: companion.id,
+        targetId: target.id,
+        policy: companion.tactics?.policy ?? 'basic-attack-v1',
+    });
+}
+
 export function provideCombatInterrupts({ state, nowWorldSeconds, horizonWorldSeconds }) {
     const battle = state?.activeBattle;
     if (!battle || battle.phase !== 'active') return [];
     const timeline = initializeCombatTimeline(state, battle);
     return battle.combatants
-        .filter((combatant) => combatant.type === 'enemy' && !combatant.battle?.defeated && combatant.resources?.hp > 0)
+        .filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0)
         .map((enemy) => {
             const readyAt = Math.max(nowWorldSeconds, Number(timeline.readyAtByActorId[enemy.id]) || nowWorldSeconds);
             if (readyAt > horizonWorldSeconds) return null;
@@ -184,7 +199,7 @@ export function resolveEnemyReadyAction(state, enemyId, options = {}) {
     const battle = state?.activeBattle;
     if (!battle || battle.phase !== 'active') return { ok: false, code: 'combat.not-active', action: null };
     const enemy = getCombatant(battle, enemyId);
-    if (!enemy || enemy.type !== 'enemy' || enemy.battle?.defeated) return { ok: false, code: 'combat.enemy-unavailable', action: null };
+    if (!enemy || getCombatantSide(enemy) !== COMBAT_SIDES.ENEMY || enemy.battle?.defeated) return { ok: false, code: 'combat.enemy-unavailable', action: null };
     if (!options.force && !isCombatantReady(state, enemy.id)) {
         return { ok: false, code: 'combat.enemy-recovering', action: null, readyAtWorldSeconds: getCombatantReadyAt(state, enemy.id) };
     }
@@ -216,6 +231,40 @@ export function resolveEnemyReadyAction(state, enemyId, options = {}) {
     return { ok: true, code: 'combat.enemy-action-resolved', action, resolution, phase: battle.phase };
 }
 
+export function resolveCompanionResponse(state, options = {}) {
+    const battle = state?.activeBattle;
+    if (!battle || battle.phase !== 'active') return { ok: true, actions: [], phase: battle?.phase ?? null };
+    const actions = [];
+    const companions = battle.combatants.filter((combatant) => combatant.type === 'companion' && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    for (const companion of companions) {
+        if (!isCombatantReady(state, companion.id)) continue;
+        const selection = selectCompanionAction(battle, companion);
+        if (!selection) continue;
+        const resolution = resolveBasicAttack(battle, selection.actorId, selection.targetId, { rng: options.rng });
+        const action = recordCombatAction(state, {
+            battle,
+            actorId: companion.id,
+            actorType: 'companion',
+            targetId: selection.targetId,
+            kind: selection.kind,
+            sourceId: selection.policy,
+            outcome: resolution.outcome,
+            recoverySeconds: COMPANION_ACTION_RECOVERY_SECONDS,
+            data: {
+                hit: resolution.hit,
+                damage: resolution.damage,
+                defeatedTarget: resolution.defeatedTarget,
+                policy: selection.policy,
+                triggerActionId: options.triggerActionId ?? null,
+            },
+        });
+        actions.push(action);
+        if (battle.phase !== 'active') break;
+    }
+    finalizeCombatState(state);
+    return { ok: true, actions, phase: battle.phase };
+}
+
 export function resolveEnemyResponse(state, options = {}) {
     const battle = state?.activeBattle;
     if (!battle || battle.phase !== 'active') {
@@ -224,7 +273,7 @@ export function resolveEnemyResponse(state, options = {}) {
     }
 
     const resolvedActions = [];
-    const enemies = battle.combatants.filter((combatant) => combatant.type === 'enemy' && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    const enemies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
 
     for (const enemy of enemies) {
         const selection = selectEnemyAction(battle, enemy);
@@ -250,13 +299,25 @@ export function resolveEnemyResponse(state, options = {}) {
         });
         resolvedActions.push(action);
 
-        const target = getCombatant(battle, selection.targetId);
-        if (!target || target.battle?.defeated || target.resources?.hp <= 0 || battle.phase !== 'active') break;
+        if (battle.phase !== 'active') break;
     }
 
     if (resolvedActions.length) battle.round = Math.max(1, Number(battle.round) || 1) + 1;
     finalizeCombatState(state);
     return { ok: true, actions: resolvedActions, phase: battle.phase };
+}
+
+export function resolvePartyAndEnemyResponses(state, options = {}) {
+    const companion = resolveCompanionResponse(state, options);
+    const enemy = state.activeBattle?.phase === 'active'
+        ? resolveEnemyResponse(state, options)
+        : { ok: true, actions: [], phase: state.activeBattle?.phase ?? null };
+    return {
+        ok: true,
+        companionActions: companion.actions ?? [],
+        enemyActions: enemy.actions ?? [],
+        phase: state.activeBattle?.phase ?? enemy.phase ?? companion.phase ?? null,
+    };
 }
 
 export function reconcileCombatStatuses(state) {
@@ -279,6 +340,7 @@ export function finalizeCombatState(state) {
     ensureCombatContract(battle, { nowWorldSeconds: ensureWorldTimeState(state).totalSeconds, combatants: battle.combatants });
     reconcileCombatStatuses(state);
     syncPlayerFromCombat(state);
+    syncCompanionsFromBattle(state, battle);
 
     if (battle.phase === 'victory' && !battle.rewards?.resolved) {
         const rewardResult = resolveBattleRewards(state, battle);
@@ -343,7 +405,7 @@ function createCombatTimeline(options = {}) {
     const now = Math.max(0, Math.floor(Number(options.nowWorldSeconds) || 0));
     const readyAtByActorId = {};
     for (const combatant of options.combatants ?? []) {
-        readyAtByActorId[combatant.id] = combatant.type === 'enemy' ? now + ENEMY_OPENING_DELAY_SECONDS : now;
+        readyAtByActorId[combatant.id] = getCombatantSide(combatant) === COMBAT_SIDES.ENEMY ? now + ENEMY_OPENING_DELAY_SECONDS : now;
     }
     return { startedAtWorldSeconds: now, readyAtByActorId };
 }
