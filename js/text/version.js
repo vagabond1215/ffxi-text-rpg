@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.6.450.1';
-export const PACKAGE_VERSION = '0.6.450';
+export const PRODUCT_VERSION = '0.6.500.1';
+export const PACKAGE_VERSION = '0.6.500';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 22,
+    data: 23,
     benchmark: 1,
-    codename: 'Locality and Exploration Navigation',
+    codename: 'Equipment and Tool Breadth',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.450.1',
+    versionManifest: '0.6.500.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -32,7 +32,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     ecologyCatalog: '0.1.0',
     ecologyState: '0.1.0',
     populations: '0.1.0',
-    gatheringSources: '0.1.0',
+    gatheringSources: '0.2.0',
     resourceItems: '0.1.0',
     routeCatalog: '0.1.0',
     transport: '0.1.0',
@@ -89,8 +89,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     poiDiscovery: '0.3.6',
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
-    shops: '0.3.8',
-    shopTransactions: '0.3.8',
+    shops: '0.4.0',
+    shopTransactions: '0.4.0',
     guilds: '0.3.5',
     questHooks: '0.3.5',
     inventoryContainers: '0.5.1',
@@ -100,8 +100,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     itemStacking: '0.5.1',
     equipmentCommands: '0.5.0',
     equipmentEligibility: '0.5.1',
+    equipmentToolEngine: '0.1.0',
     itemInspection: '0.5.1',
-    equipmentCatalog: '0.6.1',
+    equipmentCatalog: '0.7.0',
     skillCaps: '0.5.2',
     homeStorage: '0.3.9',
     wardrobes: '0.3.9',
