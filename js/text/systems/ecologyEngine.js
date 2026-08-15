@@ -5,6 +5,7 @@ import {
     listPopulations,
 } from '../data/ecologyCatalog.js';
 import { getResourceItem } from '../data/resourceItems.js';
+import { collectAvailableToolTags } from './equipmentToolEngine.js';
 import { addItemToContainer } from './inventoryEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
@@ -24,15 +25,9 @@ export function createEcologyState(options = {}) {
 
 export function ensureEcologyState(state) {
     if (!state || typeof state !== 'object') throw new Error('Ecology state requires game state.');
-    if (!state.ecology || typeof state.ecology !== 'object' || Array.isArray(state.ecology)) {
-        state.ecology = createEcologyState();
-    }
-    if (!state.ecology.populations || typeof state.ecology.populations !== 'object' || Array.isArray(state.ecology.populations)) {
-        state.ecology.populations = {};
-    }
-    if (!state.ecology.gatheringSources || typeof state.ecology.gatheringSources !== 'object' || Array.isArray(state.ecology.gatheringSources)) {
-        state.ecology.gatheringSources = {};
-    }
+    if (!state.ecology || typeof state.ecology !== 'object' || Array.isArray(state.ecology)) state.ecology = createEcologyState();
+    if (!state.ecology.populations || typeof state.ecology.populations !== 'object' || Array.isArray(state.ecology.populations)) state.ecology.populations = {};
+    if (!state.ecology.gatheringSources || typeof state.ecology.gatheringSources !== 'object' || Array.isArray(state.ecology.gatheringSources)) state.ecology.gatheringSources = {};
     const issues = validateEcologyState(state.ecology);
     if (issues.length) throw new Error(issues.join(' '));
     return state.ecology;
@@ -49,19 +44,13 @@ export function getPopulationAvailability(state, populationId) {
 export function consumePopulationUnits(state, populationId, quantity = 1) {
     const definition = getPopulation(populationId);
     if (!definition) return failure('ecology.population-not-found', { populationId }, `Unknown population: ${populationId}`);
-    if (!conditionsMet(state, definition.appearanceConditions)) {
-        return failure('ecology.population-inactive', { populationId }, `${definition.id} is not currently active.`);
-    }
+    if (!conditionsMet(state, definition.appearanceConditions)) return failure('ecology.population-inactive', { populationId }, `${definition.id} is not currently active.`);
 
     const record = ensurePopulationRecord(state, definition);
     reconcilePoolRecord(state, record, definition.capacity, definition.respawn);
     const amount = normalizeQuantity(quantity);
     if (amount > record.availableUnits) {
-        return failure('ecology.population-depleted', {
-            populationId,
-            requested: amount,
-            available: record.availableUnits,
-        }, `${definition.id} has only ${record.availableUnits} available population units.`);
+        return failure('ecology.population-depleted', { populationId, requested: amount, available: record.availableUnits }, `${definition.id} has only ${record.availableUnits} available population units.`);
     }
 
     const now = ensureWorldTimeState(state).totalSeconds;
@@ -79,11 +68,7 @@ export function consumePopulationUnits(state, populationId, quantity = 1) {
         action: 'ecology.population-consume',
         code: 'ecology.population-consumed',
         outcome: 'consumed',
-        data: {
-            population: populationSnapshot(state, definition, record),
-            quantity: amount,
-            eventId: event.id,
-        },
+        data: { population: populationSnapshot(state, definition, record), quantity: amount, eventId: event.id },
         display: { text: `${definition.id} population reduced by ${amount}.` },
     });
 }
@@ -100,17 +85,11 @@ export function harvestGatheringSource(state, sourceId, options = {}) {
     const definition = getGatheringSource(sourceId);
     if (!definition) return failure('ecology.source-not-found', { sourceId }, `Unknown gathering source: ${sourceId}`);
     if (!options.ignorePlace && state.currentPlaceId !== definition.placeId) {
-        return failure('ecology.source-wrong-place', {
-            sourceId,
-            requiredPlaceId: definition.placeId,
-            currentPlaceId: state.currentPlaceId ?? null,
-        }, `${definition.name} is not available in the current place.`);
+        return failure('ecology.source-wrong-place', { sourceId, requiredPlaceId: definition.placeId, currentPlaceId: state.currentPlaceId ?? null }, `${definition.name} is not available in the current place.`);
     }
-    if (!conditionsMet(state, definition.appearanceConditions)) {
-        return failure('ecology.source-inactive', { sourceId }, `${definition.name} is not currently available.`);
-    }
+    if (!conditionsMet(state, definition.appearanceConditions)) return failure('ecology.source-inactive', { sourceId }, `${definition.name} is not currently available.`);
 
-    const toolTags = new Set((options.toolTags ?? []).map(String));
+    const toolTags = new Set(collectAvailableToolTags(state.player, options.toolTags));
     const missingTools = definition.requiredToolTags.filter((tag) => !toolTags.has(tag));
     if (missingTools.length) {
         return failure('ecology.tool-required', { sourceId, missingTools }, `${definition.name} requires tool capability: ${missingTools.join(', ')}.`);
@@ -129,11 +108,7 @@ export function harvestGatheringSource(state, sourceId, options = {}) {
     reconcilePoolRecord(state, record, definition.capacity, definition.regeneration);
     const amount = normalizeQuantity(options.quantity ?? 1);
     if (amount > record.availableUnits) {
-        return failure('ecology.source-depleted', {
-            sourceId,
-            requested: amount,
-            available: record.availableUnits,
-        }, `${definition.name} has only ${record.availableUnits} recoverable units available.`);
+        return failure('ecology.source-depleted', { sourceId, requested: amount, available: record.availableUnits }, `${definition.name} has only ${record.availableUnits} recoverable units available.`);
     }
 
     const template = getResourceItem(definition.outputItemId);
@@ -153,9 +128,7 @@ export function harvestGatheringSource(state, sourceId, options = {}) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return failure('ecology.inventory-missing', { sourceId }, 'No inventory state is available for gathered material.');
     const addResult = addItemToContainer(inventoryState, options.containerId ?? 'inventory', item, options.inventoryContext ?? {});
-    if (!addResult.ok) {
-        return failure('ecology.storage-failed', { sourceId, itemId: item.id, reason: addResult.reason }, addResult.reason);
-    }
+    if (!addResult.ok) return failure('ecology.storage-failed', { sourceId, itemId: item.id, reason: addResult.reason }, addResult.reason);
 
     record.availableUnits -= amount;
     record.lastUpdatedAtWorldSeconds = worldTimeSeconds;
@@ -172,12 +145,7 @@ export function harvestGatheringSource(state, sourceId, options = {}) {
         action: 'ecology.harvest',
         code: 'ecology.resource-harvested',
         outcome: 'harvested',
-        data: {
-            source: gatheringSourceSnapshot(state, definition, record),
-            item: addResult.item,
-            quantity: amount,
-            eventId: event.id,
-        },
+        data: { source: gatheringSourceSnapshot(state, definition, record), item: addResult.item, quantity: amount, eventId: event.id },
         display: { text: `Recovered ${amount} ${template.name} from ${definition.name}.` },
     });
 }
@@ -201,12 +169,8 @@ export function isGatheringSourceActive(state, sourceId) {
 }
 
 export function reconcileEcologyState(state) {
-    for (const population of listPopulations()) {
-        if (state.ecology?.populations?.[population.id]) getPopulationAvailability(state, population.id);
-    }
-    for (const source of listGatheringSources()) {
-        if (state.ecology?.gatheringSources?.[source.id]) getGatheringSourceAvailability(state, source.id);
-    }
+    for (const population of listPopulations()) if (state.ecology?.populations?.[population.id]) getPopulationAvailability(state, population.id);
+    for (const source of listGatheringSources()) if (state.ecology?.gatheringSources?.[source.id]) getGatheringSourceAvailability(state, source.id);
     return ensureEcologyState(state);
 }
 
@@ -231,11 +195,7 @@ function ensureGatheringSourceRecord(state, definition) {
 
 function ensurePoolRecord(state, records, id, capacity) {
     if (!records[id]) {
-        records[id] = {
-            id,
-            availableUnits: capacity,
-            lastUpdatedAtWorldSeconds: ensureWorldTimeState(state).totalSeconds,
-        };
+        records[id] = { id, availableUnits: capacity, lastUpdatedAtWorldSeconds: ensureWorldTimeState(state).totalSeconds };
     }
     return records[id];
 }
@@ -251,9 +211,7 @@ function reconcilePoolRecord(state, record, capacity, rule) {
     const cycles = Math.floor(elapsed / rule.everySeconds);
     if (cycles <= 0) return record;
     record.availableUnits = Math.min(capacity, record.availableUnits + cycles * rule.units);
-    record.lastUpdatedAtWorldSeconds = record.availableUnits >= capacity
-        ? now
-        : record.lastUpdatedAtWorldSeconds + cycles * rule.everySeconds;
+    record.lastUpdatedAtWorldSeconds = record.availableUnits >= capacity ? now : record.lastUpdatedAtWorldSeconds + cycles * rule.everySeconds;
     return record;
 }
 
