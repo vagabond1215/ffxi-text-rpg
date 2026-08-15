@@ -14,8 +14,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.300.1');
-    assert.equal(PACKAGE_VERSION, '0.6.300');
+    assert.equal(PRODUCT_VERSION, '0.6.400.1');
+    assert.equal(PACKAGE_VERSION, '0.6.400');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -24,14 +24,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 21);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.6\.300\.1/);
-    assert.match(describeVersion(), /Package: 0\.6\.300/);
+    assert.match(describeVersion(), /Product: 0\.6\.400\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.400/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 21/);
-    assert.match(describeVersion(), /Codename: Original Magic and Abilities/);
+    assert.match(describeVersion(), /Codename: Combat 2\.0 Foundation/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.300\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.400\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -64,7 +64,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /characterStats: 0\.1\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.2\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /abilityEngine: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /abilityEngine: 0\.2\.0/);
     assert.match(describeSystemVersions(), /magic: 0\.1\.0/);
     assert.match(describeSystemVersions(), /abilities: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerEntity: 0\.8\.0/);
@@ -82,7 +82,9 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /companions: planned/);
     assert.match(describeSystemVersions(), /canvasUi: 0\.8\.0/);
     assert.match(describeSystemVersions(), /uiIntents: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /combatActions: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /battleEngine: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /combatTurns: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /combatActions: 0\.6\.0/);
     assert.match(describeSystemVersions(), /battleRewards: 0\.6\.0/);
     assert.match(describeSystemVersions(), /itemSchema: 0\.7\.0/);
     assert.match(describeSystemVersions(), /itemBehavior: 0\.1\.0/);
