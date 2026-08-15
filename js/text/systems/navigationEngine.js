@@ -10,6 +10,7 @@ import {
 import { getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
+import { syncActivePartyLocation } from './partyEngine.js';
 import { cancelTravelJourney } from './transportEngine.js';
 
 export function canMoveDirection(state, direction) {
@@ -98,6 +99,7 @@ function moveWithinPlace(state, edge) {
         : edge.to;
     const result = setPositionAndDiscover(state, destination.id, next);
     if (!result.ok) return result;
+    syncActivePartyLocation(state, destination.id);
     const seconds = calculateMoveDuration(destination, edge);
     return {
         ok: true,
@@ -114,6 +116,7 @@ function moveThroughExit(state, edge) {
     const arrival = { ...(edge.arriveAt ?? destination.coordinateSystem.start), facing: edge.arriveAt?.facing ?? edge.direction };
     const result = setPositionAndDiscover(state, destination.id, arrival, { important: ['Place arrival'] });
     if (!result.ok) return result;
+    syncActivePartyLocation(state, destination.id);
     const seconds = calculateMoveDuration(edge.place, edge);
     return {
         ok: true,
