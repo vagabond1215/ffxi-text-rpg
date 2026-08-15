@@ -182,6 +182,14 @@ function bronzeArmor(id, name, slot, tags, modifiers) {
 }
 
 function fieldTool(id, name, subtype, toolTags, options = {}) {
+    const notes = originalFieldNotes(`Field tool supplies ${toolTags.join(', ')} capability through the equipped loadout.`);
+    if (options.weaponDelay) {
+        notes.weaponDelay = {
+            confidence: CONFIDENCE_LABELS.PLACEHOLDER,
+            source: STARTER_SOURCE,
+            notes: 'Provisional combat timing for a field tool that can also function as a weapon.',
+        };
+    }
     return equipment(id, name, {
         family: 'tool', archetype: 'fieldTool', subtype, equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
         requirements: requirement(),
@@ -190,7 +198,7 @@ function fieldTool(id, name, subtype, toolTags, options = {}) {
         weaponCategory: options.weaponCategory ?? null,
         weaponDelay: options.weaponDelay ?? null,
         modifiers: options.modifiers ?? {},
-        fieldNotes: originalFieldNotes(`Field tool supplies ${toolTags.join(', ')} capability through the equipped loadout.`),
+        fieldNotes: notes,
     });
 }
 
