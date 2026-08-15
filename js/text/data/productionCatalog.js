@@ -1,70 +1,53 @@
-import { getResourceItem } from './resourceItems.js';
+import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { getProductionItem } from './productionItems.js';
 
-export const PRODUCTION_CATALOG_VERSION = 1;
+export const PRODUCTION_CATALOG_VERSION = 2;
 export const PRODUCTION_KINDS = Object.freeze(['processing', 'crafting', 'cooking', 'salvage']);
 
 const PRODUCTION_DEFINITIONS = Object.freeze({
     'process-redstone-copper-ingot': processDefinition({
-        id: 'process-redstone-copper-ingot',
-        name: 'Smelt Redstone Copper',
-        kind: 'processing',
-        durationSeconds: 300,
-        proficiencyId: 'metalworking',
-        proficiencyGain: 2,
-        requiredStationTags: ['forge'],
-        inputs: [{ itemId: 'item-redstone-copper-ore', quantity: 2 }],
-        outputs: [{ itemId: 'item-redstone-copper-ingot', quantity: 1 }],
+        id: 'process-redstone-copper-ingot', name: 'Smelt Redstone Copper', kind: 'processing', durationSeconds: 300,
+        proficiencyId: 'metalworking', proficiencyGain: 2, requiredStationTags: ['forge'],
+        inputs: [{ itemId: 'item-redstone-copper-ore', quantity: 2 }], outputs: [{ itemId: 'item-redstone-copper-ingot', quantity: 1 }],
     }),
     'craft-copper-trail-clasp': processDefinition({
-        id: 'craft-copper-trail-clasp',
-        name: 'Craft Copper Trail Clasp',
-        kind: 'crafting',
-        durationSeconds: 240,
-        proficiencyId: 'metalworking',
-        proficiencyGain: 2,
-        requiredStationTags: ['forge'],
-        inputs: [
-            { itemId: 'item-redstone-copper-ingot', quantity: 1 },
-            { itemId: 'item-starfen-reed-fiber', quantity: 1 },
-        ],
+        id: 'craft-copper-trail-clasp', name: 'Craft Copper Trail Clasp', kind: 'crafting', durationSeconds: 240,
+        proficiencyId: 'metalworking', proficiencyGain: 2, requiredStationTags: ['forge'],
+        inputs: [{ itemId: 'item-redstone-copper-ingot', quantity: 1 }, { itemId: 'item-starfen-reed-fiber', quantity: 1 }],
         outputs: [{ itemId: 'item-copper-trail-clasp', quantity: 1 }],
     }),
     'cook-silverfin-sweetroot-stew': processDefinition({
-        id: 'cook-silverfin-sweetroot-stew',
-        name: 'Cook Silverfin Sweetroot Stew',
-        kind: 'cooking',
-        durationSeconds: 180,
-        proficiencyId: 'cooking',
-        proficiencyGain: 2,
-        requiredStationTags: ['kitchen'],
-        inputs: [
-            { itemId: 'item-starfen-silverfin', quantity: 1 },
-            { itemId: 'item-elderwood-sweetroot', quantity: 1 },
-        ],
+        id: 'cook-silverfin-sweetroot-stew', name: 'Cook Silverfin Sweetroot Stew', kind: 'cooking', durationSeconds: 180,
+        proficiencyId: 'cooking', proficiencyGain: 2, requiredStationTags: ['kitchen'],
+        inputs: [{ itemId: 'item-starfen-silverfin', quantity: 1 }, { itemId: 'item-elderwood-sweetroot', quantity: 1 }],
         outputs: [{ itemId: 'item-silverfin-sweetroot-stew', quantity: 2 }],
     }),
     'salvage-copper-trail-clasp': processDefinition({
-        id: 'salvage-copper-trail-clasp',
-        name: 'Salvage Copper Trail Clasp',
-        kind: 'salvage',
-        durationSeconds: 120,
-        proficiencyId: 'salvage',
-        proficiencyGain: 1,
-        requiredStationTags: ['forge'],
-        inputs: [{ itemId: 'item-copper-trail-clasp', quantity: 1 }],
-        outputs: [{ itemId: 'item-copper-scrap', quantity: 1 }],
+        id: 'salvage-copper-trail-clasp', name: 'Salvage Copper Trail Clasp', kind: 'salvage', durationSeconds: 120,
+        proficiencyId: 'salvage', proficiencyGain: 1, requiredStationTags: ['forge'],
+        inputs: [{ itemId: 'item-copper-trail-clasp', quantity: 1 }], outputs: [{ itemId: 'item-copper-scrap', quantity: 1 }],
     }),
     'process-copper-scrap-remelt': processDefinition({
-        id: 'process-copper-scrap-remelt',
-        name: 'Remelt Copper Scrap',
-        kind: 'processing',
-        durationSeconds: 240,
-        proficiencyId: 'metalworking',
-        proficiencyGain: 1,
-        requiredStationTags: ['forge'],
-        inputs: [{ itemId: 'item-copper-scrap', quantity: 2 }],
-        outputs: [{ itemId: 'item-redstone-copper-ingot', quantity: 1 }],
+        id: 'process-copper-scrap-remelt', name: 'Remelt Copper Scrap', kind: 'processing', durationSeconds: 240,
+        proficiencyId: 'metalworking', proficiencyGain: 1, requiredStationTags: ['forge'],
+        inputs: [{ itemId: 'item-copper-scrap', quantity: 2 }], outputs: [{ itemId: 'item-redstone-copper-ingot', quantity: 1 }],
+    }),
+    'craft-elderwood-resin-board': processDefinition({
+        id: 'craft-elderwood-resin-board', name: 'Seal Elderwood Hardwood Board', kind: 'crafting', durationSeconds: 240,
+        proficiencyId: 'crafting', proficiencyGain: 2, requiredStationTags: ['woodshop'],
+        inputs: [{ itemId: 'item-elderwood-hardwood', quantity: 1 }, { itemId: 'item-elderwood-amber-resin', quantity: 1 }],
+        outputs: [{ itemId: 'item-elderwood-resin-board', quantity: 1 }],
+    }),
+    'process-redstone-iron-bloom': processDefinition({
+        id: 'process-redstone-iron-bloom', name: 'Smelt Redstone Iron Bloom', kind: 'processing', durationSeconds: 360,
+        proficiencyId: 'metalworking', minProficiency: 2, proficiencyGain: 3, requiredStationTags: ['forge'],
+        inputs: [{ itemId: 'item-redstone-iron-ore', quantity: 2 }], outputs: [{ itemId: 'item-redstone-iron-bloom', quantity: 1 }],
+    }),
+    'cook-starfen-bluekelp-broth': processDefinition({
+        id: 'cook-starfen-bluekelp-broth', name: 'Cook Bluekelp Silverfin Broth', kind: 'cooking', durationSeconds: 160,
+        proficiencyId: 'cooking', proficiencyGain: 2, requiredStationTags: ['kitchen'],
+        inputs: [{ itemId: 'item-starfen-bluekelp', quantity: 1 }, { itemId: 'item-starfen-silverfin', quantity: 1 }],
+        outputs: [{ itemId: 'item-starfen-bluekelp-broth', quantity: 2 }],
     }),
 });
 
@@ -77,7 +60,7 @@ export function listProductionDefinitions() {
 }
 
 export function getProductionInputItem(itemId) {
-    return getResourceItem(itemId) ?? getProductionItem(itemId);
+    return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId);
 }
 
 export function validateProductionCatalog() {
