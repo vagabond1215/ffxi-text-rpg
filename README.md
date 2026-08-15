@@ -18,84 +18,164 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
+Navigation law:
+
+```text
+Use fine movement where movement itself creates decisions.
+Use named localities and actions where destinations and relationships create decisions.
+```
+
 ## Current version
 
 ```text
-Product:      0.6.250.1
-Package:      0.6.250
+Product:      0.6.500.1
+Package:      0.6.500
 Account Save: 4
 Game State:   5
-Data:         20
+Data:         23
 Benchmark:    1
-Codename:     Player Interface Architecture
+Codename:     Equipment and Tool Breadth
 ```
 
-`js/text/version.js` is authoritative for runtime and subsystem versions. Product versions use `MAJOR.PHASE.TRACK.REVISION`; `package.json.version` remains three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
+`js/text/version.js` is authoritative for runtime/subsystem versions. Product versions use `MAJOR.PHASE.TRACK.REVISION`; `package.json.version` remains three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
 
 ## Milestone state
 
-**Phase 0.5 — Simulation and Content Substrate is complete. Phase 0.6 is active through 0.6.250.**
+**Phase 0.5 — Simulation and Content Substrate is complete. Phase 0.6 is active through 0.6.500.**
 
-The completed simulation substrate includes deterministic fictional time, pause/speed control, timed tasks, advance-until-interrupt behavior, day boundaries/reviews, original-world IDs, projects, resource provenance, ecology/gathering populations, canonical routes/scheduled transport, regional content packs, scalable validation, and an explicit historical 0.5 readiness gate.
+The current integrated foundation includes:
 
-`0.6.100` established character-owned stats and progression. Persistent base growth follows the highest attained discipline training rank; the active discipline supplies contextual training/stat modifiers rather than owning the person.
+- deterministic fictional time, pause/speed, timed tasks, interrupts, day review, routes, scheduled transport, projects, ecology, provenance, and scalable content-pack validation;
+- one continuous character whose learned skills/capabilities persist across discipline changes;
+- original executable magic/ability definitions separated from capability ownership;
+- Combat 2.0 structured actions, canonical readiness/recovery timing, timed-cast interruption, canonical status expiry, and an original enemy active-ability seam;
+- semantic DOM/CSS browser presentation with contextual actions and a single-screen character creator;
+- named safe-settlement locality navigation that omits the exploration map/compass, while wilderness retains the acquired-knowledge map and directional movement;
+- representative original weapons, armor, accessories, travel gear, and usable field tools whose equipped tags satisfy practical capability/gathering requirements.
 
-`0.6.200` established a character-owned capability layer. Disciplines can provide learning paths, but learned capabilities persist on the continuous character. Capability use checks concrete prerequisites—proficiency, equipment, tools, preparation, resources, flags, and world/action context—rather than universally checking the currently active discipline.
+This remains **pre-alpha systems development**, not content completion. The next bounded track is `0.6.600`: gathering/hunting/processing/crafting/cooking/salvage loops built on canonical time, tools, capability/proficiency, provenance, and resource sinks.
 
-`0.6.250` establishes the **player interface architecture** before the action catalog grows further. The active browser shell is now semantic DOM/CSS rather than full-canvas rendering. The main view presents the world/scene, a discovery-driven SVG local map, compact status, a small set of contextual actions, primary information views, recent meaningful events, and a keyboard-friendly Search-or-act field. Character creation is one screen with native wrapping and a live starting-profile summary rather than a multi-step wizard.
-
-This remains **pre-alpha foundation and representative mechanics, not content completion**. The next bounded mechanics track is `0.6.300`, which will establish original magic and executable active-ability contracts without opening the full Combat 2.0 rewrite.
-
-### Original-world anchors
+## Original-world anchors
 
 - **Thornwall** and the **Elderwood**;
 - **Brasshaven** and the **Redstone Reach**;
 - **Mistmere** and the **Starfen**;
 - future central trade hub **Waymeet**.
 
-Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. The transitional starting disciplines are **Vanguard, Pugilist, Lifewarden, Elementalist, Spellblade, and Shadowhand**.
+Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. Disciplines are training traditions rather than magical class transformations.
 
-### Deliberate compatibility debt
+## Player interface
 
-The project does not erase compatibility tokens by inventing replacement canon without design support:
+The player-facing UI is a **world interface**, not a permanent command console.
 
-- `gil` remains the current currency term until an original currency design is deliberately chosen;
-- historical localStorage key names remain for save compatibility;
-- some legacy-shaped POI hook IDs remain while dependent shop/quest/guild references are migrated atomically;
-- `places.js` connection records remain a bounded fallback for travel paths not yet represented by canonical route records;
-- encounter `spawnRules` remain a bounded transitional placement layer beside canonical ecology populations;
-- `mainJobId`, `player.jobs`, `raceId`, and related persisted/internal property names remain compatibility seams while ownership semantics move to the continuous character;
-- current equipment eligibility and skill-cap data still use discipline-shaped compatibility fields where a later capability migration is required;
-- `legacyIdentity`, save migrations, `legacyRecoveredData`, and `ffxi*` research modules retain historical names because their purpose is explicitly compatibility/reference work;
-- legacy command aliases may still be accepted at adapter boundaries, while canonical help and new runtime records use original-world vocabulary;
-- the former canvas application remains as a transitional regression/reference shell, but it is no longer the active browser entry point.
+The active browser shell is semantic DOM/CSS:
+
+```text
+index.html
+  -> js/main.js
+      -> createDomApp(host)
+          -> authoritative game/save/command/intent services
+          -> createGameViewModel(state, uiState)
+          -> renderDomApp(...)
+```
+
+Primary information navigation currently includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual actions stay small and situation-dependent. The bottom Search-or-act field remains a typed-command/power-user adapter; it is not yet a full fuzzy entity/action search engine.
+
+### Settlement/locality navigation
+
+Safe guarded city areas use named destinations and locality actions. The active renderer does not emit a local exploration map or D-pad there. Crossing between adjacent localities consumes authored coarse fictional time and remains interruptible.
+
+### Exploration navigation
+
+Wilderness/dungeons and other terrain-sensitive spaces retain directional movement and a discovery-relative SVG map. Authored coordinates, undiscovered total extent, and hidden placement inside authored bounds are simulation data and are not automatically exposed to the player.
+
+Higher-resolution shaped exploration cartography remains a later presentation/content option; it is no longer needed simply to make ordinary city interaction usable.
+
+### Character creation
+
+The active creator keeps name, ancestry, sex, origin, and starting discipline on one screen with a live starting profile. Starting discipline is initial training, not permanent class identity or a universal capability gate.
+
+## Character, combat, and equipment model
+
+### One person, many disciplines
+
+`characterStatEngine.js`, progression/skill systems, `data/capabilities.js`, and `capabilityEngine.js` keep character ownership separate from active training context. A discipline may teach or improve something without owning the learned capability forever.
+
+### Original active abilities
+
+`data/abilities.js` + `abilityEngine.js` own executable effects, targeting, costs, timed activation, cooldowns, and interruption. Capability records own learned/use prerequisites. These responsibilities remain separate.
+
+### Combat 2.0
+
+`combatTurnEngine.js` maintains structured action history and a fictional-time readiness timeline. `combatSimulationEngine.js` composes enemy-ready and ability-completion interrupts through the canonical simulation engine, allowing enemy actions to interleave with timed casts. `statusEngine.js` reconciles finite status expiry against canonical world time.
+
+### Equipment and field tools
+
+`data/equipmentCatalog.js` now includes representative equipment breadth plus:
+
+```text
+Field Knife        -> cutting / practical recovery
+Prospector Pick    -> mining
+Woodsman Hatchet   -> woodcutting
+Digging Spade      -> digging
+Reed Sickle        -> cutting
+Marsh Fishing Rod  -> fishing
+```
+
+`equipmentToolEngine.js` resolves equipped item tags for capability/gathering requirements. New original equipment is authored without active-discipline restrictions by default. Older starter `allowedJobs` fields remain bounded compatibility debt.
+
+Representative settlement shops sell the new gear as normalized equipment, so bought tools enter the same inventory/equip/loadout systems used elsewhere.
+
+## Fictional time and resources
+
+Simulation time and wall-clock time are separate. Canonical fictional seconds drive tasks, projects, ecology regeneration, transport schedules, travel arrival, combat recovery, timed abilities, status expiry, interrupt discovery, and day review.
+
+A defeated creature does not automatically manufacture finished materials in inventory. Combat/environmental gathering creates physical resource opportunities or provenance-bearing raw materials that should flow through processing, use, wear, recycling/salvage, and replacement loops.
+
+Desired material flow remains:
+
+```text
+world source
+  -> raw material
+  -> processing
+  -> component/ingredient
+  -> finished good
+  -> use/wear/consumption
+  -> repair/recycling/salvage or replacement
+```
+
+`0.6.600` is the next track that turns more of this chain into playable work.
+
+## Deliberate compatibility debt
+
+Do not erase compatibility tokens by inventing replacement canon without design support:
+
+- `gil` remains current currency terminology until an original currency design is deliberately chosen;
+- historical localStorage keys remain for save compatibility;
+- some legacy-shaped POI hook IDs remain while dependent references use them internally;
+- `places.js` connections remain bounded fallback/locality adjacency where canonical routes are not the appropriate authority;
+- encounter `spawnRules` remain transitional beside canonical ecology populations;
+- `mainJobId`, `player.jobs`, `raceId`, and related persisted/internal names remain compatibility seams;
+- older starter equipment eligibility still contains discipline-shaped fields; new original gear should not copy that pattern by default;
+- historical FFXI research modules remain bounded reference/migration surfaces;
+- Canvas UI modules remain regression/reference code but are not the active browser entry point.
 
 ## Read these first
 
-1. `AGENTS.md` — repository operating rules and session limits.
-2. `docs/THREAD_HANDOFF.md` — current implementation continuation state.
-3. `docs/DEVELOPMENT_DIRECTION.md` — design north star.
-4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world naming, legacy boundaries, provenance, and content-scale policy.
-5. `docs/ROADMAP.md` — current implementation status and sequence.
-6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product/schema version protocol and release gates.
-7. `docs/TRANSITIONAL_ARCHITECTURE.md` — temporary seams and migration constraints.
-8. `docs/ARCHITECTURE.md` — runtime/module boundaries.
-9. `js/text/version.js` — authoritative active version values.
-
-Older planning documents can preserve useful history but do not override these files.
+1. `AGENTS.md`
+2. `docs/THREAD_HANDOFF.md`
+3. `docs/DEVELOPMENT_DIRECTION.md`
+4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
+5. `docs/ROADMAP.md`
+6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+7. `docs/TRANSITIONAL_ARCHITECTURE.md`
+8. `docs/ARCHITECTURE.md`
+9. `docs/LOCALITY_AND_EXPLORATION_MODEL.md`
+10. `js/text/version.js`
 
 ## Running
 
-Serve the repository over localhost; do not open `index.html` directly with `file://` because browser ES-module imports require an HTTP origin.
-
-Windows launchers:
-
-```text
-Start Server.cmd
-Play.cmd
-```
-
-Or:
+Serve over localhost; do not open `index.html` via `file://` because browser ES-module imports require an HTTP origin.
 
 ```bash
 npm run serve
@@ -119,150 +199,21 @@ npm run benchmark
 npm run check
 ```
 
-GitHub Actions runs test/build checks for pushes to `main`. During the current early single-maintainer phase, repository work normally proceeds directly on `main`; branch/PR ceremony can be tightened when collaboration or release risk makes it useful.
+GitHub Actions runs test/build checks for pushes to `main`. During the current early single-maintainer phase, work normally proceeds directly on `main`; branch/PR protections can be tightened when collaboration/release risk requires them.
 
-## Player interface direction
-
-The player-facing UI is a **world interface**, not a permanent command console.
-
-The default game screen keeps six concerns close at hand:
-
-```text
-location + fictional time
-local acquired-knowledge map
-world / scene presentation
-compact character status
-contextual actions
-Search-or-act input
-```
-
-The center pane is the current scene or selected information view; it is not labeled as an output log. Information navigation currently includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Context actions are deliberately small and situation-dependent: nearby interactions in normal exploration, combat actions in battle, and stop/control actions during travel.
-
-The Search-or-act field remains a power-user route into existing typed/slash commands. It is not yet a full fuzzy cross-database search engine. As systems mature, command-backed views should be replaced incrementally with dedicated semantic view models while preserving typed commands as useful adapters.
-
-### Maps are acquired knowledge
-
-The local map is derived from the same per-place atlas discoveries used by navigation. It begins sparse and reveals cells/connections as movement discovers them instead of exposing a complete authoritative layout. SVG is used for map presentation; atlas state remains the authority. The compact D-pad remains beneath the map as a secondary/fine-movement control, with keyboard movement also available.
-
-### Character creation is configuration, not a wizard
-
-The active creator keeps name, ancestry, sex, origin, and starting discipline on one screen, alongside a live starting profile. Selections update their descriptions immediately and native HTML handles wrapping. The starting discipline is explicitly initial training, not a permanent class identity or universal capability gate.
-
-## Product direction in brief
-
-### One person, many disciplines
-
-A discipline is a training tradition, not a magical identity swap. Learned techniques, spells, recipes, and practical capabilities ultimately belong to the continuous character. Actual use depends on real prerequisites such as proficiency, equipment, tools, ammunition, reagents, resources, injury/status, terrain, preparation, and formal training where the fiction requires it.
-
-`characterStatEngine.js` owns persistent character base growth independently from the currently active discipline, and `capabilityEngine.js` separates **how a capability is learned** from **whether its concrete use requirements are currently satisfied**. The historical `mainJobId` field remains an internal compatibility identifier, not a new universal permission boundary.
-
-### Character progression is persistent
-
-`player.progression.character` tracks character-level training history while per-discipline records preserve discipline-specific levels and EXP. Changing active discipline can change contextual modifiers or the window in which a proficiency can improve, but it cannot erase previously learned character proficiency or reduce the character's persistent base-growth rank.
-
-### Capabilities are owned; prerequisites are checked at use time
-
-`data/capabilities.js` and `systems/capabilityEngine.js` establish representative technique/practical capability contracts. A capability can have one or more discipline learning paths or an open learning path. Once learned it lives in `player.progression.capabilities`, independent of the active discipline.
-
-The initial capability records are representative substrate, not a mass-authored technique catalog. Execution/effect definitions remain a separate concern for `0.6.300` and later combat integration.
-
-### Long fictional time without needless real waiting
-
-Simulation time and wall-clock time are separate. Canonical fictional seconds drive tasks, projects, ecology regeneration, transport schedules, travel arrival, rare/time-window conditions, interrupt discovery, and day review. Wall-clock ticks are only scheduler input.
-
-### Travel is world activity, not a menu teleport
-
-Canonical routes carry stable stops, fictional duration, distance, hazards, transport compatibility, cargo/encumbrance hooks, and map/knowledge metadata. Walking a route creates a timed task whose completion is derived from world time. Scheduled services use deterministic departure cadence and arrival rather than wall-clock waiting.
-
-### Resource provenance instead of reward confetti
-
-A defeated creature does not automatically manufacture finished crafting materials in inventory. Combat can create a body, carried-goods opportunity, or salvage opportunity. Environmental gathering uses the same provenance model, with depletion and regeneration driven by canonical time.
-
-Desired material flow remains:
-
-```text
-world source
-  -> raw material
-  -> processing
-  -> component/ingredient
-  -> finished good
-  -> use/wear/consumption
-  -> repair/recycling/salvage or replacement
-```
-
-### Regional content is a validated graph
-
-`data/contentPackSchema.js`, `data/regionalContentPacks.js`, `systems/contentPackValidator.js`, and `data/legacyCandidateNormalizer.js` establish the regional-content architecture. Packs own human-meaningful stable IDs, declare dependencies, and cross-reference geography, routes/services, ecology, resources/items, NPCs, shops, recipes, quests, and relationships.
-
-Legacy/reference normalization only produces review candidates. Successful parsing cannot make historical content canonical. Generated fixtures prove validation over hundreds of interconnected records before broad hand-authored expansion.
-
-## Current architecture
-
-```text
-index.html
-  -> js/main.js
-      -> createDomApp(host)
-          -> loadActiveCharacter() or createInitialState()
-          -> createCommandRouter(state)
-          -> createSlashCommandRouter(state)
-          -> dispatchUiIntent(...)
-          -> createGameViewModel(state, uiState)
-          -> renderDomApp(...)
-```
-
-Game logic stays separate from DOM/SVG rendering. `gameViewModel.js` is the renderer-oriented semantic presentation seam; it derives scene, map, status, movement, activity, and contextual-action information from authoritative state. Canvas modules remain transitional regression/reference code but are no longer mounted by the browser.
-
-Important current substrate files include:
-
-```text
-js/text/ui/domApp.js
-js/text/ui/domRenderer.js
-js/text/ui/gameViewModel.js
-js/text/ui/uiState.js
-js/text/ui/uiIntentDispatcher.js
-js/text/ui/minimapModel.js
-js/text/systems/characterStatEngine.js
-js/text/systems/progressionEngine.js
-js/text/systems/skillProgressionEngine.js
-js/text/data/capabilities.js
-js/text/systems/capabilityEngine.js
-js/text/data/ecologyCatalog.js
-js/text/data/routeCatalog.js
-js/text/data/contentPackSchema.js
-js/text/data/regionalContentPacks.js
-js/text/systems/ecologyEngine.js
-js/text/systems/transportEngine.js
-js/text/systems/contentPackValidator.js
-js/text/systems/simulationSubstrateGate.js
-```
-
-## Save model
-
-Historical localStorage keys are retained under compatibility policy:
-
-```text
-ffxiTextRpgAccounts
-ffxiTextRpgAccountSession
-```
-
-Encoding is `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle registered persistence-version transitions, while `reviveGameState()` repairs post-JSON references such as inventory-container links.
-
-Account Save remains v4 and Game State remains v5. Character stat/progression and capability state are additive/lazily repairable Game State v5 fields. Data remains **v20** for the canonical capability learning/use contract. The `0.6.250` interface architecture is presentation-only with respect to persistence and canonical Data contracts.
-
-## Immediate implementation sequence
+## Immediate sequence
 
 ```text
 0.5.900  Simulation/content-substrate exit gate              COMPLETE
 0.6.100  Character stats and progression                     COMPLETE
 0.6.200  Skills/proficiencies/disciplines/capabilities       COMPLETE
 0.6.250  Player interface architecture                       COMPLETE
-0.6.300  Original magic and active ability engine            NEXT
-0.6.400  Combat 2.0
-0.6.500  Canonical item/equipment/tool breadth
-0.6.600  Gathering/hunting/processing/crafting/cooking
-0.6.700  Ecology and regional creature/resource content
-0.6.800  AI party/companion foundation
+0.6.300  Original magic and active ability engine            COMPLETE
+0.6.400  Combat 2.0                                          COMPLETE
+0.6.450  Locality and exploration navigation                 COMPLETE
+0.6.500  Equipment and field-tool breadth                    COMPLETE
+0.6.600  Gathering/processing/crafting/cooking/salvage       NEXT
+0.6.700  Ecology/regional content breadth
+0.6.800  Persistent companion/party foundation
 0.6.900  Integrated-mechanics exit gate
 ```
-
-The next bounded unit is `0.6.300`: establish original executable ability/magic definitions, targeting/cost/cast/recast/effect contracts, deterministic action/event seams, and representative original techniques/spells. Keep character capability ownership distinct from executable effects and preserve the existing combat scaffold behind adapters until `0.6.400`.
