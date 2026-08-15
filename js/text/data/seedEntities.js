@@ -83,6 +83,7 @@ export function createSeedEnemies() {
             expValue: 120,
             lootTableId: 'starterOrc',
             baseAttributes: { str: 2, vit: 1 },
+            combatAbilityIds: ['enemy-ability-rushing-cleave'],
             aggro: { sight: true, sound: true, magic: false, lowHp: false },
         }),
         createEnemy({
