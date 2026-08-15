@@ -14,24 +14,24 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.600.1');
-    assert.equal(PACKAGE_VERSION, '0.6.600');
+    assert.equal(PRODUCT_VERSION, '0.6.700.1');
+    assert.equal(PACKAGE_VERSION, '0.6.700');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 24);
+    assert.equal(VERSION.data, 25);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.match(describeVersion(), /Product: 0\.6\.600\.1/);
-    assert.match(describeVersion(), /Package: 0\.6\.600/);
+    assert.match(describeVersion(), /Product: 0\.6\.700\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.700/);
     assert.match(describeVersion(), /Account Save: 4/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 24/);
-    assert.match(describeVersion(), /Codename: Production and Resource Loops/);
+    assert.match(describeVersion(), /Data: 25/);
+    assert.match(describeVersion(), /Codename: Regional Ecology Breadth/);
     assert.match(describeVersion(), /Compatibility: migrate-supported-save-versions/);
-    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.600\.1/);
+    assert.match(describeSystemVersions(), /versionManifest: 0\.6\.700\.1/);
     assert.match(describeSystemVersions(), /saveMigrations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /worldIdentity: 0\.1\.1/);
     assert.match(describeSystemVersions(), /actionResults: 0\.1\.0/);
@@ -44,24 +44,29 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /resourceProvenance: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceOpportunities: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceRecovery: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.2\.0/);
     assert.match(describeSystemVersions(), /characterActivity: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workTasks: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workstations: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /productionCatalog: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /productionItems: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /productionCatalog: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /productionItems: 0\.2\.0/);
     assert.match(describeSystemVersions(), /production: 0\.1\.0/);
     assert.match(describeSystemVersions(), /ecologyCatalog: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /regionalEcology: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /ecologyRegistry: 0\.1\.0/);
     assert.match(describeSystemVersions(), /ecologyState: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /populations: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /gatheringSources: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /populations: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /gatheringSources: 0\.3\.0/);
     assert.match(describeSystemVersions(), /gatheringWork: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceItems: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /regionalResourceItems: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /huntingResourceItems: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /resourceItemRegistry: 0\.2\.0/);
     assert.match(describeSystemVersions(), /routeCatalog: 0\.1\.0/);
     assert.match(describeSystemVersions(), /transport: 0\.1\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.2\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.1\.0/);
     assert.match(describeSystemVersions(), /legacyCandidateNormalization: 0\.1\.0/);
     assert.match(describeSystemVersions(), /simulationSubstrateGate: 0\.1\.0/);
@@ -79,6 +84,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /magic: 0\.1\.0/);
     assert.match(describeSystemVersions(), /abilities: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerEntity: 0\.8\.0/);
+    assert.match(describeSystemVersions(), /enemyEntity: 0\.4\.0/);
     assert.match(describeSystemVersions(), /statEngine: 0\.5\.0/);
     assert.match(describeSystemVersions(), /statusEngine: 0\.2\.0/);
     assert.match(describeSystemVersions(), /progression: 0\.6\.0/);
@@ -108,6 +114,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /shops: 0\.4\.0/);
     assert.match(describeSystemVersions(), /shopTransactions: 0\.4\.0/);
     assert.match(describeSystemVersions(), /skillCaps: 0\.5\.2/);
+    assert.match(describeSystemVersions(), /loot: 0\.6\.0/);
     assert.match(describeSystemVersions(), /leveling: 0\.6\.0/);
 });
 
