@@ -94,19 +94,21 @@ test('timed offensive magic spends once, resolves at canonical world time, and s
     assert.equal(cooling.code, 'ability.cooldown');
 });
 
-test('instant technique uses capability prerequisites and does not double-spend TP', () => {
+test('instant technique spends its TP cost once before deterministic enemy-response TP gain', () => {
     const state = createNewGameState({ mainJobId: 'vanguard' });
     grantCapability(state.player, 'technique-guarded-cut');
     setLearnedSkill(state.player, 'sword', 1);
     state.player.equipment.mainHand = getEquipmentCatalogEntry('bronze-sword');
     state.player.resources.tp = 500;
-    startEncounter(state, 'Brush Hare');
+    startEncounter(state, 'Brush Hare', { rng: () => 0 });
 
     const result = activateAbility(state, 'Guarded Cut');
 
     assert.equal(result.ok, true);
     assert.equal(result.code, 'ability.resolved');
-    assert.equal(state.player.resources.tp, 250);
+    assert.equal(result.data.activation.costs.tp, 250);
+    assert.equal(state.player.resources.tp, 280);
+    assert.equal(result.data.enemyResponseActionIds.length, 1);
     assert.ok(state.player.statuses.some((status) => status.id === 'status-guarded-cut'));
     assert.equal(state.abilities.active, null);
 });
