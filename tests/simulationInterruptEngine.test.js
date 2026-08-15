@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { createSimulationAdvanceDriver, setSimulationSpeed } from '../js/text/systems/simulationControlEngine.js';
 import {
     advanceSimulationUntilInterrupt,
@@ -16,7 +16,7 @@ import { startTimedTask } from '../js/text/systems/timedTaskEngine.js';
 
 
 test('interrupt candidates sort by earliest time then higher priority deterministically', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const candidates = collectInterruptCandidates(state, {
         maxSeconds: 100,
         candidates: [
@@ -31,7 +31,7 @@ test('interrupt candidates sort by earliest time then higher priority determinis
 });
 
 test('task completion is a built-in interrupt source', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const started = startTimedTask(state, { kind: 'work.test', durationSeconds: 30 });
 
     const next = findNextInterrupt(state, { maxSeconds: 60 });
@@ -42,7 +42,7 @@ test('task completion is a built-in interrupt source', () => {
 });
 
 test('advance-until-interrupt stops exactly at task completion and reconciles the task', () => {
-    const state = createInitialState();
+    const state = createTestState();
     startTimedTask(state, { kind: 'work.test', durationSeconds: 30 });
 
     const result = advanceSimulationUntilInterrupt(state, 120);
@@ -63,7 +63,7 @@ test('advance-until-interrupt stops exactly at task completion and reconciles th
 });
 
 test('simulation advances the full request when no interrupt occurs', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     const result = advanceSimulationUntilInterrupt(state, 75);
 
@@ -74,7 +74,7 @@ test('simulation advances the full request when no interrupt occurs', () => {
 });
 
 test('higher-priority custom interrupt wins a same-time tie while due tasks still reconcile', () => {
-    const state = createInitialState();
+    const state = createTestState();
     startTimedTask(state, { kind: 'work.test', durationSeconds: 20 });
 
     const result = advanceSimulationUntilInterrupt(state, 100, {
@@ -88,7 +88,7 @@ test('higher-priority custom interrupt wins a same-time tie while due tasks stil
 });
 
 test('interrupt providers can contribute future conditions without coupling them to the clock', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const provider = ({ nowWorldSeconds }) => [{
         id: 'fatigue-threshold',
         type: 'exhaustion.threshold',
@@ -104,7 +104,7 @@ test('interrupt providers can contribute future conditions without coupling them
 });
 
 test('accelerated scheduler advancement discards remaining budget after an interrupt', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setSimulationSpeed(state, 60);
     startTimedTask(state, { kind: 'work.test', durationSeconds: 10 });
     const driver = createSimulationAdvanceDriver({
@@ -124,7 +124,7 @@ test('accelerated scheduler advancement discards remaining budget after an inter
 });
 
 test('late task completion is surfaced immediately before new advancement', () => {
-    const state = createInitialState();
+    const state = createTestState();
     startTimedTask(state, { kind: 'work.test', durationSeconds: 10 });
     state.worldTime.totalSeconds = 25;
 

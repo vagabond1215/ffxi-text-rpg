@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { isActionResult } from '../js/text/systems/actionResult.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import {
@@ -31,7 +31,7 @@ test('world clock derives day and clock fields from one canonical second count',
 });
 
 test('world time advances exactly across minute hour and day boundaries', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = SECONDS_PER_DAY - 2;
 
     const result = advanceWorldTime(state, 5);
@@ -46,7 +46,7 @@ test('world time advances exactly across minute hour and day boundaries', () => 
 });
 
 test('multi-day advancement is deterministic and independent of wall-clock time', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const originalNow = Date.now;
     Date.now = () => { throw new Error('world clock must not read Date.now'); };
 
@@ -62,7 +62,7 @@ test('multi-day advancement is deterministic and independent of wall-clock time'
 });
 
 test('world-time advancement emits structured semantic observation after advancement', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const result = advanceWorldTime(state, 600);
     const events = listSemanticEvents(state, { type: 'time.advanced' });
 
@@ -78,7 +78,7 @@ test('world-time advancement emits structured semantic observation after advance
 });
 
 test('invalid time advancement is rejected without mutating state', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     for (const value of [-1, 1.5, Number.NaN]) {
         const result = advanceWorldTime(state, value);

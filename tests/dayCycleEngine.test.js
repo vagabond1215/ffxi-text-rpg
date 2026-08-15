@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import {
     advanceSimulationWithDayPolicy,
     buildDaySummary,
@@ -29,7 +29,7 @@ test('day boundary provider schedules the next boundary strictly after current t
 });
 
 test('default end-of-day policy stops exactly at midnight and pauses for review', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = SECONDS_PER_DAY - 10;
     ensureDayCycleState(state);
 
@@ -47,7 +47,7 @@ test('default end-of-day policy stops exactly at midnight and pauses for review'
 });
 
 test('resuming after end-of-day review continues from the boundary without catch-up', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = SECONDS_PER_DAY - 1;
     ensureDayCycleState(state);
 
@@ -63,7 +63,7 @@ test('resuming after end-of-day review continues from the boundary without catch
 });
 
 test('disabling end-of-day pause records summaries while allowing multi-day advancement', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setEndOfDayPause(state, false);
     ensureDayCycleState(state);
 
@@ -78,7 +78,7 @@ test('disabling end-of-day pause records summaries while allowing multi-day adva
 });
 
 test('day summaries aggregate structured semantic event types and categories without parsing prose', () => {
-    const state = createInitialState();
+    const state = createTestState();
     emitSemanticEvent(state, 'task.completed', { taskId: 'task-a' }, { source: 'test' });
     state.worldTime.totalSeconds = 100;
     emitSemanticEvent(state, 'travel.arrived', { to: 'west-elderwood' }, { source: 'test' });
@@ -102,7 +102,7 @@ test('day summaries aggregate structured semantic event types and categories wit
 });
 
 test('same-time higher-priority interrupt finalizes the day but remains the surfaced interrupt', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = SECONDS_PER_DAY - 5;
     ensureDayCycleState(state);
 
@@ -124,7 +124,7 @@ test('same-time higher-priority interrupt finalizes the day but remains the surf
 });
 
 test('day transition emits structured day-ended and day-started events', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setEndOfDayPause(state, false);
     ensureDayCycleState(state);
 
@@ -137,7 +137,7 @@ test('day transition emits structured day-ended and day-started events', () => {
 });
 
 test('missing day-cycle bookkeeping initializes at the current completed-day boundary without changing save version', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const versionBefore = state.version;
     delete state.dayCycle;
     state.worldTime.totalSeconds = (3 * SECONDS_PER_DAY) + 500;

@@ -47,7 +47,7 @@ test('player actions establish recovery instead of allowing zero-time action spa
 });
 
 test('enemy readiness interrupt can strike and interrupt a timed canonical spell before completion', () => {
-    const state = createNewGameState({ mainJobId: 'elementalist' });
+    const state = createNewGameState({ mainJobId: 'elementalist', startWorldTimeSeconds: 0 });
     grantCapability(state.player, 'spell-ember-dart');
     setLearnedSkill(state.player, 'elementalMagic', 1);
     startEncounter(state, 'Mossback Goblin', { rng: createSequenceRng([0.1, 0.5]) });

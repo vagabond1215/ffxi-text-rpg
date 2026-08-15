@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import {
@@ -19,7 +19,7 @@ import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 
 test('new games initialize an empty versioned persistent project registry', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     assert.equal(state.projects.version, 1);
     assert.equal(state.projects.nextSequence, 1);
@@ -28,7 +28,7 @@ test('new games initialize an empty versioned persistent project registry', () =
 });
 
 test('project creation records stable ids material requirements labor and semantic event data', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = 120;
 
     const result = createProject(state, {
@@ -54,7 +54,7 @@ test('project creation records stable ids material requirements labor and semant
 });
 
 test('project material contribution consumes inventory atomically and caps at requirement', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const created = createProject(state, {
         kind: 'construction.test',
         label: 'Test Project',
@@ -79,7 +79,7 @@ test('project material contribution consumes inventory atomically and caps at re
 });
 
 test('project labor cannot start until materials are satisfied', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const created = createProject(state, {
         kind: 'construction.test',
         label: 'Test Project',
@@ -95,7 +95,7 @@ test('project labor cannot start until materials are satisfied', () => {
 });
 
 test('project labor uses canonical timed tasks and completes at the deterministic task boundary', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const created = createProject(state, {
         kind: 'construction.test',
         label: 'Test Project',
@@ -125,7 +125,7 @@ test('project labor uses canonical timed tasks and completes at the deterministi
 });
 
 test('cancelling an active project cancels its timed labor task', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const created = createProject(state, {
         kind: 'construction.test',
         label: 'Test Project',
@@ -145,7 +145,7 @@ test('cancelling an active project cancels its timed labor task', () => {
 });
 
 test('missing project registry lazily initializes without changing save version', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const versionBefore = state.version;
     delete state.projects;
 
@@ -157,7 +157,7 @@ test('missing project registry lazily initializes without changing save version'
 });
 
 test('invalid project definitions do not allocate stable ids', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     assert.equal(createProject(state, { kind: '', laborSeconds: 10 }).ok, false);
     assert.equal(createProject(state, { kind: 'work.test', laborSeconds: 0 }).ok, false);

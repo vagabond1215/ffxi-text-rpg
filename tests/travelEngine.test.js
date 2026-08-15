@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeMap, describeMaps, listMaps } from '../js/text/data/maps.js';
 import { getPlace, listPlaces, ZONE_CONNECTIONS } from '../js/text/data/places.js';
@@ -50,7 +50,7 @@ test('all connections reference known places', () => {
 });
 
 test('findTravelRoute finds connected destination', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const route = findTravelRoute(state, 'West Elderwood');
 
@@ -61,7 +61,7 @@ test('findTravelRoute finds connected destination', () => {
 });
 
 test('findTravelRoute rejects disconnected destination', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const route = findTravelRoute(state, 'Redfang Camp');
 
     assert.equal(route.ok, false);
@@ -70,7 +70,7 @@ test('findTravelRoute rejects disconnected destination', () => {
 });
 
 test('startTravel returns semantic ActionResult and advanceTravel moves current place through canonical world time', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const started = startTravel(state, 'West Elderwood');
 
@@ -94,7 +94,7 @@ test('startTravel returns semantic ActionResult and advanceTravel moves current 
 });
 
 test('startTravel failure uses semantic code while retaining command compatibility text adapter', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const result = startTravel(state, 'Unknown Somewhere');
 
     assert.equal(isActionResult(result), true);
@@ -108,7 +108,7 @@ test('startTravel failure uses semantic code while retaining command compatibili
 });
 
 test('router exposes maps places travel and wait commands', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const router = createCommandRouter(state, {
         saveGame: () => true,

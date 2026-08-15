@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import {
     cancelTimedTask,
@@ -16,7 +16,7 @@ import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 
 test('new games initialize an empty versioned timed-task registry', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     assert.equal(state.tasks.version, 1);
     assert.equal(state.tasks.nextSequence, 1);
@@ -25,7 +25,7 @@ test('new games initialize an empty versioned timed-task registry', () => {
 });
 
 test('timed task start records canonical world-time boundaries and structured event data', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = 90;
 
     const result = startTimedTask(state, {
@@ -47,7 +47,7 @@ test('timed task start records canonical world-time boundaries and structured ev
 });
 
 test('task progress is derived from canonical world time and completes exactly at its deadline', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const started = startTimedTask(state, { kind: 'work.test', label: 'Test work', durationSeconds: 60 });
     const taskId = started.data.task.id;
 
@@ -75,7 +75,7 @@ test('task progress is derived from canonical world time and completes exactly a
 });
 
 test('overshooting world time records scheduled completion time rather than observation time', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const started = startTimedTask(state, { kind: 'work.test', durationSeconds: 10 });
 
     advanceWorldTime(state, 100);
@@ -89,7 +89,7 @@ test('overshooting world time records scheduled completion time rather than obse
 });
 
 test('cancelled tasks stop progressing and never complete during reconciliation', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const started = startTimedTask(state, { kind: 'work.test', durationSeconds: 100 });
     const taskId = started.data.task.id;
 
@@ -107,7 +107,7 @@ test('cancelled tasks stop progressing and never complete during reconciliation'
 });
 
 test('multiple task channels can coexist without premature concurrency policy', () => {
-    const state = createInitialState();
+    const state = createTestState();
     startTimedTask(state, { kind: 'craft.smelt', channel: 'workshop', durationSeconds: 30 });
     startTimedTask(state, { kind: 'travel.walk', channel: 'character', durationSeconds: 60 });
 
@@ -122,7 +122,7 @@ test('multiple task channels can coexist without premature concurrency policy', 
 });
 
 test('missing timed-task registry lazily initializes without changing save version', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const versionBefore = state.version;
     delete state.tasks;
 
@@ -134,7 +134,7 @@ test('missing timed-task registry lazily initializes without changing save versi
 });
 
 test('invalid task definitions are rejected without allocating task IDs', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     assert.equal(startTimedTask(state, { kind: '', durationSeconds: 10 }).ok, false);
     assert.equal(startTimedTask(state, { kind: 'work.test', durationSeconds: 0 }).ok, false);

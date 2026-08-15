@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import {
     createSimulationAdvanceDriver,
@@ -15,14 +15,14 @@ import {
 
 
 test('new games start running at normal simulation speed with end-of-day review enabled', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     assert.deepEqual(state.simulation, { paused: false, speedMultiplier: 1, endOfDayPause: true });
     assert.deepEqual(validateSimulationControlState(state.simulation), []);
 });
 
 test('older simulation-control state lazily acquires end-of-day preference without changing save version', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const versionBefore = state.version;
     delete state.simulation.endOfDayPause;
 
@@ -33,7 +33,7 @@ test('older simulation-control state lazily acquires end-of-day preference witho
 });
 
 test('pause and resume change simulation control without advancing world time', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = 120;
 
     const paused = pauseSimulation(state);
@@ -53,7 +53,7 @@ test('pause and resume change simulation control without advancing world time', 
 });
 
 test('speed control accepts arbitrary whole-number multipliers within the engine limit', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     const result = setSimulationSpeed(state, 60);
 
@@ -65,7 +65,7 @@ test('speed control accepts arbitrary whole-number multipliers within the engine
 });
 
 test('end-of-day pause preference can be disabled and emits structured change event', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     const result = setEndOfDayPause(state, false);
 
@@ -77,7 +77,7 @@ test('end-of-day pause preference can be disabled and emits structured change ev
 });
 
 test('scheduled advancement converts wall elapsed time into deterministic simulated seconds', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setSimulationSpeed(state, 60);
     const driver = createSimulationAdvanceDriver();
     const originalNow = Date.now;
@@ -94,7 +94,7 @@ test('scheduled advancement converts wall elapsed time into deterministic simula
 });
 
 test('simulation driver preserves sub-second remainder without drift', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const driver = createSimulationAdvanceDriver();
 
     assert.equal(driver.advance(state, 250).data.secondsAdvanced, 0);
@@ -108,7 +108,7 @@ test('simulation driver preserves sub-second remainder without drift', () => {
 });
 
 test('paused scheduler time is discarded rather than accumulated for later advancement', () => {
-    const state = createInitialState();
+    const state = createTestState();
     const driver = createSimulationAdvanceDriver();
     pauseSimulation(state);
 
@@ -124,7 +124,7 @@ test('paused scheduler time is discarded rather than accumulated for later advan
 });
 
 test('invalid speed values are rejected without mutating simulation state', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     for (const speed of [0, -1, 1.5, 3601]) {
         const result = setSimulationSpeed(state, speed);
@@ -135,7 +135,7 @@ test('invalid speed values are rejected without mutating simulation state', () =
 });
 
 test('invalid end-of-day pause values are rejected without mutation', () => {
-    const state = createInitialState();
+    const state = createTestState();
 
     const result = setEndOfDayPause(state, 'no');
 

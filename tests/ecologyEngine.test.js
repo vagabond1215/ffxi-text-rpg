@@ -151,7 +151,7 @@ test('gathering enforces place and tool hooks before depleting source state', ()
 
 test('time-window gathering conditions are derived from world time', () => {
     const sourceId = 'source-west-starfen-silverfin-water';
-    const state = createNewGameState({ startingPlaceId: 'west-starfen' });
+    const state = createNewGameState({ startingPlaceId: 'west-starfen', startWorldTimeSeconds: 0 });
     assert.equal(isGatheringSourceActive(state, sourceId), false);
     advanceWorldTime(state, 5 * 3600, { emitEvent: false });
     assert.equal(isGatheringSourceActive(state, sourceId), true);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createTestState } from './helpers/createTestState.js';
 import {
     getNextServiceDeparture,
     getServiceJourney,
@@ -40,7 +40,7 @@ test('service departures are deterministic from canonical world seconds', () => 
 });
 
 test('direct route travel uses a canonical timed task and advances world time to arrival', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
     const started = startTravel(state, 'West Elderwood');
@@ -58,7 +58,7 @@ test('direct route travel uses a canonical timed task and advances world time to
 });
 
 test('scheduled caravan booking enforces fare and cargo and exposes deterministic departure/arrival interrupts', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-rivergate', { coord: 'H-5' });
     state.player.wallet.gil = 100;
 
@@ -94,7 +94,7 @@ test('scheduled caravan booking enforces fare and cargo and exposes deterministi
 });
 
 test('stopping a canonical journey cancels its timed task', () => {
-    const state = createInitialState();
+    const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const started = startTravel(state, 'West Elderwood');
     const taskId = started.data.travel.taskId;

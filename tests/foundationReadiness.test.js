@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { DEFAULT_START_WORLD_TIME_SECONDS } from '../js/text/gameState.js';
 import { VERSION } from '../js/text/version.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { isActionResult } from '../js/text/systems/actionResult.js';
@@ -9,18 +9,19 @@ import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { createTickEngine } from '../js/text/systems/tickEngine.js';
 import { advanceTravel, startTravel } from '../js/text/systems/travelEngine.js';
 import { validateGameState } from '../js/text/systems/validation.js';
+import { createTestState } from './helpers/createTestState.js';
 
 
 test('current state requires valid deterministic world-time state', () => {
-    const state = createInitialState();
+    const state = createTestState({ startWorldTimeSeconds: DEFAULT_START_WORLD_TIME_SECONDS });
 
     assert.deepEqual(validateGameState(state), []);
     assert.equal(state.version, VERSION.gameState);
-    assert.deepEqual(state.worldTime, { totalSeconds: 0 });
+    assert.deepEqual(state.worldTime, { totalSeconds: DEFAULT_START_WORLD_TIME_SECONDS });
 });
 
 test('travel action and event seams can observe canonical world time without using log prose', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = 3600;
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
@@ -41,7 +42,7 @@ test('travel action and event seams can observe canonical world time without usi
 });
 
 test('character-owned skill storage is outside the active job record', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.player.progression.skills.axe = 12;
 
     assert.equal(state.player.progression.skills.axe, 12);
@@ -49,7 +50,7 @@ test('character-owned skill storage is outside the active job record', () => {
 });
 
 test('wall-clock tick scaffold remains a scheduler rather than canonical world time', () => {
-    const state = createInitialState();
+    const state = createTestState();
     state.worldTime.totalSeconds = 1234;
     const tickEngine = createTickEngine({ tickLengthMs: 1000 });
 
