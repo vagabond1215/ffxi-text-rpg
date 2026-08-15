@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.6.700.1';
-export const PACKAGE_VERSION = '0.6.700';
+export const PRODUCT_VERSION = '0.6.800.1';
+export const PACKAGE_VERSION = '0.6.800';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 25,
+    data: 26,
     benchmark: 1,
-    codename: 'Regional Ecology Breadth',
+    codename: 'Persistent Companions and Party',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.700.1',
+    versionManifest: '0.6.800.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -49,7 +49,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     huntingResourceItems: '0.1.0',
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
-    transport: '0.1.0',
+    transport: '0.2.0',
     contentPackSchema: '0.1.0',
     regionalContentPacks: '0.2.0',
     contentPackValidation: '0.1.0',
@@ -58,10 +58,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     dayCycle: '0.1.0',
     commandShell: '0.5.0',
     domUi: '0.2.0',
-    gameViewModels: '0.3.0',
+    gameViewModels: '0.4.0',
     localityNavigation: '0.1.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.3.0',
+    uiIntents: '0.4.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
@@ -74,16 +74,18 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilityCatalog: '0.1.0',
     abilityEngine: '0.2.0',
     enemyAbilityCatalog: '0.1.0',
+    companionCatalog: '0.1.0',
+    party: '0.1.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
     enemyEntity: '0.4.0',
     statEngine: '0.5.0',
     statusEngine: '0.2.0',
-    battleEngine: '0.7.0',
-    combatTurns: '0.2.0',
+    battleEngine: '0.8.0',
+    combatTurns: '0.3.0',
     combatSimulation: '0.1.0',
-    combatActions: '0.7.0',
+    combatActions: '0.8.0',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
@@ -127,7 +129,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilities: '0.1.0',
     loot: '0.6.0',
     leveling: '0.6.0',
-    companions: 'planned',
+    companions: '0.1.0',
     crafting: '0.2.0',
     mounts: 'planned',
 });
