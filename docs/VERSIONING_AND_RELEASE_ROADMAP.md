@@ -12,16 +12,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.800.1
-Package:      0.6.800
+Product:      0.6.900.1
+Package:      0.6.900
 Account Save: 4
 Game State:   5
 Data:         26
 Benchmark:    1
-Codename:     Persistent Companions and Party
+Codename:     Integrated Mechanics Gate
 ```
 
-The repository is pre-alpha. Phase 0.5 is complete and Phase 0.6 is active through `0.6.800`. Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, and persistent NPC-backed companions are established on top of the deterministic simulation/content substrate.
+The repository is pre-alpha. **Phase 0.6 is complete.** Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, persistent NPC-backed companions, and an executable integrated-mechanics exit gate are established on top of the deterministic simulation/content substrate.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ MAJOR.PHASE.TRACK.REVISION
 Example:
 
 ```text
-0.6.800.1
+0.6.900.1
 ```
 
 Meaning:
@@ -47,7 +47,7 @@ Meaning:
 `package.json.version` remains normal three-part SemVer and mirrors `MAJOR.PHASE.TRACK` where practical:
 
 ```text
-Product 0.6.800.1 -> Package 0.6.800
+Product 0.6.900.1 -> Package 0.6.900
 ```
 
 `js/text/version.js` is runtime authority. Documentation must be synchronized when a milestone version changes.
@@ -83,9 +83,11 @@ Bump when canonical authored-data contracts or catalogs gain a meaningful versio
 - Data 25 — regional ecology/resource breadth and registry contract;
 - Data 26 — persistent companion definition, recruitment/tactics, and relationship-dimension contract.
 
+`0.6.900` did **not** advance Data because it stabilized and validated existing Data 26 authorities rather than adding a new authored-data schema.
+
 ### When to bump Benchmark
 
-Bump only when the benchmark workload/protocol changes enough that prior numbers are no longer directly comparable.
+Bump only when the benchmark workload/protocol changes enough that prior numbers are no longer directly comparable. `0.6.900` retained Benchmark 1 and compared the same workload with `0.6.800`.
 
 ## Compatibility policy
 
@@ -139,7 +141,7 @@ Direction lock, version protocol, ordered persistence migrations, structured act
 | 0.5.800 | Regional content packs/scalable validation | Complete |
 | 0.5.900 | Simulation/content-substrate exit gate | Complete |
 
-### 0.6 — Integrated character and mechanics — active
+### 0.6 — Integrated character and mechanics — complete
 
 | Track | Contract | Resulting product/data | Status |
 | --- | --- | --- | --- |
@@ -153,7 +155,7 @@ Direction lock, version protocol, ordered persistence migrations, structured act
 | 0.6.600 | Gathering/hunting/processing/crafting/cooking/salvage | `0.6.600.1` / Data 24 | Complete |
 | 0.6.700 | Ecology/regional creature/resource content breadth | `0.6.700.1` / Data 25 | Complete |
 | 0.6.800 | Persistent companion/party foundation | `0.6.800.1` / Data 26 | Complete |
-| 0.6.900 | Integrated-mechanics exit gate | TBD | **Next** |
+| 0.6.900 | Integrated-mechanics exit gate | `0.6.900.1` / Data 26 | Complete |
 
 ### 0.6.400 version decision
 
@@ -165,7 +167,7 @@ Locality/exploration navigation completed at Product `0.6.450.1`, Package `0.6.4
 
 ### 0.6.500 version decision
 
-Equipment/tool breadth completed at Product `0.6.500.1`, Package `0.6.500`, Data `23`. The equipment catalog and shop-facing field-tool contract expanded materially, while ownership remains normal item/equipment state compatible with Game State 5. New original equipment avoids active-discipline gating by default; legacy starter eligibility fields remain explicit compatibility debt.
+Equipment/tool breadth completed at Product `0.6.500.1`, Package `0.6.500`, Data `23`. The equipment catalog and shop-facing field-tool contract expanded materially, while ownership remains normal item/equipment state compatible with Game State 5. Newly authored equipment avoided active-discipline gating by default.
 
 ### 0.6.600 version decision
 
@@ -179,15 +181,41 @@ Regional ecology/resource breadth completed at Product `0.6.700.1`, Package `0.6
 
 Persistent companion/party foundation completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, with Account Save 4 and Game State 5 unchanged. `state.party` is additive/lazily reconstructible; backing NPC state can be reconstructed/synchronized from canonical companion definitions. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension records are canonical authored runtime data.
 
-## Next release gate — 0.6.900
+### 0.6.900 version decision
 
-`0.6.900` is the integrated-mechanics exit audit for Phase 0.6. It should stabilize and cross-check existing systems rather than introduce another broad subsystem. The gate should cover persistence/lazy normalization, fictional-time and interrupt composition, continuous-character ownership, party/combat/travel/work coexistence, provenance and source/sink integrity, semantic UI authority, world/content validation, benchmark regression, and exact Phase 0.7 entry criteria.
+Integrated mechanics completed at Product `0.6.900.1`, Package `0.6.900`, while Account Save `4`, Game State `5`, Data `26`, and Benchmark `1` remained unchanged.
+
+The track introduced `integratedMechanicsGate` system contract `0.1.0`, which evaluates persistence/lazy normalization, time/interrupt dependencies, continuous-character ownership, combat/party/work/travel composition, provenance/production, semantic UI authority, world/content validators, and required database readiness.
+
+No persistence bump was justified because the gate proves the major additive Phase 0.6 registries can be lazily reconstructed within Game State 5. No Data bump was justified because the track repaired authority/presentation integration without introducing a new canonical authored-data shape. Canonical starter equipment was also normalized away from active-discipline `allowedJobs` gates while the generic field remains accepted at explicit legacy compatibility boundaries.
+
+Authoritative runtime checkpoint `58fed55122d8058152c70c8e7b3b2565d2cbeaf9` passed 453/453 tests, the Benchmark 1 workload, browser build/status reporting, and GitHub Pages deploy.
+
+## Phase 0.7 — Multi-region playable alpha — next
+
+Phase 0.7 begins from the closed Phase 0.6 authority contracts; it is not permission to replace them with parallel quest/economy/dialogue clocks or state models.
+
+### Entry conditions
+
+New 0.7 work must preserve:
+
+- one canonical fictional-time/task/interrupt substrate;
+- continuous-character ownership of learned/mastered capability and proficiency;
+- semantic DOM/view-model/intents as the normal browser interaction direction;
+- acquired-knowledge map privacy;
+- provenance/source-sink integrity;
+- explicit content-pack ownership/dependencies and cross-reference validation;
+- supported persistence migrations and additive normalization where sufficient.
+
+### Playable-alpha exit gate
+
+Phase 0.7 exits only when a normal player can sustain repeated multi-session play across several connected settlements/regions without test-only setup or command-line expertise. The campaign must combine persistent NPC communities, shops/services, contracts/quests, relationships/reputation, companions, meaningful transport/economy, ecology/resources, production/livelihood choices, and adventure/combat in one coherent save.
+
+Each major playable region should have both economic/livelihood reasons and social/adventure reasons to visit. Ordinary campaign actions must be reachable through the semantic browser UI. Saves, validators, provenance, time/interrupt behavior, and exactly-once resource ownership must remain green as content scales.
+
+The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication.
 
 ## Planned later phases
-
-### 0.7 — Multi-region playable alpha
-
-Exit only when the player can sustain a meaningful campaign across multiple connected regions with enough NPCs, shops/services, contracts/quests, relationships, companions, transport, economy, creatures/resources, and production/adventure content that the game feels like a sandbox rather than a systems demo.
 
 ### 0.8 — Life and infrastructure expansion
 
