@@ -1,0 +1,267 @@
+import { findCompanionDefinition, getCompanionDefinition, listCompanionDefinitions } from '../data/companions.js';
+import { actionFailure, actionSuccess } from './actionResult.js';
+import { emitSemanticEvent } from './semanticEventEngine.js';
+import { calculateCombatProfile } from './statEngine.js';
+import { ensureWorldTimeState } from './worldTimeEngine.js';
+
+export const PARTY_STATE_VERSION = 1;
+export const PARTY_ACTIVE_COMPANION_CAPACITY = 2;
+
+export function createPartyState(options = {}) {
+    return {
+        version: PARTY_STATE_VERSION,
+        capacity: PARTY_ACTIVE_COMPANION_CAPACITY,
+        activeCompanionIds: Array.isArray(options.activeCompanionIds) ? [...options.activeCompanionIds] : [],
+        companions: cloneCompanionMap(options.companions),
+    };
+}
+
+export function ensurePartyState(state) {
+    if (!state || typeof state !== 'object') throw new Error('Party state requires game state.');
+    if (!state.party || typeof state.party !== 'object' || Array.isArray(state.party)) state.party = createPartyState();
+    state.party.version ??= PARTY_STATE_VERSION;
+    state.party.capacity ??= PARTY_ACTIVE_COMPANION_CAPACITY;
+    state.party.activeCompanionIds ??= [];
+    state.party.companions ??= {};
+    const issues = validatePartyState(state.party);
+    if (issues.length) throw new Error(issues.join(' '));
+    return state.party;
+}
+
+export function listRecruitedCompanions(state) {
+    return Object.values(ensurePartyState(state).companions).map(snapshotCompanion);
+}
+
+export function listActiveCompanions(state) {
+    const party = ensurePartyState(state);
+    return party.activeCompanionIds
+        .map((id) => party.companions[id])
+        .filter(Boolean)
+        .map(snapshotCompanion);
+}
+
+export function getRecruitedCompanion(state, companionId) {
+    const definition = resolveDefinition(companionId);
+    if (!definition) return null;
+    const companion = ensurePartyState(state).companions[definition.id] ?? null;
+    return companion ? snapshotCompanion(companion) : null;
+}
+
+export function canRecruitCompanion(state, companionQuery) {
+    const definition = resolveDefinition(companionQuery);
+    if (!definition) return blocked('party.companion-not-found', { companionQuery }, `Unknown companion: ${String(companionQuery ?? '')}.`);
+    const party = ensurePartyState(state);
+    if (party.companions[definition.id]) return blocked('party.already-recruited', { companionId: definition.id }, `${definition.name} is already a persistent companion.`);
+    if (!definition.recruitment.placeIds.includes(state.currentPlaceId)) {
+        return blocked('party.wrong-place', { companionId: definition.id, requiredPlaceIds: [...definition.recruitment.placeIds] }, `${definition.name} cannot be recruited here.`);
+    }
+    const missingFlags = definition.recruitment.requiredFlags.filter((flagId) => !state.flags?.[flagId]);
+    if (missingFlags.length) {
+        return blocked('party.relationship-requirement', { companionId: definition.id, missingFlags }, `${definition.name} is not yet willing to travel with you.`);
+    }
+    return actionSuccess({
+        action: 'party.recruit-check', code: 'party.recruitable', outcome: 'available',
+        data: { companionId: definition.id, npcId: definition.npcId },
+        display: { text: `${definition.name} is willing to join you.` },
+    });
+}
+
+export function recruitCompanion(state, companionQuery, options = {}) {
+    const definition = resolveDefinition(companionQuery);
+    if (!definition) return blocked('party.companion-not-found', { companionQuery }, `Unknown companion: ${String(companionQuery ?? '')}.`);
+    if (!options.ignoreRequirements) {
+        const check = canRecruitCompanion(state, definition.id);
+        if (!check.ok) return check;
+    }
+    const party = ensurePartyState(state);
+    if (party.companions[definition.id]) return blocked('party.already-recruited', { companionId: definition.id }, `${definition.name} is already a persistent companion.`);
+
+    const companion = createPersistentCompanion(definition, state.currentPlaceId, ensureWorldTimeState(state).totalSeconds);
+    party.companions[companion.id] = companion;
+    let active = false;
+    if (options.join !== false && party.activeCompanionIds.length < party.capacity) {
+        party.activeCompanionIds.push(companion.id);
+        active = true;
+    }
+    const event = emitSemanticEvent(state, 'party.companion-recruited', {
+        companionId: companion.id,
+        npcId: companion.npcId,
+        placeId: state.currentPlaceId,
+        active,
+    }, { source: 'partyEngine' });
+    return actionSuccess({
+        action: 'party.recruit', code: 'party.companion-recruited', outcome: active ? 'joined' : 'recruited',
+        data: { companion: snapshotCompanion(companion), active, eventId: event.id },
+        display: { text: active ? `${companion.identity.name} joins your party.` : `${companion.identity.name} becomes a companion and remains here for now.` },
+    });
+}
+
+export function joinCompanion(state, companionQuery) {
+    const definition = resolveDefinition(companionQuery);
+    if (!definition) return blocked('party.companion-not-found', { companionQuery }, `Unknown companion: ${String(companionQuery ?? '')}.`);
+    const party = ensurePartyState(state);
+    const companion = party.companions[definition.id];
+    if (!companion) return blocked('party.not-recruited', { companionId: definition.id }, `${definition.name} has not joined your story as a companion.`);
+    if (party.activeCompanionIds.includes(companion.id)) return blocked('party.already-active', { companionId: companion.id }, `${companion.identity.name} is already in the active party.`);
+    if (party.activeCompanionIds.length >= party.capacity) return blocked('party.full', { capacity: party.capacity }, `The active party already has ${party.capacity} companions.`);
+    if (companion.locationId !== state.currentPlaceId) return blocked('party.not-present', { companionId: companion.id, locationId: companion.locationId }, `${companion.identity.name} is not currently here.`);
+    if (companion.resources.hp <= 0) return blocked('party.unavailable', { companionId: companion.id }, `${companion.identity.name} cannot travel while incapacitated.`);
+
+    party.activeCompanionIds.push(companion.id);
+    const event = emitSemanticEvent(state, 'party.companion-joined', { companionId: companion.id, placeId: state.currentPlaceId }, { source: 'partyEngine' });
+    return actionSuccess({ action: 'party.join', code: 'party.companion-joined', outcome: 'joined', data: { companion: snapshotCompanion(companion), eventId: event.id }, display: { text: `${companion.identity.name} joins the active party.` } });
+}
+
+export function leaveCompanion(state, companionQuery) {
+    const definition = resolveDefinition(companionQuery);
+    if (!definition) return blocked('party.companion-not-found', { companionQuery }, `Unknown companion: ${String(companionQuery ?? '')}.`);
+    const party = ensurePartyState(state);
+    const companion = party.companions[definition.id];
+    if (!companion) return blocked('party.not-recruited', { companionId: definition.id }, `${definition.name} is not a recruited companion.`);
+    const index = party.activeCompanionIds.indexOf(companion.id);
+    if (index < 0) return blocked('party.not-active', { companionId: companion.id }, `${companion.identity.name} is not in the active party.`);
+    if (state.activeBattle?.phase === 'active') return blocked('party.in-combat', { companionId: companion.id }, 'Party membership cannot change during combat.');
+
+    party.activeCompanionIds.splice(index, 1);
+    companion.locationId = state.currentPlaceId;
+    const event = emitSemanticEvent(state, 'party.companion-left', { companionId: companion.id, placeId: state.currentPlaceId }, { source: 'partyEngine' });
+    return actionSuccess({ action: 'party.leave', code: 'party.companion-left', outcome: 'left', data: { companion: snapshotCompanion(companion), eventId: event.id }, display: { text: `${companion.identity.name} leaves the active party and remains in ${state.location ?? state.currentPlaceId}.` } });
+}
+
+export function syncActivePartyLocation(state, placeId = state.currentPlaceId) {
+    const party = ensurePartyState(state);
+    for (const companionId of party.activeCompanionIds) {
+        const companion = party.companions[companionId];
+        if (companion) companion.locationId = placeId;
+    }
+    return listActiveCompanions(state);
+}
+
+export function getActiveCompanionCombatEntities(state) {
+    return listActiveCompanions(state)
+        .filter((companion) => companion.resources.hp > 0)
+        .map((companion) => ({
+            ...companion,
+            type: 'companion',
+            identity: { ...companion.identity },
+            equipment: clonePlain(companion.equipment),
+            statuses: clonePlain(companion.statuses),
+            resources: { ...companion.resources },
+            skills: { ...companion.skills },
+            baseAttributes: { ...companion.baseAttributes },
+        }));
+}
+
+export function syncCompanionsFromBattle(state, battle = state.activeBattle) {
+    if (!battle?.combatants) return [];
+    const party = ensurePartyState(state);
+    const synced = [];
+    for (const combatant of battle.combatants.filter((entry) => entry.type === 'companion')) {
+        const companion = party.companions[combatant.id];
+        if (!companion) continue;
+        companion.resources = { ...combatant.resources };
+        companion.statuses = clonePlain(combatant.statuses ?? []);
+        companion.locationId = state.currentPlaceId;
+        synced.push(snapshotCompanion(companion));
+    }
+    return synced;
+}
+
+export function describeParty(state) {
+    const party = ensurePartyState(state);
+    const recruited = Object.values(party.companions);
+    if (!recruited.length) return 'No persistent companions have joined you yet.';
+    return [
+        `Active companions: ${party.activeCompanionIds.length}/${party.capacity}`,
+        ...recruited.map((companion) => {
+            const active = party.activeCompanionIds.includes(companion.id) ? 'active' : `staying at ${companion.locationId}`;
+            return `- ${companion.identity.name}, ${companion.identity.title} Lv.${companion.level} — ${active}; HP ${companion.resources.hp}/${calculateCombatProfile(companion).resources.maxHp}; role ${companion.tactics.role}`;
+        }),
+    ].join('\n');
+}
+
+export function validatePartyState(party) {
+    if (!party || typeof party !== 'object' || Array.isArray(party)) return ['party must be an object.'];
+    const issues = [];
+    if (party.version !== PARTY_STATE_VERSION) issues.push(`party.version must be ${PARTY_STATE_VERSION}.`);
+    if (!Number.isInteger(party.capacity) || party.capacity < 1) issues.push('party.capacity must be positive.');
+    if (!Array.isArray(party.activeCompanionIds)) return [...issues, 'party.activeCompanionIds must be an array.'];
+    if (!party.companions || typeof party.companions !== 'object' || Array.isArray(party.companions)) return [...issues, 'party.companions must be an object.'];
+    if (new Set(party.activeCompanionIds).size !== party.activeCompanionIds.length) issues.push('party.activeCompanionIds contains duplicates.');
+    if (party.activeCompanionIds.length > party.capacity) issues.push('party.activeCompanionIds exceeds party capacity.');
+    for (const companionId of party.activeCompanionIds) if (!party.companions[companionId]) issues.push(`Active companion ${companionId} is not recruited.`);
+    for (const [id, companion] of Object.entries(party.companions)) {
+        const definition = getCompanionDefinition(id);
+        if (!definition) issues.push(`party.companions.${id} references unknown companion definition.`);
+        if (!companion || typeof companion !== 'object' || Array.isArray(companion)) { issues.push(`party.companions.${id} must be an object.`); continue; }
+        if (companion.id !== id) issues.push(`party.companions.${id}.id must match its key.`);
+        if (definition && companion.npcId !== definition.npcId) issues.push(`party.companions.${id}.npcId does not match catalog.`);
+        if (!Number.isInteger(companion.level) || companion.level < 1) issues.push(`party.companions.${id}.level must be positive.`);
+        if (!companion.resources || !Number.isFinite(companion.resources.hp) || companion.resources.hp < 0) issues.push(`party.companions.${id}.resources.hp is invalid.`);
+        if (!Array.isArray(companion.statuses)) issues.push(`party.companions.${id}.statuses must be an array.`);
+        if (!companion.relationship || typeof companion.relationship !== 'object' || Array.isArray(companion.relationship)) issues.push(`party.companions.${id}.relationship must be an object.`);
+    }
+    return issues;
+}
+
+export function listRecruitableCompanions(state) {
+    return listCompanionDefinitions().map((definition) => {
+        const result = canRecruitCompanion(state, definition.id);
+        return Object.freeze({ definition, recruitable: result.ok, code: result.code, reason: result.display?.text ?? '' });
+    });
+}
+
+function createPersistentCompanion(definition, locationId, joinedAtWorldSeconds) {
+    const relationship = Object.fromEntries(definition.relationshipDimensions.map((dimension) => [dimension, 0]));
+    const entity = {
+        id: definition.id,
+        npcId: definition.npcId,
+        type: 'companion',
+        identity: { name: definition.name, title: definition.title, family: 'person', faction: null },
+        level: definition.level,
+        baseAttributes: { ...definition.baseAttributes },
+        skills: { ...definition.skills },
+        equipment: {},
+        statuses: [],
+        resources: { hp: 0, mp: 0, tp: 0 },
+        relationship,
+        tactics: { ...definition.tactics },
+        homePlaceId: definition.homePlaceId,
+        locationId,
+        joinedAtWorldSeconds,
+        flags: {},
+    };
+    const combat = calculateCombatProfile(entity);
+    entity.resources = { hp: combat.resources.maxHp, mp: combat.resources.maxMp, tp: 0 };
+    return entity;
+}
+
+function resolveDefinition(query) {
+    return getCompanionDefinition(query) ?? findCompanionDefinition(query);
+}
+function blocked(code, data, text) {
+    return actionFailure({ action: 'party', code, outcome: 'blocked', data, display: { text } });
+}
+function snapshotCompanion(companion) {
+    return Object.freeze({
+        ...companion,
+        identity: Object.freeze({ ...companion.identity }),
+        baseAttributes: Object.freeze({ ...companion.baseAttributes }),
+        skills: Object.freeze({ ...companion.skills }),
+        equipment: Object.freeze(clonePlain(companion.equipment)),
+        statuses: Object.freeze(clonePlain(companion.statuses)),
+        resources: Object.freeze({ ...companion.resources }),
+        relationship: Object.freeze({ ...companion.relationship }),
+        tactics: Object.freeze({ ...companion.tactics }),
+        flags: Object.freeze({ ...companion.flags }),
+    });
+}
+function cloneCompanionMap(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+    return Object.fromEntries(Object.entries(value).map(([id, companion]) => [id, clonePlain(companion)]));
+}
+function clonePlain(value) {
+    if (Array.isArray(value)) return value.map(clonePlain);
+    if (!value || typeof value !== 'object') return value;
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, clonePlain(child)]));
+}
