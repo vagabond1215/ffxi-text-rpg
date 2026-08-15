@@ -47,7 +47,9 @@ export function gainWorkProficiency(state, proficiencyId, amount = 1, options = 
     const gain = Math.max(0, Math.floor(Number(amount) || 0));
     const record = ensureWorkProficiencies(player);
     const before = record.values[id] ?? 0;
-    const after = Math.min(Math.max(before, before + gain), Math.max(1, Number(options.cap ?? 9999)));
+    const requestedCap = Math.max(1, Number(options.cap ?? 9999));
+    const effectiveCap = Math.max(before, requestedCap);
+    const after = Math.min(before + gain, effectiveCap);
     record.values[id] = after;
 
     let eventId = null;
