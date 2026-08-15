@@ -2,6 +2,7 @@ import { getServiceJourney, getTransportService, getNextServiceDeparture, listTr
 import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { cancelTimedTask, findTimedTask, reconcileTimedTasks, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 import { advanceWorldTime, ensureWorldTimeState } from './worldTimeEngine.js';
@@ -207,6 +208,7 @@ export function validateActiveTravel(travel) {
 
 function beginJourney(state, definition) {
     if (state.travel?.active) return failure('travel.already-active', { activeTravel: snapshotTravel(state.travel) }, 'Another journey is already active.');
+    if (isCharacterHandsOnBusy(state)) return failure('travel.work-active', {}, describeBlockingHandsOnTask(state));
     if (!getPlace(definition.from) || !getPlace(definition.to)) return failure('travel.invalid-place', { from: definition.from, to: definition.to }, 'Journey endpoints must reference known places.');
     if (!positiveInteger(definition.durationSeconds)) return failure('travel.invalid-duration', { durationSeconds: definition.durationSeconds }, 'Journey duration must be a positive whole number of seconds.');
 
