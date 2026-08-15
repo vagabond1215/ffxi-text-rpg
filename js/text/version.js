@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.6.400.1';
+export const PRODUCT_VERSION = '0.6.400.2';
 export const PACKAGE_VERSION = '0.6.400';
 
 export const VERSION = Object.freeze({
@@ -6,9 +6,9 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 21,
+    data: 22,
     benchmark: 1,
-    codename: 'Combat 2.0 Foundation',
+    codename: 'Combat 2.0',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.400.1',
+    versionManifest: '0.6.400.2',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -43,7 +43,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationSubstrateGate: '0.1.0',
     dayCycle: '0.1.0',
     commandShell: '0.5.0',
-    domUi: '0.1.0',
+    domUi: '0.1.1',
     gameViewModels: '0.2.0',
     canvasUi: '0.8.0',
     uiIntents: '0.3.0',
@@ -58,15 +58,17 @@ export const SYSTEM_VERSIONS = Object.freeze({
     capabilities: '0.2.0',
     abilityCatalog: '0.1.0',
     abilityEngine: '0.2.0',
+    enemyAbilityCatalog: '0.1.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
-    enemyEntity: '0.2.1',
+    enemyEntity: '0.3.0',
     statEngine: '0.5.0',
-    statusEngine: '0.1.0',
-    battleEngine: '0.6.0',
-    combatTurns: '0.1.0',
-    combatActions: '0.6.0',
+    statusEngine: '0.2.0',
+    battleEngine: '0.7.0',
+    combatTurns: '0.2.0',
+    combatSimulation: '0.1.0',
+    combatActions: '0.7.0',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
