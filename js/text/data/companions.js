@@ -9,7 +9,7 @@ const COMPANIONS = Object.freeze({
         homePlaceId: 'timbercross-landing',
         recruitment: {
             placeIds: ['timbercross-landing'],
-            requiredFlags: ['companion.mara-venn.eligible'],
+            requiredFlags: [],
         },
         level: 4,
         baseAttributes: { str: 1, dex: 2, vit: 1, agi: 2, mnd: 1 },
