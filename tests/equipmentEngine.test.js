@@ -28,6 +28,23 @@ function craftingMaterial() {
     return { id: 'copper-ore', name: 'Copper Ore', kind: 'material', quantity: 1, tags: ['material'] };
 }
 
+function legacyRestrictedAxe() {
+    return {
+        id: 'legacy-restricted-axe',
+        name: 'Legacy Restricted Axe',
+        kind: 'equipment',
+        quantity: 1,
+        family: 'weapon',
+        archetype: 'oneHandedWeapon',
+        subtype: 'axe',
+        equipmentSlot: 'mainHand',
+        allowedSlots: ['mainHand'],
+        requirements: { minLevel: 1, allowedJobs: ['vanguard'], allowedRaces: [] },
+        flags: ['equipmentOnly'],
+        modifiers: { derived: { attack: 1 } },
+    };
+}
+
 function levelTwoSword() {
     return {
         id: 'training-sword',
@@ -97,12 +114,12 @@ test('equipItem equips gear from inventory and removes it from container', () =>
     assert.equal(inventoryState.containers.inventory.items.length, 0);
 });
 
-test('equipItem validates active discipline eligibility before equipping', () => {
+test('legacy explicit discipline eligibility remains a bounded compatibility requirement', () => {
     const state = createNewGameState({ mainJobId: 'lifewarden' });
     const inventoryState = state.player.inventoryState;
-    addItemToContainer(inventoryState, 'inventory', bronzeAxe());
+    addItemToContainer(inventoryState, 'inventory', legacyRestrictedAxe());
 
-    const result = equipItem(state, 'Bronze Axe');
+    const result = equipItem(state, 'Legacy Restricted Axe');
 
     assert.match(result, /cannot be equipped by Lifewarden/);
     assert.equal(state.player.equipment.mainHand, null);
@@ -231,13 +248,13 @@ test('enrichEquipmentItem ignores malformed runtime list fields without spreadin
 
     assert.deepEqual(stringMalformed.allowedSlots, ['mainHand', 'offHand']);
     assert.equal(stringMalformed.allowedSlots.includes('o'), false);
-    assert.deepEqual(stringMalformed.requirements.allowedJobs, ['vanguard', 'spellblade', 'oathguard']);
+    assert.deepEqual(stringMalformed.requirements.allowedJobs, []);
     assert.deepEqual(stringMalformed.latentEffects, []);
     assert.deepEqual(stringMalformed.enchantments, []);
     assert.deepEqual(stringMalformed.augments, []);
     assert.deepEqual(objectMalformed.allowedSlots, ['mainHand']);
     assert.equal(objectMalformed.allowedSlots.includes('[object Object]'), false);
-    assert.deepEqual(objectMalformed.requirements.allowedJobs, ['vanguard', 'spellblade', 'oathguard']);
+    assert.deepEqual(objectMalformed.requirements.allowedJobs, []);
     assert.deepEqual(objectMalformed.requirements.allowedRaces, ['human']);
     assert.deepEqual(objectMalformed.latentEffects, []);
     assert.deepEqual(objectMalformed.enchantments, []);
@@ -251,7 +268,7 @@ test('item inspection shows requirements flags effects and confidence notes', ()
     const output = inspectItem(state, 'Bronze Sword');
 
     assert.match(output, /Bronze Sword/);
-    assert.match(output, /Allowed jobs: vanguard, spellblade, oathguard/);
+    assert.match(output, /Allowed jobs: all/);
     assert.match(output, /Flags: equipmentOnly/);
     assert.match(output, /Effects:/);
     assert.match(output, /weaponDelay: placeholder/);
@@ -358,7 +375,7 @@ test('router exposes equip unequip and equipSources commands', () => {
     });
 
     assert.match(router('equipSources'), /Equippable item sources/);
-    assert.match(router('item Bronze Sword'), /Allowed jobs: vanguard, spellblade, oathguard/);
+    assert.match(router('item Bronze Sword'), /Allowed jobs: all/);
     assert.match(router('inspect item Bronze Sword'), /Flags: equipmentOnly/);
     assert.match(router('equip Bronze Sword'), /Equipped Bronze Sword/);
     assert.match(router('equipment'), /mainHand: Bronze Sword/);
