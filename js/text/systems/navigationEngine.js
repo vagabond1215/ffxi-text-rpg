@@ -9,10 +9,12 @@ import {
 } from '../data/coordinates.js';
 import { getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { cancelTravelJourney } from './transportEngine.js';
 
 export function canMoveDirection(state, direction) {
     if (state?.activeBattle?.phase === 'active') return false;
+    if (isCharacterHandsOnBusy(state)) return false;
     return Boolean(getMovementEdge(state, direction));
 }
 
@@ -52,6 +54,7 @@ export function getMovementEdge(state, direction) {
 
 export function moveInDirection(state, direction) {
     if (state?.activeBattle?.phase === 'active') return { ok: false, reason: 'You cannot move while engaged in battle.' };
+    if (isCharacterHandsOnBusy(state)) return { ok: false, reason: describeBlockingHandsOnTask(state) };
 
     const normalizedDirection = normalizeDirection(direction);
     if (!normalizedDirection) return { ok: false, reason: `Unknown direction: ${direction}. Use n, ne, e, se, s, sw, w, or nw.` };
