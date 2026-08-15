@@ -16,7 +16,7 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 Work directly on `main` by default. Treat each prompt as a bounded work order. Follow the `AGENTS.md` autonomous-session guardrail and update this handoff at the end of substantive work.
 
-This repository is still early/single-maintainer pre-alpha development. A coherent incremental commit may temporarily fail while the bounded unit is being assembled, but milestone checkpoints should be validated and known failures recorded. Do not create routine branches/PRs unless explicitly requested or later repository protection requires them.
+This repository remains early/single-maintainer pre-alpha development. Incremental commits may temporarily fail while a bounded unit is being assembled, but coherent milestone checkpoints should be validated and known failures recorded. Do not create routine branches/PRs unless explicitly requested or later repository protection requires them.
 
 ## Product laws
 
@@ -37,266 +37,198 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Maps represent acquired character knowledge, not omniscient authored geography. Resources have physical/economic/social provenance. Canonical fictional time is separate from wall-clock scheduling.
-
-### Hard map/privacy rule
-
-**Authored coordinates are simulation/internal data only and must not be player-facing.** A player-facing map may render discovered or locally knowable geometry, but it must not expose raw authored coordinates, undiscovered total extent, or the character's hidden relative placement inside authored bounds.
-
-Internal `state.position`, atlas keys, topology edges, POI coordinates, route-stop coordinates, and other simulation geometry remain valid implementation data. Presentation translates those into knowledge-relative geometry and human world descriptions.
+Maps represent acquired character knowledge, not omniscient authored geography. Authored coordinates remain simulation/internal data. Resources have physical/economic/social provenance. Canonical fictional time is separate from wall-clock scheduling. Companions are persistent world characters, not summons.
 
 ## Current baseline
 
 ```text
-Product:      0.6.500.1
-Package:      0.6.500
-Account Save: 4
-Game State:   5
-Data:         23
-Benchmark:    1
-Codename:     Equipment and Tool Breadth
+Product:       0.6.800.1
+Package:       0.6.800
+Account Save:  4
+Game State:    5
+Data:          26
+Benchmark:     1
+Codename:      Persistent Companions and Party
 Compatibility: migrate-supported-save-versions
 ```
 
-Phase 0.5 is complete. Phase 0.6 is active through **0.6.500**.
+Phase 0.5 is complete. Phase 0.6 is complete through **0.6.800**; **0.6.900 integrated-mechanics exit gate is next**. No `0.6.900` implementation has started.
 
-Completed sequence through this handoff:
-
-- 0.4 foundation/versioning/ordered migrations/ActionResult/semantic events;
-- 0.5.100 deterministic world clock;
-- 0.5.200 pause/speed controls;
-- 0.5.300 canonical timed tasks;
-- 0.5.400 deterministic interrupt model;
-- 0.5.500 day boundaries/end-of-day review;
-- 0.5.550 original-world identity/stable-ID migration;
-- 0.5.600 persistent projects/resource provenance;
-- 0.5.650 ecology/gathering/populations;
-- 0.5.700 canonical routes/scheduled transport;
-- 0.5.800 regional content packs/normalization/scalable validation;
-- 0.5.900 simulation/content-substrate exit gate;
-- 0.6.100 continuous-character stats/progression;
-- 0.6.200 character-owned skills/proficiencies/capabilities;
-- 0.6.200.2 bounded Canvas usability refinement;
-- 0.6.250 semantic DOM player-interface architecture;
-- 0.6.300 original magic and active ability engine;
-- **0.6.400.2 Combat 2.0**;
-- **0.6.450.1 locality and exploration navigation**;
-- **0.6.500.1 equipment and tool breadth**.
-
-## 0.6.400 Combat 2.0 — complete
-
-The Combat 2.0 contract now unifies basic attacks, canonical abilities, bounded legacy cast/technique adapters, and enemy actions behind structured combat action records rather than display prose.
-
-Primary files:
+Authoritative coherent runtime/version checkpoint:
 
 ```text
+073e0ef1bc26b68e0b47fea579db5525e1e26904
+Update pipeline expectations for persistent companions
+```
+
+Documentation synchronization follows that runtime checkpoint.
+
+## Completed Phase 0.6 sequence
+
+- `0.6.100` continuous-character stats/progression — Data 19.
+- `0.6.200` character-owned skills/proficiencies/capabilities — Data 20.
+- `0.6.250` semantic DOM player-interface architecture — Data 20.
+- `0.6.300` original magic and active ability engine — Data 21.
+- `0.6.400.2` Combat 2.0 — Data 22.
+- `0.6.450` locality/exploration navigation — Data 22.
+- `0.6.500` equipment and field-tool breadth — Data 23.
+- `0.6.600` gathering/hunting/processing/crafting/cooking/salvage — Data 24.
+- `0.6.700` ecology/regional creature/resource breadth — Data 25.
+- `0.6.800` persistent companion/party foundation — Data 26.
+
+## 0.6.600 production/resource loops — complete
+
+Primary additions include character-owned work proficiencies, timed gathering/recovery/production, activity ownership, locality-derived workstations, provenance-preserving processing/crafting/cooking/salvage/recycling, and persistent pending output when storage is full.
+
+Hands-on work blocks incompatible movement and transport. Existing ecology remains environmental source authority; equipped tool tags and persistent work proficiency compose into the work layer rather than creating a second tool or clock system.
+
+Representative loops prove regional raw material -> processing -> finished use and lossy salvage without magical duplication.
+
+## 0.6.700 regional ecology/resource breadth — complete
+
+Regional ecology/resource registries expand Elderwood, Redstone Reach, and Starfen without turning the foundation ecology module into a monolith.
+
+Environmental gathering and defeated-creature body recovery both feed the `0.6.600` production economy. Recovered regional hunt materials use canonical item metadata while retaining acquisition provenance from the defeated body/resource opportunity.
+
+Content-pack ownership/dependencies remain explicit and validated. The track populated proven systems rather than adding species-specific engine branches.
+
+## 0.6.800 persistent companions and party — complete
+
+### Primary files
+
+```text
+js/text/data/companions.js
+js/text/data/seedEntities.js
+js/text/systems/partyEngine.js
 js/text/systems/battleEngine.js
 js/text/systems/combatActionEngine.js
 js/text/systems/combatTurnEngine.js
-js/text/systems/combatSimulationEngine.js
-js/text/systems/abilityEngine.js
-js/text/systems/statusEngine.js
-js/text/data/enemyAbilities.js
+js/text/systems/navigationEngine.js
+js/text/systems/localityEngine.js
+js/text/systems/transportEngine.js
+js/text/ui/gameViewModel.js
+js/text/ui/uiIntentDispatcher.js
 ```
 
-### Combat contract v2
+Focused tests:
+
+```text
+tests/partyEngine.test.js
+tests/partyCombatIntegration.test.js
+tests/partyUiIntegration.test.js
+```
+
+### Companion identity contract
+
+A companion is one persistent NPC promoted into character-like party state. Do not model companions as summons, disposable battle entities, or copies of an NPC.
+
+Representative original companion:
+
+```text
+companion-mara-venn
+npc-elderwood-waywarden
+Mara Venn, Waywarden
+timbercross-landing
+```
+
+`companions.js` stores canonical NPC linkage, recruitment places/requirements, level/base combat traits, tactical role/policy, and relationship dimensions. The representative Mara record has no prerequisite flag so the current foundation is actually recruitable in world; future companions may use generic flag-based willingness conditions.
+
+### Party runtime contract
+
+```text
+PARTY_STATE_VERSION = 1
+active companion capacity = 2
+```
+
+`state.party` is additive/lazily normalizable within Game State 5 and contains persistent recruited records plus active membership. Companion state includes resources/statuses, relationship dimensions, tactics, home/current place, and joining time.
+
+Recruit/join/leave membership changes are blocked during active combat and emit semantic events:
+
+```text
+party.companion-recruited
+party.companion-joined
+party.companion-left
+```
+
+Backing NPC identity/location is synchronized from the persistent companion. If an older Game State 5 save lacks the backing NPC, `partyEngine` can reconstruct it from the canonical companion definition rather than requiring a save-version migration.
+
+### Combat integration
+
+Combat 2.0 now has explicit sides:
+
+```text
+ally
+enemy
+```
+
+Player and active companions are allies. Friendly basic attacks are rejected. Battle defeat is side-based, so a living companion can keep the ally side active after the player falls.
+
+Active companions enter encounters as normal combatants. A ready companion currently contributes a deterministic structured basic-attack action through the existing Combat 2.0 action history after player action resolution. Companion resources/statuses synchronize back into persistent party state during combat finalization.
+
+This preserves the existing Combat 2.0 clock/action contract instead of creating a separate companion combat engine.
+
+### Location continuity
+
+Active companion location follows canonical place changes through:
+
+- exploration movement/place exits;
+- named locality crossings;
+- direct route travel arrivals;
+- scheduled transport arrivals.
+
+Backing NPC location follows the same persistent companion record.
+
+### Semantic UI integration
+
+`gameViewModel.js` exposes a renderer-independent party model with active/recruited counts, identity, role, HP, location, and relationship dimensions.
+
+Recruitable companions can appear as direct semantic contextual actions:
 
 ```js
-battle.contract = {
-  version: 2,
-  actionSequence,
-  actions,
-  lastActionId,
-  timeline: {
-    startedAtWorldSeconds,
-    readyAtByActorId
-  }
+{
+  intent: 'party.recruit',
+  payload: { companionId }
 }
 ```
 
-Structured actions emit:
+`uiIntentDispatcher.js` invokes `partyEngine` directly; it does not manufacture a command string. The semantic party browser contract exists even though a large dedicated party renderer is deferred.
+
+## Persistence/version decision
+
+`0.6.800` completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, while Account Save 4 and Game State 5 remain unchanged.
+
+No Game State migration was required because `state.party` is additive/lazy and backing NPC state is reconstructible. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension definitions are canonical authored runtime data.
+
+Relevant system versions include:
 
 ```text
-combat.action.resolved
+versionManifest  0.6.800.1
+transport        0.2.0
+gameViewModels   0.4.0
+uiIntents        0.4.0
+companionCatalog 0.1.0
+party            0.1.0
+enemyEntity      0.4.0
+battleEngine     0.8.0
+combatTurns      0.3.0
+combatActions    0.8.0
+companions       0.1.0
 ```
-
-Current canonical timing constants in `combatTurnEngine.js`:
-
-```text
-player basic recovery: 3 fictional seconds
-enemy basic recovery:  4 fictional seconds
-enemy opening delay:    3 fictional seconds
-```
-
-Legacy cast/technique adapters currently use bounded recovery values on top of the same timeline.
-
-### Combat time and interruption
-
-There is no second combat clock. Readiness is absolute canonical fictional time.
-
-`provideCombatInterrupts()` contributes enemy-ready events to `advanceSimulationUntilInterrupt()`. `combatSimulationEngine.advanceCombatSimulation()` composes combat and ability interrupt providers. A timed player ability can therefore be struck/interrupted by an enemy before cast completion.
-
-The active DOM shell routes battle `wait` through `combatSimulationEngine` instead of bypassing combat interrupts.
-
-### Status timing
-
-Finite statuses can carry:
-
-```text
-appliedAtWorldSeconds
-expiresAtWorldSeconds
-```
-
-`reconcileStatusesAtWorldTime()` lazily anchors older finite statuses and expires them against canonical fictional time.
-
-### Deterministic battle identity
-
-New encounters use additive `state.combatSequence` and IDs such as:
-
-```text
-battle-000001
-enemy-...-encounter-000001
-```
-
-The older `Date.now()` battle identity scaffold is no longer runtime authority for new encounters.
-
-### Original enemy active ability
-
-`data/enemyAbilities.js` begins the original enemy active-ability catalog with:
-
-```text
-enemy-ability-rushing-cleave
-Rushing Cleave
-```
-
-Redfang Raider owns it. Current selection policy intentionally proves deterministic enemy active-ability execution without pretending enemy AI breadth is complete.
-
-### Combat bounded limitations
-
-- Enemy tactical policy is deliberately small.
-- AoE/ground targeting, richer resistance/accuracy layers, formations, party tactics, and broad enemy technique catalogs remain later depth/breadth work.
-- `combatActionEngine.castSpell()` and transitional weapon-technique behavior remain bounded compatibility adapters.
-- Only one active player ability activation is currently supported at once.
-
-Do not reopen the canonical readiness/interruption clock without a concrete contradiction.
-
-## 0.6.450 Locality and exploration navigation — complete
-
-The accepted navigation distinction is now active behavior, not merely design direction.
-
-Primary file:
-
-```text
-js/text/systems/localityEngine.js
-```
-
-Current semantic modes:
-
-```text
-locality     -> named settlement destinations + locality/POI actions
-exploration  -> discovery map + directional movement
-route        -> journey/progress + travel controls
-combat       -> combat state + tactical actions
-```
-
-### Safe settlements
-
-Existing danger-0 city/city-interior/travel-hub `place` records act as locality nodes. No redundant city-geography database was added.
-
-Thornwall, Brasshaven, and Mistmere starter city place graphs now support named locality navigation. The active DOM renderer **omits** local-map and D-pad markup in safe locality mode. City UI is driven by named adjacent destinations and semantic POI actions.
-
-`performLocalityPoiAction()` may use the POI's internal coordinate to satisfy old location-sensitive systems, but the coordinate is not player-facing navigation identity.
-
-### Locality time
-
-Ordinary browsing is free. Adjacent locality crossing consumes the authored connection `travelSeconds` through `advanceSimulationUntilInterrupt()`. If interrupted before completion, the player remains at the origin locality.
-
-Safe therefore means ordinary ambient danger is suppressed; it does not mean world time is suspended or events cannot occur.
-
-### Exploration
-
-Wilderness/dungeons retain the acquired-knowledge SVG minimap, legal directional movement, keyboard controls, and atlas privacy. Higher-resolution shaped/seam-compatible cartography remains a valid later exploration presentation project, but it is not required to make ordinary cities usable.
-
-See `docs/LOCALITY_AND_EXPLORATION_MODEL.md` for the stable contract.
-
-## 0.6.500 Equipment and Tool Breadth — complete
-
-Equipment breadth now proves usable world tools and general gear rather than merely adding catalog rows.
-
-Primary files:
-
-```text
-js/text/data/equipmentCatalog.js
-js/text/systems/equipmentToolEngine.js
-js/text/systems/equipmentEngine.js
-js/text/systems/equipmentEligibilityEngine.js
-js/text/data/shopCatalogs.js
-js/text/systems/shopEngine.js
-js/text/systems/ecologyEngine.js
-```
-
-### Equipment catalog v3
-
-Representative breadth now includes weapons, armor, shield/accessory/travel gear, and original field tools.
-
-Field tools:
-
-```text
-Field Knife        -> cutting, dagger
-Prospector Pick    -> mining
-Woodsman Hatchet   -> woodcutting, axe
-Digging Spade      -> digging
-Reed Sickle        -> cutting
-Marsh Fishing Rod  -> fishing
-```
-
-General gear added includes Iron Buckler, Road Cloak, Field Belt, Brass Ring, Traveler Boots, Leather Vest, Traveler Gloves, and Leather Trousers.
-
-### Tool/loadout authority
-
-`equipmentToolEngine.js` exposes equipped item tags as a shared loadout requirement source.
-
-Consequences already proven:
-
-- an Elementalist can equip a Field Knife and satisfy the learned Field Dressing practical capability without changing discipline;
-- an equipped Prospector Pick automatically satisfies the mining tool requirement for the Redstone copper seam;
-- ecology gathering still accepts explicit contextual `toolTags` as a bounded adapter, but equipped gear is now the normal player loadout seam.
-
-### Shops
-
-Shop catalog v2 stocks field tools and broader gear. Purchases recognized as equipment/tool pass through `enrichEquipmentItem()` before inventory insertion and can be equipped normally.
-
-Player-facing catalog/shop text was moved to original-world wording. Stable legacy-shaped POI IDs remain internal compatibility seams.
-
-### Equipment gating direction
-
-New original equipment in this track defaults to `allowedJobs: []`. Do **not** copy active-discipline gating into new gear by default.
-
-Older starter weapons/bronze armor still contain discipline-shaped `allowedJobs` compatibility fields. Migrate them incrementally when concrete loadout/capability requirements are available; do not perform an unbounded cleanup.
-
-### Equipment bounded limitations
-
-This is representative systems breadth, not a final item game. Durability/repair, ammunition depth, charge consumption, broad enchantment use, large tiered equipment progression, and finished economic balance remain future work.
 
 ## Validation checkpoint
 
-Authoritative runtime/version checkpoint before documentation-only synchronization:
+At runtime/version head `073e0ef1bc26b68e0b47fea579db5525e1e26904`:
 
 ```text
-3a30909e20ba279475803c691041f2d2d61f09f0
-```
-
-GitHub Actions on that head completed successfully:
-
-```text
-tests       421
-pass        421
+tests       448
+pass        448
 fail        0
 cancelled   0
 skipped     0
+todo        0
 ```
 
-Build/deploy checks:
+Build/deploy checks all completed successfully:
 
 ```text
 test                  success
@@ -305,51 +237,42 @@ report-build-status   success
 deploy                success
 ```
 
-Benchmark at Product `0.6.500.1` / Package `0.6.500` / Data `23`:
+Benchmark:
 
 ```text
-create 1,000 player combat profiles:              421.358 ms | 0.421358 ms/op
-create 1,000 enemy combat profiles:               115.202 ms | 0.115202 ms/op
-resolve 1,000 basic attacks:                      499.732 ms | 0.499732 ms/op
-run 10,000 tick dispatches with 5 subscribers:     47.547 ms | 0.004755 ms/op
-resolve 10,000 direct travel route lookups:      6714.249 ms | 0.671425 ms/op
+create 1,000 player combat profiles:              467.995 ms | 0.467995 ms/op
+create 1,000 enemy combat profiles:               111.001 ms | 0.111001 ms/op
+resolve 1,000 basic attacks:                      551.000 ms | 0.551000 ms/op
+run 10,000 tick dispatches with 5 subscribers:     48.508 ms | 0.004851 ms/op
+resolve 10,000 direct travel route lookups:      8632.854 ms | 0.863285 ms/op
 ```
 
-The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. The workflow runner forces affected action internals to Node 24 while `setup-node` still installs configured Node 20.20.2 for project test/benchmark execution.
+The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. Actions targeting Node20 are forced through Node24 internally while `setup-node` installs Node 20.20.2 for project tests/benchmarks.
 
-Documentation synchronization follows that green runtime checkpoint; verify the latest docs-only head checks when starting the next session.
+## 0.6.800 bounded limitations / intentional follow-ups
 
-## Compatibility / intentional debt
+- Only one representative recruitable companion proves the current foundation.
+- Companion tactical policy is intentionally basic; companions are not yet independent simulation-interrupt providers. Do not create a second combat clock to solve this later.
+- Deeper relationship progression/dialogue, companion equipment/progression breadth, formation/tactical controls, and larger companion content belong later.
+- The semantic party model exists but a dedicated full party browser view is not yet required.
+- `poiEngine.js`/`commandRouter.js` still contain transitional companion compatibility text/commands. Future cleanup should route those adapters to `partyEngine`; POI prose must not become companion authority.
+- The legacy-shaped POI catalog contains an unrelated Thornwall Southgate POI also displayed as “Mara Venn”. Preserve its stable compatibility ID if needed, but give that POI a unique original display identity in a bounded content cleanup.
+- Active companion location is synchronized at canonical place-transition authorities; stationary companions remain at their stored place.
+- Existing broader compatibility debt remains: legacy localStorage keys, some legacy-shaped POI IDs, internal `player.jobs`/`mainJobId` naming, Canvas regression/reference modules, older starter discipline-shaped equipment eligibility, transitional cast/technique command adapters, and `gil` terminology.
 
-Do not clean these opportunistically unless directly in scope:
+## Next bounded target — 0.6.900 integrated-mechanics exit gate
 
-- `gil` remains current currency terminology until deliberate original currency design.
-- Historical localStorage keys remain for save compatibility.
-- Legacy-shaped POI stable IDs remain where catalogs depend on them.
-- `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related internal/persisted names remain compatibility seams.
-- Historical FFXI research modules remain bounded reference surfaces.
-- Canvas modules remain regression/reference code; the active browser UI is semantic DOM.
-- Some DOM information views still bridge to command output until dedicated presentation models exist.
-- Search-or-act is command-capable, not true fuzzy cross-database/entity/action search.
-- `places.js` spawn rules and some place connections remain transitional/fallback seams.
-- Older starter equipment eligibility remains discipline-shaped compatibility debt; new original equipment should prefer concrete loadout/capability requirements.
-- Existing `bronze-pick` is a legacy-shaped combat starter item; **Prospector Pick** is the canonical field mining tool added by 0.6.500.
-- Gathering remains relatively atomic; 0.6.600 is where timed work/processing/crafting loops should deepen it.
-- High-resolution shaped exploration cartography is deferred until terrain-sensitive content justifies the authoring cost.
+Do not treat `0.6.900` as permission for another broad subsystem. It is the Phase 0.6 integration/audit/stabilization gate.
 
-## Next bounded target
+Recommended sequence:
 
-Start **0.6.600 — Gathering, hunting, processing, crafting, cooking, and salvage**. Do not skip directly into mass content generation.
-
-Recommended first unit:
-
-1. audit current ecology gathering, resource opportunities/recovery, projects/timed tasks, inventory/provenance/sinks, capabilities/proficiencies, equipment-tool tags, and representative recipes/content packs;
-2. define process/work records separately from finished item records;
-3. turn representative gathering/recovery into timed proficiency/tool-aware work where appropriate;
-4. implement one small source -> raw material -> processing -> component/ingredient -> finished-use/sink chain;
-5. prove representative crafting and cooking through canonical tasks, workstations/tools, proficiency/capability, and resource consumption;
-6. establish salvage/recycling without magical duplication;
-7. preserve locality/exploration navigation, canonical fictional time, resource provenance, regional content ownership, and continuous-character capability semantics;
-8. validate/version/benchmark/document and stop at a coherent `0.6.600` boundary.
-
-Following tracks remain `0.6.700` ecology/regional content breadth, `0.6.800` persistent companion/party foundation, and `0.6.900` integrated-mechanics exit gate.
+1. audit save/load and lazy normalization across abilities, work, ecology, combat, party, travel, projects, and semantic events;
+2. audit canonical fictional-time and interrupt composition across combat readiness, ability activation, work, travel/locality crossing, projects, and day review;
+3. identify remaining accidental active-discipline hard gates that contradict continuous-character ownership;
+4. exercise party/combat/travel/work coexistence and exactly-once synchronization/reward/resource behavior;
+5. audit provenance/source/sink continuity through combat recovery, gathering, production, trade, quests/rewards where implemented;
+6. audit semantic UI/view-model authority against old command/prose compatibility adapters;
+7. run world/database/content-pack validators and repair dangling/duplicate authority seams;
+8. run full tests, benchmark, build/deploy, and performance-regression review;
+9. close Phase 0.6 only after defining exact Phase 0.7 playable-alpha entry criteria;
+10. stop at the coherent `0.6.900` boundary rather than beginning 0.7 content automatically.
