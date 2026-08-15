@@ -11,6 +11,7 @@ Authoritative companions:
 - `docs/ARCHITECTURE.md` — current runtime/module boundaries.
 - `docs/LOCALITY_AND_EXPLORATION_MODEL.md` — settlement/exploration navigation contract.
 - `docs/THREAD_HANDOFF.md` — latest implementation handoff.
+- `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md` — Phase 0.7 player-facing sequencing and acceptance checks.
 
 ## Current baseline
 
@@ -24,7 +25,7 @@ Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
 
-This remains pre-alpha product development. Milestone numbers describe active contracts, not completion percentages.
+This remains pre-alpha product development. Milestone numbers describe active contracts, not completion percentages. Phase 0.7 implementation is in progress, but the runtime product number remains at the last completed milestone until a bounded 0.7 track is closed.
 
 ## Product laws
 
@@ -65,7 +66,7 @@ Key rules:
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
 | `0.6` | Integrated character/mechanics content | **Complete.** Continuous-character progression, semantic UI, active abilities, Combat 2.0, navigation, equipment/tools, provenance-bearing work/production, regional ecology breadth, persistent companions, and an executable cross-system exit gate are established. |
-| `0.7` | Multi-region playable alpha | **Next.** Convert the proven systems into a sustained multi-region sandbox campaign with enough NPC/social/economic/adventure content and ordinary UI flow to play rather than merely demonstrate systems. |
+| `0.7` | Multi-region playable alpha | **In progress.** Convert the proven systems into a sustained multi-region sandbox campaign with enough NPC/social/economic/adventure content and ordinary UI flow to play rather than merely demonstrate systems. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
 | `1.0` | Live foundation | The central persistent-life/adventure promise is coherent, stable, migratable, and release-ready. |
@@ -237,9 +238,11 @@ Phase 0.6 is therefore closed without an Account Save, Game State, Data, or Benc
 
 ---
 
-# 0.7 — Multi-region playable alpha — next
+# 0.7 — Multi-region playable alpha — in progress
 
 Phase 0.7 is not another architecture reset. It turns the proven Phase 0.6 systems into sustained play across a coherent authored world.
+
+The player-facing sequencing for this phase is defined in `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`.
 
 ## Phase 0.7 entry contract
 
@@ -248,11 +251,11 @@ Work may build on the Phase 0.6 gate only while preserving these authorities:
 - canonical fictional time/tasks/interrupts remain the common activity clock;
 - continuous-character stats, skills, capabilities, and work proficiencies remain character-owned;
 - combat, travel, work, party, ecology, economy, and social content compose through existing engines rather than parallel domain clocks/state;
-- semantic DOM/view-model/intents remain the primary player-interface direction; command adapters are compatibility/power surfaces;
+- semantic DOM/view-model/intents remain the primary player-interface direction; command adapters are optional power/diagnostic surfaces;
 - maps remain acquired knowledge and internal coordinates remain non-player-facing;
 - provenance and source/sink validation remain mandatory for physical/economic/social rewards;
 - content-pack ownership/dependencies and cross-reference validation remain canonical scale controls;
-- save compatibility remains `migrate-supported-save-versions` unless a real schema incompatibility requires an ordered migration.
+- compatibility mode is `pre-release-current-schema`: prefer one clean current model and intentional schema/version changes over compatibility-only lazy state or adapter complexity.
 
 ## Phase 0.7 playable-alpha exit criteria
 
@@ -263,13 +266,15 @@ A Phase 0.7 alpha slice is credible only when a normal player can sustain repeat
 - each major playable region connects ecology/resources to work/production/trade sinks and also provides adventure/social reasons to visit;
 - combat, abilities, party, work, travel, scheduled transport, day review, and recovery can occur in one campaign without violating fictional-time or exactly-once ownership contracts;
 - ordinary gameplay actions needed for the campaign slice are reachable through semantic browser UI rather than requiring command-line knowledge;
-- saves can be resumed across the campaign slice with supported migrations and additive state intact;
+- current-version saves can resume the campaign slice without duplicate rewards, contacts, or progress; historical pre-alpha migrations are not an exit requirement;
 - world/content-pack/source-sink/database validation remains green as authored content scales;
 - authored breadth is sufficient for alternative short-term goals and repeated routes/activities, rather than one linear systems demonstration.
 
-## 0.7.100 — Playable campaign slice — next bounded target
+## 0.7.100 — Playable campaign slice — in progress
 
 The first Phase 0.7 unit should assemble one end-to-end campaign slice from existing systems before broad content multiplication. Use a connected subset of Thornwall/Elderwood/Waymeet or another justified corridor and prove ordinary player flow across settlement services, a contract/quest, relationship/NPC continuity, regional livelihood/economy, travel, danger/combat, recovery/production, and return/resolution through semantic UI.
+
+The first player-experience slice is implemented: all three existing origins now provide an origin-specific arrival, a clear first local contact, a semantic first action, a setting-friendly explanation of persistent progress paths, and a believable default morning start. This is the **PX-1 footing layer**, not completion of the full `0.7.100` campaign slice.
 
 Do **not** start by mass-generating hundreds of records or by introducing a replacement quest/economy/dialogue framework. Add only the reusable primitives that the playable slice proves are actually missing.
 

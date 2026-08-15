@@ -23,6 +23,8 @@ Codename:     Integrated Mechanics Gate
 
 The repository is pre-alpha. **Phase 0.6 is complete.** Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, persistent NPC-backed companions, and an executable integrated-mechanics exit gate are established on top of the deterministic simulation/content substrate.
 
+Phase 0.7 player-experience work is now in progress, but the product version remains at the last completed milestone until a bounded 0.7 track is actually closed.
+
 ## Product version format
 
 Use:
@@ -58,18 +60,20 @@ Product version is not a persistence schema number. Track these independently:
 
 | Version | Current | Purpose |
 | --- | ---: | --- |
-| Account Save | 4 | Local account/session/character registry compatibility |
-| Game State | 5 | Serialized character/world runtime compatibility |
-| Data | 26 | Canonical authored-data contract compatibility |
+| Account Save | 4 | Current local account/session/character registry contract |
+| Game State | 5 | Current serialized character/world runtime contract |
+| Data | 26 | Canonical authored-data contract |
 | Benchmark | 1 | Benchmark protocol/comparability |
 
 ### When to bump Account Save
 
-Bump only when persisted account-registry/session structure changes incompatibly or requires an ordered migration. Presentation, mechanics, or additive character-state changes do not automatically justify a bump.
+Bump when the persisted account-registry/session contract changes materially enough that current-format data should not be mistaken for the prior schema. During pre-alpha, a bump does **not** require preserving older local account data. Add an ordered migration only when historical compatibility is deliberately worth carrying.
 
 ### When to bump Game State
 
-Bump when persisted game-state structure changes in a way that cannot be safely handled by additive/lazy normalization. Register an ordered migration for every supported step. Never bump merely because product mechanics become richer.
+Bump when the persisted game-state structure or meaning changes materially enough to define a new current contract. During pre-alpha, prefer the clean current schema over additive/lazy compatibility machinery created only to keep old local saves loading. A migration is optional engineering work until a later stabilization phase explicitly guarantees historical compatibility.
+
+Purely derived/presentation state should remain unpersisted when there is already a clear canonical authority; avoiding duplicate state is an architectural reason, not a compatibility trick.
 
 ### When to bump Data
 
@@ -94,16 +98,19 @@ Bump only when the benchmark workload/protocol changes enough that prior numbers
 Current compatibility mode:
 
 ```text
-migrate-supported-save-versions
+pre-release-current-schema
 ```
 
 Rules:
 
-- supported historical save versions migrate through ordered steps;
-- future/unknown versions fail deterministically instead of being silently coerced;
-- additive/lazily reconstructible state should avoid unnecessary save-version churn;
-- legacy identifiers may be accepted at explicit migration/input boundaries, but canonical current state/data emits original-world identifiers;
-- compatibility tokens are not permission to expose historical IP as canonical content.
+- the current schema must save, load, validate, and resume deterministically;
+- old local saves/accounts may be invalidated or reset when a cleaner current schema materially improves the project;
+- do not add lazy normalization, duplicate fields, adapter layers, or migration steps solely to preserve pre-alpha historical state;
+- when historical compatibility is deliberately supported, future/unknown versions must still fail deterministically rather than being silently coerced;
+- legacy identifiers may be accepted at explicit research/import/input boundaries, but canonical current state/data emits original-world identifiers;
+- compatibility policy is never permission to expose historical IP as canonical content.
+
+Historical migration code remains bounded technical debt until a cleanup track removes or consolidates it. Its existence does not create a forward requirement to preserve every earlier schema.
 
 ## Release discipline
 
@@ -115,9 +122,11 @@ For a normal coherent milestone checkpoint:
 2. run/observe the full test suite;
 3. run the benchmark and compare with performance budgets;
 4. verify browser/build/deploy checks where applicable;
-5. update `js/text/version.js` and `package.json` deliberately;
+5. update `js/text/version.js` and `package.json` deliberately when closing a milestone;
 6. update roadmap/architecture/handoff documentation;
 7. stop at the declared boundary rather than silently beginning the next track.
+
+In-progress work may register a subsystem version or compatibility-policy correction without advancing the product milestone number. Do not claim a planned track is complete simply because its first vertical slice exists.
 
 ## Phase / track history
 
@@ -159,7 +168,7 @@ Direction lock, version protocol, ordered persistence migrations, structured act
 
 ### 0.6.400 version decision
 
-Combat 2.0 completed at Product `0.6.400.2`, Package `0.6.400`, Data `22`, while Account Save 4 and Game State 5 remained unchanged. Readiness timeline, combat action history, deterministic runtime battle sequence, and status timing are additive/lazily normalizable Game State v5 state. Data advanced because an original canonical enemy-ability catalog became authored runtime data.
+Combat 2.0 completed at Product `0.6.400.2`, Package `0.6.400`, Data `22`, while Account Save 4 and Game State 5 remained unchanged. Readiness timeline, combat action history, deterministic runtime battle sequence, and status timing were additive/lazily normalizable Game State v5 state at the time. Data advanced because an original canonical enemy-ability catalog became authored runtime data.
 
 ### 0.6.450 version decision
 
@@ -167,11 +176,11 @@ Locality/exploration navigation completed at Product `0.6.450.1`, Package `0.6.4
 
 ### 0.6.500 version decision
 
-Equipment/tool breadth completed at Product `0.6.500.1`, Package `0.6.500`, Data `23`. The equipment catalog and shop-facing field-tool contract expanded materially, while ownership remains normal item/equipment state compatible with Game State 5. Newly authored equipment avoided active-discipline gating by default.
+Equipment/tool breadth completed at Product `0.6.500.1`, Package `0.6.500`, Data `23`. The equipment catalog and shop-facing field-tool contract expanded materially, while ownership remained normal item/equipment state compatible with Game State 5. Newly authored equipment avoided active-discipline gating by default.
 
 ### 0.6.600 version decision
 
-Production/resource loops completed at Product `0.6.600.1`, Package `0.6.600`, Data `24`. Work-task/proficiency state is additive and lazily normalizable within Game State 5, while canonical process/output records materially expanded authored-data authority and therefore advanced Data.
+Production/resource loops completed at Product `0.6.600.1`, Package `0.6.600`, Data `24`. Work-task/proficiency state was additive and lazily normalizable within Game State 5 at the time, while canonical process/output records materially expanded authored-data authority and therefore advanced Data.
 
 ### 0.6.700 version decision
 
@@ -179,7 +188,7 @@ Regional ecology/resource breadth completed at Product `0.6.700.1`, Package `0.6
 
 ### 0.6.800 version decision
 
-Persistent companion/party foundation completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, with Account Save 4 and Game State 5 unchanged. `state.party` is additive/lazily reconstructible; backing NPC state can be reconstructed/synchronized from canonical companion definitions. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension records are canonical authored runtime data.
+Persistent companion/party foundation completed at Product `0.6.800.1`, Package `0.6.800`, Data `26`, with Account Save 4 and Game State 5 unchanged. `state.party` was additive/lazily reconstructible; backing NPC state could be reconstructed/synchronized from canonical companion definitions. Data advanced because companion identity linkage, recruitment requirements, tactical policy, and relationship-dimension records are canonical authored runtime data.
 
 ### 0.6.900 version decision
 
@@ -187,11 +196,11 @@ Integrated mechanics completed at Product `0.6.900.1`, Package `0.6.900`, while 
 
 The track introduced `integratedMechanicsGate` system contract `0.1.0`, which evaluates persistence/lazy normalization, time/interrupt dependencies, continuous-character ownership, combat/party/work/travel composition, provenance/production, semantic UI authority, world/content validators, and required database readiness.
 
-No persistence bump was justified because the gate proves the major additive Phase 0.6 registries can be lazily reconstructed within Game State 5. No Data bump was justified because the track repaired authority/presentation integration without introducing a new canonical authored-data shape. Canonical starter equipment was also normalized away from active-discipline `allowedJobs` gates while the generic field remains accepted at explicit legacy compatibility boundaries.
+No persistence bump was justified for that completed historical track because its major Phase 0.6 registries could be reconstructed within Game State 5. No Data bump was justified because the track repaired authority/presentation integration without introducing a new canonical authored-data shape. Canonical starter equipment was also normalized away from active-discipline `allowedJobs` gates while the generic field remains accepted at explicit legacy compatibility boundaries.
 
 Authoritative runtime checkpoint `58fed55122d8058152c70c8e7b3b2565d2cbeaf9` passed 453/453 tests, the Benchmark 1 workload, browser build/status reporting, and GitHub Pages deploy.
 
-## Phase 0.7 — Multi-region playable alpha — next
+## Phase 0.7 — Multi-region playable alpha — in progress
 
 Phase 0.7 begins from the closed Phase 0.6 authority contracts; it is not permission to replace them with parallel quest/economy/dialogue clocks or state models.
 
@@ -205,15 +214,15 @@ New 0.7 work must preserve:
 - acquired-knowledge map privacy;
 - provenance/source-sink integrity;
 - explicit content-pack ownership/dependencies and cross-reference validation;
-- supported persistence migrations and additive normalization where sufficient.
+- one clean current schema, with pre-alpha reset/breakage preferred over compatibility-only complexity.
 
 ### Playable-alpha exit gate
 
-Phase 0.7 exits only when a normal player can sustain repeated multi-session play across several connected settlements/regions without test-only setup or command-line expertise. The campaign must combine persistent NPC communities, shops/services, contracts/quests, relationships/reputation, companions, meaningful transport/economy, ecology/resources, production/livelihood choices, and adventure/combat in one coherent save.
+Phase 0.7 exits only when a normal player can sustain repeated multi-session play across several connected settlements/regions without test-only setup or command-line expertise. The campaign must combine persistent NPC communities, shops/services, contracts/quests, relationships/reputation, companions, meaningful transport/economy, ecology/resources, production/livelihood choices, and adventure/combat in one coherent current-version save.
 
-Each major playable region should have both economic/livelihood reasons and social/adventure reasons to visit. Ordinary campaign actions must be reachable through the semantic browser UI. Saves, validators, provenance, time/interrupt behavior, and exactly-once resource ownership must remain green as content scales.
+Each major playable region should have both economic/livelihood reasons and social/adventure reasons to visit. Ordinary campaign actions must be reachable through the semantic browser UI. Current-version saves, validators, provenance, time/interrupt behavior, and exactly-once resource ownership must remain green as content scales.
 
-The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication.
+The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication. The player-experience upgrade path has begun with a first-session orientation/footing slice, but `0.7.100` is not complete yet.
 
 ## Planned later phases
 
@@ -223,7 +232,7 @@ Deepen property, workshops, agriculture, logistics, home/infrastructure, compani
 
 ### 0.9 — Adventure depth and release hardening
 
-Expand difficult regions/dungeons, advanced combat/abilities, rare systems, high-level economy/production, accessibility/UI, balance, save migration, performance, deployment, and release tooling.
+Expand difficult regions/dungeons, advanced combat/abilities, rare systems, high-level economy/production, accessibility/UI, balance, historical-save migration policy, performance, deployment, and release tooling.
 
 ### 1.0 — Live foundation
 
