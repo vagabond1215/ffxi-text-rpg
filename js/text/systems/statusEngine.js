@@ -25,10 +25,7 @@ export function createStatusEffect(options = {}) {
 }
 
 export function applyStatus(entity, status, options = {}) {
-    const next = createStatusEffect({
-        ...status,
-        appliedAtWorldSeconds: options.nowWorldSeconds ?? status.appliedAtWorldSeconds,
-    });
+    const next = createStatusEffect({ ...status, appliedAtWorldSeconds: options.nowWorldSeconds ?? status.appliedAtWorldSeconds });
     entity.statuses ??= [];
 
     const existingIndex = entity.statuses.findIndex((item) => item.stackGroup === next.stackGroup);
@@ -36,11 +33,7 @@ export function applyStatus(entity, status, options = {}) {
         entity.statuses.splice(existingIndex, 1, next);
         return entity;
     }
-
-    if (existingIndex >= 0 && next.stackRule === 'ignore') {
-        return entity;
-    }
-
+    if (existingIndex >= 0 && next.stackRule === 'ignore') return entity;
     entity.statuses.push(next);
     return entity;
 }
@@ -56,9 +49,13 @@ export function reconcileStatusesAtWorldTime(entity, nowWorldSeconds) {
     const expired = [];
 
     for (const status of entity.statuses ?? []) {
+        const duration = normalizeDuration(status.durationSeconds);
+        let appliedAt = normalizeWorldSecond(status.appliedAtWorldSeconds);
+        if (appliedAt === null && duration !== null) {
+            appliedAt = now;
+            status.appliedAtWorldSeconds = now;
+        }
         if (status.expiresAtWorldSeconds === null || status.expiresAtWorldSeconds === undefined) {
-            const appliedAt = normalizeWorldSecond(status.appliedAtWorldSeconds);
-            const duration = normalizeDuration(status.durationSeconds);
             if (appliedAt !== null && duration !== null) status.expiresAtWorldSeconds = appliedAt + duration;
         }
         const expiresAt = normalizeWorldSecond(status.expiresAtWorldSeconds);
@@ -74,10 +71,7 @@ export function reconcileStatusesAtWorldTime(entity, nowWorldSeconds) {
 export function advanceStatuses(entity, elapsedSeconds) {
     const expired = [];
     for (const status of entity.statuses ?? []) {
-        if (status.remainingSeconds !== null) {
-            status.remainingSeconds = Math.max(0, status.remainingSeconds - elapsedSeconds);
-        }
-
+        if (status.remainingSeconds !== null) status.remainingSeconds = Math.max(0, status.remainingSeconds - elapsedSeconds);
         if (status.tickSeconds) {
             status.tickAccumulator += elapsedSeconds;
             while (status.tickAccumulator >= status.tickSeconds) {
@@ -85,14 +79,9 @@ export function advanceStatuses(entity, elapsedSeconds) {
                 applyStatusTick(entity, status);
             }
         }
-
         if (status.remainingSeconds === 0) expired.push(status.id);
     }
-
-    if (expired.length) {
-        entity.statuses = entity.statuses.filter((status) => !expired.includes(status.id));
-    }
-
+    if (expired.length) entity.statuses = entity.statuses.filter((status) => !expired.includes(status.id));
     return expired;
 }
 
