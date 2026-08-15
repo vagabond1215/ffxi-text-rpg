@@ -1,4 +1,4 @@
-import { getGatheringSource } from '../data/ecologyCatalog.js';
+import { getCanonicalGatheringSource as getGatheringSource } from '../data/ecologyRegistry.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { getGatheringSourceAvailability, harvestGatheringSource } from './ecologyEngine.js';
