@@ -26,6 +26,7 @@ import {
     validateCreator,
 } from '../systems/characterCreationModel.js';
 import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
+import { recruitCompanion } from '../systems/partyEngine.js';
 
 export function createIntentResult({ ok = true, message = '', data = null } = {}) {
     return { ok, message, data };
@@ -97,6 +98,7 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'ability.activate': return activateCanonicalAbility(context);
+        case 'party.recruit': return recruitCanonicalCompanion(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -369,6 +371,15 @@ function activateCanonicalAbility(context) {
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
     return ok(context, { abilityResult: result, message });
+}
+
+function recruitCanonicalCompanion(context) {
+    const result = recruitCompanion(context.state, context.payload.companionId);
+    const message = result.message ?? result.reason ?? `${context.payload.companionId ?? 'Companion'} updated.`;
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { partyResult: result, message });
 }
 
 function routeCommand(context) {
