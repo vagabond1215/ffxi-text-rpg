@@ -1,5 +1,6 @@
 import { getProductionDefinition, getProductionInputItem, listProductionDefinitions } from '../data/productionCatalog.js';
 import { getProductionItem } from '../data/productionItems.js';
+import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { collectAvailableToolTags } from './equipmentToolEngine.js';
 import {
     addItemToContainer,
@@ -15,6 +16,7 @@ import {
     workDurationForProficiency,
 } from './workProficiencyEngine.js';
 import {
+    cancelWorkTask,
     findWorkRecord,
     markWorkAwaitingStorage,
     markWorkCompleted,
@@ -61,6 +63,7 @@ export function startProductionWork(state, processId, options = {}) {
             processId: definition.id,
             processKind: definition.kind,
             containerId,
+            startPlaceId: state.currentPlaceId ?? null,
             requiredStationTags: [...definition.requiredStationTags],
             requiredToolTags: [...definition.requiredToolTags],
             proficiencyId: definition.proficiencyId,
@@ -76,9 +79,7 @@ export function startProductionWork(state, processId, options = {}) {
     const workId = taskResult.data.work.id;
     const removed = removeInputsAtomically(inventoryState, containerId, definition.inputs);
     if (!removed.ok) {
-        const { cancelWorkTask } = options.workTaskApi ?? {};
-        if (typeof cancelWorkTask === 'function') cancelWorkTask(state, workId);
-        else markWorkAwaitingStorage(state, workId, { startFailure: removed.reason });
+        cancelWorkTask(state, workId);
         return failure('production.inputs-unavailable', { processId: definition.id, reason: removed.reason }, removed.reason);
     }
 
@@ -98,7 +99,7 @@ export function startProductionWork(state, processId, options = {}) {
         action: 'production.start',
         code: 'production.started',
         outcome: 'started',
-        data: { work: taskResult.data.work, task: taskResult.data.task, process: definition, eventId: event.id },
+        data: { work: findWorkRecord(state, workId), task: taskResult.data.task, process: definition, eventId: event.id },
         display: { text: `Started ${definition.name}; ${durationSeconds}s required.` },
     });
 }
@@ -129,6 +130,8 @@ export function checkProductionRequirements(state, definitionOrId, options = {})
     const blockers = [];
     if (state.activeBattle?.phase === 'active') blockers.push('Production cannot start during combat.');
     if (state.travel?.active) blockers.push('Production cannot start during active travel.');
+    const blockingTask = getBlockingHandsOnTask(state);
+    if (blockingTask) blockers.push(`${blockingTask.label} is already in progress.`);
 
     const station = hasWorkstationTags(state, definition.requiredStationTags, options.stationTags);
     if (!station.ok) blockers.push(`Requires workstation: ${station.missing.join(', ')}.`);
@@ -240,7 +243,7 @@ function buildRuntimeOutput(state, record, definition, output) {
         provenance: [{
             type: definition.kind === 'salvage' ? 'salvage' : 'crafting',
             sourceId: definition.id,
-            placeId: state.currentPlaceId ?? null,
+            placeId: record.data.startPlaceId ?? state.currentPlaceId ?? null,
             action: definition.kind === 'processing' ? 'process' : definition.kind === 'salvage' ? 'salvage' : 'craft',
             data: {
                 workId: record.id,
