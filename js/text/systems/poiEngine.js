@@ -5,11 +5,13 @@ import {
     getPointOfInterest,
     getPoisForPlace,
 } from '../data/pointsOfInterest.js';
+import { findCompanionDefinition } from '../data/companions.js';
 import { describeGuildServiceForPoi } from '../data/guildServices.js';
 import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { recruitCompanion } from './partyEngine.js';
 
 export function createPoiDiscoveryState() {
     return {};
@@ -72,6 +74,14 @@ export function talkAtCurrentGrid(state, query = '') {
 
 export function performPoiAction(state, action, query = '') {
     const canonicalAction = canonicalizePoiAction(action);
+    if (canonicalAction === 'companion') {
+        const definition = findCompanionDefinition(query);
+        if (definition) {
+            const result = recruitCompanion(state, definition.id);
+            return result.message ?? result.display?.text ?? result.code;
+        }
+    }
+
     const pois = getContextualPois(state);
     if (!pois.length) return 'There is no point of interest here.';
 
@@ -114,7 +124,7 @@ export function describePoiInteraction(state, poi, action) {
             lines.push('Storage behavior is not implemented yet.');
             break;
         case 'companion':
-            lines.push('Companion recruitment and party behavior are not implemented yet.');
+            lines.push('This legacy contact is not itself companion authority. Persistent recruitment is resolved through the party system.');
             break;
         default:
             lines.push('They acknowledge you. Dialogue scripting is not implemented yet.');
