@@ -39,6 +39,16 @@ This repository is currently in an early, single-maintainer development phase. *
 - When the project reaches a genuinely active/stabilization/release phase, this rule can be tightened to require protected branches, reviews, and green CI before merge.
 - Connector limitations may prevent remote branch deletion. If so, merge/close what can be handled through the connector, record the stale branch for manual deletion, and continue new work on `main`.
 
+## Pre-alpha compatibility posture
+
+Hearth & Horizon is not production-ready and old local saves are **not** a design constraint during the current pre-alpha phase.
+
+- Prefer one clean, explicit current schema and one clear authority over compatibility scaffolding, lazy reconstruction, duplicate fields, or adapter layers created only to preserve old saves.
+- Breaking Game State, Account Save, or authored-data changes are acceptable when they materially simplify or standardize the current design. Bump the relevant schema/version contract and update tests/docs deliberately.
+- Add a migration only when the user explicitly requires compatibility or when the migration is independently useful and does not complicate the canonical model.
+- Existing migrations and compatibility adapters may remain until a bounded cleanup, but do not extend them reflexively.
+- This policy does **not** relax deterministic behavior, validation, provenance, exactly-once ownership, content originality, or test discipline.
+
 ## Scope preservation
 
 A user prompt is a bounded work order, not blanket authorization to execute the entire roadmap.
@@ -57,7 +67,7 @@ For runtime, persistence, UI, simulation, or performance work:
 - preserve deterministic fictional-time and simulation behavior where the existing architecture requires it;
 - define ownership and cleanup for every new long-lived timer, listener, task, observer, subscription, cache, overlay, worker, or background job;
 - do not allow repeated scene/view entry, save/load, pause/resume, combat entry/exit, or navigation cycles to accumulate duplicate resources;
-- preserve save compatibility or install an explicit versioned migration when persisted meaning changes;
+- during pre-alpha, change persisted contracts cleanly when needed instead of preserving stale shapes by default; migrations are opt-in engineering work, not an automatic requirement;
 - run the relevant focused tests plus the repository validation expected by the current handoff;
 - use the existing benchmark as regression evidence and follow `docs/PERFORMANCE_BUDGET.md` before introducing hard thresholds;
 - treat long-session/soak and resource-retention coverage as a required design consideration for systems that create persistent or repeatable runtime activity, even when the automated harness for that surface has not yet been implemented.
@@ -114,6 +124,6 @@ These are condensed reminders; the authoritative detail remains in the docs abov
 - The canonical game is the original **Hearth & Horizon** setting. FFXI-derived material is legacy research/reference/migration material, not a source of player-facing canon.
 - Do not introduce or preserve FFXI-specific proper nouns or wording in new canonical content merely because legacy data used them. Re-express useful mechanics/data in original project terminology and context.
 - Disciplines/jobs are not magical identity transformations. The character remains one person; learned capabilities persist. Actual capability use is constrained by learned skill, proficiency, equipment/tool requirements, resources, preparation, status, and context.
-- High-volume content generation follows stable original-world IDs, migration boundaries, content-pack architecture, and validation. Do not mass-produce content on top of transitional legacy nomenclature.
-- Prefer evolutionary, tested migrations over unbounded rewrites.
+- High-volume content generation follows stable original-world IDs, content-pack architecture, and validation. Do not mass-produce content on top of transitional legacy nomenclature.
+- Prefer bounded, coherent current-model refactors over compatibility scaffolding or unbounded rewrites; pre-alpha save breakage is acceptable when it materially improves the canonical design.
 - Follow the repository version protocol and milestone gates; do not advance product versions merely because incidental work was performed.
