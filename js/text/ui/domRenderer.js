@@ -34,16 +34,7 @@ export function renderGameScreen(model, uiState = {}, session = {}) {
     return `
         ${renderHeader(model, uiState, session)}
         <main class="game-layout">
-            <aside class="map-column" aria-label="Local navigation">
-                <section class="panel map-panel">
-                    <div class="panel-heading">
-                        <span>Local Map</span>
-                        <small>${escapeHtml(model.map?.exploredCount ?? 0)}/${escapeHtml(model.map?.totalCount ?? 0)} explored</small>
-                    </div>
-                    ${renderMinimap(model.map)}
-                    ${renderMovementPad(model.movement)}
-                </section>
-            </aside>
+            ${renderExplorationColumn(model)}
 
             <section class="scene-column" aria-live="polite">
                 ${renderPrimaryView(model, uiState.activeView ?? 'scene')}
@@ -57,6 +48,22 @@ export function renderGameScreen(model, uiState = {}, session = {}) {
             </aside>
         </main>
         ${renderOmnibox()}
+    `;
+}
+
+function renderExplorationColumn(model) {
+    if (model.navigation?.mode !== 'exploration') return '';
+    return `
+        <aside class="map-column" aria-label="Local navigation">
+            <section class="panel map-panel">
+                <div class="panel-heading">
+                    <span>Local Map</span>
+                    <small>${escapeHtml(model.map?.exploredCount ?? 0)}/${escapeHtml(model.map?.totalCount ?? 0)} explored</small>
+                </div>
+                ${renderMinimap(model.map)}
+                ${renderMovementPad(model.movement)}
+            </section>
+        </aside>
     `;
 }
 
@@ -248,7 +255,7 @@ function renderSpellbookView() {
         <section class="panel primary-view">
             <p class="eyebrow">Prepared knowledge</p>
             <h1>Spellbook &amp; Techniques</h1>
-            <p class="muted">Current entries still bridge to the existing magic and technique scaffolds. The 0.6.300 engine will replace those execution details without changing this navigation surface.</p>
+            <p class="muted">Canonical abilities and techniques execute through structured effects; this view remains a compact knowledge surface rather than a permanent action catalog.</p>
             <div class="view-links">
                 ${commandButton('Known Spells', 'spells')}
                 ${commandButton('Techniques', 'techniques')}
@@ -300,7 +307,7 @@ function renderWorldView(model) {
         <section class="panel primary-view world-view">
             <p class="eyebrow">Acquired knowledge</p>
             <h1>${escapeHtml(model.header.placeName)}</h1>
-            ${renderMinimap(model.map)}
+            ${model.map ? renderMinimap(model.map) : '<p class="empty-note">This safe locality is navigated by named destinations; detailed cartography is reserved for places where terrain matters.</p>'}
             <div class="view-links">
                 ${commandButton('Local Atlas', 'atlas')}
                 ${commandButton('Known Maps', 'maps')}
