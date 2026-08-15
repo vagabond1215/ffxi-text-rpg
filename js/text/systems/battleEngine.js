@@ -1,12 +1,12 @@
 import { rollPercent } from './rng.js';
 import { calculateCombatProfile } from './statEngine.js';
 
-export function createBattleState({ player, enemies = [], rngSeed = null, rng = null } = {}) {
+export function createBattleState({ id = null, player, enemies = [], rngSeed = null, rng = null } = {}) {
     if (!player) throw new Error('createBattleState requires a player entity.');
     if (!enemies.length) throw new Error('createBattleState requires at least one enemy.');
 
     return {
-        id: `battle-${Date.now()}`,
+        id: id ?? `battle-${Date.now()}`,
         round: 1,
         phase: 'active',
         rngSeed,
