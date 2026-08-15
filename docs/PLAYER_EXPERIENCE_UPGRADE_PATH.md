@@ -20,6 +20,15 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 No onboarding layer may create a parallel quest clock, hidden teleport graph, omniscient map, duplicate progression counter, or reward path that bypasses provenance.
 
+## Pre-alpha implementation rule
+
+Player experience work targets the clean current game model. Old local-save compatibility is not a Phase 0.7 design requirement.
+
+- Prefer one explicit authority over lazy compatibility state or duplicate bookkeeping.
+- Break/reset a persisted schema when that materially simplifies the current design; version the new contract rather than carrying stale shapes forward by default.
+- Keep a value derived when it is genuinely a projection of canonical state, not merely to avoid a schema bump.
+- Add migrations only when they are deliberately useful, not as an automatic tax on pre-alpha iteration.
+
 ## PX-1 — First 30 minutes: arrival and footing
 
 **Goal:** prevent the new character from being dropped into an unexplained sandbox.
@@ -27,14 +36,14 @@ No onboarding layer may create a parallel quest clock, hidden teleport graph, om
 Required experience:
 
 - origin-specific opening prose names the starting settlement, regional horizon, and a real first contact;
-- normal guided character creation starts at a believable morning hour rather than an unexplained world-time epoch;
+- every normal new-game path starts at a believable morning hour owned by `gameState`, rather than an unexplained world-time epoch or a UI-specific default;
 - the Scene itself states the clearest next step while the character is still un-oriented;
 - the origin contact is promoted to the first contextual action in the starting locality;
 - speaking to that contact explains, in setting-friendly terms, how combat training, livelihood work, exploration, and preparation create persistent progress;
 - after the contact is met, guidance changes from a single instruction to several non-exclusive paths;
 - player-facing commission hooks use Hearth & Horizon canon and do not leak legacy world names or implementation-schema language.
 
-**Implementation status:** landed as the first `0.7.100` in-progress slice. Guidance is derived from existing world/POI discovery state, so Game State 5 needs no new persisted onboarding registry.
+**Implementation status:** landed as the first `0.7.100` in-progress slice. Orientation guidance is a pure projection over authoritative origin/place/POI discovery state; it is not persisted because persisting it would duplicate authority.
 
 ## PX-2 — First day: actionable opportunities
 
@@ -47,7 +56,7 @@ Add a dedicated Journal/Opportunities presentation model that answers:
 - What preparation does it require?
 - What persistent progress can it produce?
 
-The first-day set should include at least one viable path in each category that the current region actually supports: livelihood/material work, training/danger, exploration/travel, and settlement/service/social preparation. Buttons should route through semantic gameplay intents; command adapters remain compatibility/power surfaces rather than required knowledge.
+The first-day set should include at least one viable path in each category that the current region actually supports: livelihood/material work, training/danger, exploration/travel, and settlement/service/social preparation. Buttons should route through semantic gameplay intents; command adapters remain optional power/diagnostic surfaces rather than required player knowledge.
 
 Do not present unavailable future systems as clickable promises. A commission should either be a real trackable commitment or clearly remain an unposted/informal lead.
 
@@ -97,7 +106,7 @@ For each future Phase 0.7 slice, evaluate from a fresh save rather than from tes
 - Does the game explain what an activity improves, not merely what button starts it?
 - When an activity completes, is the persistent consequence legible?
 - Does the next opportunity arise from world knowledge/state rather than developer omniscience?
-- Can the same loop be resumed after save/load without duplicating rewards, contacts, or progress?
+- Can the current-version save/load loop resume without duplicating rewards, contacts, or progress?
 
 ## Architecture rule
 
