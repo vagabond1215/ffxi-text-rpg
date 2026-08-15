@@ -1,7 +1,9 @@
 import { rollPercent } from './rng.js';
 import { calculateCombatProfile } from './statEngine.js';
 
-export function createBattleState({ id = null, player, enemies = [], rngSeed = null, rng = null } = {}) {
+export const COMBAT_SIDES = Object.freeze({ ALLY: 'ally', ENEMY: 'enemy' });
+
+export function createBattleState({ id = null, player, allies = [], enemies = [], rngSeed = null, rng = null } = {}) {
     if (!player) throw new Error('createBattleState requires a player entity.');
     if (!enemies.length) throw new Error('createBattleState requires at least one enemy.');
 
@@ -11,7 +13,11 @@ export function createBattleState({ id = null, player, enemies = [], rngSeed = n
         phase: 'active',
         rngSeed,
         rng,
-        combatants: [refreshCombatant(player), ...enemies.map(refreshCombatant)],
+        combatants: [
+            refreshCombatant(player, COMBAT_SIDES.ALLY),
+            ...allies.map((ally) => refreshCombatant(ally, COMBAT_SIDES.ALLY)),
+            ...enemies.map((enemy) => refreshCombatant(enemy, COMBAT_SIDES.ENEMY)),
+        ],
         enmity: {},
         skillchain: null,
         magicBurstWindow: null,
@@ -19,7 +25,7 @@ export function createBattleState({ id = null, player, enemies = [], rngSeed = n
     };
 }
 
-export function refreshCombatant(entity) {
+export function refreshCombatant(entity, side = null) {
     const combat = calculateCombatProfile(entity);
     return {
         ...entity,
@@ -30,6 +36,7 @@ export function refreshCombatant(entity) {
             tp: entity.resources?.tp ?? 0,
         },
         battle: {
+            side: side ?? inferCombatSide(entity),
             targetId: null,
             actionDelay: 0,
             recasts: {},
@@ -63,6 +70,17 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
             hit: false,
             damage: 0,
             defeatedTarget: Boolean(defender.battle.defeated),
+        };
+    }
+    if (getCombatantSide(attacker) === getCombatantSide(defender)) {
+        return {
+            ok: false,
+            outcome: 'friendly-target',
+            attackerId,
+            defenderId,
+            hit: false,
+            damage: 0,
+            defeatedTarget: false,
         };
     }
 
@@ -140,6 +158,10 @@ export function getCombatant(battle, id) {
     return battle.combatants.find((combatant) => combatant.id === id);
 }
 
+export function getCombatantSide(combatant) {
+    return combatant?.battle?.side ?? inferCombatSide(combatant);
+}
+
 export function appendBattleLog(battle, entry) {
     battle.log.push(entry);
     if (battle.log.length > 100) battle.log.splice(0, battle.log.length - 100);
@@ -147,11 +169,15 @@ export function appendBattleLog(battle, entry) {
 }
 
 export function updateBattlePhase(battle) {
-    const playersAlive = battle.combatants.some((combatant) => combatant.type === 'player' && !combatant.battle.defeated);
-    const enemiesAlive = battle.combatants.some((combatant) => combatant.type === 'enemy' && !combatant.battle.defeated);
-    if (!playersAlive) battle.phase = 'defeat';
+    const alliesAlive = battle.combatants.some((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ALLY && !combatant.battle.defeated);
+    const enemiesAlive = battle.combatants.some((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle.defeated);
+    if (!alliesAlive) battle.phase = 'defeat';
     else if (!enemiesAlive) battle.phase = 'victory';
     return battle.phase;
+}
+
+function inferCombatSide(entity) {
+    return entity?.type === 'enemy' ? COMBAT_SIDES.ENEMY : COMBAT_SIDES.ALLY;
 }
 
 function clamp(value, min, max) {
