@@ -78,60 +78,129 @@ test('cross-pack references require declared dependencies even when the target i
 
 test('dangling topology, source-sink, quest, and relationship references are reported', () => {
     const broken = createContentPack({
-        id: 'pack-broken-references',
+        id: 'pack-broken-fixture',
         dataVersion: 19,
-        ownership: { scope: 'region', regionIds: ['broken-reach'] },
+        ownership: { scope: 'region', regionIds: ['broken-fixture'] },
         records: {
-            places: [{ id: 'broken-place' }],
-            routes: [{ id: 'broken-route', stops: [{ id: 'start', placeId: 'broken-place' }, { id: 'finish', placeId: 'missing-place' }] }],
-            items: [{
-                id: 'broken-item',
-                provenance: [{ type: 'flora', sourceId: 'missing-source', placeId: 'broken-place', action: 'forage' }],
-                sinks: [{ type: 'contract', targetId: 'missing-quest' }],
+            routes: [{
+                id: 'route-broken-fixture',
+                stops: [
+                    { id: 'stop-broken-a', placeId: 'west-elderwood' },
+                    { id: 'stop-broken-b', placeId: 'missing-place' },
+                ],
+                segments: [{ fromStopId: 'stop-broken-a', toStopId: 'stop-broken-b', durationSeconds: 30 }],
             }],
-            quests: [{ id: 'broken-quest', giverNpcId: 'missing-npc', placeId: 'broken-place', objectives: [{ type: 'deliverItem', itemId: 'missing-item' }], rewards: [] }],
-            relationships: [{ id: 'broken-relationship', npcId: 'missing-npc', unlockQuestIds: ['missing-quest'] }],
+            items: [{ id: 'item-broken-fixture', name: 'Broken Fixture' }],
+            npcs: [{ id: 'npc-broken-fixture', placeId: 'missing-place' }],
+            quests: [{
+                id: 'quest-broken-fixture',
+                giverNpcId: 'npc-missing-giver',
+                placeId: 'missing-place',
+                objectives: [{ type: 'deliverItem', itemId: 'item-missing-output', quantity: 1 }],
+                rewards: [],
+            }],
+            relationships: [{
+                id: 'relationship-broken-fixture',
+                npcId: 'npc-missing-giver',
+                dimensions: ['trust'],
+                unlockQuestIds: ['quest-missing-unlock'],
+            }],
         },
     });
 
     const issues = validateContentPacks([broken], { includeCanonicalCatalogs: false });
-    assert.ok(issues.some((issue) => issue.includes('unknown place missing-place')));
-    assert.ok(issues.some((issue) => issue.includes('unknown gathering source missing-source')));
-    assert.ok(issues.some((issue) => issue.includes('unknown target missing-quest')));
-    assert.ok(issues.some((issue) => issue.includes('unknown NPC missing-npc')));
-    assert.ok(issues.some((issue) => issue.includes('unknown item missing-item')));
+    assert.ok(issues.some((issue) => issue.includes('missing places id missing-place')));
+    assert.ok(issues.some((issue) => issue.includes('provenance requires at least one intentional source')));
+    assert.ok(issues.some((issue) => issue.includes('sinks requires at least one intentional use or sink')));
+    assert.ok(issues.some((issue) => issue.includes('missing npcs id npc-missing-giver')));
+    assert.ok(issues.some((issue) => issue.includes('missing items id item-missing-output')));
+    assert.ok(issues.some((issue) => issue.includes('missing quests id quest-missing-unlock')));
 });
 
 test('legacy identifiers are rejected from canonical packs unless an explicit adapter is declared', () => {
-    const leaked = createContentPack({
-        id: 'pack-legacy-leak',
+    const leaking = createContentPack({
+        id: 'pack-legacy-leak-fixture',
         dataVersion: 19,
         ownership: { scope: 'region', regionIds: ['legacy-test'] },
-        records: { npcs: [{ id: 'npc-san-doria-guard', placeId: 'west-elderwood' }] },
+        records: { places: [{ id: 'west-ronfaure', catalogRef: true }] },
     });
-    const issues = validateContentPacks([leaked]);
-    assert.ok(issues.some((issue) => issue.includes('legacy identifier')));
+    const adapted = createContentPack({
+        id: 'pack-legacy-adapter-fixture',
+        dataVersion: 19,
+        ownership: { scope: 'region', regionIds: ['legacy-test-adapted'] },
+        legacyAdapters: [{
+            legacyId: 'west-ronfaure',
+            canonicalId: 'west-elderwood',
+            reason: 'Explicit migration-boundary fixture.',
+        }],
+        records: { places: [{ id: 'west-ronfaure', catalogRef: true }] },
+    });
 
-    const explicitAdapter = createContentPack({
-        id: 'pack-legacy-adapter',
-        dataVersion: 19,
-        ownership: { scope: 'region', regionIds: ['legacy-test'] },
-        records: { npcs: [{ id: 'npc-san-doria-guard', placeId: 'west-elderwood', legacyAdapter: true }] },
-    });
-    assert.equal(validateContentPacks([explicitAdapter]).some((issue) => issue.includes('legacy identifier')), false);
+    const leakingIssues = validateContentPacks([leaking], { includeCanonicalCatalogs: false });
+    const adaptedIssues = validateContentPacks([adapted], { includeCanonicalCatalogs: false });
+    assert.ok(leakingIssues.some((issue) => issue.includes('legacy identifier west-ronfaure leaks into canonical pack')));
+    assert.equal(adaptedIssues.some((issue) => issue.includes('legacy identifier west-ronfaure')), false);
 });
 
 test('legacy normalization produces review-only candidates rather than canonical imports', () => {
-    const candidate = normalizeLegacyCandidate('items', {
-        id: 'Rabbit Hide',
-        name: 'Rabbit Hide',
-        source: 'Rarab in East Ronfaure',
-        notes: 'Historical source: FFXI',
-    }, { sourceDocument: 'legacyRecoveredData.js' });
+    const candidate = normalizeLegacyCandidate({
+        sourceSystem: 'historical-place-table',
+        recordType: 'place',
+        sourceId: 'west-ronfaure',
+        payload: { historicalLevelRange: [1, 8] },
+    });
 
-    assert.equal(candidate.status, 'review-only');
+    assert.equal(candidate.proposedId, 'west-elderwood');
+    assert.equal(candidate.reviewStatus, 'candidate');
     assert.equal(candidate.canonical, false);
-    assert.equal(candidate.normalizedId, 'item-rabbit-hide');
-    assert.match(candidate.sourceDocument, /legacyRecoveredData/);
+    assert.equal(candidate.requiresOriginalityReview, true);
     assert.deepEqual(validateLegacyCandidateRecord(candidate), []);
+});
+
+test('generated hundreds-record fixture validates lookup and cross-reference breadth', () => {
+    const count = 300;
+    const items = [];
+    const recipes = [];
+    for (let index = 0; index < count; index += 1) {
+        const suffix = String(index).padStart(3, '0');
+        const itemId = `item-scale-fixture-${suffix}`;
+        const recipeId = `recipe-scale-fixture-${suffix}`;
+        items.push({
+            id: itemId,
+            name: `Scale Fixture ${suffix}`,
+            kind: 'material',
+            provenance: [{
+                version: 1,
+                type: 'crafting',
+                sourceId: recipeId,
+                placeId: 'west-elderwood',
+                action: 'craft',
+                exceptional: false,
+                notes: '',
+                data: {},
+            }],
+            sinks: [{ type: 'trade', targetId: null, notes: '', data: {} }],
+        });
+        recipes.push({
+            id: recipeId,
+            name: `Scale Recipe ${suffix}`,
+            placeIds: ['west-elderwood'],
+            inputs: [{ itemId: 'item-elderwood-sweetroot', quantity: 1 }],
+            outputs: [{ itemId, quantity: 1 }],
+        });
+    }
+
+    const scalePack = createContentPack({
+        id: 'pack-scale-fixture',
+        dataVersion: 19,
+        ownership: { scope: 'region', regionIds: ['scale-fixture'] },
+        records: { items, recipes },
+    });
+    const issues = validateContentPacks([scalePack], { includeCanonicalCatalogs: false });
+    const index = buildContentPackIndex([scalePack]);
+
+    assert.deepEqual(issues, []);
+    assert.equal(index.recordCounts.items, 300);
+    assert.equal(index.recordCounts.recipes, 300);
+    assert.equal(index.ownerCount, 600);
 });
