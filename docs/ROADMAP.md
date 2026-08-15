@@ -15,13 +15,13 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.600.1
-Package:      0.6.600
+Product:      0.6.800.1
+Package:      0.6.800
 Account Save: 4
 Game State:   5
-Data:         24
+Data:         26
 Benchmark:    1
-Codename:     Production and Resource Loops
+Codename:     Persistent Companions and Party
 ```
 
 This remains pre-alpha product development. Milestone numbers describe active contracts, not completion percentages.
@@ -53,6 +53,7 @@ Key rules:
 - maps represent acquired knowledge and never automatically expose authored coordinates or undiscovered extent;
 - safe settlements use named localities/actions while terrain-sensitive spaces may use fine exploration navigation;
 - resources and rewards have physical/economic/social provenance;
+- companions are persistent characters and world participants, not summons;
 - mechanics and representative content grow together;
 - regional content is authored as a validated cross-linked graph;
 - legacy FFXI-derived material is research/reference/migration material only.
@@ -63,7 +64,7 @@ Key rules:
 | --- | --- | --- |
 | `0.4` | Foundation and direction lock | **Complete.** Architecture can evolve without another broad reset. |
 | `0.5` | Simulation + original-world/content substrate | **Complete.** Time, interrupts, provenance, ecology, transport, projects, regional packs, and scalable validation exist. |
-| `0.6` | Integrated character/mechanics content | **Active through 0.6.600.** Character ownership, semantic UI, abilities, Combat 2.0, locality navigation, equipment/tools, and provenance-bearing production loops are established. Ecology breadth, companions, and integration follow. |
+| `0.6` | Integrated character/mechanics content | **Active through 0.6.800.** Continuous-character progression, semantic UI, abilities, Combat 2.0, locality navigation, equipment/tools, production, regional ecology breadth, and persistent companions are integrated. The exit audit follows. |
 | `0.7` | Multi-region playable alpha | Multiple settlements/regions, transport, NPC populations, quests, relationships, economies, and authored content support a real sandbox campaign. |
 | `0.8` | Life and infrastructure expansion | Property, production, agriculture, logistics, relationships, and earned automation deepen long-form play. |
 | `0.9` | Adventure depth and release hardening | Advanced content, balance, UI, persistence, and performance reach release-candidate quality. |
@@ -139,28 +140,25 @@ Resulting baseline: **0.6.300.1 / Package 0.6.300 / Data 21**.
 
 Resulting baseline: **0.6.400.2 / Package 0.6.400 / Account Save 4 / Game State 5 / Data 22**.
 
-- Unified basic attacks, canonical abilities, legacy cast/technique adapters, and enemy actions behind a structured combat-action history.
-- Combat contract v2 adds deterministic fictional-time readiness/recovery for player and enemy combatants.
-- Enemy readiness is an interrupt provider on the existing simulation substrate; enemy actions can interleave with a timed player cast and interrupt it before completion.
-- Finite combat statuses carry canonical application/expiry timestamps and reconcile against world time rather than a separate combat clock.
-- Battle and encounter IDs are deterministic within runtime state rather than wall-clock-generated.
-- Added an original enemy active-ability catalog and representative Redfang Raider technique, **Rushing Cleave**, with deterministic selection policy.
-- Rewards, resource opportunities/provenance, skill gain, capability composition, and semantic UI seams remain intact.
+- Unified basic attacks, canonical abilities, bounded legacy cast/technique adapters, and enemy actions behind structured combat-action history.
+- Combat contract v2 uses deterministic fictional-time readiness/recovery rather than a second combat clock.
+- Enemy readiness is an interrupt provider on the canonical simulation substrate.
+- Finite combat statuses carry canonical application/expiry timestamps.
+- Battle/encounter IDs are deterministic within runtime state.
+- Original enemy active-ability data and deterministic enemy action selection are established.
+- Rewards, provenance opportunities, skill gain, capability composition, and semantic UI seams remain intact.
 
-Bounded limitations: enemy tactical policy is still intentionally small; AoE/ground targeting, deeper resistance layers, formation/party tactics, and large enemy ability catalogs are later breadth/depth work rather than prerequisites for the Combat 2.0 timing contract.
+Bounded limitations: enemy tactical policy remains intentionally small; AoE/ground targeting, deeper resistance layers, formation tactics, and broad enemy ability catalogs are later depth work.
 
 ## 0.6.450 — Locality and exploration navigation — complete
 
 Resulting baseline: **0.6.450.1 / Package 0.6.450 / Account Save 4 / Game State 5 / Data 22**.
 
 - Added semantic navigation modes for locality, exploration, route, and combat contexts.
-- Existing safe settlement `place` records serve as named locality nodes; no redundant city-geography schema was introduced.
-- Guarded city areas expose named adjacent districts and semantic locality/POI actions instead of requiring compass movement.
-- Locality crossings consume authored coarse fictional time through the canonical interrupt engine; ordinary UI browsing remains free.
-- The active DOM renderer **omits** the local map and D-pad in safe locality, route, and combat contexts.
-- Wilderness/exploration retains the acquired-knowledge SVG map and directional controls.
-- Internal POI/grid coordinates remain implementation data and are not exposed as player-facing city identity.
-- Higher-resolution shaped cartography remains optional/deferred exploration presentation work, not a prerequisite for settlement interaction.
+- Existing safe settlement `place` records serve as named locality nodes rather than duplicating city geography.
+- Locality crossings consume authored fictional time through the canonical interrupt engine.
+- Safe locality/route/combat presentation omits the exploration map and D-pad; wilderness retains knowledge-derived map and directional controls.
+- Internal POI/grid coordinates remain implementation data rather than player-facing geography.
 
 ## 0.6.500 — Equipment, tools, item breadth, and effects — complete
 
@@ -175,41 +173,69 @@ Resulting baseline: **0.6.500.1 / Package 0.6.500 / Account Save 4 / Game State 
 
 Resulting baseline: **0.6.600.1 / Package 0.6.600 / Account Save 4 / Game State 5 / Data 24**.
 
-- Added additive character-owned work proficiencies for gathering, field dressing, salvage, metalworking, crafting, and cooking domains. Stored mastery is non-decreasing; higher mastery reduces hands-on work duration down to a bounded floor.
-- Environmental gathering now runs as canonical timed work. Equipped tool tags and persistent proficiency are composed automatically; ecology remains authority for source appearance, capacity, depletion, regeneration, and raw-resource provenance.
-- Existing defeated-creature/body recovery remains its canonical timed subsystem, with a character-facing adapter that composes equipped tools and persistent work proficiency.
-- Added a persistent work-task registry over canonical timed tasks with explicit activity ownership, completion/failure/cancellation, and pending-output state.
-- Hands-on gathering/processing/recovery blocks local movement, locality travel, direct route travel, and scheduled transport. Scheduled fares are restored atomically when work prevents booking.
-- Workstations are derived from current locality POI/service tags such as blacksmithing, cooking, woodworking, and tanning rather than from a duplicate facility database.
-- Added canonical production process data for processing, crafting, cooking, salvage, and recycling. Inputs are consumed when work begins; outputs materialize only at task completion.
-- Production outputs carry transformation provenance back to consumed input provenance. Full inventory produces persistent pending output rather than duplication or loss, and claim resolves exactly once later.
-- Representative loops prove Redstone copper ore -> ingot -> Copper Trail Clasp -> lossy salvage/remelt and Silverfin + Sweetroot -> cooked meal.
-- Data advanced to 24 because production/process/output records are now canonical authored data. Work/proficiency state remains additive/lazily normalizable in Game State 5.
+- Added additive character-owned work proficiencies for gathering, field dressing, salvage, metalworking, crafting, and cooking domains.
+- Environmental gathering, body recovery, and production use canonical timed work and fictional time.
+- Hands-on work owns character activity and blocks incompatible movement/travel; scheduled fare rollback is atomic.
+- Workstations are derived from locality service/POI tags rather than a duplicate facility database.
+- Canonical processing/crafting/cooking/salvage/recycling records consume inputs at start and materialize outputs at completion.
+- Production outputs retain transformation provenance; full storage produces persistent pending output instead of duplication/loss.
+- Representative Redstone metallurgy/crafting/salvage and regional cooking loops prove the contract.
 
-Bounded limitation: the active Craft browser view still needs a richer dedicated semantic production presentation/action surface. The canonical engine/data contract is established and tested; do not route future production authority through renderer prose or legacy craft fixtures.
+Bounded limitation: the active Craft browser view still needs a richer dedicated production presentation/action surface; engine/data authority must not be moved back into renderer prose.
 
-## 0.6.700 — Ecology and regional creature/resource content breadth — next
+## 0.6.700 — Ecology and regional creature/resource content breadth — complete
 
-`0.6.700` populates the proven ecology/resource/production loops; it is not a second mechanics redesign.
+Resulting baseline: **0.6.700.1 / Package 0.6.700 / Account Save 4 / Game State 5 / Data 25**.
 
-Bounded acceptance checklist:
+- Added a regional ecology/resource catalog layer and unified registries so content breadth does not turn the original substrate module into a monolith.
+- Expanded **Elderwood**, **Redstone Reach**, and **Starfen** with original species/populations occupying distinct ecological/gameplay niches.
+- Expanded regional flora, mineral, timber/fiber/food, hide/bone, and hunting-resource records with explicit provenance and useful production/trade sinks.
+- Environmental gathering and defeated-creature body recovery both feed the `0.6.600` production economy.
+- Recovered hunt materials resolve through canonical item metadata while acquisition provenance remains tied to the defeated body/opportunity.
+- Regional sources/populations use existing deterministic capacity/regeneration/appearance/world-state hooks rather than species-specific engine branches.
+- Content-pack ownership/dependencies were expanded and validated without duplicate ownership of existing places.
 
-- expand **Elderwood**, **Redstone Reach**, and **Starfen** with original species/populations that fill distinct ecological and gameplay niches rather than reskins;
-- expand flora, mineral, timber, fiber, food, hide/bone, carried-goods, and salvage resources with explicit provenance and useful sinks;
-- bind environmental sources/populations to plausible habitats, rarity, time/weather/world-state hooks where supported, and deterministic regeneration/appearance rules;
-- ensure hunting/body recovery and environmental gathering both feed the `0.6.600` production economy;
-- add enough region-specific inputs/outputs/process links that each anchor region supports at least one coherent livelihood or trade reason to visit;
-- keep content-pack ownership/dependencies explicit and pass cross-reference/source-sink validation;
-- add generic mechanics only when content proves an actually missing reusable primitive; do not add bespoke engine branches per species/resource;
-- avoid arbitrary mass generation: breadth should be coherent enough to exercise regional economy/ecology, not chase target counts prematurely;
-- validate/version/benchmark/document at a coherent `0.6.700` boundary, then stop before companion mechanics.
+The track intentionally populates proven mechanics rather than creating a second ecology or production engine.
 
-## Following 0.6 tracks
+## 0.6.800 — Persistent companion/party foundation — complete
 
-| Track | Theme |
-| --- | --- |
-| `0.6.800` | Persistent companion/party foundation |
-| `0.6.900` | Integrated-mechanics exit gate |
+Resulting baseline: **0.6.800.1 / Package 0.6.800 / Account Save 4 / Game State 5 / Data 26**.
+
+- Added original versioned companion definitions with backing NPC identity, recruitment locations/requirements, tactical role/policy, and relationship dimensions.
+- Added additive/lazy persistent `state.party` with recruited-companion records, active membership, capacity, resources/statuses, relationship state, location continuity, and validation.
+- A companion remains one persistent NPC promoted into character-like party state; backing NPC identity/location is synchronized or reconstructible for older Game State 5 saves.
+- Recruitment, joining, and leaving emit structured semantic events and are blocked during active combat.
+- Combat uses explicit ally/enemy sides. Active companions enter encounters as allies, cannot be friendly-targeted by basic attacks, can keep the ally side alive after the player falls, and synchronize battle resources/statuses back into persistent party state.
+- Representative companion tactics contribute structured Combat 2.0 actions through the existing action history rather than special prose-only combat.
+- Active companions follow exploration exits, locality crossings, and canonical route/scheduled-transport arrivals.
+- The game view model exposes semantic party state and a direct `party.recruit` UI intent; recruitment does not require manufacturing a command string.
+- Data advanced to 26 because canonical companion definitions, recruitment/tactics, and relationship-dimension contracts are authored runtime data. Party runtime state remains additive/lazily reconstructible in Game State 5.
+
+Bounded limitations:
+
+- only one representative recruitable companion currently proves the foundation;
+- companion tactical policy is intentionally basic and companions are not yet independent simulation-interrupt providers;
+- deeper relationship progression/dialogue, companion-specific progression/loadouts, formations, and broad companion content remain later work;
+- the semantic party model exists, but a dedicated full party browser view is not yet required;
+- old POI/command companion compatibility text remains transitional and must eventually route to `partyEngine` rather than become authority;
+- an unrelated legacy-shaped POI currently duplicates the display name “Mara Venn”; its stable POI ID may remain, but the display-name collision should be repaired in a bounded content cleanup.
+
+## 0.6.900 — Integrated-mechanics exit gate — next
+
+`0.6.900` is an integration/audit/stabilization track, not another broad mechanics subsystem.
+
+Bounded acceptance direction:
+
+- audit save/load and lazy normalization across all additive `0.6` state, including abilities, work, ecology, combat, and party;
+- audit fictional-time/interrupt interactions across combat, ability activation, work, travel, locality crossings, projects, and day review;
+- verify continuous-character ownership rules and identify remaining accidental active-discipline hard gates;
+- verify party/combat/travel/work coexistence and exactly-once state/resource synchronization;
+- validate provenance/source/sink continuity through combat recovery, gathering, production, trade, and rewards;
+- audit semantic UI intents/view models against old command/prose compatibility adapters so authority remains in engines/data;
+- run world/content-pack/database validators and repair dangling or duplicate authority seams found by the audit;
+- run the full suite, benchmark, browser build/deploy, and performance-regression review;
+- close Phase 0.6 only when the integrated mechanics baseline is coherent enough to define exact `0.7` playable-alpha entry criteria;
+- avoid using the gate as permission for mass content generation or a new broad subsystem.
 
 ---
 
@@ -217,7 +243,7 @@ Bounded acceptance checklist:
 
 ## 0.7 — Multi-region playable alpha
 
-Build enough connected settlements, regions, NPC populations, economies, quests/contracts, relationships, transport, and authored content for a sustained sandbox campaign rather than isolated substrate demonstrations.
+Build enough connected settlements, regions, NPC populations, economies, quests/contracts, relationships, transport, companions, and authored content for a sustained sandbox campaign rather than isolated substrate demonstrations.
 
 ## 0.8 — Life and infrastructure expansion
 
