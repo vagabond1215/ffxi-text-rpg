@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.6.500.1';
-export const PACKAGE_VERSION = '0.6.500';
+export const PRODUCT_VERSION = '0.6.600.1';
+export const PACKAGE_VERSION = '0.6.600';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 23,
+    data: 24,
     benchmark: 1,
-    codename: 'Equipment and Tool Breadth',
+    codename: 'Production and Resource Loops',
     compatibility: 'migrate-supported-save-versions',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.500.1',
+    versionManifest: '0.6.600.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -29,10 +29,19 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceProvenance: '0.1.0',
     resourceOpportunities: '0.1.0',
     resourceRecovery: '0.1.0',
+    resourceRecoveryWork: '0.1.0',
+    characterActivity: '0.1.0',
+    workTasks: '0.1.0',
+    workProficiencies: '0.1.0',
+    workstations: '0.1.0',
+    productionCatalog: '0.1.0',
+    productionItems: '0.1.0',
+    production: '0.1.0',
     ecologyCatalog: '0.1.0',
     ecologyState: '0.1.0',
     populations: '0.1.0',
     gatheringSources: '0.2.0',
+    gatheringWork: '0.1.0',
     resourceItems: '0.1.0',
     routeCatalog: '0.1.0',
     transport: '0.1.0',
@@ -114,7 +123,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     loot: '0.5.1',
     leveling: '0.6.0',
     companions: 'planned',
-    crafting: 'planned',
+    crafting: '0.2.0',
     mounts: 'planned',
 });
 
