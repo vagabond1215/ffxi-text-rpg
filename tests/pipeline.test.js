@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.6.800.1');
-    assert.equal(PACKAGE_VERSION, '0.6.800');
+    assert.equal(PRODUCT_VERSION, '0.6.900.1');
+    assert.equal(PACKAGE_VERSION, '0.6.900');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -25,12 +25,13 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 26);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Persistent Companions and Party');
+    assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
     assert.equal(VERSION.compatibility, 'migrate-supported-save-versions');
 
     assert.deepEqual(
         {
             versionManifest: SYSTEM_VERSIONS.versionManifest,
+            integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
@@ -42,7 +43,8 @@ test('version manifest separates product package and persistence versions', () =
             companions: SYSTEM_VERSIONS.companions,
         },
         {
-            versionManifest: '0.6.800.1',
+            versionManifest: '0.6.900.1',
+            integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             gameViewModels: '0.4.0',
             uiIntents: '0.4.0',
@@ -55,11 +57,12 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.6\.800\.1/);
-    assert.match(describeVersion(), /Package: 0\.6\.800/);
+    assert.match(describeVersion(), /Product: 0\.6\.900\.1/);
+    assert.match(describeVersion(), /Package: 0\.6\.900/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 26/);
-    assert.match(describeVersion(), /Codename: Persistent Companions and Party/);
+    assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
+    assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
