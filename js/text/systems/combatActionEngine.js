@@ -13,8 +13,9 @@ import {
     isCombatantReady,
     PLAYER_ACTION_RECOVERY_SECONDS,
     recordCombatAction,
-    resolveEnemyResponse,
+    resolvePartyAndEnemyResponses,
 } from './combatTurnEngine.js';
+import { getActiveCompanionCombatEntities } from './partyEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 import { describeSkillGainResult, resolveSkillGainForAction } from './skillProgressionEngine.js';
 
@@ -29,6 +30,7 @@ export function startEncounter(state, enemyId, options = {}) {
     state.activeBattle = createBattleState({
         id: `battle-${sequence}`,
         player: state.player,
+        allies: getActiveCompanionCombatEntities(state),
         enemies: [{ ...enemy, id: `${enemy.id}-encounter-${sequence}` }],
         rng: options.rng,
         rngSeed: options.rngSeed ?? null,
@@ -69,7 +71,7 @@ export function performPlayerAttack(state, targetQuery = null) {
     });
 
     appendSkillGainLog(state, battle, { actionType: 'basicAttack' });
-    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
     else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
@@ -107,7 +109,7 @@ export function performWeaponSkill(state, skillName = 'Weapon Skill', targetQuer
         },
     });
     appendSkillGainLog(state, battle, { actionType: 'weaponSkill', actionName: skillName });
-    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
     else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
@@ -159,7 +161,7 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
         data: { effectType, amount, mpCost, transitional: true },
     });
     appendSkillGainLog(state, battle, { actionType: 'spell', spellName: spellName || 'Cure' });
-    if (battle.phase === 'active') resolveEnemyResponse(state, { triggerActionId: action?.id ?? null });
+    if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
     else finalizeCombatState(state);
     return describeBattleTurn(battle);
 }
@@ -170,7 +172,7 @@ export function describeBattle(battle) {
     const lines = [
         `Battle: ${battle.phase} round ${battle.round}`,
         ...battle.combatants.map((combatant) => {
-            const tag = combatant.type === 'player' ? 'Player' : 'Enemy';
+            const tag = combatant.type === 'player' ? 'Player' : combatant.type === 'companion' ? 'Companion' : 'Enemy';
             const defeated = combatant.battle.defeated ? ' defeated' : '';
             return `${tag}: ${combatant.identity.name} HP ${combatant.resources.hp}/${combatant.combat.resources.maxHp} MP ${combatant.resources.mp}/${combatant.combat.resources.maxMp} TP ${combatant.resources.tp}/${combatant.combat.resources.maxTp}${defeated}`;
         }),
