@@ -1,44 +1,71 @@
+export const SHOP_CATALOG_VERSION = 2;
+
 export const SHOP_CATALOGS = Object.freeze({
-    'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Ashene Weapons', 'Basic San d’Oria weapons.', [
+    'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Southgate Arms', 'Practical arms for road wardens, travelers, and apprentices.', [
         item('bronze-sword', 'Bronze Sword', 76, ['weapon', 'sword', 'starter']),
         item('bronze-axe', 'Bronze Axe', 88, ['weapon', 'axe', 'starter']),
         item('bronze-dagger', 'Bronze Dagger', 64, ['weapon', 'dagger', 'starter']),
+        item('field-knife', 'Field Knife', 72, ['equipment', 'tool', 'weapon', 'dagger', 'cutting', 'field']),
+        item('iron-buckler', 'Iron Buckler', 110, ['equipment', 'armor', 'shield', 'offhand']),
     ]),
-    'poi-sandoria-s-aveline': shop('poi-sandoria-s-aveline', 'Aveline Foodstuffs', 'Simple food and provisions.', [
+    'poi-sandoria-s-aveline': shop('poi-sandoria-s-aveline', 'Southgate Provisions', 'Bread, water, bandages, and ordinary road supplies.', [
         item('loaf-of-bread', 'Loaf of Bread', 12, ['food', 'starter']),
         item('flask-of-water', 'Flask of Water', 8, ['consumable', 'starter']),
+        item('simple-bandage', 'Simple Bandage', 20, ['consumable', 'healing']),
     ]),
-    'poi-sandoria-s-capucine': shop('poi-sandoria-s-capucine', 'Capucine Armor', 'Basic protective gear.', [
+    'poi-sandoria-s-capucine': shop('poi-sandoria-s-capucine', 'Southgate Outfitters', 'Workwear and light protection suited to city streets and the western roads.', [
         item('bronze-cap', 'Bronze Cap', 70, ['armor', 'head', 'starter']),
         item('bronze-harness', 'Bronze Harness', 120, ['armor', 'body', 'starter']),
+        item('leather-vest', 'Leather Vest', 96, ['equipment', 'armor', 'body', 'light']),
+        item('traveler-gloves', 'Traveler Gloves', 58, ['equipment', 'armor', 'hands', 'travel']),
+        item('leather-trousers', 'Leather Trousers', 78, ['equipment', 'armor', 'legs', 'light']),
+        item('traveler-boots', 'Traveler Boots', 82, ['equipment', 'armor', 'feet', 'travel']),
+        item('road-cloak', 'Road Cloak', 94, ['equipment', 'armor', 'back', 'travel']),
+        item('field-belt', 'Field Belt', 68, ['equipment', 'armor', 'waist', 'field']),
     ]),
-    'poi-sandoria-n-arlenne': shop('poi-sandoria-n-arlenne', 'Arlenne Weapons', 'Northern San d’Oria weapon stock.', [
+    'poi-sandoria-n-arlenne': shop('poi-sandoria-n-arlenne', 'Crownward Implements', 'Arcane implements and practical tools from the inner city workshops.', [
         item('ash-staff', 'Ash Staff', 96, ['weapon', 'staff', 'starter']),
         item('maple-wand', 'Maple Wand', 80, ['weapon', 'club', 'starter']),
+        item('woodsman-hatchet', 'Woodsman Hatchet', 92, ['equipment', 'tool', 'weapon', 'axe', 'woodcutting', 'field']),
+        item('digging-spade', 'Digging Spade', 84, ['equipment', 'tool', 'digging', 'field']),
     ]),
-    'poi-bastok-markets-brunhilde': shop('poi-bastok-markets-brunhilde', 'Brunhilde Armor', 'Basic Bastok armor.', [
+    'poi-bastok-markets-brunhilde': shop('poi-bastok-markets-brunhilde', 'Market Ring Armorer', 'Protective gear made for foundry crews, caravans, and civic guards.', [
         item('bronze-subligar', 'Bronze Subligar', 90, ['armor', 'legs', 'starter']),
         item('bronze-mittens', 'Bronze Mittens', 62, ['armor', 'hands', 'starter']),
+        item('leather-vest', 'Leather Vest', 96, ['equipment', 'armor', 'body', 'light']),
+        item('iron-buckler', 'Iron Buckler', 108, ['equipment', 'armor', 'shield', 'offhand']),
+        item('brass-ring', 'Brass Ring', 70, ['equipment', 'ring', 'accessory']),
     ]),
-    'poi-bastok-markets-ciqala': shop('poi-bastok-markets-ciqala', 'Ciqala Weapons', 'Basic Bastok weapon stock.', [
+    'poi-bastok-markets-ciqala': shop('poi-bastok-markets-ciqala', 'Market Ring Toolworks', 'Mining and field implements alongside ordinary weapons.', [
         item('bronze-sword', 'Bronze Sword', 76, ['weapon', 'sword', 'starter']),
         item('bronze-pick', 'Bronze Pick', 92, ['weapon', 'axe', 'starter']),
+        item('prospector-pick', 'Prospector Pick', 98, ['equipment', 'tool', 'mining', 'field']),
+        item('digging-spade', 'Digging Spade', 82, ['equipment', 'tool', 'digging', 'field']),
+        item('field-knife', 'Field Knife', 74, ['equipment', 'tool', 'weapon', 'dagger', 'cutting', 'field']),
     ]),
-    'poi-bastok-markets-carmelide': shop('poi-bastok-markets-carmelide', 'Carmelide Goods', 'Basic item supplies.', [
+    'poi-bastok-markets-carmelide': shop('poi-bastok-markets-carmelide', 'Market Ring General Goods', 'Medicinals, travel necessities, and inexpensive field gear.', [
         item('flask-of-water', 'Flask of Water', 8, ['consumable', 'starter']),
         item('minor-potion', 'Minor Potion', 60, ['consumable', 'healing']),
+        item('field-belt', 'Field Belt', 66, ['equipment', 'armor', 'waist', 'field']),
+        item('traveler-boots', 'Traveler Boots', 80, ['equipment', 'armor', 'feet', 'travel']),
     ]),
-    'poi-waters-baehu-faehu': shop('poi-waters-baehu-faehu', 'Baehu-Faehu Regional Goods', 'Sarutabaruta regional goods.', [
-        item('sarutabaruta-cotton', 'Sarutabaruta Cotton', 30, ['material', 'regional']),
-        item('windurstian-tea-leaf', 'Windurstian Tea Leaf', 18, ['food', 'regional']),
+    'poi-waters-baehu-faehu': shop('poi-waters-baehu-faehu', 'Canal Ward Regional Goods', 'Wetland fibers, tea, and tools suited to reedbeds and shallow water.', [
+        item('sarutabaruta-cotton', 'Starfen Cotton', 30, ['material', 'regional']),
+        item('windurstian-tea-leaf', 'Fen Tea Leaf', 18, ['food', 'regional']),
+        item('reed-sickle', 'Reed Sickle', 76, ['equipment', 'tool', 'cutting', 'field']),
+        item('marsh-rod', 'Marsh Fishing Rod', 105, ['equipment', 'tool', 'fishing', 'field']),
     ]),
-    'poi-waters-ensasa': shop('poi-waters-ensasa', 'Ensasa Sundries', 'Windurst starter supplies.', [
+    'poi-waters-ensasa': shop('poi-waters-ensasa', 'Canal Ward Sundries', 'Scholastic supplies, simple restorative goods, and light travel equipment.', [
         item('maple-wand', 'Maple Wand', 80, ['weapon', 'club', 'starter']),
         item('minor-ether', 'Minor Ether', 90, ['consumable', 'mp']),
+        item('road-cloak', 'Road Cloak', 92, ['equipment', 'armor', 'back', 'travel']),
+        item('brass-ring', 'Brass Ring', 68, ['equipment', 'ring', 'accessory']),
     ]),
-    'poi-port-bastok-shops': shop('poi-port-bastok-shops', 'Port Bastok Shops', 'Port-side mixed goods.', [
+    'poi-port-bastok-shops': shop('poi-port-bastok-shops', 'Iron Quay Chandlery', 'Travel provisions and durable tools for freight crews and road caravans.', [
         item('travel-ration', 'Travel Ration', 20, ['food', 'travel']),
         item('simple-bandage', 'Simple Bandage', 20, ['consumable', 'healing']),
+        item('prospector-pick', 'Prospector Pick', 100, ['equipment', 'tool', 'mining', 'field']),
+        item('marsh-rod', 'Marsh Fishing Rod', 108, ['equipment', 'tool', 'fishing', 'field']),
     ]),
 });
 
@@ -58,7 +85,7 @@ export function describeShopCatalogForPoi(poi) {
         `${catalog.name}`,
         catalog.description,
         'Inventory:',
-        ...catalog.items.map((item) => `- ${item.name}: ${item.priceGil} gil [${item.tags.join(', ')}]`),
+        ...catalog.items.map((entry) => `- ${entry.name}: ${entry.priceGil} gil [${entry.tags.join(', ')}]`),
     ].join('\n');
 }
 
@@ -67,5 +94,5 @@ function shop(poiId, name, description, items) {
 }
 
 function item(id, name, priceGil, tags = []) {
-    return Object.freeze({ id, name, priceGil, tags });
+    return Object.freeze({ id, name, priceGil, tags: Object.freeze(tags) });
 }
