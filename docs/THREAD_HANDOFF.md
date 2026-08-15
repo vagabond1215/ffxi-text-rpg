@@ -10,7 +10,9 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 5. `docs/ROADMAP.md`
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md` and `js/text/version.js`.
+7. Relevant architecture/runtime/data/tests, especially `docs/ARCHITECTURE.md`, `docs/QUALITY_GATES.md`, `docs/PERFORMANCE_BUDGET.md`, `docs/RESOURCE_LIFECYCLE.md`, and `js/text/version.js`.
+
+For navigation/UI work also read `docs/LOCALITY_AND_EXPLORATION_MODEL.md`.
 
 ## Workflow
 
@@ -30,27 +32,27 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-Maps represent acquired character knowledge, not omniscient authored geography.
+Maps represent acquired character knowledge, not omniscient authored geography. Resources have physical/economic/social provenance. Canonical fictional time is separate from wall-clock scheduling.
 
 ### Hard map/privacy rule
 
-**Authored coordinates are simulation/internal data only and must not be player-facing.** The local map must render only discovered or locally knowable geometry and fit/recenter that known portion inside the viewport. It must not reveal the character's relative position inside undiscovered authored bounds, nor reveal total authored map extent before play has justified that knowledge.
+**Authored coordinates are simulation/internal data only and must not be player-facing.** A player-facing map may render discovered or locally knowable geometry, but it must not expose raw authored coordinates, undiscovered total extent, or the character's hidden relative placement inside authored bounds.
 
-Internal `state.position`, atlas keys, topology edges, POI coordinates, route-stop coordinates, and other simulation geometry remain valid implementation data. Presentation layers must translate those into knowledge-relative geometry and human world descriptions.
+Internal `state.position`, atlas keys, topology edges, POI coordinates, route-stop coordinates, and other simulation geometry remain valid implementation data. Presentation translates those into knowledge-relative geometry and human world descriptions.
 
 ## Current baseline
 
 ```text
-Product:      0.6.300.1
-Package:      0.6.300
+Product:      0.6.400.1
+Package:      0.6.400
 Account Save: 4
 Game State:   5
 Data:         21
 Benchmark:    1
-Codename:     Original Magic and Abilities
+Codename:     Combat 2.0 Foundation
 ```
 
-Phase 0.5 is complete. Phase 0.6 is active through 0.6.300. The next planned mechanics track is `0.6.400 — Combat 2.0`, but do not reopen or rewrite the map/UI architecture merely as part of that track.
+Phase 0.5 is complete. Phase 0.6 is active. **0.6.400 is not complete:** the first Combat 2.0 vertical slice is complete and green; canonical combat timing/interruption/status/enemy-ability work remains before moving on.
 
 ## Completed implementation sequence
 
@@ -68,21 +70,65 @@ Phase 0.5 is complete. Phase 0.6 is active through 0.6.300. The next planned mec
 - 0.5.900 simulation/content-substrate exit gate;
 - 0.6.100 continuous-character stats/progression;
 - 0.6.200 character-owned skills/proficiencies/capabilities;
-- 0.6.200.2 bounded canvas usability refinement;
+- 0.6.200.2 bounded Canvas usability refinement;
 - 0.6.250 semantic DOM player-interface architecture;
-- 0.6.300 original magic and active ability engine.
+- 0.6.300 original magic and active ability engine;
+- 0.6.400.1 Combat 2.0 foundation vertical slice.
+
+## Map state and accepted navigation direction
+
+The current SVG minimap is a **functional transitional exploration substrate**, not final cartography.
+
+Two map regressions were corrected before this checkpoint:
+
+1. Player-facing projection previously used authored bounds. It now rebases/fits discovered geometry only, hides authored total extent, and removes coordinate labels.
+2. Numeric grid atlas keys such as `"2,2"` did not round-trip through `parseCoordinate()`, causing grid maps to render only a solid background. Internal numeric serialized keys now parse correctly and render discovered cells without exposing those coordinates in HTML.
+
+Runtime grid-map regression coverage remains green.
+
+### Accepted settlement/exploration distinction
+
+`docs/LOCALITY_AND_EXPLORATION_MODEL.md` is the accepted design direction:
+
+```text
+Use fine movement where movement itself creates decisions.
+Use named localities and actions where destinations and relationships create decisions.
+```
+
+Do **not** assume every settlement must be a fine directional grid.
+
+Future presentation contexts:
+
+```text
+settlement/locality -> locality name + nearby destinations + locality actions
+exploration         -> discovery map + movement/exploration actions
+route/transport     -> journey/progress + travel actions/interrupts
+combat              -> combat state + tactical actions
+```
+
+A guarded/safe city should usually expose named districts, wards, quarters, precincts, campuses, terraces, docks, markets, compounds, or culturally specific equivalents. These subdivisions bound UI density and provide discovery/reputation/quest/access gating without pretending every shop visit is wilderness navigation.
+
+The minimap and D-pad should therefore become **conditional**, not permanent application chrome.
+
+A safe locality remains on canonical world time. `safe` is a hazard/encounter policy, not a second clock. UI browsing consumes no fictional time; meaningful activities or district travel may consume authored coarse durations; scheduled/social/shop/transport/project/world events can still interrupt. There is no need to run continuous ambient danger or health-regeneration ticks merely because the player is standing in a guarded city.
+
+Higher-resolution, shaped, seam-compatible exploration maps remain a valid later cartography direction, especially for terrain-sensitive wilderness/dungeons. They are **deferred**; do not mass-author detailed city maps merely to compensate for using a grid in a context where a map should not be primary.
+
+Accepted insertion after Combat 2.0:
+
+```text
+0.6.450 — Locality and exploration navigation
+```
+
+Expected 0.6.450 scope is defined in `docs/LOCALITY_AND_EXPLORATION_MODEL.md`: named localities/adjacency/access, semantic locality actions, representative starter-city migration, conditional map/D-pad, safe-locality coarse time policy, preservation of atlas privacy and route/transport authority. Polished cartographic art remains later work.
 
 ## 0.6.300 magic/ability state
 
-Canonical executable ability/effect data is separate from character capability ownership. `capabilityEngine` owns learned/use prerequisites; `abilityEngine` owns concrete activation, costs, targeting, effects, fictional-time activation/cooldowns, interruption, and lifecycle events.
+Canonical executable ability/effect data is separate from character capability ownership. `capabilityEngine` owns learned/use prerequisites; `abilityEngine` owns activation, costs, targeting, effects, canonical fictional-time activation/cooldowns, interruption, and lifecycle events.
 
-Original spell traditions include Embercraft, Vital Weave, and Ward Lore. Representative executable records include Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading. No historical spell names were promoted into canonical ability data.
+Original representative abilities remain Ember Dart, Mending Thread, Stone Ward, Guarded Cut, and Waymark Reading. Costs are spent when activation begins; non-instant activation uses canonical timed tasks; successful resolution starts cooldown; interruption retains already-spent resources and does not start cooldown.
 
-Current ability policy: costs are spent when activation begins; non-instant activation creates a canonical timed task; successful resolution starts cooldown; interruption cancels the activation task, retains already-spent resources, and does not start cooldown. Only one active player ability activation is supported in this first contract.
-
-Waymark Reading must report only already-acquired place/atlas knowledge. It must not expose authored coordinates, hidden total topology, or undiscovered authored placement.
-
-Lifecycle events:
+Ability lifecycle events remain:
 
 ```text
 ability.started
@@ -90,112 +136,170 @@ ability.resolved
 ability.interrupted
 ```
 
-`invoke <ability>` is the bounded keyboard/power-user adapter. Old `cast` and transitional weapon-technique behavior remain compatibility seams for Combat 2.0.
+`invoke <ability>` is a bounded keyboard/power-user adapter. Historical spell names are not canonical ability data.
 
-## Discovery-safe local map correction — 2026-08-13
+## 0.6.400 Combat 2.0 foundation — complete vertical slice
 
-The local map privacy regression was traced to `js/text/ui/minimapModel.js`: visited cells were being projected against full authored topology bounds. A one-cell map could therefore reveal that the character was globally near an edge, center, top, or bottom, and the UI also exposed authored total-map counts and raw coordinate labels.
+The pre-0.6.400 audit found three divergent combat paths:
 
-The correction now on `main` does the following:
+- basic attacks mutated/logged directly in `battleEngine`;
+- legacy attack/cast/weapon-technique behavior and enemy retaliation lived in `combatActionEngine`;
+- canonical 0.6.300 abilities resolved separately in `abilityEngine` and did not share the legacy enemy-response path.
 
-- computes the minimap viewport from **discovered cells plus locally knowable path stubs only**;
-- rebases visible geometry to a knowledge-relative local origin on every render;
-- derives `model.width`/`model.height` from that visible knowledge instead of authored bounds;
-- uses synthetic presentation labels such as `Current area` / `Known area N` rather than authored coordinate identifiers;
-- hides authored total size as `?` instead of exposing values such as `1/32 explored`;
-- keeps the known portion centered/fitted by the existing DOM SVG and Canvas viewport scaling without revealing where it sits in the undiscovered authored map;
-- retains raw coordinates in internal simulation state and a separate `describeInternalCoordinate()` helper for internal/debug compatibility;
-- keeps the shared player-facing coordinate description generic (`local area` / `unknown area`);
-- removes coordinate output from player-facing atlas, POI, character, place-layout, DOM, and legacy panel surfaces;
-- keeps the transitional Canvas snapshot's raw coordinate only as internal regression/debug data while removing that value from Canvas rendering.
+The first Combat 2.0 slice establishes one structured action/response seam without pretending the whole combat redesign is finished.
 
-Important map/privacy commits include:
+### Canonical combat contract
 
-```text
-c6cf1584351e4a1efb1ac30c5e3b1b64148c7a1a  Fit minimap viewport to discovered geometry
-2c5b39709d51dde3b98aced15f8149e008e2a38b  Remove coordinate identifiers from minimap view model
-5316225b0fa625ec99637652780a17508f535c83  Make coordinate descriptions player safe
-b95b3da7ceaf5db71910ca83f4359ea8c74780b8  Keep atlas extent and coordinates undisclosed
-e7cbb8525695a9181ed8abbab9775e764a97834d  Remove coordinate data from player-facing POI text
-317fb51db80c5f6b7821b53e8604dd36129e0dad  Hide authored local-map extents from place descriptions
-82d03b19552c0f4c5359375b55ae23664333a19e  Add internal coordinate formatter
-cc1130570214164b833f9acf1edb8eda3109a4c6  Keep canvas coordinates internal to snapshot state
-5ba9b5b9a2142e9419ecdd2bf43a8227140c0383  Remove coordinate labels from legacy panels
+New `js/text/systems/combatTurnEngine.js` introduces additive battle state:
+
+```js
+battle.contract = {
+  version: 1,
+  actionSequence: 0,
+  actions: [],
+  lastActionId: null
+}
 ```
 
-### Grid minimap rendering regression and repair — 2026-08-13
+Each structured action record carries:
 
-A second, separate rendering defect was found after the discovery-safe projection shipped. Grid-based places could render as a solid-color SVG with no visible map geometry.
+- stable sequential action ID;
+- round;
+- actor ID/type;
+- target ID;
+- action kind;
+- source ID;
+- outcome;
+- structured data.
 
-Root cause: `atlasEngine` serializes internal numeric grid positions through `coordinateKey({ x, y })` as strings such as `"2,2"`. `minimapModel.createGridModel()` later called `parseCoordinate()` on those keys, but `parseCoordinate()` only accepted authored alpha topology strings or numeric coordinate objects. Every grid atlas key therefore parsed to `null`, leaving `map.cells` empty. The renderer was functioning, but it had no drawable geometry beyond its background.
-
-Repair:
-
-- `parseCoordinate()` now round-trips the existing internal numeric key serialization (`"x,y"`) back to a numeric coordinate object;
-- this is an internal parser correction only; `describeCoordinate()` remains player-safe and no numeric coordinate is exposed by the UI;
-- the discovery-relative minimap continues to rebase the parsed point to its known local origin rather than using authored map width/height;
-- `tests/minimapGridRendering.test.js` explicitly creates a Brasshaven grid-map discovery, requires a drawable current-position SVG circle, verifies the rendered map is rebased to the local known origin, keeps total extent as `?`, and asserts the internal coordinate string does not appear in rendered HTML.
-
-Repair commits:
+Records emit semantic event:
 
 ```text
-a776959ac3387882c0021567ea220bf1356d15f0  Parse internal grid atlas coordinate keys
-3092f1e91ba75231c626520a8b9d7682d107266f  Cover grid minimap rendering regression
+combat.action.resolved
 ```
 
-### Latest validation checkpoint
+The contract is additive runtime battle state; Account Save, Game State, and Data versions did not need to change.
 
-Runtime/test head:
+### Structured basic attack
 
-```text
-3092f1e91ba75231c626520a8b9d7682d107266f
+`battleEngine.resolveBasicAttack()` now returns structured resolution data including hit/miss, damage, hit chance/roll, HP before/after, and defeat outcome. Existing `performBasicAttack()` remains a compatibility wrapper.
+
+### Deterministic enemy response v1
+
+Enemy action selection is explicit rather than inferred from combat prose. Current deliberately narrow policy is:
+
+```js
+{
+  kind: 'basicAttack',
+  actorId: enemy.id,
+  targetId: livingPlayer.id,
+  policy: 'basic-attack-v1'
+}
 ```
 
-GitHub Actions completed successfully on 2026-08-13:
+The enemy response records its own structured combat action and carries `triggerActionId` linking it to the player action that gave the enemy its response opportunity.
+
+This is not final enemy AI. It establishes deterministic action-selection authority that later policies/abilities can replace or extend.
+
+### Player action unification
+
+Current flows through the contract:
+
+- player basic attacks;
+- canonical ability resolution in combat;
+- legacy cast as `legacyCast` compatibility action;
+- legacy weapon technique as `legacyTechnique` compatibility action;
+- deterministic enemy basic response.
+
+Canonical ability results now expose `combatActionId` and `enemyResponseActionIds`. Semantic UI `ability.activate` remains command-string independent.
+
+Legacy adapters remain transitional; they no longer need to own a separate private enemy-response loop.
+
+### Battle finalization compatibility
+
+Combat finalization synchronizes player resources/statuses from the battle combatant, preserves victory reward resolution, preserves resource-opportunity/provenance behavior, and retains player-facing reward log compatibility. Battle end is recorded once.
+
+## Validation checkpoint
+
+Coherent runtime/version head:
 
 ```text
-tests       398
-pass        398
+d4e888328e414081ae753aa4b349b257218735bd
+```
+
+GitHub Actions completed successfully on 2026-08-15:
+
+```text
+tests       402
+pass        402
 fail        0
 cancelled   0
 skipped     0
 todo        0
 ```
 
-The new grid-minimap regression is test 205 in that run and passed. Benchmark, Pages `build`, `report-build-status`, and `deploy` also completed successfully. The deployed build therefore contains the numeric-grid parsing repair.
+Pages checks:
 
-The recurring Actions warning about Node 20 action-runtime deprecation remains warning-only; project tests/benchmark use Node 20.20.2.
+```text
+test                  success
+build                 success
+report-build-status   success
+deploy                success
+```
 
-## Map/privacy follow-up rules
+Benchmark at that head:
 
-Do not regress these behaviors:
+```text
+create 1,000 player combat profiles       407.562 ms | 0.407562 ms/op
+create 1,000 enemy combat profiles        101.735 ms | 0.101735 ms/op
+resolve 1,000 basic attacks               474.025 ms | 0.474025 ms/op
+10,000 tick dispatches / 5 subscribers     46.125 ms | 0.004612 ms/op
+10,000 direct route lookups              6408.738 ms | 0.640874 ms/op
+```
 
-- Do not use authored topology bounds to size the player-facing minimap.
-- Do not print internal coordinates in DOM headers, Canvas panels, atlas prose, POI prose, movement/travel prose, character summaries, or normal command output.
-- Do not expose `getNavigableCoordinateKeys(...).length` as map completion before the character has earned full-map knowledge.
-- Internal coordinate assertions are valid in simulation/navigation tests.
-- A future full-map/completeness feature may reveal total extent only through an explicit knowledge contract; do not infer it from authored data automatically.
-- Local path stubs may be shown when they represent immediately knowable exits/paths from already-known cells; they must still be projected relative to visible knowledge.
-- Grid map rendering must round-trip internal atlas keys into drawable geometry without placing the resulting known geometry against authored bounds.
-- The active browser shell is semantic DOM. Canvas remains bounded compatibility/regression/reference code.
+The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only. Project tests/benchmark still run with configured Node 20.20.2.
 
-## Intentional debt entering 0.6.400
+## Important current combat limitations
 
-- `combatActionEngine.castSpell()` remains the old placeholder adapter until Combat 2.0.
-- Transitional combat-technique/recovered weapon-skill command behavior remains bounded.
-- Only one active ability activation is supported; there is no generalized action queue/concurrency model yet.
-- Enemy canonical ability selection/execution, AoE/ground targeting, resistance/accuracy layers, and final tactical timing belong to 0.6.400.
-- Status records can carry duration metadata, but status-expiry orchestration is not yet fully redesigned around world time.
+Do not describe 0.6.400 as complete yet.
+
+- Enemy action policy is only deterministic basic attack v1.
+- Player and enemy actions do not yet share a complete canonical recovery/readiness timeline.
+- A timed player ability currently receives the enemy response when the ability resolves; enemy action/interruption is not yet interleaved across the cast window.
+- General cast interruption/recovery windows remain incomplete.
+- Status records can carry duration metadata, but status expiry is not yet fully orchestrated from canonical world time.
+- Enemy canonical ability selection/execution is not implemented.
+- AoE/ground targeting, resistance/accuracy layers, and richer tactical policy remain later Combat 2.0 work.
+- The combat contract validator currently has focused tests; global `validateGameState()` does not yet validate an active battle contract.
+- Existing battle IDs still use the older `Date.now()` scaffold.
+- Only one active player ability activation is supported.
+
+## Compatibility / intentional debt
+
+Do not clean these opportunistically unless they are directly in scope:
+
+- `combatActionEngine.castSpell()` remains a legacy placeholder adapter until Combat 2.0 finishes.
+- Transitional weapon-technique/recovered weapon-skill behavior remains bounded.
 - Equipment eligibility still contains discipline-shaped compatibility requirements.
 - `player.jobs`, `mainJobId`, `raceId`, `nationId`, and related persisted/internal names remain compatibility seams.
 - Historical FFXI research modules remain bounded reference surfaces.
-- `places.js` spawn rules/place connections, `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional compatibility debt.
-- Some internal/debug helpers can still inspect authored coordinates; this is allowed only so long as presentation layers do not expose them.
+- `places.js` spawn rules/place connections, `gil`, historical localStorage keys, and legacy-shaped POI hook IDs remain intentional migration/economy debt.
+- Canvas remains bounded compatibility/regression/reference code; semantic DOM is the active browser UI.
+- Internal coordinate helpers may inspect authored geometry, but presentation must not expose it.
 
-## Next target
+## Next bounded target
 
-```text
-0.6.400 — Combat 2.0
-```
+Continue **0.6.400 — Combat 2.0**, not 0.6.450 yet.
 
-Recommended first bounded unit: inspect current battle topology/phase/combatants, action adapters, canonical abilities, statuses, rewards/resource opportunities, equipment/capabilities, and deterministic timing. Define a canonical encounter/combat-state contract; make canonical abilities first-class combat actions; add deterministic opponent action selection/timing/interruption/status interaction; keep skills/equipment/capabilities/preparation compositional rather than hard-gating through active discipline; migrate legacy attack/cast/technique commands behind bounded adapters; preserve victory/defeat/EXP/resource-provenance behavior; validate/version/test/benchmark/document; then stop before 0.6.500.
+Recommended next unit:
+
+1. define canonical combat readiness/recovery timing against fictional world time;
+2. allow enemy actions to occur/interleave while a timed player ability is activating;
+3. route combat interruption through the existing deterministic interrupt substrate;
+4. move status duration/expiry toward canonical world-time authority;
+5. add one representative original enemy active ability and deterministic selection policy;
+6. integrate `validateCombatContract()` with state validation if the contract is now stable enough;
+7. preserve rewards, resource provenance, skills, equipment, capability composition, semantic events, and compatibility adapters;
+8. test/version/benchmark/document and stop at the next coherent 0.6.400 checkpoint.
+
+After Combat 2.0 is coherent/complete, execute **0.6.450 — Locality and exploration navigation** before broad 0.6.500+ expansion hardens the current city-grid assumptions.
