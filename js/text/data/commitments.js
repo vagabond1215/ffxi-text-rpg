@@ -7,6 +7,29 @@ import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 export const COMMITMENT_CATALOG_VERSION = 2;
 
 const COMMITMENT_DEFINITIONS = Object.freeze({
+    'commitment-thornwall-sweetroot-return': commitment({
+        id: 'commitment-thornwall-sweetroot-return',
+        name: 'Sweetroot for Southgate',
+        giverNpcId: 'npc-thornwall-sera-talwin',
+        offerPoiId: 'poi-sandoria-s-alaune',
+        offerPlaceId: 'thornwall-southgate',
+        description: 'Sera Talwin needs two fresh Elderwood Sweetroots for the Southgate road pantry, where wardens and travelers keep simple food and field remedies close at hand.',
+        objective: 'Forage two Elderwood Sweetroots in West Elderwood and bring them back to Sera Talwin at Southgate.',
+        requiredItems: [{
+            itemId: 'item-elderwood-sweetroot',
+            quantity: 2,
+            provenanceSourceId: 'source-west-elderwood-sweetroot-patch',
+        }],
+        fieldSourceId: 'source-west-elderwood-sweetroot-patch',
+        reward: {
+            gil: 20,
+            relationship: { familiarity: 1, respect: 1 },
+        },
+        followUpDelayDays: 1,
+        offerText: 'Sera asks for two fresh Sweetroots from West Elderwood. Southgate keeps them for plain road food and simple field remedies, and she would rather know who actually gathered this batch than buy an anonymous bundle from a stall.',
+        resolvedText: 'Sera checks the roots, trims away the bruised ends, and puts your name beside the delivery in the gate pantry book. The work is small, but Southgate now has a reason to remember you as someone who went out and came back useful.',
+        followUpText: 'On a later day, Sera remembers the Sweetroot before you mention it. She notes that the west road still offers several kinds of work: resin cutters are making their rounds, Brush Hares are thick along the safer trails, and the deeper woods reward people who choose their preparation instead of following one chore after another.',
+    }),
     'commitment-brasshaven-copper-return': commitment({
         id: 'commitment-brasshaven-copper-return',
         name: 'Copper for the Ring',
