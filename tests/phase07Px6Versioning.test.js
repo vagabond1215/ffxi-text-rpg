@@ -10,12 +10,12 @@ import { PLAYER_DANGER_RECOVERY_VERSION } from '../js/text/systems/playerDangerR
 import { RESOURCE_RECOVERY_WORK_ADAPTER_VERSION } from '../js/text/systems/resourceRecoveryWorkAdapter.js';
 import { SYSTEM_VERSIONS, VERSION } from '../js/text/version.js';
 
-test('Phase 0.7 keeps PX6 danger contracts while PX7 advances authored continuity breadth', () => {
+test('Phase 0.7 keeps PX6/PX7 mechanics while PX8 adds third-community authored breadth', () => {
     assert.equal(VERSION.product, '0.6.900.1');
     assert.equal(VERSION.package, '0.6.900');
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 29);
+    assert.equal(VERSION.data, 30);
     assert.equal(VERSION.benchmark, 1);
 
     assert.equal(ACTIVITY_ADVANCE_VERSION, 2);
