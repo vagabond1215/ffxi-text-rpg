@@ -1,8 +1,10 @@
+import { getCanonicalGatheringSource } from './ecologyRegistry.js';
 import { getPointOfInterest } from './pointsOfInterest.js';
 import { getPlace } from './places.js';
 import { getProductionItem } from './productionItems.js';
+import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const COMMITMENT_CATALOG_VERSION = 1;
+export const COMMITMENT_CATALOG_VERSION = 2;
 
 const COMMITMENT_DEFINITIONS = Object.freeze({
     'commitment-brasshaven-copper-return': commitment({
@@ -27,6 +29,29 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         resolvedText: 'Varric checks the ingot, compares its working marks against the Ring ledger, and credits the delivery. The payment is modest; the useful part is that your name is now attached to completed work.',
         followUpText: 'When you return the next day, Varric remembers the copper without consulting the newcomer roll. He points out that a Copper Trail Clasp needs Starfen reed fiber as well as metalwork: one reliable route has become a reason to learn another.',
     }),
+    'commitment-mistmere-marrowleaf-return': commitment({
+        id: 'commitment-mistmere-marrowleaf-return',
+        name: 'Marrowleaf for the Ward',
+        giverNpcId: 'npc-mistmere-reader-soli-venn',
+        offerPoiId: 'poi-waters-dagoza-beruza',
+        offerPlaceId: 'mistmere-canal-ward',
+        description: 'Reader Soli Venn wants two fresh Marrowleaf samples gathered in West Starfen so the Canal Ward can compare this season’s growth with the civic readers’ older field notes.',
+        objective: 'Gather two Marrowleaf in West Starfen and bring them back to Reader Soli Venn in the Canal Ward.',
+        requiredItems: [{
+            itemId: 'item-starfen-marrowleaf',
+            quantity: 2,
+            provenanceSourceId: 'source-west-starfen-marrowleaf-bed',
+        }],
+        fieldSourceId: 'source-west-starfen-marrowleaf-bed',
+        reward: {
+            gil: 24,
+            relationship: { familiarity: 1, respect: 1 },
+        },
+        followUpDelayDays: 1,
+        offerText: 'Soli asks for two fresh Marrowleaf samples from West Starfen. The Ward has old notes and dried specimens, but current growth tells them more about the marsh than a copied ledger does.',
+        resolvedText: 'Soli compares the leaves against the Ward notes, marks where you gathered them, and credits the work. Your name is written beside a useful observation rather than beside another newcomer instruction.',
+        followUpText: 'When you return on a later day, Soli remembers the Marrowleaf without reopening the old notes. They point out that the same reed country supports useful gathering and troublesome rootlings: knowing Starfen means learning when to work the marsh and when to make the ground safer first.',
+    }),
 });
 
 export function getCommitmentDefinition(commitmentId) {
@@ -49,7 +74,7 @@ export function validateCommitmentCatalog() {
         if (poi && poi.placeId !== definition.offerPlaceId) issues.push(`${definition.id} offer POI is not in offer place.`);
         if (!Array.isArray(definition.requiredItems) || !definition.requiredItems.length) issues.push(`${definition.id} requires at least one item.`);
         for (const requirement of definition.requiredItems ?? []) {
-            const item = getProductionItem(requirement.itemId);
+            const item = getCommitmentItem(requirement.itemId);
             if (!item) {
                 issues.push(`${definition.id} references unknown required item ${requirement.itemId}.`);
                 continue;
@@ -57,6 +82,13 @@ export function validateCommitmentCatalog() {
             if (!positiveInteger(requirement.quantity)) issues.push(`${definition.id} has invalid quantity for ${requirement.itemId}.`);
             if (requirement.provenanceSourceId && !item.provenance.some((entry) => entry.sourceId === requirement.provenanceSourceId)) {
                 issues.push(`${definition.id} provenance requirement ${requirement.provenanceSourceId} is not a source for ${requirement.itemId}.`);
+            }
+        }
+        if (definition.fieldSourceId) {
+            const source = getCanonicalGatheringSource(definition.fieldSourceId);
+            if (!source) issues.push(`${definition.id} references unknown field source ${definition.fieldSourceId}.`);
+            else if (!definition.requiredItems.some((requirement) => requirement.itemId === source.outputItemId)) {
+                issues.push(`${definition.id} field source ${definition.fieldSourceId} does not produce a required item.`);
             }
         }
         if (!nonNegativeInteger(definition.reward.gil)) issues.push(`${definition.id} reward.gil must be a non-negative integer.`);
@@ -72,12 +104,17 @@ export function validateCommitmentCatalog() {
 function commitment(definition) {
     return Object.freeze({
         ...definition,
+        fieldSourceId: definition.fieldSourceId ?? null,
         requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))),
         reward: Object.freeze({
             ...definition.reward,
             relationship: Object.freeze({ ...definition.reward.relationship }),
         }),
     });
+}
+
+function getCommitmentItem(itemId) {
+    return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId);
 }
 
 function stableId(value) {
