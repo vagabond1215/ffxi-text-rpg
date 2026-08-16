@@ -1,6 +1,5 @@
 import { getCommitmentDefinition } from '../data/commitments.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
-import { removeItemQuantityFromContainer } from './inventoryEngine.js';
 import { applyNpcRelationshipChange, ensureRelationshipState } from './relationshipEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { ensureWorldTimeState, SECONDS_PER_DAY } from './worldTimeEngine.js';
@@ -117,19 +116,17 @@ export function resolveCommitment(state, commitmentId) {
 
     const definition = check.definition;
     const record = check.record;
-    // All requirements are prevalidated before any mutation. This first slice has one
-    // canonical production source per required item, so exact ID removal is provenance-safe.
-    const removed = [];
-    for (const requirement of definition.requiredItems) {
-        const result = removeItemQuantityFromContainer(state.player.inventoryState, 'inventory', requirement.itemId, requirement.quantity);
-        if (!result.ok) {
-            // Prevalidation and single-threaded state mutation should make this unreachable.
-            // Restore anything removed earlier before returning a deterministic failure.
-            for (const item of removed) state.player.inventoryState.containers.inventory.items.push(item);
-            return failure('commitment.resolve', 'commitment.delivery-failed', result.reason);
-        }
-        removed.push(result.item);
+    const deliveryPlan = createDeliveryPlan(state, definition.requiredItems);
+    if (!deliveryPlan.ok) {
+        return actionFailure({
+            action: 'commitment.resolve',
+            code: 'commitment.delivery-failed',
+            outcome: 'blocked',
+            data: { commitmentId: definition.id, blockers: deliveryPlan.blockers },
+            display: { text: deliveryPlan.blockers.join(' ') },
+        });
     }
+    const removed = applyDeliveryPlan(deliveryPlan);
 
     const now = ensureWorldTimeState(state).totalSeconds;
     const resolvedDay = dayNumber(now);
@@ -192,7 +189,10 @@ export function performCommitmentFollowUp(state, commitmentId) {
             display: { text: definition.followUpText },
         });
     }
-    if (!isCommitmentFollowUpAvailable(state, definition.id)) return failure('commitment.followUp', 'commitment.followup-too-early', 'Varric has no new follow-up yet; return on a later fictional day.');
+    if (!isCommitmentFollowUpAvailable(state, definition.id)) {
+        const giverName = (state.npcs ?? []).find((npc) => npc.id === definition.giverNpcId)?.identity?.name ?? definition.giverNpcId;
+        return failure('commitment.followUp', 'commitment.followup-too-early', `${giverName} has no new follow-up yet; return on a later fictional day.`);
+    }
     const placeCheck = checkGiverContext(state, definition);
     if (!placeCheck.ok) return placeCheck;
 
@@ -226,21 +226,41 @@ export function validateCommitmentState(commitments) {
         return issues;
     }
     for (const [commitmentId, record] of Object.entries(commitments.records)) {
-        if (!getCommitmentDefinition(commitmentId)) issues.push(`commitments.records.${commitmentId} references unknown commitment.`);
+        const definition = getCommitmentDefinition(commitmentId);
+        if (!definition) issues.push(`commitments.records.${commitmentId} references unknown commitment.`);
         if (!record || typeof record !== 'object' || Array.isArray(record)) {
             issues.push(`commitments.records.${commitmentId} must be an object.`);
             continue;
         }
         if (record.id !== commitmentId) issues.push(`commitments.records.${commitmentId}.id must match its key.`);
+        if (definition && record.giverNpcId !== definition.giverNpcId) issues.push(`commitments.records.${commitmentId}.giverNpcId must match its definition.`);
         if (![COMMITMENT_STATUSES.ACTIVE, COMMITMENT_STATUSES.RESOLVED].includes(record.status)) issues.push(`commitments.records.${commitmentId}.status is invalid.`);
         if (!nonNegativeInteger(record.acceptedAtWorldSeconds)) issues.push(`commitments.records.${commitmentId}.acceptedAtWorldSeconds must be non-negative.`);
+        if (record.status === COMMITMENT_STATUSES.ACTIVE) {
+            if (record.resolvedAtWorldSeconds !== null) issues.push(`commitments.records.${commitmentId}.resolvedAtWorldSeconds must be null while active.`);
+            if (record.resolvedDay !== null) issues.push(`commitments.records.${commitmentId}.resolvedDay must be null while active.`);
+            if (record.rewardClaimed !== false) issues.push(`commitments.records.${commitmentId}.rewardClaimed must be false while active.`);
+            if (record.followUpAvailableDay !== null) issues.push(`commitments.records.${commitmentId}.followUpAvailableDay must be null while active.`);
+            if (record.followUpSeenAtWorldSeconds !== null) issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds must be null while active.`);
+        }
         if (record.status === COMMITMENT_STATUSES.RESOLVED) {
             if (!nonNegativeInteger(record.resolvedAtWorldSeconds)) issues.push(`commitments.records.${commitmentId}.resolvedAtWorldSeconds must be non-negative when resolved.`);
             if (!positiveInteger(record.resolvedDay)) issues.push(`commitments.records.${commitmentId}.resolvedDay must be positive when resolved.`);
             if (record.rewardClaimed !== true) issues.push(`commitments.records.${commitmentId}.rewardClaimed must be true when resolved.`);
             if (!positiveInteger(record.followUpAvailableDay)) issues.push(`commitments.records.${commitmentId}.followUpAvailableDay must be positive when resolved.`);
+            if (nonNegativeInteger(record.resolvedAtWorldSeconds) && positiveInteger(record.resolvedDay) && dayNumber(record.resolvedAtWorldSeconds) !== record.resolvedDay) {
+                issues.push(`commitments.records.${commitmentId}.resolvedDay must match resolvedAtWorldSeconds.`);
+            }
+            if (positiveInteger(record.resolvedDay) && positiveInteger(record.followUpAvailableDay) && definition
+                && record.followUpAvailableDay !== record.resolvedDay + definition.followUpDelayDays) {
+                issues.push(`commitments.records.${commitmentId}.followUpAvailableDay must match the definition delay.`);
+            }
         }
         if (record.followUpSeenAtWorldSeconds !== null && !nonNegativeInteger(record.followUpSeenAtWorldSeconds)) issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds must be null or non-negative.`);
+        if (nonNegativeInteger(record.followUpSeenAtWorldSeconds) && nonNegativeInteger(record.resolvedAtWorldSeconds)
+            && record.followUpSeenAtWorldSeconds < record.resolvedAtWorldSeconds) {
+            issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds cannot precede resolution.`);
+        }
     }
     return issues;
 }
@@ -254,8 +274,58 @@ function checkGiverContext(state, definition) {
 
 function qualifyingItemQuantity(state, requirement) {
     return (state.player?.inventoryState?.containers?.inventory?.items ?? [])
-        .filter((item) => (item.id === requirement.itemId || item.templateId === requirement.itemId) && hasRequiredProvenance(item, requirement.provenanceSourceId))
-        .reduce((sum, item) => sum + Math.max(1, Number(item.quantity) || 1), 0);
+        .filter((item) => itemMatchesRequirement(item, requirement))
+        .reduce((sum, item) => sum + itemQuantity(item), 0);
+}
+
+function createDeliveryPlan(state, requirements) {
+    const container = state.player?.inventoryState?.containers?.inventory;
+    if (!container || !Array.isArray(container.items)) return { ok: false, blockers: ['Inventory is unavailable for commitment delivery.'] };
+    const availableByIndex = container.items.map((item) => itemQuantity(item));
+    const removals = [];
+
+    for (const requirement of requirements) {
+        let remaining = requirement.quantity;
+        for (let index = 0; index < container.items.length && remaining > 0; index += 1) {
+            const item = container.items[index];
+            if (availableByIndex[index] <= 0 || !itemMatchesRequirement(item, requirement)) continue;
+            const quantity = Math.min(availableByIndex[index], remaining);
+            removals.push({ index, quantity });
+            availableByIndex[index] -= quantity;
+            remaining -= quantity;
+        }
+        if (remaining > 0) {
+            return {
+                ok: false,
+                blockers: [`Delivery no longer contains ${requirement.quantity} ${requirement.itemId} with source ${requirement.provenanceSourceId ?? 'any'}.`],
+            };
+        }
+    }
+
+    return { ok: true, container, removals };
+}
+
+function applyDeliveryPlan(plan) {
+    const totalsByIndex = new Map();
+    for (const removal of plan.removals) totalsByIndex.set(removal.index, (totalsByIndex.get(removal.index) ?? 0) + removal.quantity);
+    const removed = [];
+    for (const [index, quantity] of [...totalsByIndex.entries()].sort((left, right) => right[0] - left[0])) {
+        const item = plan.container.items[index];
+        const available = itemQuantity(item);
+        removed.unshift({ ...item, quantity });
+        if (quantity >= available || item.stackable === false) plan.container.items.splice(index, 1);
+        else item.quantity = available - quantity;
+    }
+    return removed;
+}
+
+function itemMatchesRequirement(item, requirement) {
+    const matches = item?.id === requirement.itemId || item?.templateId === requirement.itemId;
+    return matches && hasRequiredProvenance(item, requirement.provenanceSourceId);
+}
+
+function itemQuantity(item) {
+    return Math.max(1, Number.parseInt(item?.quantity, 10) || 1);
 }
 
 function hasRequiredProvenance(item, sourceId) {
