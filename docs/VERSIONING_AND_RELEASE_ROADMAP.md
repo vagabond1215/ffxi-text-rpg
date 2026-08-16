@@ -16,14 +16,14 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         26
+Data:         27
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
 
 The repository is pre-alpha. **Phase 0.6 is complete.** Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, persistent NPC-backed companions, and an executable integrated-mechanics exit gate are established on top of the deterministic simulation/content substrate.
 
-Phase 0.7 player-experience work is now in progress, but the product version remains at the last completed milestone until a bounded 0.7 track is actually closed.
+Phase 0.7 player-experience work is now in progress, but the product version remains at the last completed milestone until a bounded 0.7 track is actually closed. Data 27 and the Phase 0.7 subsystem registrations describe the current in-progress authored/player-experience contract; they do not imply that `0.7.100` is complete.
 
 ## Product version format
 
@@ -62,7 +62,7 @@ Product version is not a persistence schema number. Track these independently:
 | --- | ---: | --- |
 | Account Save | 4 | Current local account/session/character registry contract |
 | Game State | 5 | Current serialized character/world runtime contract |
-| Data | 26 | Canonical authored-data contract |
+| Data | 27 | Canonical authored-data contract |
 | Benchmark | 1 | Benchmark protocol/comparability |
 
 ### When to bump Account Save
@@ -85,9 +85,10 @@ Bump when canonical authored-data contracts or catalogs gain a meaningful versio
 - Data 23 — equipment/field-tool/shop breadth contract;
 - Data 24 — canonical production/process/output contract;
 - Data 25 — regional ecology/resource breadth and registry contract;
-- Data 26 — persistent companion definition, recruitment/tactics, and relationship-dimension contract.
+- Data 26 — persistent companion definition, recruitment/tactics, and relationship-dimension contract;
+- Data 27 — Phase 0.7 player-experience authored content and actionable opportunity/regional-loop contract.
 
-`0.6.900` did **not** advance Data because it stabilized and validated existing Data 26 authorities rather than adding a new authored-data schema.
+`0.6.900` did **not** advance Data because it stabilized and validated existing Data 26 authorities rather than adding a new authored-data schema. Phase 0.7 subsequently advanced Data to 27 without advancing Product because the player-experience content/opportunity contract changed materially while the full `0.7.100` milestone remains open.
 
 ### When to bump Benchmark
 
@@ -200,6 +201,14 @@ No persistence bump was justified for that completed historical track because it
 
 Authoritative runtime checkpoint `58fed55122d8058152c70c8e7b3b2565d2cbeaf9` passed 453/453 tests, the Benchmark 1 workload, browser build/status reporting, and GitHub Pages deploy.
 
+### Phase 0.7 in-progress version decision
+
+The first player-experience slices retain Product `0.6.900.1` and Package `0.6.900` while advancing Data to `27`. Account Save `4`, Game State `5`, and Benchmark `1` remain unchanged.
+
+The in-progress slice registers `activityAdvance 0.1.0`, `gameViewModels 0.5.0`, `playerExperience 0.2.0`, `playerOpportunities 0.1.0`, and `domUi 0.3.0`. These versions describe the landed PX-1/PX-2 footing/opportunity work and the first bounded PX-3 Brasshaven regional-loop contract. They are intentionally not a Product `0.7.100` declaration.
+
+Authoritative runtime checkpoint `39d9912011691477d6443fa57da1bc3594b1b6f2` passed 464/464 tests, the Benchmark 1 workload at Data 27, and GitHub Pages deployment.
+
 ## Phase 0.7 — Multi-region playable alpha — in progress
 
 Phase 0.7 begins from the closed Phase 0.6 authority contracts; it is not permission to replace them with parallel quest/economy/dialogue clocks or state models.
@@ -222,7 +231,7 @@ Phase 0.7 exits only when a normal player can sustain repeated multi-session pla
 
 Each major playable region should have both economic/livelihood reasons and social/adventure reasons to visit. Ordinary campaign actions must be reachable through the semantic browser UI. Current-version saves, validators, provenance, time/interrupt behavior, and exactly-once resource ownership must remain green as content scales.
 
-The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication. The player-experience upgrade path has begun with a first-session orientation/footing slice, but `0.7.100` is not complete yet.
+The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication. PX-1 arrival/footing and PX-2 actionable opportunities are implemented, and PX-3 now proves one complete Brasshaven -> Redstone Reach -> Brasshaven material/production loop. The full `0.7.100` track remains open until persistent social/relationship continuity, commitment/quest consequences, danger/combat/recovery composition, and several-day ordinary-player continuity are coherent in the same campaign slice.
 
 ## Planned later phases
 
