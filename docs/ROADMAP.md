@@ -20,7 +20,7 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         26
+Data:         27
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
@@ -272,11 +272,19 @@ A Phase 0.7 alpha slice is credible only when a normal player can sustain repeat
 
 ## 0.7.100 — Playable campaign slice — in progress
 
-The first Phase 0.7 unit should assemble one end-to-end campaign slice from existing systems before broad content multiplication. Use a connected subset of Thornwall/Elderwood/Waymeet or another justified corridor and prove ordinary player flow across settlement services, a contract/quest, relationship/NPC continuity, regional livelihood/economy, travel, danger/combat, recovery/production, and return/resolution through semantic UI.
+The first Phase 0.7 unit assembles one end-to-end campaign slice from existing systems before broad content multiplication. The current proving corridor is Brasshaven -> Redstone Reach -> Brasshaven, with Starfen already visible as the next material horizon through the Copper Trail Clasp recipe.
 
-The first player-experience slice is implemented: all three existing origins now provide an origin-specific arrival, a clear first local contact, a semantic first action, a setting-friendly explanation of persistent progress paths, and a believable default morning start. This is the **PX-1 footing layer**, not completion of the full `0.7.100` campaign slice.
+Implemented player-experience layers now include:
 
-Do **not** start by mass-generating hundreds of records or by introducing a replacement quest/economy/dialogue framework. Add only the reusable primitives that the playable slice proves are actually missing.
+- **PX-1 — arrival and footing:** all three origins provide an origin-specific arrival, clear first local contact, semantic first action, persistent-progress explanation, and believable morning start;
+- **PX-2 — first-day opportunities:** a dedicated Journal/opportunity model surfaces real livelihood, training/danger, exploration/travel, and service/preparation paths plus real starter-tool claim/equip actions;
+- **PX-3 — first regional loop:** Brasshaven can guide the player through preparation, Redstone travel, timed copper gathering, semantic activity completion, return, forge/workstation context, copper-ingot processing, persistent work mastery, and a larger Copper Trail Clasp ambition.
+
+The current PX-3 loop is proven end to end, but `0.7.100` remains open. The campaign-slice exit contract still needs persistent NPC/community follow-up and relationship/reputation consequences, a real commitment/contract consequence rather than guidance-only state, several-day continuity, and danger/combat/recovery composition in the same ordinary player flow.
+
+The next bounded unit is **PX-4 — first several-day continuity proof**, anchored to the completed Brasshaven loop. Add only the smallest reusable canonical social/follow-up state demonstrated by that slice, carry it across a day boundary and save/load, surface it through semantic Journal/day-review presentation, and make it compete with another valid use of character time.
+
+Do **not** mass-generate hundreds of records, introduce a replacement quest/economy/dialogue framework, or declare `0.7.100` complete after the first continuity primitive. Generalize only when additional real slices prove the reusable shape.
 
 ---
 
