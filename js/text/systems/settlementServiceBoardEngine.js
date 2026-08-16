@@ -1,4 +1,4 @@
-import { getProductionDefinition, getProductionInputItem, listProductionDefinitions } from '../data/productionCatalog.js';
+import { getProductionInputItem, listProductionDefinitions } from '../data/productionCatalog.js';
 import { getProductionItem } from '../data/productionItems.js';
 import { getPoisForPlace } from '../data/pointsOfInterest.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
@@ -8,6 +8,7 @@ import { isSettlementLocality } from './localityEngine.js';
 import { checkProductionRequirements } from './productionEngine.js';
 import { findCurrentShopPoi } from './shopEngine.js';
 import { collectAvailableWorkstationTags, getWorkstationTagsForPoi } from './workstationEngine.js';
+import { workDurationForProficiency } from './workProficiencyEngine.js';
 
 export const SETTLEMENT_SERVICE_BOARD_VERSION = 1;
 
@@ -90,6 +91,7 @@ function createProductionEntry(state, definition, workshopPois, currentStationTa
     const activeRecord = (state.work?.records ?? [])
         .find((record) => record.data?.processId === definition.id && ['active', 'awaitingStorage'].includes(record.status));
     const check = checkProductionRequirements(state, definition);
+    const proficiency = Math.max(0, Number(check.proficiency) || 0);
     const missingStationTags = definition.requiredStationTags.filter((tag) => !currentStationTags.has(tag));
     const target = missingStationTags.length
         ? workshopPois.find(({ stationTags }) => missingStationTags.every((tag) => stationTags.includes(tag)))?.poi ?? null
@@ -163,9 +165,9 @@ function createProductionEntry(state, definition, workshopPois, currentStationTa
         kind: definition.kind,
         status,
         available: check.ok,
-        durationSeconds: Math.max(1, Number(check.durationSeconds) || Number(definition.durationSeconds) || 1),
+        durationSeconds: workDurationForProficiency(definition.durationSeconds, proficiency),
         proficiencyId: definition.proficiencyId,
-        proficiency: check.proficiency ?? 0,
+        proficiency,
         proficiencyGain: definition.proficiencyGain,
         requiredStationTags: Object.freeze([...definition.requiredStationTags]),
         inputs: Object.freeze(inputs),
