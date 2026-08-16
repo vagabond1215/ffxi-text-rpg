@@ -25,6 +25,8 @@ export const DATABASES = Object.freeze({
     legacyCandidates: database('legacyCandidates', 'Review-only normalization records for historical/reference material; candidates are never canonical by parsing alone.', 'normalization-boundary', '0.1.0'),
     travel: database('travel', 'Canonical world-time journeys, route traversal, scheduled departures/arrivals, cancellation, and interrupt hooks.', 'implemented', '0.5.0'),
     projects: database('projects', 'Persistent project state with stable IDs, material contributions, labor, canonical time, and completion events.', 'implemented', '0.1.0'),
+    commitments: database('commitments', 'Persistent accepted/resolved obligations tied to named NPC givers, provenance-aware requirements, exactly-once rewards, and later follow-up.', 'implemented', '0.1.0'),
+    relationships: database('relationships', 'Persistent NPC-specific familiarity, respect, trust, and obligation dimensions changed by concrete social/economic history.', 'implemented', '0.1.0'),
     resourceProvenance: database('resourceProvenance', 'Physical, economic, social, crafting, and explicitly exceptional magical acquisition metadata plus item sinks.', 'implemented', '0.1.0'),
     resourceOpportunities: database('resourceOpportunities', 'Persistent defeated-creature/body, carried-goods, and salvage opportunities with timed recovery actions.', 'implemented', '0.1.0'),
     capabilities: database('capabilities', 'Character-owned learned spells, techniques, and practical capabilities with separate learning paths and use requirements.', 'seeded', '0.2.0'),
@@ -35,8 +37,7 @@ export const DATABASES = Object.freeze({
     expCalculation: database('expCalculation', 'Historical EXP calculation research notes and future pure-engine target.', 'documented-reference', '0.3.2'),
     legacyRecoveredData: database('legacyRecoveredData', 'Unverified useful data recovered from stale branches before pruning.', 'seeded-reference', '0.3.1'),
 
-    quests: database('quests', 'Quest and commission definitions, objectives, prerequisites, rewards, repeatability, flags.', 'seeded-pack-fixture', '0.1.0'),
-    relationships: database('relationships', 'Relationship records tying persistent NPCs to trust/respect/familiarity and quest hooks.', 'seeded-pack-fixture', '0.1.0'),
+    quests: database('quests', 'Broader quest-definition pack fixtures beyond the first canonical commitment runtime.', 'seeded-pack-fixture', '0.1.0'),
     achievements: database('achievements', 'Milestones, account/local accomplishments, titles, rewards.', 'planned', '0.0.0'),
     items: database('items', 'Equipment, consumables, materials, tools, provenance metadata, sinks, and currencies-as-items where needed.', 'seeded', '0.7.0'),
     keyItems: database('keyItems', 'Persistent unlocks, permissions, quest objects, maps, licenses, mounts, and companion access.', 'planned', '0.0.0'),
