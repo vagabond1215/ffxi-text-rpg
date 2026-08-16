@@ -22,7 +22,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 29);
+    assert.equal(VERSION.data, 30);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
@@ -86,7 +86,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Product: 0\.6\.900\.1/);
     assert.match(describeVersion(), /Package: 0\.6\.900/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 29/);
+    assert.match(describeVersion(), /Data: 30/);
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
