@@ -8,6 +8,7 @@ export const NATIONS = Object.freeze({
         startingPlaceId: 'thornwall-southgate',
         startingMapIds: ['map-thornwall', 'map-elderwood'],
         startingKeyItems: ['map-thornwall', 'map-elderwood'],
+        startingEquipmentIds: ['field-knife'],
         description: 'An old forest crown city shaped by timber, hunting, stone keeps, guild craft, court politics, and oath-bound service.',
     }),
     brasshaven: nation({
@@ -17,6 +18,7 @@ export const NATIONS = Object.freeze({
         startingPlaceId: 'brasshaven-market-ring',
         startingMapIds: ['map-brasshaven', 'map-redstone-reach'],
         startingKeyItems: ['map-brasshaven', 'map-redstone-reach'],
+        startingEquipmentIds: ['prospector-pick'],
         description: 'A mercantile-industrial republic built around mines, foundries, engineering, labor, and civic competition.',
     }),
     mistmere: nation({
@@ -26,6 +28,7 @@ export const NATIONS = Object.freeze({
         startingPlaceId: 'mistmere-canal-ward',
         startingMapIds: ['map-mistmere', 'map-starfen'],
         startingKeyItems: ['map-mistmere', 'map-starfen'],
+        startingEquipmentIds: ['reed-sickle'],
         description: 'A wetland city of colleges, gardens, observatories, canals, herbalists, practical magic, and civic scholarship.',
     }),
 });
@@ -52,7 +55,11 @@ export function describeNations() {
 }
 
 function nation(definition) {
-    return Object.freeze(definition);
+    return Object.freeze({
+        startingEquipmentIds: [],
+        ...definition,
+        startingEquipmentIds: Object.freeze([...(definition.startingEquipmentIds ?? [])]),
+    });
 }
 
 function normalizeNationId(value) {
