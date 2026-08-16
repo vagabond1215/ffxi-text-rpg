@@ -2,6 +2,7 @@ import { DIRECTION_ARROWS, DIRECTION_ORDER, describeCoordinate } from '../data/c
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { listAbilityAvailability } from '../systems/abilityEngine.js';
+import { getLatestDaySummary } from '../systems/dayCycleEngine.js';
 import {
     getNavigationMode,
     listLocalityDestinations,
@@ -9,6 +10,7 @@ import {
 } from '../systems/localityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
 import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
+import { decoratePlayerOpportunityModel } from '../systems/playerContinuityEngine.js';
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
 import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
@@ -41,7 +43,7 @@ export function createGameViewModel(state, uiState = {}) {
     const spellbook = createSpellbookModel(state);
     const party = createPartyModel(state);
     const guidance = createPlayerExperienceModel(state);
-    const opportunities = createPlayerOpportunityModel(state);
+    const opportunities = decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state));
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -78,6 +80,7 @@ export function createGameViewModel(state, uiState = {}) {
         activity,
         guidance,
         opportunities,
+        dayReview: getLatestDaySummary(state),
     });
 }
 
@@ -115,7 +118,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
         const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
-        const opportunityModel = opportunities ?? createPlayerOpportunityModel(state);
+        const opportunityModel = opportunities ?? decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state));
         const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
         const recommendedAction = recommendedOpportunity?.action
             ? Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category })
@@ -152,7 +155,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
     const points = nearby ?? getContextualPois(state).map(toNearbyRecord);
     const actions = [...recruitActions];
-    const opportunityModel = opportunities ?? createPlayerOpportunityModel(state);
+    const opportunityModel = opportunities ?? decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state));
     const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
     if (recommendedOpportunity?.action) actions.push(Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category }));
     for (const poi of points) {
@@ -335,7 +338,7 @@ function abilityAction(entry) {
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
