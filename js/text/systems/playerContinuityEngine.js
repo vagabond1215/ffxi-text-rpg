@@ -1,29 +1,34 @@
-import { getCommitmentDefinition } from '../data/commitments.js';
+import { getCanonicalGatheringSource } from '../data/ecologyRegistry.js';
+import { getPointOfInterest } from '../data/pointsOfInterest.js';
+import { getPlace } from '../data/places.js';
+import { getProductionItem } from '../data/productionItems.js';
+import { getCanonicalResourceItem } from '../data/resourceItemRegistry.js';
+import { listCommitmentDefinitions } from '../data/commitments.js';
 import {
     checkCommitmentRequirements,
     getCommitmentRecord,
     isCommitmentFollowUpAvailable,
 } from './commitmentEngine.js';
 import { getLatestDaySummary } from './dayCycleEngine.js';
+import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { decorateCampaignReadabilityModel } from './playerCampaignReadabilityEngine.js';
 import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.js';
-import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
 
-export const PLAYER_CONTINUITY_VERSION = 4;
+export const PLAYER_CONTINUITY_VERSION = 5;
 
 export function decoratePlayerOpportunityModel(state, baseModel) {
     if (!baseModel) return baseModel;
     const dangerBase = decoratePlayerDangerRecoveryModel(state, baseModel);
-    const continuity = createCommitmentOpportunity(state);
+    const continuityEntries = createCommitmentOpportunities(state);
     const dayReview = createDayReviewOpportunity(state);
 
     let decorated = dangerBase;
-    if (continuity || dayReview) {
+    if (continuityEntries.length || dayReview) {
         const entries = [...dangerBase.entries];
-        if (continuity) {
+        if (continuityEntries.length) {
             const preparationIndex = entries.findIndex((entry) => entry.category === 'preparation');
-            entries.splice(preparationIndex >= 0 ? preparationIndex + 1 : 0, 0, continuity);
+            entries.splice(preparationIndex >= 0 ? preparationIndex + 1 : 0, 0, ...continuityEntries);
         }
         if (dayReview) entries.push(dayReview);
 
@@ -38,7 +43,7 @@ export function decoratePlayerOpportunityModel(state, baseModel) {
 
         decorated = Object.freeze({
             ...dangerBase,
-            version: Math.max(Number(dangerBase.version) || 0, 7),
+            version: Math.max(Number(dangerBase.version) || 0, 8),
             recommendedOpportunityId: recommended?.id ?? null,
             entries: Object.freeze(entries),
         });
@@ -47,14 +52,26 @@ export function decoratePlayerOpportunityModel(state, baseModel) {
     return decorateCampaignReadabilityModel(state, decorated);
 }
 
-export function createCommitmentOpportunity(state) {
-    const origin = getOriginExperienceForState(state);
-    const commitmentId = origin.regionalLoop?.commitmentId;
-    if (!commitmentId) return null;
-    const definition = getCommitmentDefinition(commitmentId);
-    if (!definition || !hasDiscoveredPoi(state, definition.offerPoiId)) return null;
+export function createCommitmentOpportunities(state) {
+    return Object.freeze(listCommitmentDefinitions()
+        .filter((definition) => getCommitmentRecord(state, definition.id) || hasDiscoveredPoi(state, definition.offerPoiId))
+        .map((definition) => createCommitmentOpportunity(state, definition))
+        .filter(Boolean));
+}
 
-    const record = getCommitmentRecord(state, commitmentId);
+export function createCommitmentOpportunity(state, definitionOrId = null) {
+    const definition = typeof definitionOrId === 'object'
+        ? definitionOrId
+        : listCommitmentDefinitions().find((entry) => entry.id === definitionOrId)
+            ?? listCommitmentDefinitions().find((entry) => getCommitmentRecord(state, entry.id) || hasDiscoveredPoi(state, entry.offerPoiId))
+            ?? null;
+    if (!definition) return null;
+    const record = getCommitmentRecord(state, definition.id);
+    const giver = getPointOfInterest(definition.offerPoiId);
+    const offerPlace = getPlace(definition.offerPlaceId);
+    const giverName = giver?.name ?? definition.giverNpcId;
+    const offerPlaceName = offerPlace?.name ?? definition.offerPlaceId;
+
     if (!record) {
         const inPlace = state.currentPlaceId === definition.offerPlaceId;
         return opportunity({
@@ -62,35 +79,17 @@ export function createCommitmentOpportunity(state) {
             category: 'commitment',
             title: definition.name,
             summary: definition.description,
-            reason: 'A real commitment gives the first regional livelihood loop a social and economic reason without turning the Journal into authority.',
-            progress: 'Finish the requested work and Varric will remember whether you followed through.',
+            reason: 'A known person has a concrete need that can connect ordinary world activity to persistent social consequence.',
+            progress: `Finish the requested work and ${giverName} will remember whether you followed through.`,
             status: inPlace ? 'ready' : 'available',
-            requirements: [requirement('Speak with Marshal Varric Stone in Brasshaven Market Ring', inPlace)],
-            action: inPlace ? action('accept-copper-return', `Accept · ${definition.name}`, 'commitment.accept', { commitmentId }) : null,
+            requirements: [requirement(`Speak with ${giverName} in ${offerPlaceName}`, inPlace)],
+            action: inPlace ? action(`accept-${definition.id}`, `Accept · ${definition.name}`, 'commitment.accept', { commitmentId: definition.id }) : null,
+            regionLabel: offerPlace?.region ?? null,
         });
     }
 
     if (record.status === 'active') {
-        const check = checkCommitmentRequirements(state, commitmentId);
-        const deliverable = hasQualifyingItem(state, definition.requiredItems[0]);
-        return opportunity({
-            id: `commitment-${definition.id}`,
-            category: 'commitment',
-            title: definition.name,
-            summary: deliverable
-                ? 'You have the Redstone ingot Varric asked you to make. Bring it back to him at the Market Ring.'
-                : definition.objective,
-            reason: 'The commitment remains persistent while the livelihood loop supplies its real material requirement.',
-            progress: 'Completing the delivery earns Varric’s payment and changes how he regards your work.',
-            status: check.ok ? 'ready' : 'active',
-            requirements: [
-                requirement('Commitment accepted', true),
-                requirement('Carry one Redstone Copper Ingot you smelted from Redstone ore', deliverable),
-                requirement('Return to Brasshaven Market Ring', state.currentPlaceId === definition.offerPlaceId),
-            ],
-            blockers: check.ok ? [] : check.blockers,
-            action: check.ok ? action('resolve-copper-return', 'Deliver · Redstone Copper Ingot', 'commitment.resolve', { commitmentId }) : null,
-        });
+        return createActiveCommitmentOpportunity(state, definition, { giverName, offerPlaceName, offerPlace });
     }
 
     const followUpSeen = record.followUpSeenAtWorldSeconds !== null;
@@ -99,35 +98,103 @@ export function createCommitmentOpportunity(state) {
             id: `commitment-${definition.id}`,
             category: 'commitment',
             title: `${definition.name} · remembered`,
-            summary: 'Varric remembers that you completed the copper run. Your work with him now has history rather than ending at the payment.',
+            summary: `${giverName} remembers that you finished the work. The relationship now carries history beyond the original payment.`,
             reason: 'Persistent social continuity turns completed work into future context instead of resetting the NPC after reward collection.',
-            progress: 'His later advice points toward Starfen reed fiber and the Copper Trail Clasp.',
+            progress: definition.followUpText,
             status: 'complete',
-            requirements: [requirement('Finish the copper delivery and speak with Varric again on a later day', true)],
+            requirements: [requirement(`Finish the work and speak with ${giverName} again on a later day`, true)],
             action: null,
+            regionLabel: offerPlace?.region ?? null,
         });
     }
 
-    const followUpReady = isCommitmentFollowUpAvailable(state, commitmentId);
+    const followUpReady = isCommitmentFollowUpAvailable(state, definition.id);
     const inPlace = state.currentPlaceId === definition.offerPlaceId;
     return opportunity({
         id: `commitment-${definition.id}`,
         category: 'commitment',
-        title: followUpReady ? 'Varric remembers the copper' : `${definition.name} · credited`,
+        title: followUpReady ? `${giverName} remembers the work` : `${definition.name} · credited`,
         summary: followUpReady
-            ? 'A new day has begun since the delivery. Varric may have something different to say now that you have proven you can finish the route.'
-            : 'The ingot has been delivered and credited. Give the work some time before expecting another conversation to grow from it.',
+            ? `A new day has begun since the work was credited. ${giverName} may have something different to say now.`
+            : `The work has been delivered and credited. Give it some time before expecting another conversation to grow from it.`,
         reason: 'Time and relationships persist after resolution; continuity is not an immediate reward-dialogue reset.',
-        progress: 'The next conversation can turn proven Brasshaven work into a reason to look farther east.',
+        progress: followUpReady ? definition.followUpText : `Return to ${giverName} on a later day.`,
         status: followUpReady && inPlace ? 'ready' : 'available',
         requirements: [
-            requirement('Copper delivery complete', true),
+            requirement(`${definition.name} complete`, true),
             requirement('A new day has begun', followUpReady),
-            requirement('Return to Brasshaven Market Ring', inPlace),
+            requirement(`Return to ${offerPlaceName}`, inPlace),
         ],
         action: followUpReady && inPlace
-            ? action('follow-up-copper-return', 'Speak again · Marshal Varric Stone', 'commitment.followUp', { commitmentId })
+            ? action(`follow-up-${definition.id}`, `Speak again · ${giverName}`, 'commitment.followUp', { commitmentId: definition.id })
             : null,
+        regionLabel: offerPlace?.region ?? null,
+    });
+}
+
+function createActiveCommitmentOpportunity(state, definition, { giverName, offerPlaceName, offerPlace }) {
+    const check = checkCommitmentRequirements(state, definition.id);
+    const itemRequirements = definition.requiredItems.map((itemRequirement) => {
+        const item = getCommitmentItem(itemRequirement.itemId);
+        const carried = qualifyingQuantity(state, itemRequirement);
+        return requirement(`Carry ${itemRequirement.quantity} ${item?.name ?? itemRequirement.itemId}`, carried >= itemRequirement.quantity);
+    });
+    const allItemsReady = itemRequirements.every((entry) => entry.met);
+    const inOfferPlace = state.currentPlaceId === definition.offerPlaceId;
+    const fieldSource = definition.fieldSourceId ? getCanonicalGatheringSource(definition.fieldSourceId) : null;
+    const sourceRequirement = fieldSource
+        ? definition.requiredItems.find((entry) => entry.itemId === fieldSource.outputItemId)
+        : null;
+    const sourceQuantity = sourceRequirement ? qualifyingQuantity(state, sourceRequirement) : 0;
+    const needed = sourceRequirement ? Math.max(0, sourceRequirement.quantity - sourceQuantity) : 0;
+    const atFieldSource = Boolean(fieldSource && state.currentPlaceId === fieldSource.placeId);
+    const gatherCheck = atFieldSource && needed > 0
+        ? checkGatheringWorkRequirements(state, fieldSource.id, { quantity: needed })
+        : null;
+
+    let status = check.ok ? 'ready' : 'active';
+    let nextAction = check.ok
+        ? action(`resolve-${definition.id}`, `Deliver · ${definition.name}`, 'commitment.resolve', { commitmentId: definition.id })
+        : null;
+    let blockers = check.ok ? [] : check.blockers;
+    let summary = allItemsReady
+        ? `You have what ${giverName} asked for. Bring it back to ${offerPlaceName}.`
+        : definition.objective;
+
+    if (!check.ok && gatherCheck?.ok) {
+        status = 'ready';
+        nextAction = action(`gather-${definition.id}`, `${capitalize(fieldSource.action)} · ${fieldSource.name}`, 'gathering.start', {
+            sourceId: fieldSource.id,
+            quantity: needed,
+        });
+        blockers = [];
+        summary = `${fieldSource.name} is here in ${getPlace(fieldSource.placeId)?.name ?? 'the region'}. Gather ${needed} more ${getCommitmentItem(sourceRequirement.itemId)?.name ?? 'required material'} for ${giverName}.`;
+    } else if (!check.ok && gatherCheck && !gatherCheck.ok) {
+        status = 'blocked';
+        blockers = gatherCheck.blockers;
+        summary = `${fieldSource.name} is here, but your current preparation is not enough to gather what ${giverName} needs.`;
+    }
+
+    return opportunity({
+        id: `commitment-${definition.id}`,
+        category: 'commitment',
+        title: definition.name,
+        summary,
+        reason: 'The commitment stays persistent while gathering, production, travel, and inventory remain owned by their existing gameplay systems.',
+        progress: allItemsReady
+            ? `Return to ${giverName} in ${offerPlaceName}.`
+            : fieldSource
+                ? `Gather the requested material in ${getPlace(fieldSource.placeId)?.name ?? 'the field'}, then return to ${giverName}.`
+                : definition.objective,
+        status,
+        requirements: [
+            requirement('Commitment accepted', true),
+            ...itemRequirements,
+            requirement(`Return to ${offerPlaceName}`, inOfferPlace),
+        ],
+        blockers,
+        action: nextAction,
+        regionLabel: atFieldSource ? getPlace(fieldSource.placeId)?.region ?? offerPlace?.region ?? null : offerPlace?.region ?? null,
     });
 }
 
@@ -175,14 +242,19 @@ export function createDayReviewOpportunity(state) {
     });
 }
 
-function hasQualifyingItem(state, requirement) {
-    if (!requirement) return false;
-    return (state.player?.inventoryState?.containers?.inventory?.items ?? []).some((item) => {
+function qualifyingQuantity(state, requirement) {
+    if (!requirement) return 0;
+    return (state.player?.inventoryState?.containers?.inventory?.items ?? []).reduce((total, item) => {
         const matches = item.id === requirement.itemId || item.templateId === requirement.itemId;
-        if (!matches) return false;
-        if (!requirement.provenanceSourceId) return true;
-        return Array.isArray(item.provenance) && item.provenance.some((entry) => entry.sourceId === requirement.provenanceSourceId);
-    });
+        if (!matches) return total;
+        const provenanceMatches = !requirement.provenanceSourceId
+            || (Array.isArray(item.provenance) && item.provenance.some((entry) => entry.sourceId === requirement.provenanceSourceId));
+        return provenanceMatches ? total + Math.max(1, Number(item.quantity) || 1) : total;
+    }, 0);
+}
+
+function getCommitmentItem(itemId) {
+    return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId);
 }
 
 function opportunity(definition) {
@@ -206,4 +278,9 @@ function joinNaturally(items) {
     if (items.length <= 1) return items[0] ?? '';
     if (items.length === 2) return `${items[0]} and ${items[1]}`;
     return `${items.slice(0, -1).join(', ')}, and ${items.at(-1)}`;
+}
+
+function capitalize(value) {
+    const text = String(value ?? '').trim();
+    return text ? `${text.charAt(0).toUpperCase()}${text.slice(1)}` : 'Gather';
 }
