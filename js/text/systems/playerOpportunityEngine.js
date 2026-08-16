@@ -3,15 +3,17 @@ import { getEquipmentCatalogEntry } from '../data/equipmentCatalog.js';
 import { getNation } from '../data/nations.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
+import { getProductionDefinition } from '../data/productionCatalog.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { findItemInContainer } from './inventoryEngine.js';
 import { listLocalityDestinations } from './localityEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
 import { createPlayerExperienceModel, getOriginExperienceForState } from './playerExperienceEngine.js';
+import { checkProductionRequirements } from './productionEngine.js';
 import { findTravelRoute } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 
-export const PLAYER_OPPORTUNITY_VERSION = 2;
+export const PLAYER_OPPORTUNITY_VERSION = 3;
 export const OPPORTUNITY_STATUSES = Object.freeze({
     READY: 'ready',
     BLOCKED: 'blocked',
@@ -58,8 +60,8 @@ export function createPlayerOpportunityModel(state) {
     const serviceOpportunity = createServiceOpportunity({ state, origin, service, serviceDiscovered, inStart });
     const entries = [preparation, livelihood, training, exploration, serviceOpportunity].filter(Boolean);
     const recommended = entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.READY)
-        ?? entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.AVAILABLE)
         ?? entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.ACTIVE)
+        ?? entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.AVAILABLE)
         ?? null;
     return freezeModel(origin, entries, recommended?.id ?? null);
 }
@@ -117,14 +119,20 @@ function createPreparationOpportunity({ state, origin, starterItem, starterItemI
 
 function createLivelihoodOpportunity({ state, origin, destination, source, starterItem, starterEquipped, inDestination }) {
     if (!destination || !source) return null;
+    if (origin.regionalLoop) {
+        return createRegionalLoopLivelihood({ state, origin, destination, source, starterItem, starterEquipped, inDestination });
+    }
+
     const activeWork = listWorkRecords(state, { kind: 'gathering', status: WORK_STATUSES.ACTIVE })
         .find((record) => record.data?.sourceId === source.id);
     const check = inDestination ? checkGatheringWorkRequirements(state, source.id) : null;
     let status = OPPORTUNITY_STATUSES.BLOCKED;
     let nextAction = null;
     let regionalRequirements = [];
-    if (activeWork) status = OPPORTUNITY_STATUSES.ACTIVE;
-    else if (!starterEquipped) status = OPPORTUNITY_STATUSES.BLOCKED;
+    if (activeWork) {
+        status = OPPORTUNITY_STATUSES.ACTIVE;
+        nextAction = action('finish-first-gathering', `Finish · ${activeWork.label}`, 'activity.advanceToCompletion');
+    } else if (!starterEquipped) status = OPPORTUNITY_STATUSES.BLOCKED;
     else if (!inDestination) {
         const step = createRegionalOutboundStep(state, origin, destination, 'livelihood');
         status = step.status;
@@ -152,6 +160,176 @@ function createLivelihoodOpportunity({ state, origin, destination, source, start
         ],
         blockers,
         action: nextAction,
+    });
+}
+
+function createRegionalLoopLivelihood({ state, origin, destination, source, starterItem, starterEquipped, inDestination }) {
+    const loop = origin.regionalLoop;
+    const production = getProductionDefinition(loop.productionId);
+    const workstation = getPointOfInterest(loop.workstationPoiId);
+    const returnPlace = getPlace(loop.returnPlaceId);
+    const resourceQuantity = inventoryQuantity(state, loop.targetResourceItemId);
+    const outputQuantity = inventoryQuantity(state, loop.outputItemId);
+    const activeWork = listWorkRecords(state, { status: WORK_STATUSES.ACTIVE })
+        .find((record) => record.data?.sourceId === source.id || record.data?.processId === loop.productionId);
+
+    if (outputQuantity > 0) {
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: 'Your first Redstone copper is smelted',
+            summary: `You returned regional ore to ${returnPlace?.name ?? origin.nationName} and converted it into a provenance-bearing copper ingot through real timed production.`,
+            reason: 'The loop matters because field work now feeds settlement production instead of ending at collection.',
+            progress: loop.largerAmbition,
+            status: OPPORTUNITY_STATUSES.COMPLETE,
+            requirements: [
+                requirement(`Gather ${loop.targetResourceQuantity} Redstone copper ore`, true),
+                requirement(`Return to ${returnPlace?.name ?? loop.returnPlaceId}`, true),
+                requirement(`Smelt copper at ${workstation?.name ?? 'a forge'}`, true),
+            ],
+            action: null,
+        });
+    }
+
+    if (activeWork) {
+        const isProduction = activeWork.data?.processId === loop.productionId;
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: isProduction ? `Finish ${production?.name ?? 'copper processing'}` : `Finish gathering at ${source.name}`,
+            summary: isProduction
+                ? 'The ore has already been consumed by the production authority; finishing the timed work will materialize the ingot exactly once.'
+                : `The gathering task is active in ${destination.name}; completion will recover real material and increase ${source.proficiencyId} mastery.`,
+            reason: 'Hands-on work owns fictional time. Completing it resolves the existing task rather than granting an instant tutorial reward.',
+            progress: isProduction ? loop.largerAmbition : `${source.proficiencyId} proficiency and enough physical ore to justify a return trip.`,
+            status: OPPORTUNITY_STATUSES.ACTIVE,
+            requirements: [requirement(`Finish ${activeWork.label}`, false)],
+            action: action(`finish-${activeWork.id}`, `Finish · ${activeWork.label}`, 'activity.advanceToCompletion'),
+        });
+    }
+
+    if (!starterEquipped && resourceQuantity < loop.targetResourceQuantity) {
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: `Prepare for ${source.name}`,
+            summary: `${source.name} is a real Redstone source, but the field tool must be equipped before mining can begin.`,
+            reason: 'Preparation constrains practical work; the Journal does not bypass equipment requirements.',
+            progress: `${source.proficiencyId} proficiency and regional copper once the tool is ready.`,
+            status: OPPORTUNITY_STATUSES.BLOCKED,
+            requirements: [requirement(`Equip ${starterItem?.name ?? 'the required field tool'}`, false)],
+            action: null,
+        });
+    }
+
+    if (resourceQuantity < loop.targetResourceQuantity) {
+        const needed = loop.targetResourceQuantity - resourceQuantity;
+        if (!inDestination) {
+            const step = createRegionalOutboundStep(state, origin, destination, 'livelihood');
+            return freezeOpportunity({
+                id: `livelihood-${origin.nationId}`,
+                category: 'livelihood',
+                title: loop.title,
+                summary: `Travel to ${destination.name} and recover ${needed} more copper ore from ${source.name}.`,
+                reason: 'The first regional loop deliberately ties a settlement need to a real regional source and a real return route.',
+                progress: `${source.proficiencyId} mastery, physical ore provenance, then settlement metalworking.`,
+                status: step.status,
+                requirements: [
+                    requirement(`Equip ${starterItem?.name ?? 'the required field tool'}`, starterEquipped),
+                    ...step.requirements,
+                    requirement(`Gather ${loop.targetResourceQuantity} copper ore`, resourceQuantity >= loop.targetResourceQuantity),
+                ],
+                action: step.action,
+            });
+        }
+        const check = checkGatheringWorkRequirements(state, source.id, { quantity: needed });
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: `Mine ${needed} copper ore at ${source.name}`,
+            summary: `Recover the ore through canonical timed gathering in ${destination.name}; source capacity, tool requirements, proficiency, and provenance all remain authoritative.`,
+            reason: 'Bringing enough ore home creates a reason for the return trip and a concrete processing step.',
+            progress: `${source.proficiencyId} mastery now; metalworking mastery after the ore reaches a forge.`,
+            status: check.ok ? OPPORTUNITY_STATUSES.READY : OPPORTUNITY_STATUSES.BLOCKED,
+            requirements: [
+                requirement(`Equip ${starterItem?.name ?? 'the required field tool'}`, starterEquipped),
+                requirement(`Reach ${destination.name}`, true),
+                requirement(`${needed} recoverable source unit${needed === 1 ? '' : 's'}`, check.ok),
+            ],
+            blockers: check.ok ? [] : check.blockers,
+            action: check.ok ? action('gather-loop-copper', `Mine ${needed} copper ore`, 'gathering.start', { sourceId: source.id, quantity: needed }) : null,
+        });
+    }
+
+    if (state.currentPlaceId !== loop.returnPlaceId) {
+        const step = createTransitionStep(state, loop.returnPlaceId, {
+            id: 'return-loop-copper',
+            label: `Return to ${returnPlace?.name ?? loop.returnPlaceId}`,
+        });
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: `Bring the copper back to ${returnPlace?.name ?? origin.nationName}`,
+            summary: `You carry ${resourceQuantity} copper ore with physical Redstone provenance. The next useful step is to return it to a settlement forge.`,
+            reason: 'Returning matters because settlements convert field gains into processing, trade, equipment, and larger plans.',
+            progress: `${source.proficiencyId} mastery is already persistent; returning the ore makes metalworking progress possible.`,
+            status: step.status,
+            requirements: [
+                requirement(`Carry ${loop.targetResourceQuantity} copper ore`, true),
+                requirement(`Return to ${returnPlace?.name ?? loop.returnPlaceId}`, false),
+            ],
+            action: step.action,
+        });
+    }
+
+    const productionCheck = checkProductionRequirements(state, production);
+    if (productionCheck.ok) {
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: production?.name ?? 'Smelt Redstone copper',
+            summary: `The ore, forge context, and production definition are all ready. Smelting consumes the ore at start and materializes the ingot only at completion.`,
+            reason: 'Processing converts gathered material into a new capability-bearing economic input while preserving provenance.',
+            progress: loop.largerAmbition,
+            status: OPPORTUNITY_STATUSES.READY,
+            requirements: [
+                requirement(`Carry ${loop.targetResourceQuantity} copper ore`, true),
+                requirement(`Use a forge`, true),
+            ],
+            action: action('start-loop-smelting', `Start · ${production?.name ?? 'Smelt copper'}`, 'production.start', { processId: loop.productionId }),
+        });
+    }
+
+    const stationMissing = productionCheck.blockers.some((blocker) => blocker.startsWith('Requires workstation:'));
+    if (stationMissing && workstation?.placeId === state.currentPlaceId) {
+        return freezeOpportunity({
+            id: `livelihood-${origin.nationId}`,
+            category: 'livelihood',
+            title: `Take the ore to ${workstation.name}`,
+            summary: `${workstation.name} provides the forge context required by ${production?.name ?? 'copper processing'}; locality navigation can focus that real workshop without exposing internal coordinates.`,
+            reason: 'Facilities matter as preparation. Production is available because the character is actually at a suitable workstation, not because the Journal grants one.',
+            progress: loop.largerAmbition,
+            status: OPPORTUNITY_STATUSES.READY,
+            requirements: [
+                requirement(`Carry ${loop.targetResourceQuantity} copper ore`, true),
+                requirement(`Reach a forge`, false),
+            ],
+            blockers: productionCheck.blockers,
+            action: action('visit-loop-forge', `Visit · ${workstation.name}`, 'locality.poi', { poiId: workstation.id, action: 'guild' }),
+        });
+    }
+
+    return freezeOpportunity({
+        id: `livelihood-${origin.nationId}`,
+        category: 'livelihood',
+        title: production?.name ?? 'Process the returned material',
+        summary: 'The regional material is home, but a real production requirement still blocks the next step.',
+        reason: 'The Journal reports canonical blockers instead of silently bypassing them.',
+        progress: loop.largerAmbition,
+        status: OPPORTUNITY_STATUSES.BLOCKED,
+        requirements: [requirement(`Carry ${loop.targetResourceQuantity} copper ore`, true)],
+        blockers: productionCheck.blockers,
+        action: null,
     });
 }
 
@@ -290,6 +468,13 @@ function createTransitionStep(state, targetPlaceId, options = {}) {
         };
     }
     return { status: OPPORTUNITY_STATUSES.AVAILABLE, action: null };
+}
+
+function inventoryQuantity(state, itemId, containerId = 'inventory') {
+    const items = state.player?.inventoryState?.containers?.[containerId]?.items ?? [];
+    return items
+        .filter((item) => item.id === itemId || item.templateId === itemId)
+        .reduce((sum, item) => sum + Math.max(1, Number(item.quantity) || 1), 0);
 }
 
 function freezeModel(origin, entries, recommendedOpportunityId) {
