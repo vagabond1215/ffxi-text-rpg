@@ -1,22 +1,27 @@
 import { getCommitmentDefinition } from '../data/commitments.js';
-import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import {
     checkCommitmentRequirements,
     getCommitmentRecord,
     isCommitmentFollowUpAvailable,
 } from './commitmentEngine.js';
+import { getLatestDaySummary } from './dayCycleEngine.js';
+import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
 
-export const PLAYER_CONTINUITY_VERSION = 1;
+export const PLAYER_CONTINUITY_VERSION = 2;
 
 export function decoratePlayerOpportunityModel(state, baseModel) {
     if (!baseModel) return baseModel;
     const continuity = createCommitmentOpportunity(state);
-    if (!continuity) return baseModel;
+    const dayReview = createDayReviewOpportunity(state);
+    if (!continuity && !dayReview) return baseModel;
 
     const entries = [...baseModel.entries];
-    const preparationIndex = entries.findIndex((entry) => entry.category === 'preparation');
-    entries.splice(preparationIndex >= 0 ? preparationIndex + 1 : 0, 0, continuity);
+    if (continuity) {
+        const preparationIndex = entries.findIndex((entry) => entry.category === 'preparation');
+        entries.splice(preparationIndex >= 0 ? preparationIndex + 1 : 0, 0, continuity);
+    }
+    if (dayReview) entries.push(dayReview);
 
     // Hands-on work with an explicit Finish action should win over unrelated ready leads.
     const activeAction = entries.find((entry) => entry.status === 'active' && entry.action);
@@ -28,7 +33,7 @@ export function decoratePlayerOpportunityModel(state, baseModel) {
 
     return Object.freeze({
         ...baseModel,
-        version: Math.max(Number(baseModel.version) || 0, 4),
+        version: Math.max(Number(baseModel.version) || 0, 5),
         recommendedOpportunityId: recommended?.id ?? null,
         entries: Object.freeze(entries),
     });
@@ -76,7 +81,7 @@ export function createCommitmentOpportunity(state) {
                 requirement('Return to Brasshaven Market Ring', state.currentPlaceId === definition.offerPlaceId),
             ],
             blockers: check.ok ? [] : check.blockers,
-            action: check.ok ? action('resolve-copper-return', `Deliver · Redstone Copper Ingot`, 'commitment.resolve', { commitmentId }) : null,
+            action: check.ok ? action('resolve-copper-return', 'Deliver · Redstone Copper Ingot', 'commitment.resolve', { commitmentId }) : null,
         });
     }
 
@@ -115,6 +120,38 @@ export function createCommitmentOpportunity(state) {
         action: followUpReady && inPlace
             ? action('follow-up-copper-return', 'Speak again · Marshal Varric Stone', 'commitment.followUp', { commitmentId })
             : null,
+    });
+}
+
+export function createDayReviewOpportunity(state) {
+    const summary = getLatestDaySummary(state);
+    if (!summary) return null;
+    const categories = summary.categoryCounts ?? {};
+    const eventTypes = summary.eventTypeCounts ?? {};
+    const commitments = Number(categories.commitments) || 0;
+    const relationships = Number(categories.relationships) || 0;
+    const work = Number(categories.work) || 0;
+    const progression = Number(categories.progression) || 0;
+    const resolved = Number(eventTypes['commitment.resolved']) || 0;
+    const relationshipChanges = Number(eventTypes['relationship.changed']) || 0;
+
+    const highlights = [
+        resolved ? `${resolved} commitment resolution${resolved === 1 ? '' : 's'}` : null,
+        relationshipChanges ? `${relationshipChanges} relationship change${relationshipChanges === 1 ? '' : 's'}` : null,
+        work ? `${work} work event${work === 1 ? '' : 's'}` : null,
+        progression ? `${progression} progression event${progression === 1 ? '' : 's'}` : null,
+    ].filter(Boolean);
+
+    return opportunity({
+        id: `day-review-${summary.day}`,
+        category: 'day-review',
+        title: `Latest day review · Day ${summary.day}`,
+        summary: `${summary.eventCount} semantic event${summary.eventCount === 1 ? '' : 's'} were recorded during the completed day.${highlights.length ? ` Highlights: ${highlights.join(', ')}.` : ''}`,
+        reason: 'Day review summarizes structured persistent changes; it does not reconstruct progress from display prose.',
+        progress: `Commitments ${commitments} · Relationships ${relationships} · Work ${work} · Progression ${progression}`,
+        status: 'complete',
+        requirements: [],
+        action: null,
     });
 }
 
