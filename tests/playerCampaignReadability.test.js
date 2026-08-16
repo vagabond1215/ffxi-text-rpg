@@ -103,7 +103,7 @@ test('PX5 groups and ranks only acquired opportunities without persisting a camp
     const normalizedState = JSON.stringify(state);
     const secondView = model(state);
 
-    assert.equal(view.opportunities.campaignReadabilityVersion, 1);
+    assert.equal(view.opportunities.campaignReadabilityVersion, 2);
     assert.ok(Array.isArray(view.opportunities.groups));
     assert.ok(view.opportunities.groups.some((group) => group.label === 'Redstone Reach' && group.current));
     assert.equal(view.opportunities.groups.some((group) => group.label === 'Starfen'), false);
