@@ -187,7 +187,7 @@ PX-6 also advances `playerCampaignReadability` from `0.1.0` to `0.2.0`: explicit
 Authoritative PX-6 runtime checkpoint:
 
 ```text
-e30ff49d6ae9b2df12e676a9c29f3ce4b425ef10
+e30bc607faf0e56b784aca54e1f830c0c48fe274
 480/480 tests
 Benchmark 1 success
 Data 28
