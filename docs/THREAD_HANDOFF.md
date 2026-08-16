@@ -16,7 +16,7 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 
 Work directly on `main` by default. Treat each prompt as a bounded work order and follow the autonomous-session guardrail in `AGENTS.md`.
 
-Hearth & Horizon is pre-alpha. **Old local saves/accounts are not a design constraint.** Prefer one clean current schema and one clear authority over compatibility-only migrations, duplicate fields, lazy compatibility state, or adapter layers. Breaking Account Save/Game State/Data contracts is acceptable when it materially simplifies or standardizes the current design; version the current contract deliberately. Existing historical migrations/adapters may remain as bounded technical debt until a focused cleanup, but do not extend them reflexively.
+Hearth & Horizon is pre-alpha. **Old local saves/accounts are not a design constraint.** Prefer one clean current schema and one clear authority over compatibility-only migrations, duplicate fields, lazy compatibility state, or adapter layers. Breaking Account Save/Game State/Data contracts is acceptable when it materially simplifies or standardizes the current design; version the current contract deliberately.
 
 This does not relax determinism, validation, provenance, exactly-once ownership, content originality, map privacy, or test discipline.
 
@@ -48,7 +48,7 @@ Product:       0.6.900.1
 Package:       0.6.900
 Account Save:  4
 Game State:    5
-Data:          26
+Data:          27
 Benchmark:     1
 Codename:      Integrated Mechanics Gate
 Compatibility: pre-release-current-schema
@@ -59,54 +59,30 @@ Compatibility: pre-release-current-schema
 Authoritative green runtime checkpoint for the current player-experience work:
 
 ```text
-855df41a32b4fdf573ce8d0abff4e0d5594022b1
-Align phase gates with pre-release schema policy
+39d9912011691477d6443fa57da1bc3594b1b6f2
+Assert Phase 0.7 slice version registrations
 ```
 
 At that checkpoint:
 
 ```text
-tests       457
-pass        457
+tests       464
+pass        464
 fail        0
 benchmark   success
 Check run   success
 Pages       success
 ```
 
-The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only; project tests still execute under Node 20.20.2 while GitHub forces deprecated action runtimes through Node 24.
+The Benchmark 1 workload at this checkpoint reports Data 27. The recurring GitHub Actions warning about Node 20 action-runtime deprecation remains warning-only; project tests execute under Node 20.20.2 while GitHub forces deprecated action runtimes through Node 24.
 
-## Phase 0.7 player-experience path
+## What Phase 0.7 has landed
 
-`docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md` is the player-facing sequence:
+`docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md` is the player-facing sequence. PX-1, PX-2, and the first bounded PX-3 regional loop are now implemented.
 
-- **PX-1 — Arrival and footing:** why am I here, who should I meet first, how does progress work?
-- **PX-2 — First-day opportunities:** what can I pursue now, why care, what preparation is needed, what persistent progress results?
-- **PX-3 — First regional loop:** settlement -> goal -> prepare -> travel -> accomplish -> recover/produce -> return -> resolve -> larger ambition.
-- **PX-4 — Several-day continuity:** follow-up, relationships/reputation, changing local needs, day-review meaning, competing uses of time.
-- **PX-5 — Multi-region readability:** rank/group known opportunities without omniscient quest-list behavior.
+### PX-1 — arrival and footing
 
-The guidance layer is a projection over canonical gameplay state, not a second simulation or quest authority. Real commitments/contracts added later must be canonical state with semantic events and exactly-once reward ownership.
-
-## PX-1 — implemented
-
-Primary files:
-
-```text
-js/text/data/playerExperienceContent.js
-js/text/systems/playerExperienceEngine.js
-js/text/data/characterCreationContent.js
-js/text/systems/characterCreationModel.js
-js/text/systems/poiEngine.js
-js/text/ui/gameViewModel.js
-js/text/data/questHooks.js
-tests/playerExperience.test.js
-docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md
-```
-
-### Origin-specific first-session experience
-
-All three current origins now provide a real first contact and regional horizon:
+All three current origins provide a real first contact and regional horizon:
 
 | Origin | Starting locality | First contact | Horizon |
 | --- | --- | --- | --- |
@@ -114,68 +90,74 @@ All three current origins now provide a real first contact and regional horizon:
 | Brasshaven | Brasshaven Market Ring | Marshal Varric Stone | Redstone Reach |
 | Mistmere | Mistmere Canal Ward | Reader Soli Venn | Starfen |
 
-Legacy-shaped POI IDs remain internal technical debt; player-facing names/content are canonical Hearth & Horizon.
+The Scene promotes the guide as the first semantic locality action. Guide dialogue explains persistent progress without creating duplicate onboarding state. New games begin at a canonical 08:00 fictional-world time owned by game state.
 
-Character-creation opening prose now explains the arrival circumstance, starting training as a discipline rather than a permanent class, the first contact, and the first regional horizon.
+### PX-2 — first-day opportunities
 
-### Semantic orientation flow
-
-`createPlayerExperienceModel(state)` currently derives:
-
-- `orientation` until the origin guide POI is discovered;
-- `foothold` after the guide is met in a safe settlement;
-- `expedition` while in dangerous/wilderness/dungeon space.
-
-While un-oriented in the starting locality, the guide is promoted to the **first contextual semantic action** through `locality.poi`; no command string is manufactured.
-
-The Scene description also states the clearest next step. After the guide is met, the guidance changes to four non-exclusive progress paths:
+Primary additions include:
 
 ```text
-training
-livelihood
-exploration
-preparation
+js/text/systems/playerOpportunityEngine.js
+js/text/data/playerExperienceContent.js
+js/text/ui/gameViewModel.js
+js/text/ui/uiIntentRouter.js
+js/text/ui/domUi.js
+tests/playerOpportunity.test.js
 ```
 
-Guide dialogue explains the project law in setting-friendly terms: repeated effort should return skill, material capability, knowledge, preparation, or useful connections that make larger ambitions possible.
+The Journal now renders a dedicated semantic opportunity model rather than a thin command list. It answers what can be pursued, why it matters, what preparation is required, and what persistent progress may result.
 
-Guide completion is derived from canonical POI discovery state. This is intentional state normalization, not a save-compatibility workaround: persisting a duplicate onboarding flag would create competing authority.
+All three origins can claim and equip a real field tool through semantic UI actions. Livelihood, training/danger, exploration/travel, and settlement/service opportunities are surfaced only when supported by current world/gameplay authority.
 
-### Canonical commission presentation
+### PX-3 — first regional loop
 
-Quest/commission presentation records were rewritten to original-world Thornwall/Brasshaven/Mistmere names and descriptions. Unimplemented formal contracts no longer masquerade as working quest systems; current text explicitly says when no formal tracked commission is posted.
-
-Stable internal legacy-shaped POI IDs remain until a separate ID-cleanup migration/refactor is justified.
-
-## Canonical new-game time
-
-`js/text/gameState.js` now owns one default new-game start time:
+The first complete bounded loop is Brasshaven -> Redstone Reach -> Brasshaven:
 
 ```text
-08:00 fictional world time
+meet/prepare in Brasshaven
+-> obtain and equip Prospector Pick
+-> travel to Redstone Reach
+-> gather Redstone copper through canonical timed work
+-> complete the active activity through semantic intent
+-> return to Brasshaven
+-> select the forge/workstation context
+-> process copper into a provenance-bearing ingot
+-> retain persistent work mastery
+-> surface Copper Trail Clasp as the larger ambition
 ```
 
-`DEFAULT_START_WORLD_TIME_SECONDS = 8 * 60 * 60` is the product authority. Character-creation UI no longer carries a duplicate time default.
+The Copper Trail Clasp also requires Starfen reed fiber, so the completed loop points naturally toward a larger cross-regional ambition instead of granting an isolated reward.
 
-Low-level timing/mechanics tests use `tests/helpers/createTestState.js` to request an explicit zero-based clock where that makes assertions clearer. Tests no longer inherit an accidental product-default epoch.
+An end-to-end test proves the loop leaves and returns with persistent material and mastery gains. This is the first regional-loop proof, **not** completion of `0.7.100`.
 
-## Compatibility policy correction
+## Version registrations for the Phase 0.7 slice
 
-`js/text/version.js` now reports:
+Current runtime registrations are deliberate in-progress contract versions rather than a product milestone bump:
 
 ```text
-Compatibility: pre-release-current-schema
-playerExperience subsystem: 0.1.0
+activityAdvance:      0.1.0
+gameViewModels:       0.5.0
+playerExperience:     0.2.0
+playerOpportunities:  0.1.0
+domUi:                0.3.0
+uiIntents:             0.4.0
+Data:                 27
 ```
 
-The historical Phase 0.5/0.6 gates were updated so later current-schema versions can remain valid without requiring migration-first compatibility:
+Product remains `0.6.900.1` until a coherent `0.7.100` campaign-slice contract is actually closed.
 
-- Account Save and Game State checks are minimum phase-contract checks rather than exact-version freezes;
-- compatibility checks require the current `pre-release-current-schema` policy;
-- the simulation substrate gate group is now `persistenceContract`, not `persistenceCompatibility`;
-- old migration tooling remains available but no longer determines current project health.
+## UI state confirmed from the latest browser screenshot
 
-Do not restore `migrate-supported-save-versions` merely to satisfy historical assertions.
+The current safe-settlement screenshot is consistent with the navigation contract in one important respect: safe locality mode intentionally omits the wilderness minimap and D-pad. Wilderness/exploration mode retains the discovery-safe minimap and compact directional controls.
+
+The screenshot still exposes presentation debt worth addressing in a bounded UI pass rather than confusing it with navigation correctness:
+
+- excessive empty vertical space separates the scene from primary navigation;
+- the scene/narrative card feels visually detached from the character/context panes;
+- the large bottom category buttons compete with the scene as the dominant interaction surface;
+- the right context pane and next-step callout are useful but could participate in a tighter single-screen composition.
+
+Do not reintroduce a map into safe settlement locality merely to fill space. The fix should be spatial hierarchy/composition, not leaking exploration controls into the wrong navigation mode.
 
 ## Stable authority boundaries
 
@@ -190,6 +172,7 @@ Preserve these while building Phase 0.7:
 - resource acquisition/transformation/rewards preserve provenance and source/sink reasoning;
 - companions are persistent NPC-backed people whose party state composes with Combat 2.0 and travel;
 - content-pack ownership/dependencies and cross-reference validation are the scale mechanism;
+- player-experience guidance is a projection over canonical state, never a second quest/simulation authority;
 - current schema quality takes priority over old pre-alpha save compatibility.
 
 ## Relevant deferred technical debt
@@ -199,23 +182,28 @@ Preserve these while building Phase 0.7:
 - `player.jobs`, `mainJobId`, `raceId`, `nationId`, and other transitional internal names remain.
 - Some DOM information views still bridge command output.
 - Search-or-act remains command-capable rather than true semantic fuzzy search.
-- The active Journal remains thin and does not yet render a dedicated opportunities model.
 - Formal tracked commission/contract state does not yet exist.
+- There is companion-specific relationship state, but no general NPC/community relationship or reputation authority yet.
+- The first PX-3 loop contains Brasshaven/Redstone-specific opportunity logic; generalize only when a second real loop proves the reusable shape.
+- Current safe-locality DOM composition has excessive vertical whitespace and over-dominant bottom navigation despite correct navigation-mode semantics.
 - Canvas modules remain regression/reference code; active browser UI is semantic DOM.
 - Companion tactical/dialogue/equipment/progression breadth remains intentionally small.
 - `gil` remains current currency terminology pending deliberate original-currency design.
 
-## Next bounded unit — PX-2 first-day opportunities
+## Next bounded unit — PX-4 first continuity proof
 
-Do **not** start by mass-authoring content or by creating a parallel quest framework.
+Do **not** jump directly to PX-5, mass-author content, or declare `0.7.100` complete.
 
-Implement a dedicated semantic Journal/Opportunities presentation layer using current world knowledge and existing mechanics. It should answer four questions for each surfaced opportunity:
+Anchor the first PX-4 slice to the completed Brasshaven regional loop. Prove that the world remembers what the player did across at least one fictional day and turns that history into a meaningful next choice.
 
-1. What can I pursue now?
-2. Why would I care?
-3. What preparation/conditions are required?
-4. What persistent progress can result?
+Required shape:
 
-Use existing capability/work/ecology/travel/shop/NPC/progression authorities to surface only opportunities that are real enough to act on. Route actions through semantic intents where available. If the slice proves that a real persistent commitment/contract primitive is missing, add one clean canonical state model rather than compatibility scaffolding or renderer-owned quest state.
+1. Add the smallest reusable canonical social/follow-up state needed to represent an NPC/community consequence. Do not create a broad reputation framework unless the slice proves it necessary.
+2. Emit semantic events for that state change and preserve exactly-once ownership.
+3. Make a completed Brasshaven loop create or advance one persistent follow-up tied to a named world character/service/community need.
+4. Carry that follow-up across a day boundary and current-version save/load.
+5. Surface the change in Journal/opportunities and day review without parsing display prose.
+6. Present at least one competing valid use of character time so continuity creates a decision rather than a linear quest arrow.
+7. Prove the resulting flow with focused tests plus the full suite/benchmark/deploy checkpoint.
 
-Stop after a coherent PX-2 checkpoint; do not silently continue into the full PX-3 regional campaign loop.
+Stop after that coherent PX-4 continuity proof. A later bounded unit can widen the pattern to additional origins/regions and decide whether a general contract/reputation model is justified.
