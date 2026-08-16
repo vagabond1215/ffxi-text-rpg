@@ -24,7 +24,7 @@ No onboarding layer may create a parallel quest clock, hidden teleport graph, om
 
 Player experience work targets the clean current game model. Old local-save compatibility is not a Phase 0.7 design requirement.
 
-- Prefer one explicit authority over lazy compatibility state or duplicate bookkeeping.
+- Prefer one explicit authority over compatibility-only bookkeeping.
 - Break/reset a persisted schema when that materially simplifies the current design; version the new contract rather than carrying stale shapes forward by default.
 - Keep a value derived when it is genuinely a projection of canonical state, not merely to avoid a schema bump.
 - Add migrations only when they are deliberately useful, not as an automatic tax on pre-alpha iteration.
@@ -36,31 +36,29 @@ Player experience work targets the clean current game model. Old local-save comp
 Required experience:
 
 - origin-specific opening prose names the starting settlement, regional horizon, and a real first contact;
-- every normal new-game path starts at a believable morning hour owned by `gameState`, rather than an unexplained world-time epoch or a UI-specific default;
-- the Scene itself states the clearest next step while the character is still un-oriented;
+- every normal new-game path starts at a believable morning hour owned by `gameState`;
+- the Scene states the clearest next step while the character is still un-oriented;
 - the origin contact is promoted to the first contextual action in the starting locality;
-- speaking to that contact explains, in setting-friendly terms, how combat training, livelihood work, exploration, and preparation create persistent progress;
-- after the contact is met, guidance changes from a single instruction to several non-exclusive paths;
+- speaking to that contact explains how combat training, livelihood work, exploration, and preparation create persistent progress;
+- after the contact is met, guidance changes from one instruction to several non-exclusive paths;
 - player-facing commission hooks use Hearth & Horizon canon and do not leak legacy world names or implementation-schema language.
 
-**Implementation status:** landed as the first `0.7.100` in-progress slice. Orientation guidance is a pure projection over authoritative origin/place/POI discovery state; it is not persisted because persisting it would duplicate authority.
+**Implementation status: landed.** Orientation guidance is a pure projection over authoritative origin/place/POI discovery state; it is not persisted because persisting it would duplicate authority.
 
 ## PX-2 — First day: actionable opportunities
 
 **Goal:** turn explanation into ordinary semantic UI actions.
 
-Add a dedicated Journal/Opportunities presentation model that answers:
+The Journal/Opportunities presentation model answers:
 
 - What can I pursue now?
 - Why would I care?
 - What preparation does it require?
 - What persistent progress can it produce?
 
-The first-day set should include at least one viable path in each category that the current region actually supports: livelihood/material work, training/danger, exploration/travel, and settlement/service/social preparation. Buttons should route through semantic gameplay intents; command adapters remain optional power/diagnostic surfaces rather than required player knowledge.
+The first-day set includes viable paths supported by current regional authority: livelihood/material work, training/danger, exploration/travel, and settlement/service/social preparation. Buttons route through semantic gameplay intents; command adapters remain optional power/diagnostic surfaces rather than required player knowledge.
 
-Do not present unavailable future systems as clickable promises. A commission should either be a real trackable commitment or clearly remain an unposted/informal lead.
-
-**Implementation status:** landed. `playerOpportunityEngine` now owns a dedicated semantic opportunities projection, the Journal renders actionable opportunity cards, all three origins can claim and equip a real field tool through semantic actions, and first-day livelihood/training/exploration/service paths are surfaced only when supported by current world/gameplay authority. The Journal no longer depends on a flat command catalog for this flow.
+**Implementation status: landed.** `playerOpportunityEngine` owns the semantic opportunities projection, all three origins can claim/equip a real field tool through semantic actions, and the Journal renders only opportunities supported by current world/gameplay authority.
 
 ## PX-3 — First regional loop: leave, accomplish, return
 
@@ -70,7 +68,7 @@ A player should be able to:
 
 ```text
 settlement contact/service
-    -> accept or choose a concrete goal
+    -> choose a concrete goal
     -> prepare
     -> travel into the region
     -> work, gather, explore, or fight
@@ -80,27 +78,49 @@ settlement contact/service
     -> see what persistent change now makes a larger ambition possible
 ```
 
-Use the existing Phase 0.6 engines as authority. Add only the missing reusable commitment/opportunity primitives demonstrated by this slice.
+Use the existing Phase 0.6 engines as authority. Add only missing reusable primitives demonstrated by a real slice.
 
-**Implementation status:** first bounded loop landed for Brasshaven. The Journal can guide an ordinary semantic flow from Marshal Varric Stone and a real Prospector Pick, through travel to Redstone Reach, timed copper gathering and activity completion, return to Brasshaven, forge/workstation selection, and copper-ingot processing. The loop leaves provenance-bearing material plus persistent work mastery, then points at the larger Copper Trail Clasp ambition rather than issuing a disconnected reward. This proves the regional-loop shape; it does **not** close the full `0.7.100` campaign slice or establish general tracked contracts/reputation by itself.
+**Implementation status: first bounded loop landed for Brasshaven.** The Journal guides an ordinary semantic flow from Marshal Varric Stone and a real Prospector Pick, through travel to Redstone Reach, timed copper gathering, return to Brasshaven, forge/workstation selection, and copper-ingot processing. The loop leaves provenance-bearing material plus persistent work mastery and points at the larger Copper Trail Clasp ambition, whose Starfen reed-fiber requirement creates a natural cross-regional horizon.
+
+This proves the regional-loop shape; it does not by itself close the full `0.7.100` campaign slice.
 
 ## PX-4 — First several fictional days: continuity
 
-**Goal:** make the world feel inhabited rather than reset after each loop.
+**Goal:** make the world remember what the player did rather than resetting after each loop.
 
-Add persistent NPC follow-up, lightweight reputation/relationship consequences, repeatable or changing local needs, day-review surfacing of gains and new opportunities, recovery costs, and reasons to choose between competing uses of character time.
+Required experience:
 
-Earlier chores should already begin becoming easier or more skippable through earned mastery, tools, route knowledge, or services.
+- a real commitment is canonical gameplay state rather than Journal-owned guidance;
+- resolving it changes a persistent named-NPC relationship and owns its reward exactly once;
+- material requirements preserve provenance all the way through delivery;
+- the consequence survives a fictional day boundary and the real account save/load path;
+- the next fictional day exposes changed follow-up from the same world character;
+- the Journal/day review surfaces structured commitment and relationship consequences without parsing display prose;
+- the follow-up competes with another valid use of character time rather than becoming a mandatory quest arrow.
 
-**Next bounded implementation target:** anchor the first continuity proof to the completed Brasshaven regional loop. Add only the smallest reusable canonical social/follow-up state needed to remember an NPC/community consequence across a day boundary, surface that consequence through Journal/day-review semantic presentation, and prove that a changed local need or follow-up competes with another valid use of character time. Do not invent a parallel quest clock or broad reputation framework before the slice proves its requirements.
+**Implementation status: landed and audited.** The first continuity proof is `Copper for the Ring`, tied to Marshal Varric Stone and the completed Brasshaven -> Redstone Reach -> Brasshaven copper loop. `commitmentEngine` owns acceptance/resolution/follow-up and exactly-once rewards; `relationshipEngine` owns general NPC relationship dimensions; `playerContinuityEngine` projects commitment/day-review state into the Journal; semantic commitment intents reach canonical engines directly.
+
+The audit also repaired two provenance seams that the slice exposed: same-ID inventory items with different provenance histories no longer merge into one stack, and commitment delivery consumes only the provenance-qualified stack(s) that satisfied its requirement. Top-level current-state/world validation now includes the commitment/relationship contracts, and focused tests exercise the real account save/load path plus next-day competing choices.
+
+This remains deliberately small. It is **not** a universal numeric reputation framework, broad dialogue scheduler, or generalized quest graph. The first continuity projection is still Brasshaven/copper-specific; generalize only when another real slice proves the reusable shape.
 
 ## PX-5 — Multi-region campaign readability
 
-**Goal:** preserve clarity as choice count grows.
+**Goal:** preserve clarity as known opportunities and continuity span multiple regions.
 
-The Journal/Opportunities layer should rank and group known opportunities without becoming an omniscient quest list. Regional knowledge, contacts, maps, reputation, travel access, and prior discoveries determine what can be surfaced.
+The Journal/Opportunities layer should rank and group **known** opportunities without becoming an omniscient quest list. What can be surfaced must derive from canonical player/world knowledge such as:
 
-The player should be able to maintain several short-term goals while understanding their relationship to larger ambitions: better livelihood, deeper training, stronger equipment, a broader route network, social standing, companions, property/infrastructure, and dangerous expeditions.
+- discovered places, routes, POIs, maps, and regional horizons;
+- persistent contacts and relationship/commitment state;
+- current equipment, capabilities, materials, work mastery, and preparation;
+- actually reachable travel/service context;
+- prior discoveries and completed regional work.
+
+The player should be able to maintain several short-term goals while understanding their relationship to larger ambitions: better livelihood, deeper training, stronger equipment, broader routes, social standing, companions, infrastructure, and dangerous expeditions.
+
+**Next bounded implementation target:** use the existing Brasshaven/Redstone/Starfen horizon to prove multi-region readability from acquired knowledge. Rank/group current opportunities by region and readiness, preserve direct semantic actions where they are genuinely reachable, and make unknown/undiscovered content stay unknown. Do not mass-author content or build a global quest database to make the UI look populated.
+
+Before closing `0.7.100`, the ordinary campaign slice must also compose meaningful danger/combat/recovery with the livelihood/travel/commitment continuity already proven.
 
 ## Player-facing acceptance checks
 
@@ -111,19 +131,13 @@ For each future Phase 0.7 slice, evaluate from a fresh save rather than from tes
 - Are at least two alternative ambitions understandable after the first orientation step?
 - Does the game explain what an activity improves, not merely what button starts it?
 - When an activity completes, is the persistent consequence legible?
-- Does the next opportunity arise from world knowledge/state rather than developer omniscience?
+- Does the next opportunity arise from acquired world knowledge/state rather than developer omniscience?
 - Can the current-version save/load loop resume without duplicating rewards, contacts, or progress?
+- Across days, does prior activity change what people or places offer?
+- As regions accumulate, can the player distinguish ready, preparatory, distant, and completed goals without seeing undiscovered content?
 
 ## Architecture rule
 
 Player-experience guidance is a **projection over canonical state**, not a second simulation authority.
 
-The first implementation follows that rule by deriving orientation from:
-
-- chosen origin / existing player identity;
-- the canonical starting place;
-- existing POI identity and discovery state;
-- current locality/exploration context;
-- existing progression, work, travel, equipment, and map laws.
-
-When later work needs real commitments or contracts, those should be canonical gameplay state with semantic events and exactly-once reward ownership. The guidance layer may summarize that state; it must not secretly own it.
+Current projections derive from canonical origin/place/POI discovery, progression, work, travel, equipment, map knowledge, commitments, relationships, and day-cycle state. Real commitments and relationship consequences are canonical gameplay state with semantic events and exactly-once ownership; the Journal may summarize or rank them but must not secretly own them.
