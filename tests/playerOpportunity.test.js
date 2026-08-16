@@ -5,18 +5,19 @@ import { getNation } from '../js/text/data/nations.js';
 import { getPlace } from '../js/text/data/places.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
-import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
+import { startGatheringWork } from '../js/text/systems/gatheringWorkEngine.js';
+import { moveWithinLocality, performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
+import { claimOriginStarterKit } from '../js/text/systems/playerExperienceEngine.js';
 import { createPlayerOpportunityModel } from '../js/text/systems/playerOpportunityEngine.js';
 import { advanceTravel, startTravel } from '../js/text/systems/travelEngine.js';
-import { startGatheringWork } from '../js/text/systems/gatheringWorkEngine.js';
 import { renderGameScreen } from '../js/text/ui/domRenderer.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
 
 const ORIGINS = Object.freeze([
-    { nationId: 'thornwall', guidePoiId: 'poi-sandoria-s-alaune', destinationId: 'west-elderwood', sourceId: 'source-west-elderwood-amber-resin-grove' },
-    { nationId: 'brasshaven', guidePoiId: 'poi-bastok-markets-rabid-wolf', destinationId: 'south-redstone-reach', sourceId: 'source-south-redstone-copper-seam' },
-    { nationId: 'mistmere', guidePoiId: 'poi-waters-dagoza-beruza', destinationId: 'west-starfen', sourceId: 'source-west-starfen-reedbed' },
+    { nationId: 'thornwall', guidePoiId: 'poi-sandoria-s-alaune', departureId: 'thornwall-southgate', destinationId: 'west-elderwood', sourceId: 'source-west-elderwood-amber-resin-grove' },
+    { nationId: 'brasshaven', guidePoiId: 'poi-bastok-markets-rabid-wolf', departureId: 'brasshaven-market-ring', destinationId: 'south-redstone-reach', sourceId: 'source-south-redstone-copper-seam' },
+    { nationId: 'mistmere', guidePoiId: 'poi-waters-dagoza-beruza', departureId: 'mistmere-reedport', destinationId: 'west-starfen', sourceId: 'source-west-starfen-reedbed' },
 ]);
 
 function meetGuide(state, guidePoiId) {
@@ -28,21 +29,65 @@ function opportunity(model, category) {
     return model.entries.find((entry) => entry.category === category);
 }
 
-test('each origin starts with a real field tool and Journal preparation tells the player to equip it', () => {
+function claimAndEquipStarter(state, origin) {
+    meetGuide(state, origin.guidePoiId);
+    const starterItemId = getNation(origin.nationId).startingEquipmentIds[0];
+    const claimed = claimOriginStarterKit(state);
+    assert.equal(claimed.ok, true, claimed.display?.text ?? claimed.reason);
+    const carried = state.player.inventory.find((item) => item.templateId === starterItemId || item.id === starterItemId);
+    assert.ok(carried, `${origin.nationId} missing claimed ${starterItemId}`);
+    assert.match(equipItem(state, starterItemId), /Equipped/);
+    return starterItemId;
+}
+
+function reachFirstRegion(state, origin, category = 'livelihood') {
+    let entry = opportunity(createPlayerOpportunityModel(state), category);
+    if (state.currentPlaceId !== origin.departureId) {
+        assert.equal(entry.status, 'ready', `${origin.nationId} should expose its named departure locality`);
+        assert.equal(entry.action?.intent, 'locality.move');
+        assert.equal(entry.action?.payload.destinationId, origin.departureId);
+        const moved = moveWithinLocality(state, origin.departureId);
+        assert.equal(moved.ok, true, moved.message);
+        assert.equal(state.currentPlaceId, origin.departureId);
+        entry = opportunity(createPlayerOpportunityModel(state), category);
+    }
+
+    assert.equal(entry.status, 'ready', `${origin.nationId} should expose regional travel from ${origin.departureId}`);
+    assert.equal(entry.action?.intent, 'travel.start');
+    assert.equal(entry.action?.payload.destinationId, origin.destinationId);
+    const started = startTravel(state, origin.destinationId);
+    assert.equal(started.ok, true, started.display?.text ?? started.reason);
+    assert.equal(started.data.to, origin.destinationId);
+    const advanced = advanceTravel(state, started.data.durationSeconds);
+    assert.equal(advanced.completed, true, advanced.reason);
+    assert.equal(state.currentPlaceId, origin.destinationId);
+}
+
+test('each origin guide issues a real field tool and Journal advances from claim to equip', () => {
     for (const origin of ORIGINS) {
         const state = createNewGameState({ nationId: origin.nationId });
-        const nation = getNation(origin.nationId);
-        const starterItemId = nation.startingEquipmentIds[0];
-        const carried = state.player.inventory.find((item) => item.templateId === starterItemId || item.id === starterItemId);
-        assert.ok(carried, `${origin.nationId} missing ${starterItemId}`);
+        const starterItemId = getNation(origin.nationId).startingEquipmentIds[0];
+        assert.equal(state.player.inventory.some((item) => item.templateId === starterItemId || item.id === starterItemId), false);
 
         meetGuide(state, origin.guidePoiId);
-        const model = createPlayerOpportunityModel(state);
-        const preparation = opportunity(model, 'preparation');
+        let preparation = opportunity(createPlayerOpportunityModel(state), 'preparation');
         assert.equal(preparation.status, 'ready');
-        assert.equal(preparation.action.intent, 'equipment.equip');
-        assert.equal(preparation.action.payload.itemId, starterItemId);
+        assert.equal(preparation.action?.intent, 'playerExperience.claimStarterKit');
+
+        const claimed = claimOriginStarterKit(state);
+        assert.equal(claimed.ok, true, claimed.display?.text ?? claimed.reason);
+        assert.ok(state.player.inventory.some((item) => item.templateId === starterItemId || item.id === starterItemId));
+
+        preparation = opportunity(createPlayerOpportunityModel(state), 'preparation');
+        assert.equal(preparation.status, 'ready');
+        assert.equal(preparation.action?.intent, 'equipment.equip');
+        assert.equal(preparation.action?.payload.itemId, starterItemId);
         assert.match(preparation.reason, /Possession alone does not satisfy an equipped-tool requirement/i);
+
+        assert.match(equipItem(state, starterItemId), /Equipped/);
+        preparation = opportunity(createPlayerOpportunityModel(state), 'preparation');
+        assert.equal(preparation.status, 'complete');
+        assert.equal(preparation.action, null);
     }
 });
 
@@ -65,25 +110,23 @@ test('first-day opportunities answer what why requirements and persistent progre
     }
 });
 
-test('equipping the origin tool opens an honest livelihood route from named locality navigation', () => {
+test('equipping the origin tool opens an honest livelihood route through named locality and regional navigation', () => {
     for (const origin of ORIGINS) {
         const state = createNewGameState({ nationId: origin.nationId });
-        meetGuide(state, origin.guidePoiId);
-        const starterItemId = getNation(origin.nationId).startingEquipmentIds[0];
-        assert.match(equipItem(state, starterItemId), /Equipped/);
+        claimAndEquipStarter(state, origin);
 
         const beforeTravel = createPlayerOpportunityModel(state);
         const livelihood = opportunity(beforeTravel, 'livelihood');
         assert.equal(livelihood.status, 'ready');
-        assert.equal(livelihood.action.intent, 'travel.start');
-        assert.equal(livelihood.action.payload.destinationId, origin.destinationId);
+        if (state.currentPlaceId === origin.departureId) {
+            assert.equal(livelihood.action.intent, 'travel.start');
+            assert.equal(livelihood.action.payload.destinationId, origin.destinationId);
+        } else {
+            assert.equal(livelihood.action.intent, 'locality.move');
+            assert.equal(livelihood.action.payload.destinationId, origin.departureId);
+        }
 
-        const started = startTravel(state, origin.destinationId);
-        assert.equal(started.ok, true, started.display?.text ?? started.reason);
-        assert.equal(started.data.to, origin.destinationId);
-        const advanced = advanceTravel(state, started.data.durationSeconds);
-        assert.equal(advanced.completed, true);
-        assert.equal(state.currentPlaceId, origin.destinationId);
+        reachFirstRegion(state, origin, 'livelihood');
 
         const inRegion = createPlayerOpportunityModel(state);
         const regionalLivelihood = opportunity(inRegion, 'livelihood');
@@ -92,21 +135,18 @@ test('equipping the origin tool opens an honest livelihood route from named loca
         assert.equal(regionalLivelihood.action.payload.sourceId, origin.sourceId);
         const gathering = startGatheringWork(state, origin.sourceId);
         assert.equal(gathering.ok, true, gathering.display?.text ?? gathering.reason);
-        assert.equal(createPlayerOpportunityModel(state).entries.find((entry) => entry.category === 'livelihood').status, 'active');
+        assert.equal(opportunity(createPlayerOpportunityModel(state), 'livelihood').status, 'active');
     }
 });
 
 test('regional training opportunity points only at an enemy authored for the current place', () => {
     for (const origin of ORIGINS) {
         const state = createNewGameState({ nationId: origin.nationId });
-        meetGuide(state, origin.guidePoiId);
-        const starterItemId = getNation(origin.nationId).startingEquipmentIds[0];
-        equipItem(state, starterItemId);
-        const started = startTravel(state, origin.destinationId);
-        advanceTravel(state, started.data.durationSeconds);
+        claimAndEquipStarter(state, origin);
+        reachFirstRegion(state, origin, 'training');
 
         const training = opportunity(createPlayerOpportunityModel(state), 'training');
-        assert.equal(training.status, 'ready');
+        assert.equal(training.status, 'ready', `${origin.nationId} training should be ready in ${origin.destinationId}`);
         assert.equal(training.action.intent, 'combat.encounter');
         assert.ok(state.enemies.some((enemy) => enemy.id === training.action.payload.enemyId));
         const place = getPlace(state.currentPlaceId);
@@ -114,19 +154,23 @@ test('regional training opportunity points only at an enemy authored for the cur
     }
 });
 
-test('Journal renders actionable opportunity cards instead of future-system placeholder copy', () => {
+test('Journal renders actionable opportunity cards and advances from collection to equipment preparation', () => {
     const state = createNewGameState({ nationId: 'thornwall' });
     meetGuide(state, 'poi-sandoria-s-alaune');
     const uiState = createUiState({ screen: 'game', activeView: 'journal' });
-    const html = renderGameScreen(createGameViewModel(state, uiState), uiState);
+    let html = renderGameScreen(createGameViewModel(state, uiState), uiState);
 
     assert.match(html, /Journal/);
     assert.match(html, /Suggested next/);
     assert.match(html, /<strong>Why:<\/strong>/);
     assert.match(html, /<strong>Progress:<\/strong>/);
     assert.match(html, /data-opportunity-action=/);
-    assert.match(html, /Equip Field Knife/);
+    assert.match(html, /Collect Field Knife/);
     assert.doesNotMatch(html, /Quest and commitment records will appear here/i);
+
+    assert.equal(claimOriginStarterKit(state).ok, true);
+    html = renderGameScreen(createGameViewModel(state, uiState), uiState);
+    assert.match(html, /Equip Field Knife/);
 });
 
 test('Craft view describes the implemented production substrate rather than claiming it does not exist', () => {
