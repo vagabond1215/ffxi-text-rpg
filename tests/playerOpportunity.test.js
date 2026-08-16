@@ -162,7 +162,9 @@ test('Journal renders actionable opportunity cards and advances from collection 
 
     assert.match(html, /Journal/);
     assert.match(html, /Suggested next/);
-    assert.match(html, /<strong>Why:<\/strong>/);
+    assert.doesNotMatch(html, /<strong>Why:<\/strong>/);
+    assert.match(html, /<details class="opportunity-details">/);
+    assert.match(html, /<summary>Details<\/summary>/);
     assert.match(html, /<strong>Progress:<\/strong>/);
     assert.match(html, /data-opportunity-action=/);
     assert.match(html, /Collect Field Knife/);
@@ -173,11 +175,12 @@ test('Journal renders actionable opportunity cards and advances from collection 
     assert.match(html, /Equip Field Knife/);
 });
 
-test('Craft view describes the implemented production substrate rather than claiming it does not exist', () => {
+test('Craft view describes the implemented production substrate in player-facing terms', () => {
     const state = createNewGameState();
     const uiState = createUiState({ screen: 'game', activeView: 'craft' });
     const html = renderGameScreen(createGameViewModel(state, uiState), uiState);
 
-    assert.match(html, /canonical timed work/i);
-    assert.doesNotMatch(html, /not implemented yet/i);
+    assert.match(html, /Turn carried materials into useful goods at the right workshop/i);
+    assert.match(html, /Recipes, tools, time, and practice/i);
+    assert.doesNotMatch(html, /canonical timed work|not implemented yet/i);
 });
