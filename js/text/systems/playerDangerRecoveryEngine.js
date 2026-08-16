@@ -49,11 +49,12 @@ export function createRecoveryOpportunity(state) {
         : model.available
             ? opportunityAction('start-campaign-recovery', label, 'recovery.start')
             : null;
+    const minutes = Math.floor(model.durationSeconds / 60);
     const summary = isDefeat
-        ? `Defeat has left you unable to continue. Recovery costs ${Math.floor(model.durationSeconds / 60)} fictional minutes and retreats the active party to a known safe home locality before restoring only part of your strength.`
+        ? `Defeat has left you unable to continue. Recovering will take ${minutes} minutes and bring your party back to ${getPlace(model.destinationPlaceId)?.name ?? 'known safety'}, but you will not return at full strength.`
         : isSettlement
-            ? `${place?.name ?? 'This safe locality'} supports a full rest, but the hour spent recovering is real campaign time.`
-            : `You are injured in the field. Catching your breath restores only part of what is missing and costs ${Math.floor(model.durationSeconds / 60)} fictional minutes that could have gone to travel, work, or another goal.`;
+            ? `${place?.name ?? 'This safe locality'} gives you enough safety to rest fully. The hour still passes while you recover.`
+            : `You are hurt in the field. Catching your breath will restore part of what you have lost and take ${minutes} minutes.`;
 
     return opportunity({
         id: `recovery-${model.taskId ?? state.activeBattle?.id ?? state.currentPlaceId}`,
@@ -62,12 +63,12 @@ export function createRecoveryOpportunity(state) {
         summary,
         reason: 'Combat consequence belongs to the same fictional-time budget as livelihood, travel, and social commitments; recovery is not a free reset.',
         progress: isDefeat
-            ? `Recover enough to resume the campaign from ${getPlace(model.destinationPlaceId)?.name ?? 'a known safe locality'}.`
+            ? `Get back on your feet and resume from ${getPlace(model.destinationPlaceId)?.name ?? 'a known safe locality'}.`
             : `HP ${model.hp}/${model.maxHp} · MP ${model.mp}/${model.maxMp}`,
         status: activeBattle ? 'blocked' : status,
         requirements: [
             requirement('No active battle', !activeBattle),
-            requirement('Spend fictional recovery time', false),
+            requirement(`Spend ${minutes} minutes recovering`, false),
         ],
         blockers: activeBattle ? ['Finish the active battle before recovering.'] : model.blockedReason ? [model.blockedReason] : [],
         action: activeBattle ? null : action,
@@ -93,9 +94,9 @@ export function createBattleResourceOpportunity(state) {
             id: `battle-resource-${local.id}`,
             category: 'recovery',
             title: `Finish recovering from ${local.sourceName}`,
-            summary: 'The defeated creature remains a canonical world resource opportunity. Its material has not been auto-looted; the hands-on recovery task is already consuming fictional time.',
+            summary: `You have already begun ${activeAction.id} work on the defeated ${local.sourceName}. Finish the work before moving on.`,
             reason: 'Victory rewards progression immediately, but physical materials still require their own tool, time, proficiency, condition, and inventory path.',
-            progress: `${activeAction.id} is in progress; completion resolves the persisted outcome roll exactly once.`,
+            progress: `${capitalize(activeAction.id)} is underway. The useful material, if recovered successfully, will be added when the work finishes.`,
             status: 'active',
             requirements: [requirement(`Finish ${activeAction.id}`, false)],
             action: opportunityAction(`finish-resource-${local.id}`, `Finish · ${activeAction.id}`, 'activity.advanceToCompletion'),
@@ -110,8 +111,8 @@ export function createBattleResourceOpportunity(state) {
         category: 'recovery',
         title: `Recover useful material from ${local.sourceName}`,
         summary: check.ok
-            ? `${capitalize(availableAction.id)} is possible here. Starting it uses the existing defeated-body recovery authority rather than granting an instant combat drop.`
-            : `${local.sourceName} remains physically recoverable, but your current preparation does not satisfy the real recovery requirements.`,
+            ? `${capitalize(availableAction.id)} is possible here if the material is worth the time and inventory space.`
+            : `${local.sourceName} can still yield useful material, but your current tools or preparation are not enough for the work.`,
         reason: 'The Journal exposes only a resource opportunity the character actually created through victory and keeps its tool/proficiency blockers authoritative.',
         progress: local.outputs.length
             ? `Possible recovered material: ${local.outputs.map((output) => output.name).join(', ')}.`
