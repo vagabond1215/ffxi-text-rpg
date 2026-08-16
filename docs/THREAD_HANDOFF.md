@@ -40,7 +40,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Maps/campaign guidance represent acquired character knowledge. Fictional time is separate from wall-clock scheduling. Resources retain physical/economic/social provenance. Companions are persistent NPC-backed people. Commitments/relationships are canonical state; Journal/readability/aftermath are derived presentation.
+Maps/campaign guidance represent acquired character knowledge. Fictional time is separate from wall-clock scheduling. Resources retain provenance. Companions are persistent NPC-backed people. Commitments/relationships are canonical state; Journal/readability/aftermath are derived presentation.
 
 ## Current baseline
 
@@ -49,7 +49,7 @@ Product:       0.6.900.1
 Package:       0.6.900
 Account Save:  4
 Game State:    5
-Data:          29
+Data:          30
 Benchmark:     1
 Codename:      Integrated Mechanics Gate
 Compatibility: pre-release-current-schema
@@ -57,34 +57,35 @@ Compatibility: pre-release-current-schema
 
 **Phase 0.6 is complete. Phase 0.7 is in progress. `0.7.100` is not complete.**
 
-Authoritative audited runtime checkpoint for PX-7:
+Authoritative audited runtime checkpoint for PX-8:
 
 ```text
-0411083b07bc4063fe4810fcb225e1dffd2895a4
-Align PX7 proof with regional Journal title
+63a234edfc1e327d90823c4171bdf315f01aa044
+Prove PX8 Thornwall Elderwood continuity
 ```
 
 At that checkpoint:
 
 ```text
-tests       483
-pass        483
+tests       484
+pass        484
 fail        0
+skipped     0
 benchmark   success
-Data        29
+Data        30
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     468.655ms  0.468655ms/op
-1,000 enemy combat profiles      110.203ms  0.110203ms/op
-1,000 basic attacks              553.072ms  0.553072ms/op
-10,000 ticks / 5 subscribers      48.620ms  0.004862ms/op
-10,000 direct route lookups     8767.498ms  0.876750ms/op
+1,000 player combat profiles     400.261ms  0.400261ms/op
+1,000 enemy combat profiles      104.237ms  0.104237ms/op
+1,000 basic attacks              509.356ms  0.509356ms/op
+10,000 ticks / 5 subscribers      50.139ms  0.005014ms/op
+10,000 direct route lookups     7969.682ms  0.796968ms/op
 ```
 
-GitHub Actions project tests run on Node 20.20.2; the recurring action-runtime Node deprecation warning remains warning-only.
+GitHub Actions project tests use Node 20.20.2. The recurring action-runtime Node deprecation warning remains warning-only.
 
 Documentation commits after the runtime checkpoint synchronize the PX path, architecture, roadmap, versioning, and this handoff. Verify the final docs-only head's Check/Pages before beginning new implementation.
 
@@ -108,9 +109,7 @@ domUi:                      0.7.0
 uiIntents:                  0.6.0
 ```
 
-PX-7 advances Data from 28 to 29 because it adds a real authored contract: commitment catalog v2, persistent Reader Soli Venn seed, `Marrowleaf for the Ward`, and provenance-aware commitment requirements across raw gathered or transformed goods plus field-source/return guidance.
-
-Account Save 4 / Game State 5 stay unchanged because existing generic commitment/relationship registries already serialize the new records. Benchmark remains 1 because the workload/protocol did not change.
+PX-8 advances Data 29 -> 30 because Sera Talwin becomes a persistent authored NPC-backed contact and `Sweetroot for Southgate` becomes the third canonical commitment definition. `COMMITMENT_CATALOG_VERSION` stays 2: the schema/shape does not change. Account Save 4 / Game State 5 stay unchanged because existing generic commitment/relationship registries already serialize the records. Benchmark remains 1.
 
 ## Phase 0.7 player-experience path
 
@@ -121,192 +120,142 @@ Account Save 4 / Game State 5 stay unchanged because existing generic commitment
 - **PX-5 — Multi-region campaign readability:** acquired-knowledge regional grouping/readiness proof implemented/audited.
 - **PX-6 — Danger, combat, and recovery:** ordinary campaign combat/body/recovery proof implemented/audited.
 - **Player-language hygiene pass:** implemented/audited.
-- **PX-7 — Repeated multi-region/community breadth:** Mistmere/Soli/Starfen second-community proof implemented/audited.
-- **PX-8 — Sustained sandbox breadth / third-origin continuity:** **next bounded unit**.
+- **PX-7 — Second community breadth:** Mistmere/Soli/Starfen implemented/audited.
+- **PX-8 — Third-origin continuity:** Thornwall/Sera/Elderwood implemented/audited.
+- **PX-9 — Cross-community rotation / `0.7.100` gate:** next bounded unit; do not start unless requested.
 
 ## Player-language / information-hierarchy boundary
 
-A character-POV audit found that the mechanics were improving faster than the presentation language. The cleanup before PX-7 is now a stable contract:
+Ordinary Journal rendering does **not** expose internal `entry.reason` engineering rationale. Summaries/motivation/progress are character/world-facing; detailed requirements live behind **Details**; blockers remain visible; completed entries recede; recommended actionable entries receive emphasis; Day Review renders structured history as memory. `tests/playerFacingLanguage.test.js` guards this boundary.
 
-- ordinary Journal rendering does **not** expose internal `entry.reason` engineering rationale;
-- summaries/motivation/progress are character/world-facing;
-- detailed progress/requirements live behind a collapsible **Details** disclosure;
-- blockers remain immediately visible;
-- completed entries visually recede;
-- suggested actionable entries receive emphasis;
-- Day Review turns structured semantic history into character memory rather than event-count telemetry;
-- Spellbook/Codex/Craft/continuity/readability/aftermath ordinary prose avoids developer jargon.
+Do not put terms like “canonical authority,” “semantic event,” “persisted outcome roll,” or “exactly once” into ordinary player prose merely because those concepts remain valid developer invariants.
 
-`tests/playerFacingLanguage.test.js` guards this boundary. Do not regress it by putting words like “canonical authority,” “semantic event,” “persisted outcome roll,” or “exactly once” directly into ordinary player prose.
+## Three established community loops
 
-## Established first community — Brasshaven / Varric
+### Thornwall / Sera Talwin / Elderwood — PX-8
+
+Canonical record:
 
 ```text
-meet Marshal Varric Stone
-  -> claim/equip Prospector Pick
-  -> accept Copper for the Ring
-  -> travel to Redstone Reach
-  -> gather copper
-  -> return to Brasshaven
-  -> forge Copper Ingot
-  -> deliver provenance-qualified ingot
-  -> receive 36 gil + relationship change exactly once
-  -> later fictional day
-  -> Varric remembers the work
-  -> Starfen / Copper Trail Clasp horizon
-```
-
-PX-4 audit invariants remain:
-
-- same-ID stackable items with different provenance histories do not merge;
-- commitment delivery consumes only provenance-qualified stack quantities;
-- real save/load is tested across resolution/day/follow-up;
-- commitment/relationship registries and catalog are validated authority.
-
-## Acquired-knowledge / multi-region readability
-
-`playerCampaignReadabilityEngine` is a pure presentation decorator. It does not persist a campaign registry.
-
-Varric's later follow-up can make Starfen reed fiber a known ambition without revealing remote Tall Reedbed/source data before arrival. Actual locality routes, scheduled transport fare/cadence, travel reachability, tools, and work requirements remain authoritative.
-
-The Forge–Mere proving fare remains 52 gil; Varric's 36-gil reward does not magically satisfy it.
-
-Explicit truthful upstream `regionLabel` metadata wins over fallback origin inference.
-
-## Ordinary campaign danger/recovery
-
-PX-6 proves:
-
-```text
-livelihood/training choice
-  -> Redstone Burrower encounter
-  -> semantic Attack / abilities / Wait
-  -> victory or defeat
-  -> exactly-once EXP/currency
-  -> separate physical body opportunity
-  -> optional tool/time/proficiency recovery
-  -> timed body/party recovery or defeat retreat
-  -> resume same campaign
-```
-
-Combat 2.0 remains authoritative. Resource opportunities own physical creature material. Campaign recovery uses existing timed tasks:
-
-```text
-field       10 minutes   partial recovery
-settlement  60 minutes   full active-party safe rest
-defeat      120 minutes  retreat to known safety + partial restoration
-```
-
-Do not invent a campaign-specific combat engine, second clock, free defeat reset, paid inn economy, or auto-loot layer.
-
-## PX-7 second community — Mistmere / Reader Soli Venn / Starfen
-
-### Canonical authored record
-
-```text
-commitment-mistmere-marrowleaf-return
-Marrowleaf for the Ward
-Giver: Reader Soli Venn
-Offer: Mistmere Canal Ward
-Requirement: 2 item-starfen-marrowleaf
-Required provenance: source-west-starfen-marrowleaf-bed
-Field source: source-west-starfen-marrowleaf-bed
-Return hub: mistmere-reedport
-Reward: 24 gil + familiarity 1 + respect 1
+commitment-thornwall-sweetroot-return
+Sweetroot for Southgate
+Giver: Sera Talwin
+Offer: Thornwall Southgate
+Requirement: 2 item-elderwood-sweetroot
+Required provenance: source-west-elderwood-sweetroot-patch
+Field source: source-west-elderwood-sweetroot-patch
+Reward: 20 gil + familiarity 1 + respect 1
 Follow-up: one later fictional day
 ```
 
-Reader Soli Venn is a persistent NPC-backed world contact: `npc-mistmere-reader-soli-venn`.
-
-### Proven ordinary flow
+Proven ordinary flow:
 
 ```text
-meet Soli
-  -> accept Marrowleaf for the Ward
-  -> service/exploration alternatives remain available
-  -> Canal Ward -> Reedport -> West Starfen
+meet Sera
+  -> claim/equip Field Knife
+  -> accept Sweetroot for Southgate
+  -> travel to West Elderwood
   -> choose among:
-       Soli Marrowleaf gathering
-       ordinary Reed Fiber livelihood
-       Starfen Rootling training/danger
-  -> gather 2 provenance-qualified Marrowleaf
-  -> West Starfen -> Reedport -> Canal Ward
-  -> deliver to Soli
-  -> 24 gil + relationship change exactly once
+       Sweetroot community request
+       ordinary Amber Resin livelihood
+       Brush Hare training/danger
+  -> gather 2 provenance-qualified Sweetroot
+  -> return to Southgate
+  -> resolve exactly once
   -> real save/load
   -> later fictional day
   -> real save/load
-  -> Soli remembers the Marrowleaf and contextualizes Rootling danger
+  -> Sera remembers the work and points back toward resin, Brush Hares, deeper woods
 ```
 
-### What genuinely generalized
+Sweetroot was deliberately chosen instead of Amber Resin because Amber Resin is already the ordinary Thornwall livelihood route. This preserves independent community/livelihood/danger choices. Sweetroot already has food/medicine/trade sinks; no quest-token material was added.
 
-`playerContinuityEngine` now projects **all actually known commitment definitions**. The offer POI must be discovered or persistent commitment state must already exist.
+### Brasshaven / Marshal Varric Stone / Redstone
 
-Generic continuity projection supports:
+`Copper for the Ring` remains the first transformed-good continuity proof: provenance-qualified Redstone Copper Ingot, 36 gil + relationship change, later-day follow-up, and Copper Trail/Starfen horizon.
 
-- offer/accept;
-- active material requirements;
-- direct semantic field gathering when an authored commitment names a real canonical field source;
-- bounded semantic return via existing locality/travel authority;
-- resolution;
-- later-day follow-up;
-- remembered complete state.
+### Mistmere / Reader Soli Venn / Starfen — PX-7
 
-The commitment system itself remains canonical authority. Journal projection owns none of those states.
+`Marrowleaf for the Ward` remains the second raw-resource continuity proof: two provenance-qualified Marrowleaf, 24 gil + relationship change, later-day follow-up, with Reed Fiber livelihood and Rootling danger remaining independent.
 
-Commitment catalog v2 can validate/provision provenance requirements against canonical raw-resource items or canonical production items. Do not introduce quest-token materials where a real world resource can serve as the social/economic sink.
+## Generic continuity contract
 
-## Stable authority boundaries
+`playerContinuityEngine` projects **all actually known commitment definitions**. A giver POI must be discovered or persistent commitment state must already exist.
 
-Preserve:
+The generic projection supports offer/accept, material requirements, direct field gathering when a real source is authored, bounded semantic return through existing locality/travel authority, resolution, later-day follow-up, and remembered complete state.
 
-- one fictional-time/task/interrupt substrate;
-- continuous-character ownership of stats/capabilities/work mastery;
-- semantic browser intents as normal player actions;
-- command routes as optional power/diagnostic surfaces;
-- acquired-knowledge privacy for maps/routes/resources/contacts;
-- safe settlements intentionally omitting wilderness D-pad/minimap controls;
-- provenance and exactly-once source/sink ownership;
-- battle progression rewards separate from physical resource recovery;
-- commitments separate from relationships and both separate from Journal projection;
-- scheduled transport owning fare/cadence/cargo/departure/arrival;
-- persistent NPC-backed companions;
-- content-pack/cross-reference validation;
-- clean current pre-alpha schema over compatibility-only debt.
+The commitment system owns state/rewards; relationship engine owns relationship dimensions; gathering/travel/day/save systems remain their own authorities. Do not add origin-specific continuity branches unless a real future slice proves the generic contract insufficient.
 
-## Deferred technical/product debt
+## Ordinary campaign danger/recovery
 
-- Search-or-act is still command-capable rather than true semantic fuzzy search.
+PX-6 invariants remain: Combat 2.0 is authoritative; semantic Attack/abilities/Wait are ordinary UI actions; EXP/currency reward is exactly once; physical creature material is a separate defeated-body opportunity; recovery consumes fictional time; defeat retreats to known safety with partial rather than free restoration.
+
+## Acquired-knowledge / campaign readability
+
+`playerCampaignReadabilityEngine` remains derived. Varric's follow-up may make Starfen fiber a known ambition without revealing the Tall Reedbed before arrival. Explicit truthful region metadata wins over fallback origin inference. Scheduled transport retains fare/cadence/cargo/departure/arrival authority.
+
+## `0.7.100` post-PX-8 closure audit
+
+**Open.** The third-origin/community breadth gap is closed. The remaining blocker is now concrete and architectural/UI-facing rather than a request for more content.
+
+The existing route graph connects:
+
+```text
+Thornwall Rivergate
+  -> Timbercross Landing
+  -> Brasshaven Iron Quay
+  -> Mistmere Reedport
+  -> West Starfen
+```
+
+`service-crown-forge-caravan` and `service-forge-mere-caravan` already exist, and `transportEngine` owns their fare/cadence/cargo/departure/arrival behavior. `domApp` already dispatches `transport.start` semantically.
+
+**But generic Travel Desk interaction is not executable transport UI.** `poiEngine.describePoiInteraction(..., 'travel')` currently reports: `Travel service behavior is not implemented yet unless this is a route exit.` PX-5 exposes one Forge–Mere booking through a specific Copper Trail readability path, but that does not make cross-community rotation generically available.
+
+This fails the Phase 0.7 promise that ordinary players can sustain play across several connected communities without command/API expertise. Do not promote Product to `0.7.100` until this seam is repaired and re-audited.
+
+## Next bounded unit — PX-9 cross-community rotation / `0.7.100` gate
+
+First audit:
+
+- `js/text/data/routeCatalog.js`
+- `js/text/systems/transportEngine.js`
+- `js/text/systems/localityEngine.js`
+- `js/text/systems/poiEngine.js`
+- `js/text/ui/gameViewModel.js`
+- `js/text/ui/domApp.js`
+- `js/text/ui/domRenderer.js`
+- PX-5 campaign-readability transport tests
+- route/transport/locality/party save-load tests.
+
+Target:
+
+```text
+current real travel stop
+  -> Travel Desk/context shows real scheduled services
+  -> destination + fare + timing/readiness + blockers are legible
+  -> semantic transport.start
+  -> canonical wait/depart/arrive
+  -> active companions follow
+  -> continue locality/region play
+```
+
+Required proof should cover ordinary **Thornwall -> Brasshaven -> Mistmere** rotation (and an appropriate return leg) using existing locality and scheduled-transport authority. Preserve acquired-knowledge privacy, fare/cargo/time rules, exactly-once payment, companion synchronization, and current-version save/load.
+
+Do not create a second transport catalog, UI-owned journey state, campaign-specific travel state machine, or another community merely to avoid this access problem.
+
+After PX-9, immediately re-run the complete `0.7.100` exit audit instead of automatically inventing PX-10.
+
+## Deferred debt not currently the milestone blocker
+
+- Search-or-act remains command-capable rather than true semantic fuzzy search.
 - Some information views still bridge command output.
-- Craft browser view is still a compact surface rather than a rich production interface.
+- Craft browser view is still compact rather than a rich production interface.
 - `gil` remains current currency terminology pending deliberate original-currency design.
 - companion tactical/dialogue/equipment/progression breadth remains small.
 - safe-settlement rest is executable but not yet a priced/service-quality economy.
 - active DOM safe-locality density/hierarchy still has room to improve; do **not** restore wilderness navigation controls there.
-- two persistent communities are now proven, but Thornwall/Elderwood lacks equivalent several-day continuity.
-- alternative social/economic goals remain thin after the Varric and Soli proving commitments are exhausted.
 
-## `0.7.100` status
+These are real future improvements, but the cross-community Travel Desk seam is the immediate `0.7.100` gate.
 
-**Open.** Do not promote Product merely because PX-7 is coherent.
-
-The concrete remaining closure question is whether ordinary multi-session play has enough repeated community/social/economic/adventure redirection to feel like a sandbox rather than two excellent proving loops.
-
-## Next bounded unit — PX-8 sustained sandbox breadth / third-origin continuity
-
-Prefer existing **Thornwall/Elderwood** authorities.
-
-PX-8 should:
-
-1. establish one persistent Thornwall/Elderwood named-contact/community reason;
-2. connect at least one livelihood/service reason and one danger/adventure reason;
-3. create later fictional-day consequence surviving real save/load;
-4. preserve provenance/exactly-once behavior;
-5. reuse the generic known-commitment projection rather than adding an origin-specific continuity branch;
-6. preserve competing alternatives instead of one mandatory breadcrumb chain;
-7. re-audit the complete `0.7.100` exit criteria after the third-origin slice, including economy/service usefulness, companion relevance, Craft/UI reachability, and repeated-session breadth.
-
-Do **not** start with mass-authored records, a global quest/reputation/dialogue system, replacement economy/encounter framework, or universal campaign registry.
-
-Stop after PX-8 and its audits/docs unless the user explicitly asks to continue farther.
+Stop after the PX-8 audit/docs checkpoint unless the user explicitly asks to continue farther.
