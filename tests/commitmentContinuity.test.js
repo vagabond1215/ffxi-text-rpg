@@ -5,8 +5,14 @@ import { validateCommitmentCatalog } from '../js/text/data/commitments.js';
 import { getProductionItem } from '../js/text/data/productionItems.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import {
+    createAccountWithPassword,
+    loadCharacter,
+    saveGame,
+} from '../js/text/save.js';
+import {
     acceptCommitment,
     getCommitmentRecord,
+    isCommitmentFollowUpAvailable,
     performCommitmentFollowUp,
     resolveCommitment,
     validateCommitmentState,
@@ -24,6 +30,28 @@ import { setEndOfDayPause } from '../js/text/systems/simulationControlEngine.js'
 import { SECONDS_PER_DAY } from '../js/text/systems/worldTimeEngine.js';
 
 const COMMITMENT_ID = 'commitment-brasshaven-copper-return';
+
+class MemoryStorage {
+    constructor() {
+        this.values = new Map();
+    }
+
+    getItem(key) {
+        return this.values.has(key) ? this.values.get(key) : null;
+    }
+
+    setItem(key, value) {
+        this.values.set(key, String(value));
+    }
+
+    removeItem(key) {
+        this.values.delete(key);
+    }
+}
+
+function installStorage() {
+    globalThis.localStorage = new MemoryStorage();
+}
 
 test('first commitment catalog is original, cross-linked, and new games own additive continuity state', () => {
     assert.deepEqual(validateCommitmentCatalog(), []);
@@ -91,6 +119,31 @@ test('provenance-qualified delivery resolves exactly once and changes a named NP
     assert.equal(getNpcRelationship(state, 'npc-brasshaven-marshal-varric-stone').dimensions.respect, 2);
 });
 
+test('inventory and commitment delivery preserve provenance when same-id material stacks have different histories', () => {
+    const state = createNewGameState({ nationId: 'brasshaven' });
+    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
+
+    const ingot = getProductionItem('item-redstone-copper-ingot');
+    const unrelated = { ...ingot, provenance: [] };
+    assert.equal(addItemToContainer(state.player.inventoryState, 'inventory', unrelated).ok, true);
+    assert.equal(addItemToContainer(state.player.inventoryState, 'inventory', ingot).ok, true);
+
+    const ingotStacks = state.player.inventory.filter((item) => item.id === ingot.id);
+    assert.equal(ingotStacks.length, 2, 'different provenance must not collapse into one stack');
+    assert.equal(ingotStacks[0].provenance.length, 0);
+    assert.ok(ingotStacks[1].provenance.some((entry) => entry.sourceId === 'process-redstone-copper-ingot'));
+
+    const resolved = resolveCommitment(state, COMMITMENT_ID);
+    assert.equal(resolved.ok, true, resolved.display?.text ?? resolved.reason);
+    const remaining = state.player.inventory.filter((item) => item.id === ingot.id);
+    assert.equal(remaining.length, 1);
+    assert.equal(remaining[0].provenance.length, 0, 'delivery must consume the qualifying provenance-bearing stack');
+
+    const event = listSemanticEvents(state).find((entry) => entry.type === 'commitment.resolved');
+    assert.ok(event.data.deliveredItems[0].provenance.some((entry) => entry.sourceId === 'process-redstone-copper-ingot'));
+});
+
 test('resolved commitment surfaces in day review and the same NPC has changed follow-up on a later fictional day', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
     performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
@@ -123,6 +176,59 @@ test('resolved commitment surfaces in day review and the same NPC has changed fo
     assert.equal(repeated.ok, true);
     assert.equal(repeated.outcome, 'unchanged');
     assert.equal(listSemanticEvents(state).filter((event) => event.type === 'commitment.followup-viewed').length, 1);
+});
+
+test('PX4 continuity survives the real account save/load path without duplicate social rewards', () => {
+    installStorage();
+    assert.equal(createAccountWithPassword('PX4 Save Audit', 'pwd', { persistentLogin: true }).ok, true);
+    const state = createNewGameState({ nationId: 'brasshaven', name: 'Copper Auditor' });
+    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
+    assert.equal(addItemToContainer(state.player.inventoryState, 'inventory', getProductionItem('item-redstone-copper-ingot')).ok, true);
+    assert.equal(resolveCommitment(state, COMMITMENT_ID).ok, true);
+    setEndOfDayPause(state, false);
+    ensureDayCycleState(state);
+    assert.equal(advanceSimulationWithDayPolicy(state, SECONDS_PER_DAY).ok, true);
+    assert.equal(isCommitmentFollowUpAvailable(state, COMMITMENT_ID), true);
+    assert.equal(saveGame(state), true);
+
+    let loaded = loadCharacter('Copper Auditor');
+    assert.ok(loaded);
+    assert.equal(getCommitmentRecord(loaded, COMMITMENT_ID).status, 'resolved');
+    assert.equal(isCommitmentFollowUpAvailable(loaded, COMMITMENT_ID), true);
+    assert.deepEqual(getNpcRelationship(loaded, 'npc-brasshaven-marshal-varric-stone').dimensions, {
+        familiarity: 1,
+        respect: 2,
+        trust: 0,
+        obligation: 0,
+    });
+
+    assert.equal(performCommitmentFollowUp(loaded, COMMITMENT_ID).ok, true);
+    assert.equal(getNpcRelationship(loaded, 'npc-brasshaven-marshal-varric-stone').dimensions.familiarity, 2);
+    assert.equal(saveGame(loaded), true);
+
+    loaded = loadCharacter('Copper Auditor');
+    const repeated = performCommitmentFollowUp(loaded, COMMITMENT_ID);
+    assert.equal(repeated.ok, true);
+    assert.equal(repeated.outcome, 'unchanged');
+    assert.equal(getNpcRelationship(loaded, 'npc-brasshaven-marshal-varric-stone').dimensions.familiarity, 2);
+    assert.equal(listSemanticEvents(loaded).filter((event) => event.type === 'commitment.followup-viewed').length, 1);
+});
+
+test('commitment state validation rejects inconsistent reward and follow-up bookkeeping', () => {
+    const state = createNewGameState({ nationId: 'brasshaven' });
+    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    acceptCommitment(state, COMMITMENT_ID);
+    const active = getCommitmentRecord(state, COMMITMENT_ID);
+    active.rewardClaimed = true;
+    assert.match(validateCommitmentState(state.commitments).join(' '), /rewardClaimed must be false while active/);
+
+    active.rewardClaimed = false;
+    addItemToContainer(state.player.inventoryState, 'inventory', getProductionItem('item-redstone-copper-ingot'));
+    assert.equal(resolveCommitment(state, COMMITMENT_ID).ok, true);
+    const resolved = getCommitmentRecord(state, COMMITMENT_ID);
+    resolved.followUpAvailableDay += 1;
+    assert.match(validateCommitmentState(state.commitments).join(' '), /followUpAvailableDay must match the definition delay/);
 });
 
 test('missing additive continuity registries reconstruct lazily without changing Game State 5', () => {
