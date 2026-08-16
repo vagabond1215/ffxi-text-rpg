@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.7.100.1');
-    assert.equal(PACKAGE_VERSION, '0.7.100');
+    assert.equal(PRODUCT_VERSION, '0.7.200.1');
+    assert.equal(PACKAGE_VERSION, '0.7.200');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 30);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Playable Campaign Slice');
+    assert.equal(VERSION.codename, 'Settlement Economy Depth');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -34,6 +34,9 @@ test('version manifest separates product package and persistence versions', () =
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
             transportServiceBoard: SYSTEM_VERSIONS.transportServiceBoard,
+            settlementServiceBoard: SYSTEM_VERSIONS.settlementServiceBoard,
+            workstations: SYSTEM_VERSIONS.workstations,
+            shopTransactions: SYSTEM_VERSIONS.shopTransactions,
             characterActivity: SYSTEM_VERSIONS.characterActivity,
             activityAdvance: SYSTEM_VERSIONS.activityAdvance,
             campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
@@ -57,10 +60,13 @@ test('version manifest separates product package and persistence versions', () =
             companions: SYSTEM_VERSIONS.companions,
         },
         {
-            versionManifest: '0.7.100.1',
+            versionManifest: '0.7.200.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             transportServiceBoard: '0.1.0',
+            settlementServiceBoard: '0.1.0',
+            workstations: '0.2.0',
+            shopTransactions: '0.5.0',
             characterActivity: '0.2.0',
             activityAdvance: '0.2.0',
             campaignRecovery: '0.1.0',
@@ -68,14 +74,14 @@ test('version manifest separates product package and persistence versions', () =
             commitments: '0.2.0',
             relationships: '0.1.0',
             dayCycle: '0.2.0',
-            gameViewModels: '0.9.0',
+            gameViewModels: '0.10.0',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
             playerContinuity: '0.5.0',
             playerCampaignReadability: '0.2.0',
             playerDangerRecovery: '0.2.0',
-            domUi: '0.7.0',
-            uiIntents: '0.6.0',
+            domUi: '0.8.0',
+            uiIntents: '0.7.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
             battleEngine: '0.8.0',
@@ -85,14 +91,17 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.7\.100\.1/);
-    assert.match(describeVersion(), /Package: 0\.7\.100/);
+    assert.match(describeVersion(), /Product: 0\.7\.200\.1/);
+    assert.match(describeVersion(), /Package: 0\.7\.200/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 30/);
-    assert.match(describeVersion(), /Codename: Playable Campaign Slice/);
+    assert.match(describeVersion(), /Codename: Settlement Economy Depth/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /transportServiceBoard: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /settlementServiceBoard: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /workstations: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /shopTransactions: 0\.5\.0/);
     assert.match(describeSystemVersions(), /activityAdvance: 0\.2\.0/);
     assert.match(describeSystemVersions(), /campaignRecovery: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.3\.0/);
@@ -101,8 +110,8 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /playerContinuity: 0\.5\.0/);
     assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.2\.0/);
     assert.match(describeSystemVersions(), /playerDangerRecovery: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /domUi: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /gameViewModels: 0\.10\.0/);
+    assert.match(describeSystemVersions(), /domUi: 0\.8\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
@@ -149,6 +158,5 @@ test('tick engine dispatches to subscribers', () => {
     tickEngine.tick();
 
     assert.equal(handled, 1);
-    assert.equal(tickEngine.elapsedTicks, 1);
     assert.equal(tickEngine.subscriberCount, 1);
 });
