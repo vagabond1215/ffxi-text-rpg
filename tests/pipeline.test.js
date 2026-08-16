@@ -22,7 +22,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 28);
+    assert.equal(VERSION.data, 29);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
@@ -63,16 +63,16 @@ test('version manifest separates product package and persistence versions', () =
             activityAdvance: '0.2.0',
             campaignRecovery: '0.1.0',
             resourceRecoveryWork: '0.3.0',
-            commitments: '0.1.0',
+            commitments: '0.2.0',
             relationships: '0.1.0',
             dayCycle: '0.2.0',
             gameViewModels: '0.8.0',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
-            playerContinuity: '0.4.0',
+            playerContinuity: '0.5.0',
             playerCampaignReadability: '0.2.0',
             playerDangerRecovery: '0.2.0',
-            domUi: '0.6.0',
+            domUi: '0.7.0',
             uiIntents: '0.6.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
@@ -86,18 +86,19 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Product: 0\.6\.900\.1/);
     assert.match(describeVersion(), /Package: 0\.6\.900/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 28/);
+    assert.match(describeVersion(), /Data: 29/);
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /activityAdvance: 0\.2\.0/);
     assert.match(describeSystemVersions(), /campaignRecovery: 0\.1\.0/);
     assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /commitments: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /commitments: 0\.2\.0/);
     assert.match(describeSystemVersions(), /relationships: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerContinuity: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /playerContinuity: 0\.5\.0/);
     assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.2\.0/);
     assert.match(describeSystemVersions(), /playerDangerRecovery: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /domUi: 0\.7\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
@@ -121,7 +122,7 @@ test('database registry includes canonical systems plus explicitly bounded legac
 
     const description = describeDatabases();
     assert.match(description, /production \[implemented 0\.1\.0\]/);
-    assert.match(description, /commitments \[implemented 0\.1\.0\]/);
+    assert.match(description, /commitments \[implemented 0\.2\.0\]/);
     assert.match(description, /relationships \[implemented 0\.1\.0\]/);
     assert.match(description, /capabilities \[seeded 0\.2\.0\]/);
     assert.match(description, /magic \[seeded 0\.1\.0\]/);
