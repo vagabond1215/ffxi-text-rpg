@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getNation } from '../js/text/data/nations.js';
+import { getPlace } from '../js/text/data/places.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
 import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
@@ -108,7 +109,7 @@ test('regional training opportunity points only at an enemy authored for the cur
         assert.equal(training.status, 'ready');
         assert.equal(training.action.intent, 'combat.encounter');
         assert.ok(state.enemies.some((enemy) => enemy.id === training.action.payload.enemyId));
-        const place = (await import('../js/text/data/places.js')).getPlace(state.currentPlaceId);
+        const place = getPlace(state.currentPlaceId);
         assert.ok(place.spawnRules.some((rule) => rule.enemyId === training.action.payload.enemyId));
     }
 });
