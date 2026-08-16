@@ -267,39 +267,71 @@ function renderSpellbookView() {
 }
 
 function renderJournalView(model) {
-    const opportunities = model.opportunities?.entries ?? [];
-    const cards = opportunities.length
-        ? opportunities.map((entry) => {
-            const requirements = entry.requirements?.length
-                ? `<ul class="opportunity-requirements">${entry.requirements.map((item) => `<li>${item.met ? '✓' : '○'} ${escapeHtml(item.label)}</li>`).join('')}</ul>`
-                : '<p class="muted">No special requirements.</p>';
-            const blockers = entry.blockers?.length
-                ? `<p class="muted">Blocked: ${escapeHtml(entry.blockers.join(' '))}</p>`
-                : '';
-            const action = entry.action
-                ? `<button type="button" class="primary-button" data-opportunity-action="${escapeAttr(entry.id)}">${escapeHtml(entry.action.label)}</button>`
-                : '';
-            const recommended = model.opportunities.recommendedOpportunityId === entry.id ? '<span class="opportunity-recommended">Suggested next</span>' : '';
-            return `
-                <article class="nearby-card opportunity-card">
-                    <div><strong>${escapeHtml(entry.title)}</strong><small>${escapeHtml(formatType(entry.category))} · ${escapeHtml(entry.status)}</small></div>
-                    ${recommended}
-                    <p>${escapeHtml(entry.summary)}</p>
-                    <p><strong>Why:</strong> ${escapeHtml(entry.reason)}</p>
-                    <p><strong>Progress:</strong> ${escapeHtml(entry.progress)}</p>
-                    ${requirements}${blockers}${action}
-                </article>
-            `;
-        }).join('')
-        : '<p class="empty-note">No current opportunities are known.</p>';
+    const groups = model.opportunities?.groups ?? [];
+    const fallbackEntries = model.opportunities?.entries ?? [];
+    const content = groups.length
+        ? groups.map((group) => renderOpportunityGroup(group, model.opportunities.recommendedOpportunityId)).join('')
+        : fallbackEntries.length
+            ? `<div class="nearby-list opportunity-list">${fallbackEntries.map((entry) => renderOpportunityCard(entry, model.opportunities?.recommendedOpportunityId)).join('')}</div>`
+            : '<p class="empty-note">No current opportunities are known.</p>';
     return `
         <section class="panel primary-view">
             <p class="eyebrow">What matters now</p>
             <h1>Journal</h1>
             <p class="muted">${escapeHtml(model.opportunities?.prompt ?? 'Choose a useful next step from what your character currently knows and can reach.')}</p>
             ${model.activity ? `<div class="journal-activity"><strong>${escapeHtml(model.activity.label)}</strong><span>${escapeHtml(model.activity.detail)}</span></div>` : '<p class="empty-note">No timed activity is currently underway.</p>'}
-            <div class="nearby-list opportunity-list">${cards}</div>
+            <div class="opportunity-groups">${content}</div>
         </section>
+    `;
+}
+
+function renderOpportunityGroup(group, recommendedOpportunityId) {
+    const counts = [
+        group.activeCount ? `${group.activeCount} active` : null,
+        group.readyCount ? `${group.readyCount} ready` : null,
+        group.availableCount ? `${group.availableCount} available` : null,
+        group.blockedCount ? `${group.blockedCount} blocked` : null,
+        group.completeCount ? `${group.completeCount} complete` : null,
+    ].filter(Boolean).join(' · ') || 'known';
+    const label = group.current ? `${group.label} · current` : group.label;
+    const id = `opportunity-group-${group.id}`;
+    return `
+        <section class="opportunity-group" aria-labelledby="${escapeAttr(id)}">
+            <div class="panel-heading opportunity-group-heading">
+                <h2 id="${escapeAttr(id)}">${escapeHtml(label)}</h2>
+                <small>${escapeHtml(counts)}</small>
+            </div>
+            <div class="nearby-list opportunity-list">
+                ${(group.entries ?? []).map((entry) => renderOpportunityCard(entry, recommendedOpportunityId)).join('')}
+            </div>
+        </section>
+    `;
+}
+
+function renderOpportunityCard(entry, recommendedOpportunityId) {
+    const requirements = entry.requirements?.length
+        ? `<ul class="opportunity-requirements">${entry.requirements.map((item) => `<li>${item.met ? '✓' : '○'} ${escapeHtml(item.label)}</li>`).join('')}</ul>`
+        : '<p class="muted">No special requirements.</p>';
+    const blockers = entry.blockers?.length
+        ? `<p class="muted">Blocked: ${escapeHtml(entry.blockers.join(' '))}</p>`
+        : '';
+    const action = entry.action
+        ? `<button type="button" class="primary-button" data-opportunity-action="${escapeAttr(entry.id)}">${escapeHtml(entry.action.label)}</button>`
+        : '';
+    const recommended = recommendedOpportunityId === entry.id ? '<span class="opportunity-recommended">Suggested next</span>' : '';
+    const regionPrefix = entry.regionLabel && String(entry.title).startsWith(`${entry.regionLabel} ·`)
+        ? `${entry.regionLabel} ·`
+        : null;
+    const displayTitle = regionPrefix ? String(entry.title).slice(regionPrefix.length).trimStart() : entry.title;
+    return `
+        <article class="nearby-card opportunity-card">
+            <div><strong>${escapeHtml(displayTitle)}</strong><small>${escapeHtml(formatType(entry.category))} · ${escapeHtml(entry.status)}</small></div>
+            ${recommended}
+            <p>${escapeHtml(entry.summary)}</p>
+            <p><strong>Why:</strong> ${escapeHtml(entry.reason)}</p>
+            <p><strong>Progress:</strong> ${escapeHtml(entry.progress)}</p>
+            ${requirements}${blockers}${action}
+        </article>
     `;
 }
 
