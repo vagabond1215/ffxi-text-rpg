@@ -1,3 +1,4 @@
+import { validateCommitmentCatalog } from '../data/commitments.js';
 import { listGuildServices } from '../data/guildServices.js';
 import { listEquipmentCatalogEntries } from '../data/equipmentCatalog.js';
 import { listContainerDefinitions } from '../data/inventoryContainers.js';
@@ -20,7 +21,9 @@ import {
     SKILL_KEYS,
 } from '../data/systemConstants.js';
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
+import { validateCommitmentState } from './commitmentEngine.js';
 import { getContainerCapacity } from './inventoryEngine.js';
+import { validateRelationshipState } from './relationshipEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
 export const CURRENT_SAVE_VERSION = 5;
@@ -55,6 +58,17 @@ export function validateGameState(state) {
     if (!isObject(state.atlas)) issues.push('atlas must be an object.');
     if (!isObject(state.discoveredPois)) issues.push('discoveredPois must be an object.');
     if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
+
+    if (!isObject(state.commitments)) {
+        issues.push('commitments must be an object.');
+    } else {
+        issues.push(...validateCommitmentState(state.commitments));
+    }
+    if (!isObject(state.relationships)) {
+        issues.push('relationships must be an object.');
+    } else {
+        issues.push(...validateRelationshipState(state.relationships));
+    }
 
     if (!state.player) {
         issues.push('State is missing player.');
@@ -159,6 +173,8 @@ export function validateWorldData() {
         if (!poi) issues.push(`quest hook ${hook.name} references unknown POI ${hook.poiId}.`);
         if (poi && !poi.actions.includes('quest')) issues.push(`quest hook ${hook.name} references POI without quest action.`);
     }
+
+    issues.push(...validateCommitmentCatalog().map((issue) => `commitments: ${issue}`));
 
     for (const entry of listEquipmentCatalogEntries()) {
         issues.push(...validateEquipmentCatalogEntry(entry).map((issue) => `equipmentCatalog.${entry.id}: ${issue}`));
@@ -309,7 +325,7 @@ export function validateNpc(npc) {
 
 export function validateEnemy(enemy) {
     const issues = validateEntityBase(enemy, ENTITY_TYPES.ENEMY);
-    if (!enemy.identity?.name) issues.push('identity.name is required.');
+    if (!npc.identity?.name) issues.push('identity.name is required.');
     if (!Number.isInteger(enemy.level)) issues.push('level must be an integer.');
     if (!isObject(enemy.resources)) issues.push('resources must be an object.');
     if (!isObject(enemy.combat)) issues.push('combat must be an object.');
