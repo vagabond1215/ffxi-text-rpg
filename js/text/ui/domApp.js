@@ -14,6 +14,7 @@ import {
     updateAccountSettings,
 } from '../save.js';
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
+import { advanceActiveActivityToCompletion } from '../systems/activityAdvanceEngine.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
 import { startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
@@ -21,6 +22,7 @@ import { equipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
+import { startProductionWork } from '../systems/productionEngine.js';
 import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
@@ -37,6 +39,8 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'equipment.equip',
     'travel.start',
     'gathering.start',
+    'production.start',
+    'activity.advanceToCompletion',
     'combat.encounter',
 ]);
 
@@ -108,6 +112,12 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'gathering.start') {
             result = startGatheringWork(state, payload.sourceId, { quantity: payload.quantity ?? 1 });
+            recordGameplayFeedback(result);
+        } else if (intent === 'production.start') {
+            result = startProductionWork(state, payload.processId, { containerId: payload.containerId ?? 'inventory' });
+            recordGameplayFeedback(result);
+        } else if (intent === 'activity.advanceToCompletion') {
+            result = advanceActiveActivityToCompletion(state);
             recordGameplayFeedback(result);
         } else if (intent === 'combat.encounter') {
             const place = getPlace(state.currentPlaceId);
