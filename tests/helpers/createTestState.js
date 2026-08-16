@@ -6,3 +6,9 @@ export function createTestState(options = {}) {
         ...options,
     });
 }
+
+export function createIsolatedTestState(options = {}) {
+    const state = createTestState(options);
+    state.player.inventoryState.containers.inventory.items.length = 0;
+    return state;
+}
