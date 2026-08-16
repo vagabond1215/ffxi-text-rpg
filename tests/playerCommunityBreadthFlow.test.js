@@ -78,7 +78,7 @@ test('PX7 gives Mistmere a second persistent community loop without collapsing S
     let view = model(state);
     let soliWork = commitment(view);
     assert.ok(soliWork);
-    assert.equal(soliWork.title, 'Marrowleaf for the Ward');
+    assert.match(soliWork.title, /Starfen · Marrowleaf for the Ward$/);
     assert.equal(soliWork.status, 'ready');
     assert.equal(soliWork.action?.intent, 'commitment.accept');
     assert.equal(soliWork.action?.payload.commitmentId, COMMITMENT_ID);
