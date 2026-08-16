@@ -1,14 +1,13 @@
 import { getCanonicalGatheringSource } from '../data/ecologyRegistry.js';
 import { getEquipmentCatalogEntry } from '../data/equipmentCatalog.js';
 import { getNation } from '../data/nations.js';
-import { getOriginExperienceContent } from '../data/playerExperienceContent.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { findItemInContainer } from './inventoryEngine.js';
 import { listLocalityDestinations } from './localityEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
-import { createPlayerExperienceModel } from './playerExperienceEngine.js';
+import { createPlayerExperienceModel, getOriginExperienceForState } from './playerExperienceEngine.js';
 import { findTravelRoute } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 
@@ -23,7 +22,7 @@ export const OPPORTUNITY_STATUSES = Object.freeze({
 
 export function createPlayerOpportunityModel(state) {
     const experience = createPlayerExperienceModel(state);
-    const origin = getOriginExperienceContent(experience.originId);
+    const origin = getOriginExperienceForState(state);
     const nation = getNation(origin.nationId);
     const destination = getPlace(origin.firstRegionalDestinationId);
     const source = getCanonicalGatheringSource(origin.livelihoodSourceId);
