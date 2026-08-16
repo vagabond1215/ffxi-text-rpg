@@ -11,7 +11,7 @@ import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
 import { claimOriginStarterKit } from '../js/text/systems/playerExperienceEngine.js';
 import { startProductionWork } from '../js/text/systems/productionEngine.js';
 import { createSettlementServiceBoard } from '../js/text/systems/settlementServiceBoardEngine.js';
-import { sellToCurrentShopAction } from '../js/text/systems/shopEngine.js';
+import { buyFromCurrentShopAction, sellToCurrentShopAction } from '../js/text/systems/shopEngine.js';
 import { startTravel } from '../js/text/systems/travelEngine.js';
 import { validateGameState } from '../js/text/systems/validation.js';
 import { getWorkProficiency } from '../js/text/systems/workProficiencyEngine.js';
@@ -77,7 +77,11 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(smelt.status, 'ready');
     assert.equal(smelt.action.intent, 'production.start');
     assert.equal(board.trade.currentShop.poiId, 'poi-bastok-markets-carmelide', 'the I-8 workshop coordinate should also expose the real Mae Oris merchant');
-    assert.ok(board.trade.buyOffers.some((offer) => offer.action?.intent === 'shop.buy'));
+    const unaffordableWater = board.trade.buyOffers.find((offer) => offer.itemId === 'flask-of-water');
+    assert.ok(unaffordableWater, 'current merchant should expose real stock even when the player cannot afford it yet');
+    assert.equal(unaffordableWater.affordable, false);
+    assert.equal(unaffordableWater.action, null);
+    assert.match(unaffordableWater.blocker, /Needs 8 more gil/);
 
     const beforeWork = state.time.totalSeconds;
     const started = startProductionWork(state, smelt.action.payload.processId, { containerId: smelt.action.payload.containerId });
@@ -111,6 +115,17 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(duplicateSale.ok, false);
     assert.equal(state.player.wallet.gil, walletBeforeSale + 14, 'a sold item cannot pay twice');
 
+    board = createSettlementServiceBoard(state);
+    const waterOffer = board.trade.buyOffers.find((offer) => offer.itemId === 'flask-of-water');
+    assert.ok(waterOffer);
+    assert.equal(waterOffer.affordable, true, 'processing and selling should now make an actual preparation purchase possible');
+    assert.equal(waterOffer.action.intent, 'shop.buy');
+    const bought = buyFromCurrentShopAction(state, waterOffer.action.payload.itemQuery, waterOffer.action.payload.shopQuery);
+    assert.equal(bought.ok, true, bought.display?.text ?? bought.reason);
+    assert.equal(bought.data.gilSpent, 8);
+    assert.equal(state.player.wallet.gil, walletBeforeSale + 6);
+    assert.equal(quantity(state, 'flask-of-water'), 1);
+
     state.player.resources.hp = Math.max(1, state.player.resources.hp - 20);
     board = createSettlementServiceBoard(state);
     assert.equal(board.recovery.available, true);
@@ -143,5 +158,6 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(state.time.totalSeconds, timeAfterLoop);
     assert.equal(getWorkProficiency(state.player, 'metalworking'), 2);
     assert.equal(quantity(state, 'item-redstone-copper-ingot'), 0);
+    assert.equal(quantity(state, 'flask-of-water'), 1);
     assert.deepEqual(validateGameState(state), []);
 });
