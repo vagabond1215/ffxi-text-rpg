@@ -157,7 +157,7 @@ A Phase 0.7 alpha slice is credible only when a normal player can sustain repeat
 
 ## 0.7.100 — Playable campaign slice — in progress
 
-The current proving corridor is **Brasshaven -> Redstone Reach -> Brasshaven -> Mistmere -> Starfen**, assembled from existing locality, travel/transport, ecology, work/production, social-continuity, and semantic UI authorities.
+The current proving corridor is **Brasshaven -> Redstone Reach -> Brasshaven -> Mistmere -> Starfen**, assembled from existing locality, travel/transport, ecology, work/production, social-continuity, danger/combat/recovery, and semantic UI authorities.
 
 Implemented player-experience layers:
 
@@ -165,29 +165,34 @@ Implemented player-experience layers:
 - **PX-2 — first-day opportunities:** the Journal surfaces real livelihood, training/danger, exploration/travel, and service/preparation paths plus real starter-tool claim/equip actions;
 - **PX-3 — first regional loop:** Brasshaven guides preparation, Redstone travel, timed copper gathering, return, forge/workstation context, copper-ingot processing, persistent work mastery, and the larger Copper Trail Clasp ambition;
 - **PX-4 — several-day continuity:** `Copper for the Ring` is canonical commitment state tied to persistent Marshal Varric Stone relationship state. Provenance-qualified delivery resolves exactly once, changes the NPC relationship, appears in structured day review, survives real account save/load, and exposes a changed next-day follow-up that competes with another valid use of time;
-- **PX-5 — multi-region campaign readability:** a derived campaign-readability layer groups known opportunities by region/readiness, records why they are knowable, and exposes only genuinely reachable semantic actions. The Varric follow-up creates a Starfen material horizon without revealing the remote Tall Reedbed before arrival. The real Iron Quay -> Mistmere caravan remains blocked at 36 gil against its 52-gil fare and becomes a semantic `transport.start` action only when canonical funds are sufficient. From Mistmere, the real Starfen route becomes actionable, and the local cutting-tool requirement appears only after arrival.
+- **PX-5 — multi-region campaign readability:** a derived campaign-readability layer groups only acquired-known opportunities by region/readiness, records why they are knowable, and exposes only genuinely reachable semantic actions. The Varric follow-up creates a Starfen material horizon without revealing the remote Tall Reedbed before arrival; real fare/tool blockers remain visible and authoritative;
+- **PX-6 — danger, combat, and recovery:** the existing Redstone Burrower now competes with the copper livelihood goal in ordinary play. Encounter, basic Attack, abilities, and Wait are reachable semantically; Combat 2.0 remains canonical. Victory EXP/currency resolve exactly once while physical body material remains a tool/proficiency/time-gated resource opportunity. Field/safe-locality/defeat recovery use canonical timed tasks, and defeat costs two fictional hours, retreats to known safety, and restores only part of combat resources before the same Journal campaign resumes.
 
-PX-4/PX-5 audits strengthened shared authority rather than adding parallel campaign state:
+PX-4 through PX-6 audits strengthened shared authority rather than adding parallel campaign state:
 
 - same-ID inventory stacks with different provenance histories remain distinct;
 - commitment delivery consumes only qualifying provenance-bearing stacks;
 - commitment/relationship state and commitment definitions are top-level validated authority;
-- `playerCampaignReadabilityEngine` is a pure derived projection with no persisted campaign-readability registry;
+- campaign readability and combat aftermath remain pure derived projections with no persisted Journal/campaign registry;
+- explicit current-context region metadata wins over fallback origin inference, preventing Redstone aftermath from being grouped as Brasshaven;
 - scheduled transport remains authoritative for fare/cadence/cargo/departure/arrival behavior;
-- the semantic Journal now renders actual regional/continuity groups with readiness counts instead of a flat card list.
+- battle progression rewards remain exactly once while physical creature material uses canonical resource-opportunity ownership and provenance;
+- defeated-body work and bodily/party recovery now complete through the same fictional-time activity seam as other ordinary work/travel actions.
 
-Authoritative PX-5 runtime checkpoint:
+Authoritative PX-6 runtime checkpoint:
 
 ```text
-cc78f3a5b72c4c793ad8f7f3e1a2f83b001aa9d6
-476/476 tests
+e30ff49d6ae9b2df12e676a9c29f3ce4b425ef10
+480/480 tests
 Benchmark 1 success
 Data 28
 ```
 
-`0.7.100` remains open. The next bounded unit is **PX-6 — danger, combat, and recovery in the ordinary campaign**. It should reuse current regional encounter/ecology data, Combat 2.0, companions, battle rewards, resource-recovery opportunities, settlement recovery/services, canonical fictional time, and semantic UI to prove that danger has real consequences and returns the player to the same persistent campaign.
+Benchmark 1 remains comparable; PX-6 changed neither the protocol nor the route-lookup algorithm. The runtime checkpoint measured approximately 0.459 ms/op player profile creation, 0.099 ms/op enemy profile creation, 0.506 ms/op basic attacks, 0.0045 ms/op tick dispatch, and 0.791 ms/op direct-route lookup.
 
-After PX-6, audit whether `0.7.100` has enough multi-region/community breadth for closure or whether one further bounded breadth/content unit is justified. Do **not** mass-generate content, introduce a replacement quest/economy/dialogue/encounter framework, or turn the Journal into an omniscient global quest database.
+`0.7.100` remains open. The next bounded unit is **PX-7 — repeated multi-region/community breadth**. The strongest current continuity is still Brasshaven-centered; a second real community/regional slice should prove another named contact/social reason, livelihood/service reason, danger/adventure reason, and later consequence—preferably using existing Mistmere/Starfen authority—before generalizing commitment/readability patterns.
+
+Do **not** mass-generate content, introduce replacement quest/economy/dialogue/encounter frameworks, or declare `0.7.100` complete because its systems now compose. Closure requires enough alternative repeated goals and community breadth for sustained ordinary play.
 
 ---
 
