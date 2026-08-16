@@ -1,4 +1,4 @@
-export const PLAYER_EXPERIENCE_CONTENT_VERSION = 3;
+export const PLAYER_EXPERIENCE_CONTENT_VERSION = 4;
 
 export const ORIGIN_EXPERIENCE_CONTENT = Object.freeze({
     thornwall: origin({
@@ -36,6 +36,17 @@ export const ORIGIN_EXPERIENCE_CONTENT = Object.freeze({
         trainingEnemyId: 'enemy-redstone-burrower',
         servicePoiId: 'poi-bastok-markets-olwyn',
         serviceName: 'Perrin Coil',
+        regionalLoop: {
+            id: 'loop-brasshaven-first-copper',
+            title: 'Bring Redstone copper back to the forge',
+            targetResourceItemId: 'item-redstone-copper-ore',
+            targetResourceQuantity: 2,
+            returnPlaceId: 'brasshaven-market-ring',
+            workstationPoiId: 'poi-bastok-markets-reinberta',
+            productionId: 'process-redstone-copper-ingot',
+            outputItemId: 'item-redstone-copper-ingot',
+            largerAmbition: 'A copper ingot and metalworking practice open the first half of a Copper Trail Clasp; Starfen reed fiber can complete that cross-region craft later.',
+        },
     }),
     mistmere: origin({
         nationId: 'mistmere',
@@ -66,7 +77,10 @@ export function listOriginExperienceContent() {
 }
 
 function origin(definition) {
-    return Object.freeze(definition);
+    return Object.freeze({
+        ...definition,
+        regionalLoop: definition.regionalLoop ? Object.freeze({ ...definition.regionalLoop }) : null,
+    });
 }
 
 function normalizeNationId(value) {
