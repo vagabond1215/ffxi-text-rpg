@@ -97,6 +97,7 @@ test('PX6 keeps livelihood and field danger as competing semantic goals, then re
     assert.equal(resources.length, 1);
     assert.equal(resources[0].sourceEnemyId, 'enemy-redstone-burrower');
     assert.equal(resources[0].placeId, 'south-redstone-reach');
+    assert.equal(resources[0].actions[0].id, 'extract');
     assert.equal(state.player.inventory.some((item) => item.id === 'worm-segment'), false, 'battle victory must not auto-loot physical material');
 
     finalizeCombatState(state);
@@ -109,7 +110,7 @@ test('PX6 keeps livelihood and field danger as competing semantic goals, then re
     assert.ok(body);
     assert.equal(body.status, 'blocked');
     assert.equal(body.action, null);
-    assert.ok(body.blockers.some((blocker) => /cutting/i.test(blocker)), 'the Brasshaven mining starter should not magically satisfy butchering');
+    assert.ok(body.blockers.some((blocker) => /cutting/i.test(blocker)), 'the Brasshaven mining starter should not magically satisfy Redstone Burrower extraction');
 });
 
 test('PX6 recovery and defeated-body handling consume fictional time, survive real save/load, and return material with provenance', () => {
@@ -156,6 +157,7 @@ test('PX6 recovery and defeated-body handling consume fictional time, survive re
     assert.ok(body);
     assert.equal(body.status, 'ready');
     assert.equal(body.action?.intent, 'resource.recovery.start');
+    assert.equal(body.action?.payload.actionId, 'extract');
     const bodyStarted = startCharacterResourceRecovery(state, body.action.payload.opportunityId, body.action.payload.actionId, { rng: () => 0 });
     assert.equal(bodyStarted.ok, true, bodyStarted.display?.text ?? bodyStarted.reason);
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
@@ -163,7 +165,7 @@ test('PX6 recovery and defeated-body handling consume fictional time, survive re
     const segment = state.player.inventory.find((item) => item.id === 'worm-segment');
     assert.ok(segment);
     assert.ok(segment.provenance.some((entry) => entry.sourceId === 'enemy-redstone-burrower'));
-    assert.ok(segment.provenance.some((entry) => entry.action === 'butcher'));
+    assert.ok(segment.provenance.some((entry) => entry.action === 'extract'));
     const quantityAfter = state.player.inventory.filter((item) => item.id === 'worm-segment').reduce((sum, item) => sum + item.quantity, 0);
     assert.deepEqual(reconcileCharacterResourceRecoveries(state), []);
     const repeatedQuantity = state.player.inventory.filter((item) => item.id === 'worm-segment').reduce((sum, item) => sum + item.quantity, 0);
@@ -185,7 +187,8 @@ test('PX6 defeat costs two fictional hours, retreats to known safety, restores o
     let view = model(state);
     const defeat = view.opportunities.entries.find((entry) => entry.category === 'recovery' && entry.id.startsWith('recovery-'));
     assert.ok(defeat);
-    assert.equal(defeat.title, 'Recover from defeat');
+    assert.equal(defeat.baseTitle, 'Recover from defeat');
+    assert.equal(defeat.regionLabel, 'Redstone Reach');
     assert.equal(defeat.action?.intent, 'recovery.start');
 
     const timeBefore = state.worldTime.totalSeconds;
@@ -201,6 +204,6 @@ test('PX6 defeat costs two fictional hours, retreats to known safety, restores o
     view = model(state);
     assert.ok(view.opportunities.entries.some((entry) => entry.category === 'livelihood'));
     assert.ok(view.opportunities.entries.some((entry) => entry.category === 'training'));
-    assert.equal(view.opportunities.entries.some((entry) => entry.title === 'Recover from defeat'), false);
+    assert.equal(view.opportunities.entries.some((entry) => entry.baseTitle === 'Recover from defeat'), false);
     assert.deepEqual(validateGameState(state), []);
 });
