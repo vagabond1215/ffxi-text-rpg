@@ -83,14 +83,14 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(unaffordableWater.action, null);
     assert.match(unaffordableWater.blocker, /Needs 8 more gil/);
 
-    const beforeWork = state.time.totalSeconds;
+    const beforeWork = state.worldTime.totalSeconds;
     const started = startProductionWork(state, smelt.action.payload.processId, { containerId: smelt.action.payload.containerId });
     assert.equal(started.ok, true, started.display?.text ?? started.reason);
     assert.equal(quantity(state, 'item-redstone-copper-ore'), 0, 'materials remain owned by production once work begins');
     assert.equal(processEntry(state).status, 'active');
     assert.equal(processEntry(state).action.intent, 'activity.advanceToCompletion');
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
-    assert.equal(state.time.totalSeconds - beforeWork, 300);
+    assert.equal(state.worldTime.totalSeconds - beforeWork, 300);
     assert.equal(quantity(state, 'item-redstone-copper-ingot'), 1);
     assert.equal(getWorkProficiency(state.player, 'metalworking'), 2);
     assert.equal(processEntry(state).durationSeconds, 295, 'settlement presentation should reflect persistent mastery efficiency');
@@ -131,11 +131,11 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(board.recovery.available, true);
     assert.equal(board.recovery.durationSeconds, 3600);
     assert.equal(board.recovery.action.intent, 'recovery.start');
-    const recoveryStartedAt = state.time.totalSeconds;
+    const recoveryStartedAt = state.worldTime.totalSeconds;
     assert.equal(startCampaignRecovery(state).ok, true);
     assert.equal(createSettlementServiceBoard(state).recovery.action.intent, 'activity.advanceToCompletion');
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
-    assert.equal(state.time.totalSeconds - recoveryStartedAt, 3600);
+    assert.equal(state.worldTime.totalSeconds - recoveryStartedAt, 3600);
     assert.equal(state.player.resources.hp, createSettlementServiceBoard(state).recovery.maxHp);
 
     const html = renderGameScreen(
@@ -150,12 +150,12 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.doesNotMatch(html, /canonical authority|semantic event|exactly once/i);
 
     const walletAfterLoop = state.player.wallet.gil;
-    const timeAfterLoop = state.time.totalSeconds;
+    const timeAfterLoop = state.worldTime.totalSeconds;
     assert.equal(saveGame(state), true);
     state = loadCharacter('Market Circuit Auditor');
     assert.ok(state);
     assert.equal(state.player.wallet.gil, walletAfterLoop);
-    assert.equal(state.time.totalSeconds, timeAfterLoop);
+    assert.equal(state.worldTime.totalSeconds, timeAfterLoop);
     assert.equal(getWorkProficiency(state.player, 'metalworking'), 2);
     assert.equal(quantity(state, 'item-redstone-copper-ingot'), 0);
     assert.equal(quantity(state, 'flask-of-water'), 1);
