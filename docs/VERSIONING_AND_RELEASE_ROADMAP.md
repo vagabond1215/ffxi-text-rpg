@@ -16,7 +16,7 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         29
+Data:         30
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 Compatibility: pre-release-current-schema
@@ -34,7 +34,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains three-part SemV
 | --- | ---: | --- |
 | Account Save | 4 | local account/session/character registry contract |
 | Game State | 5 | serialized character/world runtime contract |
-| Data | 29 | canonical authored-data contract |
+| Data | 30 | canonical authored-data contract |
 | Benchmark | 1 | benchmark protocol/comparability |
 
 ### Account Save
@@ -45,11 +45,11 @@ Bump when the persisted account/session registry changes materially. Pre-alpha b
 
 Bump when persisted game-state structure or meaning changes materially. Keep derived/presentation state unpersisted when canonical authority already exists.
 
-PX-5 readability, PX-6 aftermath, the PX-7 player-facing hygiene pass, and PX-7 generic known-commitment Journal projection are derived and do not justify a Game State bump. PX-7 uses the existing generic `state.commitments` and `state.relationships` registries, so Game State remains 5.
+PX-5 readability, PX-6 aftermath, player-language presentation, and the generic known-commitment Journal projection are derived. PX-7/PX-8 use the existing generic `state.commitments` and `state.relationships` registries, so Game State remains 5.
 
 ### Data
 
-Bump when canonical authored-data contracts/catalogs gain a meaningful shape or authority change.
+Bump when canonical authored-data contracts/catalogs gain meaningful shape or authority/content changes that should not be mistaken for the prior authored set.
 
 Recent Data history:
 
@@ -62,11 +62,12 @@ Recent Data history:
 - Data 26 — persistent companion definitions;
 - Data 27 — Phase 0.7 player-experience content/opportunity/regional-loop contract;
 - Data 28 — canonical commitment definitions + general persistent NPC relationship/follow-up contract;
-- **Data 29 — commitment catalog v2, persistent Reader Soli Venn seed, `Marrowleaf for the Ward`, and provenance-aware commitment requirements across raw gathered or transformed goods plus bounded field-source/return guidance.**
+- Data 29 — commitment catalog v2, persistent Reader Soli Venn, `Marrowleaf for the Ward`, and raw-resource/source/return guidance;
+- **Data 30 — persistent Sera Talwin NPC-backed contact plus `Sweetroot for Southgate`, completing the third-origin authored community-continuity set without changing commitment catalog v2 shape.**
 
 ### Benchmark
 
-Bump only if the benchmark workload/protocol changes enough that prior numbers are not comparable. PX-7 retains Benchmark 1.
+Bump only if the benchmark workload/protocol changes enough that prior numbers are not comparable. PX-8 retains Benchmark 1.
 
 ## Compatibility policy
 
@@ -76,25 +77,11 @@ Current mode:
 pre-release-current-schema
 ```
 
-Rules:
-
-- current-format save/load/validation/resume must be deterministic;
-- old pre-alpha local saves/accounts may be reset when a cleaner current schema materially improves the project;
-- do not add compatibility-only duplicate fields, lazy normalization, or adapters by reflex;
-- unknown/future versions must fail deterministically when compatibility is deliberately supported;
-- legacy identifiers are allowed only at explicit research/import boundaries, never as canonical world presentation.
+Current-format save/load/validation/resume must be deterministic. Old pre-alpha local saves/accounts may be reset when a cleaner schema materially improves the project. Do not add compatibility-only duplicate fields, normalization, or adapters by reflex. Legacy identifiers are allowed only at explicit research/import boundaries.
 
 ## Release discipline
 
-A coherent checkpoint requires:
-
-1. bounded implementation and focused tests;
-2. observed full test suite;
-3. observed benchmark against current performance discipline;
-4. browser/build/deploy checks where applicable;
-5. deliberate product/schema/data registrations;
-6. synchronized roadmap/architecture/handoff docs;
-7. stop at the declared boundary rather than silently beginning the next track.
+A coherent checkpoint requires bounded implementation/tests, observed full test suite, observed benchmark, browser/build/deploy verification where applicable, deliberate product/schema/data registration, synchronized docs, and a stop at the declared boundary.
 
 In-progress Phase 0.7 work may advance subsystem/Data contracts without advancing the Product milestone number.
 
@@ -144,58 +131,66 @@ domUi:                      0.7.0
 uiIntents:                  0.6.0
 ```
 
+PX-8 changes no subsystem contract version. It proves the existing catalog-v2 and generic continuity contracts with a third authored community.
+
 ### Phase 0.7 decision sequence
 
 - **PX-1/PX-2/PX-3:** Data 27 established origin experience content, actionable opportunity projection, starter-tool flow, and first Brasshaven/Redstone regional-loop authored contract.
 - **PX-4:** Data 28 added canonical commitment definitions and persistent general NPC relationship/follow-up authority; provenance-safe stacking/delivery was hardened.
 - **PX-5:** no schema/data bump; campaign readability is derived and transport authority remains canonical.
 - **PX-6:** no schema/data bump; recovery reuses timed-task/battle state and aftermath is derived.
-- **Player-language hygiene:** no Data/Game State bump; DOM presentation stops exposing internal rationale, adds collapsible details, and renders day history as character memory. `domUi` advances to `0.7.0`.
-- **PX-7:** Data 29. Commitment catalog v2 supports provenance-qualified raw gathered or transformed goods and optional real field-source/return-hub guidance. Reader Soli Venn becomes a persistent NPC-backed contact and `Marrowleaf for the Ward` proves a second community. `commitments` advances to `0.2.0`; `playerContinuity` advances to `0.5.0` because the Journal projection is now generic over actually known commitment definitions.
+- **Player-language hygiene:** no Data/Game State bump; DOM presentation stops exposing internal rationale and renders deeper requirements/details appropriately.
+- **PX-7:** Data 29. Reader Soli Venn and `Marrowleaf for the Ward` establish the second persistent community; commitment catalog v2 supports provenance-qualified raw or transformed goods and optional real field-source/return guidance. `playerContinuity 0.5.0` becomes generic over actually known commitment definitions.
+- **PX-8:** Data 30. Sera Talwin becomes a persistent NPC-backed Thornwall contact and `Sweetroot for Southgate` establishes the third-origin several-day continuity proof. The existing generic catalog/projection handles it without a new engine branch or persistence schema.
 
-No Account Save or Game State bump accompanies PX-7 because existing registries already serialize the new commitment/relationship records correctly.
+No Account Save or Game State bump accompanies PX-8 because existing registries already serialize the new records correctly.
 
-## Authoritative PX-7 runtime checkpoint
+## Authoritative PX-8 runtime checkpoint
 
 ```text
-0411083b07bc4063fe4810fcb225e1dffd2895a4
-483/483 tests
+63a234edfc1e327d90823c4171bdf315f01aa044
+484/484 tests
 Benchmark 1 success
-Data 29
+Data 30
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     468.655ms  0.468655ms/op
-1,000 enemy combat profiles      110.203ms  0.110203ms/op
-1,000 basic attacks              553.072ms  0.553072ms/op
-10,000 ticks / 5 subscribers      48.620ms  0.004862ms/op
-10,000 direct route lookups     8767.498ms  0.876750ms/op
+1,000 player combat profiles     400.261ms  0.400261ms/op
+1,000 enemy combat profiles      104.237ms  0.104237ms/op
+1,000 basic attacks              509.356ms  0.509356ms/op
+10,000 ticks / 5 subscribers      50.139ms  0.005014ms/op
+10,000 direct route lookups     7969.682ms  0.796968ms/op
 ```
 
 The benchmark protocol is unchanged and results remain comparable to prior Phase 0.7 gates.
 
 ## `0.7.100` — Playable campaign slice — still open
 
-PX-1 through PX-7 now prove:
+PX-1 through PX-8 now prove:
 
 - arrival/footing for all three origins;
 - ordinary first-day semantic opportunities;
-- a complete Brasshaven/Redstone livelihood-production loop;
-- persistent Varric several-day social continuity;
+- complete regional livelihood/production loops;
+- persistent several-day community continuity in Thornwall, Brasshaven, and Mistmere;
+- provenance-qualified raw/transformed community requests and exactly-once social/economic rewards;
 - acquired-knowledge multi-region readability;
 - ordinary danger/combat/body/recovery composition;
-- player-facing Journal language/hierarchy separated from developer diagnostics;
-- a second persistent Mistmere/Soli/Starfen community loop with livelihood/danger alternatives and real save/load continuity.
+- player-facing Journal language/hierarchy separated from diagnostics;
+- real save/load across resolution, day progression, and changed follow-up.
 
-The milestone remains open because sustained sandbox breadth is not yet proven across the full origin/community set. Thornwall/Elderwood lacks equivalent multi-day continuity, alternative social/economic goals remain thin after the two proving commitments, and several service/companion/Craft browser surfaces remain intentionally shallow.
+The post-PX-8 exit audit found one concrete blocker rather than a need for another community: **generic scheduled transport is not yet presented as an executable ordinary Travel Desk/browser choice.**
+
+The authored route graph already connects Thornwall Rivergate -> Timbercross -> Brasshaven Iron Quay -> Mistmere Reedport, and `transportEngine` plus `domApp` already support canonical `transport.start`. But generic POI Travel Desk interaction still reports that travel-service behavior is not implemented; only the specific PX-5 Copper Trail readability path surfaces a scheduled booking semantically.
+
+Therefore the normal-player requirement to rotate among several connected communities without command/API expertise is not yet met. Product remains `0.6.900.1`; Package remains `0.6.900`.
 
 ### Next bounded unit
 
-**PX-8 — sustained sandbox breadth / third-origin continuity.** Prefer Thornwall/Elderwood. Reuse the generic commitment/continuity projection, prove a third community loop with competing livelihood/danger/service choices and later save/load consequence, then perform an explicit `0.7.100` closure audit.
+**PX-9 — cross-community rotation / `0.7.100` gate.** Derive services from the player’s actual route stop, present destination/fare/timing/blockers through the Travel Desk/context UI, dispatch existing `transport.start`, prove ordinary Thornwall -> Brasshaven -> Mistmere rotation, and immediately re-audit the milestone.
 
-Do not advance Product to `0.7.100` until the ordinary multi-session exit gate is genuinely satisfied.
+Do not advance Product to `0.7.100` merely because the route engine already contains the graph.
 
 ## Planned later phases
 
@@ -213,4 +208,4 @@ Release when the core persistent-life/adventure promise is coherent, durable, or
 
 ## Gate philosophy
 
-Do not inflate version numbers to imply completion. Do not mass-author content merely to fill numeric ranges. Close a track when its authority boundary and player experience are coherent enough for the next track to build on safely.
+Do not inflate version numbers to imply completion. Do not mass-author content merely to fill numeric ranges. Close a track only when its authority boundary and ordinary player experience are coherent enough for the next track to build on safely.
