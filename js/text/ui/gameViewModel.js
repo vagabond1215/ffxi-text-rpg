@@ -91,8 +91,9 @@ export function createContextualActions(state, nearby = null, opportunities = nu
             .slice(0, 2)
             .map((entry) => abilityAction(entry));
         return [
-            commandAction('context:attack', 'Attack', 'attack', 'combat'),
+            directAction('context:attack', 'Attack', 'combat.attack', {}, 'combat'),
             ...readyAbilities,
+            directAction('context:combat-wait', 'Wait · 3s', 'combat.wait', { seconds: 3 }, 'combat'),
             commandAction('context:items', 'Items', 'inventory', 'utility'),
             commandAction('context:battle', 'Battle Status', 'battle', 'utility'),
             commandAction('context:spellbook', 'Spellbook', 'spells', 'utility'),
@@ -325,6 +326,16 @@ function commandAction(id, label, command, kind) {
     });
 }
 
+function directAction(id, label, intent, payload, kind) {
+    return Object.freeze({
+        id,
+        label,
+        intent,
+        payload: Object.freeze({ ...(payload ?? {}) }),
+        kind,
+    });
+}
+
 function abilityAction(entry) {
     return Object.freeze({
         id: `context:ability:${entry.ability.id}`,
@@ -338,7 +349,7 @@ function abilityAction(entry) {
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
