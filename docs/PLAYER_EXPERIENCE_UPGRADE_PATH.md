@@ -108,7 +108,7 @@ This remains deliberately small. It is **not** a universal numeric reputation fr
 
 **Goal:** preserve clarity as known opportunities and continuity span multiple regions.
 
-The Journal/Opportunities layer should rank and group **known** opportunities without becoming an omniscient quest list. What can be surfaced must derive from canonical player/world knowledge such as:
+The Journal/Opportunities layer ranks and groups **known** opportunities without becoming an omniscient quest list. What can be surfaced derives from canonical player/world knowledge such as:
 
 - discovered places, routes, POIs, maps, and regional horizons;
 - persistent contacts and relationship/commitment state;
@@ -118,9 +118,29 @@ The Journal/Opportunities layer should rank and group **known** opportunities wi
 
 The player should be able to maintain several short-term goals while understanding their relationship to larger ambitions: better livelihood, deeper training, stronger equipment, broader routes, social standing, companions, infrastructure, and dangerous expeditions.
 
-**Next bounded implementation target:** use the existing Brasshaven/Redstone/Starfen horizon to prove multi-region readability from acquired knowledge. Rank/group current opportunities by region and readiness, preserve direct semantic actions where they are genuinely reachable, and make unknown/undiscovered content stay unknown. Do not mass-author content or build a global quest database to make the UI look populated.
+**Implementation status: landed and audited.** `playerCampaignReadabilityEngine` is a pure presentation decorator over the existing opportunity/continuity model. It adds regional grouping, readiness ordering, knowledge-source metadata, group counts, and one bounded cross-region Copper Trail Clasp proof. The semantic DOM Journal renders those groups as actual sections rather than one flat card list.
 
-Before closing `0.7.100`, the ordinary campaign slice must also compose meaningful danger/combat/recovery with the livelihood/travel/commitment continuity already proven.
+The Brasshaven/Redstone/Starfen proof now behaves as acquired knowledge rather than developer omniscience:
+
+- before Varric’s canonical later-day follow-up, the Journal does not manufacture a Starfen campaign lead merely because Starfen data exists;
+- after the follow-up, Starfen becomes a known larger ambition while the remote Tall Reedbed/source record remains hidden;
+- Brasshaven Market Ring exposes the next local action to Iron Quay, not every route node at once;
+- at Iron Quay, the existing Forge–Mere caravan is surfaced through the semantic `transport.start` intent only when its real fare is affordable;
+- immediately after PX-4, Varric’s 36-gil reward is insufficient for the 52-gil fare, so the Journal honestly reports a blocked route instead of inventing free transport;
+- from Mistmere Reedport, the real route into West Starfen becomes actionable;
+- only after arriving in Starfen does the local Tall Reedbed become visible, at which point the existing cutting-tool requirement remains authoritative.
+
+This PX-5 layer does not persist a campaign-readability registry, add a global quest database, reveal hidden topology, or advance Data beyond 28. It composes canonical locality, transport, travel, inventory/equipment, commitment/relationship, ecology, work, production, and map knowledge.
+
+## PX-6 — Danger, combat, and recovery in the ordinary campaign
+
+**Goal:** make danger part of the same sustained life/adventure loop instead of a detached combat demonstration.
+
+**Next bounded implementation target:** use the existing Brasshaven/Redstone/Starfen corridor to prove one ordinary-player sequence where a meaningful field threat interrupts or competes with livelihood/travel goals, Combat 2.0 resolves through normal semantic UI, victory/defeat has real recovery/resource consequences, and the character can resume the persistent campaign afterward without a second clock or duplicate reward path.
+
+The first proof should reuse currently authored regional enemies, companions, resource-recovery opportunities, settlement recovery/services, canonical fictional time, and exactly-once battle rewards. Do not broaden enemy catalogs, add a parallel encounter campaign system, or mass-author dungeons merely to close the slice.
+
+Before closing `0.7.100`, PX-6 must demonstrate that livelihood, travel, commitment/relationship continuity, multi-region readability, danger, combat, and recovery can coexist in one ordinary current-version campaign flow.
 
 ## Player-facing acceptance checks
 
@@ -134,10 +154,11 @@ For each future Phase 0.7 slice, evaluate from a fresh save rather than from tes
 - Does the next opportunity arise from acquired world knowledge/state rather than developer omniscience?
 - Can the current-version save/load loop resume without duplicating rewards, contacts, or progress?
 - Across days, does prior activity change what people or places offer?
-- As regions accumulate, can the player distinguish ready, preparatory, distant, and completed goals without seeing undiscovered content?
+- As regions accumulate, can the player distinguish ready, preparatory, distant, blocked, and completed goals without seeing undiscovered content?
+- When danger appears, does combat/recovery return the player to the same continuous-character campaign rather than a disconnected mode?
 
 ## Architecture rule
 
 Player-experience guidance is a **projection over canonical state**, not a second simulation authority.
 
-Current projections derive from canonical origin/place/POI discovery, progression, work, travel, equipment, map knowledge, commitments, relationships, and day-cycle state. Real commitments and relationship consequences are canonical gameplay state with semantic events and exactly-once ownership; the Journal may summarize or rank them but must not secretly own them.
+Current projections derive from canonical origin/place/POI discovery, progression, work, travel/transport, equipment, map knowledge, commitments, relationships, day-cycle state, and acquired campaign context. Real commitments and relationship consequences are canonical gameplay state with semantic events and exactly-once ownership; the Journal may summarize, group, or rank them but must not secretly own them.
