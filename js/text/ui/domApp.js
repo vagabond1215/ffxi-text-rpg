@@ -16,6 +16,11 @@ import {
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { advanceActiveActivityToCompletion } from '../systems/activityAdvanceEngine.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
+import {
+    acceptCommitment,
+    performCommitmentFollowUp,
+    resolveCommitment,
+} from '../systems/commitmentEngine.js';
 import { startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { equipItem } from '../systems/equipmentEngine.js';
@@ -36,6 +41,9 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'locality.move',
     'locality.poi',
     'playerExperience.claimStarterKit',
+    'commitment.accept',
+    'commitment.resolve',
+    'commitment.followUp',
     'equipment.equip',
     'travel.start',
     'gathering.start',
@@ -101,6 +109,15 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'playerExperience.claimStarterKit') {
             result = claimOriginStarterKit(state);
+            recordGameplayFeedback(result);
+        } else if (intent === 'commitment.accept') {
+            result = acceptCommitment(state, payload.commitmentId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'commitment.resolve') {
+            result = resolveCommitment(state, payload.commitmentId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'commitment.followUp') {
+            result = performCommitmentFollowUp(state, payload.commitmentId);
             recordGameplayFeedback(result);
         } else if (intent === 'equipment.equip') {
             const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
