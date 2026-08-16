@@ -33,7 +33,10 @@ test('version manifest separates product package and persistence versions', () =
             versionManifest: SYSTEM_VERSIONS.versionManifest,
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
+            characterActivity: SYSTEM_VERSIONS.characterActivity,
             activityAdvance: SYSTEM_VERSIONS.activityAdvance,
+            campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
+            resourceRecoveryWork: SYSTEM_VERSIONS.resourceRecoveryWork,
             commitments: SYSTEM_VERSIONS.commitments,
             relationships: SYSTEM_VERSIONS.relationships,
             dayCycle: SYSTEM_VERSIONS.dayCycle,
@@ -42,6 +45,7 @@ test('version manifest separates product package and persistence versions', () =
             playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
             playerContinuity: SYSTEM_VERSIONS.playerContinuity,
             playerCampaignReadability: SYSTEM_VERSIONS.playerCampaignReadability,
+            playerDangerRecovery: SYSTEM_VERSIONS.playerDangerRecovery,
             domUi: SYSTEM_VERSIONS.domUi,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
@@ -55,17 +59,21 @@ test('version manifest separates product package and persistence versions', () =
             versionManifest: '0.6.900.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
-            activityAdvance: '0.1.0',
+            characterActivity: '0.2.0',
+            activityAdvance: '0.2.0',
+            campaignRecovery: '0.1.0',
+            resourceRecoveryWork: '0.3.0',
             commitments: '0.1.0',
             relationships: '0.1.0',
             dayCycle: '0.2.0',
-            gameViewModels: '0.7.0',
+            gameViewModels: '0.8.0',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
-            playerContinuity: '0.3.0',
-            playerCampaignReadability: '0.1.0',
-            domUi: '0.5.0',
-            uiIntents: '0.5.0',
+            playerContinuity: '0.4.0',
+            playerCampaignReadability: '0.2.0',
+            playerDangerRecovery: '0.2.0',
+            domUi: '0.6.0',
+            uiIntents: '0.6.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
             battleEngine: '0.8.0',
@@ -82,11 +90,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /activityAdvance: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /activityAdvance: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /campaignRecovery: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.3\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.1\.0/);
     assert.match(describeSystemVersions(), /relationships: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerContinuity: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerContinuity: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /playerDangerRecovery: 0\.2\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
