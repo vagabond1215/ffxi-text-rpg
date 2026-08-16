@@ -9,6 +9,7 @@ import {
 import { findRouteLeg, listRoutes } from '../data/routeCatalog.js';
 import { getConnectionsFrom, getPlace, listPlaces } from '../data/places.js';
 import { actionFailure } from './actionResult.js';
+import { isSettlementLocality } from './localityEngine.js';
 import {
     advanceTravelJourney,
     provideTravelInterrupts,
@@ -228,7 +229,7 @@ export function findPlaceByQuery(query) {
 }
 
 function requireRouteStopPosition(state, routeStop) {
-    if (!routeStop?.coordinate) return { ok: true };
+    if (!routeStop?.coordinate || isSettlementLocality(state.currentPlaceId)) return { ok: true };
     const currentKey = coordinateKey(state.position ?? {});
     const requiredKey = coordinateKey(routeStop.coordinate);
     if (currentKey === requiredKey) return { ok: true };
@@ -271,6 +272,10 @@ function describeCoordinateSystem(place) {
 function selectConnectionForPosition(state, connections, direction = null) {
     if (!connections.length) return null;
     const normalizedDirection = normalizeDirection(direction);
+    if (isSettlementLocality(state.currentPlaceId)) {
+        if (normalizedDirection) return connections.find((connection) => (connection.directions ?? []).includes(normalizedDirection)) ?? null;
+        return connections[0] ?? null;
+    }
     const positionKey = coordinateKey(state.position ?? {});
     const matchingPosition = connections.filter((connection) => !connection.departFrom || coordinateKey(connection.departFrom) === positionKey);
     const candidates = matchingPosition.length ? matchingPosition : connections;
