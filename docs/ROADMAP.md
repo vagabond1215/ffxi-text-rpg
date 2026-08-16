@@ -182,7 +182,7 @@ PX-4 through PX-6 audits strengthened shared authority rather than adding parall
 Authoritative PX-6 runtime checkpoint:
 
 ```text
-e30ff49d6ae9b2df12e676a9c29f3ce4b425ef10
+e30bc607faf0e56b784aca54e1f830c0c48fe274
 480/480 tests
 Benchmark 1 success
 Data 28
