@@ -325,7 +325,7 @@ export function validateNpc(npc) {
 
 export function validateEnemy(enemy) {
     const issues = validateEntityBase(enemy, ENTITY_TYPES.ENEMY);
-    if (!npc.identity?.name) issues.push('identity.name is required.');
+    if (!enemy.identity?.name) issues.push('identity.name is required.');
     if (!Number.isInteger(enemy.level)) issues.push('level must be an integer.');
     if (!isObject(enemy.resources)) issues.push('resources must be an object.');
     if (!isObject(enemy.combat)) issues.push('combat must be an object.');
