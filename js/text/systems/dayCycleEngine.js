@@ -244,13 +244,14 @@ function classifyEvent(type) {
     if (['project', 'construction'].includes(prefix)) return 'projects';
     if (['skill', 'level', 'progression', 'capability'].includes(prefix)) return 'progression';
     if (['resource', 'inventory', 'shop', 'economy'].includes(prefix)) return 'resources';
+    if (prefix === 'commitment') return 'commitments';
     if (['relationship', 'reputation'].includes(prefix)) return 'relationships';
     if (['day'].includes(prefix)) return 'day';
     return 'other';
 }
 
 function isNotableEvent(type) {
-    return /(?:completed|arrived|victory|defeat|level|unlocked|relationship|reputation|project)/.test(type);
+    return /(?:completed|arrived|victory|defeat|level|unlocked|commitment|relationship|reputation|project)/.test(type);
 }
 
 function summaryEventData(summary) {
