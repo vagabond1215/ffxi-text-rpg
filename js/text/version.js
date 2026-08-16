@@ -6,7 +6,7 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 29,
+    data: 30,
     benchmark: 1,
     codename: 'Integrated Mechanics Gate',
     compatibility: 'pre-release-current-schema',
