@@ -43,6 +43,7 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
             provenanceSourceId: 'source-west-starfen-marrowleaf-bed',
         }],
         fieldSourceId: 'source-west-starfen-marrowleaf-bed',
+        returnViaPlaceId: 'mistmere-reedport',
         reward: {
             gil: 24,
             relationship: { familiarity: 1, respect: 1 },
@@ -91,6 +92,9 @@ export function validateCommitmentCatalog() {
                 issues.push(`${definition.id} field source ${definition.fieldSourceId} does not produce a required item.`);
             }
         }
+        if (definition.returnViaPlaceId && !getPlace(definition.returnViaPlaceId)) {
+            issues.push(`${definition.id} references unknown return-via place ${definition.returnViaPlaceId}.`);
+        }
         if (!nonNegativeInteger(definition.reward.gil)) issues.push(`${definition.id} reward.gil must be a non-negative integer.`);
         for (const [dimension, delta] of Object.entries(definition.reward.relationship)) {
             if (!['familiarity', 'respect', 'trust', 'obligation'].includes(dimension)) issues.push(`${definition.id} uses unknown relationship dimension ${dimension}.`);
@@ -105,6 +109,7 @@ function commitment(definition) {
     return Object.freeze({
         ...definition,
         fieldSourceId: definition.fieldSourceId ?? null,
+        returnViaPlaceId: definition.returnViaPlaceId ?? null,
         requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))),
         reward: Object.freeze({
             ...definition.reward,
