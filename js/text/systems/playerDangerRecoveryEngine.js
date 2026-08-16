@@ -1,6 +1,5 @@
 import { getPlace } from '../data/places.js';
 import { createCampaignRecoveryModel } from './campaignRecoveryEngine.js';
-import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import {
     listResourceOpportunities,
     RESOURCE_OPPORTUNITY_STATUSES,
@@ -8,7 +7,7 @@ import {
 } from './resourceOpportunityEngine.js';
 import { checkCharacterResourceRecovery } from './resourceRecoveryWorkAdapter.js';
 
-export const PLAYER_DANGER_RECOVERY_VERSION = 1;
+export const PLAYER_DANGER_RECOVERY_VERSION = 2;
 
 export function decoratePlayerDangerRecoveryModel(state, baseModel) {
     if (!baseModel) return baseModel;
@@ -72,6 +71,7 @@ export function createRecoveryOpportunity(state) {
         ],
         blockers: activeBattle ? ['Finish the active battle before recovering.'] : model.blockedReason ? [model.blockedReason] : [],
         action: activeBattle ? null : action,
+        regionLabel: place?.region ?? null,
         knowledgeSource: 'current injuries and battle aftermath',
     });
 }
@@ -86,6 +86,7 @@ export function createBattleResourceOpportunity(state) {
     const activeAction = local.actions.find((entry) => entry.status === RESOURCE_RECOVERY_STATUSES.ACTIVE) ?? null;
     const availableAction = local.actions.find((entry) => entry.status === RESOURCE_RECOVERY_STATUSES.AVAILABLE) ?? null;
     if (!activeAction && !availableAction) return null;
+    const regionLabel = getPlace(local.placeId)?.region ?? getPlace(state.currentPlaceId)?.region ?? null;
 
     if (activeAction) {
         return opportunity({
@@ -98,6 +99,7 @@ export function createBattleResourceOpportunity(state) {
             status: 'active',
             requirements: [requirement(`Finish ${activeAction.id}`, false)],
             action: opportunityAction(`finish-resource-${local.id}`, `Finish · ${activeAction.id}`, 'activity.advanceToCompletion'),
+            regionLabel,
             knowledgeSource: `defeated ${local.sourceName}`,
         });
     }
@@ -123,6 +125,7 @@ export function createBattleResourceOpportunity(state) {
                 actionId: availableAction.id,
             })
             : null,
+        regionLabel,
         knowledgeSource: `defeated ${local.sourceName}`,
     });
 }
