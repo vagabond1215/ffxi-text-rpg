@@ -255,7 +255,7 @@ function renderSpellbookView() {
         <section class="panel primary-view">
             <p class="eyebrow">Prepared knowledge</p>
             <h1>Spellbook &amp; Techniques</h1>
-            <p class="muted">Canonical abilities and techniques execute through structured effects; this view remains a compact knowledge surface rather than a permanent action catalog.</p>
+            <p class="muted">Review the spells and techniques you have actually learned. What you can use now depends on your resources, equipment, preparation, and situation.</p>
             <div class="view-links">
                 ${commandButton('Known Spells', 'spells')}
                 ${commandButton('Techniques', 'techniques')}
@@ -278,7 +278,7 @@ function renderJournalView(model) {
         <section class="panel primary-view">
             <p class="eyebrow">What matters now</p>
             <h1>Journal</h1>
-            <p class="muted">${escapeHtml(model.opportunities?.prompt ?? 'Choose a useful next step from what your character currently knows and can reach.')}</p>
+            <p class="muted">${escapeHtml(model.opportunities?.prompt ?? 'Choose from the leads you know now. You can change course whenever another goal matters more.')}</p>
             ${model.activity ? `<div class="journal-activity"><strong>${escapeHtml(model.activity.label)}</strong><span>${escapeHtml(model.activity.detail)}</span></div>` : '<p class="empty-note">No timed activity is currently underway.</p>'}
             <div class="opportunity-groups">${content}</div>
         </section>
@@ -309,28 +309,42 @@ function renderOpportunityGroup(group, recommendedOpportunityId) {
 }
 
 function renderOpportunityCard(entry, recommendedOpportunityId) {
-    const requirements = entry.requirements?.length
+    const requirementList = entry.requirements?.length
         ? `<ul class="opportunity-requirements">${entry.requirements.map((item) => `<li>${item.met ? '✓' : '○'} ${escapeHtml(item.label)}</li>`).join('')}</ul>`
-        : '<p class="muted">No special requirements.</p>';
+        : '';
     const blockers = entry.blockers?.length
-        ? `<p class="muted">Blocked: ${escapeHtml(entry.blockers.join(' '))}</p>`
+        ? `<p class="opportunity-blockers"><strong>Blocked:</strong> ${escapeHtml(entry.blockers.join(' '))}</p>`
         : '';
     const action = entry.action
         ? `<button type="button" class="primary-button" data-opportunity-action="${escapeAttr(entry.id)}">${escapeHtml(entry.action.label)}</button>`
         : '';
-    const recommended = recommendedOpportunityId === entry.id ? '<span class="opportunity-recommended">Suggested next</span>' : '';
+    const isRecommended = recommendedOpportunityId === entry.id;
+    const recommended = isRecommended ? '<span class="opportunity-recommended">Suggested next</span>' : '';
     const regionPrefix = entry.regionLabel && String(entry.title).startsWith(`${entry.regionLabel} ·`)
         ? `${entry.regionLabel} ·`
         : null;
     const displayTitle = regionPrefix ? String(entry.title).slice(regionPrefix.length).trimStart() : entry.title;
+    const motivation = entry.motivation ?? playerFacingMotivation(entry.category);
+    const detailParts = [
+        entry.progress ? `<p><strong>Progress:</strong> ${escapeHtml(entry.progress)}</p>` : '',
+        requirementList,
+    ].filter(Boolean).join('');
+    const details = detailParts
+        ? `<details class="opportunity-details"><summary>Details</summary>${detailParts}</details>`
+        : '';
+    const classes = [
+        'nearby-card',
+        'opportunity-card',
+        `status-${escapeAttr(entry.status ?? 'available')}`,
+        isRecommended ? 'is-recommended' : '',
+    ].filter(Boolean).join(' ');
     return `
-        <article class="nearby-card opportunity-card">
+        <article class="${classes}">
             <div><strong>${escapeHtml(displayTitle)}</strong><small>${escapeHtml(formatType(entry.category))} · ${escapeHtml(entry.status)}</small></div>
             ${recommended}
             <p>${escapeHtml(entry.summary)}</p>
-            <p><strong>Why:</strong> ${escapeHtml(entry.reason)}</p>
-            <p><strong>Progress:</strong> ${escapeHtml(entry.progress)}</p>
-            ${requirements}${blockers}${action}
+            ${motivation ? `<p class="opportunity-motivation">${escapeHtml(motivation)}</p>` : ''}
+            ${blockers}${details}${action}
         </article>
     `;
 }
@@ -340,7 +354,7 @@ function renderCodexView() {
         <section class="panel primary-view">
             <p class="eyebrow">Known world</p>
             <h1>Codex</h1>
-            <p class="muted">Reference surfaces should reflect what the character has learned, not expose the whole authored database.</p>
+            <p class="muted">Keep track of creatures, places, and maps your character has actually learned about. The unknown world stays unknown until you discover it.</p>
             <div class="view-links">
                 ${commandButton('Bestiary', 'bestiary')}
                 ${commandButton('Known Maps', 'maps')}
@@ -355,7 +369,7 @@ function renderCraftView() {
         <section class="panel primary-view">
             <p class="eyebrow">Production</p>
             <h1>Craft &amp; Process</h1>
-            <p class="muted">Production is driven by canonical timed work, recipe/process definitions, tools, workstations, inputs, provenance-bearing outputs, and persistent work proficiency.</p>
+            <p class="muted">Turn carried materials into useful goods at the right workshop. Recipes, tools, time, and practice determine what you can make.</p>
             <div class="view-links">
                 ${commandButton('Production Options', 'production')}
                 ${commandButton('Inventory', 'inventory')}
@@ -554,6 +568,22 @@ function renderMenuAction(action) {
 
 function commandButton(label, command) {
     return `<button type="button" data-command="${escapeAttr(command)}">${escapeHtml(label)}</button>`;
+}
+
+function playerFacingMotivation(category) {
+    const motivations = {
+        orientation: 'A useful local contact can turn an unfamiliar settlement into a place where you know how to begin.',
+        preparation: 'Better preparation changes which choices are practical before you spend time or take a risk.',
+        livelihood: 'Useful work builds practice and gives you material that can matter elsewhere in the world.',
+        training: 'Manageable danger can build combat skill and confidence before you attempt harder ground.',
+        exploration: 'Travel turns directions into knowledge and gives you more places and routes to plan around.',
+        service: 'Knowing the right local people can improve your equipment, supplies, and preparation.',
+        commitment: 'Someone is counting on you, and finishing the work can change what they remember about you.',
+        ambition: 'This goal connects what you have already accomplished to a farther horizon.',
+        recovery: 'Recovery costs time, but it lets you continue without pretending the danger never happened.',
+        'day-review': 'Yesterday still matters: use what changed to decide what deserves your time next.',
+    };
+    return motivations[category] ?? '';
 }
 
 function formatType(value) {
