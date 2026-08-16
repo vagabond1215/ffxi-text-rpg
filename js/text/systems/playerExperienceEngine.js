@@ -187,3 +187,8 @@ function isEquipped(player, itemId) {
 function path(id, title, how, grows) {
     return Object.freeze({ id, title, how, grows });
 }
+
+function capitalize(value) {
+    const text = String(value ?? '').trim();
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
+}
