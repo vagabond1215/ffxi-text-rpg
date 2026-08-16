@@ -60,6 +60,8 @@ The first-day set should include at least one viable path in each category that 
 
 Do not present unavailable future systems as clickable promises. A commission should either be a real trackable commitment or clearly remain an unposted/informal lead.
 
+**Implementation status:** landed. `playerOpportunityEngine` now owns a dedicated semantic opportunities projection, the Journal renders actionable opportunity cards, all three origins can claim and equip a real field tool through semantic actions, and first-day livelihood/training/exploration/service paths are surfaced only when supported by current world/gameplay authority. The Journal no longer depends on a flat command catalog for this flow.
+
 ## PX-3 — First regional loop: leave, accomplish, return
 
 **Goal:** prove one complete reason-to-travel loop.
@@ -80,6 +82,8 @@ settlement contact/service
 
 Use the existing Phase 0.6 engines as authority. Add only the missing reusable commitment/opportunity primitives demonstrated by this slice.
 
+**Implementation status:** first bounded loop landed for Brasshaven. The Journal can guide an ordinary semantic flow from Marshal Varric Stone and a real Prospector Pick, through travel to Redstone Reach, timed copper gathering and activity completion, return to Brasshaven, forge/workstation selection, and copper-ingot processing. The loop leaves provenance-bearing material plus persistent work mastery, then points at the larger Copper Trail Clasp ambition rather than issuing a disconnected reward. This proves the regional-loop shape; it does **not** close the full `0.7.100` campaign slice or establish general tracked contracts/reputation by itself.
+
 ## PX-4 — First several fictional days: continuity
 
 **Goal:** make the world feel inhabited rather than reset after each loop.
@@ -87,6 +91,8 @@ Use the existing Phase 0.6 engines as authority. Add only the missing reusable c
 Add persistent NPC follow-up, lightweight reputation/relationship consequences, repeatable or changing local needs, day-review surfacing of gains and new opportunities, recovery costs, and reasons to choose between competing uses of character time.
 
 Earlier chores should already begin becoming easier or more skippable through earned mastery, tools, route knowledge, or services.
+
+**Next bounded implementation target:** anchor the first continuity proof to the completed Brasshaven regional loop. Add only the smallest reusable canonical social/follow-up state needed to remember an NPC/community consequence across a day boundary, surface that consequence through Journal/day-review semantic presentation, and prove that a changed local need or follow-up competes with another valid use of character time. Do not invent a parallel quest clock or broad reputation framework before the slice proves its requirements.
 
 ## PX-5 — Multi-region campaign readability
 
