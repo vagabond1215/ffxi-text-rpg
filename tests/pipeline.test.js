@@ -41,6 +41,7 @@ test('version manifest separates product package and persistence versions', () =
             playerExperience: SYSTEM_VERSIONS.playerExperience,
             playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
             playerContinuity: SYSTEM_VERSIONS.playerContinuity,
+            playerCampaignReadability: SYSTEM_VERSIONS.playerCampaignReadability,
             domUi: SYSTEM_VERSIONS.domUi,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
@@ -58,12 +59,13 @@ test('version manifest separates product package and persistence versions', () =
             commitments: '0.1.0',
             relationships: '0.1.0',
             dayCycle: '0.2.0',
-            gameViewModels: '0.6.0',
+            gameViewModels: '0.7.0',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
-            playerContinuity: '0.2.0',
-            domUi: '0.4.0',
-            uiIntents: '0.4.0',
+            playerContinuity: '0.3.0',
+            playerCampaignReadability: '0.1.0',
+            domUi: '0.5.0',
+            uiIntents: '0.5.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
             battleEngine: '0.8.0',
@@ -83,7 +85,8 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /activityAdvance: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.1\.0/);
     assert.match(describeSystemVersions(), /relationships: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerContinuity: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /playerContinuity: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.1\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
