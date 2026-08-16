@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.6.900.1';
-export const PACKAGE_VERSION = '0.6.900';
+export const PRODUCT_VERSION = '0.7.100.1';
+export const PACKAGE_VERSION = '0.7.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 30,
     benchmark: 1,
-    codename: 'Integrated Mechanics Gate',
+    codename: 'Playable Campaign Slice',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.6.900.1',
+    versionManifest: '0.7.100.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -54,6 +54,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
     transport: '0.2.0',
+    transportServiceBoard: '0.1.0',
     contentPackSchema: '0.1.0',
     regionalContentPacks: '0.2.0',
     contentPackValidation: '0.1.0',
@@ -63,7 +64,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     dayCycle: '0.2.0',
     commandShell: '0.5.0',
     domUi: '0.7.0',
-    gameViewModels: '0.8.0',
+    gameViewModels: '0.9.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
     playerContinuity: '0.5.0',
@@ -112,7 +113,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     aggro: '0.3.4',
     travel: '0.5.0',
     pois: '0.3.7',
-    poiDiscovery: '0.3.6',
+    poiDiscovery: '0.3.7',
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
     shops: '0.4.0',
