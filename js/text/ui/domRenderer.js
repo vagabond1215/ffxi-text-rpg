@@ -267,12 +267,38 @@ function renderSpellbookView() {
 }
 
 function renderJournalView(model) {
+    const opportunities = model.opportunities?.entries ?? [];
+    const cards = opportunities.length
+        ? opportunities.map((entry) => {
+            const requirements = entry.requirements?.length
+                ? `<ul class="opportunity-requirements">${entry.requirements.map((item) => `<li>${item.met ? '✓' : '○'} ${escapeHtml(item.label)}</li>`).join('')}</ul>`
+                : '<p class="muted">No special requirements.</p>';
+            const blockers = entry.blockers?.length
+                ? `<p class="muted">Blocked: ${escapeHtml(entry.blockers.join(' '))}</p>`
+                : '';
+            const action = entry.action
+                ? `<button type="button" class="primary-button" data-opportunity-action="${escapeAttr(entry.id)}">${escapeHtml(entry.action.label)}</button>`
+                : '';
+            const recommended = model.opportunities.recommendedOpportunityId === entry.id ? '<span class="opportunity-recommended">Suggested next</span>' : '';
+            return `
+                <article class="nearby-card opportunity-card">
+                    <div><strong>${escapeHtml(entry.title)}</strong><small>${escapeHtml(formatType(entry.category))} · ${escapeHtml(entry.status)}</small></div>
+                    ${recommended}
+                    <p>${escapeHtml(entry.summary)}</p>
+                    <p><strong>Why:</strong> ${escapeHtml(entry.reason)}</p>
+                    <p><strong>Progress:</strong> ${escapeHtml(entry.progress)}</p>
+                    ${requirements}${blockers}${action}
+                </article>
+            `;
+        }).join('')
+        : '<p class="empty-note">No current opportunities are known.</p>';
     return `
         <section class="panel primary-view">
             <p class="eyebrow">What matters now</p>
             <h1>Journal</h1>
+            <p class="muted">${escapeHtml(model.opportunities?.prompt ?? 'Choose a useful next step from what your character currently knows and can reach.')}</p>
             ${model.activity ? `<div class="journal-activity"><strong>${escapeHtml(model.activity.label)}</strong><span>${escapeHtml(model.activity.detail)}</span></div>` : '<p class="empty-note">No timed activity is currently underway.</p>'}
-            <p class="muted">Quest and commitment records will appear here as their canonical state systems mature. Recent meaningful output remains visible below.</p>
+            <div class="nearby-list opportunity-list">${cards}</div>
         </section>
     `;
 }
@@ -297,7 +323,11 @@ function renderCraftView() {
         <section class="panel primary-view">
             <p class="eyebrow">Production</p>
             <h1>Craft &amp; Process</h1>
-            <p class="empty-note">Canonical recipe/process state is not implemented yet. This view intentionally stays quiet rather than presenting legacy craft labels as finished gameplay.</p>
+            <p class="muted">Production is driven by canonical timed work, recipe/process definitions, tools, workstations, inputs, provenance-bearing outputs, and persistent work proficiency.</p>
+            <div class="view-links">
+                ${commandButton('Production Options', 'production')}
+                ${commandButton('Inventory', 'inventory')}
+            </div>
         </section>
     `;
 }
