@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.6.900.1
-Package:      0.6.900
+Product:      0.7.100.1
+Package:      0.7.100
 Account Save: 4
 Game State:   5
 Data:         30
 Benchmark:    1
-Codename:     Integrated Mechanics Gate
+Codename:     Playable Campaign Slice
 ```
 
-Phase 0.7 is in progress. The product number remains at the last completed milestone until the bounded `0.7.100` playable-campaign track actually closes.
+Phase 0.7 remains in progress. The first bounded Phase 0.7 milestone, `0.7.100`, is complete.
 
 ## Product laws
 
@@ -42,7 +42,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments/relationships are canonical gameplay state; Journal/readability are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
+Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments/relationships are canonical gameplay state; Journal/readability/service boards are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
 
 ## Phase summary
 
@@ -82,89 +82,95 @@ Deterministic fictional time, scheduler/pause, timed tasks, interrupts, day revi
 | `0.6.800` | Persistent companion/party foundation | Data 26 |
 | `0.6.900` | Integrated-mechanics exit gate | Product `0.6.900.1` / Data 26 |
 
-The closed Phase 0.6 gate passed 453/453 tests plus Benchmark 1 and deployment.
-
 # 0.7 — Multi-region playable alpha — in progress
 
-Phase 0.7 turns the proven systems into sustained ordinary play; it is not another architecture reset.
+Phase 0.7 turns proven systems into sustained ordinary play; it is not another architecture reset.
 
-## Exit criteria
+## Phase exit direction
 
-A normal player must be able to sustain repeated multi-session play across several connected settlements/regions without test-only setup or command expertise. The campaign must combine persistent NPC communities/relationships, shops/services and meaningful economy/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companions where relevant, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
+A normal player should sustain repeated multi-session play across connected settlements/regions without test-only setup or command expertise. The campaign should combine persistent NPC communities, economy/services/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companions where relevant, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
 
-## `0.7.100` — Playable campaign slice — in progress
+## `0.7.100` — Playable campaign slice — complete
 
-The proving geography now spans **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen** with persistent several-day community continuity at all three origins.
+The proving geography spans **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen**.
 
-### Completed player-experience slices
+Completed player-experience sequence:
 
-- **PX-1 — Arrival and footing:** origin-specific opening, first contact, believable morning start, semantic first action.
-- **PX-2 — First-day opportunities:** real preparation, livelihood, training, exploration, and service choices plus starter-tool claim/equip.
-- **PX-3 — First regional loop:** Brasshaven -> Redstone copper gathering -> return -> forge production -> larger ambition.
-- **PX-4 — Several-day continuity:** Varric commitment/relationship, provenance-qualified delivery, exactly-once reward, later-day follow-up, real save/load.
-- **PX-5 — Multi-region readability:** acquired-knowledge regional grouping/readiness and honest route/fare/tool blockers.
-- **PX-6 — Danger/combat/recovery:** ordinary Redstone combat, body recovery, timed bodily recovery/defeat consequence, return to the same campaign.
-- **Player-language hygiene:** Journal no longer displays internal engineering rationale; details are collapsible; Day Review is memory-style; ordinary prose avoids implementation jargon.
-- **PX-7 — Second community breadth:** Reader Soli Venn / `Marrowleaf for the Ward` establishes Mistmere/Starfen several-day continuity while Reed Fiber livelihood and Rootling danger remain independent.
-- **PX-8 — Third-origin continuity:** Sera Talwin / `Sweetroot for Southgate` establishes Thornwall/Elderwood several-day continuity while Amber Resin livelihood and Brush Hare danger remain independent.
+- **PX-1:** arrival and footing for all three origins.
+- **PX-2:** actionable first-day livelihood/training/exploration/service choices.
+- **PX-3:** Brasshaven -> Redstone livelihood/production loop.
+- **PX-4:** Varric several-day commitment/relationship/save-load continuity.
+- **PX-5:** acquired-knowledge multi-region Journal readability.
+- **PX-6:** ordinary combat, physical aftermath, recovery, and resumed campaign.
+- **Player-language hygiene:** character-facing Journal/Day Review information hierarchy.
+- **PX-7:** Mistmere/Soli/Starfen second-community continuity.
+- **PX-8:** Thornwall/Sera/Elderwood third-origin continuity.
+- **PX-9:** generic scheduled-transport browser access and cross-community rotation.
 
-### PX-8 authority/result
+### PX-9 closure result
 
-Sera Talwin is now a persistent NPC-backed contact. `Sweetroot for Southgate` requests two provenance-qualified West Elderwood Sweetroots, pays 20 gil plus familiarity/respect exactly once, survives real account save/load, and produces changed later-day follow-up. Sweetroot already had food/medicine/trade sinks, so PX-8 adds no quest-token resource.
+`transportServiceBoardEngine` derives scheduled destinations, fare, cadence, next boardable departure, duration, and blockers from existing canonical route/service and current player state. The game view exposes direct `transport.start` actions; Travel Desk POIs describe the same service board. `transportEngine` still owns booking, fare deduction, cargo rules, fictional time, departure/arrival, and party movement.
 
-The generic PX-7 continuity projection handles the entire third-origin flow without an origin-specific engine branch. `COMMITMENT_CATALOG_VERSION` remains 2. Data advances to **30** for the new persistent NPC/commitment authored content; Account Save 4 and Game State 5 remain valid.
-
-Authoritative PX-8 runtime checkpoint:
-
-```text
-63a234edfc1e327d90823c4171bdf315f01aa044
-484/484 tests
-Benchmark 1 success
-Data 30
-```
-
-Benchmark 1 remains comparable:
-
-```text
-player profile      0.400261ms/op
-enemy profile       0.104237ms/op
-basic attack        0.509356ms/op
-tick dispatch       0.005014ms/op
-direct route lookup 0.796968ms/op
-```
-
-## `0.7.100` closure audit after PX-8
-
-**Still open.** The third-community breadth requirement is now substantially proven, but the audit exposed one concrete ordinary-player access defect rather than a need for more authored communities.
-
-The canonical route graph already connects the campaign:
+The end-to-end proof rotates a real character through:
 
 ```text
 Thornwall Rivergate
-  -> Timbercross Landing
+  -> Crown-Forge Caravan
   -> Brasshaven Iron Quay
+  -> Forge-Mere Caravan
   -> Mistmere Reedport
-  -> West Starfen
+  -> return through the same canonical service graph
 ```
 
-Scheduled transport authority already owns the Crown–Forge and Forge–Mere services, fares, cadence, cargo, departures, arrivals, fictional time, and party travel. `domApp` can dispatch semantic `transport.start`.
+The proof covers real fares, one-time payment per booking, save/load during scheduled travel, correct per-stop service visibility, return travel, and acquired-knowledge privacy.
 
-The remaining defect is presentation/discovery: generic locality **Travel Desk** interaction still reports that travel-service behavior is not implemented. PX-5 exposes a Forge–Mere booking only through the specific Copper Trail readability proof. Therefore a normal player cannot yet rotate freely among the three proven communities using generic semantic browser transport without command/API knowledge.
+No Data or Game State bump accompanies PX-9: no authored world record or persisted contract changed.
 
-That fails the explicit `0.7.100` exit promise even though the underlying route graph is connected.
+Authoritative promoted runtime checkpoint:
 
-## Next bounded unit — PX-9 cross-community rotation / `0.7.100` gate
+```text
+d15bd9517803faf6bceae5fb3376193648cca09d
+485/485 tests
+Benchmark 1 success
+Product 0.7.100.1
+Data 30
+```
 
-Do not add a fourth community first. Repair the transport access seam:
+Benchmark 1:
 
-1. derive scheduled services/destinations available from the current real route stop;
-2. show fare, departure/readiness, and blockers through Travel Desk/context UI;
-3. dispatch existing semantic `transport.start`;
-4. prove ordinary Thornwall -> Brasshaven -> Mistmere rotation, including canonical locality legs and scheduled transport;
-5. preserve acquired-knowledge privacy, fare/cargo/time/party/save-load behavior;
-6. immediately re-run the complete `0.7.100` closure audit.
+```text
+player profile      0.439616ms/op
+enemy profile       0.116070ms/op
+basic attack        0.504204ms/op
+tick dispatch       0.004863ms/op
+direct route lookup 0.806415ms/op
+```
 
-Craft UI depth, paid service economy, and broader companion content remain later improvements, but they are not substitutes for this specific closure blocker.
+`0.7.100` is a **closed pre-alpha milestone**, not a claim that Phase 0.7 or the game is feature-complete.
+
+## `0.7.200` — Settlement service and economy depth — next
+
+Now that the proving communities are connected through ordinary semantic play, deepen the reasons to return to and spend time in settlements.
+
+Start with an audit of existing authority and one bounded reusable loop. Priorities:
+
+- expose meaningful shop/service/recovery/workstation choices through browser UI;
+- turn the compact Craft surface into a real production-choice surface using existing production/workstation authority;
+- strengthen material source -> process -> trade/use/service decisions;
+- if paid recovery/service quality is added, use the existing wallet, fictional-time, and service authorities rather than a parallel rest economy;
+- create repeated economic/social reasons to revisit communities without drifting into property/infrastructure systems reserved for 0.8.
+
+Do not begin by mass-authoring shops, recipes, or services. Prove one reusable settlement-service/economic loop first, then reassess breadth.
+
+## Known later Phase 0.7 depth
+
+- Search-or-act remains command-capable rather than true semantic fuzzy search.
+- Some information views still bridge command output.
+- Craft browser depth is limited.
+- Settlement recovery is executable but not yet a priced/service-quality economy.
+- Companion tactical/dialogue/equipment/progression breadth remains small.
+- Safe-locality hierarchy/density can improve without restoring wilderness controls there.
+- `gil` remains current currency terminology pending deliberate original-currency design.
 
 # Later phases
 
