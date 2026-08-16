@@ -63,7 +63,7 @@ export function createCommitmentOpportunity(state) {
             title: definition.name,
             summary: definition.description,
             reason: 'A real commitment gives the first regional livelihood loop a social and economic reason without turning the Journal into authority.',
-            progress: 'Resolving it records completed work, pays once, and changes your standing with a persistent NPC.',
+            progress: 'Finish the requested work and Varric will remember whether you followed through.',
             status: inPlace ? 'ready' : 'available',
             requirements: [requirement('Speak with Marshal Varric Stone in Brasshaven Market Ring', inPlace)],
             action: inPlace ? action('accept-copper-return', `Accept · ${definition.name}`, 'commitment.accept', { commitmentId }) : null,
@@ -78,14 +78,14 @@ export function createCommitmentOpportunity(state) {
             category: 'commitment',
             title: definition.name,
             summary: deliverable
-                ? 'You have the requested provenance-bearing ingot. Return it to Varric for real resolution.'
+                ? 'You have the Redstone ingot Varric asked you to make. Bring it back to him at the Market Ring.'
                 : definition.objective,
             reason: 'The commitment remains persistent while the livelihood loop supplies its real material requirement.',
-            progress: 'Successful resolution pays exactly once and changes Varric’s familiarity and respect.',
+            progress: 'Completing the delivery earns Varric’s payment and changes how he regards your work.',
             status: check.ok ? 'ready' : 'active',
             requirements: [
                 requirement('Commitment accepted', true),
-                requirement('Carry one Redstone Copper Ingot from the Redstone smelting process', deliverable),
+                requirement('Carry one Redstone Copper Ingot you smelted from Redstone ore', deliverable),
                 requirement('Return to Brasshaven Market Ring', state.currentPlaceId === definition.offerPlaceId),
             ],
             blockers: check.ok ? [] : check.blockers,
@@ -98,12 +98,12 @@ export function createCommitmentOpportunity(state) {
         return opportunity({
             id: `commitment-${definition.id}`,
             category: 'commitment',
-            title: `${definition.name} · follow-up complete`,
-            summary: 'Varric now remembers your completed work as part of an ongoing relationship rather than a one-time newcomer transaction.',
+            title: `${definition.name} · remembered`,
+            summary: 'Varric remembers that you completed the copper run. Your work with him now has history rather than ending at the payment.',
             reason: 'Persistent social continuity turns completed work into future context instead of resetting the NPC after reward collection.',
-            progress: 'The Copper Trail Clasp now points toward Starfen reed fiber and a broader cross-region ambition.',
+            progress: 'His later advice points toward Starfen reed fiber and the Copper Trail Clasp.',
             status: 'complete',
-            requirements: [requirement('Resolve the commitment and return on a later day', true)],
+            requirements: [requirement('Finish the copper delivery and speak with Varric again on a later day', true)],
             action: null,
         });
     }
@@ -115,14 +115,14 @@ export function createCommitmentOpportunity(state) {
         category: 'commitment',
         title: followUpReady ? 'Varric remembers the copper' : `${definition.name} · credited`,
         summary: followUpReady
-            ? 'A later fictional day has arrived. The same NPC now has changed follow-up based on the resolved commitment.'
-            : 'The ingot has been delivered and credited. Varric’s next follow-up becomes available on a later fictional day.',
+            ? 'A new day has begun since the delivery. Varric may have something different to say now that you have proven you can finish the route.'
+            : 'The ingot has been delivered and credited. Give the work some time before expecting another conversation to grow from it.',
         reason: 'Time and relationships persist after resolution; continuity is not an immediate reward-dialogue reset.',
-        progress: 'The next conversation connects proven Brasshaven work to a larger Starfen-linked ambition.',
+        progress: 'The next conversation can turn proven Brasshaven work into a reason to look farther east.',
         status: followUpReady && inPlace ? 'ready' : 'available',
         requirements: [
-            requirement('Commitment resolved', true),
-            requirement('A later fictional day has begun', followUpReady),
+            requirement('Copper delivery complete', true),
+            requirement('A new day has begun', followUpReady),
             requirement('Return to Brasshaven Market Ring', inPlace),
         ],
         action: followUpReady && inPlace
@@ -143,20 +143,32 @@ export function createDayReviewOpportunity(state) {
     const resolved = Number(eventTypes['commitment.resolved']) || 0;
     const relationshipChanges = Number(eventTypes['relationship.changed']) || 0;
 
-    const highlights = [
-        resolved ? `${resolved} commitment resolution${resolved === 1 ? '' : 's'}` : null,
-        relationshipChanges ? `${relationshipChanges} relationship change${relationshipChanges === 1 ? '' : 's'}` : null,
-        work ? `${work} work event${work === 1 ? '' : 's'}` : null,
-        progression ? `${progression} progression event${progression === 1 ? '' : 's'}` : null,
+    const memories = [
+        resolved ? `you finished ${resolved === 1 ? 'a commitment' : `${resolved} commitments`} someone was counting on` : null,
+        relationshipChanges ? `${relationshipChanges === 1 ? 'one relationship changed' : `${relationshipChanges} relationships changed`} because of what you did` : null,
+        work ? `you spent time on ${work === 1 ? 'useful work' : 'several pieces of useful work'}` : null,
+        progression ? 'your practice left you more experienced than the day before' : null,
+    ].filter(Boolean);
+
+    const memoryText = memories.length
+        ? `Looking back on Day ${summary.day}, ${joinNaturally(memories)}.`
+        : `Day ${summary.day} passed without a major change that needs your attention now.`;
+    const nextThoughts = [
+        commitments ? 'unfinished or newly completed promises' : null,
+        relationships ? 'people who now know you differently' : null,
+        work ? 'work worth continuing or turning into something useful' : null,
+        progression ? 'new practice you can build on' : null,
     ].filter(Boolean);
 
     return opportunity({
         id: `day-review-${summary.day}`,
         category: 'day-review',
-        title: `Latest day review · Day ${summary.day}`,
-        summary: `${summary.eventCount} semantic event${summary.eventCount === 1 ? '' : 's'} were recorded during the completed day.${highlights.length ? ` Highlights: ${highlights.join(', ')}.` : ''}`,
+        title: `Yesterday · Day ${summary.day}`,
+        summary: memoryText,
         reason: 'Day review summarizes structured persistent changes; it does not reconstruct progress from display prose.',
-        progress: `Commitments ${commitments} · Relationships ${relationships} · Work ${work} · Progression ${progression}`,
+        progress: nextThoughts.length
+            ? `Worth remembering: ${joinNaturally(nextThoughts)}.`
+            : 'Nothing from yesterday demands a particular next step.',
         status: 'complete',
         requirements: [],
         action: null,
@@ -188,4 +200,10 @@ function action(id, label, intent, payload = {}) {
 
 function requirement(label, met) {
     return { label, met: Boolean(met) };
+}
+
+function joinNaturally(items) {
+    if (items.length <= 1) return items[0] ?? '';
+    if (items.length === 2) return `${items[0]} and ${items[1]}`;
+    return `${items.slice(0, -1).join(', ')}, and ${items.at(-1)}`;
 }
