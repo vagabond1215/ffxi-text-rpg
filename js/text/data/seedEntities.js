@@ -15,6 +15,11 @@ export function createSeedNpcs() {
             locationId: 'brasshaven-market-ring', services: ['realmSeal', 'regionalRewards'],
         }),
         createNpc({
+            id: 'npc-brasshaven-marshal-varric-stone', name: 'Marshal Varric Stone', title: 'Civic Marshal', faction: 'Brasshaven',
+            locationId: 'brasshaven-market-ring', services: ['orientation', 'commissions', 'civic'],
+            questIds: ['commitment-brasshaven-copper-return'],
+        }),
+        createNpc({
             id: 'npc-mistmere-marsh-warden', name: 'Mistmere Marsh Warden', title: 'Road Warden', faction: 'Mistmere',
             locationId: 'mistmere-canal-ward', services: ['realmSeal', 'regionalRewards'],
         }),
