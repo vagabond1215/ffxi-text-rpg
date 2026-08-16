@@ -15,6 +15,7 @@ import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.j
 import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
+import { createTransportServiceBoard } from '../systems/transportServiceBoardEngine.js';
 import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEngine.js';
 import { createMinimapModel } from './minimapModel.js';
 
@@ -44,6 +45,9 @@ export function createGameViewModel(state, uiState = {}) {
     const party = createPartyModel(state);
     const guidance = createPlayerExperienceModel(state);
     const opportunities = decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state));
+    const transportDesk = navigationMode === 'locality'
+        ? createTransportServiceBoard(state)
+        : Object.freeze({ version: 1, placeId: state.currentPlaceId, placeName: place?.name ?? state.location ?? '', entries: Object.freeze([]) });
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -74,7 +78,8 @@ export function createGameViewModel(state, uiState = {}) {
         }),
         map: navigationMode === 'exploration' ? createMinimapModel(state) : null,
         movement: Object.freeze(navigationMode === 'exploration' ? createMovementActions(state) : []),
-        contextualActions: Object.freeze(createContextualActions(state, nearby, opportunities)),
+        contextualActions: Object.freeze(createContextualActions(state, nearby, opportunities, transportDesk)),
+        transportDesk,
         spellbook,
         party,
         activity,
@@ -84,7 +89,7 @@ export function createGameViewModel(state, uiState = {}) {
     });
 }
 
-export function createContextualActions(state, nearby = null, opportunities = null) {
+export function createContextualActions(state, nearby = null, opportunities = null, transportDesk = null) {
     if (state.activeBattle?.phase === 'active') {
         const readyAbilities = listAbilityAvailability(state)
             .filter((entry) => entry.known && entry.available && entry.ability.contexts.includes('combat'))
@@ -124,9 +129,12 @@ export function createContextualActions(state, nearby = null, opportunities = nu
         const recommendedAction = recommendedOpportunity?.action
             ? Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category })
             : null;
+        const board = transportDesk ?? createTransportServiceBoard(state);
+        const transportActions = board.entries.map(transportBoardAction);
         const actions = [
             ...(guidanceAction ? [guidanceAction] : []),
             ...(recommendedAction ? [recommendedAction] : []),
+            ...transportActions,
             ...recruitActions,
             ...listLocalityDestinations(state)
                 .slice(0, 3)
@@ -346,10 +354,26 @@ function abilityAction(entry) {
     });
 }
 
+function transportBoardAction(entry) {
+    const readiness = entry.available
+        ? `departs in ${formatDurationShort(entry.waitSeconds)}`
+        : entry.blockers[0];
+    return directAction(
+        `context:${entry.id}`,
+        `${entry.serviceName} → ${entry.destinationName} · ${entry.fareAmount} ${entry.currencyId} · every ${formatDurationShort(entry.cadenceSeconds)} · ${readiness}`,
+        'transport.start',
+        { serviceId: entry.serviceId, destinationPlaceId: entry.destinationPlaceId, cargoUnits: 0 },
+        'travel',
+    );
+}
+
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? action.id}`;
+        const transportKey = action.payload?.serviceId && action.payload?.destinationPlaceId
+            ? `${action.payload.serviceId}:${action.payload.destinationPlaceId}`
+            : null;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? transportKey ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
@@ -369,6 +393,15 @@ function stat(id, label, value) {
 function formatCosts(costs = {}) {
     const entries = Object.entries(costs);
     return entries.length ? entries.map(([key, value]) => `${value} ${key.toUpperCase()}`).join(' + ') : 'No resource cost';
+}
+
+function formatDurationShort(seconds) {
+    const total = Math.max(0, Math.floor(Number(seconds) || 0));
+    if (total === 0) return 'now';
+    if (total % 3600 === 0) return `${total / 3600}h`;
+    if (total >= 3600) return `${Math.floor(total / 3600)}h ${Math.floor((total % 3600) / 60)}m`;
+    if (total % 60 === 0) return `${total / 60}m`;
+    return `${total}s`;
 }
 
 function clamp01(value) {
