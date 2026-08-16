@@ -16,14 +16,14 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         27
+Data:         28
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
 
 The repository is pre-alpha. **Phase 0.6 is complete.** Continuous-character progression/capabilities, semantic DOM presentation, original executable abilities, Combat 2.0 timing/interruption, locality/exploration navigation, equipment/tool breadth, provenance-bearing production, regional ecology/resource breadth, persistent NPC-backed companions, and an executable integrated-mechanics exit gate are established on top of the deterministic simulation/content substrate.
 
-Phase 0.7 player-experience work is now in progress, but the product version remains at the last completed milestone until a bounded 0.7 track is actually closed. Data 27 and the Phase 0.7 subsystem registrations describe the current in-progress authored/player-experience contract; they do not imply that `0.7.100` is complete.
+Phase 0.7 player-experience work is now in progress, but the product version remains at the last completed milestone until a bounded 0.7 track is actually closed. Data 28 and the Phase 0.7 subsystem registrations describe the current in-progress authored/player-experience/continuity contract; they do not imply that `0.7.100` is complete.
 
 ## Product version format
 
@@ -62,7 +62,7 @@ Product version is not a persistence schema number. Track these independently:
 | --- | ---: | --- |
 | Account Save | 4 | Current local account/session/character registry contract |
 | Game State | 5 | Current serialized character/world runtime contract |
-| Data | 27 | Canonical authored-data contract |
+| Data | 28 | Canonical authored-data contract |
 | Benchmark | 1 | Benchmark protocol/comparability |
 
 ### When to bump Account Save
@@ -86,9 +86,10 @@ Bump when canonical authored-data contracts or catalogs gain a meaningful versio
 - Data 24 — canonical production/process/output contract;
 - Data 25 — regional ecology/resource breadth and registry contract;
 - Data 26 — persistent companion definition, recruitment/tactics, and relationship-dimension contract;
-- Data 27 — Phase 0.7 player-experience authored content and actionable opportunity/regional-loop contract.
+- Data 27 — Phase 0.7 player-experience authored content and actionable opportunity/regional-loop contract;
+- Data 28 — canonical commitment definition plus general persistent NPC relationship/follow-up authored contract for the first several-day continuity slice.
 
-`0.6.900` did **not** advance Data because it stabilized and validated existing Data 26 authorities rather than adding a new authored-data schema. Phase 0.7 subsequently advanced Data to 27 without advancing Product because the player-experience content/opportunity contract changed materially while the full `0.7.100` milestone remains open.
+`0.6.900` did **not** advance Data because it stabilized and validated existing Data 26 authorities rather than adding a new authored-data schema. Phase 0.7 subsequently advanced Data through 27 and 28 without advancing Product: Data 27 established player-experience/opportunity/regional-loop authored authority; Data 28 added a materially new commitment/relationship continuity contract. The full `0.7.100` milestone remains open.
 
 ### When to bump Benchmark
 
@@ -203,11 +204,28 @@ Authoritative runtime checkpoint `58fed55122d8058152c70c8e7b3b2565d2cbeaf9` pass
 
 ### Phase 0.7 in-progress version decision
 
-The first player-experience slices retain Product `0.6.900.1` and Package `0.6.900` while advancing Data to `27`. Account Save `4`, Game State `5`, and Benchmark `1` remain unchanged.
+The current player-experience slices retain Product `0.6.900.1` and Package `0.6.900` while advancing Data to `28`. Account Save `4`, Game State `5`, and Benchmark `1` remain unchanged.
 
-The in-progress slice registers `activityAdvance 0.1.0`, `gameViewModels 0.5.0`, `playerExperience 0.2.0`, `playerOpportunities 0.1.0`, and `domUi 0.3.0`. These versions describe the landed PX-1/PX-2 footing/opportunity work and the first bounded PX-3 Brasshaven regional-loop contract. They are intentionally not a Product `0.7.100` declaration.
+Current Phase 0.7 registrations include:
 
-Authoritative runtime checkpoint `39d9912011691477d6443fa57da1bc3594b1b6f2` passed 464/464 tests, the Benchmark 1 workload at Data 27, and GitHub Pages deployment.
+```text
+activityAdvance:    0.1.0
+commitments:        0.1.0
+relationships:      0.1.0
+dayCycle:           0.2.0
+gameViewModels:     0.6.0
+playerExperience:   0.3.0
+playerOpportunities:0.2.0
+playerContinuity:   0.2.0
+domUi:              0.4.0
+uiIntents:           0.4.0
+```
+
+These versions describe landed PX-1 through PX-4 footing, opportunity, regional-loop, commitment, relationship, next-day continuity, and semantic presentation/action contracts. They are intentionally not a Product `0.7.100` declaration.
+
+Data advanced from 27 to 28 because the canonical commitment definition and general persistent NPC relationship/follow-up authored contract materially expanded current authored-data authority. Game State remains 5: current new games explicitly own the commitment/relationship registries and top-level current-state validation now requires them, while no new Game State version was needed for this pre-alpha current contract. The PX-4 audit also strengthened provenance ownership so same-ID materials with different histories cannot merge and commitment delivery consumes only provenance-qualified stacks.
+
+Authoritative runtime checkpoint `ee3937b3bd9d60024937548ef09776e7677f0e97` passed 474/474 tests and the Benchmark 1 workload at Data 28. The workflow ran project tests on Node 20.20.2; the recurring GitHub Actions Node 20 action-runtime deprecation message remains warning-only.
 
 ## Phase 0.7 — Multi-region playable alpha — in progress
 
@@ -231,7 +249,9 @@ Phase 0.7 exits only when a normal player can sustain repeated multi-session pla
 
 Each major playable region should have both economic/livelihood reasons and social/adventure reasons to visit. Ordinary campaign actions must be reachable through the semantic browser UI. Current-version saves, validators, provenance, time/interrupt behavior, and exactly-once resource ownership must remain green as content scales.
 
-The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication. PX-1 arrival/footing and PX-2 actionable opportunities are implemented, and PX-3 now proves one complete Brasshaven -> Redstone Reach -> Brasshaven material/production loop. The full `0.7.100` track remains open until persistent social/relationship continuity, commitment/quest consequences, danger/combat/recovery composition, and several-day ordinary-player continuity are coherent in the same campaign slice.
+The first bounded target is `0.7.100` — a playable campaign slice connecting existing systems through one coherent regional corridor before broad content multiplication. PX-1 arrival/footing, PX-2 actionable opportunities, PX-3 Brasshaven -> Redstone Reach -> Brasshaven material/production loop, and PX-4 canonical commitment/relationship/several-day continuity are implemented as bounded slices. PX-4 now proves real account save/load continuity, exactly-once social/resource ownership, structured day review, and changed next-day follow-up.
+
+The full `0.7.100` track remains open. The next bounded player-experience unit is PX-5 multi-region campaign readability from acquired knowledge. Before the track closes, the same ordinary campaign flow must also compose meaningful danger/combat/recovery with the livelihood/travel/commitment continuity already proven and provide enough multi-region/community breadth for repeated play.
 
 ## Planned later phases
 
