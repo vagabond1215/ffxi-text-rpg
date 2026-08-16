@@ -1,3 +1,4 @@
+import { getEquipmentCatalogEntry } from './data/equipmentCatalog.js';
 import { getNation } from './data/nations.js';
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
@@ -26,6 +27,11 @@ export function createNewGameState(options = {}) {
     const nation = getNation(options.nationId);
     const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
     const startCoordinate = normalizePositionForPlace(startPlace, startPlace.coordinateSystem.start);
+    const startingEquipment = nation.startingEquipmentIds.map((itemId) => {
+        const item = getEquipmentCatalogEntry(itemId);
+        if (!item) throw new Error(`Unknown starting equipment ${itemId} for ${nation.id}.`);
+        return item;
+    });
     const player = createPlayerCharacter({
         name: options.name ?? 'Traveler',
         raceId: options.raceId ?? 'human',
@@ -35,6 +41,11 @@ export function createNewGameState(options = {}) {
         nation: nation.name,
         startingCity: startPlace.name,
         keyItems: [...nation.startingKeyItems],
+        inventoryOptions: {
+            containers: {
+                inventory: { items: startingEquipment },
+            },
+        },
         progression: {
             unlockedMaps: [...nation.startingMapIds],
             unlockedHomePoints: [startPlace.id],
