@@ -108,39 +108,77 @@ This remains deliberately small. It is **not** a universal numeric reputation fr
 
 **Goal:** preserve clarity as known opportunities and continuity span multiple regions.
 
-The Journal/Opportunities layer ranks and groups **known** opportunities without becoming an omniscient quest list. What can be surfaced derives from canonical player/world knowledge such as:
-
-- discovered places, routes, POIs, maps, and regional horizons;
-- persistent contacts and relationship/commitment state;
-- current equipment, capabilities, materials, work mastery, and preparation;
-- actually reachable travel/service context;
-- prior discoveries and completed regional work.
-
-The player should be able to maintain several short-term goals while understanding their relationship to larger ambitions: better livelihood, deeper training, stronger equipment, broader routes, social standing, companions, infrastructure, and dangerous expeditions.
+The Journal/Opportunities layer ranks and groups **known** opportunities without becoming an omniscient quest list. What can be surfaced derives from canonical player/world knowledge such as discovered places, routes, POIs, maps, contacts, relationship/commitment state, equipment, capabilities, materials, work mastery, preparation, and actually reachable travel/service context.
 
 **Implementation status: landed and audited.** `playerCampaignReadabilityEngine` is a pure presentation decorator over the existing opportunity/continuity model. It adds regional grouping, readiness ordering, knowledge-source metadata, group counts, and one bounded cross-region Copper Trail Clasp proof. The semantic DOM Journal renders those groups as actual sections rather than one flat card list.
 
-The Brasshaven/Redstone/Starfen proof now behaves as acquired knowledge rather than developer omniscience:
+The Brasshaven/Redstone/Starfen proof behaves as acquired knowledge rather than developer omniscience:
 
 - before Varric’s canonical later-day follow-up, the Journal does not manufacture a Starfen campaign lead merely because Starfen data exists;
 - after the follow-up, Starfen becomes a known larger ambition while the remote Tall Reedbed/source record remains hidden;
 - Brasshaven Market Ring exposes the next local action to Iron Quay, not every route node at once;
-- at Iron Quay, the existing Forge–Mere caravan is surfaced through the semantic `transport.start` intent only when its real fare is affordable;
+- at Iron Quay, the existing Forge–Mere caravan is surfaced through semantic `transport.start` only when its real fare is affordable;
 - immediately after PX-4, Varric’s 36-gil reward is insufficient for the 52-gil fare, so the Journal honestly reports a blocked route instead of inventing free transport;
 - from Mistmere Reedport, the real route into West Starfen becomes actionable;
 - only after arriving in Starfen does the local Tall Reedbed become visible, at which point the existing cutting-tool requirement remains authoritative.
 
-This PX-5 layer does not persist a campaign-readability registry, add a global quest database, reveal hidden topology, or advance Data beyond 28. It composes canonical locality, transport, travel, inventory/equipment, commitment/relationship, ecology, work, production, and map knowledge.
+PX-6 exposed and repaired one PX-5 composition defect: explicit acquired/current-context `regionLabel` metadata now wins over fallback origin inference. This prevents a Redstone combat aftermath opportunity from being incorrectly grouped as Brasshaven. The readability projection contract is therefore version 2 / subsystem `0.2.0`.
+
+This layer does not persist a campaign-readability registry, add a global quest database, reveal hidden topology, or advance Data beyond 28.
 
 ## PX-6 — Danger, combat, and recovery in the ordinary campaign
 
 **Goal:** make danger part of the same sustained life/adventure loop instead of a detached combat demonstration.
 
-**Next bounded implementation target:** use the existing Brasshaven/Redstone/Starfen corridor to prove one ordinary-player sequence where a meaningful field threat interrupts or competes with livelihood/travel goals, Combat 2.0 resolves through normal semantic UI, victory/defeat has real recovery/resource consequences, and the character can resume the persistent campaign afterward without a second clock or duplicate reward path.
+**Implementation status: landed and audited.** The first bounded proof uses the existing Redstone Burrower in South Redstone Reach so danger competes directly with the already-proven copper livelihood loop rather than appearing in a separate combat-only fixture.
 
-The first proof should reuse currently authored regional enemies, companions, resource-recovery opportunities, settlement recovery/services, canonical fictional time, and exactly-once battle rewards. Do not broaden enemy catalogs, add a parallel encounter campaign system, or mass-author dungeons merely to close the slice.
+The ordinary-player sequence now proves:
 
-Before closing `0.7.100`, PX-6 must demonstrate that livelihood, travel, commitment/relationship continuity, multi-region readability, danger, combat, and recovery can coexist in one ordinary current-version campaign flow.
+```text
+known Redstone livelihood + training goals
+    -> choose a real field threat
+    -> semantic Combat 2.0 encounter
+    -> semantic Attack / abilities / Wait
+    -> canonical victory or defeat
+    -> exactly-once EXP/currency consequence
+    -> physical defeated-body opportunity remains in world state
+    -> optional tool/proficiency-gated material recovery
+    -> timed bodily/party recovery or defeat retreat
+    -> resume the same Journal, travel, work, and social campaign
+```
+
+Key authority decisions:
+
+- `combatActionEngine`, `combatTurnEngine`, `combatSimulationEngine`, and existing party/combat state remain combat authority; PX-6 adds no parallel encounter clock.
+- Ordinary active-battle **Attack** and **Wait** are now direct semantic intents. Command routes remain optional diagnostic/power surfaces.
+- Victory EXP/currency remain exactly-once battle rewards. Physical creature material is **not** auto-looted: the existing `resourceOpportunityEngine` creates a defeated-body opportunity with its real condition, action, tool/proficiency, time, outcome, inventory, and provenance requirements.
+- For the Redstone Burrower proof, the canonical recovery action is `extract`. The Brasshaven Prospector Pick does not satisfy its `fieldTool:cutting` requirement, so the Journal honestly reports the blocker rather than granting a material reward. A cutting-capable Field Knife makes the existing recovery action reachable.
+- `activityAdvanceEngine` can now finish standalone defeated-body recovery tasks through the same fictional-time advancement path used by other hands-on work.
+- `playerDangerRecoveryEngine` adds only derived Journal aftermath entries for actual injuries and actual local defeated-body opportunities. It does not scan hidden remote sources or persist a combat-campaign registry.
+
+### Recovery primitive
+
+`campaignRecoveryEngine` composes recovery through canonical timed tasks rather than a new persisted registry:
+
+- **field recovery:** 10 fictional minutes, restores part of missing HP/MP;
+- **safe-settlement rest:** 1 fictional hour, restores the active party fully;
+- **defeat recovery:** 2 fictional hours, retreats the active party to a known safe home locality and restores only a bounded fraction of resources rather than performing a free full reset.
+
+Completion is recorded on the persisted timed task and reconciles exactly once. Recovery emits structured semantic events, survives the real account save/load path, consumes the same fictional-time budget as work/travel/social activity, and therefore has an actual opportunity cost.
+
+The first proof also verifies that a provenance-bearing recovered `worm-segment` records both its defeated-enemy source and `extract` recovery action, and that repeated reconciliation cannot duplicate either battle rewards or recovered material.
+
+PX-6 deliberately does **not** invent a paid inn/healing economy where no executable service authority currently exists. Safe-locality rest is a bounded recovery primitive; future service pricing/quality belongs to a later real content slice rather than renderer prose.
+
+## PX-7 — Repeated multi-region/community breadth
+
+**Goal:** turn the proven corridor from one strong Brasshaven-centered campaign proof into repeatable play across several functioning communities.
+
+**Next bounded implementation target:** prove a second real community/regional slice—preferably using existing Mistmere/Starfen authorities—where a named contact/social reason, livelihood or service reason, danger/adventure reason, and return/follow-up consequence coexist with the Brasshaven/Redstone loop. The purpose is to discover what genuinely generalizes from the first commitment/continuity/readability slice, not to mass-author content.
+
+The proof should establish that a player can rotate among several short-term ambitions across regions over multiple fictional days without following one linear breadcrumb chain. Generalize commitment/readability/social patterns only where the second slice demonstrates a reusable contract.
+
+Do **not** close `0.7.100` merely because PX-6 composes combat. The playable campaign slice still needs enough multi-region/community breadth and alternative repeated activity to sustain ordinary play rather than one deeply guided proving corridor.
 
 ## Player-facing acceptance checks
 
@@ -156,9 +194,10 @@ For each future Phase 0.7 slice, evaluate from a fresh save rather than from tes
 - Across days, does prior activity change what people or places offer?
 - As regions accumulate, can the player distinguish ready, preparatory, distant, blocked, and completed goals without seeing undiscovered content?
 - When danger appears, does combat/recovery return the player to the same continuous-character campaign rather than a disconnected mode?
+- Across several communities, are there multiple valid reasons to revisit and redirect the same continuous character?
 
 ## Architecture rule
 
 Player-experience guidance is a **projection over canonical state**, not a second simulation authority.
 
-Current projections derive from canonical origin/place/POI discovery, progression, work, travel/transport, equipment, map knowledge, commitments, relationships, day-cycle state, and acquired campaign context. Real commitments and relationship consequences are canonical gameplay state with semantic events and exactly-once ownership; the Journal may summarize, group, or rank them but must not secretly own them.
+Current projections derive from canonical origin/place/POI discovery, progression, work, travel/transport, equipment, map knowledge, commitments, relationships, day-cycle state, acquired campaign context, current injury state, and actual defeated-body resource opportunities. Real commitments, relationships, battle consequences, recovery tasks, and resource opportunities remain canonical gameplay state with semantic events and exactly-once ownership; the Journal may summarize, group, rank, or make reachable actions legible but must not secretly own them.
