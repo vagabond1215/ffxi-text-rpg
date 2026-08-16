@@ -1,7 +1,12 @@
 import { listTimedTasks, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 
-export const HANDS_ON_TASK_KINDS = Object.freeze(['resource.recovery']);
-export const HANDS_ON_TASK_CHANNELS = Object.freeze(['work:character']);
+export const HANDS_ON_TASK_KINDS = Object.freeze([
+    'resource.recovery',
+    'recovery.field',
+    'recovery.settlement',
+    'recovery.defeat',
+]);
+export const HANDS_ON_TASK_CHANNELS = Object.freeze(['work:character', 'recovery:character']);
 
 export function getBlockingHandsOnTask(state) {
     if (!state?.tasks) return null;
