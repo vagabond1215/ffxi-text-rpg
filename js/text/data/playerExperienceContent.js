@@ -1,4 +1,4 @@
-export const PLAYER_EXPERIENCE_CONTENT_VERSION = 4;
+export const PLAYER_EXPERIENCE_CONTENT_VERSION = 5;
 
 export const ORIGIN_EXPERIENCE_CONTENT = Object.freeze({
     thornwall: origin({
@@ -39,6 +39,7 @@ export const ORIGIN_EXPERIENCE_CONTENT = Object.freeze({
         regionalLoop: {
             id: 'loop-brasshaven-first-copper',
             title: 'Bring Redstone copper back to the forge',
+            commitmentId: 'commitment-brasshaven-copper-return',
             targetResourceItemId: 'item-redstone-copper-ore',
             targetResourceQuantity: 2,
             returnPlaceId: 'brasshaven-market-ring',
