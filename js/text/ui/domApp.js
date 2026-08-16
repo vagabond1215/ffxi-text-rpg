@@ -16,18 +16,20 @@ import {
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { advanceActiveActivityToCompletion } from '../systems/activityAdvanceEngine.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
+import { startCampaignRecovery } from '../systems/campaignRecoveryEngine.js';
 import {
     acceptCommitment,
     performCommitmentFollowUp,
     resolveCommitment,
 } from '../systems/commitmentEngine.js';
-import { startEncounter } from '../systems/combatActionEngine.js';
+import { performPlayerAttack, startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { equipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
 import { startProductionWork } from '../systems/productionEngine.js';
+import { startCharacterResourceRecovery } from '../systems/resourceRecoveryWorkAdapter.js';
 import { startScheduledTransport } from '../systems/transportEngine.js';
 import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
@@ -52,6 +54,10 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'production.start',
     'activity.advanceToCompletion',
     'combat.encounter',
+    'combat.attack',
+    'combat.wait',
+    'resource.recovery.start',
+    'recovery.start',
 ]);
 
 export function createDomApp({ host }) {
@@ -144,9 +150,27 @@ export function createDomApp({ host }) {
         } else if (intent === 'combat.encounter') {
             const place = getPlace(state.currentPlaceId);
             const present = place?.spawnRules?.some((rule) => rule.enemyId === payload.enemyId);
-            result = present
-                ? startEncounter(state, payload.enemyId, { source: 'player-opportunity' })
-                : { ok: false, message: 'That field threat is not present in the current place.' };
+            if ((Number(state.player?.resources?.hp) || 0) <= 0) {
+                result = { ok: false, message: 'You are incapacitated and must recover before entering another encounter.' };
+            } else {
+                result = present
+                    ? startEncounter(state, payload.enemyId, { source: 'player-opportunity' })
+                    : { ok: false, message: 'That field threat is not present in the current place.' };
+            }
+            recordGameplayFeedback(result);
+        } else if (intent === 'combat.attack') {
+            const message = performPlayerAttack(state, payload.targetId);
+            const ok = !/not in battle|still recovering|not yet ready/i.test(String(message));
+            result = { ok, message };
+            recordGameplayFeedback(result);
+        } else if (intent === 'combat.wait') {
+            result = advanceCombatSimulation(state, payload.seconds ?? 1);
+            recordGameplayFeedback(result);
+        } else if (intent === 'resource.recovery.start') {
+            result = startCharacterResourceRecovery(state, payload.opportunityId, payload.actionId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'recovery.start') {
+            result = startCampaignRecovery(state);
             recordGameplayFeedback(result);
         } else {
             result = dispatchUiIntent({ intent, payload, state, uiState, session, services });
