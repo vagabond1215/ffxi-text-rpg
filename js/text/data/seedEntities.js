@@ -24,6 +24,11 @@ export function createSeedNpcs() {
             locationId: 'mistmere-canal-ward', services: ['realmSeal', 'regionalRewards'],
         }),
         createNpc({
+            id: 'npc-mistmere-reader-soli-venn', name: 'Reader Soli Venn', title: 'Canal Ward Reader', faction: 'Mistmere',
+            locationId: 'mistmere-canal-ward', services: ['orientation', 'commissions', 'civic'],
+            questIds: ['commitment-mistmere-marrowleaf-return'],
+        }),
+        createNpc({
             id: 'npc-elderwood-waywarden', name: 'Mara Venn', title: 'Waywarden', faction: 'Thornwall',
             locationId: 'timbercross-landing', services: ['route-guidance', 'contracts', 'companion-recruitment'],
         }),
