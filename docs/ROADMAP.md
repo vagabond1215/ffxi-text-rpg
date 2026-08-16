@@ -18,7 +18,7 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         29
+Data:         30
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
@@ -90,22 +90,11 @@ Phase 0.7 turns the proven systems into sustained ordinary play; it is not anoth
 
 ## Exit criteria
 
-A normal player must be able to sustain repeated multi-session play across several connected settlements/regions without test-only setup or command expertise. The campaign must combine:
-
-- persistent NPC communities and relationships;
-- shops/services and meaningful economy/transport;
-- commitments/social consequences;
-- livelihood/resources/production;
-- adventure/combat/recovery;
-- companions where relevant;
-- several competing short-term goals;
-- semantic browser actions;
-- current-version save/load without duplicate rewards/progress;
-- acquired-knowledge privacy and provenance/source-sink validation.
+A normal player must be able to sustain repeated multi-session play across several connected settlements/regions without test-only setup or command expertise. The campaign must combine persistent NPC communities/relationships, shops/services and meaningful economy/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companions where relevant, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
 
 ## `0.7.100` — Playable campaign slice — in progress
 
-Current proving geography spans **Brasshaven / Redstone Reach / Mistmere / Starfen**, with all three origins providing first-session footing and Thornwall/Elderwood still serving as the remaining third-origin continuity gap.
+The proving geography now spans **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen** with persistent several-day community continuity at all three origins.
 
 ### Completed player-experience slices
 
@@ -115,56 +104,67 @@ Current proving geography spans **Brasshaven / Redstone Reach / Mistmere / Starf
 - **PX-4 — Several-day continuity:** Varric commitment/relationship, provenance-qualified delivery, exactly-once reward, later-day follow-up, real save/load.
 - **PX-5 — Multi-region readability:** acquired-knowledge regional grouping/readiness and honest route/fare/tool blockers.
 - **PX-6 — Danger/combat/recovery:** ordinary Redstone combat, body recovery, timed bodily recovery/defeat consequence, return to the same campaign.
-- **Player-language hygiene:** Journal no longer displays internal engineering rationale; details are collapsible; Day Review is memory-style; player prose avoids implementation jargon.
-- **PX-7 — Second community breadth:** Reader Soli Venn / `Marrowleaf for the Ward` creates a second persistent multi-day community loop in Mistmere/Starfen while ordinary Reed Fiber livelihood and Starfen Rootling danger remain competing choices.
+- **Player-language hygiene:** Journal no longer displays internal engineering rationale; details are collapsible; Day Review is memory-style; ordinary prose avoids implementation jargon.
+- **PX-7 — Second community breadth:** Reader Soli Venn / `Marrowleaf for the Ward` establishes Mistmere/Starfen several-day continuity while Reed Fiber livelihood and Rootling danger remain independent.
+- **PX-8 — Third-origin continuity:** Sera Talwin / `Sweetroot for Southgate` establishes Thornwall/Elderwood several-day continuity while Amber Resin livelihood and Brush Hare danger remain independent.
 
-### PX-7 reusable authority proved
+### PX-8 authority/result
 
-- commitment definitions can require provenance-qualified raw gathered resources or transformed goods;
-- Reader Soli Venn is a persistent NPC-backed contact;
-- `playerContinuityEngine` projects all **actually known** commitment definitions instead of containing a Varric-only branch;
-- field gathering and return guidance call existing gathering/locality/travel authorities rather than replacing them;
-- delivery and later follow-up remain exactly once across real save/load;
-- commitment data privacy remains contact-gated;
-- Data advances to 29; Account Save 4 / Game State 5 remain valid.
+Sera Talwin is now a persistent NPC-backed contact. `Sweetroot for Southgate` requests two provenance-qualified West Elderwood Sweetroots, pays 20 gil plus familiarity/respect exactly once, survives real account save/load, and produces changed later-day follow-up. Sweetroot already had food/medicine/trade sinks, so PX-8 adds no quest-token resource.
 
-Authoritative PX-7 runtime checkpoint:
+The generic PX-7 continuity projection handles the entire third-origin flow without an origin-specific engine branch. `COMMITMENT_CATALOG_VERSION` remains 2. Data advances to **30** for the new persistent NPC/commitment authored content; Account Save 4 and Game State 5 remain valid.
+
+Authoritative PX-8 runtime checkpoint:
 
 ```text
-0411083b07bc4063fe4810fcb225e1dffd2895a4
-483/483 tests
+63a234edfc1e327d90823c4171bdf315f01aa044
+484/484 tests
 Benchmark 1 success
-Data 29
+Data 30
 ```
 
 Benchmark 1 remains comparable:
 
 ```text
-player profile      0.468655ms/op
-enemy profile       0.110203ms/op
-basic attack        0.553072ms/op
-tick dispatch       0.004862ms/op
-direct route lookup 0.876750ms/op
+player profile      0.400261ms/op
+enemy profile       0.104237ms/op
+basic attack        0.509356ms/op
+tick dispatch       0.005014ms/op
+direct route lookup 0.796968ms/op
 ```
 
-## Why `0.7.100` remains open
+## `0.7.100` closure audit after PX-8
 
-PX-7 proves the community/continuity pattern is reusable, but two strong proving loops are not yet enough to claim sustained sandbox breadth.
+**Still open.** The third-community breadth requirement is now substantially proven, but the audit exposed one concrete ordinary-player access defect rather than a need for more authored communities.
 
-Concrete remaining gaps:
+The canonical route graph already connects the campaign:
 
-- Thornwall/Elderwood lacks equivalent multi-day persistent community continuity;
-- alternative social/economic goals remain thin after the two proving commitments are exhausted;
-- executable settlement-service economy remains shallow;
-- companion/social breadth remains intentionally small;
-- Craft and some information surfaces remain less direct than the Journal/Scene path;
-- the exit gate still needs a multi-session breadth audit after a third-origin/community slice.
+```text
+Thornwall Rivergate
+  -> Timbercross Landing
+  -> Brasshaven Iron Quay
+  -> Mistmere Reedport
+  -> West Starfen
+```
 
-## Next bounded unit — PX-8 sustained sandbox breadth / third-origin continuity
+Scheduled transport authority already owns the Crown–Forge and Forge–Mere services, fares, cadence, cargo, departures, arrivals, fictional time, and party travel. `domApp` can dispatch semantic `transport.start`.
 
-Prefer **Thornwall/Elderwood**. Prove a third community loop using the already-generic known-commitment projection and existing work/combat/travel authorities. Add only the smallest new authored/runtime pieces the real slice demonstrates.
+The remaining defect is presentation/discovery: generic locality **Travel Desk** interaction still reports that travel-service behavior is not implemented. PX-5 exposes a Forge–Mere booking only through the specific Copper Trail readability proof. Therefore a normal player cannot yet rotate freely among the three proven communities using generic semantic browser transport without command/API knowledge.
 
-At the PX-8 checkpoint, explicitly re-audit `0.7.100` against ordinary multi-session play. Do not mass-generate content or introduce a global quest/reputation/dialogue framework merely to fill breadth.
+That fails the explicit `0.7.100` exit promise even though the underlying route graph is connected.
+
+## Next bounded unit — PX-9 cross-community rotation / `0.7.100` gate
+
+Do not add a fourth community first. Repair the transport access seam:
+
+1. derive scheduled services/destinations available from the current real route stop;
+2. show fare, departure/readiness, and blockers through Travel Desk/context UI;
+3. dispatch existing semantic `transport.start`;
+4. prove ordinary Thornwall -> Brasshaven -> Mistmere rotation, including canonical locality legs and scheduled transport;
+5. preserve acquired-knowledge privacy, fare/cargo/time/party/save-load behavior;
+6. immediately re-run the complete `0.7.100` closure audit.
+
+Craft UI depth, paid service economy, and broader companion content remain later improvements, but they are not substitutes for this specific closure blocker.
 
 # Later phases
 
