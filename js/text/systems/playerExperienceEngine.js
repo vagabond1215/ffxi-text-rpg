@@ -20,9 +20,9 @@ export function createPlayerExperienceModel(state) {
     const phase = !guideMet ? 'orientation' : onExpedition ? 'expedition' : 'foothold';
 
     const nextStep = !guideMet
-        ? `Meet ${content.guideName} in ${getPlace(content.startingPlaceId)?.name ?? 'your starting district'}. This contact explains the local footing and how effort turns into lasting progress.`
+        ? `Meet ${content.guideName} in ${getPlace(content.startingPlaceId)?.name ?? 'your starting district'}. This contact can point out a few practical ways to begin.`
         : onExpedition
-            ? 'You are beyond the safe wards now. Choose a purpose before pushing farther: train, recover useful resources, learn the route, or return with something that improves your next attempt.'
+            ? 'You are beyond the safe wards now. Choose a purpose before pushing farther: train, recover something useful, learn the route, or return with a gain worth the risk.'
             : `Choose one small loop: prepare through ${content.localLead}, then use your known exits toward ${content.regionalHorizon} when you are ready. Return with experience, materials, knowledge, or stronger connections.`;
 
     const primaryAction = !guideMet && inStartingLocality && guide
@@ -44,7 +44,7 @@ export function createPlayerExperienceModel(state) {
             ? `As a newcomer, your clearest next step is to meet ${content.guideName}.`
             : phase === 'expedition'
                 ? 'Repeated effort here should leave you better prepared, more capable, or more knowledgeable than when you arrived.'
-                : `You now have enough local orientation to choose your own first loop: prepare, practice, work, or explore toward ${content.regionalHorizon}.`,
+                : `You know enough of the area to choose your own first loop: prepare, practice, work, or explore toward ${content.regionalHorizon}.`,
         progressionLaw: 'Effort → mastery → efficiency → capability → larger ambition.',
         guide: Object.freeze({
             poiId: content.guidePoiId,
@@ -56,10 +56,10 @@ export function createPlayerExperienceModel(state) {
         firstRegionalDestination: content.firstRegionalDestination,
         primaryAction,
         paths: Object.freeze([
-            path('training', 'Train through danger', 'Take fights you can survive and use the techniques you actually know.', 'Discipline experience and relevant combat proficiency persist. Better training and capability eligibility make harder encounters practical.'),
-            path('livelihood', 'Build a livelihood', `Use ${content.livelihoodExamples} to turn character time and tools into useful material.`, 'Work proficiency, better tools, and material stockpiles make future work faster, safer, or more valuable.'),
-            path('exploration', 'Learn the world', `Use known exits and deliberate travel to push into ${content.regionalHorizon} without treating the authored map as already known.`, 'Discovered routes, places, and map knowledge improve planning and open larger trips.'),
-            path('preparation', 'Improve preparation', `Use ${content.localLead} to improve what you carry and who you know before taking on more risk.`, 'Equipment, tools, supplies, services, and contacts convert previous gains into larger ambitions.'),
+            path('training', 'Train through danger', 'Take fights you can survive and use the techniques you actually know.', 'Practice and experience make harder encounters more practical.'),
+            path('livelihood', 'Build a livelihood', `Use ${content.livelihoodExamples} to turn time and tools into useful material.`, 'Practice, better tools, and material stockpiles make future work faster, safer, or more valuable.'),
+            path('exploration', 'Learn the world', `Use known exits and deliberate travel to push into ${content.regionalHorizon} a piece at a time.`, 'Discovered routes, places, and map knowledge improve planning and open larger trips.'),
+            path('preparation', 'Improve preparation', `Use ${content.localLead} to improve what you carry and who you know before taking on more risk.`, 'Equipment, tools, supplies, services, and contacts turn earlier gains into larger ambitions.'),
         ]),
     });
 }
@@ -158,21 +158,15 @@ export function describeOriginGuideDialogue(state, poiOrId) {
     const starterItem = getEquipmentCatalogEntry(nation.startingEquipmentIds[0]);
     return [
         `${guide?.name ?? content.guideName}`,
-        `“You are on the newcomer roll for ${content.nationName}. That means you have a place to begin, not a reputation someone else earned for you.”`,
+        `“You are on the newcomer roll for ${content.nationName}. That gives you a place to begin, not a reputation someone else earned for you.”`,
         '',
         `“Learn ${place?.name ?? 'this district'} first. ${capitalize(content.localLead)} can help you prepare before you gamble time or blood outside the safe wards.”`,
-        starterItem ? `They point out that the newcomer desk can issue you a ${starterItem.name} for your first field work.` : null,
+        starterItem ? `They point out the newcomer desk where you can collect a ${starterItem.name} for your first field work.` : null,
         '',
-        'They reduce the advice to one rule:',
-        'Effort becomes mastery. Mastery makes old work easier. That efficiency gives you room for new capabilities and larger ambitions.',
+        '“Effort becomes mastery. Mastery makes familiar work easier, and that gives you room for larger ambitions.”',
         '',
-        'Ways to make progress:',
-        '- Train through danger: surviving real fights builds discipline experience and relevant combat proficiency.',
-        `- Work for a living: ${capitalize(content.livelihoodExamples)} build work mastery while producing materials with real uses.`,
-        `- Explore deliberately: routes into ${content.regionalHorizon} become useful knowledge only as you learn them.`,
-        '- Prepare well: better tools, equipment, supplies, and contacts turn yesterday’s gains into tomorrow’s reach.',
-        '',
-        `“Start small. Come back with something you did not have before—skill, material, knowledge, or a useful connection. When ${content.firstRegionalDestination} stops feeling like the edge of your world, choose a farther horizon.”`,
+        `“Pick one useful thing today: practice safely, take work you can finish, or learn the road toward ${content.regionalHorizon}. Come back with skill, material, knowledge, or a useful connection.”`,
+        `“When ${content.firstRegionalDestination} stops feeling like the edge of your world, choose a farther horizon.”`,
     ].filter(Boolean).join('\n');
 }
 
