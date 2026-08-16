@@ -13,6 +13,7 @@ import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanion
 import { decoratePlayerOpportunityModel } from '../systems/playerContinuityEngine.js';
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
 import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
+import { createSettlementServiceBoard } from '../systems/settlementServiceBoardEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { createTransportServiceBoard } from '../systems/transportServiceBoardEngine.js';
@@ -48,6 +49,9 @@ export function createGameViewModel(state, uiState = {}) {
     const transportDesk = navigationMode === 'locality'
         ? createTransportServiceBoard(state)
         : Object.freeze({ version: 1, placeId: state.currentPlaceId, placeName: place?.name ?? state.location ?? '', entries: Object.freeze([]) });
+    const settlementServices = navigationMode === 'locality'
+        ? createSettlementServiceBoard(state)
+        : createSettlementServiceBoard(null);
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -80,6 +84,7 @@ export function createGameViewModel(state, uiState = {}) {
         movement: Object.freeze(navigationMode === 'exploration' ? createMovementActions(state) : []),
         contextualActions: Object.freeze(createContextualActions(state, nearby, opportunities, transportDesk)),
         transportDesk,
+        settlementServices,
         spellbook,
         party,
         activity,
