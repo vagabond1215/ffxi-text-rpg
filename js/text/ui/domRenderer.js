@@ -213,7 +213,7 @@ function renderPrimaryView(model, viewId) {
     if (viewId === 'spellbook') return renderSpellbookView();
     if (viewId === 'journal') return renderJournalView(model);
     if (viewId === 'codex') return renderCodexView();
-    if (viewId === 'craft') return renderCraftView();
+    if (viewId === 'craft') return renderCraftView(model);
     if (viewId === 'world') return renderWorldView(model);
     return renderSceneView(model);
 }
@@ -364,18 +364,119 @@ function renderCodexView() {
     `;
 }
 
-function renderCraftView() {
+function renderCraftView(model) {
+    const board = model.settlementServices;
+    if (!board?.available) {
+        return `
+            <section class="panel primary-view">
+                <p class="eyebrow">Work &amp; trade</p>
+                <h1>Craft &amp; Process</h1>
+                <p class="muted">Workshops and merchants are settlement services. Bring materials back to a town or travel hub to compare what you can make, sell, buy, or spend time recovering.</p>
+                <div class="view-links">${commandButton('Inventory', 'inventory')}</div>
+            </section>
+        `;
+    }
+
+    const production = board.production.length
+        ? `<div class="nearby-list opportunity-list">${board.production.map(renderProductionServiceCard).join('')}</div>`
+        : '<p class="empty-note">No workshop process is available anywhere in this locality.</p>';
     return `
-        <section class="panel primary-view">
-            <p class="eyebrow">Production</p>
-            <h1>Craft &amp; Process</h1>
-            <p class="muted">Turn carried materials into useful goods at the right workshop. Recipes, tools, time, and practice determine what you can make.</p>
-            <div class="view-links">
-                ${commandButton('Production Options', 'production')}
-                ${commandButton('Inventory', 'inventory')}
-            </div>
+        <section class="panel primary-view craft-view">
+            <p class="eyebrow">Settlement services · ${escapeHtml(board.walletGil)} gil on hand</p>
+            <h1>Work, Trade &amp; Recover</h1>
+            <p class="muted">Returning to town gives you choices: turn materials into more useful goods, sell what you carried home, buy preparation, or spend fictional time recovering before you leave again.</p>
+
+            <section class="opportunity-group" aria-labelledby="craft-work-heading">
+                <div class="panel-heading opportunity-group-heading"><h2 id="craft-work-heading">Workshop work</h2><small>${escapeHtml(board.production.length)} known here</small></div>
+                ${production}
+            </section>
+
+            ${renderTradeServices(board.trade)}
+            ${renderRecoveryService(board.recovery)}
+
+            <div class="view-links">${commandButton('Inventory', 'inventory')}</div>
         </section>
     `;
+}
+
+function renderProductionServiceCard(entry) {
+    const inputs = entry.inputs.map((item) => `${item.requiredQuantity} ${item.name} (${item.carriedQuantity} carried)`).join(' + ');
+    const outputs = entry.outputs.map((item) => `${item.quantity} ${item.name}`).join(' + ');
+    const delta = entry.tradeDeltaGil > 0 ? `+${entry.tradeDeltaGil}` : String(entry.tradeDeltaGil);
+    const blockers = entry.blockers?.length
+        ? `<p class="opportunity-blockers"><strong>Needs:</strong> ${escapeHtml(entry.blockers.join(' '))}</p>`
+        : '';
+    return `
+        <article class="nearby-card opportunity-card status-${escapeAttr(entry.status)}">
+            <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(formatType(entry.kind))} · ${escapeHtml(entry.status)}</small></div>
+            <p><strong>Use:</strong> ${escapeHtml(inputs || 'No carried materials required')}</p>
+            <p><strong>Make:</strong> ${escapeHtml(outputs)}</p>
+            <p><strong>Time:</strong> ${escapeHtml(formatDuration(entry.durationSeconds))} · ${escapeHtml(formatType(entry.proficiencyId))} ${escapeHtml(entry.proficiency)} → +${escapeHtml(entry.proficiencyGain)} practice</p>
+            <p class="muted">Typical shop value: materials ${escapeHtml(entry.inputSellGil)} gil → output ${escapeHtml(entry.outputSellGil)} gil (${escapeHtml(delta)} gil), before counting the value of your time or what the item can do for you.</p>
+            ${blockers}
+            ${serviceActionButton(entry.action)}
+        </article>
+    `;
+}
+
+function renderTradeServices(trade) {
+    if (!trade) return '';
+    if (!trade.currentShop) {
+        const shops = trade.localShops?.length
+            ? `<div class="view-links">${trade.localShops.map((shop) => serviceActionButton(shop.action)).join('')}</div>`
+            : '<p class="empty-note">No merchant is available in this locality.</p>';
+        return `
+            <section class="opportunity-group" aria-labelledby="craft-trade-heading">
+                <div class="panel-heading opportunity-group-heading"><h2 id="craft-trade-heading">Trade</h2><small>Choose a merchant</small></div>
+                <p class="muted">Visit a local merchant to see actual stock, prices, and what your carried goods will fetch here.</p>
+                ${shops}
+            </section>
+        `;
+    }
+
+    const buy = trade.buyOffers.slice(0, 8).map((offer) => `
+        <article class="nearby-card">
+            <div><strong>${escapeHtml(offer.name)}</strong><small>${escapeHtml(offer.priceGil)} gil</small></div>
+            ${offer.blocker ? `<p class="opportunity-blockers">${escapeHtml(offer.blocker)}</p>` : ''}
+            ${serviceActionButton(offer.action)}
+        </article>
+    `).join('') || '<p class="empty-note">Nothing is listed for sale.</p>';
+    const sell = trade.sellOffers.slice(0, 8).map((offer) => `
+        <article class="nearby-card">
+            <div><strong>${escapeHtml(offer.name)}</strong><small>${escapeHtml(offer.quantity)} carried</small></div>
+            <p>${escapeHtml(offer.unitPriceGil)} gil each · ${escapeHtml(offer.stackPriceGil)} gil for the carried stack</p>
+            ${serviceActionButton(offer.action)}
+        </article>
+    `).join('') || '<p class="empty-note">You are carrying nothing this merchant will buy.</p>';
+
+    return `
+        <section class="opportunity-group" aria-labelledby="craft-trade-heading">
+            <div class="panel-heading opportunity-group-heading"><h2 id="craft-trade-heading">${escapeHtml(trade.currentShop.name)}</h2><small>${escapeHtml(trade.currentShop.catalogName)}</small></div>
+            <h3>Buy</h3><div class="nearby-list">${buy}</div>
+            <h3>Sell</h3><div class="nearby-list">${sell}</div>
+        </section>
+    `;
+}
+
+function renderRecoveryService(recovery) {
+    if (!recovery) return '';
+    const status = recovery.active ? 'resting' : recovery.injured ? 'recovery available' : 'fully recovered';
+    const blocker = recovery.blocker && recovery.injured ? `<p class="opportunity-blockers">${escapeHtml(recovery.blocker)}</p>` : '';
+    return `
+        <section class="opportunity-group" aria-labelledby="craft-recovery-heading">
+            <div class="panel-heading opportunity-group-heading"><h2 id="craft-recovery-heading">Recovery</h2><small>${escapeHtml(status)}</small></div>
+            <article class="nearby-card">
+                <p>HP ${escapeHtml(recovery.hp)}/${escapeHtml(recovery.maxHp)} · MP ${escapeHtml(recovery.mp)}/${escapeHtml(recovery.maxMp)}</p>
+                <p class="muted">Safe rest costs ${escapeHtml(formatDuration(recovery.durationSeconds))} of fictional time. It does not invent a fee or erase the time you could have spent working, trading, or traveling.</p>
+                ${blocker}${serviceActionButton(recovery.action)}
+            </article>
+        </section>
+    `;
+}
+
+function serviceActionButton(action) {
+    if (!action) return '';
+    return `<button type="button" class="primary-button" data-service-action="${escapeAttr(action.id)}">${escapeHtml(action.label)}</button>`;
 }
 
 function renderWorldView(model) {
