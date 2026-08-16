@@ -11,7 +11,7 @@ import { checkProductionRequirements } from './productionEngine.js';
 import { findTravelRoute } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 
-export const PLAYER_CAMPAIGN_READABILITY_VERSION = 1;
+export const PLAYER_CAMPAIGN_READABILITY_VERSION = 2;
 
 const COPPER_TRAIL_PROOF = Object.freeze({
     commitmentId: 'commitment-brasshaven-copper-return',
@@ -301,7 +301,7 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             ? 'You have visited Starfen before, but no direct route action is currently reachable from this position.'
             : 'Varric has given you a reason to seek Starfen reed fiber, but the Journal will not reveal a remote resource node or impossible route from here.',
         reason: 'Knowing that a region or material exists is different from knowing every route, locality, and source inside it.',
-        progress: `Known from ${knowledgeSource}; reach appropriate travel context to continue.`,
+        progress: `Known from ${knowledgeSource}; reach appropriate travel infrastructure before a direct route action appears.`,
         status: 'available',
         requirements: [requirement('Reach a known travel connection toward Starfen', false)],
         regionLabel: 'Starfen',
@@ -313,110 +313,58 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
 }
 
 function createCraftStep(state, { proof, craft, forge, knowledgeSource }) {
-    if (state.currentPlaceId !== proof.brasshavenForgePlaceId) {
-        const step = createReturnFromStarfenStep(state, proof, knowledgeSource);
+    if (state.currentPlaceId === proof.brasshavenForgePlaceId) {
+        const check = checkProductionRequirements(state, proof.craftId);
         return opportunity({
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: proof.ambitionName,
-            summary: 'Both regional materials are secured. Return them to a Brasshaven forge for the cross-region craft.',
-            reason: 'The ambition resolves through the existing production/workstation authority rather than a Journal-owned completion flag.',
-            progress: 'Return to Brasshaven and craft the clasp from one Redstone ingot and one Starfen reed fiber.',
-            status: step.status,
+            summary: check.ok
+                ? `${forge?.name ?? 'The Brasshaven forge'} can now combine your Redstone metal and Starfen fiber through canonical production.`
+                : `You have both regional materials, but the current forge or preparation still blocks the craft.`,
+            reason: 'The larger ambition resolves through existing workstation, input, timed-work, and output authority.',
+            progress: 'Craft the Copper Trail Clasp and retain its transformation provenance.',
+            status: check.ok ? 'ready' : 'blocked',
             requirements: [
                 requirement('Redstone copper ingot', true),
                 requirement('Starfen reed fiber', true),
-                requirement('Return to Brasshaven Market Ring', false),
+                requirement('Work at a forge', check.ok),
             ],
-            blockers: step.blockers,
+            blockers: check.ok ? [] : check.blockers,
             regionLabel: 'Redstone Reach',
             groupKind: 'region',
             linkedAmbition: proof.ambitionName,
             knowledgeSource,
-            action: step.action,
+            action: check.ok ? action('craft-copper-trail-clasp', `Craft · ${craft?.name ?? proof.ambitionName}`, 'production.start', { processId: proof.craftId }) : null,
         });
     }
 
-    const productionCheck = checkProductionRequirements(state, craft);
-    if (productionCheck.ok) {
-        return opportunity({
-            id: 'campaign-copper-trail-clasp',
-            category: 'ambition',
-            title: proof.ambitionName,
-            summary: 'Both regional materials and a valid forge context are ready. The clasp can now be crafted through canonical timed production.',
-            reason: 'The final step remains ordinary production with real inputs, time, proficiency, workstation context, and provenance.',
-            progress: 'Craft the Copper Trail Clasp.',
-            status: 'ready',
-            requirements: [
-                requirement('Redstone copper ingot', true),
-                requirement('Starfen reed fiber', true),
-                requirement('Use a forge', true),
-            ],
-            regionLabel: 'Redstone Reach',
-            groupKind: 'region',
-            linkedAmbition: proof.ambitionName,
-            knowledgeSource,
-            action: action('craft-copper-trail-clasp', `Start · ${craft?.name ?? proof.ambitionName}`, 'production.start', { processId: proof.craftId }),
-        });
-    }
-
-    const stationMissing = productionCheck.blockers.some((blocker) => blocker.startsWith('Requires workstation:'));
-    if (stationMissing && forge?.placeId === state.currentPlaceId) {
-        return opportunity({
-            id: 'campaign-copper-trail-clasp',
-            category: 'ambition',
-            title: proof.ambitionName,
-            summary: `${forge.name} provides the forge context for the final cross-region craft.`,
-            reason: 'The Journal points at the real workstation instead of granting an implicit crafting facility.',
-            progress: 'Reach the forge context, then start the Copper Trail Clasp work.',
-            status: 'ready',
-            requirements: [requirement('Use a forge', false)],
-            blockers: productionCheck.blockers,
-            regionLabel: 'Redstone Reach',
-            groupKind: 'region',
-            linkedAmbition: proof.ambitionName,
-            knowledgeSource,
-            action: action('visit-clasp-forge', `Visit · ${forge.name}`, 'locality.poi', { poiId: forge.id, action: 'guild' }),
-        });
-    }
-
+    const returnStep = createReturnToForgeStep(state, proof);
     return opportunity({
         id: 'campaign-copper-trail-clasp',
         category: 'ambition',
-        title: proof.ambitionName,
-        summary: 'Both regional materials are present, but a real production requirement still blocks the clasp.',
-        reason: 'Readability reports the canonical blocker rather than bypassing production rules.',
-        progress: 'Satisfy the remaining production requirement.',
-        status: 'blocked',
-        requirements: [requirement('Redstone copper ingot', true), requirement('Starfen reed fiber', true)],
-        blockers: productionCheck.blockers,
+        title: 'Return with Starfen fiber',
+        summary: 'Both regional materials are in hand. The remaining action is to return to a known Brasshaven forge.',
+        reason: 'The Journal can name a known service destination without exposing hidden topology or bypassing travel authority.',
+        progress: 'Return to Brasshaven Market Ring, then craft the Copper Trail Clasp.',
+        status: returnStep.status,
+        requirements: [requirement('Reach Brasshaven Market Ring', false)],
+        blockers: returnStep.blockers,
         regionLabel: 'Redstone Reach',
         groupKind: 'region',
         linkedAmbition: proof.ambitionName,
         knowledgeSource,
-        action: null,
+        action: returnStep.action,
     });
 }
 
-function createReturnFromStarfenStep(state, proof, knowledgeSource) {
-    if (state.currentPlaceId === proof.starfenPlaceId) {
-        const route = findTravelRoute(state, proof.mistmereHubId);
-        return {
-            status: route.ok ? 'ready' : 'available',
-            blockers: route.ok ? [] : [route.reason ?? 'No usable route to Mistmere Reedport.'],
-            action: route.ok ? action('return-starfen-to-mistmere', 'Travel · Mistmere Reedport', 'travel.start', { destinationId: proof.mistmereHubId }) : null,
-        };
-    }
-    if (state.currentPlaceId === proof.mistmereHubId) {
-        const step = createLongRoadStep(state, proof.mistmereHubId, proof.brasshavenHubId, knowledgeSource);
-        return { status: step.status, blockers: step.blockers, action: step.action };
-    }
+function createReturnToForgeStep(state, proof) {
     if (state.currentPlaceId === proof.brasshavenHubId) {
         const local = listLocalityDestinations(state).find((entry) => entry.id === proof.brasshavenForgePlaceId);
         return {
             status: local ? 'ready' : 'available',
-            blockers: local ? [] : ['Market Ring is not a current locality destination.'],
-            action: local ? action('return-iron-quay-to-market', 'Go · Brasshaven Market Ring', 'locality.move', { destinationId: proof.brasshavenForgePlaceId }) : null,
+            blockers: local ? [] : ['Brasshaven Market Ring is not a current locality destination.'],
+            action: local ? action('return-to-market-ring', 'Go · Brasshaven Market Ring', 'locality.move', { destinationId: proof.brasshavenForgePlaceId }) : null,
         };
     }
 
@@ -500,8 +448,8 @@ function createLongRoadStep(state, fromPlaceId, toPlaceId, knowledgeSource) {
 }
 
 function decorateExistingEntry(entry, { currentRegion, originRegion, regionalTarget }) {
-    const regionLabel = inferRegionLabel(entry, originRegion, regionalTarget);
-    const groupKind = entry.category === 'day-review' ? 'continuity' : 'region';
+    const regionLabel = entry.regionLabel ?? inferRegionLabel(entry, originRegion, regionalTarget);
+    const groupKind = entry.groupKind ?? (entry.category === 'day-review' ? 'continuity' : 'region');
     const prefix = groupKind === 'continuity' ? 'Recent continuity' : regionLabel;
     return opportunity({
         ...entry,
