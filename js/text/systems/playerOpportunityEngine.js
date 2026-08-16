@@ -51,7 +51,7 @@ export function createPlayerOpportunityModel(state) {
         return freezeModel(origin, [entry], entry.id);
     }
 
-    const preparation = createPreparationOpportunity({ state, origin, starterItem, starterItemId, starterEquipped, starterCarried });
+    const preparation = createPreparationOpportunity({ origin, starterItem, starterItemId, starterEquipped, starterCarried });
     const livelihood = createLivelihoodOpportunity({ state, origin, destination, source, starterItem, starterEquipped, inDestination });
     const training = createTrainingOpportunity({ state, origin, destination, inDestination });
     const exploration = createExplorationOpportunity({ state, origin, destination, destinationVisited, inDestination });
@@ -64,7 +64,7 @@ export function createPlayerOpportunityModel(state) {
     return freezeModel(origin, entries, recommended?.id ?? null);
 }
 
-function createPreparationOpportunity({ state, origin, starterItem, starterItemId, starterEquipped, starterCarried }) {
+function createPreparationOpportunity({ origin, starterItem, starterItemId, starterEquipped, starterCarried }) {
     if (!starterItemId || !starterItem) return null;
     const status = starterEquipped
         ? OPPORTUNITY_STATUSES.COMPLETE
@@ -113,7 +113,7 @@ function createLivelihoodOpportunity({ state, origin, destination, source, start
         category: 'livelihood',
         title: `${capitalize(source.action)} at ${source.name}`,
         summary: `A real regional source in ${destination.name} produces material with physical provenance and builds ${source.proficiencyId} proficiency.`,
-        reason: `Livelihood is one route to capability: repeated work improves mastery and supplies material for trade or production.`,
+        reason: 'Livelihood is one route to capability: repeated work improves mastery and supplies material for trade or production.',
         progress: `${source.proficiencyId} proficiency, ${source.outputItemId} material, and practical familiarity with ${origin.regionalHorizon}.`,
         status,
         requirements: [
@@ -218,10 +218,10 @@ function freezeModel(origin, entries, recommendedOpportunityId) {
 
 function freezeOpportunity(definition) {
     return Object.freeze({
+        ...definition,
         blockers: Object.freeze([...(definition.blockers ?? [])]),
         requirements: Object.freeze((definition.requirements ?? []).map((entry) => Object.freeze({ ...entry }))),
         action: definition.action ? Object.freeze({ ...definition.action, payload: Object.freeze({ ...(definition.action.payload ?? {}) }) }) : null,
-        ...definition,
     });
 }
 
