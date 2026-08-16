@@ -22,7 +22,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 27);
+    assert.equal(VERSION.data, 28);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
@@ -34,9 +34,13 @@ test('version manifest separates product package and persistence versions', () =
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
             activityAdvance: SYSTEM_VERSIONS.activityAdvance,
+            commitments: SYSTEM_VERSIONS.commitments,
+            relationships: SYSTEM_VERSIONS.relationships,
+            dayCycle: SYSTEM_VERSIONS.dayCycle,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
             playerExperience: SYSTEM_VERSIONS.playerExperience,
             playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
+            playerContinuity: SYSTEM_VERSIONS.playerContinuity,
             domUi: SYSTEM_VERSIONS.domUi,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
@@ -51,10 +55,14 @@ test('version manifest separates product package and persistence versions', () =
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             activityAdvance: '0.1.0',
-            gameViewModels: '0.5.0',
-            playerExperience: '0.2.0',
-            playerOpportunities: '0.1.0',
-            domUi: '0.3.0',
+            commitments: '0.1.0',
+            relationships: '0.1.0',
+            dayCycle: '0.2.0',
+            gameViewModels: '0.6.0',
+            playerExperience: '0.3.0',
+            playerOpportunities: '0.2.0',
+            playerContinuity: '0.2.0',
+            domUi: '0.4.0',
             uiIntents: '0.4.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
@@ -68,13 +76,14 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Product: 0\.6\.900\.1/);
     assert.match(describeVersion(), /Package: 0\.6\.900/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 27/);
+    assert.match(describeVersion(), /Data: 28/);
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /activityAdvance: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerExperience: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /playerOpportunities: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /commitments: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /relationships: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerContinuity: 0\.2\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
@@ -83,12 +92,12 @@ test('database registry includes canonical systems plus explicitly bounded legac
     const required = [
         'places', 'maps', 'powers', 'placeConnections', 'routes', 'transportServices',
         'contentPacks', 'contentPackValidation', 'legacyCandidates', 'travel', 'projects',
-        'resourceProvenance', 'resourceOpportunities', 'capabilities', 'ecologyFamilies',
-        'species', 'populations', 'gatheringSources', 'gatheringWork', 'resourceItems',
-        'productionItems', 'productionProcesses', 'production', 'workTasks',
-        'workProficiencies', 'workstations', 'legacyRecoveredData', 'quests',
-        'relationships', 'items', 'magic', 'abilities', 'lootTables', 'leveling',
-        'companions', 'party', 'crafting',
+        'commitments', 'relationships', 'resourceProvenance', 'resourceOpportunities',
+        'capabilities', 'ecologyFamilies', 'species', 'populations', 'gatheringSources',
+        'gatheringWork', 'resourceItems', 'productionItems', 'productionProcesses',
+        'production', 'workTasks', 'workProficiencies', 'workstations',
+        'legacyRecoveredData', 'quests', 'items', 'magic', 'abilities', 'lootTables',
+        'leveling', 'companions', 'party', 'crafting',
     ];
     for (const id of required) assert.ok(ids.includes(id), `registry missing ${id}`);
 
@@ -98,6 +107,8 @@ test('database registry includes canonical systems plus explicitly bounded legac
 
     const description = describeDatabases();
     assert.match(description, /production \[implemented 0\.1\.0\]/);
+    assert.match(description, /commitments \[implemented 0\.1\.0\]/);
+    assert.match(description, /relationships \[implemented 0\.1\.0\]/);
     assert.match(description, /capabilities \[seeded 0\.2\.0\]/);
     assert.match(description, /magic \[seeded 0\.1\.0\]/);
     assert.match(description, /abilities \[implemented 0\.1\.0\]/);
