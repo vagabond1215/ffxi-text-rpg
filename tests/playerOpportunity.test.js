@@ -175,12 +175,16 @@ test('Journal renders actionable opportunity cards and advances from collection 
     assert.match(html, /Equip Field Knife/);
 });
 
-test('Craft view describes the implemented production substrate in player-facing terms', () => {
+test('Craft view exposes settlement work, trade, and recovery as player-facing services', () => {
     const state = createNewGameState();
     const uiState = createUiState({ screen: 'game', activeView: 'craft' });
     const html = renderGameScreen(createGameViewModel(state, uiState), uiState);
 
-    assert.match(html, /Turn carried materials into useful goods at the right workshop/i);
-    assert.match(html, /Recipes, tools, time, and practice/i);
+    assert.match(html, /Work, Trade &amp; Recover/i);
+    assert.match(html, /Workshop work/i);
+    assert.match(html, /Trade/i);
+    assert.match(html, /Recovery/i);
+    assert.match(html, /data-service-action=/);
+    assert.doesNotMatch(html, /data-command="production"/i);
     assert.doesNotMatch(html, /canonical timed work|not implemented yet/i);
 });
