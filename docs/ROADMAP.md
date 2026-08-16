@@ -20,7 +20,7 @@ Product:      0.6.900.1
 Package:      0.6.900
 Account Save: 4
 Game State:   5
-Data:         27
+Data:         28
 Benchmark:    1
 Codename:     Integrated Mechanics Gate
 ```
@@ -272,19 +272,22 @@ A Phase 0.7 alpha slice is credible only when a normal player can sustain repeat
 
 ## 0.7.100 — Playable campaign slice — in progress
 
-The first Phase 0.7 unit assembles one end-to-end campaign slice from existing systems before broad content multiplication. The current proving corridor is Brasshaven -> Redstone Reach -> Brasshaven, with Starfen already visible as the next material horizon through the Copper Trail Clasp recipe.
+The first Phase 0.7 unit assembles one end-to-end campaign slice from existing systems before broad content multiplication. The current proving corridor is Brasshaven -> Redstone Reach -> Brasshaven, with Starfen already visible as the next material horizon through the Copper Trail Clasp recipe and Varric's follow-up.
 
 Implemented player-experience layers now include:
 
 - **PX-1 — arrival and footing:** all three origins provide an origin-specific arrival, clear first local contact, semantic first action, persistent-progress explanation, and believable morning start;
 - **PX-2 — first-day opportunities:** a dedicated Journal/opportunity model surfaces real livelihood, training/danger, exploration/travel, and service/preparation paths plus real starter-tool claim/equip actions;
-- **PX-3 — first regional loop:** Brasshaven can guide the player through preparation, Redstone travel, timed copper gathering, semantic activity completion, return, forge/workstation context, copper-ingot processing, persistent work mastery, and a larger Copper Trail Clasp ambition.
+- **PX-3 — first regional loop:** Brasshaven guides the player through preparation, Redstone travel, timed copper gathering, semantic activity completion, return, forge/workstation context, copper-ingot processing, persistent work mastery, and a larger Copper Trail Clasp ambition;
+- **PX-4 — several-day continuity:** `Copper for the Ring` is canonical commitment state tied to persistent Marshal Varric Stone relationship state. Provenance-qualified delivery resolves exactly once, changes the NPC relationship, appears in structured day review, survives the real account save/load path, and exposes a changed next-day follow-up that competes with another valid use of character time.
 
-The current PX-3 loop is proven end to end, but `0.7.100` remains open. The campaign-slice exit contract still needs persistent NPC/community follow-up and relationship/reputation consequences, a real commitment/contract consequence rather than guidance-only state, several-day continuity, and danger/combat/recovery composition in the same ordinary player flow.
+PX-4's audit also strengthened shared authority: same-ID inventory stacks with different provenance histories remain distinct; commitment delivery consumes only qualifying provenance-bearing stacks; commitment/relationship state and the commitment catalog are now part of top-level validation.
 
-The next bounded unit is **PX-4 — first several-day continuity proof**, anchored to the completed Brasshaven loop. Add only the smallest reusable canonical social/follow-up state demonstrated by that slice, carry it across a day boundary and save/load, surface it through semantic Journal/day-review presentation, and make it compete with another valid use of character time.
+`0.7.100` remains open. The next bounded unit is **PX-5 — multi-region campaign readability**: rank/group only acquired-known opportunities by region and readiness using discovered places/routes/POIs/maps, contacts/relationships/commitments, equipment/materials/mastery, and real reachability. Unknown content must remain unknown, and direct semantic actions should remain available only when genuinely reachable.
 
-Do **not** mass-generate hundreds of records, introduce a replacement quest/economy/dialogue framework, or declare `0.7.100` complete after the first continuity primitive. Generalize only when additional real slices prove the reusable shape.
+Before `0.7.100` can close, the ordinary campaign flow must also compose meaningful danger/combat/recovery with the livelihood/travel/commitment continuity already proven, and the playable corridor must have enough multi-region/community breadth to sustain repeated play rather than one guided proof.
+
+Do **not** mass-generate hundreds of records, introduce a replacement quest/economy/dialogue framework, or turn the Journal into an omniscient global quest database. Generalize only when additional real slices prove the reusable shape.
 
 ---
 
