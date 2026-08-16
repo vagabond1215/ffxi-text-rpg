@@ -28,8 +28,9 @@ import { equipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
-import { startProductionWork } from '../systems/productionEngine.js';
+import { claimProductionOutputs, startProductionWork } from '../systems/productionEngine.js';
 import { startCharacterResourceRecovery } from '../systems/resourceRecoveryWorkAdapter.js';
+import { buyFromCurrentShopAction, sellToCurrentShopAction } from '../systems/shopEngine.js';
 import { startScheduledTransport } from '../systems/transportEngine.js';
 import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
@@ -52,6 +53,9 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'transport.start',
     'gathering.start',
     'production.start',
+    'production.claimOutputs',
+    'shop.buy',
+    'shop.sell',
     'activity.advanceToCompletion',
     'combat.encounter',
     'combat.attack',
@@ -144,6 +148,16 @@ export function createDomApp({ host }) {
         } else if (intent === 'production.start') {
             result = startProductionWork(state, payload.processId, { containerId: payload.containerId ?? 'inventory' });
             recordGameplayFeedback(result);
+        } else if (intent === 'production.claimOutputs') {
+            result = claimProductionOutputs(state, payload.workId, { containerId: payload.containerId ?? 'inventory' });
+            recordGameplayFeedback(result);
+        } else if (intent === 'shop.buy') {
+            result = buyFromCurrentShopAction(state, payload.itemQuery, payload.shopQuery);
+            recordGameplayFeedback(result);
+        } else if (intent === 'shop.sell') {
+            const query = payload.quantity > 1 ? `${payload.itemQuery} x${payload.quantity}` : payload.itemQuery;
+            result = sellToCurrentShopAction(state, query, payload.shopQuery);
+            recordGameplayFeedback(result);
         } else if (intent === 'activity.advanceToCompletion') {
             result = advanceActiveActivityToCompletion(state);
             recordGameplayFeedback(result);
@@ -225,6 +239,13 @@ export function createDomApp({ host }) {
             const model = createGameViewModel(state, uiState);
             const opportunity = model.opportunities?.entries?.find((entry) => entry.id === button.dataset.opportunityAction);
             if (opportunity?.action) dispatch(opportunity.action.intent, opportunity.action.payload);
+            return;
+        }
+
+        if (button.dataset.serviceAction) {
+            const model = createGameViewModel(state, uiState);
+            const action = model.settlementServices?.actions?.find((item) => item.id === button.dataset.serviceAction);
+            if (action) dispatch(action.intent, action.payload);
             return;
         }
 
