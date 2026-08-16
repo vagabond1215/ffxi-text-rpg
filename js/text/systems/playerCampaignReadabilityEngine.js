@@ -76,8 +76,8 @@ export function createCopperTrailOpportunity(state) {
     const claspQuantity = inventoryQuantity(state, proof.outputItemId);
     const followUpSeen = commitment?.followUpSeenAtWorldSeconds !== null && commitment?.followUpSeenAtWorldSeconds !== undefined;
 
-    // Starfen is not promoted into the Journal merely because the authored database contains it.
-    // This first cross-region lead appears only after canonical social/world/item knowledge makes it knowable.
+    // Starfen is not promoted merely because authored data contains it. This lead
+    // appears only after social, visited-place, or carried-item knowledge makes it knowable.
     if (!followUpSeen && !starfenVisited && fiberQuantity === 0 && claspQuantity === 0) return null;
 
     const source = getCanonicalGatheringSource(proof.fiberSourceId);
@@ -96,7 +96,7 @@ export function createCopperTrailOpportunity(state) {
             title: proof.ambitionName,
             summary: 'The Redstone metalwork and Starfen fiber have become one finished cross-region component.',
             reason: 'A larger ambition should connect earlier work across places instead of replacing it with a disconnected reward tier.',
-            progress: 'The Copper Trail Clasp is complete and remains a provenance-bearing product of both regional material chains.',
+            progress: 'The Copper Trail Clasp is complete; its materials still tell the story of work done in both regions.',
             status: 'complete',
             requirements: [
                 requirement('Redstone copper ingot', true),
@@ -120,8 +120,8 @@ export function createCopperTrailOpportunity(state) {
             category: 'ambition',
             title: gathering ? 'Starfen fiber for the Copper Trail Clasp' : proof.ambitionName,
             summary: gathering
-                ? 'Reed gathering is already underway in Starfen; finishing the canonical work task will resolve the material exactly once.'
-                : 'The cross-region craft is already underway; its inputs were consumed by production authority at start.',
+                ? 'You are already gathering reeds in Starfen. Finish the work to secure the fiber you came for.'
+                : 'The Copper Trail Clasp is already on the bench. Finish the work to complete it.',
             reason: 'Active work outranks unrelated distant leads and remains owned by the existing timed-task authority.',
             progress: gathering ? 'Secure the Starfen half of the clasp material chain.' : 'Finish the Copper Trail Clasp.',
             status: 'active',
@@ -141,10 +141,10 @@ export function createCopperTrailOpportunity(state) {
             category: 'ambition',
             title: towardStarfen ? 'Travel toward Starfen' : proof.ambitionName,
             summary: towardStarfen
-                ? 'Your current journey is already advancing the known Starfen material lead.'
-                : 'Another journey is active. Finish or stop it before choosing a different cross-region route.',
+                ? 'Your current journey is already carrying you toward the Starfen material you need.'
+                : 'Another journey is already underway. Finish or stop it before choosing a different long road.',
             reason: 'The Journal follows canonical travel state rather than offering simultaneous route actions.',
-            progress: `Known from ${knowledgeSource}; Starfen reed fiber is the missing regional material lead.`,
+            progress: `You learned this lead from ${knowledgeSource}; Starfen reed fiber is still missing.`,
             status: towardStarfen ? 'active' : 'available',
             requirements: [requirement('Finish the current journey', false)],
             regionLabel: 'Starfen',
@@ -160,7 +160,7 @@ export function createCopperTrailOpportunity(state) {
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen material secured',
-            summary: 'You have the reed fiber. The remaining material requirement is another Redstone Copper Ingot, which the existing Redstone livelihood lead can supply.',
+            summary: 'You have the reed fiber. The remaining material is another Redstone Copper Ingot, which you already know how to produce.',
             reason: 'The larger ambition links regional work without duplicating the Redstone gathering/production authority in a second quest path.',
             progress: 'Starfen leg complete; acquire another Redstone Copper Ingot before returning to a forge.',
             status: 'complete',
@@ -193,8 +193,8 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             category: 'ambition',
             title: `Starfen · gather reed fiber for ${proof.ambitionName}`,
             summary: check.ok
-                ? `${source?.name ?? 'A local reedbed'} is now local, knowable world context. Gather one fiber through canonical timed work.`
-                : `You have reached Starfen, but ${source?.name ?? 'the reedbed'} still requires practical preparation before harvesting.`,
+                ? `${source?.name ?? 'A local reedbed'} is here. Gather one usable length of fiber for the clasp.`
+                : `You have reached Starfen, but ${source?.name ?? 'the reedbed'} still requires better preparation before you can harvest it.`,
             reason: 'The exact source is surfaced only after the character reaches the place that contains it; authored remote resource nodes remain hidden beforehand.',
             progress: 'Starfen reed fiber completes the second regional material requirement for the Copper Trail Clasp.',
             status: check.ok ? 'ready' : 'blocked',
@@ -216,12 +216,12 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
         return opportunity({
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
-            title: `Starfen · continue toward reed country`,
+            title: 'Starfen · continue toward reed country',
             summary: route.ok
-                ? 'At Mistmere Reedport, the West Fen route is current travel context rather than remote database knowledge.'
-                : 'You know Starfen is the target region, but the next usable route is not currently available.',
+                ? 'From Mistmere Reedport, you now know a usable way into West Starfen.'
+                : 'You know Starfen is the target region, but you do not currently have a usable route from here.',
             reason: 'Specific route actions appear only when the character is at a place from which that route is genuinely usable.',
-            progress: 'Reach West Starfen; the exact reed source remains unrevealed until arrival.',
+            progress: 'Reach West Starfen. You will still need to find a suitable reed source after you arrive.',
             status: route.ok ? 'ready' : 'available',
             requirements: [requirement('Reach Mistmere Reedport', true), requirement('Know a usable route into Starfen', route.ok)],
             regionLabel: 'Starfen',
@@ -242,9 +242,9 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · take the long road east',
-            summary: `${localToBrasshavenHub.name} is a known local travel hub. Go there before choosing a long-distance service.`,
+            summary: `${localToBrasshavenHub.name} is the local travel hub you know. Go there before choosing the long-distance leg.`,
             reason: 'The Journal exposes the next locally knowable transition, not every hidden stop in the route graph.',
-            progress: 'Reach the Iron Quay, then inspect the long-distance route toward Mistmere and Starfen.',
+            progress: 'Reach the Iron Quay, then look for the long-distance connection toward Mistmere and Starfen.',
             status: 'ready',
             requirements: [requirement(`Reach ${localToBrasshavenHub.name}`, false)],
             regionLabel: 'Starfen',
@@ -261,9 +261,9 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · reach Mistmere Reedport',
-            summary: 'Reedport is the local travel hub that leads into the known Starfen horizon.',
+            summary: 'Reedport is the local travel hub you know for continuing toward Starfen.',
             reason: 'Named locality knowledge can guide the player toward a regional route without exposing authored coordinates.',
-            progress: 'Reach Reedport, then choose a real route into Starfen.',
+            progress: 'Reach Reedport, then choose a route into Starfen.',
             status: 'ready',
             requirements: [requirement('Reach Mistmere Reedport', false)],
             regionLabel: 'Starfen',
@@ -280,9 +280,9 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · return to the Brasshaven road hub',
-            summary: 'You know the Starfen material goal, but the next usable long-distance connection begins back in Brasshaven.',
+            summary: 'You know what you need from Starfen, but the long-distance connection you know begins back in Brasshaven.',
             reason: 'Distant goals remain visible while only the next reachable route action is enabled.',
-            progress: 'Return to Brasshaven, then continue east through known travel infrastructure.',
+            progress: 'Return to Brasshaven, then continue east through the travel connections you know.',
             status: 'ready',
             requirements: [requirement('Return to Brasshaven', false)],
             regionLabel: 'Starfen',
@@ -298,10 +298,10 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
         category: 'ambition',
         title: 'Starfen · known material horizon',
         summary: starfenVisited
-            ? 'You have visited Starfen before, but no direct route action is currently reachable from this position.'
-            : 'Varric has given you a reason to seek Starfen reed fiber, but the Journal will not reveal a remote resource node or impossible route from here.',
+            ? 'You have been to Starfen before, but no route you can use from your current position leads there directly.'
+            : 'Varric has given you a reason to seek Starfen reed fiber. You know the destination, not every road or reedbed between here and there.',
         reason: 'Knowing that a region or material exists is different from knowing every route, locality, and source inside it.',
-        progress: `Known from ${knowledgeSource}; reach appropriate travel infrastructure before a direct route action appears.`,
+        progress: `You learned this lead from ${knowledgeSource}. Reach a travel connection you know before planning the next leg.`,
         status: 'available',
         requirements: [requirement('Reach a known travel connection toward Starfen', false)],
         regionLabel: 'Starfen',
@@ -320,10 +320,10 @@ function createCraftStep(state, { proof, craft, forge, knowledgeSource }) {
             category: 'ambition',
             title: proof.ambitionName,
             summary: check.ok
-                ? `${forge?.name ?? 'The Brasshaven forge'} can now combine your Redstone metal and Starfen fiber through canonical production.`
-                : `You have both regional materials, but the current forge or preparation still blocks the craft.`,
+                ? `${forge?.name ?? 'The Brasshaven forge'} can combine your Redstone metal and Starfen fiber into the clasp now.`
+                : 'You have both regional materials, but the current forge or preparation still blocks the craft.',
             reason: 'The larger ambition resolves through existing workstation, input, timed-work, and output authority.',
-            progress: 'Craft the Copper Trail Clasp and retain its transformation provenance.',
+            progress: 'Craft the Copper Trail Clasp at a suitable forge.',
             status: check.ok ? 'ready' : 'blocked',
             requirements: [
                 requirement('Redstone copper ingot', true),
@@ -344,7 +344,7 @@ function createCraftStep(state, { proof, craft, forge, knowledgeSource }) {
         id: 'campaign-copper-trail-clasp',
         category: 'ambition',
         title: 'Return with Starfen fiber',
-        summary: 'Both regional materials are in hand. The remaining action is to return to a known Brasshaven forge.',
+        summary: 'Both regional materials are in hand. Bring them back to the Brasshaven forge you already know.',
         reason: 'The Journal can name a known service destination without exposing hidden topology or bypassing travel authority.',
         progress: 'Return to Brasshaven Market Ring, then craft the Copper Trail Clasp.',
         status: returnStep.status,
@@ -401,9 +401,9 @@ function createLongRoadStep(state, fromPlaceId, toPlaceId, knowledgeSource) {
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · long-distance connection unavailable',
-            summary: 'The known material horizon remains, but no current scheduled service connects this travel hub to the next leg.',
+            summary: 'You still know why Starfen matters, but this travel hub does not currently offer a usable service for the next leg.',
             reason: 'The Journal does not invent a teleport or hidden connection when route authority cannot supply one.',
-            progress: `Known from ${knowledgeSource}.`,
+            progress: `You learned this lead from ${knowledgeSource}.`,
             status: 'available',
             requirements: [requirement('Find a usable long-distance service', false)],
             regionLabel: 'Starfen',
@@ -423,7 +423,7 @@ function createLongRoadStep(state, fromPlaceId, toPlaceId, knowledgeSource) {
         id: 'campaign-copper-trail-clasp',
         category: 'ambition',
         title: toPlaceId === proof.mistmereHubId ? 'Starfen · cross to Mistmere' : 'Return west with the Starfen material',
-        summary: `${service.name} is available from the current travel hub to ${destination?.name ?? toPlaceId}.`,
+        summary: `${service.name} runs from here to ${destination?.name ?? toPlaceId}.`,
         reason: 'Scheduled transport is surfaced only at a served stop and still enforces fare, cadence, cargo, fictional time, and arrival authority.',
         progress: toPlaceId === proof.mistmereHubId
             ? 'Reach Mistmere Reedport, then continue into Starfen.'
@@ -527,17 +527,16 @@ function chooseRecommendedOpportunity(baseModel, orderedEntries) {
 function createReadabilityPrompt(groups) {
     if (!groups.length) return 'No current opportunities are known.';
     const summary = groups.map((group) => {
-        const label = group.current ? `${group.label} (current)` : group.label;
+        const label = group.current ? `${group.label} (here)` : group.label;
         const parts = [
             group.activeCount ? `${group.activeCount} active` : null,
             group.readyCount ? `${group.readyCount} ready` : null,
-            group.availableCount ? `${group.availableCount} available` : null,
+            group.availableCount ? `${group.availableCount} known` : null,
             group.blockedCount ? `${group.blockedCount} blocked` : null,
-            group.completeCount ? `${group.completeCount} complete` : null,
         ].filter(Boolean);
         return `${label}: ${parts.join(', ') || 'known'}`;
     });
-    return `Ranked from acquired knowledge only. ${summary.join(' · ')}. Unknown places, routes, contacts, and resource sites are omitted.`;
+    return `Choose among the leads you know now. ${summary.join(' · ')}.`;
 }
 
 function compareEntries(a, b) {
