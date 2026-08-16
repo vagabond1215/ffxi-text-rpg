@@ -11,9 +11,11 @@ import {
 } from './commitmentEngine.js';
 import { getLatestDaySummary } from './dayCycleEngine.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
+import { listLocalityDestinations } from './localityEngine.js';
 import { decorateCampaignReadabilityModel } from './playerCampaignReadabilityEngine.js';
 import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
+import { findTravelRoute } from './travelEngine.js';
 
 export const PLAYER_CONTINUITY_VERSION = 5;
 
@@ -116,7 +118,7 @@ export function createCommitmentOpportunity(state, definitionOrId = null) {
         title: followUpReady ? `${giverName} remembers the work` : `${definition.name} · credited`,
         summary: followUpReady
             ? `A new day has begun since the work was credited. ${giverName} may have something different to say now.`
-            : `The work has been delivered and credited. Give it some time before expecting another conversation to grow from it.`,
+            : 'The work has been delivered and credited. Give it some time before expecting another conversation to grow from it.',
         reason: 'Time and relationships persist after resolution; continuity is not an immediate reward-dialogue reset.',
         progress: followUpReady ? definition.followUpText : `Return to ${giverName} on a later day.`,
         status: followUpReady && inPlace ? 'ready' : 'available',
@@ -173,6 +175,14 @@ function createActiveCommitmentOpportunity(state, definition, { giverName, offer
         status = 'blocked';
         blockers = gatherCheck.blockers;
         summary = `${fieldSource.name} is here, but your current preparation is not enough to gather what ${giverName} needs.`;
+    } else if (!check.ok && allItemsReady && !inOfferPlace) {
+        const returnStep = createReturnStep(state, definition);
+        if (returnStep.action) {
+            status = 'ready';
+            nextAction = returnStep.action;
+            blockers = [];
+            summary = `You have what ${giverName} asked for. ${returnStep.summary}`;
+        }
     }
 
     return opportunity({
@@ -196,6 +206,42 @@ function createActiveCommitmentOpportunity(state, definition, { giverName, offer
         action: nextAction,
         regionLabel: atFieldSource ? getPlace(fieldSource.placeId)?.region ?? offerPlace?.region ?? null : offerPlace?.region ?? null,
     });
+}
+
+function createReturnStep(state, definition) {
+    const offerPlace = getPlace(definition.offerPlaceId);
+    const directLocal = listLocalityDestinations(state).find((entry) => entry.id === definition.offerPlaceId);
+    if (directLocal) {
+        return {
+            summary: `Go to ${directLocal.name} and deliver it.`,
+            action: action(`return-local-${definition.id}`, `Go · ${directLocal.name}`, 'locality.move', { destinationId: directLocal.id }),
+        };
+    }
+    const directTravel = findTravelRoute(state, definition.offerPlaceId);
+    if (directTravel.ok) {
+        return {
+            summary: `Travel back to ${offerPlace?.name ?? definition.offerPlaceId}.`,
+            action: action(`return-travel-${definition.id}`, `Travel · ${offerPlace?.name ?? definition.offerPlaceId}`, 'travel.start', { destinationId: definition.offerPlaceId }),
+        };
+    }
+    if (definition.returnViaPlaceId) {
+        const via = getPlace(definition.returnViaPlaceId);
+        const localVia = listLocalityDestinations(state).find((entry) => entry.id === definition.returnViaPlaceId);
+        if (localVia) {
+            return {
+                summary: `Go through ${localVia.name} on the way back.`,
+                action: action(`return-via-local-${definition.id}`, `Go · ${localVia.name}`, 'locality.move', { destinationId: localVia.id }),
+            };
+        }
+        const travelVia = findTravelRoute(state, definition.returnViaPlaceId);
+        if (travelVia.ok) {
+            return {
+                summary: `Travel back through ${via?.name ?? definition.returnViaPlaceId}.`,
+                action: action(`return-via-travel-${definition.id}`, `Travel · ${via?.name ?? definition.returnViaPlaceId}`, 'travel.start', { destinationId: definition.returnViaPlaceId }),
+            };
+        }
+    }
+    return { summary: `Find a known route back to ${offerPlace?.name ?? definition.offerPlaceId}.`, action: null };
 }
 
 export function createDayReviewOpportunity(state) {
