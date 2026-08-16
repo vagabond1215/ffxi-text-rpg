@@ -109,8 +109,8 @@ test('PX5 groups and ranks only acquired opportunities without persisting a camp
     assert.equal(view.opportunities.groups.some((group) => group.label === 'Starfen'), false);
     assert.equal(entry(view, CAMPAIGN_ID), null);
     assert.doesNotMatch(view.opportunities.prompt, /Tall Reedbed|source-west-starfen-reedbed/i);
-    assert.match(view.opportunities.prompt, /acquired knowledge/i);
-    assert.match(view.opportunities.prompt, /Unknown places, routes, contacts, and resource sites are omitted/i);
+    assert.match(view.opportunities.prompt, /leads you know now/i);
+    assert.doesNotMatch(view.opportunities.prompt, /authored|database|unknown places|resource sites/i);
 
     const actionable = view.opportunities.entries.filter((candidate) => ['active', 'ready'].includes(candidate.status) && candidate.action);
     assert.ok(actionable.length >= 2, 'the first-day Journal should retain several understandable choices');
