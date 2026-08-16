@@ -2,15 +2,11 @@
 
 **Working title.** Hearth & Horizon is a text-first persistent fantasy life RPG about one continuous character building skills, livelihood, relationships, reputation, material capability, home/infrastructure, and geographic reach across a connected original fantasy world.
 
-Earlier versions of this repository grew from FFXI-derived experiments. Those files may remain only as explicit research, migration, compatibility, or comparison material. They are **not canonical world content**.
-
-Core progression law:
+Earlier FFXI-derived experiments may remain only as explicit research, migration, compatibility, or comparison material. They are **not canonical world content**.
 
 ```text
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
-
-Core capability law:
 
 ```text
 Disciplines describe.
@@ -18,49 +14,46 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-Navigation law:
-
 ```text
 Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-## Current version
+## Current runtime baseline
 
 ```text
-Product:      0.6.500.1
-Package:      0.6.500
-Account Save: 4
-Game State:   5
-Data:         23
-Benchmark:    1
-Codename:     Equipment and Tool Breadth
+Product:       0.6.900.1
+Package:       0.6.900
+Account Save:  4
+Game State:    5
+Data:          27
+Benchmark:     1
+Codename:      Integrated Mechanics Gate
+Compatibility: pre-release-current-schema
 ```
 
-`js/text/version.js` is authoritative for runtime/subsystem versions. Product versions use `MAJOR.PHASE.TRACK.REVISION`; `package.json.version` remains three-part SemVer and normally mirrors `MAJOR.PHASE.TRACK`.
+`js/text/version.js` is authoritative. Product/package remain at the last **completed** milestone while Phase 0.7 work is still an in-progress playable-campaign slice. Data 27 registers the authored player-experience/regional-loop contract added during that work.
 
-## Milestone state
+## Development state
 
-**Phase 0.5 — Simulation and Content Substrate is complete. Phase 0.6 is active through 0.6.500.**
+Phase 0.6 is complete. Phase 0.7 — **Multi-region playable alpha** — is in progress, with `0.7.100` still open.
 
-The current integrated foundation includes:
+The current foundation includes deterministic fictional time, timed work and interrupts, day review, travel and transport, provenance-bearing resources and production, ecology, continuous-character progression/capabilities, Combat 2.0, persistent companions, semantic DOM presentation, locality/exploration navigation, equipment and field tools, and scalable content-pack validation.
 
-- deterministic fictional time, pause/speed, timed tasks, interrupts, day review, routes, scheduled transport, projects, ecology, provenance, and scalable content-pack validation;
-- one continuous character whose learned skills/capabilities persist across discipline changes;
-- original executable magic/ability definitions separated from capability ownership;
-- Combat 2.0 structured actions, canonical readiness/recovery timing, timed-cast interruption, canonical status expiry, and an original enemy active-ability seam;
-- semantic DOM/CSS browser presentation with contextual actions and a single-screen character creator;
-- named safe-settlement locality navigation that omits the exploration map/compass, while wilderness retains the acquired-knowledge map and directional movement;
-- representative original weapons, armor, accessories, travel gear, and usable field tools whose equipped tags satisfy practical capability/gathering requirements.
+Phase 0.7 has now landed three player-experience slices:
 
-This remains **pre-alpha systems development**, not content completion. The next bounded track is `0.6.600`: gathering/hunting/processing/crafting/cooking/salvage loops built on canonical time, tools, capability/proficiency, provenance, and resource sinks.
+- **PX-1 — arrival and footing:** origin-specific arrival, first contact, believable morning start, and setting-friendly explanation of persistent progress;
+- **PX-2 — actionable opportunities:** a real Journal/Opportunities projection over current state with semantic claim/equip/locality/travel/gathering/combat/service actions across all three origins;
+- **PX-3 — first regional loop:** a fully executable Brasshaven → South Redstone Reach → copper gathering → return → forge processing loop that leaves persistent mining/metalworking gains and provenance-bearing material.
+
+`0.7.100` is **not** complete yet. The next bounded work should add a real canonical contract/commitment and persistent NPC/social follow-up around the proven regional loop, then surface those consequences across several fictional days. Do not mass-author content before that reusable continuity slice is proven.
 
 ## Original-world anchors
 
-- **Thornwall** and the **Elderwood**;
-- **Brasshaven** and the **Redstone Reach**;
-- **Mistmere** and the **Starfen**;
-- future central trade hub **Waymeet**.
+- **Thornwall** and the **Elderwood**
+- **Brasshaven** and the **Redstone Reach**
+- **Mistmere** and the **Starfen**
+- future central trade hub **Waymeet**
 
 Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. Disciplines are training traditions rather than magical class transformations.
 
@@ -68,71 +61,26 @@ Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. Discipline
 
 The player-facing UI is a **world interface**, not a permanent command console.
 
-The active browser shell is semantic DOM/CSS:
-
 ```text
 index.html
   -> js/main.js
       -> createDomApp(host)
-          -> authoritative game/save/command/intent services
+          -> authoritative game/save/intent services
           -> createGameViewModel(state, uiState)
           -> renderDomApp(...)
 ```
 
-Primary information navigation currently includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual actions stay small and situation-dependent. The bottom Search-or-act field remains a typed-command/power-user adapter; it is not yet a full fuzzy entity/action search engine.
+Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual actions stay small and situation-dependent. Search-or-act remains a power-user command adapter rather than the required gameplay path.
 
-### Settlement/locality navigation
+Safe settlements use named locality navigation and omit the exploration map/D-pad. Wilderness and dungeon-style spaces retain directional movement and a discovery-relative map. Authored coordinates, undiscovered extent, and hidden global placement remain simulation-private.
 
-Safe guarded city areas use named destinations and locality actions. The active renderer does not emit a local exploration map or D-pad there. Crossing between adjacent localities consumes authored coarse fictional time and remains interruptible.
+The Journal is now state-aware guidance rather than a future-system placeholder. It does not own a second quest clock: it projects canonical inventory, equipment, POI discovery, route, work, production, combat, and progression state into useful next actions.
 
-### Exploration navigation
+## Fictional time, work, and resources
 
-Wilderness/dungeons and other terrain-sensitive spaces retain directional movement and a discovery-relative SVG map. Authored coordinates, undiscovered total extent, and hidden placement inside authored bounds are simulation data and are not automatically exposed to the player.
+Simulation time is separate from wall-clock time. Canonical fictional seconds drive travel, work, projects, ecology regeneration, combat recovery, timed abilities, statuses, interrupts, and day review.
 
-Higher-resolution shaped exploration cartography remains a later presentation/content option; it is no longer needed simply to make ordinary city interaction usable.
-
-### Character creation
-
-The active creator keeps name, ancestry, sex, origin, and starting discipline on one screen with a live starting profile. Starting discipline is initial training, not permanent class identity or a universal capability gate.
-
-## Character, combat, and equipment model
-
-### One person, many disciplines
-
-`characterStatEngine.js`, progression/skill systems, `data/capabilities.js`, and `capabilityEngine.js` keep character ownership separate from active training context. A discipline may teach or improve something without owning the learned capability forever.
-
-### Original active abilities
-
-`data/abilities.js` + `abilityEngine.js` own executable effects, targeting, costs, timed activation, cooldowns, and interruption. Capability records own learned/use prerequisites. These responsibilities remain separate.
-
-### Combat 2.0
-
-`combatTurnEngine.js` maintains structured action history and a fictional-time readiness timeline. `combatSimulationEngine.js` composes enemy-ready and ability-completion interrupts through the canonical simulation engine, allowing enemy actions to interleave with timed casts. `statusEngine.js` reconciles finite status expiry against canonical world time.
-
-### Equipment and field tools
-
-`data/equipmentCatalog.js` now includes representative equipment breadth plus:
-
-```text
-Field Knife        -> cutting / practical recovery
-Prospector Pick    -> mining
-Woodsman Hatchet   -> woodcutting
-Digging Spade      -> digging
-Reed Sickle        -> cutting
-Marsh Fishing Rod  -> fishing
-```
-
-`equipmentToolEngine.js` resolves equipped item tags for capability/gathering requirements. New original equipment is authored without active-discipline restrictions by default. Older starter `allowedJobs` fields remain bounded compatibility debt.
-
-Representative settlement shops sell the new gear as normalized equipment, so bought tools enter the same inventory/equip/loadout systems used elsewhere.
-
-## Fictional time and resources
-
-Simulation time and wall-clock time are separate. Canonical fictional seconds drive tasks, projects, ecology regeneration, transport schedules, travel arrival, combat recovery, timed abilities, status expiry, interrupt discovery, and day review.
-
-A defeated creature does not automatically manufacture finished materials in inventory. Combat/environmental gathering creates physical resource opportunities or provenance-bearing raw materials that should flow through processing, use, wear, recycling/salvage, and replacement loops.
-
-Desired material flow remains:
+A defeated creature or gathering source does not magically manufacture finished goods. Physical resources preserve provenance through recovery, processing, crafting, cooking, salvage/recycling, trade, and use.
 
 ```text
 world source
@@ -144,21 +92,7 @@ world source
   -> repair/recycling/salvage or replacement
 ```
 
-`0.6.600` is the next track that turns more of this chain into playable work.
-
-## Deliberate compatibility debt
-
-Do not erase compatibility tokens by inventing replacement canon without design support:
-
-- `gil` remains current currency terminology until an original currency design is deliberately chosen;
-- historical localStorage keys remain for save compatibility;
-- some legacy-shaped POI hook IDs remain while dependent references use them internally;
-- `places.js` connections remain bounded fallback/locality adjacency where canonical routes are not the appropriate authority;
-- encounter `spawnRules` remain transitional beside canonical ecology populations;
-- `mainJobId`, `player.jobs`, `raceId`, and related persisted/internal names remain compatibility seams;
-- older starter equipment eligibility still contains discipline-shaped fields; new original gear should not copy that pattern by default;
-- historical FFXI research modules remain bounded reference/migration surfaces;
-- Canvas UI modules remain regression/reference code but are not the active browser entry point.
+The first Phase 0.7 regional loop proves this in ordinary browser play: Brasshaven issues a Prospector Pick through a real first contact, the player travels to South Redstone Reach, mines two copper ore through timed gathering, returns to Market Ring, uses a real forge POI, and smelts a provenance-bearing copper ingot through timed production.
 
 ## Read these first
 
@@ -168,52 +102,24 @@ Do not erase compatibility tokens by inventing replacement canon without design 
 4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 5. `docs/ROADMAP.md`
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-7. `docs/TRANSITIONAL_ARCHITECTURE.md`
+7. `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
 8. `docs/ARCHITECTURE.md`
 9. `docs/LOCALITY_AND_EXPLORATION_MODEL.md`
 10. `js/text/version.js`
 
 ## Running
 
-Serve over localhost; do not open `index.html` via `file://` because browser ES-module imports require an HTTP origin.
+Serve over localhost; do not open `index.html` with `file://` because browser ES-module imports require an HTTP origin.
 
 ```bash
-npm run serve
+npm start
 ```
 
-Then open:
-
-```text
-http://127.0.0.1:4173/
-```
-
-No build step is required for local play.
-
-## Development gate
-
-Use Node 20+.
+Validation:
 
 ```bash
 npm test
 npm run benchmark
-npm run check
 ```
 
-GitHub Actions runs test/build checks for pushes to `main`. During the current early single-maintainer phase, work normally proceeds directly on `main`; branch/PR protections can be tightened when collaboration/release risk requires them.
-
-## Immediate sequence
-
-```text
-0.5.900  Simulation/content-substrate exit gate              COMPLETE
-0.6.100  Character stats and progression                     COMPLETE
-0.6.200  Skills/proficiencies/disciplines/capabilities       COMPLETE
-0.6.250  Player interface architecture                       COMPLETE
-0.6.300  Original magic and active ability engine            COMPLETE
-0.6.400  Combat 2.0                                          COMPLETE
-0.6.450  Locality and exploration navigation                 COMPLETE
-0.6.500  Equipment and field-tool breadth                    COMPLETE
-0.6.600  Gathering/processing/crafting/cooking/salvage       NEXT
-0.6.700  Ecology/regional content breadth
-0.6.800  Persistent companion/party foundation
-0.6.900  Integrated-mechanics exit gate
-```
+GitHub Actions is the executable validation environment for connector-driven sessions. The current Node 20 action-runtime deprecation warning is non-blocking but should be handled in a deliberate CI-maintenance pass rather than mixed into gameplay work.

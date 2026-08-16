@@ -1,327 +1,130 @@
 # Architecture
 
-Hearth & Horizon is a text-first persistent fantasy life RPG. Runtime architecture keeps simulation authority, canonical data, player-facing presentation, and legacy compatibility boundaries distinct so each can evolve without broad rewrites.
+Hearth & Horizon is an original text-first persistent fantasy life RPG built around one deterministic world state and one continuous character. This document describes current runtime authority, not speculative final architecture.
 
-Current baseline:
-
-```text
-Product:      0.6.900.1
-Package:      0.6.900
-Account Save: 4
-Game State:   5
-Data:         26
-Benchmark:    1
-```
-
-Phase 0.6 is complete. `integratedMechanicsGate.js` is now the executable cross-system readiness seam protecting the completed mechanics baseline as Phase 0.7 grows playable content.
-
-## Principles
-
-1. **Game state and engines are authoritative; presentation is derived.** UI views consume state/semantic view models and dispatch intents/actions into engines.
-2. **Text first, browser-native where practical.** The active shell is semantic HTML/CSS. SVG is used only where a knowledge map adds value. Canvas remains bounded compatibility/reference code.
-3. **Commands and UI controls are adapters.** New UI behavior should prefer semantic intents/direct engine seams instead of manufacturing command strings when a stable semantic seam exists.
-4. **Canonical fictional time is the only gameplay clock.** Wall-clock callbacks are scheduler inputs, not simulation truth.
-5. **Maps represent acquired knowledge.** Presentation must not expose raw authored coordinates, undiscovered total extent, or hidden placement inside authored bounds.
-6. **Navigation presentation follows gameplay meaning.** Named localities are used where destinations/services/relationships matter; fine movement is used where terrain/path decisions matter.
-7. **Continuous-character ownership is explicit.** Disciplines describe training; learned capabilities, skills, work proficiency, progression, and relationships belong to the persistent person.
-8. **Resources have provenance and intended sinks.** Combat, gathering, recovery, production, trade, and social rewards must not bypass physical/economic/social ownership rules.
-9. **Persistent companions are world characters.** Party membership promotes an NPC-backed persistent person into active party state; companions are not summons or disposable battle copies.
-10. **Content is data, not renderer logic.** High-volume world content belongs in validated catalogs/packs.
-11. **Legacy material is bounded.** Historical FFXI-derived names/data exist only at explicit research, migration, comparison, or compatibility seams.
-12. Major runtime contracts should have focused tests, subsystem versions, and validation where practical.
-
-## Current browser flow
+## Active browser path
 
 ```text
 index.html
   -> js/main.js
       -> createDomApp(host)
-          -> load/create authoritative game state
-          -> command/slash compatibility adapters
-          -> semantic UI actions/intents
+          -> authoritative game/save/intent services
           -> createGameViewModel(state, uiState)
           -> renderDomApp(...)
-              -> semantic HTML/CSS shell
-              -> conditional SVG discovery map in exploration only
 ```
 
-The active browser shell has been DOM-first since `0.6.250`. `js/text/ui/canvas*` remains for bounded regression/reference coverage but is not mounted by `js/main.js`.
+The semantic DOM/CSS shell is the active player interface. Canvas modules remain bounded regression/reference code and must not become the normal gameplay authority again.
 
-## Authoritative state composition
+## Authority rules
 
-Game State 5 remains the persistence contract. Major current state domains include:
+- Fictional time, timed tasks, interrupts, work, travel, combat readiness, statuses, and day review share one canonical simulation substrate.
+- Continuous-character stats, learned skills/capabilities, and work proficiency belong to the person; disciplines are contextual training traditions.
+- Inventory/equipment/tool state is canonical for preparation and practical capability checks.
+- Resources preserve source/transformation provenance and exactly-once ownership.
+- Maps represent acquired knowledge; authored coordinates and undiscovered extent remain internal.
+- Safe settlements use named locality navigation; wilderness/dungeon-style spaces use discovery-relative spatial exploration where terrain matters.
+- Persistent companions remain NPC-backed world participants.
+- Content packs and cross-reference validation are the scale mechanism for authored world growth.
 
-```text
-player
-worldTime
-simulation
-tasks
-events
-atlas / discovered POIs
-abilities
-battle
-projects
-resourceOpportunities
-ecology
-work
-party
-journey / transport state
-world flags and persistent NPC state
-```
+## Player-experience architecture
 
-Several Phase 0.6 registries are additive and lazily normalizable. The integrated mechanics gate explicitly proves that missing additive simulation/task/event/ability/party/project/resource-opportunity/ecology/work registries can be reconstructed without changing Game State 5.
+Phase 0.7 guidance deliberately composes existing authorities instead of creating a tutorial/quest subsystem.
 
-## UI and navigation architecture
+### `playerExperienceContent.js`
 
-Primary files:
+Authored origin-facing presentation contract. It owns stable content such as first contact, regional horizon, first livelihood source, departure locality, and—where authored—the first regional-loop recipe.
 
-```text
-js/text/ui/domApp.js
-js/text/ui/domRenderer.js
-js/text/ui/gameViewModel.js
-js/text/ui/uiState.js
-js/text/ui/uiIntentDispatcher.js
-js/text/ui/commandIntentAdapter.js
-js/text/ui/minimapModel.js
-js/text/systems/localityEngine.js
-js/text/systems/navigationEngine.js
-```
+Data 27 adds the Brasshaven `regionalLoop` shape: target resource/quantity, return locality, workstation POI, production process/output, and larger ambition.
 
-`gameViewModel.js` is a disposable renderer-facing projection. It exposes scene/status/activity/context actions, party state, learned abilities, and semantic navigation mode; it is not persisted and is not a second game-state schema.
+This data does **not** own progress state.
 
-Current navigation modes:
+### `playerExperienceEngine.js`
 
-```text
-locality     -> named settlement destinations + locality/POI actions
-exploration  -> acquired-knowledge map + directional movement
-route        -> journey/progress + route/transport controls
-combat       -> combat state + tactical actions
-```
+Projects first-session orientation from canonical player identity, current place, and POI discovery. It also owns the semantic origin starter-kit claim because that is a real item grant tied to a real first-contact condition, not renderer prose.
+
+### `playerOpportunityEngine.js`
+
+Projects the Journal/Opportunities model from canonical state. Current opportunity stages derive from real:
+
+- guide/POI discovery;
+- carried/equipped items;
+- locality graph and routes;
+- active travel/work;
+- gathering requirements/source capacity;
+- inventory quantities;
+- workstation context;
+- production requirements;
+- active battle/encounter availability.
+
+The Journal may recommend actions but does not persist duplicate quest/tutorial progress.
+
+### `activityAdvanceEngine.js`
+
+Provides semantic `activity.advanceToCompletion` behavior for ordinary browser play.
+
+It does not create a second clock. It composes:
+
+- current canonical travel remaining time through `travelEngine`; or
+- the active work record + timed task through `simulationInterruptEngine`;
+- then the existing gathering/production domain reconciliation authority.
+
+This is the browser-facing “finish current activity” seam demonstrated by PX-3.
+
+### DOM semantic gameplay intents
+
+`domApp.js` currently routes direct gameplay intents for locality movement/POI interaction, starter-kit claim, equipment, travel, gathering, production, activity completion, combat encounter, ability, party, and other UI authorities. Command routing remains available as a power/diagnostic adapter but is not required for the first regional loop.
+
+## Navigation architecture
 
 ### Safe locality
 
-`localityEngine.js` treats guarded danger-0 city/city-interior/travel-hub `place` records as locality nodes. Existing place connections provide bounded adjacent-district travel; a redundant locality geography database was intentionally not introduced.
+`localityEngine.js` derives named destination transitions from existing settlement place connections. The renderer omits exploration map/compass markup in locality mode. POI actions can focus an internal coordinate while exposing only semantic named interaction.
 
-Locality crossing:
+Safe locality is a hazard/presentation policy, not a second time or geography authority.
 
-```text
-semantic destination action
-  -> localityEngine.moveWithinLocality()
-  -> authored coarse travelSeconds
-  -> advanceSimulationUntilInterrupt()
-  -> destination place/atlas update
-  -> active companion location synchronization
-  -> locality.changed semantic event
-```
+### Exploration
 
-Ordinary browsing consumes no fictional time. Crossings/activities may consume authored time and remain interruptible. A safe locality is a hazard policy, not a second clock.
+Exploration spaces use internal coordinates and `navigationEngine` for directional movement. `minimapModel` renders only discovered/locally knowable geometry and dynamically fits known geometry. Authored total extent and absolute coordinate placement remain private.
 
-The active DOM renderer omits map and D-pad markup outside exploration mode. Internal POI coordinates can locate implementation targets, but player-facing city navigation uses names/actions rather than coordinate identity.
+### Routes / transport
 
-### Exploration and map privacy
+`routeCatalog.js`, `travelEngine.js`, and `transportEngine.js` own inter-place travel. Direct and scheduled travel consume fictional time and participate in the shared task/interrupt/activity laws.
 
-`navigationEngine.js`, atlas state, and `minimapModel.js` retain fine directional exploration for wilderness/dungeons/other movement-sensitive spaces. The SVG projection is discovery-relative and dynamically rebases/fits known geometry. Full authored bounds, raw coordinates, hidden relative placement, and total undiscovered extent are not player knowledge.
+## Work and resource architecture
 
-Legacy POI data may retain internal source positions for compatibility/mapping, but exported player-facing POI descriptions no longer print those values.
+`ecologyRegistry` exposes canonical gathering sources/populations. `gatheringWorkEngine` creates timed hands-on work, resolves equipped tool requirements, consumes source capacity at completion, preserves acquisition provenance, and advances character-owned work proficiency.
 
-## Character, capabilities, equipment, and work
+`productionCatalog` + `productionEngine` own processing/crafting/cooking/salvage records. Inputs are consumed at start, outputs materialize at completion, and output provenance records transformation plus input sources. Workstation context comes from real POI/locality tags through `workstationEngine`, not from a parallel facility database.
 
-```text
-Disciplines describe.
-Capabilities enable.
-Loadouts and preparation constrain and enhance.
-```
+PX-3 composes these existing authorities into the first ordinary player loop; it does not special-case copper inside gathering or production engines.
 
-Player state owns identity, character stats, progression, discipline-training records, character-owned skills/capabilities, work proficiencies, resources, wallet, equipment, inventory/storage, flags, and statuses. Internal names such as `player.jobs`/`mainJobId` remain compatibility seams; active discipline does not own the person.
+## Combat and party architecture
 
-`capabilityEngine.js` separates learning from current use. Executable effects live in the ability/combat systems rather than capability records.
+Combat 2.0 uses structured battle-local action history and fictional-time readiness/recovery. `combatSimulationEngine` composes enemy readiness and ability completion as canonical interrupts. Status expiry uses canonical world time.
 
-### Equipment and tools
+Persistent party state is NPC-backed. Active companions participate through Combat 2.0 and synchronize resources/statuses/location back to persistent companion records.
 
-Primary files:
+## Persistence policy
 
-```text
-js/text/data/itemSchema.js
-js/text/data/equipmentCatalog.js
-js/text/systems/equipmentEngine.js
-js/text/systems/equipmentEligibilityEngine.js
-js/text/systems/equipmentToolEngine.js
-js/text/data/shopCatalogs.js
-js/text/systems/shopEngine.js
-```
+Current mode: `pre-release-current-schema`.
 
-Canonical authored equipment no longer carries active-discipline `allowedJobs` gates. The generic eligibility field remains accepted for explicit historical/migration/compatibility input and is covered by a bounded legacy test fixture.
+Prefer one clean current model to compatibility-only duplication. Persist only true gameplay authority. Derived UI/guidance state should be recomputed when the authoritative source already exists.
 
-`equipmentToolEngine.js` resolves tags supplied by equipped loadout items. Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod can therefore satisfy practical capability/gathering requirements without a second tool-state system.
+Current runtime remains Account Save 4 / Game State 5. Data 27 is an authored-data contract bump, not a persistence bump.
 
-### Work and production
+## Validation and performance
 
-Primary files:
+`npm test` is the main correctness gate. `npm run benchmark` maintains Benchmark 1 comparability. GitHub Actions also exercises build/status reporting and Pages deployment.
 
-```text
-js/text/systems/workTaskEngine.js
-js/text/systems/workProficiencyEngine.js
-js/text/systems/gatheringWorkEngine.js
-js/text/systems/resourceRecoveryWorkEngine.js
-js/text/systems/productionEngine.js
-js/text/data/productionCatalog.js
-```
+The integrated Phase 0.6 gate remains executable and must stay green as Phase 0.7 grows.
 
-Hands-on gathering, body recovery, processing, crafting, cooking, salvage, and recycling compose with canonical timed tasks and character activity ownership. Work consumes inputs or source capacity at the appropriate authority boundary and materializes outputs at completion. Full inventory creates persistent pending output rather than duplication/loss.
+## Known transitional seams
 
-Workstations are derived from locality POI/service tags rather than a duplicate facility database. Higher proficiency can improve duration while stored mastery remains character-owned.
-
-## Combat, abilities, and party
-
-Primary files:
-
-```text
-js/text/systems/battleEngine.js
-js/text/systems/combatActionEngine.js
-js/text/systems/combatTurnEngine.js
-js/text/systems/combatSimulationEngine.js
-js/text/systems/abilityEngine.js
-js/text/systems/statusEngine.js
-js/text/systems/partyEngine.js
-js/text/data/enemyAbilities.js
-js/text/data/companions.js
-```
-
-### Combat action contract
-
-Combat 2.0 contract v2 is additive battle runtime state:
-
-```js
-battle.contract = {
-  version: 2,
-  actionSequence,
-  actions,
-  lastActionId,
-  timeline: {
-    startedAtWorldSeconds,
-    readyAtByActorId
-  }
-}
-```
-
-Basic attacks, canonical abilities, bounded legacy cast/technique adapters, enemy actions, and representative companion actions record structured outcomes. Battle display prose is not combat authority.
-
-### Fictional-time readiness
-
-Player/enemy recovery is expressed as absolute canonical readiness time. Combat and ability completion contribute interrupt candidates to the existing simulation substrate, so timed abilities can be interrupted by enemy readiness. There is no separate combat tick clock.
-
-### Persistent companions
-
-`data/companions.js` owns canonical companion definitions. `partyEngine.js` owns recruited/active party state, NPC linkage, relationship dimensions, resources/statuses, location continuity, and membership operations.
-
-A recruited companion remains one persistent NPC-backed person. Active companions participate on the ally side of Combat 2.0 and synchronize combat state back to the persistent party record. They follow canonical place-transition authorities including exploration exits, locality crossings, direct route travel, and scheduled transport arrivals.
-
-The active UI uses semantic `party.recruit` when available. The older `companion` command/POI route now delegates to `partyEngine`; it is a compatibility adapter, not companion authority.
-
-## Simulation architecture
-
-Canonical fictional seconds, simulation control, timed tasks, interrupt providers, day-cycle reconciliation, combat readiness, ability completion, work, projects, and transport all compose around one simulation timeline.
-
-Important modules:
-
-```text
-worldTimeEngine.js
-simulationControlEngine.js
-simulationInterruptEngine.js
-timedTaskEngine.js
-dayCycleEngine.js
-combatSimulationEngine.js
-```
-
-Long actions must compose with these systems rather than create domain-specific clocks.
-
-## Geography, ecology, resources, provenance, and content
-
-- Places/maps/coordinates define authored geography.
-- Atlas state records acquired character knowledge.
-- Routes/transport own longer travel and scheduled services.
-- Species/families/populations/gathering sources define environmental substrate.
-- Ecology runtime owns deterministic availability/depletion/regeneration.
-- Resource opportunities represent bodies, carried goods, and other recoverable world resources rather than magical drops.
-- Production transforms provenance-bearing inputs into provenance-bearing outputs.
-- Regional/shared content packs declare ownership/dependencies and are cross-reference validated at scale.
-- Legacy normalization produces review candidates, never automatic canon.
-
-## Validation and exit-gate architecture
-
-`validation.js` remains broad current-state/world validation. Domain catalogs have focused validators. Two higher-level gates now exist:
-
-```text
-simulationSubstrateGate.js     -> protects completed Phase 0.5 substrate
-integratedMechanicsGate.js     -> protects completed Phase 0.6 mechanics integration
-```
-
-`integratedMechanicsGate.js` evaluates grouped contracts for:
-
-```text
-persistenceAndNormalization
-fictionalTimeAndInterrupts
-continuousCharacterOwnership
-combatPartyWorkTravel
-provenanceAndProduction
-semanticUiAuthority
-worldAndContentValidation
-phaseExitReadiness
-```
-
-It intentionally consumes existing validators/system/database versions instead of becoming a second implementation authority.
-
-## Save/account layer
-
-```text
-Account Save: 4
-Game State:   5
-Data:         26
-```
-
-Historical localStorage keys remain deliberately:
-
-```text
-ffxiTextRpgAccounts
-ffxiTextRpgAccountSession
-```
-
-Payload encoding remains `base64-json-v1`; this is encoding, not cryptographic protection. Ordered migrations handle supported persistence versions. Additive Phase 0.6 runtime state remains compatible with Game State 5.
-
-## Current compatibility and deferred depth
-
-Preserve deliberately unless directly in scope:
-
-- Canvas UI regression/reference modules.
-- Command-backed DOM information views where dedicated presentation models do not yet exist.
-- `uiState.js` reuse of some old canvas input-state helpers.
-- Search-or-act is command-capable, not full fuzzy entity/action search.
-- Legacy-shaped POI stable IDs and historical localStorage keys.
-- Internal POI/source coordinates remain valid simulation data but must stay out of player presentation.
-- `gil` pending deliberate original currency design.
-- `player.jobs`, `mainJobId`, `raceId`, `nationId` and related persisted/internal identifiers.
-- Explicit legacy `allowedJobs` eligibility may be accepted at compatibility boundaries; canonical authored equipment should not use active discipline as a universal gate.
-- Legacy combat cast/weapon-technique adapters where tests/migration still depend on them.
-- `places.js` spawn rules and fallback place connections where newer ecology/routes do not yet own the whole domain.
-- Historical FFXI research modules at explicit reference boundaries.
-- Companion content/tactics/dialogue/equipment/progression breadth remains limited.
-- Achievements, key-item depth, mounts, high-resolution exploration cartography, and broader social/economic content remain later work rather than Phase 0.6 blockers.
-
-## Next architecture direction — Phase 0.7
-
-Do not introduce another parallel mechanics foundation. `0.7.100` should assemble a **playable campaign slice** by composing existing authorities:
-
-```text
-persistent NPC/community state
-+ semantic settlement UI
-+ contracts/quests/relationships
-+ regional ecology and livelihood economy
-+ routes/transport
-+ combat/abilities/party
-+ recovery/production/trade
-+ canonical time/interrupts
-+ save/content validation
--> repeatable multi-session regional campaign slice
-```
-
-Add new reusable primitives only when that campaign slice proves an actual missing authority. Content breadth should then expand through validated data/packs rather than renderer or command special cases.
+- Search-or-act still routes commands rather than providing full semantic fuzzy search.
+- Some information views still bridge command output.
+- Canvas modules remain regression/reference code.
+- Legacy-shaped stable POI IDs and several persisted/internal field names remain bounded compatibility debt.
+- `gil` remains current currency terminology pending deliberate original-currency design.
+- Active activity should outrank unrelated ready opportunity leads in contextual-action ranking.
+- Typed `wait` should reconcile completed gathering/production consistently with the semantic activity-completion seam.
+- Formal tracked contracts/commitments and relationship/reputation consequences are the next campaign-state authority to prove; do not implement them as Journal-owned flags.
