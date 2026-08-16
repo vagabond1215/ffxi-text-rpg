@@ -8,11 +8,12 @@ import { PLAYER_CAMPAIGN_READABILITY_VERSION } from '../js/text/systems/playerCa
 import { PLAYER_CONTINUITY_VERSION } from '../js/text/systems/playerContinuityEngine.js';
 import { PLAYER_DANGER_RECOVERY_VERSION } from '../js/text/systems/playerDangerRecoveryEngine.js';
 import { RESOURCE_RECOVERY_WORK_ADAPTER_VERSION } from '../js/text/systems/resourceRecoveryWorkAdapter.js';
+import { TRANSPORT_SERVICE_BOARD_VERSION } from '../js/text/systems/transportServiceBoardEngine.js';
 import { SYSTEM_VERSIONS, VERSION } from '../js/text/version.js';
 
-test('Phase 0.7 keeps PX6/PX7 mechanics while PX8 adds third-community authored breadth', () => {
-    assert.equal(VERSION.product, '0.6.900.1');
-    assert.equal(VERSION.package, '0.6.900');
+test('Phase 0.7 playable campaign slice keeps PX6-PX8 mechanics while PX9 closes semantic community rotation', () => {
+    assert.equal(VERSION.product, '0.7.100.1');
+    assert.equal(VERSION.package, '0.7.100');
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
     assert.equal(VERSION.data, 30);
@@ -25,6 +26,7 @@ test('Phase 0.7 keeps PX6/PX7 mechanics while PX8 adds third-community authored 
     assert.equal(PLAYER_CONTINUITY_VERSION, 5);
     assert.equal(PLAYER_CAMPAIGN_READABILITY_VERSION, 2);
     assert.equal(PLAYER_DANGER_RECOVERY_VERSION, 2);
+    assert.equal(TRANSPORT_SERVICE_BOARD_VERSION, 1);
 
     assert.equal(SYSTEM_VERSIONS.activityAdvance, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.campaignRecovery, '0.1.0');
@@ -34,7 +36,8 @@ test('Phase 0.7 keeps PX6/PX7 mechanics while PX8 adds third-community authored 
     assert.equal(SYSTEM_VERSIONS.playerContinuity, '0.5.0');
     assert.equal(SYSTEM_VERSIONS.playerCampaignReadability, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.playerDangerRecovery, '0.2.0');
-    assert.equal(SYSTEM_VERSIONS.gameViewModels, '0.8.0');
+    assert.equal(SYSTEM_VERSIONS.transportServiceBoard, '0.1.0');
+    assert.equal(SYSTEM_VERSIONS.gameViewModels, '0.9.0');
     assert.equal(SYSTEM_VERSIONS.domUi, '0.7.0');
     assert.equal(SYSTEM_VERSIONS.uiIntents, '0.6.0');
 });
