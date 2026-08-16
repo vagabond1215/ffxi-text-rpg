@@ -7,6 +7,11 @@ export function createSeedNpcs() {
             locationId: 'thornwall-southgate', services: ['realmSeal', 'regionalRewards'],
         }),
         createNpc({
+            id: 'npc-thornwall-sera-talwin', name: 'Sera Talwin', title: 'Southgate Guide', faction: 'Thornwall',
+            locationId: 'thornwall-southgate', services: ['orientation', 'commissions', 'road-guidance'],
+            questIds: ['commitment-thornwall-sweetroot-return'],
+        }),
+        createNpc({
             id: 'npc-road-instructor', name: 'Road Instructor', title: 'Combat Tutor',
             locationId: 'thornwall-southgate', services: ['tutorial', 'sparring'],
         }),
