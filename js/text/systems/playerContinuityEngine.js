@@ -6,36 +6,39 @@ import {
 } from './commitmentEngine.js';
 import { getLatestDaySummary } from './dayCycleEngine.js';
 import { decorateCampaignReadabilityModel } from './playerCampaignReadabilityEngine.js';
+import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.js';
 import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
 
-export const PLAYER_CONTINUITY_VERSION = 3;
+export const PLAYER_CONTINUITY_VERSION = 4;
 
 export function decoratePlayerOpportunityModel(state, baseModel) {
     if (!baseModel) return baseModel;
+    const dangerBase = decoratePlayerDangerRecoveryModel(state, baseModel);
     const continuity = createCommitmentOpportunity(state);
     const dayReview = createDayReviewOpportunity(state);
 
-    let decorated = baseModel;
+    let decorated = dangerBase;
     if (continuity || dayReview) {
-        const entries = [...baseModel.entries];
+        const entries = [...dangerBase.entries];
         if (continuity) {
             const preparationIndex = entries.findIndex((entry) => entry.category === 'preparation');
             entries.splice(preparationIndex >= 0 ? preparationIndex + 1 : 0, 0, continuity);
         }
         if (dayReview) entries.push(dayReview);
 
-        // Hands-on work with an explicit Finish action should win over unrelated ready leads.
+        // Hands-on work and recovery with an explicit Finish action should win over unrelated ready leads.
         const activeAction = entries.find((entry) => entry.status === 'active' && entry.action);
         const recommended = activeAction
+            ?? entries.find((entry) => entry.status === 'ready' && entry.action)
             ?? entries.find((entry) => entry.status === 'ready')
             ?? entries.find((entry) => entry.status === 'active')
             ?? entries.find((entry) => entry.status === 'available')
             ?? null;
 
         decorated = Object.freeze({
-            ...baseModel,
-            version: Math.max(Number(baseModel.version) || 0, 5),
+            ...dangerBase,
+            version: Math.max(Number(dangerBase.version) || 0, 7),
             recommendedOpportunityId: recommended?.id ?? null,
             entries: Object.freeze(entries),
         });
