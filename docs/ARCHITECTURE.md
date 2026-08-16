@@ -23,7 +23,7 @@ The semantic DOM/CSS shell is the active player interface. Canvas modules remain
 - Resources preserve source/transformation provenance and exactly-once ownership; same-ID inventory stacks with different provenance histories remain distinct.
 - Canonical commitments own accepted/resolved/follow-up gameplay state and exactly-once commitment rewards.
 - General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship state remains part of persistent party/companion authority.
-- Maps represent acquired knowledge; authored coordinates and undiscovered extent remain internal.
+- Maps and campaign guidance represent acquired knowledge; authored coordinates, undiscovered extent, hidden routes, and remote resource sites remain internal.
 - Safe settlements use named locality navigation; wilderness/dungeon-style spaces use discovery-relative spatial exploration where terrain matters.
 - Persistent companions remain NPC-backed world participants.
 - Content packs and cross-reference validation are the scale mechanism for authored world growth.
@@ -46,7 +46,7 @@ Projects first-session orientation from canonical player identity, current place
 
 ### `playerOpportunityEngine.js`
 
-Projects the Journal/Opportunities model from canonical state. Current opportunity stages derive from real:
+Projects the base Journal/Opportunities model from canonical state. Current opportunity stages derive from real:
 
 - guide/POI discovery;
 - carried/equipped items;
@@ -65,7 +65,21 @@ The Journal may recommend, rank, or group actions but does not persist duplicate
 
 Projects canonical several-day continuity into the Journal. The current proving slice derives from `Copper for the Ring`, Marshal Varric Stone's relationship state, fictional day review, and follow-up readiness.
 
-It does not own acceptance, resolution, relationship changes, reward ownership, or fictional time. The current projection is deliberately Brasshaven/copper-specific; generalize only when another real regional/social slice proves the reusable shape.
+It does not own acceptance, resolution, relationship changes, reward ownership, or fictional time. The current commitment projection is deliberately Brasshaven/copper-specific; generalize only when another real regional/social slice proves the reusable shape.
+
+### `playerCampaignReadabilityEngine.js`
+
+PX-5 adds a pure presentation decorator over the base opportunity + continuity model. It owns no persisted campaign state. It derives:
+
+- regional grouping and current-region emphasis;
+- readiness ordering (`active`, `ready`, `available`, `blocked`, `complete`);
+- per-group readiness counts;
+- knowledge-source metadata for why an opportunity is currently knowable;
+- a bounded Copper Trail Clasp cross-region projection that composes existing commitment, locality, transport, travel, ecology, work, inventory, and production authorities.
+
+The key privacy rule is that **knowing an ambition is not the same as knowing its hidden route/resource implementation**. Varric's later-day follow-up may make Starfen reed fiber a known objective, but the remote Tall Reedbed/source record is not exposed until the character actually reaches West Starfen. Likewise, a distant route action appears only from a place where canonical route/transport authority says it can be used.
+
+This layer is intentionally derived and idempotent after ordinary lazy state normalization. There is no `state.campaignReadability` or equivalent registry.
 
 ### `activityAdvanceEngine.js`
 
@@ -73,15 +87,21 @@ Provides semantic `activity.advanceToCompletion` behavior for ordinary browser p
 
 It does not create a second clock. It composes:
 
-- current canonical travel remaining time through `travelEngine`; or
+- current canonical direct or scheduled travel remaining time through travel/transport authority; or
 - the active work record + timed task through `simulationInterruptEngine`;
 - then the existing gathering/production domain reconciliation authority.
 
-This is the browser-facing “finish current activity” seam demonstrated by PX-3.
+This is the browser-facing “finish current activity” seam demonstrated by the regional campaign slices.
 
 ### DOM semantic gameplay intents
 
-`domApp.js` routes direct gameplay intents for locality movement/POI interaction, starter-kit claim, equipment, travel, gathering, production, activity completion, commitment acceptance/resolution/follow-up, combat encounter, ability, party, and other UI authorities. Command routing remains available as a power/diagnostic adapter but is not required for the proven PX-1 through PX-4 flows.
+`domApp.js` routes direct gameplay intents for locality movement/POI interaction, starter-kit claim, equipment, direct travel, scheduled transport, gathering, production, activity completion, commitment acceptance/resolution/follow-up, combat encounter, ability, party, and other UI authorities. `transport.start` delegates directly to `startScheduledTransport`; it does not synthesize a route command or bypass fare/cadence/cargo rules.
+
+Command routing remains available as a power/diagnostic adapter but is not required for the proven PX-1 through PX-5 flows.
+
+### Journal rendering
+
+The semantic DOM Journal consumes the derived opportunity `groups` model and renders separate regional/continuity sections with readiness counts. Individual cards retain what/why/progress/requirements/blockers/actions, while redundant region prefixes are removed at presentation time because the section heading now owns that hierarchy.
 
 ## Commitment and relationship architecture
 
@@ -125,6 +145,8 @@ Exploration spaces use internal coordinates and `navigationEngine` for direction
 
 `routeCatalog.js`, `travelEngine.js`, and `transportEngine.js` own inter-place travel. Direct and scheduled travel consume fictional time and participate in the shared task/interrupt/activity laws.
 
+PX-5 proves the distinction between **known destination** and **currently usable transport**. From Brasshaven Iron Quay, the Forge–Mere caravan is visible because the player is at a served stop, but the semantic booking action is available only when the real fare is affordable. The Varric continuity reward leaves 36 gil against the current 52-gil proving fare, so the Journal truthfully surfaces a blocked known route rather than granting free travel.
+
 ## Work and resource architecture
 
 `ecologyRegistry` exposes canonical gathering sources/populations. `gatheringWorkEngine` creates timed hands-on work, resolves equipped tool requirements, consumes source capacity at completion, preserves acquisition provenance, and advances character-owned work proficiency.
@@ -133,7 +155,7 @@ Exploration spaces use internal coordinates and `navigationEngine` for direction
 
 `inventoryEngine` preserves provenance identity when stacking: same item IDs may stack only when their provenance structures also match. This prevents later contract, production, or audit logic from losing the history that source/sink rules depend on.
 
-PX-3 composes the gathering/production authorities into the first ordinary player loop; PX-4 consumes a provenance-qualified output from that loop through canonical commitment resolution rather than special-casing copper in inventory or work engines.
+PX-3 composes the gathering/production authorities into the first ordinary player loop; PX-4 consumes a provenance-qualified output from that loop through canonical commitment resolution; PX-5 makes the resulting cross-region ambition readable without moving any material authority into the Journal.
 
 ## Combat and party architecture
 
@@ -141,21 +163,23 @@ Combat 2.0 uses structured battle-local action history and fictional-time readin
 
 Persistent party state is NPC-backed. Active companions participate through Combat 2.0 and synchronize resources/statuses/location back to persistent companion records.
 
-Meaningful danger/combat/recovery still needs to be composed into the same ordinary Phase 0.7 campaign flow before `0.7.100` can close; this is an integration/content requirement, not permission to create a second combat or recovery authority.
+Meaningful danger/combat/recovery still needs to be composed into the same ordinary Phase 0.7 campaign flow before `0.7.100` can close; this is the next bounded PX integration unit, not permission to create a second combat or recovery authority.
 
 ## Persistence policy
 
 Current mode: `pre-release-current-schema`.
 
-Prefer one clean current model to compatibility-only duplication. Persist only true gameplay authority. Derived UI/guidance state should be recomputed when the authoritative source already exists.
+Prefer one clean current model to compatibility-only duplication. Persist only true gameplay authority. Derived UI/guidance/readability state should be recomputed when the authoritative source already exists.
 
-Current runtime remains Account Save 4 / Game State 5. Data 28 is an authored-data contract bump, not a persistence-version bump. Current Game State 5 explicitly owns and validates commitment/relationship registries; old pre-alpha saves are not a design constraint.
+Current runtime remains Account Save 4 / Game State 5. Data 28 is an authored-data contract bump from PX-4, not a PX-5 persistence/data bump. Current Game State 5 explicitly owns and validates commitment/relationship registries; PX-5 adds no new persisted registry.
 
 ## Validation and performance
 
 `npm test` is the main correctness gate. `npm run benchmark` maintains Benchmark 1 comparability. GitHub Actions also exercises build/status reporting and Pages deployment.
 
 Top-level current-state validation includes commitment and relationship registries; world validation includes the canonical commitment catalog. The integrated Phase 0.6 gate remains executable and must stay green as Phase 0.7 grows.
+
+PX-5 focused tests assert acquired-knowledge privacy, grouped/readiness projection stability, competing goals, honest fare blocking, semantic scheduled transport, arrival-gated resource visibility, and existing cutting-tool enforcement.
 
 ## Known transitional seams
 
@@ -164,7 +188,6 @@ Top-level current-state validation includes commitment and relationship registri
 - Canvas modules remain regression/reference code.
 - Legacy-shaped stable POI IDs and several persisted/internal field names remain bounded compatibility debt.
 - `gil` remains current currency terminology pending deliberate original-currency design.
-- The first continuity projection is Brasshaven/copper-specific; do not prematurely generalize it into a universal quest/reputation framework.
-- PX-5 still needs multi-region opportunity readability based strictly on acquired knowledge and real reachability.
+- The first commitment continuity projection and first cross-region readability proof are Brasshaven/copper-specific; do not prematurely generalize them into a universal quest/reputation/campaign database.
 - The ordinary campaign slice still needs danger/combat/recovery composition before `0.7.100` can close.
 - The active DOM layout still has visible vertical-density/hierarchy debt in safe-locality play; the absence of wilderness map/D-pad controls in safe settlements is intentional and must not be “fixed” by violating locality navigation policy.
