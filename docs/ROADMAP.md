@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.7.100.1
-Package:      0.7.100
+Product:      0.7.200.1
+Package:      0.7.200
 Account Save: 4
 Game State:   5
 Data:         30
 Benchmark:    1
-Codename:     Playable Campaign Slice
+Codename:     Settlement Economy Depth
 ```
 
-Phase 0.7 remains in progress. The first bounded Phase 0.7 milestone, `0.7.100`, is complete.
+Phase 0.7 remains in progress. `0.7.100` and `0.7.200` are complete bounded milestones.
 
 ## Product laws
 
@@ -92,39 +92,7 @@ A normal player should sustain repeated multi-session play across connected sett
 
 ## `0.7.100` — Playable campaign slice — complete
 
-The proving geography spans **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen**.
-
-Completed player-experience sequence:
-
-- **PX-1:** arrival and footing for all three origins.
-- **PX-2:** actionable first-day livelihood/training/exploration/service choices.
-- **PX-3:** Brasshaven -> Redstone livelihood/production loop.
-- **PX-4:** Varric several-day commitment/relationship/save-load continuity.
-- **PX-5:** acquired-knowledge multi-region Journal readability.
-- **PX-6:** ordinary combat, physical aftermath, recovery, and resumed campaign.
-- **Player-language hygiene:** character-facing Journal/Day Review information hierarchy.
-- **PX-7:** Mistmere/Soli/Starfen second-community continuity.
-- **PX-8:** Thornwall/Sera/Elderwood third-origin continuity.
-- **PX-9:** generic scheduled-transport browser access and cross-community rotation.
-
-### PX-9 closure result
-
-`transportServiceBoardEngine` derives scheduled destinations, fare, cadence, next boardable departure, duration, and blockers from existing canonical route/service and current player state. The game view exposes direct `transport.start` actions; Travel Desk POIs describe the same service board. `transportEngine` still owns booking, fare deduction, cargo rules, fictional time, departure/arrival, and party movement.
-
-The end-to-end proof rotates a real character through:
-
-```text
-Thornwall Rivergate
-  -> Crown-Forge Caravan
-  -> Brasshaven Iron Quay
-  -> Forge-Mere Caravan
-  -> Mistmere Reedport
-  -> return through the same canonical service graph
-```
-
-The proof covers real fares, one-time payment per booking, save/load during scheduled travel, correct per-stop service visibility, return travel, and acquired-knowledge privacy.
-
-No Data or Game State bump accompanies PX-9: no authored world record or persisted contract changed.
+PX-1 through PX-9 established the proving geography across **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen**: three persistent community loops, livelihood/production, danger/combat/recovery, acquired-knowledge campaign readability, and generic semantic scheduled transport among the communities.
 
 Authoritative promoted runtime checkpoint:
 
@@ -136,41 +104,91 @@ Product 0.7.100.1
 Data 30
 ```
 
+## `0.7.200` — Settlement service and economy depth — complete
+
+The second Phase 0.7 track deepens the reason to return to settlements without creating a parallel economy.
+
+### Reusable settlement-service surface
+
+`settlementServiceBoardEngine` is a derived projection over existing locality POIs, workstation tags, production definitions, inventory, wallet, shops, work proficiency, active work, and campaign recovery. It stores nothing in game state.
+
+The active Craft browser surface is now **Work, Trade & Recover**. It exposes real semantic actions for:
+
+- going to an authored workshop;
+- starting and completing production;
+- claiming pending production output;
+- visiting a local merchant;
+- buying affordable real stock;
+- selling carried goods at the current shop quote;
+- starting/finishing safe-settlement recovery.
+
+Production, shop, inventory, recovery, locality, wallet, and fictional-time systems remain authoritative.
+
+### Proving economic loop
+
+The bounded end-to-end proof is:
+
+```text
+Brasshaven
+  -> South Redstone Reach
+  -> gather 2 Redstone Copper Ore
+  -> return to Brasshaven Market Ring
+  -> visit Selka Aurum's forge/workshop
+  -> compare raw sale value with processing
+  -> smelt Redstone Copper Ingot
+  -> persistent metalworking mastery shortens later work
+  -> sell the finished ingot to Mae Oris
+  -> use the proceeds for real preparation stock
+  -> optionally spend one fictional hour on safe recovery
+  -> save/load with wallet, item, time, and mastery intact
+```
+
+At the proving values, two raw ore carry a typical 10-gil shop value while the finished ingot carries a 14-gil shop value. Smelting initially takes 300 fictional seconds and grants +2 metalworking; the same projected process then falls to 295 seconds. Selling the ingot funds an 8-gil Flask of Water that was honestly blocked at the character's initial 0 gil. The sold ingot cannot pay twice.
+
+The same board is explicitly tested against existing authored facilities in all three origin communities: Thornwall tannery work, Brasshaven forge work, and Mistmere kitchen work. This is not a Brasshaven-specific economy branch.
+
+No Data, Game State, Account Save, or Benchmark bump accompanies `0.7.200`: no authored record, persisted registry, or benchmark protocol changed.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+61c8c6c602bc71a4e7325d04b3e7698f669843c4
+487/487 tests
+Benchmark 1 success
+Product 0.7.200.1
+Data 30
+```
+
 Benchmark 1:
 
 ```text
-player profile      0.439616ms/op
-enemy profile       0.116070ms/op
-basic attack        0.504204ms/op
-tick dispatch       0.004863ms/op
-direct route lookup 0.806415ms/op
+player profile      0.413227ms/op
+enemy profile       0.102942ms/op
+basic attack        0.513096ms/op
+tick dispatch       0.004454ms/op
+direct route lookup 0.776987ms/op
 ```
 
-`0.7.100` is a **closed pre-alpha milestone**, not a claim that Phase 0.7 or the game is feature-complete.
+`0.7.200` closes settlement work/trade/recovery browser access and the first reusable return-to-town economic decision loop. It deliberately does **not** invent paid inns, market simulation, dynamic pricing, property, or infrastructure.
 
-## `0.7.200` — Settlement service and economy depth — next
+## `0.7.300` — Semantic information access and locality usability — next
 
-Now that the proving communities are connected through ordinary semantic play, deepen the reasons to return to and spend time in settlements.
+The next bounded track should remove remaining ordinary-player dependence on command-backed information surfaces and tighten safe-locality interaction hierarchy before adding more content breadth.
 
-Start with an audit of existing authority and one bounded reusable loop. Priorities:
+Start with a concrete audit of the Character, Inventory/Equipment, Spellbook, Codex/World, locality point lists, and Search-or-act seams. Prefer derived semantic view models and direct actions over command-string bridges. Keep fuzzy/search scope bounded to existing known character/world information rather than creating an omniscient query layer.
 
-- expose meaningful shop/service/recovery/workstation choices through browser UI;
-- turn the compact Craft surface into a real production-choice surface using existing production/workstation authority;
-- strengthen material source -> process -> trade/use/service decisions;
-- if paid recovery/service quality is added, use the existing wallet, fictional-time, and service authorities rather than a parallel rest economy;
-- create repeated economic/social reasons to revisit communities without drifting into property/infrastructure systems reserved for 0.8.
+A good first proof should let a normal player inspect character preparation, known abilities/knowledge, and relevant local options from the browser UI without knowing command vocabulary, while preserving acquired-knowledge privacy and the distinction between settlement locality navigation and wilderness exploration.
 
-Do not begin by mass-authoring shops, recipes, or services. Prove one reusable settlement-service/economic loop first, then reassess breadth.
+Do not turn this into a full UI rewrite, general natural-language agent, or hidden omniscient search index.
 
 ## Known later Phase 0.7 depth
 
-- Search-or-act remains command-capable rather than true semantic fuzzy search.
-- Some information views still bridge command output.
-- Craft browser depth is limited.
-- Settlement recovery is executable but not yet a priced/service-quality economy.
-- Companion tactical/dialogue/equipment/progression breadth remains small.
+- Search-or-act is still command-capable rather than a true semantic known-information/action surface.
+- Several information views still bridge command output.
+- Companion tactical/dialogue/equipment/progression breadth remains intentionally small.
 - Safe-locality hierarchy/density can improve without restoring wilderness controls there.
 - `gil` remains current currency terminology pending deliberate original-currency design.
+- Paid/service-quality recovery remains unauthored; safe recovery currently costs fictional time rather than fabricated money.
 
 # Later phases
 
