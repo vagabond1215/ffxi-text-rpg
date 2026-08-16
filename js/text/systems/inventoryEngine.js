@@ -85,7 +85,7 @@ export function addItemToContainer(inventoryState, containerId, item, context = 
 
     const container = inventoryState.containers[containerId];
     const capacity = getContainerCapacity(inventoryState, containerId);
-    const stackTarget = container.items.find((existingItem) => canStackItems(existingItem, normalizedItem));
+    const stackTarget = container.items.find((existingItem) => canStackWithProvenance(existingItem, normalizedItem));
     if (stackTarget) {
         const beforeQuantity = stackTarget.quantity;
         const result = addToStack(stackTarget, normalizedItem);
@@ -173,7 +173,6 @@ export function transferItemBetweenContainers(state, itemQuery, fromContainerId 
 export function describeInventoryContainers(state, context = {}) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';
-
     return [
         'Inventory Containers:',
         ...listContainerDefinitions().map((definition) => describeContainerLine(inventoryState, definition.id, context)),
@@ -222,7 +221,27 @@ export function setMogHouseAccess(state, isInMogHouse) {
 }
 
 function canStackIntoExistingItem(container, item) {
-    return container.items.some((existingItem) => canStackItems(existingItem, item));
+    return container.items.some((existingItem) => canStackWithProvenance(existingItem, item));
+}
+
+function canStackWithProvenance(existingItem, incomingItem) {
+    return canStackItems(existingItem, incomingItem)
+        && sameStructuredValue(existingItem?.provenance ?? [], incomingItem?.provenance ?? []);
+}
+
+function sameStructuredValue(left, right) {
+    if (left === right) return true;
+    if (Array.isArray(left) || Array.isArray(right)) {
+        if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) return false;
+        return left.every((value, index) => sameStructuredValue(value, right[index]));
+    }
+    if (left && right && typeof left === 'object' && typeof right === 'object') {
+        const leftKeys = Object.keys(left).sort();
+        const rightKeys = Object.keys(right).sort();
+        if (leftKeys.length !== rightKeys.length || leftKeys.some((key, index) => key !== rightKeys[index])) return false;
+        return leftKeys.every((key) => sameStructuredValue(left[key], right[key]));
+    }
+    return false;
 }
 
 function describeContainerLine(inventoryState, containerId, context = {}) {
