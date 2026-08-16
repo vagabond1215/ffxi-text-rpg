@@ -20,6 +20,7 @@ import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { equipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
+import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
 import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
@@ -32,6 +33,7 @@ import { createUiState, setActiveView } from './uiState.js';
 const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'locality.move',
     'locality.poi',
+    'playerExperience.claimStarterKit',
     'equipment.equip',
     'travel.start',
     'gathering.start',
@@ -92,6 +94,9 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
             result = performLocalityPoiAction(state, payload.poiId, payload.action);
+            recordGameplayFeedback(result);
+        } else if (intent === 'playerExperience.claimStarterKit') {
+            result = claimOriginStarterKit(state);
             recordGameplayFeedback(result);
         } else if (intent === 'equipment.equip') {
             const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
