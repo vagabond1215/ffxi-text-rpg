@@ -5,10 +5,12 @@ import { describeCoordinate, normalizePositionForPlace } from './data/coordinate
 import { getPlace } from './data/places.js';
 import { createAbilityRuntimeState } from './systems/abilityEngine.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
+import { createCommitmentState } from './systems/commitmentEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
 import { createPartyState } from './systems/partyEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
+import { createRelationshipState } from './systems/relationshipEngine.js';
 import { createResourceOpportunityState } from './systems/resourceOpportunityEngine.js';
 import { createSemanticEventState } from './systems/semanticEventEngine.js';
 import { createSimulationControlState } from './systems/simulationControlEngine.js';
@@ -52,6 +54,8 @@ export function createNewGameState(options = {}) {
         abilities: createAbilityRuntimeState(),
         party: createPartyState(),
         projects: createProjectState(),
+        commitments: createCommitmentState(),
+        relationships: createRelationshipState(),
         resourceOpportunities: createResourceOpportunityState(),
         ecology: createEcologyState(),
         currentPlaceId: startPlace.id,
