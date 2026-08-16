@@ -147,10 +147,11 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.equal(review.action, null);
     assert.notEqual(view.opportunities.recommendedOpportunityId, review.id);
     const journalHtml = renderGameScreen(view, createUiState({ screen: 'game', activeView: 'journal' }));
-    assert.match(journalHtml, /Latest day review · Day 1/);
-    assert.match(journalHtml, /1 commitment resolution/);
-    assert.match(journalHtml, /1 relationship change/);
-    assert.match(journalHtml, /Commitments 2 · Relationships 1/);
+    assert.match(journalHtml, /Yesterday · Day 1/);
+    assert.match(journalHtml, /Looking back on Day 1/i);
+    assert.match(journalHtml, /finished a commitment/i);
+    assert.match(journalHtml, /one relationship changed/i);
+    assert.doesNotMatch(journalHtml, /semantic event|Commitments 2 · Relationships 1/i);
 
     contract = commitment(view);
     assert.equal(contract.status, 'ready');
