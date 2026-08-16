@@ -187,8 +187,9 @@ test('PX6 defeat costs two fictional hours, retreats to known safety, restores o
     let view = model(state);
     const defeat = view.opportunities.entries.find((entry) => entry.category === 'recovery' && entry.id.startsWith('recovery-'));
     assert.ok(defeat);
-    assert.equal(defeat.baseTitle, 'Recover from defeat');
+    assert.equal(defeat.title, 'Redstone Reach · Recover from defeat');
     assert.equal(defeat.regionLabel, 'Redstone Reach');
+    assert.equal(defeat.currentRegion, true);
     assert.equal(defeat.action?.intent, 'recovery.start');
 
     const timeBefore = state.worldTime.totalSeconds;
@@ -204,6 +205,6 @@ test('PX6 defeat costs two fictional hours, retreats to known safety, restores o
     view = model(state);
     assert.ok(view.opportunities.entries.some((entry) => entry.category === 'livelihood'));
     assert.ok(view.opportunities.entries.some((entry) => entry.category === 'training'));
-    assert.equal(view.opportunities.entries.some((entry) => entry.baseTitle === 'Recover from defeat'), false);
+    assert.equal(view.opportunities.entries.some((entry) => entry.title.endsWith('Recover from defeat')), false);
     assert.deepEqual(validateGameState(state), []);
 });
