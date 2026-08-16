@@ -27,6 +27,7 @@ import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
 import { getNpcRelationship, validateRelationshipState } from '../js/text/systems/relationshipEngine.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { setEndOfDayPause } from '../js/text/systems/simulationControlEngine.js';
+import { validateGameState, validateWorldData } from '../js/text/systems/validation.js';
 import { SECONDS_PER_DAY } from '../js/text/systems/worldTimeEngine.js';
 
 const COMMITMENT_ID = 'commitment-brasshaven-copper-return';
@@ -63,6 +64,20 @@ test('first commitment catalog is original, cross-linked, and new games own addi
     assert.ok(varric);
     assert.equal(varric.identity.name, 'Marshal Varric Stone');
     assert.ok(varric.questIds.includes(COMMITMENT_ID));
+});
+
+test('current-state validation owns commitment and relationship continuity contracts', () => {
+    const state = createNewGameState({ nationId: 'brasshaven' });
+    assert.deepEqual(validateGameState(state), []);
+    assert.deepEqual(validateWorldData(), []);
+
+    const missingCommitments = structuredClone(state);
+    delete missingCommitments.commitments;
+    assert.match(validateGameState(missingCommitments).join(' '), /commitments must be an object/);
+
+    const malformedRelationships = structuredClone(state);
+    malformedRelationships.relationships.version = 999;
+    assert.match(validateGameState(malformedRelationships).join(' '), /relationships.version must be 1/);
 });
 
 test('commitment acceptance persists independently of Journal guidance', () => {
