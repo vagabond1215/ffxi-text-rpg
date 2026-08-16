@@ -12,12 +12,18 @@ const POI_TAG_TO_STATIONS = Object.freeze({
     craftSupport: ['workshop'],
 });
 
+export function getWorkstationTagsForPoi(poi) {
+    const tags = new Set();
+    for (const poiTag of poi?.tags ?? []) {
+        for (const stationTag of POI_TAG_TO_STATIONS[poiTag] ?? []) tags.add(stationTag);
+    }
+    return Array.from(tags);
+}
+
 export function collectAvailableWorkstationTags(state, explicitTags = []) {
     const tags = new Set((explicitTags ?? []).map(String));
     for (const poi of getContextualPois(state)) {
-        for (const poiTag of poi.tags ?? []) {
-            for (const stationTag of POI_TAG_TO_STATIONS[poiTag] ?? []) tags.add(stationTag);
-        }
+        for (const stationTag of getWorkstationTagsForPoi(poi)) tags.add(stationTag);
     }
     return Array.from(tags);
 }
