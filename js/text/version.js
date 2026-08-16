@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.7.100.1';
-export const PACKAGE_VERSION = '0.7.100';
+export const PRODUCT_VERSION = '0.7.200.1';
+export const PACKAGE_VERSION = '0.7.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 30,
     benchmark: 1,
-    codename: 'Playable Campaign Slice',
+    codename: 'Settlement Economy Depth',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.7.100.1',
+    versionManifest: '0.7.200.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -37,10 +37,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     campaignRecovery: '0.1.0',
     workTasks: '0.1.0',
     workProficiencies: '0.1.0',
-    workstations: '0.1.0',
+    workstations: '0.2.0',
     productionCatalog: '0.2.0',
     productionItems: '0.2.0',
     production: '0.1.0',
+    settlementServiceBoard: '0.1.0',
     ecologyCatalog: '0.1.0',
     regionalEcology: '0.1.0',
     ecologyRegistry: '0.1.0',
@@ -63,8 +64,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     integratedMechanicsGate: '0.1.0',
     dayCycle: '0.2.0',
     commandShell: '0.5.0',
-    domUi: '0.7.0',
-    gameViewModels: '0.9.0',
+    domUi: '0.8.0',
+    gameViewModels: '0.10.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
     playerContinuity: '0.5.0',
@@ -72,7 +73,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.1.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.6.0',
+    uiIntents: '0.7.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
@@ -117,7 +118,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
     shops: '0.4.0',
-    shopTransactions: '0.4.0',
+    shopTransactions: '0.5.0',
     guilds: '0.3.5',
     questHooks: '0.3.5',
     inventoryContainers: '0.5.1',
