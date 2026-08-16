@@ -10,6 +10,7 @@ import {
 import { canMoveDirection } from '../systems/navigationEngine.js';
 import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
+import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEngine.js';
@@ -40,6 +41,7 @@ export function createGameViewModel(state, uiState = {}) {
     const spellbook = createSpellbookModel(state);
     const party = createPartyModel(state);
     const guidance = createPlayerExperienceModel(state);
+    const opportunities = createPlayerOpportunityModel(state);
     const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
 
     return Object.freeze({
@@ -70,15 +72,16 @@ export function createGameViewModel(state, uiState = {}) {
         }),
         map: navigationMode === 'exploration' ? createMinimapModel(state) : null,
         movement: Object.freeze(navigationMode === 'exploration' ? createMovementActions(state) : []),
-        contextualActions: Object.freeze(createContextualActions(state, nearby)),
+        contextualActions: Object.freeze(createContextualActions(state, nearby, opportunities)),
         spellbook,
         party,
         activity,
         guidance,
+        opportunities,
     });
 }
 
-export function createContextualActions(state, nearby = null) {
+export function createContextualActions(state, nearby = null, opportunities = null) {
     if (state.activeBattle?.phase === 'active') {
         const readyAbilities = listAbilityAvailability(state)
             .filter((entry) => entry.known && entry.available && entry.ability.contexts.includes('combat'))
@@ -112,8 +115,14 @@ export function createContextualActions(state, nearby = null) {
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
         const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
+        const opportunityModel = opportunities ?? createPlayerOpportunityModel(state);
+        const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
+        const recommendedAction = recommendedOpportunity?.action
+            ? Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category })
+            : null;
         const actions = [
             ...(guidanceAction ? [guidanceAction] : []),
+            ...(recommendedAction ? [recommendedAction] : []),
             ...recruitActions,
             ...listLocalityDestinations(state)
                 .slice(0, 3)
@@ -143,6 +152,9 @@ export function createContextualActions(state, nearby = null) {
 
     const points = nearby ?? getContextualPois(state).map(toNearbyRecord);
     const actions = [...recruitActions];
+    const opportunityModel = opportunities ?? createPlayerOpportunityModel(state);
+    const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
+    if (recommendedOpportunity?.action) actions.push(Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category }));
     for (const poi of points) {
         actions.push(commandAction(`context:talk:${poi.id}`, `Talk · ${poi.name}`, `talk ${poi.name}`, 'social'));
         for (const action of poi.actions) {
@@ -323,7 +335,7 @@ function abilityAction(entry) {
 function dedupeActions(actions) {
     const seen = new Set();
     return actions.filter((action) => {
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
