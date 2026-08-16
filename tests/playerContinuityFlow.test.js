@@ -157,6 +157,11 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.equal(contract.action.intent, 'commitment.followUp');
     assert.equal(view.opportunities.recommendedOpportunityId, contract.id);
 
+    const competingActions = view.opportunities.entries.filter((entry) => entry.id !== contract.id
+        && entry.action
+        && ['ready', 'active', 'available'].includes(entry.status));
+    assert.ok(competingActions.length >= 1, 'the next-day social follow-up must compete with another valid use of character time');
+
     const followUp = performCommitmentFollowUp(state, COMMITMENT_ID);
     assert.equal(followUp.ok, true, followUp.display?.text ?? followUp.reason);
     assert.match(followUp.display.text, /remembers the copper/i);
