@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { getServiceJourney, getTransportService } from '../js/text/data/routeCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { advanceActiveActivityToCompletion } from '../js/text/systems/activityAdvanceEngine.js';
 import {
@@ -27,6 +28,7 @@ import { createUiState } from '../js/text/ui/uiState.js';
 
 const COMMITMENT_ID = 'commitment-brasshaven-copper-return';
 const CAMPAIGN_ID = 'campaign-copper-trail-clasp';
+const LONG_ROAD_SERVICE_ID = 'service-forge-mere-caravan';
 
 function model(state) {
     return createGameViewModel(state, createUiState({ screen: 'game', activeView: 'journal' }));
@@ -38,6 +40,13 @@ function entry(view, id) {
 
 function category(view, categoryId) {
     return view.opportunities.entries.find((candidate) => candidate.category === categoryId) ?? null;
+}
+
+function fareFor(serviceId, fromPlaceId, toPlaceId) {
+    const service = getTransportService(serviceId);
+    const journey = getServiceJourney(serviceId, fromPlaceId, toPlaceId);
+    assert.ok(service && journey);
+    return service.fare.baseAmount + service.fare.perSegmentAmount * journey.segmentCount;
 }
 
 function finishPx4ThroughFollowUp(state) {
@@ -86,9 +95,14 @@ function finishPx4ThroughFollowUp(state) {
 test('PX5 groups and ranks only acquired opportunities without persisting a campaign-readability registry', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
     assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
-    const before = JSON.stringify(state);
 
+    // The broader view model is allowed to lazily normalize existing canonical authorities.
+    // Once that established normalization has occurred, the PX5 readability projection itself
+    // must be stable and must not create a new persisted registry.
     const view = model(state);
+    const normalizedState = JSON.stringify(state);
+    const secondView = model(state);
+
     assert.equal(view.opportunities.campaignReadabilityVersion, 1);
     assert.ok(Array.isArray(view.opportunities.groups));
     assert.ok(view.opportunities.groups.some((group) => group.label === 'Redstone Reach' && group.current));
@@ -101,15 +115,17 @@ test('PX5 groups and ranks only acquired opportunities without persisting a camp
     const actionable = view.opportunities.entries.filter((candidate) => ['active', 'ready'].includes(candidate.status) && candidate.action);
     assert.ok(actionable.length >= 2, 'the first-day Journal should retain several understandable choices');
     assert.ok(view.opportunities.entries.every((candidate) => candidate.regionLabel || candidate.groupKind === 'continuity'));
-    assert.equal(JSON.stringify(state), before, 'readability must remain a pure projection over canonical game state');
+    assert.equal(JSON.stringify(state), normalizedState, 'repeated readability projection must not mutate normalized canonical state');
+    assert.deepEqual(secondView.opportunities.groups, view.opportunities.groups);
     assert.equal(state.playerCampaignReadability, undefined);
+    assert.equal(state.campaignReadability, undefined);
 
     const html = renderGameScreen(view, createUiState({ screen: 'game', activeView: 'journal' }));
     assert.match(html, /Redstone Reach ·/);
     assert.doesNotMatch(html, /Tall Reedbed|source-west-starfen-reedbed/i);
 });
 
-test('PX5 turns Varric follow-up into a semantic Brasshaven to Starfen route without revealing the remote source early', () => {
+test('PX5 turns Varric follow-up into an honest semantic Brasshaven to Starfen route without revealing the remote source early', () => {
     const state = finishPx4ThroughFollowUp(createNewGameState({ nationId: 'brasshaven' }));
 
     let view = model(state);
@@ -131,10 +147,26 @@ test('PX5 turns Varric follow-up into a semantic Brasshaven to Starfen route wit
     assert.equal(moveWithinLocality(state, 'brasshaven-iron-quay').ok, true);
     view = model(state);
     campaign = entry(view, CAMPAIGN_ID);
-    assert.equal(campaign.action?.intent, 'transport.start');
-    assert.equal(campaign.action?.payload.serviceId, 'service-forge-mere-caravan');
-    assert.equal(campaign.action?.payload.destinationPlaceId, 'mistmere-reedport');
+
+    // PX4 leaves 36 gil; the real Forge-Mere fare is 52. PX5 should not hide that
+    // economy constraint or manufacture a free route merely to keep the quest arrow moving.
+    const fare = fareFor(LONG_ROAD_SERVICE_ID, 'brasshaven-iron-quay', 'mistmere-reedport');
+    assert.equal(fare, 52);
+    assert.equal(state.player.wallet.gil, 36);
+    assert.equal(campaign.status, 'blocked');
+    assert.equal(campaign.action, null);
+    assert.ok(campaign.blockers.some((blocker) => blocker.includes('52 gil') && blocker.includes('36')));
     assert.doesNotMatch(`${campaign.title} ${campaign.summary} ${campaign.progress}`, /Tall Reedbed|source-west-starfen-reedbed/i);
+
+    // Give this focused readiness fixture exactly the missing canonical funds. The same
+    // projection must now expose the existing scheduled-transport authority directly.
+    state.player.wallet.gil = fare;
+    view = model(state);
+    campaign = entry(view, CAMPAIGN_ID);
+    assert.equal(campaign.status, 'ready');
+    assert.equal(campaign.action?.intent, 'transport.start');
+    assert.equal(campaign.action?.payload.serviceId, LONG_ROAD_SERVICE_ID);
+    assert.equal(campaign.action?.payload.destinationPlaceId, 'mistmere-reedport');
 
     const booked = startScheduledTransport(state, campaign.action.payload.serviceId, campaign.action.payload.destinationPlaceId);
     assert.equal(booked.ok, true, booked.display?.text ?? booked.reason);
