@@ -13,7 +13,7 @@ index.html
           -> renderDomApp(...)
 ```
 
-The semantic DOM/CSS shell is the active player interface. Canvas modules remain bounded regression/reference code and must not become the normal gameplay authority again.
+The semantic DOM/CSS shell is the active player interface. Canvas modules remain bounded regression/reference code and must not become normal gameplay authority again.
 
 ## Authority rules
 
@@ -21,8 +21,8 @@ The semantic DOM/CSS shell is the active player interface. Canvas modules remain
 - Continuous-character stats, learned skills/capabilities, and work proficiency belong to the person; disciplines are contextual training traditions.
 - Inventory/equipment/tool state is canonical for preparation and practical capability checks.
 - Resources preserve source/transformation provenance and exactly-once ownership; same-ID stacks with different provenance histories remain distinct.
-- Commitments own accepted/resolved/follow-up state and exactly-once commitment rewards.
-- General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship state remains part of party/companion authority.
+- Commitments own accepted/resolved/follow-up state and one-time commitment rewards.
+- General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship state remains in party/companion authority.
 - Maps and campaign guidance represent acquired knowledge; authored coordinates, undiscovered extent, hidden routes, and remote source sites remain internal.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
 - Persistent companions remain NPC-backed world participants.
@@ -38,54 +38,49 @@ Origin content owns authored first contacts, regional horizons, starter framing,
 
 ### `playerOpportunityEngine.js`
 
-Projects the base Journal opportunities from guide discovery, carried/equipped items, locality/routes, active work/travel, gathering requirements, inventory, workstation context, production requirements, and encounter availability.
-
-It does not persist tutorial/quest progress. Internal `reason` fields may remain implementation-facing for diagnostics/tests, but ordinary rendering does not expose them directly.
+Projects base Journal opportunities from guide discovery, equipment, locality/routes, work/travel, gathering requirements, inventory, workstation context, production requirements, and encounter availability. It does not persist tutorial/quest progress.
 
 ### `playerContinuityEngine.js`
 
-This is now a generic projection over **actually known commitment definitions**, not an origin-specific branch. A commitment can appear when its giver POI is known or when persistent commitment state already exists.
+Generic projection over actually known commitment definitions. It handles offer/accept presentation, provenance-qualified material requirements, field-source work, semantic return, resolution, later-day follow-up, completed history, and day-review projection while domain engines retain state ownership.
 
-The projection handles offer/accept, active provenance-qualified material requirements, real field-source gathering, semantic return through existing locality/travel authority, resolution, later-day follow-up, completed history, and memory-style day review. It does not own commitment state, relationships, rewards, work, travel, time, or persistence.
-
-PX-7 proved the generic projection with Mistmere/Soli/Starfen. PX-8 proves the same projection unchanged with Thornwall/Sera/Elderwood.
+PX-7 proved it with Mistmere/Soli/Starfen; PX-8 proved the same machinery unchanged with Thornwall/Sera/Elderwood.
 
 ### `playerDangerRecoveryEngine.js`
 
-Pure aftermath projection over canonical battle/resource/injury state. It creates Journal entries only for actual injuries/defeat or actual local defeated-body resource opportunities. Actions delegate to recovery/resource engines; there is no encounter-campaign registry or auto-loot path.
+Pure aftermath projection over canonical battle/resource/injury state. It creates Journal entries only for actual injuries/defeat or actual defeated-body resource opportunities. Actions delegate to recovery/resource engines.
 
 ### `playerCampaignReadabilityEngine.js`
 
-Pure presentation over the composed opportunity model. It derives regional grouping, current-region emphasis, readiness ordering, counts, knowledge-source metadata, and the bounded Copper Trail Clasp cross-region projection.
+Pure presentation over the composed opportunity model. It derives regional grouping, current-region emphasis, readiness ordering, knowledge-source metadata, and the bounded Copper Trail Clasp cross-region projection. There is no persisted campaign-readability registry.
 
-Knowing an ambition is not knowing every hidden route/resource implementation. Explicit truthful upstream `regionLabel` metadata wins over fallback inference. There is no persisted campaign-readability registry.
+### `transportServiceBoardEngine.js`
+
+PX-9 adds a **derived scheduled-service board**, not a new transport authority.
+
+For the character's current real service stop it reads the canonical route/service catalog plus current wallet/activity/travel state and derives:
+
+- services that actually serve the current stop;
+- reachable served destinations;
+- canonical fare, cadence, duration, and next boardable departure;
+- current-funds, cargo, active-work, and active-journey blockers;
+- player-facing service-board prose.
+
+It owns no route records, fare deduction, transport task, fictional clock, party movement, or persisted journey state. The board is recomputed from canonical state and therefore requires no Game State schema field.
+
+`gameViewModel.js` turns board entries into direct `transport.start` contextual actions. `poiEngine` uses the same board for Travel Desk interaction. `domApp.js` already dispatches `transport.start` to `startScheduledTransport`, so no command-string adapter is required for ordinary booking.
 
 ### Player-language boundary
 
-- model/engine diagnostics may remain precise and implementation-facing internally;
-- player-visible summaries/motivation/progress are written from character/world perspective;
-- Journal rendering does not display `entry.reason` as ordinary prose;
-- detailed requirements/progress are collapsible;
-- Day Review uses structured event authority but renders character memory;
-- completed entries recede and actionable recommendations receive emphasis.
-
-`tests/playerFacingLanguage.test.js` guards ordinary Journal/Spellbook/Codex/Craft surfaces against developer jargon.
+Model diagnostics may remain implementation-facing internally. Ordinary Journal/service/scene prose must remain character/world-facing. Detailed Journal requirements remain collapsible, Day Review renders memory rather than telemetry, and `tests/playerFacingLanguage.test.js` guards the boundary.
 
 ### `activityAdvanceEngine.js`
 
-Provides semantic advance-to-completion for the current canonical activity without creating a second clock. It composes direct/scheduled travel, gathering/production work, defeated-body recovery, and campaign recovery while domain engines retain ownership of completion effects.
-
-### DOM semantic gameplay intents
-
-`domApp.js` routes direct gameplay intents for locality movement/POI interaction, starter-kit claim, equipment, direct travel, scheduled transport, gathering, production, activity completion, commitments, combat encounter, attack/wait, resource recovery, character/party recovery, abilities, party actions, and other UI authorities.
-
-`transport.start` is already executable at this seam. The remaining Phase 0.7 transport problem is **discovery/presentation of generic scheduled-service choices**, not the transport engine or intent dispatcher.
+Provides semantic advance-to-completion for the current canonical activity without a second clock. It composes direct/scheduled travel, gathering/production work, defeated-body recovery, and campaign recovery while domain engines retain completion effects.
 
 ## Commitment and relationship architecture
 
-### `commitments.js`
-
-**Data 30 / commitment catalog v2** contains three proving definitions while retaining one generic schema:
+**Data 30 / commitment catalog v2** contains three proving definitions under one generic schema:
 
 ```text
 Copper for the Ring
@@ -107,43 +102,25 @@ Sweetroot for Southgate
   reward: 20 gil + familiarity/respect
 ```
 
-Catalog v2 accepts provenance-aware requirements across transformed/production goods or raw canonical gathered resources. Definitions may name a real `fieldSourceId` and bounded `returnViaPlaceId`; these make work/return legible but do not transfer gathering/travel authority into commitments.
+`commitmentEngine` remains canonical for acceptance/resolution/reward/follow-up. `relationshipEngine` remains canonical for general named-NPC familiarity/respect/trust/obligation. Marshal Varric Stone, Reader Soli Venn, and Sera Talwin are persistent NPC-backed world contacts rather than Journal-manufactured quest identities.
 
-PX-8 does **not** advance the catalog shape beyond v2. Data advances to 30 because a third canonical commitment and persistent Sera NPC seed are new authored content authority.
-
-### `commitmentEngine.js`
-
-`state.commitments` remains canonical runtime authority for acceptance, resolution, exactly-once reward ownership, and later-day follow-up bookkeeping. Delivery is planned before mutation and consumes only provenance-qualified stack quantities.
-
-### `relationshipEngine.js`
-
-`state.relationships` remains canonical general named-NPC relationship authority with familiarity, respect, trust, and obligation dimensions. Companion-specific relationship state remains separate.
-
-### Persistent NPC identity
-
-Marshal Varric Stone, Reader Soli Venn, and Sera Talwin are persistent NPC-backed world contacts. The Journal does not manufacture them as quest records.
-
-### Day review and save/load
-
-Commitment/relationship events participate in the existing day-cycle summary. Follow-up availability derives from canonical fictional day/time. Game State 5 already contains generic commitment/relationship registries, so PX-7/PX-8 require no new persistence schema.
-
-Focused tests exercise the real local-account save/load path across resolution, day transition, later follow-up, and repeated exactly-once handling.
+Game State 5 already contains the generic commitment/relationship registries, so PX-7/PX-8 required no persistence schema bump.
 
 ## Navigation architecture
 
 ### Safe locality
 
-`localityEngine.js` derives named settlement destination transitions from existing connections. The renderer intentionally omits wilderness map/D-pad controls in locality mode.
+`localityEngine.js` derives named settlement transitions from existing connections. The renderer intentionally omits wilderness map/D-pad controls in locality mode.
 
 ### Exploration
 
-Exploration spaces use internal coordinates and `navigationEngine`. `minimapModel` renders discovered/locally knowable geometry only; authored total extent and absolute placement remain private.
+Exploration spaces use internal coordinates and `navigationEngine`. `minimapModel` renders discovered/locally knowable geometry only; total authored extent and absolute placement remain private.
 
-### Routes / scheduled transport
+### Routes and scheduled transport
 
 `routeCatalog.js`, `travelEngine.js`, and `transportEngine.js` own inter-place travel. Direct and scheduled travel consume fictional time and share task/interrupt laws.
 
-The authored graph already connects the proving communities:
+The proving graph is connected:
 
 ```text
 Thornwall Rivergate
@@ -153,15 +130,11 @@ Thornwall Rivergate
   -> West Starfen
 ```
 
-`service-crown-forge-caravan` and `service-forge-mere-caravan` own real fare/cadence/cargo/departure/arrival behavior. PX-5 proves one semantic Forge–Mere booking path when the Copper Trail ambition makes that service knowable and usable.
+PX-9 closes the former browser-access seam. Generic service-board/context UI now exposes only real scheduled destinations available from the current service stop and dispatches existing `transport.start`. The transport engine still owns fare/cargo/cadence/boarding/departure/arrival and party synchronization.
 
-### Current transport-access seam
+The PX-9 end-to-end regression verifies the 60-gil Rivergate -> Brasshaven Crown-Forge fare, the 52-gil Brasshaven -> Mistmere Forge-Mere fare, save/load during scheduled travel, correct return services, one fare deduction per booking, and no remote resource-topology leak.
 
-The world/engine graph is more complete than the generic browser presentation. `performLocalityPoiAction(..., 'travel')` currently reaches `poiEngine`, whose travel interaction still reports that travel-service behavior is not implemented unless the POI is a route exit. Therefore a generic Travel Desk does not yet enumerate executable scheduled services and destinations.
-
-This is now the concrete blocker for `0.7.100`: ordinary cross-community rotation cannot rely on one campaign-specific readability branch or command/API knowledge. The next bounded repair should derive services from the current real route stop and expose their destination/fare/timing/blockers as semantic `transport.start` actions while keeping `transportEngine` authoritative.
-
-Do not create a second transport registry or UI-owned journey state.
+Do not create a second route catalog, UI-owned journey state, or campaign-specific transport state machine.
 
 ## Work and resource architecture
 
@@ -169,13 +142,9 @@ Do not create a second transport registry or UI-owned journey state.
 
 `productionCatalog` + `productionEngine` own processing/crafting/cooking/salvage. Inputs are consumed at start; outputs materialize at completion with transformation/input provenance. Workstations come from real POI/locality context.
 
-`inventoryEngine` preserves provenance identity while stacking. Commitment delivery therefore cannot lose source history by merging incompatible same-ID stacks.
+`inventoryEngine` preserves provenance identity while stacking. Community requests therefore consume only qualifying source-bearing stacks.
 
-### Community requests use real world resources
-
-PX-7 reuses Starfen Marrowleaf as a social/economic sink instead of creating a quest token. PX-8 likewise reuses Elderwood Sweetroot, which already has food/medicine/trade sinks.
-
-PX-8 deliberately does **not** use Amber Resin for Sera’s request because Amber Resin is already Thornwall’s ordinary livelihood route. This keeps community work, ordinary livelihood, and Brush Hare danger as independent choices.
+PX-7 reuses Starfen Marrowleaf and PX-8 reuses Elderwood Sweetroot as social/economic sinks instead of quest-token materials. Sweetroot was chosen instead of Amber Resin so Thornwall's ordinary resin livelihood remains an independent ambition.
 
 ### Defeated-body recovery
 
@@ -185,7 +154,7 @@ Victory progression/economic rewards remain owned by `rewardEngine`. Physical cr
 
 Combat 2.0 uses structured battle-local action history and fictional-time readiness/recovery. Persistent party state is NPC-backed and companions compose with combat/travel/recovery rather than functioning as summons.
 
-Victory EXP/currency are exactly-once consequences. Defeat remains battle state until explicit campaign recovery resolves it.
+Victory EXP/currency are one-time consequences. Defeat remains battle state until explicit campaign recovery resolves it.
 
 `campaignRecoveryEngine` uses canonical timed tasks:
 
@@ -195,30 +164,31 @@ recovery.settlement  60 minutes   full active-party safe rest
 recovery.defeat      120 minutes  retreat to known safe home + bounded partial restoration
 ```
 
-The safe-settlement rest primitive is not a fabricated paid inn/healing economy.
+The safe-settlement rest primitive is not yet a priced/service-quality economy; that is a candidate for later Phase 0.7 service/economic depth.
 
 ## Persistence and version policy
 
 Current compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:      0.6.900.1
-Package:      0.6.900
+Product:      0.7.100.1
+Package:      0.7.100
 Account Save: 4
 Game State:   5
 Data:         30
 Benchmark:    1
+Codename:     Playable Campaign Slice
 ```
 
-Data 30 adds the Sera persistent NPC seed and third canonical commitment definition. Account Save 4 / Game State 5 remain valid because no new persistent registry or structural meaning is introduced. Derived UI/guidance/readability/aftermath state remains recomputed.
+PX-9 changes no authored data or persisted state contract. The service board is derived from Data 30 route/service content and Game State 5 wallet/activity/travel state. Account Save 4, Game State 5, Data 30, and Benchmark 1 therefore remain unchanged.
 
 ## Validation and performance
 
-Authoritative PX-8 runtime checkpoint:
+Authoritative promoted `0.7.100` runtime checkpoint:
 
 ```text
-63a234edfc1e327d90823c4171bdf315f01aa044
-484/484 tests
+d15bd9517803faf6bceae5fb3376193648cca09d
+485/485 tests
 Benchmark 1 success
 Data 30
 ```
@@ -226,11 +196,11 @@ Data 30
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     400.261ms  0.400261ms/op
-1,000 enemy combat profiles      104.237ms  0.104237ms/op
-1,000 basic attacks              509.356ms  0.509356ms/op
-10,000 ticks / 5 subscribers      50.139ms  0.005014ms/op
-10,000 direct route lookups     7969.682ms  0.796968ms/op
+1,000 player combat profiles     439.616ms  0.439616ms/op
+1,000 enemy combat profiles      116.070ms  0.116070ms/op
+1,000 basic attacks              504.204ms  0.504204ms/op
+10,000 ticks / 5 subscribers      48.633ms  0.004863ms/op
+10,000 direct route lookups     8064.154ms  0.806415ms/op
 ```
 
 Important Phase 0.7 focused coverage includes:
@@ -241,17 +211,20 @@ Important Phase 0.7 focused coverage includes:
 - `tests/playerDangerRecoveryFlow.test.js`
 - `tests/playerCommunityBreadthFlow.test.js`
 - `tests/playerThirdCommunityFlow.test.js`
-- version/pipeline/validation gates.
+- `tests/playerCrossCommunityRotation.test.js`
+- route/transport/party/save-load/version/pipeline/validation gates.
 
-## Known transitional seams
+## Known transitional seams after `0.7.100`
 
-- **Primary `0.7.100` blocker:** generic Travel Desk/browser presentation does not yet expose the existing scheduled transport graph as semantic service choices.
+The playable campaign slice is closed, but Phase 0.7 remains in progress. Remaining depth work includes:
+
 - Search-or-act still routes commands rather than providing full semantic fuzzy search.
 - Some information views still bridge command output.
-- Canvas modules remain regression/reference code.
 - Legacy-shaped stable POI IDs and several internal field names remain bounded debt.
 - `gil` remains current currency terminology pending deliberate original-currency design.
 - Safe-settlement rest is executable but not yet a priced/service-quality economy.
-- The active Craft browser view still needs a richer dedicated production surface.
+- The active Craft browser view is compact rather than a rich production-choice surface.
 - Companion tactical/dialogue/equipment/progression breadth remains intentionally small.
-- Safe-locality DOM density/hierarchy still has room to improve; do not restore wilderness exploration controls there.
+- Safe-locality DOM density/hierarchy can improve without restoring wilderness controls there.
+
+The next bounded track is `0.7.200` settlement service and economy depth: deepen repeated return-to-settlement decisions using existing wallet, shop, production, recovery, workstation, and fictional-time authorities before broad content expansion.
