@@ -22,7 +22,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 26);
+    assert.equal(VERSION.data, 27);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Integrated Mechanics Gate');
@@ -33,8 +33,11 @@ test('version manifest separates product package and persistence versions', () =
             versionManifest: SYSTEM_VERSIONS.versionManifest,
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
+            activityAdvance: SYSTEM_VERSIONS.activityAdvance,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
             playerExperience: SYSTEM_VERSIONS.playerExperience,
+            playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
+            domUi: SYSTEM_VERSIONS.domUi,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
             party: SYSTEM_VERSIONS.party,
@@ -47,8 +50,11 @@ test('version manifest separates product package and persistence versions', () =
             versionManifest: '0.6.900.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
-            gameViewModels: '0.4.0',
-            playerExperience: '0.1.0',
+            activityAdvance: '0.1.0',
+            gameViewModels: '0.5.0',
+            playerExperience: '0.2.0',
+            playerOpportunities: '0.1.0',
+            domUi: '0.3.0',
             uiIntents: '0.4.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
@@ -62,11 +68,13 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeVersion(), /Product: 0\.6\.900\.1/);
     assert.match(describeVersion(), /Package: 0\.6\.900/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 26/);
+    assert.match(describeVersion(), /Data: 27/);
     assert.match(describeVersion(), /Codename: Integrated Mechanics Gate/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerExperience: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /activityAdvance: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerExperience: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /playerOpportunities: 0\.1\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
