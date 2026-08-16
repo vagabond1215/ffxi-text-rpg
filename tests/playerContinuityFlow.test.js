@@ -22,6 +22,7 @@ import { getNpcRelationship } from '../js/text/systems/relationshipEngine.js';
 import { setEndOfDayPause } from '../js/text/systems/simulationControlEngine.js';
 import { startTravel } from '../js/text/systems/travelEngine.js';
 import { SECONDS_PER_DAY } from '../js/text/systems/worldTimeEngine.js';
+import { renderGameScreen } from '../js/text/ui/domRenderer.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
 
@@ -137,6 +138,20 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.ok(view.dayReview);
     assert.equal(view.dayReview.eventTypeCounts['commitment.resolved'], 1);
     assert.equal(view.dayReview.eventTypeCounts['relationship.changed'], 1);
+    assert.equal(view.dayReview.categoryCounts.commitments, 2);
+    assert.equal(view.dayReview.categoryCounts.relationships, 1);
+
+    const review = view.opportunities.entries.find((entry) => entry.category === 'day-review');
+    assert.ok(review);
+    assert.equal(review.status, 'complete');
+    assert.equal(review.action, null);
+    assert.notEqual(view.opportunities.recommendedOpportunityId, review.id);
+    const journalHtml = renderGameScreen(view, createUiState({ screen: 'game', activeView: 'journal' }));
+    assert.match(journalHtml, /Latest day review · Day 1/);
+    assert.match(journalHtml, /1 commitment resolution/);
+    assert.match(journalHtml, /1 relationship change/);
+    assert.match(journalHtml, /Commitments 2 · Relationships 1/);
+
     contract = commitment(view);
     assert.equal(contract.status, 'ready');
     assert.equal(contract.action.intent, 'commitment.followUp');
