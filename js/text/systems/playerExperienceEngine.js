@@ -125,7 +125,7 @@ export function claimOriginStarterKit(state) {
             display: { text: stored.reason },
         });
     }
-    emitSemanticEvent(state, 'player-experience.starter-kit-claimed', {
+    emitSemanticEvent(state, 'player.starter-kit-claimed', {
         nationId: nation.id,
         itemId,
         guidePoiId: content.guidePoiId,
@@ -186,9 +186,4 @@ function isEquipped(player, itemId) {
 
 function path(id, title, how, grows) {
     return Object.freeze({ id, title, how, grows });
-}
-
-function capitalize(value) {
-    const text = String(value ?? '');
-    return text ? `${text.slice(0, 1).toUpperCase()}${text.slice(1)}` : '';
 }
