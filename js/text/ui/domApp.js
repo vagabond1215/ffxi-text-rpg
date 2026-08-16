@@ -28,6 +28,7 @@ import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
 import { startProductionWork } from '../systems/productionEngine.js';
+import { startScheduledTransport } from '../systems/transportEngine.js';
 import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
@@ -46,6 +47,7 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'commitment.followUp',
     'equipment.equip',
     'travel.start',
+    'transport.start',
     'gathering.start',
     'production.start',
     'activity.advanceToCompletion',
@@ -126,6 +128,9 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'travel.start') {
             result = startTravel(state, payload.destinationId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'transport.start') {
+            result = startScheduledTransport(state, payload.serviceId, payload.destinationPlaceId, { cargoUnits: payload.cargoUnits ?? 0 });
             recordGameplayFeedback(result);
         } else if (intent === 'gathering.start') {
             result = startGatheringWork(state, payload.sourceId, { quantity: payload.quantity ?? 1 });
