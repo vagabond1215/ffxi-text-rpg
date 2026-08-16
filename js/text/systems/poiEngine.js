@@ -13,6 +13,7 @@ import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { recruitCompanion } from './partyEngine.js';
 import { describeOriginGuideDialogue } from './playerExperienceEngine.js';
+import { describeTransportServiceBoard } from './transportServiceBoardEngine.js';
 
 export function createPoiDiscoveryState() {
     return {};
@@ -124,7 +125,7 @@ export function describePoiInteraction(state, poi, action) {
             lines.push('', describeQuestHookForPoi(poi));
             break;
         case 'travel':
-            lines.push('Travel service behavior is not implemented yet unless this is a route exit.');
+            lines.push('', describeTransportServiceBoard(state));
             break;
         case 'storage':
             lines.push('Storage behavior is not implemented yet.');
