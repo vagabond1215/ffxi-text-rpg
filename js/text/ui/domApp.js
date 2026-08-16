@@ -1,3 +1,4 @@
+import { getPlace } from '../data/places.js';
 import { createCommandRouter } from '../commandRouter.js';
 import { createInitialState, replaceState } from '../gameState.js';
 import {
@@ -14,8 +15,12 @@ import {
 } from '../save.js';
 import { createSlashCommandRouter } from '../slashCommandRouter.js';
 import { setCreatorName, validateCreator } from '../systems/characterCreationModel.js';
+import { startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
+import { equipItem } from '../systems/equipmentEngine.js';
+import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
+import { startTravel } from '../systems/travelEngine.js';
 import { appendOutput, isMovementOnCooldown, setActiveFeedback } from './canvasInput.js';
 import { createCommandIntentAdapter } from './commandIntentAdapter.js';
 import { renderDomApp } from './domRenderer.js';
@@ -23,6 +28,15 @@ import { createGameViewModel } from './gameViewModel.js';
 import { createMenuActionList } from './uiActions.js';
 import { dispatchUiIntent } from './uiIntentDispatcher.js';
 import { createUiState, setActiveView } from './uiState.js';
+
+const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
+    'locality.move',
+    'locality.poi',
+    'equipment.equip',
+    'travel.start',
+    'gathering.start',
+    'combat.encounter',
+]);
 
 export function createDomApp({ host }) {
     if (!host) throw new Error('DOM app requires a host element.');
@@ -75,22 +89,45 @@ export function createDomApp({ host }) {
         let result;
         if (intent === 'locality.move') {
             result = moveWithinLocality(state, payload.destinationId);
-            setActiveFeedback(uiState, result.message);
-            appendOutput(uiState, result.message);
+            recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
             result = performLocalityPoiAction(state, payload.poiId, payload.action);
-            setActiveFeedback(uiState, result.message);
-            appendOutput(uiState, result.message);
+            recordGameplayFeedback(result);
+        } else if (intent === 'equipment.equip') {
+            const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
+            const equipped = Object.values(state.player?.equipment ?? {}).some((item) => item && (item.templateId === payload.itemId || item.id === payload.itemId));
+            result = { ok: equipped, message };
+            recordGameplayFeedback(result);
+        } else if (intent === 'travel.start') {
+            result = startTravel(state, payload.destinationId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'gathering.start') {
+            result = startGatheringWork(state, payload.sourceId, { quantity: payload.quantity ?? 1 });
+            recordGameplayFeedback(result);
+        } else if (intent === 'combat.encounter') {
+            const place = getPlace(state.currentPlaceId);
+            const present = place?.spawnRules?.some((rule) => rule.enemyId === payload.enemyId);
+            result = present
+                ? startEncounter(state, payload.enemyId, { source: 'player-opportunity' })
+                : { ok: false, message: 'That field threat is not present in the current place.' };
+            recordGameplayFeedback(result);
         } else {
             result = dispatchUiIntent({ intent, payload, state, uiState, session, services });
         }
         session = result.session ?? session;
-        if (!result.ok && !['locality.move', 'locality.poi'].includes(intent)) {
+        if (!result.ok && !DIRECT_GAMEPLAY_INTENTS.includes(intent)) {
             setActiveFeedback(uiState, result.reason);
             appendOutput(uiState, result.reason);
         }
         if (options.render !== false) render();
         return result;
+    }
+
+    function recordGameplayFeedback(result) {
+        const message = result?.message ?? result?.display?.text ?? result?.reason ?? 'Action updated.';
+        setActiveFeedback(uiState, message);
+        appendOutput(uiState, message);
+        appendOutput(uiState, '');
     }
 
     function runCommand(command) {
@@ -120,6 +157,13 @@ export function createDomApp({ host }) {
         if (button.dataset.view) {
             setActiveView(uiState, button.dataset.view);
             render();
+            return;
+        }
+
+        if (button.dataset.opportunityAction) {
+            const model = createGameViewModel(state, uiState);
+            const opportunity = model.opportunities?.entries?.find((entry) => entry.id === button.dataset.opportunityAction);
+            if (opportunity?.action) dispatch(opportunity.action.intent, opportunity.action.payload);
             return;
         }
 
