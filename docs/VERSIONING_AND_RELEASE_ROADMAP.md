@@ -12,17 +12,17 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:       0.7.100.1
-Package:       0.7.100
+Product:       0.7.200.1
+Package:       0.7.200
 Account Save:  4
 Game State:    5
 Data:          30
 Benchmark:     1
-Codename:      Playable Campaign Slice
+Codename:      Settlement Economy Depth
 Compatibility: pre-release-current-schema
 ```
 
-Phase 0.6 is complete. Phase 0.7 remains in progress. The bounded `0.7.100` playable-campaign track is complete.
+Phase 0.6 is complete. Phase 0.7 remains in progress. The bounded `0.7.100` playable-campaign and `0.7.200` settlement-economy tracks are complete.
 
 ## Product version format
 
@@ -37,7 +37,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains three-part SemV
 | Data | 30 | canonical authored-data contract |
 | Benchmark | 1 | benchmark protocol/comparability |
 
-Account Save changes when the local account/session registry changes materially. Game State changes when persisted game-state structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the workload/protocol changes enough that prior results stop being comparable.
+Account Save changes when the account/session registry changes materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the workload/protocol changes enough that prior results stop being comparable.
 
 Recent Data history:
 
@@ -51,9 +51,9 @@ Recent Data history:
 - Data 27 — Phase 0.7 player-experience content/opportunity/regional-loop contract;
 - Data 28 — canonical commitment definitions + general persistent NPC relationship/follow-up contract;
 - Data 29 — commitment catalog v2, Reader Soli Venn, `Marrowleaf for the Ward`, raw-resource/source/return guidance;
-- Data 30 — Sera Talwin plus `Sweetroot for Southgate`, completing the three-origin authored community-continuity set without changing commitment catalog v2 shape.
+- Data 30 — Sera Talwin plus `Sweetroot for Southgate`, completing the three-origin authored community-continuity set.
 
-PX-9 does **not** advance Data because the route/service catalog is unchanged. Its service board is derived presentation over existing Data 30 records. It does not advance Game State because no new persisted field or meaning is introduced.
+PX-9 and `0.7.200` do **not** advance Data because they add derived access/presentation over existing authored records. `0.7.200` also does not advance Game State: settlement service-board state is recomputed and the shop/production/recovery mutations use existing canonical state.
 
 ## Compatibility policy
 
@@ -73,7 +73,7 @@ Direction lock, version protocol, persistence migrations, structured action resu
 
 ### 0.5 — Simulation/content substrate — complete
 
-Fictional time, scheduler/pause, timed tasks, interrupts, day review, original-world identity, provenance/projects, ecology/gathering, routes/transport, content packs, validation.
+Fictional time, pause/scheduler, timed tasks, interrupts, day review, original-world identity, provenance/projects, ecology/gathering, routes/transport, content packs, validation.
 
 ### 0.6 — Integrated character/mechanics — complete
 
@@ -94,7 +94,7 @@ Fictional time, scheduler/pause, timed tasks, interrupts, day review, original-w
 ## Phase 0.7 current registrations
 
 ```text
-versionManifest:              0.7.100.1
+versionManifest:              0.7.200.1
 activityAdvance:              0.2.0
 campaignRecovery:             0.1.0
 characterActivity:            0.2.0
@@ -104,44 +104,36 @@ dayCycle:                     0.2.0
 resourceRecoveryWork:         0.3.0
 transport:                    0.2.0
 transportServiceBoard:        0.1.0
-gameViewModels:               0.9.0
+settlementServiceBoard:       0.1.0
+workstations:                 0.2.0
+shopTransactions:             0.5.0
+gameViewModels:               0.10.0
 playerExperience:             0.3.0
 playerOpportunities:          0.2.0
 playerContinuity:             0.5.0
 playerCampaignReadability:    0.2.0
 playerDangerRecovery:         0.2.0
-domUi:                        0.7.0
-uiIntents:                    0.6.0
+domUi:                        0.8.0
+uiIntents:                    0.7.0
 ```
 
 ### Phase 0.7 decision sequence
 
 - **PX-1/PX-2/PX-3:** Data 27 established origin experience, actionable opportunity projection, starter-tool flow, and the first Brasshaven/Redstone regional loop.
-- **PX-4:** Data 28 added canonical commitment definitions and persistent general NPC relationship/follow-up authority; provenance-safe stacking/delivery was hardened.
-- **PX-5:** no schema/data bump; campaign readability is derived and transport authority remains canonical.
+- **PX-4:** Data 28 added canonical commitment definitions and persistent general NPC relationship/follow-up authority.
+- **PX-5:** no schema/data bump; campaign readability is derived.
 - **PX-6:** no schema/data bump; recovery reuses timed-task/battle state and aftermath is derived.
 - **Player-language hygiene:** no Data/Game State bump; ordinary presentation stops exposing internal rationale.
-- **PX-7:** Data 29; Reader Soli Venn and `Marrowleaf for the Ward` establish the second persistent community. `playerContinuity 0.5.0` becomes generic over actually known commitment definitions.
-- **PX-8:** Data 30; Sera Talwin and `Sweetroot for Southgate` establish third-origin several-day continuity without changing commitment schema or persistence shape.
-- **PX-9:** no Data/Game State bump. `transportServiceBoard 0.1.0` derives actual scheduled-service choices from the existing route catalog and state. `gameViewModels` advances to `0.9.0` because generic scheduled transport is now exposed through ordinary semantic context actions.
+- **PX-7:** Data 29; Reader Soli Venn and `Marrowleaf for the Ward` establish the second persistent community.
+- **PX-8:** Data 30; Sera Talwin and `Sweetroot for Southgate` establish third-origin continuity without changing persistence shape.
+- **PX-9 / `0.7.100`:** no Data/Game State bump. `transportServiceBoard 0.1.0` derives actual scheduled-service choices; `gameViewModels` advances to `0.9.0`. Product becomes `0.7.100.1`.
+- **`0.7.200`:** no Data/Game State bump. `settlementServiceBoard 0.1.0` derives settlement work/trade/recovery choices. `workstations 0.2.0` exposes authored POI workstation tags, `shopTransactions 0.5.0` adds structured semantic buy/sell results, `gameViewModels 0.10.0`, `domUi 0.8.0`, and `uiIntents 0.7.0` expose the new browser flow. Product becomes `0.7.200.1`.
 
 ## `0.7.100` — Playable campaign slice — complete
 
-PX-1 through PX-9 jointly prove the milestone: three origin/community continuity loops, competing livelihood/social/danger choices, production, combat/recovery, acquired-knowledge readability, semantic scheduled transport across the connected proving graph, current-version save/load, and provenance/one-time ownership.
+PX-1 through PX-9 jointly prove three origin/community continuity loops, competing livelihood/social/danger choices, production, combat/recovery, acquired-knowledge readability, semantic scheduled transport, current-version save/load, and provenance/one-time ownership.
 
-PX-9 removes the final audited access blocker by making the existing Crown-Forge and Forge-Mere scheduled service graph generically reachable through browser context/Travel Desk presentation while leaving `transportEngine` authoritative.
-
-Product therefore advances:
-
-```text
-0.6.900.1 -> 0.7.100.1
-package     -> 0.7.100
-codename    -> Playable Campaign Slice
-```
-
-The milestone remains pre-alpha (`released: false`). Phase 0.7 itself remains open for additional depth.
-
-## Authoritative promoted `0.7.100` runtime checkpoint
+Authoritative runtime checkpoint:
 
 ```text
 d15bd9517803faf6bceae5fb3376193648cca09d
@@ -150,25 +142,54 @@ Benchmark 1 success
 Data 30
 ```
 
+## `0.7.200` — Settlement service and economy depth — complete
+
+The track closes the audited return-to-settlement access gap without creating another economy.
+
+`settlementServiceBoardEngine` is derived from existing POIs/workstations, production definitions, inventory, wallet, shop catalogs, work proficiency, work state, and recovery state. The active Craft surface becomes **Work, Trade & Recover** and dispatches direct semantic workshop, production, trade, and recovery actions while the domain engines retain mutation authority.
+
+The Brasshaven/Redstone end-to-end proof compares selling two raw ore (10-gil typical value) against smelting an ingot (14-gil typical value), consumes 300 fictional seconds, raises metalworking to 2, projects the next smelt at 295 seconds, sells the real ingot once, uses the proceeds to unlock an 8-gil preparation purchase, spends a real hour when safe recovery is chosen, and survives account save/load with wallet/time/mastery/item ownership intact.
+
+A second focused regression proves the same board discovers existing Thornwall tannery, Brasshaven forge, and Mistmere kitchen/merchant authority. No origin-specific economy branch exists.
+
+Product advances:
+
+```text
+0.7.100.1 -> 0.7.200.1
+package     -> 0.7.200
+codename    -> Settlement Economy Depth
+```
+
+The milestone remains pre-alpha (`released: false`). Phase 0.7 remains open.
+
+## Authoritative promoted `0.7.200` runtime checkpoint
+
+```text
+61c8c6c602bc71a4e7325d04b3e7698f669843c4
+487/487 tests
+Benchmark 1 success
+Data 30
+```
+
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     439.616ms  0.439616ms/op
-1,000 enemy combat profiles      116.070ms  0.116070ms/op
-1,000 basic attacks              504.204ms  0.504204ms/op
-10,000 ticks / 5 subscribers      48.633ms  0.004863ms/op
-10,000 direct route lookups     8064.154ms  0.806415ms/op
+1,000 player combat profiles     413.227ms  0.413227ms/op
+1,000 enemy combat profiles      102.942ms  0.102942ms/op
+1,000 basic attacks              513.096ms  0.513096ms/op
+10,000 ticks / 5 subscribers      44.538ms  0.004454ms/op
+10,000 direct route lookups     7769.865ms  0.776987ms/op
 ```
 
 Benchmark protocol remains 1 and results remain comparable.
 
-## `0.7.200` — Settlement service and economy depth — next bounded track
+## `0.7.300` — Semantic information access and locality usability — next bounded track
 
-With the playable campaign graph closed, the next track should deepen repeated return-to-settlement usefulness rather than add another region merely for breadth.
+The next track should remove ordinary-player command dependence from core information and local-interaction surfaces rather than add another content region.
 
-Audit and then prove one reusable loop across existing authorities: shops/wallet, recovery/time, workstations/production, source-sink economics, and semantic browser presentation. A richer Craft production-choice surface and deliberately priced/service-quality recovery are strong candidates if they can reuse existing domain systems.
+Audit Character, Inventory/Equipment, Spellbook, Codex/World, locality point lists, and Search-or-act. Prefer derived semantic models/actions over command-string bridges. The first proof should make preparation, learned capability/knowledge, and relevant local options inspectable from ordinary browser UI while preserving acquired-knowledge privacy.
 
-Do not mass-author shops/recipes/services, create a parallel economy, or pull property/infrastructure scope forward from Phase 0.8.
+Do not turn the track into a full UI rewrite, general natural-language agent, or omniscient search index. Safe-locality improvements must preserve the locality/exploration distinction.
 
 ## Planned later phases
 
