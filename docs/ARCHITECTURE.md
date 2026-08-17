@@ -17,13 +17,15 @@ The semantic DOM/CSS shell is the active player interface. Canvas modules remain
 
 ## Authority rules
 
-- Fictional time, timed tasks, interrupts, work, travel, combat readiness, statuses, recovery, and day review share one canonical simulation substrate.
+- Fictional time, timed tasks, interrupts, work, projects, travel, combat readiness, statuses, recovery, and day review share one canonical simulation substrate.
 - Continuous-character stats, learned skills/capabilities, and work proficiency belong to the person; disciplines are contextual training traditions.
 - Inventory/equipment/tool state is canonical for preparation and practical capability checks.
 - Resources preserve source/transformation provenance and one-time ownership; same-ID stacks with different provenance histories remain distinct.
+- Projects own persistent material/labor progress; specialized systems may attach bounded project metadata and apply domain-specific completion effects.
+- Home/infrastructure does not own a second item store, construction clock, or storage-capacity formula. It composes projects, timed tasks, canonical materials, inventory, and furnishings.
 - Commitments own accepted/resolved/follow-up state and one-time rewards.
 - General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship/tactics state remains in party/companion authority.
-- Maps, campaign guidance, transport boards, settlement service boards, and player information views are projections of acquired/current state; they do not own simulation state.
+- Maps, campaign guidance, transport boards, settlement service boards, player information, and home opportunity models are projections of acquired/current state; they do not own simulation state.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
 - Persistent companions remain NPC-backed world participants rather than summons.
 - Content packs and cross-reference validation remain the scale mechanism for authored world growth.
@@ -68,36 +70,98 @@ The Craft browser surface renders the derived board as **Work, Trade & Recover**
 
 ### `playerInformationEngine`
 
-The semantic information projection derives only information justified by the current character and current/acquired world state:
+The semantic information projection derives only information justified by the current character and current/acquired world state: accessible carried items, equipment, effective skills, learned capabilities/abilities, acquired maps, visited places, discovered POIs/contacts, current locality destinations/actions, and deterministic bounded search over the same set.
 
-- accessible unlocked carried containers/items;
-- current equipment plus semantic equip/unequip readiness;
-- effective skills under current discipline context;
-- character-owned learned capabilities;
-- learned spells/techniques and current readiness;
-- maps actually acquired;
-- places represented in the visited atlas;
-- POIs/contacts actually discovered;
-- current safe-locality destinations and POI actions;
-- deterministic bounded search results over the same set.
-
-It intentionally does **not** enumerate the global map, place, route, POI, resource, or encounter catalogs. Search query state lives only in `uiState.informationQuery`; it is not gameplay/save state.
-
-The active DOM consumes this projection as structured Character, Spellbook, Codex, and World views. Semantic actions dispatch existing domain intents. A leading `/` in the omnibox explicitly uses the command shell as an optional power/diagnostic surface.
+It intentionally does **not** enumerate the global map, place, route, POI, resource, or encounter catalogs. Search query state lives only in `uiState.informationQuery`; it is not gameplay/save state. A leading `/` explicitly opts into the command shell as a power/diagnostic surface.
 
 ### Character-facing information boundary
 
 Ordinary browser presentation follows a character-POV rule: expose what the character **sees, knows, carries, remembers, needs, or can decide**. Development-roadmap language, compatibility details, raw task/state channels, hidden authored topology, and implementation rationale stay outside normal play.
 
-`tests/playerFacingLanguage.test.js` and `tests/playerPointOfViewPresentation.test.js` guard this boundary across the primary browser surfaces and representative encounterable place/POI data.
+`tests/playerFacingLanguage.test.js` and `tests/playerPointOfViewPresentation.test.js` guard this boundary across the primary browser surfaces and representative encounterable place/POI data. `tests/playerHomeInfrastructureFlow.test.js` extends the same rule to the Home & Foothold Journal projection.
 
 ### `activityAdvanceEngine.js`
 
-Provides semantic advance-to-completion for the current canonical activity without a second clock. It composes direct/scheduled travel, gathering/production work, defeated-body recovery, and campaign recovery while domain engines retain completion effects.
+Provides semantic advance-to-completion for the current canonical activity without a second clock. It composes direct/scheduled travel, gathering/production work, defeated-body recovery, campaign recovery, and generic `project.labor`.
+
+For project labor, generic project reconciliation remains in `projectEngine`. When the project carries a recognized home-infrastructure definition, the home adapter applies the domain completion effect after generic project completion. Unrelated project kinds remain generic and are not claimed by the home system.
+
+## Home, project, and infrastructure architecture (`0.8.100`)
+
+### Existing project authority
+
+`projectEngine.js` remains the persistent construction/work substrate. A project owns:
+
+- stable project ID, kind, label, and status;
+- required/contributed material quantities;
+- labor duration and linked `project.labor` timed task;
+- creation/start/completion world timestamps;
+- arbitrary bounded domain `data` for systems that compose with the generic project contract.
+
+Material contribution removes canonical inventory quantity atomically through `inventoryEngine`; labor starts through the shared timed-task substrate; `reconcileProjects` owns generic completion.
+
+### `homeInfrastructure.js` authored data
+
+Data 32 adds the first canonical home-improvement definition:
+
+```text
+Build a Storage Chest
+  materials: 2 Resin-Sealed Hardwood Boards
+             1 Redstone Copper Ingot
+  labor:     30 minutes
+  benefit:   existing Storage Chest furnishing (+5 storage slots)
+```
+
+The boards and ingot already belong to the canonical Elderwood/Redstone production economy. The improvement therefore creates a durable sink for real regional goods rather than a building-specific currency.
+
+### `homeInfrastructureEngine.js`
+
+`HOME_INFRASTRUCTURE_VERSION = 1` is a bounded adapter, not a second property simulation.
+
+It:
+
+- resolves the character's current home from existing unlocked home points;
+- begins a generic project with home-improvement metadata;
+- delegates material contribution to `contributeProjectMaterial`;
+- delegates labor start to `startProjectLabor`;
+- reconciles generic project completion;
+- applies the authored furnishing exactly once;
+- emits `home.infrastructure-completed` as a semantic event;
+- derives the player-facing **Home & Foothold** Journal entry and its current semantic action;
+- validates home-project references against the authored improvement catalog.
+
+It does **not** own:
+
+- a new property registry;
+- a construction-specific clock/task queue;
+- a separate inventory or construction-material wallet;
+- storage-capacity math;
+- a duplicate world location/home registry;
+- a UI persistence model.
+
+### Furnishing/storage authority
+
+`mogHouseFurniture.js` is still a bounded internal legacy-named module, while player-facing copy uses lodging/home/furnishing terminology. `calculateFurnitureStorageCapacity` remains the actual furnishing capacity calculation consumed by inventory storage.
+
+A fresh character's Bronze Bed + Maple Table provide 3 furnishing-storage slots. Completing the first improvement places the existing `storage-chest` furnishing once, adding 5 and producing an 8-slot total. The completed furnishing remains ordinary persisted inventory/home state, so the benefit naturally survives save/load.
+
+### Journal/UI integration
+
+`gameViewModel` decorates the existing opportunity model with a `Home & Foothold` group. The active flow is:
+
+```text
+Plan
+  -> Set aside canonical materials
+  -> Start 30m project labor
+  -> Finish current activity
+  -> completed furnishing benefit
+```
+
+`uiIntentDispatcher` handles semantic `home.infrastructure.begin`, `.contribute`, and `.start` intents. The final Finish action delegates the existing activity advance path. The renderer remains generic; no home-specific management screen or renderer state was added.
 
 ## Commitment and relationship architecture
 
-**Data 31 / commitment catalog v2** retains the three proving definitions under one generic schema:
+Data 31 commitment catalog v2 retains the three proving definitions under one generic schema:
 
 ```text
 Copper for the Ring
@@ -152,23 +216,9 @@ Combat 2.0 uses structured battle-local action history and fictional-time readin
 
 ### Mara Venn field preparation (`0.7.400`)
 
-The companion catalog is version 2 and the companion/party database registrations are `0.2.0`.
+Mara's two authored field approaches live in `js/text/data/companions.js`; the selected approach is stored in her existing party tactics record. Party authority owns recruitment, active membership, companion location/condition, selected tactics, and synchronization with the backing NPC. Battle creation reads the choice and derives temporary battle-entry attributes without mutating permanent attributes or creating a second companion progression authority.
 
-Mara's two authored field approaches are definitions in `js/text/data/companions.js`. The selected approach is stored in her **existing party tactics record**; no new top-level persistence registry was introduced.
-
-```text
-Guard the Road
-  -> battle-entry attribute tradeoff favors evasion over attack
-
-Seek the Opening
-  -> battle-entry attribute tradeoff favors attack over caution
-```
-
-Party authority owns recruitment, active membership, companion location/condition, selected tactics, and synchronization with the backing NPC. Battle creation reads the selected approach and derives temporary battle-entry attributes; it does not mutate Mara's permanent attributes or create companion progression state. Tactic changes are rejected during active battle.
-
-The Character view is presentation over these authorities. It shows Mara's identity, description, location, condition, selected approach, authored voice, and semantic approach/join/leave actions without exposing raw tactic IDs.
-
-`tests/playerCompanionLifeFlow.test.js` proves the approach tradeoff, permanent-stat non-mutation, combat lockout, real save/load persistence, and backing-NPC identity through canonical travel.
+`tests/playerCompanionLifeFlow.test.js` proves the approach tradeoff, permanent-stat non-mutation, combat lockout, real save/load persistence, and backing-NPC identity through travel.
 
 `campaignRecoveryEngine` continues to use canonical timed tasks:
 
@@ -183,71 +233,77 @@ recovery.defeat      120 minutes  retreat to known safe home + bounded partial r
 Current compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:      0.7.400.1
-Package:      0.7.400
+Product:      0.8.100.1
+Package:      0.8.100
 Account Save: 4
 Game State:   5
-Data:         31
+Data:         32
 Benchmark:    1
-Codename:     Companion Life and Party Depth
+Codename:     Home Foothold and Infrastructure
 ```
 
-Data advanced from 30 to 31 because the canonical companion catalog and player-visible authored place/POI content changed. Account Save 4 and Game State 5 remain unchanged because field approach fits the existing party tactics structure and the POV changes are authored/presentation data rather than a new persisted runtime contract.
+Data advances from 31 to 32 because the canonical home-infrastructure definition and its material-to-durable-benefit contract are authored data. Account Save 4 and Game State 5 remain unchanged because the track reuses existing project metadata, timed tasks, placed furnishings, and inventory state.
 
 Current relevant subsystem registrations:
 
 ```text
-playerInformation:  0.1.1
-gameViewModels:     0.12.0
-domUi:              0.10.0
-uiIntents:           0.9.0
-companionCatalog:   0.2.0
-party:              0.2.0
-companions:         0.2.0
+projects:             0.1.0
+homeInfrastructure:   0.1.0
+homeStorage:          0.3.9
+characterActivity:    0.3.0
+activityAdvance:      0.3.0
+gameViewModels:       0.13.0
+uiIntents:            0.10.0
+validation:           0.10.0
+playerInformation:    0.1.1
+domUi:                0.10.0
+companionCatalog:     0.2.0
+party:                0.2.0
+companions:           0.2.0
 ```
 
 ## Validation and performance
 
-Authoritative promoted `0.7.400` runtime checkpoint:
+World-data validation now checks the home-infrastructure catalog. Game-state validation first checks generic projects and then validates recognized home-project metadata/benefit consistency. Existing equipment-effect validation remains intact, including effects, latent effects, enchantments, augments, charges, requirements, modifiers, and metadata.
+
+Authoritative promoted `0.8.100` runtime checkpoint:
 
 ```text
-1e217fe1f7e62593fa9ed33eebdf1b3878490336
-495/495 tests
+0b9251a43285443087050127da36b977cabdf7ee
+496/496 tests
 0 failed
 0 skipped
 Benchmark 1 success
-Data 31
+Data 32
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     470.213ms  0.470213ms/op
-1,000 enemy combat profiles      124.768ms  0.124768ms/op
-1,000 basic attacks              538.006ms  0.538006ms/op
-10,000 ticks / 5 subscribers      50.197ms  0.005020ms/op
-10,000 direct route lookups     8612.637ms  0.861264ms/op
+1,000 player combat profiles     466.332ms  0.466332ms/op
+1,000 enemy combat profiles      108.813ms  0.108813ms/op
+1,000 basic attacks              521.192ms  0.521192ms/op
+10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
+10,000 direct route lookups     8784.978ms  0.878498ms/op
 ```
 
-Important Phase 0.7 focused coverage includes:
+Important current focused coverage includes:
 
+- `tests/playerHomeInfrastructureFlow.test.js`
+- `tests/projectEngine.test.js`
 - `tests/playerFacingLanguage.test.js`
 - `tests/playerPointOfViewPresentation.test.js`
 - `tests/playerCompanionLifeFlow.test.js`
 - `tests/playerContinuityFlow.test.js`
 - `tests/playerCampaignReadability.test.js`
 - `tests/playerDangerRecoveryFlow.test.js`
-- `tests/playerCommunityBreadthFlow.test.js`
-- `tests/playerThirdCommunityFlow.test.js`
 - `tests/playerCrossCommunityRotation.test.js`
 - `tests/playerSettlementEconomyFlow.test.js`
 - `tests/playerInformationAccess.test.js`
 - route/transport/party/save-load/version/pipeline/validation gates.
 
-## Phase 0.7 architecture closure
+## Current architecture boundary
 
-**Phase 0.7 is complete at Product `0.7.400.1`.** The ordinary player path now composes the existing authorities into a sustained multi-region campaign without requiring a duplicate simulation layer or command expertise.
+**Phase 0.7 remains complete. Phase 0.8 is in progress; `0.8.100` is complete at Product `0.8.100.1`.**
 
-Known later depth is intentionally deferred rather than treated as a reason to reopen Phase 0.7: broader companion dialogue/equipment/progression/goals, richer generic NPC/vendor voice, residual optional command adapters, safe-locality density refinement, original currency terminology, and authored paid/service-quality recovery.
-
-Do not start Phase 0.8 automatically. Its first life/infrastructure track should be selected by a new bounded work order.
+The home track proves one life/infrastructure loop without duplicating simulation authority. Do not extrapolate this into a second property engine, a building currency, a home-only inventory, or automatic mass-authoring. The next Phase 0.8 work order should choose one bounded seam and audit existing authorities before implementation.
