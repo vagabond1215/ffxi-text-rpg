@@ -12,7 +12,7 @@ import { advanceTravel } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const ACTIVITY_ADVANCE_VERSION = 3;
+export const ACTIVITY_ADVANCE_VERSION = 4;
 
 export function advanceActiveActivityToCompletion(state) {
     if (state?.activeBattle?.phase === 'active') {
@@ -125,10 +125,9 @@ function advanceProjectLaborCompletion(state, task, advance) {
                 secondsAdvanced: advance.data?.secondsAdvanced ?? 0,
                 furnitureId: result?.furnitureId ?? project.data?.furnitureId ?? null,
                 storageSlotsAdded: result?.storageSlotsAdded ?? 0,
+                furnitureTagsAdded: result?.furnitureTagsAdded ?? [],
             },
-            display: { text: result?.storageSlotsAdded > 0
-                ? `${project.label} is complete. Your lodging now has ${result.storageSlotsAdded} more home-storage slots.`
-                : `${project.label} is complete.` },
+            display: { text: describeHomeCompletion(project, result) },
         });
     }
 
@@ -146,6 +145,28 @@ function advanceProjectLaborCompletion(state, task, advance) {
         },
         display: { text: `${project.label} is complete.` },
     });
+}
+
+function describeHomeCompletion(project, result) {
+    if (result?.storageSlotsAdded > 0) {
+        return `${project.label} is complete. Your lodging now has ${result.storageSlotsAdded} more home-storage slots.`;
+    }
+    if (result?.furnitureTagsAdded?.includes('woodshop')) {
+        return `${project.label} is complete. Your lodging now has a woodshop workstation ready for timber work.`;
+    }
+    if (result?.furnitureTagsAdded?.includes('forge')) {
+        return `${project.label} is complete. Your lodging now has a forge workstation ready for metalwork.`;
+    }
+    if (result?.furnitureTagsAdded?.includes('kitchen')) {
+        return `${project.label} is complete. Your lodging now has a kitchen workstation ready for cooking.`;
+    }
+    if (result?.furnitureTagsAdded?.includes('tannery')) {
+        return `${project.label} is complete. Your lodging now has a tannery workstation ready for hide work.`;
+    }
+    if (result?.furnitureTagsAdded?.some((tag) => ['workbench', 'workshop'].includes(tag))) {
+        return `${project.label} is complete. Your lodging now has a workshop station ready for practical work.`;
+    }
+    return `${project.label} is complete.`;
 }
 
 function advanceTaskToBoundary(state, task) {
