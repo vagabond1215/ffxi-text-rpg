@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.100.2');
-    assert.equal(PACKAGE_VERSION, '0.8.100');
+    assert.equal(PRODUCT_VERSION, '0.8.200.1');
+    assert.equal(PACKAGE_VERSION, '0.8.200');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 33);
+    assert.equal(VERSION.data, 34);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Home Foothold and Infrastructure');
+    assert.equal(VERSION.codename, 'Home Workshop Capability');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -36,6 +36,7 @@ test('version manifest separates product package and persistence versions', () =
             transportServiceBoard: SYSTEM_VERSIONS.transportServiceBoard,
             settlementServiceBoard: SYSTEM_VERSIONS.settlementServiceBoard,
             workstations: SYSTEM_VERSIONS.workstations,
+            productionItems: SYSTEM_VERSIONS.productionItems,
             shopTransactions: SYSTEM_VERSIONS.shopTransactions,
             characterActivity: SYSTEM_VERSIONS.characterActivity,
             activityAdvance: SYSTEM_VERSIONS.activityAdvance,
@@ -69,16 +70,17 @@ test('version manifest separates product package and persistence versions', () =
             startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
         },
         {
-            versionManifest: '0.8.100.2',
+            versionManifest: '0.8.200.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             transportServiceBoard: '0.1.0',
-            settlementServiceBoard: '0.1.0',
-            workstations: '0.2.0',
+            settlementServiceBoard: '0.2.0',
+            workstations: '0.3.0',
+            productionItems: '0.3.0',
             shopTransactions: '0.5.0',
             characterActivity: '0.3.0',
-            activityAdvance: '0.3.0',
-            homeInfrastructure: '0.1.0',
+            activityAdvance: '0.4.0',
+            homeInfrastructure: '0.2.0',
             campaignRecovery: '0.1.0',
             resourceRecoveryWork: '0.3.0',
             commitments: '0.2.0',
@@ -109,13 +111,17 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.100\.2/);
-    assert.match(describeVersion(), /Package: 0\.8\.100/);
+    assert.match(describeVersion(), /Product: 0\.8\.200\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.200/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 33/);
-    assert.match(describeVersion(), /Codename: Home Foothold and Infrastructure/);
+    assert.match(describeVersion(), /Data: 34/);
+    assert.match(describeVersion(), /Codename: Home Workshop Capability/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /workstations: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /productionItems: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /settlementServiceBoard: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /activityAdvance: 0\.4\.0/);
     assert.match(describeSystemVersions(), /domOnboarding: 0\.1\.0/);
     assert.match(describeSystemVersions(), /saveRecovery: 0\.1\.0/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.6\.0/);
@@ -143,7 +149,9 @@ test('database registry includes canonical systems plus explicitly bounded legac
 
     const description = describeDatabases();
     assert.match(description, /production \[implemented 0\.1\.0\]/);
-    assert.match(description, /homeInfrastructure \[implemented 0\.1\.0\]/);
+    assert.match(description, /productionItems \[seeded 0\.2\.0\]/);
+    assert.match(description, /workstations \[implemented 0\.2\.0\]/);
+    assert.match(description, /homeInfrastructure \[implemented 0\.2\.0\]/);
     assert.match(description, /commitments \[implemented 0\.2\.0\]/);
     assert.match(description, /relationships \[implemented 0\.1\.0\]/);
     assert.match(description, /capabilities \[seeded 0\.2\.0\]/);
