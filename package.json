@@ -1,6 +1,6 @@
 {
   "name": "hearth-and-horizon",
-  "version": "0.8.100",
+  "version": "0.8.200",
   "private": true,
   "type": "module",
   "description": "Original text-first persistent fantasy life RPG with deterministic simulation, exploration, livelihoods, relationships, and dangerous travel.",
