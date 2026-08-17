@@ -23,7 +23,7 @@ The semantic DOM/CSS shell is the active player interface. Canvas modules remain
 - Resources preserve source/transformation provenance and one-time ownership; same-ID stacks with different provenance histories remain distinct.
 - Commitments own accepted/resolved/follow-up state and one-time rewards.
 - General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship state remains in party/companion authority.
-- Maps, campaign guidance, transport boards, and settlement service boards represent projections of acquired/current state; they do not own simulation state.
+- Maps, campaign guidance, transport boards, settlement service boards, and player information views are projections of acquired/current state; they do not own simulation state.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
 - Persistent companions remain NPC-backed world participants.
 - Content packs and cross-reference validation remain the scale mechanism for authored world growth.
@@ -54,22 +54,9 @@ It owns no route, fare deduction, transport task, fictional clock, party movemen
 
 ### `settlementServiceBoardEngine`
 
-`SETTLEMENT_SERVICE_BOARD_VERSION = 1` is the `0.7.200` settlement-economy projection.
+`SETTLEMENT_SERVICE_BOARD_VERSION = 1` is the `0.7.200` settlement-economy projection. It derives real workshop, production, merchant, wallet, work-mastery, and recovery choices from existing locality/POI/workstation, production, inventory, shop, activity, and recovery state.
 
-For the character's current safe settlement locality it derives:
-
-- authored workshop POIs and their existing workstation tags;
-- production definitions that can actually be performed somewhere in that locality;
-- current workshop readiness and a semantic route to the required workshop when needed;
-- actual inputs, carried quantities, outputs, current proficiency, adjusted work duration, and production blockers;
-- conservative current shop-value comparison between required materials and produced output;
-- real local merchant providers, current stock, price, affordability, and sellable carried goods;
-- safe-settlement recovery status and canonical fictional-time cost;
-- direct semantic actions for workshop selection, production start/finish/output claim, merchant selection, buy/sell, and recovery.
-
-The board stores nothing in game state. It does not invent recipes, prices, work, inventory ownership, wallet state, or recovery effects.
-
-Mutation authority remains separated:
+The board stores nothing in game state. Mutation authority remains separated:
 
 ```text
 productionEngine        -> input consumption, timed work, provenance output, mastery
@@ -81,7 +68,32 @@ localityEngine          -> named settlement movement/POI focus
 worldTime/timedTasks    -> fictional time
 ```
 
-`gameViewModel.js` includes the derived board. The Craft browser surface renders it as **Work, Trade & Recover**, and `domApp.js` dispatches its semantic intents directly to the domain engines rather than manufacturing command strings.
+The Craft browser surface renders the derived board as **Work, Trade & Recover** and dispatches semantic intents directly to the domain engines.
+
+### `playerInformationEngine`
+
+`PLAYER_INFORMATION_VERSION = 1` is the `0.7.300` semantic information projection.
+
+It derives only information that can be justified from the current character and current/acquired world state:
+
+- accessible unlocked inventory containers and their current items;
+- current equipment plus semantic equip/unequip readiness;
+- effective skills under the current discipline context;
+- character-owned learned capabilities;
+- learned spells/techniques and current ability readiness;
+- maps actually acquired by the character;
+- places represented in the character's visited atlas;
+- POIs/contacts actually discovered through play;
+- current safe-locality destinations and POI actions;
+- deterministic bounded search results over that same set.
+
+It intentionally does **not** enumerate the global map, place, route, POI, resource, or encounter catalogs. Therefore search cannot reveal authored remote topology merely because the record exists in data.
+
+Search query state lives only in `uiState.informationQuery`; it is not written into `state` or the account/game save. `createGameViewModel` recomputes the information model each render.
+
+The active DOM consumes this projection as structured Character, Spellbook, Codex, and World views. Semantic action buttons dispatch existing domain intents such as `equipment.equip`, `equipment.unequip`, `ability.activate`, `locality.move`, and `locality.poi`. The omnibox searches the derived information model by default; a leading `/` explicitly uses the existing command shell as an optional power/diagnostic surface.
+
+`tests/playerInformationAccess.test.js` guards the acquired-knowledge boundary, including an explicit assertion that **Tall Reedbed** is not searchable before discovery.
 
 ### Player-language boundary
 
@@ -120,15 +132,15 @@ Sweetroot for Southgate
 
 `localityEngine.js` derives named settlement transitions from existing connections. The renderer intentionally omits wilderness map/D-pad controls in locality mode.
 
+`0.7.300` improves locality information access without changing this authority: the World view lists currently reachable named districts and current local POIs/services from `playerInformationEngine`, and actions still delegate to `localityEngine`.
+
 ### Exploration
 
 Exploration spaces use internal coordinates and `navigationEngine`. `minimapModel` renders discovered/locally knowable geometry only; total authored extent and absolute placement remain private.
 
 ### Routes and scheduled transport
 
-`routeCatalog.js`, `travelEngine.js`, and `transportEngine.js` own inter-place travel. Direct and scheduled travel consume fictional time and share task/interrupt laws.
-
-The proving graph connects Thornwall, Brasshaven, and Mistmere. PX-9 exposes its scheduled services through semantic browser presentation while the transport engine retains fare/cargo/cadence/boarding/departure/arrival and party synchronization.
+`routeCatalog.js`, `travelEngine.js`, and `transportEngine.js` own inter-place travel. Direct and scheduled travel consume fictional time and share task/interrupt laws. PX-9 exposes scheduled service through semantic browser presentation while transport retains fare/cargo/cadence/boarding/departure/arrival and party synchronization.
 
 ## Work, production, and settlement economy
 
@@ -138,23 +150,7 @@ The proving graph connects Thornwall, Brasshaven, and Mistmere. PX-9 exposes its
 
 `inventoryEngine` preserves provenance identity while stacking. Shop sale removes the inventory quantity before adding currency; shop purchase successfully stores the item before deducting currency.
 
-### `0.7.200` proving loop
-
-The production/economy proof reuses the existing Brasshaven/Redstone loop:
-
-```text
-2 Redstone Copper Ore
-  -> Selka Aurum workshop
-  -> 300s initial smelt
-  -> Redstone Copper Ingot +2 metalworking
-  -> next projected smelt 295s
-  -> Mae Oris merchant sale
-  -> preparation purchase
-```
-
-Two raw ore have a conservative typical shop value of 10 gil; the finished ingot has a 14-gil typical shop value. The comparison is presentation only: the shop engine remains the source of the actual current transaction result.
-
-The same derived settlement board is regression-tested against Thornwall tannery, Brasshaven forge, and Mistmere kitchen facilities. No settlement-specific economy branch was introduced.
+The `0.7.200` proof reuses the Brasshaven/Redstone loop: two raw Redstone Copper Ore can be processed at Selka Aurum's workshop into a Redstone Copper Ingot, improving metalworking and changing the process-vs-sell choice before the player prepares for another outing.
 
 Safe settlement recovery remains a one-hour fictional-time choice with no fabricated fee. Paid recovery/service quality should only be introduced when a real authored service contract exists.
 
@@ -179,24 +175,24 @@ recovery.defeat      120 minutes  retreat to known safe home + bounded partial r
 Current compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:      0.7.200.1
-Package:      0.7.200
+Product:      0.7.300.1
+Package:      0.7.300
 Account Save: 4
 Game State:   5
 Data:         30
 Benchmark:    1
-Codename:     Settlement Economy Depth
+Codename:     Semantic Information Access
 ```
 
-`0.7.200` adds only derived presentation and structured semantic transaction interfaces over existing state. No authored world record or persisted state contract changed, so Account Save 4, Game State 5, Data 30, and Benchmark 1 remain unchanged.
+`0.7.300` adds a pure derived information/search projection and transient UI query state. No authored world record or persisted gameplay contract changed, so Account Save 4, Game State 5, Data 30, and Benchmark 1 remain unchanged.
 
 ## Validation and performance
 
-Authoritative promoted `0.7.200` runtime checkpoint:
+Authoritative promoted `0.7.300` runtime checkpoint:
 
 ```text
-61c8c6c602bc71a4e7325d04b3e7698f669843c4
-487/487 tests
+0f6af06ff8571658d51bc2be53112a50d51275cb
+490/490 tests
 Benchmark 1 success
 Data 30
 ```
@@ -204,14 +200,14 @@ Data 30
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     413.227ms  0.413227ms/op
-1,000 enemy combat profiles      102.942ms  0.102942ms/op
-1,000 basic attacks              513.096ms  0.513096ms/op
-10,000 ticks / 5 subscribers      44.538ms  0.004454ms/op
-10,000 direct route lookups     7769.865ms  0.776987ms/op
+1,000 player combat profiles     464.067ms  0.464067ms/op
+1,000 enemy combat profiles      114.406ms  0.114406ms/op
+1,000 basic attacks              543.591ms  0.543591ms/op
+10,000 ticks / 5 subscribers      48.428ms  0.004843ms/op
+10,000 direct route lookups     8693.735ms  0.869373ms/op
 ```
 
-Important Phase 0.7 focused coverage now includes:
+Important Phase 0.7 focused coverage includes:
 
 - `tests/playerFacingLanguage.test.js`
 - `tests/playerContinuityFlow.test.js`
@@ -222,15 +218,15 @@ Important Phase 0.7 focused coverage now includes:
 - `tests/playerCrossCommunityRotation.test.js`
 - `tests/playerSettlementEconomyFlow.test.js`
 - `tests/settlementServiceBoard.test.js`
+- `tests/playerInformationAccess.test.js`
 - route/transport/party/save-load/version/pipeline/validation gates.
 
-## Known transitional seams after `0.7.200`
+## Known transitional seams after `0.7.300`
 
-- Search-or-act still routes command text rather than operating as a semantic known-information/action surface.
-- Several information views still use command-backed buttons for Inventory, Equipment, Skills, Codex, and world inspection.
+- A few explicit utility/combat and wilderness POI actions still use command adapters. Core Character/Spellbook/Codex/World information no longer depends on them.
 - Companion tactical/dialogue/equipment/progression breadth remains intentionally small.
-- Safe-locality DOM density/hierarchy can improve without restoring wilderness controls there.
+- Safe-locality DOM density/hierarchy can still improve without restoring wilderness controls there.
 - `gil` remains current currency terminology pending deliberate original-currency design.
 - Paid/service-quality recovery remains unauthored; do not invent a parallel rest economy.
 
-The next bounded track is `0.7.300` semantic information access and locality usability: replace ordinary command-backed information bridges with derived semantic views/actions and improve safe-locality interaction hierarchy without a full UI rewrite or omniscient search layer.
+The next bounded track is `0.7.400` companion life and party depth: make the existing persistent NPC-backed companion foundation create meaningful ordinary campaign choices beyond one automatic combat contribution, while preserving current party/relationship/travel/recovery authorities.
