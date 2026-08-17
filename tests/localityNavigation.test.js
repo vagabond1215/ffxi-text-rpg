@@ -20,7 +20,7 @@ test('guarded settlement districts use locality navigation instead of grid movem
     assert.equal(model.navigation.mode, 'locality');
     assert.equal(model.map, null);
     assert.deepEqual(model.movement, []);
-    assert.equal(model.header.coordinate, 'Named locality');
+    assert.equal(model.header.coordinate, 'Local streets');
     assert.ok(model.navigation.destinations.some((entry) => entry.id === 'thornwall-crownward'));
     assert.ok(model.contextualActions.some((entry) => entry.intent === 'locality.move'));
 });
