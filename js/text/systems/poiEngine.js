@@ -11,6 +11,7 @@ import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { recruitCompanion } from './partyEngine.js';
 import { describeOriginGuideDialogue } from './playerExperienceEngine.js';
 import { describeTransportServiceBoard } from './transportServiceBoardEngine.js';
@@ -56,7 +57,11 @@ export function describeCurrentPois(state) {
     if (!pois.length) return 'No known points of interest are immediately here.';
     return [
         'Points of interest here:',
-        ...pois.map((poi) => `- ${poi.name} [${poi.type}] - ${poi.notes} | actions: ${poi.actions.join(', ')}`),
+        ...pois.map((poi) => {
+            const availability = getPoiScheduleStatus(state, poi);
+            const scheduleText = availability.scheduled ? ` | ${describeNpcScheduleStatus(availability)}` : '';
+            return `- ${poi.name} [${poi.type}] - ${poi.notes} | actions: ${poi.actions.join(', ')}${scheduleText}`;
+        }),
     ].join('\n');
 }
 
@@ -99,6 +104,9 @@ export function performPoiAction(state, action, query = '') {
 }
 
 export function describePoiInteraction(state, poi, action) {
+    const availability = getPoiScheduleStatus(state, poi);
+    if (availability.scheduled && !availability.available) return describeNpcScheduleStatus(availability);
+
     const canonicalAction = canonicalizePoiAction(action);
     if (canonicalAction === 'talk') {
         const guideDialogue = describeOriginGuideDialogue(state, poi);
@@ -113,6 +121,8 @@ export function describePoiInteraction(state, poi, action) {
         poi.notes,
         discovered ? 'Discovered: yes. You can fast-travel to this POI while in the same place.' : 'Discovered: no.',
     ];
+
+    if (availability.scheduled) lines.push(describeNpcScheduleStatus(availability));
 
     switch (canonicalAction) {
         case 'shop':
