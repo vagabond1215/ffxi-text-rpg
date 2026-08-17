@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.7.200.1
-Package:      0.7.200
+Product:      0.7.300.1
+Package:      0.7.300
 Account Save: 4
 Game State:   5
 Data:         30
 Benchmark:    1
-Codename:     Settlement Economy Depth
+Codename:     Semantic Information Access
 ```
 
-Phase 0.7 remains in progress. `0.7.100` and `0.7.200` are complete bounded milestones.
+Phase 0.7 remains in progress. `0.7.100`, `0.7.200`, and `0.7.300` are complete bounded milestones.
 
 ## Product laws
 
@@ -42,7 +42,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments/relationships are canonical gameplay state; Journal/readability/service boards are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
+Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments/relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
 
 ## Phase summary
 
@@ -106,48 +106,9 @@ Data 30
 
 ## `0.7.200` — Settlement service and economy depth — complete
 
-The second Phase 0.7 track deepens the reason to return to settlements without creating a parallel economy.
+`settlementServiceBoardEngine` derives real workshop, production, merchant, wallet, work-mastery, and recovery choices from existing authorities. The active Craft browser surface is **Work, Trade & Recover** and dispatches semantic workshop/production/trade/recovery actions without creating a parallel economy.
 
-### Reusable settlement-service surface
-
-`settlementServiceBoardEngine` is a derived projection over existing locality POIs, workstation tags, production definitions, inventory, wallet, shops, work proficiency, active work, and campaign recovery. It stores nothing in game state.
-
-The active Craft browser surface is now **Work, Trade & Recover**. It exposes real semantic actions for:
-
-- going to an authored workshop;
-- starting and completing production;
-- claiming pending production output;
-- visiting a local merchant;
-- buying affordable real stock;
-- selling carried goods at the current shop quote;
-- starting/finishing safe-settlement recovery.
-
-Production, shop, inventory, recovery, locality, wallet, and fictional-time systems remain authoritative.
-
-### Proving economic loop
-
-The bounded end-to-end proof is:
-
-```text
-Brasshaven
-  -> South Redstone Reach
-  -> gather 2 Redstone Copper Ore
-  -> return to Brasshaven Market Ring
-  -> visit Selka Aurum's forge/workshop
-  -> compare raw sale value with processing
-  -> smelt Redstone Copper Ingot
-  -> persistent metalworking mastery shortens later work
-  -> sell the finished ingot to Mae Oris
-  -> use the proceeds for real preparation stock
-  -> optionally spend one fictional hour on safe recovery
-  -> save/load with wallet, item, time, and mastery intact
-```
-
-At the proving values, two raw ore carry a typical 10-gil shop value while the finished ingot carries a 14-gil shop value. Smelting initially takes 300 fictional seconds and grants +2 metalworking; the same projected process then falls to 295 seconds. Selling the ingot funds an 8-gil Flask of Water that was honestly blocked at the character's initial 0 gil. The sold ingot cannot pay twice.
-
-The same board is explicitly tested against existing authored facilities in all three origin communities: Thornwall tannery work, Brasshaven forge work, and Mistmere kitchen work. This is not a Brasshaven-specific economy branch.
-
-No Data, Game State, Account Save, or Benchmark bump accompanies `0.7.200`: no authored record, persisted registry, or benchmark protocol changed.
+The bounded Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent work mastery, finished-goods trade, preparation purchase, optional one-hour safe recovery, and save/load continuity. The same derived board discovers existing Thornwall tannery, Brasshaven forge, and Mistmere kitchen authority.
 
 Authoritative promoted runtime checkpoint:
 
@@ -159,34 +120,69 @@ Product 0.7.200.1
 Data 30
 ```
 
+## `0.7.300` — Semantic information access and locality usability — complete
+
+The third Phase 0.7 track removes ordinary command knowledge from the core information needed to make decisions while preserving the command shell as an optional power/diagnostic surface.
+
+### Derived known/current information model
+
+`playerInformationEngine` is a pure projection over existing authorities. It derives only information the character carries, has learned, has visited/acquired, or can currently act on:
+
+- accessible carried containers and equipment, with semantic equip/unequip actions;
+- effective skills and character-owned learned capabilities;
+- learned spells/techniques and current readiness;
+- acquired maps and visited places;
+- discovered named POIs/contacts;
+- currently usable safe-locality destinations and POI actions;
+- deterministic bounded search results over those entries only.
+
+Search state is transient UI state, not game state. The model does not enumerate the global map/place/POI/resource catalogs and cannot become an omniscient world index.
+
+### Browser result
+
+Character, Spellbook, Codex, and World now render structured state directly. Safe-locality World presentation exposes named districts and local places/people through semantic actions while still omitting wilderness D-pad/minimap controls. The omnibox searches **what the character knows or can do**; a leading `/` explicitly opts into the command shell.
+
+The focused privacy regression proves a fresh Thornwall character can search Sera Talwin and a learned Ore Survey capability, can inspect the acquired Thornwall map/current locality, and cannot find the hidden **Tall Reedbed** before discovery.
+
+No Data, Game State, Account Save, or Benchmark bump accompanies `0.7.300`: no authored record or persisted gameplay contract changed.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+0f6af06ff8571658d51bc2be53112a50d51275cb
+490/490 tests
+Benchmark 1 success
+Product 0.7.300.1
+Data 30
+```
+
 Benchmark 1:
 
 ```text
-player profile      0.413227ms/op
-enemy profile       0.102942ms/op
-basic attack        0.513096ms/op
-tick dispatch       0.004454ms/op
-direct route lookup 0.776987ms/op
+player profile      0.464067ms/op
+enemy profile       0.114406ms/op
+basic attack        0.543591ms/op
+tick dispatch       0.004843ms/op
+direct route lookup 0.869373ms/op
 ```
 
-`0.7.200` closes settlement work/trade/recovery browser access and the first reusable return-to-town economic decision loop. It deliberately does **not** invent paid inns, market simulation, dynamic pricing, property, or infrastructure.
+`0.7.300` deliberately does **not** attempt a total command purge, a general natural-language agent, or an omniscient fuzzy world search.
 
-## `0.7.300` — Semantic information access and locality usability — next
+## `0.7.400` — Companion life and party depth — next
 
-The next bounded track should remove remaining ordinary-player dependence on command-backed information surfaces and tighten safe-locality interaction hierarchy before adding more content breadth.
+The next bounded track should make the existing persistent companion foundation matter more often in ordinary campaign play rather than add another companion framework or content region.
 
-Start with a concrete audit of the Character, Inventory/Equipment, Spellbook, Codex/World, locality point lists, and Search-or-act seams. Prefer derived semantic view models and direct actions over command-string bridges. Keep fuzzy/search scope bounded to existing known character/world information rather than creating an omniscient query layer.
+Begin with an audit of Mara's existing NPC/party/relationship/tactics state, recruitment and leave/join flows, companion battle behavior, travel/recovery synchronization, current browser presentation, and save/load coverage. Choose one concrete multi-session companion loop before adding breadth.
 
-A good first proof should let a normal player inspect character preparation, known abilities/knowledge, and relevant local options from the browser UI without knowing command vocabulary, while preserving acquired-knowledge privacy and the distinction between settlement locality navigation and wilderness exploration.
+A good first proof should make a recruited companion create at least one meaningful preparation/tactical/social choice outside a single automatic battle action, persist the consequence, survive real save/load, and remain the same NPC-backed person across travel/community play.
 
-Do not turn this into a full UI rewrite, general natural-language agent, or hidden omniscient search index.
+Do not begin with a summon system, universal party-AI framework, mass-authored companions, or a duplicate relationship/equipment/progression authority.
 
 ## Known later Phase 0.7 depth
 
-- Search-or-act is still command-capable rather than a true semantic known-information/action surface.
-- Several information views still bridge command output.
-- Companion tactical/dialogue/equipment/progression breadth remains intentionally small.
-- Safe-locality hierarchy/density can improve without restoring wilderness controls there.
+- A few explicit utility/combat and wilderness POI actions still retain command bridges; commands remain optional power surfaces rather than normal core information access.
+- Companion tactical/dialogue/equipment/progression breadth remains intentionally small until `0.7.400`.
+- Safe-locality density/hierarchy can still improve without restoring wilderness controls there.
 - `gil` remains current currency terminology pending deliberate original-currency design.
 - Paid/service-quality recovery remains unauthored; safe recovery currently costs fictional time rather than fabricated money.
 
