@@ -1,4 +1,4 @@
-export const COMPANION_CATALOG_VERSION = 1;
+export const COMPANION_CATALOG_VERSION = 2;
 
 const COMPANIONS = Object.freeze({
     'companion-mara-venn': companion({
@@ -6,6 +6,7 @@ const COMPANIONS = Object.freeze({
         npcId: 'npc-elderwood-waywarden',
         name: 'Mara Venn',
         title: 'Waywarden',
+        description: 'An Elderwood waywarden who reads bent grass, bird-silence, and bad tracks before trouble reaches the road.',
         homePlaceId: 'timbercross-landing',
         recruitment: {
             placeIds: ['timbercross-landing'],
@@ -14,7 +15,25 @@ const COMPANIONS = Object.freeze({
         level: 4,
         baseAttributes: { str: 1, dex: 2, vit: 1, agi: 2, mnd: 1 },
         skills: { sword: 10, dagger: 8, evasion: 10, parrying: 7 },
-        tactics: { role: 'skirmisher', policy: 'basic-attack-v1' },
+        tactics: { role: 'skirmisher', policy: 'basic-attack-v1', defaultApproachId: 'guard-the-road' },
+        fieldApproaches: [
+            {
+                id: 'guard-the-road',
+                name: 'Guard the Road',
+                summary: 'Mara stays close enough to take the first rush, but gives up some chances to strike back.',
+                quote: '“Stay inside my reach. I’ll take the first rush.”',
+                companionRecoverySeconds: 4,
+                drawsFirstPressure: true,
+            },
+            {
+                id: 'seek-the-opening',
+                name: 'Seek the Opening',
+                summary: 'Mara ranges wider and finds more openings, leaving you to hold the enemy’s attention.',
+                quote: '“Keep their eyes on you. I’ll find the seam.”',
+                companionRecoverySeconds: 2,
+                drawsFirstPressure: false,
+            },
+        ],
         relationshipDimensions: ['trust', 'respect', 'familiarity'],
     }),
 });
@@ -33,6 +52,16 @@ export function listCompanionDefinitions() {
     return Object.values(COMPANIONS);
 }
 
+export function listCompanionFieldApproaches(companionId) {
+    return getCompanionDefinition(companionId)?.fieldApproaches ?? Object.freeze([]);
+}
+
+export function getCompanionFieldApproach(companionId, approachId) {
+    const normalized = normalize(approachId);
+    if (!normalized) return null;
+    return listCompanionFieldApproaches(companionId).find((entry) => normalize(entry.id) === normalized) ?? null;
+}
+
 export function validateCompanionCatalog() {
     const issues = [];
     const ids = new Set();
@@ -45,12 +74,25 @@ export function validateCompanionCatalog() {
         if (npcIds.has(entry.npcId)) issues.push(`NPC ${entry.npcId} backs more than one companion definition.`);
         npcIds.add(entry.npcId);
         if (!entry.name) issues.push(`${entry.id}.name is required.`);
+        if (!entry.description) issues.push(`${entry.id}.description is required.`);
         if (!stableId(entry.homePlaceId)) issues.push(`${entry.id}.homePlaceId is invalid.`);
         if (!Number.isInteger(entry.level) || entry.level < 1) issues.push(`${entry.id}.level must be positive.`);
         if (!Array.isArray(entry.recruitment.placeIds) || !entry.recruitment.placeIds.length) issues.push(`${entry.id} requires recruitment places.`);
         if (!Array.isArray(entry.recruitment.requiredFlags)) issues.push(`${entry.id}.recruitment.requiredFlags must be an array.`);
         if (!Array.isArray(entry.relationshipDimensions) || !entry.relationshipDimensions.length) issues.push(`${entry.id} requires relationship dimensions.`);
         if (!entry.tactics?.policy) issues.push(`${entry.id} requires a tactics policy.`);
+        if (!stableId(entry.tactics?.defaultApproachId)) issues.push(`${entry.id} requires a default field approach.`);
+        if (!Array.isArray(entry.fieldApproaches) || entry.fieldApproaches.length < 2) issues.push(`${entry.id} requires at least two field approaches.`);
+        const approachIds = new Set();
+        for (const approach of entry.fieldApproaches ?? []) {
+            if (!stableId(approach.id)) issues.push(`${entry.id} has invalid field approach id ${String(approach.id)}.`);
+            if (approachIds.has(approach.id)) issues.push(`${entry.id} duplicates field approach ${approach.id}.`);
+            approachIds.add(approach.id);
+            if (!approach.name || !approach.summary || !approach.quote) issues.push(`${entry.id}.${approach.id} requires player-facing name, summary, and quote.`);
+            if (!Number.isInteger(approach.companionRecoverySeconds) || approach.companionRecoverySeconds < 1) issues.push(`${entry.id}.${approach.id}.companionRecoverySeconds must be positive.`);
+            if (typeof approach.drawsFirstPressure !== 'boolean') issues.push(`${entry.id}.${approach.id}.drawsFirstPressure must be boolean.`);
+        }
+        if (!approachIds.has(entry.tactics?.defaultApproachId)) issues.push(`${entry.id}.tactics.defaultApproachId must reference a field approach.`);
     }
     return issues;
 }
@@ -62,6 +104,7 @@ function companion(definition) {
         npcId: definition.npcId,
         name: definition.name,
         title: definition.title ?? '',
+        description: definition.description ?? '',
         homePlaceId: definition.homePlaceId,
         recruitment: {
             placeIds: [...(definition.recruitment?.placeIds ?? [])],
@@ -71,6 +114,7 @@ function companion(definition) {
         baseAttributes: { ...(definition.baseAttributes ?? {}) },
         skills: { ...(definition.skills ?? {}) },
         tactics: { ...(definition.tactics ?? {}) },
+        fieldApproaches: (definition.fieldApproaches ?? []).map((entry) => ({ ...entry })),
         relationshipDimensions: [...(definition.relationshipDimensions ?? [])],
     });
 }
