@@ -26,7 +26,12 @@ import {
     validateCreator,
 } from '../systems/characterCreationModel.js';
 import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
-import { recruitCompanion } from '../systems/partyEngine.js';
+import {
+    joinCompanion,
+    leaveCompanion,
+    recruitCompanion,
+    setCompanionApproach,
+} from '../systems/partyEngine.js';
 
 export function createIntentResult({ ok = true, message = '', data = null } = {}) {
     return { ok, message, data };
@@ -99,6 +104,9 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'ability.activate': return activateCanonicalAbility(context);
         case 'party.recruit': return recruitCanonicalCompanion(context);
+        case 'party.join': return joinCanonicalCompanion(context);
+        case 'party.leave': return leaveCanonicalCompanion(context);
+        case 'party.approach.set': return setCanonicalCompanionApproach(context);
         case 'command.route': return routeCommand(context);
         default: return fail(context, `Unknown intent: ${context.intent || 'none'}`);
     }
@@ -366,7 +374,7 @@ function activateCanonicalAbility(context) {
         preparationTags: context.payload.preparationTags,
         flags: context.payload.flags,
     });
-    const message = result.message ?? result.reason ?? `${context.payload.abilityId ?? 'Ability'} updated.`;
+    const message = result.display?.text ?? result.message ?? result.reason ?? `${context.payload.abilityId ?? 'Ability'} updated.`;
     setActiveFeedback(context.uiState, message);
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
@@ -374,8 +382,23 @@ function activateCanonicalAbility(context) {
 }
 
 function recruitCanonicalCompanion(context) {
-    const result = recruitCompanion(context.state, context.payload.companionId);
-    const message = result.message ?? result.reason ?? `${context.payload.companionId ?? 'Companion'} updated.`;
+    return recordPartyResult(context, recruitCompanion(context.state, context.payload.companionId));
+}
+
+function joinCanonicalCompanion(context) {
+    return recordPartyResult(context, joinCompanion(context.state, context.payload.companionId));
+}
+
+function leaveCanonicalCompanion(context) {
+    return recordPartyResult(context, leaveCompanion(context.state, context.payload.companionId));
+}
+
+function setCanonicalCompanionApproach(context) {
+    return recordPartyResult(context, setCompanionApproach(context.state, context.payload.companionId, context.payload.approachId));
+}
+
+function recordPartyResult(context, result) {
+    const message = result.display?.text ?? result.message ?? result.reason ?? `${context.payload.companionId ?? 'Companion'} updated.`;
     setActiveFeedback(context.uiState, message);
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
