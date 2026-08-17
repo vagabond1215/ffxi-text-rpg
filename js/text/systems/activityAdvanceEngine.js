@@ -2,6 +2,7 @@ import { actionFailure, actionSuccess } from './actionResult.js';
 import { reconcileCampaignRecoveries } from './campaignRecoveryEngine.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { reconcileGatheringWork } from './gatheringWorkEngine.js';
+import { reconcileHomeInfrastructureProjects } from './homeInfrastructureEngine.js';
 import { reconcileProductionWork } from './productionEngine.js';
 import { reconcileCharacterResourceRecoveries } from './resourceRecoveryWorkAdapter.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
@@ -10,7 +11,7 @@ import { advanceTravel } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const ACTIVITY_ADVANCE_VERSION = 2;
+export const ACTIVITY_ADVANCE_VERSION = 3;
 
 export function advanceActiveActivityToCompletion(state) {
     if (state?.activeBattle?.phase === 'active') {
@@ -95,7 +96,32 @@ function advanceStandaloneHandsOnTask(state, task) {
             },
             display: { text: task.kind === 'recovery.defeat'
                 ? `Recovery completed. You are back in ${state.location ?? state.currentPlaceId} and able to continue, but the lost field time remains spent.`
-                : 'Recovery completed. The fictional time spent resting remains part of the campaign.' },
+                : 'Recovery completed. The time spent resting remains part of the campaign.' },
+        });
+    }
+
+    if (task.kind === 'project.labor') {
+        const completed = reconcileHomeInfrastructureProjects(state);
+        const result = completed.find((entry) => entry.projectId === task.data?.projectId) ?? completed[0] ?? null;
+        const project = state.projects?.records?.find((entry) => entry.id === task.data?.projectId) ?? null;
+        if (!project || project.status !== 'completed') {
+            return failure('activity.project-not-completed', `${task.label} did not reach completion.`);
+        }
+        return actionSuccess({
+            action: 'activity.advance-to-completion',
+            code: 'activity.home-infrastructure-completed',
+            outcome: 'completed',
+            data: {
+                kind: task.kind,
+                taskId: task.id,
+                projectId: project.id,
+                secondsAdvanced: advance.data?.secondsAdvanced ?? 0,
+                furnitureId: result?.furnitureId ?? project.data?.furnitureId ?? null,
+                storageSlotsAdded: result?.storageSlotsAdded ?? 0,
+            },
+            display: { text: result?.storageSlotsAdded > 0
+                ? `${project.label} is complete. Your lodging now has ${result.storageSlotsAdded} more home-storage slots.`
+                : `${project.label} is complete.` },
         });
     }
 
