@@ -12,6 +12,7 @@ import { canMoveDirection } from '../systems/navigationEngine.js';
 import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
 import { decoratePlayerOpportunityModel } from '../systems/playerContinuityEngine.js';
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
+import { createPlayerInformationModel } from '../systems/playerInformationEngine.js';
 import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
 import { createSettlementServiceBoard } from '../systems/settlementServiceBoardEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
@@ -46,6 +47,7 @@ export function createGameViewModel(state, uiState = {}) {
     const party = createPartyModel(state);
     const guidance = createPlayerExperienceModel(state);
     const opportunities = decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state));
+    const information = createPlayerInformationModel(state, { query: uiState.informationQuery ?? '' });
     const transportDesk = navigationMode === 'locality'
         ? createTransportServiceBoard(state)
         : Object.freeze({ version: 1, placeId: state.currentPlaceId, placeName: place?.name ?? state.location ?? '', entries: Object.freeze([]) });
@@ -86,6 +88,7 @@ export function createGameViewModel(state, uiState = {}) {
         transportDesk,
         settlementServices,
         spellbook,
+        information,
         party,
         activity,
         guidance,
@@ -104,9 +107,9 @@ export function createContextualActions(state, nearby = null, opportunities = nu
             directAction('context:attack', 'Attack', 'combat.attack', {}, 'combat'),
             ...readyAbilities,
             directAction('context:combat-wait', 'Wait · 3s', 'combat.wait', { seconds: 3 }, 'combat'),
-            commandAction('context:items', 'Items', 'inventory', 'utility'),
+            directAction('context:items', 'Items', 'ui.view.open', { view: 'character' }, 'utility'),
             commandAction('context:battle', 'Battle Status', 'battle', 'utility'),
-            commandAction('context:spellbook', 'Spellbook', 'spells', 'utility'),
+            directAction('context:spellbook', 'Spellbook', 'ui.view.open', { view: 'spellbook' }, 'utility'),
         ].slice(0, 6);
     }
 
@@ -163,7 +166,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                 kind: action === 'talk' ? 'social' : action,
             }));
         }
-        actions.push(commandAction('context:locality-list', 'All Local Places', `pois ${state.currentPlaceId}`, 'utility'));
+        actions.push(directAction('context:locality-list', 'All Local Places', 'ui.view.open', { view: 'world' }, 'utility'));
         return dedupeActions(actions).slice(0, 6);
     }
 
@@ -185,8 +188,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
         }
     }
 
-    actions.push(commandAction('context:look', 'Look Around', 'look', 'world'));
-    if (!points.length) actions.push(commandAction('context:nearby', 'Nearby', 'here', 'world'));
+    actions.push(directAction('context:look', 'World & Nearby', 'ui.view.open', { view: 'world' }, 'world'));
     return dedupeActions(actions).slice(0, 6);
 }
 
@@ -378,7 +380,7 @@ function dedupeActions(actions) {
         const transportKey = action.payload?.serviceId && action.payload?.destinationPlaceId
             ? `${action.payload.serviceId}:${action.payload.destinationPlaceId}`
             : null;
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? transportKey ?? action.id}`;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? action.payload?.view ?? transportKey ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
