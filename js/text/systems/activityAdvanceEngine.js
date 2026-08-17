@@ -4,6 +4,7 @@ import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { reconcileGatheringWork } from './gatheringWorkEngine.js';
 import { reconcileHomeInfrastructureProjects } from './homeInfrastructureEngine.js';
 import { reconcileProductionWork } from './productionEngine.js';
+import { reconcileProjects } from './projectEngine.js';
 import { reconcileCharacterResourceRecoveries } from './resourceRecoveryWorkAdapter.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from './timedTaskEngine.js';
@@ -100,13 +101,19 @@ function advanceStandaloneHandsOnTask(state, task) {
         });
     }
 
-    if (task.kind === 'project.labor') {
+    if (task.kind === 'project.labor') return advanceProjectLaborCompletion(state, task, advance);
+
+    return failure('activity.unsupported-hands-on-task', `${task.label} cannot yet be completed through the activity action.`);
+}
+
+function advanceProjectLaborCompletion(state, task, advance) {
+    const project = state.projects?.records?.find((entry) => entry.id === task.data?.projectId) ?? null;
+    if (!project) return failure('activity.project-not-found', `${task.label} no longer has a matching project.`);
+
+    if (project.data?.homeInfrastructureId) {
         const completed = reconcileHomeInfrastructureProjects(state);
-        const result = completed.find((entry) => entry.projectId === task.data?.projectId) ?? completed[0] ?? null;
-        const project = state.projects?.records?.find((entry) => entry.id === task.data?.projectId) ?? null;
-        if (!project || project.status !== 'completed') {
-            return failure('activity.project-not-completed', `${task.label} did not reach completion.`);
-        }
+        const result = completed.find((entry) => entry.projectId === project.id) ?? null;
+        if (project.status !== 'completed') return failure('activity.project-not-completed', `${task.label} did not reach completion.`);
         return actionSuccess({
             action: 'activity.advance-to-completion',
             code: 'activity.home-infrastructure-completed',
@@ -125,7 +132,20 @@ function advanceStandaloneHandsOnTask(state, task) {
         });
     }
 
-    return failure('activity.unsupported-hands-on-task', `${task.label} cannot yet be completed through the activity action.`);
+    reconcileProjects(state);
+    if (project.status !== 'completed') return failure('activity.project-not-completed', `${task.label} did not reach completion.`);
+    return actionSuccess({
+        action: 'activity.advance-to-completion',
+        code: 'activity.project-completed',
+        outcome: 'completed',
+        data: {
+            kind: task.kind,
+            taskId: task.id,
+            projectId: project.id,
+            secondsAdvanced: advance.data?.secondsAdvanced ?? 0,
+        },
+        display: { text: `${project.label} is complete.` },
+    });
 }
 
 function advanceTaskToBoundary(state, task) {
