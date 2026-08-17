@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { getCompanionDefinition, validateCompanionCatalog } from '../js/text/data/companions.js';
+import { validateCompanionCatalog } from '../js/text/data/companions.js';
 import { getPlace } from '../js/text/data/places.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -57,7 +57,7 @@ test('0.7.400 gives Mara a persistent voiced field approach that changes real co
     assert.equal(mara.tactics.approachId, 'guard-the-road');
     const permanentAttributes = { ...mara.baseAttributes };
 
-    let view = createGameViewModel(state, createUiState({ screen: 'game', activeView: 'character' }));
+    const view = createGameViewModel(state, createUiState({ screen: 'game', activeView: 'character' }));
     const projectedMara = view.party.entries.find((entry) => entry.id === MARA_ID);
     assert.ok(projectedMara);
     assert.match(projectedMara.description, /bent grass/i);
@@ -84,8 +84,8 @@ test('0.7.400 gives Mara a persistent voiced field approach that changes real co
     setCompanionApproach(state, MARA_ID, 'seek-the-opening');
     const seekEntity = getActiveCompanionCombatEntities(state)[0];
     const seekProfile = calculateCombatProfile(seekEntity);
-    assert.ok(seekProfile.attack > guardProfile.attack, 'Seek the Opening should trade caution for stronger attack');
-    assert.ok(guardProfile.evasion > seekProfile.evasion, 'Guard the Road should make Mara harder to hit');
+    assert.ok(seekProfile.derived.attack > guardProfile.derived.attack, 'Seek the Opening should trade caution for stronger attack');
+    assert.ok(guardProfile.derived.evasion > seekProfile.derived.evasion, 'Guard the Road should make Mara harder to hit');
     assert.deepEqual(getRecruitedCompanion(state, MARA_ID).baseAttributes, permanentAttributes, 'field approach must not rewrite Mara’s permanent attributes');
 
     assert.equal(saveGame(state), true);
@@ -101,7 +101,7 @@ test('0.7.400 gives Mara a persistent voiced field approach that changes real co
     assert.equal(battle.ok, true, battle.display?.text ?? battle.reason);
     const battleMara = state.activeBattle.combatants.find((entry) => entry.id === MARA_ID);
     assert.ok(battleMara, 'the same persistent companion should enter battle');
-    assert.ok(calculateCombatProfile(battleMara).attack >= seekProfile.attack);
+    assert.ok(calculateCombatProfile(battleMara).derived.attack >= seekProfile.derived.attack);
     const blocked = setCompanionApproach(state, MARA_ID, 'guard-the-road');
     assert.equal(blocked.ok, false);
     assert.match(blocked.display.text, /before the fighting begins/i);
