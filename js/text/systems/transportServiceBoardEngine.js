@@ -5,15 +5,16 @@ import {
     listTransportServices,
 } from '../data/routeCatalog.js';
 import { getPlace } from '../data/places.js';
+import { getCarriedCargoUnits } from './carriedLoadEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const TRANSPORT_SERVICE_BOARD_VERSION = 1;
+export const TRANSPORT_SERVICE_BOARD_VERSION = 2;
 
 export function createTransportServiceBoard(state, options = {}) {
     const fromPlaceId = options.placeId ?? state?.currentPlaceId ?? null;
     const nowWorldSeconds = ensureWorldTimeState(state).totalSeconds;
-    const cargoUnits = nonNegativeInteger(options.cargoUnits) ? options.cargoUnits : 0;
+    const cargoUnits = getCarriedCargoUnits(state);
     const entries = [];
 
     for (const service of listTransportServices()) {
@@ -46,6 +47,8 @@ export function createTransportServiceBoard(state, options = {}) {
         placeId: fromPlaceId,
         placeName: getPlace(fromPlaceId)?.name ?? fromPlaceId ?? 'Unknown place',
         nowWorldSeconds,
+        cargoUnits,
+        cargoUnitModel: 'occupied-carried-slots',
         entries: Object.freeze(entries),
     });
 }
@@ -55,11 +58,12 @@ export function describeTransportServiceBoard(state, options = {}) {
     if (!board.entries.length) return `No scheduled passenger services depart from ${board.placeName}.`;
     return [
         `Scheduled departures from ${board.placeName}:`,
+        `Carried load: ${board.cargoUnits} cargo units.`,
         ...board.entries.map((entry) => {
             const readiness = entry.blockers.length
                 ? `Blocked: ${entry.blockers.join(' ')}`
                 : `Boardable; next departure in ${formatDuration(entry.waitSeconds)}.`;
-            return `- ${entry.serviceName} to ${entry.destinationName}: ${entry.fareAmount} ${entry.currencyId}, every ${formatDuration(entry.cadenceSeconds)}, travel ${formatDuration(entry.durationSeconds)}. ${readiness}`;
+            return `- ${entry.serviceName} to ${entry.destinationName}: ${entry.fareAmount} ${entry.currencyId}, load ${entry.cargoUnits}/${entry.cargoAllowanceUnits}, every ${formatDuration(entry.cadenceSeconds)}, travel ${formatDuration(entry.durationSeconds)}. ${readiness}`;
         }),
     ].join('\n');
 }
@@ -74,7 +78,7 @@ function createQuote(state, service, journey, context) {
     if (state.travel?.active) blockers.push('Finish or stop your current journey first.');
     if (isCharacterHandsOnBusy(state)) blockers.push(describeBlockingHandsOnTask(state));
     if (context.cargoUnits > service.cargoAllowanceUnits) {
-        blockers.push(`${service.name} carries at most ${service.cargoAllowanceUnits} cargo units.`);
+        blockers.push(`You are carrying ${context.cargoUnits} cargo units; ${service.name} carries at most ${service.cargoAllowanceUnits}.`);
     }
     if (availableFunds < fareAmount) {
         blockers.push(`Fare is ${fareAmount} ${service.fare.currencyId}; you have ${availableFunds}.`);
@@ -94,6 +98,7 @@ function createQuote(state, service, journey, context) {
         durationSeconds: journey.durationSeconds,
         cadenceSeconds: service.cadenceSeconds,
         boardingLeadSeconds: service.boardingLeadSeconds,
+        cargoUnits: context.cargoUnits,
         cargoAllowanceUnits: service.cargoAllowanceUnits,
         currencyId: service.fare.currencyId,
         fareAmount,
@@ -126,8 +131,4 @@ function formatDuration(seconds) {
     }
     if (total % 60 === 0) return `${total / 60}m`;
     return `${total}s`;
-}
-
-function nonNegativeInteger(value) {
-    return Number.isInteger(value) && value >= 0;
 }
