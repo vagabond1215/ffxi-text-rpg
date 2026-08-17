@@ -136,7 +136,7 @@ function createCapabilityModel(state) {
         .map((definition) => Object.freeze({
             id: definition.id,
             name: definition.name,
-            kind: definition.kind,
+            kind: definition.type,
             description: definition.description ?? '',
         }));
     return Object.freeze({ entries: Object.freeze(entries) });
