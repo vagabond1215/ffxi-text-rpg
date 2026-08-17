@@ -47,7 +47,7 @@ export function renderGameScreen(model, uiState = {}, session = {}) {
                 ${renderActivityStatus(model.activity)}
             </aside>
         </main>
-        ${renderOmnibox()}
+        ${renderOmnibox(model.information?.search?.query ?? '')}
     `;
 }
 
@@ -210,9 +210,9 @@ function renderHeader(model, uiState, session) {
 
 function renderPrimaryView(model, viewId) {
     if (viewId === 'character') return renderCharacterView(model);
-    if (viewId === 'spellbook') return renderSpellbookView();
+    if (viewId === 'spellbook') return renderSpellbookView(model);
     if (viewId === 'journal') return renderJournalView(model);
-    if (viewId === 'codex') return renderCodexView();
+    if (viewId === 'codex') return renderCodexView(model);
     if (viewId === 'craft') return renderCraftView(model);
     if (viewId === 'world') return renderWorldView(model);
     return renderSceneView(model);
@@ -234,34 +234,67 @@ function renderSceneView(model) {
 }
 
 function renderCharacterView(model) {
+    const preparation = model.information?.preparation;
+    const equipped = preparation?.equipment?.length
+        ? preparation.equipment.map((entry) => `
+            <article class="nearby-card">
+                <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.slotLabel)}</small></div>
+                ${informationActionButton(entry.action)}
+            </article>
+        `).join('')
+        : '<p class="empty-note">No equipment is currently worn.</p>';
+    const carried = preparation?.containers?.length
+        ? preparation.containers.map((container) => `
+            <section class="opportunity-group">
+                <div class="panel-heading opportunity-group-heading"><h3>${escapeHtml(container.label)}</h3><small>${escapeHtml(container.used)}/${escapeHtml(container.capacity)} slots</small></div>
+                <div class="nearby-list">${container.items.length ? container.items.map((item) => `
+                    <article class="nearby-card">
+                        <div><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.quantity)} · ${escapeHtml(formatType(item.kind))}</small></div>
+                        ${item.blocker ? `<p class="muted">${escapeHtml(item.blocker)}</p>` : ''}
+                        ${informationActionButton(item.action)}
+                    </article>
+                `).join('') : '<p class="empty-note">Nothing here.</p>'}</div>
+            </section>
+        `).join('')
+        : '<p class="empty-note">No carried containers are accessible here.</p>';
+    const skills = model.information?.skills?.entries?.length
+        ? model.information.skills.entries.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.rank ?? 'practice')}</small></div><p>Learned ${escapeHtml(entry.learned)} · effective ${escapeHtml(entry.effective)} / ${escapeHtml(entry.cap)}</p></article>`).join('')
+        : '<p class="empty-note">No trained skills are recorded yet.</p>';
+    const capabilities = model.information?.capabilities?.entries?.length
+        ? model.information.capabilities.entries.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(formatType(entry.kind))}</small></div><p>${escapeHtml(entry.description)}</p></article>`).join('')
+        : '<p class="empty-note">No additional capabilities have been learned yet.</p>';
     return `
-        <section class="panel primary-view">
-            <p class="eyebrow">Continuous Character</p>
+        <section class="panel primary-view character-view">
+            <p class="eyebrow">Continuous Character · ${escapeHtml(preparation?.gil ?? 0)} gil</p>
             <h1>${escapeHtml(model.character.name)}</h1>
             <p class="muted">${escapeHtml(model.character.ancestry)} · ${escapeHtml(model.character.discipline)} Lv.${escapeHtml(model.character.level)}</p>
             <div class="attribute-grid large-attributes">${model.character.attributes.map((item) => `<div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join('')}</div>
-            <div class="view-links">
-                ${commandButton('Inventory', 'inventory')}
-                ${commandButton('Equipment', 'equipment')}
-                ${commandButton('Skills', 'skills')}
-                ${commandButton('Training', 'job')}
-            </div>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Equipped</h2><small>${escapeHtml(preparation?.equipment?.length ?? 0)} items</small></div><div class="nearby-list">${equipped}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Carried</h2><small>${escapeHtml(preparation?.itemCount ?? 0)} items</small></div>${carried}</section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Skills</h2><small>current training context</small></div><div class="nearby-list">${skills}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Capabilities</h2><small>learned by the character</small></div><div class="nearby-list">${capabilities}</div></section>
         </section>
     `;
 }
 
-function renderSpellbookView() {
+function renderSpellbookView(model) {
+    const entries = model.spellbook?.entries ?? [];
+    const content = entries.length
+        ? entries.map((entry) => `
+            <article class="nearby-card opportunity-card status-${entry.available ? 'ready' : 'blocked'}">
+                <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.schoolName ?? formatType(entry.kind))}</small></div>
+                <p>${escapeHtml(entry.cost)} · ${escapeHtml(formatDuration(entry.activationSeconds))} to use${entry.cooldownSeconds ? ` · ${escapeHtml(formatDuration(entry.cooldownSeconds))} recovery` : ''}</p>
+                ${entry.available ? '' : `<p class="opportunity-blockers">${escapeHtml(entry.reason ?? 'Not ready now.')}</p>`}
+                ${entry.available ? informationActionButton({ id: `information:ability:${entry.id}`, label: `Use ${entry.name}` }) : ''}
+            </article>
+        `).join('')
+        : '<p class="empty-note">No spells or techniques have been learned yet. Capabilities gained through training remain part of the character even when your active discipline changes.</p>';
     return `
-        <section class="panel primary-view">
-            <p class="eyebrow">Prepared knowledge</p>
+        <section class="panel primary-view spellbook-view">
+            <p class="eyebrow">Prepared knowledge · ${escapeHtml(entries.length)} known</p>
             <h1>Spellbook &amp; Techniques</h1>
-            <p class="muted">Review the spells and techniques you have actually learned. What you can use now depends on your resources, equipment, preparation, and situation.</p>
-            <div class="view-links">
-                ${commandButton('Known Spells', 'spells')}
-                ${commandButton('Techniques', 'techniques')}
-                ${commandButton('Abilities', 'abilities')}
-                ${commandButton('Skills', 'skills')}
-            </div>
+            <p class="muted">These are the spells and techniques you have actually learned. Readiness reflects your current resources, equipment, cooldowns, and situation.</p>
+            <div class="nearby-list opportunity-list">${content}</div>
         </section>
     `;
 }
@@ -349,17 +382,36 @@ function renderOpportunityCard(entry, recommendedOpportunityId) {
     `;
 }
 
-function renderCodexView() {
+function renderCodexView(model) {
+    const information = model.information;
+    const search = information?.search;
+    const searchContent = search?.active
+        ? `<section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Search results</h2><small>${escapeHtml(search.results.length)} known/current matches</small></div>${search.results.length ? `<div class="nearby-list">${search.results.map((entry) => `
+            <article class="nearby-card">
+                <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.category)}</small></div>
+                ${entry.detail ? `<p>${escapeHtml(entry.detail)}</p>` : ''}
+                ${informationActionButton(entry.action)}
+            </article>
+        `).join('')}</div>` : `<p class="empty-note">Nothing you currently know, carry, or can act on matches “${escapeHtml(search.query)}”.</p>`}<div class="view-links"><button type="button" data-intent="ui.search.clear">Clear search</button></div></section>`
+        : '';
+    const maps = information?.knowledge?.maps?.length
+        ? information.knowledge.maps.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.region)}</small></div></article>`).join('')
+        : '<p class="empty-note">No map knowledge is recorded yet.</p>';
+    const places = information?.knowledge?.places?.length
+        ? information.knowledge.places.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.region)}</small></div></article>`).join('')
+        : '<p class="empty-note">No visited places are recorded yet.</p>';
+    const contacts = information?.knowledge?.discoveredPois?.length
+        ? information.knowledge.discoveredPois.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.placeName)}</small></div><p>${escapeHtml(entry.notes)}</p></article>`).join('')
+        : '<p class="empty-note">No named places or contacts have been recorded through interaction yet.</p>';
     return `
-        <section class="panel primary-view">
+        <section class="panel primary-view codex-view">
             <p class="eyebrow">Known world</p>
             <h1>Codex</h1>
-            <p class="muted">Keep track of creatures, places, and maps your character has actually learned about. The unknown world stays unknown until you discover it.</p>
-            <div class="view-links">
-                ${commandButton('Bestiary', 'bestiary')}
-                ${commandButton('Known Maps', 'maps')}
-                ${commandButton('Places', 'places')}
-            </div>
+            <p class="muted">This view contains only things your character has learned, visited, carried, or can act on now. The wider authored world stays outside your knowledge until play reveals it.</p>
+            ${searchContent}
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Maps</h2><small>acquired</small></div><div class="nearby-list">${maps}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Visited places</h2><small>remembered</small></div><div class="nearby-list">${places}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Known contacts &amp; places</h2><small>discovered</small></div><div class="nearby-list">${contacts}</div></section>
         </section>
     `;
 }
@@ -372,7 +424,7 @@ function renderCraftView(model) {
                 <p class="eyebrow">Work &amp; trade</p>
                 <h1>Craft &amp; Process</h1>
                 <p class="muted">Workshops and merchants are settlement services. Bring materials back to a town or travel hub to compare what you can make, sell, buy, or spend time recovering.</p>
-                <div class="view-links">${commandButton('Inventory', 'inventory')}</div>
+                <div class="view-links"><button type="button" data-view="character">Character &amp; Gear</button></div>
             </section>
         `;
     }
@@ -384,7 +436,7 @@ function renderCraftView(model) {
         <section class="panel primary-view craft-view">
             <p class="eyebrow">Settlement services · ${escapeHtml(board.walletGil)} gil on hand</p>
             <h1>Work, Trade &amp; Recover</h1>
-            <p class="muted">Returning to town gives you choices: turn materials into more useful goods, sell what you carried home, buy preparation, or spend fictional time recovering before you leave again.</p>
+            <p class="muted">Returning to town gives you choices: turn materials into more useful goods, sell what you carried home, buy preparation, or spend time recovering before you leave again.</p>
 
             <section class="opportunity-group" aria-labelledby="craft-work-heading">
                 <div class="panel-heading opportunity-group-heading"><h2 id="craft-work-heading">Workshop work</h2><small>${escapeHtml(board.production.length)} known here</small></div>
@@ -394,7 +446,7 @@ function renderCraftView(model) {
             ${renderTradeServices(board.trade)}
             ${renderRecoveryService(board.recovery)}
 
-            <div class="view-links">${commandButton('Inventory', 'inventory')}</div>
+            <div class="view-links"><button type="button" data-view="character">Character &amp; Gear</button></div>
         </section>
     `;
 }
@@ -467,7 +519,7 @@ function renderRecoveryService(recovery) {
             <div class="panel-heading opportunity-group-heading"><h2 id="craft-recovery-heading">Recovery</h2><small>${escapeHtml(status)}</small></div>
             <article class="nearby-card">
                 <p>HP ${escapeHtml(recovery.hp)}/${escapeHtml(recovery.maxHp)} · MP ${escapeHtml(recovery.mp)}/${escapeHtml(recovery.maxMp)}</p>
-                <p class="muted">Safe rest costs ${escapeHtml(formatDuration(recovery.durationSeconds))} of fictional time. It does not invent a fee or erase the time you could have spent working, trading, or traveling.</p>
+                <p class="muted">Safe rest takes ${escapeHtml(formatDuration(recovery.durationSeconds))}. It does not invent a fee or erase the time you could have spent working, trading, or traveling.</p>
                 ${blocker}${serviceActionButton(recovery.action)}
             </article>
         </section>
@@ -479,17 +531,29 @@ function serviceActionButton(action) {
     return `<button type="button" class="primary-button" data-service-action="${escapeAttr(action.id)}">${escapeHtml(action.label)}</button>`;
 }
 
+function informationActionButton(action) {
+    if (!action?.id) return '';
+    return `<button type="button" class="primary-button" data-information-action="${escapeAttr(action.id)}">${escapeHtml(action.label ?? 'Open')}</button>`;
+}
+
 function renderWorldView(model) {
+    const information = model.information;
+    const destinations = information?.local?.destinations?.length
+        ? information.local.destinations.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(formatDuration(entry.travelSeconds))}</small></div>${informationActionButton(entry.action)}</article>`).join('')
+        : '<p class="empty-note">No named district crossing is available here.</p>';
+    const points = information?.local?.points?.length
+        ? information.local.points.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(formatType(entry.type))}</small></div><p>${escapeHtml(entry.notes)}</p>${informationActionButton(entry.action)}</article>`).join('')
+        : '<p class="empty-note">No named local service or contact is available here.</p>';
+    const maps = information?.knowledge?.maps?.length
+        ? information.knowledge.maps.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.region)}</small></div></article>`).join('')
+        : '<p class="empty-note">No acquired maps are recorded yet.</p>';
     return `
         <section class="panel primary-view world-view">
             <p class="eyebrow">Acquired knowledge</p>
             <h1>${escapeHtml(model.header.placeName)}</h1>
             ${model.map ? renderMinimap(model.map) : '<p class="empty-note">This safe locality is navigated by named destinations; detailed cartography is reserved for places where terrain matters.</p>'}
-            <div class="view-links">
-                ${commandButton('Local Atlas', 'atlas')}
-                ${commandButton('Known Maps', 'maps')}
-                ${commandButton('Known Exits', 'exits')}
-            </div>
+            ${information?.local?.mode === 'locality' ? `<section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Nearby districts</h2><small>reachable now</small></div><div class="nearby-list">${destinations}</div></section><section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Local places &amp; people</h2><small>usable here</small></div><div class="nearby-list">${points}</div></section>` : ''}
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Your maps</h2><small>acquired</small></div><div class="nearby-list">${maps}</div></section>
         </section>
     `;
 }
@@ -559,12 +623,12 @@ function renderActivityFeed(lines) {
     `;
 }
 
-function renderOmnibox() {
+function renderOmnibox(query = '') {
     return `
         <form class="omnibox" id="omnibox-form">
-            <label class="sr-only" for="omnibox-input">Search or act</label>
+            <label class="sr-only" for="omnibox-input">Search what you know or can do</label>
             <span aria-hidden="true">›</span>
-            <input id="omnibox-input" autocomplete="off" placeholder="Search or act…  (travel, inventory, talk, item, place, command)">
+            <input id="omnibox-input" autocomplete="off" value="${escapeAttr(query)}" placeholder="Search what you know or can do…  (/ for commands)">
             <button type="submit">Go</button>
         </form>
     `;
@@ -665,10 +729,6 @@ function renderModal(session, uiState) {
 function renderMenuAction(action) {
     if (action.kind === 'command') return `<button type="button" data-command="${escapeAttr(action.payload?.command ?? action.command ?? '')}" ${action.disabled ? 'disabled' : ''}>${escapeHtml(action.label)}</button>`;
     return `<button type="button" data-menu-action="${escapeAttr(action.id)}" ${action.disabled ? 'disabled' : ''}>${escapeHtml(action.label)}</button>`;
-}
-
-function commandButton(label, command) {
-    return `<button type="button" data-command="${escapeAttr(command)}">${escapeHtml(label)}</button>`;
 }
 
 function playerFacingMotivation(category) {
