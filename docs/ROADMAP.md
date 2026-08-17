@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.8.100.1
+Product:      0.8.100.2
 Package:      0.8.100
 Account Save: 4
 Game State:   5
-Data:         32
+Data:         33
 Benchmark:    1
 Codename:     Home Foothold and Infrastructure
 ```
 
-**Phase 0.7 — Multi-region playable alpha is complete. Phase 0.8 — Life and infrastructure expansion is in progress.** The project remains pre-alpha and `released: false`.
+**Phase 0.7 — Multi-region playable alpha is complete. Phase 0.8 — Life and infrastructure expansion is in progress.** The bounded `0.8.100` track remains complete; `0.8.100.2` is a follow-up onboarding/character-creation polish revision, not a new Phase 0.8 feature track. The project remains pre-alpha and `released: false`.
 
 ## Product laws
 
@@ -134,9 +134,9 @@ Data 30
 
 ## `0.7.400` — Companion life, party depth, and character POV — complete
 
-The existing Mara Venn companion foundation creates a real preparation decision outside automatic combat contribution. Her persistent field approach lives in the existing party tactics record, survives save/load and travel, and affects only derived battle-entry attributes. The Character view presents Mara as a persistent traveling person with voiced intent and semantic preparation/party actions.
+Mara Venn's persistent field approach lives in the existing party tactics record, survives save/load and travel, and affects only derived battle-entry attributes. The Character view presents Mara as a persistent traveling person with voiced intent and semantic preparation/party actions.
 
-The same track completed the character-POV hygiene audit: ordinary browser surfaces and encounterable place/POI descriptions speak in terms of what the character sees, knows, carries, remembers, needs, or can decide. Implementation vocabulary stays outside normal play.
+The same track established the carried-forward character-POV rule: ordinary browser surfaces speak in terms of what the character sees, knows, carries, remembers, needs, or can decide; implementation vocabulary stays outside normal play.
 
 Authoritative promoted runtime checkpoint:
 
@@ -150,23 +150,9 @@ Product 0.7.400.1
 Data 31
 ```
 
-Benchmark 1:
-
-```text
-player profile       0.470213ms/op
-enemy profile        0.124768ms/op
-basic attack         0.538006ms/op
-tick dispatch        0.005020ms/op
-direct route lookup  0.861264ms/op
-```
-
-Data advanced to 31 because the canonical companion catalog and player-visible authored world/POI content changed. Account Save 4 and Game State 5 remained unchanged because field approach used the existing party tactics structure.
-
 ## Phase 0.7 closure audit
 
-**PASS. Phase 0.7 closes at Product `0.7.400.1`.**
-
-The exit contract is satisfied by the combined proofs: three several-day persistent community loops; livelihood/gathering/provenance/processing/trade/mastery; danger/combat/recovery; semantic scheduled transport; useful settlement returns; acquired/current information privacy; deterministic save/load; a persistent companion with a meaningful preparation choice; and simple character-facing browser presentation.
+**PASS. Phase 0.7 closes at Product `0.7.400.1`.** Later shared-authority improvements do not reopen it.
 
 # 0.8 — Life and infrastructure expansion — in progress
 
@@ -174,22 +160,11 @@ Phase 0.8 expands the persistent-life half of the game: property, workshops, agr
 
 ## `0.8.100` — Home Foothold & Infrastructure — complete
 
-The first Phase 0.8 track turns the character's starting lodging into a small durable infrastructure loop.
+The first Phase 0.8 track turns the character's starting lodging into a small durable infrastructure loop. **Build a Storage Chest** consumes 2 Resin-Sealed Hardwood Boards, 1 Redstone Copper Ingot, and 30 minutes of canonical project labor, then places the existing Storage Chest furnishing exactly once and raises furnishing-backed storage from 3 to 8 slots.
 
-The first authored improvement is **Build a Storage Chest**:
+The Journal derives **Home & Foothold** with semantic Plan → Set aside materials → Start work → Finish actions. `projectEngine` retains material/labor authority; world time/timed tasks own duration; inventory/furnishing authority owns storage capacity; `homeInfrastructureEngine` remains a bounded adapter and projection.
 
-- requires 2 **Resin-Sealed Hardwood Boards** from the existing Elderwood production chain;
-- requires 1 **Redstone Copper Ingot** from the existing Redstone production chain;
-- requires 30 minutes of hands-on fictional labor;
-- completes through the existing generic project/timed-task substrate;
-- places the existing **Storage Chest** furnishing exactly once;
-- raises furnishing-backed home storage from the starting 3 slots to 8 slots.
-
-The Journal derives a **Home & Foothold** opportunity with semantic Plan → Set aside materials → Start work → Finish actions. Materials leave carried inventory through the generic atomic project-contribution path. Active construction survives real account save/load. Completion is reconciled exactly once and the benefit survives subsequent save/load.
-
-No second property registry, construction clock, inventory, storage-capacity system, or UI-owned economy state was introduced. `projectEngine` retains project/material/labor authority; canonical world time/timed tasks own duration; inventory/furnishing authority owns the storage benefit; `homeInfrastructureEngine` is the bounded authored adapter and derived presentation layer.
-
-Authoritative promoted runtime checkpoint:
+Original track checkpoint:
 
 ```text
 0b9251a43285443087050127da36b977cabdf7ee
@@ -198,25 +173,57 @@ Authoritative promoted runtime checkpoint:
 0 skipped
 Benchmark 1 success
 Product 0.8.100.1
-Package 0.8.100
 Data 32
+```
+
+## `0.8.100.2` — Onboarding and character-creation polish — complete
+
+This revision repairs the player-facing beginning without opening a new Phase 0.8 feature track.
+
+- The active browser has two deliberate palettes only: **Dark** uses charcoal/grayscale/navy; **Light** uses silver-gray/dark navy/dark gray/black. Decorative gold/brown selection chrome was removed, including the follow-up resource-meter audit. Semantic danger/success colors remain restrained.
+- Character save cards have a top-right `×`; deletion works against the account registry by character ID even when the encoded character state cannot be decoded. Settings exposes clear-all local data with destructive confirmation, and the logged-out landing has a reset path for account-registry corruption.
+- Character creation has an original-world ancestry/sex-aware name die and a whole-character die. The canonical randomizer is deterministic under injected RNG for tests and does not reuse legacy FFXI name data.
+- The six starting disciplines now expose truthful level-1 differences: active attribute emphasis, resource tendency, combat focus, weapon/magic training, protection, play style, and actual starting gear.
+- Guided browser creation grants a small real two-item discipline kit through canonical inventory authority. The kit begins **carried, not auto-equipped**, preserving an immediate preparation decision. Generic `createNewGameState()` remains neutral; only guided creator options request the kit.
+- The generic six-paragraph intro was replaced by three authored arrival scenes. Thornwall arrives by timber wagon and introduces Warden Halric Dane/Sera Talwin; Brasshaven arrives with freight and a predatory labor broker before Varric Stone intervenes; Mistmere arrives by ferry and exposes a bogus visitor-fee pitch before the registrar points toward Soli Venn. Each opening adds one restrained discipline-aware observation.
+- Diegetic prose no longer explains game-design concepts such as permanent-class rules; that guidance remains in the creator UI where it belongs.
+
+Data advances `32 -> 33` because canonical names, starter-kit definitions, and authored opening content changed. Account Save remains 4 and Game State remains 5 because deletion uses the existing account registry and starter gear uses existing inventory records.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+0f00ef68a01ad001063803d67ff0efffc48ab3ef
+505/505 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.8.100.2
+Package 0.8.100
+Data 33
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     466.332ms  0.466332ms/op
-1,000 enemy combat profiles      108.813ms  0.108813ms/op
-1,000 basic attacks              521.192ms  0.521192ms/op
-10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
-10,000 direct route lookups     8784.978ms  0.878498ms/op
+1,000 player combat profiles      463.353ms  0.463353ms/op
+1,000 enemy combat profiles       125.126ms  0.125126ms/op
+1,000 basic attacks               551.861ms  0.551861ms/op
+10,000 ticks / 5 subscribers       48.338ms  0.004834ms/op
+10,000 direct route lookups      8665.221ms  0.866522ms/op
 ```
 
-Data advances `31 -> 32` because the canonical home-infrastructure definition and its material-to-durable-benefit contract are authored data. Account Save remains 4 and Game State remains 5 because the track reuses existing project `data`, timed tasks, placed furnishings, and inventory state.
+Primary new guards are `tests/playerCreatorPolish.test.js` and `tests/saveRecovery.test.js`.
+
+Known non-blocking seams after the audit:
+
+- the legacy prompt/fast-create command adapter still creates neutral generic new-game state and therefore does not opt into the semantic browser creator's starter-kit flag;
+- the historical account settings normalizer still accepts `highContrast`, but the active new browser UI exposes only Light and Dark;
+- this checkpoint is validated by code/DOM/CSS regressions, full CI, Benchmark 1, and Pages build/deploy; no manual visual-browser walkthrough is claimed.
 
 ## Next Phase 0.8 boundary
 
-Do not mass-author property, farms, workshops, or automation as a follow-on to this checkpoint. The next work order should select one bounded Phase 0.8 track and first audit its existing authority/data seam. Candidate directions include workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
+`0.8.100` remains complete. Do not mass-author property, farms, workshops, or automation as a follow-on to this revision. The next work order should select one bounded Phase 0.8 track and first audit its existing authority/data seam. Candidate directions include workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
 
 # Later phases
 
