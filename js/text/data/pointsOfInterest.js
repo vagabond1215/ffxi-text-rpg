@@ -34,7 +34,7 @@ const POI_SEEDS = [
     poi('poi-sandoria-s-capucine', 'thornwall-southgate', 'Bria Holt', POI_TYPES.VENDOR, 'E-9', ['armor', 'shop'], 'Armor vendor'),
     poi('poi-sandoria-s-carautia', 'thornwall-southgate', 'Tamsin Reed', POI_TYPES.VENDOR, 'K-8', ['armor', 'shop'], 'Protective gear vendor'),
     poi('poi-sandoria-s-faulpie', 'thornwall-southgate', 'Edrin Bale', POI_TYPES.GUILD, 'E-8', ['tanning', 'guildMaster'], 'Tanning guild master'),
-    poi('poi-sandoria-s-gondebaud', 'thornwall-southgate', 'Rowan Greymark', POI_TYPES.COMPANION, 'L-6', ['companion'], 'Potential future companion contact'),
+    poi('poi-sandoria-s-gondebaud', 'thornwall-southgate', 'Rowan Greymark', POI_TYPES.COMPANION, 'L-6', ['companion'], 'A grey-cloaked ranger who watches Southgate travelers and listens for news from Elderwood'),
     poi('poi-sandoria-s-corua', 'thornwall-southgate', 'Nessa Woodmere', POI_TYPES.VENDOR, 'G-9', ['regionalVendor', 'elderwood'], 'Regional vendor for Elderwood goods'),
     poi('poi-sandoria-s-ferdoulemiont', 'thornwall-southgate', 'Pell Arden', POI_TYPES.VENDOR, 'I-11', ['standardVendor', 'shop'], 'General goods vendor'),
 
@@ -67,7 +67,7 @@ const POI_SEEDS = [
     poi('poi-metalworks-cornelia', 'brasshaven-foundry-hall', 'Envoy Tessa Mar', POI_TYPES.MISSION, 'K-8', ['mission', 'brasshaven'], 'Civic commission contact'),
     poi('poi-metalworks-iron-eater', 'brasshaven-foundry-hall', 'Captain Brannic Voss', POI_TYPES.MISSION, 'J-8', ['mission', 'brasshaven'], 'Foundry guard and military commission contact'),
     poi('poi-metalworks-raibaht', 'brasshaven-foundry-hall', 'Gearwright Noll', POI_TYPES.QUEST, 'G-8', ['quest', 'engineer'], 'Workshop project and repair contact'),
-    poi('poi-port-bastok-travel-counter', 'brasshaven-iron-quay', 'Iron Quay Transit Office', POI_TYPES.TRAVEL, 'K-7', ['travel', 'futureTransit'], 'Port and caravan travel services placeholder'),
+    poi('poi-port-bastok-travel-counter', 'brasshaven-iron-quay', 'Iron Quay Transit Office', POI_TYPES.TRAVEL, 'K-7', ['travel', 'futureTransit'], 'Freight clerks, caravan boards, and passenger bookings for routes beyond the quay'),
     poi('poi-port-bastok-shops', 'brasshaven-iron-quay', 'Iron Quay Exchange', POI_TYPES.SHOP, 'F-6', ['shops'], 'Quayside shop cluster'),
 
     poi('poi-waters-baehu-faehu', 'mistmere-canal-ward', 'Pelu Senn', POI_TYPES.VENDOR, 'G-5', ['regionalVendor', 'starfen'], 'Regional vendor for Starfen goods'),
@@ -81,7 +81,7 @@ const POI_SEEDS = [
     poi('poi-woods-apururu', 'mistmere-garden-ward', 'Curator Lessa Rain', POI_TYPES.MISSION, 'H-9', ['importantNpc', 'mission', 'mistmere'], 'Important Mistmere garden-ward civic contact'),
     poi('poi-woods-east-gate', 'mistmere-garden-ward', 'East Starfen Gate', POI_TYPES.ROUTE_EXIT, 'K-10', ['zoneConnection', 'eastStarfen'], 'Gate toward East Starfen'),
     poi('poi-walls-heavens-tower-gate', 'mistmere-spire-ward', 'Observatory Gate', POI_TYPES.MISSION, 'H-7', ['mission', 'observatory'], 'Access to Mistmere Observatory'),
-    poi('poi-port-windurst-travel-counter', 'mistmere-reedport', 'Reedport Transit House', POI_TYPES.TRAVEL, 'M-6', ['travel', 'futureTransit'], 'Regional travel services placeholder'),
+    poi('poi-port-windurst-travel-counter', 'mistmere-reedport', 'Reedport Transit House', POI_TYPES.TRAVEL, 'M-6', ['travel', 'futureTransit'], 'Boatmen, caravan agents, and passenger boards serving routes beyond Reedport'),
     poi('poi-heavens-tower-mission-desk', 'mistmere-observatory', 'Observatory Civic Desk', POI_TYPES.MISSION, 'H-6', ['mission', 'mistmere'], 'Mistmere civic commission desk'),
 ];
 
