@@ -20,18 +20,16 @@ const COMPANIONS = Object.freeze({
             {
                 id: 'guard-the-road',
                 name: 'Guard the Road',
-                summary: 'Mara stays close enough to take the first rush, but gives up some chances to strike back.',
-                quote: '“Stay inside my reach. I’ll take the first rush.”',
-                companionRecoverySeconds: 4,
-                drawsFirstPressure: true,
+                summary: 'Mara keeps her guard tight, trading some striking power for staying power when trouble closes in.',
+                quote: '“Stay inside my reach. We get home together.”',
+                attributeModifiers: { str: -1, vit: 2 },
             },
             {
                 id: 'seek-the-opening',
                 name: 'Seek the Opening',
-                summary: 'Mara ranges wider and finds more openings, leaving you to hold the enemy’s attention.',
-                quote: '“Keep their eyes on you. I’ll find the seam.”',
-                companionRecoverySeconds: 2,
-                drawsFirstPressure: false,
+                summary: 'Mara fights for decisive angles, trading some staying power for a sharper attack.',
+                quote: '“Hold their eye. I’ll find the seam.”',
+                attributeModifiers: { str: 2, vit: -1 },
             },
         ],
         relationshipDimensions: ['trust', 'respect', 'familiarity'],
@@ -89,8 +87,10 @@ export function validateCompanionCatalog() {
             if (approachIds.has(approach.id)) issues.push(`${entry.id} duplicates field approach ${approach.id}.`);
             approachIds.add(approach.id);
             if (!approach.name || !approach.summary || !approach.quote) issues.push(`${entry.id}.${approach.id} requires player-facing name, summary, and quote.`);
-            if (!Number.isInteger(approach.companionRecoverySeconds) || approach.companionRecoverySeconds < 1) issues.push(`${entry.id}.${approach.id}.companionRecoverySeconds must be positive.`);
-            if (typeof approach.drawsFirstPressure !== 'boolean') issues.push(`${entry.id}.${approach.id}.drawsFirstPressure must be boolean.`);
+            if (!approach.attributeModifiers || typeof approach.attributeModifiers !== 'object' || Array.isArray(approach.attributeModifiers)) issues.push(`${entry.id}.${approach.id}.attributeModifiers must be an object.`);
+            else for (const [attribute, modifier] of Object.entries(approach.attributeModifiers)) {
+                if (!['str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr'].includes(attribute) || !Number.isInteger(modifier)) issues.push(`${entry.id}.${approach.id} has invalid attribute modifier ${attribute}.`);
+            }
         }
         if (!approachIds.has(entry.tactics?.defaultApproachId)) issues.push(`${entry.id}.tactics.defaultApproachId must reference a field approach.`);
     }
@@ -114,7 +114,10 @@ function companion(definition) {
         baseAttributes: { ...(definition.baseAttributes ?? {}) },
         skills: { ...(definition.skills ?? {}) },
         tactics: { ...(definition.tactics ?? {}) },
-        fieldApproaches: (definition.fieldApproaches ?? []).map((entry) => ({ ...entry })),
+        fieldApproaches: (definition.fieldApproaches ?? []).map((entry) => ({
+            ...entry,
+            attributeModifiers: { ...(entry.attributeModifiers ?? {}) },
+        })),
         relationshipDimensions: [...(definition.relationshipDimensions ?? [])],
     });
 }
