@@ -156,9 +156,10 @@ export function leaveCompanion(state, companionQuery) {
 export function listCompanionApproaches(state, companionQuery) {
     const definition = resolveDefinition(companionQuery);
     if (!definition) return [];
-    const companion = ensurePartyState(state).companions[definition.id];
+    const party = ensurePartyState(state);
+    const companion = party.companions[definition.id];
     if (!companion) return [];
-    const active = ensurePartyState(state).activeCompanionIds.includes(companion.id);
+    const active = party.activeCompanionIds.includes(companion.id);
     return listCompanionFieldApproaches(definition.id).map((approach) => Object.freeze({
         ...approach,
         selected: companion.tactics?.approachId === approach.id,
@@ -215,16 +216,23 @@ export function syncActivePartyLocation(state, placeId = state.currentPlaceId) {
 export function getActiveCompanionCombatEntities(state) {
     return listActiveCompanions(state)
         .filter((companion) => companion.resources.hp > 0)
-        .map((companion) => ({
-            ...companion,
-            type: 'companion',
-            identity: { ...companion.identity },
-            equipment: clonePlain(companion.equipment),
-            statuses: clonePlain(companion.statuses),
-            resources: { ...companion.resources },
-            skills: { ...companion.skills },
-            baseAttributes: { ...companion.baseAttributes },
-        }));
+        .map((companion) => {
+            const approach = getCompanionFieldApproach(companion.id, companion.tactics?.approachId);
+            const baseAttributes = { ...companion.baseAttributes };
+            for (const [attribute, modifier] of Object.entries(approach?.attributeModifiers ?? {})) {
+                baseAttributes[attribute] = (Number(baseAttributes[attribute]) || 0) + modifier;
+            }
+            return {
+                ...companion,
+                type: 'companion',
+                identity: { ...companion.identity },
+                equipment: clonePlain(companion.equipment),
+                statuses: clonePlain(companion.statuses),
+                resources: { ...companion.resources },
+                skills: { ...companion.skills },
+                baseAttributes,
+            };
+        });
 }
 
 export function syncCompanionsFromBattle(state, battle = state.activeBattle) {
