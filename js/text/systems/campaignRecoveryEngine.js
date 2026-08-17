@@ -231,9 +231,9 @@ function recoveryLabel(kind) {
 
 function recoveryStartedText(kind, durationSeconds) {
     const minutes = Math.floor(durationSeconds / 60);
-    if (kind === CAMPAIGN_RECOVERY_KINDS.DEFEAT) return `Defeat forces a retreat and ${minutes} fictional minutes of recovery before the campaign can continue.`;
-    if (kind === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) return `You settle in for ${minutes} fictional minutes of safe rest.`;
-    return `You commit ${minutes} fictional minutes to field recovery instead of pressing on immediately.`;
+    if (kind === CAMPAIGN_RECOVERY_KINDS.DEFEAT) return `You are forced back toward safety. Recovering will take ${minutes} minutes before you can set out again.`;
+    if (kind === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) return `You settle in for ${minutes} minutes of safe rest.`;
+    return `You stop for ${minutes} minutes to bind wounds, drink, and catch your breath before pressing on.`;
 }
 
 function failure(code, text, data = {}) {
