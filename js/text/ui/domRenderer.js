@@ -58,7 +58,7 @@ function renderExplorationColumn(model) {
             <section class="panel map-panel">
                 <div class="panel-heading">
                     <span>Local Map</span>
-                    <small>${escapeHtml(model.map?.exploredCount ?? 0)}/${escapeHtml(model.map?.totalCount ?? 0)} explored</small>
+                    <small>${escapeHtml(model.map?.exploredCount ?? 0)} places traced</small>
                 </div>
                 ${renderMinimap(model.map)}
                 ${renderMovementPad(model.movement)}
@@ -183,7 +183,7 @@ export function renderMinimap(map) {
             <svg class="minimap" viewBox="0 0 ${svgWidth} ${svgHeight}" role="img" aria-label="Discovered local map of ${escapeAttr(map.placeName)}">
                 ${connections}${cells}
             </svg>
-            <div class="map-legend"><span><b class="legend-current"></b> You</span><span><b class="legend-known"></b> Known</span><span>stubs = unrevealed path</span></div>
+            <div class="map-legend"><span><b class="legend-current"></b> You</span><span><b class="legend-known"></b> Known</span><span>faint paths = not yet traveled</span></div>
         </div>
     `;
 }
@@ -224,7 +224,7 @@ function renderSceneView(model) {
         : '<p class="empty-note">Nothing notable is immediately beside you.</p>';
     return `
         <section class="panel primary-view scene-view">
-            <p class="eyebrow">${escapeHtml(model.scene.region)} · danger ${escapeHtml(model.scene.dangerLevel)}</p>
+            <p class="eyebrow">${escapeHtml(model.scene.region)} · ${escapeHtml(formatDanger(model.scene.dangerLevel))}</p>
             <h1>${escapeHtml(model.scene.title)}</h1>
             <p class="scene-description">${escapeHtml(model.scene.description)}</p>
             <h2>Nearby</h2>
@@ -263,17 +263,46 @@ function renderCharacterView(model) {
     const capabilities = model.information?.capabilities?.entries?.length
         ? model.information.capabilities.entries.map((entry) => `<article class="nearby-card"><div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(formatType(entry.kind))}</small></div><p>${escapeHtml(entry.description)}</p></article>`).join('')
         : '<p class="empty-note">No additional capabilities have been learned yet.</p>';
+    const companions = model.party?.entries?.length
+        ? model.party.entries.map(renderCompanionCard).join('')
+        : '<p class="empty-note">No one has joined you on the road yet.</p>';
     return `
         <section class="panel primary-view character-view">
-            <p class="eyebrow">Continuous Character · ${escapeHtml(preparation?.gil ?? 0)} gil</p>
+            <p class="eyebrow">Gear &amp; training · ${escapeHtml(preparation?.gil ?? 0)} gil</p>
             <h1>${escapeHtml(model.character.name)}</h1>
             <p class="muted">${escapeHtml(model.character.ancestry)} · ${escapeHtml(model.character.discipline)} Lv.${escapeHtml(model.character.level)}</p>
             <div class="attribute-grid large-attributes">${model.character.attributes.map((item) => `<div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join('')}</div>
             <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Equipped</h2><small>${escapeHtml(preparation?.equipment?.length ?? 0)} items</small></div><div class="nearby-list">${equipped}</div></section>
             <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Carried</h2><small>${escapeHtml(preparation?.itemCount ?? 0)} items</small></div>${carried}</section>
-            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Skills</h2><small>current training context</small></div><div class="nearby-list">${skills}</div></section>
-            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Capabilities</h2><small>learned by the character</small></div><div class="nearby-list">${capabilities}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Skills</h2><small>practice under ${escapeHtml(model.character.discipline)}</small></div><div class="nearby-list">${skills}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Capabilities</h2><small>what you know how to do</small></div><div class="nearby-list">${capabilities}</div></section>
+            <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Traveling company</h2><small>${escapeHtml(model.party?.activeCount ?? 0)} with you</small></div><div class="nearby-list">${companions}</div></section>
         </section>
+    `;
+}
+
+function renderCompanionCard(entry) {
+    const current = entry.currentApproach;
+    const approachChoices = entry.approaches?.length
+        ? entry.approaches.map((approach) => `
+            <article class="nearby-card ${approach.selected ? 'is-recommended' : ''}">
+                <div><strong>${escapeHtml(approach.name)}</strong><small>${approach.selected ? 'Current' : 'Alternative'}</small></div>
+                <p>${escapeHtml(approach.summary)}</p>
+                <p class="muted">${escapeHtml(approach.quote)}</p>
+                ${partyActionButton(approach.action)}
+            </article>
+        `).join('')
+        : '';
+    const status = entry.active ? 'Traveling with you' : `Staying at ${entry.locationName}`;
+    return `
+        <article class="nearby-card companion-card">
+            <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.title)} · Lv.${escapeHtml(entry.level)}</small></div>
+            ${entry.description ? `<p>${escapeHtml(entry.description)}</p>` : ''}
+            <p class="muted">${escapeHtml(status)} · HP ${escapeHtml(entry.hp)}/${escapeHtml(entry.maxHp)}</p>
+            ${current ? `<p><strong>${escapeHtml(current.name)}:</strong> ${escapeHtml(current.summary)}</p><p class="muted">${escapeHtml(current.quote)}</p>` : ''}
+            ${entry.active && approachChoices ? `<details class="opportunity-details"><summary>Field approach</summary><div class="nearby-list">${approachChoices}</div></details>` : ''}
+            ${partyActionButton(entry.membershipAction)}
+        </article>
     `;
 }
 
@@ -312,7 +341,7 @@ function renderJournalView(model) {
             <p class="eyebrow">What matters now</p>
             <h1>Journal</h1>
             <p class="muted">${escapeHtml(model.opportunities?.prompt ?? 'Choose from the leads you know now. You can change course whenever another goal matters more.')}</p>
-            ${model.activity ? `<div class="journal-activity"><strong>${escapeHtml(model.activity.label)}</strong><span>${escapeHtml(model.activity.detail)}</span></div>` : '<p class="empty-note">No timed activity is currently underway.</p>'}
+            ${model.activity ? `<div class="journal-activity"><strong>${escapeHtml(model.activity.label)}</strong>${model.activity.detail ? `<span>${escapeHtml(model.activity.detail)}</span>` : ''}</div>` : '<p class="empty-note">No timed activity is currently underway.</p>'}
             <div class="opportunity-groups">${content}</div>
         </section>
     `;
@@ -386,7 +415,7 @@ function renderCodexView(model) {
     const information = model.information;
     const search = information?.search;
     const searchContent = search?.active
-        ? `<section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Search results</h2><small>${escapeHtml(search.results.length)} known/current matches</small></div>${search.results.length ? `<div class="nearby-list">${search.results.map((entry) => `
+        ? `<section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Search results</h2><small>${escapeHtml(search.results.length)} matches</small></div>${search.results.length ? `<div class="nearby-list">${search.results.map((entry) => `
             <article class="nearby-card">
                 <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.category)}</small></div>
                 ${entry.detail ? `<p>${escapeHtml(entry.detail)}</p>` : ''}
@@ -407,7 +436,7 @@ function renderCodexView(model) {
         <section class="panel primary-view codex-view">
             <p class="eyebrow">Known world</p>
             <h1>Codex</h1>
-            <p class="muted">This view contains only things your character has learned, visited, carried, or can act on now. The wider authored world stays outside your knowledge until play reveals it.</p>
+            <p class="muted">Maps, places, and people you have actually encountered are kept here. Unknown roads stay unknown until you learn them.</p>
             ${searchContent}
             <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Maps</h2><small>acquired</small></div><div class="nearby-list">${maps}</div></section>
             <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Visited places</h2><small>remembered</small></div><div class="nearby-list">${places}</div></section>
@@ -423,7 +452,7 @@ function renderCraftView(model) {
             <section class="panel primary-view">
                 <p class="eyebrow">Work &amp; trade</p>
                 <h1>Craft &amp; Process</h1>
-                <p class="muted">Workshops and merchants are settlement services. Bring materials back to a town or travel hub to compare what you can make, sell, buy, or spend time recovering.</p>
+                <p class="muted">Workshops and merchants are easiest to use in settled places. Bring materials back when you want to make, sell, buy, or recover before the next outing.</p>
                 <div class="view-links"><button type="button" data-view="character">Character &amp; Gear</button></div>
             </section>
         `;
@@ -519,7 +548,7 @@ function renderRecoveryService(recovery) {
             <div class="panel-heading opportunity-group-heading"><h2 id="craft-recovery-heading">Recovery</h2><small>${escapeHtml(status)}</small></div>
             <article class="nearby-card">
                 <p>HP ${escapeHtml(recovery.hp)}/${escapeHtml(recovery.maxHp)} · MP ${escapeHtml(recovery.mp)}/${escapeHtml(recovery.maxMp)}</p>
-                <p class="muted">Safe rest takes ${escapeHtml(formatDuration(recovery.durationSeconds))}. It does not invent a fee or erase the time you could have spent working, trading, or traveling.</p>
+                <p class="muted">Safe rest takes ${escapeHtml(formatDuration(recovery.durationSeconds))}. That time could otherwise be spent working, trading, or traveling.</p>
                 ${blocker}${serviceActionButton(recovery.action)}
             </article>
         </section>
@@ -534,6 +563,11 @@ function serviceActionButton(action) {
 function informationActionButton(action) {
     if (!action?.id) return '';
     return `<button type="button" class="primary-button" data-information-action="${escapeAttr(action.id)}">${escapeHtml(action.label ?? 'Open')}</button>`;
+}
+
+function partyActionButton(action) {
+    if (!action?.id) return '';
+    return `<button type="button" class="primary-button" data-party-action="${escapeAttr(action.id)}">${escapeHtml(action.label ?? 'Choose')}</button>`;
 }
 
 function renderWorldView(model) {
@@ -551,7 +585,7 @@ function renderWorldView(model) {
         <section class="panel primary-view world-view">
             <p class="eyebrow">Acquired knowledge</p>
             <h1>${escapeHtml(model.header.placeName)}</h1>
-            ${model.map ? renderMinimap(model.map) : '<p class="empty-note">This safe locality is navigated by named destinations; detailed cartography is reserved for places where terrain matters.</p>'}
+            ${model.map ? renderMinimap(model.map) : '<p class="empty-note">In settled streets, names and landmarks matter more than counting steps. Your field map returns when the road leaves the ward.</p>'}
             ${information?.local?.mode === 'locality' ? `<section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Nearby districts</h2><small>reachable now</small></div><div class="nearby-list">${destinations}</div></section><section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Local places &amp; people</h2><small>usable here</small></div><div class="nearby-list">${points}</div></section>` : ''}
             <section class="opportunity-group"><div class="panel-heading opportunity-group-heading"><h2>Your maps</h2><small>acquired</small></div><div class="nearby-list">${maps}</div></section>
         </section>
@@ -606,7 +640,7 @@ function renderActivityStatus(activity) {
         <section class="panel activity-panel">
             <p class="eyebrow">Current Activity</p>
             <strong>${escapeHtml(activity.label)}</strong>
-            <span>${escapeHtml(activity.detail)}</span>
+            ${activity.detail ? `<span>${escapeHtml(activity.detail)}</span>` : ''}
             <div class="meter activity-meter"><span style="--value:${Math.round(activity.progress * 100)}%"></span></div>
             <small>${escapeHtml(formatDuration(activity.remainingSeconds))} remaining</small>
         </section>
@@ -745,6 +779,16 @@ function playerFacingMotivation(category) {
         'day-review': 'Yesterday still matters: use what changed to decide what deserves your time next.',
     };
     return motivations[category] ?? '';
+}
+
+function formatDanger(value) {
+    const level = Math.max(0, Number(value) || 0);
+    if (level <= 0) return 'Safe';
+    if (level === 1) return 'Low risk';
+    if (level === 2) return 'Watchful';
+    if (level === 3) return 'Hazardous';
+    if (level <= 5) return 'Dangerous';
+    return 'Severe danger';
 }
 
 function formatType(value) {
