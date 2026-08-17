@@ -1,0 +1,247 @@
+/* Hearth & Horizon two-theme palette. Loaded after style.css so legacy literals can be normalized here. */
+:root,
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #171a1f;
+    --panel: #20242a;
+    --panel-raised: #292e35;
+    --panel-deep: #111419;
+    --border: #3b424b;
+    --border-soft: #30363e;
+    --text: #edf0f3;
+    --muted: #a8b0ba;
+    --accent: #5f7899;
+    --accent-strong: #a7b8ca;
+    --good: #86b69a;
+    --danger: #c98686;
+    --focus: #6f91b8;
+    --theme-header: rgba(23, 26, 31, 0.97);
+    --theme-hover: #303944;
+    --theme-primary-bg: #26384c;
+    --theme-primary-border: #496b90;
+    --theme-map-bg: #10141a;
+    --theme-map-link: #667381;
+    --theme-map-cell: #b9c0c7;
+    --theme-highlight-bg: #1c2733;
+    --theme-subtle-text: #cbd1d8;
+    --theme-overlay: rgba(17, 20, 25, 0.97);
+}
+
+html[data-theme="light"] {
+    color-scheme: light;
+    --bg: #d9dde2;
+    --panel: #eef0f2;
+    --panel-raised: #e2e5e8;
+    --panel-deep: #f7f8f9;
+    --border: #8b949e;
+    --border-soft: #bbc2c9;
+    --text: #15191f;
+    --muted: #515c68;
+    --accent: #234b72;
+    --accent-strong: #163b60;
+    --good: #356c4d;
+    --danger: #8b3f46;
+    --focus: #1f5f96;
+    --theme-header: rgba(225, 229, 233, 0.97);
+    --theme-hover: #d3d9df;
+    --theme-primary-bg: #294f75;
+    --theme-primary-border: #183f65;
+    --theme-map-bg: #d0d5da;
+    --theme-map-link: #63707d;
+    --theme-map-cell: #303943;
+    --theme-highlight-bg: #d8e1ea;
+    --theme-subtle-text: #343d46;
+    --theme-overlay: rgba(238, 240, 242, 0.98);
+}
+
+html,
+body,
+#app,
+.hh-app {
+    background: var(--bg);
+    color: var(--text);
+}
+
+button:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--theme-hover);
+}
+
+.primary-button {
+    border-color: var(--theme-primary-border);
+    background: var(--theme-primary-bg);
+    color: #f4f7fa;
+}
+
+.game-header {
+    background: var(--theme-header);
+}
+
+.minimap {
+    background: var(--theme-map-bg);
+}
+
+.map-link {
+    stroke: var(--theme-map-link);
+}
+
+.map-cell,
+.map-legend b {
+    fill: var(--theme-map-cell);
+    background: var(--theme-map-cell);
+}
+
+.map-current {
+    fill: var(--accent-strong);
+    stroke: var(--accent);
+}
+
+.opportunity-card.is-recommended,
+.choice-button.selected {
+    border-color: var(--accent);
+    background: var(--theme-highlight-bg);
+}
+
+.opportunity-recommended,
+.context-social,
+.context-shop,
+.context-guild,
+.context-quest {
+    border-color: var(--accent);
+}
+
+.opportunity-motivation,
+.choice-description,
+.creator-rule {
+    color: var(--theme-subtle-text) !important;
+}
+
+.omnibox {
+    border-color: var(--accent);
+    background: var(--theme-overlay);
+}
+
+.creator-name-row {
+    width: min(100%, 34rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem;
+}
+
+.creator-name-row .creator-name-input {
+    width: 100%;
+}
+
+.creator-die-button {
+    min-width: 2.7rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.creator-random-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.55rem;
+    padding: 0.45rem 0.65rem;
+}
+
+.discipline-preview {
+    margin-top: 0.65rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    background: var(--panel-deep);
+}
+
+.discipline-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.5rem;
+}
+
+.discipline-preview-grid div {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.discipline-preview dt {
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.discipline-preview dd {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.76rem;
+}
+
+.character-select-entry {
+    position: relative;
+}
+
+.character-select-entry .character-select-card {
+    padding-right: 2.7rem;
+}
+
+.character-delete-button {
+    position: absolute;
+    top: 0.38rem;
+    right: 0.38rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border-color: transparent;
+    background: transparent;
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.character-delete-button:hover:not(:disabled),
+.local-data-clear:hover:not(:disabled) {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.onboarding-settings-tools {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-soft);
+    display: grid;
+    gap: 0.45rem;
+}
+
+.onboarding-settings-tools small {
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.local-data-clear {
+    border-color: color-mix(in srgb, var(--danger) 60%, var(--border));
+}
+
+.landing-reset-data {
+    margin-top: 0.6rem;
+    color: var(--muted);
+}
+
+html[data-theme="light"] .intro-prose,
+html[data-theme="light"] .scene-description {
+    color: #171b20;
+}
+
+@media (max-width: 640px) {
+    .creator-name-row {
+        width: 100%;
+    }
+
+    .discipline-preview-grid {
+        grid-template-columns: 1fr;
+    }
+}
