@@ -1,4 +1,5 @@
 import { validateCommitmentCatalog } from '../data/commitments.js';
+import { validateHomeInfrastructureCatalog } from '../data/homeInfrastructure.js';
 import { listGuildServices } from '../data/guildServices.js';
 import { listEquipmentCatalogEntries } from '../data/equipmentCatalog.js';
 import { listContainerDefinitions } from '../data/inventoryContainers.js';
@@ -22,7 +23,9 @@ import {
 } from '../data/systemConstants.js';
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { validateCommitmentState } from './commitmentEngine.js';
+import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
 import { getContainerCapacity } from './inventoryEngine.js';
+import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
@@ -58,6 +61,14 @@ export function validateGameState(state) {
     if (!isObject(state.atlas)) issues.push('atlas must be an object.');
     if (!isObject(state.discoveredPois)) issues.push('discoveredPois must be an object.');
     if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
+
+    if (!isObject(state.projects)) {
+        issues.push('projects must be an object.');
+    } else {
+        const projectIssues = validateProjectState(state.projects);
+        issues.push(...projectIssues);
+        if (!projectIssues.length) issues.push(...validateHomeInfrastructureState(state).map((issue) => `homeInfrastructure.${issue}`));
+    }
 
     if (!isObject(state.commitments)) {
         issues.push('commitments must be an object.');
@@ -175,6 +186,7 @@ export function validateWorldData() {
     }
 
     issues.push(...validateCommitmentCatalog().map((issue) => `commitments: ${issue}`));
+    issues.push(...validateHomeInfrastructureCatalog().map((issue) => `homeInfrastructure: ${issue}`));
 
     for (const entry of listEquipmentCatalogEntries()) {
         issues.push(...validateEquipmentCatalogEntry(entry).map((issue) => `equipmentCatalog.${entry.id}: ${issue}`));
@@ -302,7 +314,6 @@ export function validateEquipmentCatalogEntry(entry) {
     issues.push(...validateEffectArray(entry.effects, 'effects'));
     issues.push(...validateLatentEffectArray(entry.latentEffects, 'latentEffects'));
     issues.push(...validateEffectLikeArray(entry.enchantments, 'enchantments'));
-    issues.push(...validateEffectLikeArray(entry.augments, 'augments'));
     issues.push(...validateCharges(entry.charges, 'charges'));
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
         issues.push('weaponDelay must be a non-negative integer when present.');
