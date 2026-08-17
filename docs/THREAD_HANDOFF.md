@@ -45,55 +45,60 @@ Ordinary player-facing information should describe what the character **sees, kn
 ## Current baseline
 
 ```text
-Product:       0.8.100.1
+Product:       0.8.100.2
 Package:       0.8.100
 Account Save:  4
 Game State:    5
-Data:          32
+Data:          33
 Benchmark:     1
 Codename:      Home Foothold and Infrastructure
 Compatibility: pre-release-current-schema
 Released:      false
 ```
 
-**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is IN PROGRESS. The bounded `0.8.100` track is complete and audited.**
+**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is IN PROGRESS. The bounded `0.8.100` track remains complete; `0.8.100.2` is a closed onboarding/creator polish revision.**
 
-Authoritative promoted `0.8.100` runtime checkpoint:
+Authoritative promoted runtime checkpoint:
 
 ```text
-0b9251a43285443087050127da36b977cabdf7ee
-Restore augment validation after 0.8.100 promotion
+0f00ef68a01ad001063803d67ff0efffc48ab3ef
+Synchronize onboarding polish version contract
 ```
 
 At that checkpoint:
 
 ```text
-tests       496
-pass        496
+tests       505
+pass        505
 fail        0
 skipped     0
 benchmark   success
-Data        32
+Data        33
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     466.332ms  0.466332ms/op
-1,000 enemy combat profiles      108.813ms  0.108813ms/op
-1,000 basic attacks              521.192ms  0.521192ms/op
-10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
-10,000 direct route lookups     8784.978ms  0.878498ms/op
+1,000 player combat profiles      463.353ms  0.463353ms/op
+1,000 enemy combat profiles       125.126ms  0.125126ms/op
+1,000 basic attacks               551.861ms  0.551861ms/op
+10,000 ticks / 5 subscribers       48.338ms  0.004834ms/op
+10,000 direct route lookups      8665.221ms  0.866522ms/op
 ```
 
-Exact promoted runtime Check run: `31990577051` — SUCCESS. GitHub Actions project tests use Node 20.20.2. The recurring action-runtime Node deprecation warning remains warning-only.
+Exact promoted runtime workflows:
 
-Documentation commits after the runtime checkpoint synchronize roadmap, versioning, architecture, player-experience path, and this handoff. Verify the final documentation head's Check and Pages results before new implementation if they are not recorded in the thread that produced this handoff.
+```text
+Check  31994591523  SUCCESS
+Pages  31994591247  SUCCESS
+```
+
+GitHub Actions project tests use Node 20.20.2. The recurring Actions-runtime Node deprecation/forced-Node-24 warning remains warning-only for `actions/checkout` / `actions/setup-node`; the project test job explicitly installs Node 20.20.2.
 
 ## Current relevant registrations
 
 ```text
-versionManifest:              0.8.100.1
+versionManifest:              0.8.100.2
 projects:                     0.1.0
 homeInfrastructure:           0.1.0
 homeStorage:                  0.3.9
@@ -118,16 +123,20 @@ playerContinuity:             0.5.0
 playerCampaignReadability:    0.2.0
 playerDangerRecovery:         0.2.0
 domUi:                        0.10.0
+domOnboarding:                0.1.0
+saveRecovery:                 0.1.0
+characterCreation:            0.6.0
+characterCreationContent:     0.2.0
+characterNames:               0.1.0
+startingDisciplineKits:       0.1.0
 companionCatalog:             0.2.0
 party:                        0.2.0
 companions:                   0.2.0
 ```
 
-`js/text/data/databaseRegistry.js` records `homeInfrastructure` as implemented `0.1.0`. Existing `projects` and home-storage contracts did not advance because `0.8.100` consumes rather than replaces those authorities.
+## Stable Phase 0.7 baseline remains closed
 
-## Phase 0.7 remains closed
-
-The established multi-region playable-alpha baseline remains canonical:
+The multi-region playable-alpha proof remains canonical:
 
 - Thornwall / Sera Talwin / Elderwood — `Sweetroot for Southgate`;
 - Brasshaven / Marshal Varric Stone / Redstone — `Copper for the Ring`;
@@ -136,92 +145,126 @@ The established multi-region playable-alpha baseline remains canonical:
 - settlement return offers real work/trade/recovery/preparation/social decisions;
 - acquired/current information and maps preserve hidden-topology privacy;
 - danger/combat/body recovery/defeat return to the same campaign;
-- Mara Venn remains one persistent NPC-backed companion with a real persistent pre-battle field-approach choice;
+- Mara Venn remains one persistent NPC-backed companion with a real pre-battle field-approach choice;
 - primary browser surfaces follow the character-POV presentation boundary.
 
 Do not reopen Phase 0.7 merely because later breadth is desirable.
 
 ## `0.8.100` — Home Foothold & Infrastructure — complete
 
-### Player-facing proof
-
-The first authored improvement is **Build a Storage Chest**.
+The first authored improvement is **Build a Storage Chest**:
 
 ```text
-2 Resin-Sealed Hardwood Boards   <- existing Elderwood production chain
-1 Redstone Copper Ingot          <- existing Redstone production chain
-30 minutes hands-on labor        <- canonical project/timed-task substrate
-                   |
-                   v
-Storage Chest furnishing         -> +5 furnishing-storage slots
+2 Resin-Sealed Hardwood Boards
+1 Redstone Copper Ingot
+30 minutes project labor
+  -> Storage Chest furnishing
+  -> home storage 3 -> 8 slots
 ```
 
-A fresh character's Bronze Bed + Maple Table provide 3 furnishing-backed home-storage slots. Completing the chest places the existing `storage-chest` furnishing exactly once and raises capacity to 8 slots.
+`homeInfrastructureEngine` remains a bounded adapter. Generic projects own material/labor/status; inventory owns material removal and storage; world time/timed tasks own duration; furnishings own the durable capacity benefit; the Journal is derived presentation.
 
-The Journal derives a **Home & Foothold** group. Normal semantic flow is:
+No second property registry, construction clock, construction-material wallet, home-only inventory, storage-capacity formula, or UI-owned economy/property state was introduced.
+
+Original runtime checkpoint:
 
 ```text
-Plan
-  -> Set aside available materials
-  -> Start work
-  -> Finish current activity
-  -> completed furnishing and larger storage capacity
+0b9251a43285443087050127da36b977cabdf7ee
+496/496 tests
+Benchmark 1 success
+Product 0.8.100.1
+Data 32
 ```
 
-No project IDs, task channels, internal furnishing registry names, or command strings are required in ordinary play.
+## `0.8.100.2` — Onboarding and character creation polish — complete
 
-### Authority boundaries
+This revision responds to the first hands-on creator/onboarding walkthrough and does not open a new Phase 0.8 track.
 
-`homeInfrastructureEngine` is a bounded adapter, not a second property simulation.
+### Themes
 
-- `js/text/data/homeInfrastructure.js` owns authored improvement definitions.
-- `projectEngine` owns project IDs, material requirements/contributions, labor linkage, status, timestamps, and generic completion.
-- `inventoryEngine` owns atomic material removal and storage capacity/access.
-- canonical world time/timed tasks own fictional duration.
-- `mogHouseFurniture.js` remains the bounded legacy-internal furnishing data source; player-facing copy uses home/lodging/furnishing terminology.
-- `homeInfrastructureEngine` applies recognized domain completion benefits exactly once and emits the semantic completion event.
-- `gameViewModel` derives the Journal group/action state.
-- `uiIntentDispatcher` delegates semantic begin/contribute/start actions.
-- `activityAdvanceEngine` now supports generic `project.labor`; unrelated project kinds remain generic and are not claimed by the home adapter.
+The active browser now exposes two palettes:
 
-Do **not** add a second property registry, construction clock, construction-material wallet, home-only inventory, storage-capacity formula, or UI-owned economy/property state.
+```text
+Dark  -> charcoal + grayscale + slate/navy blue
+Light -> silver gray + dark navy + dark gray/black
+```
 
-### Persistence and validation
+`css/theme.css` is loaded after the legacy stylesheet and normalizes active selection, focus, map, primary-button, and resource-meter chrome away from decorative gold/brown. Restrained red/green remain semantic danger/success cues. `js/text/ui/uiTheme.js` was aligned with the dark charcoal/navy palette for bounded canvas/reference code.
 
-Data advances `31 -> 32` because the canonical home-improvement definition and its material-to-durable-benefit contract are authored data.
+Theme preference remains account settings authority. The historical settings normalizer still accepts `highContrast`, but the active browser UI exposes only Light/Dark. Treat removal of the dormant value as optional bounded cleanup, not a reason to reopen this revision.
 
-Game State remains 5 because the active project fits the existing generic `state.projects.records[].data` contract, labor uses existing timed tasks, and the completed benefit uses existing `inventoryState.mogHouse.placedFurniture` state. Account Save remains 4 because the account/session/character registry is unchanged.
+### Save recovery
 
-Canonical validation now checks:
+`saveRecovery.js` is an adapter over `save.js`:
 
-- home-infrastructure authored material/furnishing references;
-- recognized home-project metadata against the catalog;
-- completed home projects claiming applied furnishing benefits actually have that furnishing present.
+- character cards receive a top-right `×`;
+- `deleteCharacterSave(id)` removes the account-registry record without decoding `encodedState`, so corrupt characters can be deleted even when `loadCharacter` rejects them;
+- deletion repairs `lastCharacterId` to another character or `null`;
+- Settings exposes **Clear all local data** with destructive confirmation;
+- logged-out landing exposes **Reset local data** so account-registry corruption can be cleared without entering Settings;
+- clear-all delegates existing `clearSave()`.
 
-Existing equipment validation was preserved after a promotion regression exposed an accidentally omitted `augments` validation call. The final runtime checkpoint includes the repair and is fully green.
+No second save/account/storage authority was added.
 
-### End-to-end regression
+### Creator randomization
 
-`tests/playerHomeInfrastructureFlow.test.js` proves:
+`characterNames.js` owns original-world ancestry/sex-aware name pools. The legacy FFXI name generator is not used.
 
-- authored catalog validation;
-- initial 3-slot furnishing capacity;
-- derived Home & Foothold Journal presentation;
-- semantic Plan / contribute / Start actions;
-- canonical materials consumed exactly once;
-- active construction persists through real account save/load;
-- canonical activity advance completes `project.labor`;
-- Storage Chest is applied exactly once;
-- capacity becomes 8 slots;
-- repeated reconciliation cannot duplicate the benefit;
-- completed benefit survives real save/load;
-- game-state validation remains clean;
-- rendered Journal copy does not expose internal project/task/`mogHouse`/completion identifiers.
+The creator now has:
+
+- a name die for the current ancestry/sex;
+- a whole-character die that selects ancestry → valid sex → origin → starting discipline → matching name.
+
+`characterCreationModel.randomizeCreator*` accepts injectable RNG for deterministic tests.
+
+### Disciplines and starter gear
+
+The six starting disciplines now expose their real level-1 differences: active attribute emphasis, resource tendency, derived combat focus, weapon/non-magic skill focus, magic skill focus, protection, play style, and starting gear.
+
+Current kits:
+
+```text
+Vanguard     Bronze Sword + Leather Vest
+Pugilist     Traveler Gloves + Leather Vest
+Lifewarden   Maple Wand + Road Cloak
+Elementalist Ash Staff + Road Cloak
+Spellblade   Bronze Sword + Leather Vest
+Shadowhand   Bronze Dagger + Road Cloak
+```
+
+Guided browser creation sets `includeStartingDisciplineKit: true`; `createNewGameState` then stores the existing equipment items through canonical inventory authority. Items begin carried and are **not auto-equipped**.
+
+Generic `createNewGameState()` stays neutral unless that explicit option is present. This repaired the first integration attempt, which had polluted many low-level fixtures by universally granting starter inventory.
+
+The old prompt/fast-create command adapter still uses the neutral generic path and therefore does not receive the starter kit. It is a known non-blocking transitional seam. Do not “fix” it by restoring universal starter inventory; either route it through creator options in a later bounded cleanup or leave it diagnostic.
+
+### Authored starting narrative
+
+`characterCreationContent.js` now owns three distinct arrival scenes:
+
+- **Thornwall:** timber-wagon arrival, Warden Halric Dane, predatory hawker, credible introduction to Sera Talwin;
+- **Brasshaven:** freight/ore arrival, predatory labor broker, Marshal Varric Stone intervenes;
+- **Mistmere:** morning ferry, bogus visitor-fee runner, canal registrar directs the player to Reader Soli Venn.
+
+Each includes one restrained discipline-aware observation. Diegetic prose no longer explains permanent-class design; the creator UI retains the non-permanent-discipline rule.
+
+### Regression and audit trail
+
+Primary new regressions:
+
+- `tests/playerCreatorPolish.test.js`
+- `tests/saveRecovery.test.js`
+
+The first full integration run failed because starter gear was initially universal; this was corrected to the explicit creator-only option. A follow-up color audit found lingering gold TP/resource-meter styling and replaced it with theme-aware grayscale/navy values.
+
+The final promoted runtime is fully green at `0f00ef68...` with 505/505 tests plus Benchmark 1.
+
+No manual visual/browser walkthrough was performed or claimed; evidence is code/DOM/CSS regression coverage, full CI, Benchmark 1, and Pages build/deploy.
 
 ## Stable authority boundaries to preserve
 
 - one fictional-time/task/interrupt substrate;
-- generic projects as the shared material + labor + completion substrate;
+- generic projects as shared material + labor + completion substrate;
 - continuous-character ownership of stats/capabilities/work mastery;
 - semantic browser intents as normal player actions;
 - command routes as optional power/diagnostic surfaces;
@@ -231,33 +274,34 @@ Existing equipment validation was preserved after a promotion regression exposed
 - battle progression rewards separate from physical body recovery;
 - commitments separate from relationships and both separate from Journal projection;
 - scheduled transport owning fare/cadence/cargo/departure/arrival;
-- transport and settlement service boards as derived presentation only;
-- player information/search as derived/transient presentation only;
+- service/information/onboarding views as projections/adapters only;
 - production engine owning recipes/work/input/output/mastery;
 - shop engine owning actual transactions and wallet changes;
 - persistent NPC-backed companions with party/battle/travel responsibilities kept separate;
 - furnishings/inventory owning actual home-storage capacity;
+- creator starter gear entering through canonical inventory, not UI-owned loadout state;
+- save recovery mutating the existing account registry, not raw storage in the UI;
 - content-pack/cross-reference validation;
 - clean current pre-alpha schema over compatibility-only debt.
 
 ## Known non-blocking debt
 
-- the internal `mogHouse` key/module name remains legacy terminology; ordinary player-facing copy is already original/generic. Do not rename the persisted internal contract incidentally—do so only in a bounded schema/terminology cleanup if the simplification is worth the change;
-- broader property/building ownership, workshops, agriculture, logistics, social schedules, companion breadth, and earned automation remain future Phase 0.8 work;
+- internal `mogHouse` remains legacy terminology; player-facing copy is already original/generic;
+- legacy prompt/fast-create creator bypasses the semantic creator starter-kit flag;
+- account settings still normalize historical `highContrast`, while active UI offers only Light/Dark;
+- broader property/workshops/agriculture/logistics/social schedules/companion breadth/earned automation remain future Phase 0.8 work;
 - original currency terminology is still deferred;
-- recurring GitHub action-runtime Node deprecation warning remains warning-only.
+- recurring GitHub action-runtime Node warning remains warning-only.
 
 ## Next work
 
 **Do not automatically launch another Phase 0.8 track from this handoff.** A new user work order should choose one bounded life/infrastructure seam and audit the existing authority/data path before implementation.
 
-Good candidate bounded tracks include:
+Good candidate tracks include:
 
 - workshop/home-production depth;
 - agriculture/stewardship;
 - logistics/warehousing/transport capacity;
 - social schedules and relationship life;
 - companion life breadth;
-- earned automation that reduces attention only after demonstrated investment/mastery.
-
-Whichever track is selected, grow from existing materials, fictional time, projects/work, inventory, locations, relationships, party, production, transport, and service authorities rather than creating an isolated management minigame.
+- earned automation.
