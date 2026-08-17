@@ -314,6 +314,7 @@ export function validateEquipmentCatalogEntry(entry) {
     issues.push(...validateEffectArray(entry.effects, 'effects'));
     issues.push(...validateLatentEffectArray(entry.latentEffects, 'latentEffects'));
     issues.push(...validateEffectLikeArray(entry.enchantments, 'enchantments'));
+    issues.push(...validateEffectLikeArray(entry.augments, 'augments'));
     issues.push(...validateCharges(entry.charges, 'charges'));
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
         issues.push('weaponDelay must be a non-negative integer when present.');
