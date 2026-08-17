@@ -11,7 +11,7 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 5. `docs/ROADMAP.md`
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 7. `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
-8. `docs/ARCHITECTURE.md`, `docs/LOCALITY_AND_EXPLORATION_MODEL.md`, `docs/QUALITY_GATES.md`, `docs/PERFORMANCE_BUDGET.md`, `js/text/version.js`, and the systems/tests relevant to the next bounded work order.
+8. `docs/ARCHITECTURE.md`, `docs/LOCALITY_AND_EXPLORATION_MODEL.md`, `docs/QUALITY_GATES.md`, `docs/PERFORMANCE_BUDGET.md`, `docs/RESOURCE_LIFECYCLE.md`, `js/text/version.js`, and the systems/tests relevant to the next bounded work order.
 
 ## Workflow and pre-alpha policy
 
@@ -38,72 +38,73 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Maps/campaign guidance represent acquired character knowledge. Fictional time is separate from wall-clock scheduling. Resources retain provenance. Companions are persistent NPC-backed people. Commitments/relationships are canonical state; Journal/readability/service/information/home opportunity models are derived presentation.
+Maps/campaign guidance represent acquired character knowledge. Fictional time is separate from wall-clock scheduling. Resources retain provenance. Companions are persistent NPC-backed people. Commitments/relationships are canonical state; Journal/readability/service/information/home models are derived presentation.
 
 Ordinary player-facing information should describe what the character **sees, knows, carries, remembers, needs, or can decide**. Architecture, compatibility, raw state/task channels, hidden topology, and implementation rationale stay outside normal play.
 
 ## Current baseline
 
 ```text
-Product:       0.8.100.2
-Package:       0.8.100
+Product:       0.8.200.1
+Package:       0.8.200
 Account Save:  4
 Game State:    5
-Data:          33
+Data:          34
 Benchmark:     1
-Codename:      Home Foothold and Infrastructure
+Codename:      Home Workshop Capability
 Compatibility: pre-release-current-schema
 Released:      false
 ```
 
-**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is IN PROGRESS. The bounded `0.8.100` track remains complete; `0.8.100.2` is a closed onboarding/creator polish revision.**
+**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is IN PROGRESS. `0.8.100` and `0.8.200` are complete and audited.**
 
-Authoritative promoted runtime checkpoint:
+Authoritative promoted `0.8.200` runtime checkpoint:
 
 ```text
-0f00ef68a01ad001063803d67ff0efffc48ab3ef
-Synchronize onboarding polish version contract
+03ab71c7e96c54eaeffb75598ed01243fd390f21
+Synchronize pipeline manifest with 0.8.200
 ```
 
 At that checkpoint:
 
 ```text
-tests       505
-pass        505
+tests       506
+pass        506
 fail        0
 skipped     0
 benchmark   success
-Data        33
+Product     0.8.200.1
+Package     0.8.200
+Data        34
 ```
 
 Benchmark 1:
 
 ```text
-1,000 player combat profiles      463.353ms  0.463353ms/op
-1,000 enemy combat profiles       125.126ms  0.125126ms/op
-1,000 basic attacks               551.861ms  0.551861ms/op
-10,000 ticks / 5 subscribers       48.338ms  0.004834ms/op
-10,000 direct route lookups      8665.221ms  0.866522ms/op
+1,000 player combat profiles      465.527ms  0.465527ms/op
+1,000 enemy combat profiles       117.252ms  0.117252ms/op
+1,000 basic attacks               550.132ms  0.550132ms/op
+10,000 ticks / 5 subscribers       44.971ms  0.004497ms/op
+10,000 direct route lookups      8708.613ms  0.870861ms/op
 ```
 
-Exact promoted runtime workflows:
+Exact promoted runtime Check run: `32046733161` — SUCCESS. Project tests explicitly install Node 20.20.2. The recurring GitHub Actions warning about `actions/checkout` / `actions/setup-node` being forced to the newer action runtime remains warning-only.
 
-```text
-Check  31994591523  SUCCESS
-Pages  31994591247  SUCCESS
-```
-
-GitHub Actions project tests use Node 20.20.2. The recurring Actions-runtime Node deprecation/forced-Node-24 warning remains warning-only for `actions/checkout` / `actions/setup-node`; the project test job explicitly installs Node 20.20.2.
+The documentation commits after that runtime checkpoint synchronize roadmap, architecture, versioning, player-experience path, and this handoff. Verify the final documentation head's exact Check and Pages runs before new implementation if they are not recorded in the conversation that created this handoff.
 
 ## Current relevant registrations
 
 ```text
-versionManifest:              0.8.100.2
+versionManifest:              0.8.200.1
 projects:                     0.1.0
-homeInfrastructure:           0.1.0
+homeInfrastructure:           0.2.0
 homeStorage:                  0.3.9
 characterActivity:            0.3.0
-activityAdvance:              0.3.0
+activityAdvance:              0.4.0
+workstations:                 0.3.0
+productionItems:              0.3.0
+production:                   0.1.0
+settlementServiceBoard:       0.2.0
 gameViewModels:               0.13.0
 uiIntents:                    0.10.0
 validation:                   0.10.0
@@ -113,8 +114,6 @@ dayCycle:                     0.2.0
 resourceRecoveryWork:         0.3.0
 transport:                    0.2.0
 transportServiceBoard:        0.1.0
-settlementServiceBoard:       0.1.0
-workstations:                 0.2.0
 shopTransactions:             0.5.0
 playerInformation:            0.1.1
 playerExperience:             0.3.0
@@ -133,6 +132,16 @@ companionCatalog:             0.2.0
 party:                        0.2.0
 companions:                   0.2.0
 ```
+
+Database registrations relevant to the current track:
+
+```text
+homeInfrastructure  implemented 0.2.0
+workstations        implemented 0.2.0
+productionItems     seeded      0.2.0
+```
+
+Subsystem versions and database versions are independent contracts.
 
 ## Stable Phase 0.7 baseline remains closed
 
@@ -162,9 +171,7 @@ The first authored improvement is **Build a Storage Chest**:
   -> home storage 3 -> 8 slots
 ```
 
-`homeInfrastructureEngine` remains a bounded adapter. Generic projects own material/labor/status; inventory owns material removal and storage; world time/timed tasks own duration; furnishings own the durable capacity benefit; the Journal is derived presentation.
-
-No second property registry, construction clock, construction-material wallet, home-only inventory, storage-capacity formula, or UI-owned economy/property state was introduced.
+Generic projects own material/labor/status; inventory owns material removal and storage; world time/timed tasks own duration; furnishings own the durable capacity benefit; the Journal is derived presentation.
 
 Original runtime checkpoint:
 
@@ -178,88 +185,122 @@ Data 32
 
 ## `0.8.100.2` — Onboarding and character creation polish — complete
 
-This revision responds to the first hands-on creator/onboarding walkthrough and does not open a new Phase 0.8 track.
+This revision added deliberate Light/Dark themes, corrupt-character deletion and local-data recovery, original-world creator randomization, truthful six-discipline previews with real carried starter kits, and distinct authored Thornwall/Brasshaven/Mistmere opening scenes.
 
-### Themes
-
-The active browser now exposes two palettes:
+Promoted runtime checkpoint:
 
 ```text
-Dark  -> charcoal + grayscale + slate/navy blue
-Light -> silver gray + dark navy + dark gray/black
+0f00ef68a01ad001063803d67ff0efffc48ab3ef
+505/505 tests
+Benchmark 1 success
+Product 0.8.100.2
+Data 33
 ```
 
-`css/theme.css` is loaded after the legacy stylesheet and normalizes active selection, focus, map, primary-button, and resource-meter chrome away from decorative gold/brown. Restrained red/green remain semantic danger/success cues. `js/text/ui/uiTheme.js` was aligned with the dark charcoal/navy palette for bounded canvas/reference code.
+Known non-blocking seams from that revision remain:
 
-Theme preference remains account settings authority. The historical settings normalizer still accepts `highContrast`, but the active browser UI exposes only Light/Dark. Treat removal of the dormant value as optional bounded cleanup, not a reason to reopen this revision.
+- legacy prompt/fast-create uses neutral generic new-game creation and does not receive the semantic creator's starter kit;
+- historical account-settings normalization can still accept `highContrast`, while active browser UI exposes only Light/Dark;
+- no manual visual/browser walkthrough was claimed.
 
-### Save recovery
+Do not repair these by introducing universal starter inventory or another settings authority.
 
-`saveRecovery.js` is an adapter over `save.js`:
+## `0.8.200` — Home Workshop Capability — complete
 
-- character cards receive a top-right `×`;
-- `deleteCharacterSave(id)` removes the account-registry record without decoding `encodedState`, so corrupt characters can be deleted even when `loadCharacter` rejects them;
-- deletion repairs `lastCharacterId` to another character or `null`;
-- Settings exposes **Clear all local data** with destructive confirmation;
-- logged-out landing exposes **Reset local data** so account-registry corruption can be cleared without entering Settings;
-- clear-all delegates existing `clearSave()`.
+### Bounded player proof
 
-No second save/account/storage authority was added.
-
-### Creator randomization
-
-`characterNames.js` owns original-world ancestry/sex-aware name pools. The legacy FFXI name generator is not used.
-
-The creator now has:
-
-- a name die for the current ancestry/sex;
-- a whole-character die that selects ancestry → valid sex → origin → starting discipline → matching name.
-
-`characterCreationModel.randomizeCreator*` accepts injectable RNG for deterministic tests.
-
-### Disciplines and starter gear
-
-The six starting disciplines now expose their real level-1 differences: active attribute emphasis, resource tendency, derived combat focus, weapon/non-magic skill focus, magic skill focus, protection, play style, and starting gear.
-
-Current kits:
+The new authored improvement is **Build a Joiner's Workbench**:
 
 ```text
-Vanguard     Bronze Sword + Leather Vest
-Pugilist     Traveler Gloves + Leather Vest
-Lifewarden   Maple Wand + Road Cloak
-Elementalist Ash Staff + Road Cloak
-Spellblade   Bronze Sword + Leather Vest
-Shadowhand   Bronze Dagger + Road Cloak
+2 Resin-Sealed Hardwood Boards
+1 Copper Trail Clasp
+45 minutes canonical project labor
+  -> Joiner's Workbench furnishing
+  -> woodshop + workshop station context at home
 ```
 
-Guided browser creation sets `includeStartingDisciplineKit: true`; `createNewGameState` then stores the existing equipment items through canonical inventory authority. Items begin carried and are **not auto-equipped**.
+The workbench has **0 storage slots**. It grants capability, not hidden capacity.
 
-Generic `createNewGameState()` stays neutral unless that explicit option is present. This repaired the first integration attempt, which had polluted many low-level fixtures by universally granting starter inventory.
+`workstationEngine` now derives station tags from two sources under one authority:
 
-The old prompt/fast-create command adapter still uses the neutral generic path and therefore does not receive the starter kit. It is a known non-blocking transitional seam. Do not “fix” it by restoring universal starter inventory; either route it through creator options in a later bounded cleanup or leave it diagnostic.
+1. current contextual settlement POIs/services;
+2. placed workstation-bearing furnishings, but only while `currentPlaceId` equals the character's home place.
 
-### Authored starting narrative
+The Joiner's Workbench carries `workbench` + `woodshop` furnishing tags and therefore produces `workshop` + `woodshop` semantic station tags at home. Away from home it contributes nothing.
 
-`characterCreationContent.js` now owns three distinct arrival scenes:
+### Existing production loop enabled at home
 
-- **Thornwall:** timber-wagon arrival, Warden Halric Dane, predatory hawker, credible introduction to Sera Talwin;
-- **Brasshaven:** freight/ore arrival, predatory labor broker, Marshal Varric Stone intervenes;
-- **Mistmere:** morning ferry, bogus visitor-fee runner, canal registrar directs the player to Reader Soli Venn.
+The track intentionally reuses the existing `craft-elderwood-resin-board` recipe rather than authoring a parallel home recipe:
 
-Each includes one restrained discipline-aware observation. Diegetic prose no longer explains permanent-class design; the creator UI retains the non-permanent-discipline rule.
+```text
+Seal Elderwood Hardwood Board
+  1 Elderwood Hardwood
+  1 Elderwood Amber Resin
+  requires woodshop
+  240 fictional seconds at proficiency 0
+  +2 crafting proficiency
+    -> 1 Resin-Sealed Hardwood Board
+```
 
-### Regression and audit trail
+Before the workbench is built, this recipe is blocked at the Thornwall home by the woodshop requirement. After completion, `productionEngine` sees the derived home `woodshop` context and the existing **Work, Trade & Recover** surface exposes the real recipe through semantic `production.start`.
 
-Primary new regressions:
+`productionEngine` still owns requirements, atomic input consumption, timed work, output storage, transformation/input/place provenance, and persistent crafting proficiency.
 
-- `tests/playerCreatorPolish.test.js`
-- `tests/saveRecovery.test.js`
+### End-to-end proof
 
-The first full integration run failed because starter gear was initially universal; this was corrected to the explicit creator-only option. A follow-up color audit found lingering gold TP/resource-meter styling and replaced it with theme-aware grayscale/navy values.
+`tests/playerHomeWorkshopFlow.test.js` proves:
 
-The final promoted runtime is fully green at `0f00ef68...` with 505/505 tests plus Benchmark 1.
+- both home improvements remain visible and independently stateful;
+- the workbench recipe is blocked before construction;
+- 2 boards + 1 clasp are consumed exactly once through project contribution;
+- a 45-minute active build survives real account save/load;
+- canonical activity advance completes project labor;
+- exactly one workbench furnishing is placed;
+- storage capacity remains unchanged at 3 when only the workbench is added;
+- home station tags become woodshop/workshop;
+- repeated reconciliation cannot duplicate the furnishing;
+- the existing resin-board process becomes ready at home;
+- Work, Trade & Recover discovers it through the ordinary service board;
+- production consumes hardwood/resin and 240 fictional seconds;
+- output has canonical transformation/input/place provenance;
+- crafting proficiency gains +2;
+- final world time, furnishing, product, and mastery survive another real save/load;
+- home/game validation and player-facing HTML hygiene remain clean.
 
-No manual visual/browser walkthrough was performed or claimed; evidence is code/DOM/CSS regression coverage, full CI, Benchmark 1, and Pages build/deploy.
+### Resource-lifecycle audit
+
+Infrastructure-consumed goods now advertise their real construction sinks:
+
+```text
+Resin-Sealed Hardwood Board  -> construction
+Redstone Copper Ingot        -> construction
+Copper Trail Clasp           -> construction
+```
+
+This is descriptive authored metadata. Actual consumption remains project/inventory authority.
+
+### Integration repair trail
+
+First functional Check head `9e788412...` ran the new loop successfully but exposed a stale Phase 0.7 test that expected `settlementServiceBoard` to remain exactly version 1. The historical gate was repaired to assert minimum compatible versions for shared systems so later Phase 0.8 evolution does not reopen Phase 0.7.
+
+Pre-promotion head `283e00fa...` then passed 506/506 tests plus Benchmark 1.
+
+The first promoted head `f2b57ec4...` failed only because `tests/pipeline.test.js` still pinned Product `0.8.100.2`, Data 33, and old subsystem/database registrations. The release-contract test was synchronized without weakening persistence or legacy-boundary assertions.
+
+Authoritative promoted runtime checkpoint is therefore:
+
+```text
+03ab71c7e96c54eaeffb75598ed01243fd390f21
+506/506 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Check run 32046733161 SUCCESS
+```
+
+### `0.8.200` closure audit
+
+**PASS.** The workbench is locality-honest, grants no hidden storage, applies exactly once, survives save/load, feeds the existing workstation and production authorities, preserves provenance/mastery, and is available through ordinary semantic browser play. `0.8.100` and all historical Phase 0.7 regressions remain green.
 
 ## Stable authority boundaries to preserve
 
@@ -274,11 +315,12 @@ No manual visual/browser walkthrough was performed or claimed; evidence is code/
 - battle progression rewards separate from physical body recovery;
 - commitments separate from relationships and both separate from Journal projection;
 - scheduled transport owning fare/cadence/cargo/departure/arrival;
-- service/information/onboarding views as projections/adapters only;
-- production engine owning recipes/work/input/output/mastery;
+- service/information/onboarding/home views as projections/adapters only;
+- `workstationEngine` as the single semantic workstation-context authority;
+- `productionEngine` owning recipes, station requirements, work, inputs, outputs, provenance, and mastery;
 - shop engine owning actual transactions and wallet changes;
 - persistent NPC-backed companions with party/battle/travel responsibilities kept separate;
-- furnishings/inventory owning actual home-storage capacity;
+- furnishings/inventory owning placed objects and actual home-storage capacity;
 - creator starter gear entering through canonical inventory, not UI-owned loadout state;
 - save recovery mutating the existing account registry, not raw storage in the UI;
 - content-pack/cross-reference validation;
@@ -289,19 +331,20 @@ No manual visual/browser walkthrough was performed or claimed; evidence is code/
 - internal `mogHouse` remains legacy terminology; player-facing copy is already original/generic;
 - legacy prompt/fast-create creator bypasses the semantic creator starter-kit flag;
 - account settings still normalize historical `highContrast`, while active UI offers only Light/Dark;
-- broader property/workshops/agriculture/logistics/social schedules/companion breadth/earned automation remain future Phase 0.8 work;
+- broader agriculture/logistics/social schedules/companion breadth/earned automation remain future Phase 0.8 work;
 - original currency terminology is still deferred;
 - recurring GitHub action-runtime Node warning remains warning-only.
 
 ## Next work
 
-**Do not automatically launch another Phase 0.8 track from this handoff.** A new user work order should choose one bounded life/infrastructure seam and audit the existing authority/data path before implementation.
+**Do not automatically launch another Phase 0.8 track from this handoff.** `0.8.200` is closed. A new user work order should select one bounded life/infrastructure seam and audit the existing authority/data path before implementation.
 
-Good candidate tracks include:
+Good candidate tracks now include:
 
-- workshop/home-production depth;
 - agriculture/stewardship;
 - logistics/warehousing/transport capacity;
 - social schedules and relationship life;
 - companion life breadth;
 - earned automation.
+
+Do not mass-author additional workshop types or property tiers merely because the first home workstation now exists.
