@@ -60,7 +60,7 @@ test('DOM game shell omits exploration map and compass in safe settlement locali
 
     assert.match(html, /Thornwall Southgate/);
     assert.match(html, /aria-label="Context actions"/);
-    assert.match(html, /Search or act/);
+    assert.match(html, /Search what you know or can do/);
     assert.match(html, /aria-label="Character status"/);
     assert.doesNotMatch(html, /Local Map/);
     assert.doesNotMatch(html, /<svg class="minimap"/);
