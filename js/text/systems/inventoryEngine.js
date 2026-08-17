@@ -44,6 +44,18 @@ export function getContainerCapacity(inventoryState, containerId) {
     return definition.baseCapacity;
 }
 
+export function unlockInventoryContainer(stateOrInventoryState, containerId) {
+    const inventoryState = stateOrInventoryState?.player?.inventoryState ?? stateOrInventoryState?.inventoryState ?? stateOrInventoryState;
+    const definition = getContainerDefinition(containerId);
+    const container = inventoryState?.containers?.[containerId];
+    if (!definition || !container) return { ok: false, reason: `Unknown container: ${containerId}` };
+    if (container.unlocked) {
+        return { ok: true, alreadyUnlocked: true, containerId, capacity: getContainerCapacity(inventoryState, containerId) };
+    }
+    container.unlocked = true;
+    return { ok: true, alreadyUnlocked: false, containerId, capacity: getContainerCapacity(inventoryState, containerId) };
+}
+
 export function isContainerAccessible(inventoryState, containerId, context = {}) {
     const definition = getContainerDefinition(containerId);
     const container = inventoryState?.containers?.[containerId];
@@ -239,7 +251,7 @@ function sameStructuredValue(left, right) {
         const leftKeys = Object.keys(left).sort();
         const rightKeys = Object.keys(right).sort();
         if (leftKeys.length !== rightKeys.length || leftKeys.some((key, index) => key !== rightKeys[index])) return false;
-        return leftKeys.every((key) => sameStructuredValue(left[key], right[key]));
+        return leftKeys.every((key) => sameStructuredValue(left[key], right[index]));
     }
     return false;
 }
