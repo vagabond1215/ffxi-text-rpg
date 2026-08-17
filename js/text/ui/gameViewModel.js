@@ -1,4 +1,5 @@
 import { DIRECTION_ARROWS, DIRECTION_ORDER, describeCoordinate } from '../data/coordinates.js';
+import { getCompanionDefinition } from '../data/companions.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { listAbilityAvailability } from '../systems/abilityEngine.js';
@@ -9,7 +10,12 @@ import {
     listLocalityPoints,
 } from '../systems/localityEngine.js';
 import { canMoveDirection } from '../systems/navigationEngine.js';
-import { listActiveCompanions, listRecruitableCompanions, listRecruitedCompanions } from '../systems/partyEngine.js';
+import {
+    listActiveCompanions,
+    listCompanionApproaches,
+    listRecruitableCompanions,
+    listRecruitedCompanions,
+} from '../systems/partyEngine.js';
 import { decoratePlayerOpportunityModel } from '../systems/playerContinuityEngine.js';
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
 import { createPlayerInformationModel } from '../systems/playerInformationEngine.js';
@@ -123,7 +129,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
         .filter((entry) => entry.recruitable)
         .map((entry) => Object.freeze({
             id: `context:recruit:${entry.definition.id}`,
-            label: `Recruit · ${entry.definition.name}`,
+            label: `Invite ${entry.definition.name} to travel`,
             intent: 'party.recruit',
             payload: Object.freeze({ companionId: entry.definition.id }),
             kind: 'social',
@@ -231,20 +237,55 @@ function createSpellbookModel(state) {
 
 function createPartyModel(state) {
     const activeIds = new Set(listActiveCompanions(state).map((entry) => entry.id));
+    const actions = [];
     const entries = listRecruitedCompanions(state).map((companion) => {
         const combat = calculateCombatProfile(companion);
+        const definition = getCompanionDefinition(companion.id);
+        const active = activeIds.has(companion.id);
+        const approaches = listCompanionApproaches(state, companion.id).map((approach) => {
+            const action = approach.available && !approach.selected
+                ? directAction(
+                    `party:${companion.id}:approach:${approach.id}`,
+                    approach.name,
+                    'party.approach.set',
+                    { companionId: companion.id, approachId: approach.id },
+                    'social',
+                )
+                : null;
+            if (action) actions.push(action);
+            return Object.freeze({
+                id: approach.id,
+                name: approach.name,
+                summary: approach.summary,
+                quote: approach.quote,
+                selected: approach.selected,
+                action,
+            });
+        });
+        const membershipAction = active
+            ? directAction(`party:${companion.id}:leave`, 'Part ways here', 'party.leave', { companionId: companion.id }, 'social')
+            : companion.locationId === state.currentPlaceId
+                ? directAction(`party:${companion.id}:join`, 'Travel together', 'party.join', { companionId: companion.id }, 'social')
+                : null;
+        if (membershipAction) actions.push(membershipAction);
+        const currentApproach = approaches.find((entry) => entry.selected) ?? null;
         return Object.freeze({
             id: companion.id,
             npcId: companion.npcId,
             name: companion.identity.name,
             title: companion.identity.title,
+            description: definition?.description ?? '',
             level: companion.level,
-            active: activeIds.has(companion.id),
+            active,
             locationId: companion.locationId,
+            locationName: getPlace(companion.locationId)?.name ?? companion.locationId,
             role: companion.tactics.role,
             hp: companion.resources.hp,
             maxHp: combat.resources.maxHp,
             relationship: Object.freeze({ ...companion.relationship }),
+            currentApproach,
+            approaches: Object.freeze(approaches),
+            membershipAction,
         });
     });
     return Object.freeze({
@@ -252,6 +293,7 @@ function createPartyModel(state) {
         activeCount: activeIds.size,
         recruitedCount: entries.length,
         entries: Object.freeze(entries),
+        actions: Object.freeze(actions),
     });
 }
 
