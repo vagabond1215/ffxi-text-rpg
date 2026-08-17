@@ -1,7 +1,6 @@
 import { getHomeInfrastructureDefinition, listHomeInfrastructureDefinitions } from '../data/homeInfrastructure.js';
 import { getFurniture, calculateFurnitureStorageCapacity } from '../data/mogHouseFurniture.js';
 import { getPlace } from '../data/places.js';
-import { getProductionItem } from '../data/productionItems.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import {
@@ -84,7 +83,7 @@ export function reconcileHomeInfrastructureProjects(state) {
     const projects = ensureProjectState(state);
     const applied = [];
     const placedFurniture = state?.player?.inventoryState?.mogHouse?.placedFurniture;
-    if (!Array.isArray(placedFurniture)) return applied;
+    if (!Array.isArray(placedFurniture)) return Object.freeze(applied);
 
     for (const project of projects.records) {
         if (project.status !== PROJECT_STATUSES.COMPLETED || project.data?.completionApplied === true) continue;
@@ -295,7 +294,7 @@ function createHomeGroup(entry, current) {
 function opportunity({ id, category, title, summary, motivation, progress, status, requirements = [], blockers = [], action = null, regionLabel = null, groupKind = null }) {
     return Object.freeze({
         id, category, title, summary, motivation, progress, status,
-        reason: 'A home improvement turns regional materials and fictional labor into a durable preparation benefit without creating a second construction or storage authority.',
+        reason: 'Your lodging can be improved with materials you carry and time you choose to spend.',
         requirements: Object.freeze(requirements),
         blockers: Object.freeze(blockers),
         action,
