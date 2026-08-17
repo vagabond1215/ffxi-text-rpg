@@ -12,17 +12,17 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:       0.8.100.1
+Product:       0.8.100.2
 Package:       0.8.100
 Account Save:  4
 Game State:    5
-Data:          32
+Data:          33
 Benchmark:     1
 Codename:      Home Foothold and Infrastructure
 Compatibility: pre-release-current-schema
 ```
 
-**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is in progress and `0.8.100` is complete.** The project remains pre-alpha and unreleased.
+**Phases 0.4, 0.5, 0.6, and 0.7 are complete. Phase 0.8 is in progress and the bounded `0.8.100` track is complete.** `0.8.100.2` is an onboarding/character-creation polish revision within that closed track. The project remains pre-alpha and unreleased.
 
 ## Product version format
 
@@ -34,7 +34,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains three-part SemV
 | --- | ---: | --- |
 | Account Save | 4 | local account/session/character registry contract |
 | Game State | 5 | serialized character/world runtime contract |
-| Data | 32 | canonical authored-data contract |
+| Data | 33 | canonical authored-data contract |
 | Benchmark | 1 | benchmark protocol/comparability |
 
 Account Save changes when the account/session registry changes materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the workload/protocol changes enough that prior results stop being comparable.
@@ -53,9 +53,10 @@ Recent Data history:
 - Data 29 — commitment catalog v2, Reader Soli Venn, `Marrowleaf for the Ward`, raw-resource/source/return guidance;
 - Data 30 — Sera Talwin plus `Sweetroot for Southgate`, completing the three-origin authored community-continuity set;
 - Data 31 — companion catalog v2 with voiced field approaches plus character-facing place/POI authored-content cleanup;
-- Data 32 — first canonical home-infrastructure definition linking existing regional production goods and generic project labor to the durable Storage Chest furnishing benefit.
+- Data 32 — first canonical home-infrastructure definition linking existing regional production goods and generic project labor to the durable Storage Chest furnishing benefit;
+- Data 33 — original ancestry/sex-aware character-name catalog, starting-discipline starter-kit definitions, and authored Thornwall/Brasshaven/Mistmere opening scenes.
 
-`0.8.100` does **not** advance Game State or Account Save. Its persistent construction record fits the existing generic project `data` contract, its labor is an existing timed task, and its completed benefit uses existing placed-furnishing/inventory state.
+Neither the original `0.8.100` home track nor the `0.8.100.2` onboarding revision advances Game State or Account Save. Home construction uses existing project/timed-task/furnishing state. Creator starter gear uses existing inventory records, and save deletion/clear-all uses the existing account registry.
 
 ## Compatibility policy
 
@@ -105,7 +106,9 @@ Account Save:  4
 Game State:    5
 ```
 
-The sequence closed origin/community continuity, multi-region campaign readability, danger/combat/recovery, semantic transport, settlement economy/service depth, semantic information access, companion preparation, and the character-POV browser boundary. The authoritative final runtime checkpoint remains:
+The sequence closed origin/community continuity, multi-region campaign readability, danger/combat/recovery, semantic transport, settlement economy/service depth, semantic information access, companion preparation, and the character-POV browser boundary.
+
+Final runtime checkpoint:
 
 ```text
 1e217fe1f7e62593fa9ed33eebdf1b3878490336
@@ -115,37 +118,13 @@ The sequence closed origin/community continuity, multi-region campaign readabili
 Benchmark 1 success
 ```
 
-Final Phase 0.7 registrations that remain relevant:
-
-```text
-commitments:                  0.2.0
-relationships:                0.1.0
-dayCycle:                     0.2.0
-resourceRecoveryWork:         0.3.0
-transport:                    0.2.0
-transportServiceBoard:        0.1.0
-settlementServiceBoard:       0.1.0
-workstations:                 0.2.0
-shopTransactions:             0.5.0
-playerInformation:            0.1.1
-playerExperience:             0.3.0
-playerOpportunities:          0.2.0
-playerContinuity:             0.5.0
-playerCampaignReadability:    0.2.0
-playerDangerRecovery:         0.2.0
-domUi:                        0.10.0
-companionCatalog:             0.2.0
-party:                        0.2.0
-companions:                   0.2.0
-```
-
 Phase 0.7 remains closed; later shared-authority revisions do not reopen its historical gate.
 
 # Phase 0.8 — Life and infrastructure expansion — in progress
 
 ## `0.8.100` — Home Foothold & Infrastructure — complete
 
-### Version decision
+### Original track decision
 
 ```text
 Product:       0.8.100.1
@@ -154,51 +133,11 @@ Account Save:  4
 Game State:    5
 Data:          32
 Benchmark:     1
-Codename:      Home Foothold and Infrastructure
-Compatibility: pre-release-current-schema
 ```
 
-Data advances `31 -> 32` because this track adds a canonical authored home-infrastructure definition and a material-to-durable-benefit contract. Game State remains 5 because construction uses the existing `state.projects` record/data structure, existing canonical timed tasks, and existing `inventoryState.mogHouse.placedFurniture`. Account Save remains 4 because the account/session/character registry is unchanged. Benchmark remains 1 because the benchmark protocol/workloads are unchanged.
+Data `31 -> 32` added the first canonical home-infrastructure definition. `homeInfrastructureEngine` is a bounded adapter over project, timed-task, inventory, furnishing, and Journal authorities. The proving improvement consumes 2 Resin-Sealed Hardwood Boards, 1 Redstone Copper Ingot, and 30 minutes project labor, then places the existing Storage Chest exactly once and raises furnishing-backed storage from 3 to 8 slots.
 
-### `0.8.100` subsystem registrations
-
-```text
-versionManifest:              0.8.100.1
-homeInfrastructure:           0.1.0
-characterActivity:            0.3.0
-activityAdvance:              0.3.0
-gameViewModels:               0.13.0
-uiIntents:                    0.10.0
-validation:                   0.10.0
-projects:                     0.1.0
-homeStorage:                  0.3.9
-```
-
-Existing `projects` and `homeStorage` versions do not advance because their authority contracts did not change. The new adapter consumes them. `js/text/data/databaseRegistry.js` records `homeInfrastructure` as an implemented `0.1.0` contract.
-
-### Authority decision
-
-`homeInfrastructureEngine` is a bounded adapter over existing authorities:
-
-- authored home-improvement definitions specify material/labor/benefit requirements;
-- `projectEngine` owns project IDs, material contributions, labor linkage, status, and generic completion;
-- world time/timed tasks own fictional duration;
-- inventory/furnishing definitions own the actual storage-capacity benefit;
-- the Journal/view model is derived presentation only;
-- semantic UI intents delegate begin/contribute/start operations to the adapter;
-- `activityAdvanceEngine` can now complete generic `project.labor`, with home-specific completion effects delegated back to the home adapter.
-
-No second property registry, construction timer, item store, storage-capacity calculation, or UI persistence layer was added.
-
-### Player-facing gate
-
-The first improvement is **Build a Storage Chest**. It requires 2 Resin-Sealed Hardwood Boards, 1 Redstone Copper Ingot, and 30 minutes of hands-on fictional labor. The materials are existing canonical products from Elderwood and Redstone chains; construction therefore turns regional production into a durable preparation sink rather than spawning a disconnected building currency.
-
-The starting Bronze Bed + Maple Table provide 3 furnishing-storage slots. Completion places the existing Storage Chest exactly once, raising the furnishing-backed home storage capacity to 8 slots. Real account save/load is proven both during active construction and after completion.
-
-`tests/playerHomeInfrastructureFlow.test.js` guards semantic Journal actions, atomic material contribution, active-project persistence, canonical activity completion, exactly-once furnishing application, 3 -> 8 capacity, final save/load continuity, validation, and player-facing HTML hygiene.
-
-### Authoritative promoted runtime checkpoint
+Original promoted checkpoint:
 
 ```text
 0b9251a43285443087050127da36b977cabdf7ee
@@ -209,21 +148,81 @@ Benchmark 1 success
 Data 32
 ```
 
+## `0.8.100.2` — onboarding and character-creation polish revision — complete
+
+### Version decision
+
+```text
+Product:       0.8.100.2
+Package:       0.8.100
+Account Save:  4
+Game State:    5
+Data:          33
+Benchmark:     1
+Codename:      Home Foothold and Infrastructure
+Compatibility: pre-release-current-schema
+```
+
+This is a revision of the existing `0.8.100` track rather than `0.8.200`: it repairs onboarding/player presentation and uses existing game authorities instead of introducing another life/infrastructure feature domain.
+
+Data advances `32 -> 33` because the revision adds canonical authored name pools, starting-discipline-kit definitions, and substantial origin-opening prose. Game State stays 5 because the kit is ordinary inventory. Account Save stays 4 because character deletion and clear-all use the existing registry/storage contract. Benchmark remains 1 because the workload is unchanged.
+
+### Relevant registrations
+
+```text
+versionManifest:          0.8.100.2
+domOnboarding:            0.1.0
+saveRecovery:             0.1.0
+characterCreation:        0.6.0
+characterCreationContent: 0.2.0
+characterNames:           0.1.0
+startingDisciplineKits:   0.1.0
+```
+
+Existing `domUi`, account-save, inventory, equipment, stat, and game-state versions do not advance merely because the new presentation composes them.
+
+### Player-facing gate
+
+The revision closes the requested onboarding defects:
+
+- active browser color scheme is deliberately limited to Light and Dark palettes;
+- corrupt character records can be removed without decoding their game state;
+- account-wide local data can be cleared from Settings, with a logged-out recovery path as well;
+- name and whole-character randomization use original-world canonical data and valid ancestry/sex combinations;
+- the six starting disciplines expose their real attribute/resource/skill/combat distinctions and actual starting gear;
+- guided creator state grants the selected two-item kit into ordinary carried inventory without auto-equipping it;
+- Thornwall, Brasshaven, and Mistmere have distinct authored arrival scenes with credible first human contacts and discipline-sensitive observation.
+
+The generic new-game constructor intentionally remains neutral unless the creator-specific `includeStartingDisciplineKit` option is supplied. The older prompt/fast-create command adapter still uses neutral generic creation; it is transitional debt, not a reason to make starter inventory universal.
+
+The historical account settings normalizer still accepts `highContrast`, but the active browser UI exposes only Light and Dark. Removing that dormant value can be a later bounded account-settings cleanup.
+
+### Authoritative promoted runtime checkpoint
+
+```text
+0f00ef68a01ad001063803d67ff0efffc48ab3ef
+505/505 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Data 33
+```
+
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     466.332ms  0.466332ms/op
-1,000 enemy combat profiles      108.813ms  0.108813ms/op
-1,000 basic attacks              521.192ms  0.521192ms/op
-10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
-10,000 direct route lookups     8784.978ms  0.878498ms/op
+1,000 player combat profiles      463.353ms  0.463353ms/op
+1,000 enemy combat profiles       125.126ms  0.125126ms/op
+1,000 basic attacks               551.861ms  0.551861ms/op
+10,000 ticks / 5 subscribers       48.338ms  0.004834ms/op
+10,000 direct route lookups      8665.221ms  0.866522ms/op
 ```
 
-Benchmark protocol remains 1 and the results remain comparable to the Phase 0.7 baseline.
+Primary new regressions are `tests/playerCreatorPolish.test.js` and `tests/saveRecovery.test.js`. Exact promoted runtime Check and Pages workflows both succeeded. No manual visual-browser walkthrough is claimed by this evidence.
 
 ### Next Phase 0.8 decision
 
-`0.8.100` is closed. Do not automatically expand it into broad property or farm authoring. A new bounded work order should choose and audit the next life/infrastructure seam before implementation. Candidate directions include workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
+`0.8.100` remains closed after this revision. Do not automatically expand it into broad property, farm, workshop, social-schedule, logistics, companion, or automation work. A new bounded user work order should choose and audit one such seam before implementation.
 
 # Planned later phases
 
