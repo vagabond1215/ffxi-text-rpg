@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.7.200.1');
-    assert.equal(PACKAGE_VERSION, '0.7.200');
+    assert.equal(PRODUCT_VERSION, '0.7.300.1');
+    assert.equal(PACKAGE_VERSION, '0.7.300');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 30);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Settlement Economy Depth');
+    assert.equal(VERSION.codename, 'Semantic Information Access');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -45,6 +45,7 @@ test('version manifest separates product package and persistence versions', () =
             relationships: SYSTEM_VERSIONS.relationships,
             dayCycle: SYSTEM_VERSIONS.dayCycle,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
+            playerInformation: SYSTEM_VERSIONS.playerInformation,
             playerExperience: SYSTEM_VERSIONS.playerExperience,
             playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
             playerContinuity: SYSTEM_VERSIONS.playerContinuity,
@@ -60,7 +61,7 @@ test('version manifest separates product package and persistence versions', () =
             companions: SYSTEM_VERSIONS.companions,
         },
         {
-            versionManifest: '0.7.200.1',
+            versionManifest: '0.7.300.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             transportServiceBoard: '0.1.0',
@@ -74,14 +75,15 @@ test('version manifest separates product package and persistence versions', () =
             commitments: '0.2.0',
             relationships: '0.1.0',
             dayCycle: '0.2.0',
-            gameViewModels: '0.10.0',
+            gameViewModels: '0.11.0',
+            playerInformation: '0.1.0',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
             playerContinuity: '0.5.0',
             playerCampaignReadability: '0.2.0',
             playerDangerRecovery: '0.2.0',
-            domUi: '0.8.0',
-            uiIntents: '0.7.0',
+            domUi: '0.9.0',
+            uiIntents: '0.8.0',
             companionCatalog: '0.1.0',
             party: '0.1.0',
             battleEngine: '0.8.0',
@@ -91,11 +93,11 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.7\.200\.1/);
-    assert.match(describeVersion(), /Package: 0\.7\.200/);
+    assert.match(describeVersion(), /Product: 0\.7\.300\.1/);
+    assert.match(describeVersion(), /Package: 0\.7\.300/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 30/);
-    assert.match(describeVersion(), /Codename: Settlement Economy Depth/);
+    assert.match(describeVersion(), /Codename: Semantic Information Access/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /integratedMechanicsGate: 0\.1\.0/);
     assert.match(describeSystemVersions(), /transportServiceBoard: 0\.1\.0/);
@@ -107,11 +109,12 @@ test('version manifest separates product package and persistence versions', () =
     assert.match(describeSystemVersions(), /resourceRecoveryWork: 0\.3\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.2\.0/);
     assert.match(describeSystemVersions(), /relationships: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerInformation: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerContinuity: 0\.5\.0/);
     assert.match(describeSystemVersions(), /playerCampaignReadability: 0\.2\.0/);
     assert.match(describeSystemVersions(), /playerDangerRecovery: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.10\.0/);
-    assert.match(describeSystemVersions(), /domUi: 0\.8\.0/);
+    assert.match(describeSystemVersions(), /gameViewModels: 0\.11\.0/);
+    assert.match(describeSystemVersions(), /domUi: 0\.9\.0/);
     assert.match(describeSystemVersions(), /party: 0\.1\.0/);
 });
 
