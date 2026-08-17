@@ -6,6 +6,7 @@ import { randomCharacterName } from '../js/text/data/characterNames.js';
 import { getStartingDisciplineKit, validateStartingDisciplineKits } from '../js/text/data/startingDisciplineKits.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import {
+    createCreatorGameOptions,
     createGuidedCreatorState,
     describeCreatorOpening,
     randomizeCreator,
@@ -59,9 +60,15 @@ test('all six starting disciplines expose truthful mechanical and equipment prev
     }
 });
 
-test('new characters receive their real discipline starter kit through canonical inventory authority', () => {
+test('guided creator grants real discipline starter kits without polluting generic new-game fixtures', () => {
+    const generic = createNewGameState({ name: 'Fixture', mainJobId: 'vanguard' });
+    assert.equal(generic.player.inventoryState.containers.inventory.items.length, 0);
+
     for (const jobId of STARTING_DISCIPLINES) {
-        const state = createNewGameState({ name: `Test ${jobId}`, mainJobId: jobId });
+        const creator = createGuidedCreatorState({ name: `Test ${jobId}`, mainJobId: jobId });
+        const options = createCreatorGameOptions(creator);
+        assert.equal(options.includeStartingDisciplineKit, true);
+        const state = createNewGameState(options);
         const expected = getStartingDisciplineKit(jobId).itemIds;
         const carried = state.player.inventoryState.containers.inventory.items.map((item) => item.templateId ?? item.id);
         for (const itemId of expected) assert.ok(carried.includes(itemId), `${jobId} should carry ${itemId}`);
