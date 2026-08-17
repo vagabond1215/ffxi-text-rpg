@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.8.100.2';
-export const PACKAGE_VERSION = '0.8.100';
+export const PRODUCT_VERSION = '0.8.200.1';
+export const PACKAGE_VERSION = '0.8.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 33,
+    data: 34,
     benchmark: 1,
-    codename: 'Home Foothold and Infrastructure',
+    codename: 'Home Workshop Capability',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.100.2',
+    versionManifest: '0.8.200.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -26,7 +26,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationInterrupts: '0.1.0',
     timedTasks: '0.1.0',
     projects: '0.1.0',
-    homeInfrastructure: '0.1.0',
+    homeInfrastructure: '0.2.0',
     commitments: '0.2.0',
     relationships: '0.1.0',
     resourceProvenance: '0.1.0',
@@ -34,15 +34,15 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceRecovery: '0.1.0',
     resourceRecoveryWork: '0.3.0',
     characterActivity: '0.3.0',
-    activityAdvance: '0.3.0',
+    activityAdvance: '0.4.0',
     campaignRecovery: '0.1.0',
     workTasks: '0.1.0',
     workProficiencies: '0.1.0',
-    workstations: '0.2.0',
+    workstations: '0.3.0',
     productionCatalog: '0.2.0',
-    productionItems: '0.2.0',
+    productionItems: '0.3.0',
     production: '0.1.0',
-    settlementServiceBoard: '0.1.0',
+    settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
     regionalEcology: '0.1.0',
     ecologyRegistry: '0.1.0',
