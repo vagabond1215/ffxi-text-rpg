@@ -3,6 +3,7 @@ const HOME_FURNITURE_DEFINITIONS = Object.freeze({
     mapleTable: furniture('maple-table', 'Maple Table', 2, ['table']),
     storageChest: furniture('storage-chest', 'Storage Chest', 5, ['chest', 'storage']),
     simpleCabinet: furniture('simple-cabinet', 'Simple Cabinet', 8, ['cabinet', 'storage']),
+    joinersWorkbench: furniture('joiners-workbench', "Joiner's Workbench", 0, ['workbench', 'woodshop']),
 });
 
 // Canonical export for new code. The legacy export is retained as a bounded compatibility alias
