@@ -6,6 +6,7 @@ export function createUiState(options = {}) {
     return {
         ...createCanvasUiState(options),
         activeView: PRIMARY_UI_VIEWS.includes(options.activeView) ? options.activeView : 'scene',
+        informationQuery: String(options.informationQuery ?? '').trim(),
     };
 }
 
