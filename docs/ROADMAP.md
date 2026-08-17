@@ -9,21 +9,21 @@ Authoritative companions:
 - `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — product/schema version protocol and release gates.
 - `docs/ARCHITECTURE.md` — current runtime/module boundaries.
 - `docs/THREAD_HANDOFF.md` — latest implementation handoff.
-- `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md` — Phase 0.7 player-facing sequencing and acceptance checks.
+- `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md` — player-facing sequencing and acceptance checks.
 
 ## Current baseline
 
 ```text
-Product:      0.7.300.1
-Package:      0.7.300
+Product:      0.7.400.1
+Package:      0.7.400
 Account Save: 4
 Game State:   5
-Data:         30
+Data:         31
 Benchmark:    1
-Codename:     Semantic Information Access
+Codename:     Companion Life and Party Depth
 ```
 
-Phase 0.7 remains in progress. `0.7.100`, `0.7.200`, and `0.7.300` are complete bounded milestones.
+**Phase 0.7 — Multi-region playable alpha is complete.** The project remains pre-alpha and `released: false`; completing Phase 0.7 does not imply release readiness.
 
 ## Product laws
 
@@ -42,7 +42,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments/relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
+Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments and relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
 
 ## Phase summary
 
@@ -51,7 +51,7 @@ Campaign guidance and maps reflect acquired knowledge. Resources preserve proven
 | `0.4` | Foundation and direction lock | **Complete** |
 | `0.5` | Simulation + original-world/content substrate | **Complete** |
 | `0.6` | Integrated character/mechanics content | **Complete** |
-| `0.7` | Multi-region playable alpha | **In progress** |
+| `0.7` | Multi-region playable alpha | **Complete** |
 | `0.8` | Life and infrastructure expansion | Planned |
 | `0.9` | Adventure depth and release hardening | Planned |
 | `1.0` | Live foundation | Planned |
@@ -82,13 +82,13 @@ Deterministic fictional time, scheduler/pause, timed tasks, interrupts, day revi
 | `0.6.800` | Persistent companion/party foundation | Data 26 |
 | `0.6.900` | Integrated-mechanics exit gate | Product `0.6.900.1` / Data 26 |
 
-# 0.7 — Multi-region playable alpha — in progress
+# 0.7 — Multi-region playable alpha — complete
 
-Phase 0.7 turns proven systems into sustained ordinary play; it is not another architecture reset.
+Phase 0.7 turned the proven systems into a sustained ordinary-play campaign rather than another architecture reset.
 
-## Phase exit direction
+## Exit contract
 
-A normal player should sustain repeated multi-session play across connected settlements/regions without test-only setup or command expertise. The campaign should combine persistent NPC communities, economy/services/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companions where relevant, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
+A normal player can sustain repeated multi-session play across connected settlements/regions without test-only setup or command expertise. The campaign combines persistent NPC communities, economy/services/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companion preparation, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
 
 ## `0.7.100` — Playable campaign slice — complete
 
@@ -108,8 +108,6 @@ Data 30
 
 `settlementServiceBoardEngine` derives real workshop, production, merchant, wallet, work-mastery, and recovery choices from existing authorities. The active Craft browser surface is **Work, Trade & Recover** and dispatches semantic workshop/production/trade/recovery actions without creating a parallel economy.
 
-The bounded Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent work mastery, finished-goods trade, preparation purchase, optional one-hour safe recovery, and save/load continuity. The same derived board discovers existing Thornwall tannery, Brasshaven forge, and Mistmere kitchen authority.
-
 Authoritative promoted runtime checkpoint:
 
 ```text
@@ -122,29 +120,7 @@ Data 30
 
 ## `0.7.300` — Semantic information access and locality usability — complete
 
-The third Phase 0.7 track removes ordinary command knowledge from the core information needed to make decisions while preserving the command shell as an optional power/diagnostic surface.
-
-### Derived known/current information model
-
-`playerInformationEngine` is a pure projection over existing authorities. It derives only information the character carries, has learned, has visited/acquired, or can currently act on:
-
-- accessible carried containers and equipment, with semantic equip/unequip actions;
-- effective skills and character-owned learned capabilities;
-- learned spells/techniques and current readiness;
-- acquired maps and visited places;
-- discovered named POIs/contacts;
-- currently usable safe-locality destinations and POI actions;
-- deterministic bounded search results over those entries only.
-
-Search state is transient UI state, not game state. The model does not enumerate the global map/place/POI/resource catalogs and cannot become an omniscient world index.
-
-### Browser result
-
-Character, Spellbook, Codex, and World now render structured state directly. Safe-locality World presentation exposes named districts and local places/people through semantic actions while still omitting wilderness D-pad/minimap controls. The omnibox searches **what the character knows or can do**; a leading `/` explicitly opts into the command shell.
-
-The focused privacy regression proves a fresh Thornwall character can search Sera Talwin and a learned Ore Survey capability, can inspect the acquired Thornwall map/current locality, and cannot find the hidden **Tall Reedbed** before discovery.
-
-No Data, Game State, Account Save, or Benchmark bump accompanies `0.7.300`: no authored record or persisted gameplay contract changed.
+`playerInformationEngine` derives only information the character carries, has learned, has visited/acquired, or can currently act on. Character, Spellbook, Codex, World, and the default omnibox expose ordinary decision information without requiring command vocabulary. Search remains bounded by acquired/current knowledge; hidden topology is not an indexable catalog.
 
 Authoritative promoted runtime checkpoint:
 
@@ -156,45 +132,82 @@ Product 0.7.300.1
 Data 30
 ```
 
+## `0.7.400` — Companion life, party depth, and character POV — complete
+
+The existing Mara Venn companion foundation now creates a real preparation decision outside the automatic combat contribution. Mara remains the same NPC-backed person through recruitment, active-party changes, travel, battle-resource synchronization, recovery, and real save/load.
+
+Her persistent field approach lives in the existing party tactics record:
+
+- **Guard the Road** — tighter defense/evasion at the cost of striking power; Mara says, “Stay inside my reach. We get home together.”
+- **Seek the Opening** — more attack at the cost of caution; Mara says, “Hold their eye. I’ll find the seam.”
+
+Changing approach is a pre-battle decision. Battle entry derives its modifiers without mutating Mara's permanent attributes, creating companion XP, or adding a second combat-AI/progression authority.
+
+The Character view presents Mara as a traveling person rather than a raw policy record: identity, description, location, condition, current approach, voiced intent, alternative approaches, and semantic travel/part-ways/preparation actions.
+
+The same track completed a character-POV hygiene audit. Ordinary browser surfaces and encounterable place/POI descriptions now speak in terms of what the character sees, knows, carries, remembers, needs, or can decide. Development-roadmap language, raw state/task labels, authored-world explanations, and similar implementation vocabulary stay outside normal play. `tests/playerPointOfViewPresentation.test.js` and `tests/playerFacingLanguage.test.js` guard that boundary.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+1e217fe1f7e62593fa9ed33eebdf1b3878490336
+495/495 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.7.400.1
+Data 31
+```
+
 Benchmark 1:
 
 ```text
-player profile      0.464067ms/op
-enemy profile       0.114406ms/op
-basic attack        0.543591ms/op
-tick dispatch       0.004843ms/op
-direct route lookup 0.869373ms/op
+player profile       0.470213ms/op
+enemy profile        0.124768ms/op
+basic attack         0.538006ms/op
+tick dispatch        0.005020ms/op
+direct route lookup  0.861264ms/op
 ```
 
-`0.7.300` deliberately does **not** attempt a total command purge, a general natural-language agent, or an omniscient fuzzy world search.
+Data advances to 31 because the canonical companion catalog and player-visible authored world/POI content changed. Account Save 4 and Game State 5 remain unchanged because field approach uses the existing party tactics structure.
 
-## `0.7.400` — Companion life and party depth — next
+## Phase 0.7 closure audit
 
-The next bounded track should make the existing persistent companion foundation matter more often in ordinary campaign play rather than add another companion framework or content region.
+**PASS. Phase 0.7 closes at Product `0.7.400.1`.**
 
-Begin with an audit of Mara's existing NPC/party/relationship/tactics state, recruitment and leave/join flows, companion battle behavior, travel/recovery synchronization, current browser presentation, and save/load coverage. Choose one concrete multi-session companion loop before adding breadth.
+The exit contract is satisfied by the combined proofs:
 
-A good first proof should make a recruited companion create at least one meaningful preparation/tactical/social choice outside a single automatic battle action, persist the consequence, survive real save/load, and remain the same NPC-backed person across travel/community play.
+- three several-day persistent community loops with named NPC relationships and later follow-up;
+- livelihood, gathering, provenance, processing, trade, preparation, and persistent work mastery;
+- danger, Combat 2.0, physical-body recovery, defeat consequences, and return to the same campaign;
+- semantic scheduled transport across the proving communities;
+- useful settlement return choices for work, trade, recovery, preparation, and social continuity;
+- acquired/current information access and search without omniscient topology leakage;
+- current-format deterministic save/load with exactly-once rewards, fares, trades, and progress;
+- a persistent companion whose pre-battle choice matters and survives travel/save-load;
+- clean character-facing prose and a simple decision-first browser hierarchy.
 
-Do not begin with a summon system, universal party-AI framework, mass-authored companions, or a duplicate relationship/equipment/progression authority.
+The audit does **not** require every future depth system to be complete. Residual breadth belongs to later phases unless it becomes a concrete player blocker.
 
-## Known later Phase 0.7 depth
+## Deferred depth after Phase 0.7
 
-- A few explicit utility/combat and wilderness POI actions still retain command bridges; commands remain optional power surfaces rather than normal core information access.
-- Companion tactical/dialogue/equipment/progression breadth remains intentionally small until `0.7.400`.
-- Safe-locality density/hierarchy can still improve without restoring wilderness controls there.
-- `gil` remains current currency terminology pending deliberate original-currency design.
-- Paid/service-quality recovery remains unauthored; safe recovery currently costs fictional time rather than fabricated money.
+- Broader companion dialogue, equipment, progression, goals, schedules, and relationship consequences.
+- Richer generic NPC/vendor voice and denser social life.
+- A few optional utility/combat/wilderness command adapters outside the core ordinary information path.
+- Further safe-locality density/hierarchy refinement without restoring wilderness controls there.
+- Deliberate original-currency terminology to replace current `gil` wording.
+- Authored paid/service-quality recovery rather than fabricated fees.
+- Broader content scale and harder adventure/economy loops appropriate to Phases 0.8/0.9.
 
 # Later phases
 
 ## 0.8 — Life and infrastructure expansion
 
-Deepen property, workshops, agriculture, logistics, home/infrastructure, relationships, companions, and earned automation.
+Property, workshops, agriculture, logistics, home/infrastructure, relationships, companions, social schedules, and earned automation. **Do not begin automatically; choose a bounded track only on a new work order.**
 
 ## 0.9 — Adventure depth and release hardening
 
-Expand difficult regions/dungeons, advanced combat/abilities, rare systems, high-level economy/production, UI/accessibility, balance, persistence policy, performance, and release tooling.
+Difficult regions/dungeons, advanced combat/abilities, rare systems, high-level economy/production, UI/accessibility, balance, persistence policy, performance, and release tooling.
 
 ## 1.0 — Live foundation
 
