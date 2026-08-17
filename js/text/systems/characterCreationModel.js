@@ -1,6 +1,7 @@
 import { listJobs } from '../data/jobs.js';
 import { listNations } from '../data/nations.js';
 import { RACES } from '../data/races.js';
+import { randomCharacterName } from '../data/characterNames.js';
 import {
     composeStartingNarrative,
     describeCreatorSex,
@@ -91,6 +92,30 @@ export function setCreatorName(creator, name) {
     return normalizeCreatorState({ ...creator, name: normalizeName(name).slice(0, 24) });
 }
 
+export function randomizeCreatorName(creator, rng = Math.random) {
+    const normalized = normalizeCreatorState(creator);
+    return setCreatorName(normalized, randomCharacterName(normalized.raceId, normalized.sex, rng));
+}
+
+export function randomizeCreator(creator, rng = Math.random) {
+    const current = normalizeCreatorState(creator);
+    const races = Object.values(RACES);
+    const race = pick(races, rng) ?? RACES.human;
+    const sex = pick(race.allowedSexes, rng) ?? race.allowedSexes[0];
+    const nations = getNationOptions();
+    const jobs = STARTING_JOB_IDS;
+    const nation = pick(nations, rng)?.id ?? current.nationId;
+    const mainJobId = pick(jobs, rng) ?? current.mainJobId;
+    return normalizeCreatorState({
+        ...current,
+        raceId: race.id,
+        sex,
+        nationId: nation,
+        mainJobId,
+        name: randomCharacterName(race.id, sex, rng),
+    });
+}
+
 export function advanceCreatorStep(creator, delta) {
     const normalized = normalizeCreatorState(creator);
     return normalizeCreatorState({ ...normalized, stepIndex: clampStep(normalized.stepIndex + delta) });
@@ -112,6 +137,7 @@ export function getCreatorSummary(creator) {
         jobAbbreviation: job.abbreviation,
         startingMaps: nation.startingMapIds,
         startingKeyItems: nation.startingKeyItems,
+        discipline: job,
     };
 }
 
@@ -148,4 +174,11 @@ function clampStep(value) {
     const parsed = Number.parseInt(value, 10);
     if (!Number.isFinite(parsed)) return 0;
     return Math.max(0, Math.min(CREATOR_STEPS.length - 1, parsed));
+}
+
+function pick(values, rng) {
+    if (!values?.length) return null;
+    const roll = Number(typeof rng === 'function' ? rng() : Math.random());
+    const bounded = Number.isFinite(roll) ? Math.max(0, Math.min(0.999999999, roll)) : 0;
+    return values[Math.floor(bounded * values.length)] ?? values[0];
 }
