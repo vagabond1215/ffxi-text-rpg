@@ -6,14 +6,15 @@ This document records the player-facing upgrade path that closed Phase 0.7 and n
 
 A new player should be able to answer these questions from normal browser play:
 
-1. **Why am I here?** — the character has an origin-specific arrival circumstance and a first local connection.
-2. **What should I do next?** — the game presents one clear first contact and then several small, non-exclusive ambitions.
-3. **How does progress work?** — actions connect effort to persistent mastery, efficiency, capability, preparation, knowledge, relationships, or infrastructure.
-4. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character's life.
-5. **Why would I return?** — settlements convert what the character earned into recovery, trade, processing, equipment, training, social continuity, and larger ambitions.
-6. **What do I know and have ready?** — preparation, learned abilities/capabilities, acquired world knowledge, and useful local options are inspectable without command vocabulary.
-7. **Who is traveling with me?** — an active companion is a persistent person whose preparation, condition, and choices matter beyond a single combat effect.
-8. **Why improve a home or foothold?** — regional materials and fictional labor can become durable preparation advantages that reduce the burden of future journeys.
+1. **Who am I, and what was I trained to do?** — ancestry, sex, origin, and starting discipline communicate concrete level-1 differences without pretending the discipline is a permanent class.
+2. **Why am I here?** — the character has an origin-specific arrival circumstance and a credible first local connection.
+3. **What should I do next?** — the game presents one clear first contact and then several small, non-exclusive ambitions.
+4. **How does progress work?** — actions connect effort to persistent mastery, efficiency, capability, preparation, knowledge, relationships, or infrastructure.
+5. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character's life.
+6. **Why would I return?** — settlements convert what the character earned into recovery, trade, processing, equipment, training, social continuity, and larger ambitions.
+7. **What do I know and have ready?** — preparation, learned abilities/capabilities, acquired world knowledge, and useful local options are inspectable without command vocabulary.
+8. **Who is traveling with me?** — an active companion is a persistent person whose preparation, condition, and choices matter beyond a single combat effect.
+9. **Why improve a home or foothold?** — regional materials and fictional labor can become durable preparation advantages that reduce the burden of future journeys.
 
 The intended loop remains:
 
@@ -31,97 +32,41 @@ Player-experience work targets the clean current model. Old local-save compatibi
 
 ## PX-1 — Arrival and footing
 
-**Implemented and audited.** All three origins name the starting settlement, regional horizon, and a real first contact; new games begin at a believable morning hour; and the opening explains that the starting discipline is initial training rather than a permanent class identity.
+**Implemented and audited.** The current opening now improves on the original Phase 0.7 proof: each origin has a distinct present-world arrival scene, a named first intermediary/contact, a believable pointer toward the origin guide, and one discipline-sensitive observation. The rule that a starting discipline is not a permanent class remains visible in character creation rather than being spoken by the narrator inside the fiction.
 
 ## PX-2 — First-day actionable opportunities
 
 **Implemented and audited.** The Journal projects real livelihood, training/danger, exploration/travel, and settlement/service preparation. All three origins can claim and equip a real starter field tool through semantic actions.
 
-## PX-3 — First regional loop
+## PX-3 through PX-9
 
-**Implemented and audited.** Marshal Varric Stone and a Prospector Pick lead into Redstone Reach, timed copper gathering, return to Brasshaven, forge selection, copper-ingot processing, persistent work mastery, and a larger crafting horizon.
+**Implemented and audited.** The Phase 0.7 campaign proof covers Redstone gathering/production/mastery, several-day commitment and relationship continuity, multi-region acquired-knowledge readability, combat/recovery/defeat continuity, Mistmere/Starfen and Thornwall/Elderwood community breadth, and semantic scheduled transport among the proving communities.
 
-## PX-4 — Several fictional days of continuity
-
-**Implemented and audited.** `Copper for the Ring` is canonical commitment state. Provenance-qualified delivery changes Varric's relationship, pays once, survives account save/load, and creates later-day follow-up.
-
-## PX-5 — Multi-region campaign readability
-
-**Implemented and audited.** Known opportunities are grouped by region/readiness without exposing hidden topology. Knowing why a distant region matters is distinct from knowing every route/resource site there.
-
-## PX-6 — Danger, combat, and recovery
-
-**Implemented and audited.** Redstone livelihood and danger compete in ordinary play. Combat rewards progression/currency once, physical creature material remains a separate recovery opportunity, and recovery/defeat consume canonical fictional time before the same campaign resumes.
-
-## Player-language hygiene
-
-**Implemented and audited.** Journal cards use character-facing motivation/blockers/actions; details are collapsible; completed entries recede; Day Review reads as memory rather than telemetry; ordinary player surfaces avoid implementation jargon.
-
-## PX-7 — Second community breadth
-
-**Implemented and audited.** Reader Soli Venn / `Marrowleaf for the Ward` proves Mistmere/Starfen several-day continuity while ordinary reed livelihood and Rootling danger remain independent choices.
-
-## PX-8 — Third-origin continuity
-
-**Implemented and audited.** Sera Talwin / `Sweetroot for Southgate` proves Thornwall/Elderwood several-day continuity while Amber Resin livelihood and Brush Hare danger remain independent choices.
-
-## PX-9 — Cross-community rotation / `0.7.100`
-
-**Implemented and audited.** `transportServiceBoardEngine` derives actual scheduled destinations, fares, cadence, next boardable departure, journey duration, and blockers from the existing route/service catalog and character state. The UI dispatches direct `transport.start`; transport authority still owns payment, cargo, fictional time, departure/arrival, and party movement.
-
-`0.7.100` closed at Product `0.7.100.1` with 485/485 tests plus Benchmark 1.
+`0.7.100` closed at Product `0.7.100.1`; later Phase 0.7 tracks added settlement economy/service depth, semantic information access/locality usability, and companion/POV depth.
 
 # `0.7.200` — Settlement service and economy depth
 
 **Implemented, audited, and closed.**
 
-The active Craft surface became **Work, Trade & Recover**. `settlementServiceBoardEngine` derives actual workshop, production, merchant, wallet, work-mastery, and recovery decisions from existing authorities. A Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent mastery/efficiency, finished-goods trade, preparation purchase, optional safe recovery, and save/load continuity. The same board discovers existing Thornwall, Brasshaven, and Mistmere facilities.
+The active Craft surface became **Work, Trade & Recover**. `settlementServiceBoardEngine` derives actual workshop, production, merchant, wallet, work-mastery, and recovery decisions from existing authorities. A Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent mastery/efficiency, finished-goods trade, preparation purchase, optional safe recovery, and save/load continuity.
 
 # `0.7.300` — Semantic information access and locality usability
 
 **Implemented, audited, and closed.**
 
-`playerInformationEngine` is a derived model over existing authorities. It exposes only accessible carried/equipped preparation, effective skills, character-owned capabilities, learned abilities, acquired maps, visited places, discovered contacts/POIs, and currently actionable safe-locality choices.
-
-Character, Spellbook, Codex, and World render those states directly. The omnibox searches what the character currently knows or can do; `/` explicitly enters the optional command shell. Search is bounded by acquired/current knowledge, so hidden places such as Tall Reedbed remain absent until learned or discovered.
+`playerInformationEngine` exposes only accessible carried/equipped preparation, effective skills, character-owned capabilities, learned abilities, acquired maps, visited places, discovered contacts/POIs, and currently actionable safe-locality choices. Character, Spellbook, Codex, World, and the omnibox no longer require command vocabulary for ordinary information decisions.
 
 # `0.7.400` — Companion life, party depth, and character POV
 
 **Implemented, audited, and closed.**
 
-Mara Venn remains one persistent NPC-backed character. Her existing party tactics record carries a chosen field approach that matters before danger:
+Mara Venn remains one persistent NPC-backed character. Her field approach survives real account save/load and travel and changes derived battle-entry behavior without rewriting permanent attributes.
 
-- **Guard the Road** — favors evasion over attack. “Stay inside my reach. We get home together.”
-- **Seek the Opening** — favors attack over caution. “Hold their eye. I'll find the seam.”
-
-The choice survives real account save/load and canonical travel. Battle creation derives approach modifiers without changing permanent attributes. The Character view presents identity, lore description, location, condition, current approach, voiced intent, alternatives, and semantic party/preparation actions rather than raw tactic IDs.
-
-The accompanying character-POV audit established the carried-forward rule:
+The carried-forward character-POV rule is:
 
 > Ordinary character-facing information should tell the player what the character **sees, knows, carries, remembers, needs, or can decide**. Architecture, roadmap, compatibility, raw state channels, hidden topology, and implementation rationale stay outside normal play.
 
-`tests/playerCompanionLifeFlow.test.js`, `tests/playerPointOfViewPresentation.test.js`, and `tests/playerFacingLanguage.test.js` guard this closure.
-
-Promoted checkpoint:
-
-```text
-1e217fe1f7e62593fa9ed33eebdf1b3878490336
-495/495 tests
-0 failed
-0 skipped
-Benchmark 1 success
-Product 0.7.400.1
-Package 0.7.400
-Data 31
-```
-
-# Phase 0.7 closure audit
-
-**Result: PASS — Phase 0.7 is complete at `0.7.400.1`.**
-
-The combined Phase 0.7 proofs satisfy the player-facing acceptance checks: clear next actions and competing ambitions, persistent consequences, acquired-knowledge privacy, deterministic save/load, social continuity, combat/recovery continuity, semantic movement among proving communities, useful settlement returns, inspectable preparation/knowledge, persistent companion life, and clean decision-first character-facing presentation.
-
-Phase 0.7 remains closed as later phases extend shared authorities.
+Phase 0.7 closes at Product `0.7.400.1`; later shared-authority revisions do not reopen it.
 
 # Phase 0.8 — Life and infrastructure expansion — in progress
 
@@ -131,67 +76,124 @@ Phase 0.8 must deepen the persistent-life loop without turning the game into dis
 
 **Implemented, audited, and closed.**
 
-## Player-facing problem
-
-Before this track, the character began with a home/storage concept, and the generic project engine already supported materials plus fictional labor, but ordinary play did not turn regional production into a visible durable home improvement. Home storage was a static starting convenience rather than a reason to bring useful goods back from the wider campaign.
-
-## Bounded proof: Build a Storage Chest
-
-The first improvement deliberately reuses existing material chains and furnishing authority:
+The first improvement, **Build a Storage Chest**, reuses existing Elderwood/Redstone material chains plus canonical project labor:
 
 ```text
-2 Resin-Sealed Hardwood Boards   <- Elderwood production
-1 Redstone Copper Ingot          <- Redstone production
-30 minutes hands-on labor        <- canonical project/timed-task substrate
-                   |
-                   v
-Storage Chest furnishing         -> +5 furnishing-storage slots
+2 Resin-Sealed Hardwood Boards
+1 Redstone Copper Ingot
+30 minutes hands-on labor
+  -> Storage Chest furnishing
+  -> +5 furnishing-storage slots
 ```
 
-A fresh character begins with Bronze Bed + Maple Table for 3 furnishing-storage slots. Completing the chest raises that existing capacity to 8 slots.
+A fresh character's existing furnishings provide 3 storage slots; completing the chest raises capacity to 8. The Journal exposes a semantic Plan → Set aside materials → Start work → Finish sequence. Project, inventory, timed-task, furnishing, and save/load authorities remain canonical.
 
-The Journal now includes a derived **Home & Foothold** group. The ordinary semantic sequence is:
-
-```text
-Plan
-  -> Set aside available construction materials
-  -> Start work
-  -> Finish the active task
-  -> see the completed furnishing and larger home-storage capacity
-```
-
-The player never needs a project ID, task channel, internal furnishing registry name, or command string.
-
-## Authority and continuity proof
-
-`homeInfrastructureEngine` is an adapter, not a new simulation authority. Generic projects own material/labor progress; inventory removes contributed goods; world time/timed tasks own the 30-minute duration; furnishing/inventory authority owns the actual capacity calculation; Journal/view state is derived.
-
-The end-to-end regression proves:
-
-- the authored home-infrastructure catalog validates against real canonical production items and furnishing IDs;
-- contributed boards and copper leave carried inventory exactly once;
-- an active home project survives real account save/load;
-- canonical activity advance completes `project.labor` without a second clock;
-- the Storage Chest furnishing is applied exactly once;
-- repeated reconciliation cannot duplicate the benefit;
-- home storage is 3 slots before and 8 after completion;
-- completed infrastructure survives another real save/load;
-- game-state/world-data validation remain clean;
-- rendered Journal HTML exposes present-world lodging/material/storage language and not internal project/task/state identifiers.
-
-`tests/playerHomeInfrastructureFlow.test.js` is the primary regression.
-
-## `0.8.100` promoted checkpoint
+Original promoted checkpoint:
 
 ```text
 0b9251a43285443087050127da36b977cabdf7ee
 496/496 tests
+Benchmark 1 success
+Product 0.8.100.1
+Data 32
+```
+
+# `0.8.100.2` — Onboarding and character-creation polish
+
+**Implemented, audited, and closed as a revision of `0.8.100`.**
+
+## Theme/readability repair
+
+The active browser now has two deliberate visual modes:
+
+- **Dark:** charcoal gray surfaces, grayscale text/chrome, dark/slate blue emphasis.
+- **Light:** silver-gray surfaces, dark navy emphasis, dark gray/black text.
+
+The follow-up audit removed remaining decorative gold/brown selection and resource-meter chrome. Red/green remain only where a restrained semantic danger/success cue is useful. Theme preference continues to live in account settings.
+
+The historical settings normalizer can still accept `highContrast`, but the active browser UI intentionally exposes only Light and Dark. Removing that dormant compatibility value is later cleanup, not part of this player-facing repair.
+
+## Save recovery
+
+Character selection now provides a small top-right `×` per save. The deletion path operates on the account-registry record ID and therefore works even when the encoded character state is corrupt and cannot be loaded or migrated.
+
+Settings also exposes **Clear all local data** with destructive confirmation. A logged-out **Reset local data** path remains available if account-registry corruption prevents normal settings access.
+
+Deletion/clearing reuse the existing save/account layer and do not create a second persistence system.
+
+## Random character creation
+
+The Name field has a die for a canonical original-world name appropriate to the currently selected ancestry and sex. A second die randomizes the whole character: ancestry → valid sex → origin → starting discipline → matching name.
+
+The canonical randomizer accepts injected RNG so validity is deterministic in tests. The old legacy FFXI name generator is not reused.
+
+## Disciplines now explain a real level-1 choice
+
+The existing concise discipline buttons/descriptions remain, but the selected discipline now exposes real canonical differences:
+
+- active attribute emphasis;
+- starting HP/MP tendency where the current discipline context provides one;
+- combat-derived focus;
+- weapon/non-magic skill focus;
+- magic skill focus;
+- protection style;
+- play style;
+- actual starting gear.
+
+The six current starter kits are:
+
+| Discipline | Starting gear |
+| --- | --- |
+| Vanguard | Bronze Sword + Leather Vest |
+| Pugilist | Traveler Gloves + Leather Vest |
+| Lifewarden | Maple Wand + Road Cloak |
+| Elementalist | Ash Staff + Road Cloak |
+| Spellblade | Bronze Sword + Leather Vest |
+| Shadowhand | Bronze Dagger + Road Cloak |
+
+Guided browser creation places these items into canonical carried inventory. They are **not auto-equipped**. That gives the new player an immediate preparation/equipment decision and keeps equipment authority explicit.
+
+Generic low-level `createNewGameState()` remains empty unless the creator-specific option is supplied. The older prompt/fast-create command adapter still uses that neutral generic path; it is transitional debt and should not be “fixed” by making every new-game fixture receive starter gear.
+
+## Authored introductions
+
+The previous generic opening template has been replaced with three distinct authored scenes:
+
+### Thornwall
+
+The character reaches Southgate on a timber wagon after dawn, sees wet forest-road traffic and gate congestion, is checked against the newcomer roll by **Warden Halric Dane**, and watches Dane chase off a hawker selling an overpriced “essential road bundle.” Dane gives a concrete reason to seek **Sera Talwin**.
+
+### Brasshaven
+
+The character arrives with a freight caravan among ore wagons and foundry haze. A labor broker tries to turn the newcomer into an easy sale before **Marshal Varric Stone** intervenes and points them toward legitimate Market Ring footing.
+
+### Mistmere
+
+The character arrives by morning ferry among wet canal steps, herb sellers, students, kitchens, and civic magic. A runner tries to charge a bogus visitor fee before a canal registrar points the character toward **Reader Soli Venn**.
+
+Each scene adds one short discipline-aware observation—weapon posture, balance, injury, elemental/magical detail, steel/ward-work, or sightlines/watchers—without branching into six separate novels.
+
+Diegetic prose no longer explains “permanent class” design rules. That information remains in the creator UI, where the player needs it.
+
+## Regression/audit proof
+
+`tests/playerCreatorPolish.test.js` verifies original names, deterministic whole-character randomization, truthful six-discipline previews, creator-scoped starter kits, carried-not-equipped gear, distinct origin scenes, and the two-theme contract.
+
+`tests/saveRecovery.test.js` verifies deletion of a deliberately corrupt encoded character, last-character fallback, deletion of the only character, and account-wide clear-all behavior.
+
+The first integration run intentionally exposed a bad implementation choice: universal starter inventory polluted many low-level tests. That was repaired at the authority boundary by making the kit creator-specific. The follow-up palette audit also caught old gold TP/meter chrome and replaced it with theme-aware grayscale/navy values.
+
+Authoritative promoted checkpoint:
+
+```text
+0f00ef68a01ad001063803d67ff0efffc48ab3ef
+505/505 tests
 0 failed
 0 skipped
 Benchmark 1 success
-Product 0.8.100.1
+Product 0.8.100.2
 Package 0.8.100
-Data 32
+Data 33
 Account Save 4
 Game State 5
 ```
@@ -199,25 +201,19 @@ Game State 5
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     466.332ms  0.466332ms/op
-1,000 enemy combat profiles      108.813ms  0.108813ms/op
-1,000 basic attacks              521.192ms  0.521192ms/op
-10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
-10,000 direct route lookups     8784.978ms  0.878498ms/op
+player combat profiles  0.463353 ms/op
+enemy combat profiles   0.125126 ms/op
+basic attacks            0.551861 ms/op
+tick dispatch            0.004834 ms/op
+direct route lookup      0.866522 ms/op
 ```
 
-Data advances to 32 because the canonical authored home-improvement definition and material-to-durable-benefit contract are new content. Game State and Account Save stay unchanged because the project metadata and completed furnishing fit existing persisted structures.
-
-## Character-POV audit for `0.8.100`
-
-The new home flow follows the Phase 0.7 POV boundary. Player text speaks about lodging, materials, hands-on work, the chest taking shape, and available storage. Internal terms such as `project.labor`, `completionApplied`, `homePlaceId`, internal project IDs, and the legacy internal `mogHouse` key are not rendered in normal Journal play.
-
-The completed improvement remains simple to read: what was built, where it stands, and what practical capacity changed.
+This evidence includes code/DOM/CSS regressions, full CI, Benchmark 1, and Pages build/deploy. No manual visual-browser walkthrough is claimed.
 
 ## Next Phase 0.8 boundary
 
-`0.8.100` is complete, but Phase 0.8 is not. Do **not** automatically launch a broad property/farming/automation expansion. A new bounded work order should first select and audit one existing seam, such as workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
+`0.8.100` remains complete, but Phase 0.8 is not. Do **not** automatically launch another property/farming/automation expansion from this revision. A new bounded work order should first select and audit one existing seam, such as workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
 
 ## Architecture rule carried forward
 
-Player-experience guidance, service boards, information/search, home opportunity models, and similar presentation layers are projections over canonical state, not second simulation authorities. Projects, commitments, relationships, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, wallet ownership, and furnishing/storage capacity remain in their domain systems.
+Player-experience guidance, service boards, information/search, home opportunity models, onboarding helpers, and similar presentation layers are projections/adapters over canonical state, not second simulation authorities. Projects, commitments, relationships, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, wallet ownership, and furnishing/storage capacity remain in their domain systems.
