@@ -15,14 +15,14 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.100.1');
+    assert.equal(PRODUCT_VERSION, '0.8.100.2');
     assert.equal(PACKAGE_VERSION, '0.8.100');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 32);
+    assert.equal(VERSION.data, 33);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
     assert.equal(VERSION.codename, 'Home Foothold and Infrastructure');
@@ -53,6 +53,7 @@ test('version manifest separates product package and persistence versions', () =
             playerCampaignReadability: SYSTEM_VERSIONS.playerCampaignReadability,
             playerDangerRecovery: SYSTEM_VERSIONS.playerDangerRecovery,
             domUi: SYSTEM_VERSIONS.domUi,
+            domOnboarding: SYSTEM_VERSIONS.domOnboarding,
             uiIntents: SYSTEM_VERSIONS.uiIntents,
             validation: SYSTEM_VERSIONS.validation,
             companionCatalog: SYSTEM_VERSIONS.companionCatalog,
@@ -61,9 +62,14 @@ test('version manifest separates product package and persistence versions', () =
             combatTurns: SYSTEM_VERSIONS.combatTurns,
             combatActions: SYSTEM_VERSIONS.combatActions,
             companions: SYSTEM_VERSIONS.companions,
+            saveRecovery: SYSTEM_VERSIONS.saveRecovery,
+            characterCreation: SYSTEM_VERSIONS.characterCreation,
+            characterCreationContent: SYSTEM_VERSIONS.characterCreationContent,
+            characterNames: SYSTEM_VERSIONS.characterNames,
+            startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
         },
         {
-            versionManifest: '0.8.100.1',
+            versionManifest: '0.8.100.2',
             integratedMechanicsGate: '0.1.0',
             transport: '0.2.0',
             transportServiceBoard: '0.1.0',
@@ -86,6 +92,7 @@ test('version manifest separates product package and persistence versions', () =
             playerCampaignReadability: '0.2.0',
             playerDangerRecovery: '0.2.0',
             domUi: '0.10.0',
+            domOnboarding: '0.1.0',
             uiIntents: '0.10.0',
             validation: '0.10.0',
             companionCatalog: '0.2.0',
@@ -94,21 +101,26 @@ test('version manifest separates product package and persistence versions', () =
             combatTurns: '0.3.0',
             combatActions: '0.8.0',
             companions: '0.2.0',
+            saveRecovery: '0.1.0',
+            characterCreation: '0.6.0',
+            characterCreationContent: '0.2.0',
+            characterNames: '0.1.0',
+            startingDisciplineKits: '0.1.0',
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.100\.1/);
+    assert.match(describeVersion(), /Product: 0\.8\.100\.2/);
     assert.match(describeVersion(), /Package: 0\.8\.100/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 32/);
+    assert.match(describeVersion(), /Data: 33/);
     assert.match(describeVersion(), /Codename: Home Foothold and Infrastructure/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /homeInfrastructure: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /activityAdvance: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /characterActivity: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.13\.0/);
-    assert.match(describeSystemVersions(), /uiIntents: 0\.10\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.10\.0/);
+    assert.match(describeSystemVersions(), /domOnboarding: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /saveRecovery: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /characterCreation: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /characterNames: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /startingDisciplineKits: 0\.1\.0/);
 });
 
 test('database registry includes canonical systems plus explicitly bounded legacy research', () => {
