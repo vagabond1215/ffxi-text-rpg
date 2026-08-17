@@ -25,6 +25,11 @@ import {
     selectCreatorSex,
     validateCreator,
 } from '../systems/characterCreationModel.js';
+import {
+    beginHomeInfrastructureProject,
+    contributeHomeInfrastructureMaterial,
+    startHomeInfrastructureLabor,
+} from '../systems/homeInfrastructureEngine.js';
 import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
 import {
     joinCompanion,
@@ -103,6 +108,9 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'ability.activate': return activateCanonicalAbility(context);
+        case 'home.infrastructure.begin': return beginHomeInfrastructure(context);
+        case 'home.infrastructure.contribute': return contributeHomeInfrastructure(context);
+        case 'home.infrastructure.start': return startHomeInfrastructure(context);
         case 'party.recruit': return recruitCanonicalCompanion(context);
         case 'party.join': return joinCanonicalCompanion(context);
         case 'party.leave': return leaveCanonicalCompanion(context);
@@ -379,6 +387,31 @@ function activateCanonicalAbility(context) {
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
     return ok(context, { abilityResult: result, message });
+}
+
+function beginHomeInfrastructure(context) {
+    return recordHomeResult(context, beginHomeInfrastructureProject(context.state, context.payload.improvementId));
+}
+
+function contributeHomeInfrastructure(context) {
+    return recordHomeResult(context, contributeHomeInfrastructureMaterial(
+        context.state,
+        context.payload.projectId,
+        context.payload.itemId,
+        context.payload.quantity ?? 1,
+    ));
+}
+
+function startHomeInfrastructure(context) {
+    return recordHomeResult(context, startHomeInfrastructureLabor(context.state, context.payload.projectId));
+}
+
+function recordHomeResult(context, result) {
+    const message = result.display?.text ?? result.message ?? result.reason ?? 'Home improvement updated.';
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { homeResult: result, message });
 }
 
 function recruitCanonicalCompanion(context) {
