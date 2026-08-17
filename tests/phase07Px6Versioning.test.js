@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { COMMITMENT_CATALOG_VERSION } from '../js/text/data/commitments.js';
+import { COMPANION_CATALOG_VERSION } from '../js/text/data/companions.js';
 import { ACTIVITY_ADVANCE_VERSION } from '../js/text/systems/activityAdvanceEngine.js';
 import { CAMPAIGN_RECOVERY_VERSION } from '../js/text/systems/campaignRecoveryEngine.js';
 import { PLAYER_CAMPAIGN_READABILITY_VERSION } from '../js/text/systems/playerCampaignReadabilityEngine.js';
@@ -13,18 +14,19 @@ import { SETTLEMENT_SERVICE_BOARD_VERSION } from '../js/text/systems/settlementS
 import { TRANSPORT_SERVICE_BOARD_VERSION } from '../js/text/systems/transportServiceBoardEngine.js';
 import { SYSTEM_VERSIONS, VERSION } from '../js/text/version.js';
 
-test('Phase 0.7 semantic information access keeps campaign authority while exposing acquired and current knowledge directly', () => {
-    assert.equal(VERSION.product, '0.7.300.1');
-    assert.equal(VERSION.package, '0.7.300');
+test('Phase 0.7 companion life keeps campaign authority while adding persistent NPC-backed preparation', () => {
+    assert.equal(VERSION.product, '0.7.400.1');
+    assert.equal(VERSION.package, '0.7.400');
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 30);
+    assert.equal(VERSION.data, 31);
     assert.equal(VERSION.benchmark, 1);
 
     assert.equal(ACTIVITY_ADVANCE_VERSION, 2);
     assert.equal(CAMPAIGN_RECOVERY_VERSION, 1);
     assert.equal(RESOURCE_RECOVERY_WORK_ADAPTER_VERSION, 3);
     assert.equal(COMMITMENT_CATALOG_VERSION, 2);
+    assert.equal(COMPANION_CATALOG_VERSION, 2);
     assert.equal(PLAYER_CONTINUITY_VERSION, 5);
     assert.equal(PLAYER_CAMPAIGN_READABILITY_VERSION, 2);
     assert.equal(PLAYER_DANGER_RECOVERY_VERSION, 2);
@@ -44,8 +46,11 @@ test('Phase 0.7 semantic information access keeps campaign authority while expos
     assert.equal(SYSTEM_VERSIONS.settlementServiceBoard, '0.1.0');
     assert.equal(SYSTEM_VERSIONS.workstations, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.shopTransactions, '0.5.0');
-    assert.equal(SYSTEM_VERSIONS.playerInformation, '0.1.0');
-    assert.equal(SYSTEM_VERSIONS.gameViewModels, '0.11.0');
-    assert.equal(SYSTEM_VERSIONS.domUi, '0.9.0');
-    assert.equal(SYSTEM_VERSIONS.uiIntents, '0.8.0');
+    assert.equal(SYSTEM_VERSIONS.playerInformation, '0.1.1');
+    assert.equal(SYSTEM_VERSIONS.gameViewModels, '0.12.0');
+    assert.equal(SYSTEM_VERSIONS.domUi, '0.10.0');
+    assert.equal(SYSTEM_VERSIONS.uiIntents, '0.9.0');
+    assert.equal(SYSTEM_VERSIONS.companionCatalog, '0.2.0');
+    assert.equal(SYSTEM_VERSIONS.party, '0.2.0');
+    assert.equal(SYSTEM_VERSIONS.companions, '0.2.0');
 });
