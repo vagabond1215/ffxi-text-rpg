@@ -3,6 +3,7 @@ import { reconcileCampaignRecoveries } from './campaignRecoveryEngine.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { reconcileGatheringWork } from './gatheringWorkEngine.js';
 import { reconcileHomeInfrastructureProjects } from './homeInfrastructureEngine.js';
+import { reconcilePortableLogisticsProjects } from './portableLogisticsEngine.js';
 import { reconcileProductionWork } from './productionEngine.js';
 import { reconcileProjects } from './projectEngine.js';
 import { reconcileCharacterResourceRecoveries } from './resourceRecoveryWorkAdapter.js';
@@ -12,7 +13,7 @@ import { advanceTravel } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const ACTIVITY_ADVANCE_VERSION = 4;
+export const ACTIVITY_ADVANCE_VERSION = 5;
 
 export function advanceActiveActivityToCompletion(state) {
     if (state?.activeBattle?.phase === 'active') {
@@ -128,6 +129,26 @@ function advanceProjectLaborCompletion(state, task, advance) {
                 furnitureTagsAdded: result?.furnitureTagsAdded ?? [],
             },
             display: { text: describeHomeCompletion(project, result) },
+        });
+    }
+
+    if (project.data?.portableLogisticsId) {
+        const completed = reconcilePortableLogisticsProjects(state);
+        const result = completed.find((entry) => entry.projectId === project.id) ?? null;
+        if (project.status !== 'completed') return failure('activity.project-not-completed', `${task.label} did not reach completion.`);
+        return actionSuccess({
+            action: 'activity.advance-to-completion',
+            code: 'activity.portable-logistics-completed',
+            outcome: 'completed',
+            data: {
+                kind: task.kind,
+                taskId: task.id,
+                projectId: project.id,
+                secondsAdvanced: advance.data?.secondsAdvanced ?? 0,
+                containerId: result?.containerId ?? project.data?.containerId ?? null,
+                portableSlots: result?.portableSlots ?? 0,
+            },
+            display: { text: `${project.label} is complete. Your Field Satchel is ready, with ${result?.portableSlots ?? 0} portable slots; its contents still count as carried load.` },
         });
     }
 
