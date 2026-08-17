@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.7.200.1';
-export const PACKAGE_VERSION = '0.7.200';
+export const PRODUCT_VERSION = '0.7.300.1';
+export const PACKAGE_VERSION = '0.7.300';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 30,
     benchmark: 1,
-    codename: 'Settlement Economy Depth',
+    codename: 'Semantic Information Access',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.7.200.1',
+    versionManifest: '0.7.300.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -64,8 +64,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     integratedMechanicsGate: '0.1.0',
     dayCycle: '0.2.0',
     commandShell: '0.5.0',
-    domUi: '0.8.0',
-    gameViewModels: '0.10.0',
+    domUi: '0.9.0',
+    gameViewModels: '0.11.0',
+    playerInformation: '0.1.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
     playerContinuity: '0.5.0',
@@ -73,7 +74,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.1.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.7.0',
+    uiIntents: '0.8.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
