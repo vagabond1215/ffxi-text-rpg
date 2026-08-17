@@ -38,14 +38,19 @@ test('guided creator builds summary and game-state options', () => {
     assert.deepEqual(validateCreator(creator), []);
     assert.match(getCreatorSummary(creator).startingCity, /Brasshaven Market Ring/);
 
-    const state = createNewGameState(createCreatorGameOptions(creator));
+    const options = createCreatorGameOptions(creator);
+    assert.equal(options.includeStartingDisciplineKit, true);
+    const state = createNewGameState(options);
     assert.equal(state.player.identity.name, 'Stone Son');
     assert.equal(state.currentPlaceId, 'brasshaven-market-ring');
     assert.equal(state.player.jobs.mainJobId, 'pugilist');
+    assert.equal(state.player.inventoryState.containers.inventory.items.length, 2);
 });
 
 test('guided creator requires a name before final confirmation', () => {
     const creator = createGuidedCreatorState();
     assert.match(validateCreator(creator).join('\n'), /Name is required/);
-    assert.match(describeCreatorOpening(setCreatorName(creator, 'Ashen'))[0], /Ashen/);
+    const opening = describeCreatorOpening(setCreatorName(creator, 'Ashen')).join('\n');
+    assert.match(opening, /Ashen/);
+    assert.match(opening, /Halric Dane|Sera Talwin/);
 });
