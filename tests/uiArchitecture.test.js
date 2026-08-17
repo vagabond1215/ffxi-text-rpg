@@ -20,7 +20,7 @@ test('semantic game view model presents safe settlement locality status and cont
     assert.equal(model.scene.title, 'Thornwall Southgate');
     assert.equal(model.header.placeName, 'Thornwall Southgate');
     assert.match(model.header.worldTime, /^Day 1,/);
-    assert.equal(model.header.coordinate, 'Named locality');
+    assert.equal(model.header.coordinate, 'Local streets');
     assert.equal(model.character.name, 'Lark');
     assert.equal(model.character.resources.length, 3);
     assert.equal(model.character.attributes.length, 7);
@@ -77,7 +77,7 @@ test('DOM game shell retains discovery-safe map and movement controls in wildern
 
     assert.match(html, /Local Map/);
     assert.match(html, /<svg class="minimap"/);
-    assert.match(html, /1\/\? explored/);
+    assert.match(html, /1 places traced/);
     assert.match(html, /aria-label="Movement controls"/);
     assert.doesNotMatch(html, /G-10|A-M|1\/32 explored/);
 });
