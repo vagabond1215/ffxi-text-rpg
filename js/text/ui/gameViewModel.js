@@ -60,7 +60,7 @@ export function createGameViewModel(state, uiState = {}) {
     const settlementServices = navigationMode === 'locality'
         ? createSettlementServiceBoard(state)
         : createSettlementServiceBoard(null);
-    const coordinateLabel = navigationMode === 'locality' ? 'Named locality' : describeCoordinate(state.position);
+    const coordinateLabel = navigationMode === 'locality' ? 'Local streets' : describeCoordinate(state.position);
 
     return Object.freeze({
         header: Object.freeze({
@@ -340,7 +340,7 @@ function createActivityModel(state) {
     return Object.freeze({
         kind: task.kind,
         label: task.label,
-        detail: task.channel,
+        detail: '',
         remainingSeconds: progress?.remainingSeconds ?? 0,
         progress: clamp01(progress?.progress ?? 0),
     });
