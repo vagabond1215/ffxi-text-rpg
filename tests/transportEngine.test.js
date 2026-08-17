@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { EQUIPMENT_CATALOG } from '../js/text/data/equipmentCatalog.js';
 import { createTestState } from './helpers/createTestState.js';
 import {
     getNextServiceDeparture,
@@ -10,6 +11,7 @@ import {
     validateRouteCatalog,
 } from '../js/text/data/routeCatalog.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
+import { addItemToContainer, removeItemQuantityFromContainer } from '../js/text/systems/inventoryEngine.js';
 import { advanceSimulationUntilInterrupt } from '../js/text/systems/simulationInterruptEngine.js';
 import { findTimedTask, TIMED_TASK_STATUSES } from '../js/text/systems/timedTaskEngine.js';
 import {
@@ -57,20 +59,26 @@ test('direct route travel uses a canonical timed task and advances world time to
     assert.equal(findTimedTask(state, 'task-000001').status, TIMED_TASK_STATUSES.COMPLETED);
 });
 
-test('scheduled caravan booking enforces fare and cargo and exposes deterministic departure/arrival interrupts', () => {
+test('scheduled caravan booking enforces fare and canonical carried cargo and exposes deterministic departure/arrival interrupts', () => {
     const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-rivergate', { coord: 'H-5' });
     state.player.wallet.gil = 100;
 
-    const overCargo = startScheduledTransport(state, 'service-crown-forge-caravan', 'brasshaven-iron-quay', { cargoUnits: 25 });
+    for (let index = 0; index < 25; index += 1) {
+        assert.equal(addItemToContainer(state.player.inventoryState, 'inventory', EQUIPMENT_CATALOG['bronze-sword']).ok, true);
+    }
+    const overCargo = startScheduledTransport(state, 'service-crown-forge-caravan', 'brasshaven-iron-quay', { cargoUnits: 0 });
     assert.equal(overCargo.ok, false);
     assert.equal(overCargo.code, 'transport.cargo-over-limit');
+    assert.equal(overCargo.data.cargoUnits, 25);
     assert.equal(state.player.wallet.gil, 100);
 
-    const booked = startScheduledTransport(state, 'service-crown-forge-caravan', 'brasshaven-iron-quay', { cargoUnits: 20 });
+    assert.equal(removeItemQuantityFromContainer(state.player.inventoryState, 'inventory', 'bronze-sword', 1).ok, true);
+    const booked = startScheduledTransport(state, 'service-crown-forge-caravan', 'brasshaven-iron-quay', { cargoUnits: 999 });
     assert.equal(booked.ok, true);
     assert.equal(booked.code, 'transport.booked');
     assert.equal(booked.outcome, 'booked');
+    assert.equal(booked.data.travel.cargoUnits, 24);
     assert.equal(booked.data.departAtWorldSeconds, 21600);
     assert.equal(booked.data.arriveAtWorldSeconds, 43200);
     assert.equal(state.player.wallet.gil, 40);
