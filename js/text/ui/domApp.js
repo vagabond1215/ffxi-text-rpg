@@ -260,6 +260,13 @@ export function createDomApp({ host }) {
             return;
         }
 
+        if (button.dataset.partyAction) {
+            const model = createGameViewModel(state, uiState);
+            const action = model.party?.actions?.find((item) => item.id === button.dataset.partyAction);
+            if (action) dispatch(action.intent, action.payload);
+            return;
+        }
+
         if (button.dataset.opportunityAction) {
             const model = createGameViewModel(state, uiState);
             const opportunity = model.opportunities?.entries?.find((entry) => entry.id === button.dataset.opportunityAction);
