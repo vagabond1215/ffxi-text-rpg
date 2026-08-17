@@ -2,6 +2,7 @@ import { getHomeInfrastructureDefinition, listHomeInfrastructureDefinitions } fr
 import { getFurniture, calculateFurnitureStorageCapacity } from '../data/mogHouseFurniture.js';
 import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
+import { getContainerCapacity, unlockInventoryContainer } from './inventoryEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import {
     contributeProjectMaterial,
@@ -16,7 +17,7 @@ import {
 } from './projectEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const HOME_INFRASTRUCTURE_VERSION = 2;
+export const HOME_INFRASTRUCTURE_VERSION = 3;
 export const DEFAULT_HOME_IMPROVEMENT_ID = 'storage-chest';
 
 export function getHomePlaceId(state) {
@@ -35,7 +36,10 @@ export function beginHomeInfrastructureProject(state, improvementId = DEFAULT_HO
 
     const existing = findHomeInfrastructureProject(state, definition.id);
     if (existing && existing.status !== PROJECT_STATUSES.CANCELLED) {
-        return failure('home.project-exists', `${definition.name.replace(/^Build a /, '')} is already ${playerStatus(existing.status)}.`);
+        return failure('home.project-exists', `${benefitName(definition)} is already ${playerStatus(existing.status)}.`);
+    }
+    if (definition.benefit.kind === 'container' && state.player?.inventoryState?.containers?.[definition.benefit.containerId]?.unlocked) {
+        return failure('home.benefit-exists', `${benefitName(definition)} is already ready for the road.`);
     }
 
     return createProject(state, {
@@ -50,7 +54,8 @@ export function beginHomeInfrastructureProject(state, improvementId = DEFAULT_HO
         data: {
             homeInfrastructureId: definition.id,
             homePlaceId: getHomePlaceId(state),
-            furnitureId: definition.benefit.furnitureId,
+            furnitureId: definition.benefit.furnitureId ?? null,
+            containerId: definition.benefit.containerId ?? null,
             completionApplied: false,
         },
     });
@@ -82,38 +87,60 @@ export function reconcileHomeInfrastructureProjects(state) {
     reconcileProjects(state);
     const projects = ensureProjectState(state);
     const applied = [];
-    const placedFurniture = state?.player?.inventoryState?.mogHouse?.placedFurniture;
-    if (!Array.isArray(placedFurniture)) return Object.freeze(applied);
+    const inventoryState = state?.player?.inventoryState;
+    const placedFurniture = inventoryState?.mogHouse?.placedFurniture;
+    if (!inventoryState) return Object.freeze(applied);
 
     for (const project of projects.records) {
         if (project.status !== PROJECT_STATUSES.COMPLETED || project.data?.completionApplied === true) continue;
         const definition = getHomeInfrastructureDefinition(project.data?.homeInfrastructureId);
         if (!definition || definition.projectKind !== project.kind) continue;
 
-        const furnitureId = definition.benefit.furnitureId;
-        const alreadyPlaced = placedFurniture.includes(furnitureId);
-        if (!alreadyPlaced) placedFurniture.push(furnitureId);
+        let result;
+        if (definition.benefit.kind === 'furnishing') {
+            if (!Array.isArray(placedFurniture)) continue;
+            const furnitureId = definition.benefit.furnitureId;
+            const alreadyPlaced = placedFurniture.includes(furnitureId);
+            if (!alreadyPlaced) placedFurniture.push(furnitureId);
+            result = {
+                furnitureId,
+                containerId: null,
+                storageSlotsAdded: alreadyPlaced ? 0 : definition.benefit.storageSlots,
+                furnitureTagsAdded: alreadyPlaced ? [] : [...definition.benefit.tags],
+                portableSlots: 0,
+                alreadyApplied: alreadyPlaced,
+            };
+        } else if (definition.benefit.kind === 'container') {
+            const unlock = unlockInventoryContainer(inventoryState, definition.benefit.containerId);
+            if (!unlock.ok) continue;
+            result = {
+                furnitureId: null,
+                containerId: definition.benefit.containerId,
+                storageSlotsAdded: 0,
+                furnitureTagsAdded: [],
+                portableSlots: unlock.capacity,
+                alreadyApplied: unlock.alreadyUnlocked,
+            };
+        } else continue;
+
         project.data.completionApplied = true;
         project.data.completionAppliedAtWorldSeconds = ensureWorldTimeState(state).totalSeconds;
-
-        const benefit = {
-            storageSlotsAdded: alreadyPlaced ? 0 : definition.benefit.storageSlots,
-            furnitureTagsAdded: alreadyPlaced ? [] : [...definition.benefit.tags],
-        };
         const event = emitSemanticEvent(state, 'home.infrastructure-completed', {
             projectId: project.id,
             homeInfrastructureId: definition.id,
             homePlaceId: project.data.homePlaceId ?? getHomePlaceId(state),
-            furnitureId,
+            furnitureId: result.furnitureId,
+            containerId: result.containerId,
             benefitSummary: definition.benefitSummary,
-            ...benefit,
+            storageSlotsAdded: result.storageSlotsAdded,
+            furnitureTagsAdded: result.furnitureTagsAdded,
+            portableSlots: result.portableSlots,
         }, { source: 'homeInfrastructureEngine' });
         applied.push(Object.freeze({
             projectId: project.id,
             improvementId: definition.id,
-            furnitureId,
             benefitSummary: definition.benefitSummary,
-            ...benefit,
+            ...result,
             eventId: event.id,
         }));
     }
@@ -161,6 +188,14 @@ export function createHomeInfrastructureModel(state) {
                 tags: Object.freeze([...(furniture?.tags ?? [])]),
             });
         })),
+        portableContainers: Object.freeze(definitions
+            .filter((definition) => definition.benefit.kind === 'container')
+            .map((definition) => Object.freeze({
+                id: definition.benefit.containerId,
+                name: definition.benefit.containerName,
+                unlocked: Boolean(state.player.inventoryState?.containers?.[definition.benefit.containerId]?.unlocked),
+                slots: getContainerCapacity(state.player.inventoryState, definition.benefit.containerId),
+            }))),
         entries: Object.freeze(entries),
         actions: Object.freeze(actions),
     });
@@ -178,7 +213,7 @@ export function decorateHomeInfrastructureOpportunityModel(state, baseModel) {
 
     return Object.freeze({
         ...baseModel,
-        version: Math.max(Number(baseModel.version) || 0, 10),
+        version: Math.max(Number(baseModel.version) || 0, 11),
         homeInfrastructureVersion: HOME_INFRASTRUCTURE_VERSION,
         recommendedOpportunityId: activeEntry?.id ?? baseModel.recommendedOpportunityId,
         entries: Object.freeze(entries),
@@ -196,13 +231,18 @@ export function validateHomeInfrastructureState(state) {
         if (!definition) issues.push(`${project.id} references unknown home improvement ${improvementId}.`);
         else if (definition.projectKind !== project.kind) issues.push(`${project.id} kind does not match ${improvementId}.`);
         if (!project.data?.homePlaceId) issues.push(`${project.id} is missing its homePlaceId.`);
-        if (definition && project.data?.furnitureId && project.data.furnitureId !== definition.benefit.furnitureId) {
+        if (definition?.benefit.kind === 'furnishing' && project.data?.furnitureId !== definition.benefit.furnitureId) {
             issues.push(`${project.id} furnishing does not match ${improvementId}.`);
         }
+        if (definition?.benefit.kind === 'container' && project.data?.containerId !== definition.benefit.containerId) {
+            issues.push(`${project.id} container does not match ${improvementId}.`);
+        }
         if (project.status === PROJECT_STATUSES.COMPLETED && project.data?.completionApplied === true) {
-            const furnitureId = definition?.benefit?.furnitureId;
-            if (furnitureId && !state.player?.inventoryState?.mogHouse?.placedFurniture?.includes(furnitureId)) {
+            if (definition?.benefit.kind === 'furnishing' && !state.player?.inventoryState?.mogHouse?.placedFurniture?.includes(definition.benefit.furnitureId)) {
                 issues.push(`${project.id} says its completed furnishing was applied but the furnishing is absent.`);
+            }
+            if (definition?.benefit.kind === 'container' && !state.player?.inventoryState?.containers?.[definition.benefit.containerId]?.unlocked) {
+                issues.push(`${project.id} says its portable storage benefit was applied but the container remains locked.`);
             }
         }
     }
@@ -235,6 +275,7 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
     const effectiveProject = cancelled ? null : project;
     const allMaterials = effectiveProject && materials.every((entry) => entry.met);
     const firstMissing = effectiveProject ? materials.find((entry) => !entry.met) : null;
+    const name = benefitName(definition);
 
     let status = atHome ? 'ready' : 'available';
     let summary = definition.description;
@@ -243,18 +284,18 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
     let action = null;
 
     if (!effectiveProject) {
-        if (atHome) action = homeAction(`home:${definition.id}:begin`, `Plan · ${definition.benefit.furnitureName}`, 'home.infrastructure.begin', { improvementId: definition.id });
+        if (atHome) action = homeAction(`home:${definition.id}:begin`, `Plan · ${name}`, 'home.infrastructure.begin', { improvementId: definition.id });
         else progress = `Return to ${homeName} to lay out the work. ${definition.benefitSummary}`;
     } else if (completed) {
         status = 'complete';
-        summary = `${definition.benefit.furnitureName} now stands in your lodging at ${homeName}.`;
-        progress = describeCompletedBenefit(definition, storageCapacity);
+        summary = `${name} is complete at your lodging in ${homeName}.`;
+        progress = describeCompletedBenefit(definition, storageCapacity, state);
     } else if (active) {
         status = 'active';
         const projectProgress = getProjectProgress(state, effectiveProject.id);
         progress = `${formatPercent(projectProgress?.laborProgress)} of the hands-on work is finished.`;
-        summary = `The materials are fitted and the ${definition.benefit.furnitureName.toLowerCase()} is taking shape.`;
-        action = homeAction(`home:${definition.id}:finish`, `Finish · ${definition.benefit.furnitureName}`, 'activity.advanceToCompletion', {});
+        summary = `The materials are fitted and the ${name.toLowerCase()} is taking shape.`;
+        action = homeAction(`home:${definition.id}:finish`, `Finish · ${name}`, 'activity.advanceToCompletion', {});
     } else if (allMaterials) {
         if (atHome) {
             status = 'ready';
@@ -282,7 +323,7 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
 
     return opportunity({
         id: `home-infrastructure-${definition.id}`,
-        category: 'ambition',
+        category: definition.benefit.kind === 'container' ? 'preparation' : 'ambition',
         title: definition.name,
         summary,
         motivation: definition.motivation,
@@ -296,11 +337,15 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
         blockers,
         action,
         regionLabel: getPlace(getHomePlaceId(state))?.region ?? null,
-        groupKind: 'home',
+        groupKind: definition.benefit.kind === 'container' ? 'field-logistics' : 'home',
     });
 }
 
-function describeCompletedBenefit(definition, storageCapacity) {
+function describeCompletedBenefit(definition, storageCapacity, state) {
+    if (definition.benefit.kind === 'container') {
+        const slots = getContainerCapacity(state.player.inventoryState, definition.benefit.containerId);
+        return `Portable field storage: ${slots} slots. Goods kept there still count as carried transport load.`;
+    }
     if (definition.benefit.storageSlots > 0) return `Furnishing storage capacity: ${storageCapacity} slots.`;
     if (definition.benefit.tags.includes('woodshop')) return 'Home workstation: woodshop ready.';
     if (definition.benefit.tags.includes('forge')) return 'Home workstation: forge ready.';
@@ -308,6 +353,10 @@ function describeCompletedBenefit(definition, storageCapacity) {
     if (definition.benefit.tags.includes('tannery')) return 'Home workstation: tannery ready.';
     if (definition.benefit.tags.includes('workshop') || definition.benefit.tags.includes('workbench')) return 'Home workstation: workshop ready.';
     return definition.benefitSummary;
+}
+
+function benefitName(definition) {
+    return definition.benefit.furnitureName ?? definition.benefit.containerName ?? definition.name;
 }
 
 function createHomeGroup(entries, current) {
