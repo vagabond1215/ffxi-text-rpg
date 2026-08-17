@@ -36,7 +36,7 @@ export function validateHomeInfrastructureCatalog() {
         if (!definition.name) issues.push(`${definition.id} requires a name.`);
         if (!definition.description) issues.push(`${definition.id} requires a description.`);
         if (!Number.isInteger(definition.laborSeconds) || definition.laborSeconds <= 0) issues.push(`${definition.id} requires positive laborSeconds.`);
-        if (!getFurniture(definition.furnitureId)) issues.push(`${definition.id} references unknown furnishing ${definition.furnitureId}.`);
+        if (!getFurniture(definition.benefit?.furnitureId)) issues.push(`${definition.id} references unknown furnishing ${definition.benefit?.furnitureId}.`);
         for (const material of definition.materials) {
             if (!getProductionItem(material.itemId)) issues.push(`${definition.id} references unknown construction material ${material.itemId}.`);
             if (!Number.isInteger(material.quantity) || material.quantity <= 0) issues.push(`${definition.id} has invalid quantity for ${material.itemId}.`);
