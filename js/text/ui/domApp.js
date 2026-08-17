@@ -24,7 +24,7 @@ import {
 } from '../systems/commitmentEngine.js';
 import { performPlayerAttack, startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
-import { equipItem } from '../systems/equipmentEngine.js';
+import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
@@ -49,6 +49,7 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'commitment.resolve',
     'commitment.followUp',
     'equipment.equip',
+    'equipment.unequip',
     'travel.start',
     'transport.start',
     'gathering.start',
@@ -113,7 +114,18 @@ export function createDomApp({ host }) {
 
     function dispatch(intent, payload = {}, options = {}) {
         let result;
-        if (intent === 'locality.move') {
+        if (intent === 'ui.view.open') {
+            const view = setActiveView(uiState, payload.view);
+            result = { ok: true, view };
+        } else if (intent === 'ui.search') {
+            const query = String(payload.query ?? '').trim();
+            uiState.informationQuery = query;
+            setActiveView(uiState, 'codex');
+            result = { ok: true, query };
+        } else if (intent === 'ui.search.clear') {
+            uiState.informationQuery = '';
+            result = { ok: true };
+        } else if (intent === 'locality.move') {
             result = moveWithinLocality(state, payload.destinationId);
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
@@ -135,6 +147,12 @@ export function createDomApp({ host }) {
             const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
             const equipped = Object.values(state.player?.equipment ?? {}).some((item) => item && (item.templateId === payload.itemId || item.id === payload.itemId));
             result = { ok: equipped, message };
+            recordGameplayFeedback(result);
+        } else if (intent === 'equipment.unequip') {
+            const itemBefore = state.player?.equipment?.[payload.slot] ?? null;
+            const message = unequipItem(state, payload.slot, payload.destinationContainerId ?? 'inventory');
+            const unequipped = Boolean(itemBefore) && !state.player?.equipment?.[payload.slot];
+            result = { ok: unequipped, message };
             recordGameplayFeedback(result);
         } else if (intent === 'travel.start') {
             result = startTravel(state, payload.destinationId);
@@ -235,6 +253,13 @@ export function createDomApp({ host }) {
             return;
         }
 
+        if (button.dataset.informationAction) {
+            const model = createGameViewModel(state, uiState);
+            const action = model.information?.actions?.find((item) => item.id === button.dataset.informationAction);
+            if (action) dispatch(action.intent, action.payload);
+            return;
+        }
+
         if (button.dataset.opportunityAction) {
             const model = createGameViewModel(state, uiState);
             const opportunity = model.opportunities?.entries?.find((entry) => entry.id === button.dataset.opportunityAction);
@@ -321,9 +346,10 @@ export function createDomApp({ host }) {
         if (event.target.id !== 'omnibox-form') return;
         event.preventDefault();
         const input = host.querySelector('#omnibox-input');
-        const command = input?.value?.trim();
-        if (!command) return;
-        runCommand(command);
+        const value = input?.value?.trim();
+        if (!value) return;
+        if (value.startsWith('/')) runCommand(value);
+        else dispatch('ui.search', { query: value });
     }
 
     function handleKeyDown(event) {
