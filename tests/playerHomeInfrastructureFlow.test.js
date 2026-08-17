@@ -130,7 +130,7 @@ test('0.8.100 turns real regional materials and fictional labor into an exactly-
     const finishedView = createGameViewModel(state, uiState);
     const finishedEntry = finishedView.opportunities.entries.find((entry) => entry.id === 'home-infrastructure-storage-chest');
     assert.equal(finishedEntry.status, 'complete');
-    assert.match(finishedEntry.summary, /stands in your lodging/i);
+    assert.match(finishedEntry.summary, /complete at your lodging/i);
     assert.match(finishedEntry.progress, /8 slots/i);
 
     const html = renderGameScreen(finishedView, uiState, {});
