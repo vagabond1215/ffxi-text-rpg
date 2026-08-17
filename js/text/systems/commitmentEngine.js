@@ -1,5 +1,6 @@
 import { getCommitmentDefinition } from '../data/commitments.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
+import { describeNpcScheduleStatus, getNpcScheduleStatus } from './npcScheduleEngine.js';
 import { applyNpcRelationshipChange, ensureRelationshipState } from './relationshipEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { ensureWorldTimeState, SECONDS_PER_DAY } from './worldTimeEngine.js';
@@ -82,8 +83,12 @@ export function checkCommitmentRequirements(state, commitmentId) {
     if (!record) blockers.push('Commitment has not been accepted.');
     else if (record.status === COMMITMENT_STATUSES.RESOLVED) blockers.push('Commitment is already resolved.');
     if (state.currentPlaceId !== definition.offerPlaceId) blockers.push(`Return to ${definition.offerPlaceId}.`);
-    if (!(state.npcs ?? []).some((npc) => npc.id === definition.giverNpcId && npc.identity?.locationId === definition.offerPlaceId)) {
+    const giverPresent = (state.npcs ?? []).some((npc) => npc.id === definition.giverNpcId && npc.identity?.locationId === definition.offerPlaceId);
+    if (!giverPresent) {
         blockers.push(`Persistent giver ${definition.giverNpcId} is not present.`);
+    } else {
+        const availability = getNpcScheduleStatus(state, definition.giverNpcId);
+        if (availability.scheduled && !availability.available) blockers.push(describeNpcScheduleStatus(availability));
     }
     for (const requirement of definition.requiredItems) {
         const available = qualifyingItemQuantity(state, requirement);
@@ -269,7 +274,11 @@ function checkGiverContext(state, definition) {
     if (state.currentPlaceId !== definition.offerPlaceId) return failure('commitment.context', 'commitment.wrong-place', `Return to ${definition.offerPlaceId} to speak with the commitment giver.`);
     const giver = (state.npcs ?? []).find((npc) => npc.id === definition.giverNpcId && npc.identity?.locationId === definition.offerPlaceId);
     if (!giver) return failure('commitment.context', 'commitment.giver-absent', `Persistent giver ${definition.giverNpcId} is not present.`);
-    return { ok: true, giver };
+    const availability = getNpcScheduleStatus(state, definition.giverNpcId);
+    if (availability.scheduled && !availability.available) {
+        return failure('commitment.context', 'commitment.giver-unavailable', describeNpcScheduleStatus(availability));
+    }
+    return { ok: true, giver, availability };
 }
 
 function qualifyingItemQuantity(state, requirement) {
