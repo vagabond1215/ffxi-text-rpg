@@ -7,10 +7,14 @@ import { calculateSellValue, canSellItem } from './itemBehaviorEngine.js';
 import { isSettlementLocality } from './localityEngine.js';
 import { checkProductionRequirements } from './productionEngine.js';
 import { findCurrentShopPoi } from './shopEngine.js';
-import { collectAvailableWorkstationTags, getWorkstationTagsForPoi } from './workstationEngine.js';
+import {
+    collectAvailableWorkstationTags,
+    collectHomeWorkstationTags,
+    getWorkstationTagsForPoi,
+} from './workstationEngine.js';
 import { workDurationForProficiency } from './workProficiencyEngine.js';
 
-export const SETTLEMENT_SERVICE_BOARD_VERSION = 1;
+export const SETTLEMENT_SERVICE_BOARD_VERSION = 2;
 
 export function createSettlementServiceBoard(state) {
     const placeId = state?.currentPlaceId ?? null;
@@ -21,8 +25,12 @@ export function createSettlementServiceBoard(state) {
     const workshopPois = localPois
         .map((poi) => ({ poi, stationTags: getWorkstationTagsForPoi(poi) }))
         .filter((entry) => entry.stationTags.length > 0);
-    const localStationTags = new Set(workshopPois.flatMap((entry) => entry.stationTags));
     const currentStationTags = new Set(collectAvailableWorkstationTags(state));
+    const homeStationTags = new Set(collectHomeWorkstationTags(state));
+    const localStationTags = new Set([
+        ...workshopPois.flatMap((entry) => entry.stationTags),
+        ...homeStationTags,
+    ]);
     const currentShopPoi = findCurrentShopPoi(state);
     const currentShopCatalog = currentShopPoi ? getShopCatalogForPoi(currentShopPoi.id) : null;
 
@@ -43,6 +51,14 @@ export function createSettlementServiceBoard(state) {
             action,
         });
     });
+
+    const homeWorkshop = homeStationTags.size
+        ? Object.freeze({
+            name: 'Your lodging workshop',
+            stationTags: Object.freeze(Array.from(homeStationTags)),
+            current: true,
+        })
+        : null;
 
     const localShops = localPois
         .filter((poi) => poi.actions.includes('shop') && getShopCatalogForPoi(poi.id))
@@ -79,6 +95,7 @@ export function createSettlementServiceBoard(state) {
         placeId,
         walletGil: Math.max(0, Number(state.player.wallet?.gil) || 0),
         currentStationTags: Object.freeze(Array.from(currentStationTags)),
+        homeWorkshop,
         workshops: Object.freeze(workshops),
         production: Object.freeze(production),
         trade,
@@ -271,7 +288,7 @@ function createRecoveryEntry(state, actions) {
 }
 
 function carriedQuantity(state, itemId) {
-    return (state.player?.inventoryState?.containers?.inventory?.items ?? [])
+    return (state.player.inventoryState?.containers?.inventory?.items ?? [])
         .filter((item) => item.id === itemId || item.templateId === itemId)
         .reduce((sum, item) => sum + Math.max(1, Number(item.quantity) || 1), 0);
 }
@@ -293,6 +310,7 @@ function emptyBoard(placeId) {
         placeId,
         walletGil: 0,
         currentStationTags: Object.freeze([]),
+        homeWorkshop: null,
         workshops: Object.freeze([]),
         production: Object.freeze([]),
         trade: Object.freeze({ currentShop: null, localShops: Object.freeze([]), buyOffers: Object.freeze([]), sellOffers: Object.freeze([]) }),
