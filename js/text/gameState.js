@@ -1,4 +1,5 @@
 import { getNation } from './data/nations.js';
+import { getStartingDisciplineKit } from './data/startingDisciplineKits.js';
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
 import { describeCoordinate, normalizePositionForPlace } from './data/coordinates.js';
@@ -7,6 +8,7 @@ import { createAbilityRuntimeState } from './systems/abilityEngine.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { createCommitmentState } from './systems/commitmentEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
+import { addItemToContainer } from './systems/inventoryEngine.js';
 import { createPartyState } from './systems/partyEngine.js';
 import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
@@ -28,11 +30,12 @@ export function createNewGameState(options = {}) {
     const nation = getNation(options.nationId);
     const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
     const startCoordinate = normalizePositionForPlace(startPlace, startPlace.coordinateSystem.start);
+    const mainJobId = options.mainJobId ?? 'vanguard';
     const player = createPlayerCharacter({
         name: options.name ?? 'Traveler',
         raceId: options.raceId ?? 'human',
         sex: options.sex,
-        mainJobId: options.mainJobId ?? 'vanguard',
+        mainJobId,
         level: 1,
         nation: nation.name,
         startingCity: startPlace.name,
@@ -42,6 +45,7 @@ export function createNewGameState(options = {}) {
             unlockedHomePoints: [startPlace.id],
         },
     });
+    grantStartingDisciplineKit(player, mainJobId);
 
     return {
         version: 5,
@@ -174,4 +178,12 @@ export function describeInventory(state) {
 export function appendLog(state, entry) {
     state.log.push({ at: new Date().toISOString(), entry });
     if (state.log.length > 100) state.log.splice(0, state.log.length - 100);
+}
+
+function grantStartingDisciplineKit(player, mainJobId) {
+    const kit = getStartingDisciplineKit(mainJobId);
+    for (const item of kit.items) {
+        const stored = addItemToContainer(player.inventoryState, 'inventory', item);
+        if (!stored.ok) throw new Error(`Unable to grant ${kit.disciplineId} starting equipment: ${stored.reason}`);
+    }
 }
