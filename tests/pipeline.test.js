@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.200.1');
-    assert.equal(PACKAGE_VERSION, '0.8.200');
+    assert.equal(PRODUCT_VERSION, '0.8.300.1');
+    assert.equal(PACKAGE_VERSION, '0.8.300');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 34);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Home Workshop Capability');
+    assert.equal(VERSION.codename, 'Carried Load and Transport Logistics');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -33,6 +33,7 @@ test('version manifest separates product package and persistence versions', () =
             versionManifest: SYSTEM_VERSIONS.versionManifest,
             integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
             transport: SYSTEM_VERSIONS.transport,
+            carriedLoad: SYSTEM_VERSIONS.carriedLoad,
             transportServiceBoard: SYSTEM_VERSIONS.transportServiceBoard,
             settlementServiceBoard: SYSTEM_VERSIONS.settlementServiceBoard,
             workstations: SYSTEM_VERSIONS.workstations,
@@ -70,10 +71,11 @@ test('version manifest separates product package and persistence versions', () =
             startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
         },
         {
-            versionManifest: '0.8.200.1',
+            versionManifest: '0.8.300.1',
             integratedMechanicsGate: '0.1.0',
-            transport: '0.2.0',
-            transportServiceBoard: '0.1.0',
+            transport: '0.3.0',
+            carriedLoad: '0.1.0',
+            transportServiceBoard: '0.2.0',
             settlementServiceBoard: '0.2.0',
             workstations: '0.3.0',
             productionItems: '0.3.0',
@@ -111,12 +113,15 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.200\.1/);
-    assert.match(describeVersion(), /Package: 0\.8\.200/);
+    assert.match(describeVersion(), /Product: 0\.8\.300\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.300/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 34/);
-    assert.match(describeVersion(), /Codename: Home Workshop Capability/);
+    assert.match(describeVersion(), /Codename: Carried Load and Transport Logistics/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
+    assert.match(describeSystemVersions(), /transport: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /carriedLoad: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /transportServiceBoard: 0\.2\.0/);
     assert.match(describeSystemVersions(), /homeInfrastructure: 0\.2\.0/);
     assert.match(describeSystemVersions(), /workstations: 0\.3\.0/);
     assert.match(describeSystemVersions(), /productionItems: 0\.3\.0/);
