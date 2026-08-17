@@ -5,6 +5,7 @@ export const HANDS_ON_TASK_KINDS = Object.freeze([
     'recovery.field',
     'recovery.settlement',
     'recovery.defeat',
+    'project.labor',
 ]);
 export const HANDS_ON_TASK_CHANNELS = Object.freeze(['work:character', 'recovery:character']);
 
