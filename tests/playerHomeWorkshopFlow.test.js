@@ -46,6 +46,10 @@ function quantity(state, itemId) {
         .reduce((sum, item) => sum + Math.max(1, Number(item.quantity) || 1), 0);
 }
 
+function sinkTypes(itemId) {
+    return (getProductionInputItem(itemId)?.sinks ?? []).map((sink) => sink.type);
+}
+
 function homeEntry(state, uiState, improvementId = 'joiners-workbench') {
     const view = createGameViewModel(state, uiState);
     return view.opportunities.entries.find((entry) => entry.id === `home-infrastructure-${improvementId}`) ?? null;
@@ -71,6 +75,9 @@ function dispatchHomeEntry(state, uiState, improvementId = 'joiners-workbench') 
 test('0.8.200 turns a home improvement into a real reusable woodshop capability and reduces future workshop travel', () => {
     installStorage();
     assert.deepEqual(validateHomeInfrastructureCatalog(), []);
+    assert.ok(sinkTypes('item-elderwood-resin-board').includes('construction'));
+    assert.ok(sinkTypes('item-copper-trail-clasp').includes('construction'));
+    assert.ok(sinkTypes('item-redstone-copper-ingot').includes('construction'), 'the earlier Storage Chest material should also advertise its real infrastructure sink');
     assert.equal(createAccountWithPassword('Home Workshop Audit', 'pwd', { persistentLogin: true }).ok, true);
 
     let state = createNewGameState({ nationId: 'thornwall', name: 'Workshop Auditor' });
