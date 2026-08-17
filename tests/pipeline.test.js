@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.300.1');
-    assert.equal(PACKAGE_VERSION, '0.8.300');
+    assert.equal(PRODUCT_VERSION, '0.8.400.1');
+    assert.equal(PACKAGE_VERSION, '0.8.400');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 4);
     assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 34);
+    assert.equal(VERSION.data, 35);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Carried Load and Transport Logistics');
+    assert.equal(VERSION.codename, 'Portable Field Logistics');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -38,6 +38,8 @@ test('version manifest separates product package and persistence versions', () =
             settlementServiceBoard: SYSTEM_VERSIONS.settlementServiceBoard,
             workstations: SYSTEM_VERSIONS.workstations,
             productionItems: SYSTEM_VERSIONS.productionItems,
+            inventoryContainers: SYSTEM_VERSIONS.inventoryContainers,
+            inventoryTransfers: SYSTEM_VERSIONS.inventoryTransfers,
             shopTransactions: SYSTEM_VERSIONS.shopTransactions,
             characterActivity: SYSTEM_VERSIONS.characterActivity,
             activityAdvance: SYSTEM_VERSIONS.activityAdvance,
@@ -71,18 +73,20 @@ test('version manifest separates product package and persistence versions', () =
             startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
         },
         {
-            versionManifest: '0.8.300.1',
+            versionManifest: '0.8.400.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.3.0',
-            carriedLoad: '0.1.0',
+            carriedLoad: '0.2.0',
             transportServiceBoard: '0.2.0',
             settlementServiceBoard: '0.2.0',
             workstations: '0.3.0',
-            productionItems: '0.3.0',
+            productionItems: '0.4.0',
+            inventoryContainers: '0.6.0',
+            inventoryTransfers: '0.6.0',
             shopTransactions: '0.5.0',
             characterActivity: '0.3.0',
-            activityAdvance: '0.4.0',
-            homeInfrastructure: '0.2.0',
+            activityAdvance: '0.5.0',
+            homeInfrastructure: '0.3.0',
             campaignRecovery: '0.1.0',
             resourceRecoveryWork: '0.3.0',
             commitments: '0.2.0',
@@ -113,20 +117,22 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.300\.1/);
-    assert.match(describeVersion(), /Package: 0\.8\.300/);
+    assert.match(describeVersion(), /Product: 0\.8\.400\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.400/);
     assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 34/);
-    assert.match(describeVersion(), /Codename: Carried Load and Transport Logistics/);
+    assert.match(describeVersion(), /Data: 35/);
+    assert.match(describeVersion(), /Codename: Portable Field Logistics/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /transport: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /carriedLoad: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /carriedLoad: 0\.2\.0/);
     assert.match(describeSystemVersions(), /transportServiceBoard: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.3\.0/);
     assert.match(describeSystemVersions(), /workstations: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /productionItems: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /productionItems: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /inventoryContainers: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /inventoryTransfers: 0\.6\.0/);
     assert.match(describeSystemVersions(), /settlementServiceBoard: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /activityAdvance: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /activityAdvance: 0\.5\.0/);
     assert.match(describeSystemVersions(), /domOnboarding: 0\.1\.0/);
     assert.match(describeSystemVersions(), /saveRecovery: 0\.1\.0/);
     assert.match(describeSystemVersions(), /characterCreation: 0\.6\.0/);
