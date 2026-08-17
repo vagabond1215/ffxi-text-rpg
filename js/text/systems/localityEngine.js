@@ -2,13 +2,14 @@ import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getPointOfInterest, getPoisForPlace } from '../data/pointsOfInterest.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
+import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { syncActivePartyLocation } from './partyEngine.js';
 import { discoverPoi, performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const LOCALITY_NAVIGATION_VERSION = 1;
+export const LOCALITY_NAVIGATION_VERSION = 2;
 export const SETTLEMENT_LOCALITY_TYPES = Object.freeze(['city', 'cityInterior', 'travelHub']);
 
 export function isSettlementLocality(placeOrId) {
@@ -46,7 +47,8 @@ export function listLocalityPoints(state, options = {}) {
     const limit = Math.max(1, Number(options.limit) || 8);
     return getPoisForPlace(state.currentPlaceId)
         .filter((poi) => !['routeExit'].includes(poi.type))
-        .slice(0, limit);
+        .slice(0, limit)
+        .map((poi) => decoratePoiAvailability(state, poi));
 }
 
 export function moveWithinLocality(state, destinationId) {
@@ -100,6 +102,15 @@ export function performLocalityPoiAction(state, poiId, action = 'talk') {
     const poi = getPointOfInterest(poiId);
     if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
 
+    const availability = getPoiScheduleStatus(state, poi);
+    if (availability.scheduled && !availability.available) {
+        return fail('locality.poi-unavailable-now', describeNpcScheduleStatus(availability), {
+            poiId: poi.id,
+            scheduleId: availability.scheduleId,
+            nextAvailableAtWorldSeconds: availability.nextAvailableAtWorldSeconds,
+        });
+    }
+
     const positioned = setPositionAndDiscover(state, state.currentPlaceId, poi.coordinate, {
         important: [`Visited ${poi.name}`],
     });
@@ -131,6 +142,16 @@ export function describeLocality(state) {
         points.length ? `Local points: ${points.map((poi) => poi.name).join(', ')}` : 'Local points: none',
         'Browsing is free; locality crossings consume authored fictional time and remain interruptible.',
     ].join('\n');
+}
+
+function decoratePoiAvailability(state, poi) {
+    const availability = getPoiScheduleStatus(state, poi);
+    if (!availability.scheduled) return poi;
+    return Object.freeze({
+        ...poi,
+        notes: `${poi.notes} · ${describeNpcScheduleStatus(availability)}`,
+        availability,
+    });
 }
 
 function ok(code, message, data = {}) { return { ok: true, code, message, data }; }
