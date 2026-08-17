@@ -28,7 +28,8 @@ test('new characters begin at a believable morning hour and the opening names th
         assert.equal(state.worldTime.totalSeconds, DEFAULT_START_WORLD_TIME_SECONDS);
         assert.match(opening, new RegExp(guideName));
         assert.match(opening, new RegExp(regionName));
-        assert.match(opening, /more mastery, material capability, knowledge, or useful connections/i);
+        assert.match(opening, /better judgment|stronger hands|useful material|remembers your name/i);
+        assert.doesNotMatch(opening, /permanent class|implementation|game state|roadmap/i);
     }
 });
 
