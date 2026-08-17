@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.7.400.1
-Package:      0.7.400
+Product:      0.8.100.1
+Package:      0.8.100
 Account Save: 4
 Game State:   5
-Data:         31
+Data:         32
 Benchmark:    1
-Codename:     Companion Life and Party Depth
+Codename:     Home Foothold and Infrastructure
 ```
 
-**Phase 0.7 — Multi-region playable alpha is complete.** The project remains pre-alpha and `released: false`; completing Phase 0.7 does not imply release readiness.
+**Phase 0.7 — Multi-region playable alpha is complete. Phase 0.8 — Life and infrastructure expansion is in progress.** The project remains pre-alpha and `released: false`.
 
 ## Product laws
 
@@ -42,7 +42,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments and relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Legacy FFXI-derived material remains research/reference only.
+Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments and relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Home/infrastructure work must reuse canonical projects, fictional time, materials, inventory, and furnishing/storage authority rather than introducing parallel management state. Legacy FFXI-derived material remains research/reference only.
 
 ## Phase summary
 
@@ -52,7 +52,7 @@ Campaign guidance and maps reflect acquired knowledge. Resources preserve proven
 | `0.5` | Simulation + original-world/content substrate | **Complete** |
 | `0.6` | Integrated character/mechanics content | **Complete** |
 | `0.7` | Multi-region playable alpha | **Complete** |
-| `0.8` | Life and infrastructure expansion | Planned |
+| `0.8` | Life and infrastructure expansion | **In progress** |
 | `0.9` | Adventure depth and release hardening | Planned |
 | `1.0` | Live foundation | Planned |
 
@@ -134,18 +134,9 @@ Data 30
 
 ## `0.7.400` — Companion life, party depth, and character POV — complete
 
-The existing Mara Venn companion foundation now creates a real preparation decision outside the automatic combat contribution. Mara remains the same NPC-backed person through recruitment, active-party changes, travel, battle-resource synchronization, recovery, and real save/load.
+The existing Mara Venn companion foundation creates a real preparation decision outside automatic combat contribution. Her persistent field approach lives in the existing party tactics record, survives save/load and travel, and affects only derived battle-entry attributes. The Character view presents Mara as a persistent traveling person with voiced intent and semantic preparation/party actions.
 
-Her persistent field approach lives in the existing party tactics record:
-
-- **Guard the Road** — tighter defense/evasion at the cost of striking power; Mara says, “Stay inside my reach. We get home together.”
-- **Seek the Opening** — more attack at the cost of caution; Mara says, “Hold their eye. I’ll find the seam.”
-
-Changing approach is a pre-battle decision. Battle entry derives its modifiers without mutating Mara's permanent attributes, creating companion XP, or adding a second combat-AI/progression authority.
-
-The Character view presents Mara as a traveling person rather than a raw policy record: identity, description, location, condition, current approach, voiced intent, alternative approaches, and semantic travel/part-ways/preparation actions.
-
-The same track completed a character-POV hygiene audit. Ordinary browser surfaces and encounterable place/POI descriptions now speak in terms of what the character sees, knows, carries, remembers, needs, or can decide. Development-roadmap language, raw state/task labels, authored-world explanations, and similar implementation vocabulary stay outside normal play. `tests/playerPointOfViewPresentation.test.js` and `tests/playerFacingLanguage.test.js` guard that boundary.
+The same track completed the character-POV hygiene audit: ordinary browser surfaces and encounterable place/POI descriptions speak in terms of what the character sees, knows, carries, remembers, needs, or can decide. Implementation vocabulary stays outside normal play.
 
 Authoritative promoted runtime checkpoint:
 
@@ -169,41 +160,65 @@ tick dispatch        0.005020ms/op
 direct route lookup  0.861264ms/op
 ```
 
-Data advances to 31 because the canonical companion catalog and player-visible authored world/POI content changed. Account Save 4 and Game State 5 remain unchanged because field approach uses the existing party tactics structure.
+Data advanced to 31 because the canonical companion catalog and player-visible authored world/POI content changed. Account Save 4 and Game State 5 remained unchanged because field approach used the existing party tactics structure.
 
 ## Phase 0.7 closure audit
 
 **PASS. Phase 0.7 closes at Product `0.7.400.1`.**
 
-The exit contract is satisfied by the combined proofs:
+The exit contract is satisfied by the combined proofs: three several-day persistent community loops; livelihood/gathering/provenance/processing/trade/mastery; danger/combat/recovery; semantic scheduled transport; useful settlement returns; acquired/current information privacy; deterministic save/load; a persistent companion with a meaningful preparation choice; and simple character-facing browser presentation.
 
-- three several-day persistent community loops with named NPC relationships and later follow-up;
-- livelihood, gathering, provenance, processing, trade, preparation, and persistent work mastery;
-- danger, Combat 2.0, physical-body recovery, defeat consequences, and return to the same campaign;
-- semantic scheduled transport across the proving communities;
-- useful settlement return choices for work, trade, recovery, preparation, and social continuity;
-- acquired/current information access and search without omniscient topology leakage;
-- current-format deterministic save/load with exactly-once rewards, fares, trades, and progress;
-- a persistent companion whose pre-battle choice matters and survives travel/save-load;
-- clean character-facing prose and a simple decision-first browser hierarchy.
+# 0.8 — Life and infrastructure expansion — in progress
 
-The audit does **not** require every future depth system to be complete. Residual breadth belongs to later phases unless it becomes a concrete player blocker.
+Phase 0.8 expands the persistent-life half of the game: property, workshops, agriculture, logistics, home/infrastructure, relationships, social schedules, companion depth, and earned automation. Each track must grow from existing simulation and material authorities rather than becoming a disconnected management minigame.
 
-## Deferred depth after Phase 0.7
+## `0.8.100` — Home Foothold & Infrastructure — complete
 
-- Broader companion dialogue, equipment, progression, goals, schedules, and relationship consequences.
-- Richer generic NPC/vendor voice and denser social life.
-- A few optional utility/combat/wilderness command adapters outside the core ordinary information path.
-- Further safe-locality density/hierarchy refinement without restoring wilderness controls there.
-- Deliberate original-currency terminology to replace current `gil` wording.
-- Authored paid/service-quality recovery rather than fabricated fees.
-- Broader content scale and harder adventure/economy loops appropriate to Phases 0.8/0.9.
+The first Phase 0.8 track turns the character's starting lodging into a small durable infrastructure loop.
+
+The first authored improvement is **Build a Storage Chest**:
+
+- requires 2 **Resin-Sealed Hardwood Boards** from the existing Elderwood production chain;
+- requires 1 **Redstone Copper Ingot** from the existing Redstone production chain;
+- requires 30 minutes of hands-on fictional labor;
+- completes through the existing generic project/timed-task substrate;
+- places the existing **Storage Chest** furnishing exactly once;
+- raises furnishing-backed home storage from the starting 3 slots to 8 slots.
+
+The Journal derives a **Home & Foothold** opportunity with semantic Plan → Set aside materials → Start work → Finish actions. Materials leave carried inventory through the generic atomic project-contribution path. Active construction survives real account save/load. Completion is reconciled exactly once and the benefit survives subsequent save/load.
+
+No second property registry, construction clock, inventory, storage-capacity system, or UI-owned economy state was introduced. `projectEngine` retains project/material/labor authority; canonical world time/timed tasks own duration; inventory/furnishing authority owns the storage benefit; `homeInfrastructureEngine` is the bounded authored adapter and derived presentation layer.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+0b9251a43285443087050127da36b977cabdf7ee
+496/496 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.8.100.1
+Package 0.8.100
+Data 32
+```
+
+Benchmark 1:
+
+```text
+1,000 player combat profiles     466.332ms  0.466332ms/op
+1,000 enemy combat profiles      108.813ms  0.108813ms/op
+1,000 basic attacks              521.192ms  0.521192ms/op
+10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
+10,000 direct route lookups     8784.978ms  0.878498ms/op
+```
+
+Data advances `31 -> 32` because the canonical home-infrastructure definition and its material-to-durable-benefit contract are authored data. Account Save remains 4 and Game State remains 5 because the track reuses existing project `data`, timed tasks, placed furnishings, and inventory state.
+
+## Next Phase 0.8 boundary
+
+Do not mass-author property, farms, workshops, or automation as a follow-on to this checkpoint. The next work order should select one bounded Phase 0.8 track and first audit its existing authority/data seam. Candidate directions include workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
 
 # Later phases
-
-## 0.8 — Life and infrastructure expansion
-
-Property, workshops, agriculture, logistics, home/infrastructure, relationships, companions, social schedules, and earned automation. **Do not begin automatically; choose a bounded track only on a new work order.**
 
 ## 0.9 — Adventure depth and release hardening
 
