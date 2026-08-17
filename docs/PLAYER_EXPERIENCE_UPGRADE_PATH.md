@@ -1,6 +1,6 @@
 # Player Experience Upgrade Path
 
-This document records the player-facing upgrade path that closed Phase 0.7. It is ordered by what a normal player must understand and accomplish, not by how many underlying engines exist.
+This document records the player-facing upgrade path that closed Phase 0.7 and now guides bounded Phase 0.8 life/infrastructure work. It is ordered by what a normal player must understand and accomplish, not by how many underlying engines exist.
 
 ## Player promise
 
@@ -8,11 +8,12 @@ A new player should be able to answer these questions from normal browser play:
 
 1. **Why am I here?** — the character has an origin-specific arrival circumstance and a first local connection.
 2. **What should I do next?** — the game presents one clear first contact and then several small, non-exclusive ambitions.
-3. **How does progress work?** — actions connect effort to persistent mastery, efficiency, capability, preparation, knowledge, or relationships.
+3. **How does progress work?** — actions connect effort to persistent mastery, efficiency, capability, preparation, knowledge, relationships, or infrastructure.
 4. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character's life.
 5. **Why would I return?** — settlements convert what the character earned into recovery, trade, processing, equipment, training, social continuity, and larger ambitions.
 6. **What do I know and have ready?** — preparation, learned abilities/capabilities, acquired world knowledge, and useful local options are inspectable without command vocabulary.
 7. **Who is traveling with me?** — an active companion is a persistent person whose preparation, condition, and choices matter beyond a single combat effect.
+8. **Why improve a home or foothold?** — regional materials and fictional labor can become durable preparation advantages that reduce the burden of future journeys.
 
 The intended loop remains:
 
@@ -20,11 +21,11 @@ The intended loop remains:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-No onboarding or convenience layer may create a parallel quest clock, hidden teleport graph, omniscient map/index, duplicate progression counter, duplicate economy, or reward path that bypasses provenance.
+No onboarding or convenience layer may create a parallel quest clock, hidden teleport graph, omniscient map/index, duplicate progression counter, duplicate economy, construction currency, property timer, or reward path that bypasses provenance.
 
 ## Pre-alpha implementation rule
 
-Player-experience work targets the clean current model. Old local-save compatibility is not a Phase 0.7 design requirement. Prefer one explicit authority, keep derived values derived, and version real contract changes deliberately.
+Player-experience work targets the clean current model. Old local-save compatibility is not a design requirement. Prefer one explicit authority, keep derived values derived, and version real contract changes deliberately.
 
 # Completed Phase 0.7 sequence
 
@@ -88,37 +89,20 @@ Character, Spellbook, Codex, and World render those states directly. The omnibox
 
 **Implemented, audited, and closed.**
 
-## Companion ordinary-play proof
+Mara Venn remains one persistent NPC-backed character. Her existing party tactics record carries a chosen field approach that matters before danger:
 
-Mara Venn remains one persistent NPC-backed character. Her existing party tactics record now carries a chosen **field approach** that matters before danger:
+- **Guard the Road** — favors evasion over attack. “Stay inside my reach. We get home together.”
+- **Seek the Opening** — favors attack over caution. “Hold their eye. I'll find the seam.”
 
-- **Guard the Road** — Mara keeps close and guarded, gaining evasion while giving up some attack. “Stay inside my reach. We get home together.”
-- **Seek the Opening** — Mara looks for decisive angles, gaining attack while giving up some caution. “Hold their eye. I'll find the seam.”
+The choice survives real account save/load and canonical travel. Battle creation derives approach modifiers without changing permanent attributes. The Character view presents identity, lore description, location, condition, current approach, voiced intent, alternatives, and semantic party/preparation actions rather than raw tactic IDs.
 
-The player changes the approach outside combat from the Character view. The choice survives real account save/load and canonical travel. Battle creation derives approach modifiers for Mara's battle entity without changing her permanent attributes. No companion XP track, summon system, second relationship registry, or universal party-AI framework was introduced.
-
-`tests/playerCompanionLifeFlow.test.js` proves:
-
-- Mara is the same backing NPC before and after travel;
-- approach choice changes a real attack/evasion tradeoff;
-- permanent attributes remain unchanged;
-- changing approach during active combat is blocked;
-- chosen approach survives real save/load;
-- active-party/travel synchronization remains canonical.
-
-## Character-POV and immersion audit
-
-The browser and encounterable authored content were reviewed under one rule:
+The accompanying character-POV audit established the carried-forward rule:
 
 > Ordinary character-facing information should tell the player what the character **sees, knows, carries, remembers, needs, or can decide**. Architecture, roadmap, compatibility, raw state channels, hidden topology, and implementation rationale stay outside normal play.
 
-The pass removed or replaced player-visible phrases such as raw task-channel labels, “fictional minutes,” “authored world,” roadmap/future placeholders, numeric danger values, and explanatory software-language around maps/services. Settlement, map, status, companion, place, and POI copy now favors present-world observations and decisions.
+`tests/playerCompanionLifeFlow.test.js`, `tests/playerPointOfViewPresentation.test.js`, and `tests/playerFacingLanguage.test.js` guard this closure.
 
-The Character view presents Mara with identity, lore description, location, condition, current approach, voiced intent, alternatives, and semantic party/preparation actions rather than raw tactic IDs.
-
-`tests/playerPointOfViewPresentation.test.js` guards the primary Scene, Character, Spellbook, Journal, Codex, Craft, and World surfaces plus representative place/POI authored strings. `tests/playerFacingLanguage.test.js` continues to guard decision-first Journal/UI language.
-
-## `0.7.400` promoted checkpoint
+Promoted checkpoint:
 
 ```text
 1e217fe1f7e62593fa9ed33eebdf1b3878490336
@@ -131,41 +115,109 @@ Package 0.7.400
 Data 31
 ```
 
-Benchmark 1:
-
-```text
-1,000 player combat profiles     470.213ms  0.470213ms/op
-1,000 enemy combat profiles      124.768ms  0.124768ms/op
-1,000 basic attacks              538.006ms  0.538006ms/op
-10,000 ticks / 5 subscribers      50.197ms  0.005020ms/op
-10,000 direct route lookups     8612.637ms  0.861264ms/op
-```
-
-Data advances to 31 for the canonical companion catalog and authored world/POI content changes. Game State remains 5 and Account Save remains 4 because field approach uses the existing party tactics record.
-
 # Phase 0.7 closure audit
 
 **Result: PASS — Phase 0.7 is complete at `0.7.400.1`.**
 
-From a fresh/current-format save, the combined Phase 0.7 proofs satisfy the player-facing acceptance checks:
+The combined Phase 0.7 proofs satisfy the player-facing acceptance checks: clear next actions and competing ambitions, persistent consequences, acquired-knowledge privacy, deterministic save/load, social continuity, combat/recovery continuity, semantic movement among proving communities, useful settlement returns, inspectable preparation/knowledge, persistent companion life, and clean decision-first character-facing presentation.
 
-- one useful next action is obvious without command expertise;
-- several competing ambitions are understandable;
-- activities expose persistent character/world consequences;
-- acquired knowledge remains distinct from hidden authored topology;
-- save/load resumes without duplicated rewards, fares, trades, or progress;
-- prior days and relationships alter later opportunities;
-- combat/recovery returns to the same campaign;
-- players can move among proving communities through semantic browser actions;
-- returning to settlements provides trade, production, recovery, preparation, and social choices for another outing;
-- core decision information can be inspected without command vocabulary;
-- Mara remains the same persistent NPC-backed person and now creates a meaningful preparation decision outside a single automatic combat action;
-- primary character-facing surfaces use immersive, present-world language and a simple decision-first hierarchy.
+Phase 0.7 remains closed as later phases extend shared authorities.
 
-The alpha gate does not require every future life/adventure depth feature. The following remain deliberate later-phase breadth rather than Phase 0.7 blockers: broader companion dialogue/equipment/progression/goals, richer generic NPC/vendor voice, residual optional command adapters, safe-locality density refinement, original currency terminology, and authored paid/service-quality recovery.
+# Phase 0.8 — Life and infrastructure expansion — in progress
+
+Phase 0.8 must deepen the persistent-life loop without turning the game into disconnected management menus. New property, workshop, agriculture, logistics, social-life, companion-life, and automation features must consume or extend real world resources, fictional time, skills, relationships, locations, and existing persistent authorities.
+
+# `0.8.100` — Home Foothold & Infrastructure
+
+**Implemented, audited, and closed.**
+
+## Player-facing problem
+
+Before this track, the character began with a home/storage concept, and the generic project engine already supported materials plus fictional labor, but ordinary play did not turn regional production into a visible durable home improvement. Home storage was a static starting convenience rather than a reason to bring useful goods back from the wider campaign.
+
+## Bounded proof: Build a Storage Chest
+
+The first improvement deliberately reuses existing material chains and furnishing authority:
+
+```text
+2 Resin-Sealed Hardwood Boards   <- Elderwood production
+1 Redstone Copper Ingot          <- Redstone production
+30 minutes hands-on labor        <- canonical project/timed-task substrate
+                   |
+                   v
+Storage Chest furnishing         -> +5 furnishing-storage slots
+```
+
+A fresh character begins with Bronze Bed + Maple Table for 3 furnishing-storage slots. Completing the chest raises that existing capacity to 8 slots.
+
+The Journal now includes a derived **Home & Foothold** group. The ordinary semantic sequence is:
+
+```text
+Plan
+  -> Set aside available construction materials
+  -> Start work
+  -> Finish the active task
+  -> see the completed furnishing and larger home-storage capacity
+```
+
+The player never needs a project ID, task channel, internal furnishing registry name, or command string.
+
+## Authority and continuity proof
+
+`homeInfrastructureEngine` is an adapter, not a new simulation authority. Generic projects own material/labor progress; inventory removes contributed goods; world time/timed tasks own the 30-minute duration; furnishing/inventory authority owns the actual capacity calculation; Journal/view state is derived.
+
+The end-to-end regression proves:
+
+- the authored home-infrastructure catalog validates against real canonical production items and furnishing IDs;
+- contributed boards and copper leave carried inventory exactly once;
+- an active home project survives real account save/load;
+- canonical activity advance completes `project.labor` without a second clock;
+- the Storage Chest furnishing is applied exactly once;
+- repeated reconciliation cannot duplicate the benefit;
+- home storage is 3 slots before and 8 after completion;
+- completed infrastructure survives another real save/load;
+- game-state/world-data validation remain clean;
+- rendered Journal HTML exposes present-world lodging/material/storage language and not internal project/task/state identifiers.
+
+`tests/playerHomeInfrastructureFlow.test.js` is the primary regression.
+
+## `0.8.100` promoted checkpoint
+
+```text
+0b9251a43285443087050127da36b977cabdf7ee
+496/496 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.8.100.1
+Package 0.8.100
+Data 32
+Account Save 4
+Game State 5
+```
+
+Benchmark 1:
+
+```text
+1,000 player combat profiles     466.332ms  0.466332ms/op
+1,000 enemy combat profiles      108.813ms  0.108813ms/op
+1,000 basic attacks              521.192ms  0.521192ms/op
+10,000 ticks / 5 subscribers      48.255ms  0.004825ms/op
+10,000 direct route lookups     8784.978ms  0.878498ms/op
+```
+
+Data advances to 32 because the canonical authored home-improvement definition and material-to-durable-benefit contract are new content. Game State and Account Save stay unchanged because the project metadata and completed furnishing fit existing persisted structures.
+
+## Character-POV audit for `0.8.100`
+
+The new home flow follows the Phase 0.7 POV boundary. Player text speaks about lodging, materials, hands-on work, the chest taking shape, and available storage. Internal terms such as `project.labor`, `completionApplied`, `homePlaceId`, internal project IDs, and the legacy internal `mogHouse` key are not rendered in normal Journal play.
+
+The completed improvement remains simple to read: what was built, where it stands, and what practical capacity changed.
+
+## Next Phase 0.8 boundary
+
+`0.8.100` is complete, but Phase 0.8 is not. Do **not** automatically launch a broad property/farming/automation expansion. A new bounded work order should first select and audit one existing seam, such as workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
 
 ## Architecture rule carried forward
 
-Player-experience guidance, service boards, information/search, and similar presentation models are projections over canonical state, not second simulation authorities. Commitments, relationships, battle consequences, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, and wallet ownership remain in their domain systems.
-
-Phase 0.8 is planned but **must not begin automatically**. A new work order should choose its first bounded life/infrastructure track.
+Player-experience guidance, service boards, information/search, home opportunity models, and similar presentation layers are projections over canonical state, not second simulation authorities. Projects, commitments, relationships, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, wallet ownership, and furnishing/storage capacity remain in their domain systems.
