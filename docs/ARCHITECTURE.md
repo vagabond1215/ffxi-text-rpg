@@ -22,130 +22,147 @@ The semantic DOM/CSS shell is the active player interface. Canvas modules remain
 - Fictional time, timed tasks, interrupts, work, projects, travel, combat readiness, statuses, recovery, and day review share one canonical simulation substrate.
 - Continuous-character stats, learned skills/capabilities, and work proficiency belong to the person; disciplines are contextual training traditions.
 - Inventory/equipment/tool state is canonical for preparation and practical capability checks.
-- Resources preserve source/transformation provenance and one-time ownership; same-ID stacks with different provenance histories remain distinct.
+- Resources preserve source/transformation provenance and one-time ownership; same-ID stacks with different histories remain distinct.
 - Projects own persistent material/labor progress; specialized systems may attach bounded project metadata and apply domain-specific completion effects.
-- Home/infrastructure composes projects, timed tasks, canonical materials, inventory, and furnishings; it does not own a second item store, construction clock, or capacity formula.
+- Home/infrastructure composes projects, timed tasks, canonical materials, inventory, furnishings, workstations, and production. It does not own a second item store, construction clock, workstation registry, recipe engine, mastery counter, or storage-capacity formula.
 - Commitments own accepted/resolved/follow-up state and one-time rewards. General named-NPC relationship continuity lives in `state.relationships`; companion-specific relationship/tactics state remains in party/companion authority.
 - Maps, campaign guidance, transport boards, settlement service boards, player information, and home opportunity models are projections of acquired/current state.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
 - Persistent companions remain NPC-backed world participants rather than summons.
-- Content packs and cross-reference validation remain the scale mechanism for authored world growth.
 - Ordinary browser presentation exposes what the character sees, knows, carries, remembers, needs, or can decide. Architecture, compatibility, raw state/task channels, and hidden topology stay outside normal play.
 
 ## Player-experience projections
 
 `playerExperienceEngine` and `playerOpportunityEngine` read real origin, equipment, locality, route, work, gathering, inventory, encounter, and service state; they do not persist tutorial progress.
 
-`playerContinuityEngine`, `playerDangerRecoveryEngine`, `playerCampaignReadabilityEngine`, `transportServiceBoardEngine`, `settlementServiceBoardEngine`, and `playerInformationEngine` remain derived views over their canonical domain authorities. The semantic browser delegates actual mutations to travel, transport, production, shop, recovery, equipment, commitment, party, locality, inventory, and project engines.
+`playerContinuityEngine`, `playerDangerRecoveryEngine`, `playerCampaignReadabilityEngine`, `transportServiceBoardEngine`, `settlementServiceBoardEngine`, and `playerInformationEngine` remain derived views over canonical domain authorities. The semantic browser delegates actual mutations to travel, transport, production, shop, recovery, equipment, commitment, party, locality, inventory, and project engines.
 
 `activityAdvanceEngine` provides semantic advance-to-completion for the current canonical activity without a second clock. It composes travel, gathering/production work, defeated-body recovery, campaign recovery, and generic `project.labor`.
 
+## Home, project, workstation, and production architecture (`0.8.100`–`0.8.200`)
+
+### Generic project authority
+
+`projectEngine.js` remains the persistent construction/work substrate. A project owns:
+
+- stable ID, kind, label, and status;
+- material requirements and contributed quantities;
+- labor duration and linked `project.labor` timed task;
+- creation/start/completion world timestamps;
+- bounded domain `data` used by systems that compose with the generic project contract.
+
+Material contribution removes canonical inventory quantity atomically. Labor uses the shared fictional-time/timed-task substrate. Generic project reconciliation owns generic completion.
+
+### Authored home-infrastructure data
+
+`homeInfrastructure.js` contains authored improvement definitions, not a property simulation.
+
+Current improvements:
+
+```text
+Build a Storage Chest
+  2 Resin-Sealed Hardwood Boards
+  1 Redstone Copper Ingot
+  30 minutes labor
+    -> Storage Chest furnishing
+    -> +5 furnishing-backed storage slots
+
+Build a Joiner's Workbench
+  2 Resin-Sealed Hardwood Boards
+  1 Copper Trail Clasp
+  45 minutes labor
+    -> Joiner's Workbench furnishing
+    -> woodshop + workshop workstation tags while at home
+```
+
+The workbench deliberately has `storageSlots: 0`. Its value is production capability rather than hidden capacity.
+
+### `homeInfrastructureEngine.js`
+
+`HOME_INFRASTRUCTURE_VERSION = 2` remains a bounded domain adapter over generic authorities. It:
+
+- resolves the character's current home from existing unlocked home points;
+- begins generic project records with home-improvement metadata;
+- delegates material contribution and labor to project authority;
+- reconciles project completion;
+- places the authored furnishing exactly once;
+- emits `home.infrastructure-completed` with the durable benefit;
+- derives the **Home & Foothold** Journal entries/actions;
+- validates home-project references against authored definitions.
+
+It does **not** own a property registry, construction queue, construction currency, home-only inventory, station registry, recipe list, mastery state, or UI persistence model.
+
+### Furnishing authority
+
+`mogHouseFurniture.js` remains the bounded internal legacy-named furnishing catalog; player-facing copy uses home/lodging/furnishing terminology.
+
+Furnishings own durable placed-object identity and storage contribution. `calculateFurnitureStorageCapacity` remains the actual storage-capacity formula. A fresh Bronze Bed + Maple Table provide 3 slots; Storage Chest raises that to 8. Joiner's Workbench contributes zero storage.
+
+### Workstation authority
+
+`workstationEngine.js` is the sole semantic workstation-availability authority.
+
+It derives station tags from:
+
+1. current contextual POIs/services; and
+2. placed workstation-bearing furnishings **only when the character is physically at the current home place**.
+
+For the Joiner's Workbench:
+
+```text
+furnishing tags: workbench + woodshop
+        |
+        v
+workstationEngine
+        |
+        +-> workshop
+        +-> woodshop
+```
+
+Away from home, those furnishing-derived tags are absent. This prevents a durable home upgrade from becoming an omnipresent crafting permission.
+
+### Production authority
+
+`productionEngine.js` remains authoritative for recipe requirements, station checks, atomic input consumption, timed work, output storage, transformation/input provenance, and persistent work proficiency.
+
+The `0.8.200` proving loop reuses the existing `craft-elderwood-resin-board` definition:
+
+```text
+1 Elderwood Hardwood
+1 Elderwood Amber Resin
+woodshop required
+240 seconds at proficiency 0
++2 crafting proficiency
+  -> Resin-Sealed Hardwood Board
+```
+
+Building the workbench changes **context**, not the recipe. Once the furnishing makes `woodshop` available at home, the same existing production definition becomes executable through the same production engine.
+
+### Settlement service projection
+
+`settlementServiceBoardEngine` version 2 merges current home-derived station tags into the existing settlement work projection. It may expose a derived `homeWorkshop` summary and production choices, but it owns no furnishing, workstation permission, recipe, input/output, time, or mastery state.
+
+The active Craft browser surface remains **Work, Trade & Recover**. Home-enabled production therefore appears through the same semantic player surface as public-workshop production rather than a second home-crafting menu.
+
+### Resource lifecycle
+
+Infrastructure consumes ordinary canonical goods. Authored item sink metadata now matches those real uses:
+
+- Resin-Sealed Hardwood Board → `construction`;
+- Redstone Copper Ingot → `construction`;
+- Copper Trail Clasp → `construction`.
+
+This is descriptive lifecycle metadata; actual item consumption remains atomic project contribution through inventory/project authority.
+
 ## Character creation and onboarding architecture (`0.8.100.2`)
 
-### Canonical creator model
+`characterCreationModel.js` owns normalized creator choices and deterministic creator randomization over canonical ancestry, discipline, origin, original-world names, authored creator prose, and starter-kit definitions.
 
-`characterCreationModel.js` owns normalized creator choices and deterministic creator randomization. It consumes:
+Guided browser creation explicitly requests the starter kit. Existing equipment items enter canonical carried inventory and are not auto-equipped. Generic `createNewGameState()` remains neutral unless that creator option is supplied.
 
-- canonical ancestry definitions from `races.js`;
-- canonical discipline definitions from `jobs.js`;
-- canonical origin definitions from `nations.js` / player-experience content;
-- original-world names from `characterNames.js`;
-- authored creator/origin prose from `characterCreationContent.js`;
-- starter-kit definitions from `startingDisciplineKits.js`.
+`domOnboardingEnhancements.js` is a presentation adapter for name/whole-character dice, discipline preview, character-save delete controls, theme controls, and local-data recovery. `saveRecovery.js` mutates the existing account registry/save layer rather than introducing another persistence system.
 
-`randomizeCreatorName` and `randomizeCreator` accept an injectable RNG. Tests can therefore prove valid ancestry/sex/origin/discipline combinations without making UI randomness an implicit gameplay authority.
-
-### Starting discipline presentation and kit
-
-The six starting disciplines already own real `primaryAttributes`, `derivedFocus`, and `skillFocus`. `characterCreationContent.js` now exposes those facts alongside a small starter-kit description so the browser can explain the practical level-1 difference between disciplines.
-
-`startingDisciplineKits.js` is authored data, not an equipment/progression engine. Each definition points at existing canonical equipment records and adds player-facing weapon-training/protection/play-style framing.
-
-Guided browser creation calls:
-
-```text
-createCreatorGameOptions(...)
-  -> includeStartingDisciplineKit: true
-  -> createNewGameState(options)
-  -> addItemToContainer(...)
-```
-
-The kit is placed in canonical carried inventory and is **not auto-equipped**. This preserves a real first preparation choice and avoids mutating equipment/combat state behind the player's back.
-
-Generic `createNewGameState()` remains neutral unless that explicit option is supplied. This is intentional: low-level fixtures, diagnostic callers, and future non-creator state construction must not silently receive browser onboarding equipment.
-
-The older prompt/fast-create command adapter still uses neutral generic state creation. It is a non-blocking transitional seam; do not repair it by restoring universal starter inventory.
-
-### Authored opening scenes
-
-`characterCreationContent.js` owns three distinct present-world arrival scenes rather than one variable-substitution tutorial template:
-
-- Thornwall: timber-wagon arrival, Warden Halric Dane, an opportunistic hawker, and a credible pointer toward Sera Talwin;
-- Brasshaven: freight-caravan arrival, a predatory labor broker, and Marshal Varric Stone's intervention;
-- Mistmere: ferry arrival, a bogus visitor-fee pitch, a canal registrar, and a pointer toward Reader Soli Venn.
-
-Each scene includes one restrained observation derived from the selected discipline. Game-design explanation such as permanent-class rules belongs in the creator UI, not diegetic prose.
-
-### DOM onboarding adapter
-
-`domOnboardingEnhancements.js` is a bounded presentation adapter installed after the main DOM app. It does not own creator, save, account, equipment, or theme persistence state.
-
-It adds:
-
-- ancestry/sex-aware name die;
-- whole-character die;
-- discipline mechanics/gear preview;
-- top-right delete control on character save cards;
-- Light/Dark theme control in Settings;
-- clear-all local data in Settings;
-- logged-out reset-local-data fallback.
-
-The MutationObserver exists only to reapply these controls after the existing renderer replaces DOM markup. Every enhancement has duplicate guards. It is not a gameplay timer, subscription, or simulation loop.
-
-### Theme authority
-
-Account settings remain the persistence source for theme preference. `applyThemePreference()` reads that setting and applies `html[data-theme]`; `css/theme.css` provides the two active palettes:
-
-```text
-Dark  = charcoal + grayscale + dark/slate blue
-Light = silver-gray + dark navy + dark gray + black
-```
-
-Decorative gold/brown selection chrome is overridden, including resource-meter colors. Restrained semantic danger/success colors remain allowed.
-
-The historical account-settings normalizer still accepts `highContrast`; the active new browser UI exposes only Light and Dark. A future schema/settings cleanup may remove the dormant historical value deliberately.
-
-### Save recovery
-
-`saveRecovery.js` is an adapter over `save.js`, not another persistence layer.
-
-`deleteCharacterSave(characterId)`:
-
-- loads the logged-in account registry;
-- removes a character record by registry ID without decoding its `encodedState`;
-- repairs `lastCharacterId` to another remaining character or `null`;
-- persists through canonical `saveAccount`;
-- therefore can remove a corrupt character that `loadCharacter()` cannot revive.
-
-`clearAllLocalData()` delegates to existing `clearSave()`. The UI uses destructive confirmations but does not manipulate storage keys directly.
-
-## Home, project, and infrastructure architecture (`0.8.100`)
-
-`projectEngine.js` remains the persistent construction/work substrate. A project owns stable ID/kind/status, material requirements/contributions, labor duration and linked `project.labor` task, timestamps, and bounded domain `data`.
-
-Data 32 introduced **Build a Storage Chest**:
-
-```text
-2 Resin-Sealed Hardwood Boards
-1 Redstone Copper Ingot
-30 minutes canonical project labor
-  -> existing Storage Chest furnishing
-  -> +5 furnishing-storage slots
-```
-
-`homeInfrastructureEngine.js` resolves the current home, begins the generic project, delegates material contribution and labor, reconciles generic completion, applies the furnishing exactly once, emits the semantic completion event, and derives the **Home & Foothold** Journal entry. Inventory/furnishing authority remains the actual storage-capacity owner.
-
-A fresh character's Bronze Bed + Maple Table provide 3 furnishing-storage slots; the Storage Chest raises that to 8. No second property registry, construction clock, construction wallet, or home-only inventory exists.
+The active browser exposes Light/Dark palettes only. The historical settings normalizer may still accept `highContrast`; that dormant value is non-blocking compatibility debt.
 
 ## Navigation, economy, combat, party, and recovery
 
@@ -155,69 +172,58 @@ Gathering/production/shop/inventory authorities continue to own source capacity,
 
 Combat 2.0 uses structured battle-local history and fictional-time readiness. Persistent party state is NPC-backed. Mara Venn's field approach lives in existing party tactics and affects derived battle-entry attributes without mutating permanent stats or creating companion XP.
 
-Campaign recovery remains canonical timed work:
-
-```text
-recovery.field       10 minutes
-recovery.settlement  60 minutes
-recovery.defeat      120 minutes
-```
-
 ## Persistence and version policy
 
 Current compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:      0.8.100.2
-Package:      0.8.100
+Product:      0.8.200.1
+Package:      0.8.200
 Account Save: 4
 Game State:   5
-Data:         33
+Data:         34
 Benchmark:    1
-Codename:     Home Foothold and Infrastructure
+Codename:     Home Workshop Capability
 ```
 
-Data 32 remains the first home-infrastructure contract. Data advances `32 -> 33` for canonical original-world name pools, starting-discipline-kit definitions, and the authored origin-opening revision.
+Data advances `33 -> 34` because the canonical furnishing catalog, second home-infrastructure definition, and production-item construction-sink metadata changed.
 
-Account Save remains 4: per-character deletion and clear-all use the existing account registry/settings/storage contract.
+Account Save remains 4. Game State remains 5 because the new capability fits existing project `data`, placed-furnishing IDs, inventory, work/proficiency, production, and provenance structures. No persisted field or meaning requires migration.
 
-Game State remains 5: starter equipment uses existing inventory records; no persisted field or meaning changed.
-
-Relevant new/advanced registrations:
+Relevant advanced registrations:
 
 ```text
-versionManifest:          0.8.100.2
-domOnboarding:            0.1.0
-saveRecovery:             0.1.0
-characterCreation:        0.6.0
-characterCreationContent: 0.2.0
-characterNames:           0.1.0
-startingDisciplineKits:   0.1.0
+versionManifest:         0.8.200.1
+homeInfrastructure:      0.2.0
+activityAdvance:         0.4.0
+workstations:            0.3.0
+productionItems:         0.3.0
+settlementServiceBoard:  0.2.0
 ```
 
 ## Current authoritative runtime checkpoint
 
 ```text
-0f00ef68a01ad001063803d67ff0efffc48ab3ef
-505/505 tests
+03ab71c7e96c54eaeffb75598ed01243fd390f21
+506/506 tests
 0 failed
 0 skipped
 Benchmark 1 success
-Product 0.8.100.2
-Data 33
+Product 0.8.200.1
+Data 34
 ```
 
 Benchmark 1:
 
 ```text
-player combat profiles  0.463353 ms/op
-enemy combat profiles   0.125126 ms/op
-basic attacks            0.551861 ms/op
-tick dispatch            0.004834 ms/op
-direct route lookup      0.866522 ms/op
+player combat profiles  0.465527 ms/op
+enemy combat profiles   0.117252 ms/op
+basic attacks            0.550132 ms/op
+tick dispatch            0.004497 ms/op
+direct route lookup      0.870861 ms/op
 ```
 
-Primary new regression coverage is `tests/playerCreatorPolish.test.js` and `tests/saveRecovery.test.js`. This checkpoint also passed the normal Pages build/deploy. No manual visual-browser walkthrough is claimed by the repository evidence.
+`tests/playerHomeWorkshopFlow.test.js` is the primary new end-to-end guard. It proves home-local station context, zero hidden storage, exactly-once furnishing application, active-build/final save-load continuity, semantic service discovery, canonical production time, provenance, mastery, validation, and player-facing presentation.
 
 ## Carried-forward rule
 
