@@ -1,6 +1,6 @@
 # Player Experience Upgrade Path
 
-This document defines the player-facing upgrade path for Phase 0.7. It is ordered by what a normal player must understand and accomplish, not by how many underlying engines exist.
+This document records the player-facing upgrade path that closed Phase 0.7. It is ordered by what a normal player must understand and accomplish, not by how many underlying engines exist.
 
 ## Player promise
 
@@ -9,9 +9,10 @@ A new player should be able to answer these questions from normal browser play:
 1. **Why am I here?** — the character has an origin-specific arrival circumstance and a first local connection.
 2. **What should I do next?** — the game presents one clear first contact and then several small, non-exclusive ambitions.
 3. **How does progress work?** — actions connect effort to persistent mastery, efficiency, capability, preparation, knowledge, or relationships.
-4. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character’s life.
+4. **Why would I leave town?** — nearby regions contain work, resources, danger, people, and knowledge that feed back into the character's life.
 5. **Why would I return?** — settlements convert what the character earned into recovery, trade, processing, equipment, training, social continuity, and larger ambitions.
 6. **What do I know and have ready?** — preparation, learned abilities/capabilities, acquired world knowledge, and useful local options are inspectable without command vocabulary.
+7. **Who is traveling with me?** — an active companion is a persistent person whose preparation, condition, and choices matter beyond a single combat effect.
 
 The intended loop remains:
 
@@ -24,6 +25,8 @@ No onboarding or convenience layer may create a parallel quest clock, hidden tel
 ## Pre-alpha implementation rule
 
 Player-experience work targets the clean current model. Old local-save compatibility is not a Phase 0.7 design requirement. Prefer one explicit authority, keep derived values derived, and version real contract changes deliberately.
+
+# Completed Phase 0.7 sequence
 
 ## PX-1 — Arrival and footing
 
@@ -65,121 +68,104 @@ Player-experience work targets the clean current model. Old local-save compatibi
 
 **Implemented and audited.** `transportServiceBoardEngine` derives actual scheduled destinations, fares, cadence, next boardable departure, journey duration, and blockers from the existing route/service catalog and character state. The UI dispatches direct `transport.start`; transport authority still owns payment, cargo, fictional time, departure/arrival, and party movement.
 
-`0.7.100` closes at Product `0.7.100.1`, with 485/485 tests plus Benchmark 1 at runtime checkpoint `d15bd9517803faf6bceae5fb3376193648cca09d`.
+`0.7.100` closed at Product `0.7.100.1` with 485/485 tests plus Benchmark 1.
 
 # `0.7.200` — Settlement service and economy depth
 
-**Status: implemented, audited, and closed.**
+**Implemented, audited, and closed.**
 
-The active Craft surface is now **Work, Trade & Recover**. `settlementServiceBoardEngine` derives actual workshop, production, merchant, wallet, work-mastery, and recovery decisions from existing authorities. A Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent mastery/efficiency, finished-goods trade, preparation purchase, optional safe recovery, and save/load continuity. The same board discovers existing Thornwall, Brasshaven, and Mistmere facilities.
-
-Product closes at `0.7.200.1`, Package `0.7.200`, with 487/487 tests and Benchmark 1 at runtime checkpoint `61c8c6c602bc71a4e7325d04b3e7698f669843c4`.
+The active Craft surface became **Work, Trade & Recover**. `settlementServiceBoardEngine` derives actual workshop, production, merchant, wallet, work-mastery, and recovery decisions from existing authorities. A Brasshaven/Redstone proof turns gathered ore into a process-vs-sell decision, persistent mastery/efficiency, finished-goods trade, preparation purchase, optional safe recovery, and save/load continuity. The same board discovers existing Thornwall, Brasshaven, and Mistmere facilities.
 
 # `0.7.300` — Semantic information access and locality usability
 
-**Goal:** let ordinary players inspect the information needed for a decision and use safe-locality options without knowing command vocabulary.
+**Implemented, audited, and closed.**
 
-**Status: implemented, audited, and closed.**
+`playerInformationEngine` is a derived model over existing authorities. It exposes only accessible carried/equipped preparation, effective skills, character-owned capabilities, learned abilities, acquired maps, visited places, discovered contacts/POIs, and currently actionable safe-locality choices.
 
-## Known/current information contract
+Character, Spellbook, Codex, and World render those states directly. The omnibox searches what the character currently knows or can do; `/` explicitly enters the optional command shell. Search is bounded by acquired/current knowledge, so hidden places such as Tall Reedbed remain absent until learned or discovered.
 
-`playerInformationEngine` is a derived model. It reads existing authorities and exposes only information justified by the current character and current/acquired world state:
+# `0.7.400` — Companion life, party depth, and character POV
 
-- accessible carried containers/items and current equipment;
-- semantic equip/unequip actions when eligible;
-- effective skills and learned character capabilities;
-- learned spells/techniques and current readiness;
-- acquired maps;
-- visited atlas places;
-- discovered named contacts/POIs;
-- current safe-locality destinations and local actions;
-- deterministic bounded search over the same set.
+**Implemented, audited, and closed.**
 
-It does not persist a knowledge/search registry and does not enumerate hidden remote world content.
+## Companion ordinary-play proof
 
-## Browser result
+Mara Venn remains one persistent NPC-backed character. Her existing party tactics record now carries a chosen **field approach** that matters before danger:
 
-The core decision-information surfaces are now structured rather than command-backed:
+- **Guard the Road** — Mara keeps close and guarded, gaining evasion while giving up some attack. “Stay inside my reach. We get home together.”
+- **Seek the Opening** — Mara looks for decisive angles, gaining attack while giving up some caution. “Hold their eye. I'll find the seam.”
 
-- **Character** — resources/attributes plus Equipped, Carried, Skills, and Capabilities;
-- **Spellbook** — actual learned spells/techniques, costs, activation time, cooldown/readiness, and semantic use;
-- **Codex** — acquired maps, visited places, discovered contacts/POIs, and bounded search results;
-- **World** — current safe-locality districts and local places/people with semantic actions, plus acquired maps;
-- **Omnibox** — searches what the character currently knows or can do; `/` explicitly enters the optional command shell.
+The player changes the approach outside combat from the Character view. The choice survives real account save/load and canonical travel. Battle creation derives approach modifiers for Mara's battle entity without changing her permanent attributes. No companion XP track, summon system, second relationship registry, or universal party-AI framework was introduced.
 
-Safe settlements still omit wilderness D-pad/minimap controls. Wilderness exploration remains discovery-relative rather than replaced by settlement locality UI.
+`tests/playerCompanionLifeFlow.test.js` proves:
 
-## Privacy proof
+- Mara is the same backing NPC before and after travel;
+- approach choice changes a real attack/evasion tradeoff;
+- permanent attributes remain unchanged;
+- changing approach during active combat is blocked;
+- chosen approach survives real save/load;
+- active-party/travel synchronization remains canonical.
 
-`tests/playerInformationAccess.test.js` starts from ordinary Thornwall state and proves:
+## Character-POV and immersion audit
 
-- an acquired Thornwall map is visible while the Starfen map is not;
-- Thornwall Southgate is visible as visited while West Starfen is not;
-- current Sera Talwin is searchable and resolves to a semantic locality action;
-- learned Ore Survey is searchable and resolves to the relevant information view;
-- inaccessible Home Safe storage is not presented as carried-accessible inventory;
-- **Tall Reedbed returns no search result before discovery**;
-- the Character, Spellbook, Codex, and World core views do not require `data-command` buttons.
+The browser and encounterable authored content were reviewed under one rule:
 
-Search query state is transient UI state only; no Game State field was added.
+> Ordinary character-facing information should tell the player what the character **sees, knows, carries, remembers, needs, or can decide**. Architecture, roadmap, compatibility, raw state channels, hidden topology, and implementation rationale stay outside normal play.
 
-## `0.7.300` closure
+The pass removed or replaced player-visible phrases such as raw task-channel labels, “fictional minutes,” “authored world,” roadmap/future placeholders, numeric danger values, and explanatory software-language around maps/services. Settlement, map, status, companion, place, and POI copy now favors present-world observations and decisions.
 
-Product advances to **`0.7.300.1`** / Package **`0.7.300`**, codename **Semantic Information Access**. Account Save remains 4, Game State 5, Data 30, Benchmark 1.
+The Character view presents Mara with identity, lore description, location, condition, current approach, voiced intent, alternatives, and semantic party/preparation actions rather than raw tactic IDs.
 
-Authoritative promoted runtime checkpoint:
+`tests/playerPointOfViewPresentation.test.js` guards the primary Scene, Character, Spellbook, Journal, Codex, Craft, and World surfaces plus representative place/POI authored strings. `tests/playerFacingLanguage.test.js` continues to guard decision-first Journal/UI language.
+
+## `0.7.400` promoted checkpoint
 
 ```text
-0f6af06ff8571658d51bc2be53112a50d51275cb
-490/490 tests
+1e217fe1f7e62593fa9ed33eebdf1b3878490336
+495/495 tests
+0 failed
+0 skipped
 Benchmark 1 success
+Product 0.7.400.1
+Package 0.7.400
+Data 31
 ```
 
-Benchmark 1 at that checkpoint:
+Benchmark 1:
 
 ```text
-1,000 player combat profiles     464.067ms  0.464067ms/op
-1,000 enemy combat profiles      114.406ms  0.114406ms/op
-1,000 basic attacks              543.591ms  0.543591ms/op
-10,000 ticks / 5 subscribers      48.428ms  0.004843ms/op
-10,000 direct route lookups     8693.735ms  0.869373ms/op
+1,000 player combat profiles     470.213ms  0.470213ms/op
+1,000 enemy combat profiles      124.768ms  0.124768ms/op
+1,000 basic attacks              538.006ms  0.538006ms/op
+10,000 ticks / 5 subscribers      50.197ms  0.005020ms/op
+10,000 direct route lookups     8612.637ms  0.861264ms/op
 ```
 
-The track deliberately does not create a full natural-language agent, omniscient fuzzy search, universal command replacement, or second knowledge authority. Explicit `/` commands remain available as a power/diagnostic surface.
+Data advances to 31 for the canonical companion catalog and authored world/POI content changes. Game State remains 5 and Account Save remains 4 because field approach uses the existing party tactics record.
 
-# Next Phase 0.7 bounded track — `0.7.400` companion life and party depth
+# Phase 0.7 closure audit
 
-The persistent NPC-backed companion foundation now needs a deeper ordinary-play proof.
+**Result: PASS — Phase 0.7 is complete at `0.7.400.1`.**
 
-First audit:
+From a fresh/current-format save, the combined Phase 0.7 proofs satisfy the player-facing acceptance checks:
 
-1. Mara's existing companion/NPC/relationship definition and state.
-2. Recruitment, active join/leave, and current locality requirements.
-3. Current battle contribution and tactical-role data.
-4. Travel/recovery synchronization.
-5. Companion equipment/progression/dialogue seams and current browser presentation.
-6. Save/load coverage for recruited/active companion state and relationship consequences.
+- one useful next action is obvious without command expertise;
+- several competing ambitions are understandable;
+- activities expose persistent character/world consequences;
+- acquired knowledge remains distinct from hidden authored topology;
+- save/load resumes without duplicated rewards, fares, trades, or progress;
+- prior days and relationships alter later opportunities;
+- combat/recovery returns to the same campaign;
+- players can move among proving communities through semantic browser actions;
+- returning to settlements provides trade, production, recovery, preparation, and social choices for another outing;
+- core decision information can be inspected without command vocabulary;
+- Mara remains the same persistent NPC-backed person and now creates a meaningful preparation decision outside a single automatic combat action;
+- primary character-facing surfaces use immersive, present-world language and a simple decision-first hierarchy.
 
-Choose one bounded multi-session loop in which an existing recruited companion creates a meaningful preparation, tactical, or social decision **outside a single automatic combat action**, the consequence persists, save/load resumes correctly, and the companion remains the same NPC-backed person through travel/community play.
+The alpha gate does not require every future life/adventure depth feature. The following remain deliberate later-phase breadth rather than Phase 0.7 blockers: broader companion dialogue/equipment/progression/goals, richer generic NPC/vendor voice, residual optional command adapters, safe-locality density refinement, original currency terminology, and authored paid/service-quality recovery.
 
-Do not begin with a summon system, mass-authored companions, duplicate relationship/progression state, or a universal party-AI framework.
+## Architecture rule carried forward
 
-## Player-facing acceptance checks
+Player-experience guidance, service boards, information/search, and similar presentation models are projections over canonical state, not second simulation authorities. Commitments, relationships, battle consequences, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, and wallet ownership remain in their domain systems.
 
-For remaining Phase 0.7 work, evaluate from a fresh save:
-
-- Is one useful next action obvious without command expertise?
-- Are several competing ambitions understandable?
-- Does each activity expose persistent character/world consequences?
-- Does acquired knowledge remain distinct from hidden authored topology?
-- Can save/load resume without duplicated rewards, fares, trades, or progress?
-- Do prior days and relationships alter later opportunities?
-- Does combat/recovery return to the same campaign?
-- Can the player move among relevant communities through semantic browser actions?
-- On return to settlement, are trade, production, recovery, preparation, and social choices useful enough to support another outing?
-- Can core information needed for a decision be inspected without command vocabulary?
-- When a companion is involved, do they remain the same persistent person rather than a temporary combat effect?
-
-## Architecture rule
-
-Player-experience guidance, service boards, and information/search models are projections over canonical state, not second simulation authorities. Commitments, relationships, battle consequences, party state, recovery tasks, transport journeys, inventory, production, shops, resource opportunities, fictional time, and wallet ownership remain in their domain systems; UI projections may summarize and expose semantic actions but may not secretly own those states.
+Phase 0.8 is planned but **must not begin automatically**. A new work order should choose its first bounded life/infrastructure track.
