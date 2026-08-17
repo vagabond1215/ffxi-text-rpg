@@ -159,6 +159,7 @@ export function createCreatorGameOptions(creator) {
         sex: normalized.sex,
         nationId: normalized.nationId,
         mainJobId: normalized.mainJobId,
+        includeStartingDisciplineKit: true,
     };
 }
 
