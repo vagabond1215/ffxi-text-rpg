@@ -11,6 +11,7 @@ export const INVENTORY_CONTAINER_DEFINITIONS = Object.freeze({
     inventory: container('inventory', 'Inventory', 30, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Main carried inventory. Accessible anywhere.',
         itemKinds: ['all'],
+        countsAsCarriedCargo: true,
     }),
     mogSafe: container('mogSafe', 'Home Safe', 50, INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE, {
         description: 'Secure home storage. Accessible while at your home or lodging.',
@@ -31,20 +32,23 @@ export const INVENTORY_CONTAINER_DEFINITIONS = Object.freeze({
         itemKinds: ['all'],
         unlockedByDefault: false,
     }),
-    mogSatchel: container('mogSatchel', 'Field Satchel', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
-        description: 'Portable satchel container. Locked until account or character unlock rules are implemented.',
+    mogSatchel: container('mogSatchel', 'Field Satchel', 8, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
+        description: 'Earned portable field storage. Its contents remain part of your carried transport load.',
         itemKinds: ['all'],
         unlockedByDefault: false,
+        countsAsCarriedCargo: true,
     }),
     mogSack: container('mogSack', 'Field Sack', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Portable sack container. Locked until unlock rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,
+        countsAsCarriedCargo: true,
     }),
     mogCase: container('mogCase', 'Field Case', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Portable case container. Locked until unlock rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,
+        countsAsCarriedCargo: true,
     }),
     wardrobe1: wardrobe('wardrobe1', 'Wardrobe 1', true),
     wardrobe2: wardrobe('wardrobe2', 'Wardrobe 2', false),
@@ -79,6 +83,7 @@ function container(id, label, baseCapacity, access, options = {}) {
         itemKinds: Object.freeze(options.itemKinds ?? ['all']),
         unlockedByDefault: options.unlockedByDefault ?? true,
         capacityMode: options.capacityMode ?? 'fixed',
+        countsAsCarriedCargo: options.countsAsCarriedCargo ?? false,
     });
 }
 
