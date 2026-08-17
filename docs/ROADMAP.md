@@ -14,16 +14,16 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:      0.8.100.2
-Package:      0.8.100
+Product:      0.8.200.1
+Package:      0.8.200
 Account Save: 4
 Game State:   5
-Data:         33
+Data:         34
 Benchmark:    1
-Codename:     Home Foothold and Infrastructure
+Codename:     Home Workshop Capability
 ```
 
-**Phase 0.7 — Multi-region playable alpha is complete. Phase 0.8 — Life and infrastructure expansion is in progress.** The bounded `0.8.100` track remains complete; `0.8.100.2` is a follow-up onboarding/character-creation polish revision, not a new Phase 0.8 feature track. The project remains pre-alpha and `released: false`.
+**Phase 0.7 — Multi-region playable alpha is complete. Phase 0.8 — Life and infrastructure expansion is in progress. `0.8.100` and `0.8.200` are complete and audited.** The project remains pre-alpha and `released: false`.
 
 ## Product laws
 
@@ -42,7 +42,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments and relationships are canonical gameplay state; Journal/readability/service/information models are projections. Companions are persistent NPC-backed people. Home/infrastructure work must reuse canonical projects, fictional time, materials, inventory, and furnishing/storage authority rather than introducing parallel management state. Legacy FFXI-derived material remains research/reference only.
+Campaign guidance and maps reflect acquired knowledge. Resources preserve provenance. Commitments and relationships are canonical gameplay state; Journal/readability/service/information/home models are projections. Companions are persistent NPC-backed people. Home and infrastructure work must compose canonical projects, fictional time, materials, inventory, furnishings, workstations, production, and mastery rather than introducing parallel management state. Legacy FFXI-derived material remains research/reference only.
 
 ## Phase summary
 
@@ -56,89 +56,36 @@ Campaign guidance and maps reflect acquired knowledge. Resources preserve proven
 | `0.9` | Adventure depth and release hardening | Planned |
 | `1.0` | Live foundation | Planned |
 
-## Completed phase history
+# Completed phase history
 
-### 0.4 — Foundation
+## 0.4 — Foundation
 
 Direction/version protocol, ordered persistence migrations, structured action results/events, and architecture stabilization.
 
-### 0.5 — Simulation and content substrate
+## 0.5 — Simulation and content substrate
 
 Deterministic fictional time, scheduler/pause, timed tasks, interrupts, day review, original-world identity, projects/provenance, ecology/gathering/populations, routes/scheduled transport, content packs, and scalable validation.
 
-### 0.6 — Integrated character and mechanics
+## 0.6 — Integrated character and mechanics
 
-| Track | Contract | Result |
-| --- | --- | --- |
-| `0.6.100` | Continuous-character stats/progression | Data 19 |
-| `0.6.200` | Skills/proficiencies/disciplines/capabilities | Data 20 |
-| `0.6.250` | Semantic DOM player interface | Data 20 |
-| `0.6.300` | Original magic/active ability engine | Data 21 |
-| `0.6.400` | Combat 2.0 | Data 22 |
-| `0.6.450` | Locality/exploration navigation | Data 22 |
-| `0.6.500` | Equipment/field-tool breadth | Data 23 |
-| `0.6.600` | Gathering/production/crafting breadth | Data 24 |
-| `0.6.700` | Regional ecology/resource breadth | Data 25 |
-| `0.6.800` | Persistent companion/party foundation | Data 26 |
-| `0.6.900` | Integrated-mechanics exit gate | Product `0.6.900.1` / Data 26 |
+Continuous-character stats/progression, skills/proficiencies/disciplines/capabilities, semantic DOM UI, original magic/abilities, Combat 2.0, locality/exploration navigation, equipment/field tools, production/crafting, regional ecology/resources, persistent companions/party, and the integrated-mechanics exit gate. Phase 0.6 closed at Product `0.6.900.1` / Data 26.
 
 # 0.7 — Multi-region playable alpha — complete
 
-Phase 0.7 turned the proven systems into a sustained ordinary-play campaign rather than another architecture reset.
+Phase 0.7 turned the systems into a sustained ordinary-play campaign across **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen**.
 
-## Exit contract
+The completed proof includes:
 
-A normal player can sustain repeated multi-session play across connected settlements/regions without test-only setup or command expertise. The campaign combines persistent NPC communities, economy/services/transport, commitments/social consequences, livelihood/resources/production, adventure/combat/recovery, companion preparation, competing goals, semantic browser actions, deterministic save/load, acquired-knowledge privacy, and provenance/source-sink integrity.
+- three persistent community loops with named NPC continuity;
+- livelihood, gathering, provenance, processing, trade, and persistent work mastery;
+- danger, Combat 2.0, physical resource recovery, defeat, and campaign recovery;
+- acquired-knowledge campaign readability and semantic information access;
+- scheduled transport among proving communities;
+- settlement work/trade/recovery services;
+- a persistent NPC-backed companion with a real preparation choice;
+- character-POV browser presentation and deterministic account save/load.
 
-## `0.7.100` — Playable campaign slice — complete
-
-PX-1 through PX-9 established the proving geography across **Thornwall / Elderwood / Brasshaven / Redstone Reach / Mistmere / Starfen**: three persistent community loops, livelihood/production, danger/combat/recovery, acquired-knowledge campaign readability, and generic semantic scheduled transport among the communities.
-
-Authoritative promoted runtime checkpoint:
-
-```text
-d15bd9517803faf6bceae5fb3376193648cca09d
-485/485 tests
-Benchmark 1 success
-Product 0.7.100.1
-Data 30
-```
-
-## `0.7.200` — Settlement service and economy depth — complete
-
-`settlementServiceBoardEngine` derives real workshop, production, merchant, wallet, work-mastery, and recovery choices from existing authorities. The active Craft browser surface is **Work, Trade & Recover** and dispatches semantic workshop/production/trade/recovery actions without creating a parallel economy.
-
-Authoritative promoted runtime checkpoint:
-
-```text
-61c8c6c602bc71a4e7325d04b3e7698f669843c4
-487/487 tests
-Benchmark 1 success
-Product 0.7.200.1
-Data 30
-```
-
-## `0.7.300` — Semantic information access and locality usability — complete
-
-`playerInformationEngine` derives only information the character carries, has learned, has visited/acquired, or can currently act on. Character, Spellbook, Codex, World, and the default omnibox expose ordinary decision information without requiring command vocabulary. Search remains bounded by acquired/current knowledge; hidden topology is not an indexable catalog.
-
-Authoritative promoted runtime checkpoint:
-
-```text
-0f6af06ff8571658d51bc2be53112a50d51275cb
-490/490 tests
-Benchmark 1 success
-Product 0.7.300.1
-Data 30
-```
-
-## `0.7.400` — Companion life, party depth, and character POV — complete
-
-Mara Venn's persistent field approach lives in the existing party tactics record, survives save/load and travel, and affects only derived battle-entry attributes. The Character view presents Mara as a persistent traveling person with voiced intent and semantic preparation/party actions.
-
-The same track established the carried-forward character-POV rule: ordinary browser surfaces speak in terms of what the character sees, knows, carries, remembers, needs, or can decide; implementation vocabulary stays outside normal play.
-
-Authoritative promoted runtime checkpoint:
+Final Phase 0.7 runtime checkpoint:
 
 ```text
 1e217fe1f7e62593fa9ed33eebdf1b3878490336
@@ -150,80 +97,144 @@ Product 0.7.400.1
 Data 31
 ```
 
-## Phase 0.7 closure audit
-
-**PASS. Phase 0.7 closes at Product `0.7.400.1`.** Later shared-authority improvements do not reopen it.
+**Phase 0.7 remains closed.** Later shared-authority revisions do not reopen its historical gate.
 
 # 0.8 — Life and infrastructure expansion — in progress
 
-Phase 0.8 expands the persistent-life half of the game: property, workshops, agriculture, logistics, home/infrastructure, relationships, social schedules, companion depth, and earned automation. Each track must grow from existing simulation and material authorities rather than becoming a disconnected management minigame.
+Phase 0.8 deepens the persistent-life half of the game. New property, workshop, agriculture, logistics, social-life, companion-life, and automation features must consume or extend real world resources, fictional time, skills, relationships, locations, and existing persistent authorities.
 
 ## `0.8.100` — Home Foothold & Infrastructure — complete
 
-The first Phase 0.8 track turns the character's starting lodging into a small durable infrastructure loop. **Build a Storage Chest** consumes 2 Resin-Sealed Hardwood Boards, 1 Redstone Copper Ingot, and 30 minutes of canonical project labor, then places the existing Storage Chest furnishing exactly once and raises furnishing-backed storage from 3 to 8 slots.
+The first authored improvement is **Build a Storage Chest**:
 
-The Journal derives **Home & Foothold** with semantic Plan → Set aside materials → Start work → Finish actions. `projectEngine` retains material/labor authority; world time/timed tasks own duration; inventory/furnishing authority owns storage capacity; `homeInfrastructureEngine` remains a bounded adapter and projection.
+```text
+2 Resin-Sealed Hardwood Boards
+1 Redstone Copper Ingot
+30 minutes canonical project labor
+  -> Storage Chest furnishing
+  -> furnishing-backed home storage 3 -> 8 slots
+```
 
-Original track checkpoint:
+The Journal derives **Home & Foothold** with semantic Plan → Set aside materials → Start work → Finish actions. `projectEngine` owns project/material/labor state; world time/timed tasks own duration; inventory/furnishing authority owns the durable storage result; `homeInfrastructureEngine` is a bounded adapter/projection.
+
+Original promoted track checkpoint:
 
 ```text
 0b9251a43285443087050127da36b977cabdf7ee
 496/496 tests
-0 failed
-0 skipped
 Benchmark 1 success
 Product 0.8.100.1
 Data 32
 ```
 
-## `0.8.100.2` — Onboarding and character-creation polish — complete
+### `0.8.100.2` — onboarding and character-creation polish — complete
 
-This revision repairs the player-facing beginning without opening a new Phase 0.8 feature track.
+The follow-up revision added two deliberate Light/Dark palettes, corrupt-save deletion and clear-all recovery, original-world creator randomization, truthful six-discipline previews and real carried starter kits, and distinct authored Thornwall/Brasshaven/Mistmere arrival scenes.
 
-- The active browser has two deliberate palettes only: **Dark** uses charcoal/grayscale/navy; **Light** uses silver-gray/dark navy/dark gray/black. Decorative gold/brown selection chrome was removed, including the follow-up resource-meter audit. Semantic danger/success colors remain restrained.
-- Character save cards have a top-right `×`; deletion works against the account registry by character ID even when the encoded character state cannot be decoded. Settings exposes clear-all local data with destructive confirmation, and the logged-out landing has a reset path for account-registry corruption.
-- Character creation has an original-world ancestry/sex-aware name die and a whole-character die. The canonical randomizer is deterministic under injected RNG for tests and does not reuse legacy FFXI name data.
-- The six starting disciplines now expose truthful level-1 differences: active attribute emphasis, resource tendency, combat focus, weapon/magic training, protection, play style, and actual starting gear.
-- Guided browser creation grants a small real two-item discipline kit through canonical inventory authority. The kit begins **carried, not auto-equipped**, preserving an immediate preparation decision. Generic `createNewGameState()` remains neutral; only guided creator options request the kit.
-- The generic six-paragraph intro was replaced by three authored arrival scenes. Thornwall arrives by timber wagon and introduces Warden Halric Dane/Sera Talwin; Brasshaven arrives with freight and a predatory labor broker before Varric Stone intervenes; Mistmere arrives by ferry and exposes a bogus visitor-fee pitch before the registrar points toward Soli Venn. Each opening adds one restrained discipline-aware observation.
-- Diegetic prose no longer explains game-design concepts such as permanent-class rules; that guidance remains in the creator UI where it belongs.
-
-Data advances `32 -> 33` because canonical names, starter-kit definitions, and authored opening content changed. Account Save remains 4 and Game State remains 5 because deletion uses the existing account registry and starter gear uses existing inventory records.
-
-Authoritative promoted runtime checkpoint:
+Promoted checkpoint:
 
 ```text
 0f00ef68a01ad001063803d67ff0efffc48ab3ef
 505/505 tests
-0 failed
-0 skipped
 Benchmark 1 success
 Product 0.8.100.2
 Package 0.8.100
 Data 33
 ```
 
+## `0.8.200` — Home Workshop Capability — complete
+
+This track proves that a home improvement can unlock a **real reusable production capability**, not merely a storage number or isolated property bonus.
+
+The authored improvement is **Build a Joiner's Workbench**:
+
+```text
+2 Resin-Sealed Hardwood Boards
+1 Copper Trail Clasp
+45 minutes canonical project labor
+  -> Joiner's Workbench furnishing
+  -> woodshop + workshop workstation context while at home
+```
+
+The workbench has **0 storage slots**. Its durable value is capability: when the character is physically at the home place, `workstationEngine` derives `woodshop`/`workshop` tags from the placed furnishing. Away from home, those tags do not apply.
+
+The existing **Work, Trade & Recover** surface then discovers recipes enabled by that furnishing through the existing settlement service projection. The proving recipe is the existing **Seal Elderwood Hardwood Board** process:
+
+```text
+1 Elderwood Hardwood
+1 Elderwood Amber Resin
+240 fictional seconds at crafting proficiency 0
+  -> 1 Resin-Sealed Hardwood Board
+  -> +2 crafting proficiency
+  -> ordinary transformation/input/place provenance
+```
+
+This closes the intended infrastructure loop:
+
+```text
+regional effort
+  -> durable home improvement
+  -> local production capability
+  -> less future workshop travel
+  -> more efficient preparation and larger ambitions
+```
+
+Authority remains singular:
+
+- generic projects own material/labor/status;
+- timed tasks/world time own duration;
+- furnishings own the durable placed object;
+- `workstationEngine` owns workstation availability;
+- `productionEngine` owns recipe requirements, input consumption, timed work, output, provenance, and mastery;
+- the settlement service board and Journal remain derived presentation;
+- no second property, workshop, production, inventory, mastery, or UI persistence system was introduced.
+
+The follow-up resource-lifecycle audit also aligned authored sink metadata with actual infrastructure use: **Redstone Copper Ingot** and **Copper Trail Clasp** now explicitly advertise `construction` sinks, alongside the already-correct Resin-Sealed Hardwood Board.
+
+Primary end-to-end guard: `tests/playerHomeWorkshopFlow.test.js`. It proves blocked-before-build → construction → active-build save/load → exactly-once furnishing → no hidden storage → home-only workstation tags → semantic production → canonical fictional time → output provenance/mastery → final save/load and validation.
+
+Authoritative promoted runtime checkpoint:
+
+```text
+03ab71c7e96c54eaeffb75598ed01243fd390f21
+506/506 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.8.200.1
+Package 0.8.200
+Data 34
+```
+
 Benchmark 1:
 
 ```text
-1,000 player combat profiles      463.353ms  0.463353ms/op
-1,000 enemy combat profiles       125.126ms  0.125126ms/op
-1,000 basic attacks               551.861ms  0.551861ms/op
-10,000 ticks / 5 subscribers       48.338ms  0.004834ms/op
-10,000 direct route lookups      8665.221ms  0.866522ms/op
+1,000 player combat profiles      465.527ms  0.465527ms/op
+1,000 enemy combat profiles       117.252ms  0.117252ms/op
+1,000 basic attacks               550.132ms  0.550132ms/op
+10,000 ticks / 5 subscribers       44.971ms  0.004497ms/op
+10,000 direct route lookups      8708.613ms  0.870861ms/op
 ```
 
-Primary new guards are `tests/playerCreatorPolish.test.js` and `tests/saveRecovery.test.js`.
+Data advances `33 -> 34` because the canonical furnishing catalog, home-infrastructure definition, and production-item sink metadata changed. Account Save remains 4 and Game State remains 5 because the track reuses existing project `data`, placed-furnishing IDs, work state, inventory, production, proficiency, and provenance contracts. Benchmark remains 1 because the workload/protocol is unchanged.
 
-Known non-blocking seams after the audit:
+### `0.8.200` closure audit
 
-- the legacy prompt/fast-create command adapter still creates neutral generic new-game state and therefore does not opt into the semantic browser creator's starter-kit flag;
-- the historical account settings normalizer still accepts `highContrast`, but the active new browser UI exposes only Light and Dark;
-- this checkpoint is validated by code/DOM/CSS regressions, full CI, Benchmark 1, and Pages build/deploy; no manual visual-browser walkthrough is claimed.
+**PASS.** The workbench is useful only at the actual home locality, grants no hidden storage, survives save/load, applies exactly once, feeds the existing workstation and production authorities, preserves provenance/mastery, and is surfaced through ordinary semantic browser play. The original `0.8.100` Storage Chest proof and all Phase 0.7 gates remain green.
+
+Two integration failures were release/test synchronization issues rather than runtime defects: a historical Phase 0.7 test froze later shared subsystem versions, and the promoted pipeline manifest still pinned `0.8.100.2`. Both were repaired without weakening their historical/persistence contracts.
 
 ## Next Phase 0.8 boundary
 
-`0.8.100` remains complete. Do not mass-author property, farms, workshops, or automation as a follow-on to this revision. The next work order should select one bounded Phase 0.8 track and first audit its existing authority/data seam. Candidate directions include workshop/home-production depth, agriculture/stewardship, logistics, social schedules/relationship life, companion life breadth, or earned automation.
+`0.8.200` is closed. **Do not automatically broaden it into multiple workshop types, property tiers, farms, warehouses, social schedules, or automation.** The next work order should select one bounded Phase 0.8 seam and first audit its existing authority/data path.
+
+Good candidate directions now include:
+
+- agriculture/stewardship;
+- logistics/warehousing/transport capacity;
+- social schedules and relationship life;
+- companion life breadth;
+- earned automation.
 
 # Later phases
 
