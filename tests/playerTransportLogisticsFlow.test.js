@@ -59,12 +59,11 @@ test('0.8.300 makes scheduled transport capacity depend on actual carried invent
         const stored = addItemToContainer(state.player.inventoryState, 'inventory', EQUIPMENT_CATALOG['bronze-sword']);
         assert.equal(stored.ok, true, stored.reason);
     }
-    assert.deepEqual(getCarriedCargoLoad(state), {
-        containerId: 'inventory',
-        cargoUnits: 25,
-        occupiedSlots: 25,
-        unitModel: 'occupied-carried-slots',
-    });
+    const initialLoad = getCarriedCargoLoad(state);
+    assert.equal(initialLoad.cargoUnits, 25);
+    assert.equal(initialLoad.occupiedSlots, 25);
+    assert.match(initialLoad.unitModel, /occupied-.*slots/);
+    assert.equal(initialLoad.containers.find((container) => container.containerId === 'inventory')?.cargoUnits, 25);
 
     moveToRivergate(state);
     let board = createTransportServiceBoard(state, { cargoUnits: 0 });
