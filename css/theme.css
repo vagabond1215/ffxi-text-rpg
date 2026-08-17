@@ -25,6 +25,10 @@ html[data-theme="dark"] {
     --theme-highlight-bg: #1c2733;
     --theme-subtle-text: #cbd1d8;
     --theme-overlay: rgba(17, 20, 25, 0.97);
+    --theme-meter-track: #101318;
+    --theme-meter-hp: #70808d;
+    --theme-meter-mp: #4d6d91;
+    --theme-meter-tp: #66717d;
 }
 
 html[data-theme="light"] {
@@ -52,6 +56,10 @@ html[data-theme="light"] {
     --theme-highlight-bg: #d8e1ea;
     --theme-subtle-text: #343d46;
     --theme-overlay: rgba(238, 240, 242, 0.98);
+    --theme-meter-track: #c9cfd5;
+    --theme-meter-hp: #667684;
+    --theme-meter-mp: #315d87;
+    --theme-meter-tp: #707b86;
 }
 
 html,
@@ -94,6 +102,26 @@ button:hover:not(:disabled) {
 .map-current {
     fill: var(--accent-strong);
     stroke: var(--accent);
+}
+
+.meter {
+    background: var(--theme-meter-track);
+}
+
+.meter > span {
+    background: var(--accent);
+}
+
+.resource-hp .meter > span {
+    background: var(--theme-meter-hp);
+}
+
+.resource-mp .meter > span {
+    background: var(--theme-meter-mp);
+}
+
+.resource-tp .meter > span {
+    background: var(--theme-meter-tp);
 }
 
 .opportunity-card.is-recommended,
