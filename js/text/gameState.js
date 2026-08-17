@@ -45,7 +45,7 @@ export function createNewGameState(options = {}) {
             unlockedHomePoints: [startPlace.id],
         },
     });
-    grantStartingDisciplineKit(player, mainJobId);
+    if (options.includeStartingDisciplineKit === true) grantStartingDisciplineKit(player, mainJobId);
 
     return {
         version: 5,
