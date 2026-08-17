@@ -251,7 +251,7 @@ function sameStructuredValue(left, right) {
         const leftKeys = Object.keys(left).sort();
         const rightKeys = Object.keys(right).sort();
         if (leftKeys.length !== rightKeys.length || leftKeys.some((key, index) => key !== rightKeys[index])) return false;
-        return leftKeys.every((key) => sameStructuredValue(left[key], right[index]));
+        return leftKeys.every((key) => sameStructuredValue(left[key], right[key]));
     }
     return false;
 }
