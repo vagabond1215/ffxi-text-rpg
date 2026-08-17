@@ -16,7 +16,7 @@ import {
 } from './projectEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const HOME_INFRASTRUCTURE_VERSION = 1;
+export const HOME_INFRASTRUCTURE_VERSION = 2;
 export const DEFAULT_HOME_IMPROVEMENT_ID = 'storage-chest';
 
 export function getHomePlaceId(state) {
@@ -96,18 +96,24 @@ export function reconcileHomeInfrastructureProjects(state) {
         project.data.completionApplied = true;
         project.data.completionAppliedAtWorldSeconds = ensureWorldTimeState(state).totalSeconds;
 
+        const benefit = {
+            storageSlotsAdded: alreadyPlaced ? 0 : definition.benefit.storageSlots,
+            furnitureTagsAdded: alreadyPlaced ? [] : [...definition.benefit.tags],
+        };
         const event = emitSemanticEvent(state, 'home.infrastructure-completed', {
             projectId: project.id,
             homeInfrastructureId: definition.id,
             homePlaceId: project.data.homePlaceId ?? getHomePlaceId(state),
             furnitureId,
-            storageSlotsAdded: alreadyPlaced ? 0 : definition.benefit.storageSlots,
+            benefitSummary: definition.benefitSummary,
+            ...benefit,
         }, { source: 'homeInfrastructureEngine' });
         applied.push(Object.freeze({
             projectId: project.id,
             improvementId: definition.id,
             furnitureId,
-            storageSlotsAdded: alreadyPlaced ? 0 : definition.benefit.storageSlots,
+            benefitSummary: definition.benefitSummary,
+            ...benefit,
             eventId: event.id,
         }));
     }
@@ -121,30 +127,23 @@ export function findHomeInfrastructureProject(state, improvementId = DEFAULT_HOM
 }
 
 export function createHomeInfrastructureModel(state) {
-    const definition = getHomeInfrastructureDefinition(DEFAULT_HOME_IMPROVEMENT_ID);
-    if (!state?.player || !definition) return Object.freeze({ version: HOME_INFRASTRUCTURE_VERSION, available: false, entries: Object.freeze([]), actions: Object.freeze([]) });
+    const definitions = listHomeInfrastructureDefinitions();
+    if (!state?.player || !definitions.length) return emptyHomeModel();
+
     const homePlaceId = getHomePlaceId(state);
     const atHome = isAtHomePlace(state);
-    const project = findHomeInfrastructureProject(state, definition.id);
-    const storageCapacity = calculateFurnitureStorageCapacity(state.player.inventoryState?.mogHouse?.placedFurniture ?? []);
-    const materialState = definition.materials.map((material) => {
-        const projectRequirement = project?.materials?.find((entry) => entry.itemId === material.itemId);
-        const contributed = projectRequirement?.quantityContributed ?? 0;
-        const required = projectRequirement?.quantityRequired ?? material.quantity;
-        const carried = carriedQuantity(state, material.itemId);
-        return Object.freeze({
-            itemId: material.itemId,
-            name: material.name,
-            required,
-            contributed,
-            carried,
-            missing: Math.max(0, required - contributed),
-            met: contributed >= required,
-        });
-    });
+    const placedFurnitureIds = state.player.inventoryState?.mogHouse?.placedFurniture ?? [];
+    const storageCapacity = calculateFurnitureStorageCapacity(placedFurnitureIds);
+    const entries = [];
     const actions = [];
-    const opportunity = createHomeOpportunity(state, definition, project, materialState, { atHome, storageCapacity });
-    if (opportunity.action) actions.push(opportunity.action);
+
+    for (const definition of definitions) {
+        const project = findHomeInfrastructureProject(state, definition.id);
+        const materials = buildMaterialState(state, definition, project);
+        const opportunity = createHomeOpportunity(state, definition, project, materials, { atHome, storageCapacity });
+        entries.push(opportunity);
+        if (opportunity.action) actions.push(opportunity.action);
+    }
 
     return Object.freeze({
         version: HOME_INFRASTRUCTURE_VERSION,
@@ -153,11 +152,16 @@ export function createHomeInfrastructureModel(state) {
         homePlaceName: homePlaceName(state),
         atHome,
         storageCapacity,
-        placedFurniture: Object.freeze((state.player.inventoryState?.mogHouse?.placedFurniture ?? []).map((id) => {
+        placedFurniture: Object.freeze(placedFurnitureIds.map((id) => {
             const furniture = getFurniture(id);
-            return Object.freeze({ id, name: furniture?.name ?? id, storageSlots: furniture?.storageSlots ?? 0 });
+            return Object.freeze({
+                id,
+                name: furniture?.name ?? id,
+                storageSlots: furniture?.storageSlots ?? 0,
+                tags: Object.freeze([...(furniture?.tags ?? [])]),
+            });
         })),
-        entries: Object.freeze([opportunity]),
+        entries: Object.freeze(entries),
         actions: Object.freeze(actions),
     });
 }
@@ -166,15 +170,17 @@ export function decorateHomeInfrastructureOpportunityModel(state, baseModel) {
     if (!baseModel) return baseModel;
     const home = createHomeInfrastructureModel(state);
     if (!home.available || !home.entries.length) return baseModel;
-    const entry = home.entries[0];
-    const entries = [...(baseModel.entries ?? []).filter((candidate) => candidate.id !== entry.id), entry];
-    const groups = [...(baseModel.groups ?? []).filter((group) => group.id !== 'home-foothold'), createHomeGroup(entry, home.atHome)];
-    const shouldRecommend = entry.status === 'active' && Boolean(entry.action);
+
+    const homeEntryIds = new Set(home.entries.map((entry) => entry.id));
+    const entries = [...(baseModel.entries ?? []).filter((candidate) => !homeEntryIds.has(candidate.id)), ...home.entries];
+    const groups = [...(baseModel.groups ?? []).filter((group) => group.id !== 'home-foothold'), createHomeGroup(home.entries, home.atHome)];
+    const activeEntry = home.entries.find((entry) => entry.status === 'active' && Boolean(entry.action));
+
     return Object.freeze({
         ...baseModel,
-        version: Math.max(Number(baseModel.version) || 0, 9),
+        version: Math.max(Number(baseModel.version) || 0, 10),
         homeInfrastructureVersion: HOME_INFRASTRUCTURE_VERSION,
-        recommendedOpportunityId: shouldRecommend ? entry.id : baseModel.recommendedOpportunityId,
+        recommendedOpportunityId: activeEntry?.id ?? baseModel.recommendedOpportunityId,
         entries: Object.freeze(entries),
         groups: Object.freeze(groups),
     });
@@ -190,6 +196,9 @@ export function validateHomeInfrastructureState(state) {
         if (!definition) issues.push(`${project.id} references unknown home improvement ${improvementId}.`);
         else if (definition.projectKind !== project.kind) issues.push(`${project.id} kind does not match ${improvementId}.`);
         if (!project.data?.homePlaceId) issues.push(`${project.id} is missing its homePlaceId.`);
+        if (definition && project.data?.furnitureId && project.data.furnitureId !== definition.benefit.furnitureId) {
+            issues.push(`${project.id} furnishing does not match ${improvementId}.`);
+        }
         if (project.status === PROJECT_STATUSES.COMPLETED && project.data?.completionApplied === true) {
             const furnitureId = definition?.benefit?.furnitureId;
             if (furnitureId && !state.player?.inventoryState?.mogHouse?.placedFurniture?.includes(furnitureId)) {
@@ -200,6 +209,24 @@ export function validateHomeInfrastructureState(state) {
     return issues;
 }
 
+function buildMaterialState(state, definition, project) {
+    return definition.materials.map((material) => {
+        const projectRequirement = project?.materials?.find((entry) => entry.itemId === material.itemId);
+        const contributed = projectRequirement?.quantityContributed ?? 0;
+        const required = projectRequirement?.quantityRequired ?? material.quantity;
+        const carried = carriedQuantity(state, material.itemId);
+        return Object.freeze({
+            itemId: material.itemId,
+            name: material.name,
+            required,
+            contributed,
+            carried,
+            missing: Math.max(0, required - contributed),
+            met: contributed >= required,
+        });
+    });
+}
+
 function createHomeOpportunity(state, definition, project, materials, { atHome, storageCapacity }) {
     const homeName = homePlaceName(state);
     const completed = project?.status === PROJECT_STATUSES.COMPLETED;
@@ -208,21 +235,20 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
     const effectiveProject = cancelled ? null : project;
     const allMaterials = effectiveProject && materials.every((entry) => entry.met);
     const firstMissing = effectiveProject ? materials.find((entry) => !entry.met) : null;
-    const capacityAfter = storageCapacity + (completed ? 0 : definition.benefit.storageSlots);
 
     let status = atHome ? 'ready' : 'available';
     let summary = definition.description;
-    let progress = `A ${definition.benefit.furnitureName} adds ${definition.benefit.storageSlots} home-storage slots.`;
+    let progress = definition.benefitSummary;
     let blockers = [];
     let action = null;
 
     if (!effectiveProject) {
         if (atHome) action = homeAction(`home:${definition.id}:begin`, `Plan · ${definition.benefit.furnitureName}`, 'home.infrastructure.begin', { improvementId: definition.id });
-        else progress = `Return to ${homeName} to lay out the work.`;
+        else progress = `Return to ${homeName} to lay out the work. ${definition.benefitSummary}`;
     } else if (completed) {
         status = 'complete';
         summary = `${definition.benefit.furnitureName} now stands in your lodging at ${homeName}.`;
-        progress = `Furnishing storage capacity: ${storageCapacity} slots.`;
+        progress = describeCompletedBenefit(definition, storageCapacity);
     } else if (active) {
         status = 'active';
         const projectProgress = getProjectProgress(state, effectiveProject.id);
@@ -242,7 +268,7 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
         const canContribute = atHome && firstMissing.carried > 0;
         status = canContribute ? 'ready' : atHome ? 'blocked' : 'available';
         const amount = Math.min(firstMissing.missing, firstMissing.carried);
-        progress = `${materials.map((entry) => `${entry.contributed}/${entry.required} ${entry.name}`).join(' · ')}. Finished capacity: ${capacityAfter} slots.`;
+        progress = `${materials.map((entry) => `${entry.contributed}/${entry.required} ${entry.name}`).join(' · ')}. Benefit: ${definition.benefitSummary}`;
         if (canContribute) {
             action = homeAction(`home:${definition.id}:contribute:${firstMissing.itemId}`, `Set aside ${amount} ${firstMissing.name}`, 'home.infrastructure.contribute', {
                 projectId: effectiveProject.id,
@@ -259,7 +285,7 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
         category: 'ambition',
         title: definition.name,
         summary,
-        motivation: 'A better foothold lets useful materials stay behind, making preparation for the next journey less wasteful.',
+        motivation: definition.motivation,
         progress,
         status,
         requirements: [
@@ -274,15 +300,27 @@ function createHomeOpportunity(state, definition, project, materials, { atHome, 
     });
 }
 
-function createHomeGroup(entry, current) {
+function describeCompletedBenefit(definition, storageCapacity) {
+    if (definition.benefit.storageSlots > 0) return `Furnishing storage capacity: ${storageCapacity} slots.`;
+    if (definition.benefit.tags.includes('woodshop')) return 'Home workstation: woodshop ready.';
+    if (definition.benefit.tags.includes('forge')) return 'Home workstation: forge ready.';
+    if (definition.benefit.tags.includes('kitchen')) return 'Home workstation: kitchen ready.';
+    if (definition.benefit.tags.includes('tannery')) return 'Home workstation: tannery ready.';
+    if (definition.benefit.tags.includes('workshop') || definition.benefit.tags.includes('workbench')) return 'Home workstation: workshop ready.';
+    return definition.benefitSummary;
+}
+
+function createHomeGroup(entries, current) {
     const statuses = { active: 0, ready: 0, available: 0, blocked: 0, complete: 0 };
-    if (Object.hasOwn(statuses, entry.status)) statuses[entry.status] += 1;
+    for (const entry of entries) {
+        if (Object.hasOwn(statuses, entry.status)) statuses[entry.status] += 1;
+    }
     return Object.freeze({
         id: 'home-foothold',
         kind: 'home',
         label: 'Home & Foothold',
         current,
-        entries: Object.freeze([entry]),
+        entries: Object.freeze([...entries]),
         activeCount: statuses.active,
         readyCount: statuses.ready,
         availableCount: statuses.available,
@@ -346,6 +384,15 @@ function formatPercent(value) {
 
 function failure(code, text) {
     return actionFailure({ action: 'home.infrastructure', code, outcome: 'blocked', display: { text } });
+}
+
+function emptyHomeModel() {
+    return Object.freeze({
+        version: HOME_INFRASTRUCTURE_VERSION,
+        available: false,
+        entries: Object.freeze([]),
+        actions: Object.freeze([]),
+    });
 }
 
 export function describeHomeInfrastructure(state) {
