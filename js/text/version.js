@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.8.200.1';
-export const PACKAGE_VERSION = '0.8.200';
+export const PRODUCT_VERSION = '0.8.300.1';
+export const PACKAGE_VERSION = '0.8.300';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 34,
     benchmark: 1,
-    codename: 'Home Workshop Capability',
+    codename: 'Carried Load and Transport Logistics',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.200.1',
+    versionManifest: '0.8.300.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -55,8 +55,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     huntingResourceItems: '0.1.0',
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
-    transport: '0.2.0',
-    transportServiceBoard: '0.1.0',
+    transport: '0.3.0',
+    carriedLoad: '0.1.0',
+    transportServiceBoard: '0.2.0',
     contentPackSchema: '0.1.0',
     regionalContentPacks: '0.2.0',
     contentPackValidation: '0.1.0',
