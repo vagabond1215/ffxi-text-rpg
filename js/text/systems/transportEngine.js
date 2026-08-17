@@ -2,6 +2,7 @@ import { getServiceJourney, getTransportService, getNextServiceDeparture, listTr
 import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import { getCarriedCargoUnits } from './carriedLoadEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { syncActivePartyLocation } from './partyEngine.js';
@@ -28,7 +29,7 @@ export function startRouteJourney(state, options = {}) {
         distanceYalms: options.distanceYalms ?? null,
         hazardTags: options.hazardTags ?? [],
         knowledge: options.knowledge ?? null,
-        cargoUnits: options.cargoUnits ?? 0,
+        cargoUnits: getCarriedCargoUnits(state),
         fare: null,
         startEventType: 'travel.started',
         startEventSource: 'transportEngine',
@@ -43,9 +44,9 @@ export function startScheduledTransport(state, serviceId, destinationPlaceId, op
     const journey = getServiceJourney(service.id, from, destinationPlaceId);
     if (!journey) return failure('transport.invalid-journey', { serviceId, from, to: destinationPlaceId }, `${service.name} does not serve that journey from the current place.`);
 
-    const cargoUnits = nonNegativeInteger(options.cargoUnits) ? options.cargoUnits : 0;
+    const cargoUnits = getCarriedCargoUnits(state);
     if (cargoUnits > service.cargoAllowanceUnits) {
-        return failure('transport.cargo-over-limit', { serviceId, cargoUnits, allowance: service.cargoAllowanceUnits }, `${service.name} allows ${service.cargoAllowanceUnits} cargo units; requested ${cargoUnits}.`);
+        return failure('transport.cargo-over-limit', { serviceId, cargoUnits, allowance: service.cargoAllowanceUnits }, `You are carrying ${cargoUnits} cargo units; ${service.name} carries at most ${service.cargoAllowanceUnits}.`);
     }
 
     const worldTime = ensureWorldTimeState(state);
