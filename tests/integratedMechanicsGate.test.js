@@ -57,8 +57,8 @@ test('legacy companion command adapter reaches canonical party authority exactly
     const first = router('companion Mara Venn');
     const second = router('companion Mara Venn');
 
-    assert.match(first, /Mara Venn joins your party/);
-    assert.match(second, /already a persistent companion/);
+    assert.match(first, /Mara Venn falls into step beside you/);
+    assert.match(second, /already one of your traveling companions/);
     assert.deepEqual(state.party.activeCompanionIds, ['companion-mara-venn']);
     assert.equal(listSemanticEvents(state, { type: 'party.companion-recruited' }).length, 1);
 });
