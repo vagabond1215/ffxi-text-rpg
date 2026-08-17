@@ -12,17 +12,17 @@ Authoritative companions:
 ## Current baseline
 
 ```text
-Product:       0.7.200.1
-Package:       0.7.200
+Product:       0.7.300.1
+Package:       0.7.300
 Account Save:  4
 Game State:    5
 Data:          30
 Benchmark:     1
-Codename:      Settlement Economy Depth
+Codename:      Semantic Information Access
 Compatibility: pre-release-current-schema
 ```
 
-Phase 0.6 is complete. Phase 0.7 remains in progress. The bounded `0.7.100` playable-campaign and `0.7.200` settlement-economy tracks are complete.
+Phase 0.6 is complete. Phase 0.7 remains in progress. The bounded `0.7.100`, `0.7.200`, and `0.7.300` tracks are complete.
 
 ## Product version format
 
@@ -53,7 +53,7 @@ Recent Data history:
 - Data 29 — commitment catalog v2, Reader Soli Venn, `Marrowleaf for the Ward`, raw-resource/source/return guidance;
 - Data 30 — Sera Talwin plus `Sweetroot for Southgate`, completing the three-origin authored community-continuity set.
 
-PX-9 and `0.7.200` do **not** advance Data because they add derived access/presentation over existing authored records. `0.7.200` also does not advance Game State: settlement service-board state is recomputed and the shop/production/recovery mutations use existing canonical state.
+PX-9, `0.7.200`, and `0.7.300` do **not** advance Data because they add derived access/presentation over existing authored records. `0.7.300` also does not advance Game State: the player-information model and search query are recomputed/transient rather than persisted.
 
 ## Compatibility policy
 
@@ -94,7 +94,7 @@ Fictional time, pause/scheduler, timed tasks, interrupts, day review, original-w
 ## Phase 0.7 current registrations
 
 ```text
-versionManifest:              0.7.200.1
+versionManifest:              0.7.300.1
 activityAdvance:              0.2.0
 campaignRecovery:             0.1.0
 characterActivity:            0.2.0
@@ -107,14 +107,15 @@ transportServiceBoard:        0.1.0
 settlementServiceBoard:       0.1.0
 workstations:                 0.2.0
 shopTransactions:             0.5.0
-gameViewModels:               0.10.0
+playerInformation:            0.1.0
+gameViewModels:               0.11.0
 playerExperience:             0.3.0
 playerOpportunities:          0.2.0
 playerContinuity:             0.5.0
 playerCampaignReadability:    0.2.0
 playerDangerRecovery:         0.2.0
-domUi:                        0.8.0
-uiIntents:                    0.7.0
+domUi:                        0.9.0
+uiIntents:                    0.8.0
 ```
 
 ### Phase 0.7 decision sequence
@@ -126,8 +127,9 @@ uiIntents:                    0.7.0
 - **Player-language hygiene:** no Data/Game State bump; ordinary presentation stops exposing internal rationale.
 - **PX-7:** Data 29; Reader Soli Venn and `Marrowleaf for the Ward` establish the second persistent community.
 - **PX-8:** Data 30; Sera Talwin and `Sweetroot for Southgate` establish third-origin continuity without changing persistence shape.
-- **PX-9 / `0.7.100`:** no Data/Game State bump. `transportServiceBoard 0.1.0` derives actual scheduled-service choices; `gameViewModels` advances to `0.9.0`. Product becomes `0.7.100.1`.
-- **`0.7.200`:** no Data/Game State bump. `settlementServiceBoard 0.1.0` derives settlement work/trade/recovery choices. `workstations 0.2.0` exposes authored POI workstation tags, `shopTransactions 0.5.0` adds structured semantic buy/sell results, `gameViewModels 0.10.0`, `domUi 0.8.0`, and `uiIntents 0.7.0` expose the new browser flow. Product becomes `0.7.200.1`.
+- **PX-9 / `0.7.100`:** no Data/Game State bump. `transportServiceBoard 0.1.0` derives actual scheduled-service choices; Product becomes `0.7.100.1`.
+- **`0.7.200`:** no Data/Game State bump. `settlementServiceBoard 0.1.0`, structured shop transactions, and richer Craft presentation close the settlement return/economy gap. Product becomes `0.7.200.1`.
+- **`0.7.300`:** no Data/Game State bump. `playerInformation 0.1.0` derives accessible preparation, skills/capabilities, learned abilities, acquired/visited/discovered world knowledge, current locality actions, and bounded semantic search. `gameViewModels 0.11.0`, `domUi 0.9.0`, and `uiIntents 0.8.0` expose the browser flow. Product becomes `0.7.300.1`.
 
 ## `0.7.100` — Playable campaign slice — complete
 
@@ -144,25 +146,9 @@ Data 30
 
 ## `0.7.200` — Settlement service and economy depth — complete
 
-The track closes the audited return-to-settlement access gap without creating another economy.
+The track closes the audited return-to-settlement access gap without creating another economy. The active Craft surface exposes derived workshop, production, merchant, and recovery choices through semantic actions while domain engines retain mutation authority.
 
-`settlementServiceBoardEngine` is derived from existing POIs/workstations, production definitions, inventory, wallet, shop catalogs, work proficiency, work state, and recovery state. The active Craft surface becomes **Work, Trade & Recover** and dispatches direct semantic workshop, production, trade, and recovery actions while the domain engines retain mutation authority.
-
-The Brasshaven/Redstone end-to-end proof compares selling two raw ore (10-gil typical value) against smelting an ingot (14-gil typical value), consumes 300 fictional seconds, raises metalworking to 2, projects the next smelt at 295 seconds, sells the real ingot once, uses the proceeds to unlock an 8-gil preparation purchase, spends a real hour when safe recovery is chosen, and survives account save/load with wallet/time/mastery/item ownership intact.
-
-A second focused regression proves the same board discovers existing Thornwall tannery, Brasshaven forge, and Mistmere kitchen/merchant authority. No origin-specific economy branch exists.
-
-Product advances:
-
-```text
-0.7.100.1 -> 0.7.200.1
-package     -> 0.7.200
-codename    -> Settlement Economy Depth
-```
-
-The milestone remains pre-alpha (`released: false`). Phase 0.7 remains open.
-
-## Authoritative promoted `0.7.200` runtime checkpoint
+Authoritative promoted runtime checkpoint:
 
 ```text
 61c8c6c602bc71a4e7325d04b3e7698f669843c4
@@ -171,25 +157,56 @@ Benchmark 1 success
 Data 30
 ```
 
+## `0.7.300` — Semantic information access and locality usability — complete
+
+The track closes the core information-access gap without creating an omniscient index or second game-state authority.
+
+`playerInformationEngine` projects only currently justified information: accessible carried/equipped preparation, effective skills, learned capabilities and abilities, acquired maps, visited places, discovered contacts/POIs, and current safe-locality actions. The deterministic search model ranks only those entries and its query lives in transient UI state.
+
+Character, Spellbook, Codex, and World now render structured information directly. Equip/unequip, ability, safe-locality destination, and safe-locality POI actions are semantic. The omnibox searches known/current information by default and reserves a leading `/` for explicit command-shell use.
+
+The focused regression proves that a fresh Thornwall character can find Sera Talwin and learned Ore Survey knowledge but cannot search the hidden Tall Reedbed before discovery.
+
+Product advances:
+
+```text
+0.7.200.1 -> 0.7.300.1
+package     -> 0.7.300
+codename    -> Semantic Information Access
+```
+
+The milestone remains pre-alpha (`released: false`). Phase 0.7 remains open.
+
+## Authoritative promoted `0.7.300` runtime checkpoint
+
+```text
+0f6af06ff8571658d51bc2be53112a50d51275cb
+490/490 tests
+Benchmark 1 success
+Data 30
+```
+
 Benchmark 1:
 
 ```text
-1,000 player combat profiles     413.227ms  0.413227ms/op
-1,000 enemy combat profiles      102.942ms  0.102942ms/op
-1,000 basic attacks              513.096ms  0.513096ms/op
-10,000 ticks / 5 subscribers      44.538ms  0.004454ms/op
-10,000 direct route lookups     7769.865ms  0.776987ms/op
+1,000 player combat profiles     464.067ms  0.464067ms/op
+1,000 enemy combat profiles      114.406ms  0.114406ms/op
+1,000 basic attacks              543.591ms  0.543591ms/op
+10,000 ticks / 5 subscribers      48.428ms  0.004843ms/op
+10,000 direct route lookups     8693.735ms  0.869373ms/op
 ```
 
 Benchmark protocol remains 1 and results remain comparable.
 
-## `0.7.300` — Semantic information access and locality usability — next bounded track
+## `0.7.400` — Companion life and party depth — next bounded track
 
-The next track should remove ordinary-player command dependence from core information and local-interaction surfaces rather than add another content region.
+The next track should make the existing persistent NPC-backed companion foundation matter more often in normal campaign play.
 
-Audit Character, Inventory/Equipment, Spellbook, Codex/World, locality point lists, and Search-or-act. Prefer derived semantic models/actions over command-string bridges. The first proof should make preparation, learned capability/knowledge, and relevant local options inspectable from ordinary browser UI while preserving acquired-knowledge privacy.
+Audit companion definition/state, Mara's recruitment and relationship data, party join/leave behavior, current combat tactics, travel/recovery synchronization, equipment/progression seams, browser presentation, and save/load coverage. Choose one concrete multi-session companion decision loop before broadening the model.
 
-Do not turn the track into a full UI rewrite, general natural-language agent, or omniscient search index. Safe-locality improvements must preserve the locality/exploration distinction.
+The first proof should create a meaningful preparation, tactical, or social choice involving an already-recruited companion outside a single automatic combat action; persist the consequence; survive real save/load; and keep the companion the same world NPC across travel/community play.
+
+Do not mass-author companions, create a summon framework, add a parallel relationship registry, or prematurely build a universal party-AI architecture.
 
 ## Planned later phases
 
