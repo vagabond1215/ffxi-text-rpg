@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.100.1';
+export const PRODUCT_VERSION = '0.8.100.2';
 export const PACKAGE_VERSION = '0.8.100';
 
 export const VERSION = Object.freeze({
@@ -6,7 +6,7 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 32,
+    data: 33,
     benchmark: 1,
     codename: 'Home Foothold and Infrastructure',
     compatibility: 'pre-release-current-schema',
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.100.1',
+    versionManifest: '0.8.100.2',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -66,6 +66,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     dayCycle: '0.2.0',
     commandShell: '0.5.0',
     domUi: '0.10.0',
+    domOnboarding: '0.1.0',
     gameViewModels: '0.13.0',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
@@ -78,11 +79,15 @@ export const SYSTEM_VERSIONS = Object.freeze({
     uiIntents: '0.10.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
+    saveRecovery: '0.1.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
     validation: '0.10.0',
     playerEntity: '0.8.0',
-    characterCreation: '0.5.2',
+    characterCreation: '0.6.0',
+    characterCreationContent: '0.2.0',
+    characterNames: '0.1.0',
+    startingDisciplineKits: '0.1.0',
     characterStats: '0.1.0',
     capabilities: '0.2.0',
     abilityCatalog: '0.1.0',
