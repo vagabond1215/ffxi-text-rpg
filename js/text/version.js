@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.7.400.1';
-export const PACKAGE_VERSION = '0.7.400';
+export const PRODUCT_VERSION = '0.8.100.1';
+export const PACKAGE_VERSION = '0.8.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 31,
+    data: 32,
     benchmark: 1,
-    codename: 'Companion Life and Party Depth',
+    codename: 'Home Foothold and Infrastructure',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.7.400.1',
+    versionManifest: '0.8.100.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -26,14 +26,15 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationInterrupts: '0.1.0',
     timedTasks: '0.1.0',
     projects: '0.1.0',
+    homeInfrastructure: '0.1.0',
     commitments: '0.2.0',
     relationships: '0.1.0',
     resourceProvenance: '0.1.0',
     resourceOpportunities: '0.1.0',
     resourceRecovery: '0.1.0',
     resourceRecoveryWork: '0.3.0',
-    characterActivity: '0.2.0',
-    activityAdvance: '0.2.0',
+    characterActivity: '0.3.0',
+    activityAdvance: '0.3.0',
     campaignRecovery: '0.1.0',
     workTasks: '0.1.0',
     workProficiencies: '0.1.0',
@@ -65,7 +66,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     dayCycle: '0.2.0',
     commandShell: '0.5.0',
     domUi: '0.10.0',
-    gameViewModels: '0.12.0',
+    gameViewModels: '0.13.0',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
@@ -74,12 +75,12 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.1.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.9.0',
+    uiIntents: '0.10.0',
     slashCommands: '0.4.1',
     accountSaves: '0.6.0',
     saveEncoding: '0.4.1',
     parser: '0.2.0',
-    validation: '0.9.0',
+    validation: '0.10.0',
     playerEntity: '0.8.0',
     characterCreation: '0.5.2',
     characterStats: '0.1.0',
