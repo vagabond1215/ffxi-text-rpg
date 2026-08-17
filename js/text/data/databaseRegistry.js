@@ -25,6 +25,7 @@ export const DATABASES = Object.freeze({
     legacyCandidates: database('legacyCandidates', 'Review-only normalization records for historical/reference material; candidates are never canonical by parsing alone.', 'normalization-boundary', '0.1.0'),
     travel: database('travel', 'Canonical world-time journeys, route traversal, scheduled departures/arrivals, cancellation, and interrupt hooks.', 'implemented', '0.5.0'),
     projects: database('projects', 'Persistent project state with stable IDs, material contributions, labor, canonical time, and completion events.', 'implemented', '0.1.0'),
+    homeInfrastructure: database('homeInfrastructure', 'Authored home and foothold improvements that consume canonical materials and project labor to grant durable preparation benefits through existing home-storage and furnishing authority.', 'implemented', '0.1.0'),
     commitments: database('commitments', 'Persistent accepted/resolved obligations tied to named NPC givers, provenance-aware requirements across gathered or produced goods, exactly-once rewards, and later follow-up.', 'implemented', '0.2.0'),
     relationships: database('relationships', 'Persistent NPC-specific familiarity, respect, trust, and obligation dimensions changed by concrete social/economic history.', 'implemented', '0.1.0'),
     resourceProvenance: database('resourceProvenance', 'Physical, economic, social, crafting, and explicitly exceptional magical acquisition metadata plus item sinks.', 'implemented', '0.1.0'),
