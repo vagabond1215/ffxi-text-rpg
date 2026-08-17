@@ -1,14 +1,14 @@
-export const PRODUCT_VERSION = '0.8.300.1';
-export const PACKAGE_VERSION = '0.8.300';
+export const PRODUCT_VERSION = '0.8.400.1';
+export const PACKAGE_VERSION = '0.8.400';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 4,
     gameState: 5,
-    data: 34,
+    data: 35,
     benchmark: 1,
-    codename: 'Carried Load and Transport Logistics',
+    codename: 'Portable Field Logistics',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.300.1',
+    versionManifest: '0.8.400.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -26,7 +26,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationInterrupts: '0.1.0',
     timedTasks: '0.1.0',
     projects: '0.1.0',
-    homeInfrastructure: '0.2.0',
+    homeInfrastructure: '0.3.0',
     commitments: '0.2.0',
     relationships: '0.1.0',
     resourceProvenance: '0.1.0',
@@ -34,13 +34,13 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceRecovery: '0.1.0',
     resourceRecoveryWork: '0.3.0',
     characterActivity: '0.3.0',
-    activityAdvance: '0.4.0',
+    activityAdvance: '0.5.0',
     campaignRecovery: '0.1.0',
     workTasks: '0.1.0',
     workProficiencies: '0.1.0',
     workstations: '0.3.0',
     productionCatalog: '0.2.0',
-    productionItems: '0.3.0',
+    productionItems: '0.4.0',
     production: '0.1.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
@@ -56,7 +56,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
     transport: '0.3.0',
-    carriedLoad: '0.1.0',
+    carriedLoad: '0.2.0',
     transportServiceBoard: '0.2.0',
     contentPackSchema: '0.1.0',
     regionalContentPacks: '0.2.0',
@@ -129,8 +129,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     shopTransactions: '0.5.0',
     guilds: '0.3.5',
     questHooks: '0.3.5',
-    inventoryContainers: '0.5.1',
-    inventoryTransfers: '0.5.1',
+    inventoryContainers: '0.6.0',
+    inventoryTransfers: '0.6.0',
     itemSchema: '0.7.0',
     itemBehavior: '0.1.0',
     itemStacking: '0.5.1',
