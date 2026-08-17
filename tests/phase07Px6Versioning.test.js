@@ -30,7 +30,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.equal(PLAYER_CAMPAIGN_READABILITY_VERSION, 2);
     assert.equal(PLAYER_DANGER_RECOVERY_VERSION, 2);
     assert.equal(TRANSPORT_SERVICE_BOARD_VERSION, 1);
-    assert.equal(SETTLEMENT_SERVICE_BOARD_VERSION, 1);
+    assert.ok(SETTLEMENT_SERVICE_BOARD_VERSION >= 1);
     assert.equal(PLAYER_INFORMATION_VERSION, 1);
 
     assert.ok(compareSemver(SYSTEM_VERSIONS.activityAdvance, '0.2.0') >= 0);
@@ -42,8 +42,8 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.equal(SYSTEM_VERSIONS.playerCampaignReadability, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.playerDangerRecovery, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.transportServiceBoard, '0.1.0');
-    assert.equal(SYSTEM_VERSIONS.settlementServiceBoard, '0.1.0');
-    assert.equal(SYSTEM_VERSIONS.workstations, '0.2.0');
+    assert.ok(compareSemver(SYSTEM_VERSIONS.settlementServiceBoard, '0.1.0') >= 0);
+    assert.ok(compareSemver(SYSTEM_VERSIONS.workstations, '0.2.0') >= 0);
     assert.equal(SYSTEM_VERSIONS.shopTransactions, '0.5.0');
     assert.equal(SYSTEM_VERSIONS.playerInformation, '0.1.1');
     assert.ok(compareSemver(SYSTEM_VERSIONS.gameViewModels, '0.12.0') >= 0);
