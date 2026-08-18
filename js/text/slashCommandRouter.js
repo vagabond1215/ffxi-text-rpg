@@ -1,5 +1,5 @@
 import { createCommandRouter } from './commandRouter.js';
-import { createNewGameState, replaceState } from './gameState.js';
+import { replaceState } from './gameState.js';
 import {
     clearSave,
     describeAccount,
@@ -20,7 +20,7 @@ const SLASH_HELP = [
     '  /help                 Same as /commands.',
     '  /reset                Clear local account/characters and reload.',
     '',
-    'Gameplay commands now use a slash prefix:',
+    'Gameplay commands use a slash prefix:',
     '  /look, /stats, /inventory, /equipment, /containers, /talk, /shop, /buy, /travel, /move, /battle, /attack, etc.',
     '',
     'Character-creation answers do not need a slash while prompts are active.',
@@ -39,40 +39,11 @@ const MAIN_MENU = [
 const SLASH_ALIASES = Object.freeze({
     '/help': '/commands',
     '/?': '/commands',
-    '/menu': '/menu',
     '/new': '/newcharacter',
     '/newchar': '/newcharacter',
     '/charlist': '/characters',
     '/chars': '/characters',
 });
-
-const FFXI_MACRO_COMMANDS = new Set([
-    '/macrohelp',
-    '/ma',
-    '/magic',
-    '/ja',
-    '/ws',
-    '/weaponskill',
-    '/ra',
-    '/rangedattack',
-    '/item',
-    '/equipset',
-    '/recast',
-    '/target',
-    '/targetnpc',
-    '/targetbnpc',
-    '/assist',
-    '/lockon',
-    '/check',
-    '/echo',
-    '/p',
-    '/l',
-    '/linkshell',
-    '/say',
-    '/s',
-    '/tell',
-    '/t',
-]);
 
 export function createSlashCommandRouter(state, services = {}) {
     const engineRouter = createCommandRouter(state, services);
@@ -96,7 +67,7 @@ export function createSlashCommandRouter(state, services = {}) {
         }
 
         if (!input.startsWith('/')) {
-            return 'Commands now require a slash prefix. Try /menu, /commands, or /newcharacter.';
+            return 'Commands require a slash prefix. Try /menu, /commands, or /newcharacter.';
         }
 
         const [rawCommandName, ...args] = input.split(/\s+/);
@@ -129,12 +100,9 @@ export function createSlashCommandRouter(state, services = {}) {
 }
 
 function routeGameplaySlash(engineRouter, input) {
-    const stripped = input.slice(1);
-    if (!stripped.trim()) return SLASH_HELP;
-    const commandName = input.split(/\s+/)[0].toLowerCase();
-    return FFXI_MACRO_COMMANDS.has(commandName)
-        ? engineRouter(input)
-        : engineRouter(stripped);
+    const stripped = input.slice(1).trim();
+    if (!stripped) return SLASH_HELP;
+    return engineRouter(stripped);
 }
 
 function describeCharacters() {
