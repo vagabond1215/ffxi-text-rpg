@@ -93,10 +93,10 @@ test('transferItemBetweenContainers stacks into destination when possible', () =
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
     addItemToContainer(inventoryState, 'inventory', potion(2));
-    addItemToContainer(inventoryState, 'mogSafe', potion(3), { isInMogHouse: true });
-    inventoryState.mogHouse.isInMogHouse = true;
+    addItemToContainer(inventoryState, 'homeSafe', potion(3), { isAtHome: true });
+    inventoryState.home.isAtHome = true;
 
-    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'mogSafe'), /Transferred Potion/);
-    assert.equal(inventoryState.containers.mogSafe.items.length, 1);
-    assert.equal(inventoryState.containers.mogSafe.items[0].quantity, 5);
+    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'homeSafe'), /Transferred Potion/);
+    assert.equal(inventoryState.containers.homeSafe.items.length, 1);
+    assert.equal(inventoryState.containers.homeSafe.items[0].quantity, 5);
 });

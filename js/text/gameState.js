@@ -21,6 +21,7 @@ import { describePlace } from './systems/travelEngine.js';
 import { moveInDirection } from './systems/navigationEngine.js';
 import { calculateCombatProfile } from './systems/statEngine.js';
 import { createWorldTimeState } from './systems/worldTimeEngine.js';
+import { VERSION } from './version.js';
 
 export const DEFAULT_START_WORLD_TIME_SECONDS = 8 * 60 * 60;
 
@@ -48,7 +49,7 @@ export function createNewGameState(options = {}) {
     if (options.includeStartingDisciplineKit === true) grantStartingDisciplineKit(player, mainJobId);
 
     return {
-        version: 5,
+        version: VERSION.gameState,
         worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? DEFAULT_START_WORLD_TIME_SECONDS }),
         simulation: createSimulationControlState({
             paused: options.simulationPaused ?? false,

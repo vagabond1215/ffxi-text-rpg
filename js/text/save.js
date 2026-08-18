@@ -1,12 +1,8 @@
-import { createInventoryState } from './systems/inventoryEngine.js';
-import { migrateAccountRegistryPayload, migrateGameStatePayload } from './systems/saveMigrations.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 import { VERSION } from './version.js';
 
-const ACCOUNTS_KEY = 'ffxiTextRpgAccounts';
-const ACCOUNT_SESSION_KEY = 'ffxiTextRpgAccountSession';
-const LEGACY_SINGLE_ACCOUNT_KEY = 'ffxiTextRpgAccount';
-const LEGACY_SAVE_KEY = 'ffxiTextRpgSave';
+const ACCOUNTS_KEY = 'hearthHorizonAccounts';
+const ACCOUNT_SESSION_KEY = 'hearthHorizonAccountSession';
 const ACCOUNT_VERSION = VERSION.accountSave;
 const ENCODING = 'base64-json-v1';
 const RESERVED_ACCOUNT_NAMES = new Set(['local-adventurer', 'account', 'placeholder']);
@@ -41,23 +37,17 @@ export function loadCharacter(characterSelector) {
     if (!record) return null;
 
     const state = decodeState(record.encodedState);
-    if (!state) return null;
-    const migration = migrateGameStatePayload(state);
-    if (!migration.ok) {
-        console.warn('Ignoring incompatible character save.', migration.message);
+    if (!state || state.version !== VERSION.gameState) {
+        console.warn(`Ignoring incompatible character save. Expected game state ${VERSION.gameState}, received ${String(state?.version)}.`);
         return null;
     }
 
-    const revived = reviveGameState(migration.value, record.id);
+    const revived = reviveGameState(state, record.id);
     if (!isValidGameState(revived)) {
         console.warn('Ignoring incompatible character save.', validateGameState(revived));
         return null;
     }
 
-    if (migration.migrated) {
-        record.encodedState = encodeState(revived);
-        record.updatedAt = new Date().toISOString();
-    }
     account.profile.lastCharacterId = record.id;
     saveAccount(account);
     return revived;
@@ -71,6 +61,10 @@ export function saveGame(state) {
             return false;
         }
 
+        if (state?.version !== VERSION.gameState) {
+            console.warn(`Refusing to save game state version ${String(state?.version)}; current version is ${VERSION.gameState}.`);
+            return false;
+        }
         const revived = reviveGameState(state, state?.meta?.characterId);
         const issues = validateGameState(revived);
         if (issues.length) {
@@ -133,8 +127,6 @@ export function saveAccount(account) {
     else registry.accounts.push(nextAccount);
     saveAccountRegistry(registry);
     syncAccountSession(nextAccount);
-    getStorage()?.removeItem(LEGACY_SAVE_KEY);
-    getStorage()?.removeItem(LEGACY_SINGLE_ACCOUNT_KEY);
     return cloneAccount(nextAccount);
 }
 
@@ -205,8 +197,6 @@ export function loadAccountSession() {
 export function clearSave() {
     getStorage()?.removeItem(ACCOUNTS_KEY);
     getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
-    getStorage()?.removeItem(LEGACY_SINGLE_ACCOUNT_KEY);
-    getStorage()?.removeItem(LEGACY_SAVE_KEY);
 }
 
 export function describeAccount() {
@@ -239,7 +229,7 @@ export function encodePayload(value) {
 
 export function decodePayload(raw) {
     const value = String(raw ?? '');
-    if (!value.startsWith(`${ENCODING}:`)) return JSON.parse(value);
+    if (!value.startsWith(`${ENCODING}:`)) throw new Error(`Unsupported local payload encoding. Expected ${ENCODING}.`);
     return JSON.parse(fromBase64(value.slice(ENCODING.length + 1)));
 }
 
@@ -248,11 +238,7 @@ export function reviveGameState(state, characterId = null) {
     state.meta ??= {};
     state.meta.characterId ??= characterId ?? createId('character');
     state.meta.updatedAt ??= new Date().toISOString();
-    if (state.player) {
-        state.player.inventoryState ??= createInventoryState();
-        state.player.inventoryState.containers ??= createInventoryState().containers;
-        state.player.inventoryState.mogHouse ??= createInventoryState().mogHouse;
-        state.player.inventoryState.containers.inventory ??= { id: 'inventory', unlocked: true, items: [] };
+    if (state.player?.inventoryState?.containers?.inventory) {
         state.player.inventory = state.player.inventoryState.containers.inventory.items;
     }
     return state;
@@ -263,22 +249,19 @@ function loadAccountRegistry() {
         const raw = getStorage()?.getItem(ACCOUNTS_KEY);
         if (!raw) return createAccountRegistry();
         const parsed = decodePayload(raw);
-        const migration = migrateAccountRegistryPayload(parsed);
-        if (!migration.ok) {
-            console.warn('Ignoring incompatible account registry.', migration.message);
+        if (parsed?.version !== ACCOUNT_VERSION || parsed?.encoding !== ENCODING || !Array.isArray(parsed?.accounts)) {
+            console.warn(`Ignoring incompatible account registry. Expected account save ${ACCOUNT_VERSION}.`);
             return createAccountRegistry();
         }
-        if (!Array.isArray(migration.value.accounts)) return createAccountRegistry();
 
-        const nextRegistry = {
+        return {
             version: ACCOUNT_VERSION,
             encoding: ENCODING,
-            accounts: migration.value.accounts.map(normalizeAccount).filter((account) => isRealAccount(account)),
+            accounts: parsed.accounts
+                .filter((account) => account?.version === ACCOUNT_VERSION && account?.encoding === ENCODING)
+                .map(normalizeAccount)
+                .filter((account) => isRealAccount(account)),
         };
-        if (migration.migrated) {
-            getStorage()?.setItem(ACCOUNTS_KEY, encodePayload(nextRegistry));
-        }
-        return nextRegistry;
     } catch (error) {
         console.warn('Unable to load account registry.', error);
         return createAccountRegistry();
@@ -337,12 +320,12 @@ function normalizeAccount(account) {
 }
 
 function normalizeSettings(settings = {}) {
-    const theme = oneOf(settings.theme, ['dark', 'light', 'highContrast'], DEFAULT_ACCOUNT_SETTINGS.theme);
+    const theme = oneOf(settings.theme, ['dark', 'light'], DEFAULT_ACCOUNT_SETTINGS.theme);
     const uiScale = oneOf(settings.uiScale, ['auto', '90%', '100%', '110%', '125%'], DEFAULT_ACCOUNT_SETTINGS.uiScale);
     const layoutMode = oneOf(settings.layoutMode, ['auto', 'portrait', 'landscape'], DEFAULT_ACCOUNT_SETTINGS.layoutMode);
     const layoutProportion = oneOf(settings.layoutProportion, ['standard', 'compact', 'wide'], DEFAULT_ACCOUNT_SETTINGS.layoutProportion);
     const clockFormat = settings.clockFormat === '24h' ? '24h' : DEFAULT_ACCOUNT_SETTINGS.clockFormat;
-    const timeZoneMode = oneOf(settings.timeZoneMode ?? settings.timeZone, ['auto', 'manual'], DEFAULT_ACCOUNT_SETTINGS.timeZoneMode);
+    const timeZoneMode = oneOf(settings.timeZoneMode, ['auto', 'manual'], DEFAULT_ACCOUNT_SETTINGS.timeZoneMode);
     const daylightSavings = oneOf(settings.daylightSavings, ['auto', 'on', 'off'], DEFAULT_ACCOUNT_SETTINGS.daylightSavings);
     return {
         theme,
@@ -398,13 +381,33 @@ function decodeState(encodedState) {
 }
 
 function writeSession(account, options = {}) {
-    const session = { loggedIn: true, accountId: account.profile.accountId, displayName: account.profile.displayName, persistentLogin: Boolean(options.persistentLogin), loggedInAt: new Date().toISOString() };
+    const session = {
+        version: ACCOUNT_VERSION,
+        encoding: ENCODING,
+        loggedIn: true,
+        accountId: account.profile.accountId,
+        displayName: account.profile.displayName,
+        persistentLogin: Boolean(options.persistentLogin),
+        loggedInAt: new Date().toISOString(),
+    };
     getStorage()?.setItem(ACCOUNT_SESSION_KEY, encodePayload(session));
     return loadAccountSession();
 }
 
 function readStoredSession() {
-    try { const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY); return raw ? decodePayload(raw) : null; } catch { getStorage()?.removeItem(ACCOUNT_SESSION_KEY); return null; }
+    try {
+        const raw = getStorage()?.getItem(ACCOUNT_SESSION_KEY);
+        if (!raw) return null;
+        const session = decodePayload(raw);
+        if (session?.version !== ACCOUNT_VERSION || session?.encoding !== ENCODING) {
+            getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
+            return null;
+        }
+        return session;
+    } catch {
+        getStorage()?.removeItem(ACCOUNT_SESSION_KEY);
+        return null;
+    }
 }
 
 function syncAccountSession(account) {

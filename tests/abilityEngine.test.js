@@ -22,6 +22,7 @@ import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { setLearnedSkill } from '../js/text/systems/skillProgressionEngine.js';
 import { findTimedTask, TIMED_TASK_STATUSES } from '../js/text/systems/timedTaskEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
+import { VERSION } from '../js/text/version.js';
 
 test('original ability and spell-school catalogs validate against character capabilities', () => {
     assert.deepEqual(validateCapabilityCatalog(), []);
@@ -32,13 +33,13 @@ test('original ability and spell-school catalogs validate against character capa
     assert.equal(listAbilities().some((entry) => ['Cure', 'Fire'].includes(entry.name)), false);
 });
 
-test('ability runtime state is additive and initializes lazily without a save-version migration', () => {
+test('ability runtime state initializes lazily within the current game-state schema', () => {
     const state = createNewGameState();
     delete state.abilities;
 
     const abilityState = ensureAbilityRuntimeState(state);
 
-    assert.equal(state.version, 5);
+    assert.equal(state.version, VERSION.gameState);
     assert.equal(abilityState.version, ABILITY_RUNTIME_STATE_VERSION);
     assert.deepEqual(abilityState.cooldowns, {});
     assert.equal(abilityState.active, null);

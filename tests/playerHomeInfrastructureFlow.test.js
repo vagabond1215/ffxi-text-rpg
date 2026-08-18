@@ -119,7 +119,7 @@ test('0.8.100 turns real regional materials and fictional labor into an exactly-
     assert.match(completed.display.text, /5 more home-storage slots/i);
     assert.equal(state.projects.records[0].status, 'completed');
     assert.equal(state.projects.records[0].data.completionApplied, true);
-    assert.deepEqual(state.player.inventoryState.mogHouse.placedFurniture.filter((id) => id === 'storage-chest'), ['storage-chest']);
+    assert.deepEqual(state.player.inventoryState.home.placedFurniture.filter((id) => id === 'storage-chest'), ['storage-chest']);
     assert.equal(getContainerCapacity(state.player.inventoryState, 'storage'), 8, 'completed Storage Chest adds its real furnishing capacity');
 
     assert.deepEqual(reconcileHomeInfrastructureProjects(state), [], 'reconciliation after completion must not apply the benefit twice');

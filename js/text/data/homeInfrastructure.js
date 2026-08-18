@@ -1,8 +1,8 @@
 import { getContainerDefinition } from './inventoryContainers.js';
-import { getFurniture } from './mogHouseFurniture.js';
+import { getFurniture } from './homeFurnishings.js';
 import { getProductionItem } from './productionItems.js';
 
-export const HOME_INFRASTRUCTURE_CATALOG_VERSION = 3;
+export const HOME_INFRASTRUCTURE_CATALOG_VERSION = 4;
 
 const HOME_INFRASTRUCTURE_DEFINITIONS = Object.freeze({
     'storage-chest': improvement({
@@ -45,7 +45,7 @@ const HOME_INFRASTRUCTURE_DEFINITIONS = Object.freeze({
             { itemId: 'item-elderwood-hide-binding', quantity: 2 },
             { itemId: 'item-copper-trail-clasp', quantity: 1 },
         ],
-        containerId: 'mogSatchel',
+        containerId: 'fieldSatchel',
     }),
 });
 

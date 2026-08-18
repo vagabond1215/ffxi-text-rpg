@@ -134,7 +134,7 @@ test('0.8.200 turns a home improvement into a real reusable woodshop capability 
     assert.equal(built.ok, true, built.display?.text ?? built.reason);
     assert.equal(built.code, 'activity.home-infrastructure-completed');
     assert.match(built.display.text, /woodshop workstation/i);
-    assert.deepEqual(state.player.inventoryState.mogHouse.placedFurniture.filter((id) => id === 'joiners-workbench'), ['joiners-workbench']);
+    assert.deepEqual(state.player.inventoryState.home.placedFurniture.filter((id) => id === 'joiners-workbench'), ['joiners-workbench']);
     assert.equal(getContainerCapacity(state.player.inventoryState, 'storage'), 3, 'the workbench adds capability rather than hidden storage capacity');
     assert.ok(collectHomeWorkstationTags(state).includes('woodshop'));
     assert.ok(collectHomeWorkstationTags(state).includes('workshop'));
@@ -191,7 +191,7 @@ test('0.8.200 turns a home improvement into a real reusable woodshop capability 
     state = loadCharacter('Workshop Auditor');
     assert.ok(state);
     assert.equal(state.worldTime.totalSeconds, savedTime);
-    assert.ok(state.player.inventoryState.mogHouse.placedFurniture.includes('joiners-workbench'));
+    assert.ok(state.player.inventoryState.home.placedFurniture.includes('joiners-workbench'));
     assert.ok(collectHomeWorkstationTags(state).includes('woodshop'));
     assert.equal(quantity(state, 'item-elderwood-resin-board'), 1);
     assert.equal(getWorkProficiency(state.player, 'crafting'), 2);

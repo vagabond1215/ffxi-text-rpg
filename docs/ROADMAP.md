@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.1
+Product:       0.8.600.2
 Package:       0.8.600
-Account Save:  4
-Game State:    5
-Data:          36
+Account Save:  5
+Game State:    6
+Data:          37
 Benchmark:     1
-Codename:      Companion Convalescence
+Codename:      Current Schema Cleanup
 Compatibility: pre-release-current-schema
 Released:      false
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited.**
+**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. `0.8.600.2` is a maintenance/schema cleanup revision, not a new Phase 0.8 track.**
 
 ## Product laws
 
@@ -161,7 +161,7 @@ A downed companion cannot be abandoned in unsafe wilderness. `partyEngine` rejec
 
 A dependency-light `localityClassificationEngine` now owns the safe-settlement predicate used by both locality and party code; `localityEngine` re-exports the public classifier. This avoids a party↔locality import cycle without changing locality-navigation semantics.
 
-No authored gameplay catalog changed, so Data remains 36. Game State remains 5 because companion HP/location/membership and recovery timed tasks already existed. Account Save remains 4 and Benchmark remains 1.
+No authored gameplay catalog changed, so Data remained 36 at the original `0.8.600.1` promotion. Game State remained 5 because companion HP/location/membership and recovery timed tasks already existed. Account Save remained 4 and Benchmark remained 1.
 
 Authoritative promoted runtime checkpoint:
 
@@ -190,9 +190,23 @@ direct route lookup      0.810038 ms/op
 
 **PASS.** Companion injury now creates a coherent safety/recovery/reunion decision using existing HP, place, party, recovery, timed-task, and fictional-time authorities. Settlement rest can heal a nearby inactive companion without silently changing party membership; wilderness abandonment of a downed companion is blocked; browser and domain availability agree; and the result survives current save/load.
 
+## `0.8.600.2` — Current Schema Cleanup — maintenance revision
+
+This revision does not open `0.8.700` and adds no new life-system track. It removes pre-alpha compatibility debt and stale canonical identifiers around persistence, home storage, and transport presentation.
+
+- Account Save advances `4 -> 5`: local account/session storage now uses Hearth & Horizon keys and exact current-schema/versioned encoding. Older registries are rejected rather than migrated.
+- Game State advances `5 -> 6`: persisted home inventory state is canonical `inventoryState.home`; old `mogHouse` state and `mog*` home/portable container IDs are removed rather than mirrored or translated.
+- Data advances `36 -> 37`: canonical home furnishing/container identifiers changed, including `homeSafe`, `storage`, and `fieldSatchel`.
+- The obsolete active save-migration module is removed. The generic ordered migration engine remains available for a future migration only when compatibility is deliberately required.
+- New-game state derives its schema version from `VERSION.gameState` instead of duplicating a hard-coded value.
+- The UI no longer emits obsolete `highContrast` theme state or the dead `cargoUnits: 0` transport payload.
+- Historical phase/version tests now use compatible minimum assertions where later shared authorities legitimately advance.
+
+Validated cleanup runtime checkpoint `23c373310bac90b20e14b840cc4221e3ca648daf` passed Check run `32104815961`: 507/507 tests, 0 failed/skipped, Benchmark 1 success.
+
 ## Next Phase 0.8 boundary
 
-This work order stops at closed `0.8.600`. **Do not automatically begin `0.8.700` or add passive companion healing/routines merely to continue the theme.** A new work order should re-audit one bounded Phase 0.8 seam against existing authorities.
+The current work order stops at the cleanup revision over closed `0.8.600`. **Do not automatically begin `0.8.700` or add passive companion healing/routines merely to continue the theme.** A new work order should re-audit one bounded Phase 0.8 seam against existing authorities.
 
 Strong candidate families now are:
 

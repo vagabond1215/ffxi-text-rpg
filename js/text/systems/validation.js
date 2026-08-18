@@ -22,6 +22,7 @@ import {
     SKILL_KEYS,
 } from '../data/systemConstants.js';
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
+import { VERSION } from '../version.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
 import { getContainerCapacity } from './inventoryEngine.js';
@@ -29,7 +30,7 @@ import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
-export const CURRENT_SAVE_VERSION = 5;
+export const CURRENT_SAVE_VERSION = VERSION.gameState;
 
 export function validateGameState(state) {
     const issues = [];
@@ -259,7 +260,7 @@ function validateProgression(progression) {
 export function validateInventoryState(inventoryState) {
     const issues = [];
     if (!isObject(inventoryState.containers)) issues.push('containers must be an object.');
-    if (!isObject(inventoryState.mogHouse)) issues.push('mogHouse must be an object.');
+    if (!isObject(inventoryState.home)) issues.push('home must be an object.');
 
     for (const definition of listContainerDefinitions()) {
         const container = inventoryState.containers?.[definition.id];
@@ -274,8 +275,8 @@ export function validateInventoryState(inventoryState) {
         }
     }
 
-    if (!Array.isArray(inventoryState.mogHouse?.placedFurniture)) issues.push('mogHouse.placedFurniture must be an array.');
-    if (typeof inventoryState.mogHouse?.isInMogHouse !== 'boolean') issues.push('mogHouse.isInMogHouse must be boolean.');
+    if (!Array.isArray(inventoryState.home?.placedFurniture)) issues.push('home.placedFurniture must be an array.');
+    if (typeof inventoryState.home?.isAtHome !== 'boolean') issues.push('home.isAtHome must be boolean.');
     return issues;
 }
 

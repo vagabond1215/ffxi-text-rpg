@@ -14,143 +14,58 @@ import {
 } from '../js/text/version.js';
 
 
-test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.1');
+test('version manifest separates product package persistence data and focused cleanup versions', () => {
+    assert.equal(PRODUCT_VERSION, '0.8.600.2');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
-    assert.equal(VERSION.accountSave, 4);
-    assert.equal(VERSION.gameState, 5);
-    assert.equal(VERSION.data, 36);
+    assert.equal(VERSION.accountSave, 5);
+    assert.equal(VERSION.gameState, 6);
+    assert.equal(VERSION.data, 37);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Companion Convalescence');
+    assert.equal(VERSION.codename, 'Current Schema Cleanup');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
         {
             versionManifest: SYSTEM_VERSIONS.versionManifest,
-            integratedMechanicsGate: SYSTEM_VERSIONS.integratedMechanicsGate,
-            transport: SYSTEM_VERSIONS.transport,
-            carriedLoad: SYSTEM_VERSIONS.carriedLoad,
-            transportServiceBoard: SYSTEM_VERSIONS.transportServiceBoard,
-            settlementServiceBoard: SYSTEM_VERSIONS.settlementServiceBoard,
-            workstations: SYSTEM_VERSIONS.workstations,
-            productionItems: SYSTEM_VERSIONS.productionItems,
+            accountSaves: SYSTEM_VERSIONS.accountSaves,
+            saveEncoding: SYSTEM_VERSIONS.saveEncoding,
             inventoryContainers: SYSTEM_VERSIONS.inventoryContainers,
             inventoryTransfers: SYSTEM_VERSIONS.inventoryTransfers,
-            shopTransactions: SYSTEM_VERSIONS.shopTransactions,
-            characterActivity: SYSTEM_VERSIONS.characterActivity,
-            activityAdvance: SYSTEM_VERSIONS.activityAdvance,
             homeInfrastructure: SYSTEM_VERSIONS.homeInfrastructure,
-            campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
-            resourceRecoveryWork: SYSTEM_VERSIONS.resourceRecoveryWork,
-            commitments: SYSTEM_VERSIONS.commitments,
-            relationships: SYSTEM_VERSIONS.relationships,
-            npcSchedules: SYSTEM_VERSIONS.npcSchedules,
-            playerSocialSchedules: SYSTEM_VERSIONS.playerSocialSchedules,
-            dayCycle: SYSTEM_VERSIONS.dayCycle,
-            localityNavigation: SYSTEM_VERSIONS.localityNavigation,
-            gameViewModels: SYSTEM_VERSIONS.gameViewModels,
-            playerInformation: SYSTEM_VERSIONS.playerInformation,
-            playerExperience: SYSTEM_VERSIONS.playerExperience,
-            playerOpportunities: SYSTEM_VERSIONS.playerOpportunities,
-            playerContinuity: SYSTEM_VERSIONS.playerContinuity,
-            playerCampaignReadability: SYSTEM_VERSIONS.playerCampaignReadability,
-            playerDangerRecovery: SYSTEM_VERSIONS.playerDangerRecovery,
-            domUi: SYSTEM_VERSIONS.domUi,
-            domOnboarding: SYSTEM_VERSIONS.domOnboarding,
-            uiIntents: SYSTEM_VERSIONS.uiIntents,
+            homeStorage: SYSTEM_VERSIONS.homeStorage,
+            workstations: SYSTEM_VERSIONS.workstations,
             validation: SYSTEM_VERSIONS.validation,
-            companionCatalog: SYSTEM_VERSIONS.companionCatalog,
-            party: SYSTEM_VERSIONS.party,
-            battleEngine: SYSTEM_VERSIONS.battleEngine,
-            combatTurns: SYSTEM_VERSIONS.combatTurns,
-            combatActions: SYSTEM_VERSIONS.combatActions,
-            companions: SYSTEM_VERSIONS.companions,
-            saveRecovery: SYSTEM_VERSIONS.saveRecovery,
-            characterCreation: SYSTEM_VERSIONS.characterCreation,
-            characterCreationContent: SYSTEM_VERSIONS.characterCreationContent,
-            characterNames: SYSTEM_VERSIONS.characterNames,
-            startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
+            gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.1',
-            integratedMechanicsGate: '0.1.0',
-            transport: '0.3.0',
-            carriedLoad: '0.2.0',
-            transportServiceBoard: '0.2.0',
-            settlementServiceBoard: '0.2.0',
-            workstations: '0.3.0',
-            productionItems: '0.4.0',
-            inventoryContainers: '0.6.0',
-            inventoryTransfers: '0.6.0',
-            shopTransactions: '0.5.0',
-            characterActivity: '0.3.0',
-            activityAdvance: '0.5.0',
-            homeInfrastructure: '0.3.0',
-            campaignRecovery: '0.2.0',
-            resourceRecoveryWork: '0.3.0',
-            commitments: '0.3.0',
-            relationships: '0.1.0',
-            npcSchedules: '0.1.0',
-            playerSocialSchedules: '0.1.0',
-            dayCycle: '0.2.0',
-            localityNavigation: '0.2.0',
-            gameViewModels: '0.15.0',
-            playerInformation: '0.1.1',
-            playerExperience: '0.3.0',
-            playerOpportunities: '0.2.0',
-            playerContinuity: '0.5.0',
-            playerCampaignReadability: '0.2.0',
-            playerDangerRecovery: '0.2.0',
-            domUi: '0.10.0',
-            domOnboarding: '0.1.0',
-            uiIntents: '0.10.0',
-            validation: '0.10.0',
-            companionCatalog: '0.2.0',
-            party: '0.3.0',
-            battleEngine: '0.8.0',
-            combatTurns: '0.3.0',
-            combatActions: '0.8.0',
-            companions: '0.2.0',
-            saveRecovery: '0.1.0',
-            characterCreation: '0.6.0',
-            characterCreationContent: '0.2.0',
-            characterNames: '0.1.0',
-            startingDisciplineKits: '0.1.0',
+            versionManifest: '0.8.600.2',
+            accountSaves: '0.7.0',
+            saveEncoding: '0.5.0',
+            inventoryContainers: '0.7.0',
+            inventoryTransfers: '0.7.0',
+            homeInfrastructure: '0.4.0',
+            homeStorage: '0.4.0',
+            workstations: '0.3.1',
+            validation: '0.11.0',
+            gameViewModels: '0.15.1',
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.600\.1/);
+    assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.2/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
-    assert.match(describeVersion(), /Game State: 5/);
-    assert.match(describeVersion(), /Data: 36/);
-    assert.match(describeVersion(), /Codename: Companion Convalescence/);
+    assert.match(describeVersion(), /Account Save: 5/);
+    assert.match(describeVersion(), /Game State: 6/);
+    assert.match(describeVersion(), /Data: 37/);
+    assert.match(describeVersion(), /Codename: Current Schema Cleanup/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /npcSchedules: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerSocialSchedules: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /commitments: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /campaignRecovery: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /localityNavigation: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.15\.0/);
-    assert.match(describeSystemVersions(), /party: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /transport: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /carriedLoad: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /transportServiceBoard: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /workstations: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /productionItems: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /inventoryContainers: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /inventoryTransfers: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /settlementServiceBoard: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /activityAdvance: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /domOnboarding: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /saveRecovery: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /characterCreation: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /characterNames: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /startingDisciplineKits: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /inventoryContainers: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.4\.0/);
+    assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
 
 test('database registry includes canonical systems plus explicitly bounded legacy research', () => {

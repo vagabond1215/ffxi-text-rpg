@@ -424,7 +424,7 @@ function transportBoardAction(entry) {
         `context:${entry.id}`,
         `${entry.serviceName} → ${entry.destinationName} · ${entry.fareAmount} ${entry.currencyId} · every ${formatDurationShort(entry.cadenceSeconds)} · ${readiness}`,
         'transport.start',
-        { serviceId: entry.serviceId, destinationPlaceId: entry.destinationPlaceId, cargoUnits: 0 },
+        { serviceId: entry.serviceId, destinationPlaceId: entry.destinationPlaceId },
         'travel',
     );
 }

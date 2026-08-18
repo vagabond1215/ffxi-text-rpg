@@ -6,10 +6,7 @@ const HOME_FURNITURE_DEFINITIONS = Object.freeze({
     joinersWorkbench: furniture('joiners-workbench', "Joiner's Workbench", 0, ['workbench', 'woodshop']),
 });
 
-// Canonical export for new code. The legacy export is retained as a bounded compatibility alias
-// until dependent imports are migrated in a later inventory-schema revision.
 export const HOME_FURNITURE = HOME_FURNITURE_DEFINITIONS;
-export const MOG_HOUSE_FURNITURE = HOME_FURNITURE_DEFINITIONS;
 
 export const STARTING_FURNITURE_IDS = Object.freeze([
     'bronze-bed',

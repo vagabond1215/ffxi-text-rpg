@@ -1,50 +1,47 @@
 export const INVENTORY_ACCESS_CONTEXTS = Object.freeze({
     ANYWHERE: 'anywhere',
-    // Legacy persistence/access token retained until the inventory schema receives its own ordered migration.
-    MOG_HOUSE: 'mogHouse',
+    HOME: 'home',
     EQUIPMENT_ANYWHERE: 'equipmentAnywhere',
 });
 
-// Several stable container IDs intentionally remain legacy-shaped for save compatibility.
-// Player-facing labels and descriptions are canonical Hearth & Horizon terminology.
 export const INVENTORY_CONTAINER_DEFINITIONS = Object.freeze({
     inventory: container('inventory', 'Inventory', 30, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Main carried inventory. Accessible anywhere.',
         itemKinds: ['all'],
         countsAsCarriedCargo: true,
     }),
-    mogSafe: container('mogSafe', 'Home Safe', 50, INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE, {
+    homeSafe: container('homeSafe', 'Home Safe', 50, INVENTORY_ACCESS_CONTEXTS.HOME, {
         description: 'Secure home storage. Accessible while at your home or lodging.',
         itemKinds: ['all'],
     }),
-    mogSafe2: container('mogSafe2', 'Home Safe II', 0, INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE, {
+    homeSafe2: container('homeSafe2', 'Home Safe II', 0, INVENTORY_ACCESS_CONTEXTS.HOME, {
         description: 'Second home safe. Locked until expansion rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,
     }),
-    storage: container('storage', 'Furnishing Storage', 0, INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE, {
+    storage: container('storage', 'Furnishing Storage', 0, INVENTORY_ACCESS_CONTEXTS.HOME, {
         description: 'Home storage capacity provided by placed storage furnishings.',
         itemKinds: ['all'],
         capacityMode: 'furniture',
     }),
-    mogLocker: container('mogLocker', 'Home Locker', 0, INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE, {
+    homeLocker: container('homeLocker', 'Home Locker', 0, INVENTORY_ACCESS_CONTEXTS.HOME, {
         description: 'Locker-style home storage. Locked until regional or property unlock rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,
     }),
-    mogSatchel: container('mogSatchel', 'Field Satchel', 8, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
+    fieldSatchel: container('fieldSatchel', 'Field Satchel', 8, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Earned portable field storage. Its contents remain part of your carried transport load.',
         itemKinds: ['all'],
         unlockedByDefault: false,
         countsAsCarriedCargo: true,
     }),
-    mogSack: container('mogSack', 'Field Sack', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
+    fieldSack: container('fieldSack', 'Field Sack', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Portable sack container. Locked until unlock rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,
         countsAsCarriedCargo: true,
     }),
-    mogCase: container('mogCase', 'Field Case', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
+    fieldCase: container('fieldCase', 'Field Case', 0, INVENTORY_ACCESS_CONTEXTS.ANYWHERE, {
         description: 'Portable case container. Locked until unlock rules are implemented.',
         itemKinds: ['all'],
         unlockedByDefault: false,

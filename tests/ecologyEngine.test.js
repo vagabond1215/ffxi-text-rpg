@@ -25,6 +25,7 @@ import {
     validateEcologyState,
 } from '../js/text/systems/ecologyEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
+import { VERSION } from '../js/text/version.js';
 
 test('ecology catalog separates families species and encounter templates', () => {
     assert.ok(listEcologyFamilies().length >= 6);
@@ -58,9 +59,9 @@ test('gathering sources reference canonical raw resource items with matching pro
     }
 });
 
-test('new games initialize versioned ecology state without a save version bump', () => {
+test('new games initialize versioned ecology state inside the current game-state schema', () => {
     const state = createNewGameState();
-    assert.equal(state.version, 5);
+    assert.equal(state.version, VERSION.gameState);
     assert.equal(state.ecology.version, 1);
     assert.deepEqual(state.ecology.populations, {});
     assert.deepEqual(state.ecology.gatheringSources, {});
@@ -87,7 +88,6 @@ test('rare population appearance is deterministic from canonical day and time', 
     const beforeWindow = createNewGameState({ startWorldTimeSeconds: 4 * 86400 + 3 * 3600 });
     const insideWindow = createNewGameState({ startWorldTimeSeconds: 4 * 86400 + 5 * 3600 });
     const wrongDay = createNewGameState({ startWorldTimeSeconds: 3 * 86400 + 5 * 3600 });
-
     assert.equal(isPopulationActive(beforeWindow, populationId), false);
     assert.equal(isPopulationActive(insideWindow, populationId), true);
     assert.equal(isPopulationActive(wrongDay, populationId), false);
