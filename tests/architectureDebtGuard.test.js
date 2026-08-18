@@ -51,6 +51,10 @@ test('presentation does not regain rejected compatibility payloads', () => {
     assertAbsent('js/text/ui/uiIntentDispatcher.js', [/highContrast/]);
 });
 
+test('active travel does not regain runtime compatibility reconstruction', () => {
+    assertAbsent('js/text/systems/transportEngine.js', [/normalizeLegacyActiveTravel/, /legacyTravel\s*:/]);
+});
+
 test('direct timed-task creation stays limited to audited domain owners with release responsibility', () => {
     const expectedOwners = [
         'js/text/systems/abilityEngine.js',
