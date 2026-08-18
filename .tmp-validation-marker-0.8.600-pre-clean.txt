@@ -1,0 +1,1 @@
+Temporary marker for PR-triggered validation of the cleaned pre-promotion 0.8.600 companion convalescence slice. Do not merge.
