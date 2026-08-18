@@ -27,7 +27,9 @@ Applicable resources include timers, scheduled callbacks, simulation tasks, list
 
 ## Current deterministic evidence
 
-`tests/longSessionLifecycle.test.js` is the accepted long-session smoke. It currently proves:
+`tests/longSessionLifecycle.test.js` is the accepted long-session/lifecycle smoke. It proves both long-run bounded histories and mixed owner-managed task release.
+
+Long-session evidence:
 
 - one timed task survives repeated current-schema save/load as one task;
 - its `task.started` event remains exactly once;
@@ -37,6 +39,23 @@ Applicable resources include timers, scheduled callbacks, simulation tasks, list
 - semantic event history remains bounded at 200 records with unique event IDs/sequences;
 - day-summary history remains bounded at 120 summaries with unique day identities;
 - final fictional time and persisted task/event/summary registry counts survive another save/load unchanged.
+
+Mixed terminal-task evidence added at Product `0.8.600.17`:
+
+```text
+one completed generic/unowned terminal task is retained as the baseline
+  -> work completes and releases its terminal task
+  -> project labor begins
+  -> real account save/load while project task is active
+  -> project completes and releases its terminal task
+  -> route travel arrives and releases its terminal task
+  -> timed ability resolves and releases its terminal task
+  -> resource recovery resolves and releases its terminal task
+  -> save/load
+  -> repeat three cycles
+  -> task registry returns to the one-record baseline after every owner reconciliation
+  -> task IDs remain monotonic and are never reused
+```
 
 This is deterministic state/lifecycle evidence, not a claim about total process memory or browser heap retention.
 
@@ -63,15 +82,30 @@ A remount first disposes the current onboarding enhancement observer and destroy
 
 `tests/domRootLifecycle.test.js` guards remount teardown, idempotent unmount, and failed-install cleanup.
 
-## Timed-task terminal history — unresolved ownership seam
+## Timed-task terminal ownership — current contract
 
-`timedTaskEngine` currently retains completed/cancelled task records. A central age/count prune was audited during the `0.8.600.8`–`.12` hardening train and **was deliberately not implemented**.
+The generic timed-task authority now exposes `releaseTimedTask(state, taskId)` for **terminal tasks only**. Active tasks cannot be released. Releasing a task removes only the heavyweight task record; stable domain records/events may retain `taskId` as historical correlation.
 
-Several domain records can remain active while their linked timed task is already terminal and later reconcile by task ID. Blindly pruning terminal task records in the generic task engine could therefore orphan domain reconciliation or manufacture inconsistent state.
+The release point belongs to the domain that owns the consequence. A terminal task is not released until the domain has durably copied every outcome it needs and emitted/recorded the exactly-once transition.
 
-A future task-retention change must first define the domain-owned release/reconciliation contract for projects, work, resource recovery, transport, abilities, and any other task-linked state. Only after those owners can prove they no longer require a terminal task record should generic retention be bounded or compaction be introduced.
+Current owners using this contract:
 
-Do not solve this by duplicating task state into each consumer or by silently reconstructing missing task records.
+- campaign recovery — after recovery consequences/events reconcile;
+- work — after completed, failed, awaiting-storage, or cancelled state/event is durable;
+- projects — after completion or cancellation is durable;
+- transport — after arrival or cancellation has updated travel/location state and emitted its event;
+- abilities — after resolution/cooldown/effects or interruption state/event is durable;
+- resource recovery — after recovered/failed-storage outcomes and completion event are durable.
+
+An unreconciled terminal task is intentionally retained across save/load until its owner consumes it. This is explicitly tested for campaign recovery. Work/project/transport/ability/resource owners then remove terminal task records without erasing correlation IDs from their own durable records/results/events.
+
+## Generic terminal history remains a separate policy decision
+
+`timedTaskEngine` does **not** blindly prune all completed/cancelled records. The owner-gated release train removed the known domain-managed accumulation path, and the mixed soak proves those owners return to steady state.
+
+A generic task with no domain owner may still remain terminal indefinitely by design. Before adding a central age/count cap, audit what such generic tasks represent and whether their history is needed for diagnostics, tests, or future consumers. If a retention cap is added, it must preserve all active tasks and must not become a substitute for domain reconciliation.
+
+Do not solve retention by duplicating task state into consumers or by silently reconstructing missing task records.
 
 ## Review checklist
 
@@ -81,7 +115,8 @@ For lifecycle-sensitive changes, inspect the relevant repeated transitions:
 - mount -> unmount -> remount the browser shell;
 - subscribe -> replace owner -> dispose stale owner;
 - start -> pause/resume -> finish an activity;
-- save -> load -> continue;
+- task becomes terminal -> owner reconciles consequence -> owner releases task;
+- save -> load -> continue before and after owner reconciliation;
 - open -> close -> reopen an overlay/view;
 - repeated multi-day advancement with periodic persistence.
 
