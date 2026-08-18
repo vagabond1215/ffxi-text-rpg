@@ -7,7 +7,7 @@ import {
 } from '../data/companions.js';
 import { createNpc } from '../entities/entityFactory.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
-import { isSettlementLocality } from './localityEngine.js';
+import { isSettlementLocality } from './localityClassificationEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
