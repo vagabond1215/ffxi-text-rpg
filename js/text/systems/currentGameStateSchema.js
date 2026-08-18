@@ -4,6 +4,7 @@ import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
+import { validatePersistedPlayerProgression } from './playerProgressionPersistence.js';
 import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateResourceOpportunityState } from './resourceOpportunityEngine.js';
@@ -95,6 +96,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         }
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) {
             if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
+        }
+        if (isObject(state.player.jobs) && isObject(state.player.progression)) {
+            issues.push(...validatePersistedPlayerProgression(state.player).map((issue) => `player.${issue}`));
         }
         if (isObject(state.player.inventoryState)) {
             issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
