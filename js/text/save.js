@@ -1,3 +1,4 @@
+import { validateCurrentGameStateStructure } from './systems/currentGameStateSchema.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 import { VERSION } from './version.js';
 
@@ -42,6 +43,12 @@ export function loadCharacter(characterSelector) {
         return null;
     }
 
+    const structureIssues = validateCurrentGameStateStructure(state, { requireMeta: true });
+    if (structureIssues.length) {
+        console.warn('Ignoring incomplete current-schema character save.', structureIssues);
+        return null;
+    }
+
     const revived = reviveGameState(state, record.id);
     if (!isValidGameState(revived)) {
         console.warn('Ignoring incompatible character save.', validateGameState(revived));
@@ -66,7 +73,10 @@ export function saveGame(state) {
             return false;
         }
         const revived = reviveGameState(state, state?.meta?.characterId);
-        const issues = validateGameState(revived);
+        const issues = [
+            ...validateCurrentGameStateStructure(revived, { requireMeta: true }),
+            ...validateGameState(revived),
+        ];
         if (issues.length) {
             console.warn('Refusing to save invalid game state.', issues);
             return false;
