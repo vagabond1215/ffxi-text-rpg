@@ -6,7 +6,7 @@ import { isSettlementLocality } from './localityEngine.js';
 import { ensurePartyState, syncActivePartyLocation } from './partyEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
-import { listTimedTasks, reconcileTimedTasks, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
+import { listTimedTasks, reconcileTimedTasks, releaseTimedTask, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
 export const CAMPAIGN_RECOVERY_VERSION = 2;
@@ -115,12 +115,18 @@ export function startCampaignRecovery(state) {
 
 export function reconcileCampaignRecoveries(state) {
     reconcileTimedTasks(state);
+    const candidates = [...(state?.tasks?.records ?? [])]
+        .filter((task) => RECOVERY_KINDS.has(task.kind)
+            && task.status === TIMED_TASK_STATUSES.COMPLETED
+            && task.data?.resolved !== true);
     const completed = [];
-    for (const task of state?.tasks?.records ?? []) {
-        if (!RECOVERY_KINDS.has(task.kind)) continue;
-        if (task.status !== TIMED_TASK_STATUSES.COMPLETED || task.data?.resolved === true) continue;
+
+    for (const task of candidates) {
         const result = resolveCampaignRecoveryTask(state, task);
-        if (result) completed.push(result);
+        if (!result) continue;
+        const released = releaseTimedTask(state, task.id);
+        if (!released.ok) throw new Error(`Resolved recovery task ${task.id} could not be released: ${released.code}`);
+        completed.push(result);
     }
     return completed;
 }
