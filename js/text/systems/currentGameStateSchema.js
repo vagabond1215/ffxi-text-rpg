@@ -55,6 +55,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
     if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
     if (isObject(state.travel)) issues.push(...validateCurrentActiveTravel(state));
+    issues.push(...validateCurrentTaskOwnerLinks(state));
     if (!Number.isInteger(state.combatSequence) || state.combatSequence < 0) issues.push('combatSequence must be a persisted non-negative integer.');
     if (state.activeBattle !== null && !isObject(state.activeBattle)) issues.push('activeBattle must be persisted as null or an object.');
 
@@ -87,18 +88,93 @@ function validateCurrentActiveTravel(state) {
     const issues = validateActiveTravel(travel);
     if (issues.length) return issues;
 
-    const task = Array.isArray(state.tasks?.records)
-        ? state.tasks.records.find((record) => record?.id === travel.taskId)
-        : null;
+    const task = findPersistedTask(state, travel.taskId);
     if (!task) return [`travel.taskId ${travel.taskId} must reference a persisted timed task.`];
 
     const expectedKind = travel.kind === TRAVEL_KINDS.SCHEDULED ? 'transport.journey' : 'travel.route';
     if (task.kind !== expectedKind) issues.push(`travel.taskId ${travel.taskId} must reference ${expectedKind}.`);
     if (task.channel !== 'travel') issues.push(`travel.taskId ${travel.taskId} must use the travel task channel.`);
-    if (!['active', 'completed'].includes(task.status)) issues.push(`travel.taskId ${travel.taskId} must be active or completed until travel reconciliation.`);
+    if (!activeOwnerTaskStatus(task.status)) issues.push(`travel.taskId ${travel.taskId} must be active or completed until travel reconciliation.`);
     if (task.data?.from !== travel.from || task.data?.to !== travel.to) issues.push(`travel.taskId ${travel.taskId} endpoints must match active travel.`);
     if (task.completesAtWorldSeconds !== travel.arriveAtWorldSeconds) issues.push(`travel.taskId ${travel.taskId} completion time must match travel arrival.`);
     return issues;
+}
+
+function validateCurrentTaskOwnerLinks(state) {
+    const issues = [];
+
+    for (const project of state.projects?.records ?? []) {
+        if (project?.status !== 'active') continue;
+        issues.push(...validateOwnerTask(state, {
+            path: `project ${project.id}`,
+            taskId: project.taskId,
+            kind: 'project.labor',
+            channel: `project:${project.id}`,
+            data: { projectId: project.id },
+        }));
+    }
+
+    for (const work of state.work?.records ?? []) {
+        if (work?.status !== 'active') continue;
+        issues.push(...validateOwnerTask(state, {
+            path: `work ${work.id}`,
+            taskId: work.taskId,
+            kind: `work.${work.kind}`,
+            channel: work.channel,
+            data: { workId: work.id },
+        }));
+    }
+
+    const activation = state.abilities?.active;
+    if (isObject(activation)) {
+        issues.push(...validateOwnerTask(state, {
+            path: `ability ${activation.abilityId}`,
+            taskId: activation.taskId,
+            kind: 'ability.activation',
+            channel: 'ability',
+            data: { abilityId: activation.abilityId },
+        }));
+    }
+
+    for (const opportunity of state.resourceOpportunities?.records ?? []) {
+        for (const action of opportunity?.actions ?? []) {
+            if (action?.status !== 'active') continue;
+            issues.push(...validateOwnerTask(state, {
+                path: `resource recovery ${opportunity.id}/${action.id}`,
+                taskId: action.taskId,
+                kind: 'resource.recovery',
+                channel: `resource:${opportunity.id}`,
+                data: { opportunityId: opportunity.id, actionId: action.id },
+            }));
+        }
+    }
+
+    return issues;
+}
+
+function validateOwnerTask(state, expected) {
+    if (typeof expected.taskId !== 'string' || !expected.taskId.trim()) return [`${expected.path} must reference a persisted timed task.`];
+    const task = findPersistedTask(state, expected.taskId);
+    if (!task) return [`${expected.path} taskId ${expected.taskId} must reference a persisted timed task.`];
+
+    const issues = [];
+    if (task.kind !== expected.kind) issues.push(`${expected.path} task ${expected.taskId} must have kind ${expected.kind}.`);
+    if (task.channel !== expected.channel) issues.push(`${expected.path} task ${expected.taskId} must use channel ${expected.channel}.`);
+    if (!activeOwnerTaskStatus(task.status)) issues.push(`${expected.path} task ${expected.taskId} must be active or completed until owner reconciliation.`);
+    for (const [key, value] of Object.entries(expected.data ?? {})) {
+        if (task.data?.[key] !== value) issues.push(`${expected.path} task ${expected.taskId} must match ${key}.`);
+    }
+    return issues;
+}
+
+function findPersistedTask(state, taskId) {
+    return Array.isArray(state.tasks?.records)
+        ? state.tasks.records.find((record) => record?.id === taskId) ?? null
+        : null;
+}
+
+function activeOwnerTaskStatus(status) {
+    return status === 'active' || status === 'completed';
 }
 
 function isObject(value) {
