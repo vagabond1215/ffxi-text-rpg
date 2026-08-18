@@ -86,7 +86,6 @@ export function startScheduledTransport(state, serviceId, destinationPlaceId, op
 
 export function reconcileTravelJourney(state) {
     if (!state.travel?.active) return { completed: false, departed: false, travel: null };
-    normalizeLegacyActiveTravel(state);
     reconcileTimedTasks(state);
     const travel = state.travel;
     const now = ensureWorldTimeState(state).totalSeconds;
@@ -142,7 +141,6 @@ export function advanceTravelJourney(state, elapsedSeconds) {
 
 export function cancelTravelJourney(state) {
     if (!state.travel?.active) return { ok: true, stopped: false, message: 'You are already stopped.' };
-    normalizeLegacyActiveTravel(state);
     const travel = state.travel;
     if (travel.taskId) {
         const task = findTimedTask(state, travel.taskId);
@@ -158,7 +156,6 @@ export function cancelTravelJourney(state) {
 
 export function provideTravelInterrupts({ state, nowWorldSeconds, horizonWorldSeconds }) {
     if (!state.travel?.active) return [];
-    normalizeLegacyActiveTravel(state);
     const travel = state.travel;
     const candidates = [];
     if (travel.status === TRAVEL_STATUSES.WAITING && travel.departAtWorldSeconds >= nowWorldSeconds && travel.departAtWorldSeconds <= horizonWorldSeconds) {
@@ -200,14 +197,20 @@ export function validateActiveTravel(travel) {
     if (!plainObject(travel)) return ['travel must be null or an object.'];
     const issues = [];
     if (travel.active !== true) issues.push('travel.active must be true when travel is present.');
-    if (travel.version !== undefined && travel.version !== TRAVEL_STATE_VERSION) issues.push(`travel.version must be ${TRAVEL_STATE_VERSION}.`);
-    if (travel.kind !== undefined && !Object.values(TRAVEL_KINDS).includes(travel.kind)) issues.push('travel.kind is invalid.');
-    if (travel.status !== undefined && !Object.values(TRAVEL_STATUSES).includes(travel.status)) issues.push('travel.status is invalid.');
+    if (travel.version !== TRAVEL_STATE_VERSION) issues.push(`travel.version must be ${TRAVEL_STATE_VERSION}.`);
+    if (!Object.values(TRAVEL_KINDS).includes(travel.kind)) issues.push('travel.kind is invalid.');
+    if (!Object.values(TRAVEL_STATUSES).includes(travel.status)) issues.push('travel.status is invalid.');
+    if (!/^task-\d{6,}$/.test(travel.taskId ?? '')) issues.push('travel.taskId is invalid.');
     if (!travel.from || !getPlace(travel.from)) issues.push('travel.from references an unknown place.');
     if (!travel.to || !getPlace(travel.to)) issues.push('travel.to references an unknown place.');
-    if (travel.departAtWorldSeconds !== undefined && !nonNegativeInteger(travel.departAtWorldSeconds)) issues.push('travel.departAtWorldSeconds is invalid.');
-    if (travel.arriveAtWorldSeconds !== undefined && !nonNegativeInteger(travel.arriveAtWorldSeconds)) issues.push('travel.arriveAtWorldSeconds is invalid.');
-    if (travel.departAtWorldSeconds !== undefined && travel.arriveAtWorldSeconds !== undefined && travel.arriveAtWorldSeconds < travel.departAtWorldSeconds) issues.push('travel arrival precedes departure.');
+    if (!positiveInteger(travel.durationSeconds)) issues.push('travel.durationSeconds must be positive.');
+    if (!positiveInteger(travel.totalSeconds)) issues.push('travel.totalSeconds must be positive.');
+    if (!nonNegativeInteger(travel.remainingSeconds)) issues.push('travel.remainingSeconds must be non-negative.');
+    if (!nonNegativeInteger(travel.bookedAtWorldSeconds)) issues.push('travel.bookedAtWorldSeconds is invalid.');
+    if (!nonNegativeInteger(travel.departAtWorldSeconds)) issues.push('travel.departAtWorldSeconds is invalid.');
+    if (!nonNegativeInteger(travel.arriveAtWorldSeconds)) issues.push('travel.arriveAtWorldSeconds is invalid.');
+    if (nonNegativeInteger(travel.departAtWorldSeconds) && nonNegativeInteger(travel.arriveAtWorldSeconds) && travel.arriveAtWorldSeconds < travel.departAtWorldSeconds) issues.push('travel arrival precedes departure.');
+    if (!Array.isArray(travel.hazardTags)) issues.push('travel.hazardTags must be an array.');
     return issues;
 }
 
@@ -268,41 +271,6 @@ function beginJourney(state, definition) {
         data: { travel: snapshotTravel(state.travel), task: task.data.task, eventId: event.id, from: definition.from, to: definition.to, durationSeconds: definition.durationSeconds, departAtWorldSeconds, arriveAtWorldSeconds },
         display: { text: status === TRAVEL_STATUSES.WAITING ? `Booked ${definition.mode} travel; departure at ${departAtWorldSeconds}, arrival at ${arriveAtWorldSeconds}.` : `Traveling to ${getPlace(definition.to)?.name ?? definition.to}. Estimated time: ${definition.durationSeconds}s.` },
     });
-}
-
-function normalizeLegacyActiveTravel(state) {
-    const travel = state.travel;
-    if (!travel?.active || travel.version === TRAVEL_STATE_VERSION) return travel;
-    const now = ensureWorldTimeState(state).totalSeconds;
-    const remainingSeconds = Math.max(1, Number.parseInt(travel.remainingSeconds, 10) || Number.parseInt(travel.totalSeconds, 10) || 1);
-    const task = startTimedTask(state, {
-        kind: 'travel.route',
-        label: `${travel.mode ?? 'walk'} legacy travel`,
-        channel: 'travel',
-        durationSeconds: remainingSeconds,
-        data: { routeId: null, serviceId: null, from: travel.from, to: travel.to, legacyTravel: true },
-    });
-    Object.assign(travel, {
-        version: TRAVEL_STATE_VERSION,
-        kind: TRAVEL_KINDS.ROUTE,
-        status: TRAVEL_STATUSES.IN_TRANSIT,
-        routeId: null,
-        serviceId: null,
-        taskId: task.ok ? task.data.task.id : null,
-        durationSeconds: remainingSeconds,
-        totalSeconds: remainingSeconds,
-        remainingSeconds,
-        bookedAtWorldSeconds: now,
-        departAtWorldSeconds: now,
-        departedAtWorldSeconds: now,
-        arriveAtWorldSeconds: now + remainingSeconds,
-        distanceYalms: null,
-        hazardTags: [],
-        knowledge: null,
-        cargoUnits: 0,
-        fare: null,
-    });
-    return travel;
 }
 
 function releaseTravelTask(state, taskId) {
