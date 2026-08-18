@@ -7,6 +7,8 @@ import { calculateCombatProfile } from '../js/text/systems/statEngine.js';
 import { createTickEngine } from '../js/text/systems/tickEngine.js';
 import { findTravelRoute } from '../js/text/systems/travelEngine.js';
 
+export const BENCHMARK_WARMUP_RATIO = 0.1;
+
 export const BENCHMARK_DEFINITIONS = Object.freeze([
     Object.freeze({
         name: 'create 1,000 player combat profiles',
@@ -63,13 +65,14 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
 ]);
 
 export function runBenchmarkSuite() {
-    return BENCHMARK_DEFINITIONS.map((definition) => benchmark(definition));
+    return BENCHMARK_DEFINITIONS.map((definition) => runBenchmarkDefinition(definition));
 }
 
-function benchmark(definition) {
-    const context = typeof definition.setup === 'function'
-        ? definition.setup({ iterations: definition.iterations })
-        : undefined;
+export function runBenchmarkDefinition(definition) {
+    const warmupIterations = Math.max(1, Math.floor(definition.iterations * BENCHMARK_WARMUP_RATIO));
+    runIterations(definition, warmupIterations);
+
+    const context = createContext(definition, definition.iterations);
     const start = performance.now();
     for (let index = 0; index < definition.iterations; index += 1) {
         definition.action(context, index);
@@ -78,7 +81,21 @@ function benchmark(definition) {
     return Object.freeze({
         name: definition.name,
         iterations: definition.iterations,
+        warmupIterations,
         totalMs,
         perIterationMs: totalMs / definition.iterations,
     });
+}
+
+function runIterations(definition, iterations) {
+    const context = createContext(definition, iterations);
+    for (let index = 0; index < iterations; index += 1) {
+        definition.action(context, index);
+    }
+}
+
+function createContext(definition, iterations) {
+    return typeof definition.setup === 'function'
+        ? definition.setup({ iterations })
+        : undefined;
 }
