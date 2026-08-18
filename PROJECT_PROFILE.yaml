@@ -30,6 +30,8 @@ validation:
   benchmark: npm run benchmark
   aggregate: npm run check
   hosted_check: Check
+  node_baseline: 24
+  architecture_debt_guard: tests/architectureDebtGuard.test.js
 modules:
   - game-runtime
   - persistent-state
@@ -38,7 +40,9 @@ modules:
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
+  current_game_state_must_be_complete_before_revival: true
   future_migrations: deliberate-only-when-required
+  canonical_action_results_only: true
   resource_lifecycle_review: required
   long_session_stability: required-design-consideration
   hard_performance_thresholds: baseline-required-first
@@ -47,6 +51,8 @@ constraints:
   - preserve the original-world canon and legacy/reference boundary
   - preserve the distinction between fictional simulation time and wall-clock scheduling
   - preserve player-facing acquired-knowledge map privacy
-  - reject incompatible pre-alpha saves/accounts rather than adding compatibility scaffolding by default
+  - reject incompatible or incomplete pre-alpha saves/accounts rather than adding compatibility scaffolding by default
   - keep the generic migration substrate available for future deliberate migrations without making migration automatic
+  - keep carried inventory/container facts under inventory authority rather than duplicating container knowledge in consumers
+  - do not reintroduce retired FFXI command runtime compatibility
   - roadmap sequencing does not authorize unbounded implementation
