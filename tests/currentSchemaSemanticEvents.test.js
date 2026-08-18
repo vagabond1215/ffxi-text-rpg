@@ -57,8 +57,8 @@ test('current schema rejects malformed semantic event sequence ordering and dupl
 
 test('current schema rejects malformed semantic event records before normalization', () => {
     const state = stateWithEvents();
-    state.events.records[0].type = 'INVALID TYPE';
-    state.events.records[1].data = [];
+    state.events.records[0] = { ...structuredClone(state.events.records[0]), type: 'INVALID TYPE' };
+    state.events.records[1] = { ...structuredClone(state.events.records[1]), data: [] };
 
     const issues = validateCurrentGameStateStructure(state);
     assert.ok(issues.some((issue) => issue.includes('events.records[0] is not a valid semantic event')));
