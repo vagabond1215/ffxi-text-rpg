@@ -4,6 +4,7 @@ import {
     cancelTimedTask,
     findTimedTask,
     reconcileTimedTasks,
+    releaseTimedTask,
     startTimedTask,
     TIMED_TASK_STATUSES,
 } from './timedTaskEngine.js';
@@ -100,12 +101,16 @@ export function reconcileWorkTasks(state) {
 export function markWorkCompleted(state, workId, data = {}) {
     const record = findWorkRecord(state, workId);
     if (!record) return null;
-    if (record.status === WORK_STATUSES.COMPLETED) return snapshot(record);
+    if (record.status === WORK_STATUSES.COMPLETED) {
+        releaseTerminalWorkTask(state, record);
+        return snapshot(record);
+    }
     record.status = WORK_STATUSES.COMPLETED;
     const task = findTimedTask(state, record.taskId);
     record.completedAtWorldSeconds = task?.completedAtWorldSeconds ?? ensureWorldTimeState(state).totalSeconds;
     record.data = { ...record.data, ...structuredCloneSafe(data) };
     emitSemanticEvent(state, 'work.completed', eventData(record), { source: 'workTaskEngine' });
+    releaseTerminalWorkTask(state, record);
     return snapshot(record);
 }
 
@@ -117,6 +122,7 @@ export function markWorkAwaitingStorage(state, workId, data = {}) {
     record.completedAtWorldSeconds ??= task?.completedAtWorldSeconds ?? ensureWorldTimeState(state).totalSeconds;
     record.data = { ...record.data, ...structuredCloneSafe(data) };
     emitSemanticEvent(state, 'work.awaiting-storage', eventData(record), { source: 'workTaskEngine' });
+    releaseTerminalWorkTask(state, record);
     return snapshot(record);
 }
 
@@ -129,6 +135,7 @@ export function markWorkFailed(state, workId, code, data = {}) {
     record.completedAtWorldSeconds ??= task?.completedAtWorldSeconds ?? ensureWorldTimeState(state).totalSeconds;
     record.data = { ...record.data, ...structuredCloneSafe(data) };
     emitSemanticEvent(state, 'work.failed', eventData(record), { source: 'workTaskEngine' });
+    releaseTerminalWorkTask(state, record);
     return snapshot(record);
 }
 
@@ -141,6 +148,7 @@ export function cancelWorkTask(state, workId) {
     record.status = WORK_STATUSES.CANCELLED;
     record.cancelledAtWorldSeconds = ensureWorldTimeState(state).totalSeconds;
     const event = emitSemanticEvent(state, 'work.cancelled', eventData(record), { source: 'workTaskEngine' });
+    releaseTerminalWorkTask(state, record);
     return actionSuccess({
         action: 'work.cancel',
         code: 'work.cancelled',
@@ -188,6 +196,14 @@ export function validateWorkState(registry) {
     }
     if (registry.nextSequence <= maxSequence) issues.push('work.nextSequence must be greater than stored work sequences.');
     return issues;
+}
+
+function releaseTerminalWorkTask(state, record) {
+    const task = findTimedTask(state, record?.taskId);
+    if (!task || task.status === TIMED_TASK_STATUSES.ACTIVE) return false;
+    const released = releaseTimedTask(state, task.id);
+    if (!released.ok) throw new Error(`Terminal work task ${task.id} could not be released: ${released.code}`);
+    return true;
 }
 
 function snapshot(record) {
