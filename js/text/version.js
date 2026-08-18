@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.9';
+export const PRODUCT_VERSION = '0.8.600.10';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,18 +8,18 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 2,
-    codename: 'Benchmark Protocol V2',
+    codename: 'Subscription Ownership',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.9',
+    versionManifest: '0.8.600.10',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
     performanceHarness: '0.2.0',
-    lifecycleHarness: '0.1.0',
+    lifecycleHarness: '0.2.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
@@ -113,7 +113,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     expTables: '0.5.2',
     disciplineSwitching: '0.6.0',
     skillProgression: '0.6.0',
-    liveTick: '0.2.0',
+    liveTick: '0.2.1',
     maps: '0.5.0',
     places: '0.5.0',
     coordinates: '0.1.0',
