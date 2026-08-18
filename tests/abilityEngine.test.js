@@ -20,7 +20,7 @@ import { grantCapability } from '../js/text/systems/capabilityEngine.js';
 import { startEncounter } from '../js/text/systems/combatActionEngine.js';
 import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { setLearnedSkill } from '../js/text/systems/skillProgressionEngine.js';
-import { findTimedTask, TIMED_TASK_STATUSES } from '../js/text/systems/timedTaskEngine.js';
+import { findTimedTask } from '../js/text/systems/timedTaskEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 import { VERSION } from '../js/text/version.js';
 
@@ -57,7 +57,7 @@ test('ability activation rejects unknown and unlearned executable effects', () =
     assert.equal(result.data.requirementCode, 'not-learned');
 });
 
-test('timed offensive magic spends once, resolves at canonical world time, and starts cooldown on resolution', () => {
+test('timed offensive magic spends once, resolves at canonical world time, starts cooldown, and releases its terminal task', () => {
     const state = createNewGameState({ mainJobId: 'elementalist' });
     grantCapability(state.player, 'spell-ember-dart');
     setLearnedSkill(state.player, 'elementalMagic', 1);
@@ -67,6 +67,7 @@ test('timed offensive magic spends once, resolves at canonical world time, and s
     enemy.resources.hp = 999;
 
     const started = activateAbility(state, 'Ember Dart');
+    const taskId = started.data.activation.taskId;
 
     assert.equal(started.ok, true);
     assert.equal(started.code, 'ability.started');
@@ -83,12 +84,16 @@ test('timed offensive magic spends once, resolves at canonical world time, and s
 
     assert.equal(resolved.ok, true);
     assert.equal(resolved.code, 'ability.resolved');
+    assert.equal(resolved.data.activation.taskId, taskId);
     assert.equal(resolved.data.effects[0].type, 'damage');
     assert.ok(resolved.data.effects[0].amount > 0);
     assert.equal(enemy.resources.hp, 999 - resolved.data.effects[0].amount);
     assert.equal(state.player.resources.mp, 90);
     assert.equal(state.abilities.active, null);
     assert.equal(state.abilities.cooldowns['ability-ember-dart'], state.worldTime.totalSeconds + 12);
+    assert.equal(findTimedTask(state, taskId), null);
+    const [event] = listSemanticEvents(state, { type: 'ability.resolved' });
+    assert.equal(event.data.taskId, taskId);
 
     const cooling = canActivateAbility(state, 'Ember Dart');
     assert.equal(cooling.ok, false);
@@ -159,7 +164,7 @@ test('non-combat Waymark Reading resolves contextual world knowledge without rev
     assert.equal(Object.hasOwn(effect, 'authoredCoordinateCount'), false);
 });
 
-test('interrupting a timed ability cancels its task, keeps spent resources, and emits a semantic event', () => {
+test('interrupting a timed ability releases its cancelled task after the interruption event and keeps spent resources', () => {
     const state = createNewGameState({ mainJobId: 'lifewarden' });
     grantCapability(state.player, 'spell-mending-thread');
     setLearnedSkill(state.player, 'healingMagic', 1);
@@ -172,14 +177,16 @@ test('interrupting a timed ability cancels its task, keeps spent resources, and 
     assert.equal(interrupted.ok, true);
     assert.equal(interrupted.code, 'ability.interrupted');
     assert.equal(interrupted.data.costsRetained, true);
+    assert.equal(interrupted.data.activation.taskId, taskId);
     assert.equal(state.player.resources.mp, 92);
     assert.equal(state.abilities.active, null);
-    assert.equal(findTimedTask(state, taskId).status, TIMED_TASK_STATUSES.CANCELLED);
+    assert.equal(findTimedTask(state, taskId), null);
     assert.equal(state.abilities.cooldowns['ability-mending-thread'], undefined);
 
     const events = listSemanticEvents(state, { type: 'ability.interrupted' });
     assert.equal(events.length, 1);
     assert.equal(events[0].data.abilityId, 'ability-mending-thread');
+    assert.equal(events[0].data.taskId, taskId);
     assert.equal(events[0].data.reason, 'movement');
 });
 

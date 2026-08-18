@@ -5,6 +5,7 @@ import { emitSemanticEvent } from './semanticEventEngine.js';
 import {
     findTimedTask,
     reconcileTimedTasks,
+    releaseTimedTask,
     startTimedTask,
     TIMED_TASK_STATUSES,
 } from './timedTaskEngine.js';
@@ -203,6 +204,7 @@ export function reconcileResourceRecoveries(state, options = {}) {
                 recoveredItemIds: recovery.items.map((item) => item.id),
                 failedItemIds: recovery.failedItems.map((entry) => entry.item.id),
             }, { source: 'resourceOpportunityEngine' });
+            releaseResourceRecoveryTask(state, action.taskId);
             completed.push({
                 opportunityId: opportunity.id,
                 actionId: action.id,
@@ -367,6 +369,14 @@ function createRecoveryActionState(actionId) {
 
 function actionDefinition(id, durationSeconds, requiredToolTags, proficiencyId, minProficiency, minCondition) {
     return Object.freeze({ id, durationSeconds, requiredToolTags: Object.freeze(requiredToolTags), proficiencyId, minProficiency, minCondition });
+}
+
+function releaseResourceRecoveryTask(state, taskId) {
+    const task = findTimedTask(state, taskId);
+    if (!task || task.status === TIMED_TASK_STATUSES.ACTIVE) return false;
+    const released = releaseTimedTask(state, task.id);
+    if (!released.ok) throw new Error(`Terminal resource recovery task ${task.id} could not be released: ${released.code}`);
+    return true;
 }
 
 function opportunityEventData(opportunity) {

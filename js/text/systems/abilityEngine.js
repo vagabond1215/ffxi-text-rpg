@@ -11,6 +11,7 @@ import {
     cancelTimedTask,
     findTimedTask,
     reconcileTimedTasks,
+    releaseTimedTask,
     startTimedTask,
     TIMED_TASK_STATUSES,
 } from './timedTaskEngine.js';
@@ -192,6 +193,7 @@ export function reconcileAbilityActivation(state) {
     const ability = getAbility(active.abilityId);
     if (!ability) {
         runtime.active = null;
+        releaseAbilityTask(state, active.taskId);
         return failure('ability.missing-definition', { activation: snapshotActivation(active) }, `Active ability definition is missing: ${active.abilityId}.`);
     }
     return resolveActivation(state, active, ability, null);
@@ -214,6 +216,7 @@ export function interruptActiveAbility(state, reason = 'interrupted') {
         costsRetained: true,
     }, { source: 'abilityEngine' });
     const ability = getAbility(active.abilityId);
+    releaseAbilityTask(state, active.taskId);
     return actionSuccess({
         action: 'ability.interrupt',
         code: 'ability.interrupted',
@@ -337,6 +340,7 @@ function resolveActivation(state, activation, ability, startEventId = null) {
         }
     }
 
+    releaseAbilityTask(state, activation.taskId);
     return actionSuccess({
         action: 'ability.activate',
         code: 'ability.resolved',
@@ -487,6 +491,14 @@ function getAbilityContext(state) {
 function resolveAbility(query) {
     if (query && typeof query === 'object' && query.id) return getAbility(query.id);
     return findAbility(query);
+}
+
+function releaseAbilityTask(state, taskId) {
+    const task = findTimedTask(state, taskId);
+    if (!task || task.status === TIMED_TASK_STATUSES.ACTIVE) return false;
+    const released = releaseTimedTask(state, task.id);
+    if (!released.ok) throw new Error(`Terminal ability task ${task.id} could not be released: ${released.code}`);
+    return true;
 }
 
 function activationEventData(activation) {

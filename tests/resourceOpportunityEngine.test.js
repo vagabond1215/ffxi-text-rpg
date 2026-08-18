@@ -13,6 +13,7 @@ import {
     startResourceRecovery,
     validateResourceOpportunityState,
 } from '../js/text/systems/resourceOpportunityEngine.js';
+import { findTimedTask } from '../js/text/systems/timedTaskEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 function hare() {
@@ -88,12 +89,13 @@ test('skinning exposes tool time proficiency condition and persisted outcome hoo
     assert.deepEqual(started.data.opportunity.actions[0].outputRolls, [{ outputIndex: 0, roll: 0.25 }]);
 });
 
-test('completed recovery uses its persisted outcome roll and produces provenance-tagged material at the timed-task boundary', () => {
+test('completed recovery uses its persisted outcome roll, produces provenance material, and releases its terminal task after the recovery event', () => {
     const state = createInitialState();
     state.currentPlaceId = 'west-elderwood';
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
     const opportunityId = created.data.opportunity.id;
-    startResourceRecovery(state, opportunityId, 'skin', { toolTags: ['cutting'], rng: () => 0 });
+    const started = startResourceRecovery(state, opportunityId, 'skin', { toolTags: ['cutting'], rng: () => 0 });
+    const taskId = started.data.task.id;
 
     advanceWorldTime(state, 89);
     assert.deepEqual(reconcileResourceRecoveries(state, { rng: () => 1 }), []);
@@ -109,21 +111,26 @@ test('completed recovery uses its persisted outcome roll and produces provenance
     assert.equal(hide.provenance[0].sourceId, 'enemy-test-hare');
     assert.equal(hide.provenance[0].action, 'skin');
     assert.equal(hide.sinks[0].type, 'trade');
-    assert.equal(listResourceOpportunities(state)[0].status, RESOURCE_OPPORTUNITY_STATUSES.EXHAUSTED);
+    const opportunity = listResourceOpportunities(state)[0];
+    assert.equal(opportunity.status, RESOURCE_OPPORTUNITY_STATUSES.EXHAUSTED);
+    assert.equal(opportunity.actions[0].taskId, taskId, 'resource action keeps historical task correlation');
+    assert.equal(findTimedTask(state, taskId), null);
     const [event] = listSemanticEvents(state, { type: 'resource.recovery-completed' });
+    assert.equal(event.data.taskId, taskId);
     assert.deepEqual(event.data.recoveredItemIds, ['wild-rabbit-hide']);
 });
 
 test('persisted failed outcome remains failed even if reconciliation receives a successful fallback rng', () => {
     const state = createInitialState();
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
-    startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0.9 });
+    const started = startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0.9 });
     advanceWorldTime(state, 90);
 
     const [completed] = reconcileResourceRecoveries(state, { rng: () => 0 });
 
     assert.equal(completed.items.length, 0);
     assert.equal(state.player.inventory.length, 0);
+    assert.equal(findTimedTask(state, started.data.task.id), null);
 });
 
 test('raider rewards become searchable carried-inventory opportunities', () => {
@@ -137,7 +144,7 @@ test('raider rewards become searchable carried-inventory opportunities', () => {
     assert.equal(started.data.task.durationSeconds, 15);
 });
 
-test('recovery records storage failure without materializing an item outside inventory rules', () => {
+test('recovery records storage failure without materializing an item outside inventory rules and still releases the task', () => {
     const state = createInitialState();
     for (let index = 0; index < 30; index += 1) {
         state.player.inventoryState.containers.inventory.items.push({
@@ -149,7 +156,7 @@ test('recovery records storage failure without materializing an item outside inv
         });
     }
     const created = createDefeatedEnemyResourceOpportunity(state, hare());
-    startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0 });
+    const started = startResourceRecovery(state, created.data.opportunity.id, 'skin', { toolTags: ['cutting'], rng: () => 0 });
     advanceWorldTime(state, 90);
 
     const [completed] = reconcileResourceRecoveries(state);
@@ -158,6 +165,7 @@ test('recovery records storage failure without materializing an item outside inv
     assert.equal(completed.failedItems.length, 1);
     assert.match(completed.failedItems[0].reason, /Inventory is full/);
     assert.equal(state.player.inventory.length, 30);
+    assert.equal(findTimedTask(state, started.data.task.id), null);
 });
 
 test('missing resource-opportunity registry initializes lazily without changing save version', () => {
