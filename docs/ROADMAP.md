@@ -7,19 +7,19 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.12
+Product:       0.8.600.17
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
-Codename:      Warm Benchmark Baseline
+Codename:      Bounded Task Retention
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `0.8.600.2` through `.12` are maintenance/hardening revisions and do not open `0.8.700`.**
+**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `0.8.600.2` through `.17` are maintenance/hardening revisions and do not open `0.8.700`.**
 
 ## Product laws
 
@@ -92,7 +92,7 @@ Historical track checkpoints:
 
 `0.8.600.1` closed Companion Convalescence at 511/511 tests and Benchmark 1 success. Settlement recovery can heal a nearby inactive recruited companion without silently changing party membership, and a downed companion cannot be abandoned in unsafe wilderness.
 
-## `0.8.600.2`–`.12` — maintenance and hardening
+## `0.8.600.2`–`.17` — maintenance and hardening
 
 The maintenance revisions consolidate the current foundation before another feature track:
 
@@ -109,12 +109,17 @@ The maintenance revisions consolidate the current foundation before another feat
 | `.10` | Subscription ownership: stale tick disposer cannot remove replacement owner | `cc75d707f3a6ca492a6de6883c7ac59b871836c8` |
 | `.11` | DOM root ownership: remount/unmount explicitly dispose active app resources and onboarding observer | `b9d1be0d72cb1bb27d414349bc894726deb6ace3` |
 | `.12` | Warm Benchmark Baseline: separate-context 10% warm-up before measurement; Benchmark `2 -> 3` | `3de675d60ba46852f193b5cd319df2ce056aa00f` |
+| `.13` | Owner-gated task release: terminal-only release API + campaign-recovery save/load/exactly-once proof | `be8db394e81da0e2aa96069efb7df51cd0b68b9b` |
+| `.14` | Work/project task release: durable completion/failure/storage/cancel transitions release terminal task records | `f7d51365f13fa1cb703383ec4799934e07a3f90f` |
+| `.15` | Transport task release: arrival/cancellation releases terminal task after location/event state is durable | `588d6dd0e0a882a6cfdc76d60797c0488330141d` |
+| `.16` | Ability/resource task release: resolution/interruption/recovery/storage outcomes release terminal tasks after durable consequences | `67ec4ea8ae19b1032894a604ed372802d794cf92` |
+| `.17` | Bounded task retention soak: repeated mixed owner-managed lifecycles return to one intentional generic-terminal baseline across real save/load | `e4ebdbc14776329156f2df2dee8c598e3b8b91cb` |
 
-Latest exact-head runtime validation was PR #335 / Check `32160936491` on Node 24.19.0:
+Latest exact-head runtime validation was PR #340 / head `666d2f432c3db097012ef035d2e4655405c5747d` / Check `32168023319` on Node 24.19.0:
 
 ```text
-tests       527
-pass        527
+tests       534
+pass        534
 fail        0
 cancelled   0
 skipped     0
@@ -122,33 +127,41 @@ Benchmark 3 success
 Benchmark Sample success
 ```
 
-Benchmark 3 single run:
+Benchmark 3 single run on that gate:
 
 ```text
-player combat profiles  0.355492 ms/op
-enemy combat profiles   0.066399 ms/op
-basic attacks            0.002787 ms/op
-tick dispatch            0.000923 ms/op
-direct route lookup      0.008017 ms/op
+player combat profiles  0.379708 ms/op
+enemy combat profiles   0.071495 ms/op
+basic attacks            0.003396 ms/op
+tick dispatch            0.000927 ms/op
+direct route lookup      0.007520 ms/op
 ```
 
 Three-sample medians/spreads on that gate:
 
 ```text
-player profiles  0.359021 ms/op   7.97%
-enemy profiles   0.068446 ms/op  11.71%
-basic attacks    0.000951 ms/op 191.11%
-tick dispatch    0.000646 ms/op  61.69%
-route lookup     0.007238 ms/op   5.16%
+player profiles  0.359505 ms/op   6.21%
+enemy profiles   0.070873 ms/op  10.10%
+basic attacks    0.001285 ms/op 189.74%
+tick dispatch    0.000798 ms/op  28.18%
+route lookup     0.007662 ms/op   6.59%
 ```
 
-Benchmark 3 is a new comparability baseline. Do not compare its numeric values directly with Benchmark 1 or 2. No hard timing threshold is accepted yet, especially for the very short attack/tick microbenchmarks.
+Benchmark 3 remains the current comparability baseline. Do not compare its numeric values directly with Benchmark 1 or 2. No hard timing threshold is accepted yet, especially for the very short attack/tick microbenchmarks.
+
+### Terminal-task ownership after `.13`–`.17`
+
+The known domain-managed retention seam is now closed without blind central pruning.
+
+`releaseTimedTask` rejects active tasks. Campaign recovery, work, projects, transport, abilities, and resource recovery release terminal records only after their domain consequence/event is durable. Domain records/results/events may retain `taskId` as historical correlation. An unreconciled terminal task remains persisted until its owner consumes it.
+
+The `.17` mixed lifecycle soak proves repeated work/project/travel/ability/resource cycles return the timed-task registry to a stable baseline, including a save/load while project labor is active. A deliberately generic unowned completed task remains retained, demonstrating that domain release is not equivalent to global history deletion.
 
 ## Current Phase 0.8 boundary
 
 **Do not automatically begin `0.8.700`.** A fresh work order should re-audit one bounded seam before implementation.
 
-For further maintenance/hardening, the strongest known ownership seam is terminal timed-task retention. Completed/cancelled task records are not centrally pruned because active domain records may still need their terminal task IDs for reconciliation. Any future retention/compaction work must first define domain-owned release semantics; do not add duplicate task state as a shortcut.
+For further maintenance/hardening, the next task-history question is narrower: audit whether generic/unowned terminal task records need a bounded diagnostic/history policy at all. Do not add a central prune unless real generic producers/consumers justify it; owner-managed gameplay tasks already return to steady state.
 
 Strong feature candidate families remain:
 
