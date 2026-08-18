@@ -6,6 +6,7 @@ import {
     findTimedTask,
     getTimedTaskProgress,
     reconcileTimedTasks,
+    releaseTimedTask,
     startTimedTask,
     TIMED_TASK_STATUSES,
 } from './timedTaskEngine.js';
@@ -173,6 +174,7 @@ export function reconcileProjects(state) {
         project.status = PROJECT_STATUSES.COMPLETED;
         project.completedAtWorldSeconds = task.completedAtWorldSeconds;
         const event = emitSemanticEvent(state, 'project.completed', projectEventData(project), { source: 'projectEngine' });
+        releaseProjectTask(state, project);
         completed.push({ project: snapshotProject(project), eventId: event.id });
     }
 
@@ -193,6 +195,7 @@ export function cancelProject(state, projectId) {
     project.status = PROJECT_STATUSES.CANCELLED;
     project.cancelledAtWorldSeconds = ensureWorldTimeState(state).totalSeconds;
     const event = emitSemanticEvent(state, 'project.cancelled', projectEventData(project), { source: 'projectEngine' });
+    releaseProjectTask(state, project);
     return actionSuccess({
         action: 'project.cancel',
         code: 'project.cancelled',
@@ -301,6 +304,14 @@ function normalizeMaterialRequirements(rawMaterials = []) {
         });
     }
     return { ok: true, records };
+}
+
+function releaseProjectTask(state, project) {
+    const task = findTimedTask(state, project?.taskId);
+    if (!task || task.status === TIMED_TASK_STATUSES.ACTIVE) return false;
+    const released = releaseTimedTask(state, task.id);
+    if (!released.ok) throw new Error(`Terminal project task ${task.id} could not be released: ${released.code}`);
+    return true;
 }
 
 function snapshotProject(project) {
