@@ -6,8 +6,10 @@ import { validatePartyState } from './partyEngine.js';
 import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateResourceOpportunityState } from './resourceOpportunityEngine.js';
+import { validateSimulationControlState } from './simulationControlEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
+import { validateWorldTimeState } from './worldTimeEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
     'worldTime',
@@ -59,6 +61,8 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         if (!Array.isArray(state[field])) issues.push(`${field} must be a persisted array.`);
     }
 
+    if (isObject(state.worldTime)) issues.push(...validateWorldTimeState(state.worldTime));
+    if (isObject(state.simulation)) issues.push(...validateSimulationControlState(state.simulation));
     if (isObject(state.tasks)) issues.push(...validateTimedTaskState(state.tasks));
     if (isObject(state.abilities)) issues.push(...validateAbilityRuntimeState(state.abilities));
     if (isObject(state.party)) issues.push(...validatePartyState(state.party));
