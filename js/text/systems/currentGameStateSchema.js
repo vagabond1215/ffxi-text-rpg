@@ -1,4 +1,5 @@
 import { VERSION } from '../version.js';
+import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
     'worldTime',
@@ -53,6 +54,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
     if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
+    if (isObject(state.travel)) issues.push(...validateCurrentActiveTravel(state));
     if (!Number.isInteger(state.combatSequence) || state.combatSequence < 0) issues.push('combatSequence must be a persisted non-negative integer.');
     if (state.activeBattle !== null && !isObject(state.activeBattle)) issues.push('activeBattle must be persisted as null or an object.');
 
@@ -77,6 +79,25 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         }
     }
 
+    return issues;
+}
+
+function validateCurrentActiveTravel(state) {
+    const travel = state.travel;
+    const issues = validateActiveTravel(travel);
+    if (issues.length) return issues;
+
+    const task = Array.isArray(state.tasks?.records)
+        ? state.tasks.records.find((record) => record?.id === travel.taskId)
+        : null;
+    if (!task) return [`travel.taskId ${travel.taskId} must reference a persisted timed task.`];
+
+    const expectedKind = travel.kind === TRAVEL_KINDS.SCHEDULED ? 'transport.journey' : 'travel.route';
+    if (task.kind !== expectedKind) issues.push(`travel.taskId ${travel.taskId} must reference ${expectedKind}.`);
+    if (task.channel !== 'travel') issues.push(`travel.taskId ${travel.taskId} must use the travel task channel.`);
+    if (!['active', 'completed'].includes(task.status)) issues.push(`travel.taskId ${travel.taskId} must be active or completed until travel reconciliation.`);
+    if (task.data?.from !== travel.from || task.data?.to !== travel.to) issues.push(`travel.taskId ${travel.taskId} endpoints must match active travel.`);
+    if (task.completesAtWorldSeconds !== travel.arriveAtWorldSeconds) issues.push(`travel.taskId ${travel.taskId} completion time must match travel arrival.`);
     return issues;
 }
 

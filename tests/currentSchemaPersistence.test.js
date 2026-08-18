@@ -10,6 +10,7 @@ import {
     loadCharacter,
     saveGame,
 } from '../js/text/save.js';
+import { startRouteJourney } from '../js/text/systems/transportEngine.js';
 import { VERSION } from '../js/text/version.js';
 
 class MemoryStorage {
@@ -129,4 +130,95 @@ test('world time persists through current-schema save and load without wall-cloc
 
     assert.equal(loaded.version, VERSION.gameState);
     assert.equal(loaded.worldTime.totalSeconds, 123456);
+});
+
+test('current active travel survives save/load with the same linked timed task', () => {
+    installStorage();
+    assert.equal(createAccountWithPassword('Travel Persistence Account', 'pwd', { persistentLogin: true }).ok, true);
+
+    const state = createInitialState();
+    state.player.identity.name = 'Roadkeeper';
+    const started = startRouteJourney(state, {
+        routeId: 'strict-travel-route',
+        from: state.currentPlaceId,
+        to: 'west-elderwood',
+        mode: 'walk',
+        durationSeconds: 30,
+    });
+    assert.equal(started.ok, true, started.display?.text);
+    const taskId = started.data.task.id;
+    assert.equal(saveGame(state), true);
+
+    const loaded = loadCharacter('Roadkeeper');
+    assert.ok(loaded);
+    assert.equal(loaded.travel.version, 2);
+    assert.equal(loaded.travel.taskId, taskId);
+    assert.equal(loaded.tasks.records.length, 1);
+    assert.equal(loaded.tasks.records[0].id, taskId);
+    assert.equal(loaded.tasks.records[0].completesAtWorldSeconds, loaded.travel.arriveAtWorldSeconds);
+});
+
+test('current-version legacy-shaped active travel is rejected instead of reconstructed', () => {
+    installStorage();
+    assert.equal(createAccountWithPassword('Strict Travel Shape Account', 'pwd', { persistentLogin: true }).ok, true);
+
+    const state = createInitialState();
+    state.player.identity.name = 'Strictroad';
+    const started = startRouteJourney(state, {
+        routeId: 'strict-travel-shape',
+        from: state.currentPlaceId,
+        to: 'west-elderwood',
+        mode: 'walk',
+        durationSeconds: 30,
+    });
+    assert.equal(started.ok, true);
+    assert.equal(saveGame(state), true);
+
+    const key = 'hearthHorizonAccounts';
+    const registry = decodePayload(globalThis.localStorage.getItem(key));
+    const record = registry.accounts[0].characters[0];
+    const malformed = decodePayload(record.encodedState);
+    delete malformed.travel.version;
+    delete malformed.travel.status;
+    record.encodedState = encodePayload(malformed);
+    globalThis.localStorage.setItem(key, encodePayload(registry));
+
+    assert.equal(loadCharacter('Strictroad'), null);
+    const unchangedRegistry = decodePayload(globalThis.localStorage.getItem(key));
+    const unchanged = decodePayload(unchangedRegistry.accounts[0].characters[0].encodedState);
+    assert.equal(Object.hasOwn(unchanged.travel, 'version'), false);
+    assert.equal(Object.hasOwn(unchanged.travel, 'status'), false);
+    assert.equal(unchanged.tasks.records.length, 1, 'load must not manufacture a replacement travel task');
+});
+
+test('current active travel with a missing linked task is rejected instead of repaired', () => {
+    installStorage();
+    assert.equal(createAccountWithPassword('Strict Travel Link Account', 'pwd', { persistentLogin: true }).ok, true);
+
+    const state = createInitialState();
+    state.player.identity.name = 'Strictlink';
+    const started = startRouteJourney(state, {
+        routeId: 'strict-travel-link',
+        from: state.currentPlaceId,
+        to: 'west-elderwood',
+        mode: 'walk',
+        durationSeconds: 30,
+    });
+    assert.equal(started.ok, true);
+    assert.equal(saveGame(state), true);
+
+    const key = 'hearthHorizonAccounts';
+    const registry = decodePayload(globalThis.localStorage.getItem(key));
+    const record = registry.accounts[0].characters[0];
+    const malformed = decodePayload(record.encodedState);
+    const taskId = malformed.travel.taskId;
+    malformed.tasks.records = malformed.tasks.records.filter((task) => task.id !== taskId);
+    record.encodedState = encodePayload(malformed);
+    globalThis.localStorage.setItem(key, encodePayload(registry));
+
+    assert.equal(loadCharacter('Strictlink'), null);
+    const unchangedRegistry = decodePayload(globalThis.localStorage.getItem(key));
+    const unchanged = decodePayload(unchangedRegistry.accounts[0].characters[0].encodedState);
+    assert.equal(unchanged.travel.taskId, taskId);
+    assert.equal(unchanged.tasks.records.length, 0, 'load must not reconstruct the missing task');
 });
