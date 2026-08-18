@@ -9,14 +9,17 @@ export function createTickEngine(options = {}) {
         if (!id || typeof handler !== 'function') {
             throw new Error('Tick subscriptions require an id and handler function.');
         }
-        subscribers.set(id, {
+        const subscriber = {
             id,
             handler,
             meta,
             enabled: true,
             ticksHandled: 0,
-        });
-        return () => unsubscribe(id);
+        };
+        subscribers.set(id, subscriber);
+        return () => {
+            if (subscribers.get(id) === subscriber) subscribers.delete(id);
+        };
     }
 
     function unsubscribe(id) {
