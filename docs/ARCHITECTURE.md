@@ -30,14 +30,14 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 - Inventory/equipment/tool/container state owns preparation, capacity, access, portable item location, carried-load facts, and practical capability checks.
 - Resources preserve source/transformation provenance and one-time ownership.
 - Projects own persistent material/labor progress and exactly-once completion state.
-- Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks; it does not create parallel stores, timers, workstation registries, recipe engines, mastery counters, or cargo state.
+- Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks rather than creating parallel stores or timers.
 - Transport owns fares, cadence, departure, arrival, journey cargo snapshots, and service limits. It derives carried load from inventory and never trusts caller/UI cargo counts.
 - Commitments own accepted/resolved/follow-up state and one-time rewards; relationship continuity remains a separate authority.
 - NPC schedules are recurring authored availability evaluated against canonical fictional time; availability is derived, not serialized as a second clock.
 - Campaign recovery remains the one player/party recovery authority.
 - Maps, Journal guidance, transport/service boards, player information, home opportunity models, and social schedule decoration are projections of acquired/current state.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
-- Persistent companions remain NPC-backed world participants; party authority owns recruitment, active membership, location continuity, safe separation/reunion, and battle synchronization.
+- Persistent companions remain NPC-backed world participants; party authority owns recruitment, active membership, location continuity, safe separation/reunion, field approach, and battle synchronization.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs, or can decide; implementation rationale stays outside normal play.
 
 ## Semantic action contract
@@ -55,58 +55,19 @@ display
 
 `actionSuccess()` / `actionFailure()` return that contract directly. The old non-enumerable `.message` / `.reason` aliases are removed. Adapters use `describeActionResult()` / `display.text` for prose and semantic fields for logic.
 
-Do not reintroduce prose parsing or promoted compatibility fields as gameplay authority.
-
 ## Shared player-experience projections
 
 `playerExperienceEngine`, `playerOpportunityEngine`, `playerContinuityEngine`, `playerDangerRecoveryEngine`, `playerCampaignReadabilityEngine`, `transportServiceBoardEngine`, `settlementServiceBoardEngine`, `playerInformationEngine`, and `playerSocialScheduleEngine` remain derived views/decorators over canonical domain authorities.
 
 `activityAdvanceEngine` provides semantic advance-to-completion without a second clock. It composes travel, gathering/production work, recovery, and generic `project.labor`.
 
-## Home and inventory authority
+## Home, inventory, and carried-load authority
 
 `projectEngine.js` is the persistent construction/work substrate. Projects own stable identity/status, material requirements/contributions, labor duration, linked tasks, timestamps, and bounded domain data.
 
-Current canonical home/inventory state is:
+Current canonical home/inventory state is rooted at `player.inventoryState`. Inventory owns container unlock/access/capacity/transfer and item location. `homeFurnishings.js` owns canonical furnishing definitions; `workstationEngine` derives workstation context; `productionEngine` owns recipe inputs/work/outputs/provenance/mastery.
 
-```text
-player.inventoryState.home
-  isAtHome
-  placedFurniture
-
-player.inventoryState.containers
-  inventory
-  homeSafe
-  homeSafe2
-  storage
-  homeLocker
-  fieldSatchel
-  fieldSack
-  fieldCase
-  wardrobe1 ... wardrobe8
-```
-
-Inherited `mogHouse` state and `mog*` container identifiers are not canonical aliases and are not translated during load. `homeFurnishings.js` owns canonical furnishing definitions; inventory owns container unlock/access/capacity/transfer; `workstationEngine` derives workstation context; `productionEngine` owns recipe inputs/work/outputs/provenance/mastery.
-
-## Carried inventory and logistics authority
-
-`carriedInventoryEngine.js` centralizes the portable-carried container set and exposes deterministic carried-item queries plus atomic cross-container removal. Consumers such as commitments do not hard-code Field Satchel/Sack/Case IDs.
-
-`carriedLoadEngine.js` projects cargo units from the same container definitions. It does not persist a second live cargo counter.
-
-```text
-Inventory -> Field Satchel
-  item location changes
-  total carried cargo does NOT change
-
-Inventory/Field Satchel -> Home Safe
-  goods leave portable carriage
-  total carried cargo decreases
-```
-
-Commitment requirements/delivery inspect canonical carried inventory, so a qualifying item in an unlocked portable field container can be delivered while home storage cannot. Cross-container removal plans validate completely before mutation.
-
-`transportServiceBoardEngine` derives current load for presentation and `transportEngine` independently derives load when booking, checks allowance before fare deduction, and records journey load.
+`carriedInventoryEngine.js` centralizes the portable-carried container set and exposes deterministic carried-item queries plus atomic cross-container removal. `carriedLoadEngine.js` projects cargo units from those same definitions. Transport and commitments consume these authorities rather than duplicating container lists.
 
 ## Daily social availability authority
 
@@ -114,69 +75,76 @@ Commitment requirements/delivery inspect canonical carried inventory, so a quali
 
 The current model is public availability at a static canonical NPC location, not autonomous multi-location pathfinding.
 
-## Companion convalescence authority
+## Companion and recovery authority
 
-`campaignRecoveryEngine.js` remains the one recovery authority:
+`campaignRecoveryEngine.js` remains the one recovery authority for player and party consequences. Settlement recovery can include inactive recruited companions physically present in a safe settlement without silently activating them.
 
-```text
-field recovery       -> player + active companions
-defeat recovery      -> player + active companions
-settlement recovery  -> player + active companions + inactive recruited companions physically present in the safe settlement
-```
-
-Settlement recovery uses the existing `recovery.settlement` timed task and 3600 canonical fictional seconds. It changes HP/MP only; inactive companions do not silently become active.
-
-`partyEngine` rejects leaving a 0-HP companion behind in unsafe wilderness before membership/location mutation. `localityClassificationEngine.js` owns the shared safe-settlement predicate. Presentation suppresses impossible reunion actions while party authority remains final.
+`partyEngine` owns persistent companion identity/membership/location/tactics state. It rejects unsafe abandonment of a downed companion before mutation. `localityClassificationEngine.js` owns the shared safe-settlement predicate.
 
 ## Persistence authority — strict current schema
 
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.22
+Product:       0.8.600.27
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
+Codename:      Strict Character Runtime
 ```
 
-`js/text/save.js` owns account/session/character persistence. Current storage keys are:
+`js/text/save.js` owns account/session/character persistence. Current storage keys are `hearthHorizonAccounts` and `hearthHorizonAccountSession`; accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
+
+### Raw validation precedes revival
+
+`currentGameStateSchema.js` validates the raw persisted Game State 6 before reference revival and before runtime `ensure*` helpers can normalize it. Current required domain-registry validation covers:
 
 ```text
-hearthHorizonAccounts
-hearthHorizonAccountSession
-```
-
-Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
-
-Before revival/reference relinking, `currentGameStateSchema.js` requires a complete Game State 6 persisted structure. Runtime `ensure*` helpers may initialize new/internal state, but they are not implicit save migrations.
-
-The current raw persistence boundary additionally validates the task subsystem rather than checking object presence alone:
-
-```text
-timed-task registry
-  version
-  nextSequence monotonicity
-  unique stable task ids
-  valid status/timing/data records
+timed tasks
+  version, sequence monotonicity, unique ids, status/timing/data
 
 active travel
-  Travel State 2
-  matching travel task kind/channel/endpoints/deadline
+  Travel State 2 plus matching task kind/channel/endpoints/deadline
 
-active domain owners
-  project -> project.labor
-  work -> work.<kind>
-  timed ability -> ability.activation
-  resource recovery -> resource.recovery
+projects
+  version, sequence, stable ids, status, labor/material progress
+
+commitments
+  canonical definition ids and reward/follow-up bookkeeping
+
+relationships
+  version, npc-key/record consistency, integer dimensions, timestamps
+
+resource opportunities
+  version, sequence, stable ids/status, action definitions, persisted output rolls
+
+ecology
+  version, population/source child maps, canonical references, quantities, timestamps
+
+party
+  version, capacity, unique active membership, recruited records, identity/resources/tactics
+
+ability runtime
+  version, cooldown map and active activation structure
 ```
 
-An active domain record may reference an active task or a task that has just completed and awaits owner reconciliation. A terminal domain record may retain `taskId` as historical correlation after the task record has been released.
+Separate active-owner link validation requires active project/work/travel/timed-ability/resource-recovery state to retain a matching active-or-just-completed timed task until owner reconciliation.
 
-Legacy-shaped or orphaned active travel/task state is rejected rather than reconstructed. The old runtime active-travel normalization path is removed. Malformed current task registries are rejected before `ensureTimedTaskState()` can normalize them.
+Malformed current state is rejected rather than repaired. In particular, Party and Ability `ensure*` normalization cannot reset a malformed Game State 6 payload into apparent validity, and ecology/project/continuity/resource registries cannot be lazily recreated on load. Historical lazy-init tests may still prove internal/new-state construction behavior; they are not pre-alpha save-compatibility promises.
 
-`saveGame()` likewise refuses malformed current state rather than manufacturing required registries during persistence. The deleted active save-migration layer is not part of current runtime. `migrationEngine.js` remains a generic utility only for a future deliberate migration requirement.
+`saveGame()` likewise refuses malformed current state rather than manufacturing required registries during persistence. The generic migration utility remains available only for a future deliberate compatibility requirement.
+
+### State classification rule
+
+Before tightening another raw persistence seam, classify the state:
+
+1. **persistent required authority** — must already be valid before revival;
+2. **derived/transient state** — recompute from authoritative inputs;
+3. **construction convenience** — initialize in factory/new-state paths, not during current-save load.
+
+This prevents raw validation from accidentally serializing projections or turning runtime convenience helpers into implicit migration code.
 
 ## Timed-task lifecycle ownership
 
@@ -207,11 +175,9 @@ start task
   -> domain record/event may retain historical taskId
 ```
 
-`releaseTimedTask` rejects active tasks and never rewinds task sequence allocation. Production-style repeated owner lifecycles return the task registry to zero retained task records after reconciliation.
+`releaseTimedTask` rejects active tasks and never rewinds task sequence allocation. Production-style repeated owner lifecycles return the task registry to zero retained task records after reconciliation. There is currently no production generic/unowned timed-task producer and no accepted blind global pruning policy.
 
-There is currently no production generic/unowned timed-task producer. The low-level lifecycle smoke deliberately proves that the task engine itself does not silently prune an unreleased generic terminal record; no global task-history cap is accepted without a concrete future producer/history requirement.
-
-Positive current-schema persistence evidence exists across all six owners: campaign recovery, project, travel, work, timed ability, and resource recovery all preserve the relevant owner/task identity through their required save/load boundary and reconcile exactly once.
+Positive current-schema persistence evidence exists across all six task owners: campaign recovery, project, travel, work, timed ability, and resource recovery preserve the relevant owner/task identity through their required save/load boundary and reconcile exactly once.
 
 See `docs/RESOURCE_LIFECYCLE.md` for the detailed ownership contract.
 
@@ -219,34 +185,30 @@ See `docs/RESOURCE_LIFECYCLE.md` for the detailed ownership contract.
 
 ### Tick subscriptions
 
-Stable subscriber IDs may be replaced. The disposer returned to a subscriber removes only the exact record it created; an old owner cannot later remove a newer subscriber that reused the same ID. Explicit `unsubscribe(id)` remains the deliberate operation for removing the current owner.
+Stable subscriber IDs may be replaced. The disposer returned to a subscriber removes only the exact record it created; an old owner cannot later remove a newer subscriber that reused the same ID.
 
 ### Browser root
 
-`domRoot.js` owns the active `domApp` instance and onboarding enhancement disposer. Remount disposes the prior observer/app before replacement. Unmount is idempotent. If onboarding enhancement installation throws after app creation, the new app is destroyed and the root remains unmounted.
+`domRoot.js` owns the active `domApp` instance and onboarding enhancement disposer. Remount disposes the prior observer/app before replacement. Unmount is idempotent. A failed enhancement installation destroys the new app and leaves the root unmounted.
 
 ### Long-session state
 
-`tests/longSessionLifecycle.test.js` proves deterministic 130-day advancement with periodic real current-schema save/load, exactly-once low-level task start/completion through reload, bounded semantic-event history (200), bounded day-summary history (120), and zero-retained-task steady state for repeated owner-managed gameplay lifecycles.
+`tests/longSessionLifecycle.test.js` proves deterministic 130-day advancement with periodic real current-schema save/load, bounded semantic-event/day-summary histories, exactly-once task transitions, and zero-retained-task steady state for repeated owner-managed gameplay lifecycles.
 
 ## Command/adapter boundary
 
-Canonical command/slash routing no longer preserves the retired FFXI macro runtime surface. The old command adapter, macro runtime reference data, raw-save fallback key, and command aliases such as `moghouse`, `trust`, `jobs`, `/ma`, `/ws`, etc. are removed from canonical runtime routing.
+Canonical command/slash routing no longer preserves the retired FFXI macro runtime surface. Legacy FFXI-derived research/reference datasets may remain bounded reference material but must not feed canonical world identity or persisted gameplay state merely for compatibility.
 
 Generic UX abbreviations such as `?`, `h`, `inv`, or `char` remain ordinary parser shorthand where useful; they are not world-identity compatibility.
-
-Legacy FFXI-derived research/reference datasets may remain bounded reference material but must not feed canonical world identity or persisted gameplay state merely for compatibility.
 
 ## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check runs on Node 24 LTS using `actions/checkout@v7` and `actions/setup-node@v6`, with concurrency cancellation and a bounded job timeout.
 
-Hosted Check executes the full tests, Benchmark 3, and sampled Benchmark 3 evidence.
-
-Latest exact-head runtime gate: PR #345 / exact head `be561e922f1b0316727e13a91381595418b956e2` / Check `32171224914`, Node 24.19.0:
+Latest exact-head runtime gate: PR #350 / exact head `5d0d8071d9f94cac818c43a1fe018583eb56286f` / Check `32174533957`, Node 24.19.0:
 
 ```text
-550/550 tests
+575/575 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -256,21 +218,21 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player combat profiles  0.394555 ms/op
-enemy combat profiles   0.071987 ms/op
-basic attacks            0.003521 ms/op
-tick dispatch            0.001158 ms/op
-direct route lookup      0.007919 ms/op
+player combat profiles  0.381457 ms/op
+enemy combat profiles   0.067924 ms/op
+basic attacks            0.003165 ms/op
+tick dispatch            0.000865 ms/op
+direct route lookup      0.007660 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.364139 ms/op   7.99%
-enemy profiles   0.070800 ms/op  11.17%
-basic attacks    0.001303 ms/op 219.89%
-tick dispatch    0.000713 ms/op  18.43%
-route lookup     0.007434 ms/op   6.93%
+player profiles  0.357477 ms/op   6.21%
+enemy profiles   0.064718 ms/op   8.92%
+basic attacks    0.001198 ms/op 200.77%
+tick dispatch    0.000698 ms/op  69.53%
+route lookup     0.007425 ms/op  17.56%
 ```
 
 Benchmark 1/2 results are not numerically comparable to Benchmark 3. No hard performance thresholds are accepted yet.
@@ -279,4 +241,4 @@ Benchmark 1/2 results are not numerically comparable to Benchmark 3. No hard per
 
 Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, recovery, production, transport, world knowledge, and bounded authored schedules rather than creating isolated management simulations, hidden lifecycle resources, or compatibility layers.
 
-For future persistence hardening, compose raw current-schema validators one bounded registry family at a time. First distinguish persistent required authority from derived/transient state and construction convenience; do not turn `ensure*` helpers into implicit Game State 6 migration behavior.
+For future persistence hardening, audit remaining top-level/player state one bounded authority family at a time. Do not mechanically attach every runtime validator to load; first determine whether the data is true persisted authority, a projection, or construction convenience.
