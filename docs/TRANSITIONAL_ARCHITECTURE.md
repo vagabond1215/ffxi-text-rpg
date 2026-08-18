@@ -1,202 +1,105 @@
 # Transitional Architecture
 
-This document records the seams that are intentionally temporary between the current 0.4 foundation and the planned simulation/capability architecture. It exists to prevent future implementation work from accidentally hardening scaffolds that are scheduled to be replaced.
-
-The design authority remains `docs/DEVELOPMENT_DIRECTION.md`. The release gates remain `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
+This document records remaining temporary seams so current pre-alpha work does not harden legacy assumptions. The design authority is `docs/DEVELOPMENT_DIRECTION.md`; current runtime authority is `docs/ARCHITECTURE.md`; release/schema policy is `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
 
 ## Purpose
 
-The current repository is useful foundation code, but several concepts still reflect the earlier FFXI-oriented scaffold. New work should preserve working behavior while avoiding deeper coupling to those assumptions.
+Hearth & Horizon is an original text-first persistent fantasy life RPG. FFXI-derived code/data may remain as bounded research, migration history, or command-adapter scaffolding, but must not become canonical player-facing identity or a second source of truth.
 
 The transition strategy is evolutionary:
 
-- preserve current tested systems;
-- introduce new contracts beside them;
-- adapt representative paths first;
-- migrate persistent state explicitly when required;
-- remove transitional assumptions only when their replacement is tested.
+- preserve deterministic, tested current systems;
+- replace legacy authority rather than mirror it;
+- keep adapters narrow and clearly non-canonical;
+- change pre-alpha persisted contracts cleanly when simplification is worth the break;
+- add a migration only when compatibility is explicitly required or independently useful;
+- remove temporary assumptions once their canonical replacement is proven.
 
-Do not perform a broad rewrite merely because a later architecture is known.
+Do not perform a broad rewrite merely because transitional debt remains.
 
-## Main-job and job-switching state is transitional
+## Discipline/job state remains partly transitional
 
-Current player state still contains concepts such as:
+Current player state still contains `player.jobs` fields used by progression, equipment eligibility, and some command-facing descriptions. They are not the long-term definition of what the character can do.
 
-```text
-player.jobs.mainJobId
-player.jobs.mainJobName
-player.jobs.level
-player.jobs.unlocked
-```
-
-and current systems may use the active main job for level progression, skill-cap scaffolding, equipment eligibility, and legacy FFXI-facing descriptions.
-
-These fields are compatibility scaffolds, not the long-term definition of what the character is capable of doing.
-
-### Long-term rule
+The durable rule is:
 
 ```text
-Jobs describe.
+Disciplines describe.
 Capabilities enable.
-Loadouts constrain and enhance.
+Loadouts and preparation constrain and enhance.
 ```
 
-A job/discipline is a recognizable training tradition or archetype. The character does not transform into another person or magically forget learned abilities when changing equipment.
+Character-owned learned capabilities, proficiency, equipment/tool requirements, resources, preparation, status, and context should increasingly decide action eligibility. Do not add new permanent mechanics whose only justification is a magical active-class transformation.
 
-Long-term action eligibility should derive from some combination of:
+## Structured action and event seams
 
-- learned capability/knowledge;
-- proficiency/mastery;
-- required or preferred equipment;
-- preparation and selected loadout;
-- resources such as MP, stamina, TP, ammunition, reagents, or charges;
-- current physical/status condition;
-- environmental/context requirements;
-- specific formal training where an advanced technique genuinely requires it.
+`js/text/systems/actionResult.js` provides structured action outcomes; consumers should use semantic action/code/outcome/data rather than parse prose.
 
-A future capability may therefore be usable across several traditional job classifications when its actual requirements are met.
+`js/text/systems/semanticEventEngine.js` provides bounded observational events for summaries, objectives, relationships, completion, diagnostics, and tests. Events are not event sourcing; canonical game state remains authoritative.
 
-### Rules during the transition
+Some compatibility aliases on action results or command-facing adapters may remain until a bounded cleanup proves their callers are gone. Do not extend those aliases reflexively.
 
-Until the 0.6 capability/discipline work lands:
+## Persistence seam — current-schema pre-alpha
 
-1. Do not delete `player.jobs` or the current progression paths merely to anticipate the new model.
-2. Do not add new permanent rules whose only justification is `current main job == X` unless they are explicitly documented as temporary compatibility behavior.
-3. Prefer character-owned proficiency state over new per-job copies. Existing `player.progression.skills[skillId]` remains the intended character-owned location.
-4. Equipment eligibility may continue using current job data where already implemented, but new ability eligibility should be designed so it can later accept capability/equipment/preparation predicates.
-5. Job names remain valuable content and identity labels; only the magical job-switch interpretation is being retired.
-
-## Structured action seam
-
-`js/text/systems/actionResult.js` defines the first engine-facing action contract.
-
-The intended direction is:
+The active persistence policy is now intentionally simple:
 
 ```text
-engine action
-  -> semantic outcome/code/data
-  -> optional semantic events
-  -> UI/command adapter renders prose
+accepted account registry version == VERSION.accountSave
+accepted game state version       == VERSION.gameState
+accepted encoding                 == base64-json-v1
+otherwise                         -> reject/reset, do not auto-migrate
 ```
 
-Engine consumers should prefer `action`, `code`, `outcome`, and `data` rather than parsing message strings.
+`js/text/save.js` owns current account/session/character persistence. Current storage keys are Hearth & Horizon names, and current Game State uses canonical `inventoryState.home` plus canonical home/field container identifiers.
 
-The non-enumerable `.message` / `.reason` aliases are compatibility aids for older command-facing callers. They are not a reason to keep adding prose-dependent game logic.
+`js/text/systems/migrationEngine.js` remains as a generic ordered-migration utility for a future migration that is deliberately required. The old active `saveMigrations.js` compatibility layer has been removed. The existence of the generic engine does not imply support for old local pre-alpha saves/accounts.
 
-Only representative paths need to migrate at first. Do not mass-convert every engine solely for stylistic consistency.
+`reviveGameState()` may restore current-schema object references after JSON decoding. It must not become a hidden migration/reconstruction system.
 
-## Semantic event seam
+Account Save, Game State, Data, Benchmark, and Product versions answer different questions and must be advanced deliberately.
 
-`js/text/systems/semanticEventEngine.js` provides bounded observational events.
+## Fictional time versus wall clock
 
-Events are intended for systems such as:
-
-- objectives and quests;
-- end-of-day summaries;
-- achievements;
-- project completion;
-- relationship/reputation reactions;
-- interruption handling;
-- diagnostics and tests.
-
-Events are **not** authoritative event sourcing. Game state remains the source of truth. Event history may be bounded or absent in an older save, and consumers must tolerate that distinction where appropriate.
-
-Consumers should inspect event types and structured data rather than command-log prose.
-
-## Persistence seam
-
-`js/text/systems/migrationEngine.js` and `saveMigrations.js` now provide ordered migrations for versioned persistent structures.
-
-Rules:
-
-- a persistent shape change that invalidates an existing current save must have a registered ordered migration or an explicit reset decision;
-- future versions must be rejected rather than silently interpreted as current;
-- `reviveGameState()` remains useful for restoring object references after JSON decoding, but it is not the migration system;
-- Account Save, Game State, Data, and product versions answer different questions and must not be bumped automatically together.
-
-Optional observational fields that can be created lazily and do not invalidate current saves do not require a Game State bump solely because they now appear on new states.
-
-## World-time seam
-
-The current `tickEngine.js` is a wall-clock scheduling/dispatch scaffold. It uses real elapsed milliseconds and must not become the authoritative game calendar.
-
-The 0.5 world-time architecture should introduce a deterministic simulation clock with state such as total simulated seconds and derived date/time values.
-
-The boundary should become:
+Canonical fictional time is `state.worldTime` and the deterministic simulation/task/interrupt substrate. Wall-clock scheduling may request advancement; it never owns the world calendar.
 
 ```text
-wall-clock scheduler (optional)
+wall-clock/UI input (optional)
         |
         v
-request simulation advancement
+request deterministic simulation advancement
         |
         v
-deterministic world clock
+world time + tasks + interrupts
         |
         v
-tasks / travel / projects / statuses / events
+travel / work / projects / recovery / schedules / combat
 ```
 
-Tests and direct commands must be able to advance world time exactly without `Date.now()`, sleeping, or waiting for a real interval.
+Tests and gameplay systems must be able to advance fictional time without sleeping or depending on real elapsed time.
 
-The existing live tick scaffold may later become one way to request advancement at normal speed. It should not calculate the canonical world date by itself.
+## Legacy command adapter boundary
 
-## Travel as the current integration pilot
+The command shell still contains historical aliases and FFXI-era command compatibility. This is an adapter surface, not canonical world identity. New normal browser gameplay should use semantic intents and original-world terminology.
 
-Travel is intentionally the first path through the new seams because it already has:
+Do not add new canonical state, content IDs, or gameplay rules merely to preserve an old command alias. Remove remaining aliases/fallback keys only in a bounded command-shell cleanup with focused tests so parser behavior is not accidentally rewritten alongside unrelated systems.
 
-- a clear start action;
-- duration;
-- progress;
-- completion;
-- location change;
-- user-facing text;
-- restrictions;
-- natural future interaction with world time and interrupts.
+## Foundations to preserve
 
-Current travel therefore demonstrates:
+The following boundaries are useful and should be evolved rather than replaced without cause:
 
-```text
-startTravel
-  -> ActionResult
-  -> travel.started event
-
-advanceTravel
-  -> state transition
-  -> travel.arrived event
-```
-
-During 0.5, travel should become a consumer of the canonical timed-task/world-clock model rather than being used as the model every other activity must copy.
-
-## Existing systems to preserve
-
-The following foundations are already useful and should be extended rather than replaced without cause:
-
-- canvas-first text UI and command compatibility;
-- local account/character persistence;
-- ordered migrations;
-- places, coordinates, atlas and movement;
-- POI discovery and interaction;
-- inventory containers and item normalization;
-- equipment storage/equip/unequip flow;
-- shops and basic economy transactions;
-- battle state, rewards and deterministic RNG seams;
-- character-owned skill values;
+- deterministic world time, timed tasks, activity advancement, and interrupts;
 - ActionResult and semantic-event contracts;
-- validation and Node test harness;
-- benchmark/check pipeline.
+- projects, resource provenance, ecology, gathering, production, and work mastery;
+- original-world places/localities, acquired map knowledge, routes, and transport;
+- canonical inventory/container/equipment/tool ownership;
+- commitments and relationships as separate authorities;
+- authored NPC availability evaluated from fictional time;
+- persistent NPC-backed companions and separate party/recovery authority;
+- semantic DOM browser UI with presentation/view models kept non-authoritative;
+- validation, Node test harness, and Benchmark 1.
 
-Their formulas/content depth may be provisional even when their architectural boundaries are useful.
+## Current cleanup checkpoint
 
-## 0.4 stabilization constraints
+Product `0.8.600.2` removes the active old-save compatibility layer, inherited `mogHouse`/`mog*` canonical home identifiers, obsolete `highContrast` intent generation, and the dead UI transport cargo payload. It advances Account Save to 5, Game State to 6, and Data to 37 without opening a new feature track.
 
-Before entering 0.5:
-
-- current tests and benchmark must remain green;
-- travel command behavior must remain compatible despite structured action/event internals;
-- current saves supported by registered migrations must still load;
-- no subsystem may require semantic-event prose parsing;
-- world-time work must have a clean insertion point separate from wall-clock scheduling;
-- no new feature should deepen magical main-job switching as the intended final capability model.
-
-Meeting these conditions means the project can proceed into deterministic simulation time without another reset or architectural rewrite.
+Remaining transitional debt should be addressed only when a concrete bounded work order justifies it. In particular, do not turn compatibility cleanup into an unbounded rewrite of legacy research datasets or the entire command adapter.
