@@ -4,10 +4,10 @@ These repository-level gates supplement the current handoff and focused design a
 
 ## Before implementation
 
-- Confirm current `main` and the current handoff.
-- Identify the authoritative state owner and the production caller for the requested behavior.
-- Inspect focused tests and nearby persistence/runtime/UI contracts that may be affected.
-- Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` when the change affects repeated runtime activity, lifecycle ownership, responsiveness, or long-session stability.
+- Confirm current `main` and read `docs/THREAD_HANDOFF.md`.
+- Identify the authoritative state owner and production caller for the requested behavior.
+- Inspect focused tests and nearby persistence/runtime/UI contracts.
+- Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for lifecycle- or performance-sensitive work.
 
 ## Validation
 
@@ -21,37 +21,66 @@ npm run hardening
 npm run check
 ```
 
-The hosted `Check` gate runs on Node 24 LTS. `package.json` requires Node `>=24`. The workflow uses current supported GitHub Actions majors and includes cancellation plus a bounded job timeout.
+Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report only checks that actually ran. Documentation-only synchronization after a frozen green runtime does not create a new runtime checkpoint.
 
-`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt and guards the exact direct timed-task owner set plus removal of runtime legacy active-travel reconstruction.
-
-Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only synchronization does not create a new runtime validation checkpoint.
+`tests/architectureDebtGuard.test.js` protects selected compatibility and lifecycle seams, including the exact direct timed-task owner set and the removal of runtime legacy active-travel reconstruction.
 
 ## Persistence
 
 Current mode is **pre-alpha current-schema only**.
 
-- Account/session payloads must match the current Account Save contract exactly.
-- Character payloads must match the current Game State version and contain the complete required persisted structure before revival/reference relinking.
-- Raw current-schema validation must run before runtime `ensure*` helpers can normalize state.
-- Current Game State 6 raw validation now composes the declared domain validators for timed tasks, active travel, projects, commitments, relationships, resource opportunities, ecology, party, and ability runtime state.
+- Account/session payloads must match Account Save 5 exactly.
+- Character payloads must match Game State 6 and contain the complete required persisted structure before reference revival.
+- Raw validation runs before runtime `ensure*` helpers may normalize state.
+- Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
 - Active project/work/travel/timed-ability/resource-recovery task links must reference consistent active-or-just-completed persisted tasks until owner reconciliation.
-- Missing, malformed, mismatched, or legacy-shaped required state is rejected rather than reconstructed.
-- Incompatible or incomplete pre-alpha saves are rejected rather than lazily reconstructed or migrated by default.
-- A future migration is deliberate engineering work only when explicitly required or independently useful; the generic migration utility may remain without making migration automatic.
-- Any change to current persisted meaning requires a deliberate Game State/Account Save version decision and representative current save/load validation.
+- A future compatibility migration is deliberate work only when explicitly required or independently useful.
+- Tightening enforcement of an existing current-schema invariant does not alone require a schema bump; changing persisted shape or meaning does.
 
-When considering another raw validator, first classify the state:
+### Current raw Game State 6 validation
+
+The current boundary validates these required persisted families before revival:
+
+```text
+world time
+simulation control
+timed tasks
+active Travel State 2
+projects
+commitments
+relationships
+resource opportunities
+ecology
+party
+ability runtime
+semantic events
+player capability registry
+player inventory/container state
+```
+
+`work` is a special classified case: **absence remains valid construction convenience**, but if `state.work` is persisted it must be an object satisfying `validateWorkState()` before runtime access.
+
+The following remain deliberately outside raw validation:
+
+- broad `validatePlayer()` because it mixes persisted invariants with post-revival object identity and derived combat/profile checks;
+- flat `player.inventory` alias/reference identity, which is restored during revival;
+- atlas/POI discovery tightening until a dedicated authority decision resolves its validation and timestamp semantics.
+
+### State-classification rule
+
+Before adding another raw validator, classify the state first:
 
 1. **persistent required authority** — validate before revival;
-2. **derived/transient** — recompute freely;
-3. **construction convenience** — initialize in new-state/factory paths, not as implicit load migration.
+2. **derived/transient** — recompute from authoritative inputs;
+3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration.
 
-Do not convert historical lazy-initialization behavior into current save compatibility by accident. Tightening enforcement of an already-declared Game State 6 invariant does not by itself require a schema bump; changing persisted shape or meaning does.
+A fourth practical case is **optional persisted authority**: absence is allowed, but once present the stored value must satisfy its domain contract. The work registry is the current example.
 
-## Current strict-registry evidence
+Historical tests that exercise lazy `ensure*` initialization may remain correct internal construction tests. They do not imply that an incomplete or malformed current Game State 6 save is load-compatible.
 
-The current raw-registry hardening suite includes:
+## Current strict-persistence evidence
+
+Focused raw-boundary regression files include:
 
 ```text
 tests/currentSchemaProjectRegistry.test.js
@@ -59,28 +88,31 @@ tests/currentSchemaContinuityRegistries.test.js
 tests/currentSchemaResourceOpportunities.test.js
 tests/currentSchemaEcologyRegistry.test.js
 tests/currentSchemaCharacterRuntime.test.js
+tests/currentSchemaWorldSimulation.test.js
+tests/currentSchemaPlayerCapabilities.test.js
+tests/currentSchemaInventoryState.test.js
+tests/currentSchemaSemanticEvents.test.js
+tests/currentSchemaWorkRegistry.test.js
 ```
 
-Each family includes positive current save/load evidence and malformed-current-state rejection evidence. Encoded corruptions used by these tests must remain rejected without being silently repaired or rewritten.
+Each newly tightened family has positive non-trivial current save/load evidence and malformed-current-save rejection/no-repair evidence. Preserve that pattern for future persistence hardening.
 
 ## Resource lifecycle
 
-New long-lived runtime resources require a clear owner, creation condition, duplicate-prevention strategy, and cleanup behavior. Repeated scene/view changes, activity transitions, save/load, and pause/resume should not accumulate duplicate resources. See `docs/RESOURCE_LIFECYCLE.md`.
+New long-lived runtime resources require a clear owner, creation condition, duplicate-prevention strategy, and cleanup behavior. Repeated scene/view changes, activity transitions, save/load, and pause/resume must not accumulate duplicate resources. See `docs/RESOURCE_LIFECYCLE.md`.
 
-For timed tasks specifically, a new direct production task creator must define its durable consequence, exactly-once reconciliation point, and terminal release responsibility. The architecture guard currently admits only the six audited task-owner modules.
+A new direct production timed-task creator must define its durable consequence, exactly-once reconciliation point, and terminal release responsibility. The architecture guard currently admits only the six audited task-owner modules.
 
 ## Performance and long-session stability
 
-Use `docs/PERFORMANCE_BUDGET.md`. Benchmark 3 and repeated sampling are required evidence for performance-sensitive work. Do not invent hard thresholds before a repeatable baseline is measured and accepted.
-
-Lifecycle-sensitive work should preserve the deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
+Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
 ## UI and adapter boundaries
 
-The semantic DOM shell is the active player interface. UI work should preserve keyboard usability, acquired-knowledge map privacy, sensible focus/navigation behavior, and separation of authoritative game state from presentation.
+The semantic DOM shell is the active player interface. UI work must preserve keyboard usability, acquired-knowledge map privacy, sensible focus/navigation behavior, and separation of authoritative game state from presentation.
 
-Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`, and `display`; do not restore `.message`/`.reason` compatibility aliases. Command and UI adapters may render semantic results, but they must not become domain authorities.
+Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`, and `display`; do not restore `.message`/`.reason` compatibility aliases or prose parsing as domain logic.
 
 ## Definition of done
 
-A bounded implementation is complete when the requested production behavior is coherent, relevant validation actually ran or limitations are explicitly reported, persistence and lifecycle contracts are preserved, performance evidence is collected when material, architecture-debt guardrails remain green, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changed.
+A bounded implementation is complete when production behavior is coherent, relevant validation actually ran or limitations are reported, persistence/lifecycle contracts are preserved, performance evidence is collected when material, architecture guards remain green, deliberate version decisions are recorded, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changes.
