@@ -276,7 +276,7 @@ function createPartyModel(state) {
         });
         const membershipAction = active
             ? directAction(`party:${companion.id}:leave`, 'Part ways here', 'party.leave', { companionId: companion.id }, 'social')
-            : companion.locationId === state.currentPlaceId
+            : companion.locationId === state.currentPlaceId && companion.resources.hp > 0
                 ? directAction(`party:${companion.id}:join`, 'Travel together', 'party.join', { companionId: companion.id }, 'social')
                 : null;
         if (membershipAction) actions.push(membershipAction);
