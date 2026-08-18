@@ -120,7 +120,8 @@ test('active resource recovery preserves its task and persisted outcome through 
     assert.equal(started.ok, true);
     const taskId = started.data.task.id;
     const durationSeconds = started.data.task.durationSeconds;
-    const persistedRolls = structuredClone(started.data.action.outcomeRolls);
+    const startedAction = started.data.opportunity.actions.find((action) => action.id === 'skin');
+    const persistedRolls = structuredClone(startedAction.outcomeRolls);
 
     state = saveAndReload(state);
     const loadedOpportunity = state.resourceOpportunities.records.find((record) => record.id === opportunityId);
@@ -132,7 +133,12 @@ test('active resource recovery preserves its task and persisted outcome through 
     advanceWorldTime(state, durationSeconds, { source: 'test.active-resource-matrix' });
     const completed = reconcileResourceRecoveries(state, { rng: () => 1 });
     assert.equal(completed.length, 1);
-    assert.equal(completed[0].taskId, taskId);
+    assert.equal(completed[0].opportunityId, opportunityId);
+    assert.equal(completed[0].actionId, 'skin');
+    const completedOpportunity = state.resourceOpportunities.records.find((record) => record.id === opportunityId);
+    const completedAction = completedOpportunity.actions.find((action) => action.id === 'skin');
+    assert.equal(completedAction.taskId, taskId, 'resource action retains historical correlation id');
+    assert.deepEqual(completedAction.outcomeRolls, persistedRolls, 'resolution uses the persisted outcome rolls');
     assert.equal(findTimedTask(state, taskId), null);
     assert.equal(listTimedTasks(state).length, 0);
 
