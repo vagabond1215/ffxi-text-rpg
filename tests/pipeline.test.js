@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.11');
+    assert.equal(PRODUCT_VERSION, '0.8.600.12');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 6);
     assert.equal(VERSION.data, 37);
-    assert.equal(VERSION.benchmark, 2);
+    assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'DOM Root Ownership');
+    assert.equal(VERSION.codename, 'Warm Benchmark Baseline');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -48,9 +48,9 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.11',
+            versionManifest: '0.8.600.12',
             actionResults: '0.2.0',
-            performanceHarness: '0.2.0',
+            performanceHarness: '0.3.0',
             lifecycleHarness: '0.3.0',
             liveTick: '0.2.1',
             domRoot: '0.1.0',
@@ -68,15 +68,15 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.11/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.12/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
-    assert.match(describeVersion(), /Benchmark: 2/);
-    assert.match(describeVersion(), /Codename: DOM Root Ownership/);
+    assert.match(describeVersion(), /Benchmark: 3/);
+    assert.match(describeVersion(), /Codename: Warm Benchmark Baseline/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /performanceHarness: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /performanceHarness: 0\.3\.0/);
     assert.match(describeSystemVersions(), /lifecycleHarness: 0\.3\.0/);
     assert.match(describeSystemVersions(), /liveTick: 0\.2\.1/);
     assert.match(describeSystemVersions(), /domRoot: 0\.1\.0/);

@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { BENCHMARK_DEFINITIONS } from '../scripts/benchmarkSuite.js';
+import {
+    BENCHMARK_DEFINITIONS,
+    BENCHMARK_WARMUP_RATIO,
+    runBenchmarkDefinition,
+} from '../scripts/benchmarkSuite.js';
 
 function benchmarkByName(fragment) {
     const definition = BENCHMARK_DEFINITIONS.find((candidate) => candidate.name.includes(fragment));
@@ -50,4 +54,30 @@ test('basic-attack benchmark prepares independent battles before timed action ca
 
     assert.equal(battles[0].log.length > firstLogLength, true);
     assert.equal(battles[1].log.length > secondLogLength, true);
+});
+
+test('benchmark runner warms a separate setup context before measuring reported iterations', () => {
+    const setupIterations = [];
+    const actionCounts = [];
+    const definition = {
+        name: 'protocol fixture',
+        iterations: 20,
+        setup: ({ iterations }) => {
+            const slot = setupIterations.length;
+            setupIterations.push(iterations);
+            actionCounts.push(0);
+            return { slot };
+        },
+        action: (context) => {
+            actionCounts[context.slot] += 1;
+        },
+    };
+
+    const result = runBenchmarkDefinition(definition);
+
+    assert.equal(BENCHMARK_WARMUP_RATIO, 0.1);
+    assert.deepEqual(setupIterations, [2, 20]);
+    assert.deepEqual(actionCounts, [2, 20]);
+    assert.equal(result.warmupIterations, 2);
+    assert.equal(result.iterations, 20);
 });

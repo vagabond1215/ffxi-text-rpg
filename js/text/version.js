@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.11';
+export const PRODUCT_VERSION = '0.8.600.12';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -7,18 +7,18 @@ export const VERSION = Object.freeze({
     accountSave: 5,
     gameState: 6,
     data: 37,
-    benchmark: 2,
-    codename: 'DOM Root Ownership',
+    benchmark: 3,
+    codename: 'Warm Benchmark Baseline',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.11',
+    versionManifest: '0.8.600.12',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
-    performanceHarness: '0.2.0',
+    performanceHarness: '0.3.0',
     lifecycleHarness: '0.3.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
