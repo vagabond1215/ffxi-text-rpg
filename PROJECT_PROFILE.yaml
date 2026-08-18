@@ -28,10 +28,17 @@ git:
 validation:
   tests: npm test
   benchmark: npm run benchmark
+  benchmark_sample: npm run benchmark:sample
+  hardening: npm run hardening
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
   architecture_debt_guard: tests/architectureDebtGuard.test.js
+  long_session_guard: tests/longSessionLifecycle.test.js
+  lifecycle_guards:
+    - tests/tickLifecycle.test.js
+    - tests/domRootLifecycle.test.js
+  benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
   - persistent-state
@@ -44,8 +51,10 @@ quality:
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
-  long_session_stability: required-design-consideration
-  hard_performance_thresholds: baseline-required-first
+  long_session_stability: deterministic-smoke-required-for-lifecycle-sensitive-work
+  benchmark_protocol: 3
+  benchmark_warmup_ratio: 0.1
+  hard_performance_thresholds: not-yet-accepted
 constraints:
   - use current repository authority rather than conversation memory
   - preserve the original-world canon and legacy/reference boundary
@@ -55,4 +64,5 @@ constraints:
   - keep the generic migration substrate available for future deliberate migrations without making migration automatic
   - keep carried inventory/container facts under inventory authority rather than duplicating container knowledge in consumers
   - do not reintroduce retired FFXI command runtime compatibility
+  - do not prune terminal timed-task history until domain owners define safe release semantics
   - roadmap sequencing does not authorize unbounded implementation
