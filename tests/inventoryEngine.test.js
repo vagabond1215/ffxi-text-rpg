@@ -11,7 +11,6 @@ import {
     getContainerCapacity,
     isContainerAccessible,
     setHomeAccess,
-    setMogHouseAccess,
     transferItemBetweenContainers,
 } from '../js/text/systems/inventoryEngine.js';
 import { validateGameState } from '../js/text/systems/validation.js';
@@ -22,7 +21,7 @@ test('player starts with structured inventory containers', () => {
     const inventoryState = state.player.inventoryState;
 
     assert.ok(inventoryState.containers.inventory);
-    assert.ok(inventoryState.containers.mogSafe);
+    assert.ok(inventoryState.containers.homeSafe);
     assert.ok(inventoryState.containers.storage);
     assert.ok(inventoryState.containers.wardrobe1);
     assert.equal(state.player.inventory, inventoryState.containers.inventory.items);
@@ -34,16 +33,11 @@ test('home storage accessibility follows context', () => {
     const inventoryState = state.player.inventoryState;
 
     assert.equal(isContainerAccessible(inventoryState, 'storage'), false);
-    assert.equal(isContainerAccessible(inventoryState, 'mogSafe'), false);
+    assert.equal(isContainerAccessible(inventoryState, 'homeSafe'), false);
     setHomeAccess(state, true);
+    assert.equal(inventoryState.home.isAtHome, true);
     assert.equal(isContainerAccessible(inventoryState, 'storage'), true);
-    assert.equal(isContainerAccessible(inventoryState, 'mogSafe'), true);
-});
-
-test('legacy home-access API remains a bounded compatibility alias', () => {
-    const state = createInitialState();
-    assert.equal(setMogHouseAccess(state, true).ok, true);
-    assert.equal(state.player.inventoryState.mogHouse.isInMogHouse, true);
+    assert.equal(isContainerAccessible(inventoryState, 'homeSafe'), true);
 });
 
 test('furniture controls storage capacity', () => {
@@ -57,7 +51,7 @@ test('portable containers and wardrobes follow unlock and item-kind rules', () =
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
 
-    assert.equal(isContainerAccessible(inventoryState, 'mogSatchel'), false);
+    assert.equal(isContainerAccessible(inventoryState, 'fieldSatchel'), false);
     assert.equal(isContainerAccessible(inventoryState, 'wardrobe1'), true);
     assert.equal(canStoreItemInContainer(inventoryState, 'wardrobe1', { id: 'potion', name: 'Potion', kind: 'consumable' }).ok, false);
     assert.equal(canStoreItemInContainer(inventoryState, 'wardrobe1', { id: 'bronze-sword', name: 'Bronze Sword', kind: 'equipment' }).ok, true);
@@ -67,10 +61,10 @@ test('addItemToContainer respects access and capacity rules', () => {
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
 
-    assert.equal(addItemToContainer(inventoryState, 'mogSafe', { id: 'potion', name: 'Potion', kind: 'consumable' }).ok, false);
+    assert.equal(addItemToContainer(inventoryState, 'homeSafe', { id: 'potion', name: 'Potion', kind: 'consumable' }).ok, false);
     setHomeAccess(state, true);
-    assert.equal(addItemToContainer(inventoryState, 'mogSafe', { id: 'potion', name: 'Potion', kind: 'consumable' }).ok, true);
-    assert.match(describeContainerContents(state, 'mogSafe'), /Potion/);
+    assert.equal(addItemToContainer(inventoryState, 'homeSafe', { id: 'potion', name: 'Potion', kind: 'consumable' }).ok, true);
+    assert.match(describeContainerContents(state, 'homeSafe'), /Potion/);
 });
 
 test('transferItemBetweenContainers enforces home storage access', () => {
@@ -78,13 +72,13 @@ test('transferItemBetweenContainers enforces home storage access', () => {
     const inventoryState = state.player.inventoryState;
     addItemToContainer(inventoryState, 'inventory', { id: 'potion', name: 'Potion', kind: 'consumable' });
 
-    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'mogSafe'), /Home Safe is not accessible/);
+    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'homeSafe'), /Home Safe is not accessible/);
     assert.equal(inventoryState.containers.inventory.items.length, 1);
 
     setHomeAccess(state, true);
-    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'mogSafe'), /Transferred Potion/);
+    assert.match(transferItemBetweenContainers(state, 'Potion', 'inventory', 'homeSafe'), /Transferred Potion/);
     assert.equal(inventoryState.containers.inventory.items.length, 0);
-    assert.equal(inventoryState.containers.mogSafe.items.length, 1);
+    assert.equal(inventoryState.containers.homeSafe.items.length, 1);
 });
 
 test('transferItemBetweenContainers supports equipment transfer to wardrobe anywhere', () => {
@@ -121,7 +115,7 @@ test('router exposes container transfer command', () => {
     assert.match(router('container wardrobe1'), /Bronze Sword/);
 });
 
-test('router legacy home command exposes canonical storage wording', () => {
+test('router home command exposes canonical storage wording', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, {
         saveGame: () => true,
@@ -131,7 +125,7 @@ test('router legacy home command exposes canonical storage wording', () => {
 
     assert.match(router('containers'), /Inventory Containers/);
     assert.match(router('container storage'), /Furnishing Storage/);
-    assert.match(router('moghouse enter'), /Home-storage context: entered/);
+    assert.match(router('home enter'), /Home-storage context: entered/);
     assert.match(router('containers'), /Home Safe.*accessible/s);
-    assert.doesNotMatch(router('containers'), /access=mogHouse/);
+    assert.doesNotMatch(router('containers'), /mogHouse/);
 });
