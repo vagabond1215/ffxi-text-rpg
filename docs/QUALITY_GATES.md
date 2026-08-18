@@ -19,11 +19,21 @@ npm run benchmark
 npm run check
 ```
 
-Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only administration changes do not need to pretend that local runtime checks ran.
+The hosted `Check` gate runs on Node 24 LTS. `package.json` requires Node `>=24`. The workflow uses current supported GitHub Actions majors and includes cancellation plus a bounded job timeout.
+
+`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt removed during the `0.8.600.3`–`.7` maintenance train.
+
+Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only administration changes do not need to pretend that runtime checks ran.
 
 ## Persistence
 
-Changes to persisted meaning must preserve supported saves or follow the ordered migration/version protocol. When persistence is affected, validate representative save/load and supported older-state behavior.
+Current mode is **pre-alpha current-schema only**.
+
+- Account/session payloads must match the current Account Save contract exactly.
+- Character payloads must match the current Game State version and contain the complete required persisted structure before revival/reference relinking.
+- Incompatible or incomplete pre-alpha saves are rejected rather than lazily reconstructed or migrated by default.
+- A future migration is deliberate engineering work only when explicitly required or independently useful; the generic migration utility may remain without making migration automatic.
+- Any change to current persisted meaning requires a deliberate Game State/Account Save version decision and representative current save/load validation.
 
 ## Resource lifecycle
 
@@ -33,10 +43,12 @@ New long-lived runtime resources require a clear owner, creation condition, dupl
 
 Use `docs/PERFORMANCE_BUDGET.md`. The existing benchmark is required evidence for performance-sensitive work. Do not invent hard thresholds before a repeatable baseline is measured and accepted.
 
-## UI
+## UI and adapter boundaries
 
 The semantic DOM shell is the active player interface. UI work should preserve keyboard usability, acquired-knowledge map privacy, sensible focus/navigation behavior, and separation of authoritative game state from presentation.
 
+Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`, and `display`; do not restore `.message`/`.reason` compatibility aliases. Command and UI adapters may render semantic results, but they must not become domain authorities.
+
 ## Definition of done
 
-A bounded implementation is complete when the requested production behavior is coherent, relevant validation actually ran or limitations are explicitly reported, persistence and lifecycle contracts are preserved, performance evidence is collected when material, and `docs/THREAD_HANDOFF.md` is updated when current state or immediate next work changed.
+A bounded implementation is complete when the requested production behavior is coherent, relevant validation actually ran or limitations are explicitly reported, persistence and lifecycle contracts are preserved, performance evidence is collected when material, architecture-debt guardrails remain green, and `docs/THREAD_HANDOFF.md` is updated when current state or immediate next work changed.
