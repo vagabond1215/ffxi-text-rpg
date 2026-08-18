@@ -48,7 +48,7 @@ export const DATABASES = Object.freeze({
     lootTables: database('lootTables', 'Transitional candidate output pools consumed by provenance-aware resource opportunities.', 'seeded-transitional', '0.1.0'),
     leveling: database('leveling', 'Character growth, EXP curves, discipline training records, proficiency training caps, and later advanced progression.', 'seeded', '0.6.0'),
     companions: database('companions', 'Persistent NPC-backed companion definitions, recruitment conditions, relationship dimensions, voiced field approaches, tactical roles, and combat integration.', 'implemented', '0.2.0'),
-    party: database('party', 'Persistent recruited-companion membership, active-party capacity, location continuity, field preparation, and battle synchronization.', 'implemented', '0.2.0'),
+    party: database('party', 'Persistent recruited-companion membership, active-party capacity, location continuity, safe separation and reunion, field preparation, and battle synchronization.', 'implemented', '0.3.0'),
     crafting: database('crafting', 'Canonical processing/crafting/cooking/salvage processes, tools/stations, timed work, proficiency, and provenance-bearing transformations.', 'implemented', '0.2.0'),
     mounts: database('mounts', 'Mount unlocks, travel modifiers, restrictions, and place/route permission rules.', 'planned', '0.0.0'),
     statusEffects: database('statusEffects', 'Buffs, debuffs, food, stances, ongoing effects, regeneration, and KO states.', 'seeded', '0.1.0'),
