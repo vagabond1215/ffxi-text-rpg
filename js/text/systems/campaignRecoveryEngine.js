@@ -9,7 +9,7 @@ import { calculateCombatProfile } from './statEngine.js';
 import { listTimedTasks, reconcileTimedTasks, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const CAMPAIGN_RECOVERY_VERSION = 1;
+export const CAMPAIGN_RECOVERY_VERSION = 2;
 export const CAMPAIGN_RECOVERY_KINDS = Object.freeze({
     FIELD: 'recovery.field',
     SETTLEMENT: 'recovery.settlement',
@@ -32,11 +32,13 @@ export function createCampaignRecoveryModel(state) {
     const mp = Math.max(0, Number(state.player.resources?.mp) || 0);
     const maxHp = profile.resources.maxHp;
     const maxMp = profile.resources.maxMp;
-    const injured = hp < maxHp || mp < maxMp;
+    const playerInjured = hp < maxHp || mp < maxMp;
     const mode = activeTask?.kind
         ?? (defeated ? CAMPAIGN_RECOVERY_KINDS.DEFEAT
             : isSettlementLocality(state.currentPlaceId) ? CAMPAIGN_RECOVERY_KINDS.SETTLEMENT
                 : CAMPAIGN_RECOVERY_KINDS.FIELD);
+    const companionRecovery = createRecoverableCompanionModel(state, mode);
+    const injured = playerInjured || companionRecovery.injuredCount > 0;
     const blockingTask = activeTask ? null : getBlockingHandsOnTask(state);
     const blockedReason = state.activeBattle?.phase === 'active'
         ? 'Finish the active battle before recovering.'
@@ -45,7 +47,7 @@ export function createCampaignRecoveryModel(state) {
             : blockingTask
                 ? `${blockingTask.label} is already in progress.`
                 : !defeated && !injured
-                    ? 'You are already fully recovered.'
+                    ? 'You and your nearby traveling company are already fully recovered.'
                     : null;
 
     return Object.freeze({
@@ -55,6 +57,9 @@ export function createCampaignRecoveryModel(state) {
         taskId: activeTask?.id ?? null,
         defeated,
         injured,
+        playerInjured,
+        injuredCompanionCount: companionRecovery.injuredCount,
+        companions: Object.freeze(companionRecovery.entries),
         available: !activeTask && !blockedReason,
         blockedReason,
         durationSeconds: activeTask?.durationSeconds ?? CAMPAIGN_RECOVERY_DURATIONS[mode],
@@ -96,6 +101,7 @@ export function startCampaignRecovery(state) {
         fromPlaceId: state.currentPlaceId ?? null,
         destinationPlaceId,
         durationSeconds: CAMPAIGN_RECOVERY_DURATIONS[kind],
+        injuredCompanionCount: model.injuredCompanionCount,
     }, { source: 'campaignRecoveryEngine' });
 
     return actionSuccess({
@@ -131,10 +137,11 @@ export function isCampaignRecoveryTask(task) {
 function resolveCampaignRecoveryTask(state, task) {
     const beforePlaceId = state.currentPlaceId ?? null;
     const playerBefore = { ...state.player.resources };
+    const companionsBefore = snapshotRecoverableCompanions(state, task.kind);
     if (task.kind === CAMPAIGN_RECOVERY_KINDS.DEFEAT) {
         resolveDefeatRecovery(state, task);
     } else if (task.kind === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) {
-        restoreParty(state, { full: true });
+        restoreParty(state, { full: true }, { includeLocalInactive: true });
     } else {
         restoreParty(state, { missingRatio: 0.4 });
     }
@@ -147,6 +154,7 @@ function resolveCampaignRecoveryTask(state, task) {
         state.activeBattle.recoveryTaskId = task.id;
     }
 
+    const companionsAfter = snapshotRecoverableCompanions(state, task.kind);
     const event = emitSemanticEvent(state, 'recovery.completed', {
         taskId: task.id,
         kind: task.kind,
@@ -155,6 +163,8 @@ function resolveCampaignRecoveryTask(state, task) {
         toPlaceId: state.currentPlaceId ?? null,
         playerBefore,
         playerAfter: { ...state.player.resources },
+        companionsBefore,
+        companionsAfter,
     }, { source: 'campaignRecoveryEngine' });
 
     return Object.freeze({
@@ -165,6 +175,8 @@ function resolveCampaignRecoveryTask(state, task) {
         toPlaceId: state.currentPlaceId ?? null,
         playerBefore: Object.freeze(playerBefore),
         playerAfter: Object.freeze({ ...state.player.resources }),
+        companionsBefore: Object.freeze(companionsBefore),
+        companionsAfter: Object.freeze(companionsAfter),
         eventId: event.id,
     });
 }
@@ -181,10 +193,16 @@ function resolveDefeatRecovery(state, task) {
     restoreParty(state, { hpRatio: 0.35, mpRatio: 0.5, resetTp: true });
 }
 
-function restoreParty(state, options) {
+function restoreParty(state, options, scope = {}) {
     restoreEntity(state.player, options);
     const party = ensurePartyState(state);
-    for (const companionId of party.activeCompanionIds) {
+    const companionIds = new Set(party.activeCompanionIds);
+    if (scope.includeLocalInactive) {
+        for (const companion of Object.values(party.companions)) {
+            if (companion.locationId === state.currentPlaceId) companionIds.add(companion.id);
+        }
+    }
+    for (const companionId of companionIds) {
         const companion = party.companions[companionId];
         if (companion) restoreEntity(companion, options);
     }
@@ -211,6 +229,50 @@ function restoreEntity(entity, options = {}) {
     if (options.resetTp) entity.resources.tp = 0;
 }
 
+function createRecoverableCompanionModel(state, mode) {
+    const companions = recoverableCompanions(state, mode);
+    const entries = companions.map((companion) => {
+        const profile = calculateCombatProfile(companion);
+        const hp = Math.max(0, Number(companion.resources?.hp) || 0);
+        const mp = Math.max(0, Number(companion.resources?.mp) || 0);
+        const maxHp = profile.resources.maxHp;
+        const maxMp = profile.resources.maxMp;
+        return Object.freeze({
+            id: companion.id,
+            name: companion.identity?.name ?? companion.id,
+            active: ensurePartyState(state).activeCompanionIds.includes(companion.id),
+            hp,
+            maxHp,
+            mp,
+            maxMp,
+            injured: hp < maxHp || mp < maxMp,
+        });
+    });
+    return {
+        entries,
+        injuredCount: entries.filter((entry) => entry.injured).length,
+    };
+}
+
+function recoverableCompanions(state, mode) {
+    const party = ensurePartyState(state);
+    const companionIds = new Set(party.activeCompanionIds);
+    if (mode === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) {
+        for (const companion of Object.values(party.companions)) {
+            if (companion.locationId === state.currentPlaceId) companionIds.add(companion.id);
+        }
+    }
+    return [...companionIds].map((id) => party.companions[id]).filter(Boolean);
+}
+
+function snapshotRecoverableCompanions(state, mode) {
+    return recoverableCompanions(state, mode).map((companion) => Object.freeze({
+        companionId: companion.id,
+        hp: Math.max(0, Number(companion.resources?.hp) || 0),
+        mp: Math.max(0, Number(companion.resources?.mp) || 0),
+    }));
+}
+
 function isUnrecoveredDefeat(state) {
     return Boolean(state.activeBattle?.phase === 'defeat' && state.activeBattle.recoveryResolved !== true)
         || Math.max(0, Number(state.player?.resources?.hp) || 0) <= 0;
@@ -232,7 +294,7 @@ function recoveryLabel(kind) {
 function recoveryStartedText(kind, durationSeconds) {
     const minutes = Math.floor(durationSeconds / 60);
     if (kind === CAMPAIGN_RECOVERY_KINDS.DEFEAT) return `You are forced back toward safety. Recovering will take ${minutes} minutes before you can set out again.`;
-    if (kind === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) return `You settle in for ${minutes} minutes of safe rest.`;
+    if (kind === CAMPAIGN_RECOVERY_KINDS.SETTLEMENT) return `You settle in for ${minutes} minutes of safe rest. Nearby companions who stay here recover with you.`;
     return `You stop for ${minutes} minutes to bind wounds, drink, and catch your breath before pressing on.`;
 }
 
