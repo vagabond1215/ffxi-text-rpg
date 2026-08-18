@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.8');
+    assert.equal(PRODUCT_VERSION, '0.8.600.9');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 6);
     assert.equal(VERSION.data, 37);
-    assert.equal(VERSION.benchmark, 1);
+    assert.equal(VERSION.benchmark, 2);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Long Session Evidence');
+    assert.equal(VERSION.codename, 'Benchmark Protocol V2');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -46,9 +46,9 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.8',
+            versionManifest: '0.8.600.9',
             actionResults: '0.2.0',
-            performanceHarness: '0.1.0',
+            performanceHarness: '0.2.0',
             lifecycleHarness: '0.1.0',
             commandShell: '0.5.1',
             slashCommands: '0.5.0',
@@ -64,14 +64,15 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.8/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.9/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
-    assert.match(describeVersion(), /Codename: Long Session Evidence/);
+    assert.match(describeVersion(), /Benchmark: 2/);
+    assert.match(describeVersion(), /Codename: Benchmark Protocol V2/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /performanceHarness: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /performanceHarness: 0\.2\.0/);
     assert.match(describeSystemVersions(), /lifecycleHarness: 0\.1\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });

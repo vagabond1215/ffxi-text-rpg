@@ -11,6 +11,7 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
     Object.freeze({
         name: 'create 1,000 player combat profiles',
         iterations: 1000,
+        setup: null,
         action: () => {
             const player = createPlayerCharacter({ level: 30, raceId: 'human', mainJobId: 'vanguard' });
             calculateCombatProfile(player);
@@ -19,6 +20,7 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
     Object.freeze({
         name: 'create 1,000 enemy combat profiles',
         iterations: 1000,
+        setup: null,
         action: () => {
             const enemy = createEnemy({ level: 30, family: 'beast' });
             calculateCombatProfile(enemy);
@@ -27,29 +29,34 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
     Object.freeze({
         name: 'resolve 1,000 basic attacks',
         iterations: 1000,
-        action: () => {
-            const player = createPlayerCharacter({ id: 'bench-player', level: 10 });
-            const enemy = createEnemy({ id: 'bench-enemy', level: 10 });
-            const battle = createBattleState({ player, enemies: [enemy] });
-            performBasicAttack(battle, 'bench-player', 'bench-enemy');
+        setup: ({ iterations }) => Array.from({ length: iterations }, (_, index) => {
+            const player = createPlayerCharacter({ id: `bench-player-${index}`, level: 10 });
+            const enemy = createEnemy({ id: `bench-enemy-${index}`, level: 10 });
+            return createBattleState({ player, enemies: [enemy] });
+        }),
+        action: (battles, index) => {
+            performBasicAttack(battles[index], `bench-player-${index}`, `bench-enemy-${index}`);
         },
     }),
     Object.freeze({
-        name: 'run 10,000 tick dispatches with 5 subscribers',
+        name: 'dispatch 10,000 ticks to 5 steady subscribers',
         iterations: 10000,
-        action: () => {
+        setup: () => {
             const tickEngine = createTickEngine({ tickLengthMs: 1000 });
             for (let index = 0; index < 5; index += 1) {
                 tickEngine.subscribe(`subscriber-${index}`, () => {});
             }
+            return tickEngine;
+        },
+        action: (tickEngine) => {
             tickEngine.tick();
         },
     }),
     Object.freeze({
         name: 'resolve 10,000 direct travel route lookups',
         iterations: 10000,
-        action: () => {
-            const state = createInitialState();
+        setup: () => createInitialState(),
+        action: (state) => {
             findTravelRoute(state, 'West Elderwood');
         },
     }),
@@ -60,9 +67,12 @@ export function runBenchmarkSuite() {
 }
 
 function benchmark(definition) {
+    const context = typeof definition.setup === 'function'
+        ? definition.setup({ iterations: definition.iterations })
+        : undefined;
     const start = performance.now();
     for (let index = 0; index < definition.iterations; index += 1) {
-        definition.action(index);
+        definition.action(context, index);
     }
     const totalMs = performance.now() - start;
     return Object.freeze({
