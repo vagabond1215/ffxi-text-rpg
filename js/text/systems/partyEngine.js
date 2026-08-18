@@ -7,6 +7,7 @@ import {
 } from '../data/companions.js';
 import { createNpc } from '../entities/entityFactory.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
+import { isSettlementLocality } from './localityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
@@ -145,6 +146,13 @@ export function leaveCompanion(state, companionQuery) {
     const index = party.activeCompanionIds.indexOf(companion.id);
     if (index < 0) return blocked('party.not-active', { companionId: companion.id }, `${companion.identity.name} is not traveling with you now.`);
     if (state.activeBattle?.phase === 'active') return blocked('party.in-combat', { companionId: companion.id }, 'Part ways only after the fighting is done.');
+    if (Math.max(0, Number(companion.resources?.hp) || 0) <= 0 && !isSettlementLocality(state.currentPlaceId)) {
+        return blocked(
+            'party.downed-in-danger',
+            { companionId: companion.id, placeId: state.currentPlaceId },
+            `${companion.identity.name} is too badly hurt to be left behind here. Reach a safe settlement or recover together first.`,
+        );
+    }
 
     party.activeCompanionIds.splice(index, 1);
     companion.locationId = state.currentPlaceId;
