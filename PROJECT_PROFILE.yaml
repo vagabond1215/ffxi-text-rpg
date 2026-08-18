@@ -43,6 +43,12 @@ validation:
     - tests/currentSchemaTaskLinks.test.js
     - tests/currentSchemaTaskRegistry.test.js
     - tests/activeTaskPersistenceMatrix.test.js
+  current_schema_registry_guards:
+    - tests/currentSchemaProjectRegistry.test.js
+    - tests/currentSchemaContinuityRegistries.test.js
+    - tests/currentSchemaResourceOpportunities.test.js
+    - tests/currentSchemaEcologyRegistry.test.js
+    - tests/currentSchemaCharacterRuntime.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -55,6 +61,16 @@ quality:
   current_game_state_must_be_complete_before_revival: true
   raw_current_schema_validation_before_runtime_normalization: true
   active_task_links_must_be_persisted_and_consistent: true
+  required_domain_registries_validate_before_revival:
+    - timed-tasks
+    - active-travel
+    - projects
+    - commitments
+    - relationships
+    - resource-opportunities
+    - ecology
+    - party
+    - ability-runtime
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
@@ -73,5 +89,6 @@ constraints:
   - do not reintroduce retired FFXI command runtime compatibility
   - direct production timed-task creation requires an explicit domain owner, exactly-once reconciliation, and terminal release responsibility
   - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
-  - tighten current-schema registry validation one bounded authority family at a time after classifying persistent versus derived/construction state
+  - raw Game State 6 validation must reject malformed required domain registries before runtime ensure helpers can normalize them
+  - classify remaining state as persistent authority, derived/transient, or construction convenience before adding another raw validator
   - roadmap sequencing does not authorize unbounded implementation
