@@ -21,6 +21,7 @@ import { decoratePlayerOpportunityModel } from '../systems/playerContinuityEngin
 import { createPlayerExperienceModel } from '../systems/playerExperienceEngine.js';
 import { createPlayerInformationModel } from '../systems/playerInformationEngine.js';
 import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine.js';
+import { decoratePlayerSocialScheduleModel } from '../systems/playerSocialScheduleEngine.js';
 import { createSettlementServiceBoard } from '../systems/settlementServiceBoardEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
@@ -53,7 +54,10 @@ export function createGameViewModel(state, uiState = {}) {
     const spellbook = createSpellbookModel(state);
     const party = createPartyModel(state);
     const guidance = createPlayerExperienceModel(state);
-    const opportunities = decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state)));
+    const opportunities = decoratePlayerSocialScheduleModel(
+        state,
+        decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+    );
     const information = createPlayerInformationModel(state, { query: uiState.informationQuery ?? '' });
     const transportDesk = navigationMode === 'locality'
         ? createTransportServiceBoard(state)
@@ -139,7 +143,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
         const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
-        const opportunityModel = opportunities ?? decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state)));
+        const opportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
+            state,
+            decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+        );
         const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
         const recommendedAction = recommendedOpportunity?.action
             ? Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category })
@@ -164,6 +171,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
         for (const poi of points) {
             if (actions.length >= 5) break;
+            if (poi.availability?.scheduled && !poi.availability.available) continue;
             const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
             actions.push(Object.freeze({
                 id: `context:locality-poi:${poi.id}:${action}`,
@@ -179,7 +187,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
     const points = nearby ?? getContextualPois(state).map(toNearbyRecord);
     const actions = [...recruitActions];
-    const opportunityModel = opportunities ?? decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state)));
+    const opportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
+        state,
+        decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+    );
     const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
     if (recommendedOpportunity?.action) actions.push(Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category }));
     for (const poi of points) {
@@ -371,6 +382,7 @@ function toNearbyRecord(poi) {
         type: poi.type,
         notes: poi.notes,
         actions: Object.freeze([...(poi.actions ?? [])]),
+        availability: poi.availability ? Object.freeze({ ...poi.availability }) : null,
     });
 }
 
