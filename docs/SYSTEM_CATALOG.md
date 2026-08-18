@@ -1,202 +1,155 @@
 # System Catalog
 
-This catalog tracks major systems against the current roadmap. It distinguishes **schema existence** from **real player-facing breadth** so a toy dataset is not mistaken for a completed subsystem.
+This catalog describes the **current** Hearth & Horizon runtime. Historical roadmap documents may describe earlier scaffolds; this file must not preserve obsolete “planned” labels after a system becomes real.
 
 ## Status legend
 
 | Status | Meaning |
 | --- | --- |
 | `planned` | Known requirement, no canonical runtime implementation. |
-| `seeded` | Schema or small seed dataset exists. |
-| `integrated` | Runtime reads/uses the system. |
-| `playable` | A player can meaningfully interact with it end-to-end. |
-| `scaled` | Proven against representative content volume and cross-system references. |
-| `balanced` | Tuned through sustained gameplay/benchmarking at intended scale. |
+| `seeded` | Canonical schema or bounded content exists, but player-facing breadth is limited. |
+| `integrated` | Runtime consumes the authority across real system paths. |
+| `playable` | A player can exercise a meaningful end-to-end loop. |
+| `scaled` | Representative larger-volume/content validation exists. |
+| `balanced` | Tuned through sustained gameplay/accepted performance evidence at intended scale. |
 
-## Core simulation and architecture
+No system is marked `balanced` merely because tests are green.
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Text command shell/parser | integrated | complete foundation | Active command adapter. |
-| Canvas/UI intent layer | integrated | ongoing | UI and command paths should call shared gameplay actions. |
-| Structured action results | integrated | 0.4 complete | Semantic outcomes separated from prose. |
-| Semantic events | integrated | 0.4 complete | Bounded structured event history. |
-| Ordered save migrations | integrated | 0.4 complete | Required for upcoming stable-ID migration. |
-| Validation framework | integrated | ongoing | Must expand into cross-content validation. |
-| Benchmark harness | seeded | ongoing | Needs broader simulation/content benchmarks. |
-| Canonical world time | integrated | 0.5.100 complete | Deterministic simulation seconds. |
-| Pause/speed control | integrated | 0.5.200 complete | Includes end-of-day preference after 0.5.500. |
-| Canonical timed tasks | integrated | 0.5.300 complete | Generic timed activity substrate. |
-| Simulation interrupts | integrated | 0.5.400 complete | Deterministic advance-until-event foundation. |
-| Day cycle/review | integrated | 0.5.500 complete | Structured day summaries and default auto-pause. |
-| Persistent projects | planned | 0.5.600 | Materials + labor + time + progress + completion. |
+## Core simulation, persistence, and tooling
 
-## World identity, geography, maps, and travel
+| System | Status | Notes |
+| --- | --- | --- |
+| Canonical fictional world time | playable | One deterministic second count drives derived date/time. |
+| Simulation pause/speed control | playable | Wall-clock scheduling requests deterministic fictional-time advancement. |
+| Timed tasks | playable | Shared substrate for work, recovery, projects, travel, and abilities. |
+| Simulation interrupts | playable | Deterministic advance-until-event behavior with priority ordering. |
+| Day cycle/review | playable | Structured end-of-day summaries and pause preference. |
+| Persistent projects | playable | Materials + labor + linked timed task + exactly-once completion. |
+| Semantic events | integrated | Bounded observational history; state remains authoritative. |
+| ActionResult contract | integrated | Canonical `ok/action/code/outcome/data/display`; legacy `.message/.reason` aliases removed. |
+| Current-schema account/character persistence | playable | Account Save 5 / Game State 6, strict current-format load/save. |
+| Current Game State structure gate | integrated | Incomplete Game State 6 is rejected before revival/reference relinking. |
+| Generic ordered migration utility | integrated utility | Available for a future deliberate migration; no active automatic save-migration layer. |
+| Validation framework | integrated | Runtime, persistence, authored-data, and cross-reference validation. |
+| Benchmark harness | integrated | Benchmark 1 covers combat profiles/actions, tick dispatch, route lookup. |
+| Architecture debt guard | integrated | Static tests protect selected removed compatibility seams. |
+| Hosted CI | integrated | Node 24 LTS, `checkout@v7`, `setup-node@v6`, Test + Benchmark. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Original-world canonical IDs/names | planned | 0.5.550 | Must land before high-volume content expansion. |
-| Legacy ID/save migration | planned | 0.5.550 | Replace inherited place/nation/ancestry/discipline IDs safely. |
-| Places database | integrated | 0.5.550 migration then 0.7 scale | Several starter city/wilderness/dungeon records exist but use legacy identity. |
-| Place/route connections | integrated | 0.5.700 expansion | Directed graph exists; should evolve toward roads/routes and natural transitions. |
-| Coordinate/topology movement | integrated | ongoing | Supports grid/topology movement and exits. |
-| Map definitions | integrated | 0.5.550 migration | Map ownership/discovery needs deeper cartography gameplay. |
-| Cartography/map knowledge | seeded | 0.5.700 / 0.7.100 | Discovery exists; partial maps/route confidence/annotations still needed. |
-| Local travel | playable scaffold | 0.5.700 | Existing travel/movement does not yet fully consume canonical time through one route model. |
-| Scheduled caravans | planned | 0.5.700 | Stops, schedules, fares, cargo, risk, interruption. |
-| Ferry/hired transport contract | planned | 0.5.700+ | Reuse generic transport model. |
-| Mount/pack-animal transport | planned | 0.7.200 / 0.8 | Original species/terminology required. |
-| Multi-region sandbox | seeded | 0.7.100 | Three starter clusters exist, but broad inter-regional graph and dense content are missing. |
+## World identity, geography, knowledge, and travel
 
-## Character identity and progression
+| System | Status | Notes |
+| --- | --- | --- |
+| Original-world identity | integrated | Hearth & Horizon powers, ancestries, disciplines, places, NPCs, and player-facing vocabulary are canonical. |
+| Places/routes/maps | playable | Three anchor regions with connected travel/locality/exploration paths. |
+| Safe-locality navigation | playable | Named destinations/actions where topology itself is not the decision. |
+| Wilderness/dungeon exploration | playable | Discovery-relative coordinates/minimap and terrain-sensitive movement. |
+| Acquired map knowledge | playable | Presentation reveals visited/discovered knowledge, not omniscient authored topology. |
+| Direct canonical travel | playable | Uses route authority, timed tasks, fictional time, and arrival events. |
+| Scheduled transport | playable | Deterministic departures, fares, cargo allowance, arrival interrupts. |
+| Carried-load projection | playable | Derived from canonical unlocked portable containers. |
+| Regional content-pack schema/validation | integrated | Cross-pack references, ownership, legacy-boundary checks, generated larger fixture. |
+| High-volume regional content | seeded | Architecture supports breadth; authored world volume is still pre-alpha. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Player entity | integrated | ongoing | Identity/resources/equipment/progression present. |
-| Ancestries | seeded legacy | 0.5.550 | Mechanical slots exist; canonical names/identity migrate next. |
-| Origins/backgrounds | planned | 0.6 / 0.7 opening | Starting circumstances should replace class-only opening emphasis. |
-| Transitional job scaffold | integrated legacy | 0.5.550 then 0.6.200 | Must become original disciplines and later cease being universal ability gate. |
-| EXP/level progression | playable scaffold | 0.6.100 | Current system works but remains transitional. |
-| Character-owned skills | playable scaffold | 0.6.200 | Learned skill storage exists. |
-| Skill caps/ranks | seeded | 0.6.200 | Sparse starter table with placeholder rank math. |
-| Full skill/proficiency registry | planned | 0.6.200 | Must include combat, magic, gathering, crafting, practical/social domains. |
-| Learned capability registry | planned | 0.6.200 | Spells/techniques/recipes/traits/actions owned by character. |
-| Training/mentor/certification | planned | 0.6.200+ | Advanced instruction and recognition. |
-| Advanced long-horizon progression | planned | 0.9+ | Add only after core advancement is compelling. |
+## Character identity, progression, abilities, and equipment
 
-## Stats, combat, magic, and abilities
+| System | Status | Notes |
+| --- | --- | --- |
+| Continuous player entity | playable | Identity/resources/equipment/progression persist as one person. |
+| Original ancestries/origins | playable | Creator has authored original-world options/openings. |
+| Disciplines | playable | Contextual training identities; no magical character replacement. |
+| Character-owned skill progression | playable | Learned values persist independently of active discipline. |
+| Character-owned capability state | playable | Learned capabilities and use requirements are character-owned. |
+| Character stats/progression | playable | Base/lifetime growth and discipline context compose deterministically. |
+| Ability/spell catalog + engine | playable | Learned canonical abilities, timed resolution, resource cost, cooldown/interruption seams. |
+| Equipment eligibility/tool context | playable | Gear, tools, ancestry/discipline legacy requirements where still explicitly bounded. |
+| Equipment/item breadth | seeded | Representative original catalog exists; broad high-level economy still future. |
+| Training/mentor/certification depth | planned | Expand when it creates meaningful capability access decisions. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Primary/resource/derived stat engine | integrated scaffold | 0.6.100 | Mix of researched and simplified values; needs canonical balance pass. |
-| Basic battle state | playable scaffold | 0.6.400 | Hit/damage/TP and victory/defeat exist. |
-| Basic attack | playable | 0.6.400 hardening | Deterministic tests exist. |
-| Weapon techniques | seeded placeholder | 0.6.300–0.6.400 | Current weapon-skill action is simplified and not a full ability catalog. |
-| Magic action | seeded placeholder | 0.6.300 | Current Cure/generic-damage split is intentionally temporary. |
-| Canonical magic database | planned | 0.6.300 | Legacy spell data is reference only; author original spell catalog. |
-| Casting/recast/interruption | planned | 0.6.300 | Time-aware spell action engine. |
-| Capability prerequisites | planned | 0.6.200–0.6.300 | Hard/soft/enhancing equipment/preparation/context checks. |
-| Enemy tactical AI | planned | 0.6.400 | Current enemies auto-basic-attack only. |
-| Enemy family abilities | planned | 0.6.400 | Requires canonical creature ability records. |
-| Status/resistance system | seeded | 0.6.400 | Status structure exists; broad combat integration incomplete. |
-| Threat/attention | planned | 0.6.400 | Needed for party tactics. |
-| KO/injury/recovery | planned | 0.6.400 | Persistent consequences/recovery. |
-| Party combat | planned | 0.6.800 | Companion-aware targets/tactics/resources. |
+## Combat, danger, recovery, and companions
 
-## Creatures, ecology, spawns, and natural resources
+| System | Status | Notes |
+| --- | --- | --- |
+| Combat 2.0 battle/action model | playable | Structured deterministic action history, readiness, TP/resources, victory/defeat. |
+| Basic attacks and techniques | playable | Deterministic action resolution; technique breadth remains limited. |
+| Timed magic/ability interruption | playable | Shares fictional time and interrupt authority. |
+| Status timing | integrated | Canonical-time duration/expiry. |
+| Enemy active abilities/tactical selection | seeded | Representative deterministic enemy action selection; broad tactical families remain future. |
+| Campaign recovery | playable | Field, defeat, and safe-settlement recovery under one authority. |
+| Persistent companions | playable | NPC-backed recruitment, active membership, travel continuity, battle synchronization. |
+| Companion convalescence | playable | Inactive local injured companions can recover safely and explicitly rejoin. |
+| Companion/social breadth | seeded | Persistent relationship/party foundations exist; deeper authored life breadth remains future. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Enemy entity schema | integrated | ongoing | Runtime enemy entities exist. |
-| Starter spawn rules | seeded | 0.5.650 | Small place-level populations exist. |
-| Species/family database | planned | 0.5.650 | Separate species ecology from encounter instances. |
-| Habitat/population model | planned | 0.5.650 | Density, rarity, aggression, senses, social behavior, time/environment hooks. |
-| Respawn/regeneration | planned | 0.5.650 | Deterministic population/resource recovery. |
-| Rare/named spawns | legacy seed only | 0.5.650 / 0.6.700 | Rebuild under original world/content rules. |
-| Flora/fungi resources | planned | 0.5.650 | Location/yield/regeneration/use data. |
-| Mineral/clay/stone resources | planned | 0.5.650 | Geology/location/yield/tool hooks. |
-| Fishing/shore resources | planned | 0.5.650 / 0.6.600 | Waters/habitat/tackle/time hooks. |
-| Hunting/trapping | planned | 0.6.600 | Integrates ecology and provenance. |
-| Carcass/body processing | planned | 0.5.600 / 0.6.600 | Skin, butcher, pluck, bone, gland, venom, salvage. |
-| Construct salvage | planned | 0.5.600 / 0.6.600 | Dismantle rather than magical drops. |
+## Inventory, provenance, economy, and logistics
 
-## Items, inventory, equipment, and economy
+| System | Status | Notes |
+| --- | --- | --- |
+| Inventory containers/transfers | playable | Capacity/access/stacking/portable/home/wardrobe rules. |
+| Canonical home/container vocabulary | integrated | `homeSafe`, `storage`, `fieldSatchel`, `inventoryState.home`; inherited `mog*` identifiers removed. |
+| Carried inventory authority | playable | Portable carried-container queries + atomic cross-container removal. |
+| Shops/buy/sell | playable | Deterministic wallet/inventory transactions with sell restrictions. |
+| Resource provenance | playable | Physical/economic/social/exceptional source history survives transformations. |
+| Resource opportunities/body recovery | playable | Defeated creatures/world sources become recoverable opportunities rather than magical inventory rewards. |
+| Regional economy depth | seeded | Real goods, sinks, shops, transport decisions exist; broad stock/price simulation is future. |
+| Currency vocabulary cleanup | planned | Original terminology remains a separate content/design decision. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Canonical item schema | integrated | 0.5.800 validation / 0.6.500 scale | Structured requirements/effects/modifiers/metadata exist. |
-| Inventory containers | playable scaffold | ongoing | Portable/home/storage rules exist. |
-| Item stacking/transfers | playable | ongoing | Capacity/access/stack behavior tested. |
-| Equipment eligibility | playable scaffold | 0.6.200 evolution | Currently tied partly to legacy job scaffold. |
-| Equipment catalog | seeded | 0.6.500 | Very small starter catalog only. |
-| Direct-use consumables/tools | seeded | 0.6.500 | Item behavior contract exists; broad actions/content missing. |
-| Item source/sink metadata | planned | 0.5.600 | Required before high-volume item database. |
-| Physical provenance | planned | 0.5.600 | Body/environment/commerce/craft/quest origin categories. |
-| Loot/search carried inventory | seeded legacy behavior | 0.5.600 | Automatic battle rewards must distinguish carried goods from recoverable body resources. |
-| Shops/buy/sell | playable scaffold | 0.7.300 scale | Transactions work; catalogs are tiny. |
-| Regional economy | planned | 0.7.300 | Stock, services, regional inputs/outputs, trade incentives. |
-| Currency vocabulary | legacy | 0.5.550 | Replace inherited currency/reward terminology. |
-| Repair/maintenance | planned | 0.6.500 / 0.8 | Add where it creates useful sinks/decisions. |
+## Ecology, gathering, work, and production
 
-## Gathering, processing, crafting, and cooking
+| System | Status | Notes |
+| --- | --- | --- |
+| Ecology families/species/populations | playable | Canonical habitat/population state with deterministic availability/respawn hooks. |
+| Gathering sources | playable | Place/tool/time conditions, source capacity, fictional work, provenance output. |
+| Hunting/body recovery | playable | Defeated bodies feed practical material recovery/production sinks. |
+| Work proficiency | playable | Repeated work improves persistent efficiency without discipline ownership. |
+| Production processes | playable | Processing/crafting/cooking/salvage examples use inputs, work, output, provenance, mastery. |
+| Workstations | playable | Locality/home furnishing context is derived under one workstation authority. |
+| Regional production breadth | seeded | Representative cross-region resource/process graph exists; sustained balance/content breadth future. |
+| Quality/HQ depth | planned | Do not inherit MMO quality tiers by default. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Gathering categories | legacy seed only | 0.6.600 | Names exist in old data, not a canonical gathering engine. |
-| Gathering actions/nodes | planned | 0.5.650 / 0.6.600 | Actual world sources, tools, time, yields, proficiency. |
-| Craft disciplines | legacy seed only | 0.6.600 | Old list is not a recipe/process system. |
-| Recipe/process schema | planned | 0.5.800 / 0.6.600 | Inputs, outputs, tools, stations, time, skill, quality, byproducts. |
-| Cooking | planned | 0.6.600 | Food effects + ingredient chains. |
-| Medicine/alchemy | planned | 0.6.600 | Herbs, extracts, reagents, tools, medicines. |
-| Smithing/metalwork | planned | 0.6.600 | Ore -> processed metal -> components/equipment/tools. |
-| Woodworking | planned | 0.6.600 | Timber -> lumber/components/tools/construction. |
-| Leatherwork | planned | 0.6.600 | Hide -> tanning -> leather/components/equipment. |
-| Textiles | planned | 0.6.600 | Fiber/wool/etc. -> cloth -> clothing/equipment. |
-| Salvage/recycling | planned | 0.5.600 / 0.6.600 | Recover materials from constructed goods/ruins. |
-| Quality/HQ behavior | planned | 0.6.600 | Original quality model; do not assume inherited MMO tiers. |
+## NPCs, commitments, relationships, and information
 
-## NPCs, services, quests, reputation, and social systems
+| System | Status | Notes |
+| --- | --- | --- |
+| Persistent NPC entities | integrated | Named NPC continuity supports services, schedules, relationships, companions. |
+| NPC recurring availability schedules | playable | Authored windows evaluated from canonical fictional time; not serialized as second clock state. |
+| Commitments | playable | Accept/requirements/resolve/follow-up/one-time reward state. |
+| Carried commitment delivery | playable | Portable carried goods qualify; home storage does not; removal is atomic. |
+| Named-NPC relationship state | playable | Persistent social continuity separate from commitments/party state. |
+| Journal/player opportunity projection | playable | Decision-first derived guidance over canonical state. |
+| Player information/services projections | playable | Carried/known/visited/actionable information without second authorities. |
+| Broad quest/branching narrative engine | seeded | Commitment and hook foundations exist; large branching quest breadth remains future. |
+| Romance/deep social life | planned | Requires authored candidates, boundaries, goals, schedules, and real decisions. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| NPC entity schema | integrated | ongoing | Only a few runtime seed entities currently exist. |
-| POI/NPC location records | seeded | 0.5.550 migration / 0.7.300 scale | Many current POIs still use inherited names. |
-| NPC schedules/availability | planned | 0.7.300 | Work/home/service routines. |
-| Shop/service attachment | playable scaffold | 0.7.300 | Small catalogs/services exist. |
-| Quest hooks | seeded only | 0.7.400 | No full objective/journal state yet. |
-| Quest/contract engine | planned | 0.7.400 | Semantic objectives, prereqs, branches, rewards, repeatability. |
-| Reputation/faction | planned | 0.7.400+ | Regional/social consequences and service access. |
-| Relationship state | planned | 0.7.500 | Friendship/rivalry/mentorship/community/romance. |
-| Romance | planned | 0.7.500 | Deep authored candidates with goals/boundaries/schedules. |
-| Achievements/titles | planned | 0.7+ | Milestones, recognition, unlocks; not a priority over core quests. |
+## Home, livelihood, infrastructure, and future life systems
 
-## Party and companions
+| System | Status | Notes |
+| --- | --- | --- |
+| Home storage foothold | playable | Storage Chest converts regional materials + project labor into durable capacity. |
+| Home workshop | playable | Joiner's Workbench grants home production context. |
+| Portable field logistics | playable | Field Satchel is earned through existing project/inventory authorities. |
+| Broader property/building depth | seeded | Home infrastructure substrate exists; broader acquisition/renovation breadth future. |
+| Agriculture/gardening | planned | Strong Phase 0.8 candidate; requires a fresh bounded authority audit. |
+| Stewardship/husbandry | planned | Add only where care/work/resources/transport create meaningful decisions. |
+| Earned automation/hired labor | planned | Strong candidate after established chores exist; must reduce attention through earned investment/mastery. |
+| Warehouses/large logistics | planned | Do not add merely to fill a numeric track. |
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Companion database | planned | 0.6.800 | Original persistent companion entities replace inherited `Trust` terminology. |
-| Companion tactics AI | planned | 0.6.800 | Roles/preferences/action selection/resources. |
-| Companion equipment/progression | planned | 0.6.800 | Persistent capability/loadout growth. |
-| Companion KO/recovery | planned | 0.6.800 | Integrate party and injury/recovery systems. |
-| Companion relationships | planned | 0.7.500 | Tactical AI remains separate from social state. |
-| Personal companion quests | planned | 0.7.400–0.7.500 | Goals and narrative/state changes. |
+## Current maintenance/hardening posture
 
-## Home, livelihood, infrastructure, and logistics
+Completed maintenance through Product `0.8.600.7`:
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Home/storage foothold | seeded legacy | 0.7 opening / 0.8 | Current storage concept needs original terminology and deeper property context. |
-| Origins/backgrounds | planned | 0.6/0.7 | Determine opening property/tools/relationships/obligations. |
-| Livelihood loops | planned | 0.6.600 | Work must connect time, resources, skill, economy, and mastery. |
-| Persistent construction projects | planned | 0.5.600 | Shared project substrate first. |
-| Property/buildings | planned | 0.8 | Acquisition, renovation, capacity, workshops. |
-| Farming/gardening | planned | 0.8 | Crop/soil/season/work/infrastructure systems. |
-| Husbandry/taming | planned | 0.8 | Practical animals, care, production, transport where useful. |
-| Logistics/carts/warehouses | planned | 0.7.200 / 0.8 | Carrying capacity and regional trade/infrastructure. |
-| Hired labor/earned automation | planned | 0.8 | Reduce chore attention through investment/mastery. |
+- current-schema persistence/home identifier cleanup;
+- retired FFXI runtime command compatibility removal;
+- strict Game State 6 structural persistence gate;
+- canonical carried inventory shared by logistics + commitment delivery;
+- ActionResult compatibility alias removal;
+- Node 24 LTS/current Actions CI refresh;
+- executable architecture-debt regression guards.
 
-## Data-production infrastructure
+Latest gate: PR #330 / Check `32110997315`, 517/517 tests, Benchmark 1 success on Node 24.19.0.
 
-| System | Status | Roadmap | Notes |
-| --- | --- | --- | --- |
-| Regional content-pack contract | planned | 0.5.800 | Geography, NPC, ecology, items, recipes, quests, social, transport. |
-| Cross-reference validator | seeded baseline | 0.5.800 | Expand dramatically before large data generation. |
-| Legacy normalization/import tools | planned | 0.5.800 | Produce candidate original records; never direct canonical copying. |
-| Source/sink validator | planned | 0.5.600 / 0.5.800 | Detect items with no source/use unless exempt. |
-| Quest reachability/content validator | planned | 0.5.800 / 0.7.400 | Detect impossible objectives/rewards. |
-| Scale/performance validation | planned | 0.5.800 onward | Test hundreds/thousands of records rather than only tiny seeds. |
+## Next decision boundary
 
-## Current implementation priority
+Do **not** automatically begin `0.8.700`.
 
-1. **0.5.550** — original-world naming and stable-ID/save migration.
-2. **0.5.600** — persistent projects + resource provenance/body processing.
-3. **0.5.650** — ecology, gathering sources, spawn populations, regeneration.
-4. **0.5.700** — canonical timed travel + scheduled caravans/transport.
-5. **0.5.800** — regional content packs, import normalization, cross-reference validation.
-6. **0.6.100–0.6.400** — stats/progression, skills/disciplines/capabilities, magic/abilities, Combat 2.0.
-7. **0.6.500–0.6.800** — item breadth, gathering/crafting/cooking/salvage, ecology content, AI party.
-8. **0.7** — multi-region world, transport network, NPC populations/economies, quests, relationships/romance, broad content packs.
-9. **0.8** — infrastructure/life expansion.
-10. **0.9** — adventure depth, high-volume balance, release hardening.
+A fresh work order should choose one bounded seam after current-main audit. Strong feature candidates: agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics gap.
 
-The project must no longer treat content as a late decorative layer. Systems and real cross-linked data advance together.
+A separate hardening candidate is repeatable benchmark sampling plus deterministic multi-day lifecycle/save-load smoke coverage. That work should remain a bounded maintenance unit rather than becoming incidental scope in a feature track.
