@@ -1,4 +1,4 @@
-import { runBenchmarkSuite } from './benchmarkSuite.js';
+import { BENCHMARK_WARMUP_RATIO, runBenchmarkSuite } from './benchmarkSuite.js';
 import { describeVersion } from '../js/text/version.js';
 
 const sampleCount = normalizeSampleCount(process.env.HNH_BENCHMARK_SAMPLES);
@@ -7,6 +7,7 @@ const samples = Array.from({ length: sampleCount }, () => runBenchmarkSuite());
 console.log('Hearth & Horizon Benchmark Sample');
 console.log(describeVersion());
 console.log(`Samples: ${sampleCount}`);
+console.log(`Warm-up: ${(BENCHMARK_WARMUP_RATIO * 100).toFixed(0)}% of measured iterations per workload on separate setup state before each sample.`);
 console.log('No hard thresholds are enforced; compare like-for-like environments and use median/spread as baseline evidence.');
 console.log('');
 
@@ -18,6 +19,7 @@ for (let benchmarkIndex = 0; benchmarkIndex < samples[0].length; benchmarkIndex 
     console.log([
         reference.name,
         `n=${sampleCount}`,
+        `warmup=${reference.warmupIterations}`,
         `min=${summary.min.toFixed(6)}ms/op`,
         `median=${summary.median.toFixed(6)}ms/op`,
         `max=${summary.max.toFixed(6)}ms/op`,
