@@ -32,7 +32,7 @@ test('ActionResult separates semantic data from display prose', () => {
     assert.equal(isActionResult(result), true);
 });
 
-test('legacy message and reason aliases are non-enumerable compatibility adapters', () => {
+test('ActionResult exposes no legacy message or reason compatibility aliases', () => {
     const success = actionSuccess({
         action: 'fixture.start',
         code: 'fixture.started',
@@ -46,14 +46,12 @@ test('legacy message and reason aliases are non-enumerable compatibility adapter
         display: { text: 'Blocked.' },
     });
 
-    assert.equal(success.message, 'Started.');
-    assert.equal(success.reason, undefined);
-    assert.equal(failure.message, undefined);
-    assert.equal(failure.reason, 'Blocked.');
-    assert.equal(Object.keys(success).includes('message'), false);
-    assert.equal(Object.keys(failure).includes('reason'), false);
-    assert.equal(JSON.stringify(success).includes('Started.'), true);
-    assert.equal(JSON.stringify(success).includes('message'), false);
+    assert.equal(Object.hasOwn(success, 'message'), false);
+    assert.equal(Object.hasOwn(success, 'reason'), false);
+    assert.equal(Object.hasOwn(failure, 'message'), false);
+    assert.equal(Object.hasOwn(failure, 'reason'), false);
+    assert.equal(describeActionResult(success), 'Started.');
+    assert.equal(describeActionResult(failure), 'Blocked.');
 });
 
 test('ActionResult validates required semantic fields', () => {
