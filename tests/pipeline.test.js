@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.15');
+    assert.equal(PRODUCT_VERSION, '0.8.600.16');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Transport Task Release');
+    assert.equal(VERSION.codename, 'Ability Resource Task Release');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -38,6 +38,8 @@ test('version manifest separates product package persistence data and focused cl
             projects: SYSTEM_VERSIONS.projects,
             campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
             workTasks: SYSTEM_VERSIONS.workTasks,
+            resourceOpportunities: SYSTEM_VERSIONS.resourceOpportunities,
+            abilityEngine: SYSTEM_VERSIONS.abilityEngine,
             transport: SYSTEM_VERSIONS.transport,
             liveTick: SYSTEM_VERSIONS.liveTick,
             domRoot: SYSTEM_VERSIONS.domRoot,
@@ -53,14 +55,16 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.15',
+            versionManifest: '0.8.600.16',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
-            lifecycleHarness: '0.6.0',
+            lifecycleHarness: '0.7.0',
             timedTasks: '0.2.0',
             projects: '0.2.0',
             campaignRecovery: '0.3.0',
             workTasks: '0.2.0',
+            resourceOpportunities: '0.2.0',
+            abilityEngine: '0.3.0',
             transport: '0.4.0',
             liveTick: '0.2.1',
             domRoot: '0.1.0',
@@ -78,20 +82,22 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.15/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.16/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Transport Task Release/);
+    assert.match(describeVersion(), /Codename: Ability Resource Task Release/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /performanceHarness: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.7\.0/);
     assert.match(describeSystemVersions(), /timedTasks: 0\.2\.0/);
     assert.match(describeSystemVersions(), /projects: 0\.2\.0/);
     assert.match(describeSystemVersions(), /campaignRecovery: 0\.3\.0/);
     assert.match(describeSystemVersions(), /workTasks: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /resourceOpportunities: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /abilityEngine: 0\.3\.0/);
     assert.match(describeSystemVersions(), /transport: 0\.4\.0/);
     assert.match(describeSystemVersions(), /liveTick: 0\.2\.1/);
     assert.match(describeSystemVersions(), /domRoot: 0\.1\.0/);
