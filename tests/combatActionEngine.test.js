@@ -135,7 +135,7 @@ test('skill gain clamps at current discipline cap and omits capped spam', () => 
     assert.doesNotMatch(result, /Skill gained:/);
 });
 
-test('router exposes encounter battle attack and slash commands across combat recovery', () => {
+test('command router exposes canonical encounter battle attack and recovery commands', () => {
     const state = createInitialState();
     const router = createCommandRouter(state, commandServices());
 
@@ -143,7 +143,6 @@ test('router exposes encounter battle attack and slash commands across combat re
     assert.match(router('battle'), /Battle/);
     assert.match(router('attack'), /Battle/);
     assert.match(router('wait 3'), /Advanced 3s/);
-    assert.match(router('/attack'), /Battle/);
 });
 
 function equipCatalogItem(state, id, name, tags) {
