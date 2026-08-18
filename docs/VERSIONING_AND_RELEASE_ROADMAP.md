@@ -7,17 +7,17 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.500.1
-Package:       0.8.500
+Product:       0.8.600.1
+Package:       0.8.600
 Account Save:  4
 Game State:    5
 Data:          36
 Benchmark:     1
-Codename:      Daily Social Availability
+Codename:      Companion Convalescence
 Compatibility: pre-release-current-schema
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.500` are complete and audited.** The project remains pre-alpha and unreleased.
+**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited.** The project remains pre-alpha and unreleased.
 
 ## Product version format
 
@@ -43,7 +43,9 @@ Recent Data history:
 - Data 35 — Field Satchel home-improvement/container semantics plus Resin-Cured Hide Binding construction sink;
 - Data 36 — canonical recurring NPC-availability schedule data, beginning with Sera Talwin's Southgate duty window.
 
-Game State remains 5 through Data 36. The Phase 0.8 additions reuse existing project records/data, furnishings, inventory containers/`unlocked`, transport journey data, production/work state, provenance, relationships/commitments, and canonical world time. `0.8.500` adds no serialized schedule state; availability is re-derived from fictional time. Account Save remains 4 because account/session/character-registry semantics are unchanged.
+`0.8.600` is a behavioral composition track and does **not** advance Data. It changes no companion, place, recovery, or other authored catalog record.
+
+Game State remains 5 through `0.8.600`. Phase 0.8 additions continue to use existing project records/data, furnishings, inventory containers, transport journey data, production/work state, provenance, relationships/commitments, companion HP/location/membership, recovery tasks, and canonical world time. Account Save remains 4 because account/session/character-registry semantics are unchanged.
 
 ## Compatibility policy
 
@@ -75,39 +77,15 @@ Checkpoint `03ab71c7e96c54eaeffb75598ed01243fd390f21`, Product `0.8.200.1`, Pack
 
 ## `0.8.300` — Carried Load & Transport Logistics — complete
 
-```text
-Product:       0.8.300.1
-Package:       0.8.300
-Account Save:  4
-Game State:    5
-Data:          34
-Benchmark:     1
-Codename:      Carried Load and Transport Logistics
-```
+`carriedLoadEngine` derives actual occupied carried slots, `transportServiceBoardEngine` projects the fact, and `transportEngine` independently derives it at booking. Caller-provided cargo is ignored; service capacity is checked before fare deduction.
 
-No Data bump was required: this track repaired runtime authority rather than authored content. `carriedLoadEngine` derives actual occupied carried slots, `transportServiceBoardEngine` projects the fact, and `transportEngine` independently derives it at booking. Caller-provided cargo is ignored; service capacity is checked before fare deduction.
-
-Checkpoint `4f8c0de9e6ba926ee903f5787d34cca73c40eb6d` — 507/507 tests, Benchmark 1.
+Checkpoint `4f8c0de9e6ba926ee903f5787d34cca73c40eb6d` — 507/507 tests, Benchmark 1, Product `0.8.300.1`, Data 34.
 
 ## `0.8.400` — Portable Field Logistics — complete
 
-```text
-Product:       0.8.400.1
-Package:       0.8.400
-Account Save:  4
-Game State:    5
-Data:          35
-Benchmark:     1
-Codename:      Portable Field Logistics
-```
-
-Data advances `34 -> 35` because the track adds canonical Field Satchel improvement/container semantics and the Resin-Cured Hide Binding construction sink. The satchel is built through existing project/home authority and unlocked through inventory authority.
-
-The cargo rule is explicit: Inventory→Field Satchel leaves total carried load unchanged; portable container→Home Safe reduces carried load. Promoted checkpoint `d1a43568c5ca4dd7e57fb86316b422c35025ce07`; Check `32080844409` completed successfully with Test and Benchmark steps green.
+The Field Satchel is built through existing project/home authority and unlocked through inventory authority. Inventory→Field Satchel leaves total carried load unchanged; portable container→Home Safe reduces carried load. Promoted checkpoint `d1a43568c5ca4dd7e57fb86316b422c35025ce07`; Check `32080844409` completed successfully with Test and Benchmark steps green.
 
 ## `0.8.500` — Daily Social Availability — complete
-
-### Version decision
 
 ```text
 Product:       0.8.500.1
@@ -117,83 +95,78 @@ Game State:    5
 Data:          36
 Benchmark:     1
 Codename:      Daily Social Availability
+```
+
+Data advanced `35 -> 36` because `0.8.500` added canonical authored NPC-schedule data. `npcScheduleEngine` derives current/next availability from that data and canonical fictional time. Locality/POI/commitment domain paths and browser/Journal projections consume the same authority; no schedule state is serialized.
+
+Authoritative checkpoint `fde1d30d76264ea25af6bad4d829545c488eec9b` — 509/509 tests, Benchmark 1.
+
+## `0.8.600` — Companion Convalescence — complete
+
+### Version decision
+
+```text
+Product:       0.8.600.1
+Package:       0.8.600
+Account Save:  4
+Game State:    5
+Data:          36
+Benchmark:     1
+Codename:      Companion Convalescence
 Compatibility: pre-release-current-schema
 ```
 
-Data advances `35 -> 36` because `0.8.500` adds canonical authored NPC-schedule data. Game State remains 5 because the schedule does not add persisted runtime fields: availability is derived from existing canonical `worldTime.totalSeconds`. Account Save remains 4. Benchmark remains 1 because the benchmark protocol is unchanged.
-
-### Authored-data contract
-
-The first proving record is deliberately narrow:
-
-```text
-schedule-thornwall-sera-talwin
-NPC:   npc-thornwall-sera-talwin
-POI:   poi-sandoria-s-alaune
-Place: thornwall-southgate
-Daily: 08:00–18:00
-```
-
-`validateNpcScheduleCatalog()` validates schedule identity, canonical NPC/POI/place references, unique POI ownership, and well-formed/non-overlapping daily windows. It is owned by the NPC-schedule subsystem and is directly exercised by the end-to-end regression. The global `validation` registration remains `0.10.0`; the track does not duplicate schedule ownership there merely to manufacture another version bump.
+No Data bump is required: `0.8.600` adds no authored gameplay record. No Game State bump is required: companion HP/MP, location, active membership, and recovery timed tasks already exist in Game State 5. Account Save and Benchmark remain unchanged.
 
 ### Authority decision
 
-`npcScheduleEngine` is the one runtime availability authority. It derives current/next availability entirely from authored schedule data plus canonical fictional time. It creates no `state.npcSchedules` or second clock.
+The defect was an authority gap rather than missing content. `joinCompanion` correctly rejected a recruited companion at 0 HP, but campaign recovery previously restored only active companions. An injured companion left inactive could therefore become permanently unavailable.
 
-The same authority is consumed by:
+`campaignRecoveryEngine` v2 remains the one recovery authority. Settlement recovery now considers recruited companions physically present in the current safe settlement even when inactive. Field and defeat recovery keep their existing active-party scope. Settlement recovery still uses the existing `recovery.settlement` task and costs exactly 3600 fictional seconds.
 
-- `localityEngine` v2 before a semantic scheduled-POI interaction can move/discover the character;
-- `poiEngine` for command-path talk and POI actions;
-- `commitmentEngine` v0.3.0 for accept, resolve, and follow-up giver context;
-- `playerSocialScheduleEngine` for derived Journal blocking/recommendation;
-- `gameViewModel` v0.14.0 for nearby schedule notes and suppression of dead contextual Talk actions.
+`partyEngine` v0.3.0 additionally refuses to leave a 0-HP companion behind outside a safe settlement. The check occurs before membership/location mutation. Safe settlement separation remains valid, and recovery does not silently reactivate the companion; reunion stays an explicit party action.
 
-Commitments remain obligation/reward authority; relationships remain social-continuity authority; schedule data only determines when the conversation is publicly available.
+A dependency-light `localityClassificationEngine` owns the shared safe-settlement predicate, while `localityEngine` re-exports it. This removes a party/locality import cycle without changing locality-navigation semantics.
 
-The current schedule contract is **availability at a static canonical NPC location**. It does not move Sera's persisted NPC location or implement autonomous multi-location routines.
+`gameViewModel` v0.15.0 suppresses **Travel together** while an inactive local companion is at 0 HP and exposes it again after recovery. Presentation therefore agrees with party authority.
 
 ### Current registrations
 
 ```text
-versionManifest:          0.8.500.1
+versionManifest:          0.8.600.1
+campaignRecovery:         0.2.0
+party:                    0.3.0
+gameViewModels:           0.15.0
+localityNavigation:       0.2.0
 commitments:              0.3.0
-relationships:            0.1.0
 npcSchedules:             0.1.0
 playerSocialSchedules:    0.1.0
-localityNavigation:       0.2.0
-gameViewModels:           0.14.0
-validation:               0.10.0
 ```
 
-Database registration:
+Database `party` registration advances to `implemented 0.3.0` to record its safe separation/reunion responsibility. `companionCatalog`/`companions` stay `0.2.0` because no authored companion definition changed.
 
-```text
-npcSchedules  implemented 0.1.0
-```
+Historical Phase 0.7 assertions for campaign recovery and party versions use compatible minimums rather than freezing later shared-authority evolution at exact historical versions.
 
 ### End-to-end gate
 
-`tests/playerSocialScheduleFlow.test.js` proves:
+`tests/playerCompanionRecoveryFlow.test.js` proves:
 
-- Sera is available at canonical 08:00 and her 08:00–18:00 window is visible;
-- semantic locality interaction succeeds while available;
-- at 18:30 both semantic and command-path talk are blocked with next-return guidance;
-- blocked interaction does not move the character or create hidden time cost;
-- commitment acceptance is independently blocked by domain authority while the giver is away;
-- the browser retains useful away/return information while suppressing impossible contextual and Journal actions;
-- save/load serializes fictional time but no schedule registry, then re-derives the same unavailable state;
-- advancing to next-day 08:00 restores availability and commitment acceptance;
-- schedule catalog, game state, and world data validations remain green.
-
-### Regression and repair trail
-
-The pre-promotion runtime passed 509/509 tests plus Benchmark 1. The first promoted run then exposed one historical Phase 0.7 assertion that froze `SYSTEM_VERSIONS.commitments` at exactly `0.2.0`. Since `0.8.500` legitimately extends that shared authority, the historical gate was changed to require a compatible minimum (`>= 0.2.0`), matching existing precedent for later shared-system evolution. No historical gameplay behavior was weakened.
+- Mara can be downed, brought to Thornwall Southgate, and left there safely;
+- immediate reunion is rejected at 0 HP;
+- the Character surface does not advertise the rejected reunion action;
+- a fully healthy player can still choose settlement recovery because nearby inactive Mara is injured;
+- the existing settlement recovery task costs exactly 3600 fictional seconds;
+- Mara reaches full HP/MP while remaining inactive;
+- **Travel together** reappears after recovery and explicit reunion succeeds;
+- save/load preserves the recovered state and membership;
+- a downed Mara cannot be left behind in West Elderwood and failed separation is atomic;
+- current game validation remains green.
 
 ### Authoritative promoted runtime checkpoint
 
 ```text
-fde1d30d76264ea25af6bad4d829545c488eec9b
-509/509 tests
+04211e8909996b1ac34fa91ae1cdd7aa216b86f8
+511/511 tests
 0 failed
 0 skipped
 Benchmark 1 success
@@ -202,18 +175,18 @@ Benchmark 1 success
 Benchmark 1:
 
 ```text
-1,000 player combat profiles      367.612ms  0.367612ms/op
-1,000 enemy combat profiles       101.654ms  0.101654ms/op
-1,000 basic attacks               434.260ms  0.434260ms/op
-10,000 ticks / 5 subscribers       43.213ms  0.004321ms/op
-10,000 direct route lookups      6877.677ms  0.687768ms/op
+1,000 player combat profiles      436.701ms  0.436701ms/op
+1,000 enemy combat profiles       102.201ms  0.102201ms/op
+1,000 basic attacks               519.382ms  0.519382ms/op
+10,000 ticks / 5 subscribers       56.889ms  0.005689ms/op
+10,000 direct route lookups      8100.376ms  0.810038ms/op
 ```
 
-**PASS. `0.8.500` is closed. Phase 0.8 remains open.**
+**PASS. `0.8.600` is closed. Phase 0.8 remains open.**
 
 ## Next Phase 0.8 decision
 
-Do not automatically begin `0.8.600` or mass-author more schedules. The next work order should re-audit one bounded seam before implementation. Candidate families: agriculture/stewardship, companion-life breadth, earned automation, additional social-life breadth with a concrete decision/authority path, or another life/logistics seam only where an existing gap justifies it.
+Do not automatically begin `0.8.700` or create passive companion healing/routine systems. The next work order should re-audit one bounded seam before implementation. Candidate families: agriculture/stewardship, earned automation, further companion/social-life breadth only with a concrete player decision and existing authority path, or another life/logistics seam only where an existing gap justifies it.
 
 # Planned later phases
 
