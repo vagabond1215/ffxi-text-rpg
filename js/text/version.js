@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.13';
+export const PRODUCT_VERSION = '0.8.600.14';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,23 +8,23 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 3,
-    codename: 'Owner-Gated Task Release',
+    codename: 'Work Project Task Release',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.13',
+    versionManifest: '0.8.600.14',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
     performanceHarness: '0.3.0',
-    lifecycleHarness: '0.4.0',
+    lifecycleHarness: '0.5.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
     timedTasks: '0.2.0',
-    projects: '0.1.0',
+    projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     commitments: '0.3.1',
     relationships: '0.1.0',
@@ -37,7 +37,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     characterActivity: '0.3.0',
     activityAdvance: '0.5.0',
     campaignRecovery: '0.3.0',
-    workTasks: '0.1.0',
+    workTasks: '0.2.0',
     workProficiencies: '0.1.0',
     workstations: '0.3.1',
     productionCatalog: '0.2.0',
