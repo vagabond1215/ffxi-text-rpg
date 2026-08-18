@@ -2,6 +2,7 @@ import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
+import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
 import { validatePersistedPlayerProgression } from './playerProgressionPersistence.js';
@@ -77,6 +78,8 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.resourceOpportunities)) issues.push(...validateResourceOpportunityState(state.resourceOpportunities));
     if (isObject(state.ecology)) issues.push(...validateEcologyState(state.ecology));
     if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
+    if (isObject(state.atlas)) issues.push(...validateAtlasState(state.atlas));
+    if (isObject(state.discoveredPois)) issues.push(...validatePoiDiscoveryState(state.discoveredPois));
     if (state.work !== undefined) {
         if (!isObject(state.work)) issues.push('work must be a persisted object when present.');
         else issues.push(...validateWorkState(state.work));
