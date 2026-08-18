@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.17');
+    assert.equal(PRODUCT_VERSION, '0.8.600.18');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Bounded Task Retention');
+    assert.equal(VERSION.codename, 'Task Owner Guard');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -55,10 +55,10 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.17',
+            versionManifest: '0.8.600.18',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
-            lifecycleHarness: '0.8.0',
+            lifecycleHarness: '0.9.0',
             timedTasks: '0.2.0',
             projects: '0.2.0',
             campaignRecovery: '0.3.0',
@@ -82,16 +82,16 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.17/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.18/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Bounded Task Retention/);
+    assert.match(describeVersion(), /Codename: Task Owner Guard/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /performanceHarness: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.8\.0/);
+    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.9\.0/);
     assert.match(describeSystemVersions(), /timedTasks: 0\.2\.0/);
     assert.match(describeSystemVersions(), /projects: 0\.2\.0/);
     assert.match(describeSystemVersions(), /campaignRecovery: 0\.3\.0/);
