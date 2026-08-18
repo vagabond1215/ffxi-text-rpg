@@ -7,17 +7,17 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.1
+Product:       0.8.600.2
 Package:       0.8.600
-Account Save:  4
-Game State:    5
-Data:          36
+Account Save:  5
+Game State:    6
+Data:          37
 Benchmark:     1
-Codename:      Companion Convalescence
+Codename:      Current Schema Cleanup
 Compatibility: pre-release-current-schema
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited.** The project remains pre-alpha and unreleased.
+**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. `0.8.600.2` is a maintenance/schema cleanup revision, not a new track.** The project remains pre-alpha and unreleased.
 
 ## Product version format
 
@@ -27,12 +27,12 @@ Use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains three-part SemV
 
 | Version | Current | Purpose |
 | --- | ---: | --- |
-| Account Save | 4 | local account/session/character registry contract |
-| Game State | 5 | serialized character/world runtime contract |
-| Data | 36 | canonical authored-data contract |
+| Account Save | 5 | local account/session/character registry contract |
+| Game State | 6 | serialized character/world runtime contract |
+| Data | 37 | canonical authored-data and stable-identifier contract |
 | Benchmark | 1 | benchmark protocol/comparability |
 
-Account Save changes when account/session registry semantics change materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the benchmark workload/protocol stops being comparable.
+Account Save changes when account/session registry semantics change materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content or stable identifiers change materially. Benchmark changes only when the benchmark workload/protocol stops being comparable.
 
 Recent Data history:
 
@@ -41,19 +41,22 @@ Recent Data history:
 - Data 33 — original character names, starting-discipline kits, and authored origin openings;
 - Data 34 — Joiner's Workbench furnishing/home-improvement definition plus explicit construction sinks for infrastructure goods;
 - Data 35 — Field Satchel home-improvement/container semantics plus Resin-Cured Hide Binding construction sink;
-- Data 36 — canonical recurring NPC-availability schedule data, beginning with Sera Talwin's Southgate duty window.
+- Data 36 — canonical recurring NPC-availability schedule data, beginning with Sera Talwin's Southgate duty window;
+- Data 37 — canonical home furnishing/container identifier cleanup (`homeSafe`, `storage`, `fieldSatchel`, and `inventoryState.home`) replacing inherited `mog*` identifiers.
 
-`0.8.600` is a behavioral composition track and does **not** advance Data. It changes no companion, place, recovery, or other authored catalog record.
-
-Game State remains 5 through `0.8.600`. Phase 0.8 additions continue to use existing project records/data, furnishings, inventory containers, transport journey data, production/work state, provenance, relationships/commitments, companion HP/location/membership, recovery tasks, and canonical world time. Account Save remains 4 because account/session/character-registry semantics are unchanged.
+The original `0.8.600.1` Companion Convalescence promotion was a behavioral composition track and did not advance Data. The later `0.8.600.2` maintenance revision advances Data because stable canonical home/container identifiers change.
 
 ## Compatibility policy
 
-Current mode is `pre-release-current-schema`. Current-format save/load/validation/resume must be deterministic. Old pre-alpha local saves/accounts may be reset when a cleaner schema materially improves the project. Do not add compatibility-only duplicate state or adapters by reflex.
+Current mode is `pre-release-current-schema`.
+
+Current-format save/load/validation/resume must be deterministic. **Old pre-alpha local saves/accounts are not a supported compatibility surface.** When a cleaner current schema materially improves the project, incompatible old registries/states may be rejected and reset rather than automatically migrated. Do not add compatibility-only duplicate state, aliases, fallback storage keys, lazy reconstruction, or adapter layers by reflex.
+
+The generic ordered migration engine remains available for a future migration when compatibility is explicitly required or independently useful. Its existence does not make migration automatic.
 
 ## Release discipline
 
-A coherent checkpoint requires a bounded player-facing implementation, regression coverage, observed full Test and Benchmark gates, deliberate product/schema/data registration, synchronized authority docs, and a stop at the declared boundary. Do not claim test counts or performance figures that were not observed.
+A coherent checkpoint requires a bounded player-facing implementation or maintenance contract, regression coverage, observed full Test and Benchmark gates, deliberate product/schema/data registration, synchronized authority docs, and a stop at the declared boundary. Do not claim test counts or performance figures that were not observed.
 
 # Phase history
 
@@ -103,7 +106,7 @@ Authoritative checkpoint `fde1d30d76264ea25af6bad4d829545c488eec9b` — 509/509 
 
 ## `0.8.600` — Companion Convalescence — complete
 
-### Version decision
+### Original version decision
 
 ```text
 Product:       0.8.600.1
@@ -116,7 +119,7 @@ Codename:      Companion Convalescence
 Compatibility: pre-release-current-schema
 ```
 
-No Data bump is required: `0.8.600` adds no authored gameplay record. No Game State bump is required: companion HP/MP, location, active membership, and recovery timed tasks already exist in Game State 5. Account Save and Benchmark remain unchanged.
+No Data bump was required for the original companion-convalescence promotion: it added no authored gameplay record. No Game State bump was required because companion HP/MP, location, active membership, and recovery timed tasks already existed in Game State 5. Account Save and Benchmark remained unchanged.
 
 ### Authority decision
 
@@ -128,41 +131,7 @@ The defect was an authority gap rather than missing content. `joinCompanion` cor
 
 A dependency-light `localityClassificationEngine` owns the shared safe-settlement predicate, while `localityEngine` re-exports it. This removes a party/locality import cycle without changing locality-navigation semantics.
 
-`gameViewModel` v0.15.0 suppresses **Travel together** while an inactive local companion is at 0 HP and exposes it again after recovery. Presentation therefore agrees with party authority.
-
-### Current registrations
-
-```text
-versionManifest:          0.8.600.1
-campaignRecovery:         0.2.0
-party:                    0.3.0
-gameViewModels:           0.15.0
-localityNavigation:       0.2.0
-commitments:              0.3.0
-npcSchedules:             0.1.0
-playerSocialSchedules:    0.1.0
-```
-
-Database `party` registration advances to `implemented 0.3.0` to record its safe separation/reunion responsibility. `companionCatalog`/`companions` stay `0.2.0` because no authored companion definition changed.
-
-Historical Phase 0.7 assertions for campaign recovery and party versions use compatible minimums rather than freezing later shared-authority evolution at exact historical versions.
-
-### End-to-end gate
-
-`tests/playerCompanionRecoveryFlow.test.js` proves:
-
-- Mara can be downed, brought to Thornwall Southgate, and left there safely;
-- immediate reunion is rejected at 0 HP;
-- the Character surface does not advertise the rejected reunion action;
-- a fully healthy player can still choose settlement recovery because nearby inactive Mara is injured;
-- the existing settlement recovery task costs exactly 3600 fictional seconds;
-- Mara reaches full HP/MP while remaining inactive;
-- **Travel together** reappears after recovery and explicit reunion succeeds;
-- save/load preserves the recovered state and membership;
-- a downed Mara cannot be left behind in West Elderwood and failed separation is atomic;
-- current game validation remains green.
-
-### Authoritative promoted runtime checkpoint
+### Original promoted runtime checkpoint
 
 ```text
 04211e8909996b1ac34fa91ae1cdd7aa216b86f8
@@ -172,17 +141,56 @@ Historical Phase 0.7 assertions for campaign recovery and party versions use com
 Benchmark 1 success
 ```
 
-Benchmark 1:
+**PASS. `0.8.600` is closed. Phase 0.8 remains open.**
+
+## `0.8.600.2` — Current Schema Cleanup — maintenance revision
+
+### Version decision
 
 ```text
-1,000 player combat profiles      436.701ms  0.436701ms/op
-1,000 enemy combat profiles       102.201ms  0.102201ms/op
-1,000 basic attacks               519.382ms  0.519382ms/op
-10,000 ticks / 5 subscribers       56.889ms  0.005689ms/op
-10,000 direct route lookups      8100.376ms  0.810038ms/op
+Product:       0.8.600.2
+Package:       0.8.600
+Account Save:  5
+Game State:    6
+Data:          37
+Benchmark:     1
+Codename:      Current Schema Cleanup
+Compatibility: pre-release-current-schema
 ```
 
-**PASS. `0.8.600` is closed. Phase 0.8 remains open.**
+Account Save advances because the local account/session namespace and accepted registry contract are now strictly current. Game State advances because persisted inventory/home state and container identifiers change. Data advances because canonical furnishing/container stable identifiers change. Benchmark remains 1 because the workload is unchanged.
+
+No migration is supplied. Older pre-alpha account registries and Game State payloads are rejected without rewriting them. The obsolete active save-migration module is removed; the generic migration engine remains available for a future deliberate compatibility requirement.
+
+Relevant registrations changed by this maintenance revision:
+
+```text
+versionManifest:       0.8.600.2
+homeInfrastructure:    0.4.0
+workstations:          0.3.1
+gameViewModels:        0.15.1
+uiIntents:             0.10.1
+accountSaves:          0.7.0
+saveEncoding:          0.5.0
+validation:            0.11.0
+inventoryContainers:   0.7.0
+inventoryTransfers:    0.7.0
+homeStorage:           0.4.0
+```
+
+Validated cleanup runtime checkpoint `23c373310bac90b20e14b840cc4221e3ca648daf` passed Check run `32104815961` with 507/507 tests, 0 failures/skips, and Benchmark 1 success.
+
+Benchmark 1 on that checkpoint:
+
+```text
+player combat profiles  0.465978 ms/op
+enemy combat profiles   0.117722 ms/op
+basic attacks            0.538805 ms/op
+tick dispatch            0.004715 ms/op
+direct route lookup      0.894560 ms/op
+```
+
+The test count is lower than `0.8.600.1` because obsolete save-migration integration tests were removed with the compatibility layer; current-schema rejection and round-trip coverage replaces the relevant persistence contract.
 
 ## Next Phase 0.8 decision
 
