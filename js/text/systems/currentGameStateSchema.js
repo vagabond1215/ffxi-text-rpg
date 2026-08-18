@@ -1,4 +1,5 @@
 import { VERSION } from '../version.js';
+import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
@@ -50,6 +51,8 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     for (const field of REQUIRED_ARRAY_FIELDS) {
         if (!Array.isArray(state[field])) issues.push(`${field} must be a persisted array.`);
     }
+
+    if (isObject(state.tasks)) issues.push(...validateTimedTaskState(state.tasks));
 
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
