@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.12
+Product:       0.8.600.17
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
-Codename:      Warm Benchmark Baseline
+Codename:      Bounded Task Retention
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.12` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.17` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
 
 ## Product version format
 
@@ -95,7 +95,7 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-`tests/architectureDebtGuard.test.js` guards selected removed compatibility surfaces from returning. Long-session and lifecycle-specific guards additionally cover multi-day save/load, tick subscription ownership, and browser-root resource teardown.
+`tests/architectureDebtGuard.test.js` guards selected removed compatibility surfaces from returning. Long-session and lifecycle-specific guards additionally cover multi-day save/load, tick subscription ownership, browser-root resource teardown, owner-gated terminal task release, and mixed task-retention steady state.
 
 ## Benchmark protocol history
 
@@ -115,7 +115,7 @@ Introduced at Product `0.8.600.12`. Every workload now receives an unreported wa
 
 Benchmark 3 is the current baseline. Numeric results from Benchmark 1/2 must not be described as directly improving/regressing against Benchmark 3.
 
-No hard timing threshold is accepted yet. The latest hosted sample still shows substantial relative variance on very short basic-attack and tick measurements.
+No hard timing threshold is accepted yet. The latest hosted sample still shows substantial relative variance on very short basic-attack measurements, though the longer profile/route workloads remain more stable.
 
 ## `0.8.600` feature-track history
 
@@ -139,7 +139,7 @@ Game State 5
 Data 36
 ```
 
-## `0.8.600.2`–`.12` maintenance history
+## `0.8.600.2`–`.17` maintenance history
 
 | Revision | Contract | Independent-version decision |
 | --- | --- | --- |
@@ -154,22 +154,39 @@ Data 36
 | `.10` Subscription Ownership | prevent stale tick disposer from deleting replacement owner | unchanged |
 | `.11` DOM Root Ownership | root owns app/observer teardown across remount/failure | unchanged |
 | `.12` Warm Benchmark Baseline | 10% separate-context warm-up before each measurement/sample | Benchmark `2->3` |
+| `.13` Owner-Gated Task Release | terminal-only `releaseTimedTask`; campaign recovery releases after exactly-once consequence reconciliation | unchanged |
+| `.14` Work/Project Task Release | work/project terminal transitions release task records while retaining correlation IDs | unchanged |
+| `.15` Transport Task Release | arrival/cancellation release terminal task after location/state/event transition | unchanged |
+| `.16` Ability/Resource Task Release | ability resolution/interruption and resource recovery/storage outcomes release terminal tasks after durable consequences | unchanged |
+| `.17` Bounded Task Retention | mixed repeated owner-managed lifecycles return task registry to one intentional generic-terminal baseline across save/load | unchanged |
 
-Promoted commits for the second hardening train:
+Promoted commits for the terminal-task hardening train:
 
 ```text
-.8   8fad34adb0d7db253a6593e7ffbeab3f28c28293
-.9   7f562e20b335c4fdb449f74a8fd2a48c6378e182
-.10  cc75d707f3a6ca492a6de6883c7ac59b871836c8
-.11  b9d1be0d72cb1bb27d414349bc894726deb6ace3
-.12  3de675d60ba46852f193b5cd319df2ce056aa00f
+.13  be8db394e81da0e2aa96069efb7df51cd0b68b9b
+.14  f7d51365f13fa1cb703383ec4799934e07a3f90f
+.15  588d6dd0e0a882a6cfdc76d60797c0488330141d
+.16  67ec4ea8ae19b1032894a604ed372802d794cf92
+.17  e4ebdbc14776329156f2df2dee8c598e3b8b91cb
 ```
 
-Latest exact-head runtime validation: PR #335 / exact head `10ab2c5af9ddcf0760f49817ff5a8c41ec1caa07` / Check `32160936491`, Node 24.19.0:
+Exact-head validation for the train:
+
+| Revision | PR | Exact head | Check | Tests |
+| --- | ---: | --- | ---: | ---: |
+| `.13` | #336 | `d3d7beeba9d605a7a94d397ed3827e97f7b1e434` | `32162369191` | 529/529 |
+| `.14` | #337 | `fcea01f324067a60af440378a0647767c5bb5cab` | `32162896278` | 533/533 |
+| `.15` | #338 | `3086f424259b441fd644338ad3e65e9b860938db` | `32163232356` | 533/533 |
+| `.16` | #339 | `d596e0a86e71ac2dc5b74c552b5f98a5ff2b621a` | `32163982824` | 533/533 |
+| `.17` | #340 | `666d2f432c3db097012ef035d2e4655405c5747d` | `32168023319` | 534/534 |
+
+Every listed head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
+
+Latest exact-head runtime validation: PR #340 / head `666d2f432c3db097012ef035d2e4655405c5747d` / Check `32168023319`:
 
 ```text
-tests       527
-pass        527
+tests       534
+pass        534
 fail        0
 cancelled   0
 skipped     0
@@ -177,15 +194,32 @@ Benchmark 3 success
 Benchmark Sample success
 ```
 
-Three-sample Benchmark 3 medians/spreads:
+Latest three-sample Benchmark 3 medians/spreads:
 
 ```text
-player profiles  0.359021 ms/op   7.97%
-enemy profiles   0.068446 ms/op  11.71%
-basic attacks    0.000951 ms/op 191.11%
-tick dispatch    0.000646 ms/op  61.69%
-route lookup     0.007238 ms/op   5.16%
+player profiles  0.359505 ms/op   6.21%
+enemy profiles   0.070873 ms/op  10.10%
+basic attacks    0.001285 ms/op 189.74%
+tick dispatch    0.000798 ms/op  28.18%
+route lookup     0.007662 ms/op   6.59%
 ```
+
+## Timed-task release/retention contract
+
+`releaseTimedTask` may remove only terminal task records. Active release is rejected, and `nextSequence` remains monotonic so released task IDs are not reused.
+
+Domain owners release only after their durable consequence is established:
+
+- campaign recovery after recovery consequence/event reconciliation;
+- work after completed/failed/awaiting-storage/cancelled transition;
+- projects after completion/cancellation;
+- transport after arrival/cancellation;
+- abilities after resolution/cooldown/effects or interruption;
+- resource recovery after recovered/failed-storage outcome and completion event.
+
+An unreconciled terminal task survives save/load until its owner consumes it. Domain records/results/events may keep `taskId` only as historical correlation after release.
+
+Generic/unowned terminal history is intentionally **not** centrally pruned yet. The `.17` soak proves owner-managed gameplay task retention returns to steady state; a separate generic history cap should be introduced only if a concrete diagnostic/history requirement justifies it.
 
 ## Release discipline
 
@@ -202,9 +236,9 @@ Do not claim validation that did not run. Documentation-only synchronization aft
 
 ## Next Phase 0.8 decision
 
-Do **not** automatically begin `0.8.700`. A new work order should re-audit one bounded seam before implementation.
+Do **not** automatically begin `0.8.700`. A new feature work order should re-audit one bounded seam before implementation.
 
-For maintenance, terminal timed-task retention is a known ownership seam but must not be solved by generic blind pruning. Domain owners must first define when terminal task IDs can be released safely.
+For maintenance, the prior terminal-task ownership seam is now closed for known direct owners. The next bounded question is whether generic/unowned terminal tasks require any history/diagnostic retention policy at all. Audit real producers/consumers first; do not add a central prune merely because the mechanism exists.
 
 Candidate feature families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam.
 
