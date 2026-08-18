@@ -1,5 +1,5 @@
 import { getHomeInfrastructureDefinition, listHomeInfrastructureDefinitions } from '../data/homeInfrastructure.js';
-import { getFurniture, calculateFurnitureStorageCapacity } from '../data/mogHouseFurniture.js';
+import { getFurniture, calculateFurnitureStorageCapacity } from '../data/homeFurnishings.js';
 import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { getContainerCapacity, unlockInventoryContainer } from './inventoryEngine.js';
@@ -17,7 +17,7 @@ import {
 } from './projectEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const HOME_INFRASTRUCTURE_VERSION = 3;
+export const HOME_INFRASTRUCTURE_VERSION = 4;
 export const DEFAULT_HOME_IMPROVEMENT_ID = 'storage-chest';
 
 export function getHomePlaceId(state) {
@@ -88,7 +88,7 @@ export function reconcileHomeInfrastructureProjects(state) {
     const projects = ensureProjectState(state);
     const applied = [];
     const inventoryState = state?.player?.inventoryState;
-    const placedFurniture = inventoryState?.mogHouse?.placedFurniture;
+    const placedFurniture = inventoryState?.home?.placedFurniture;
     if (!inventoryState) return Object.freeze(applied);
 
     for (const project of projects.records) {
@@ -159,7 +159,7 @@ export function createHomeInfrastructureModel(state) {
 
     const homePlaceId = getHomePlaceId(state);
     const atHome = isAtHomePlace(state);
-    const placedFurnitureIds = state.player.inventoryState?.mogHouse?.placedFurniture ?? [];
+    const placedFurnitureIds = state.player.inventoryState?.home?.placedFurniture ?? [];
     const storageCapacity = calculateFurnitureStorageCapacity(placedFurnitureIds);
     const entries = [];
     const actions = [];
@@ -238,7 +238,7 @@ export function validateHomeInfrastructureState(state) {
             issues.push(`${project.id} container does not match ${improvementId}.`);
         }
         if (project.status === PROJECT_STATUSES.COMPLETED && project.data?.completionApplied === true) {
-            if (definition?.benefit.kind === 'furnishing' && !state.player?.inventoryState?.mogHouse?.placedFurniture?.includes(definition.benefit.furnitureId)) {
+            if (definition?.benefit.kind === 'furnishing' && !state.player?.inventoryState?.home?.placedFurniture?.includes(definition.benefit.furnitureId)) {
                 issues.push(`${project.id} says its completed furnishing was applied but the furnishing is absent.`);
             }
             if (definition?.benefit.kind === 'container' && !state.player?.inventoryState?.containers?.[definition.benefit.containerId]?.unlocked) {
