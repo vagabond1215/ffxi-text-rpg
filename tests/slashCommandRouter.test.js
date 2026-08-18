@@ -55,20 +55,19 @@ test('slash router exposes menu and command help', () => {
     assert.match(router('/commands'), /\/newcharacter/);
 });
 
-test('slash router forwards slash gameplay commands to engine router', () => {
+test('slash router forwards canonical slash gameplay commands to engine router', () => {
     const { router } = createRouterWithState();
 
     assert.match(router('/look'), /Thornwall Southgate/);
     assert.match(router('/stats'), /Attributes/);
 });
 
-test('slash router preserves FFXI macro-style slash commands for the bounded legacy adapter', () => {
+test('slash router no longer preserves the retired FFXI macro command surface', () => {
     const { router } = createRouterWithState();
 
-    assert.match(router('/macrohelp'), /FFXI Macro\/Text Command Reference/);
-    assert.match(router('/ma Cure'), /You are not in battle/);
-    assert.match(router('/ws "Fast Blade"'), /You are not in battle/);
-    assert.match(router('/item Potion'), /Item command accepted/);
+    assert.match(router('/macrohelp'), /Unknown command: macrohelp/);
+    assert.match(router('/ma Cure'), /Unknown command: ma Cure/);
+    assert.match(router('/ws "Fast Blade"'), /Unknown command: ws/);
 });
 
 test('slash router supports account character save and listing commands', () => {

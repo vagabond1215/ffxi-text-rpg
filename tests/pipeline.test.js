@@ -15,22 +15,24 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.2');
+    assert.equal(PRODUCT_VERSION, '0.8.600.3');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
-    assert.equal(VERSION.app, PRODUCT_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 6);
     assert.equal(VERSION.data, 37);
     assert.equal(VERSION.benchmark, 1);
-    assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Current Schema Cleanup');
+    assert.equal(Object.hasOwn(VERSION, 'app'), false);
+    assert.equal(Object.hasOwn(VERSION, 'save'), false);
+    assert.equal(VERSION.codename, 'Canonical Command Contract');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
         {
             versionManifest: SYSTEM_VERSIONS.versionManifest,
+            commandShell: SYSTEM_VERSIONS.commandShell,
+            slashCommands: SYSTEM_VERSIONS.slashCommands,
             accountSaves: SYSTEM_VERSIONS.accountSaves,
             saveEncoding: SYSTEM_VERSIONS.saveEncoding,
             inventoryContainers: SYSTEM_VERSIONS.inventoryContainers,
@@ -42,7 +44,9 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.2',
+            versionManifest: '0.8.600.3',
+            commandShell: '0.5.1',
+            slashCommands: '0.5.0',
             accountSaves: '0.7.0',
             saveEncoding: '0.5.0',
             inventoryContainers: '0.7.0',
@@ -56,15 +60,15 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.2/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.3/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
-    assert.match(describeVersion(), /Codename: Current Schema Cleanup/);
+    assert.match(describeVersion(), /Codename: Canonical Command Contract/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /inventoryContainers: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /homeInfrastructure: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /commandShell: 0\.5\.1/);
+    assert.match(describeSystemVersions(), /slashCommands: 0\.5\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
 

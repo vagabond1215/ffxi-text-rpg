@@ -29,7 +29,6 @@ import {
 } from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
 import { describeEquippableSources, equipItem, inspectItem, unequipItem } from './systems/equipmentEngine.js';
-import { isFfxiSlashCommand, routeFfxiSlashCommand } from './systems/ffxiCommandAdapter.js';
 import {
     describeContainerContents,
     describeInventoryContainers,
@@ -117,15 +116,15 @@ const HELP_TEXT = [
     '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show learned canonical spells and active abilities.',
     '  abilities            Show learned canonical spells, techniques, and utility abilities.',
-    '  invoke <ability>     Activate a canonical learned ability through the 0.6.300 engine.',
+    '  invoke <ability>     Activate a canonical learned ability through the ability engine.',
     '  techniques           Show recovered weapon-technique source data.',
-    '  jobabilities         Show bounded recovered discipline abilities and traits.',
+    '  disciplineabilities  Show bounded recovered discipline abilities and traits.',
     '  bestiary             Show recovered bestiary notes for the current place.',
     '  encounter <enemy>    Start a battle against a loaded enemy seed.',
     '  battle               Show the active battle state.',
     '  attack [target]      Perform a basic attack in battle.',
-    '  technique <name>     Use the transitional TP-gated combat technique adapter.',
-    '  cast <spell>         Use the transitional legacy spell combat adapter.',
+    '  technique <name>     Use the current TP-gated combat technique adapter.',
+    '  cast <spell>         Use a learned spell in combat.',
     '  npcs                 List loaded NPCs.',
     '  enemies              List loaded enemies.',
     '  maps                 List known starter map records.',
@@ -141,7 +140,7 @@ const HELP_TEXT = [
     '  travel <destination> Start direct travel to a connected place.',
     '  wait [seconds]       Advance canonical fictional time and reconcile timed actions.',
     '  databases            List planned/seeded/implemented data registries.',
-    '  version              Show product/save/data version tracking.',
+    '  version              Show product/schema/data version tracking.',
     '  systems              Show system version map.',
     '  tick                 Inspect live tick engine baseline.',
     '  inspect <target>     Inspect character, item, stats, skills, inventory, equipment, places, maps, or runtime diagnostics.',
@@ -149,14 +148,12 @@ const HELP_TEXT = [
     '  log                  Show recent command history.',
     '  save                 Save the current local game state.',
     '  reset                Clear local save data and reload the page.',
-    '',
-    'Legacy command aliases remain accepted at bounded compatibility seams but are not canonical vocabulary.',
 ].join('\n');
 
 export function createCommandRouter(state, services = {}) {
     const saveGame = services.saveGame ?? (() => false);
-    const clearSave = services.clearSave ?? (() => window.localStorage?.removeItem('ffxiTextRpgSave'));
-    const reload = services.reload ?? (() => window.location.reload());
+    const clearSave = typeof services.clearSave === 'function' ? services.clearSave : null;
+    const reload = services.reload ?? (() => globalThis.window?.location?.reload?.());
     const tickEngine = services.tickEngine ?? createTickEngine();
     let creator = null;
 
@@ -178,8 +175,6 @@ export function createCommandRouter(state, services = {}) {
             return result.message;
         }
 
-        if (isFfxiSlashCommand(parsed)) return routeFfxiSlashCommand(state, parsed);
-
         switch (parsed.command) {
             case 'help': return HELP_TEXT;
             case 'create':
@@ -188,14 +183,10 @@ export function createCommandRouter(state, services = {}) {
                 creator = createCreatorSession();
                 return renderCreatorPrompt(creator);
             case 'cancel': creator = null; return 'Character creation cancelled.';
-            case 'powers':
-            case 'nations': return describeNations();
-            case 'ancestries':
-            case 'races': return describeRaces();
-            case 'disciplines':
-            case 'jobs': return describeJobs();
-            case 'discipline':
-            case 'job': return parsed.args.length ? switchMainJob(state.player, parsed.args.join(' ')).message : describeJobProgression(state.player);
+            case 'powers': return describeNations();
+            case 'ancestries': return describeAncestries();
+            case 'disciplines': return describeDisciplines();
+            case 'discipline': return parsed.args.length ? switchMainJob(state.player, parsed.args.join(' ')).message : describeJobProgression(state.player);
             case 'skills': return describeSkillProgression(state.player);
             case 'skill': return describeSkillProgression(state.player, parsed.args[0]);
             case 'statformula': return describeStatFormulaOverview();
@@ -214,12 +205,10 @@ export function createCommandRouter(state, services = {}) {
             case 'guild': return performPoiAction(state, 'guild', parsed.args.join(' '));
             case 'quest': return performPoiAction(state, 'quest', parsed.args.join(' '));
             case 'storage': return performPoiAction(state, 'storage', parsed.args.join(' '));
-            case 'companion':
-            case 'trust': return performPoiAction(state, 'companion', parsed.args.join(' '));
+            case 'companion': return performPoiAction(state, 'companion', parsed.args.join(' '));
             case 'discovered': return describeDiscoveredPois(state);
             case 'fastpoi': return fastTravelToPoi(state, parsed.args.join(' '));
-            case 'exits':
-            case 'zonefast': return describeZoneFastTravelOptions(state);
+            case 'exits': return describeZoneFastTravelOptions(state);
             case 'character': return describeCharacter(state);
             case 'stats': return describeStats(state);
             case 'inventory':
@@ -231,33 +220,24 @@ export function createCommandRouter(state, services = {}) {
             case 'equip': return describeEquipCommand(state, parsed.args);
             case 'unequip': return describeUnequipCommand(state, parsed.args);
             case 'equipsources': return describeEquippableSources(state);
-            case 'home':
-            case 'moghouse': return describeHomeCommand(state, parsed.args[0]);
+            case 'home': return describeHomeCommand(state, parsed.args[0]);
             case 'equipment': return describeEquipment(state);
             case 'spells':
-            case 'magic':
             case 'abilities': return describeAbilities(state);
             case 'invoke': return describeAbilityActivation(state, parsed.args.join(' '));
-            case 'techniques':
-            case 'weaponskills':
-            case 'ws': return describeWeaponSkills();
-            case 'disciplineabilities':
-            case 'jobabilities':
-            case 'ja': return describeJobAbilities(state);
+            case 'techniques': return describeWeaponSkills();
+            case 'disciplineabilities': return describeJobAbilities(state);
             case 'bestiary': return describeBestiary(state);
             case 'encounter': return describeEncounterStart(state, parsed.args.join(' '));
             case 'battle': return describeBattle(state.activeBattle);
             case 'attack': return performPlayerAttack(state, parsed.args[0]);
-            case 'technique':
-            case 'weaponskill': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
+            case 'technique': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
             case 'cast': return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
             case 'npcs': return describeNpcs(state);
             case 'enemies': return describeEnemies(state);
             case 'maps': return describeMaps();
             case 'map': return describeMap(parsed.args.join(' '));
-            case 'zones':
             case 'places': return describePlaces();
-            case 'zone':
             case 'place': return describePlace(parsed.args.join(' ') || state.currentPlaceId);
             case 'atlas': return describeAtlas(state, parsed.args.join(' ') || state.currentPlaceId);
             case 'grid': return describeCurrentGrid(state);
@@ -265,8 +245,7 @@ export function createCommandRouter(state, services = {}) {
             case 'stop': return stopTravel(state).message;
             case 'controls':
             case 'hud': return describeControls();
-            case 'recovered':
-            case 'legacy': return describeLegacyRecoveredData();
+            case 'recovered': return describeLegacyRecoveredData();
             case 'travel': return describeTravelStart(state, parsed.args.join(' '));
             case 'wait': return describeWait(state, tickEngine, parsed.args[0]);
             case 'databases':
@@ -278,7 +257,11 @@ export function createCommandRouter(state, services = {}) {
             case 'validate': return describeValidation(state);
             case 'log': return describeLog(state, parsed.args[0]);
             case 'save': return saveGame(state) ? 'Game saved locally.' : 'Save failed. Check console for validation details.';
-            case 'reset': clearSave(); reload(); return 'Resetting local save...';
+            case 'reset':
+                if (!clearSave) return 'Reset is unavailable in this command context.';
+                clearSave();
+                reload();
+                return 'Resetting local save...';
             default: return `Unknown command: ${parsed.input}\nType "help" for available commands.`;
         }
     };
@@ -335,15 +318,15 @@ function hasFastCreateArgs(parsed) {
 }
 
 function describeCreateCharacter(state, parsed) {
-    const powerQuery = parsed.named.power ?? parsed.named.nation ?? parsed.args[0] ?? 'thornwall';
+    const powerQuery = parsed.named.power ?? parsed.args[0] ?? 'thornwall';
     const power = findNation(powerQuery);
     if (!power) return `Unknown starting power: ${powerQuery}. Try: powers`;
 
     const nextState = createNewGameState({
         nationId: power.id,
-        raceId: parsed.named.ancestry ?? parsed.named.race ?? 'human',
+        raceId: parsed.named.ancestry ?? 'human',
         sex: parsed.named.sex,
-        mainJobId: parsed.named.discipline ?? parsed.named.job ?? parsed.named.mainJob ?? 'vanguard',
+        mainJobId: parsed.named.discipline ?? 'vanguard',
         name: parsed.named.name ?? 'Traveler',
     });
 
@@ -355,12 +338,12 @@ function describeCreatedCharacter(state) {
     return [`Created ${state.player.identity.name}.`, describeCharacter(state), '', 'Starting maps:', ...state.player.progression.unlockedMaps.map((mapId) => `- ${mapId}`)].join('\n');
 }
 
-function describeRaces() {
-    return Object.values(RACES).map((race, index) => `${index + 1}. ${race.id} - ${race.name}: ${race.description}`).join('\n');
+function describeAncestries() {
+    return Object.values(RACES).map((ancestry, index) => `${index + 1}. ${ancestry.id} - ${ancestry.name}: ${ancestry.description}`).join('\n');
 }
 
-function describeJobs() {
-    return listStartingJobs().map((job, index) => `${index + 1}. ${job.id} - ${job.name} (${job.abbreviation}): ${job.role}`).join('\n');
+function describeDisciplines() {
+    return listStartingJobs().map((discipline, index) => `${index + 1}. ${discipline.id} - ${discipline.name} (${discipline.abbreviation}): ${discipline.role}`).join('\n');
 }
 
 function describeMove(state, direction) {
@@ -418,31 +401,22 @@ function inspectTarget(state, target = 'character', restArgs = []) {
         case 'equipment':
         case 'equip': return describeEquipment(state);
         case 'spells':
-        case 'magic':
         case 'abilities': return describeAbilities(state);
-        case 'techniques':
-        case 'weaponskills':
-        case 'ws': return describeWeaponSkills();
+        case 'techniques': return describeWeaponSkills();
         case 'discipline':
-        case 'job':
         case 'progression': return describeJobProgression(state.player);
         case 'skills': return describeSkillProgression(state.player);
         case 'skill': return describeSkillProgression(state.player, restArgs[0]);
-        case 'disciplineabilities':
-        case 'jobabilities':
-        case 'ja': return describeJobAbilities(state);
+        case 'disciplineabilities': return describeJobAbilities(state);
         case 'bestiary': return describeBestiary(state);
         case 'battle': return describeBattle(state.activeBattle);
         case 'npcs':
         case 'npc': return describeNpcs(state);
         case 'enemies':
         case 'enemy': return describeEnemies(state);
-        case 'powers':
-        case 'nations': return describeNations();
-        case 'ancestries':
-        case 'races': return describeRaces();
-        case 'disciplines':
-        case 'jobs': return describeJobs();
+        case 'powers': return describeNations();
+        case 'ancestries': return describeAncestries();
+        case 'disciplines': return describeDisciplines();
         case 'statformula': return describeStatFormulaOverview();
         case 'racegrades': return describeRaceStatGrades();
         case 'jobgrades': return describeJobStatGrades();
@@ -453,17 +427,14 @@ function inspectTarget(state, target = 'character', restArgs = []) {
         case 'poi':
         case 'pois': return describePlacePois(state.currentPlaceId);
         case 'discovered': return describeDiscoveredPois(state);
-        case 'exits':
-        case 'zonefast': return describeZoneFastTravelOptions(state);
-        case 'zone':
+        case 'exits': return describeZoneFastTravelOptions(state);
         case 'place': return describeLocation(state);
         case 'atlas': return describeAtlas(state);
         case 'grid': return describeCurrentGrid(state);
         case 'travel': return describeTravel(state);
         case 'controls':
         case 'hud': return describeControls();
-        case 'recovered':
-        case 'legacy': return describeLegacyRecoveredData();
+        case 'recovered': return describeLegacyRecoveredData();
         case 'state': return JSON.stringify(state, null, 2);
         case 'log': return describeLog(state);
         case 'version': return describeVersion();

@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.2';
+export const PRODUCT_VERSION = '0.8.600.3';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,15 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 1,
-    codename: 'Current Schema Cleanup',
+    codename: 'Canonical Command Contract',
     compatibility: 'pre-release-current-schema',
     released: false,
-    app: PRODUCT_VERSION,
-    save: 6,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.2',
+    versionManifest: '0.8.600.3',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -66,7 +64,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationSubstrateGate: '0.1.0',
     integratedMechanicsGate: '0.1.0',
     dayCycle: '0.2.0',
-    commandShell: '0.5.0',
+    commandShell: '0.5.1',
     domUi: '0.10.0',
     domOnboarding: '0.1.0',
     gameViewModels: '0.15.1',
@@ -79,7 +77,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     localityNavigation: '0.2.0',
     canvasUi: '0.8.0',
     uiIntents: '0.10.1',
-    slashCommands: '0.4.1',
+    slashCommands: '0.5.0',
     accountSaves: '0.7.0',
     saveRecovery: '0.1.0',
     saveEncoding: '0.5.0',
