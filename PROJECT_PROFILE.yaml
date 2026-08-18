@@ -49,6 +49,11 @@ validation:
     - tests/currentSchemaResourceOpportunities.test.js
     - tests/currentSchemaEcologyRegistry.test.js
     - tests/currentSchemaCharacterRuntime.test.js
+    - tests/currentSchemaWorldSimulation.test.js
+    - tests/currentSchemaPlayerCapabilities.test.js
+    - tests/currentSchemaInventoryState.test.js
+    - tests/currentSchemaSemanticEvents.test.js
+    - tests/currentSchemaWorkRegistry.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -61,16 +66,29 @@ quality:
   current_game_state_must_be_complete_before_revival: true
   raw_current_schema_validation_before_runtime_normalization: true
   active_task_links_must_be_persisted_and_consistent: true
-  required_domain_registries_validate_before_revival:
-    - timed-tasks
-    - active-travel
-    - projects
-    - commitments
-    - relationships
-    - resource-opportunities
-    - ecology
-    - party
-    - ability-runtime
+  raw_domain_validation:
+    required:
+      - world-time
+      - simulation-control
+      - timed-tasks
+      - active-travel
+      - projects
+      - commitments
+      - relationships
+      - resource-opportunities
+      - ecology
+      - party
+      - ability-runtime
+      - semantic-events
+      - player-capabilities
+      - player-inventory-state
+    optional_when_present:
+      - work-registry
+  post_revival_only:
+    - broad-player-validation
+    - flat-inventory-alias-identity
+  deferred_raw_validation:
+    - atlas-and-poi-discovery-pending-authority-review
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
@@ -87,8 +105,11 @@ constraints:
   - keep the generic migration substrate available for future deliberate migrations without making migration automatic
   - keep carried inventory/container facts under inventory authority rather than duplicating container knowledge in consumers
   - do not reintroduce retired FFXI command runtime compatibility
-  - direct production timed-task creation requires an explicit domain owner, exactly-once reconciliation, and terminal release responsibility
+  - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
   - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
-  - raw Game State 6 validation must reject malformed required domain registries before runtime ensure helpers can normalize them
-  - classify remaining state as persistent authority, derived/transient, or construction convenience before adding another raw validator
+  - raw Game State 6 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
+  - classify remaining state as persistent authority derived-transient or construction convenience before adding another raw validator
+  - do not compose broad validatePlayer at the raw boundary because it mixes post-revival identity and derived-state checks
+  - keep work optional when absent but strict when a work registry is persisted
+  - do not tighten atlas or POI discovery persistence until its authority and timestamp semantics are explicitly resolved
   - roadmap sequencing does not authorize unbounded implementation
