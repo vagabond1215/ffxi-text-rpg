@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.17
+Product:       0.8.600.22
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
-Codename:      Bounded Task Retention
+Codename:      Active Task Persistence Matrix
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.17` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.22` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
 
 ## Product version format
 
@@ -37,12 +37,7 @@ A revision bump may record a coherent maintenance contract without advancing a f
 | Data | 37 | canonical authored-data and stable-identifier contract |
 | Benchmark | 3 | benchmark workload/measurement comparability contract |
 
-These versions advance independently:
-
-- **Account Save** changes when account/session registry semantics change materially.
-- **Game State** changes when persisted runtime structure or meaning changes materially.
-- **Data** changes when canonical authored-data shape, authority, content, or stable identifiers change materially.
-- **Benchmark** changes when the workload or measurement protocol stops being comparable.
+These versions advance independently. Maintenance that enforces an already-declared current contract does not require a schema/data bump merely because validation became stricter.
 
 Recent Data history:
 
@@ -64,9 +59,18 @@ Current rules:
 
 1. Account/session payloads must match Account Save 5 exactly.
 2. Character payloads must match Game State 6 and contain the complete required persisted structure before revival/reference relinking.
-3. Incompatible or incomplete pre-alpha payloads are rejected rather than lazily reconstructed or automatically migrated.
-4. Do not add duplicate fields, compatibility aliases, fallback storage keys, or adapter layers by reflex.
-5. The generic ordered migration utility remains available for a future migration only when compatibility is explicitly required or independently useful.
+3. Current persisted registries/active owner links that are validated at the raw boundary must already satisfy their declared contract; load does not manufacture replacement task/travel state.
+4. Incompatible or incomplete pre-alpha payloads are rejected rather than lazily reconstructed or automatically migrated.
+5. Do not add duplicate fields, compatibility aliases, fallback storage keys, or adapter layers by reflex.
+6. The generic ordered migration utility remains available for a future migration only when compatibility is explicitly required or independently useful.
+
+Current task-related raw validation covers:
+
+- timed-task registry version/records/status/timing/duplicates/monotonic sequence;
+- Travel State 2 plus the active travel/task link;
+- active project/work/timed-ability/resource-recovery task ownership.
+
+Active owner links may point to an active or just-completed task until the owner reconciles. Terminal owner records may retain historical `taskId` after terminal task release.
 
 ## Current ActionResult contract
 
@@ -87,7 +91,7 @@ The old non-enumerable `.message` / `.reason` aliases are removed. Adapters rend
 
 `package.json` requires Node `>=24`. Hosted Check uses Node 24 LTS with `actions/checkout@v7` and `actions/setup-node@v6`, concurrency cancellation, and a 15-minute job timeout.
 
-Hosted Check currently runs:
+Hosted Check runs:
 
 ```text
 npm test
@@ -95,7 +99,7 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-`tests/architectureDebtGuard.test.js` guards selected removed compatibility surfaces from returning. Long-session and lifecycle-specific guards additionally cover multi-day save/load, tick subscription ownership, browser-root resource teardown, owner-gated terminal task release, and mixed task-retention steady state.
+`tests/architectureDebtGuard.test.js` now also guards the exact direct timed-task owner set and prevents runtime legacy active-travel reconstruction from returning.
 
 ## Benchmark protocol history
 
@@ -107,15 +111,13 @@ Historical workload. Several timed loops included fixture/setup work such as tic
 
 ### Benchmark 2
 
-Introduced at Product `0.8.600.9`. Setup was moved outside the timed regions for basic attacks, steady tick dispatch, and route lookup. Player/enemy profile creation remained intentionally measured as creation workloads. Because this changed what the numbers meant, Benchmark advanced `1 -> 2`.
+Introduced at Product `0.8.600.9`. Setup was moved outside the timed regions for basic attacks, steady tick dispatch, and route lookup. Player/enemy profile creation remained intentionally measured as creation workloads. Benchmark advanced `1 -> 2` because the measurement meaning changed.
 
 ### Benchmark 3 — current
 
-Introduced at Product `0.8.600.12`. Every workload now receives an unreported warm-up equal to 10% of measured iterations on a separate setup context before timing begins. Because warm-up changes the measurement protocol and cold/JIT contribution, Benchmark advanced `2 -> 3`.
+Introduced at Product `0.8.600.12`. Every workload receives an unreported warm-up equal to 10% of measured iterations on a separate setup context before timing begins. Benchmark advanced `2 -> 3` because warm-up changed comparability.
 
-Benchmark 3 is the current baseline. Numeric results from Benchmark 1/2 must not be described as directly improving/regressing against Benchmark 3.
-
-No hard timing threshold is accepted yet. The latest hosted sample still shows substantial relative variance on very short basic-attack measurements, though the longer profile/route workloads remain more stable.
+Benchmark 3 is the current baseline. Numeric results from Benchmark 1/2 must not be described as direct improvement/regression against Benchmark 3. No hard timing threshold is accepted yet.
 
 ## `0.8.600` feature-track history
 
@@ -139,87 +141,71 @@ Game State 5
 Data 36
 ```
 
-## `0.8.600.2`–`.17` maintenance history
+## Maintenance history `.2`–`.22`
 
 | Revision | Contract | Independent-version decision |
 | --- | --- | --- |
-| `.2` Current Schema Cleanup | Hearth & Horizon persistence/home identifiers; obsolete migration/theme/transport cleanup | Account `4->5`, Game `5->6`, Data `36->37` |
-| `.3` Canonical Command Contract | remove FFXI runtime macro adapter/aliases; remove `VERSION.app`/`VERSION.save` | unchanged |
-| `.4` Strict Current Schema | reject incomplete Game State 6 before revival; malformed current state cannot save | unchanged |
-| `.5` Carried Commitment Delivery | one carried-container fact for logistics + commitment delivery; atomic cross-container removal | unchanged |
-| `.6` Canonical Action Results | remove ActionResult `.message`/`.reason` compatibility aliases | unchanged |
-| `.7` Runtime Architecture Guardrails | Node 24 LTS + current Actions + executable debt guards | unchanged |
-| `.8` Long Session Evidence | sampled benchmark command + deterministic 130-day save/load/lifecycle smoke | unchanged |
+| `.2` Current Schema Cleanup | canonical persistence/home identifiers; obsolete migration/theme/transport cleanup | Account `4->5`, Game `5->6`, Data `36->37` |
+| `.3` Canonical Command Contract | remove FFXI runtime macro adapter/aliases; remove ambiguous version aliases | unchanged |
+| `.4` Strict Current Schema | reject incomplete Game State 6 before revival | unchanged |
+| `.5` Carried Commitment Delivery | canonical carried-container facts + atomic removal | unchanged |
+| `.6` Canonical Action Results | remove ActionResult compatibility aliases | unchanged |
+| `.7` Runtime Architecture Guardrails | Node 24 + current Actions + executable debt guards | unchanged |
+| `.8` Long Session Evidence | sampled benchmark + deterministic 130-day save/load smoke | unchanged |
 | `.9` Benchmark Protocol V2 | separate setup from attack/tick/route timing | Benchmark `1->2` |
-| `.10` Subscription Ownership | prevent stale tick disposer from deleting replacement owner | unchanged |
-| `.11` DOM Root Ownership | root owns app/observer teardown across remount/failure | unchanged |
-| `.12` Warm Benchmark Baseline | 10% separate-context warm-up before each measurement/sample | Benchmark `2->3` |
-| `.13` Owner-Gated Task Release | terminal-only `releaseTimedTask`; campaign recovery releases after exactly-once consequence reconciliation | unchanged |
-| `.14` Work/Project Task Release | work/project terminal transitions release task records while retaining correlation IDs | unchanged |
-| `.15` Transport Task Release | arrival/cancellation release terminal task after location/state/event transition | unchanged |
-| `.16` Ability/Resource Task Release | ability resolution/interruption and resource recovery/storage outcomes release terminal tasks after durable consequences | unchanged |
-| `.17` Bounded Task Retention | mixed repeated owner-managed lifecycles return task registry to one intentional generic-terminal baseline across save/load | unchanged |
+| `.10` Subscription Ownership | stale disposer cannot delete replacement tick owner | unchanged |
+| `.11` DOM Root Ownership | root owns app/observer cleanup | unchanged |
+| `.12` Warm Benchmark Baseline | separate-context 10% warm-up | Benchmark `2->3` |
+| `.13` Owner-Gated Task Release | terminal-only release + campaign recovery reconciliation proof | unchanged |
+| `.14` Work/Project Task Release | release after durable terminal transitions | unchanged |
+| `.15` Transport Task Release | release after arrival/cancellation | unchanged |
+| `.16` Ability/Resource Task Release | release after durable resolution/recovery outcome | unchanged |
+| `.17` Bounded Task Retention | mixed repeated owner lifecycle soak | unchanged |
+| `.18` Task Owner Guard | direct production task creation restricted to six audited release owners; managed task steady state zero | unchanged |
+| `.19` Strict Active Travel | remove runtime legacy reconstruction; enforce Travel State 2/task link at raw save boundary | unchanged |
+| `.20` Active Task Link Integrity | validate active project/work/ability/resource owner task links before revival | unchanged |
+| `.21` Strict Task Registry | validate full task registry before revival | unchanged |
+| `.22` Active Task Persistence Matrix | positive active save/load/reconcile/release evidence across all six owners | unchanged |
 
-Promoted commits for the terminal-task hardening train:
+Latest hardening train `.18`–`.22`:
 
-```text
-.13  be8db394e81da0e2aa96069efb7df51cd0b68b9b
-.14  f7d51365f13fa1cb703383ec4799934e07a3f90f
-.15  588d6dd0e0a882a6cfdc76d60797c0488330141d
-.16  67ec4ea8ae19b1032894a604ed372802d794cf92
-.17  e4ebdbc14776329156f2df2dee8c598e3b8b91cb
-```
+| Revision | PR | Exact head | Check | Tests | Promoted main |
+| --- | ---: | --- | ---: | ---: | --- |
+| `.18` | #341 | `340e0088f93bac89d00bd37e4be5800d065275c3` | `32169108628` | 535/535 | `6dbea79abd82dab5b4dc9e1b141a409383937530` |
+| `.19` | #342 | `45918eda8b144c2a3ab1cc6c0eb8599eb58923e2` | `32169787083` | 539/539 | `fcd435c0c3802c7301670a4c48700def1c2465e7` |
+| `.20` | #343 | `d2d3376e19ad3e4a6df79fcef7040afde7053819` | `32170142917` | 543/543 | `2c11cda829c407dea6564c4eb622e17238f8dc4c` |
+| `.21` | #344 | `7b269d0a17d6d07237c281288c9b7d03365ec354` | `32170589178` | 547/547 | `8c3995d8957dfa3a9542688d9cc8dc79e69a1903` |
+| `.22` | #345 | `be561e922f1b0316727e13a91381595418b956e2` | `32171224914` | 550/550 | `7a148ebdff594523f956ed6be83aba59e26d564f` |
 
-Exact-head validation for the train:
+Every final head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
 
-| Revision | PR | Exact head | Check | Tests |
-| --- | ---: | --- | ---: | ---: |
-| `.13` | #336 | `d3d7beeba9d605a7a94d397ed3827e97f7b1e434` | `32162369191` | 529/529 |
-| `.14` | #337 | `fcea01f324067a60af440378a0647767c5bb5cab` | `32162896278` | 533/533 |
-| `.15` | #338 | `3086f424259b441fd644338ad3e65e9b860938db` | `32163232356` | 533/533 |
-| `.16` | #339 | `d596e0a86e71ac2dc5b74c552b5f98a5ff2b621a` | `32163982824` | 533/533 |
-| `.17` | #340 | `666d2f432c3db097012ef035d2e4655405c5747d` | `32168023319` | 534/534 |
-
-Every listed head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
-
-Latest exact-head runtime validation: PR #340 / head `666d2f432c3db097012ef035d2e4655405c5747d` / Check `32168023319`:
+Latest Benchmark 3 single run from Check `32171224914`:
 
 ```text
-tests       534
-pass        534
-fail        0
-cancelled   0
-skipped     0
-Benchmark 3 success
-Benchmark Sample success
+player profiles  0.394555 ms/op
+enemy profiles   0.071987 ms/op
+basic attacks    0.003521 ms/op
+tick dispatch    0.001158 ms/op
+route lookup     0.007919 ms/op
 ```
 
-Latest three-sample Benchmark 3 medians/spreads:
+Three-sample medians/spreads:
 
 ```text
-player profiles  0.359505 ms/op   6.21%
-enemy profiles   0.070873 ms/op  10.10%
-basic attacks    0.001285 ms/op 189.74%
-tick dispatch    0.000798 ms/op  28.18%
-route lookup     0.007662 ms/op   6.59%
+player profiles  0.364139 ms/op   7.99%
+enemy profiles   0.070800 ms/op  11.17%
+basic attacks    0.001303 ms/op 219.89%
+tick dispatch    0.000713 ms/op  18.43%
+route lookup     0.007434 ms/op   6.93%
 ```
 
-## Timed-task release/retention contract
+## Timed-task ownership contract
 
-`releaseTimedTask` may remove only terminal task records. Active release is rejected, and `nextSequence` remains monotonic so released task IDs are not reused.
+`releaseTimedTask` removes terminal task records only. Active release is rejected, and `nextSequence` remains monotonic.
 
-Domain owners release only after their durable consequence is established:
+Direct production task creators are currently limited to ability, campaign recovery, projects, resource recovery, transport, and work. Each owner releases only after its durable exactly-once consequence.
 
-- campaign recovery after recovery consequence/event reconciliation;
-- work after completed/failed/awaiting-storage/cancelled transition;
-- projects after completion/cancellation;
-- transport after arrival/cancellation;
-- abilities after resolution/cooldown/effects or interruption;
-- resource recovery after recovered/failed-storage outcome and completion event.
-
-An unreconciled terminal task survives save/load until its owner consumes it. Domain records/results/events may keep `taskId` only as historical correlation after release.
-
-Generic/unowned terminal history is intentionally **not** centrally pruned yet. The `.17` soak proves owner-managed gameplay task retention returns to steady state; a separate generic history cap should be introduced only if a concrete diagnostic/history requirement justifies it.
+There is no production generic/unowned task producer at the `.22` baseline. Consequently there is no accepted generic history cap or global task prune. Future direct owners must establish ownership/reconciliation/release semantics before being admitted by the architecture guard.
 
 ## Release discipline
 
@@ -236,9 +222,9 @@ Do not claim validation that did not run. Documentation-only synchronization aft
 
 ## Next Phase 0.8 decision
 
-Do **not** automatically begin `0.8.700`. A new feature work order should re-audit one bounded seam before implementation.
+Do **not** automatically begin `0.8.700`.
 
-For maintenance, the prior terminal-task ownership seam is now closed for known direct owners. The next bounded question is whether generic/unowned terminal tasks require any history/diagnostic retention policy at all. Audit real producers/consumers first; do not add a central prune merely because the mechanism exists.
+For maintenance, the strongest next bounded audit is current-schema validator composition for other required persisted registries. Inspect one registry family at a time and distinguish required persistent authority from derived/transient/construction convenience before tightening rejection behavior.
 
 Candidate feature families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam.
 
