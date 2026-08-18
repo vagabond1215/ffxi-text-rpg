@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createInitialState } from '../js/text/gameState.js';
+import { createInitialState, DEFAULT_START_WORLD_TIME_SECONDS } from '../js/text/gameState.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeControls, NAV_KEYPAD } from '../js/text/data/actionControls.js';
 import { evaluateAggroForGrid } from '../js/text/systems/aggroEngine.js';
@@ -11,10 +11,13 @@ import { startEncounter } from '../js/text/systems/combatActionEngine.js';
 
 test('initial state keeps coordinate state internal while atlas text exposes discovery only', () => {
     const state = createInitialState();
+    const initialVisit = state.atlas['thornwall-southgate'].visited['G-10'];
 
     assert.equal(state.position.placeId, 'thornwall-southgate');
     assert.equal(state.position.coord, 'G-10');
     assert.equal(hasVisited(state.atlas, 'thornwall-southgate', state.position), true);
+    assert.equal(initialVisit.visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS);
+    assert.equal(Object.hasOwn(initialVisit, 'visitedAt'), false);
     assert.match(describeAtlas(state), /Known areas: 1/);
     assert.match(describeAtlas(state), /total map extent remain hidden/i);
     assert.doesNotMatch(describeAtlas(state), /G-10|A-M|13x13/);
@@ -31,13 +34,17 @@ test('controls include resource bars tick bar keypad and action groups', () => {
     assert.match(text, /Cast Magic/);
 });
 
-test('setPositionAndDiscover records a new visited coordinate', () => {
+test('setPositionAndDiscover records canonical world time for a new visited coordinate', () => {
     const state = createInitialState();
+    state.worldTime.totalSeconds += 123;
     const result = setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
+    const visit = state.atlas['thornwall-southgate'].visited['F-10'];
 
     assert.equal(result.ok, true);
     assert.equal(state.position.coord, 'F-10');
     assert.equal(hasVisited(state.atlas, 'thornwall-southgate', { coord: 'F-10' }), true);
+    assert.equal(visit.visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS + 123);
+    assert.equal(Object.hasOwn(visit, 'visitedAt'), false);
 });
 
 test('aggro engine can deterministically trigger on aggressive spawn grid', () => {

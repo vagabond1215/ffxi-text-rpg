@@ -7,9 +7,12 @@ import {
 } from '../data/coordinates.js';
 import { getPlace, isCoordinateInsidePlace } from '../data/places.js';
 
-export function createAtlasState(startPlaceId, coordinate) {
+export function createAtlasState(startPlaceId, coordinate, options = {}) {
     const atlas = {};
-    markVisited(atlas, startPlaceId, coordinate, { important: ['Starting position'] });
+    markVisited(atlas, startPlaceId, coordinate, {
+        important: ['Starting position'],
+        worldTimeSeconds: options.worldTimeSeconds ?? 0,
+    });
     return atlas;
 }
 
@@ -25,7 +28,7 @@ export function markVisited(atlas, placeId, coordinate, details = {}) {
         ...(Number.isInteger(coordinate.x) && Number.isInteger(coordinate.y)
             ? { x: coordinate.x, y: coordinate.y }
             : { coord: coordinateKey(coordinate), levelId: coordinate.levelId ?? 'main' }),
-        visitedAt: new Date().toISOString(),
+        visitedAtWorldSeconds: normalizeWorldTimeSeconds(details.worldTimeSeconds),
         important: details.important ?? [],
         notes: details.notes ?? [],
     };
@@ -96,13 +99,20 @@ export function setPositionAndDiscover(state, placeId, coordinate, details = {})
     state.location = place.name;
     state.position = normalizePositionForPlace(place, coordinate, coordinate?.facing);
     state.atlas ??= {};
-    markVisited(state.atlas, place.id, state.position, details);
+    markVisited(state.atlas, place.id, state.position, {
+        ...details,
+        worldTimeSeconds: state.worldTime?.totalSeconds,
+    });
 
     return { ok: true, place, coordinate: state.position };
 }
 
 export function coordinateKey(coordinate) {
     return normalizedCoordinateKey(coordinate);
+}
+
+function normalizeWorldTimeSeconds(value) {
+    return Number.isInteger(value) && value >= 0 ? value : 0;
 }
 
 function describeGridAtlasRows(state, place) {

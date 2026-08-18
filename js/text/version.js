@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.600.33';
+export const PRODUCT_VERSION = '0.8.600.34';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 6,
+    gameState: 7,
     data: 37,
     benchmark: 3,
-    codename: 'Strict Player Progression',
+    codename: 'Canonical Discovery Time',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.33',
+    versionManifest: '0.8.600.34',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -86,7 +86,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.5.0',
     parser: '0.2.0',
-    validation: '0.25.0',
+    validation: '0.26.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
@@ -119,13 +119,14 @@ export const SYSTEM_VERSIONS = Object.freeze({
     places: '0.5.0',
     coordinates: '0.1.0',
     navigation: '0.1.1',
-    placeAtlas: '0.5.0',
+    placeAtlas: '0.6.0',
+    discoveryPersistence: '0.1.0',
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
     travel: '0.5.0',
     pois: '0.3.7',
-    poiDiscovery: '0.3.7',
+    poiDiscovery: '0.4.0',
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
     shops: '0.4.0',
