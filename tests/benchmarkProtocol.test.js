@@ -42,10 +42,12 @@ test('basic-attack benchmark prepares independent battles before timed action ca
 
     assert.equal(battles.length, 2);
     assert.notEqual(battles[0], battles[1]);
+    const firstLogLength = battles[0].log.length;
+    const secondLogLength = battles[1].log.length;
 
     definition.action(battles, 0);
     definition.action(battles, 1);
 
-    assert.equal(battles[0].history.length > 0, true);
-    assert.equal(battles[1].history.length > 0, true);
+    assert.equal(battles[0].log.length > firstLogLength, true);
+    assert.equal(battles[1].log.length > secondLogLength, true);
 });
