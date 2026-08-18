@@ -16,6 +16,7 @@ import { describeLegacyRecoveredData } from './data/legacyRecoveredData.js';
 import { describeMap, describeMaps } from './data/maps.js';
 import { describeNations, findNation } from './data/nations.js';
 import { RACES } from './data/races.js';
+import { describeActionResult } from './systems/actionResult.js';
 import { describeAggroResult, evaluateAggroForGrid } from './systems/aggroEngine.js';
 import { activateAbility, describeAbilities, reconcileAbilityActivation } from './systems/abilityEngine.js';
 import { describeAtlas, describeCurrentGrid } from './systems/atlasEngine.js';
@@ -309,8 +310,7 @@ function describeEncounterStart(state, enemyQuery) {
 
 function describeAbilityActivation(state, abilityQuery) {
     if (!abilityQuery) return 'Invoke what? Try `abilities` to see learned canonical abilities.';
-    const result = activateAbility(state, abilityQuery);
-    return result.ok ? result.message : result.reason;
+    return describeActionResult(activateAbility(state, abilityQuery));
 }
 
 function hasFastCreateArgs(parsed) {
@@ -366,8 +366,7 @@ function describeMove(state, direction) {
 function describeTravelStart(state, destination) {
     if (isActiveBattle(state.activeBattle)) return 'You cannot travel while engaged in battle.';
     if (!destination) return 'Travel where? Try `places` to see known destinations.';
-    const result = startTravel(state, destination);
-    return result.ok ? result.message : result.reason;
+    return describeActionResult(startTravel(state, destination));
 }
 
 function describeWait(state, tickEngine, secondsArg = '1') {
@@ -379,7 +378,7 @@ function describeWait(state, tickEngine, secondsArg = '1') {
     const abilityResult = reconcileAbilityActivation(state);
     const lines = [`Advanced ${seconds}s.`];
     if (travelResult?.message) lines.push(travelResult.message);
-    if (abilityResult?.message) lines.push(abilityResult.message);
+    if (abilityResult) lines.push(describeActionResult(abilityResult));
     if (travelResult?.completed) lines.push('', describeLocation(state));
     else if (state.travel?.active) lines.push(describeTravel(state));
     return lines.join('\n');

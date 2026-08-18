@@ -5,7 +5,7 @@ import { createTestState } from './helpers/createTestState.js';
 import { createCommandRouter } from '../js/text/commandRouter.js';
 import { describeMap, describeMaps, listMaps } from '../js/text/data/maps.js';
 import { getPlace, listPlaces, ZONE_CONNECTIONS } from '../js/text/data/places.js';
-import { isActionResult } from '../js/text/systems/actionResult.js';
+import { describeActionResult, isActionResult } from '../js/text/systems/actionResult.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { validateWorldData } from '../js/text/systems/validation.js';
 import {
@@ -93,7 +93,7 @@ test('startTravel returns semantic ActionResult and advanceTravel moves current 
     assert.equal(state.location, 'West Elderwood');
 });
 
-test('startTravel failure uses semantic code while retaining command compatibility text adapter', () => {
+test('startTravel failure exposes semantic code and canonical display text only', () => {
     const state = createTestState();
     const result = startTravel(state, 'Unknown Somewhere');
 
@@ -103,8 +103,8 @@ test('startTravel failure uses semantic code while retaining command compatibili
     assert.equal(result.outcome, 'blocked');
     assert.equal(result.data.destinationQuery, 'Unknown Somewhere');
     assert.match(result.display.text, /Unknown destination/);
-    assert.match(result.reason, /Unknown destination/);
-    assert.equal(Object.keys(result).includes('reason'), false);
+    assert.match(describeActionResult(result), /Unknown destination/);
+    assert.equal(Object.hasOwn(result, 'reason'), false);
 });
 
 test('router exposes maps places travel and wait commands', () => {
