@@ -38,6 +38,11 @@ validation:
   lifecycle_guards:
     - tests/tickLifecycle.test.js
     - tests/domRootLifecycle.test.js
+    - tests/timedTaskReleaseLifecycle.test.js
+    - tests/workProjectTaskReleaseLifecycle.test.js
+    - tests/currentSchemaTaskLinks.test.js
+    - tests/currentSchemaTaskRegistry.test.js
+    - tests/activeTaskPersistenceMatrix.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -48,6 +53,8 @@ quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   current_game_state_must_be_complete_before_revival: true
+  raw_current_schema_validation_before_runtime_normalization: true
+  active_task_links_must_be_persisted_and_consistent: true
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
@@ -64,5 +71,7 @@ constraints:
   - keep the generic migration substrate available for future deliberate migrations without making migration automatic
   - keep carried inventory/container facts under inventory authority rather than duplicating container knowledge in consumers
   - do not reintroduce retired FFXI command runtime compatibility
-  - do not prune terminal timed-task history until domain owners define safe release semantics
+  - direct production timed-task creation requires an explicit domain owner, exactly-once reconciliation, and terminal release responsibility
+  - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
+  - tighten current-schema registry validation one bounded authority family at a time after classifying persistent versus derived/construction state
   - roadmap sequencing does not authorize unbounded implementation
