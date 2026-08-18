@@ -21,8 +21,6 @@ Hearth & Horizon is pre-alpha. Old local saves/accounts are **not** a compatibil
 
 Runtime first. Freeze runtime before documentation. Update this handoff last. Report only validation that actually ran.
 
-Autonomous-session discipline from `AGENTS.md` remains binding. If reliable elapsed time is unavailable, use at most six cycles; cycle 6 is stabilization/handoff only.
-
 ## Product laws
 
 Working title: **Hearth & Horizon**. FFXI-derived material is legacy research/reference material only.
@@ -47,41 +45,55 @@ Maps/campaign guidance represent acquired character knowledge. Fictional time is
 ## Current baseline
 
 ```text
-Product:       0.8.600.12
+Product:       0.8.600.17
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
-Codename:      Warm Benchmark Baseline
+Codename:      Bounded Task Retention
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.12` are maintenance/hardening revisions over the closed `0.8.600` track and do **not** open `0.8.700`.
+Relevant system versions:
+
+```text
+performanceHarness    0.3.0
+lifecycleHarness      0.8.0
+timedTasks            0.2.0
+campaignRecovery      0.3.0
+workTasks             0.2.0
+projects              0.2.0
+transport             0.4.0
+abilityEngine         0.3.0
+resourceOpportunities 0.2.0
+```
+
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.17` are maintenance/hardening revisions over the closed `0.8.600` track and **do not** open `0.8.700`.
 
 ## Current runtime freeze
 
-The second hardening train ended with PR **#335** (`maintenance/benchmark-warmup-v3`), squash-merged to `main` as:
+The terminal-task ownership hardening train ended with PR **#340** (`maintenance/bounded-task-retention-soak`), squash-merged to `main` as:
 
 ```text
-3de675d60ba46852f193b5cd319df2ce056aa00f
+e4ebdbc14776329156f2df2dee8c598e3b8b91cb
 ```
 
 The exact validated PR head was:
 
 ```text
-10ab2c5af9ddcf0760f49817ff5a8c41ec1caa07
-Check 32160936491
+666d2f432c3db097012ef035d2e4655405c5747d
+Check 32168023319
 Node 24.19.0
 ```
 
 Observed exact-head validation:
 
 ```text
-tests              527
-pass               527
+tests              534
+pass               534
 fail               0
 cancelled          0
 skipped            0
@@ -89,154 +101,96 @@ Benchmark 3        success
 Benchmark Sample   success
 ```
 
-Runtime was frozen after promotion of `3de675d60ba46852f193b5cd319df2ce056aa00f`. Cycle-6 commits after that point synchronize documentation only; do not describe those later documentation heads as new runtime validation checkpoints.
+Latest Benchmark 3 single-run evidence:
 
-## Hardening train `.8`–`.12`
+```text
+1,000 player combat profiles   0.379708 ms/op
+1,000 enemy combat profiles    0.071495 ms/op
+1,000 basic attacks            0.003396 ms/op
+10,000 steady tick dispatches  0.000927 ms/op
+10,000 direct route lookups    0.007520 ms/op
+```
 
-The user authorized continued hardening until input became necessary. Five runtime cycles were promoted, followed by the mandatory sixth-cycle stabilization/handoff.
+Latest three-sample medians/spreads:
 
-| Revision | Work | PR | Promoted main commit | Exact-head Check | Tests |
+```text
+player profiles  median 0.359505 ms/op   spread   6.21%
+enemy profiles   median 0.070873 ms/op   spread  10.10%
+basic attacks    median 0.001285 ms/op   spread 189.74%
+tick dispatch    median 0.000798 ms/op   spread  28.18%
+route lookup     median 0.007662 ms/op   spread   6.59%
+```
+
+**No hard performance threshold is accepted yet.** Benchmark 1, 2, and 3 are separate comparability protocols; do not describe numeric changes across those protocol versions as direct optimization results.
+
+Documentation-only synchronization after the runtime merge does not create a new runtime validation checkpoint.
+
+## Terminal-task ownership hardening `.13`–`.17`
+
+| Revision | Contract | PR | Promoted main commit | Exact-head Check | Tests |
 | --- | --- | ---: | --- | ---: | ---: |
-| `0.8.600.8` | Long-session evidence | #331 | `8fad34adb0d7db253a6593e7ffbeab3f28c28293` | `32159065893` | 518/518 |
-| `0.8.600.9` | Benchmark Protocol V2 | #332 | `7f562e20b335c4fdb449f74a8fd2a48c6378e182` | `32159773159` | 521/521 |
-| `0.8.600.10` | Tick subscription ownership | #333 | `cc75d707f3a6ca492a6de6883c7ac59b871836c8` | `32160017162` | 523/523 |
-| `0.8.600.11` | DOM root ownership | #334 | `b9d1be0d72cb1bb27d414349bc894726deb6ace3` | `32160575028` | 526/526 |
-| `0.8.600.12` | Warm Benchmark Baseline / Benchmark 3 | #335 | `3de675d60ba46852f193b5cd319df2ce056aa00f` | `32160936491` | 527/527 |
+| `0.8.600.13` | terminal-only release API + campaign recovery owner reconciliation | #336 | `be8db394e81da0e2aa96069efb7df51cd0b68b9b` | `32162369191` | 529/529 |
+| `0.8.600.14` | work/project terminal release after durable transition | #337 | `f7d51365f13fa1cb703383ec4799934e07a3f90f` | `32162896278` | 533/533 |
+| `0.8.600.15` | transport arrival/cancellation terminal release | #338 | `588d6dd0e0a882a6cfdc76d60797c0488330141d` | `32163232356` | 533/533 |
+| `0.8.600.16` | ability/resource recovery terminal release | #339 | `67ec4ea8ae19b1032894a604ed372802d794cf92` | `32163982824` | 533/533 |
+| `0.8.600.17` | mixed repeated retention soak across real save/load | #340 | `e4ebdbc14776329156f2df2dee8c598e3b8b91cb` | `32168023319` | 534/534 |
 
-Every final PR head passed the full Test gate and the current Benchmark gate before merge. From `.8` onward hosted Check also ran sampled benchmark evidence.
+Every exact PR head passed Test, Benchmark 3, and Benchmark Sample before promotion.
 
-## `0.8.600.8` — Long Session Evidence
+### Current timed-task release contract
 
-Added reusable performance/lifecycle evidence rather than inventing thresholds:
+`releaseTimedTask(state, taskId)` is terminal-only:
 
-- `scripts/benchmarkSuite.js` centralizes benchmark workloads;
-- `scripts/benchmarkSample.js` runs repeated measurements and reports min/median/max/mean/spread;
-- `npm run benchmark:sample` and `npm run hardening` are repository entry points;
-- hosted Check runs benchmark sampling after Test and Benchmark;
-- `tests/longSessionLifecycle.test.js` performs deterministic long-session save/load coverage.
+- active tasks cannot be released;
+- release removes the task record but does not rewind `nextSequence`;
+- task IDs remain monotonic and are never reused;
+- domain records/results/events may keep `taskId` as historical correlation after the task record is gone.
 
-The lifecycle smoke proves:
+A domain owns the release point. It may release only **after** every durable consequence it needs has been copied/committed and the exactly-once semantic transition has been recorded.
+
+Current release owners:
+
+- campaign recovery — after recovery consequence/event reconciliation;
+- work — after completed, failed, awaiting-storage, or cancelled transition/event;
+- projects — after completion/cancellation transition/event;
+- transport — after arrival/cancellation updates travel/location and emits the semantic event;
+- abilities — after resolution/cooldown/effects or interruption state/event;
+- resource recovery — after recovered/failed-storage outcome and completion event.
+
+An unreconciled terminal task is intentionally retained across save/load until the owner consumes it. Campaign recovery has a direct save/load proof for this boundary.
+
+### Mixed retention soak
+
+`tests/longSessionLifecycle.test.js` now includes a mixed owner-managed retention test against one persisted state.
 
 ```text
-one active task
-  -> repeated save/load keeps one task + one start event
-  -> completion reconciles exactly once
+one completed generic/unowned terminal task retained as baseline
+  -> work completes/releases
+  -> project starts
+  -> real account save/load while project task is active
+  -> project completes/releases
+  -> route travel arrives/releases
+  -> timed ability resolves/releases
+  -> resource recovery resolves/releases
   -> save/load
-  -> second reconciliation does not duplicate completion
-  -> 130 fictional days advance with save/load every 10 days
-  -> semantic event history stays bounded at 200
-  -> day summaries stay bounded at 120
-  -> final time + registry counts survive another save/load
+  -> repeat three cycles
 ```
 
-This is deterministic retained-state evidence, not a claim about total process memory.
+After every owner-managed lifecycle, the timed-task registry returns to exactly the one intentional generic-terminal baseline record. The generic record remains present, proving owner-gated release is not a blind global prune.
 
-## `0.8.600.9` — Benchmark Protocol V2
+## Earlier hardening context
 
-The `.8` sampling audit showed several Benchmark 1 labels did not match their measured regions: battle/entity setup, tick subscription setup, and route state creation were included inside timed loops.
+The immediately preceding `.8`–`.12` train established:
 
-Benchmark 2 corrected those boundaries:
+- deterministic 130-day save/load lifecycle evidence;
+- Benchmark Protocol V2 with setup removed from timed attack/tick/route workloads;
+- stale-safe tick subscription ownership;
+- explicit DOM-root app/observer teardown;
+- Benchmark 3 separate-context warm-up and sampled evidence.
 
-- player/enemy profile creation remains measured because creation is the workload;
-- basic-attack battles are prepared before timing;
-- one tick engine with five steady subscribers is prepared before timing;
-- one game state is prepared before direct route lookup timing.
+The `.2`–`.7` maintenance train established current-schema cleanup, canonical command/action contracts, strict current-schema persistence, carried commitment delivery, Node 24/current Actions, and executable debt guards.
 
-Because the meaning of the measurements changed, Benchmark advanced `1 -> 2`. Historical Phase 0.7 benchmark assertions now require the historical minimum rather than freezing Benchmark 1 forever.
-
-Do **not** compare Benchmark 1 and Benchmark 2 numbers as an optimization result.
-
-## `0.8.600.10` — Subscription Ownership
-
-Fixed a real stale-owner lifecycle defect in `tickEngine`.
-
-A stable subscriber ID may be replaced, but the disposer returned to the old subscriber now removes the subscription only when that exact subscriber record is still current.
-
-```text
-A subscribes id X
-B replaces id X
-A's stale disposer runs
-  -> B remains
-explicit unsubscribe(X)
-  -> current B is removed
-```
-
-`tests/tickLifecycle.test.js` guards both behaviors. `liveTick` advanced to `0.2.1`; `lifecycleHarness` advanced to `0.2.0`.
-
-## `0.8.600.11` — DOM Root Ownership
-
-Lower browser layers already exposed cleanup primitives, but `js/main.js` discarded them. `domRoot.js` now owns the active DOM app and onboarding enhancement disposer.
-
-Current lifecycle:
-
-```text
-mount
-  -> unmount previous resources if any
-  -> createDomApp
-  -> install onboarding enhancement observer
-
-unmount
-  -> dispose onboarding observer
-  -> domApp.destroy
-      -> remove host/window listeners
-      -> stop movement interval
-```
-
-Unmount is idempotent. If enhancement installation throws, the newly created app is destroyed and the root remains unmounted. `tests/domRootLifecycle.test.js` guards remount cleanup, repeated unmount, and failed-install cleanup.
-
-`lifecycleHarness` advanced to `0.3.0`; `domRoot` registered at `0.1.0`.
-
-## `0.8.600.12` — Warm Benchmark Baseline / Benchmark 3
-
-Repeated Benchmark 2 samples showed very high relative noise in the shortest microbenchmarks. Benchmark 3 adds an explicit warm-up rather than converting noisy timing into a false threshold.
-
-Current protocol:
-
-- each workload warms up with 10% of its measured iteration count, minimum one;
-- warm-up occurs before the timer;
-- warm-up uses a separate setup context so mutable workloads do not contaminate measured fixtures;
-- warm-up time is not reported;
-- every sampled measurement performs its own warm-up.
-
-Benchmark advanced `2 -> 3` because the measurement protocol changed. `performanceHarness` is `0.3.0`.
-
-Single Benchmark 3 run from Check `32160936491`:
-
-```text
-1,000 player combat profiles   0.355492 ms/op   warmup=100
-1,000 enemy combat profiles    0.066399 ms/op   warmup=100
-1,000 basic attacks            0.002787 ms/op   warmup=100
-10,000 steady tick dispatches  0.000923 ms/op   warmup=1000
-10,000 direct route lookups    0.008017 ms/op   warmup=1000
-```
-
-Three-sample evidence from the same exact-head gate:
-
-```text
-player profiles  median 0.359021 ms/op   spread   7.97%
-enemy profiles   median 0.068446 ms/op   spread  11.71%
-basic attacks    median 0.000951 ms/op   spread 191.11%
-tick dispatch    median 0.000646 ms/op   spread  61.69%
-route lookup     median 0.007238 ms/op   spread   5.16%
-```
-
-**No hard performance threshold is accepted yet.** Basic attack and tick dispatch are so short that hosted timing noise remains a large share of the measurement. Player/enemy profile creation and route lookup are more stable, but additional repeated evidence is still required before release budgets are adopted.
-
-Benchmark 1, 2, and 3 are separate comparability protocols. Do not describe lower Benchmark 3 values as direct improvement over earlier protocols.
-
-## Earlier maintenance `.3`–`.7`
-
-The preceding maintenance train remains authoritative history:
-
-| Revision | Contract | Promoted main commit |
-| --- | --- | --- |
-| `.3` | canonical command contract; FFXI runtime command adapter/aliases removed | `c1fbfbe2629aee628cba4e60af3bed37bef86f7a` |
-| `.4` | strict current Game State 6 persistence before revival | `ba3f38f05c83175f188b0231c175a89c9310309f` |
-| `.5` | commitment delivery consumes canonical carried inventory | `0b62b13b25297acad853c2b17be8ffb86a63419f` |
-| `.6` | ActionResult `.message`/`.reason` compatibility aliases removed | `268e17f4c5d8de08d1ea2fc68f6017371df4627a` |
-| `.7` | Node 24/current Actions + architecture-debt guards | `f56b2f6f50d481f46babf80b47e13c70672d9176` |
-
-The `.2` Current Schema Cleanup preceded those revisions and advanced Account Save `4->5`, Game State `5->6`, and Data `36->37` while removing inherited persistence/home identifiers and obsolete active save migration.
+See `docs/ROADMAP.md` and `docs/VERSIONING_AND_RELEASE_ROADMAP.md` for the full revision table.
 
 ## Stable authority boundaries to preserve
 
@@ -248,6 +202,8 @@ The `.2` Current Schema Cleanup preceded those revisions and advanced Account Sa
 - home infrastructure composes project/inventory/furnishing/workstation authorities rather than creating parallel stores or timers;
 - transport owns fares/cadence/departure/arrival/service allowance and independently derives carried load;
 - projects own material + labor + completion state;
+- work authorities own their durable completion/failure/storage/cancellation records;
+- terminal timed-task release belongs to the domain after exactly-once reconciliation, not to a blind central prune;
 - `workstationEngine` owns workstation-context derivation;
 - `productionEngine` owns recipe requirements/work/inputs/outputs/provenance/mastery;
 - campaign recovery remains the single player/party recovery authority;
@@ -263,22 +219,21 @@ The `.2` Current Schema Cleanup preceded those revisions and advanced Account Sa
 
 ## Known non-blocking debt / future hardening
 
-### Terminal timed-task retention is not solved
+### Generic/unowned terminal task history is now the only remaining task-retention question
 
-`timedTaskEngine` currently retains terminal task records. A generic retention cap/prune was audited during this hardening train and intentionally **not** implemented.
+Known gameplay/domain owners return terminal tasks to steady state. The generic timed-task authority still retains a completed/cancelled task when no domain owner releases it.
 
-Several domain records can remain active while their linked task is already terminal and later reconcile through `findTimedTask(taskId)`. Blind central pruning could therefore orphan project/work/resource-recovery/transport/ability or other domain reconciliation.
-
-The next task-retention design must first answer, per domain:
+Do **not** add an age/count prune automatically. First audit concrete generic task producers/consumers and decide whether such records are needed for diagnostics/history at all. If a bounded generic history policy is justified, it must:
 
 ```text
-when does the domain stop needing the linked terminal task?
-who clears/releases that task reference?
-what must survive save/load after release?
-how is exactly-once reconciliation proved before compaction?
+preserve all active tasks
+never substitute for domain reconciliation
+never cause task-id reuse
+remain deterministic across save/load
+have explicit evidence for its retention rule
 ```
 
-Only after domain release semantics exist should generic task-history compaction or retention limits be added. Do not duplicate task state into consumers and do not reconstruct missing terminal tasks as a compatibility workaround.
+If no meaningful generic history consumer exists, deletion-at-owner or explicit caller release may remain preferable to central compaction.
 
 Other carried debt:
 
@@ -289,43 +244,29 @@ Other carried debt:
 - broad quest/romance/social-life content remains shallower than long-term design;
 - no passive/offline companion healing or autonomous companion routine exists, deliberately;
 - regional content breadth/balance remains pre-alpha;
-- no browser heap/profiler run was claimed in this train; deterministic lifecycle tests are the observed evidence.
-
-## Cycle-6 documentation synchronization
-
-After runtime freeze at `3de675d60ba46852f193b5cd319df2ce056aa00f`, Cycle 6 updated documentation only:
-
-- `docs/PERFORMANCE_BUDGET.md` — accepted Benchmark 3 protocol, exact gate, sample variance, no thresholds;
-- `docs/RESOURCE_LIFECYCLE.md` — 130-day smoke, tick ownership, DOM root ownership, deferred task-retention seam;
-- `docs/ROADMAP.md` — baseline and `.8`–`.12` history;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Benchmark 1/2/3 comparability history and current versions;
-- `docs/ARCHITECTURE.md` — root lifecycle, long-session evidence, Benchmark 3 guardrails;
-- `PROJECT_PROFILE.yaml` — current hardening/benchmark/lifecycle validation entry points;
-- this handoff last.
-
-These documentation commits were not followed by a new runtime validation run and must not be presented as runtime checkpoints.
+- no browser heap/profiler run was claimed; deterministic lifecycle tests are the observed retention evidence;
+- `docs/SYSTEM_CATALOG.md` remains secondary/historical where it conflicts with runtime/version/handoff authority.
 
 ## Next work
 
-**Do not automatically begin `0.8.700`.** A fresh user work order is required because this session reached the six-cycle autonomous stabilization boundary.
+**Do not automatically begin `0.8.700`.** A fresh feature work order should re-audit one bounded Phase 0.8 seam before implementation.
 
-If continuing maintenance/hardening, the strongest known bounded seam is:
+If continuing maintenance/hardening, the next bounded audit is:
 
 ```text
-domain-owned terminal task release/reconciliation audit
-  -> identify one or more task-linked domain owners
-  -> define safe release point after exactly-once reconciliation
-  -> prove save/load behavior
-  -> only then consider bounded generic task-history retention
+generic/unowned terminal task history policy
+  -> enumerate actual generic task producers/consumers
+  -> determine whether terminal history has a real diagnostic/runtime consumer
+  -> if yes, define a bounded deterministic retention rule
+  -> if no, prefer explicit caller/owner release over central history machinery
+  -> prove save/load + active-task preservation before promotion
 ```
 
-Audit before implementation; do not assume the correct solution is a global prune.
+Do not implement a global prune before that audit establishes a concrete requirement.
 
 If returning to Phase 0.8 feature work, strong candidate families remain:
 
 - agriculture/stewardship;
 - earned automation that reduces already-established chore attention through investment/mastery;
 - further companion/social-life breadth only where a concrete player decision and existing authority path justify it;
-- another life/logistics segment only when a specific current defect/opportunity warrants it.
-
-A new user message is required before starting another implementation cycle.
+- another specific life/logistics seam only when current runtime evidence identifies a real gap.
