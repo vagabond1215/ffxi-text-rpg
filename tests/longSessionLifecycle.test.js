@@ -85,11 +85,8 @@ function createRetentionHare() {
     });
 }
 
-function assertOnlyBaselineTask(state, baselineTaskId) {
-    const tasks = listTimedTasks(state);
-    assert.equal(tasks.length, 1);
-    assert.equal(tasks[0].id, baselineTaskId);
-    assert.equal(tasks[0].status, TIMED_TASK_STATUSES.COMPLETED);
+function assertNoRetainedTasks(state) {
+    assert.equal(listTimedTasks(state).length, 0);
 }
 
 test('multi-day save/load continuation keeps lifecycle-owned state deterministic and bounded', () => {
@@ -166,26 +163,14 @@ test('multi-day save/load continuation keeps lifecycle-owned state deterministic
     assert.equal(listSemanticEvents(state).length, DEFAULT_EVENT_HISTORY_LIMIT);
 });
 
-test('mixed owner-managed lifecycles return task retention to one unreleased terminal baseline across save/load', () => {
+test('mixed owner-managed lifecycles return task retention to zero across save/load', () => {
     installStorage();
     assert.equal(createAccountWithPassword('Retention Runner', 'pwd', { persistentLogin: true }).ok, true);
 
     let state = createInitialState();
     state.player.identity.name = 'Retention Runner';
     grantCapability(state.player, 'practical-waymark-reading');
-
-    const baseline = startTimedTask(state, {
-        kind: 'test.unowned-terminal',
-        label: 'Unowned terminal baseline',
-        channel: 'test:unowned-terminal',
-        durationSeconds: 1,
-        data: { purpose: 'prove-owner-gated-retention' },
-    });
-    assert.equal(baseline.ok, true);
-    const baselineTaskId = baseline.data.task.id;
-    advanceWorldTime(state, 1, { source: 'test.retention-baseline' });
-    reconcileTimedTasks(state);
-    assertOnlyBaselineTask(state, baselineTaskId);
+    assertNoRetainedTasks(state);
 
     for (let cycle = 0; cycle < 3; cycle += 1) {
         const work = startWorkTask(state, {
@@ -200,7 +185,7 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         assert.ok(dueWork);
         markWorkCompleted(state, work.data.work.id, { cycle });
         assert.equal(findTimedTask(state, work.data.task.id), null);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
 
         const project = createProject(state, {
             kind: `retention.project.${cycle}`,
@@ -214,8 +199,7 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         if (cycle === 1) {
             state = saveAndReload(state);
             const tasks = listTimedTasks(state);
-            assert.equal(tasks.length, 2);
-            assert.equal(findTimedTask(state, baselineTaskId).status, TIMED_TASK_STATUSES.COMPLETED);
+            assert.equal(tasks.length, 1);
             assert.equal(findTimedTask(state, projectStart.data.task.id).status, TIMED_TASK_STATUSES.ACTIVE);
         }
 
@@ -223,7 +207,7 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         const completedProjects = reconcileProjects(state);
         assert.ok(completedProjects.some(({ project: completedProject }) => completedProject.id === project.data.project.id));
         assert.equal(findTimedTask(state, projectStart.data.task.id), null);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
 
         const destinationPlaceId = state.currentPlaceId === 'west-elderwood' ? 'thornwall-southgate' : 'west-elderwood';
         const travel = startRouteJourney(state, {
@@ -240,7 +224,7 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         assert.equal(arrived.completed, true);
         assert.equal(state.currentPlaceId, destinationPlaceId);
         assert.equal(findTimedTask(state, travelTaskId), null);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
 
         const ability = activateAbility(state, 'Waymark Reading');
         assert.equal(ability.ok, true);
@@ -251,7 +235,7 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         assert.equal(resolvedAbility.ok, true);
         assert.equal(resolvedAbility.code, 'ability.resolved');
         assert.equal(findTimedTask(state, abilityTaskId), null);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
 
         const opportunity = createDefeatedEnemyResourceOpportunity(state, createRetentionHare(), { battleId: `retention-battle-${cycle}` });
         assert.equal(opportunity.ok, true);
@@ -265,13 +249,12 @@ test('mixed owner-managed lifecycles return task retention to one unreleased ter
         const completedRecoveries = reconcileResourceRecoveries(state, { rng: () => 1 });
         assert.equal(completedRecoveries.length, 1);
         assert.equal(findTimedTask(state, recoveryTaskId), null);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
 
         state = saveAndReload(state);
-        assertOnlyBaselineTask(state, baselineTaskId);
+        assertNoRetainedTasks(state);
     }
 
-    assert.ok(state.tasks.nextSequence > 16, 'released task ids remain monotonic rather than being reused');
-    assert.equal(listSemanticEvents(state, { type: 'task.completed' }).some((event) => event.data.taskId === baselineTaskId), true);
-    assertOnlyBaselineTask(state, baselineTaskId);
+    assert.equal(state.tasks.nextSequence, 16, 'released task ids remain monotonic rather than being reused');
+    assertNoRetainedTasks(state);
 });
