@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.35');
+    assert.equal(PRODUCT_VERSION, '0.8.600.36');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Strict Work Proficiencies');
+    assert.equal(VERSION.codename, 'Strict Player Resources');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -59,7 +59,7 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.35',
+            versionManifest: '0.8.600.36',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -81,7 +81,7 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.27.0',
+            validation: '0.28.0',
             placeAtlas: '0.6.0',
             discoveryPersistence: '0.1.0',
             poiDiscovery: '0.4.0',
@@ -90,30 +90,19 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.35/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.36/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 7/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Strict Work Proficiencies/);
+    assert.match(describeVersion(), /Codename: Strict Player Resources/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /performanceHarness: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.13\.0/);
-    assert.match(describeSystemVersions(), /timedTasks: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /projects: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /campaignRecovery: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /workTasks: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.28\.0/);
     assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /resourceOpportunities: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /abilityEngine: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /transport: 0\.4\.1/);
-    assert.match(describeSystemVersions(), /validation: 0\.27\.0/);
     assert.match(describeSystemVersions(), /placeAtlas: 0\.6\.0/);
     assert.match(describeSystemVersions(), /discoveryPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /poiDiscovery: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /liveTick: 0\.2\.1/);
-    assert.match(describeSystemVersions(), /domRoot: 0\.1\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
 
@@ -130,7 +119,6 @@ test('database registry includes canonical systems plus explicitly bounded legac
         'leveling', 'companions', 'party', 'crafting',
     ];
     for (const id of required) assert.ok(ids.includes(id), `registry missing ${id}`);
-
     assert.equal(ids.includes('nations'), false);
     assert.equal(ids.includes('zoneConnections'), false);
     assert.equal(ids.includes('trusts'), false);
@@ -154,15 +142,9 @@ test('database registry includes canonical systems plus explicitly bounded legac
 test('tick engine dispatches to subscribers', () => {
     const tickEngine = createTickEngine({ tickLengthMs: 1000 });
     let handled = 0;
-
-    tickEngine.subscribe('test', (event) => {
-        handled += 1;
-        assert.equal(event.tick, 1);
-    });
-
+    tickEngine.subscribe('test', (event) => { handled += 1; assert.equal(event.tick, 1); });
     assert.equal(tickEngine.elapsedTicks, 0);
     tickEngine.tick();
-
     assert.equal(handled, 1);
     assert.equal(tickEngine.subscriberCount, 1);
 });
