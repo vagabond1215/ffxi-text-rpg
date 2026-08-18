@@ -54,6 +54,12 @@ validation:
     - tests/currentSchemaInventoryState.test.js
     - tests/currentSchemaSemanticEvents.test.js
     - tests/currentSchemaWorkRegistry.test.js
+    - tests/currentSchemaPlayerProgression.test.js
+    - tests/currentSchemaDiscoveryPersistence.test.js
+    - tests/currentSchemaWorkProficiencies.test.js
+    - tests/currentSchemaPlayerResources.test.js
+    - tests/currentSchemaDayCycle.test.js
+    - tests/currentSchemaPlayerWallet.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -63,6 +69,10 @@ modules:
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
+  current_account_save: 5
+  current_game_state: 7
+  current_data_version: 37
+  current_benchmark_version: 3
   current_game_state_must_be_complete_before_revival: true
   raw_current_schema_validation_before_runtime_normalization: true
   active_task_links_must_be_persisted_and_consistent: true
@@ -80,15 +90,24 @@ quality:
       - party
       - ability-runtime
       - semantic-events
+      - atlas-discovery
+      - poi-discovery
+      - player-progression-and-skills
       - player-capabilities
       - player-inventory-state
+      - player-mutable-resources
+      - player-wallet
     optional_when_present:
       - work-registry
-  post_revival_only:
+      - player-work-proficiencies
+      - day-cycle-history
+  post_revival_or_derived:
     - broad-player-validation
     - flat-inventory-alias-identity
-  deferred_raw_validation:
-    - atlas-and-poi-discovery-pending-authority-review
+    - player-combat-profile
+    - derived-combat-stat-maxima
+  next_classification_audit:
+    - player-stat-state-and-combat-cache-ownership
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
@@ -107,9 +126,10 @@ constraints:
   - do not reintroduce retired FFXI command runtime compatibility
   - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
   - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
-  - raw Game State 6 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
-  - classify remaining state as persistent authority derived-transient or construction convenience before adding another raw validator
+  - raw Game State 7 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
+  - classify remaining state as persistent authority derived-transient construction convenience or optional persisted authority before adding another raw validator
   - do not compose broad validatePlayer at the raw boundary because it mixes post-revival identity and derived-state checks
-  - keep work optional when absent but strict when a work registry is persisted
-  - do not tighten atlas or POI discovery persistence until its authority and timestamp semantics are explicitly resolved
+  - keep work work-proficiencies and day-cycle state optional when absent but strict when persisted
+  - persist atlas discovery timing in canonical fictional seconds never wall-clock timestamps
+  - keep player combat profile and derived maxima outside persistence authority until a dedicated cache/ownership audit says otherwise
   - roadmap sequencing does not authorize unbounded implementation
