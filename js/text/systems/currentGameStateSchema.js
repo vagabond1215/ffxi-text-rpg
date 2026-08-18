@@ -7,6 +7,7 @@ import { validatePartyState } from './partyEngine.js';
 import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateResourceOpportunityState } from './resourceOpportunityEngine.js';
+import { validateSemanticEventState } from './semanticEventEngine.js';
 import { validateSimulationControlState } from './simulationControlEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
@@ -73,6 +74,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.relationships)) issues.push(...validateRelationshipState(state.relationships));
     if (isObject(state.resourceOpportunities)) issues.push(...validateResourceOpportunityState(state.resourceOpportunities));
     if (isObject(state.ecology)) issues.push(...validateEcologyState(state.ecology));
+    if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
 
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
