@@ -17,6 +17,7 @@ import {
     logoutAccount,
     saveAccount,
     saveGame,
+    updateAccountSettings,
 } from '../js/text/save.js';
 
 class MemoryStorage {
@@ -59,12 +60,16 @@ test('encodePayload and decodePayload round-trip account-safe JSON', () => {
     assert.deepEqual(decodePayload(encoded), value);
 });
 
+test('decodePayload rejects unversioned raw JSON', () => {
+    assert.throws(() => decodePayload('{"name":"legacy"}'), /Unsupported local payload encoding/);
+});
+
 test('saveGame refuses to save without a logged-in account', () => {
     installStorage();
     const state = createInitialState();
 
     assert.equal(saveGame(state), false);
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccounts'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccounts'), null);
 });
 
 test('saveGame stores encoded account registry with character summary after login', () => {
@@ -75,9 +80,8 @@ test('saveGame stores encoded account registry with character summary after logi
 
     assert.equal(saveGame(state), true);
 
-    const raw = globalThis.localStorage.getItem('ffxiTextRpgAccounts');
+    const raw = globalThis.localStorage.getItem('hearthHorizonAccounts');
     assert.match(raw, /^base64-json-v1:/);
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgSave'), null);
 
     const account = loadAccount();
     assert.equal(account.characters.length, 1);
@@ -125,7 +129,7 @@ test('createAccountWithPassword persists a real local account and session', () =
     assert.equal(result.session.persistentLogin, true);
     assert.equal(loadAccount().profile.displayName, 'Russell');
     assert.equal(listAccounts()[0].displayName, 'Russell');
-    assert.match(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), /^base64-json-v1:/);
+    assert.match(globalThis.localStorage.getItem('hearthHorizonAccountSession'), /^base64-json-v1:/);
 });
 
 test('placeholder account names are rejected explicitly', () => {
@@ -158,7 +162,7 @@ test('account logout clears session without deleting saved account', () => {
 
     assert.equal(session.loggedIn, false);
     assert.equal(listAccounts()[0].displayName, 'Russell');
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccountSession'), null);
 });
 
 test('saveAccount keeps logged-in session display name synchronized', () => {
@@ -172,6 +176,14 @@ test('saveAccount keeps logged-in session display name synchronized', () => {
     assert.equal(loadAccountSession().displayName, 'New Name');
 });
 
+test('theme settings accept only the current Light and Dark options', () => {
+    installStorage();
+    createLoggedInAccount();
+
+    assert.equal(updateAccountSettings({ theme: 'light' }).settings.theme, 'light');
+    assert.equal(updateAccountSettings({ theme: 'highContrast' }).settings.theme, 'dark');
+});
+
 test('clearSave removes encoded account registry and session data', () => {
     installStorage();
     createLoggedInAccount('Clear Me');
@@ -179,7 +191,7 @@ test('clearSave removes encoded account registry and session data', () => {
     saveGame(state);
     clearSave();
 
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccounts'), null);
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccounts'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccountSession'), null);
     assert.equal(listAccounts().length, 0);
 });
