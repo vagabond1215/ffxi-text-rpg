@@ -28,7 +28,6 @@ const REQUIRED_PLAYER_OBJECT_FIELDS = Object.freeze([
     'wallet',
     'equipment',
     'inventoryState',
-    'capabilities',
     'combat',
     'resources',
     'flags',
@@ -63,6 +62,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         }
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) {
             if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
+        }
+        if (isObject(state.player.progression) && !isObject(state.player.progression.capabilities)) {
+            issues.push('player.progression.capabilities must be a persisted object.');
         }
     }
 
