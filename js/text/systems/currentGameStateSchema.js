@@ -14,6 +14,7 @@ import { validateSimulationControlState } from './simulationControlEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
 import { validateInventoryState } from './validation.js';
+import { validateWorkProficiencies } from './workProficiencyEngine.js';
 import { validateWorkState } from './workTaskEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
@@ -107,6 +108,14 @@ export function validateCurrentGameStateStructure(state, options = {}) {
             issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
         }
         if (isObject(state.player.progression)) {
+            const workProficiencies = state.player.progression.workProficiencies;
+            if (workProficiencies !== undefined) {
+                if (!isObject(workProficiencies)) {
+                    issues.push('player.progression.workProficiencies must be a persisted object when present.');
+                } else {
+                    issues.push(...validateWorkProficiencies(workProficiencies).map((issue) => `player.progression.${issue}`));
+                }
+            }
             if (!isObject(state.player.progression.capabilities)) {
                 issues.push('player.progression.capabilities must be a persisted object.');
             } else {
