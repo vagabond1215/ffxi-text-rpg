@@ -2,6 +2,7 @@ import { VERSION } from '../version.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
+import { validateResourceOpportunityState } from './resourceOpportunityEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
 
@@ -59,6 +60,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.projects)) issues.push(...validateProjectState(state.projects));
     if (isObject(state.commitments)) issues.push(...validateCommitmentState(state.commitments));
     if (isObject(state.relationships)) issues.push(...validateRelationshipState(state.relationships));
+    if (isObject(state.resourceOpportunities)) issues.push(...validateResourceOpportunityState(state.resourceOpportunities));
 
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
