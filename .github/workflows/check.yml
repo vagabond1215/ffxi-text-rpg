@@ -29,3 +29,5 @@ jobs:
         run: npm test
       - name: Benchmark
         run: npm run benchmark
+      - name: Benchmark Sample
+        run: npm run benchmark:sample
