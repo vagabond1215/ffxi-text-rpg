@@ -69,6 +69,7 @@ test('0.8.600 lets an injured inactive companion share safe settlement recovery 
     const beforeView = createGameViewModel(state, createUiState({ screen: 'game', activeView: 'character' }));
     const projectedBefore = beforeView.party.entries.find((entry) => entry.id === MARA_ID);
     assert.equal(projectedBefore.hp, 0);
+    assert.equal(projectedBefore.membershipAction, null, 'the browser must not advertise a reunion action the party engine will reject');
 
     const recovery = createCampaignRecoveryModel(state);
     assert.equal(recovery.mode, CAMPAIGN_RECOVERY_KINDS.SETTLEMENT);
