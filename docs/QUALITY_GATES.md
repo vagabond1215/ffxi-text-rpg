@@ -23,7 +23,7 @@ npm run check
 
 The hosted `Check` gate runs on Node 24 LTS. `package.json` requires Node `>=24`. The workflow uses current supported GitHub Actions majors and includes cancellation plus a bounded job timeout.
 
-`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt and now also guards the exact direct timed-task owner set plus removal of runtime legacy active-travel reconstruction.
+`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt and guards the exact direct timed-task owner set plus removal of runtime legacy active-travel reconstruction.
 
 Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only synchronization does not create a new runtime validation checkpoint.
 
@@ -34,21 +34,34 @@ Current mode is **pre-alpha current-schema only**.
 - Account/session payloads must match the current Account Save contract exactly.
 - Character payloads must match the current Game State version and contain the complete required persisted structure before revival/reference relinking.
 - Raw current-schema validation must run before runtime `ensure*` helpers can normalize state.
-- Persisted registries that have been declared required and whose validator is part of the current raw boundary must satisfy that validator before revival.
-- The current task boundary validates the timed-task registry and active travel/project/work/timed-ability/resource-recovery task links.
-- Active owner/task links may reference active or just-completed tasks until owner reconciliation; terminal owner records may retain historical `taskId` after terminal task release.
-- Missing, malformed, mismatched, or legacy-shaped active task/travel state is rejected rather than reconstructed.
+- Current Game State 6 raw validation now composes the declared domain validators for timed tasks, active travel, projects, commitments, relationships, resource opportunities, ecology, party, and ability runtime state.
+- Active project/work/travel/timed-ability/resource-recovery task links must reference consistent active-or-just-completed persisted tasks until owner reconciliation.
+- Missing, malformed, mismatched, or legacy-shaped required state is rejected rather than reconstructed.
 - Incompatible or incomplete pre-alpha saves are rejected rather than lazily reconstructed or migrated by default.
 - A future migration is deliberate engineering work only when explicitly required or independently useful; the generic migration utility may remain without making migration automatic.
 - Any change to current persisted meaning requires a deliberate Game State/Account Save version decision and representative current save/load validation.
 
-When tightening raw validation for another registry, first classify its state:
+When considering another raw validator, first classify the state:
 
 1. **persistent required authority** — validate before revival;
 2. **derived/transient** — recompute freely;
 3. **construction convenience** — initialize in new-state/factory paths, not as implicit load migration.
 
-Do not convert historical lazy-initialization behavior into current save compatibility by accident.
+Do not convert historical lazy-initialization behavior into current save compatibility by accident. Tightening enforcement of an already-declared Game State 6 invariant does not by itself require a schema bump; changing persisted shape or meaning does.
+
+## Current strict-registry evidence
+
+The current raw-registry hardening suite includes:
+
+```text
+tests/currentSchemaProjectRegistry.test.js
+tests/currentSchemaContinuityRegistries.test.js
+tests/currentSchemaResourceOpportunities.test.js
+tests/currentSchemaEcologyRegistry.test.js
+tests/currentSchemaCharacterRuntime.test.js
+```
+
+Each family includes positive current save/load evidence and malformed-current-state rejection evidence. Encoded corruptions used by these tests must remain rejected without being silently repaired or rewritten.
 
 ## Resource lifecycle
 
