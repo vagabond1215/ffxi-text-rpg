@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package and persistence versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.500.1');
-    assert.equal(PACKAGE_VERSION, '0.8.500');
+    assert.equal(PRODUCT_VERSION, '0.8.600.1');
+    assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.app, PRODUCT_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package and persistence versions', () =
     assert.equal(VERSION.data, 36);
     assert.equal(VERSION.benchmark, 1);
     assert.equal(VERSION.save, VERSION.gameState);
-    assert.equal(VERSION.codename, 'Daily Social Availability');
+    assert.equal(VERSION.codename, 'Companion Convalescence');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -76,7 +76,7 @@ test('version manifest separates product package and persistence versions', () =
             startingDisciplineKits: SYSTEM_VERSIONS.startingDisciplineKits,
         },
         {
-            versionManifest: '0.8.500.1',
+            versionManifest: '0.8.600.1',
             integratedMechanicsGate: '0.1.0',
             transport: '0.3.0',
             carriedLoad: '0.2.0',
@@ -90,7 +90,7 @@ test('version manifest separates product package and persistence versions', () =
             characterActivity: '0.3.0',
             activityAdvance: '0.5.0',
             homeInfrastructure: '0.3.0',
-            campaignRecovery: '0.1.0',
+            campaignRecovery: '0.2.0',
             resourceRecoveryWork: '0.3.0',
             commitments: '0.3.0',
             relationships: '0.1.0',
@@ -98,7 +98,7 @@ test('version manifest separates product package and persistence versions', () =
             playerSocialSchedules: '0.1.0',
             dayCycle: '0.2.0',
             localityNavigation: '0.2.0',
-            gameViewModels: '0.14.0',
+            gameViewModels: '0.15.0',
             playerInformation: '0.1.1',
             playerExperience: '0.3.0',
             playerOpportunities: '0.2.0',
@@ -110,7 +110,7 @@ test('version manifest separates product package and persistence versions', () =
             uiIntents: '0.10.0',
             validation: '0.10.0',
             companionCatalog: '0.2.0',
-            party: '0.2.0',
+            party: '0.3.0',
             battleEngine: '0.8.0',
             combatTurns: '0.3.0',
             combatActions: '0.8.0',
@@ -123,17 +123,19 @@ test('version manifest separates product package and persistence versions', () =
         },
     );
 
-    assert.match(describeVersion(), /Product: 0\.8\.500\.1/);
-    assert.match(describeVersion(), /Package: 0\.8\.500/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Game State: 5/);
     assert.match(describeVersion(), /Data: 36/);
-    assert.match(describeVersion(), /Codename: Daily Social Availability/);
+    assert.match(describeVersion(), /Codename: Companion Convalescence/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerSocialSchedules: 0\.1\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /campaignRecovery: 0\.2\.0/);
     assert.match(describeSystemVersions(), /localityNavigation: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /gameViewModels: 0\.14\.0/);
+    assert.match(describeSystemVersions(), /gameViewModels: 0\.15\.0/);
+    assert.match(describeSystemVersions(), /party: 0\.3\.0/);
     assert.match(describeSystemVersions(), /transport: 0\.3\.0/);
     assert.match(describeSystemVersions(), /carriedLoad: 0\.2\.0/);
     assert.match(describeSystemVersions(), /transportServiceBoard: 0\.2\.0/);
@@ -181,7 +183,7 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.match(description, /magic \[seeded 0\.1\.0\]/);
     assert.match(description, /abilities \[implemented 0\.1\.0\]/);
     assert.match(description, /companions \[implemented 0\.2\.0\]/);
-    assert.match(description, /party \[implemented 0\.2\.0\]/);
+    assert.match(description, /party \[implemented 0\.3\.0\]/);
     assert.match(describeLegacyRecoveredData(), /weapon skills/);
 });
 
