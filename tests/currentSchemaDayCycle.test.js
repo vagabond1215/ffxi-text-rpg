@@ -44,7 +44,10 @@ test('current schema accepts canonical persisted day-cycle summaries after a rea
 test('current schema rejects malformed or temporally impossible persisted day-cycle state', () => {
     const malformedSummary = createInitialState();
     finalizeFirstDay(malformedSummary);
-    malformedSummary.dayCycle.summaries[0].endWorldSeconds = 999;
+    malformedSummary.dayCycle.summaries[0] = {
+        ...malformedSummary.dayCycle.summaries[0],
+        endWorldSeconds: 999,
+    };
     assert.ok(validateCurrentGameStateStructure(malformedSummary).some((issue) => issue.includes('endWorldSeconds must match its canonical day boundary')));
 
     const futureFinalizedDay = createInitialState();
