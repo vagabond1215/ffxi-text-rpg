@@ -6,7 +6,7 @@ import { getCarriedCargoUnits } from './carriedLoadEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { syncActivePartyLocation } from './partyEngine.js';
-import { cancelTimedTask, findTimedTask, reconcileTimedTasks, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
+import { cancelTimedTask, findTimedTask, reconcileTimedTasks, releaseTimedTask, startTimedTask, TIMED_TASK_STATUSES } from './timedTaskEngine.js';
 import { advanceWorldTime, ensureWorldTimeState } from './worldTimeEngine.js';
 
 export const TRAVEL_STATE_VERSION = 2;
@@ -120,6 +120,7 @@ export function reconcileTravelJourney(state) {
     state.travel = null;
     const eventType = completed.kind === TRAVEL_KINDS.SCHEDULED ? 'transport.arrived' : 'travel.arrived';
     const event = emitSemanticEvent(state, eventType, { ...travelEventData(completed), arrival }, { source: 'transportEngine' });
+    releaseTravelTask(state, completed.taskId);
     return {
         completed: true,
         departed,
@@ -151,6 +152,7 @@ export function cancelTravelJourney(state) {
     const eventType = travel.kind === TRAVEL_KINDS.SCHEDULED ? 'transport.cancelled' : 'travel.cancelled';
     emitSemanticEvent(state, eventType, travelEventData(travel), { source: 'transportEngine' });
     state.travel = null;
+    releaseTravelTask(state, travel.taskId);
     return { ok: true, stopped: true, message: `Stopped traveling${destination ? ` to ${destination.name}` : ''}.` };
 }
 
@@ -301,6 +303,14 @@ function normalizeLegacyActiveTravel(state) {
         fare: null,
     });
     return travel;
+}
+
+function releaseTravelTask(state, taskId) {
+    const task = findTimedTask(state, taskId);
+    if (!task || task.status === TIMED_TASK_STATUSES.ACTIVE) return false;
+    const released = releaseTimedTask(state, task.id);
+    if (!released.ok) throw new Error(`Terminal travel task ${task.id} could not be released: ${released.code}`);
+    return true;
 }
 
 function travelEventData(travel) {
