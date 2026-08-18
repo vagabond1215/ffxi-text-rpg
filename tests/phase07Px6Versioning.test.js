@@ -16,8 +16,8 @@ import { SYSTEM_VERSIONS, VERSION } from '../js/text/version.js';
 
 test('Phase 0.7 companion-life gate remains satisfied as later tracks extend shared authorities', () => {
     assert.ok(compareProductVersions(VERSION.product, '0.7.400.1') >= 0);
-    assert.equal(VERSION.accountSave, 4);
-    assert.equal(VERSION.gameState, 5);
+    assert.ok(VERSION.accountSave >= 4);
+    assert.ok(VERSION.gameState >= 5);
     assert.ok(VERSION.data >= 31);
     assert.equal(VERSION.benchmark, 1);
 
