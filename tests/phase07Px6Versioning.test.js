@@ -37,7 +37,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.equal(SYSTEM_VERSIONS.campaignRecovery, '0.1.0');
     assert.equal(SYSTEM_VERSIONS.resourceRecoveryWork, '0.3.0');
     assert.ok(compareSemver(SYSTEM_VERSIONS.characterActivity, '0.2.0') >= 0);
-    assert.equal(SYSTEM_VERSIONS.commitments, '0.2.0');
+    assert.ok(compareSemver(SYSTEM_VERSIONS.commitments, '0.2.0') >= 0);
     assert.equal(SYSTEM_VERSIONS.playerContinuity, '0.5.0');
     assert.equal(SYSTEM_VERSIONS.playerCampaignReadability, '0.2.0');
     assert.equal(SYSTEM_VERSIONS.playerDangerRecovery, '0.2.0');
