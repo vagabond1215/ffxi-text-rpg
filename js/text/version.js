@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.20';
+export const PRODUCT_VERSION = '0.8.600.21';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,18 +8,18 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 3,
-    codename: 'Active Task Link Integrity',
+    codename: 'Strict Task Registry',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.20',
+    versionManifest: '0.8.600.21',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
     performanceHarness: '0.3.0',
-    lifecycleHarness: '0.11.0',
+    lifecycleHarness: '0.12.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
@@ -86,7 +86,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.5.0',
     parser: '0.2.0',
-    validation: '0.13.0',
+    validation: '0.14.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
