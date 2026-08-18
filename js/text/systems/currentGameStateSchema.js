@@ -12,6 +12,7 @@ import { validateSimulationControlState } from './simulationControlEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
 import { validateInventoryState } from './validation.js';
+import { validateWorkState } from './workTaskEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
@@ -75,6 +76,10 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.resourceOpportunities)) issues.push(...validateResourceOpportunityState(state.resourceOpportunities));
     if (isObject(state.ecology)) issues.push(...validateEcologyState(state.ecology));
     if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
+    if (state.work !== undefined) {
+        if (!isObject(state.work)) issues.push('work must be a persisted object when present.');
+        else issues.push(...validateWorkState(state.work));
+    }
 
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
