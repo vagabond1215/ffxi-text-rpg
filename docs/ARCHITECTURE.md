@@ -7,12 +7,18 @@ Hearth & Horizon is an original text-first persistent fantasy life RPG built aro
 ```text
 index.html
   -> js/main.js
-      -> createDomApp(host)
-          -> authoritative game/save/intent services
-          -> createGameViewModel(state, uiState)
-          -> renderDomApp(...)
-      -> installOnboardingEnhancements(host)
-          -> presentation-only theme/creator/save-recovery controls
+      -> createDomRoot(...)
+          -> mount()
+              -> createDomApp(host)
+                  -> authoritative game/save/intent services
+                  -> createGameViewModel(state, uiState)
+                  -> renderDomApp(...)
+              -> installOnboardingEnhancements(host)
+          -> unmount()
+              -> dispose onboarding observer
+              -> domApp.destroy()
+                  -> remove host/window listeners
+                  -> stop movement interval
 ```
 
 The semantic DOM/CSS shell is the active player interface. Canvas code remains bounded regression/reference code.
@@ -47,7 +53,7 @@ data
 display
 ```
 
-`actionSuccess()` / `actionFailure()` return that contract directly. The transitional non-enumerable `.message` / `.reason` aliases are removed. Adapters use `describeActionResult()` / `display.text` for prose and semantic fields for logic.
+`actionSuccess()` / `actionFailure()` return that contract directly. The old non-enumerable `.message` / `.reason` aliases are removed. Adapters use `describeActionResult()` / `display.text` for prose and semantic fields for logic.
 
 Do not reintroduce prose parsing or promoted compatibility fields as gameplay authority.
 
@@ -98,7 +104,7 @@ Inventory/Field Satchel -> Home Safe
   total carried cargo decreases
 ```
 
-Commitment requirements/delivery now inspect canonical carried inventory, so a qualifying item in an unlocked portable field container can be delivered while home storage cannot. Cross-container removal plans validate completely before mutation.
+Commitment requirements/delivery inspect canonical carried inventory, so a qualifying item in an unlocked portable field container can be delivered while home storage cannot. Cross-container removal plans validate completely before mutation.
 
 `transportServiceBoardEngine` derives current load for presentation and `transportEngine` independently derives load when booking, checks allowance before fare deduction, and records journey load.
 
@@ -127,12 +133,12 @@ Settlement recovery uses the existing `recovery.settlement` timed task and 3600 
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.7
+Product:       0.8.600.12
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
-Benchmark:     1
+Benchmark:     3
 ```
 
 `js/text/save.js` owns account/session/character persistence. Current storage keys are:
@@ -144,45 +150,70 @@ hearthHorizonAccountSession
 
 Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
 
-Before revival/reference relinking, `currentGameStateSchema.js` requires a complete Game State 6 persisted structure. Missing required registries such as timed tasks/ecology or nested character capability state cause rejection. Runtime `ensure*` helpers may initialize new/internal state, but they are not implicit save migrations.
+Before revival/reference relinking, `currentGameStateSchema.js` requires a complete Game State 6 persisted structure. Missing required registries or nested capability state cause rejection. Runtime `ensure*` helpers may initialize new/internal state, but they are not implicit save migrations.
 
-`saveGame()` likewise refuses malformed current state rather than manufacturing required registries during persistence.
+`saveGame()` likewise refuses malformed current state rather than manufacturing required registries during persistence. The deleted active save-migration layer is not part of current runtime. `migrationEngine.js` remains a generic utility only for a future deliberate migration requirement.
 
-The deleted active save-migration layer is not part of current runtime. `migrationEngine.js` remains a generic utility only for a future deliberate migration requirement.
+## Lifecycle ownership
 
-## Command/adaptor boundary
+Long-lived runtime resources require explicit owners and safe replacement/disposal.
 
-Canonical command/slash routing no longer preserves the retired FFXI macro runtime surface. The old `ffxiCommandAdapter.js`, macro runtime reference data, old raw-save fallback key, and command aliases such as `moghouse`, `trust`, `jobs`, `/ma`, `/ws`, etc. are removed from canonical runtime routing.
+### Tick subscriptions
+
+Stable subscriber IDs may be replaced. The disposer returned to a subscriber removes only the exact record it created; therefore an old owner cannot later remove a newer subscriber that reused the same ID. Explicit `unsubscribe(id)` remains the deliberate operation for removing the current owner.
+
+### Browser root
+
+`domRoot.js` owns the active `domApp` instance and onboarding enhancement disposer. Remount disposes the prior observer/app before replacement. Unmount is idempotent. If onboarding enhancement installation throws after app creation, the new app is destroyed and the root remains unmounted.
+
+### Long-session state
+
+`tests/longSessionLifecycle.test.js` proves deterministic 130-day advancement with periodic real current-schema save/load, exactly-once task start/completion through reload, bounded semantic-event history (200), and bounded day-summary history (120).
+
+### Terminal task history
+
+Completed/cancelled timed-task records are not generically pruned yet. Multiple domain records may still reconcile through terminal task IDs. Any future compaction requires domain-owned release semantics first; generic deletion without that contract would violate task authority.
+
+See `docs/RESOURCE_LIFECYCLE.md` for the detailed ownership contract.
+
+## Command/adapter boundary
+
+Canonical command/slash routing no longer preserves the retired FFXI macro runtime surface. The old command adapter, macro runtime reference data, raw-save fallback key, and command aliases such as `moghouse`, `trust`, `jobs`, `/ma`, `/ws`, etc. are removed from canonical runtime routing.
 
 Generic UX abbreviations such as `?`, `h`, `inv`, or `char` remain ordinary parser shorthand where useful; they are not world-identity compatibility.
 
 Legacy FFXI-derived research/reference datasets may remain bounded reference material but must not feed canonical world identity or persisted gameplay state merely for compatibility.
 
-## Runtime and architecture guardrails
+## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check runs on Node 24 LTS using `actions/checkout@v7` and `actions/setup-node@v6`, with concurrency cancellation and a bounded job timeout.
 
-`tests/architectureDebtGuard.test.js` prevents selected removed compatibility surfaces from returning to canonical runtime, including old command adapter modules, old persistence/home identifiers, ambiguous version aliases, ActionResult compatibility aliases, obsolete theme state, and the dead transport UI payload.
+Hosted Check executes the full tests, Benchmark 3, and sampled Benchmark 3 evidence. `tests/architectureDebtGuard.test.js` prevents selected removed compatibility surfaces from returning. Focused lifecycle tests additionally protect long-session save/load, subscriber ownership, and DOM-root cleanup.
 
-Latest exact-head gate: PR #330 / Check `32110997315`, Node 24.19.0:
+Benchmark 3 separates setup from the timed attack/tick/route workloads and performs an unreported 10% warm-up on separate setup state before every timed workload/sample. Benchmark 1/2 results are not numerically comparable to Benchmark 3.
+
+Latest exact-head runtime gate: PR #335 / exact head `10ab2c5af9ddcf0760f49817ff5a8c41ec1caa07` / Check `32160936491`, Node 24.19.0:
 
 ```text
-517/517 tests
+527/527 tests
 0 failed
 0 skipped
-Benchmark 1 success
+Benchmark 3 success
+Benchmark Sample success
 ```
 
-Benchmark 1:
+Single Benchmark 3 run:
 
 ```text
-player combat profiles  0.410749 ms/op
-enemy combat profiles   0.077986 ms/op
-basic attacks            0.450466 ms/op
-tick dispatch            0.005553 ms/op
-direct route lookup      0.634726 ms/op
+player combat profiles  0.355492 ms/op
+enemy combat profiles   0.066399 ms/op
+basic attacks            0.002787 ms/op
+tick dispatch            0.000923 ms/op
+direct route lookup      0.008017 ms/op
 ```
+
+No hard performance thresholds are accepted yet. The very short attack/tick microbenchmarks still show high relative variance in repeated hosted samples. See `docs/PERFORMANCE_BUDGET.md` for the current baseline and interpretation rules.
 
 ## Carried-forward rule
 
-Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, recovery, production, transport, world knowledge, and bounded authored schedules rather than creating isolated management simulations or compatibility layers.
+Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, recovery, production, transport, world knowledge, and bounded authored schedules rather than creating isolated management simulations, hidden lifecycle resources, or compatibility layers.
