@@ -1,5 +1,6 @@
 import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
+import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
@@ -87,8 +88,12 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) {
             if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
         }
-        if (isObject(state.player.progression) && !isObject(state.player.progression.capabilities)) {
-            issues.push('player.progression.capabilities must be a persisted object.');
+        if (isObject(state.player.progression)) {
+            if (!isObject(state.player.progression.capabilities)) {
+                issues.push('player.progression.capabilities must be a persisted object.');
+            } else {
+                issues.push(...validateCapabilityState(state.player).map((issue) => `player.${issue}`));
+            }
         }
     }
 
