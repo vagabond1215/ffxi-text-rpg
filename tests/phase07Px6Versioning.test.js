@@ -22,7 +22,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.equal(VERSION.benchmark, 1);
 
     assert.ok(ACTIVITY_ADVANCE_VERSION >= 2);
-    assert.equal(CAMPAIGN_RECOVERY_VERSION, 1);
+    assert.ok(CAMPAIGN_RECOVERY_VERSION >= 1);
     assert.equal(RESOURCE_RECOVERY_WORK_ADAPTER_VERSION, 3);
     assert.equal(COMMITMENT_CATALOG_VERSION, 2);
     assert.equal(COMPANION_CATALOG_VERSION, 2);
@@ -34,7 +34,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.equal(PLAYER_INFORMATION_VERSION, 1);
 
     assert.ok(compareSemver(SYSTEM_VERSIONS.activityAdvance, '0.2.0') >= 0);
-    assert.equal(SYSTEM_VERSIONS.campaignRecovery, '0.1.0');
+    assert.ok(compareSemver(SYSTEM_VERSIONS.campaignRecovery, '0.1.0') >= 0);
     assert.equal(SYSTEM_VERSIONS.resourceRecoveryWork, '0.3.0');
     assert.ok(compareSemver(SYSTEM_VERSIONS.characterActivity, '0.2.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.commitments, '0.2.0') >= 0);
