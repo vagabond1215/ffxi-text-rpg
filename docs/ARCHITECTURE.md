@@ -27,14 +27,15 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 - Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks. It does not own a second item store, construction clock, workstation registry, recipe engine, mastery counter, cargo wallet, or capacity formula.
 - Transport owns fares, cadence, departure, arrival, and service cargo limits. It does not trust UI-supplied cargo counts.
 - Commitments own accepted/resolved/follow-up state and one-time rewards. General named-NPC relationship continuity lives in `state.relationships`; companion-specific state remains in party/companion authority.
-- Maps, campaign guidance, transport boards, settlement service boards, player information, and home opportunity models are projections of acquired/current state.
+- NPC schedules are authored recurring availability data evaluated against canonical fictional time. Availability is derived, not serialized as a second clock/state registry.
+- Maps, campaign guidance, transport boards, settlement service boards, player information, home opportunity models, and social-schedule opportunity decoration are projections of acquired/current state.
 - Safe settlements use named locality navigation; terrain-sensitive wilderness/dungeon spaces use discovery-relative spatial exploration.
 - Persistent companions remain NPC-backed world participants.
 - Ordinary browser presentation exposes what the character sees, knows, carries, remembers, needs, or can decide; implementation vocabulary stays outside normal play.
 
 ## Shared player-experience projections
 
-`playerExperienceEngine`, `playerOpportunityEngine`, `playerContinuityEngine`, `playerDangerRecoveryEngine`, `playerCampaignReadabilityEngine`, `transportServiceBoardEngine`, `settlementServiceBoardEngine`, and `playerInformationEngine` remain derived views over canonical domain authorities.
+`playerExperienceEngine`, `playerOpportunityEngine`, `playerContinuityEngine`, `playerDangerRecoveryEngine`, `playerCampaignReadabilityEngine`, `transportServiceBoardEngine`, `settlementServiceBoardEngine`, `playerInformationEngine`, and `playerSocialScheduleEngine` remain derived views/decorators over canonical domain authorities.
 
 `activityAdvanceEngine` provides semantic advance-to-completion without a second clock. It composes travel, gathering/production work, recovery, and generic `project.labor`, including home-infrastructure completion effects.
 
@@ -74,69 +75,98 @@ Make a Field Satchel
     -> contents remain carried transport cargo
 ```
 
-The definition contract supports exactly one durable **furnishing** or **container** benefit. The adapter does not invent separate construction state for either type.
-
-## `homeInfrastructureEngine.js`
-
-Current `HOME_INFRASTRUCTURE_VERSION = 3` is a bounded adapter. It resolves the character's existing home, begins generic projects, delegates material contribution/labor, reconciles generic completion, and then applies the authored durable benefit exactly once:
-
-- furnishing benefit → place the furnishing in existing furnishing state;
-- container benefit → call canonical inventory container-unlock authority.
-
-It emits `home.infrastructure-completed`, derives **Home & Foothold** Journal entries/actions, and validates project-to-definition references. It owns neither inventory capacity nor portable cargo accounting.
-
-## Furnishing/workstation/production authority
-
-Furnishings own placed-object identity and furnishing storage contribution. `workstationEngine` is the sole semantic workstation-context authority and derives station tags from current contextual POIs/services plus placed workstation-bearing furnishings only while the character is physically at home.
-
-The Joiner's Workbench therefore changes production **context**, not recipes. `productionEngine` remains authoritative for recipe requirements, station checks, input consumption, timed work, output storage, provenance, and work proficiency. The existing **Work, Trade & Recover** service projection discovers home-enabled recipes without creating a home-only crafting menu.
+`homeInfrastructureEngine` is a bounded adapter over generic project and domain authorities. Furnishings own placed-object/storage effects; inventory owns container unlock/capacity/transfer; `workstationEngine` owns station context; `productionEngine` owns recipes, inputs, timed work, provenance, output, and mastery.
 
 # Logistics authority (`0.8.300`–`0.8.400`)
 
-## Canonical carried load
+`carriedLoadEngine.js` is a pure projection over unlocked inventory containers marked `countsAsCarriedCargo`. It does not persist a weight/cargo number.
 
-`carriedLoadEngine.js` is a pure derived projection over inventory containers. It does not persist a weight/cargo number.
+At `0.8.300`, scheduled transport quotes and bookings stopped trusting caller-provided cargo. `transportServiceBoardEngine` derives current load for presentation and `transportEngine` independently derives it at booking, checks service allowance before fare deduction, and records the canonical load.
 
-At `0.8.300`, scheduled-transport cargo became canonical: service quotes and bookings derive current occupied carried slots rather than trusting caller-provided `cargoUnits`. `transportEngine` checks that load against the authored service allowance before fare deduction and records the derived load in the journey snapshot.
-
-At `0.8.400`, carried load expanded from the main Inventory alone to **all unlocked container definitions marked `countsAsCarriedCargo`**. Current carried containers include the main Inventory and the earned Field Satchel. Home Safe/storage and wardrobes are not transport cargo.
-
-Consequences:
+At `0.8.400`, the Field Satchel became an earned portable container while remaining cargo-honest:
 
 ```text
 Inventory -> Field Satchel
-  portable space distribution changes
+  portable distribution changes
   total carried cargo does NOT change
 
 Inventory/Field Satchel -> Home Safe
-  goods leave portable carried containers
+  goods leave portable carriage
   total carried cargo decreases
 ```
 
-This is intentionally slot-based rather than a premature mass/encumbrance simulation. The transport allowance therefore measures occupied portable slots under the current contract.
+This remains intentionally slot-based rather than a premature mass/encumbrance simulation.
 
-## Inventory container authority
+# Daily social availability authority (`0.8.500`)
 
-`inventoryContainers.js` authors capacity/access/cargo semantics. `inventoryEngine.js` owns current container records, access, storage, transfer, and the idempotent `unlockInventoryContainer` operation.
+## Authored schedule data
 
-The stable internal ID `mogSatchel` remains legacy-shaped for persistence continuity, but player-facing copy is **Field Satchel**. Unlocking it changes the existing `unlocked` field; no Game State migration or second portable-inventory registry is required.
+`npcSchedules.js` is the first canonical recurring NPC-availability catalog. It authors stable references and public availability windows; it does not contain a simulation clock or persisted runtime records.
 
-## Transport service projection
+Current proving record:
 
-`transportServiceBoardEngine` derives the same current carried-load fact used by `transportEngine`. The board can explain `load N/allowance` and capacity blockers; the booking path independently derives the load again, so a browser or command caller cannot bypass the rule by falsifying payload data.
+```text
+schedule-thornwall-sera-talwin
+NPC:   npc-thornwall-sera-talwin
+POI:   poi-sandoria-s-alaune
+Place: thornwall-southgate
+Daily: 08:00–18:00
+Role:  Southgate guide duty
+```
+
+`validateNpcScheduleCatalog()` owns cross-reference and window validation for this authored catalog: schedule IDs, NPC existence, POI/place consistency, unique claimed POI, integer in-day windows, ordering, and overlap checks. This validator is directly exercised by the track regression. The broader `validation` subsystem remains version `0.10.0`; `0.8.500` did not change its global contract merely to duplicate ownership.
+
+## `npcScheduleEngine.js`
+
+`NPC_SCHEDULE_ENGINE_VERSION = 1` is the single runtime availability authority. It reads canonical `state.worldTime` and authored schedule data to derive:
+
+- whether the NPC/POI is available now;
+- current window/end time when present;
+- next available fictional world second;
+- time until return;
+- human-readable daily window and return guidance.
+
+No `state.npcSchedules` registry is created. Save/load persists canonical fictional time through existing Game State 5; availability is recomputed after load.
+
+The current model represents **public availability at a static canonical NPC location**. Sera's persistent NPC location remains Southgate. The schedule says when she is available there; it does not teleport or pathfind her elsewhere. Multi-location daily movement would be a separate future authority decision.
+
+## Interaction enforcement
+
+Availability is enforced below presentation so UI/command callers cannot bypass it:
+
+```text
+npcScheduleEngine
+    |
+    +-> localityEngine
+    |     scheduled POI unavailable -> fail before position/discovery mutation
+    |
+    +-> poiEngine
+    |     talk / POI action -> same availability check
+    |
+    +-> commitmentEngine
+          accept / resolve / follow-up -> same giver availability check
+```
+
+`localityEngine` v2 exposes schedule status on locality POI records and rejects unavailable scheduled interactions before moving the character. `poiEngine` uses the same schedule for command-path talk/action. `commitmentEngine` v0.3.0 applies the giver check to acceptance, delivery resolution, and later follow-up.
+
+This preserves authority separation: commitments still own obligation/reward state, relationships still own social continuity dimensions, NPC schedule data only constrains whether the conversation is currently available, and fictional time remains the clock.
+
+## Browser projection
+
+`playerSocialScheduleEngine` is pure derived presentation. It decorates commitment opportunity cards whose giver is currently unavailable:
+
+- marks the opportunity blocked;
+- adds the schedule/return-time requirement;
+- removes the executable social action;
+- recomputes recommendation so an impossible conversation is not recommended.
+
+`gameViewModel` v0.14.0 also carries locality availability into nearby records and omits contextual Talk actions for scheduled-away POIs. The person/place remains visible with useful away/return guidance rather than disappearing from the player's knowledge.
+
+No UI-owned schedule, appointment state, romance meter, wall-clock timer, or relationship counter was added.
 
 # Resource lifecycle
 
-Infrastructure and logistics consume ordinary canonical production goods. Current explicit construction sinks include:
-
-```text
-Resin-Sealed Hardwood Board
-Redstone Copper Ingot
-Copper Trail Clasp
-Resin-Cured Hide Binding
-```
-
-Sink metadata is descriptive. Actual consumption remains project/inventory authority.
+Infrastructure/logistics consume ordinary canonical production goods. Current explicit construction sinks include Resin-Sealed Hardwood Board, Redstone Copper Ingot, Copper Trail Clasp, and Resin-Cured Hide Binding. Sink metadata is descriptive; actual consumption remains project/inventory authority.
 
 # Character creation, navigation, economy, combat, and party
 
@@ -149,23 +179,21 @@ Safe-locality navigation remains named-place/POI based; wilderness/dungeons rema
 Current compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.400.1
-Package:       0.8.400
+Product:       0.8.500.1
+Package:       0.8.500
 Account Save:  4
 Game State:    5
-Data:          35
+Data:          36
 Benchmark:     1
-Codename:      Portable Field Logistics
+Codename:      Daily Social Availability
 ```
 
-Data 34 introduced the Joiner's Workbench and related construction lifecycle metadata. Data 35 adds the canonical Field Satchel home-improvement/container semantics and Resin-Cured Hide Binding construction sink.
-
-Account Save remains 4. Game State remains 5 because all new durable behavior fits existing project records, furnishing IDs, container records/`unlocked`, inventory, transport journey data, production, work proficiency, and provenance structures.
+Data 35 introduced Field Satchel authored/container semantics. Data 36 adds the canonical NPC schedule catalog. Account Save remains 4. Game State remains 5 because `0.8.500` derives availability from existing persisted fictional time and introduces no persisted schedule field/meaning. Benchmark remains 1 because the workload is unchanged.
 
 Relevant current registrations:
 
 ```text
-versionManifest:          0.8.400.1
+versionManifest:          0.8.500.1
 homeInfrastructure:       0.3.0
 activityAdvance:          0.5.0
 workstations:             0.3.0
@@ -176,22 +204,46 @@ carriedLoad:              0.2.0
 transportServiceBoard:    0.2.0
 inventoryContainers:      0.6.0
 inventoryTransfers:       0.6.0
+commitments:              0.3.0
+relationships:            0.1.0
+npcSchedules:             0.1.0
+playerSocialSchedules:    0.1.0
+localityNavigation:       0.2.0
+gameViewModels:           0.14.0
+validation:               0.10.0
+```
+
+Database registration:
+
+```text
+npcSchedules  implemented 0.1.0
 ```
 
 ## Current authoritative runtime checkpoint
 
 ```text
-d1a43568c5ca4dd7e57fb86316b422c35025ce07
-Product 0.8.400.1
-Package 0.8.400
-Data 35
-Benchmark 1
+fde1d30d76264ea25af6bad4d829545c488eec9b
+509/509 tests
+0 failed
+0 skipped
+Benchmark 1 success
+Product 0.8.500.1
+Package 0.8.500
+Data 36
 ```
 
-Promoted Check run `32080844409` completed successfully; its Test and Benchmark steps both succeeded. Exact test-count/timing lines were not retained in the available connector evidence and are therefore not claimed here.
+Benchmark 1:
 
-Primary logistics guards are `tests/playerTransportLogisticsFlow.test.js` and `tests/playerPortableFieldLogisticsFlow.test.js`, alongside the canonical transport/inventory/home-infrastructure regressions.
+```text
+player combat profiles  0.367612 ms/op
+enemy combat profiles   0.101654 ms/op
+basic attacks            0.434260 ms/op
+tick dispatch            0.004321 ms/op
+direct route lookup      0.687768 ms/op
+```
+
+Primary social-availability guard: `tests/playerSocialScheduleFlow.test.js`. It proves present-at-08:00, away-at-18:30, semantic and command enforcement, Journal/browser alignment, no hidden mutation, save/load re-derivation, next-day return, commitment availability, catalog validation, and current game/world validation.
 
 ## Carried-forward rule
 
-Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future Phase 0.8 work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, production, transport, and world knowledge rather than creating isolated management simulations.
+Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future Phase 0.8 work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, production, transport, world knowledge, and bounded authored schedules rather than creating isolated management simulations.
