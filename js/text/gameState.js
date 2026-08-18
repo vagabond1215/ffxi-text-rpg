@@ -31,6 +31,7 @@ export function createNewGameState(options = {}) {
     const nation = getNation(options.nationId);
     const startPlace = getPlace(options.startingPlaceId ?? nation.startingPlaceId);
     const startCoordinate = normalizePositionForPlace(startPlace, startPlace.coordinateSystem.start);
+    const startWorldTimeSeconds = options.startWorldTimeSeconds ?? DEFAULT_START_WORLD_TIME_SECONDS;
     const mainJobId = options.mainJobId ?? 'vanguard';
     const player = createPlayerCharacter({
         name: options.name ?? 'Traveler',
@@ -50,7 +51,7 @@ export function createNewGameState(options = {}) {
 
     return {
         version: VERSION.gameState,
-        worldTime: createWorldTimeState({ totalSeconds: options.startWorldTimeSeconds ?? DEFAULT_START_WORLD_TIME_SECONDS }),
+        worldTime: createWorldTimeState({ totalSeconds: startWorldTimeSeconds }),
         simulation: createSimulationControlState({
             paused: options.simulationPaused ?? false,
             speedMultiplier: options.simulationSpeedMultiplier ?? 1,
@@ -66,7 +67,7 @@ export function createNewGameState(options = {}) {
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,
-        atlas: createAtlasState(startPlace.id, startCoordinate),
+        atlas: createAtlasState(startPlace.id, startCoordinate, { worldTimeSeconds: startWorldTimeSeconds }),
         discoveredPois: createPoiDiscoveryState(),
         travel: null,
         player,
