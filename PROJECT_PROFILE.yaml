@@ -37,7 +37,8 @@ modules:
   - deterministic-simulation
 quality:
   deterministic_simulation: preserve
-  save_compatibility: explicit-migration-for-breaking-persisted-semantics
+  save_compatibility: current-schema-only-pre-alpha
+  future_migrations: deliberate-only-when-required
   resource_lifecycle_review: required
   long_session_stability: required-design-consideration
   hard_performance_thresholds: baseline-required-first
@@ -46,5 +47,6 @@ constraints:
   - preserve the original-world canon and legacy/reference boundary
   - preserve the distinction between fictional simulation time and wall-clock scheduling
   - preserve player-facing acquired-knowledge map privacy
-  - preserve ordered save migrations and compatibility boundaries
+  - reject incompatible pre-alpha saves/accounts rather than adding compatibility scaffolding by default
+  - keep the generic migration substrate available for future deliberate migrations without making migration automatic
   - roadmap sequencing does not authorize unbounded implementation
