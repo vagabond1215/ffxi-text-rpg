@@ -1,6 +1,7 @@
 export const DATABASES = Object.freeze({
     players: database('players', 'Player characters and account-local save state.', 'implemented', '0.2.0'),
     npcs: database('npcs', 'Non-player characters, services, dialogue hooks, shops, quest givers.', 'seeded', '0.2.0'),
+    npcSchedules: database('npcSchedules', 'Canonical recurring NPC availability windows tied to fictional time and known POIs; runtime availability is derived rather than persisted.', 'implemented', '0.1.0'),
     enemies: database('enemies', 'Encounter-instance templates linked to canonical species plus combat, resource-opportunity, and EXP hooks.', 'seeded', '0.2.1'),
     ecologyFamilies: database('ecologyFamilies', 'Canonical creature family records shared across species and population definitions.', 'seeded', '0.1.0'),
     species: database('species', 'Canonical species records separated from encounter instances, with habitat and behavior metadata.', 'seeded', '0.1.0'),
