@@ -327,7 +327,7 @@ test('item inspection searches accessible non-wardrobe containers for consumable
     const state = createInitialState();
     const inventoryState = state.player.inventoryState;
     setHomeAccess(state, true);
-    addItemToContainer(inventoryState, 'mogSafe', potion());
+    addItemToContainer(inventoryState, 'homeSafe', potion());
     addItemToContainer(inventoryState, 'storage', craftingMaterial());
 
     const potionOutput = inspectItem(state, 'Potion');
