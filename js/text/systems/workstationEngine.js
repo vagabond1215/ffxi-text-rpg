@@ -1,4 +1,4 @@
-import { getFurniture } from '../data/mogHouseFurniture.js';
+import { getFurniture } from '../data/homeFurnishings.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 
 export const WORKSTATION_ENGINE_VERSION = 3;
@@ -44,7 +44,7 @@ export function collectHomeWorkstationTags(state) {
     if (!homePlaceId || state?.currentPlaceId !== homePlaceId) return [];
 
     const tags = new Set();
-    for (const furnitureId of state?.player?.inventoryState?.mogHouse?.placedFurniture ?? []) {
+    for (const furnitureId of state?.player?.inventoryState?.home?.placedFurniture ?? []) {
         const furniture = getFurniture(furnitureId);
         for (const stationTag of getWorkstationTagsForFurniture(furniture)) tags.add(stationTag);
     }
