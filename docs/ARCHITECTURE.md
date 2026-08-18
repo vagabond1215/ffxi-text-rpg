@@ -133,7 +133,7 @@ Settlement recovery uses the existing `recovery.settlement` timed task and 3600 
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.12
+Product:       0.8.600.22
 Package:       0.8.600
 Account Save:  5
 Game State:    6
@@ -150,17 +150,76 @@ hearthHorizonAccountSession
 
 Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
 
-Before revival/reference relinking, `currentGameStateSchema.js` requires a complete Game State 6 persisted structure. Missing required registries or nested capability state cause rejection. Runtime `ensure*` helpers may initialize new/internal state, but they are not implicit save migrations.
+Before revival/reference relinking, `currentGameStateSchema.js` requires a complete Game State 6 persisted structure. Runtime `ensure*` helpers may initialize new/internal state, but they are not implicit save migrations.
+
+The current raw persistence boundary additionally validates the task subsystem rather than checking object presence alone:
+
+```text
+timed-task registry
+  version
+  nextSequence monotonicity
+  unique stable task ids
+  valid status/timing/data records
+
+active travel
+  Travel State 2
+  matching travel task kind/channel/endpoints/deadline
+
+active domain owners
+  project -> project.labor
+  work -> work.<kind>
+  timed ability -> ability.activation
+  resource recovery -> resource.recovery
+```
+
+An active domain record may reference an active task or a task that has just completed and awaits owner reconciliation. A terminal domain record may retain `taskId` as historical correlation after the task record has been released.
+
+Legacy-shaped or orphaned active travel/task state is rejected rather than reconstructed. The old runtime active-travel normalization path is removed. Malformed current task registries are rejected before `ensureTimedTaskState()` can normalize them.
 
 `saveGame()` likewise refuses malformed current state rather than manufacturing required registries during persistence. The deleted active save-migration layer is not part of current runtime. `migrationEngine.js` remains a generic utility only for a future deliberate migration requirement.
 
-## Lifecycle ownership
+## Timed-task lifecycle ownership
 
-Long-lived runtime resources require explicit owners and safe replacement/disposal.
+Timed-task authority owns scheduling/progress/terminal status. Domain authority owns the semantic consequence and terminal release point.
+
+Current direct production task creators are exactly:
+
+```text
+abilityEngine.js
+campaignRecoveryEngine.js
+projectEngine.js
+resourceOpportunityEngine.js
+transportEngine.js
+workTaskEngine.js
+```
+
+`tests/architectureDebtGuard.test.js` makes that set executable and requires each direct owner to depend on terminal release.
+
+Lifecycle law:
+
+```text
+start task
+  -> active owner state references task
+  -> task becomes completed/cancelled
+  -> owner commits durable consequence + exactly-once semantic transition
+  -> owner calls releaseTimedTask
+  -> task record removed
+  -> domain record/event may retain historical taskId
+```
+
+`releaseTimedTask` rejects active tasks and never rewinds task sequence allocation. Production-style repeated owner lifecycles return the task registry to zero retained task records after reconciliation.
+
+There is currently no production generic/unowned timed-task producer. The low-level lifecycle smoke deliberately proves that the task engine itself does not silently prune an unreleased generic terminal record; no global task-history cap is accepted without a concrete future producer/history requirement.
+
+Positive current-schema persistence evidence exists across all six owners: campaign recovery, project, travel, work, timed ability, and resource recovery all preserve the relevant owner/task identity through their required save/load boundary and reconcile exactly once.
+
+See `docs/RESOURCE_LIFECYCLE.md` for the detailed ownership contract.
+
+## Other lifecycle ownership
 
 ### Tick subscriptions
 
-Stable subscriber IDs may be replaced. The disposer returned to a subscriber removes only the exact record it created; therefore an old owner cannot later remove a newer subscriber that reused the same ID. Explicit `unsubscribe(id)` remains the deliberate operation for removing the current owner.
+Stable subscriber IDs may be replaced. The disposer returned to a subscriber removes only the exact record it created; an old owner cannot later remove a newer subscriber that reused the same ID. Explicit `unsubscribe(id)` remains the deliberate operation for removing the current owner.
 
 ### Browser root
 
@@ -168,13 +227,7 @@ Stable subscriber IDs may be replaced. The disposer returned to a subscriber rem
 
 ### Long-session state
 
-`tests/longSessionLifecycle.test.js` proves deterministic 130-day advancement with periodic real current-schema save/load, exactly-once task start/completion through reload, bounded semantic-event history (200), and bounded day-summary history (120).
-
-### Terminal task history
-
-Completed/cancelled timed-task records are not generically pruned yet. Multiple domain records may still reconcile through terminal task IDs. Any future compaction requires domain-owned release semantics first; generic deletion without that contract would violate task authority.
-
-See `docs/RESOURCE_LIFECYCLE.md` for the detailed ownership contract.
+`tests/longSessionLifecycle.test.js` proves deterministic 130-day advancement with periodic real current-schema save/load, exactly-once low-level task start/completion through reload, bounded semantic-event history (200), bounded day-summary history (120), and zero-retained-task steady state for repeated owner-managed gameplay lifecycles.
 
 ## Command/adapter boundary
 
@@ -188,32 +241,42 @@ Legacy FFXI-derived research/reference datasets may remain bounded reference mat
 
 `package.json` requires Node `>=24`. Hosted Check runs on Node 24 LTS using `actions/checkout@v7` and `actions/setup-node@v6`, with concurrency cancellation and a bounded job timeout.
 
-Hosted Check executes the full tests, Benchmark 3, and sampled Benchmark 3 evidence. `tests/architectureDebtGuard.test.js` prevents selected removed compatibility surfaces from returning. Focused lifecycle tests additionally protect long-session save/load, subscriber ownership, and DOM-root cleanup.
+Hosted Check executes the full tests, Benchmark 3, and sampled Benchmark 3 evidence.
 
-Benchmark 3 separates setup from the timed attack/tick/route workloads and performs an unreported 10% warm-up on separate setup state before every timed workload/sample. Benchmark 1/2 results are not numerically comparable to Benchmark 3.
-
-Latest exact-head runtime gate: PR #335 / exact head `10ab2c5af9ddcf0760f49817ff5a8c41ec1caa07` / Check `32160936491`, Node 24.19.0:
+Latest exact-head runtime gate: PR #345 / exact head `be561e922f1b0316727e13a91381595418b956e2` / Check `32171224914`, Node 24.19.0:
 
 ```text
-527/527 tests
+550/550 tests
 0 failed
 0 skipped
 Benchmark 3 success
 Benchmark Sample success
 ```
 
-Single Benchmark 3 run:
+Benchmark 3 single run:
 
 ```text
-player combat profiles  0.355492 ms/op
-enemy combat profiles   0.066399 ms/op
-basic attacks            0.002787 ms/op
-tick dispatch            0.000923 ms/op
-direct route lookup      0.008017 ms/op
+player combat profiles  0.394555 ms/op
+enemy combat profiles   0.071987 ms/op
+basic attacks            0.003521 ms/op
+tick dispatch            0.001158 ms/op
+direct route lookup      0.007919 ms/op
 ```
 
-No hard performance thresholds are accepted yet. The very short attack/tick microbenchmarks still show high relative variance in repeated hosted samples. See `docs/PERFORMANCE_BUDGET.md` for the current baseline and interpretation rules.
+Three-sample medians/spreads:
+
+```text
+player profiles  0.364139 ms/op   7.99%
+enemy profiles   0.070800 ms/op  11.17%
+basic attacks    0.001303 ms/op 219.89%
+tick dispatch    0.000713 ms/op  18.43%
+route lookup     0.007434 ms/op   6.93%
+```
+
+Benchmark 1/2 results are not numerically comparable to Benchmark 3. No hard performance thresholds are accepted yet.
 
 ## Carried-forward rule
 
 Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future work should extend real fictional time, materials, inventory, projects, relationships, locations, party state, recovery, production, transport, world knowledge, and bounded authored schedules rather than creating isolated management simulations, hidden lifecycle resources, or compatibility layers.
+
+For future persistence hardening, compose raw current-schema validators one bounded registry family at a time. First distinguish persistent required authority from derived/transient state and construction convenience; do not turn `ensure*` helpers into implicit Game State 6 migration behavior.
