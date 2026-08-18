@@ -15,13 +15,11 @@ import {
     calculateFurnitureStorageCapacity,
     describeFurnitureStorage,
     STARTING_FURNITURE_IDS,
-} from '../data/mogHouseFurniture.js';
+} from '../data/homeFurnishings.js';
 
 export function createInventoryState(options = {}) {
-    // `mogHouse` is retained as the persisted compatibility key until an ordered
-    // inventory-state schema migration renames it. Do not expose that token to players.
-    const mogHouse = {
-        isInMogHouse: options.isInMogHouse ?? false,
+    const home = {
+        isAtHome: options.isAtHome ?? false,
         placedFurniture: options.placedFurniture ?? [...STARTING_FURNITURE_IDS],
     };
 
@@ -31,7 +29,7 @@ export function createInventoryState(options = {}) {
             unlocked: options.unlockedContainers?.includes(definition.id) ?? definition.unlockedByDefault,
             items: (options.containers?.[definition.id]?.items ?? []).map(normalizeItem),
         }])),
-        mogHouse,
+        home,
     };
 }
 
@@ -39,7 +37,7 @@ export function getContainerCapacity(inventoryState, containerId) {
     const definition = getContainerDefinition(containerId);
     if (!definition) return 0;
     if (definition.capacityMode === 'furniture') {
-        return calculateFurnitureStorageCapacity(inventoryState?.mogHouse?.placedFurniture ?? []);
+        return calculateFurnitureStorageCapacity(inventoryState?.home?.placedFurniture ?? []);
     }
     return definition.baseCapacity;
 }
@@ -61,13 +59,13 @@ export function isContainerAccessible(inventoryState, containerId, context = {})
     const container = inventoryState?.containers?.[containerId];
     if (!definition || !container?.unlocked) return false;
 
-    const inMogHouse = context.isInMogHouse ?? inventoryState?.mogHouse?.isInMogHouse ?? false;
+    const atHome = context.isAtHome ?? inventoryState?.home?.isAtHome ?? false;
     switch (definition.access) {
         case INVENTORY_ACCESS_CONTEXTS.ANYWHERE:
         case INVENTORY_ACCESS_CONTEXTS.EQUIPMENT_ANYWHERE:
             return true;
-        case INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE:
-            return inMogHouse;
+        case INVENTORY_ACCESS_CONTEXTS.HOME:
+            return atHome;
         default:
             return false;
     }
@@ -189,7 +187,7 @@ export function describeInventoryContainers(state, context = {}) {
         'Inventory Containers:',
         ...listContainerDefinitions().map((definition) => describeContainerLine(inventoryState, definition.id, context)),
         '',
-        describeFurnitureStorage(inventoryState.mogHouse?.placedFurniture ?? []),
+        describeFurnitureStorage(inventoryState.home?.placedFurniture ?? []),
     ].join('\n');
 }
 
@@ -223,13 +221,8 @@ export function describeEquipmentAndWardrobes(state, context = {}) {
 export function setHomeAccess(state, isAtHome) {
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return { ok: false, message: 'No inventory container state found.' };
-    inventoryState.mogHouse.isInMogHouse = Boolean(isAtHome);
-    return { ok: true, message: `Home-storage context: ${inventoryState.mogHouse.isInMogHouse ? 'entered' : 'left'}.` };
-}
-
-// Legacy API alias retained while command and save adapters are migrated.
-export function setMogHouseAccess(state, isInMogHouse) {
-    return setHomeAccess(state, isInMogHouse);
+    inventoryState.home.isAtHome = Boolean(isAtHome);
+    return { ok: true, message: `Home-storage context: ${inventoryState.home.isAtHome ? 'entered' : 'left'}.` };
 }
 
 function canStackIntoExistingItem(container, item) {
@@ -267,7 +260,7 @@ function describeContainerLine(inventoryState, containerId, context = {}) {
 
 function describeAccessContext(access) {
     switch (access) {
-        case INVENTORY_ACCESS_CONTEXTS.MOG_HOUSE:
+        case INVENTORY_ACCESS_CONTEXTS.HOME:
             return 'home';
         case INVENTORY_ACCESS_CONTEXTS.EQUIPMENT_ANYWHERE:
             return 'equipment-anywhere';
