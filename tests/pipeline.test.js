@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.9');
+    assert.equal(PRODUCT_VERSION, '0.8.600.10');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 2);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Benchmark Protocol V2');
+    assert.equal(VERSION.codename, 'Subscription Ownership');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -34,6 +34,7 @@ test('version manifest separates product package persistence data and focused cl
             actionResults: SYSTEM_VERSIONS.actionResults,
             performanceHarness: SYSTEM_VERSIONS.performanceHarness,
             lifecycleHarness: SYSTEM_VERSIONS.lifecycleHarness,
+            liveTick: SYSTEM_VERSIONS.liveTick,
             commandShell: SYSTEM_VERSIONS.commandShell,
             slashCommands: SYSTEM_VERSIONS.slashCommands,
             accountSaves: SYSTEM_VERSIONS.accountSaves,
@@ -46,10 +47,11 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.9',
+            versionManifest: '0.8.600.10',
             actionResults: '0.2.0',
             performanceHarness: '0.2.0',
-            lifecycleHarness: '0.1.0',
+            lifecycleHarness: '0.2.0',
+            liveTick: '0.2.1',
             commandShell: '0.5.1',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
@@ -64,16 +66,17 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.9/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.10/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 2/);
-    assert.match(describeVersion(), /Codename: Benchmark Protocol V2/);
+    assert.match(describeVersion(), /Codename: Subscription Ownership/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /performanceHarness: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /lifecycleHarness: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /liveTick: 0\.2\.1/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
 
