@@ -9,7 +9,9 @@
     "start": "npm run serve",
     "test": "node --test",
     "benchmark": "node scripts/benchmark.js",
+    "benchmark:sample": "node scripts/benchmarkSample.js",
     "bench": "npm run benchmark",
+    "hardening": "node --test tests/longSessionLifecycle.test.js && npm run benchmark:sample",
     "check": "npm test && npm run benchmark"
   },
   "devDependencies": {},
