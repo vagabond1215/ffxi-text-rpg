@@ -7,17 +7,17 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.400.1
-Package:       0.8.400
+Product:       0.8.500.1
+Package:       0.8.500
 Account Save:  4
 Game State:    5
-Data:          35
+Data:          36
 Benchmark:     1
-Codename:      Portable Field Logistics
+Codename:      Daily Social Availability
 Compatibility: pre-release-current-schema
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.400` are complete and audited.** The project remains pre-alpha and unreleased.
+**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.500` are complete and audited.** The project remains pre-alpha and unreleased.
 
 ## Product version format
 
@@ -29,10 +29,10 @@ Use `MAJOR.PHASE.TRACK.REVISION`. `package.json.version` remains three-part SemV
 | --- | ---: | --- |
 | Account Save | 4 | local account/session/character registry contract |
 | Game State | 5 | serialized character/world runtime contract |
-| Data | 35 | canonical authored-data contract |
+| Data | 36 | canonical authored-data contract |
 | Benchmark | 1 | benchmark protocol/comparability |
 
-Account Save changes when the account/session registry changes materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the workload/protocol changes enough that previous results stop being comparable.
+Account Save changes when account/session registry semantics change materially. Game State changes when persisted runtime structure or meaning changes materially. Data changes when canonical authored-data shape/authority/content changes materially. Benchmark changes only when the benchmark workload/protocol stops being comparable.
 
 Recent Data history:
 
@@ -40,9 +40,10 @@ Recent Data history:
 - Data 32 — first home-infrastructure definition linking regional materials/project labor to Storage Chest capacity;
 - Data 33 — original character names, starting-discipline kits, and authored origin openings;
 - Data 34 — Joiner's Workbench furnishing/home-improvement definition plus explicit construction sinks for infrastructure goods;
-- Data 35 — Field Satchel home-improvement/container semantics plus Resin-Cured Hide Binding construction sink.
+- Data 35 — Field Satchel home-improvement/container semantics plus Resin-Cured Hide Binding construction sink;
+- Data 36 — canonical recurring NPC-availability schedule data, beginning with Sera Talwin's Southgate duty window.
 
-Game State remains 5 through Data 35 because the Phase 0.8 additions reuse existing project records/data, placed furnishing IDs, inventory containers and their existing `unlocked` field, transport journey data, production/work state, and provenance. Account Save remains 4 because account/session/character-registry semantics are unchanged.
+Game State remains 5 through Data 36. The Phase 0.8 additions reuse existing project records/data, furnishings, inventory containers/`unlocked`, transport journey data, production/work state, provenance, relationships/commitments, and canonical world time. `0.8.500` adds no serialized schedule state; availability is re-derived from fictional time. Account Save remains 4 because account/session/character-registry semantics are unchanged.
 
 ## Compatibility policy
 
@@ -50,7 +51,7 @@ Current mode is `pre-release-current-schema`. Current-format save/load/validatio
 
 ## Release discipline
 
-A coherent checkpoint requires a bounded player-facing implementation, regression coverage, observed full Check/Test and Benchmark gates, deliberate product/schema/data registration, synchronized authority docs, and a stop at the declared boundary. Do not claim a test count or performance figure that was not retained in observed evidence.
+A coherent checkpoint requires a bounded player-facing implementation, regression coverage, observed full Test and Benchmark gates, deliberate product/schema/data registration, synchronized authority docs, and a stop at the declared boundary. Do not claim test counts or performance figures that were not observed.
 
 # Phase history
 
@@ -74,8 +75,6 @@ Checkpoint `03ab71c7e96c54eaeffb75598ed01243fd390f21`, Product `0.8.200.1`, Pack
 
 ## `0.8.300` — Carried Load & Transport Logistics — complete
 
-### Version decision
-
 ```text
 Product:       0.8.300.1
 Package:       0.8.300
@@ -86,48 +85,11 @@ Benchmark:     1
 Codename:      Carried Load and Transport Logistics
 ```
 
-No Data bump was required: this track repaired runtime authority rather than authored content. Scheduled transport already had cargo allowances; the defect was that caller/UI payload supplied the cargo number.
+No Data bump was required: this track repaired runtime authority rather than authored content. `carriedLoadEngine` derives actual occupied carried slots, `transportServiceBoardEngine` projects the fact, and `transportEngine` independently derives it at booking. Caller-provided cargo is ignored; service capacity is checked before fare deduction.
 
-### Authority decision
-
-`carriedLoadEngine` derives actual occupied carried slots from canonical inventory. `transportServiceBoardEngine` uses that value for player-facing quotes/blockers, and `transportEngine` independently derives it again at booking. Caller-provided `cargoUnits` is ignored. Cargo capacity is checked before fare deduction and the journey records the canonical booked load.
-
-This makes home storage operationally meaningful: goods stored at home stop counting as carried cargo. No persisted weight state, cargo currency, separate warehouse ledger, or UI-owned transport state was added.
-
-### Registrations
-
-```text
-versionManifest:          0.8.300.1
-transport:                0.3.0
-carriedLoad:              0.1.0
-transportServiceBoard:    0.2.0
-```
-
-### Promoted checkpoint
-
-```text
-4f8c0de9e6ba926ee903f5787d34cca73c40eb6d
-507/507 tests
-0 failed
-0 skipped
-Benchmark 1 success
-```
-
-Benchmark 1:
-
-```text
-player combat profiles  0.492450 ms/op
-enemy combat profiles   0.117547 ms/op
-basic attacks            0.588062 ms/op
-tick dispatch            0.005528 ms/op
-direct route lookup      0.902781 ms/op
-```
-
-**PASS. `0.8.300` is closed.**
+Checkpoint `4f8c0de9e6ba926ee903f5787d34cca73c40eb6d` — 507/507 tests, Benchmark 1.
 
 ## `0.8.400` — Portable Field Logistics — complete
-
-### Version decision
 
 ```text
 Product:       0.8.400.1
@@ -137,74 +99,121 @@ Game State:    5
 Data:          35
 Benchmark:     1
 Codename:      Portable Field Logistics
+```
+
+Data advances `34 -> 35` because the track adds canonical Field Satchel improvement/container semantics and the Resin-Cured Hide Binding construction sink. The satchel is built through existing project/home authority and unlocked through inventory authority.
+
+The cargo rule is explicit: Inventory→Field Satchel leaves total carried load unchanged; portable container→Home Safe reduces carried load. Promoted checkpoint `d1a43568c5ca4dd7e57fb86316b422c35025ce07`; Check `32080844409` completed successfully with Test and Benchmark steps green.
+
+## `0.8.500` — Daily Social Availability — complete
+
+### Version decision
+
+```text
+Product:       0.8.500.1
+Package:       0.8.500
+Account Save:  4
+Game State:    5
+Data:          36
+Benchmark:     1
+Codename:      Daily Social Availability
 Compatibility: pre-release-current-schema
 ```
 
-Data advances `34 -> 35` because the track adds canonical authored Field Satchel improvement/container semantics and the Resin-Cured Hide Binding construction sink. Game State remains 5 because container unlock uses the existing `unlocked` field and construction uses existing project records. Account Save remains 4.
+Data advances `35 -> 36` because `0.8.500` adds canonical authored NPC-schedule data. Game State remains 5 because the schedule does not add persisted runtime fields: availability is derived from existing canonical `worldTime.totalSeconds`. Account Save remains 4. Benchmark remains 1 because the benchmark protocol is unchanged.
 
-### Player-facing contract
+### Authored-data contract
 
-```text
-Make a Field Satchel
-  2 Resin-Cured Hide Bindings
-  1 Copper Trail Clasp
-  30 minutes project labor
-    -> unlock Field Satchel
-    -> 8 portable slots
-```
-
-The satchel is implemented through the existing home-infrastructure/project/timed-task adapter. Inventory remains authority for unlock/access/capacity/transfer.
-
-The cargo rule is explicit:
+The first proving record is deliberately narrow:
 
 ```text
-Inventory -> Field Satchel       carried cargo unchanged
-portable container -> Home Safe carried cargo decreases
+schedule-thornwall-sera-talwin
+NPC:   npc-thornwall-sera-talwin
+POI:   poi-sandoria-s-alaune
+Place: thornwall-southgate
+Daily: 08:00–18:00
 ```
 
-`carriedLoadEngine` v2 sums every unlocked authored container marked `countsAsCarriedCargo`. Portable capacity therefore supports longer field loops without becoming an exploit for scheduled-transport limits.
+`validateNpcScheduleCatalog()` validates schedule identity, canonical NPC/POI/place references, unique POI ownership, and well-formed/non-overlapping daily windows. It is owned by the NPC-schedule subsystem and is directly exercised by the end-to-end regression. The global `validation` registration remains `0.10.0`; the track does not duplicate schedule ownership there merely to manufacture another version bump.
+
+### Authority decision
+
+`npcScheduleEngine` is the one runtime availability authority. It derives current/next availability entirely from authored schedule data plus canonical fictional time. It creates no `state.npcSchedules` or second clock.
+
+The same authority is consumed by:
+
+- `localityEngine` v2 before a semantic scheduled-POI interaction can move/discover the character;
+- `poiEngine` for command-path talk and POI actions;
+- `commitmentEngine` v0.3.0 for accept, resolve, and follow-up giver context;
+- `playerSocialScheduleEngine` for derived Journal blocking/recommendation;
+- `gameViewModel` v0.14.0 for nearby schedule notes and suppression of dead contextual Talk actions.
+
+Commitments remain obligation/reward authority; relationships remain social-continuity authority; schedule data only determines when the conversation is publicly available.
+
+The current schedule contract is **availability at a static canonical NPC location**. It does not move Sera's persisted NPC location or implement autonomous multi-location routines.
 
 ### Current registrations
 
 ```text
-versionManifest:          0.8.400.1
-homeInfrastructure:       0.3.0
-activityAdvance:          0.5.0
-productionItems:          0.4.0
-carriedLoad:              0.2.0
-transport:                0.3.0
-transportServiceBoard:    0.2.0
-inventoryContainers:      0.6.0
-inventoryTransfers:       0.6.0
-workstations:             0.3.0
-settlementServiceBoard:   0.2.0
+versionManifest:          0.8.500.1
+commitments:              0.3.0
+relationships:            0.1.0
+npcSchedules:             0.1.0
+playerSocialSchedules:    0.1.0
+localityNavigation:       0.2.0
+gameViewModels:           0.14.0
+validation:               0.10.0
 ```
+
+Database registration:
+
+```text
+npcSchedules  implemented 0.1.0
+```
+
+### End-to-end gate
+
+`tests/playerSocialScheduleFlow.test.js` proves:
+
+- Sera is available at canonical 08:00 and her 08:00–18:00 window is visible;
+- semantic locality interaction succeeds while available;
+- at 18:30 both semantic and command-path talk are blocked with next-return guidance;
+- blocked interaction does not move the character or create hidden time cost;
+- commitment acceptance is independently blocked by domain authority while the giver is away;
+- the browser retains useful away/return information while suppressing impossible contextual and Journal actions;
+- save/load serializes fictional time but no schedule registry, then re-derives the same unavailable state;
+- advancing to next-day 08:00 restores availability and commitment acceptance;
+- schedule catalog, game state, and world data validations remain green.
 
 ### Regression and repair trail
 
-The first `0.8.400` pre-promotion validation exposed one stale `0.8.100` text assertion: the chest remained functionally correct but its generalized completion sentence no longer matched an old exact phrase. The regression was updated to assert the stable semantic fact rather than a historical verb. No gameplay authority was weakened.
-
-A briefly drafted standalone portable-logistics project/catalog adapter was removed before validation because it duplicated the existing home-infrastructure/project authority. The final track has one construction authority and one inventory authority.
+The pre-promotion runtime passed 509/509 tests plus Benchmark 1. The first promoted run then exposed one historical Phase 0.7 assertion that froze `SYSTEM_VERSIONS.commitments` at exactly `0.2.0`. Since `0.8.500` legitimately extends that shared authority, the historical gate was changed to require a compatible minimum (`>= 0.2.0`), matching existing precedent for later shared-system evolution. No historical gameplay behavior was weakened.
 
 ### Authoritative promoted runtime checkpoint
 
 ```text
-d1a43568c5ca4dd7e57fb86316b422c35025ce07
-Product 0.8.400.1
-Package 0.8.400
-Data 35
-Account Save 4
-Game State 5
-Benchmark 1
+fde1d30d76264ea25af6bad4d829545c488eec9b
+509/509 tests
+0 failed
+0 skipped
+Benchmark 1 success
 ```
 
-Promoted Check run `32080844409` completed **SUCCESS**. The Test and Benchmark workflow steps both completed successfully. Exact test-count/timing lines are not claimed because they were not retained in the available connector evidence.
+Benchmark 1:
 
-**PASS. `0.8.400` is closed. Phase 0.8 remains open.**
+```text
+1,000 player combat profiles      367.612ms  0.367612ms/op
+1,000 enemy combat profiles       101.654ms  0.101654ms/op
+1,000 basic attacks               434.260ms  0.434260ms/op
+10,000 ticks / 5 subscribers       43.213ms  0.004321ms/op
+10,000 direct route lookups      6877.677ms  0.687768ms/op
+```
+
+**PASS. `0.8.500` is closed. Phase 0.8 remains open.**
 
 ## Next Phase 0.8 decision
 
-Do not automatically begin `0.8.500`. The next work order should re-audit one bounded seam before implementation. Candidate families: agriculture/stewardship, social schedules/relationship life, companion life breadth, earned automation, or another logistics segment only when an existing authority gap justifies it.
+Do not automatically begin `0.8.600` or mass-author more schedules. The next work order should re-audit one bounded seam before implementation. Candidate families: agriculture/stewardship, companion-life breadth, earned automation, additional social-life breadth with a concrete decision/authority path, or another life/logistics seam only where an existing gap justifies it.
 
 # Planned later phases
 
