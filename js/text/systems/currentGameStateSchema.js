@@ -10,6 +10,7 @@ import { validateResourceOpportunityState } from './resourceOpportunityEngine.js
 import { validateSimulationControlState } from './simulationControlEngine.js';
 import { validateTimedTaskState } from './timedTaskEngine.js';
 import { TRAVEL_KINDS, validateActiveTravel } from './transportEngine.js';
+import { validateInventoryState } from './validation.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
@@ -87,6 +88,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         }
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) {
             if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
+        }
+        if (isObject(state.player.inventoryState)) {
+            issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
         }
         if (isObject(state.player.progression)) {
             if (!isObject(state.player.progression.capabilities)) {
