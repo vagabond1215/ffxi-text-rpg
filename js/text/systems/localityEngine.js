@@ -2,6 +2,7 @@ import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getPointOfInterest, getPoisForPlace } from '../data/pointsOfInterest.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
+import { isSettlementLocality } from './localityClassificationEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { syncActivePartyLocation } from './partyEngine.js';
 import { discoverPoi, performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
@@ -9,16 +10,9 @@ import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const LOCALITY_NAVIGATION_VERSION = 2;
-export const SETTLEMENT_LOCALITY_TYPES = Object.freeze(['city', 'cityInterior', 'travelHub']);
+export { SETTLEMENT_LOCALITY_TYPES, isSettlementLocality } from './localityClassificationEngine.js';
 
-export function isSettlementLocality(placeOrId) {
-    const place = typeof placeOrId === 'string' ? getPlace(placeOrId) : placeOrId;
-    return Boolean(place
-        && Number(place.dangerLevel ?? 0) === 0
-        && SETTLEMENT_LOCALITY_TYPES.includes(place.type)
-        && !place.flags?.externalPlaceholder);
-}
+export const LOCALITY_NAVIGATION_VERSION = 2;
 
 export function getNavigationMode(state) {
     if (state?.activeBattle?.phase === 'active') return 'combat';
