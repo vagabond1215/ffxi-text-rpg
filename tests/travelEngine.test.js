@@ -118,9 +118,9 @@ test('router exposes maps places travel and wait commands', () => {
 
     assert.match(router('maps'), /map-thornwall/);
     assert.match(router('map map-brasshaven'), /Brasshaven/);
-    assert.match(router('zones'), /thornwall-southgate/);
-    assert.match(router('zones'), /brasshaven-market-ring/);
-    assert.match(router('zones'), /mistmere-canal-ward/);
+    assert.match(router('places'), /thornwall-southgate/);
+    assert.match(router('places'), /brasshaven-market-ring/);
+    assert.match(router('places'), /mistmere-canal-ward/);
     assert.match(router('travel West Elderwood'), /Traveling to West Elderwood/);
     assert.match(router('wait 1800'), /Arrived at West Elderwood/);
 });
