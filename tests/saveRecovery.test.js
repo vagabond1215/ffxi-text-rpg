@@ -79,6 +79,6 @@ test('clear-all recovery removes account registry and session in one action', ()
     assert.equal(result.ok, true);
     assert.equal(result.session.loggedIn, false);
     assert.equal(listAccounts().length, 0);
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccounts'), null);
-    assert.equal(globalThis.localStorage.getItem('ffxiTextRpgAccountSession'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccounts'), null);
+    assert.equal(globalThis.localStorage.getItem('hearthHorizonAccountSession'), null);
 });
