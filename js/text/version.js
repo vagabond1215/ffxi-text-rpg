@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.8.500.1';
-export const PACKAGE_VERSION = '0.8.500';
+export const PRODUCT_VERSION = '0.8.600.1';
+export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,7 +8,7 @@ export const VERSION = Object.freeze({
     gameState: 5,
     data: 36,
     benchmark: 1,
-    codename: 'Daily Social Availability',
+    codename: 'Companion Convalescence',
     compatibility: 'pre-release-current-schema',
     released: false,
     app: PRODUCT_VERSION,
@@ -16,7 +16,7 @@ export const VERSION = Object.freeze({
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.500.1',
+    versionManifest: '0.8.600.1',
     saveMigrations: '0.3.0',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
@@ -37,7 +37,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceRecoveryWork: '0.3.0',
     characterActivity: '0.3.0',
     activityAdvance: '0.5.0',
-    campaignRecovery: '0.1.0',
+    campaignRecovery: '0.2.0',
     workTasks: '0.1.0',
     workProficiencies: '0.1.0',
     workstations: '0.3.0',
@@ -70,7 +70,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.5.0',
     domUi: '0.10.0',
     domOnboarding: '0.1.0',
-    gameViewModels: '0.14.0',
+    gameViewModels: '0.15.0',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
@@ -97,7 +97,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilityEngine: '0.2.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.2.0',
-    party: '0.2.0',
+    party: '0.3.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
