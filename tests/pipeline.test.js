@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.22');
+    assert.equal(PRODUCT_VERSION, '0.8.600.23');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Active Task Persistence Matrix');
+    assert.equal(VERSION.codename, 'Strict Project Registry');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -55,7 +55,7 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.22',
+            versionManifest: '0.8.600.23',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -76,19 +76,19 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.14.0',
+            validation: '0.15.0',
             gameViewModels: '0.15.1',
         },
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.22/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.23/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Active Task Persistence Matrix/);
+    assert.match(describeVersion(), /Codename: Strict Project Registry/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /performanceHarness: 0\.3\.0/);
     assert.match(describeSystemVersions(), /lifecycleHarness: 0\.13\.0/);
@@ -99,7 +99,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.match(describeSystemVersions(), /resourceOpportunities: 0\.2\.0/);
     assert.match(describeSystemVersions(), /abilityEngine: 0\.3\.0/);
     assert.match(describeSystemVersions(), /transport: 0\.4\.1/);
-    assert.match(describeSystemVersions(), /validation: 0\.14\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.15\.0/);
     assert.match(describeSystemVersions(), /liveTick: 0\.2\.1/);
     assert.match(describeSystemVersions(), /domRoot: 0\.1\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
