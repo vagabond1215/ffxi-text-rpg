@@ -78,7 +78,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.2.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.10.0',
+    uiIntents: '0.10.1',
     slashCommands: '0.4.1',
     accountSaves: '0.7.0',
     saveRecovery: '0.1.0',
