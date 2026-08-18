@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.4');
+    assert.equal(PRODUCT_VERSION, '0.8.600.5');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 1);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Strict Current Schema');
+    assert.equal(VERSION.codename, 'Carried Commitment Delivery');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -34,40 +34,38 @@ test('version manifest separates product package persistence data and focused cl
             commandShell: SYSTEM_VERSIONS.commandShell,
             slashCommands: SYSTEM_VERSIONS.slashCommands,
             accountSaves: SYSTEM_VERSIONS.accountSaves,
-            saveEncoding: SYSTEM_VERSIONS.saveEncoding,
+            commitments: SYSTEM_VERSIONS.commitments,
+            carriedInventory: SYSTEM_VERSIONS.carriedInventory,
+            carriedLoad: SYSTEM_VERSIONS.carriedLoad,
             inventoryContainers: SYSTEM_VERSIONS.inventoryContainers,
             inventoryTransfers: SYSTEM_VERSIONS.inventoryTransfers,
-            homeInfrastructure: SYSTEM_VERSIONS.homeInfrastructure,
-            homeStorage: SYSTEM_VERSIONS.homeStorage,
-            workstations: SYSTEM_VERSIONS.workstations,
             validation: SYSTEM_VERSIONS.validation,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.4',
+            versionManifest: '0.8.600.5',
             commandShell: '0.5.1',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
-            saveEncoding: '0.5.0',
+            commitments: '0.3.1',
+            carriedInventory: '0.1.0',
+            carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            homeInfrastructure: '0.4.0',
-            homeStorage: '0.4.0',
-            workstations: '0.3.1',
             validation: '0.11.0',
             gameViewModels: '0.15.1',
         },
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.4/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.5/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 6/);
     assert.match(describeVersion(), /Data: 37/);
-    assert.match(describeVersion(), /Codename: Strict Current Schema/);
+    assert.match(describeVersion(), /Codename: Carried Commitment Delivery/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /accountSaves: 0\.7\.1/);
+    assert.match(describeSystemVersions(), /carriedInventory: 0\.1\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
 

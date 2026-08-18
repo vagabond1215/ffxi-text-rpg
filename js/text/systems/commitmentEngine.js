@@ -1,5 +1,10 @@
 import { getCommitmentDefinition } from '../data/commitments.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
+import {
+    applyCarriedItemRemovalPlan,
+    getCarriedItemQuantity,
+    listCarriedItemEntries,
+} from './carriedInventoryEngine.js';
 import { describeNpcScheduleStatus, getNpcScheduleStatus } from './npcScheduleEngine.js';
 import { applyNpcRelationshipChange, ensureRelationshipState } from './relationshipEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
@@ -131,7 +136,17 @@ export function resolveCommitment(state, commitmentId) {
             display: { text: deliveryPlan.blockers.join(' ') },
         });
     }
-    const removed = applyDeliveryPlan(deliveryPlan);
+    const removal = applyCarriedItemRemovalPlan(state, deliveryPlan.removals);
+    if (!removal.ok) {
+        return actionFailure({
+            action: 'commitment.resolve',
+            code: 'commitment.delivery-failed',
+            outcome: 'blocked',
+            data: { commitmentId: definition.id, blockers: [removal.reason] },
+            display: { text: removal.reason },
+        });
+    }
+    const removed = removal.removed;
 
     const now = ensureWorldTimeState(state).totalSeconds;
     const resolvedDay = dayNumber(now);
@@ -264,7 +279,7 @@ export function validateCommitmentState(commitments) {
         if (record.followUpSeenAtWorldSeconds !== null && !nonNegativeInteger(record.followUpSeenAtWorldSeconds)) issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds must be null or non-negative.`);
         if (nonNegativeInteger(record.followUpSeenAtWorldSeconds) && nonNegativeInteger(record.resolvedAtWorldSeconds)
             && record.followUpSeenAtWorldSeconds < record.resolvedAtWorldSeconds) {
-            issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds cannot precede resolution.`);
+                issues.push(`commitments.records.${commitmentId}.followUpSeenAtWorldSeconds cannot precede resolution.`);
         }
     }
     return issues;
@@ -282,25 +297,23 @@ function checkGiverContext(state, definition) {
 }
 
 function qualifyingItemQuantity(state, requirement) {
-    return (state.player?.inventoryState?.containers?.inventory?.items ?? [])
-        .filter((item) => itemMatchesRequirement(item, requirement))
-        .reduce((sum, item) => sum + itemQuantity(item), 0);
+    return getCarriedItemQuantity(state, (item) => itemMatchesRequirement(item, requirement));
 }
 
 function createDeliveryPlan(state, requirements) {
-    const container = state.player?.inventoryState?.containers?.inventory;
-    if (!container || !Array.isArray(container.items)) return { ok: false, blockers: ['Inventory is unavailable for commitment delivery.'] };
-    const availableByIndex = container.items.map((item) => itemQuantity(item));
+    if (!state.player?.inventoryState) return { ok: false, blockers: ['Inventory is unavailable for commitment delivery.'] };
+    const entries = listCarriedItemEntries(state);
+    const availableByEntry = entries.map((entry) => itemQuantity(entry.item));
     const removals = [];
 
     for (const requirement of requirements) {
         let remaining = requirement.quantity;
-        for (let index = 0; index < container.items.length && remaining > 0; index += 1) {
-            const item = container.items[index];
-            if (availableByIndex[index] <= 0 || !itemMatchesRequirement(item, requirement)) continue;
-            const quantity = Math.min(availableByIndex[index], remaining);
-            removals.push({ index, quantity });
-            availableByIndex[index] -= quantity;
+        for (let entryIndex = 0; entryIndex < entries.length && remaining > 0; entryIndex += 1) {
+            const entry = entries[entryIndex];
+            if (availableByEntry[entryIndex] <= 0 || !itemMatchesRequirement(entry.item, requirement)) continue;
+            const quantity = Math.min(availableByEntry[entryIndex], remaining);
+            removals.push({ containerId: entry.containerId, index: entry.index, quantity });
+            availableByEntry[entryIndex] -= quantity;
             remaining -= quantity;
         }
         if (remaining > 0) {
@@ -311,21 +324,7 @@ function createDeliveryPlan(state, requirements) {
         }
     }
 
-    return { ok: true, container, removals };
-}
-
-function applyDeliveryPlan(plan) {
-    const totalsByIndex = new Map();
-    for (const removal of plan.removals) totalsByIndex.set(removal.index, (totalsByIndex.get(removal.index) ?? 0) + removal.quantity);
-    const removed = [];
-    for (const [index, quantity] of [...totalsByIndex.entries()].sort((left, right) => right[0] - left[0])) {
-        const item = plan.container.items[index];
-        const available = itemQuantity(item);
-        removed.unshift({ ...item, quantity });
-        if (quantity >= available || item.stackable === false) plan.container.items.splice(index, 1);
-        else item.quantity = available - quantity;
-    }
-    return removed;
+    return { ok: true, removals };
 }
 
 function itemMatchesRequirement(item, requirement) {
