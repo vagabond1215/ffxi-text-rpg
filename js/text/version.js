@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.14';
+export const PRODUCT_VERSION = '0.8.600.15';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,18 +8,18 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 3,
-    codename: 'Work Project Task Release',
+    codename: 'Transport Task Release',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.14',
+    versionManifest: '0.8.600.15',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
     performanceHarness: '0.3.0',
-    lifecycleHarness: '0.5.0',
+    lifecycleHarness: '0.6.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
@@ -56,7 +56,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     huntingResourceItems: '0.1.0',
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
-    transport: '0.3.0',
+    transport: '0.4.0',
     carriedInventory: '0.1.0',
     carriedLoad: '0.2.1',
     transportServiceBoard: '0.2.0',
