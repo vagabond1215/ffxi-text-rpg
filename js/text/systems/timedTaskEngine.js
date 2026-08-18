@@ -105,6 +105,27 @@ export function cancelTimedTask(state, taskId) {
     });
 }
 
+export function releaseTimedTask(state, taskId) {
+    const tasks = ensureTimedTaskState(state);
+    const id = String(taskId ?? '').trim();
+    if (!id) return failure('task.release-invalid-id', { taskId }, 'A timed task id is required for release.');
+    const index = tasks.records.findIndex((task) => task.id === id);
+    if (index < 0) return failure('task.not-found', { taskId: id }, `Unknown timed task: ${id}`);
+    const task = tasks.records[index];
+    if (task.status === TIMED_TASK_STATUSES.ACTIVE) {
+        return failure('task.release-active', { task: snapshotTask(task) }, `${task.label} is still active and cannot be released.`);
+    }
+
+    tasks.records.splice(index, 1);
+    return actionSuccess({
+        action: 'task.release',
+        code: 'task.released',
+        outcome: 'released',
+        data: { task: snapshotTask(task) },
+        display: { text: `Released terminal task ${task.label}.` },
+    });
+}
+
 export function getTimedTaskProgress(state, taskId) {
     const task = findTimedTask(state, taskId);
     if (!task) return null;
