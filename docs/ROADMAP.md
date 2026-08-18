@@ -7,19 +7,19 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.27
+Product:       0.8.600.32
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
 Benchmark:     3
-Codename:      Strict Character Runtime
+Codename:      Strict Optional Work Registry
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `0.8.600.2` through `.27` are maintenance/hardening revisions and do not open `0.8.700`.**
+**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.32` are maintenance/hardening revisions and do not open `0.8.700`.**
 
 ## Product laws
 
@@ -38,7 +38,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance reflects acquired knowledge. Resources preserve provenance. Projects, inventory, transport, production, commitments, relationships, party state, recovery, NPC schedules, and fictional time remain canonical authorities. Journal/service/information/home/social presentation remains derived. Legacy FFXI-derived material is research/reference material only, not canonical runtime identity.
+Campaign guidance reflects acquired knowledge. Resources preserve provenance. Projects, inventory, transport, production, commitments, relationships, party state, recovery, NPC schedules, and fictional time remain canonical authorities. Journal/service/information/home/social presentation remains derived. Legacy FFXI-derived material is research/reference only.
 
 ## Phase summary
 
@@ -52,22 +52,16 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. Pr
 | `0.9` | Adventure depth and release hardening | Planned |
 | `1.0` | Live foundation | Planned |
 
-## Phase 0.7 — complete
-
-The multi-region playable-alpha proof covers Thornwall/Elderwood, Brasshaven/Redstone Reach, and Mistmere/Starfen; persistent community continuity; livelihood/production/mastery; danger/combat/recovery; acquired-knowledge readability; semantic transport and settlement services; persistent companion preparation; and deterministic save/load.
-
-Historical final Phase 0.7 checkpoint: `1e217fe1f7e62593fa9ed33eebdf1b3878490336`, 495/495 tests, Benchmark 1, Product `0.7.400.1`, Data 31.
-
-# Phase 0.8 — Life and infrastructure expansion — in progress
+## Phase 0.8 feature tracks
 
 | Track | Gate | Status |
 | --- | --- | --- |
-| `0.8.100` | Home foothold: Storage Chest converts regional materials + project labor into durable storage | **Complete** |
-| `0.8.200` | Home workshop: Joiner's Workbench grants locality-bound production capability | **Complete** |
-| `0.8.300` | Carried-load transport: service capacity derives from actual carried inventory | **Complete** |
-| `0.8.400` | Portable logistics: earned Field Satchel expands field organization without creating free cargo | **Complete** |
-| `0.8.500` | Daily social availability: Sera Talwin follows authored fictional-time availability | **Complete** |
-| `0.8.600` | Companion convalescence: safe-settlement recovery closes the downed inactive-companion dead end | **Complete** |
+| `0.8.100` | Home foothold: durable storage from regional materials + project labor | **Complete** |
+| `0.8.200` | Home workshop: locality-bound production capability | **Complete** |
+| `0.8.300` | Carried-load transport from actual inventory | **Complete** |
+| `0.8.400` | Earned Field Satchel portable logistics | **Complete** |
+| `0.8.500` | Fictional-time NPC availability | **Complete** |
+| `0.8.600` | Companion convalescence and safe reunion | **Complete** |
 
 Historical feature-track checkpoints:
 
@@ -80,96 +74,110 @@ Historical feature-track checkpoints:
 0.8.600  04211e8909996b1ac34fa91ae1cdd7aa216b86f8
 ```
 
-## `0.8.600.2`–`.27` — maintenance and hardening
+## Maintenance history `.2`–`.32`
 
-| Revision | Maintenance gate | Promoted main commit |
-| --- | --- | --- |
-| `.2` | Current-schema cleanup: canonical persistence/home identifiers and obsolete migration cleanup | `bc42c7a00050f73704f19f2c3287d1426a788fa1` |
-| `.3` | Canonical command contract; remove FFXI runtime command compatibility | `c1fbfbe2629aee628cba4e60af3bed37bef86f7a` |
-| `.4` | Strict current schema: reject incomplete Game State 6 before revival | `ba3f38f05c83175f188b0231c175a89c9310309f` |
-| `.5` | Carried commitment delivery shares canonical carried-container authority | `0b62b13b25297acad853c2b17be8ffb86a63419f` |
-| `.6` | Canonical ActionResult contract; remove compatibility aliases | `268e17f4c5d8de08d1ea2fc68f6017371df4627a` |
-| `.7` | Node 24/current Actions + executable architecture-debt guards | `f56b2f6f50d481f46babf80b47e13c70672d9176` |
-| `.8` | Deterministic 130-day save/load smoke + benchmark sampling | `8fad34adb0d7db253a6593e7ffbeab3f28c28293` |
-| `.9` | Benchmark Protocol V2 | `7f562e20b335c4fdb449f74a8fd2a48c6378e182` |
-| `.10` | Stale-safe tick subscription ownership | `cc75d707f3a6ca492a6de6883c7ac59b871836c8` |
-| `.11` | DOM root owns remount/unmount cleanup | `b9d1be0d72cb1bb27d414349bc894726deb6ace3` |
-| `.12` | Benchmark 3 warm-up baseline | `3de675d60ba46852f193b5cd319df2ce056aa00f` |
-| `.13` | Terminal-only task release + campaign-recovery proof | `be8db394e81da0e2aa96069efb7df51cd0b68b9b` |
-| `.14` | Work/project terminal task release | `f7d51365f13fa1cb703383ec4799934e07a3f90f` |
-| `.15` | Transport terminal task release | `588d6dd0e0a882a6cfdc76d60797c0488330141d` |
-| `.16` | Ability/resource terminal task release | `67ec4ea8ae19b1032894a604ed372802d794cf92` |
-| `.17` | Repeated owner-managed retention soak | `e4ebdbc14776329156f2df2dee8c598e3b8b91cb` |
-| `.18` | Direct task-owner guard + zero-retained managed steady state | `6dbea79abd82dab5b4dc9e1b141a409383937530` |
-| `.19` | Strict Active Travel; remove runtime legacy reconstruction | `fcd435c0c3802c7301670a4c48700def1c2465e7` |
-| `.20` | Active Task Link Integrity | `2c11cda829c407dea6564c4eb622e17238f8dc4c` |
-| `.21` | Strict Task Registry | `8c3995d8957dfa3a9542688d9cc8dc79e69a1903` |
-| `.22` | Active Task Persistence Matrix | `7a148ebdff594523f956ed6be83aba59e26d564f` |
-| `.23` | Strict Project Registry: project validator runs on raw current saves | `d99d8b56cb3a79f24a3aa9c1c0212ca21c7b8e74` |
-| `.24` | Strict Continuity Registries: commitments + relationships validate before revival | `d9fab2ac9096243687afc72ef5c9faac16a27216` |
-| `.25` | Strict Resource Opportunities: resource registry validates before recovery reconciliation | `8b15db6696bb38988e023935df13345dac5574d8` |
-| `.26` | Strict Ecology Registry: persisted depletion/regeneration state validates before runtime access | `d1f55853a366604cf36b274c915935dd7978575b` |
-| `.27` | Strict Character Runtime: Party + Ability runtime validators run before normalization | `bccd49848593e47e7f5b3d69e0132d3a598ebe4a` |
+Earlier revisions `.2`–`.22` established current-schema cleanup, canonical command/action contracts, carried-inventory authority, Node 24/current Actions, deterministic long-session and Benchmark 3 evidence, explicit lifecycle ownership, terminal task release, task-owner guards, strict active travel, task-registry validation, and positive active task persistence evidence.
 
-### Latest strict-registry train `.23`–`.27`
+Revisions `.23`–`.27` composed raw pre-revival validators for projects, continuity, resource opportunities, ecology, party, and ability runtime.
 
-| Revision | PR | Exact head | Check | Tests |
-| --- | ---: | --- | ---: | ---: |
-| `.23` | #346 | `9facc76633f706cf808371e60b24ce901c0659af` | `32172651042` | 555/555 |
-| `.24` | #347 | `e71cbfe13ec08f39462cfad59a3793643e478c25` | `32173390833` | 560/560 |
-| `.25` | #348 | `1251d915706f4c7e4c1a795512aa1e24f4eea17b` | `32173721913` | 565/565 |
-| `.26` | #349 | `ae497c08ffa017a76d5baa2ba190cde39c1c4a3a` | `32174111312` | 569/569 |
-| `.27` | #350 | `5d0d8071d9f94cac818c43a1fe018583eb56286f` | `32174533957` | 575/575 |
+### Latest strict-state train `.28`–`.32`
+
+| Revision | Maintenance gate | PR | Exact head | Check | Tests | Promoted main |
+| --- | --- | ---: | --- | ---: | ---: | --- |
+| `.28` | Strict World Simulation: world time + simulation control validate before runtime access | #351 | `5c1d4108fc8714ea67a5b009ada5cfac43da3e4a` | `32175617550` | 581/581 | `3d1f59b9bfdf03a17e7c96ef00c4eee6bed72087` |
+| `.29` | Strict Player Capabilities: required character capability registry validates before `ensureCapabilityState()` | #352 | `31e0f665e7d022508e10f1dce0ef18fd1420e739` | `32176059398` | 586/586 | `eac701fb968bb326e768c2c105fe814c84272a10` |
+| `.30` | Strict Inventory State: canonical containers/access/capacity/home state validate before revival | #353 | `229cf4992c61dd1c887b5ec85886443122739dbe` | `32176647509` | 591/591 | `86eb8365fc1b2ff9c2207ce52ffe84321c713f9e` |
+| `.31` | Strict Semantic Events: event records/order/sequence integrity validate before normalization | #354 | `f5842eb71eb16861ecb8c0c50b56454396e3f5f4` | `32177641185` | 597/597 | `e947f82f132d0f1fb972688471a23140731ab34c` |
+| `.32` | Strict Optional Work Registry: absence remains valid; persisted work must satisfy its domain validator | #355 | `458a87b3dbf08f6d6da086cc24bc1da6c539ede4` | `32178015948` | 602/602 | `9423e87b6d681841a7576d938950bfbb631dd257` |
 
 Every final head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
 
-Latest Benchmark 3 evidence from `.27`:
+### Current persistence boundary after `.32`
+
+Current Game State 6 raw validation now covers:
 
 ```text
-single run
-player profiles  0.381457 ms/op
-enemy profiles   0.067924 ms/op
-basic attacks    0.003165 ms/op
-tick dispatch    0.000865 ms/op
-route lookup     0.007660 ms/op
-
-three-sample medians/spreads
-player profiles  0.357477 ms/op   6.21%
-enemy profiles   0.064718 ms/op   8.92%
-basic attacks    0.001198 ms/op 200.77%
-tick dispatch    0.000698 ms/op  69.53%
-route lookup     0.007425 ms/op  17.56%
+world time
+simulation control
+timed tasks
+active Travel State 2
+projects
+commitments
+relationships
+resource opportunities
+ecology
+party
+ability runtime
+semantic events
+player capability registry
+player inventory/container state
+optional work registry when present
 ```
 
-Benchmark 3 remains the current comparability baseline. No hard timing threshold is accepted yet.
+Active project/work/travel/timed-ability/resource-recovery owners additionally require consistent persisted timed-task links.
 
-### Current persistence boundary after `.23`–`.27`
+The state-classification rule remains mandatory: persistent authority validates before revival; derived/transient state is recomputed; construction convenience is created in factory/internal paths; optional persisted authority may be absent but must be valid when present.
 
-Current Game State 6 raw validation now composes domain validators for timed tasks, active travel, projects, commitments, relationships, resource opportunities, ecology, party, and ability runtime before revival. Active task-owning records also require consistent persisted task links.
+Important non-actions in this train:
 
-This does **not** mean every runtime `ensure*` helper is obsolete. Construction helpers may still initialize new/internal state, and derived/transient state may be recomputed. The load boundary must first classify a state family as persistent authority, derived/transient, or construction convenience before adding another validator.
+- broad `validatePlayer()` was **not** composed at the raw boundary because it mixes persisted checks with post-revival alias identity and derived state;
+- flat `player.inventory` reference identity remains post-revival;
+- atlas/POI discovery persistence was **not** tightened because it lacks a dedicated raw-domain validator and currently includes wall-clock visit timestamps that require an explicit authority decision first.
 
-Malformed current required state is rejected without being silently repaired or rewritten. Old pre-alpha payloads remain outside the supported compatibility surface.
+## Latest runtime gate
+
+Runtime freeze: `9423e87b6d681841a7576d938950bfbb631dd257`.
+
+Exact validated `.32` gate: PR #355, head `458a87b3dbf08f6d6da086cc24bc1da6c539ede4`, Check `32178015948`, Node 24.19.0:
+
+```text
+602/602 tests
+0 failed
+0 skipped
+Benchmark 3 success
+Benchmark Sample success
+```
+
+Benchmark 3 single run:
+
+```text
+player profiles  0.270363 ms/op
+enemy profiles   0.053653 ms/op
+basic attacks    0.002913 ms/op
+tick dispatch    0.000814 ms/op
+route lookup     0.005602 ms/op
+```
+
+Three-sample medians/spreads:
+
+```text
+player profiles  0.259028 ms/op   7.25%
+enemy profiles   0.051633 ms/op  11.45%
+basic attacks    0.001148 ms/op 186.78%
+tick dispatch    0.000478 ms/op 133.64%
+route lookup     0.005363 ms/op  14.08%
+```
+
+Benchmark 3 remains the current comparability baseline. No hard timing threshold is accepted.
 
 ## Current Phase 0.8 boundary
 
-**Do not automatically begin `0.8.700`.** A fresh feature work order should re-audit one bounded seam before implementation.
+**Do not automatically begin `0.8.700`.**
 
-For further maintenance, the next bounded persistence audit should examine the **remaining top-level/player state families not yet governed by a dedicated raw-domain validator**, one family at a time. Prioritize authoritative state with meaningful invariants; do not mechanically validate projections or historical construction convenience.
+For further maintenance, choose one remaining state family and classify it before implementation. The strongest likely persistence follow-ups are:
 
-Strong feature candidate families remain:
+- extract a dedicated **raw-safe persisted player progression/stat validator** instead of invoking broad `validatePlayer()`;
+- separately audit atlas/POI discovery authority and wall-clock timestamp semantics before any persistence tightening;
+- audit another optional persisted family only where real current save/load behavior demonstrates a concrete normalization gap.
 
-- agriculture/stewardship;
-- earned automation that reduces established chore attention through investment/mastery;
-- further companion/social-life breadth only where a concrete player decision and existing authority path justify it;
-- another life/logistics segment only when a specific current gap warrants it.
+Strong feature candidate families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam—but starting a new feature track requires an explicit fresh feature work order.
 
-# Later phases
+## Later phases
 
-## 0.9 — Adventure depth and release hardening
+### 0.9 — Adventure depth and release hardening
 
-Difficult regions/dungeons, advanced combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability, performance evidence/budgets, and release tooling.
+Difficult regions/dungeons, advanced combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability, performance budgets, and release tooling.
 
-## 1.0 — Live foundation
+### 1.0 — Live foundation
 
 Release when the continuous-character persistent-life/adventure promise is coherent, original, stable, performant, and supported by enough interconnected content for sustained play.
