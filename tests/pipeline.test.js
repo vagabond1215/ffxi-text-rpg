@@ -132,7 +132,7 @@ test('database registry includes canonical systems plus explicitly bounded legac
     assert.match(description, /commitments \[implemented 0\.2\.0\]/);
     assert.match(description, /relationships \[implemented 0\.1\.0\]/);
     assert.match(description, /capabilities \[seeded 0\.2\.0\]/);
-    assert.match(description(), /magic \[seeded 0\.1\.0\]/);
+    assert.match(description, /magic \[seeded 0\.1\.0\]/);
     assert.match(description, /abilities \[implemented 0\.1\.0\]/);
     assert.match(description, /companions \[implemented 0\.2\.0\]/);
     assert.match(description, /party \[implemented 0\.3\.0\]/);
