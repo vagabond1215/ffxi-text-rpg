@@ -93,14 +93,14 @@ test('a current-version save missing required character capability state is reje
     const registry = decodePayload(globalThis.localStorage.getItem(key));
     const record = registry.accounts[0].characters[0];
     const incomplete = decodePayload(record.encodedState);
-    delete incomplete.player.capabilities;
+    delete incomplete.player.progression.capabilities;
     record.encodedState = encodePayload(incomplete);
     globalThis.localStorage.setItem(key, encodePayload(registry));
 
     assert.equal(loadCharacter('Strictcap'), null);
     const unchangedRegistry = decodePayload(globalThis.localStorage.getItem(key));
     const unchangedState = decodePayload(unchangedRegistry.accounts[0].characters[0].encodedState);
-    assert.equal(Object.hasOwn(unchangedState.player, 'capabilities'), false);
+    assert.equal(Object.hasOwn(unchangedState.player.progression, 'capabilities'), false);
 });
 
 test('saveGame rejects a malformed current runtime state instead of filling required registries', () => {
