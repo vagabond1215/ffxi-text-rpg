@@ -69,7 +69,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     commandShell: '0.5.0',
     domUi: '0.10.0',
     domOnboarding: '0.1.0',
-    gameViewModels: '0.15.0',
+    gameViewModels: '0.15.1',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
