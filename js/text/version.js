@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.15';
+export const PRODUCT_VERSION = '0.8.600.16';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,18 +8,18 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 3,
-    codename: 'Transport Task Release',
+    codename: 'Ability Resource Task Release',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.15',
+    versionManifest: '0.8.600.16',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
     performanceHarness: '0.3.0',
-    lifecycleHarness: '0.6.0',
+    lifecycleHarness: '0.7.0',
     worldTime: '0.2.0',
     simulationControl: '0.3.0',
     simulationInterrupts: '0.1.0',
@@ -31,7 +31,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     npcSchedules: '0.1.0',
     playerSocialSchedules: '0.1.0',
     resourceProvenance: '0.1.0',
-    resourceOpportunities: '0.1.0',
+    resourceOpportunities: '0.2.0',
     resourceRecovery: '0.1.0',
     resourceRecoveryWork: '0.3.0',
     characterActivity: '0.3.0',
@@ -95,7 +95,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     characterStats: '0.1.0',
     capabilities: '0.2.0',
     abilityCatalog: '0.1.0',
-    abilityEngine: '0.2.0',
+    abilityEngine: '0.3.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.2.0',
     party: '0.3.0',
