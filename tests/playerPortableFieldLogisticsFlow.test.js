@@ -95,9 +95,9 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
     const initialHome = createHomeInfrastructureModel(state);
     const initialSatchel = initialHome.entries.find((entry) => entry.id === SATCHEL_ENTRY_ID);
     assert.ok(initialSatchel);
-    assert.equal(state.player.inventoryState.containers.mogSatchel.unlocked, false);
-    assert.equal(getContainerCapacity(state.player.inventoryState, 'mogSatchel'), 8);
-    assert.equal(isContainerAccessible(state.player.inventoryState, 'mogSatchel'), false);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.unlocked, false);
+    assert.equal(getContainerCapacity(state.player.inventoryState, 'fieldSatchel'), 8);
+    assert.equal(isContainerAccessible(state.player.inventoryState, 'fieldSatchel'), false);
     assert.equal(initialSatchel.action.intent, 'home.infrastructure.begin');
     assert.match(initialSatchel.progress, /8 portable slots/i);
     assert.match(initialSatchel.motivation, /still counts as carried transport load/i);
@@ -131,13 +131,13 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
     const completed = advanceActiveActivityToCompletion(state);
     assert.equal(completed.ok, true, completed.display?.text ?? completed.reason);
     assert.equal(completed.code, 'activity.home-infrastructure-completed');
-    assert.equal(completed.data.containerId, 'mogSatchel');
+    assert.equal(completed.data.containerId, 'fieldSatchel');
     assert.equal(completed.data.portableSlots, 8);
     assert.match(completed.display.text, /8 portable slots/i);
     assert.match(completed.display.text, /still count as carried transport load/i);
     assert.equal(state.projects.records[0].data.completionApplied, true);
-    assert.equal(state.player.inventoryState.containers.mogSatchel.unlocked, true);
-    assert.equal(isContainerAccessible(state.player.inventoryState, 'mogSatchel'), true);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.unlocked, true);
+    assert.equal(isContainerAccessible(state.player.inventoryState, 'fieldSatchel'), true);
     assert.deepEqual(reconcileHomeInfrastructureProjects(state), [], 'satchel unlock must be exactly once');
 
     for (let index = 0; index < 30; index += 1) {
@@ -145,10 +145,10 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
         assert.equal(stored.ok, true, stored.reason);
     }
     assert.equal(getCarriedCargoLoad(state).cargoUnits, 30);
-    const shifted = transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'mogSatchel');
+    const shifted = transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'fieldSatchel');
     assert.match(shifted, /Field Satchel/);
     assert.equal(getCarriedCargoLoad(state).cargoUnits, 30, 'moving carried goods between portable containers must not reduce load');
-    assert.equal(state.player.inventoryState.containers.mogSatchel.items.length, 1);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.items.length, 1);
 
     const extra = addItemToContainer(state.player.inventoryState, 'inventory', EQUIPMENT_CATALOG['bronze-sword']);
     assert.equal(extra.ok, true, extra.reason);
@@ -157,8 +157,8 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
     assert.equal(saveGame(state), true);
     state = loadCharacter('Satchel Auditor');
     assert.ok(state);
-    assert.equal(state.player.inventoryState.containers.mogSatchel.unlocked, true);
-    assert.equal(state.player.inventoryState.containers.mogSatchel.items.length, 1);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.unlocked, true);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.items.length, 1);
     assert.equal(getCarriedCargoLoad(state).cargoUnits, 31);
 
     moveToRivergate(state);
@@ -172,10 +172,10 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
     moveHome(state);
     assert.equal(setHomeAccess(state, true).ok, true);
     for (let index = 0; index < 7; index += 1) {
-        assert.match(transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'mogSafe', { isInMogHouse: true }), /Home Safe/);
+        assert.match(transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'homeSafe', { isAtHome: true }), /Home Safe/);
     }
     assert.equal(getCarriedCargoLoad(state).cargoUnits, 24, 'only leaving goods in non-carried home storage should reduce transport load');
-    assert.equal(state.player.inventoryState.containers.mogSatchel.items.length, 1);
+    assert.equal(state.player.inventoryState.containers.fieldSatchel.items.length, 1);
     assert.equal(setHomeAccess(state, false).ok, true);
 
     moveToRivergate(state);
@@ -196,5 +196,5 @@ test('0.8.400 earns portable Field Satchel capacity without turning it into free
     const html = renderGameScreen(finishedView, uiState, {});
     assert.match(html, /Field Satchel/);
     assert.match(html, /carried transport load/i);
-    assert.doesNotMatch(html, /mogSatchel|completionApplied|containerId/i);
+    assert.doesNotMatch(html, /fieldSatchel|completionApplied|containerId/i);
 });
