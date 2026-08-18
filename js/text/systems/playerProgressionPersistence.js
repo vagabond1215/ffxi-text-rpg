@@ -19,7 +19,7 @@ export function validatePersistedPlayerProgression(player) {
 
     const unlockedJobs = validateUnlockedJobs(jobs.unlockedJobs, mainJobId, issues);
     validateJobLevels(jobs.jobLevels, unlockedJobs, mainJobId, jobs.level, levelCap, issues);
-    validateJobProgression(progression, unlockedJobs, mainJobId, jobs.level, levelCap, issues);
+    validateJobProgression(progression, jobs.jobLevels, unlockedJobs, mainJobId, jobs.level, levelCap, issues);
     validateCharacterProgression(progression.character, progression.jobProgression, jobs.level, issues);
     validateSkillState(progression.skills, issues);
 
@@ -68,7 +68,7 @@ function validateJobLevels(value, unlockedJobs, mainJobId, mainLevel, levelCap, 
     }
 }
 
-function validateJobProgression(progression, unlockedJobs, mainJobId, mainLevel, levelCap, issues) {
+function validateJobProgression(progression, jobLevels, unlockedJobs, mainJobId, mainLevel, levelCap, issues) {
     const records = progression.jobProgression;
     if (!isObject(records)) {
         issues.push('progression.jobProgression must be an object.');
@@ -83,17 +83,13 @@ function validateJobProgression(progression, unlockedJobs, mainJobId, mainLevel,
         }
         if (!validLevel(record.level, levelCap)) issues.push(`progression.jobProgression.${jobId}.level must be an integer from 1 to ${levelCap}.`);
         if (!nonNegativeInteger(record.exp)) issues.push(`progression.jobProgression.${jobId}.exp must be a non-negative integer.`);
+        if (isObject(jobLevels) && validLevel(jobLevels[jobId], levelCap) && validLevel(record.level, levelCap) && record.level !== jobLevels[jobId]) {
+            issues.push(`progression.jobProgression.${jobId}.level must match jobs.jobLevels.${jobId}.`);
+        }
     }
 
     for (const jobId of unlockedJobs) {
-        const record = records[jobId];
-        if (!isObject(record)) {
-            issues.push(`progression.jobProgression.${jobId} must persist the unlocked discipline record.`);
-            continue;
-        }
-        if (playerJobLevel(progression, jobId) !== null && record.level !== playerJobLevel(progression, jobId)) {
-            // The jobs-side equality is checked by the caller because progression has no jobs reference.
-        }
+        if (!isObject(records[jobId])) issues.push(`progression.jobProgression.${jobId} must persist the unlocked discipline record.`);
     }
 
     const active = records[mainJobId];
@@ -146,10 +142,6 @@ function validateSkillState(value, issues) {
         if (!SKILL_KEYS.includes(skillId)) issues.push(`progression.skills.${skillId} references unknown skill.`);
         if (!nonNegativeInteger(learned)) issues.push(`progression.skills.${skillId} must be a non-negative integer.`);
     }
-}
-
-function playerJobLevel() {
-    return null;
 }
 
 function knownJob(jobId) {
