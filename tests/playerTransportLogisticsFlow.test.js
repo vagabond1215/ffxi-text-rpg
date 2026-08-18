@@ -88,10 +88,10 @@ test('0.8.300 makes scheduled transport capacity depend on actual carried invent
 
     moveHome(state);
     assert.equal(setHomeAccess(state, true).ok, true);
-    const storedAtHome = transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'mogSafe', { isInMogHouse: true });
+    const storedAtHome = transferItemBetweenContainers(state, 'Bronze Sword', 'inventory', 'homeSafe', { isAtHome: true });
     assert.match(storedAtHome, /Transferred Bronze Sword/);
     assert.equal(getCarriedCargoLoad(state).cargoUnits, 24);
-    assert.equal(state.player.inventoryState.containers.mogSafe.items.length, 1);
+    assert.equal(state.player.inventoryState.containers.homeSafe.items.length, 1);
     assert.equal(setHomeAccess(state, false).ok, true);
 
     moveToRivergate(state);
@@ -111,7 +111,7 @@ test('0.8.300 makes scheduled transport capacity depend on actual carried invent
     state = loadCharacter('Load Planner');
     assert.ok(state);
     assert.equal(state.travel?.cargoUnits, 24);
-    assert.equal(state.player.inventoryState.containers.mogSafe.items.length, 1);
+    assert.equal(state.player.inventoryState.containers.homeSafe.items.length, 1);
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
     assert.equal(state.currentPlaceId, DESTINATION_ID);
     assert.equal(state.travel, null);
