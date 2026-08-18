@@ -7,19 +7,19 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.7
+Product:       0.8.600.12
 Package:       0.8.600
 Account Save:  5
 Game State:    6
 Data:          37
-Benchmark:     1
-Codename:      Runtime Architecture Guardrails
+Benchmark:     3
+Codename:      Warm Benchmark Baseline
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `0.8.600.2` through `.7` are maintenance/hardening revisions and do not open `0.8.700`.**
+**Phases 0.4–0.7 are complete. Phase 0.8 — Life and infrastructure expansion is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `0.8.600.2` through `.12` are maintenance/hardening revisions and do not open `0.8.700`.**
 
 ## Product laws
 
@@ -79,7 +79,7 @@ Later shared-authority work does not reopen Phase 0.7.
 | `0.8.500` | Daily social availability: Sera Talwin follows authored fictional-time availability | **Complete** |
 | `0.8.600` | Companion convalescence: safe-settlement recovery closes the downed inactive-companion dead end | **Complete** |
 
-### Historical track checkpoints
+Historical track checkpoints:
 
 ```text
 0.8.100  0b9251a43285443087050127da36b977cabdf7ee
@@ -92,9 +92,9 @@ Later shared-authority work does not reopen Phase 0.7.
 
 `0.8.600.1` closed Companion Convalescence at 511/511 tests and Benchmark 1 success. Settlement recovery can heal a nearby inactive recruited companion without silently changing party membership, and a downed companion cannot be abandoned in unsafe wilderness.
 
-## `0.8.600.2`–`.7` — maintenance and consolidation train
+## `0.8.600.2`–`.12` — maintenance and hardening
 
-The maintenance train cleaned the current foundation before another feature track:
+The maintenance revisions consolidate the current foundation before another feature track:
 
 | Revision | Maintenance gate | Promoted main commit |
 | --- | --- | --- |
@@ -104,45 +104,64 @@ The maintenance train cleaned the current foundation before another feature trac
 | `.5` | Carried commitment delivery: commitment requirements/removal share canonical carried-container authority | `0b62b13b25297acad853c2b17be8ffb86a63419f` |
 | `.6` | Canonical ActionResult contract: remove `.message`/`.reason` compatibility aliases | `268e17f4c5d8de08d1ea2fc68f6017371df4627a` |
 | `.7` | Runtime/architecture guardrails: Node 24 LTS CI, current GitHub Actions, executable compatibility-debt guards | `f56b2f6f50d481f46babf80b47e13c70672d9176` |
+| `.8` | Long-session evidence: deterministic 130-day save/load smoke + repeated benchmark sampling | `8fad34adb0d7db253a6593e7ffbeab3f28c28293` |
+| `.9` | Benchmark Protocol V2: setup removed from timed attack/tick/route workloads; Benchmark `1 -> 2` | `7f562e20b335c4fdb449f74a8fd2a48c6378e182` |
+| `.10` | Subscription ownership: stale tick disposer cannot remove replacement owner | `cc75d707f3a6ca492a6de6883c7ac59b871836c8` |
+| `.11` | DOM root ownership: remount/unmount explicitly dispose active app resources and onboarding observer | `b9d1be0d72cb1bb27d414349bc894726deb6ace3` |
+| `.12` | Warm Benchmark Baseline: separate-context 10% warm-up before measurement; Benchmark `2 -> 3` | `3de675d60ba46852f193b5cd319df2ce056aa00f` |
 
-Latest exact-head validation for `.7` was PR #330 / Check `32110997315` on Node 24.19.0:
+Latest exact-head runtime validation was PR #335 / Check `32160936491` on Node 24.19.0:
 
 ```text
-tests       517
-pass        517
+tests       527
+pass        527
 fail        0
+cancelled   0
 skipped     0
-Benchmark   success
+Benchmark 3 success
+Benchmark Sample success
 ```
 
-Benchmark 1 on that gate:
+Benchmark 3 single run:
 
 ```text
-player combat profiles  0.410749 ms/op
-enemy combat profiles   0.077986 ms/op
-basic attacks            0.450466 ms/op
-tick dispatch            0.005553 ms/op
-direct route lookup      0.634726 ms/op
+player combat profiles  0.355492 ms/op
+enemy combat profiles   0.066399 ms/op
+basic attacks            0.002787 ms/op
+tick dispatch            0.000923 ms/op
+direct route lookup      0.008017 ms/op
 ```
+
+Three-sample medians/spreads on that gate:
+
+```text
+player profiles  0.359021 ms/op   7.97%
+enemy profiles   0.068446 ms/op  11.71%
+basic attacks    0.000951 ms/op 191.11%
+tick dispatch    0.000646 ms/op  61.69%
+route lookup     0.007238 ms/op   5.16%
+```
+
+Benchmark 3 is a new comparability baseline. Do not compare its numeric values directly with Benchmark 1 or 2. No hard timing threshold is accepted yet, especially for the very short attack/tick microbenchmarks.
 
 ## Current Phase 0.8 boundary
 
-**Do not automatically begin `0.8.700`.** The maintenance train is complete through `.7`, but the next feature track still requires a fresh bounded seam audit.
+**Do not automatically begin `0.8.700`.** A fresh work order should re-audit one bounded seam before implementation.
 
-Strong candidate families remain:
+For further maintenance/hardening, the strongest known ownership seam is terminal timed-task retention. Completed/cancelled task records are not centrally pruned because active domain records may still need their terminal task IDs for reconciliation. Any future retention/compaction work must first define domain-owned release semantics; do not add duplicate task state as a shortcut.
+
+Strong feature candidate families remain:
 
 - agriculture/stewardship;
 - earned automation that reduces established chore attention through investment/mastery;
 - further companion/social-life breadth only where a concrete player decision and existing authority path justify it;
 - another life/logistics segment only when a specific current gap warrants it.
 
-A separate hardening candidate is long-session/performance evidence: repeatable benchmark sampling plus deterministic multi-day lifecycle/save-load smoke coverage. Treat that as a bounded maintenance work order rather than silently folding it into a feature track.
-
 # Later phases
 
 ## 0.9 — Adventure depth and release hardening
 
-Difficult regions/dungeons, advanced combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability evidence, performance, and release tooling.
+Difficult regions/dungeons, advanced combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability, performance evidence/budgets, and release tooling.
 
 ## 1.0 — Live foundation
 
