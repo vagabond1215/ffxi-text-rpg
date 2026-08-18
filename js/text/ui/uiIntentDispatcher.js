@@ -55,7 +55,7 @@ export function describeIntent(action) {
     return action.intent ?? action.kind ?? action.id ?? 'unknown';
 }
 
-const THEMES = Object.freeze(['dark', 'light', 'highContrast']);
+const THEMES = Object.freeze(['dark', 'light']);
 const UI_SCALES = Object.freeze(['auto', '90%', '100%', '110%', '125%']);
 const LAYOUT_MODES = Object.freeze(['auto', 'portrait', 'landscape']);
 const LAYOUT_PROPORTIONS = Object.freeze(['standard', 'compact', 'wide']);
