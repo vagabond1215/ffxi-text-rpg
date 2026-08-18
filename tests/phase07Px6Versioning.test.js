@@ -19,7 +19,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.ok(VERSION.accountSave >= 4);
     assert.ok(VERSION.gameState >= 5);
     assert.ok(VERSION.data >= 31);
-    assert.equal(VERSION.benchmark, 1);
+    assert.ok(VERSION.benchmark >= 1);
 
     assert.ok(ACTIVITY_ADVANCE_VERSION >= 2);
     assert.ok(CAMPAIGN_RECOVERY_VERSION >= 1);
