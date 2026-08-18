@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.4';
+export const PRODUCT_VERSION = '0.8.600.5';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 6,
     data: 37,
     benchmark: 1,
-    codename: 'Strict Current Schema',
+    codename: 'Carried Commitment Delivery',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.4',
+    versionManifest: '0.8.600.5',
     actionResults: '0.1.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -24,7 +24,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     timedTasks: '0.1.0',
     projects: '0.1.0',
     homeInfrastructure: '0.4.0',
-    commitments: '0.3.0',
+    commitments: '0.3.1',
     relationships: '0.1.0',
     npcSchedules: '0.1.0',
     playerSocialSchedules: '0.1.0',
@@ -55,7 +55,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceItemRegistry: '0.2.0',
     routeCatalog: '0.1.0',
     transport: '0.3.0',
-    carriedLoad: '0.2.0',
+    carriedInventory: '0.1.0',
+    carriedLoad: '0.2.1',
     transportServiceBoard: '0.2.0',
     contentPackSchema: '0.1.0',
     regionalContentPacks: '0.2.0',
