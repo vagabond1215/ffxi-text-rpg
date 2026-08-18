@@ -16,14 +16,16 @@ Repository entry points are:
 ```bash
 npm test
 npm run benchmark
+npm run benchmark:sample
+npm run hardening
 npm run check
 ```
 
 The hosted `Check` gate runs on Node 24 LTS. `package.json` requires Node `>=24`. The workflow uses current supported GitHub Actions majors and includes cancellation plus a bounded job timeout.
 
-`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt removed during the `0.8.600.3`–`.7` maintenance train.
+`tests/architectureDebtGuard.test.js` protects selected canonical runtime seams from reintroducing compatibility debt and now also guards the exact direct timed-task owner set plus removal of runtime legacy active-travel reconstruction.
 
-Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only administration changes do not need to pretend that runtime checks ran.
+Use any stricter focused validation required by the current handoff. Report only checks that actually ran. Documentation-only synchronization does not create a new runtime validation checkpoint.
 
 ## Persistence
 
@@ -31,17 +33,34 @@ Current mode is **pre-alpha current-schema only**.
 
 - Account/session payloads must match the current Account Save contract exactly.
 - Character payloads must match the current Game State version and contain the complete required persisted structure before revival/reference relinking.
+- Raw current-schema validation must run before runtime `ensure*` helpers can normalize state.
+- Persisted registries that have been declared required and whose validator is part of the current raw boundary must satisfy that validator before revival.
+- The current task boundary validates the timed-task registry and active travel/project/work/timed-ability/resource-recovery task links.
+- Active owner/task links may reference active or just-completed tasks until owner reconciliation; terminal owner records may retain historical `taskId` after terminal task release.
+- Missing, malformed, mismatched, or legacy-shaped active task/travel state is rejected rather than reconstructed.
 - Incompatible or incomplete pre-alpha saves are rejected rather than lazily reconstructed or migrated by default.
 - A future migration is deliberate engineering work only when explicitly required or independently useful; the generic migration utility may remain without making migration automatic.
 - Any change to current persisted meaning requires a deliberate Game State/Account Save version decision and representative current save/load validation.
+
+When tightening raw validation for another registry, first classify its state:
+
+1. **persistent required authority** — validate before revival;
+2. **derived/transient** — recompute freely;
+3. **construction convenience** — initialize in new-state/factory paths, not as implicit load migration.
+
+Do not convert historical lazy-initialization behavior into current save compatibility by accident.
 
 ## Resource lifecycle
 
 New long-lived runtime resources require a clear owner, creation condition, duplicate-prevention strategy, and cleanup behavior. Repeated scene/view changes, activity transitions, save/load, and pause/resume should not accumulate duplicate resources. See `docs/RESOURCE_LIFECYCLE.md`.
 
+For timed tasks specifically, a new direct production task creator must define its durable consequence, exactly-once reconciliation point, and terminal release responsibility. The architecture guard currently admits only the six audited task-owner modules.
+
 ## Performance and long-session stability
 
-Use `docs/PERFORMANCE_BUDGET.md`. The existing benchmark is required evidence for performance-sensitive work. Do not invent hard thresholds before a repeatable baseline is measured and accepted.
+Use `docs/PERFORMANCE_BUDGET.md`. Benchmark 3 and repeated sampling are required evidence for performance-sensitive work. Do not invent hard thresholds before a repeatable baseline is measured and accepted.
+
+Lifecycle-sensitive work should preserve the deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
 ## UI and adapter boundaries
 
@@ -51,4 +70,4 @@ Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`
 
 ## Definition of done
 
-A bounded implementation is complete when the requested production behavior is coherent, relevant validation actually ran or limitations are explicitly reported, persistence and lifecycle contracts are preserved, performance evidence is collected when material, architecture-debt guardrails remain green, and `docs/THREAD_HANDOFF.md` is updated when current state or immediate next work changed.
+A bounded implementation is complete when the requested production behavior is coherent, relevant validation actually ran or limitations are explicitly reported, persistence and lifecycle contracts are preserved, performance evidence is collected when material, architecture-debt guardrails remain green, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changed.
