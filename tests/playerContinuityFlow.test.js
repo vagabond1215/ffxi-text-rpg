@@ -25,6 +25,7 @@ import { SECONDS_PER_DAY } from '../js/text/systems/worldTimeEngine.js';
 import { renderGameScreen } from '../js/text/ui/domRenderer.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
+import { VERSION } from '../js/text/version.js';
 
 const COMMITMENT_ID = 'commitment-brasshaven-copper-return';
 
@@ -54,9 +55,9 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.equal(contract.action.payload.commitmentId, COMMITMENT_ID);
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
 
-    // Prove the new authority is plain persisted game state rather than UI-owned state.
+    // Prove the authority is plain persisted game state rather than UI-owned state.
     state = JSON.parse(JSON.stringify(state));
-    assert.equal(state.version, 5);
+    assert.equal(state.version, VERSION.gameState);
     assert.equal(getCommitmentRecord(state, COMMITMENT_ID).status, 'active');
 
     view = model(state);
@@ -157,7 +158,6 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.equal(contract.status, 'ready');
     assert.equal(contract.action.intent, 'commitment.followUp');
     assert.equal(view.opportunities.recommendedOpportunityId, contract.id);
-
     const competingActions = view.opportunities.entries.filter((entry) => entry.id !== contract.id
         && entry.action
         && ['ready', 'active', 'available'].includes(entry.status));
