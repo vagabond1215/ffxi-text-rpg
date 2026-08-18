@@ -1,6 +1,8 @@
 import { VERSION } from '../version.js';
+import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateEcologyState } from './ecologyEngine.js';
+import { validatePartyState } from './partyEngine.js';
 import { validateProjectState } from './projectEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateResourceOpportunityState } from './resourceOpportunityEngine.js';
@@ -58,6 +60,8 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     }
 
     if (isObject(state.tasks)) issues.push(...validateTimedTaskState(state.tasks));
+    if (isObject(state.abilities)) issues.push(...validateAbilityRuntimeState(state.abilities));
+    if (isObject(state.party)) issues.push(...validatePartyState(state.party));
     if (isObject(state.projects)) issues.push(...validateProjectState(state.projects));
     if (isObject(state.commitments)) issues.push(...validateCommitmentState(state.commitments));
     if (isObject(state.relationships)) issues.push(...validateRelationshipState(state.relationships));
