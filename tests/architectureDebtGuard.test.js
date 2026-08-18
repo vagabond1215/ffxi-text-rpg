@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -16,6 +16,16 @@ function assertAbsent(relativePath, patterns) {
     for (const pattern of patterns) {
         assert.doesNotMatch(text, pattern, `${relativePath} reintroduced architecture debt matching ${pattern}`);
     }
+}
+
+function listJavaScriptFiles(root) {
+    const files = [];
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+        const path = resolve(root, entry.name);
+        if (entry.isDirectory()) files.push(...listJavaScriptFiles(path));
+        else if (entry.isFile() && entry.name.endsWith('.js')) files.push(path);
+    }
+    return files;
 }
 
 test('retired FFXI command compatibility modules stay deleted', () => {
@@ -39,4 +49,26 @@ test('version and ActionResult compatibility aliases stay removed', () => {
 test('presentation does not regain rejected compatibility payloads', () => {
     assertAbsent('js/text/ui/gameViewModel.js', [/cargoUnits\s*:/]);
     assertAbsent('js/text/ui/uiIntentDispatcher.js', [/highContrast/]);
+});
+
+test('direct timed-task creation stays limited to audited domain owners with release responsibility', () => {
+    const expectedOwners = [
+        'js/text/systems/abilityEngine.js',
+        'js/text/systems/campaignRecoveryEngine.js',
+        'js/text/systems/projectEngine.js',
+        'js/text/systems/resourceOpportunityEngine.js',
+        'js/text/systems/transportEngine.js',
+        'js/text/systems/workTaskEngine.js',
+    ];
+
+    const actualOwners = listJavaScriptFiles(TEXT_ROOT)
+        .map((path) => relative(ROOT, path).replaceAll('\\', '/'))
+        .filter((path) => path !== 'js/text/systems/timedTaskEngine.js')
+        .filter((path) => source(path).includes('startTimedTask'))
+        .sort();
+
+    assert.deepEqual(actualOwners, expectedOwners);
+    for (const ownerPath of expectedOwners) {
+        assert.match(source(ownerPath), /\breleaseTimedTask\b/, `${ownerPath} creates timed tasks without an explicit terminal release dependency`);
+    }
 });
