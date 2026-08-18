@@ -30,14 +30,15 @@ Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report 
 Current mode is **pre-alpha current-schema only**.
 
 - Account/session payloads must match Account Save 5 exactly.
-- Character payloads must match Game State 6 and contain the complete required persisted structure before reference revival.
+- Character payloads must match Game State 7 and contain the complete required persisted structure before reference revival.
 - Raw validation runs before runtime `ensure*` helpers may normalize state.
 - Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
+- Optional persisted authority may be absent when construction semantics permit it, but once present must satisfy its domain contract.
 - Active project/work/travel/timed-ability/resource-recovery task links must reference consistent active-or-just-completed persisted tasks until owner reconciliation.
 - A future compatibility migration is deliberate work only when explicitly required or independently useful.
 - Tightening enforcement of an existing current-schema invariant does not alone require a schema bump; changing persisted shape or meaning does.
 
-### Current raw Game State 6 validation
+### Current raw Game State 7 validation
 
 The current boundary validates these required persisted families before revival:
 
@@ -54,17 +55,36 @@ ecology
 party
 ability runtime
 semantic events
+atlas discovery with canonical fictional-time visit records
+POI discovery/acquired-knowledge ownership
+player discipline progression, lifetime training, and learned skills
 player capability registry
 player inventory/container state
+player mutable HP/MP/TP
+player canonical wallet
 ```
 
-`work` is a special classified case: **absence remains valid construction convenience**, but if `state.work` is persisted it must be an object satisfying `validateWorkState()` before runtime access.
+Optional persisted authorities are:
 
-The following remain deliberately outside raw validation:
+```text
+state.work
+player.progression.workProficiencies
+state.dayCycle
+```
 
-- broad `validatePlayer()` because it mixes persisted invariants with post-revival object identity and derived combat/profile checks;
+For each of those, absence remains legitimate construction state; a present stored value must validate before runtime access.
+
+The following remain deliberately outside raw persistence authority:
+
+- broad `validatePlayer()`, because it mixes serialized invariants with post-revival object identity and derived combat/profile checks;
 - flat `player.inventory` alias/reference identity, which is restored during revival;
-- atlas/POI discovery tightening until a dedicated authority decision resolves its validation and timestamp semantics.
+- `player.combat` and derived combat/stat maxima, which are projections rather than accepted raw authority.
+
+`player.statState` remains a dedicated future classification question: its deterministic character-base semantics and current reconstruction path should be audited together before it is either made strict persisted authority or removed from persisted-cache expectations.
+
+### Discovery-time rule
+
+Game State 7 replaced wall-clock atlas visit timestamps with `visitedAtWorldSeconds` anchored to canonical fictional time. Current discovery records carrying legacy wall-clock `visitedAt` are incompatible and are rejected rather than migrated or rewritten. Acquired-knowledge map privacy remains mandatory.
 
 ### State-classification rule
 
@@ -72,11 +92,10 @@ Before adding another raw validator, classify the state first:
 
 1. **persistent required authority** — validate before revival;
 2. **derived/transient** — recompute from authoritative inputs;
-3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration.
+3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration;
+4. **optional persisted authority** — absence is allowed, but once present the stored value must satisfy its domain contract.
 
-A fourth practical case is **optional persisted authority**: absence is allowed, but once present the stored value must satisfy its domain contract. The work registry is the current example.
-
-Historical tests that exercise lazy `ensure*` initialization may remain correct internal construction tests. They do not imply that an incomplete or malformed current Game State 6 save is load-compatible.
+Historical tests that exercise lazy `ensure*` initialization may remain correct internal construction tests. They do not imply that an incomplete or malformed current Game State 7 save is load-compatible.
 
 ## Current strict-persistence evidence
 
@@ -93,6 +112,12 @@ tests/currentSchemaPlayerCapabilities.test.js
 tests/currentSchemaInventoryState.test.js
 tests/currentSchemaSemanticEvents.test.js
 tests/currentSchemaWorkRegistry.test.js
+tests/currentSchemaPlayerProgression.test.js
+tests/currentSchemaDiscoveryPersistence.test.js
+tests/currentSchemaWorkProficiencies.test.js
+tests/currentSchemaPlayerResources.test.js
+tests/currentSchemaDayCycle.test.js
+tests/currentSchemaPlayerWallet.test.js
 ```
 
 Each newly tightened family has positive non-trivial current save/load evidence and malformed-current-save rejection/no-repair evidence. Preserve that pattern for future persistence hardening.
@@ -106,6 +131,8 @@ A new direct production timed-task creator must define its durable consequence, 
 ## Performance and long-session stability
 
 Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
+
+Latest validated runtime evidence is PR #361 exact head `a356c67124167ab60efd4cf4a57c742d3d94c355`, Check `32197699859`, Node 24.19.0: **629/629 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze after promotion is `dc588d194211ccaed671d58362617bea6b2c5a73`.
 
 ## UI and adapter boundaries
 
