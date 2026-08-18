@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.36';
+export const PRODUCT_VERSION = '0.8.600.37';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 7,
     data: 37,
     benchmark: 3,
-    codename: 'Strict Player Resources',
+    codename: 'Strict Day Cycle',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.36',
+    versionManifest: '0.8.600.37',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -67,6 +67,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     simulationSubstrateGate: '0.1.0',
     integratedMechanicsGate: '0.1.0',
     dayCycle: '0.2.0',
+    dayCyclePersistence: '0.1.0',
     commandShell: '0.5.1',
     domUi: '0.10.0',
     domRoot: '0.1.0',
@@ -86,7 +87,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.5.0',
     parser: '0.2.0',
-    validation: '0.28.0',
+    validation: '0.29.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',

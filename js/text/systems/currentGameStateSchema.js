@@ -2,6 +2,7 @@ import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
+import { validatePersistedDayCycle } from './dayCyclePersistence.js';
 import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
@@ -33,7 +34,6 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     const issues = [];
     if (!isObject(state)) return ['state must be an object.'];
     if (state.version !== VERSION.gameState) issues.push(`version must be current Game State ${VERSION.gameState}.`);
-
     for (const field of REQUIRED_OBJECT_FIELDS) if (!isObject(state[field])) issues.push(`${field} must be a persisted object.`);
     for (const field of REQUIRED_ARRAY_FIELDS) if (!Array.isArray(state[field])) issues.push(`${field} must be a persisted array.`);
 
@@ -50,6 +50,10 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
     if (isObject(state.atlas)) issues.push(...validateAtlasState(state.atlas));
     if (isObject(state.discoveredPois)) issues.push(...validatePoiDiscoveryState(state.discoveredPois));
+    if (state.dayCycle !== undefined) {
+        if (!isObject(state.dayCycle)) issues.push('dayCycle must be a persisted object when present.');
+        else issues.push(...validatePersistedDayCycle(state.dayCycle, state.worldTime));
+    }
     if (state.work !== undefined) {
         if (!isObject(state.work)) issues.push('work must be a persisted object when present.');
         else issues.push(...validateWorkState(state.work));
@@ -66,15 +70,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.player)) {
         for (const field of REQUIRED_PLAYER_OBJECT_FIELDS) if (!isObject(state.player[field])) issues.push(`player.${field} must be a persisted object.`);
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
-        if (isObject(state.player.jobs) && isObject(state.player.progression)) {
-            issues.push(...validatePersistedPlayerProgression(state.player).map((issue) => `player.${issue}`));
-        }
-        if (isObject(state.player.resources)) {
-            issues.push(...validatePersistedPlayerResources(state.player.resources).map((issue) => `player.${issue}`));
-        }
-        if (isObject(state.player.inventoryState)) {
-            issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
-        }
+        if (isObject(state.player.jobs) && isObject(state.player.progression)) issues.push(...validatePersistedPlayerProgression(state.player).map((issue) => `player.${issue}`));
+        if (isObject(state.player.resources)) issues.push(...validatePersistedPlayerResources(state.player.resources).map((issue) => `player.${issue}`));
+        if (isObject(state.player.inventoryState)) issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
         if (isObject(state.player.progression)) {
             const workProficiencies = state.player.progression.workProficiencies;
             if (workProficiencies !== undefined) {

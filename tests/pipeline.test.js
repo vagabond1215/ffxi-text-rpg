@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.36');
+    assert.equal(PRODUCT_VERSION, '0.8.600.37');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Strict Player Resources');
+    assert.equal(VERSION.codename, 'Strict Day Cycle');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -39,6 +39,8 @@ test('version manifest separates product package persistence data and focused cl
             campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
             workTasks: SYSTEM_VERSIONS.workTasks,
             workProficiencies: SYSTEM_VERSIONS.workProficiencies,
+            dayCycle: SYSTEM_VERSIONS.dayCycle,
+            dayCyclePersistence: SYSTEM_VERSIONS.dayCyclePersistence,
             resourceOpportunities: SYSTEM_VERSIONS.resourceOpportunities,
             abilityEngine: SYSTEM_VERSIONS.abilityEngine,
             transport: SYSTEM_VERSIONS.transport,
@@ -59,7 +61,7 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.36',
+            versionManifest: '0.8.600.37',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -68,6 +70,8 @@ test('version manifest separates product package persistence data and focused cl
             campaignRecovery: '0.3.0',
             workTasks: '0.2.0',
             workProficiencies: '0.1.0',
+            dayCycle: '0.2.0',
+            dayCyclePersistence: '0.1.0',
             resourceOpportunities: '0.2.0',
             abilityEngine: '0.3.0',
             transport: '0.4.1',
@@ -81,7 +85,7 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.28.0',
+            validation: '0.29.0',
             placeAtlas: '0.6.0',
             discoveryPersistence: '0.1.0',
             poiDiscovery: '0.4.0',
@@ -90,15 +94,16 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.36/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.37/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 7/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Strict Player Resources/);
+    assert.match(describeVersion(), /Codename: Strict Day Cycle/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /validation: 0\.28\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.29\.0/);
+    assert.match(describeSystemVersions(), /dayCyclePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
     assert.match(describeSystemVersions(), /placeAtlas: 0\.6\.0/);
     assert.match(describeSystemVersions(), /discoveryPersistence: 0\.1\.0/);
