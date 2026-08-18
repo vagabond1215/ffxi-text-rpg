@@ -12,8 +12,9 @@ import {
 } from '../js/text/data/routeCatalog.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { addItemToContainer, removeItemQuantityFromContainer } from '../js/text/systems/inventoryEngine.js';
+import { listSemanticEvents } from '../js/text/systems/semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from '../js/text/systems/simulationInterruptEngine.js';
-import { findTimedTask, TIMED_TASK_STATUSES } from '../js/text/systems/timedTaskEngine.js';
+import { findTimedTask } from '../js/text/systems/timedTaskEngine.js';
 import {
     provideTravelInterrupts,
     reconcileTravelJourney,
@@ -41,7 +42,7 @@ test('service departures are deterministic from canonical world seconds', () => 
     assert.equal(getNextServiceDeparture('service-crown-forge-caravan', 21601), 43200);
 });
 
-test('direct route travel uses a canonical timed task and advances world time to arrival', () => {
+test('direct route travel releases its terminal task after arrival while retaining correlation in travel result and event', () => {
     const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
 
@@ -54,9 +55,12 @@ test('direct route travel uses a canonical timed task and advances world time to
 
     const advanced = advanceTravel(state, 1800);
     assert.equal(advanced.completed, true);
+    assert.equal(advanced.travel.taskId, 'task-000001');
     assert.equal(state.worldTime.totalSeconds, 1800);
     assert.equal(state.currentPlaceId, 'west-elderwood');
-    assert.equal(findTimedTask(state, 'task-000001').status, TIMED_TASK_STATUSES.COMPLETED);
+    assert.equal(findTimedTask(state, 'task-000001'), null);
+    const [arrival] = listSemanticEvents(state, { type: 'travel.arrived' });
+    assert.equal(arrival.data.taskId, 'task-000001');
 });
 
 test('scheduled caravan booking enforces fare and canonical carried cargo and exposes deterministic departure/arrival interrupts', () => {
@@ -83,6 +87,7 @@ test('scheduled caravan booking enforces fare and canonical carried cargo and ex
     assert.equal(booked.data.arriveAtWorldSeconds, 43200);
     assert.equal(state.player.wallet.gil, 40);
     assert.equal(state.travel.status, 'waiting');
+    const taskId = booked.data.travel.taskId;
 
     const departureAdvance = advanceSimulationUntilInterrupt(state, 50000, { providers: [provideTravelInterrupts] });
     assert.equal(departureAdvance.data.interrupt.type, 'transport.departure');
@@ -97,11 +102,13 @@ test('scheduled caravan booking enforces fare and canonical carried cargo and ex
     assert.equal(arrivalAdvance.data.afterWorldSeconds, 43200);
     const arrived = reconcileTravelJourney(state);
     assert.equal(arrived.completed, true);
+    assert.equal(arrived.travel.taskId, taskId);
     assert.equal(state.currentPlaceId, 'brasshaven-iron-quay');
     assert.equal(state.travel, null);
+    assert.equal(findTimedTask(state, taskId), null);
 });
 
-test('stopping a canonical journey cancels its timed task', () => {
+test('stopping a canonical journey releases its cancelled task after cancellation event', () => {
     const state = createTestState();
     setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' });
     const started = startTravel(state, 'West Elderwood');
@@ -111,5 +118,8 @@ test('stopping a canonical journey cancels its timed task', () => {
     assert.equal(stopped.ok, true);
     assert.equal(stopped.stopped, true);
     assert.equal(state.travel, null);
-    assert.equal(findTimedTask(state, taskId).status, TIMED_TASK_STATUSES.CANCELLED);
+    assert.equal(findTimedTask(state, taskId), null);
+    assert.equal(listSemanticEvents(state, { type: 'task.cancelled' }).length, 1);
+    const [cancelled] = listSemanticEvents(state, { type: 'travel.cancelled' });
+    assert.equal(cancelled.data.taskId, taskId);
 });
