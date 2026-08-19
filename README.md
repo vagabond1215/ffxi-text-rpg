@@ -22,21 +22,21 @@ Use named localities and actions where destinations and relationships create dec
 ## Current runtime baseline
 
 ```text
-Product:       0.8.600.50
+Product:       0.8.600.51
 Package:       0.8.600
 Account Save:  5
-Game State:    10
+Game State:    11
 Data:          37
 Benchmark:     3
-Codename:      Derived NPC World Projection
+Codename:      Derived Enemy Encounter Projection
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete: home storage, home workshop capability, carried-load transport, earned portable field logistics, fictional-time NPC availability, and companion convalescence/reunion. Revisions `.2` through `.50` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
+Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete. Revisions `.2` through `.51` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
 
-Latest frozen runtime: `181bc67b69172390d1a59fa3dfca35980a026b3d`. Validation-only PR #374 surfaced Check `32292959171` on Node 24.19.0: **680/680 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
+Latest frozen runtime: `5a97a109d9476438d001ee75b8e20293f57360dd`. Validation-only PR #375 surfaced Check `32297557960` on Node 24.19.0: **684/684 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
 
 ## Product direction
 
@@ -48,18 +48,21 @@ Fictional time is separate from wall-clock waiting. Long tasks cost character ti
 
 The project is pre-alpha and uses a strict **current-schema-only** persistence posture. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 10 validates required persisted authority before reference revival or runtime normalization. Important durable authorities include world time, simulation/task state, projects, commitments, relationships, ecology/resource opportunities, party, ability runtime, semantic events, acquired discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, location, combat identity, and active-battle state when present.
+Game State 11 validates required persisted authority before reference revival or runtime normalization. Important durable authorities include world time, simulation/task state, projects, commitments, relationships, ecology/resource opportunities, party, ability runtime, semantic events, acquired discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, location, combat identity, and active-battle state when present.
 
 Some runtime state is deliberately **not** serialized:
 
 - root `player.combat` and `player.statState` are reconstructed caches;
 - `activeBattle.rng` is transient;
 - flat `player.inventory` reference identity is relinked after decode;
-- `state.npcs` is a reconstructed world projection.
+- `state.npcs` is a reconstructed world projection;
+- `state.enemies` is a reconstructed encounter-template projection.
 
-Product `.50` completed the dedicated NPC ownership audit. Canonical seed NPC definitions provide the baseline; `state.party.companions` owns durable companion participation; schedules derive availability from fictional time; relationships and commitments own their own continuity. Save encoding therefore omits `state.npcs`, and revival rebuilds it after raw validation from canonical seed definitions plus persisted party companion authority.
+Product `.50` completed the dedicated NPC ownership audit. Canonical seed NPC definitions provide the baseline; `state.party.companions` owns durable companion participation; schedules derive availability from fictional time; relationships and commitments own their own continuity.
 
-The remaining broad state-family audits are `state.enemies` and `state.log`, separately. Do not combine them into a generic entity validator.
+Product `.51` completed the dedicated enemy ownership audit. Production does not mutate the seed enemy array. Place spawn rules and opportunities reference stable enemy IDs; the seed entities provide encounter-construction inputs and derived starting combat/resources; `startEncounter()` creates the distinct combatant snapshot whose mutable state is durably owned by `activeBattle`. Save encoding therefore omits `state.enemies` and reconstructs fresh canonical templates after raw validation.
+
+The remaining broad state-family audit is `state.log` alone. It must be classified as presentation history, durable player-facing memory, or compatibility baggage without being confused with canonical semantic events.
 
 ## Player interface
 
