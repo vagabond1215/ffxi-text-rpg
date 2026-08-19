@@ -1,5 +1,6 @@
 import { validateCurrentGameStateStructure } from './systems/currentGameStateSchema.js';
 import { refreshNpcWorldProjection } from './systems/npcWorldProjection.js';
+import { resetPresentationLog } from './systems/presentationLog.js';
 import { refreshPlayerDerivedState, stripPlayerDerivedStateForPersistence } from './systems/playerDerivedState.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 import { VERSION } from './version.js';
@@ -51,6 +52,7 @@ export function loadCharacter(characterSelector) {
         return null;
     }
 
+    resetPresentationLog(state);
     const revived = reviveGameState(state, record.id);
     if (!isValidGameState(revived)) {
         console.warn('Ignoring incompatible character save.', validateGameState(revived));
@@ -389,6 +391,7 @@ function findCharacterRecord(account, selector) {
 function encodeState(state) {
     const persisted = stripPlayerDerivedStateForPersistence(state);
     delete persisted.npcs;
+    delete persisted.log;
     return encodePayload(persisted);
 }
 
