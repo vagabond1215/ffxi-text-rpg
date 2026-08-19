@@ -22,33 +22,33 @@ Use named localities and actions where destinations and relationships create dec
 ## Current runtime baseline
 
 ```text
-Product:       0.8.600.51
+Product:       0.8.600.52
 Package:       0.8.600
 Account Save:  5
-Game State:    11
+Game State:    12
 Data:          37
 Benchmark:     3
-Codename:      Derived Enemy Encounter Projection
+Codename:      Transient Command Presentation Log
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete. Revisions `.2` through `.51` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
+Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete. Revisions `.2` through `.52` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
 
-Latest frozen runtime: `5a97a109d9476438d001ee75b8e20293f57360dd`. Validation-only PR #375 surfaced Check `32297557960` on Node 24.19.0: **684/684 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
+Latest frozen runtime: `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`. Validation-only PR #376 surfaced Check `32301160532` on Node 24.19.0: **688/688 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
 
 ## Product direction
 
 The game is one persistent life, not a collection of disconnected minigames. Hunting, gathering, work, production, trade, commitments, relationships, travel, combat, recovery, companions, and home infrastructure should feed one another through shared authorities.
 
-Fictional time is separate from wall-clock waiting. Long tasks cost character time, resources, preparation, risk, and opportunity rather than mandatory real-world delay. Maps represent acquired knowledge. Materials preserve provenance through source, processing, use, repair, salvage, or replacement. Disciplines describe training traditions; learned capabilities belong to the character and are constrained by actual proficiency, equipment, resources, preparation, status, and context.
+Fictional time is separate from wall-clock waiting. Long tasks cost character time, resources, preparation, risk, and opportunity rather than mandatory real-world delay. Maps represent acquired knowledge. Materials preserve provenance. Disciplines describe training traditions; learned capabilities belong to the character and are constrained by actual proficiency, equipment, resources, preparation, status, and context.
 
 ## Current persistence model
 
 The project is pre-alpha and uses a strict **current-schema-only** persistence posture. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 11 validates required persisted authority before reference revival or runtime normalization. Important durable authorities include world time, simulation/task state, projects, commitments, relationships, ecology/resource opportunities, party, ability runtime, semantic events, acquired discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, location, combat identity, and active-battle state when present.
+Game State 12 validates required persisted authority before reference revival or runtime normalization. Important durable authorities include world time, simulation/task state, projects, commitments, relationships, ecology/resource opportunities, party, ability runtime, semantic events, acquired discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, location, combat identity, and active-battle state when present.
 
 Some runtime state is deliberately **not** serialized:
 
@@ -56,13 +56,14 @@ Some runtime state is deliberately **not** serialized:
 - `activeBattle.rng` is transient;
 - flat `player.inventory` reference identity is relinked after decode;
 - `state.npcs` is a reconstructed world projection;
-- `state.enemies` is a reconstructed encounter-template projection.
+- `state.enemies` is a reconstructed encounter-template projection;
+- top-level `state.log` is current-session command presentation history.
 
-Product `.50` completed the dedicated NPC ownership audit. Canonical seed NPC definitions provide the baseline; `state.party.companions` owns durable companion participation; schedules derive availability from fictional time; relationships and commitments own their own continuity.
+Products `.50`–`.52` completed the dedicated broad-array ownership series. NPC records are rebuilt from canonical seed data plus persisted party authority. Enemy templates are rebuilt from canonical seed definitions while mutable encounter state belongs to persisted `activeBattle`. Top-level command history is wall-clock-stamped presentation/diagnostic state: save encoding omits it and character load starts a fresh session log, while persisted typed `state.events` remains the semantic observation channel.
 
-Product `.51` completed the dedicated enemy ownership audit. Production does not mutate the seed enemy array. Place spawn rules and opportunities reference stable enemy IDs; the seed entities provide encounter-construction inputs and derived starting combat/resources; `startEncounter()` creates the distinct combatant snapshot whose mutable state is durably owned by `activeBattle`. Save encoding therefore omits `state.enemies` and reconstructs fresh canonical templates after raw validation.
+`activeBattle.log` remains separate persisted encounter-local history. Canvas command-history/output buffers are separate transient UI state.
 
-The remaining broad state-family audit is `state.log` alone. It must be classified as presentation history, durable player-facing memory, or compatibility baggage without being confused with canonical semantic events.
+There is no automatically queued next audit from this series. A new maintenance or feature packet requires a fresh bounded work order; `0.8.700` is not opened by revision sequencing alone.
 
 ## Player interface
 
