@@ -32,6 +32,15 @@ function createEncounterState(name = 'Sequence Keeper') {
     return state;
 }
 
+function createSwordEncounterState(name) {
+    const state = createInitialState();
+    state.player.identity.name = name;
+    state.player.equipment.mainHand = structuredClone(EQUIPMENT_CATALOG['bronze-sword']);
+    const result = startEncounter(state, 'Brush Hare', { rng: () => 0 });
+    assert.equal(result.ok, true);
+    return state;
+}
+
 function battlePlayer(state) {
     return state.activeBattle.combatants.find((combatant) => combatant.type === 'player');
 }
@@ -97,16 +106,16 @@ test('ordinary combat keeps active root and battle skill authority coherent', ()
 test('loaded active combat copies a new root skill gain into the battle snapshot before cache refresh', () => {
     installStorage();
     assert.equal(createAccountWithPassword('Combat Skill Link Account', 'pwd', { persistentLogin: true }).ok, true);
-    const state = createEncounterState('Skill Link Keeper');
+    const state = createSwordEncounterState('Skill Link Keeper');
     assert.equal(saveGame(state), true);
 
     const loaded = loadCharacter('Skill Link Keeper');
     assert.ok(loaded);
     assert.notEqual(battlePlayer(loaded).progression, loaded.player.progression);
-    const before = structuredClone(loaded.player.progression.skills);
+    assert.equal(loaded.player.progression.skills.sword, undefined);
 
     assert.match(performPlayerAttack(loaded), /Battle:/);
-    assert.notDeepEqual(loaded.player.progression.skills, before);
+    assert.equal(loaded.player.progression.skills.sword, 1);
     assert.deepEqual(battlePlayer(loaded).progression.skills, loaded.player.progression.skills);
     assert.deepEqual(validateCurrentGameStateStructure(loaded), []);
 });
