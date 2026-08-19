@@ -144,7 +144,7 @@ test('restorative and support magic resolve outside combat through structured ef
     advanceWorldTime(wardState, 4);
     const warded = reconcileAbilityActivation(wardState);
     assert.equal(warded.data.effects[0].type, 'status');
-    assert.ok(wardState.player.statuses.some((status) => status.id === 'status-stone-ward' && status.modifiers.defense === 4));
+    assert.ok(wardState.player.statuses.some((status) => status.id === 'status-stone-ward' && status.modifiers.derived.defense === 4));
 });
 
 test('non-combat Waymark Reading resolves contextual world knowledge without revealing authored topology', () => {
