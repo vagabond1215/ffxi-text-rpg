@@ -11,6 +11,7 @@
     "benchmark": "node scripts/benchmark.js",
     "benchmark:sample": "node scripts/benchmarkSample.js",
     "bench": "npm run benchmark",
+    "census": "node scripts/contentCensus.js",
     "hardening": "node --test tests/longSessionLifecycle.test.js && npm run benchmark:sample",
     "check": "npm test && npm run benchmark"
   },
