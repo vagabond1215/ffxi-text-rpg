@@ -1,8 +1,18 @@
 # Roadmap
 
-This is the authoritative implementation summary and phase index for **Hearth & Horizon**, an original text-first persistent fantasy life RPG.
+This is the authoritative phase and feature-track roadmap for **Hearth & Horizon**, an original text-first persistent fantasy life RPG.
 
-Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`, `docs/VERSIONING_AND_RELEASE_ROADMAP.md`, `docs/ARCHITECTURE.md`, `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`, and `docs/THREAD_HANDOFF.md`.
+Operational sequencing, deferred work, and restart instructions live in `docs/EXECUTION_PIPELINE.md`. Exact current checkpoint and immediate next work live in `docs/THREAD_HANDOFF.md`.
+
+Authoritative companions:
+
+- `docs/DEVELOPMENT_DIRECTION.md`
+- `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
+- `docs/EXECUTION_PIPELINE.md`
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+- `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
+- `docs/ARCHITECTURE.md`
+- `docs/QUALITY_GATES.md`
 
 ## Current baseline
 
@@ -19,7 +29,19 @@ Released:      false
 Runtime:       Node >=24
 ```
 
-**Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.52` are maintenance/hardening revisions and do not open `0.8.700`.**
+Latest validated implementation/tooling checkpoint:
+
+```text
+b0c1e067a1907a8587a08a128126f9207c6d6134
+PR #377 validation-only, closed without merge
+Check 32308719621
+Node 24.19.0
+692/692 tests
+Benchmark 3 success
+Benchmark Sample success
+```
+
+That checkpoint adds the content-scale progression gate and `npm run census`; it does not change Product version, Game State, or gameplay authority.
 
 ## Product laws
 
@@ -38,7 +60,7 @@ Use fine movement where movement itself creates decisions.
 Use named localities and actions where destinations and relationships create decisions.
 ```
 
-Campaign guidance reflects acquired knowledge. Resources preserve provenance. Declared persistent authorities remain canonical; projections and presentation remain derived. Legacy FFXI-derived material is research/reference only.
+Campaign guidance reflects acquired knowledge. Resources preserve provenance. Fictional time is separate from wall-clock scheduling. Persistent authorities remain canonical; projections and presentation remain derived. Legacy FFXI-derived material is research/reference only.
 
 ## Phase summary
 
@@ -47,14 +69,16 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. De
 | `0.4` | Foundation and direction lock | **Complete** |
 | `0.5` | Simulation + original-world/content substrate | **Complete** |
 | `0.6` | Integrated character/mechanics | **Complete** |
-| `0.7` | Multi-region playable alpha | **Complete** |
+| `0.7` | Multi-region playable alpha foundation | **Complete** |
 | `0.8` | Life and infrastructure expansion | **In progress** |
-| `0.9` | Adventure depth and release hardening | Planned |
+| `0.9` | Content scale, adventure depth and release hardening | Planned |
 | `1.0` | Live foundation | Planned |
 
-## Phase 0.8 feature tracks
+# Phase 0.8 — Life and infrastructure expansion
 
-| Track | Gate | Status |
+## Completed tracks
+
+| Track | Player-facing gate | Status |
 | --- | --- | --- |
 | `0.8.100` | Home foothold: durable storage from regional materials + project labor | **Complete** |
 | `0.8.200` | Home workshop: locality-bound production capability | **Complete** |
@@ -63,154 +87,215 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. De
 | `0.8.500` | Fictional-time NPC availability | **Complete** |
 | `0.8.600` | Companion convalescence and safe reunion | **Complete** |
 
-Historical feature-track checkpoints remain recorded in git history and earlier roadmap revisions.
+Revisions `.2` through `.52` after the closed `0.8.600` feature track hardened current-schema persistence, action/semantic boundaries, deterministic lifecycle ownership, current location/combat authority, and the derived/transient classification of root player caches, `state.npcs`, `state.enemies`, and top-level `state.log`.
 
-## Maintenance history
+The dedicated broad-array classification sequence is complete. Do not manufacture another persistence audit merely to advance a revision number.
 
-Revisions `.2`–`.38` established current-schema cleanup, canonical action/command boundaries, deterministic simulation and lifecycle ownership, strict domain registries, fictional-time discovery, and progressively stricter persisted player/runtime state.
+## Continuation infrastructure gate
 
-Revisions `.39`–`.43` established Game State 8/9 player-persistence rules: root derived caches removed from save authority, equipment strictness, canonical status persistence, active battle persistence, and integrated cache resynchronization.
+Before opening a new feature track, the August 19, 2026 repo audit identified a transition in project risk:
 
-### Persistence hardening and authority classification `.44`–`.52`
+> The deterministic/persistence substrate is comparatively mature; the largest strategic gap is now player-facing life/adventure breadth and authored content scale.
 
-| Revision | Maintenance gate | Validation PR | Exact validated head | Check | Runtime/main checkpoint |
-| --- | --- | ---: | --- | ---: | --- |
-| `.44` | Strict Player Identity Facts | #367 | `ec77c85573dacfe9c8148c8d602b565288f356fa` | `32279241023` | `6ef317c75d5181ddc316caeefe342d14492ab8e2` |
-| `.45` | Strict Player Envelope and World Flags | #368 | `b65d80707073db0a1f5ebe1941c9b48c8c34fd67` | `32280196036` | `c02c8ec72f5e78c93b27ae2fed9f3ff233114c9b` |
-| `.46` | Strict Battle Derived Caches | #369 | `a8eec6ef34ff96ed53bc37ee14aab6280d36a93e` | `32281825598` | `2e143daf63f8874d6135e61af79ddfcd474fc418` |
-| `.47` | Strict Current Location State | #371 | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` | `1c8698147a98e80a0a519aadb520f6808fe61323` |
-| `.48` | Strict Combat Identity Sequence | #372 | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` | `512f8c3d5edbb22d07d857fa98d6f0755d043d89` |
-| `.49` | Strict Active Battle Player Link | #373 validation-only | `49df1a5379da51e15cfb3ce0320008047a70c768` | `32290206583` | `49df1a5379da51e15cfb3ce0320008047a70c768` |
-| `.50` | Derived NPC World Projection | #374 validation-only | `181bc67b69172390d1a59fa3dfca35980a026b3d` | `32292959171` | `181bc67b69172390d1a59fa3dfca35980a026b3d` |
-| `.51` | Derived Enemy Encounter Projection | #375 validation-only | `5a97a109d9476438d001ee75b8e20293f57360dd` | `32297557960` | `5a97a109d9476438d001ee75b8e20293f57360dd` |
-| `.52` | Transient Command Presentation Log: remove top-level wall-clock command history from serialized authority while preserving session diagnostics and structured semantic events | #376 validation-only | `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691` | `32301160532` | `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691` |
+The C0 continuation pass therefore adds:
 
-Every final validated head passed hosted Test, Benchmark 3, and Benchmark Sample. `.50` finished at **680/680 tests**; `.51` at **684/684**; `.52` at **688/688** on Node 24.19.0.
+- `docs/EXECUTION_PIPELINE.md` — durable active/next/deferred queue and restart rules;
+- `js/text/systems/contentScaleGate.js` — criteria-driven content scale metrics;
+- `scripts/contentCensus.js` / `npm run census` — developer-visible census;
+- `tests/contentScaleGate.test.js` — protects the target definitions and readiness logic.
 
-Revisions `.49`–`.52` were implemented directly on `main` under the bounded normal-work policy. PRs #373–#376 were validation-only and were closed without merge after the exact frozen runtime heads passed.
+This tooling is intentionally informational: being below future content targets does not fail CI.
 
-### Version decision through `.52`
+## Next Phase 0.8 sequence
 
-Account Save 5, Data 37, Benchmark 3, and Package 0.8.600 remain unchanged.
+The following tracks are the recommended current progression path. Roadmap order does **not** authorize unbounded autonomous implementation; each new independent track still needs an explicit work order/message under `AGENTS.md`.
 
-Revisions `.50`–`.52` complete the dedicated ownership audit of the three broad top-level arrays that had previously remained weakly classified:
+### `0.8.700` — Cultivation & Stewardship
 
-- `.50`: `state.npcs` is a reconstructible runtime world projection; **Game State 9 → 10**.
-- `.51`: `state.enemies` is a reconstructible encounter-template projection; mutable encounter authority belongs to `activeBattle`; **Game State 10 → 11**.
-- `.52`: top-level `state.log` is bounded session presentation history produced by the command adapter with wall-clock display timestamps. It has no mechanical consumers, does not advance fictional time, and is distinct from persisted structured `state.events`. Save encoding omits it; character load resets it to an empty session log after raw validation; saving does not erase the live in-memory log. This advances **Game State 11 → 12**.
+**Status: next recommended feature track after the C0 documentation pass closes.**
 
-`activeBattle.log` is a separate persisted encounter-local record and is unchanged. Canvas command history/output buffers are separate transient UI state.
-
-Under the current pre-alpha policy no automatic migrations were added.
-
-Historical schema changes are:
-
-- `.34`: Game State 6 → 7 for canonical fictional-time discovery timestamps;
-- `.39`: Game State 7 → 8 when root player combat/stat caches left serialized authority;
-- `.41`: Game State 8 → 9 for canonical nested persisted status modifiers;
-- `.50`: Game State 9 → 10 when runtime NPC projection left serialized authority;
-- `.51`: Game State 10 → 11 when runtime enemy encounter-template projection left serialized authority;
-- `.52`: Game State 11 → 12 when top-level command presentation history left serialized authority.
-
-## Current persistence boundary after `.52`
-
-Required raw Game State 12 validation covers:
+Bounded first proof:
 
 ```text
-world time and simulation control
-timed tasks and active owner/task links
-active Travel State 2
-projects, commitments, relationships
-resource opportunities and ecology
-party and ability runtime
-semantic events
-atlas and POI discovery
-player envelope / identity / key items / flags
-player progression, training, learned skills and capabilities
-player inventory/container state
-player mutable HP/MP/TP
-player canonical wallet
-player equipment/loadout state
-player canonical statuses
-top-level world flags
-current location/position coherence
-combat sequence / active battle identity coherence
-active battle and deterministic encounter combat/stat snapshots when present
-active battle player / root player live-authority coherence while the encounter is active
+access plot
+  -> prepare
+  -> plant provenance-bearing input
+  -> canonical fictional time passes
+  -> tend when required
+  -> harvest
+  -> provenance-bearing outputs
+  -> outputs feed multiple existing systems
+  -> persistent work/cultivation mastery improves efficiency
 ```
 
-Optional persisted authority:
+Required design constraints:
+
+- one canonical fictional clock;
+- no real-time/offline-growth authority;
+- inventory owns physical seed/input/output location;
+- provenance remains explicit;
+- existing work proficiency should own repeated-practice efficiency where it fits;
+- home/projects may own durable infrastructure;
+- do not create a new timed-task owner for every growing plot unless the domain truly requires task semantics.
+
+Exit proof must include deterministic multi-day behavior, save/load mid-growth, exactly-once harvest, meaningful output sinks, and an ordinary semantic browser path.
+
+### `0.8.800` — Earned Routine Delegation
+
+**Status: queued after a real repetitive routine exists.**
+
+The system should prove the progression law by allowing investment/mastery/infrastructure/social capital to reduce attention spent on a solved chore.
+
+First proof should delegate one concrete routine rather than build a generic automation platform.
 
 ```text
-work registry
-player work proficiencies
-day-cycle history
+manual chore
+  -> mastery/infrastructure/reputation
+  -> bounded hired/helper option
+  -> wages/material/time constraints remain real
+  -> same domain consequence
+  -> less player attention
 ```
 
-Derived/transient or post-validation runtime state:
+No free resource generation, passive wall-clock simulation, or second generic task engine.
+
+### `0.8.900` — Household & Community Continuity
+
+**Status: queued.**
+
+Make the player's foothold socially consequential through existing schedule, relationship, commitment, party, work, recovery, home and economy authorities.
+
+Target breadth for the track:
+
+- 2–3 additional recurring named social characters with distinct routines/needs;
+- one additional companion candidate when the regional content graph justifies it;
+- livelihood/property-linked commitments or services;
+- several-day return consequences;
+- no full romance framework yet.
+
+### Phase 0.8 exit audit
+
+After `0.8.900`, prove one coherent life arc:
 
 ```text
-state.npcs runtime world projection
-state.enemies encounter-template projection
-state.log command presentation history
+home/storage/workshop
+  -> cultivation/stewardship
+  -> recurring productive routine
+  -> earned reduction in repetitive attention
+  -> named community consequences
+  -> preparation for travel/adventure
+```
+
+Run the content census and normal quality gates. Close 0.8 only when the life/infrastructure additions feel connected to the existing adventure loop rather than like isolated menu systems.
+
+# Content scale as a roadmap gate
+
+`docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` defines lower-bound planning ranges. `npm run census` now turns the most important categories into an executable progression indicator.
+
+| Category | Mechanics integration | Playable alpha | 1.0 lower bound |
+| --- | ---: | ---: | ---: |
+| Places/localities | 10 | 30 | 75 |
+| Named NPCs | 50 | 250 | 700 |
+| Functional shop/service sites | 20 | 60 | 150 |
+| Creature definitions | 40 | 120 | 300 |
+| Resource sources | 40 | 100 | 250 |
+| Canonical items | 200 | 800 | 2,500 |
+| Recipes/processes | 75 | 300 | 800 |
+| Abilities/techniques | 100 | 250 | 500 |
+| Quests/contracts | 30 | 150 | 500 |
+| Recruitable companions | 4 | 12 | 25 |
+| Scheduled transport services | 5 | 20 | 50 |
+
+These counts are **scale evidence, not quality/balance claims**. A category can meet a numeric lower bound and still need better cross-linking, originality, balance, presentation, or regional distribution.
+
+# Phase 0.9 — Content scale, adventure depth and release hardening
+
+Phase 0.9 should spend substantially more effort on connected authored breadth than the late 0.8 maintenance line did.
+
+| Proposed track | Gate | Planning envelope |
+| --- | --- | --- |
+| `0.9.100` | Content Scale Gate A: move core categories toward mechanics-integration lower bounds | Q1 2027 |
+| `0.9.200` | Adventure vertical slices: deeper dangerous regions/dungeons combining maps, preparation, ecology, combat, recovery and provenance | Q1–Q2 2027 |
+| `0.9.300` | Advanced combat/training: tactical families, techniques, mentors/certification and equipment interaction | Q2 2027 |
+| `0.9.400` | Economy/production depth: material tiers, repair/replacement, advanced stations and durable sinks | Q2–Q3 2027 |
+| `0.9.500` | Quest/social depth: regional arcs, reputation/community consequences, companion breadth | Q3 2027 |
+| `0.9.600` | Playable-alpha content-scale push | Q4 2027–Q1 2028 |
+| `0.9.700` | Browser UX/accessibility/E2E hardening | Q1–Q2 2028 |
+| `0.9.800` | Supported persistence/release transition; deliberate migrations; protected-main policy | Q2 2028 |
+| `0.9.900` | Release-candidate soak, accepted performance budgets, packaging/recovery/content/balance sweeps | Q3 2028 |
+
+Calendar windows are planning envelopes, not promises. Track completion remains criteria-driven.
+
+## Phase 0.9 governance transition
+
+Current early single-maintainer work may continue directly on `main` under `AGENTS.md`.
+
+Before release/stabilization work, transition toward:
+
+```text
+protected main
+  -> required hosted Check
+  -> feature/track PRs
+  -> supported persistence policy
+  -> explicit release fixtures
+  -> accepted representative performance budgets
+```
+
+Do not adopt these controls simply as ceremony before they materially improve project safety.
+
+# 1.0 — Live foundation
+
+A 1.0 release is justified when the game fulfills the continuous-character persistent-life/adventure promise at sustained content scale:
+
+- original world identity is coherent and no legacy proprietary setting leaks into canonical content;
+- life, livelihood, preparation, travel, danger, combat, recovery, home and social systems materially feed one another;
+- repeated effort produces mastery/efficiency/capability rather than only larger denominators;
+- the content graph is large enough for sustained play and passes source/sink/topology/cross-reference validation;
+- normal browser play is accessible without command expertise;
+- supported saves have a deliberate compatibility/migration policy;
+- long-session/resource behavior is stable;
+- accepted performance budgets cover representative workloads;
+- release tooling, recovery and packaging are proven.
+
+Q4 2028 is an aggressive planning target for a 1.0 candidate, not a commitment. Do not lock a release date before the `0.9.600` content-scale push proves sustainable authoring throughput.
+
+# Current persistence boundary
+
+Game State 12 remains strict current-schema-only during pre-alpha.
+
+Required persisted authority includes world/simulation/task state, active travel, projects, commitments, relationships, resource opportunities/ecology, party, ability runtime, semantic events, discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, world flags, location and active combat authority when present.
+
+Optional persisted authority remains:
+
+```text
+state.work
+player.progression.workProficiencies
+state.dayCycle
+```
+
+Derived/transient state includes:
+
+```text
+state.npcs
+state.enemies
+state.log
 flat player.inventory alias identity
 root player.combat
 root player.statState
 activeBattle.rng
 ```
 
-`state.events` remains the persisted structured semantic observation channel, with fictional-time semantics and stable sequence identity. It must not depend on command-log prose. The command log remains useful for `log`/`inspect log` diagnostics during the current session, but it is not character/world continuity.
+`state.events` remains durable structured semantic observation history. Top-level `state.log` remains session-only command presentation. `activeBattle.log` remains separate persisted encounter-local history.
 
-## Latest runtime gate
+# Deferred work
 
-Runtime freeze: `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`.
+The authoritative detailed deferred queue is `docs/EXECUTION_PIPELINE.md`. Key items include:
 
-Exact validated `.52` gate: validation-only PR #376, head `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`, Check `32301160532`, Node 24.19.0:
+- supported-save migrations until release policy requires them;
+- branch protection until Phase 0.9 stabilization;
+- dedicated real-browser E2E/accessibility program until the UI flow stabilizes;
+- hard performance thresholds until Benchmark 3 evidence is repeatable enough;
+- full balance certification until content-scale play exists;
+- quality/HQ crafting, mounts/warehouses/large logistics, and deep romance until existing systems create the need.
 
-```text
-688/688 tests
-0 failed
-0 skipped
-Benchmark 3 success
-Benchmark Sample success
-```
-
-Benchmark 3 single run:
-
-```text
-player profiles  0.399417 ms/op
-enemy profiles   0.070029 ms/op
-basic attacks    0.003675 ms/op
-tick dispatch    0.000898 ms/op
-route lookup     0.007617 ms/op
-```
-
-Three-sample medians/spreads:
-
-```text
-player profiles  0.357454 ms/op    7.63%
-enemy profiles   0.070214 ms/op   11.19%
-basic attacks    0.001153 ms/op  214.09%
-tick dispatch    0.000873 ms/op   30.99%
-route lookup     0.007237 ms/op    6.02%
-```
-
-Benchmark 3 remains the current comparability baseline. No hard timing threshold is accepted.
-
-## Current Phase 0.8 boundary
-
-**Do not automatically begin `0.8.700`.**
-
-The bounded `state.npcs`, `state.enemies`, and `state.log` ownership/classification series is complete. There is no remaining broad top-level array audit queued by this maintenance sequence.
-
-The next work unit requires a **fresh bounded decision/work order** rather than automatic continuation. Strong feature candidate families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam. A new maintenance packet should likewise be justified by a specific repository-evidenced risk rather than continuing revision numbers mechanically.
-
-## Later phases
-
-### 0.9 — Adventure depth and release hardening
-
-Difficult regions/dungeons, advanced combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability, performance budgets, and release tooling.
-
-### 1.0 — Live foundation
-
-Release when the continuous-character persistent-life/adventure promise is coherent, original, stable, performant, and supported by enough interconnected content for sustained play.
+When a future thread is asked to continue, start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. Do not repeat broad discovery unless repository evidence has invalidated those checkpoints.
