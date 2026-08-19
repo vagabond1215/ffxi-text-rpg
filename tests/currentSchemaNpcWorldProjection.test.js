@@ -33,15 +33,12 @@ function storedCharacterState() {
     return { registry, record, state: decodePayload(record.encodedState) };
 }
 
-test('Game State 10 raw payload does not require derived NPC world projection', () => {
+test('Game State 11 raw payload does not require derived NPC world projection', () => {
     const state = createInitialState();
-    assert.equal(VERSION.gameState, 10);
+    assert.equal(VERSION.gameState, 11);
     delete state.npcs;
+    delete state.enemies;
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
-
-    const missingEnemies = structuredClone(state);
-    delete missingEnemies.enemies;
-    assert.ok(validateCurrentGameStateStructure(missingEnemies).some((issue) => issue.includes('enemies must be a persisted array')));
 
     const missingLog = structuredClone(state);
     delete missingLog.log;
@@ -79,6 +76,7 @@ test('save omits NPC projection and load rebuilds it from seed and party authori
     assert.equal(saveGame(state), true);
     const stored = storedCharacterState().state;
     assert.equal(Object.hasOwn(stored, 'npcs'), false);
+    assert.equal(Object.hasOwn(stored, 'enemies'), false);
     assert.ok(stored.party.companions['companion-mara-venn']);
 
     const loaded = loadCharacter('Projectionkeeper');
