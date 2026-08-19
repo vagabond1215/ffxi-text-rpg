@@ -34,15 +34,48 @@ Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete. Revisions `.2` through `.52` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
+Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete. Revisions `.2` through `.52` are maintenance/hardening over that closed feature track.
 
-Latest frozen runtime: `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`. Validation-only PR #376 surfaced Check `32301160532` on Node 24.19.0: **688/688 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
+The August 19, 2026 continuation pass adds a durable execution queue and measurable content-scale gate without changing gameplay version or Game State. Exact validated implementation/tooling checkpoint `b0c1e067a1907a8587a08a128126f9207c6d6134` passed validation-only PR #377 / Check `32308719621` on Node 24.19.0: **692/692 tests**, Benchmark 3 success, and Benchmark Sample success. PR #377 was closed without merge after validation.
+
+`docs/THREAD_HANDOFF.md` states the exact current checkpoint and next bounded unit. `docs/EXECUTION_PIPELINE.md` contains the durable active/next/deferred queue, restart protocol, pass gates, and later Phase 0.9 progression envelope. New threads should use those documents instead of restarting broad repository discovery when the checkpoint is still current.
 
 ## Product direction
 
 The game is one persistent life, not a collection of disconnected minigames. Hunting, gathering, work, production, trade, commitments, relationships, travel, combat, recovery, companions, and home infrastructure should feed one another through shared authorities.
 
 Fictional time is separate from wall-clock waiting. Long tasks cost character time, resources, preparation, risk, and opportunity rather than mandatory real-world delay. Maps represent acquired knowledge. Materials preserve provenance. Disciplines describe training traditions; learned capabilities belong to the character and are constrained by actual proficiency, equipment, resources, preparation, status, and context.
+
+The current strategic risk is increasingly **authored breadth and connected player-facing life/adventure depth**, not lack of generic persistence infrastructure. Content-heavy tracks should grow mechanics and content together and use `npm run census` as a progression indicator without treating numeric breadth as a substitute for originality, cross-linking, balance, or quality.
+
+## Current progression path
+
+The current recommended Phase 0.8 sequence is:
+
+```text
+C0 Continuation Infrastructure + Content Census  -> complete
+0.8.700 Cultivation & Stewardship                -> ready next
+0.8.800 Earned Routine Delegation                -> queued
+0.8.900 Household & Community Continuity         -> queued
+Phase 0.8 exit audit                             -> queued
+```
+
+`0.8.700` is the next **bounded** feature unit, not authorization to execute every later track automatically. Its first proof should connect a home/foothold cultivation loop to canonical fictional time, physical inventory/provenance, work mastery, and several existing sinks such as food, medicine, production, trade, or commitments.
+
+Later Phase 0.9 work is planned around content scale, deeper adventure regions, advanced combat/training, economy/production depth, quest/social breadth, browser E2E/accessibility, supported-save/release transition, and release-candidate hardening. See `docs/ROADMAP.md` and `docs/EXECUTION_PIPELINE.md` for the criteria-driven sequence and deferred work.
+
+## Content-scale census
+
+The repository now exposes:
+
+```bash
+npm run census
+npm run census -- --json
+```
+
+The census reports current unique canonical breadth against mechanics-integration, playable-alpha, and 1.0 lower-bound planning targets for places, NPCs, service sites, creatures, resource sources, items, recipes/processes, abilities, quests/contracts, companions, and scheduled transport services.
+
+Being below a future target is **not a CI failure**. The census is a roadmap/progression signal and should not be gamed with disconnected filler records.
 
 ## Current persistence model
 
@@ -63,7 +96,7 @@ Products `.50`–`.52` completed the dedicated broad-array ownership series. NPC
 
 `activeBattle.log` remains separate persisted encounter-local history. Canvas command-history/output buffers are separate transient UI state.
 
-There is no automatically queued next audit from this series. A new maintenance or feature packet requires a fresh bounded work order; `0.8.700` is not opened by revision sequencing alone.
+Do not restart that completed classification sequence merely because a new thread begins.
 
 ## Player interface
 
@@ -95,7 +128,7 @@ The current foundation includes:
 - ecology, gathering, work proficiency, production, workstations, and regional material chains;
 - commitments, relationships, recurring NPC availability, Journal/opportunity projections, and player information surfaces;
 - home storage, workshop capability, and earned portable field logistics;
-- current-schema persistence, lifecycle guards, long-session smoke coverage, and repeatable benchmark sampling.
+- current-schema persistence, lifecycle guards, long-session smoke coverage, content-scale census, and repeatable benchmark sampling.
 
 High-volume content, advanced combat/ability breadth, deeper social life, agriculture/stewardship, earned automation, larger property systems, and release hardening remain future work.
 
@@ -103,17 +136,18 @@ High-volume content, advanced combat/ability breadth, deeper social life, agricu
 
 1. `AGENTS.md`
 2. `docs/THREAD_HANDOFF.md`
-3. `docs/DEVELOPMENT_DIRECTION.md`
-4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
-5. `docs/ROADMAP.md`
-6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-7. `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
-8. `docs/ARCHITECTURE.md`
-9. `docs/QUALITY_GATES.md`
-10. `PROJECT_PROFILE.yaml`
-11. `js/text/version.js`
+3. `docs/EXECUTION_PIPELINE.md`
+4. `docs/DEVELOPMENT_DIRECTION.md`
+5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
+6. `docs/ROADMAP.md`
+7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+8. `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
+9. `docs/ARCHITECTURE.md`
+10. `docs/QUALITY_GATES.md`
+11. `PROJECT_PROFILE.yaml`
+12. `js/text/version.js`
 
-Repository evidence beats conversation memory. Follow the bounded-work and validation rules in `AGENTS.md` before implementation.
+Repository evidence beats conversation memory. Follow the bounded-work and validation rules in `AGENTS.md` before implementation. If the handoff and execution pipeline identify a current next unit and `main` still matches their assumptions, inspect only that unit's relevant systems/tests instead of restarting broad discovery.
 
 ## Running
 
@@ -123,12 +157,13 @@ Serve over localhost; do not open `index.html` with `file://` because browser ES
 npm start
 ```
 
-Validation entry points:
+Validation and progression entry points:
 
 ```bash
 npm test
 npm run benchmark
 npm run benchmark:sample
+npm run census
 npm run hardening
 npm run check
 ```
