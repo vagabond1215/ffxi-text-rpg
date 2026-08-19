@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.42';
+export const PRODUCT_VERSION = '0.8.600.43';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 9,
     data: 37,
     benchmark: 3,
-    codename: 'Strict Active Battle',
+    codename: 'Player Persistence Integration',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.42',
+    versionManifest: '0.8.600.43',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -89,10 +89,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     parser: '0.2.0',
     validation: '0.34.0',
     walletPersistence: '0.1.0',
-    playerDerivedState: '0.1.0',
+    playerDerivedState: '0.1.1',
     playerEquipmentPersistence: '0.1.0',
     playerStatusPersistence: '0.1.0',
     activeBattlePersistence: '0.1.0',
+    playerPersistenceHarness: '0.1.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
@@ -112,7 +113,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     statEngine: '0.5.0',
     statusEngine: '0.3.0',
     battleEngine: '0.8.0',
-    combatTurns: '0.3.0',
+    combatTurns: '0.3.1',
     combatSimulation: '0.1.0',
     combatActions: '0.8.0',
     battleRewards: '0.6.0',
