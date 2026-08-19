@@ -41,10 +41,11 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 - Transport owns fares, cadence, departure, arrival, journey cargo snapshots, and service limits, deriving carried load from inventory.
 - Commitments own accepted/resolved/follow-up state and one-time rewards; relationship continuity remains a separate authority.
 - NPC schedules are recurring authored availability evaluated against canonical fictional time; availability is derived, not serialized as a second clock.
+- `state.npcs` is a reconstructible runtime world projection, not serialized authority. Canonical seed NPC definitions plus persisted party companion state rebuild it after raw validation.
 - Campaign recovery remains the one player/party recovery authority.
 - Atlas/POI discovery persists acquired knowledge; atlas visit timing uses canonical fictional seconds rather than wall-clock timestamps.
 - Maps, Journal guidance, service boards, player information, home opportunity models, and social schedule decoration are projections of acquired/current state.
-- Persistent companions remain NPC-backed world participants; party authority owns recruitment, active membership, location continuity, field approach, recovery participation, and battle synchronization.
+- Persistent companions remain NPC-backed world participants; party authority owns recruitment, active membership, location continuity, field approach, recovery participation, and battle synchronization. Their backing NPC records are projections of that authority.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs, or can decide; implementation rationale stays outside normal play.
 
 ## Semantic action contract
@@ -70,25 +71,54 @@ Adapters render `display.text` or consume semantic fields. Do not restore `.mess
 
 The flat `player.inventory` array is a runtime convenience alias relinked to the main inventory container after decode. Its object identity is a **post-revival invariant**, not a raw serialized invariant.
 
+## NPC world projection authority
+
+Product `.50` completed the dedicated `state.npcs` ownership audit.
+
+Current production ownership is split cleanly:
+
+```text
+authored seed NPC definitions
+  -> canonical baseline identity/services/location
+
+state.party.companions
+  -> durable recruited companion membership/location/tactics/resources
+
+NPC schedule catalog + world time
+  -> derived availability
+
+state.relationships
+  -> durable named-NPC social continuity
+
+state.commitments
+  -> durable accepted/resolved/follow-up continuity
+```
+
+No independent production system owns mutable durable facts solely in `state.npcs`. The only runtime mutations found there are companion-backing identity/location/active flags, and those values are projections of `state.party` plus the companion catalog.
+
+Accordingly, Game State 10 encoding omits `state.npcs`. `refreshNpcWorldProjection()` rebuilds the array during revival from `createSeedNpcs()` and overlays persisted companion participation. Raw validation happens first. A forged or stale serialized `npcs` field therefore cannot become canonical state; revival replaces it with the deterministic projection.
+
+This is deliberately different from adding a broad NPC validator. If a future system introduces genuinely mutable non-companion NPC world facts, that system must first define its durable owner rather than silently making the projection array authoritative again.
+
 ## Persistence authority — strict current schema
 
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.49
+Product:       0.8.600.50
 Package:       0.8.600
 Account Save:  5
-Game State:    9
+Game State:    10
 Data:          37
 Benchmark:     3
-Codename:      Strict Active Battle Player Link
+Codename:      Derived NPC World Projection
 ```
 
 `js/text/save.js` owns account/session/character persistence. Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
 
 ### Raw validation precedes revival
 
-`currentGameStateSchema.js` validates decoded Game State 9 **before reference revival and before runtime `ensure*` normalization**.
+`currentGameStateSchema.js` validates decoded Game State 10 **before reference revival and before runtime `ensure*` normalization or projection reconstruction**.
 
 Current required raw domain validation covers:
 
@@ -125,13 +155,24 @@ state.dayCycle
 
 For each, absence remains valid construction state. Once present, the stored value must satisfy its domain contract before runtime access.
 
-Malformed current state is rejected rather than repaired or rewritten. `saveGame()` likewise refuses malformed current state rather than manufacturing required authority during persistence.
+Derived/post-revival state includes:
+
+```text
+state.npcs
+flat player.inventory alias identity
+player.combat
+player.statState
+activeBattle.rng
+```
+
+Malformed current persisted authority is rejected rather than repaired or rewritten. `saveGame()` likewise refuses malformed current state rather than manufacturing required authority during persistence. Derived projections are rebuilt only after the raw persisted contract is accepted.
 
 ### Historical schema transitions
 
 - **Game State 7** — Product `.34` replaced wall-clock atlas `visitedAt` with canonical fictional `visitedAtWorldSeconds`.
 - **Game State 8** — Product `.39` removed root `player.combat` and `player.statState` from serialized authority and made them post-validation reconstructed caches.
 - **Game State 9** — Product `.41` changed valid persisted status modifiers to canonical nested `attributes`, `resources`, `derived`, and `resistances` blocks.
+- **Game State 10** — Product `.50` removed the reconstructible `state.npcs` runtime projection from serialized authority.
 
 No automatic pre-alpha migrations were added for those transitions.
 
@@ -175,7 +216,7 @@ Before tightening another raw persistence seam, classify the state:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not during current-save load;
 4. **optional persisted authority** — absence is valid, but a present stored value must satisfy its domain contract.
 
-Do not compose broad `validatePlayer()` wholesale at the raw boundary. Do not mechanically promote `state.npcs`, `state.enemies`, or presentation `state.log` to strict authority before separate ownership audits.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. `state.npcs` has now been classified as derived/reconstructible. Do not mechanically promote `state.enemies` or presentation `state.log` before their separate ownership audits.
 
 ## Timed-task lifecycle ownership
 
@@ -198,16 +239,16 @@ workTaskEngine.js
 
 `domRoot.js` owns the mounted DOM app and onboarding observer. Tick subscriber replacement is stale-disposer safe. `tests/longSessionLifecycle.test.js` proves deterministic multi-day advancement with periodic current-schema save/load, bounded event/day-summary histories, exactly-once task transitions, and zero-retained-task steady state for owner-managed lifecycles.
 
-`tests/playerPersistenceIntegration.test.js` proves the player boundary together: equipment, canonical statuses, mutable resources, active battle, stripped root caches, save/load revival, status expiry, derived profile refresh, non-aliased status modifier blocks, and resumed combat. `tests/currentSchemaCombatIdentityPersistence.test.js` additionally proves active battle/root player linkage, malformed split rejection/no repair, terminal historical divergence, and post-load combat-skill synchronization.
+`tests/playerPersistenceIntegration.test.js` proves the player boundary together. `tests/currentSchemaCombatIdentityPersistence.test.js` proves active battle/root player linkage, malformed split rejection/no repair, terminal historical divergence, and post-load combat-skill synchronization. `tests/currentSchemaNpcWorldProjection.test.js` proves Game State 10 does not require serialized `npcs`, save encoding omits it, canonical seed plus party authority rebuild it, and injected NPC projection data cannot become authoritative on load.
 
 ## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check uses Node 24 LTS, `actions/checkout@v7`, and `actions/setup-node@v6`.
 
-Latest exact-head runtime gate: validation-only PR #373 / head `49df1a5379da51e15cfb3ce0320008047a70c768` / Check `32290206583`, Node 24.19.0. The PR existed only to surface the standard pull-request Check for the exact direct-main runtime and was closed without merge after validation.
+Latest exact runtime gate: validation-only PR #374 / head `181bc67b69172390d1a59fa3dfca35980a026b3d` / Check `32292959171`, Node 24.19.0. The PR existed only to surface the standard pull-request Check for the direct-main runtime and was closed without merge after validation.
 
 ```text
-676/676 tests
+680/680 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -217,27 +258,27 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player combat profiles  0.382805 ms/op
-enemy combat profiles   0.069545 ms/op
-basic attacks            0.003288 ms/op
-tick dispatch            0.000952 ms/op
-direct route lookup      0.007661 ms/op
+player combat profiles  0.372865 ms/op
+enemy combat profiles   0.071050 ms/op
+basic attacks            0.003425 ms/op
+tick dispatch            0.000818 ms/op
+direct route lookup      0.007469 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.362564 ms/op    6.88%
-enemy profiles   0.068110 ms/op    8.11%
-basic attacks    0.001199 ms/op  209.52%
-tick dispatch    0.000681 ms/op   57.21%
-route lookup     0.007336 ms/op    3.69%
+player profiles  0.364304 ms/op    3.27%
+enemy profiles   0.067755 ms/op   10.57%
+basic attacks    0.001213 ms/op  162.66%
+tick dispatch    0.000876 ms/op   44.41%
+route lookup     0.007423 ms/op    6.50%
 ```
 
-Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. The runtime freeze for this packet is `49df1a5379da51e15cfb3ce0320008047a70c768`. Documentation commits after that freeze are synchronization only.
+Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. The runtime freeze for this packet is `181bc67b69172390d1a59fa3dfca35980a026b3d`. Documentation commits after that freeze are synchronization only.
 
 ## Carried-forward rule
 
-Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future persistence work must continue one bounded family at a time.
+Presentation adapters and reconstructed projections may make canonical state easier to understand and operate, but they must not become second authorities. Future persistence work must continue one bounded family at a time.
 
-The next strongest classification work is to audit `state.npcs`, `state.enemies`, and `state.log` **separately**. Seed/world-entity definitions, mutable world participation, derived combat state, and presentation history must not be conflated into one broad validator. Do not automatically begin `0.8.700`.
+The `state.npcs` audit is complete. The next strongest classification work is `state.enemies`, followed separately by `state.log`. Authored encounter definitions, mutable encounter state, derived combat caches, and presentation history must not be conflated into one broad validator. Do not automatically begin `0.8.700`.
