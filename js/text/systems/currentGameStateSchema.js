@@ -37,7 +37,7 @@ const REQUIRED_OBJECT_FIELDS = Object.freeze([
     'worldTime', 'simulation', 'tasks', 'abilities', 'party', 'projects', 'commitments', 'relationships',
     'resourceOpportunities', 'ecology', 'position', 'atlas', 'discoveredPois', 'player', 'flags', 'events',
 ]);
-const REQUIRED_ARRAY_FIELDS = Object.freeze(['npcs', 'enemies', 'log']);
+const REQUIRED_ARRAY_FIELDS = Object.freeze(['enemies', 'log']);
 const REQUIRED_PLAYER_OBJECT_FIELDS = Object.freeze([
     'identity', 'jobs', 'progression', 'wallet', 'equipment', 'inventoryState', 'resources', 'flags',
 ]);

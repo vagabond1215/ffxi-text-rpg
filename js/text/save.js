@@ -1,4 +1,5 @@
 import { validateCurrentGameStateStructure } from './systems/currentGameStateSchema.js';
+import { refreshNpcWorldProjection } from './systems/npcWorldProjection.js';
 import { refreshPlayerDerivedState, stripPlayerDerivedStateForPersistence } from './systems/playerDerivedState.js';
 import { isValidGameState, validateGameState } from './systems/validation.js';
 import { VERSION } from './version.js';
@@ -252,6 +253,7 @@ export function reviveGameState(state, characterId = null) {
     if (state.player?.inventoryState?.containers?.inventory) {
         state.player.inventory = state.player.inventoryState.containers.inventory.items;
     }
+    refreshNpcWorldProjection(state);
     refreshPlayerDerivedState(state.player);
     return state;
 }
@@ -385,7 +387,9 @@ function findCharacterRecord(account, selector) {
 }
 
 function encodeState(state) {
-    return encodePayload(stripPlayerDerivedStateForPersistence(state));
+    const persisted = stripPlayerDerivedStateForPersistence(state);
+    delete persisted.npcs;
+    return encodePayload(persisted);
 }
 
 function decodeState(encodedState) {
