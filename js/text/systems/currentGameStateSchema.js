@@ -1,5 +1,6 @@
 import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
+import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validatePersistedDayCycle } from './dayCyclePersistence.js';
@@ -69,6 +70,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     issues.push(...validateCurrentTaskOwnerLinks(state));
     if (!Number.isInteger(state.combatSequence) || state.combatSequence < 0) issues.push('combatSequence must be a persisted non-negative integer.');
     if (state.activeBattle !== null && !isObject(state.activeBattle)) issues.push('activeBattle must be persisted as null or an object.');
+    else if (isObject(state.activeBattle)) issues.push(...validatePersistedActiveBattle(state.activeBattle));
 
     if (isObject(state.player)) {
         for (const field of REQUIRED_PLAYER_OBJECT_FIELDS) if (!isObject(state.player[field])) issues.push(`player.${field} must be a persisted object.`);
