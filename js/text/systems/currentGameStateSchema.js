@@ -37,7 +37,6 @@ const REQUIRED_OBJECT_FIELDS = Object.freeze([
     'worldTime', 'simulation', 'tasks', 'abilities', 'party', 'projects', 'commitments', 'relationships',
     'resourceOpportunities', 'ecology', 'position', 'atlas', 'discoveredPois', 'player', 'flags', 'events',
 ]);
-const REQUIRED_ARRAY_FIELDS = Object.freeze(['log']);
 const REQUIRED_PLAYER_OBJECT_FIELDS = Object.freeze([
     'identity', 'jobs', 'progression', 'wallet', 'equipment', 'inventoryState', 'resources', 'flags',
 ]);
@@ -48,7 +47,6 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (!isObject(state)) return ['state must be an object.'];
     if (state.version !== VERSION.gameState) issues.push(`version must be current Game State ${VERSION.gameState}.`);
     for (const field of REQUIRED_OBJECT_FIELDS) if (!isObject(state[field])) issues.push(`${field} must be a persisted object.`);
-    for (const field of REQUIRED_ARRAY_FIELDS) if (!Array.isArray(state[field])) issues.push(`${field} must be a persisted array.`);
 
     if (isObject(state.worldTime)) issues.push(...validateWorldTimeState(state.worldTime));
     if (isObject(state.simulation)) issues.push(...validateSimulationControlState(state.simulation));
