@@ -6,6 +6,7 @@ import { validateCommitmentState } from './commitmentEngine.js';
 import { validatePersistedDayCycle } from './dayCyclePersistence.js';
 import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
 import { validateEcologyState } from './ecologyEngine.js';
+import { validatePersistedCurrentLocation } from './locationPersistence.js';
 import { validatePartyState } from './partyEngine.js';
 import { validatePersistedPlayerEquipment } from './playerEquipmentPersistence.js';
 import {
@@ -73,6 +74,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
 
     if (typeof state.currentPlaceId !== 'string' || !state.currentPlaceId.trim()) issues.push('currentPlaceId must be a persisted non-empty string.');
     if (typeof state.location !== 'string' || !state.location.trim()) issues.push('location must be a persisted non-empty string.');
+    if (isObject(state.position) && typeof state.currentPlaceId === 'string' && typeof state.location === 'string') {
+        issues.push(...validatePersistedCurrentLocation(state));
+    }
     if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
     if (isObject(state.travel)) issues.push(...validateCurrentActiveTravel(state));
     issues.push(...validateCurrentTaskOwnerLinks(state));
