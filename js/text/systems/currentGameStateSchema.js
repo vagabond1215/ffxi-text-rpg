@@ -130,7 +130,7 @@ function validateCurrentTaskOwnerLinks(state) {
     for (const opportunity of state.resourceOpportunities?.records ?? []) {
         for (const action of opportunity?.actions ?? []) {
             if (action?.status !== 'active') continue;
-            issues.push(...validateOwnerTask(state, { path: `resource recovery ${opportunity.id}/${action.id}`, taskId: action.taskId, kind: 'resource.recovery', channel: `resource:${opportunity.id}`, data: { opportunityId: opportunity.id, actionId: action.id }));
+            issues.push(...validateOwnerTask(state, { path: `resource recovery ${opportunity.id}/${action.id}`, taskId: action.taskId, kind: 'resource.recovery', channel: `resource:${opportunity.id}`, data: { opportunityId: opportunity.id, actionId: action.id } }));
         }
     }
     return issues;
