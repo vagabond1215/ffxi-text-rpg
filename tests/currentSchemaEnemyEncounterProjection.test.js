@@ -33,15 +33,12 @@ function storedCharacterState() {
     return { registry, record, state: decodePayload(record.encodedState) };
 }
 
-test('Game State 11 raw payload does not require derived enemy encounter projection', () => {
+test('Game State 12 raw payload does not require derived enemy encounter projection', () => {
     const state = createInitialState();
-    assert.equal(VERSION.gameState, 11);
+    assert.equal(VERSION.gameState, 12);
     delete state.enemies;
+    delete state.log;
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
-
-    const missingLog = structuredClone(state);
-    delete missingLog.log;
-    assert.ok(validateCurrentGameStateStructure(missingLog).some((issue) => issue.includes('log must be a persisted array')));
 });
 
 test('enemy encounter projection rebuilds fresh canonical seed entities', () => {
