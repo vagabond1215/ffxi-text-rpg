@@ -15,7 +15,7 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.47');
+    assert.equal(PRODUCT_VERSION, '0.8.600.48');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Strict Current Location State');
+    assert.equal(VERSION.codename, 'Strict Combat Identity Sequence');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -64,6 +64,7 @@ test('version manifest separates product package persistence data and focused cl
             playerPersistenceHarness: SYSTEM_VERSIONS.playerPersistenceHarness,
             playerIdentityPersistence: SYSTEM_VERSIONS.playerIdentityPersistence,
             locationPersistence: SYSTEM_VERSIONS.locationPersistence,
+            combatIdentityPersistence: SYSTEM_VERSIONS.combatIdentityPersistence,
             statusEngine: SYSTEM_VERSIONS.statusEngine,
             combatTurns: SYSTEM_VERSIONS.combatTurns,
             saveEncoding: SYSTEM_VERSIONS.saveEncoding,
@@ -73,7 +74,7 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.47',
+            versionManifest: '0.8.600.48',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -97,7 +98,7 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.38.0',
+            validation: '0.39.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.1',
             playerEquipmentPersistence: '0.1.0',
@@ -107,6 +108,7 @@ test('version manifest separates product package persistence data and focused cl
             playerPersistenceHarness: '0.1.0',
             playerIdentityPersistence: '0.2.0',
             locationPersistence: '0.1.0',
+            combatIdentityPersistence: '0.1.0',
             statusEngine: '0.3.0',
             combatTurns: '0.3.1',
             saveEncoding: '0.6.0',
@@ -118,16 +120,17 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.47/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.48/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 9/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Strict Current Location State/);
+    assert.match(describeVersion(), /Codename: Strict Combat Identity Sequence/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /validation: 0\.38\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.39\.0/);
     assert.match(describeSystemVersions(), /locationPersistence: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /combatIdentityPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /activeBattlePersistence: 0\.2\.0/);
     assert.match(describeSystemVersions(), /battleDerivedCachePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerStatusPersistence: 0\.1\.0/);
