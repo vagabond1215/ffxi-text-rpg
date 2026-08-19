@@ -192,9 +192,18 @@ export function isActiveBattle(battle) { return Boolean(battle && battle.phase =
 
 function appendSkillGainLog(state, battle, actionContext) {
     const result = resolveSkillGainForAction(state, actionContext);
+    if (result?.gained) syncRootSkillStateIntoBattle(state, battle);
     const message = describeSkillGainResult(result);
     if (message) appendBattleLog(battle, message);
     return result;
+}
+
+function syncRootSkillStateIntoBattle(state, battle) {
+    const player = getPlayerCombatant(battle);
+    if (!player || !state?.player) return null;
+    player.progression ??= {};
+    player.progression.skills = { ...(state.player.progression?.skills ?? {}) };
+    return player.progression.skills;
 }
 
 function describeRecovery(state, actorId) {
