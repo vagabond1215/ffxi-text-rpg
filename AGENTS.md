@@ -7,14 +7,15 @@ This file defines repository-level operating rules for ChatGPT/Codex-style imple
 Before implementing anything substantial:
 
 1. `AGENTS.md` — this operating protocol.
-2. `docs/THREAD_HANDOFF.md` — current repository state, completed work, blockers, and immediate next action.
-3. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
-4. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world/content policy.
-5. `docs/ROADMAP.md` — implementation sequence and milestone gates.
-6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
-7. Relevant architecture/runtime files for the requested work.
+2. `docs/THREAD_HANDOFF.md` — exact current repository state, completed work, blockers, and immediate next bounded action.
+3. `docs/EXECUTION_PIPELINE.md` — durable active/next/deferred progression queue and thread-restart protocol.
+4. `docs/DEVELOPMENT_DIRECTION.md` — authoritative design north star.
+5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` — original-world/content policy and scale targets.
+6. `docs/ROADMAP.md` — phase and feature-track progression.
+7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
+8. Relevant architecture/runtime files for the active bounded work only.
 
-Do not restart broad discovery or design research when these documents already answer the question. Inspect `main`, open PRs only when they exist, CI status, and recent commits before deciding what remains.
+Do not restart broad discovery or design research when the handoff and execution pipeline already answer what is active and what comes next. Inspect current `main`, open PRs only when they exist, CI status, and recent commits before deciding whether the handoff is stale. Reopen broad discovery only when repository evidence materially diverges, the next unit is explicitly unselected, or the user asks for a fresh audit.
 
 ## Repository administration baseline
 
@@ -26,18 +27,21 @@ For implementation work, use these durable quality authorities when relevant to 
 - `docs/PERFORMANCE_BUDGET.md` — benchmark, responsiveness, and regression-baseline policy;
 - `docs/RESOURCE_LIFECYCLE.md` — ownership and cleanup rules for timers, tasks, listeners, UI resources, caches, and other long-lived runtime state.
 
-Repository evidence beats conversation memory. Do not claim tests, benchmarks, browser checks, heap/leak checks, or other executable validation ran unless they actually ran in a capable environment. Use the least-powerful safe tool that can complete and validate the bounded request; documentation or connector evidence is not a substitute for a repository-capable execution surface when correctness depends on runtime commands.
+Repository evidence beats conversation memory. Do not claim tests, benchmarks, browser checks, heap/leak checks, census results, or other executable validation ran unless they actually ran in a capable environment. Use the least-powerful safe tool that can complete and validate the bounded request; documentation or connector evidence is not a substitute for a repository-capable execution surface when correctness depends on runtime commands.
+
+For content-heavy work, `npm run census` is the progression indicator for repository planning-scale categories. A content target being incomplete is a roadmap fact, not a CI failure.
 
 ## Default Git workflow: work on `main`
 
 This repository is currently in an early, single-maintainer development phase. **Work directly on `main` by default.**
 
 - Do not create a branch or pull request solely as a routine safety ritual.
-- Use a branch/PR only when the user explicitly asks for one, when a connector/tool requires one, or when a change is unusually risky enough that isolated review is materially useful.
+- Use a branch/PR only when the user explicitly asks for one, when a connector/tool requires one, for validation-only Check surfacing when direct-main CI cannot be inspected, or when a change is unusually risky enough that isolated review is materially useful.
 - Existing implementation branches from older runs should be merged into `main` once their state is coherent enough to continue from there; do not keep stacking follow-up work on an old branch merely because it already exists.
 - A fully green repository test suite is desirable but is **not currently a mandatory pre-merge gate** for every incremental development change. Run relevant validation when practical, distinguish stale assertions from real regressions, and record known failures in the handoff instead of using branch isolation as a substitute for progress.
-- When the project reaches a genuinely active/stabilization/release phase, this rule can be tightened to require protected branches, reviews, and green CI before merge.
-- Connector limitations may prevent remote branch deletion. If so, merge/close what can be handled through the connector, record the stale branch for manual deletion, and continue new work on `main`.
+- Validation-only PRs for already-direct-main checkpoints must be closed without merge after evidence is collected.
+- When the project reaches a genuinely active stabilization/release phase, follow the execution pipeline and roadmap transition to protected `main`, required Check, and review-oriented work.
+- Connector limitations may prevent remote branch deletion. If so, close validation/review work that can be handled, record stale branches for manual deletion, and continue new normal work on `main`.
 
 ## Pre-alpha compatibility posture
 
@@ -47,6 +51,7 @@ Hearth & Horizon is not production-ready and old local saves are **not** a desig
 - Breaking Game State, Account Save, or authored-data changes are acceptable when they materially simplify or standardize the current design. Bump the relevant schema/version contract and update tests/docs deliberately.
 - Add a migration only when the user explicitly requires compatibility or when the migration is independently useful and does not complicate the canonical model.
 - Existing migrations and compatibility adapters may remain until a bounded cleanup, but do not extend them reflexively.
+- Existing plans defer a supported-save compatibility promise until Phase 0.9 release transition unless a future work order explicitly changes that policy.
 - This policy does **not** relax deterministic behavior, validation, provenance, exactly-once ownership, content originality, or test discipline.
 
 ## Scope preservation
@@ -54,14 +59,15 @@ Hearth & Horizon is not production-ready and old local saves are **not** a desig
 A user prompt is a bounded work order, not blanket authorization to execute the entire roadmap.
 
 - Complete the requested unit and the directly necessary fixes, migrations, tests, documentation, and CI cleanup needed to leave that unit coherent.
-- `Next`, `Following`, roadmap, handoff, and milestone sections describe future sequencing; they do **not** authorize an agent to keep launching subsequent milestones without returning to the user.
-- Do not turn a request to continue one track into an unbounded chain of PRs, deep-research passes, refactors, or later-version work.
-- If additional safe work is obvious after the requested unit is complete, record it in the handoff/report and stop.
+- `Next`, `Following`, roadmap, execution-pipeline, handoff, and milestone sections describe future sequencing; they do **not** authorize an agent to keep launching subsequent independent milestones without returning to the user.
+- A new explicit user message such as `continue` may authorize the immediate next bounded unit when `THREAD_HANDOFF.md` names it clearly; do not reinterpret it as authorization for all queued tracks.
+- Do not turn a request to continue one track into an unbounded chain of PRs, research passes, refactors, content expansion, or later-version work.
+- If additional safe work is obvious after the requested unit is complete, record it in `docs/EXECUTION_PIPELINE.md` or the handoff and stop.
 - External research should be targeted to a concrete blocker or explicitly requested question. Avoid repeated broad/deep research passes when repository evidence is sufficient.
 
 ## Runtime quality discipline
 
-For runtime, persistence, UI, simulation, or performance work:
+For runtime, persistence, UI, simulation, content-scale, or performance work:
 
 - identify the authoritative state owner and the real production caller before changing a helper in isolation;
 - preserve deterministic fictional-time and simulation behavior where the existing architecture requires it;
@@ -70,7 +76,18 @@ For runtime, persistence, UI, simulation, or performance work:
 - during pre-alpha, change persisted contracts cleanly when needed instead of preserving stale shapes by default; migrations are opt-in engineering work, not an automatic requirement;
 - run the relevant focused tests plus the repository validation expected by the current handoff;
 - use the existing benchmark as regression evidence and follow `docs/PERFORMANCE_BUDGET.md` before introducing hard thresholds;
+- run `npm run census` before/after content-heavy tracks when it materially measures progress, but do not game the count by adding disconnected filler records;
 - treat long-session/soak and resource-retention coverage as a required design consideration for systems that create persistent or repeatable runtime activity, even when the automated harness for that surface has not yet been implemented.
+
+## Content progression discipline
+
+The project has enough systems that authored breadth is now a first-class risk.
+
+- Grow mechanics and content together; do not validate a major content system only against one or two toy records.
+- Prefer cross-linked regional content packs with source/sink/topology/service/social relationships over disconnected global lists.
+- Numeric content targets are lower-bound planning indicators, not permission to create filler.
+- Every content-heavy pass should preserve originality, provenance, stable IDs, and cross-reference validation.
+- Use `docs/EXECUTION_PIPELINE.md` to keep deferred content families visible instead of repeatedly rediscovering them.
 
 ## Hard autonomous-session budget
 
@@ -110,12 +127,19 @@ Before returning from a substantive repo session, update `docs/THREAD_HANDOFF.md
 
 Record at minimum:
 
-- current branch (`main` by default) and any relevant PR;
-- target product/subversion;
+- current `main` SHA and any relevant validation/review PR;
+- validated implementation/runtime SHA;
+- target product/subversion and schema/data decisions;
+- active pass and whether it is active, blocked, or complete;
 - what was completed in this session;
-- tests/benchmarks/CI status;
+- tests/benchmarks/census/CI status actually observed;
 - known failures or blockers;
-- the next bounded work unit that was **not** started because the session ended.
+- exact files/authorities the next thread should inspect;
+- the next bounded work unit that was **not** started;
+- deferred work discovered but deliberately not started;
+- explicit do-not-redo notes when a prior audit/discovery sequence is closed.
+
+Keep the handoff concise. Historical detail belongs in `docs/ROADMAP.md`, `docs/VERSIONING_AND_RELEASE_ROADMAP.md`, `docs/EXECUTION_PIPELINE.md`, and git history rather than being recopied into every thread handoff.
 
 ## Project intent that must survive handoffs
 
@@ -124,6 +148,6 @@ These are condensed reminders; the authoritative detail remains in the docs abov
 - The canonical game is the original **Hearth & Horizon** setting. FFXI-derived material is legacy research/reference/migration material, not a source of player-facing canon.
 - Do not introduce or preserve FFXI-specific proper nouns or wording in new canonical content merely because legacy data used them. Re-express useful mechanics/data in original project terminology and context.
 - Disciplines/jobs are not magical identity transformations. The character remains one person; learned capabilities persist. Actual capability use is constrained by learned skill, proficiency, equipment/tool requirements, resources, preparation, status, and context.
-- High-volume content generation follows stable original-world IDs, content-pack architecture, and validation. Do not mass-produce content on top of transitional legacy nomenclature.
+- High-volume content generation follows stable original-world IDs, content-pack architecture, provenance/source-sink rules, and validation. Do not mass-produce content on top of transitional legacy nomenclature.
 - Prefer bounded, coherent current-model refactors over compatibility scaffolding or unbounded rewrites; pre-alpha save breakage is acceptable when it materially improves the canonical design.
 - Follow the repository version protocol and milestone gates; do not advance product versions merely because incidental work was performed.
