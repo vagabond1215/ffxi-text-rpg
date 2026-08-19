@@ -2,6 +2,7 @@ import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
 import { validateCapabilityState } from './capabilityEngine.js';
+import { validatePersistedCombatIdentity } from './combatIdentityPersistence.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validatePersistedDayCycle } from './dayCyclePersistence.js';
 import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
@@ -80,7 +81,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
     if (isObject(state.travel)) issues.push(...validateCurrentActiveTravel(state));
     issues.push(...validateCurrentTaskOwnerLinks(state));
-    if (!Number.isInteger(state.combatSequence) || state.combatSequence < 0) issues.push('combatSequence must be a persisted non-negative integer.');
+    issues.push(...validatePersistedCombatIdentity(state));
     if (state.activeBattle !== null && !isObject(state.activeBattle)) issues.push('activeBattle must be persisted as null or an object.');
     else if (isObject(state.activeBattle)) issues.push(...validatePersistedActiveBattle(state.activeBattle));
 
