@@ -30,7 +30,7 @@ Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report 
 Current mode is **pre-alpha current-schema only**.
 
 - Account/session payloads must match Account Save 5 exactly.
-- Character payloads must match Game State 10 and contain complete required persisted authority before reference revival.
+- Character payloads must match Game State 11 and contain complete required persisted authority before reference revival.
 - Raw validation runs before runtime `ensure*` helpers or derived projection reconstruction may normalize state.
 - Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
 - Optional persisted authority may be absent where construction semantics permit it, but once present must satisfy its domain contract.
@@ -38,7 +38,7 @@ Current mode is **pre-alpha current-schema only**.
 - Tightening enforcement of an existing invariant does not alone require a schema bump; changing serialized shape or meaning does.
 - Derived runtime projections must not be serialized merely because they are convenient to consume.
 
-### Current raw Game State 10 validation
+### Current raw Game State 11 validation
 
 The current boundary validates these persisted families before revival:
 
@@ -63,6 +63,7 @@ current place / display location / position coherence
 combatSequence / activeBattle.id identity coherence
 active battle state when present, including deterministic combat/stat cache snapshots
 active battle player / root player identity and live combat-authority coherence
+state.log array pending dedicated ownership classification
 ```
 
 Optional persisted authorities remain:
@@ -81,13 +82,16 @@ Current non-serialized/reconstructed state includes:
 
 ```text
 state.npcs
+state.enemies
 player.inventory alias identity
 player.combat
 player.statState
 activeBattle.rng
 ```
 
-Product `.50` classified `state.npcs` as a runtime world projection. Save encoding omits it. After the raw Game State 10 payload validates, `refreshNpcWorldProjection()` reconstructs canonical seed NPCs and overlays persisted companion participation from `state.party`. An injected or stale serialized `npcs` value is replaced rather than accepted as authority.
+Product `.50` classified `state.npcs` as a runtime world projection. Save encoding omits it; post-validation revival reconstructs canonical seed NPCs and overlays persisted companion participation from `state.party`.
+
+Product `.51` classified `state.enemies` as a runtime encounter-template projection. Save encoding omits it; post-validation revival rebuilds fresh canonical seed enemy templates. Place/spawn systems reference stable enemy IDs, and `startEncounter()` constructs the actual encounter snapshot. Mutable enemy resources, statuses, action history, phase, and other ongoing encounter facts belong to persisted `activeBattle`, not to the template projection. Injected serialized `enemies` data is replaced rather than accepted as authority.
 
 Root `player.combat` and `player.statState` remain reconstructible caches. Mutable HP/MP/TP remain persisted independently. `activeBattle.rng` remains transient.
 
@@ -109,8 +113,9 @@ The battle player ID must match the root player ID. During an active encounter, 
 
 - Game State 7 replaced wall-clock atlas `visitedAt` with fictional-time `visitedAtWorldSeconds`.
 - Game State 8 removed root player combat/stat caches from serialized authority.
-- Game State 9 canonicalized persisted player-status modifiers into nested `attributes`, `resources`, `derived`, and `resistances` blocks.
+- Game State 9 canonicalized persisted player-status modifiers into nested modifier blocks.
 - Game State 10 removed the reconstructible `state.npcs` runtime projection from serialized authority.
+- Game State 11 removed the reconstructible `state.enemies` encounter-template projection from serialized authority.
 
 No automatic compatibility migrations were added for those pre-alpha transitions.
 
@@ -123,7 +128,7 @@ Before adding another raw validator, classify the state first:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration;
 4. **optional persisted authority** — absence is allowed, but once present the stored value must satisfy its domain contract.
 
-Do not compose broad `validatePlayer()` wholesale at the raw boundary. Flat `player.inventory` alias/reference identity remains a post-revival invariant. `state.npcs` is now explicitly derived. `state.enemies` and `state.log` remain unclassified beyond their current array-shape requirement and must be audited separately.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. Flat `player.inventory` alias/reference identity remains a post-revival invariant. `state.npcs` and `state.enemies` are explicitly derived. `state.log` remains the one broad array still requiring dedicated ownership classification.
 
 ## Current strict-persistence evidence
 
@@ -138,9 +143,10 @@ tests/playerPersistenceIntegration.test.js
 tests/currentSchemaLocationPersistence.test.js
 tests/currentSchemaCombatIdentityPersistence.test.js
 tests/currentSchemaNpcWorldProjection.test.js
+tests/currentSchemaEnemyEncounterProjection.test.js
 ```
 
-Revisions `.44`–`.49` cover strict player identity/key-item/player-flag facts, stable player envelope/world flags, deterministic active-battle combat/stat snapshots, coherent current location, encounter sequence identity, active battle/root player linkage, and post-load skill synchronization. Revision `.50` proves the opposite classification pattern is equally important: a field that is derivable must leave serialized authority rather than gain a validator.
+Revisions `.44`–`.49` cover strict persisted-authority invariants. Revisions `.50` and `.51` prove the opposite classification pattern is equally important: fields that are deterministic projections must leave serialized authority rather than gain validators.
 
 ## Resource lifecycle
 
@@ -152,26 +158,26 @@ A new direct production timed-task creator must define its durable consequence, 
 
 Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
-Latest validated runtime evidence is validation-only PR #374 exact head `181bc67b69172390d1a59fa3dfca35980a026b3d`, Check `32292959171`, Node 24.19.0: **680/680 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze is the same exact `main` SHA. The PR was closed without merge after validation.
+Latest validated runtime evidence is validation-only PR #375 exact head `5a97a109d9476438d001ee75b8e20293f57360dd`, Check `32297557960`, Node 24.19.0: **684/684 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze is the same exact `main` SHA. The PR was closed without merge after validation.
 
 Benchmark 3 single run:
 
 ```text
-player profiles  0.372865 ms/op
-enemy profiles   0.071050 ms/op
-basic attacks    0.003425 ms/op
-tick dispatch    0.000818 ms/op
-route lookup     0.007469 ms/op
+player profiles  0.360644 ms/op
+enemy profiles   0.069621 ms/op
+basic attacks    0.002998 ms/op
+tick dispatch    0.000941 ms/op
+route lookup     0.007920 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.364304 ms/op    3.27%
-enemy profiles   0.067755 ms/op   10.57%
-basic attacks    0.001213 ms/op  162.66%
-tick dispatch    0.000876 ms/op   44.41%
-route lookup     0.007423 ms/op    6.50%
+player profiles  0.361064 ms/op    3.82%
+enemy profiles   0.067427 ms/op    9.06%
+basic attacks    0.001015 ms/op  191.25%
+tick dispatch    0.000908 ms/op   38.68%
+route lookup     0.007617 ms/op    8.23%
 ```
 
 No hard threshold is accepted.
