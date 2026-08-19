@@ -17,5 +17,6 @@ export function stripPlayerDerivedStateForPersistence(state) {
         delete persisted.player.combat;
         delete persisted.player.statState;
     }
+    delete persisted.enemies;
     return persisted;
 }
