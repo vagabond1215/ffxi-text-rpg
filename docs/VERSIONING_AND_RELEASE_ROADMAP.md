@@ -2,7 +2,7 @@
 
 This document defines product-version protocol and milestone gates from the current pre-alpha foundation to 1.0. Milestones are criteria-driven rather than calendar-driven.
 
-Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`, `docs/ROADMAP.md`, and `docs/THREAD_HANDOFF.md`.
+Authoritative companions: `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`, and `docs/ROADMAP.md`.
 
 ## Current baseline
 
@@ -18,13 +18,17 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.52` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Feature tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.52` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+
+The C0 continuation/content-census pass is tooling and documentation, not a gameplay Product track. It therefore leaves Product, Package, Account Save, Game State, Data, and Benchmark versions unchanged.
 
 ## Product version format
 
 Use `MAJOR.PHASE.TRACK.REVISION`.
 
 `package.json.version` remains three-part SemVer and mirrors `MAJOR.PHASE.TRACK` where practical. `js/text/version.js` is runtime authority. A revision bump may record a coherent maintenance contract without advancing a feature track.
+
+A feature-track number such as `0.8.700` is opened only when implementation for that bounded player-facing track actually begins. Planning or selecting the track does not by itself advance runtime version metadata.
 
 ## Independent schema/data versions
 
@@ -74,6 +78,8 @@ Current rules:
 18. `state.enemies` is not serialized authority; it is rebuilt from canonical seed enemy definitions and mutable ongoing enemy state belongs to `activeBattle`.
 19. Top-level `state.log` is not serialized authority. It is current-session command presentation history, omitted from saves and reset on character load. `state.events` remains the persisted structured semantic observation channel.
 20. `activeBattle.log` remains separate persisted encounter-local history; Canvas command-history/output buffers remain separate transient UI state.
+
+Supported-save migrations remain deliberately deferred to the Phase 0.9 release transition unless a future explicit work order changes that policy.
 
 ### Current raw validation
 
@@ -135,6 +141,14 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
+Developer progression tooling additionally provides:
+
+```text
+npm run census
+```
+
+The content census is informational/criteria-tracking; future breadth targets do not fail CI merely because they are unfinished.
+
 ## Benchmark protocol history
 
 - **Benchmark 1** — historical workloads included setup in several timed loops.
@@ -143,93 +157,84 @@ npm run benchmark:sample
 
 Benchmark 3 is the current comparability baseline. No hard timing threshold is accepted yet.
 
-## Latest maintenance line `.44`–`.52`
+## Maintenance line `.44`–`.52`
 
-| Revision | Contract | Validation PR | Exact validated head | Check | Runtime/main checkpoint |
-| --- | --- | ---: | --- | ---: | --- |
-| `.44` | Strict Player Identity Facts | #367 | `ec77c85573dacfe9c8148c8d602b565288f356fa` | `32279241023` | `6ef317c75d5181ddc316caeefe342d14492ab8e2` |
-| `.45` | Strict Player Envelope and World Flags | #368 | `b65d80707073db0a1f5ebe1941c9b48c8c34fd67` | `32280196036` | `c02c8ec72f5e78c93b27ae2fed9f3ff233114c9b` |
-| `.46` | Strict Battle Derived Caches | #369 | `a8eec6ef34ff96ed53bc37ee14aab6280d36a93e` | `32281825598` | `2e143daf63f8874d6135e61af79ddfcd474fc418` |
-| `.47` | Strict Current Location State | #371 | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` | `1c8698147a98e80a0a519aadb520f6808fe61323` |
-| `.48` | Strict Combat Identity Sequence | #372 | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` | `512f8c3d5edbb22d07d857fa98d6f0755d043d89` |
-| `.49` | Strict Active Battle Player Link | #373 validation-only | `49df1a5379da51e15cfb3ce0320008047a70c768` | `32290206583` | `49df1a5379da51e15cfb3ce0320008047a70c768` |
-| `.50` | Derived NPC World Projection | #374 validation-only | `181bc67b69172390d1a59fa3dfca35980a026b3d` | `32292959171` | `181bc67b69172390d1a59fa3dfca35980a026b3d` |
-| `.51` | Derived Enemy Encounter Projection | #375 validation-only | `5a97a109d9476438d001ee75b8e20293f57360dd` | `32297557960` | `5a97a109d9476438d001ee75b8e20293f57360dd` |
-| `.52` | Transient Command Presentation Log | #376 validation-only | `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691` | `32301160532` | `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691` |
+| Revision | Contract | Validation PR | Exact validated head | Check |
+| --- | --- | ---: | --- | ---: |
+| `.44` | Strict Player Identity Facts | #367 | `ec77c85573dacfe9c8148c8d602b565288f356fa` | `32279241023` |
+| `.45` | Strict Player Envelope and World Flags | #368 | `b65d80707073db0a1f5ebe1941c9b48c8c34fd67` | `32280196036` |
+| `.46` | Strict Battle Derived Caches | #369 | `a8eec6ef34ff96ed53bc37ee14aab6280d36a93e` | `32281825598` |
+| `.47` | Strict Current Location State | #371 | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` |
+| `.48` | Strict Combat Identity Sequence | #372 | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` |
+| `.49` | Strict Active Battle Player Link | #373 | `49df1a5379da51e15cfb3ce0320008047a70c768` | `32290206583` |
+| `.50` | Derived NPC World Projection | #374 | `181bc67b69172390d1a59fa3dfca35980a026b3d` | `32292959171` |
+| `.51` | Derived Enemy Encounter Projection | #375 | `5a97a109d9476438d001ee75b8e20293f57360dd` | `32297557960` |
+| `.52` | Transient Command Presentation Log | #376 | `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691` | `32301160532` |
 
-Every final validated head passed Test, Benchmark 3, and Benchmark Sample. `.50` passed 680/680 tests; `.51` passed 684/684; `.52` passed 688/688 on Node 24.19.0. Validation-only PRs #373–#376 were closed without merge after validation.
+The broad-array ownership sequence is complete. Do not extend it mechanically.
 
-### `.52` version decision
+## Continuation/content-census checkpoint
 
-The dedicated log audit found:
-
-- only the command adapter writes top-level `state.log`;
-- entries are bounded recent command input plus `new Date().toISOString()` display timestamps;
-- only `log`/`inspect log` read the array;
-- no gameplay mechanic consumes the prose;
-- command logging does not advance fictional time or create semantic events;
-- Canvas has separate transient command-history/output buffers;
-- `state.events` already owns persisted structured semantic observation history;
-- `activeBattle.log` is a different persisted encounter-local history.
-
-Therefore persisting top-level `state.log` created no durable gameplay value and blurred the wall-clock/session boundary. Product `.52` removes it from Game State encoding and initializes an empty presentation log when a character is loaded. A live Save does not clear the in-memory session history. Because serialized shape changed, Game State advances 11 → 12. Account Save 5, Data 37, Benchmark 3, and Package 0.8.600 remain unchanged. No pre-alpha migration was added.
-
-## Latest runtime evidence
-
-Exact validated `.52` gate: validation-only PR #376, head `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`, Check `32301160532`, Node 24.19.0:
+C0 exact implementation/tooling head:
 
 ```text
-688/688 tests
-0 failed
-0 skipped
+b0c1e067a1907a8587a08a128126f9207c6d6134
+PR #377 validation-only, closed without merge
+Check 32308719621
+Node 24.19.0
+692/692 tests
 Benchmark 3 success
 Benchmark Sample success
 ```
 
-Benchmark 3 single run:
-
-```text
-player profiles  0.399417 ms/op
-enemy profiles   0.070029 ms/op
-basic attacks    0.003675 ms/op
-tick dispatch    0.000898 ms/op
-route lookup     0.007617 ms/op
-```
-
-Three-sample medians/spreads:
-
-```text
-player profiles  0.357454 ms/op    7.63%
-enemy profiles   0.070214 ms/op   11.19%
-basic attacks    0.001153 ms/op  214.09%
-tick dispatch    0.000873 ms/op   30.99%
-route lookup     0.007237 ms/op    6.02%
-```
-
-Runtime freeze: `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`.
-
-## Timed-task ownership contract
-
-Direct production task creators remain limited to ability, campaign recovery, projects, resource recovery, transport, and work. Each owner releases only after its durable exactly-once consequence. There is no production generic/unowned task producer and no accepted blind global task-history prune.
+C0 adds `docs/EXECUTION_PIPELINE.md`, a criteria-driven content-scale gate, `npm run census`, and focused tests. Because it does not change gameplay semantics, serialized state, authored-data meaning, or benchmark protocol, Product remains `0.8.600.52`, Game State remains 12, Data remains 37, and Benchmark remains 3.
 
 ## Release discipline
 
-A coherent runtime checkpoint requires one bounded contract, focused regression coverage, observed full Test and current Benchmark gates, deliberate version decisions, and direct-main completion only after the exact head is green. Freeze runtime before documentation. Documentation-only synchronization after the freeze is not a new runtime validation checkpoint.
+A coherent implementation checkpoint requires one bounded contract, focused regression coverage, observed full Test and current Benchmark gates when material, deliberate version decisions, and an exact frozen implementation SHA before documentation synchronization. `docs/THREAD_HANDOFF.md` is updated last.
 
-## Next Phase 0.8 decision
+Content-heavy work should also record census evidence when the command actually ran. Numeric scale is not a substitute for content quality or integration.
 
-Do **not** automatically begin `0.8.700`.
+## Next Phase 0.8 decision — selected
 
-The bounded broad-array classification sequence (`state.npcs`, `state.enemies`, top-level `state.log`) is complete. There is no pre-authorized next maintenance packet in this sequence. The next unit must be selected through a fresh bounded work order based on repository evidence.
+The fresh August 19, 2026 repository audit and C0 continuation pass have now selected the next bounded feature family:
 
-Candidate feature families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam. Starting a new feature track requires explicit authorization.
+### `0.8.700` — Cultivation & Stewardship
 
-## Later phases
+Status: **READY NEXT; not yet opened in runtime version metadata.**
 
-### 0.9 — Adventure depth and release hardening
+The first pass should prove a multi-day cultivation loop that composes existing canonical world time, inventory/provenance, home/infrastructure, work mastery, production/economy, and semantic browser actions. It must avoid a parallel growth clock, passive real-time authority, and a new per-crop timed-task owner by reflex.
 
-Advanced regions/dungeons, combat/abilities, high-level economy/production, UI/accessibility, persistence hardening, long-session stability, performance budgets, and release tooling.
+Once implementation begins, use the normal feature-track version protocol and make explicit Product/Data/Game State decisions from the actual changed contracts.
 
-### 1.0 — Live foundation
+Following planned Phase 0.8 units are:
 
-Release when the persistent-life/adventure promise is coherent, durable, original, stable, performant, and supported by enough interconnected content for sustained play.
+```text
+0.8.800 Earned Routine Delegation
+0.8.900 Household & Community Continuity
+Phase 0.8 exit audit
+```
+
+Those later units are queued, not automatically authorized by starting `0.8.700`.
+
+## Phase 0.9 planning envelope
+
+Phase 0.9 shifts emphasis toward connected authored scale and deeper adventure/release evidence:
+
+```text
+0.9.100 content-scale gate A
+0.9.200 deeper adventure vertical slices
+0.9.300 advanced combat/training
+0.9.400 economy/production depth
+0.9.500 quest/social depth
+0.9.600 playable-alpha content-scale push
+0.9.700 browser E2E/accessibility hardening
+0.9.800 supported persistence + protected-main transition
+0.9.900 release-candidate soak/performance/release hardening
+```
+
+See `docs/EXECUTION_PIPELINE.md` for statuses, deferred work, and planning windows.
+
+## 1.0 — Live foundation
+
+Release when the persistent-life/adventure promise is coherent, durable, original, stable, performant, usable through ordinary browser play, and supported by enough interconnected content for sustained play. Q4 2028 is an aggressive planning target for a candidate, not a commitment; do not lock the date before the `0.9.600` content-scale push demonstrates sustainable authoring throughput.
