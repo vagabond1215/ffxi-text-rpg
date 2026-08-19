@@ -11,7 +11,7 @@ export function validatePersistedBattleDerivedCaches(combatant, path = 'combatan
 
     if (combatant.type === 'player') {
         const expectedStatState = createCharacterStatState(deterministic);
-        if (!plainEqual(combatant.statState, expectedStatState)) {
+        if (!plainEqual(statStateMechanics(combatant.statState), statStateMechanics(expectedStatState))) {
             issues.push(`${path}.statState must match the deterministic player stat cache.`);
         }
         deterministic.statState = expectedStatState;
@@ -22,6 +22,21 @@ export function validatePersistedBattleDerivedCaches(combatant, path = 'combatan
         issues.push(`${path}.combat must match the deterministic combat cache.`);
     }
     return issues;
+}
+
+function statStateMechanics(statState) {
+    if (!isObject(statState)) return null;
+    return {
+        version: statState.version,
+        ancestryId: statState.ancestryId,
+        growthRank: statState.growthRank,
+        base: clonePlain(statState.base),
+        provenance: {
+            kind: statState.provenance?.kind,
+            modelId: statState.provenance?.modelId,
+            confidence: statState.provenance?.confidence,
+        },
+    };
 }
 
 function plainEqual(left, right) {
