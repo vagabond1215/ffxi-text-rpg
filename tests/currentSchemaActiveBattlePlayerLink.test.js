@@ -63,7 +63,25 @@ test('current schema rejects active battle player identity resource and combat-d
 test('ordinary combat keeps active root and battle player links coherent despite root-owned skill gain', () => {
     const state = createBattleState();
     assert.match(performPlayerAttack(state), /Battle:/);
+    assert.deepEqual(battlePlayer(state).progression.skills, state.player.progression.skills);
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
+});
+
+test('loaded active combat copies a new root-owned skill gain into the battle snapshot before cache refresh', () => {
+    installStorage();
+    assert.equal(createAccountWithPassword('Battle Skill Account', 'pwd', { persistentLogin: true }).ok, true);
+    const state = createBattleState();
+    assert.equal(saveGame(state), true);
+
+    const loaded = loadCharacter('Linkguard');
+    assert.ok(loaded);
+    assert.notEqual(battlePlayer(loaded).progression, loaded.player.progression);
+    const before = structuredClone(loaded.player.progression.skills);
+
+    assert.match(performPlayerAttack(loaded), /Battle:/);
+    assert.notDeepEqual(loaded.player.progression.skills, before);
+    assert.deepEqual(battlePlayer(loaded).progression.skills, loaded.player.progression.skills);
+    assert.deepEqual(validateCurrentGameStateStructure(loaded), []);
 });
 
 test('terminal battle remains historical while root resources may change afterward', () => {
