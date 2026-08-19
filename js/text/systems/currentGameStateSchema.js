@@ -8,6 +8,11 @@ import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersis
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
 import { validatePersistedPlayerEquipment } from './playerEquipmentPersistence.js';
+import {
+    validatePersistedPlayerFlags,
+    validatePersistedPlayerIdentity,
+    validatePersistedPlayerKeyItems,
+} from './playerIdentityPersistence.js';
 import { validatePersistedPlayerProgression } from './playerProgressionPersistence.js';
 import { validatePersistedPlayerResources } from './playerResourcePersistence.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
@@ -75,6 +80,9 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.player)) {
         for (const field of REQUIRED_PLAYER_OBJECT_FIELDS) if (!isObject(state.player[field])) issues.push(`player.${field} must be a persisted object.`);
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
+        if (isObject(state.player.identity)) issues.push(...validatePersistedPlayerIdentity(state.player.identity).map((issue) => `player.${issue}`));
+        if (Array.isArray(state.player.keyItems)) issues.push(...validatePersistedPlayerKeyItems(state.player.keyItems).map((issue) => `player.${issue}`));
+        if (isObject(state.player.flags)) issues.push(...validatePersistedPlayerFlags(state.player.flags).map((issue) => `player.${issue}`));
         if (isObject(state.player.jobs) && isObject(state.player.progression)) issues.push(...validatePersistedPlayerProgression(state.player).map((issue) => `player.${issue}`));
         if (isObject(state.player.resources)) issues.push(...validatePersistedPlayerResources(state.player.resources).map((issue) => `player.${issue}`));
         if (isObject(state.player.wallet)) issues.push(...validatePersistedPlayerWallet(state.player.wallet).map((issue) => `player.${issue}`));
