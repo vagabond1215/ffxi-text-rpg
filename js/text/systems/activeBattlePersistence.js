@@ -1,4 +1,5 @@
 import { COMBAT_SIDES } from './battleEngine.js';
+import { validatePersistedBattleDerivedCaches } from './battleDerivedCachePersistence.js';
 import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTurnEngine.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
 
@@ -48,6 +49,7 @@ export function validatePersistedActiveBattle(battle) {
         if (!isObject(combatant.identity) || !nonEmptyString(combatant.identity.name)) issues.push(`${path}.identity.name must be a non-empty string.`);
         issues.push(...validateResources(combatant.resources, `${path}.resources`));
         if (!isObject(combatant.combat)) issues.push(`${path}.combat must be a persisted combat snapshot.`);
+        else issues.push(...validatePersistedBattleDerivedCaches(combatant, path));
         if (!isObject(combatant.battle)) issues.push(`${path}.battle must be an object.`);
         else {
             if (![COMBAT_SIDES.ALLY, COMBAT_SIDES.ENEMY].includes(combatant.battle.side)) issues.push(`${path}.battle.side is invalid.`);
