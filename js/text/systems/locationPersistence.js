@@ -1,7 +1,6 @@
 import {
     DIRECTION_ORDER,
     getLevel,
-    isCoordinateWithinBounds,
     isNavigableCoordinate,
     isTopologyPlace,
     normalizeCoordinate,
@@ -48,7 +47,11 @@ function validatePosition(place, position) {
         issues.push(`${path}.x and ${path}.y must be persisted integers for grid places.`);
         return issues;
     }
-    if (!isCoordinateWithinBounds(place, position)) issues.push(`${path} must be inside ${place.id}.`);
+    const width = Number(place.coordinateSystem?.width) || 0;
+    const height = Number(place.coordinateSystem?.height) || 0;
+    if (position.x < 0 || position.y < 0 || position.x >= width || position.y >= height) {
+        issues.push(`${path} must be inside ${place.id}.`);
+    }
 
     if (position.coord !== undefined) {
         const coordinate = normalizeCoordinate(position.coord);
