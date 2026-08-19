@@ -1,11 +1,13 @@
 import { getCompanionDefinition } from '../data/companions.js';
 import { createSeedNpcs } from '../data/seedEntities.js';
 import { createNpc } from '../entities/entityFactory.js';
+import { refreshEnemyEncounterProjection } from './enemyEncounterProjection.js';
 
 export const NPC_WORLD_PROJECTION_VERSION = 1;
 
 export function refreshNpcWorldProjection(state) {
     if (!state || typeof state !== 'object' || Array.isArray(state)) return [];
+    refreshEnemyEncounterProjection(state);
     state.npcs = createSeedNpcs();
 
     const party = state.party;
