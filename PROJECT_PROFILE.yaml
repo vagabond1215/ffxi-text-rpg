@@ -68,6 +68,7 @@ validation:
     - tests/currentSchemaLocationPersistence.test.js
     - tests/currentSchemaCombatIdentityPersistence.test.js
     - tests/currentSchemaNpcWorldProjection.test.js
+    - tests/currentSchemaEnemyEncounterProjection.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -78,7 +79,7 @@ quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   current_account_save: 5
-  current_game_state: 10
+  current_game_state: 11
   current_data_version: 37
   current_benchmark_version: 3
   current_game_state_must_be_complete_before_revival: true
@@ -127,13 +128,14 @@ quality:
     - derived-combat-stat-maxima
     - active-battle-rng
     - npc-world-projection
+    - enemy-encounter-projection
   serialization_exclusions:
     - player-combat-profile
     - player-stat-state
     - active-battle-rng
     - state-npcs
+    - state-enemies
   next_classification_audit:
-    - persisted-enemy-world-entity-boundary
     - presentation-log-persistence-boundary
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
@@ -153,7 +155,7 @@ constraints:
   - do not reintroduce retired FFXI command runtime compatibility
   - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
   - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
-  - raw Game State 10 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
+  - raw Game State 11 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
   - classify remaining state as persistent authority derived-transient construction convenience or optional persisted authority before adding another raw validator
   - do not compose broad validatePlayer at the raw boundary because it mixes post-revival identity and derived-state checks
   - keep work work-proficiencies and day-cycle state optional when absent but strict when persisted
@@ -169,5 +171,6 @@ constraints:
   - post-load root-owned combat skill gains must synchronize into the active battle player before encounter cache refresh
   - refresh combatant and root player derived profiles after status reconciliation and durable combat synchronization
   - state.npcs is a post-validation runtime projection rebuilt from canonical seed NPC definitions plus persisted party companion authority and must not be serialized as a second authority
-  - do not mechanically promote seed enemy arrays or presentation log history to strict authority before their dedicated ownership audits
+  - state.enemies is a post-validation encounter-template projection rebuilt from canonical seed enemy definitions; authored template combat/resources are derived construction data while mutable encounter authority belongs to activeBattle
+  - do not mechanically promote presentation log history to strict authority before its dedicated ownership audit
   - roadmap sequencing does not authorize unbounded implementation
