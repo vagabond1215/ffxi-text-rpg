@@ -39,29 +39,29 @@ Protocol history:
 
 ## Latest accepted baseline
 
-Runtime checkpoint: PR #335 exact head `10ab2c5af9ddcf0760f49817ff5a8c41ec1caa07`, Check `32160936491`, Node `24.19.0`, Product `0.8.600.12`, Benchmark `3`.
+Latest validated implementation/tooling checkpoint: validation-only PR #377 exact head `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, Node `24.19.0`, Product `0.8.600.52`, Benchmark `3`.
 
-The full gate observed 527/527 tests passing before benchmark execution.
+The full gate observed **692/692 tests passing** before benchmark execution. PR #377 was closed without merge after validation; the checkpoint adds continuation/content-census tooling and does not change gameplay version or the Benchmark protocol.
 
 Single Benchmark 3 run:
 
 ```text
-player combat profiles  0.355492 ms/op   warmup=100
-enemy combat profiles   0.066399 ms/op   warmup=100
-basic attacks            0.002787 ms/op   warmup=100
-tick dispatch            0.000923 ms/op   warmup=1000
-direct route lookup      0.008017 ms/op   warmup=1000
+player combat profiles  0.393820 ms/op   warmup=100
+enemy combat profiles   0.070731 ms/op   warmup=100
+basic attacks            0.003811 ms/op   warmup=100
+tick dispatch            0.001062 ms/op   warmup=1000
+direct route lookup      0.007603 ms/op   warmup=1000
 ```
 
 Three-sample evidence from the same exact-head Check:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.359021 | 7.97% |
-| enemy combat profiles | 0.068446 | 11.71% |
-| basic attacks | 0.000951 | 191.11% |
-| tick dispatch | 0.000646 | 61.69% |
-| direct route lookup | 0.007238 | 5.16% |
+| player combat profiles | 0.362912 | 10.42% |
+| enemy combat profiles | 0.065795 | 9.93% |
+| basic attacks | 0.001204 | 200.40% |
+| tick dispatch | 0.000696 | 33.93% |
+| direct route lookup | 0.006992 | 9.64% |
 
 The very fast basic-attack and tick microbenchmarks remain dominated by timing/runtime noise at this duration. **Do not create CI thresholds from those figures yet.** Player/enemy profile creation and route lookup are more stable in the current hosted environment, but they still need additional repeated evidence before a release budget is accepted.
 
@@ -75,4 +75,4 @@ The very fast basic-attack and tick microbenchmarks remain dominated by timing/r
 - Treat cumulative retained-state growth as a lifecycle/ownership problem when repeated use does not return toward a stable application-owned state.
 - Advance the Benchmark version whenever workload or measurement protocol changes enough to break comparability.
 
-Hard thresholds may be adopted later only after a repeatable baseline and acceptable variance are established for the specific surface and environment.
+Hard thresholds may be adopted later only after a repeatable baseline and acceptable variance are established for the specific surface and environment. The execution pipeline currently defers accepted hard budgets to Phase 0.9 release hardening rather than treating current microbenchmarks as release gates.
