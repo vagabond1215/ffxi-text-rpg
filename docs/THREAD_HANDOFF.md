@@ -19,7 +19,7 @@ Hearth & Horizon is pre-alpha. Old local saves/accounts are not a compatibility 
 
 Runtime first. Freeze runtime before documentation. Update this handoff last. Report only validation that actually ran.
 
-The latest user work order explicitly authorized the highest-recommended next maintenance pass after Product `.49`: audit the `state.npcs` ownership/persistence boundary and implement the minimum coherent correction. That pass is complete as Product `.50`. It does **not** authorize automatically starting the remaining `state.enemies` or `state.log` audits, nor opening `0.8.700`.
+The latest user work order explicitly authorized the next highest-recommended maintenance pass after Product `.50`: audit the `state.enemies` ownership/persistence boundary, create the plan, and implement the coherent result. That pass is complete as Product `.51`. It does **not** authorize automatically starting the remaining `state.log` audit or opening `0.8.700`.
 
 ## Product laws
 
@@ -45,47 +45,47 @@ Fictional time is separate from wall-clock scheduling. Resources retain provenan
 ## Current baseline
 
 ```text
-Product:       0.8.600.50
+Product:       0.8.600.51
 Package:       0.8.600
 Account Save:  5
-Game State:    10
+Game State:    11
 Data:          37
 Benchmark:     3
-Codename:      Derived NPC World Projection
+Codename:      Derived Enemy Encounter Projection
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
-Validation:    0.41.0
+Validation:    0.42.0
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.50` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.51` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
 
 ## Current branch and runtime freeze
 
 Normal development branch: `main`.
 
-The `.50` runtime was implemented directly on `main` under the bounded normal-work policy and frozen at:
+The `.51` runtime was implemented directly on `main` under the bounded normal-work policy and frozen at:
 
 ```text
-181bc67b69172390d1a59fa3dfca35980a026b3d
+5a97a109d9476438d001ee75b8e20293f57360dd
 ```
 
 Documentation/configuration commits after that SHA are synchronization only and do not create a new runtime checkpoint.
 
-Validation-only draft PR **#374** was created solely to surface the repository's normal pull-request `Check` for the frozen runtime. It was closed **without merge** after validation. The validation refs were then aligned to the runtime SHA; they are validation artifacts, not development authorities.
+Validation-only draft PR **#375** existed solely to surface the repository's normal pull-request `Check` for that frozen runtime. It was closed **without merge** after validation.
 
 ```text
-Head   181bc67b69172390d1a59fa3dfca35980a026b3d
-PR     #374 validation-only, closed without merge
-Check  32292959171
+Head   5a97a109d9476438d001ee75b8e20293f57360dd
+PR     #375 validation-only, closed without merge
+Check  32297557960
 Node   24.19.0
 ```
 
 Observed hosted validation:
 
 ```text
-tests              680
-pass               680
+tests              684
+pass               684
 fail               0
 cancelled          0
 skipped            0
@@ -96,145 +96,133 @@ Benchmark Sample   success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.372865 ms/op
-enemy profiles   0.071050 ms/op
-basic attacks    0.003425 ms/op
-tick dispatch    0.000818 ms/op
-route lookup     0.007469 ms/op
+player profiles  0.360644 ms/op
+enemy profiles   0.069621 ms/op
+basic attacks    0.002998 ms/op
+tick dispatch    0.000941 ms/op
+route lookup     0.007920 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.364304 ms/op    3.27%
-enemy profiles   0.067755 ms/op   10.57%
-basic attacks    0.001213 ms/op  162.66%
-tick dispatch    0.000876 ms/op   44.41%
-route lookup     0.007423 ms/op    6.50%
+player profiles  0.361064 ms/op    3.82%
+enemy profiles   0.067427 ms/op    9.06%
+basic attacks    0.001015 ms/op  191.25%
+tick dispatch    0.000908 ms/op   38.68%
+route lookup     0.007617 ms/op    8.23%
 ```
 
 No hard performance threshold is accepted. Benchmark 1/2 are not directly comparable to Benchmark 3.
 
-## Product `.50` — Derived NPC World Projection
+## Product `.51` — Derived Enemy Encounter Projection
 
 ### Audit conclusion
 
-The dedicated `state.npcs` audit traced the production producers, mutators, and consumers instead of adding a validator by default.
+The dedicated `state.enemies` audit traced production construction, readers, mutation sites, spawn references, and the encounter-cloning boundary before changing persistence.
 
 Current ownership is:
 
 ```text
-createSeedNpcs() / authored seed records
-  -> canonical NPC baseline identity, services, starting location
+createSeedEnemies() / authored enemy definitions
+  -> stable encounter-template identity/species/zone/level/loot/aggro inputs
 
-state.party.companions
-  -> durable recruited companion membership, location, tactics, resources, statuses
+createEnemy()
+  -> constructs each template and deterministically derives its initial combat/resources
 
-NPC schedule catalog + canonical world time
-  -> derived recurring availability
+place spawn rules / player opportunities
+  -> reference stable enemy IDs
 
-state.relationships
-  -> durable named-NPC relationship continuity
+startEncounter()
+  -> resolves a template and constructs a distinct encounter combatant
 
-state.commitments
-  -> durable accepted/resolved/follow-up continuity
-
-state.npcs
-  -> runtime projection consumed by location/talk/presentation paths
+activeBattle
+  -> durable mutable combatants, resources, statuses, actions, timeline and phase
 ```
 
-No independent production system was found that owns durable mutable facts solely in `state.npcs`. The meaningful mutations to the array are companion-backing identity/location/active flags, and those values are projections of already-persisted party authority plus companion definitions.
+No production mutation of `state.enemies` was found. No durable world fact is owned solely by that array. The `combat` and `resources` fields created on seed enemies are deterministic construction data, not ongoing entity history.
 
-Therefore `state.npcs` is **derived/reconstructible runtime state**, not another persisted world-entity authority.
+Therefore `state.enemies` is **derived/reconstructible encounter-template state**, not persisted mutable world-entity authority.
 
 ### Runtime implementation
 
 New module:
 
 ```text
-js/text/systems/npcWorldProjection.js
+js/text/systems/enemyEncounterProjection.js
 ```
 
-`refreshNpcWorldProjection(state)`:
+`refreshEnemyEncounterProjection(state)` replaces `state.enemies` with fresh canonical entities from `createSeedEnemies()`.
 
-1. rebuilds the baseline from `createSeedNpcs()`;
-2. reads persisted `state.party.companions` and `activeCompanionIds`;
-3. creates a companion backing NPC if the canonical seed list does not already contain one;
-4. overlays companion name/title/location and `companionId` / `companionActive` flags from party authority;
-5. replaces the runtime `state.npcs` projection deterministically.
+The existing post-validation world-projection chain now reconstructs enemy templates during `refreshNpcWorldProjection(state)`, before rebuilding NPC projection. This is the current bounded orchestration seam; do not refactor it merely for naming aesthetics without a separate reason.
 
-`save.js` now omits `state.npcs` from encoded character state. `reviveGameState()` reconstructs it **after** `validateCurrentGameStateStructure()` accepts the raw Game State 10 payload.
-
-`currentGameStateSchema.js` therefore no longer requires `npcs` as a persisted array. `enemies` and `log` remain required arrays pending their own dedicated ownership audits.
-
-### Why this is not a validator
-
-The correct result of the audit was to remove authority, not tighten it.
-
-A broad NPC validator would have created a second durable authority for facts already owned by seed definitions, party, schedules, relationships, and commitments. Game State 10 instead preserves the repository's classification law:
+Save encoding now omits both top-level projections:
 
 ```text
-persistent required authority
-  -> validate before revival
-
-derived/transient
-  -> recompute from authoritative inputs
-
-construction convenience
-  -> initialize in factory/new-state/internal paths
-
-optional persisted authority
-  -> absence is valid; present stored state must satisfy its domain contract
+state.npcs
+state.enemies
 ```
 
-An injected or stale serialized `npcs` value cannot become authoritative: raw Game State 10 does not require it, and revival replaces it with the deterministic projection.
+Raw `currentGameStateSchema.js` no longer requires either array. `state.log` remains the only broad required top-level array awaiting ownership classification.
 
-## `.50` focused regression coverage
+A forged/stale serialized `enemies` field cannot become authority. Game State 11 accepts the payload without requiring that projection and revival deterministically replaces supplied runtime enemy data before encounter lookup.
+
+### Active battle remains different
+
+Do not infer from `.51` that enemy combat state is generally non-persistent.
+
+Once `startEncounter()` resolves a template, the battle engine constructs a unique encounter combatant under `activeBattle`. That snapshot is governed by the established active-battle persistence contract and carries mutable resources, statuses, deterministic caches, action history/timeline, sides and phase through save/load. Only the reusable seed/template projection left serialized authority.
+
+## `.51` focused regression coverage
 
 New test file:
 
 ```text
-tests/currentSchemaNpcWorldProjection.test.js
+tests/currentSchemaEnemyEncounterProjection.test.js
 ```
 
 It proves:
 
-- raw Game State 10 is valid without `state.npcs`;
-- `state.enemies` and `state.log` remain required while still awaiting classification;
-- canonical seed NPCs rebuild correctly;
-- persisted Mara companion participation overlays backing NPC location/identity/active flags;
-- save encoding omits `npcs` while preserving party authority;
-- load reconstructs the NPC projection from seed + party data;
-- a forged injected serialized NPC projection is ignored and replaced.
+- raw Game State 11 is valid without `state.enemies`;
+- `state.log` remains required pending its own audit;
+- refresh replaces forged enemy templates with fresh canonical seed entities;
+- mutating a projected seed enemy's HP does not survive a projection refresh;
+- save encoding omits `enemies`;
+- load reconstructs canonical enemy templates before `startEncounter()` lookup;
+- a loaded reconstructed template can start a normal encounter;
+- injected serialized enemy projection data is replaced rather than accepted as authority.
 
-The normal full hosted suite also proves existing companion travel, recruitment, social schedules, commitments, UI flows, save/load, combat, and long-session behavior remain green under the new projection boundary.
+Existing NPC projection coverage was advanced to Game State 11 and now proves both `npcs` and `enemies` are absent from encoded state. Discovery/version-manifest expectations were advanced accordingly. Full hosted coverage remained green.
 
-## `.50` version decision
+## `.51` version decision
 
-This packet changes the serialized Game State shape, so it is not merely another Game State 9 invariant tightening.
+This packet changes serialized Game State shape and therefore advances the schema version.
 
 ```text
-Product             0.8.600.49 -> 0.8.600.50
-Game State          9 -> 10
-Validation          0.40.0 -> 0.41.0
-saveEncoding        0.6.0 -> 0.7.0
-npcWorldProjection  new 0.1.0
-Account Save        5 unchanged
-Package             0.8.600 unchanged
-Data                37 unchanged
-Benchmark           3 unchanged
+Product                    0.8.600.50 -> 0.8.600.51
+Game State                 10 -> 11
+Validation                 0.41.0 -> 0.42.0
+saveEncoding               0.7.0 -> 0.8.0
+playerDerivedState         0.1.1 -> 0.1.2
+npcWorldProjection         0.1.0 -> 0.1.1
+enemyEncounterProjection   new 0.1.0
+Account Save               5 unchanged
+Package                    0.8.600 unchanged
+Data                       37 unchanged
+Benchmark                  3 unchanged
 ```
 
-No Game State 9 → 10 migration was added. That is deliberate under the pre-alpha current-schema-only policy.
+No Game State 10 → 11 migration was added. That is deliberate under the pre-alpha current-schema-only policy.
 
 Historical schema transitions are now:
 
 - `.34`: Game State 6 → 7 for canonical fictional-time discovery timestamps;
 - `.39`: Game State 7 → 8 when root player combat/stat caches left serialized authority;
 - `.41`: Game State 8 → 9 for canonical nested persisted status modifiers;
-- `.50`: Game State 9 → 10 when the reconstructible `state.npcs` runtime projection left serialized authority.
+- `.50`: Game State 9 → 10 when the reconstructible `state.npcs` runtime projection left serialized authority;
+- `.51`: Game State 10 → 11 when the reconstructible `state.enemies` encounter-template projection left serialized authority.
 
-## Current raw Game State 10 boundary
+## Current raw Game State 11 boundary
 
 `currentGameStateSchema.js` validates decoded state **before reference revival, derived projection reconstruction, and runtime `ensure*` normalization**.
 
@@ -261,6 +249,7 @@ current place / display location / position coherence
 combatSequence / activeBattle.id coherence
 active battle and deterministic encounter combat/stat snapshots when present
 active battle player / root player live-authority coherence while active
+state.log array pending dedicated ownership classification
 ```
 
 Optional persisted authority:
@@ -275,6 +264,7 @@ Derived/transient or post-revival:
 
 ```text
 state.npcs
+state.enemies
 flat player.inventory alias identity
 player.combat
 player.statState
@@ -298,6 +288,7 @@ activeBattle.rng
 - campaign recovery remains the single player/party recovery authority;
 - party owns persistent companion membership/location/tactics/resources/statuses;
 - NPC backing records are reconstructed projection of canonical seed + party authority, not a second persistence store;
+- enemy seed/template records are reconstructed encounter projection, while `activeBattle` owns mutable ongoing enemy combat state;
 - commitments remain separate from relationships and Journal projection;
 - NPC schedules are recurring availability against canonical fictional time, not a second clock;
 - atlas/POI discovery is acquired knowledge and uses canonical fictional visit time;
@@ -309,58 +300,56 @@ activeBattle.rng
 - combatSequence and activeBattle identity must remain coherent;
 - an active battle player must remain bound to root player ID/resources/statuses/combat-driving profile;
 - terminal battle snapshots are historical rather than live-character mirrors;
-- root-owned combat skill gains must synchronize into the active battle player before encounter cache refresh, including after save/load;
 - canonical ActionResult logic uses structured fields rather than prose parsing;
 - Benchmark protocol changes require a Benchmark version bump when comparability changes;
 - legacy FFXI-derived records remain bounded research/reference material.
 
-## Documentation synchronization after `.50` runtime freeze
+## Documentation synchronization after `.51` runtime freeze
 
-After runtime freeze at `181bc67b69172390d1a59fa3dfca35980a026b3d`, documentation/configuration was synchronized without changing runtime behavior:
+After runtime freeze at `5a97a109d9476438d001ee75b8e20293f57360dd`, documentation/configuration was synchronized without changing runtime behavior:
 
-- `PROJECT_PROFILE.yaml` — Game State 10, NPC projection classification/serialization exclusion, remaining audits;
-- `docs/ROADMAP.md` — `.50` checkpoint, validation evidence, next decision boundary;
-- `docs/ARCHITECTURE.md` — NPC world projection authority and Game State 10 persistence model;
-- `docs/QUALITY_GATES.md` — Game State 10 raw/derived boundary and focused regression evidence;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Game State 9 → 10 schema decision;
-- `README.md` — current Phase 0.8/runtime orientation;
-- `docs/SYSTEM_CATALOG.md` — current system statuses and maintenance posture;
+- `PROJECT_PROFILE.yaml` — Game State 11, enemy projection classification/serialization exclusion, `state.log` as sole remaining audit;
+- `docs/ROADMAP.md` — `.51` checkpoint, validation evidence, next decision boundary;
+- `docs/ARCHITECTURE.md` — enemy encounter-template ownership and active-battle distinction;
+- `docs/QUALITY_GATES.md` — Game State 11 raw/derived boundary and regression evidence;
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Game State 10 → 11 schema decision;
+- `README.md` — current runtime/persistence orientation;
+- `docs/SYSTEM_CATALOG.md` — current projection and combat authority status;
 - this handoff — updated last.
 
 These documentation commits are not new runtime checkpoints and were not independently benchmarked.
 
 ## Next bounded work unit — not started
 
-**Highest recommended next maintenance pass: audit `state.enemies` ownership/persistence.**
+**Highest recommended next maintenance pass: audit `state.log` ownership/persistence.**
 
-Do not begin by validating every enemy object. First trace production ownership and classify at least:
+Do not begin by validating log entries. First trace every producer and consumer and classify at least:
 
 ```text
-authored encounter/enemy definitions
-seed construction data
-runtime-derived combat/resource caches
-mutable world-entity state, if any actually exists
-activeBattle combatant authority
-spawn/ecology references
+command input history
+player-facing recent output/history
+wall-clock timestamp usage
+canvas/DOM presentation history
+save/load expectations
+semantic-event overlap or lack thereof
+whether anything mechanically reads log prose
 ```
 
-The key question is whether `state.enemies` is another reconstructible definition/projection array like `state.npcs`, or whether it contains genuine durable mutable world state that needs a dedicated persisted owner. Only the audit should determine whether Game State changes again.
+Current evidence already suggests `appendLog()` writes wall-clock-stamped command/presentation history and command help describes `log` as recent command history, while `state.events` is the structured semantic observational channel. The next pass must prove the boundary across all producers/consumers before deciding whether `state.log` should leave Game State authority, remain optional durable player memory, or be replaced by a more explicit presentation-history owner.
 
-After `state.enemies`, audit `state.log` separately. Current evidence suggests `state.log` is bounded command/presentation history with wall-clock timestamps while `state.events` is the canonical semantic observational history, but that conclusion must be proven by its own bounded producer/consumer audit before changing the save contract.
-
-Do **not** combine enemy and log work into a generic entity packet. Do **not** automatically begin `0.8.700`.
+Do **not** combine the log audit with a UI redesign. Do **not** automatically begin `0.8.700`.
 
 ## Session status
 
 ```text
 Branch:                 main
-Runtime freeze:         181bc67b69172390d1a59fa3dfca35980a026b3d
-Relevant PR:            #374 validation-only, closed without merge
-Hosted Check:           32292959171 success
-Tests:                  680/680 passed
+Runtime freeze:         5a97a109d9476438d001ee75b8e20293f57360dd
+Relevant PR:            #375 validation-only, closed without merge
+Hosted Check:           32297557960 success
+Tests:                  684/684 passed
 Benchmark 3:            success
 Benchmark Sample:       success
 Known runtime failures: none observed
 Known blocker:          none
-Next unit:              state.enemies ownership/persistence audit
+Next unit:              state.log ownership/persistence audit
 ```
