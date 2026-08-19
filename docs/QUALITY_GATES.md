@@ -34,8 +34,7 @@ Current mode is **pre-alpha current-schema only**.
 - Raw validation runs before runtime `ensure*` helpers may normalize state.
 - Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
 - Optional persisted authority may be absent where construction semantics permit it, but once present must satisfy its domain contract.
-- Active project/work/travel/timed-ability/resource-recovery task links must reference consistent active-or-just-completed persisted tasks until owner reconciliation.
-- A future compatibility migration is deliberate work only when explicitly required or independently useful.
+- Active owner/task links must remain consistent until owner reconciliation.
 - Tightening enforcement of an existing invariant does not alone require a schema bump; changing serialized shape or meaning does.
 
 ### Current raw Game State 9 validation
@@ -43,32 +42,30 @@ Current mode is **pre-alpha current-schema only**.
 The current boundary validates these persisted families before revival:
 
 ```text
-world time
-simulation control
-timed tasks
+world time and simulation control
+timed tasks and active owner/task links
 active Travel State 2
-projects
-commitments
-relationships
-resource opportunities
-ecology
-party
-ability runtime
+projects, commitments, relationships
+resource opportunities and ecology
+party and ability runtime
 semantic events
-atlas discovery with canonical fictional-time visit records
-POI discovery/acquired-knowledge ownership
-player discipline progression, lifetime training, learned skills and capabilities
+atlas and POI discovery
+player envelope / identity / key items / player flags
+player progression / lifetime training / learned skills / capabilities
 player inventory/container state
 player mutable HP/MP/TP
 player canonical wallet
 player equipment/loadout state
 player canonical status state
-active battle state when present
+top-level world flags
+current place / display location / position coherence
+combatSequence / activeBattle.id identity coherence
+active battle state when present, including deterministic combat/stat cache snapshots
 ```
 
-Active battle validation covers battle identity/phase, combatants, sides, resources, status records, Combat 2.0 action identity/references, and timeline actor ownership. The live battle RNG is transient and is not serialized authority.
+The live battle RNG is transient and is not serialized authority.
 
-Optional persisted authorities are:
+Optional persisted authorities remain:
 
 ```text
 state.work
@@ -78,26 +75,29 @@ state.dayCycle
 
 For each, absence remains legitimate construction state; a present stored value must validate before runtime access.
 
-### Derived player-cache rule
+### Derived-cache split
 
-Game State 8 established that root `player.combat` and `player.statState` are reconstructible caches rather than durable save authority. Save encoding omits them; revival rebuilds both from validated character inputs. Mutable HP/MP/TP remain persisted independently.
+Root `player.combat` and `player.statState` are reconstructible caches. Save encoding omits them; revival rebuilds both from validated character inputs. Mutable HP/MP/TP remain persisted independently.
 
-Combat synchronization must keep that cache contract live after revival: status reconciliation refreshes combatant derived profiles, and durable resource/status synchronization refreshes root player derived caches. Nested status modifier blocks must not be shared by reference between battle and root player state.
+Active-battle combatant caches are intentionally different under the current Game State 9 contract: `activeBattle.combatants[*].combat` and the player combatant's `statState` are persisted deterministic encounter snapshots and must match recomputation from the persisted combatant inputs. `activeBattle.rng` remains transient.
 
-The following remain deliberately outside raw persistence authority:
+Combat synchronization must keep root caches current after revival: status reconciliation refreshes combatant profiles, and battle-to-root resource/status synchronization refreshes root player caches without sharing nested status modifier objects by reference.
 
-- broad `validatePlayer()`, because it mixes serialized invariants with post-revival object identity and derived combat/profile checks;
-- flat `player.inventory` alias/reference identity, restored during revival;
-- root `player.combat` and `player.statState`, rebuilt after validation;
-- live `activeBattle.rng`, which is transient.
+### Identity, world-condition, and location rules
 
-### Discovery-time rule
+Persisted player identity must remain canonical and internally coherent. Key-item identity is stable and duplicate-free; player flags and top-level world-condition flags are boolean facts, not truthy/falsy convenience values.
 
-Game State 7 replaced wall-clock atlas visit timestamps with `visitedAtWorldSeconds` anchored to canonical fictional time. Current discovery records carrying legacy wall-clock `visitedAt` are incompatible and are rejected rather than migrated or rewritten. Acquired-knowledge map privacy remains mandatory.
+`currentPlaceId`, `location`, and `position` form one persisted location authority. The place ID must be canonical, the display name must match that place, and the position must belong to that place. Topology positions must use valid navigable coordinates/levels/facing; grid positions must preserve raw x/y bounds and any external coordinate must map exactly to the stored x/y.
 
-### Status-state rule
+`combatSequence` is the durable encounter-ID allocator. When `activeBattle` exists, its ID must equal the canonical `battle-NNNNNN` value for the persisted sequence. Load must reject a forged counter or battle ID rather than repairing either side.
 
-Game State 9 canonicalized persisted status modifiers into nested `attributes`, `resources`, `derived`, and `resistances` blocks. Flat modifier payloads are no longer current state. Status timing uses canonical fictional-time boundaries, and malformed current records are rejected before revival rather than canonicalized during load.
+### Historical schema decisions
+
+- Game State 7 replaced wall-clock atlas `visitedAt` with fictional-time `visitedAtWorldSeconds`.
+- Game State 8 removed root player combat/stat caches from serialized authority.
+- Game State 9 canonicalized persisted player-status modifiers into nested `attributes`, `resources`, `derived`, and `resistances` blocks.
+
+No automatic compatibility migrations were added for those pre-alpha transitions.
 
 ### State-classification rule
 
@@ -108,37 +108,23 @@ Before adding another raw validator, classify the state first:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration;
 4. **optional persisted authority** — absence is allowed, but once present the stored value must satisfy its domain contract.
 
-Historical tests that exercise lazy `ensure*` initialization may remain correct internal construction tests. They do not imply that an incomplete or malformed current Game State 9 save is load-compatible.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. Flat `player.inventory` alias/reference identity remains a post-revival invariant.
 
 ## Current strict-persistence evidence
 
-Focused raw-boundary and integration regression files include:
+Focused evidence includes the existing registry/resource/discovery/player suites plus:
 
 ```text
-tests/currentSchemaProjectRegistry.test.js
-tests/currentSchemaContinuityRegistries.test.js
-tests/currentSchemaResourceOpportunities.test.js
-tests/currentSchemaEcologyRegistry.test.js
-tests/currentSchemaCharacterRuntime.test.js
-tests/currentSchemaWorldSimulation.test.js
-tests/currentSchemaPlayerCapabilities.test.js
-tests/currentSchemaInventoryState.test.js
-tests/currentSchemaSemanticEvents.test.js
-tests/currentSchemaWorkRegistry.test.js
-tests/currentSchemaPlayerProgression.test.js
-tests/currentSchemaDiscoveryPersistence.test.js
-tests/currentSchemaWorkProficiencies.test.js
-tests/currentSchemaPlayerResources.test.js
-tests/currentSchemaDayCycle.test.js
-tests/currentSchemaPlayerWallet.test.js
 tests/currentSchemaDerivedPlayerState.test.js
 tests/currentSchemaPlayerEquipment.test.js
 tests/currentSchemaPlayerStatuses.test.js
 tests/currentSchemaActiveBattle.test.js
 tests/playerPersistenceIntegration.test.js
+tests/currentSchemaLocationPersistence.test.js
+tests/currentSchemaCombatIdentityPersistence.test.js
 ```
 
-Each newly tightened authority family requires positive non-trivial current save/load evidence and malformed-current-save rejection/no-repair evidence where applicable. Derived-cache contracts require proof that serialized caches are absent/ignored and rebuilt from durable inputs.
+Revisions `.44`–`.46` additionally cover strict player identity/key-item/player-flag facts, stable player envelope/world flags, and deterministic active-battle combat/stat snapshots. Preserve the pattern: positive non-trivial current save/load evidence plus malformed-current-save rejection/no-repair evidence for true persisted authority.
 
 ## Resource lifecycle
 
@@ -150,7 +136,7 @@ A new direct production timed-task creator must define its durable consequence, 
 
 Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
-Latest validated runtime evidence is PR #366 exact head `2a10727dfa14734ca9c3031adf4bc368be592063`, Check `32276311018`, Node 24.19.0: **648/648 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze after promotion is `daa1904c8287c5b16950142cef76edcfdd902d3d`.
+Latest validated runtime evidence is PR #372 exact head `8cdc20aecf40201e82cd560eccd19d7f34700798`, Check `32287076773`, Node 24.19.0: **670/670 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze after promotion is `512f8c3d5edbb22d07d857fa98d6f0755d043d89`.
 
 ## UI and adapter boundaries
 
