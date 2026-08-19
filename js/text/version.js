@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.600.51';
+export const PRODUCT_VERSION = '0.8.600.52';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 11,
+    gameState: 12,
     data: 37,
     benchmark: 3,
-    codename: 'Derived Enemy Encounter Projection',
+    codename: 'Transient Command Presentation Log',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.51',
+    versionManifest: '0.8.600.52',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -31,6 +31,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     npcSchedules: '0.1.0',
     npcWorldProjection: '0.1.1',
     enemyEncounterProjection: '0.1.0',
+    presentationLog: '0.1.0',
     playerSocialSchedules: '0.1.0',
     resourceProvenance: '0.1.0',
     resourceOpportunities: '0.2.0',
@@ -87,9 +88,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     slashCommands: '0.5.0',
     accountSaves: '0.7.1',
     saveRecovery: '0.1.0',
-    saveEncoding: '0.8.0',
+    saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.42.0',
+    validation: '0.43.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',
