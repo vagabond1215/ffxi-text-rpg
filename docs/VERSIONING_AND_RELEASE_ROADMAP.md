@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.49
+Product:       0.8.600.50
 Package:       0.8.600
 Account Save:  5
-Game State:    9
+Game State:    10
 Data:          37
 Benchmark:     3
-Codename:      Strict Active Battle Player Link
+Codename:      Derived NPC World Projection
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.49` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.50` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
 
 ## Product version format
 
@@ -31,7 +31,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 9 | serialized character/world runtime contract |
+| Game State | 10 | serialized character/world runtime contract |
 | Data | 37 | canonical authored-data and stable-identifier contract |
 | Benchmark | 3 | benchmark workload/measurement comparability contract |
 
@@ -42,8 +42,9 @@ These versions advance independently.
 - `.34` changed atlas timing from wall-clock `visitedAt` to canonical fictional `visitedAtWorldSeconds`: **Game State 6 → 7**.
 - `.39` removed root `player.combat` and `player.statState` from serialized authority and made them post-validation reconstructed caches: **Game State 7 → 8**.
 - `.41` changed valid persisted player-status modifier semantics to canonical nested modifier blocks: **Game State 8 → 9**.
+- `.50` removed reconstructible `state.npcs` runtime projection from serialized authority and rebuilds it after raw validation from canonical seed NPC definitions plus persisted party companion state: **Game State 9 → 10**.
 
-Other later revisions enforce/classify existing authority or repair runtime synchronization without changing serialized meaning. Under the current pre-alpha policy there are no automatic migrations between those Game State versions.
+Under the current pre-alpha policy there are no automatic migrations between those Game State versions.
 
 ## Current compatibility policy
 
@@ -52,8 +53,8 @@ Mode: `pre-release-current-schema`.
 Current rules:
 
 1. Account/session payloads must match Account Save 5 exactly.
-2. Character payloads must match Game State 9 and contain complete required persisted authority before revival/reference relinking.
-3. Raw validation runs before runtime `ensure*` helpers may normalize state.
+2. Character payloads must match Game State 10 and contain complete required persisted authority before revival/reference relinking.
+3. Raw validation runs before runtime `ensure*` helpers or derived projection reconstruction may normalize state.
 4. Required persisted authority must already satisfy its declared current contract.
 5. Optional persisted authority may be absent, but a present value must satisfy its domain contract.
 6. Active owner/task links may reference active or just-completed tasks until domain reconciliation.
@@ -67,10 +68,11 @@ Current rules:
 14. `combatSequence` is the encounter-ID allocator and must agree with `activeBattle.id` when a battle exists.
 15. The persisted battle player must match the root player ID. While the encounter is active, its mutable resources/statuses and deterministic combat profile must agree with root combat-driving authority; terminal battle snapshots remain historical.
 16. Root-owned combat skill gains during an active encounter must be synchronized into the battle-player snapshot before the encounter combat cache refreshes, including after save/load has separated nested object identities.
+17. `state.npcs` is not serialized authority in Game State 10. It is rebuilt after raw validation from canonical seed NPC definitions plus persisted `state.party` companion authority; supplied or stale serialized projection data cannot override those authorities.
 
 ### Current raw validation
 
-Current Game State 9 raw validation covers:
+Current Game State 10 raw validation covers:
 
 ```text
 world time / simulation control / timed tasks
@@ -99,7 +101,7 @@ player work proficiencies
 day-cycle history
 ```
 
-Derived/transient or post-revival state includes root `player.combat`, root `player.statState`, flat inventory alias identity, and `activeBattle.rng`.
+Derived/transient or post-revival state includes `state.npcs`, root `player.combat`, root `player.statState`, flat inventory alias identity, and `activeBattle.rng`.
 
 Before adding another validator, classify state as persistent required authority, derived/transient, construction convenience, or optional persisted authority.
 
@@ -138,7 +140,7 @@ npm run benchmark:sample
 
 Benchmark 3 is the current comparability baseline. No hard timing threshold is accepted yet.
 
-## Latest maintenance line `.44`–`.49`
+## Latest maintenance line `.44`–`.50`
 
 | Revision | Contract | Validation PR | Exact validated head | Check | Runtime/main checkpoint |
 | --- | --- | ---: | --- | ---: | --- |
@@ -148,28 +150,30 @@ Benchmark 3 is the current comparability baseline. No hard timing threshold is a
 | `.47` | Strict Current Location State | #371 | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` | `1c8698147a98e80a0a519aadb520f6808fe61323` |
 | `.48` | Strict Combat Identity Sequence | #372 | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` | `512f8c3d5edbb22d07d857fa98d6f0755d043d89` |
 | `.49` | Strict Active Battle Player Link | #373 validation-only | `49df1a5379da51e15cfb3ce0320008047a70c768` | `32290206583` | `49df1a5379da51e15cfb3ce0320008047a70c768` |
+| `.50` | Derived NPC World Projection | #374 validation-only | `181bc67b69172390d1a59fa3dfca35980a026b3d` | `32292959171` | `181bc67b69172390d1a59fa3dfca35980a026b3d` |
 
-Every final validated head passed Test, Benchmark 3, and Benchmark Sample. `.47` passed 665/665 tests; `.48` passed 670/670; `.49` passed 676/676 on Node 24.19.0.
+Every final validated head passed Test, Benchmark 3, and Benchmark Sample. `.47` passed 665/665 tests; `.48` passed 670/670; `.49` passed 676/676; `.50` passed 680/680 on Node 24.19.0.
 
-`.49` was a direct-main bounded maintenance packet. Validation-only PR #373 existed solely to expose the standard pull-request Check for that exact frozen `main` SHA through the available connector; it was closed without merge after validation.
+`.49` and `.50` were direct-main bounded maintenance packets. Validation-only PRs #373 and #374 existed solely to expose the standard pull-request Check for the corresponding frozen `main` SHA through the available connector; both were closed without merge after validation.
 
-### `.44`–`.49` version decision
+### `.50` version decision
 
-Account Save 5, Game State 9, Data 37, and Benchmark 3 remain unchanged. These revisions tighten existing Game State 9 invariants or synchronize already-persisted authorities rather than changing serialized shape or meaning:
+Product `.50` changes the serialized Game State shape rather than merely tightening an invariant. The dedicated NPC audit found:
 
-- `.44` classifies canonical player identity, key items, and boolean player flags as strict durable facts.
-- `.45` validates the stable player envelope and boolean top-level world conditions.
-- `.46` validates already-persisted deterministic active-battle combat/stat snapshots against recomputation.
-- `.47` enforces coherence among already-persisted current place, display name, and position.
-- `.48` enforces coherence between the existing encounter sequence allocator and active battle identity.
-- `.49` enforces live active-battle player/root authority coherence and repairs post-load combat-skill synchronization without changing the serialized shape.
+- canonical seed NPC records are authored definitions/construction input;
+- recurring NPC availability is derived from schedule definitions plus fictional world time;
+- commitments and relationships already own their own durable continuity;
+- companion state is durably owned by `state.party.companions`;
+- the only production mutations to `state.npcs` are companion-backing identity/location/active projections of party authority.
+
+Therefore `state.npcs` is omitted during save encoding and reconstructed after raw validation. This advances Game State 9 → 10. Account Save 5, Data 37, Benchmark 3, and Package 0.8.600 remain unchanged. No migration from Game State 9 was added because the repository is still current-schema-only pre-alpha.
 
 ## Latest runtime evidence
 
-Exact validated `.49` gate: validation-only PR #373, head `49df1a5379da51e15cfb3ce0320008047a70c768`, Check `32290206583`, Node 24.19.0:
+Exact validated `.50` gate: validation-only PR #374, head `181bc67b69172390d1a59fa3dfca35980a026b3d`, Check `32292959171`, Node 24.19.0:
 
 ```text
-676/676 tests
+680/680 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -179,24 +183,24 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.382805 ms/op
-enemy profiles   0.069545 ms/op
-basic attacks    0.003288 ms/op
-tick dispatch    0.000952 ms/op
-route lookup     0.007661 ms/op
+player profiles  0.372865 ms/op
+enemy profiles   0.071050 ms/op
+basic attacks    0.003425 ms/op
+tick dispatch    0.000818 ms/op
+route lookup     0.007469 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.362564 ms/op    6.88%
-enemy profiles   0.068110 ms/op    8.11%
-basic attacks    0.001199 ms/op  209.52%
-tick dispatch    0.000681 ms/op   57.21%
-route lookup     0.007336 ms/op    3.69%
+player profiles  0.364304 ms/op    3.27%
+enemy profiles   0.067755 ms/op   10.57%
+basic attacks    0.001213 ms/op  162.66%
+tick dispatch    0.000876 ms/op   44.41%
+route lookup     0.007423 ms/op    6.50%
 ```
 
-Runtime freeze: `49df1a5379da51e15cfb3ce0320008047a70c768`.
+Runtime freeze: `181bc67b69172390d1a59fa3dfca35980a026b3d`.
 
 ## Timed-task ownership contract
 
@@ -210,13 +214,12 @@ A coherent runtime checkpoint requires one bounded contract, focused regression 
 
 Do **not** automatically begin `0.8.700`.
 
-For maintenance, separately classify the remaining broad persisted arrays before adding new raw validation:
+The `state.npcs` classification is complete. For maintenance, separately classify the remaining broad persisted arrays before adding new raw validation:
 
-- `state.npcs`: authored/seeded identity versus mutable persistent world state and companion-backed continuity;
 - `state.enemies`: authored encounter definitions versus mutable runtime entity state and derived caches;
 - `state.log`: presentation history versus durable player-facing history; do not confuse it with semantic event authority.
 
-Do not mechanically combine these into a single entity validator.
+Do not mechanically combine these into a single entity validator. The strongest next maintenance unit is the bounded `state.enemies` ownership/classification audit.
 
 Candidate feature families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam. Starting a new feature track requires an explicit fresh work order.
 
