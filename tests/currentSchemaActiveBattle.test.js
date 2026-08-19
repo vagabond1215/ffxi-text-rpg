@@ -79,8 +79,7 @@ test('active battle survives real current save and load and can continue', () =>
     const state = createInitialState();
     state.player.identity.name = 'Battlesaver';
     startBattle(state);
-    const expectedBattle = structuredClone(state.activeBattle);
-    delete expectedBattle.rng;
+    const expectedBattle = JSON.parse(JSON.stringify(state.activeBattle));
 
     assert.equal(saveGame(state), true);
     const loaded = loadCharacter('Battlesaver');
