@@ -118,7 +118,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     battleEngine: '0.8.0',
     combatTurns: '0.3.1',
     combatSimulation: '0.1.0',
-    combatActions: '0.8.0',
+    combatActions: '0.8.1',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
