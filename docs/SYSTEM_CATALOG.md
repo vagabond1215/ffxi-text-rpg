@@ -18,17 +18,17 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.8.600.50
+Product:       0.8.600.51
 Package:       0.8.600
 Account Save:  5
-Game State:    10
+Game State:    11
 Data:          37
 Benchmark:     3
-Codename:      Derived NPC World Projection
+Codename:      Derived Enemy Encounter Projection
 Runtime:       Node >=24
 ```
 
-Latest frozen runtime `181bc67b69172390d1a59fa3dfca35980a026b3d` passed validation-only PR #374 / Check `32292959171` on Node 24.19.0: **680/680 tests**, Benchmark 3 success, Benchmark Sample success.
+Latest frozen runtime `5a97a109d9476438d001ee75b8e20293f57360dd` passed validation-only PR #375 / Check `32297557960` on Node 24.19.0: **684/684 tests**, Benchmark 3 success, Benchmark Sample success.
 
 ## Core simulation, persistence, and tooling
 
@@ -42,9 +42,10 @@ Latest frozen runtime `181bc67b69172390d1a59fa3dfca35980a026b3d` passed validati
 | Persistent projects | playable | Materials + labor + linked timed task + exactly-once completion. |
 | Semantic events | integrated | Bounded observational history; domain state remains authoritative. |
 | ActionResult contract | integrated | Canonical `ok/action/code/outcome/data/display`; legacy aliases remain removed. |
-| Current-schema account/character persistence | playable | Account Save 5 / Game State 10, strict current-format load/save. |
+| Current-schema account/character persistence | playable | Account Save 5 / Game State 11, strict current-format load/save. |
 | Raw current-state gate | integrated | Required persisted authority validates before revival/normalization. |
-| NPC world projection | integrated | `state.npcs` is omitted from saves and rebuilt after validation from canonical seed definitions + persisted party authority. |
+| NPC world projection | integrated | `state.npcs` is omitted from saves and rebuilt from canonical seed definitions + persisted party authority. |
+| Enemy encounter projection | integrated | `state.enemies` is omitted from saves and rebuilt from canonical seed encounter templates; mutable enemy combat belongs to `activeBattle`. |
 | Generic ordered migration utility | integrated utility | Available for a future deliberate migration; no automatic save-migration layer. |
 | Validation framework | integrated | Runtime, persistence, authored-data, and cross-reference validation. |
 | Benchmark harness | integrated | Benchmark 3 uses separate-context warm-up and repeatable sampling. |
@@ -92,6 +93,7 @@ Latest frozen runtime `181bc67b69172390d1a59fa3dfca35980a026b3d` passed validati
 | Basic attacks and techniques | playable | Deterministic action resolution; technique breadth remains limited. |
 | Timed magic/ability interruption | playable | Shares fictional time and interrupt authority. |
 | Status timing | integrated | Canonical-time duration/expiry. |
+| Enemy authored encounter templates | integrated projection | Seed enemy records provide stable encounter inputs; factory combat/resources are deterministic construction data, not durable world history. |
 | Active-battle persistence | integrated | Encounter state and deterministic combat/stat snapshots survive save/load; RNG is transient. |
 | Battle/root player coherence | integrated | Active player ID/resources/statuses/combat-driving profile remain bound to root authority. |
 | Enemy active abilities/tactical selection | seeded | Representative deterministic enemy action selection; broad tactical families remain future. |
@@ -131,7 +133,7 @@ Latest frozen runtime `181bc67b69172390d1a59fa3dfca35980a026b3d` passed validati
 | System | Status | Notes |
 | --- | --- | --- |
 | NPC authored seed definitions | integrated | Canonical baseline identity/services/location used to build runtime projection. |
-| Runtime `state.npcs` projection | integrated projection | Rebuilt after raw validation; not Game State 10 serialized authority. |
+| Runtime `state.npcs` projection | integrated projection | Rebuilt after raw validation; not Game State 11 serialized authority. |
 | NPC recurring availability schedules | playable | Authored windows evaluated from canonical fictional time; not serialized as second clock state. |
 | Companion-backed NPC continuity | playable | Durable companion participation belongs to `state.party`; backing NPC location/active flags are derived. |
 | Commitments | playable | Accept/requirements/resolve/follow-up/one-time reward state. |
@@ -157,7 +159,7 @@ Latest frozen runtime `181bc67b69172390d1a59fa3dfca35980a026b3d` passed validati
 
 ## Current maintenance/hardening posture
 
-Maintenance through Product `0.8.600.50` has established:
+Maintenance through Product `0.8.600.51` has established:
 
 - strict current-schema persistence and removal of retired FFXI runtime compatibility;
 - canonical ActionResult and semantic-event boundaries;
@@ -165,12 +167,13 @@ Maintenance through Product `0.8.600.50` has established:
 - strict registries for projects, continuity, resources, ecology, discovery, player authority, location, combat identity, and active battle state;
 - root derived player caches omitted from serialized authority;
 - deterministic active-battle cache persistence and root-player live-authority coherence;
-- Game State 10 NPC-world classification: seed/backing NPC runtime records are reconstructible projection rather than durable serialized state.
+- Game State 10 NPC-world classification: seed/backing NPC runtime records are reconstructible projection rather than durable serialized state;
+- Game State 11 enemy classification: seed encounter templates are reconstructible projection while `activeBattle` owns mutable encounter state.
 
 ## Next decision boundary
 
 Do **not** automatically begin `0.8.700`.
 
-The NPC classification is complete. The next strongest maintenance candidate is a bounded audit of `state.enemies`: distinguish authored encounter definitions, any true mutable world-entity state, derived combat/resource caches, and active-battle authority before deciding whether the array should remain serialized. Audit `state.log` separately afterward as presentation history versus durable player-facing history.
+The NPC and enemy classifications are complete. The strongest remaining maintenance candidate is the bounded `state.log` audit: determine whether recent command/presentation history is disposable projection, compatibility baggage, or durable player-facing history, and keep that distinction separate from semantic-event authority.
 
 Strong feature candidates remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics gap. A new feature track requires a fresh bounded work order.
