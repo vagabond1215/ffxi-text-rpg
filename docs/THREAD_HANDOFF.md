@@ -19,7 +19,7 @@ Hearth & Horizon is pre-alpha. Old local saves/accounts are not a compatibility 
 
 Runtime first. Freeze runtime before documentation. Update this handoff last. Report only validation that actually ran.
 
-When elapsed-time enforcement is unavailable, autonomous work is capped at six cycles; **cycle 6 is stabilization/handoff only**. The maintenance train documented here used five runtime cycles plus the mandatory sixth documentation cycle, so a fresh user message is required before more implementation.
+When elapsed-time enforcement is unavailable, autonomous work is capped at six cycles; **cycle 6 is stabilization/handoff only**. The maintenance train documented here accounts for five runtime cycles (`.44`–`.48`) plus the mandatory sixth documentation cycle, so a fresh user message is required before more implementation.
 
 ## Product laws
 
@@ -45,42 +45,42 @@ Fictional time is separate from wall-clock scheduling. Resources retain provenan
 ## Current baseline
 
 ```text
-Product:       0.8.600.43
+Product:       0.8.600.48
 Package:       0.8.600
 Account Save:  5
 Game State:    9
 Data:          37
 Benchmark:     3
-Codename:      Player Persistence Integration
+Codename:      Strict Combat Identity Sequence
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
-Validation:    0.34.0
+Validation:    0.39.0
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.43` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.48` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
 
 ## Current runtime freeze
 
-The latest player-persistence train ended with PR **#366** (`maintenance/player-persistence-integration`) and was squash-merged to `main` as:
+The latest runtime packet is PR **#372** (`maintenance/strict-combat-identity-sequence`), squash-merged to `main` as:
 
 ```text
-daa1904c8287c5b16950142cef76edcfdd902d3d
+512f8c3d5edbb22d07d857fa98d6f0755d043d89
 ```
 
 Exact validated PR head:
 
 ```text
-2a10727dfa14734ca9c3031adf4bc368be592063
-Check 32276311018
+8cdc20aecf40201e82cd560eccd19d7f34700798
+Check 32287076773
 Node 24.19.0
 ```
 
 Observed exact-head validation:
 
 ```text
-tests              648
-pass               648
+tests              670
+pass               670
 fail               0
 cancelled          0
 skipped            0
@@ -91,50 +91,52 @@ Benchmark Sample   success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.314430 ms/op
-enemy profiles   0.064417 ms/op
-basic attacks    0.003578 ms/op
-tick dispatch    0.000743 ms/op
-route lookup     0.006808 ms/op
+player profiles  0.268864 ms/op
+enemy profiles   0.052262 ms/op
+basic attacks    0.003205 ms/op
+tick dispatch    0.000825 ms/op
+route lookup     0.005607 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.316339 ms/op    4.33%
-enemy profiles   0.058325 ms/op    5.66%
-basic attacks    0.001355 ms/op  173.80%
-tick dispatch    0.000598 ms/op   67.24%
-route lookup     0.006198 ms/op    1.95%
+player profiles  0.260915 ms/op    6.23%
+enemy profiles   0.050549 ms/op    8.78%
+basic attacks    0.001223 ms/op  224.79%
+tick dispatch    0.000587 ms/op  123.28%
+route lookup     0.005258 ms/op    8.89%
 ```
 
 No hard performance threshold is accepted. Benchmark 1/2 are not directly comparable to Benchmark 3.
 
-Runtime was frozen after promotion of `daa1904c8287c5b16950142cef76edcfdd902d3d`. Cycle-6 commits after that point are documentation synchronization only and are not new runtime validation checkpoints.
+Runtime was frozen after promotion of `512f8c3d5edbb22d07d857fa98d6f0755d043d89`. Cycle-6 commits after that point are documentation/configuration synchronization only and are not new runtime validation checkpoints.
 
-## Player persistence train `.39`–`.43`
+## Persistence hardening train `.44`–`.48`
 
-| Revision | Contract | PR | Promoted main | Exact head | Check | Tests |
-| --- | --- | ---: | --- | --- | ---: | ---: |
-| `.39` | Derived Player Cache Contract: omit root combat/stat caches from saves and rebuild after raw validation | #362 | `16ce275995aae56c2d4da36dbce02ccd33647a25` | `a94666003e54dedb96d8d4140b1b1cae04d7fd97` | `32273155030` | 632/632 |
-| `.40` | Strict Player Equipment: canonical slot/loadout state validates before revival | #363 | `29d20cf78d1faae2c7ae08899211e439577fa515` | `103b3a363153a30a25549d58063717b5eed666ee` | `32273809797` | 637/637 |
-| `.41` | Canonical Player Statuses: nested modifier state and fictional-time status timing become strict | #364 | `9cb2a32cbd3253bed099a8aabb31c68e7f7e252c` | `430dbb78bbbdaea72d2be9d4c1dcb82699c3d90d` | `32274840087` | 641/641 |
-| `.42` | Strict Active Battle: ongoing combat snapshots/actions/timeline validate before revival | #365 | `5526eba5fa3728b4212955a307b91b0ee72b4b2c` | `ce680fc35568df1a16a2feed30b1b7130d0b8eb6` | `32275555067` | 646/646 |
-| `.43` | Player Persistence Integration: combined round trip plus derived-cache resynchronization | #366 | `daa1904c8287c5b16950142cef76edcfdd902d3d` | `2a10727dfa14734ca9c3031adf4bc368be592063` | `32276311018` | 648/648 |
+This continuation began by resynchronizing current `main`. The previous handoff was stale at `.43`, while `.44`–`.46` had already landed. Those three completed runtime packets were counted as cycles 1–3 of the fresh train; `.47` and `.48` were then implemented and validated as cycles 4–5 before this Cycle 6 stabilization pass.
 
-Every final head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
+| Revision | Contract | PR | Promoted main | Exact head | Check |
+| --- | --- | ---: | --- | --- | ---: |
+| `.44` | Strict Player Identity Facts: canonical identity, key items, boolean player flags | #367 | `6ef317c75d5181ddc316caeefe342d14492ab8e2` | `ec77c85573dacfe9c8148c8d602b565288f356fa` | `32279241023` |
+| `.45` | Strict Player Envelope and World Flags: stable player envelope plus boolean world conditions | #368 | `c02c8ec72f5e78c93b27ae2fed9f3ff233114c9b` | `b65d80707073db0a1f5ebe1941c9b48c8c34fd67` | `32280196036` |
+| `.46` | Strict Battle Derived Caches: deterministic encounter combat/stat snapshots validate before revival | #369 | `2e143daf63f8874d6135e61af79ddfcd474fc418` | `a8eec6ef34ff96ed53bc37ee14aab6280d36a93e` | `32281825598` |
+| `.47` | Strict Current Location State: canonical place/name/position coherence | #371 | `1c8698147a98e80a0a519aadb520f6808fe61323` | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` |
+| `.48` | Strict Combat Identity Sequence: active battle ID agrees with durable encounter allocator | #372 | `512f8c3d5edbb22d07d857fa98d6f0755d043d89` | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` |
 
-### Independent-version decision
+Every final head passed hosted Test, Benchmark 3, and Benchmark Sample before promotion. `.47` passed **665/665 tests** after one persistence-specific bounds correction; `.48` passed **670/670 tests** on Node 24.19.0.
 
-Account Save 5, Data 37, and Benchmark 3 remained unchanged throughout `.39`–`.43`.
+### Version decision
 
-- `.39` changed serialized player shape by removing root `player.combat` and `player.statState` from save payloads and reconstructing them after raw validation. Therefore **Game State advanced 7 → 8**.
-- `.40` enforced the existing equipment/loadout contract without changing serialized meaning.
-- `.41` changed valid persisted status semantics from flat/legacy modifier records to canonical nested modifier blocks. Therefore **Game State advanced 8 → 9**.
-- `.42` enforced the existing active-battle/Combat 2.0 snapshot contract.
-- `.43` repaired derived-cache synchronization and added integrated evidence without changing serialized meaning.
+Account Save 5, Game State 9, Data 37, and Benchmark 3 remained unchanged throughout `.44`–`.48`. Each packet tightened or classified fields already present in the Game State 9 shape rather than changing serialized shape or meaning.
 
-Under the current pre-alpha policy no automatic Game State 7 → 8 or 8 → 9 migrations were added.
+Historical schema transitions remain:
+
+- `.34`: Game State 6 → 7 for canonical fictional-time discovery timestamps;
+- `.39`: Game State 7 → 8 when root player combat/stat caches left serialized authority;
+- `.41`: Game State 8 → 9 for canonical nested persisted status modifiers.
+
+Under the current pre-alpha policy no automatic migrations were added for those transitions.
 
 ## Current raw Game State 9 boundary
 
@@ -143,31 +145,26 @@ Under the current pre-alpha policy no automatic Game State 7 → 8 or 8 → 9 mi
 Required raw validation covers:
 
 ```text
-world time
-simulation control
-timed tasks
+world time / simulation control
+timed tasks and active owner/task links
 active Travel State 2
-projects
-commitments
-relationships
-resource opportunities
-ecology
-party
-ability runtime
+projects / commitments / relationships
+resource opportunities / ecology
+party / ability runtime
 semantic events
-atlas discovery
-POI discovery
-player progression / lifetime training / learned skills
-player capability registry
+atlas / POI discovery
+player envelope / identity / key items / player flags
+player progression / lifetime training / learned skills / capabilities
 player inventory/container state
 player mutable HP/MP/TP
 player canonical wallet
 player equipment/loadout state
 player canonical statuses
-active battle when present
+top-level world flags
+current place / display location / position coherence
+combatSequence / activeBattle.id coherence
+active battle and deterministic encounter combat/stat snapshots when present
 ```
-
-Active project/work/travel/timed-ability/resource-recovery records also require consistent persisted timed-task links until owner reconciliation.
 
 Optional persisted authority:
 
@@ -177,45 +174,60 @@ player.progression.workProficiencies
 state.dayCycle
 ```
 
-Absence is valid construction state for those fields. Once persisted, each must satisfy its domain contract before runtime access.
+Absence is valid construction state for those optional fields. Once persisted, each must satisfy its domain contract before runtime access.
 
-## Derived player-cache contract
+## Root player and encounter-cache split
 
-Game State 8 made these root fields explicitly reconstructible:
+Root fields:
 
 ```text
 player.combat
 player.statState
 ```
 
-They are omitted from the encoded character state by `stripPlayerDerivedStateForPersistence()` and rebuilt by `refreshPlayerDerivedState()` only after the raw Game State 9 payload validates. Mutable `player.resources.hp/mp/tp` remain durable and independent.
+are reconstructible caches. They are omitted from encoded character state and rebuilt after the raw Game State 9 payload validates. Mutable `player.resources.hp/mp/tp` remain durable and independent.
 
-`playerPersistenceIntegration.test.js` proves that equipment, statuses, resources, and active battle persist while root combat/stat caches do not. After load, status expiry refreshes each battle combatant's derived profile, durable battle-to-root resource/status synchronization refreshes root player caches, nested status modifier blocks are not aliased between those two authorities, and combat can continue.
+Active-battle caches are intentionally different under the current contract. Product `.46` made `activeBattle.combatants[*].combat` and the player combatant's `statState` strict deterministic persisted encounter snapshots. They must match recomputation from the persisted combatant facts. The live `activeBattle.rng` remains transient and non-persisted.
 
-Do **not** re-add root combat/stat caches to the serialized required-field list without a new explicit authority decision.
+Combat/status reconciliation refreshes battle combatant profiles, synchronizes durable resources/statuses back to the root player, avoids nested status-modifier aliasing, and refreshes root caches.
 
-## Canonical player-status contract
+## Identity, flags, and key items
 
-Runtime `createStatusEffect()` canonicalizes authored flat modifier keys into nested blocks consumed by `statEngine`:
+Products `.44`–`.45` completed the root player identity boundary:
+
+- stable player envelope (`id`/`type`) is strict;
+- canonical ancestry/sex/name identity facts must agree with canonical definitions;
+- persisted key-item identity is structurally valid and duplicate-free;
+- player flags are boolean durable facts;
+- top-level world-condition flags are boolean durable facts.
+
+Do not reintroduce generic truthy/falsy persistence for these facts.
+
+## Current location authority
+
+Product `.47` made these one persisted authority:
 
 ```text
-modifiers.attributes
-modifiers.resources
-modifiers.derived
-modifiers.resistances
+currentPlaceId
+location
+position
 ```
 
-Persisted Game State 9 must already use that canonical shape. Loading does not normalize a malformed flat status payload. Status identity/category/source, fictional-time duration/expiry, stack ownership, optional tick state, modifier keys, and flags validate before revival.
+The place ID must be exact canonical identity; `location` must match the canonical place name; `position.placeId` must match the current place.
 
-This train also fixed a concrete behavior defect: flat Stone Ward/Guarded Cut-style defense modifiers previously could persist and expire while not contributing to `calculateCombatProfile()`. Canonical nested modifier state now affects the intended derived stat.
+Topology places require a normalized navigable coordinate, canonical level and facing, and no numeric grid x/y. Grid places require raw stored x/y within the place width/height; if an external coordinate is persisted it must normalize and map exactly to the same x/y, with canonical level/facing metadata.
 
-## Equipment and active-battle authority
+The first `.47` hosted run exposed a useful implementation mistake: a convenience bounds helper preferred the external coordinate and therefore failed to judge a forged raw `x=999`. The final validator checks stored numeric bounds directly and separately checks external-coordinate mapping. The corrected exact head is the one recorded above and passed 665/665.
 
-`player.equipment` is durable physical/loadout authority. All canonical slots exist; occupied slots contain structurally valid equipment compatible with the occupied slot; impossible two-handed/off-hand persistence is rejected. Current discipline eligibility is deliberately not persistence authority.
+## Combat identity authority
 
-`activeBattle` is durable ongoing encounter authority when present. Raw validation covers battle identity/phase/round, combatant identity/types/sides/resources/statuses, bounded log, Combat 2.0 action identity/references, timeline actor ownership, and phase/living-side coherence. The live `activeBattle.rng` function is transient and is not serialized.
+Product `.48` makes `combatSequence` the explicit durable encounter-ID allocator.
 
-A future audit may decide whether `activeBattle.combatants[*].combat` should remain a durable encounter snapshot or become explicitly reconstructible cache state. Do not change that classification incidentally.
+- no active battle: sequence may be zero or later historical count;
+- active battle present: sequence must be positive;
+- `activeBattle.id` must exactly equal `battle-${sequence padded to six digits}`.
+
+A persisted low/high forged counter or forged battle ID is rejected before revival. Load does not repair either side. Focused evidence also proves normal next-encounter allocation advances from `battle-000001` to `battle-000002` rather than reusing identity.
 
 ## State-classification law
 
@@ -259,7 +271,9 @@ Each owner owns exactly-once reconciliation and terminal release. `releaseTimedT
 - raw persistence validation before revival/runtime normalization;
 - inventory owns container/access/capacity/transfer/carried-item facts;
 - equipment is durable loadout authority;
-- transport independently derives carried load and owns fare/cadence/departure/arrival/service limits;
+- player identity/key items/player flags and world flags are strict durable facts;
+- current place/name/position is one coherent persisted location authority;
+- transport derives carried load and owns fare/cadence/departure/arrival/service limits;
 - projects own material/labor/completion state;
 - work owns durable work records when constructed;
 - work proficiency is character-owned mastery and optional persisted authority;
@@ -273,20 +287,21 @@ Each owner owns exactly-once reconciliation and terminal release. `releaseTimedT
 - mutable HP/MP/TP and wallet balances persist;
 - root player combat/stat caches are omitted from saves and rebuilt after validation;
 - canonical player statuses persist and use nested modifier blocks;
-- active battle persists while live RNG does not;
+- active battle persists with deterministic combat/stat snapshots while live RNG does not;
+- combatSequence and activeBattle identity must remain coherent;
 - canonical ActionResult logic uses structured fields rather than prose parsing;
 - Benchmark protocol changes require a Benchmark version bump when comparability changes;
 - legacy FFXI-derived records remain bounded research/reference material.
 
 ## Cycle-6 documentation synchronization
 
-After runtime freeze at `daa1904c8287c5b16950142cef76edcfdd902d3d`, Cycle 6 changed documentation/configuration only:
+After runtime freeze at `512f8c3d5edbb22d07d857fa98d6f0755d043d89`, Cycle 6 changed documentation/configuration only:
 
-- `PROJECT_PROFILE.yaml` — Game State 9 raw/optional/derived authority map and next classification audits;
-- `docs/QUALITY_GATES.md` — Game State 9 rules and player persistence integration evidence;
-- `docs/ARCHITECTURE.md` — Game State 8/9 cache/status contracts, equipment/active-battle authority, `.43` gate;
-- `docs/ROADMAP.md` — `.39`–`.43` train and current maintenance boundary;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Game State 7 → 8 → 9 rationale and independent-version decisions;
+- `PROJECT_PROFILE.yaml` — `.48` raw/optional/derived authority map and next classification audits;
+- `docs/QUALITY_GATES.md` — current Game State 9 rules and `.48` gate;
+- `docs/ARCHITECTURE.md` — identity/flags/location/combat-sequence and encounter-cache authority;
+- `docs/ROADMAP.md` — `.44`–`.48` train and next maintenance boundary;
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — `.44`–`.48` version rationale and independent-version decisions;
 - this handoff **last**.
 
 No runtime validation was rerun after the freeze for these documentation-only commits.
@@ -295,19 +310,24 @@ No runtime validation was rerun after the freeze for these documentation-only co
 
 **Do not automatically begin `0.8.700`.**
 
-If continuing maintenance, start a fresh bounded train from current `main` and keep the next decisions separate:
+If continuing maintenance, start a fresh bounded train from current `main` and classify the remaining broad persisted arrays separately:
 
-1. **Root player identity/key-item/flag boundary**
-   - inspect production ownership and mutation of `player.identity`, `player.keyItems`, and `player.flags`;
-   - classify exact durable invariants before composing any raw validator;
-   - add non-trivial save/load and malformed/no-repair evidence only for true authority.
-2. **Active-battle combat snapshot audit**
-   - separately inspect `activeBattle.combatants[*].combat` readers and mutation/reconstruction behavior;
-   - decide whether it remains a durable encounter snapshot or becomes reconstructible cache state;
-   - do not combine that decision mechanically with root-player validation.
+1. **Persisted NPC world-entity boundary**
+   - inspect `state.npcs` production readers/writers;
+   - distinguish authored/seeded identity, persistent mutable world location/relationship/companion backing facts, and derived/presentation fields;
+   - do not require every seeded NPC field merely because it exists at runtime.
+2. **Persisted enemy world-entity boundary**
+   - inspect `state.enemies` as authored encounter definitions versus mutable runtime entity state;
+   - keep derived combat caches separate from stable authored identity/data decisions.
+3. **Presentation log boundary**
+   - classify `state.log` separately from canonical semantic events;
+   - determine whether it is presentation history, durable player-facing history, or compatibility baggage before tightening or de-persisting it;
+   - do not make prose history a second semantic-event authority.
+
+Do not combine these into one broad entity validator.
 
 If returning to feature work, agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam remain candidate families, but a new feature track requires explicit authorization.
 
 ## Stop condition
 
-This session reached the six-cycle autonomous boundary: five runtime cycles plus Cycle 6 stabilization/handoff. **A fresh user message is required before more implementation.**
+This session reached the six-cycle autonomous boundary: five runtime cycles (`.44`–`.48`, with `.44`–`.46` already present when the stale handoff was resynchronized) plus Cycle 6 stabilization/handoff. **A fresh user message is required before more implementation.**
