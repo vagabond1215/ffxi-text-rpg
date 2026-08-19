@@ -1,9 +1,20 @@
+import { ENTITY_TYPES } from '../data/systemConstants.js';
 import { listNations } from '../data/nations.js';
 import { getPlace } from '../data/places.js';
 import { RACES } from '../data/races.js';
 
 const PLAYER_NAME_MAX_LENGTH = 24;
 const PLAYER_TITLE_MAX_LENGTH = 80;
+
+export function validatePersistedPlayerEnvelope(player) {
+    if (!isObject(player)) return ['player must be an object.'];
+    const issues = [];
+    if (typeof player.id !== 'string' || !player.id.trim() || player.id !== player.id.trim()) {
+        issues.push('id must be a normalized non-empty string.');
+    }
+    if (player.type !== ENTITY_TYPES.PLAYER) issues.push(`type must be ${ENTITY_TYPES.PLAYER}.`);
+    return issues;
+}
 
 export function validatePersistedPlayerIdentity(identity) {
     if (!isObject(identity)) return ['identity must be an object.'];
@@ -50,11 +61,19 @@ export function validatePersistedPlayerKeyItems(keyItems) {
 }
 
 export function validatePersistedPlayerFlags(flags) {
-    if (!isObject(flags)) return ['flags must be an object.'];
+    return validateBooleanFlagMap(flags, 'flags');
+}
+
+export function validatePersistedWorldFlags(flags) {
+    return validateBooleanFlagMap(flags, 'flags');
+}
+
+function validateBooleanFlagMap(flags, path) {
+    if (!isObject(flags)) return [`${path} must be an object.`];
     const issues = [];
     for (const [flagId, value] of Object.entries(flags)) {
-        if (!flagId.trim() || flagId !== flagId.trim()) issues.push(`flags key ${JSON.stringify(flagId)} must be a normalized non-empty id.`);
-        if (typeof value !== 'boolean') issues.push(`flags.${flagId} must be boolean.`);
+        if (!flagId.trim() || flagId !== flagId.trim()) issues.push(`${path} key ${JSON.stringify(flagId)} must be a normalized non-empty id.`);
+        if (typeof value !== 'boolean') issues.push(`${path}.${flagId} must be boolean.`);
     }
     return issues;
 }

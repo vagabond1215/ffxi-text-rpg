@@ -9,9 +9,11 @@ import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
 import { validatePersistedPlayerEquipment } from './playerEquipmentPersistence.js';
 import {
+    validatePersistedPlayerEnvelope,
     validatePersistedPlayerFlags,
     validatePersistedPlayerIdentity,
     validatePersistedPlayerKeyItems,
+    validatePersistedWorldFlags,
 } from './playerIdentityPersistence.js';
 import { validatePersistedPlayerProgression } from './playerProgressionPersistence.js';
 import { validatePersistedPlayerResources } from './playerResourcePersistence.js';
@@ -59,6 +61,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
     if (isObject(state.atlas)) issues.push(...validateAtlasState(state.atlas));
     if (isObject(state.discoveredPois)) issues.push(...validatePoiDiscoveryState(state.discoveredPois));
+    if (isObject(state.flags)) issues.push(...validatePersistedWorldFlags(state.flags));
     if (state.dayCycle !== undefined) {
         if (!isObject(state.dayCycle)) issues.push('dayCycle must be a persisted object when present.');
         else issues.push(...validatePersistedDayCycle(state.dayCycle, state.worldTime));
@@ -78,6 +81,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     else if (isObject(state.activeBattle)) issues.push(...validatePersistedActiveBattle(state.activeBattle));
 
     if (isObject(state.player)) {
+        issues.push(...validatePersistedPlayerEnvelope(state.player).map((issue) => `player.${issue}`));
         for (const field of REQUIRED_PLAYER_OBJECT_FIELDS) if (!isObject(state.player[field])) issues.push(`player.${field} must be a persisted object.`);
         for (const field of REQUIRED_PLAYER_ARRAY_FIELDS) if (!Array.isArray(state.player[field])) issues.push(`player.${field} must be a persisted array.`);
         if (isObject(state.player.identity)) issues.push(...validatePersistedPlayerIdentity(state.player.identity).map((issue) => `player.${issue}`));
