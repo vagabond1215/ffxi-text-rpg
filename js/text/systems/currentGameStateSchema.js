@@ -6,6 +6,7 @@ import { validatePersistedDayCycle } from './dayCyclePersistence.js';
 import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
 import { validateEcologyState } from './ecologyEngine.js';
 import { validatePartyState } from './partyEngine.js';
+import { validatePersistedPlayerEquipment } from './playerEquipmentPersistence.js';
 import { validatePersistedPlayerProgression } from './playerProgressionPersistence.js';
 import { validatePersistedPlayerResources } from './playerResourcePersistence.js';
 import { validatePersistedPlayerWallet } from './playerWalletPersistence.js';
@@ -74,6 +75,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
         if (isObject(state.player.jobs) && isObject(state.player.progression)) issues.push(...validatePersistedPlayerProgression(state.player).map((issue) => `player.${issue}`));
         if (isObject(state.player.resources)) issues.push(...validatePersistedPlayerResources(state.player.resources).map((issue) => `player.${issue}`));
         if (isObject(state.player.wallet)) issues.push(...validatePersistedPlayerWallet(state.player.wallet).map((issue) => `player.${issue}`));
+        if (isObject(state.player.equipment)) issues.push(...validatePersistedPlayerEquipment(state.player.equipment).map((issue) => `player.${issue}`));
         if (isObject(state.player.inventoryState)) issues.push(...validateInventoryState(state.player.inventoryState).map((issue) => `player.inventoryState.${issue}`));
         if (isObject(state.player.progression)) {
             const workProficiencies = state.player.progression.workProficiencies;
