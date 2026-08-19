@@ -1,3 +1,6 @@
+import { createCharacterStatState } from './characterStatEngine.js';
+import { calculateCombatProfile } from './statEngine.js';
+
 export const ACTIVE_BATTLE_PLAYER_LINK_PERSISTENCE_VERSION = 1;
 
 export function validatePersistedActiveBattlePlayerLink(state) {
@@ -9,12 +12,19 @@ export function validatePersistedActiveBattlePlayerLink(state) {
 
     const issues = [];
     if (battlePlayer.id !== rootPlayer.id) issues.push('activeBattle player id must match root player id.');
-    comparePlain(battlePlayer.identity, rootPlayer.identity, 'identity', issues);
-    comparePlain(battlePlayer.jobs, rootPlayer.jobs, 'jobs', issues);
-    comparePlain(battlePlayer.progression, rootPlayer.progression, 'progression', issues);
-    comparePlain(battlePlayer.equipment, rootPlayer.equipment, 'equipment', issues);
+    if (battle.phase !== 'active') return issues;
+
     comparePlain(battlePlayer.resources, rootPlayer.resources, 'resources', issues);
     comparePlain(battlePlayer.statuses, rootPlayer.statuses, 'statuses', issues);
+
+    const rootSnapshot = clonePlain(rootPlayer);
+    delete rootSnapshot.combat;
+    delete rootSnapshot.statState;
+    rootSnapshot.statState = createCharacterStatState(rootSnapshot);
+    const expectedCombat = calculateCombatProfile(rootSnapshot);
+    if (!plainEqual(battlePlayer.combat, expectedCombat)) {
+        issues.push('activeBattle active player combat profile must match root player combat-driving authority.');
+    }
     return issues;
 }
 
@@ -36,6 +46,12 @@ function plainEqual(left, right) {
         return leftKeys.every((key) => Object.hasOwn(right, key) && plainEqual(left[key], right[key]));
     }
     return false;
+}
+
+function clonePlain(value) {
+    if (Array.isArray(value)) return value.map(clonePlain);
+    if (!isObject(value)) return value;
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, clonePlain(child)]));
 }
 
 function isObject(value) {
