@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.43';
+export const PRODUCT_VERSION = '0.8.600.44';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 9,
     data: 37,
     benchmark: 3,
-    codename: 'Player Persistence Integration',
+    codename: 'Strict Player Identity Facts',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.43',
+    versionManifest: '0.8.600.44',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -87,13 +87,14 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.6.0',
     parser: '0.2.0',
-    validation: '0.34.0',
+    validation: '0.35.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.1',
     playerEquipmentPersistence: '0.1.0',
     playerStatusPersistence: '0.1.0',
     activeBattlePersistence: '0.1.0',
     playerPersistenceHarness: '0.1.0',
+    playerIdentityPersistence: '0.1.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
