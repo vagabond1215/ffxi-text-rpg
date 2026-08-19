@@ -1,4 +1,10 @@
-import { STATUS_CATEGORIES } from '../data/systemConstants.js';
+import {
+    ATTRIBUTE_KEYS,
+    DERIVED_STAT_KEYS,
+    ELEMENT_KEYS,
+    RESOURCE_KEYS,
+    STATUS_CATEGORIES,
+} from '../data/systemConstants.js';
 
 export function createStatusEffect(options = {}) {
     const appliedAtWorldSeconds = normalizeWorldSecond(options.appliedAtWorldSeconds);
@@ -15,13 +21,33 @@ export function createStatusEffect(options = {}) {
         appliedAtWorldSeconds,
         expiresAtWorldSeconds,
         tickSeconds: options.tickSeconds ?? null,
-        tickAccumulator: 0,
+        tickAccumulator: normalizeAccumulator(options.tickAccumulator),
         stackGroup: options.stackGroup ?? options.id,
         stackRule: options.stackRule ?? 'replace',
-        modifiers: options.modifiers ?? {},
+        modifiers: normalizeStatusModifiers(options.modifiers),
         tick: options.tick ?? null,
         flags: options.flags ?? {},
     };
+}
+
+export function normalizeStatusModifiers(rawModifiers = {}) {
+    const raw = rawModifiers && typeof rawModifiers === 'object' && !Array.isArray(rawModifiers) ? rawModifiers : {};
+    const normalized = {
+        attributes: normalizeModifierCategory(raw.attributes, ATTRIBUTE_KEYS),
+        resources: normalizeModifierCategory(raw.resources, RESOURCE_KEYS),
+        derived: normalizeModifierCategory(raw.derived, DERIVED_STAT_KEYS),
+        resistances: normalizeModifierCategory(raw.resistances, ELEMENT_KEYS),
+    };
+
+    for (const [key, value] of Object.entries(raw)) {
+        if (['attributes', 'resources', 'derived', 'resistances'].includes(key)) continue;
+        if (!Number.isFinite(Number(value))) continue;
+        if (ATTRIBUTE_KEYS.includes(key)) normalized.attributes[key] = Number(value);
+        else if (RESOURCE_KEYS.includes(key)) normalized.resources[key] = Number(value);
+        else if (DERIVED_STAT_KEYS.includes(key)) normalized.derived[key] = Number(value);
+        else if (ELEMENT_KEYS.includes(key)) normalized.resistances[key] = Number(value);
+    }
+    return normalized;
 }
 
 export function applyStatus(entity, status, options = {}) {
@@ -90,6 +116,20 @@ function applyStatusTick(entity, status) {
     if (status.tick.hp) entity.resources.hp = Math.max(0, entity.resources.hp + status.tick.hp);
     if (status.tick.mp) entity.resources.mp = Math.max(0, entity.resources.mp + status.tick.mp);
     if (status.tick.tp) entity.resources.tp = Math.max(0, entity.resources.tp + status.tick.tp);
+}
+
+function normalizeModifierCategory(value, allowedKeys) {
+    const result = {};
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return result;
+    for (const [key, amount] of Object.entries(value)) {
+        if (allowedKeys.includes(key) && Number.isFinite(Number(amount))) result[key] = Number(amount);
+    }
+    return result;
+}
+
+function normalizeAccumulator(value) {
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 ? number : 0;
 }
 
 function normalizeWorldSecond(value) {
