@@ -96,7 +96,7 @@ An unreconciled terminal task remains persisted until its owner consumes it. Cam
 
 ## Current-schema task integrity
 
-Game State 6 persistence now validates task ownership before revival/runtime access.
+Game State 12 persistence validates task ownership before revival/runtime access.
 
 The raw current-schema boundary validates:
 
@@ -122,6 +122,10 @@ owner -> durable consequence -> exactly-once reconciliation -> terminal release
 ```
 
 If a future diagnostic/history use case introduces genuinely generic tasks, design retention from that concrete requirement. Do not add global pruning preemptively, duplicate task state into consumers, or reconstruct missing task records as compatibility behavior.
+
+## Planned cultivation caution
+
+The next recommended Phase 0.8 feature is cultivation/stewardship. Growing plots should not automatically become a seventh direct timed-task owner. If growth can be represented as persisted plot/crop state plus canonical world-time boundaries and deterministic reconciliation, prefer that simpler ownership model. Introduce a direct task owner only if cultivation has a real active-work consequence that needs timed-task semantics and can satisfy the same exactly-once/release contract as existing owners.
 
 ## Review checklist
 
