@@ -1,8 +1,10 @@
 import { getEnemyAbility } from '../data/enemyAbilities.js';
 import { appendBattleLog, COMBAT_SIDES, getCombatant, getCombatantSide, resolveBasicAttack, updateBattlePhase } from './battleEngine.js';
 import { syncCompanionsFromBattle } from './partyEngine.js';
+import { refreshPlayerDerivedState } from './playerDerivedState.js';
 import { resolveBattleRewards } from './rewardEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { calculateCombatProfile } from './statEngine.js';
 import { reconcileStatusesAtWorldTime } from './statusEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
@@ -327,9 +329,11 @@ export function reconcileCombatStatuses(state) {
     if (battle?.combatants) {
         for (const combatant of battle.combatants) {
             for (const statusId of reconcileStatusesAtWorldTime(combatant, now)) expired.push({ combatantId: combatant.id, statusId });
+            combatant.combat = calculateCombatProfile(combatant);
         }
     } else if (state?.player) {
         for (const statusId of reconcileStatusesAtWorldTime(state.player, now)) expired.push({ combatantId: state.player.id, statusId });
+        refreshPlayerDerivedState(state.player);
     }
     return expired;
 }
@@ -361,9 +365,10 @@ export function syncPlayerFromCombat(state) {
     state.player.resources = { ...playerCombatant.resources };
     state.player.statuses = (playerCombatant.statuses ?? []).map((status) => ({
         ...status,
-        modifiers: { ...(status.modifiers ?? {}) },
+        modifiers: cloneModifierBlocks(status.modifiers),
         flags: { ...(status.flags ?? {}) },
     }));
+    refreshPlayerDerivedState(state.player);
     return playerCombatant;
 }
 
@@ -450,6 +455,10 @@ function resolveEnemySelection(battle, selection, options = {}) {
         ...resolveBasicAttack(battle, selection.actorId, selection.targetId, { rng: options.rng }),
         recoverySeconds: ENEMY_ACTION_RECOVERY_SECONDS,
     };
+}
+
+function cloneModifierBlocks(modifiers = {}) {
+    return Object.fromEntries(Object.entries(modifiers ?? {}).map(([category, values]) => [category, { ...(values ?? {}) }]));
 }
 
 function clonePlain(value) {
