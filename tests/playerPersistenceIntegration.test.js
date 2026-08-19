@@ -81,7 +81,7 @@ test('combined player authority survives save load while derived root caches rem
     assert.deepEqual(validateCurrentGameStateStructure(loaded), []);
 });
 
-test('loaded active battle can expire status, resync derived player cache, and continue combat', () => {
+test('loaded active battle can expire status, resync derived caches, and continue combat', () => {
     installStorage();
     assert.equal(createAccountWithPassword('Continuation Account', 'pwd', { persistentLogin: true }).ok, true);
     const state = preparePersistentCombatState();
@@ -89,12 +89,20 @@ test('loaded active battle can expire status, resync derived player cache, and c
     const loaded = loadCharacter('Integrated');
     assert.ok(loaded);
 
+    finalizeCombatState(loaded);
+    const rootStatus = loaded.player.statuses.find((status) => status.id === 'status-integration-ward');
+    const battlePlayer = loaded.activeBattle.combatants.find((entry) => entry.type === 'player');
+    const battleStatus = battlePlayer.statuses.find((status) => status.id === 'status-integration-ward');
+    assert.ok(rootStatus && battleStatus);
+    assert.notStrictEqual(rootStatus.modifiers.derived, battleStatus.modifiers.derived);
+
     const defenseWithWard = calculateCombatProfile(loaded.player).derived.defense;
     advanceWorldTime(loaded, 31);
     finalizeCombatState(loaded);
     assert.equal(loaded.player.statuses.some((status) => status.id === 'status-integration-ward'), false);
-    assert.equal(loaded.activeBattle.combatants.find((entry) => entry.type === 'player').statuses.some((status) => status.id === 'status-integration-ward'), false);
+    assert.equal(battlePlayer.statuses.some((status) => status.id === 'status-integration-ward'), false);
     assert.equal(calculateCombatProfile(loaded.player).derived.defense, defenseWithWard - 4);
+    assert.equal(battlePlayer.combat.derived.defense, defenseWithWard - 4);
     assert.deepEqual(loaded.player.combat, calculateCombatProfile(loaded.player));
 
     const before = loaded.activeBattle.contract.actionSequence;
