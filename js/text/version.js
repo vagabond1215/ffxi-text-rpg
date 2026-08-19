@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.8.600.48';
+export const PRODUCT_VERSION = '0.8.600.49';
 export const PACKAGE_VERSION = '0.8.600';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 9,
     data: 37,
     benchmark: 3,
-    codename: 'Strict Combat Identity Sequence',
+    codename: 'Strict Active Battle Player Link',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.48',
+    versionManifest: '0.8.600.49',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -87,7 +87,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.6.0',
     parser: '0.2.0',
-    validation: '0.39.0',
+    validation: '0.40.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.1',
     playerEquipmentPersistence: '0.1.0',
@@ -97,7 +97,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerPersistenceHarness: '0.1.0',
     playerIdentityPersistence: '0.2.0',
     locationPersistence: '0.1.0',
-    combatIdentityPersistence: '0.1.0',
+    combatIdentityPersistence: '0.2.0',
     playerEntity: '0.8.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
@@ -119,7 +119,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     battleEngine: '0.8.0',
     combatTurns: '0.3.1',
     combatSimulation: '0.1.0',
-    combatActions: '0.8.0',
+    combatActions: '0.8.1',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
