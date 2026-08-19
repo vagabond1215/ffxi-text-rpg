@@ -22,40 +22,44 @@ Use named localities and actions where destinations and relationships create dec
 ## Current runtime baseline
 
 ```text
-Product:       0.6.900.1
-Package:       0.6.900
-Account Save:  4
-Game State:    5
-Data:          27
-Benchmark:     1
-Codename:      Integrated Mechanics Gate
+Product:       0.8.600.50
+Package:       0.8.600
+Account Save:  5
+Game State:    10
+Data:          37
+Benchmark:     3
+Codename:      Derived NPC World Projection
 Compatibility: pre-release-current-schema
+Released:      false
+Runtime:       Node >=24
 ```
 
-`js/text/version.js` is authoritative. Product/package remain at the last **completed** milestone while Phase 0.7 work is still an in-progress playable-campaign slice. Data 27 registers the authored player-experience/regional-loop contract added during that work.
+Phase 0.8 — **Life and infrastructure expansion** — is in progress. Feature tracks `0.8.100` through `0.8.600` are complete: home storage, home workshop capability, carried-load transport, earned portable field logistics, fictional-time NPC availability, and companion convalescence/reunion. Revisions `.2` through `.50` are maintenance/hardening over that closed feature track and do **not** automatically open `0.8.700`.
 
-## Development state
+Latest frozen runtime: `181bc67b69172390d1a59fa3dfca35980a026b3d`. Validation-only PR #374 surfaced Check `32292959171` on Node 24.19.0: **680/680 tests**, Benchmark 3 success, and Benchmark Sample success. The PR was closed without merge after validation; documentation commits after the runtime freeze are synchronization only.
 
-Phase 0.6 is complete. Phase 0.7 — **Multi-region playable alpha** — is in progress, with `0.7.100` still open.
+## Product direction
 
-The current foundation includes deterministic fictional time, timed work and interrupts, day review, travel and transport, provenance-bearing resources and production, ecology, continuous-character progression/capabilities, Combat 2.0, persistent companions, semantic DOM presentation, locality/exploration navigation, equipment and field tools, and scalable content-pack validation.
+The game is one persistent life, not a collection of disconnected minigames. Hunting, gathering, work, production, trade, commitments, relationships, travel, combat, recovery, companions, and home infrastructure should feed one another through shared authorities.
 
-Phase 0.7 has now landed three player-experience slices:
+Fictional time is separate from wall-clock waiting. Long tasks cost character time, resources, preparation, risk, and opportunity rather than mandatory real-world delay. Maps represent acquired knowledge. Materials preserve provenance through source, processing, use, repair, salvage, or replacement. Disciplines describe training traditions; learned capabilities belong to the character and are constrained by actual proficiency, equipment, resources, preparation, status, and context.
 
-- **PX-1 — arrival and footing:** origin-specific arrival, first contact, believable morning start, and setting-friendly explanation of persistent progress;
-- **PX-2 — actionable opportunities:** a real Journal/Opportunities projection over current state with semantic claim/equip/locality/travel/gathering/combat/service actions across all three origins;
-- **PX-3 — first regional loop:** a fully executable Brasshaven → South Redstone Reach → copper gathering → return → forge processing loop that leaves persistent mining/metalworking gains and provenance-bearing material.
+## Current persistence model
 
-`0.7.100` is **not** complete yet. The next bounded work should add a real canonical contract/commitment and persistent NPC/social follow-up around the proven regional loop, then surface those consequences across several fictional days. Do not mass-author content before that reusable continuity slice is proven.
+The project is pre-alpha and uses a strict **current-schema-only** persistence posture. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-## Original-world anchors
+Game State 10 validates required persisted authority before reference revival or runtime normalization. Important durable authorities include world time, simulation/task state, projects, commitments, relationships, ecology/resource opportunities, party, ability runtime, semantic events, acquired discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, location, combat identity, and active-battle state when present.
 
-- **Thornwall** and the **Elderwood**
-- **Brasshaven** and the **Redstone Reach**
-- **Mistmere** and the **Starfen**
-- future central trade hub **Waymeet**
+Some runtime state is deliberately **not** serialized:
 
-Canonical ancestries are **Human, Lethari, Miri, Veyra, and Korren**. Disciplines are training traditions rather than magical class transformations.
+- root `player.combat` and `player.statState` are reconstructed caches;
+- `activeBattle.rng` is transient;
+- flat `player.inventory` reference identity is relinked after decode;
+- `state.npcs` is a reconstructed world projection.
+
+Product `.50` completed the dedicated NPC ownership audit. Canonical seed NPC definitions provide the baseline; `state.party.companions` owns durable companion participation; schedules derive availability from fictional time; relationships and commitments own their own continuity. Save encoding therefore omits `state.npcs`, and revival rebuilds it after raw validation from canonical seed definitions plus persisted party companion authority.
+
+The remaining broad state-family audits are `state.enemies` and `state.log`, separately. Do not combine them into a generic entity validator.
 
 ## Player interface
 
@@ -64,35 +68,32 @@ The player-facing UI is a **world interface**, not a permanent command console.
 ```text
 index.html
   -> js/main.js
-      -> createDomApp(host)
-          -> authoritative game/save/intent services
-          -> createGameViewModel(state, uiState)
-          -> renderDomApp(...)
+      -> createDomRoot(...)
+          -> createDomApp(host)
+              -> authoritative game/save/intent services
+              -> createGameViewModel(state, uiState)
+              -> renderDomApp(...)
 ```
 
-Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual actions stay small and situation-dependent. Search-or-act remains a power-user command adapter rather than the required gameplay path.
+The semantic DOM/CSS shell is active. Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual actions use semantic intents into domain systems. Search/command routing remains a power-user and regression adapter rather than the required gameplay path.
 
-Safe settlements use named locality navigation and omit the exploration map/D-pad. Wilderness and dungeon-style spaces retain directional movement and a discovery-relative map. Authored coordinates, undiscovered extent, and hidden global placement remain simulation-private.
+Safe settlements use named locality navigation where fine movement adds little decision value. Wilderness and dungeon-style spaces retain directional movement and discovery-relative maps. Authored topology and undiscovered coordinates remain simulation-private.
 
-The Journal is now state-aware guidance rather than a future-system placeholder. It does not own a second quest clock: it projects canonical inventory, equipment, POI discovery, route, work, production, combat, and progression state into useful next actions.
+## Systems already playable
 
-## Fictional time, work, and resources
+The current foundation includes:
 
-Simulation time is separate from wall-clock time. Canonical fictional seconds drive travel, work, projects, ecology regeneration, combat recovery, timed abilities, statuses, interrupts, and day review.
+- deterministic fictional time, simulation control, timed tasks, interrupts, and day review;
+- connected multi-region travel, exploration, scheduled transport, and acquired map knowledge;
+- continuous-character progression, skills, capabilities, equipment, and ability execution;
+- deterministic combat, statuses, battle persistence, recovery, and persistent companions;
+- inventory containers, carried-load logistics, shops, provenance, resource recovery, and economy seams;
+- ecology, gathering, work proficiency, production, workstations, and regional material chains;
+- commitments, relationships, recurring NPC availability, Journal/opportunity projections, and player information surfaces;
+- home storage, workshop capability, and earned portable field logistics;
+- current-schema persistence, lifecycle guards, long-session smoke coverage, and repeatable benchmark sampling.
 
-A defeated creature or gathering source does not magically manufacture finished goods. Physical resources preserve provenance through recovery, processing, crafting, cooking, salvage/recycling, trade, and use.
-
-```text
-world source
-  -> raw material
-  -> processing
-  -> component/ingredient
-  -> finished good
-  -> use/wear/consumption
-  -> repair/recycling/salvage or replacement
-```
-
-The first Phase 0.7 regional loop proves this in ordinary browser play: Brasshaven issues a Prospector Pick through a real first contact, the player travels to South Redstone Reach, mines two copper ore through timed gathering, returns to Market Ring, uses a real forge POI, and smelts a provenance-bearing copper ingot through timed production.
+High-volume content, advanced combat/ability breadth, deeper social life, agriculture/stewardship, earned automation, larger property systems, and release hardening remain future work.
 
 ## Read these first
 
@@ -104,8 +105,11 @@ The first Phase 0.7 regional loop proves this in ordinary browser play: Brasshav
 6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 7. `docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md`
 8. `docs/ARCHITECTURE.md`
-9. `docs/LOCALITY_AND_EXPLORATION_MODEL.md`
-10. `js/text/version.js`
+9. `docs/QUALITY_GATES.md`
+10. `PROJECT_PROFILE.yaml`
+11. `js/text/version.js`
+
+Repository evidence beats conversation memory. Follow the bounded-work and validation rules in `AGENTS.md` before implementation.
 
 ## Running
 
@@ -115,11 +119,14 @@ Serve over localhost; do not open `index.html` with `file://` because browser ES
 npm start
 ```
 
-Validation:
+Validation entry points:
 
 ```bash
 npm test
 npm run benchmark
+npm run benchmark:sample
+npm run hardening
+npm run check
 ```
 
-GitHub Actions is the executable validation environment for connector-driven sessions. The current Node 20 action-runtime deprecation warning is non-blocking but should be handled in a deliberate CI-maintenance pass rather than mixed into gameplay work.
+`package.json` requires Node 24 or newer. Hosted `Check` currently uses Node 24 LTS.
