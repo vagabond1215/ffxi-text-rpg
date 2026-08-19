@@ -61,6 +61,7 @@ top-level world flags
 current place / display location / position coherence
 combatSequence / activeBattle.id identity coherence
 active battle state when present, including deterministic combat/stat cache snapshots
+active battle player / root player identity and live combat-authority coherence
 ```
 
 The live battle RNG is transient and is not serialized authority.
@@ -81,15 +82,19 @@ Root `player.combat` and `player.statState` are reconstructible caches. Save enc
 
 Active-battle combatant caches are intentionally different under the current Game State 9 contract: `activeBattle.combatants[*].combat` and the player combatant's `statState` are persisted deterministic encounter snapshots and must match recomputation from the persisted combatant inputs. `activeBattle.rng` remains transient.
 
-Combat synchronization must keep root caches current after revival: status reconciliation refreshes combatant profiles, and battle-to-root resource/status synchronization refreshes root player caches without sharing nested status modifier objects by reference.
+While a battle is active, the persisted battle player is additionally bound to the durable root player: stable player ID, mutable resources, statuses, and the deterministic combat profile must agree with root combat-driving authority. Once the battle is terminal, the battle snapshot is historical and later root progression/recovery changes may diverge legitimately.
 
-### Identity, world-condition, and location rules
+Combat synchronization must keep both sides coherent during a live encounter. Status reconciliation refreshes combatant profiles; battle-to-root resource/status synchronization refreshes root player caches without sharing nested status modifier objects by reference; root-owned combat skill gains are copied into the active battle player before the encounter cache is refreshed. This last step is required after save/load because JSON revival no longer preserves the original nested-object sharing that exists immediately after encounter construction.
+
+### Identity, world-condition, location, and encounter rules
 
 Persisted player identity must remain canonical and internally coherent. Key-item identity is stable and duplicate-free; player flags and top-level world-condition flags are boolean facts, not truthy/falsy convenience values.
 
 `currentPlaceId`, `location`, and `position` form one persisted location authority. The place ID must be canonical, the display name must match that place, and the position must belong to that place. Topology positions must use valid navigable coordinates/levels/facing; grid positions must preserve raw x/y bounds and any external coordinate must map exactly to the stored x/y.
 
 `combatSequence` is the durable encounter-ID allocator. When `activeBattle` exists, its ID must equal the canonical `battle-NNNNNN` value for the persisted sequence. Load must reject a forged counter or battle ID rather than repairing either side.
+
+The battle player ID must match the root player ID. During an active encounter, root/battle resource, status, or combat-driving profile splits are malformed current state and must be rejected before revival rather than normalized into agreement. Terminal encounters retain historical snapshots and are not required to follow subsequent live-character changes.
 
 ### Historical schema decisions
 
@@ -124,7 +129,7 @@ tests/currentSchemaLocationPersistence.test.js
 tests/currentSchemaCombatIdentityPersistence.test.js
 ```
 
-Revisions `.44`–`.46` additionally cover strict player identity/key-item/player-flag facts, stable player envelope/world flags, and deterministic active-battle combat/stat snapshots. Preserve the pattern: positive non-trivial current save/load evidence plus malformed-current-save rejection/no-repair evidence for true persisted authority.
+Revisions `.44`–`.49` additionally cover strict player identity/key-item/player-flag facts, stable player envelope/world flags, deterministic active-battle combat/stat snapshots, coherent current location, encounter sequence identity, active battle/root player linkage, and post-load skill synchronization. Preserve the pattern: positive non-trivial current save/load evidence plus malformed-current-save rejection/no-repair evidence for true persisted authority.
 
 ## Resource lifecycle
 
@@ -136,7 +141,7 @@ A new direct production timed-task creator must define its durable consequence, 
 
 Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
-Latest validated runtime evidence is PR #372 exact head `8cdc20aecf40201e82cd560eccd19d7f34700798`, Check `32287076773`, Node 24.19.0: **670/670 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze after promotion is `512f8c3d5edbb22d07d857fa98d6f0755d043d89`.
+Latest validated runtime evidence is validation-only PR #373 exact head `49df1a5379da51e15cfb3ce0320008047a70c768`, Check `32290206583`, Node 24.19.0: **676/676 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze is the same exact `main` SHA. The PR was closed without merge after validation.
 
 ## UI and adapter boundaries
 
