@@ -113,6 +113,7 @@ quality:
       - combat-identity-sequence
       - active-battle-when-present
       - active-battle-deterministic-combat-caches
+      - active-battle-root-player-link
     optional_when_present:
       - work-registry
       - player-work-proficiencies
@@ -162,6 +163,8 @@ constraints:
   - currentPlaceId location and position must remain one coherent canonical location state
   - combatSequence is the persisted encounter-id allocator and must agree with activeBattle.id when a battle is present
   - active battle state and deterministic combat/stat snapshots are persisted while battle rng is transient and non-persisted
+  - an active battle player must remain bound to the root player id resources statuses and combat-driving profile while terminal battle snapshots remain historical
+  - post-load root-owned combat skill gains must synchronize into the active battle player before encounter cache refresh
   - refresh combatant and root player derived profiles after status reconciliation and durable combat synchronization
   - do not mechanically promote seed NPC enemy arrays or presentation log history to strict authority before a dedicated ownership audit
   - roadmap sequencing does not authorize unbounded implementation
