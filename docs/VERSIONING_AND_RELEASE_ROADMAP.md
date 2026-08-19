@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.38
+Product:       0.8.600.43
 Package:       0.8.600
 Account Save:  5
-Game State:    7
+Game State:    9
 Data:          37
 Benchmark:     3
-Codename:      Strict Player Wallet
+Codename:      Player Persistence Integration
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.38` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.43` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
 
 ## Product version format
 
@@ -33,26 +33,23 @@ A revision bump may record a coherent maintenance contract without advancing a f
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 7 | serialized character/world runtime contract |
+| Game State | 9 | serialized character/world runtime contract |
 | Data | 37 | canonical authored-data and stable-identifier contract |
 | Benchmark | 3 | benchmark workload/measurement comparability contract |
 
 These versions advance independently.
 
-### `.33`–`.38` version decision
+### Persistence-version history through `.43`
 
-Account Save 5, Data 37, and Benchmark 3 remain unchanged throughout `.33`–`.38`.
+Account Save 5, Data 37, and Benchmark 3 remained unchanged through the latest persistence trains.
 
-- `.33` extracts raw-safe validation for existing durable player progression/training/skills; no persisted meaning change.
-- `.34` changes persisted atlas discovery timing from wall-clock ISO `visitedAt` to canonical fictional `visitedAtWorldSeconds`, and adds strict atlas/POI discovery authority. **Game State advances 6 → 7.**
-- `.35` classifies work proficiencies as optional persisted authority; stored shape is unchanged.
-- `.36` validates existing mutable HP/MP/TP values without promoting derived combat profiles to authority.
-- `.37` classifies day-cycle summaries as optional persisted authority and validates the existing canonical-day bookkeeping.
-- `.38` validates the existing canonical wallet key/balance contract without renaming currency or changing economic meaning.
+- `.34` changed atlas timing from wall-clock `visitedAt` to canonical fictional `visitedAtWorldSeconds`: **Game State 6 → 7**.
+- `.39` removed root `player.combat` and `player.statState` from serialized authority and made them post-validation reconstructed caches: **Game State 7 → 8**.
+- `.41` changed valid persisted player-status modifier semantics to canonical nested modifier blocks: **Game State 8 → 9**.
 
-The Game State 7 bump at `.34` is deliberate because serialized field meaning changed. The other revisions are enforcement/classification changes and therefore remain Game State 7. No authored-data identity changed and Benchmark 3 protocol did not change.
+Other revisions in those trains enforce/classify existing authority or repair runtime synchronization without changing serialized meaning, so they do not bump Game State.
 
-Under the current pre-alpha policy there is no automatic Game State 6 → 7 migration. Old local saves are not a supported compatibility surface unless a future work order explicitly changes that policy.
+Under the current pre-alpha policy there are no automatic migrations between those Game State versions. Old local saves are not a supported compatibility surface unless a future work order explicitly changes that policy.
 
 ## Current compatibility policy
 
@@ -61,7 +58,7 @@ Mode: `pre-release-current-schema`.
 Current rules:
 
 1. Account/session payloads must match Account Save 5 exactly.
-2. Character payloads must match Game State 7 and contain complete required persisted authority before revival/reference relinking.
+2. Character payloads must match Game State 9 and contain complete required persisted authority before revival/reference relinking.
 3. Raw validation runs before runtime `ensure*` helpers may normalize state.
 4. Required persisted authority must already satisfy its declared current contract.
 5. Optional persisted authority may be absent, but a present value must satisfy its domain contract.
@@ -70,10 +67,12 @@ Current rules:
 8. Do not add duplicate fields, compatibility aliases, fallback storage keys, or adapter layers by reflex.
 9. The generic ordered migration utility remains available for a future migration only when compatibility is explicitly required or independently useful.
 10. Persisted gameplay time uses canonical fictional time; wall-clock timestamps are not a substitute for simulation time.
+11. Derived root player caches are omitted from save payloads and rebuilt only after current raw state validates.
+12. Live battle RNG is transient and is not serialized gameplay authority.
 
 ### Current raw validation
 
-Current Game State 7 raw validation covers:
+Current Game State 9 raw validation covers:
 
 ```text
 world time
@@ -89,11 +88,14 @@ party
 ability runtime
 semantic events
 atlas and POI discovery
-player discipline progression / lifetime training / learned skills
+player progression / lifetime training / learned skills
 player capability registry
 player inventory/container state
 player mutable HP/MP/TP
 player canonical wallet
+player equipment/loadout state
+player canonical statuses
+active battle when present
 ```
 
 Optional persisted authority validates when present:
@@ -104,11 +106,9 @@ player work proficiencies
 day-cycle history
 ```
 
-Separate active-owner checks require consistent persisted timed-task links for active travel, projects, work, timed abilities, and resource recovery.
+Derived/transient or post-revival state includes root `player.combat`, root `player.statState`, flat inventory alias identity, and `activeBattle.rng`.
 
 Before adding another validator, classify state as persistent required authority, derived/transient, construction convenience, or optional persisted authority.
-
-The raw boundary deliberately does **not** compose broad `validatePlayer()`. Flat `player.inventory` alias identity remains post-revival. `player.combat` and derived stat/resource maxima remain projections. `player.statState` requires a dedicated cache/ownership audit before changing its persistence role.
 
 ## Current ActionResult contract
 
@@ -145,31 +145,22 @@ npm run benchmark:sample
 
 Benchmark 3 is the current comparability baseline. No hard timing threshold is accepted yet.
 
-## Maintenance history
-
-Revisions `.2`–`.22` established current-schema cleanup, canonical command/action contracts, carried inventory authority, Node 24/current Actions, deterministic long-session/benchmark evidence, explicit lifecycle ownership, terminal task release, task-owner guards, strict active travel, task-registry validation, and positive active-task persistence evidence.
-
-Revisions `.23`–`.27` composed raw validators for projects, continuity, resource opportunities, ecology, party, and ability runtime.
-
-Revisions `.28`–`.32` composed strict world/simulation, player capability, inventory, semantic-event, and optional work validation.
-
-### Strict persistence train `.33`–`.38`
+## Latest maintenance train `.39`–`.43`
 
 | Revision | Contract | PR | Exact head | Check | Tests | Promoted main |
 | --- | --- | ---: | --- | ---: | ---: | --- |
-| `.33` | Strict Player Progression | #356 | `98c1d2e9c6499fb85256b40c5d225c329b623e7c` | `32186702816` | 607/607 | `4a4710464c0b47fc6abe0fdc924e70e3d1681577` |
-| `.34` | Canonical Discovery Time / Game State 7 | #357 | `3037e1a7ad3e9883b9dce0252866290bf1e52917` | `32196254452` | 611/611 | `cfaa7ce2c7afa613925f51c94aa2d12b311cd8e9` |
-| `.35` | Strict Work Proficiencies | #358 | `f01dbe687d434f88b61c72e7889a61e09bec8ff4` | `32196637167` | 616/616 | `be4c29eb5e4dd60993da113f3ccfa2241b8b06b8` |
-| `.36` | Strict Player Resources | #359 | `fec79d286c9d6ed117b92375bddaffd9e8f04f56` | `32196927507` | 620/620 | `3759f130174d804ccb76c9b243dca4d7826b10c1` |
-| `.37` | Strict Day Cycle | #360 | `29aecd95fd92930330b64734dd24a573c93d4cda` | `32197342668` | 625/625 | `4dd5b126b37810a807c5f1e03c074c68178ede06` |
-| `.38` | Strict Player Wallet | #361 | `a356c67124167ab60efd4cf4a57c742d3d94c355` | `32197699859` | 629/629 | `dc588d194211ccaed671d58362617bea6b2c5a73` |
+| `.39` | Derived Player Cache Contract / Game State 8 | #362 | `a94666003e54dedb96d8d4140b1b1cae04d7fd97` | `32273155030` | 632/632 | `16ce275995aae56c2d4da36dbce02ccd33647a25` |
+| `.40` | Strict Player Equipment | #363 | `103b3a363153a30a25549d58063717b5eed666ee` | `32273809797` | 637/637 | `29d20cf78d1faae2c7ae08899211e439577fa515` |
+| `.41` | Canonical Player Statuses / Game State 9 | #364 | `430dbb78bbbdaea72d2be9d4c1dcb82699c3d90d` | `32274840087` | 641/641 | `9cb2a32cbd3253bed099a8aabb31c68e7f7e252c` |
+| `.42` | Strict Active Battle | #365 | `ce680fc35568df1a16a2feed30b1b7130d0b8eb6` | `32275555067` | 646/646 | `5526eba5fa3728b4212955a307b91b0ee72b4b2c` |
+| `.43` | Player Persistence Integration | #366 | `2a10727dfa14734ca9c3031adf4bc368be592063` | `32276311018` | 648/648 | `daa1904c8287c5b16950142cef76edcfdd902d3d` |
 
 Every final head passed Test, Benchmark 3, and Benchmark Sample on Node 24.19.0 before promotion.
 
-Latest exact-head runtime evidence from `.38` / Check `32197699859`:
+Latest exact-head runtime evidence from `.43` / Check `32276311018`:
 
 ```text
-629/629 tests
+648/648 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -179,24 +170,24 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.352213 ms/op
-enemy profiles   0.066914 ms/op
-basic attacks    0.003626 ms/op
-tick dispatch    0.000750 ms/op
-route lookup     0.007245 ms/op
+player profiles  0.314430 ms/op
+enemy profiles   0.064417 ms/op
+basic attacks    0.003578 ms/op
+tick dispatch    0.000743 ms/op
+route lookup     0.006808 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.332962 ms/op    7.70%
-enemy profiles   0.063346 ms/op   11.90%
-basic attacks    0.001369 ms/op  150.99%
-tick dispatch    0.000825 ms/op   33.05%
-route lookup     0.007222 ms/op    5.66%
+player profiles  0.316339 ms/op    4.33%
+enemy profiles   0.058325 ms/op    5.66%
+basic attacks    0.001355 ms/op  173.80%
+tick dispatch    0.000598 ms/op   67.24%
+route lookup     0.006198 ms/op    1.95%
 ```
 
-Runtime freeze for this train: `dc588d194211ccaed671d58362617bea6b2c5a73`.
+Runtime freeze for this train: `daa1904c8287c5b16950142cef76edcfdd902d3d`.
 
 ## Timed-task ownership contract
 
@@ -210,14 +201,7 @@ A coherent runtime checkpoint requires one bounded contract, focused regression 
 
 Do **not** automatically begin `0.8.700`.
 
-For maintenance, the strongest next bounded persistence investigation is the derived combat/stat cache boundary:
-
-- audit direct production reads/writes/reconstruction of `player.combat` and `player.statState`;
-- separate durable character-base authority from deterministic cache/projection state;
-- decide whether each field should persist, validate, or be recomputed on load;
-- only then modify the raw required-field list or save/load behavior.
-
-Durable equipment/status persistence is a separate later candidate and should not be mechanically combined with that audit.
+For maintenance, the strongest next bounded investigation is the remaining root-player persistence boundary: classify identity, key items, and player flags before adding raw validation. Separately audit whether active-battle combatant combat profiles are intentionally durable encounter snapshots or should become reconstructible cache state. Do not mechanically combine those decisions.
 
 Candidate feature families remain agriculture/stewardship, earned automation, justified companion/social-life breadth, or another concrete life/logistics seam. Starting a new feature track requires an explicit fresh work order.
 
