@@ -65,6 +65,8 @@ validation:
     - tests/currentSchemaPlayerStatuses.test.js
     - tests/currentSchemaActiveBattle.test.js
     - tests/playerPersistenceIntegration.test.js
+    - tests/currentSchemaLocationPersistence.test.js
+    - tests/currentSchemaCombatIdentityPersistence.test.js
   benchmark_protocol_guard: tests/benchmarkProtocol.test.js
 modules:
   - game-runtime
@@ -97,6 +99,8 @@ quality:
       - semantic-events
       - atlas-discovery
       - poi-discovery
+      - player-envelope
+      - player-identity-key-items-flags
       - player-progression-and-skills
       - player-capabilities
       - player-inventory-state
@@ -104,7 +108,11 @@ quality:
       - player-wallet
       - player-equipment
       - player-statuses
+      - world-flags
+      - current-location-position
+      - combat-identity-sequence
       - active-battle-when-present
+      - active-battle-deterministic-combat-caches
     optional_when_present:
       - work-registry
       - player-work-proficiencies
@@ -121,8 +129,9 @@ quality:
     - player-stat-state
     - active-battle-rng
   next_classification_audit:
-    - player-identity-key-items-flags-boundary
-    - active-battle-combat-snapshot-cache-boundary
+    - persisted-npc-world-entity-boundary
+    - persisted-enemy-world-entity-boundary
+    - presentation-log-persistence-boundary
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
@@ -149,6 +158,10 @@ constraints:
   - omit root player combat and stat caches from save payloads and rebuild them after raw validation
   - keep mutable player HP MP TP independent from derived maximum-resource calculations
   - equipped items and canonical player statuses are durable persistence authority
-  - active battle state is durable while battle rng is transient and non-persisted
+  - player identity key-items player flags and world flags are strict durable authority
+  - currentPlaceId location and position must remain one coherent canonical location state
+  - combatSequence is the persisted encounter-id allocator and must agree with activeBattle.id when a battle is present
+  - active battle state and deterministic combat/stat snapshots are persisted while battle rng is transient and non-persisted
   - refresh combatant and root player derived profiles after status reconciliation and durable combat synchronization
+  - do not mechanically promote seed NPC enemy arrays or presentation log history to strict authority before a dedicated ownership audit
   - roadmap sequencing does not authorize unbounded implementation
