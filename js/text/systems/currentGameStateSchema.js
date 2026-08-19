@@ -1,5 +1,6 @@
 import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
+import { validatePersistedActiveBattlePlayerLink } from './activeBattlePlayerLinkPersistence.js';
 import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
@@ -103,6 +104,8 @@ export function validateCurrentGameStateStructure(state, options = {}) {
             else issues.push(...validateCapabilityState(state.player).map((issue) => `player.${issue}`));
         }
     }
+
+    if (isObject(state.activeBattle) && isObject(state.player)) issues.push(...validatePersistedActiveBattlePlayerLink(state));
 
     if (options.requireMeta === true) {
         if (!isObject(state.meta)) issues.push('meta must be a persisted object.');
