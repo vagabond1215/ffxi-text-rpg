@@ -27,7 +27,7 @@ const REQUIRED_OBJECT_FIELDS = Object.freeze([
 ]);
 const REQUIRED_ARRAY_FIELDS = Object.freeze(['npcs', 'enemies', 'log']);
 const REQUIRED_PLAYER_OBJECT_FIELDS = Object.freeze([
-    'identity', 'jobs', 'progression', 'wallet', 'equipment', 'inventoryState', 'combat', 'resources', 'flags',
+    'identity', 'jobs', 'progression', 'wallet', 'equipment', 'inventoryState', 'resources', 'flags',
 ]);
 const REQUIRED_PLAYER_ARRAY_FIELDS = Object.freeze(['inventory', 'keyItems', 'statuses']);
 

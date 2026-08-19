@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.38');
+    assert.equal(PRODUCT_VERSION, '0.8.600.39');
     assert.equal(PACKAGE_VERSION, '0.8.600');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
-    assert.equal(VERSION.gameState, 7);
+    assert.equal(VERSION.gameState, 8);
     assert.equal(VERSION.data, 37);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Strict Player Wallet');
+    assert.equal(VERSION.codename, 'Derived Player Cache Contract');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -56,13 +56,15 @@ test('version manifest separates product package persistence data and focused cl
             inventoryTransfers: SYSTEM_VERSIONS.inventoryTransfers,
             validation: SYSTEM_VERSIONS.validation,
             walletPersistence: SYSTEM_VERSIONS.walletPersistence,
+            playerDerivedState: SYSTEM_VERSIONS.playerDerivedState,
+            saveEncoding: SYSTEM_VERSIONS.saveEncoding,
             placeAtlas: SYSTEM_VERSIONS.placeAtlas,
             discoveryPersistence: SYSTEM_VERSIONS.discoveryPersistence,
             poiDiscovery: SYSTEM_VERSIONS.poiDiscovery,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.38',
+            versionManifest: '0.8.600.39',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -86,8 +88,10 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.30.0',
+            validation: '0.31.0',
             walletPersistence: '0.1.0',
+            playerDerivedState: '0.1.0',
+            saveEncoding: '0.6.0',
             placeAtlas: '0.6.0',
             discoveryPersistence: '0.1.0',
             poiDiscovery: '0.4.0',
@@ -96,16 +100,18 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.38/);
+    assert.match(describeVersion(), /Product: 0\.8\.600\.39/);
     assert.match(describeVersion(), /Package: 0\.8\.600/);
     assert.match(describeVersion(), /Account Save: 5/);
-    assert.match(describeVersion(), /Game State: 7/);
+    assert.match(describeVersion(), /Game State: 8/);
     assert.match(describeVersion(), /Data: 37/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Strict Player Wallet/);
+    assert.match(describeVersion(), /Codename: Derived Player Cache Contract/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /validation: 0\.30\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.31\.0/);
     assert.match(describeSystemVersions(), /walletPersistence: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerDerivedState: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /saveEncoding: 0\.6\.0/);
     assert.match(describeSystemVersions(), /dayCyclePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
     assert.match(describeSystemVersions(), /placeAtlas: 0\.6\.0/);
