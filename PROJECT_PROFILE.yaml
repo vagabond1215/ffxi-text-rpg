@@ -10,6 +10,7 @@ project:
 authority:
   instructions: AGENTS.md
   handoff: docs/THREAD_HANDOFF.md
+  execution_pipeline: docs/EXECUTION_PIPELINE.md
   design_direction: docs/DEVELOPMENT_DIRECTION.md
   roadmap: docs/ROADMAP.md
   architecture: docs/ARCHITECTURE.md
@@ -25,15 +26,33 @@ git:
   normal_work: direct-main
   risky_or_explicit_review_work: feature-branch-pr
   stabilization_transition: protect-default-branch-and-require-green-ci
+progression:
+  continuation_pass: C0-continuation-infrastructure-content-census
+  continuation_pass_status: complete
+  next_bounded_unit: 0.8.700-cultivation-stewardship
+  content_scale_gate_version: 1
+  content_scale_targets: criteria-driven-lower-bound-planning-indicators
+  phase_0_8_sequence:
+    - 0.8.700-cultivation-stewardship
+    - 0.8.800-earned-routine-delegation
+    - 0.8.900-household-community-continuity
+    - phase-0.8-exit-audit
+  deferred_release_transition:
+    - browser-e2e-accessibility-program
+    - supported-save-migrations
+    - protected-main-required-check
+    - accepted-hard-performance-budgets
 validation:
   tests: npm test
   benchmark: npm run benchmark
   benchmark_sample: npm run benchmark:sample
+  census: npm run census
   hardening: npm run hardening
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
   architecture_debt_guard: tests/architectureDebtGuard.test.js
+  content_scale_guard: tests/contentScaleGate.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
   lifecycle_guards:
     - tests/tickLifecycle.test.js
@@ -146,8 +165,10 @@ quality:
   benchmark_protocol: 3
   benchmark_warmup_ratio: 0.1
   hard_performance_thresholds: not-yet-accepted
+  content_scale_is_release_progress_not_ci_pass_fail: true
 constraints:
   - use current repository authority rather than conversation memory
+  - read thread handoff and execution pipeline before broad discovery
   - preserve the original-world canon and legacy/reference boundary
   - preserve the distinction between fictional simulation time and wall-clock scheduling
   - preserve player-facing acquired-knowledge map privacy
@@ -178,5 +199,6 @@ constraints:
   - state.events remains the persisted structured semantic observation channel and must not parse or depend on command-log prose
   - activeBattle.log is separate persisted encounter-local history and is not the top-level presentation log
   - canvas command history and output buffers remain transient UI state separate from Game State
-  - the broad top-level npcs enemies and log classification series is complete; choose future work through a fresh bounded work order
+  - the broad top-level npcs enemies and log classification series is complete; do not rediscover or extend it without a concrete defect
+  - content-heavy work should run the census without gaming counts with disconnected filler
   - roadmap sequencing does not authorize unbounded implementation
