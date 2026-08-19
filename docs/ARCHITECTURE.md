@@ -34,6 +34,8 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 - Current location is one coherent persisted authority: canonical place ID, canonical display name, and a position owned by that same place.
 - `combatSequence` is the durable encounter-ID allocator. A persisted active battle must carry the corresponding `battle-NNNNNN` identity.
 - Active battles persist ongoing combat authority: combatants, resources, sides, statuses, action history/timeline, phase, and deterministic combat/stat snapshots survive save/load. The live battle RNG is transient and is not serialized.
+- While a battle is active, the battle-player snapshot is bound to the durable root player for stable player ID, mutable resources, canonical statuses, and the deterministic combat profile derived from live root combat-driving authority. A terminal battle is historical and may legitimately diverge from later root-character changes.
+- Root-owned combat skill gains that occur during an active encounter are copied into the battle-player snapshot before encounter cache refresh. This synchronization is explicit because save/load breaks the nested object sharing that happens to exist immediately after encounter construction.
 - Projects own persistent material/labor progress and exactly-once completion state.
 - Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks rather than creating parallel stores or timers.
 - Transport owns fares, cadence, departure, arrival, journey cargo snapshots, and service limits, deriving carried load from inventory.
@@ -73,13 +75,13 @@ The flat `player.inventory` array is a runtime convenience alias relinked to the
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.48
+Product:       0.8.600.49
 Package:       0.8.600
 Account Save:  5
 Game State:    9
 Data:          37
 Benchmark:     3
-Codename:      Strict Combat Identity Sequence
+Codename:      Strict Active Battle Player Link
 ```
 
 `js/text/save.js` owns account/session/character persistence. Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
@@ -110,6 +112,7 @@ top-level world flags
 current location/position coherence
 combat identity sequence
 active battle state and deterministic encounter caches when present
+active battle player / root player live-authority coherence
 ```
 
 Optional persisted authority currently includes:
@@ -147,7 +150,11 @@ player.statState
 
 Active battle snapshots are different. Product `.46` made deterministic encounter `combat` caches, and the player combatant's `statState`, strict persisted snapshots. They must match deterministic recomputation from the persisted combatant inputs. This preserves an internally coherent ongoing encounter while still keeping root player caches non-authoritative.
 
-`reconcileCombatStatuses()` refreshes battle combatant derived profiles after status timing changes. `syncPlayerFromCombat()` copies durable resources/statuses back to the root player, clones nested status modifiers, and refreshes root caches.
+Product `.49` adds a second, cross-boundary invariant for the one active battle player. Its stable ID must match the root player. While `activeBattle.phase === 'active'`, its mutable resources and statuses must match the root player and its persisted combat cache must equal a fresh deterministic profile reconstructed from root combat-driving authority. This catches a battle snapshot that is internally self-consistent but no longer represents the live character.
+
+Terminal encounters are intentionally different: after victory/defeat the encounter snapshot is historical, so later root progression, recovery, loadout, or resource changes do not have to rewrite the terminal battle.
+
+`reconcileCombatStatuses()` refreshes battle combatant derived profiles after status timing changes. `syncPlayerFromCombat()` copies durable resources/statuses back to the root player, clones nested status modifiers, and refreshes root caches. `combatActionEngine.js` additionally copies a newly gained root combat-skill map into the active battle player before final cache refresh. That explicit step matters after save/load because JSON revival recreates root and battle progression as separate nested objects rather than preserving construction-time object sharing.
 
 ### Identity, flags, location, and encounter identity
 
@@ -156,6 +163,8 @@ Products `.44` and `.45` made player identity/key items/player flags, the stable
 Product `.47` made persisted location coherent: exact canonical `currentPlaceId`, matching `location`, and a `position` owned by that place. Topology places require navigable normalized coordinates, valid level and facing, and no grid x/y. Grid places require stored x/y within raw bounds; any external coordinate must map exactly to those values.
 
 Product `.48` made encounter allocation strict: `combatSequence` is the persisted allocator and an existing `activeBattle.id` must exactly match its padded sequence identity. Forged counters or IDs are rejected before revival rather than repaired.
+
+Product `.49` makes the battle-player identity/live-authority link strict while the encounter is active. A forged root player ID, live resource/status split, or combat-driving split is rejected before revival. Load does not repair either side. A terminal battle remains historical.
 
 ### State-classification rule
 
@@ -189,16 +198,16 @@ workTaskEngine.js
 
 `domRoot.js` owns the mounted DOM app and onboarding observer. Tick subscriber replacement is stale-disposer safe. `tests/longSessionLifecycle.test.js` proves deterministic multi-day advancement with periodic current-schema save/load, bounded event/day-summary histories, exactly-once task transitions, and zero-retained-task steady state for owner-managed lifecycles.
 
-`tests/playerPersistenceIntegration.test.js` proves the player boundary together: equipment, canonical statuses, mutable resources, active battle, stripped root caches, save/load revival, status expiry, derived profile refresh, non-aliased status modifier blocks, and resumed combat.
+`tests/playerPersistenceIntegration.test.js` proves the player boundary together: equipment, canonical statuses, mutable resources, active battle, stripped root caches, save/load revival, status expiry, derived profile refresh, non-aliased status modifier blocks, and resumed combat. `tests/currentSchemaCombatIdentityPersistence.test.js` additionally proves active battle/root player linkage, malformed split rejection/no repair, terminal historical divergence, and post-load combat-skill synchronization.
 
 ## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check uses Node 24 LTS, `actions/checkout@v7`, and `actions/setup-node@v6`.
 
-Latest exact-head runtime gate: PR #372 / head `8cdc20aecf40201e82cd560eccd19d7f34700798` / Check `32287076773`, Node 24.19.0:
+Latest exact-head runtime gate: validation-only PR #373 / head `49df1a5379da51e15cfb3ce0320008047a70c768` / Check `32290206583`, Node 24.19.0. The PR existed only to surface the standard pull-request Check for the exact direct-main runtime and was closed without merge after validation.
 
 ```text
-670/670 tests
+676/676 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -208,24 +217,24 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player combat profiles  0.268864 ms/op
-enemy combat profiles   0.052262 ms/op
-basic attacks            0.003205 ms/op
-tick dispatch            0.000825 ms/op
-direct route lookup      0.005607 ms/op
+player combat profiles  0.382805 ms/op
+enemy combat profiles   0.069545 ms/op
+basic attacks            0.003288 ms/op
+tick dispatch            0.000952 ms/op
+direct route lookup      0.007661 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.260915 ms/op    6.23%
-enemy profiles   0.050549 ms/op    8.78%
-basic attacks    0.001223 ms/op  224.79%
-tick dispatch    0.000587 ms/op  123.28%
-route lookup     0.005258 ms/op    8.89%
+player profiles  0.362564 ms/op    6.88%
+enemy profiles   0.068110 ms/op    8.11%
+basic attacks    0.001199 ms/op  209.52%
+tick dispatch    0.000681 ms/op   57.21%
+route lookup     0.007336 ms/op    3.69%
 ```
 
-Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. The runtime freeze for this train is `512f8c3d5edbb22d07d857fa98d6f0755d043d89`. Documentation commits after that freeze are synchronization only.
+Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. The runtime freeze for this packet is `49df1a5379da51e15cfb3ce0320008047a70c768`. Documentation commits after that freeze are synchronization only.
 
 ## Carried-forward rule
 
