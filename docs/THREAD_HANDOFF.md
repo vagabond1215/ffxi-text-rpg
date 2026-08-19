@@ -19,7 +19,17 @@ Hearth & Horizon is pre-alpha. Old local saves/accounts are not a compatibility 
 
 Runtime first. Freeze runtime before documentation. Update this handoff last. Report only validation that actually ran.
 
-The latest user work order explicitly authorized the next highest-recommended maintenance pass after Product `.50`: audit the `state.enemies` ownership/persistence boundary, create the plan, and implement the coherent result. That pass is complete as Product `.51`. It does **not** authorize automatically starting the remaining `state.log` audit or opening `0.8.700`.
+The latest user instruction, `continue`, explicitly authorized the next bounded maintenance unit named by the prior handoff: audit top-level `state.log` ownership/persistence and implement the coherent result. That pass is complete as Product `.52`.
+
+The earlier three-array classification sequence is now complete:
+
+```text
+state.npcs    -> derived runtime world projection
+state.enemies -> derived encounter-template projection
+state.log     -> transient current-session command presentation history
+```
+
+There is **no automatically authorized next maintenance packet** from that sequence. Do not open `0.8.700` or choose another revision merely because `.52` is complete.
 
 ## Product laws
 
@@ -45,47 +55,47 @@ Fictional time is separate from wall-clock scheduling. Resources retain provenan
 ## Current baseline
 
 ```text
-Product:       0.8.600.51
+Product:       0.8.600.52
 Package:       0.8.600
 Account Save:  5
-Game State:    11
+Game State:    12
 Data:          37
 Benchmark:     3
-Codename:      Derived Enemy Encounter Projection
+Codename:      Transient Command Presentation Log
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
-Validation:    0.42.0
+Validation:    0.43.0
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.51` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` remain complete and audited. Revisions `.2` through `.52` are maintenance/hardening revisions over the closed `0.8.600` track and **do not open `0.8.700`**.
 
 ## Current branch and runtime freeze
 
 Normal development branch: `main`.
 
-The `.51` runtime was implemented directly on `main` under the bounded normal-work policy and frozen at:
+The `.52` runtime was implemented directly on `main` and frozen at:
 
 ```text
-5a97a109d9476438d001ee75b8e20293f57360dd
+0fb444aee8b6dbd3a35bb1d3b7662728d85fd691
 ```
 
 Documentation/configuration commits after that SHA are synchronization only and do not create a new runtime checkpoint.
 
-Validation-only draft PR **#375** existed solely to surface the repository's normal pull-request `Check` for that frozen runtime. It was closed **without merge** after validation.
+Validation-only draft PR **#376** existed solely to surface the repository's normal pull-request `Check` for that frozen runtime. It was closed **without merge** after validation.
 
 ```text
-Head   5a97a109d9476438d001ee75b8e20293f57360dd
-PR     #375 validation-only, closed without merge
-Check  32297557960
+Head   0fb444aee8b6dbd3a35bb1d3b7662728d85fd691
+PR     #376 validation-only, closed without merge
+Check  32301160532
 Node   24.19.0
 ```
 
 Observed hosted validation:
 
 ```text
-tests              684
-pass               684
+tests              688
+pass               688
 fail               0
 cancelled          0
 skipped            0
@@ -96,135 +106,153 @@ Benchmark Sample   success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.360644 ms/op
-enemy profiles   0.069621 ms/op
-basic attacks    0.002998 ms/op
-tick dispatch    0.000941 ms/op
-route lookup     0.007920 ms/op
+player profiles  0.399417 ms/op
+enemy profiles   0.070029 ms/op
+basic attacks    0.003675 ms/op
+tick dispatch    0.000898 ms/op
+route lookup     0.007617 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.361064 ms/op    3.82%
-enemy profiles   0.067427 ms/op    9.06%
-basic attacks    0.001015 ms/op  191.25%
-tick dispatch    0.000908 ms/op   38.68%
-route lookup     0.007617 ms/op    8.23%
+player profiles  0.357454 ms/op    7.63%
+enemy profiles   0.070214 ms/op   11.19%
+basic attacks    0.001153 ms/op  214.09%
+tick dispatch    0.000873 ms/op   30.99%
+route lookup     0.007237 ms/op    6.02%
 ```
 
 No hard performance threshold is accepted. Benchmark 1/2 are not directly comparable to Benchmark 3.
 
-## Product `.51` — Derived Enemy Encounter Projection
+## Product `.52` — Transient Command Presentation Log
 
 ### Audit conclusion
 
-The dedicated `state.enemies` audit traced production construction, readers, mutation sites, spawn references, and the encounter-cloning boundary before changing persistence.
+The dedicated audit traced every production producer/consumer rather than adding a log validator by default.
 
-Current ownership is:
+Top-level `state.log` ownership is:
 
 ```text
-createSeedEnemies() / authored enemy definitions
-  -> stable encounter-template identity/species/zone/level/loot/aggro inputs
+commandRouter
+  -> calls appendLog(state, `> ${parsed.input}`) for routed command input
 
-createEnemy()
-  -> constructs each template and deterministically derives its initial combat/resources
+gameState.appendLog
+  -> stores { at: new Date().toISOString(), entry }
+  -> bounds history to the latest 100 entries
 
-place spawn rules / player opportunities
-  -> reference stable enemy IDs
-
-startEncounter()
-  -> resolves a template and constructs a distinct encounter combatant
-
-activeBattle
-  -> durable mutable combatants, resources, statuses, actions, timeline and phase
+log / inspect log
+  -> only production readers
+  -> render the recent timestamped command history
 ```
 
-No production mutation of `state.enemies` was found. No durable world fact is owned solely by that array. The `combat` and `resources` fields created on seed enemies are deterministic construction data, not ongoing entity history.
+No gameplay/domain system reads the top-level log or parses its prose. Writing a command log entry does not advance canonical fictional time and does not itself create a semantic event.
 
-Therefore `state.enemies` is **derived/reconstructible encounter-template state**, not persisted mutable world-entity authority.
+Other history-like structures are separate authorities:
+
+```text
+state.events
+  -> persisted typed semantic observation history
+  -> stable sequence ids
+  -> canonical fictional-time context
+
+activeBattle.log
+  -> separate persisted encounter-local battle narrative/action history
+
+canvas uiState.commandHistory / outputLines
+  -> separate transient UI input/output buffers
+```
+
+`tests/semanticEventEngine.test.js` already proves semantic event consumers operate without parsing top-level log prose. Character state replacement could already discard command history, further confirming that it is not continuous-character authority.
+
+Therefore top-level `state.log` is **transient current-session presentation/diagnostic state**, not durable Game State.
 
 ### Runtime implementation
 
 New module:
 
 ```text
-js/text/systems/enemyEncounterProjection.js
+js/text/systems/presentationLog.js
 ```
 
-`refreshEnemyEncounterProjection(state)` replaces `state.enemies` with fresh canonical entities from `createSeedEnemies()`.
+`resetPresentationLog(state)` sets the runtime presentation history to a fresh empty array.
 
-The existing post-validation world-projection chain now reconstructs enemy templates during `refreshNpcWorldProjection(state)`, before rebuilding NPC projection. This is the current bounded orchestration seam; do not refactor it merely for naming aesthetics without a separate reason.
+Persistence behavior is deliberately phase-specific:
 
-Save encoding now omits both top-level projections:
+1. new game state still constructs `log: []` so runtime diagnostics have a valid array;
+2. live routed commands continue appending bounded wall-clock presentation history;
+3. `saveGame()` validates the current runtime normally and **does not clear** the live session log;
+4. save encoding omits top-level `state.log` alongside the existing non-authoritative world/entity projections;
+5. `loadCharacter()` validates the raw Game State 12 payload first;
+6. only after raw validation, load calls `resetPresentationLog(state)` before broad runtime validation/revival;
+7. supplied or injected serialized top-level log history therefore cannot become character authority;
+8. a loaded character begins a fresh command-diagnostic session while persisted `state.events` remains intact.
+
+This is intentionally **not** a conversion of command timestamps from wall clock to fictional time. Those timestamps are appropriate for transient presentation. Durable chronology belongs to typed domain state such as semantic events, tasks, day-cycle records, travel, commitments, or active battle.
+
+### Raw-schema result
+
+`currentGameStateSchema.js` no longer requires any of the three broad top-level arrays:
 
 ```text
 state.npcs
 state.enemies
+state.log
 ```
 
-Raw `currentGameStateSchema.js` no longer requires either array. `state.log` remains the only broad required top-level array awaiting ownership classification.
+That does not mean runtime state may omit them arbitrarily. Post-validation runtime construction/revival supplies the needed projections/session state, and broad runtime validation may still assert runtime invariants such as `state.log` being an array.
 
-A forged/stale serialized `enemies` field cannot become authority. Game State 11 accepts the payload without requiring that projection and revival deterministically replaces supplied runtime enemy data before encounter lookup.
-
-### Active battle remains different
-
-Do not infer from `.51` that enemy combat state is generally non-persistent.
-
-Once `startEncounter()` resolves a template, the battle engine constructs a unique encounter combatant under `activeBattle`. That snapshot is governed by the established active-battle persistence contract and carries mutable resources, statuses, deterministic caches, action history/timeline, sides and phase through save/load. Only the reusable seed/template projection left serialized authority.
-
-## `.51` focused regression coverage
+## `.52` focused regression coverage
 
 New test file:
 
 ```text
-tests/currentSchemaEnemyEncounterProjection.test.js
+tests/currentSchemaPresentationLog.test.js
 ```
 
 It proves:
 
-- raw Game State 11 is valid without `state.enemies`;
-- `state.log` remains required pending its own audit;
-- refresh replaces forged enemy templates with fresh canonical seed entities;
-- mutating a projected seed enemy's HP does not survive a projection refresh;
-- save encoding omits `enemies`;
-- load reconstructs canonical enemy templates before `startEncounter()` lookup;
-- a loaded reconstructed template can start a normal encounter;
-- injected serialized enemy projection data is replaced rather than accepted as authority.
+- raw Game State 12 is valid without `npcs`, `enemies`, or top-level `log`;
+- routed command logging is wall-clock presentation history and does not change fictional world time or semantic events;
+- `log` remains a functioning current-session diagnostic command;
+- save encoding omits `npcs`, `enemies`, and `log`;
+- saving does not erase the current in-memory command history;
+- structured semantic events survive save/load unchanged;
+- a loaded character begins with an empty presentation log and can immediately accumulate new commands;
+- injected serialized command history is discarded on load rather than accepted as durable authority.
 
-Existing NPC projection coverage was advanced to Game State 11 and now proves both `npcs` and `enemies` are absent from encoded state. Discovery/version-manifest expectations were advanced accordingly. Full hosted coverage remained green.
+NPC/enemy projection and discovery/version-manifest suites were advanced to Game State 12. Full hosted coverage remained green at 688/688.
 
-## `.51` version decision
+## `.52` version decision
 
-This packet changes serialized Game State shape and therefore advances the schema version.
+The packet changes serialized Game State shape, so it advances the schema version.
 
 ```text
-Product                    0.8.600.50 -> 0.8.600.51
-Game State                 10 -> 11
-Validation                 0.41.0 -> 0.42.0
-saveEncoding               0.7.0 -> 0.8.0
-playerDerivedState         0.1.1 -> 0.1.2
-npcWorldProjection         0.1.0 -> 0.1.1
-enemyEncounterProjection   new 0.1.0
-Account Save               5 unchanged
-Package                    0.8.600 unchanged
-Data                       37 unchanged
-Benchmark                  3 unchanged
+Product          0.8.600.51 -> 0.8.600.52
+Game State       11 -> 12
+Validation       0.42.0 -> 0.43.0
+saveEncoding     0.8.0 -> 0.9.0
+presentationLog  new 0.1.0
+Account Save     5 unchanged
+Package          0.8.600 unchanged
+Data             37 unchanged
+Benchmark        3 unchanged
 ```
 
-No Game State 10 → 11 migration was added. That is deliberate under the pre-alpha current-schema-only policy.
+No Game State 11 → 12 migration was added. That is deliberate under the current-schema-only pre-alpha policy.
 
-Historical schema transitions are now:
+Historical schema transitions now include:
 
 - `.34`: Game State 6 → 7 for canonical fictional-time discovery timestamps;
 - `.39`: Game State 7 → 8 when root player combat/stat caches left serialized authority;
 - `.41`: Game State 8 → 9 for canonical nested persisted status modifiers;
-- `.50`: Game State 9 → 10 when the reconstructible `state.npcs` runtime projection left serialized authority;
-- `.51`: Game State 10 → 11 when the reconstructible `state.enemies` encounter-template projection left serialized authority.
+- `.50`: Game State 9 → 10 when `state.npcs` projection left serialized authority;
+- `.51`: Game State 10 → 11 when `state.enemies` projection left serialized authority;
+- `.52`: Game State 11 → 12 when top-level command presentation history left serialized authority.
 
-## Current raw Game State 11 boundary
+## Current raw Game State 12 boundary
 
-`currentGameStateSchema.js` validates decoded state **before reference revival, derived projection reconstruction, and runtime `ensure*` normalization**.
+`currentGameStateSchema.js` validates decoded state **before reference revival, projection reconstruction, presentation-session initialization, and runtime `ensure*` normalization**.
 
 Required raw validation covers:
 
@@ -249,7 +277,6 @@ current place / display location / position coherence
 combatSequence / activeBattle.id coherence
 active battle and deterministic encounter combat/stat snapshots when present
 active battle player / root player live-authority coherence while active
-state.log array pending dedicated ownership classification
 ```
 
 Optional persisted authority:
@@ -260,11 +287,12 @@ player.progression.workProficiencies
 state.dayCycle
 ```
 
-Derived/transient or post-revival:
+Derived/transient or post-validation runtime state:
 
 ```text
 state.npcs
 state.enemies
+state.log
 flat player.inventory alias identity
 player.combat
 player.statState
@@ -276,80 +304,68 @@ activeBattle.rng
 - one fictional-time/task/interrupt substrate;
 - strict current-schema persistence during pre-alpha unless compatibility is explicitly requested;
 - raw persistence validation before revival/runtime normalization;
+- `state.events` is persisted typed semantic observation history and must not depend on presentation prose;
+- top-level `state.log` is session-only command presentation history, not durable character memory;
+- `activeBattle.log` is separate persisted encounter-local history;
+- Canvas command/output history is transient UI state separate from Game State;
 - inventory owns container/access/capacity/transfer/carried-item facts;
 - equipment is durable loadout authority;
 - player identity/key items/player flags and world flags are strict durable facts;
 - current place/name/position is one coherent persisted location authority;
-- transport derives carried load and owns fare/cadence/departure/arrival/service limits;
-- projects own material/labor/completion state;
-- work owns durable work records when constructed;
-- work proficiency is character-owned mastery and optional persisted authority;
-- production owns recipe/work/input/output/provenance/mastery;
-- campaign recovery remains the single player/party recovery authority;
-- party owns persistent companion membership/location/tactics/resources/statuses;
-- NPC backing records are reconstructed projection of canonical seed + party authority, not a second persistence store;
+- projects, work, production, recovery, transport, commitments, relationships, party, ecology and resources retain their declared owners;
+- NPC backing records are reconstructed projection of canonical seed + party authority;
 - enemy seed/template records are reconstructed encounter projection, while `activeBattle` owns mutable ongoing enemy combat state;
-- commitments remain separate from relationships and Journal projection;
-- NPC schedules are recurring availability against canonical fictional time, not a second clock;
-- atlas/POI discovery is acquired knowledge and uses canonical fictional visit time;
-- semantic events are bounded observational history, not world authority, while persisted ID/order/sequence integrity is strict;
-- mutable HP/MP/TP and wallet balances persist;
 - root player combat/stat caches are omitted from saves and rebuilt after validation;
-- canonical player statuses persist and use nested modifier blocks;
-- active battle persists with deterministic combat/stat snapshots while live RNG does not;
+- active battle persists deterministic encounter state while live RNG does not;
 - combatSequence and activeBattle identity must remain coherent;
-- an active battle player must remain bound to root player ID/resources/statuses/combat-driving profile;
-- terminal battle snapshots are historical rather than live-character mirrors;
 - canonical ActionResult logic uses structured fields rather than prose parsing;
 - Benchmark protocol changes require a Benchmark version bump when comparability changes;
 - legacy FFXI-derived records remain bounded research/reference material.
 
-## Documentation synchronization after `.51` runtime freeze
+## Documentation synchronization after `.52` runtime freeze
 
-After runtime freeze at `5a97a109d9476438d001ee75b8e20293f57360dd`, documentation/configuration was synchronized without changing runtime behavior:
+After runtime freeze at `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`, documentation/configuration was synchronized without changing runtime behavior:
 
-- `PROJECT_PROFILE.yaml` — Game State 11, enemy projection classification/serialization exclusion, `state.log` as sole remaining audit;
-- `docs/ROADMAP.md` — `.51` checkpoint, validation evidence, next decision boundary;
-- `docs/ARCHITECTURE.md` — enemy encounter-template ownership and active-battle distinction;
-- `docs/QUALITY_GATES.md` — Game State 11 raw/derived boundary and regression evidence;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Game State 10 → 11 schema decision;
+- `PROJECT_PROFILE.yaml` — Game State 12, presentation-log exclusion, broad-array series complete;
+- `docs/ROADMAP.md` — `.52` checkpoint, validation evidence, fresh next-decision boundary;
+- `docs/ARCHITECTURE.md` — command presentation / semantic event / active-battle history separation;
+- `docs/QUALITY_GATES.md` — Game State 12 raw/transient boundary and focused regression evidence;
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — Game State 11 → 12 schema decision;
 - `README.md` — current runtime/persistence orientation;
-- `docs/SYSTEM_CATALOG.md` — current projection and combat authority status;
+- `docs/SYSTEM_CATALOG.md` — current transient presentation-history status;
 - this handoff — updated last.
 
 These documentation commits are not new runtime checkpoints and were not independently benchmarked.
 
-## Next bounded work unit — not started
+## Next bounded work — not selected
 
-**Highest recommended next maintenance pass: audit `state.log` ownership/persistence.**
+The persistence classification queue that drove Products `.50`–`.52` is complete. There is no inherited next audit to begin automatically.
 
-Do not begin by validating log entries. First trace every producer and consumer and classify at least:
+Do **not** automatically begin `0.8.700`.
+
+For a future user request to continue, first refresh repository authority and select one bounded unit based on the then-current roadmap and evidence. Candidate feature families currently named in roadmap/catalog include:
 
 ```text
-command input history
-player-facing recent output/history
-wall-clock timestamp usage
-canvas/DOM presentation history
-save/load expectations
-semantic-event overlap or lack thereof
-whether anything mechanically reads log prose
+agriculture / gardening / stewardship
+earned automation or hired labor after established chores
+justified companion / social-life breadth
+another concrete life / logistics gap
 ```
 
-Current evidence already suggests `appendLog()` writes wall-clock-stamped command/presentation history and command help describes `log` as recent command history, while `state.events` is the structured semantic observational channel. The next pass must prove the boundary across all producers/consumers before deciding whether `state.log` should leave Game State authority, remain optional durable player memory, or be replaced by a more explicit presentation-history owner.
-
-Do **not** combine the log audit with a UI redesign. Do **not** automatically begin `0.8.700`.
+A maintenance packet is also valid when a specific repository-evidenced risk is identified, but do not manufacture another persistence audit merely to extend revision numbering.
 
 ## Session status
 
 ```text
 Branch:                 main
-Runtime freeze:         5a97a109d9476438d001ee75b8e20293f57360dd
-Relevant PR:            #375 validation-only, closed without merge
-Hosted Check:           32297557960 success
-Tests:                  684/684 passed
+Runtime freeze:         0fb444aee8b6dbd3a35bb1d3b7662728d85fd691
+Relevant PR:            #376 validation-only, closed without merge
+Hosted Check:           32301160532 success
+Tests:                  688/688 passed
 Benchmark 3:            success
 Benchmark Sample:       success
 Known runtime failures: none observed
 Known blocker:          none
-Next unit:              state.log ownership/persistence audit
+Broad array audits:     complete (npcs, enemies, log)
+Next unit:              not selected; fresh bounded work order required
 ```
