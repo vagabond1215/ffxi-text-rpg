@@ -25,10 +25,12 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 
 - Fictional time, timed tasks, interrupts, work, projects, travel, combat readiness, recovery, and day review share one canonical deterministic simulation substrate.
 - Continuous-character progression, learned skills/capabilities, and work proficiency belong to the person; disciplines are contextual training traditions.
-- Mutable HP/MP/TP are persisted player state. Combat profiles and derived maxima are projections from character/training/equipment/status inputs, not accepted raw persistence authority.
-- Inventory/equipment/tool/container state owns preparation, capacity, access, portable item location, carried-load facts, and practical capability checks.
+- Mutable HP/MP/TP are persisted player state. Root `player.combat` and `player.statState` are reconstructible caches and are omitted from save payloads.
+- Inventory/equipment/tool/container state owns preparation, capacity, access, portable item location, carried-load facts, and practical capability checks. Equipped items are durable loadout authority.
+- Player statuses are durable timed/modifier authority and use canonical fictional-time boundaries plus canonical nested modifier blocks.
 - The canonical wallet owns persisted currency balances under the current currency-key set.
 - Resources preserve source/transformation provenance and one-time ownership.
+- Active battles persist as ongoing combat authority: combatant snapshots, resources, sides, statuses, action history/timeline, and phase survive save/load. The live battle RNG is transient and is not serialized.
 - Projects own persistent material/labor progress and exactly-once completion state.
 - Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks rather than creating parallel stores or timers.
 - Transport owns fares, cadence, departure, arrival, journey cargo snapshots, and service limits, deriving carried load from inventory.
@@ -68,68 +70,39 @@ The flat `player.inventory` array is a runtime convenience alias relinked to the
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.38
+Product:       0.8.600.43
 Package:       0.8.600
 Account Save:  5
-Game State:    7
+Game State:    9
 Data:          37
 Benchmark:     3
-Codename:      Strict Player Wallet
+Codename:      Player Persistence Integration
 ```
 
 `js/text/save.js` owns account/session/character persistence. Current storage keys are `hearthHorizonAccounts` and `hearthHorizonAccountSession`; accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
 
 ### Raw validation precedes revival
 
-`currentGameStateSchema.js` validates decoded Game State 7 **before reference revival and before runtime `ensure*` normalization**.
+`currentGameStateSchema.js` validates decoded Game State 9 **before reference revival and before runtime `ensure*` normalization**.
 
 Current required raw domain validation covers:
 
 ```text
-world time
-  canonical non-negative fictional seconds
-
-simulation control
-  paused/speed/end-of-day preference shape
-
-timed tasks
-  version, sequence monotonicity, unique ids, status/timing/data
-
-active travel
-  Travel State 2 plus matching task kind/channel/endpoints/deadline
-
-projects
-  version, sequence, stable ids, status, labor/material progress
-
-commitments / relationships
-  continuity definitions, status, reward/follow-up and relationship invariants
-
+world time / simulation control
+timed tasks / active owner-task links
+active Travel State 2
+projects / commitments / relationships
 resource opportunities / ecology
-  durable recovery, population and gathering-source state
-
 party / ability runtime
-  companion continuity, cooldown and active-activation structure
-
 semantic events
-  stable identity/type/data, ordering, duplicates and nextSequence monotonicity
-
-atlas / POI discovery
-  acquired-place/coordinate/POI knowledge with fictional-time visit timestamps
-
-player progression
-  unlocked disciplines, per-discipline level/EXP, continuous-character training totals and learned skills
-
-player capabilities
-  canonical capability registry and learned records
-
-player inventory state
-  canonical containers, unlocks, capacity and home context
-
-player mutable resources
-  required non-negative integer HP/MP/TP values
-
-player wallet
-  complete canonical currency-key set with non-negative integer balances and no undeclared keys
+atlas / POI acquired discovery
+player progression / training / learned skills / capabilities
+player inventory/container state
+player mutable HP/MP/TP
+player canonical wallet
+player equipment/loadout state
+player canonical status state
+active battle state when present
 ```
 
 Optional persisted authority currently includes:
@@ -140,24 +113,49 @@ player.progression.workProficiencies
 state.dayCycle
 ```
 
-For each, absence remains valid construction state. Once present, the stored value must satisfy its domain contract before runtime access. `dayCycle` additionally validates canonical day boundaries, ordering, bounded summary history, and consistency with completed fictional days.
-
-Separate active-owner link validation requires active project/work/travel/timed-ability/resource-recovery state to retain a matching active-or-just-completed timed task until owner reconciliation.
+For each, absence remains valid construction state. Once present, the stored value must satisfy its domain contract before runtime access.
 
 Malformed current state is rejected rather than repaired or rewritten. `saveGame()` likewise refuses malformed current state rather than manufacturing required authority during persistence.
 
 ### Game State 7 discovery contract
 
-Product `.34` changed persisted discovery meaning and therefore advanced Game State 6 → 7. Atlas visits now store `visitedAtWorldSeconds` from canonical fictional time. Legacy wall-clock `visitedAt` records are incompatible current state and are rejected without migration or rewrite. Account Save 5 and Data 37 did not change.
+Product `.34` changed persisted discovery meaning and therefore advanced Game State 6 → 7. Atlas visits store `visitedAtWorldSeconds` from canonical fictional time. Legacy wall-clock `visitedAt` records are incompatible current state and are rejected without migration or rewrite.
 
-### Deliberately derived or post-revival state
+### Game State 8 derived player-cache contract
 
-Raw validation is not a goal by itself. The current boundary deliberately excludes:
+Product `.39` changed serialized player shape and advanced Game State 7 → 8. Root `player.combat` and `player.statState` are no longer serialized authority. `stripPlayerDerivedStateForPersistence()` removes them from the save payload; `reviveGameState()` reconstructs them after raw validation through `refreshPlayerDerivedState()`.
 
-- broad `validatePlayer()`, because that validator mixes true persisted invariants with post-revival inventory alias identity and derived combat/profile expectations;
-- flat `player.inventory` reference identity, which is reconstructed by revival;
-- `player.combat` and derived combat/stat maxima as raw authority; they remain projections;
-- a final decision on `player.statState`, whose deterministic continuous-character base-state semantics and reconstruction path need a dedicated cache/ownership audit before stricter persistence or de-persistence work.
+This distinction is intentional:
+
+```text
+player.resources.hp/mp/tp
+  -> durable mutable gameplay state
+
+player.combat
+player.statState
+  -> reconstructible derived caches
+```
+
+Combat synchronization preserves that contract after revival. `reconcileCombatStatuses()` refreshes each battle combatant's derived profile after status timing changes. `syncPlayerFromCombat()` copies durable resources/statuses back to the root player, clones nested status modifier blocks, then refreshes root derived caches.
+
+### Game State 9 canonical status contract
+
+Product `.41` changed valid persisted status semantics and advanced Game State 8 → 9. Status modifiers use canonical nested blocks:
+
+```text
+modifiers.attributes
+modifiers.resources
+modifiers.derived
+modifiers.resistances
+```
+
+Flat authored modifier keys are normalized when a status is created at runtime, not while loading persisted state. A Game State 9 save carrying legacy flat modifier records is malformed current state and is rejected. Canonical status timing uses `appliedAtWorldSeconds`, `expiresAtWorldSeconds`, duration/remaining fields, stack ownership, optional tick data, and flags.
+
+### Durable equipment and active-battle authority
+
+Product `.40` made player equipment structurally strict without changing Game State 8 meaning. All canonical equipment slots must exist; occupied slots contain valid equipment items compatible with that slot; impossible two-handed/off-hand combinations are rejected. Current discipline eligibility is deliberately not persistence authority because a durable loadout may outlive a training-context change.
+
+Product `.42` made `activeBattle` strict when present without changing Game State 9 meaning. The persisted battle owns ongoing combatant snapshots, resources, sides, statuses, bounded log, Combat 2.0 action identity/references, timeline actor readiness, and phase coherence. `activeBattle.rng` remains transient/non-persisted.
 
 ### State-classification rule
 
@@ -168,7 +166,7 @@ Before tightening another raw persistence seam, classify the state:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not during current-save load;
 4. **optional persisted authority** — absence is valid, but a present stored value must satisfy its domain contract.
 
-Historical lazy-init tests may still prove internal/new-state construction behavior. They are not promises that malformed or incomplete current Game State 7 saves will load.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. Flat inventory alias identity remains post-revival, and root combat/stat caches remain derived.
 
 ## Timed-task lifecycle ownership
 
@@ -193,14 +191,16 @@ Production-style repeated owner lifecycles return the task registry to zero reta
 
 `domRoot.js` owns the mounted DOM app and onboarding observer. Tick subscriber replacement is stale-disposer safe. `tests/longSessionLifecycle.test.js` proves deterministic multi-day advancement with periodic current-schema save/load, bounded event/day-summary histories, exactly-once task transitions, and zero-retained-task steady state for owner-managed lifecycles.
 
+`tests/playerPersistenceIntegration.test.js` proves the current player boundary together: equipment, canonical statuses, damaged/spent resources, active battle, stripped root caches, real save/load revival, status expiry, derived profile refresh, non-aliased status modifier blocks, and resumed combat.
+
 ## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check uses Node 24 LTS, `actions/checkout@v7`, and `actions/setup-node@v6`.
 
-Latest exact-head runtime gate: PR #361 / exact head `a356c67124167ab60efd4cf4a57c742d3d94c355` / Check `32197699859`, Node 24.19.0:
+Latest exact-head runtime gate: PR #366 / exact head `2a10727dfa14734ca9c3031adf4bc368be592063` / Check `32276311018`, Node 24.19.0:
 
 ```text
-629/629 tests
+648/648 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -210,29 +210,29 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player combat profiles  0.352213 ms/op
-enemy combat profiles   0.066914 ms/op
-basic attacks            0.003626 ms/op
-tick dispatch            0.000750 ms/op
-direct route lookup      0.007245 ms/op
+player combat profiles  0.314430 ms/op
+enemy combat profiles   0.064417 ms/op
+basic attacks            0.003578 ms/op
+tick dispatch            0.000743 ms/op
+direct route lookup      0.006808 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.332962 ms/op    7.70%
-enemy profiles   0.063346 ms/op   11.90%
-basic attacks    0.001369 ms/op  150.99%
-tick dispatch    0.000825 ms/op   33.05%
-route lookup     0.007222 ms/op    5.66%
+player profiles  0.316339 ms/op    4.33%
+enemy profiles   0.058325 ms/op    5.66%
+basic attacks    0.001355 ms/op  173.80%
+tick dispatch    0.000598 ms/op   67.24%
+route lookup     0.006198 ms/op    1.95%
 ```
 
 Benchmark 1/2 results are not numerically comparable to Benchmark 3. No hard performance thresholds are accepted yet.
 
-The runtime freeze for this train is `dc588d194211ccaed671d58362617bea6b2c5a73`. Documentation commits after that freeze are synchronization only, not new runtime checkpoints.
+The runtime freeze for this train is `daa1904c8287c5b16950142cef76edcfdd902d3d`. Documentation commits after that freeze are synchronization only, not new runtime checkpoints.
 
 ## Carried-forward rule
 
 Presentation adapters may make canonical state easier to understand and operate, but they must not become second authorities. Future persistence work must continue one bounded family at a time and must not mechanically attach every runtime validator to load.
 
-The next strongest maintenance audit is the **derived combat/stat cache boundary**: inspect direct reads and reconstruction behavior for `player.combat` and `player.statState`, then decide explicitly what remains persisted cache versus what should be recomputed. Do not bulk-remove or make either field strict before that production-caller audit.
+The next strongest maintenance classification is the remaining root-player identity/key-item/flag boundary. A separate follow-up may audit whether active-battle `combatant.combat` should remain a durable encounter snapshot or become another explicitly reconstructible cache. Do not combine those mechanically.
