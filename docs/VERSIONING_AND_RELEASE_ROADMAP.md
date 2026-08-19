@@ -7,18 +7,18 @@ Authoritative companions: `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_
 ## Current baseline
 
 ```text
-Product:       0.8.600.48
+Product:       0.8.600.49
 Package:       0.8.600
 Account Save:  5
 Game State:    9
 Data:          37
 Benchmark:     3
-Codename:      Strict Combat Identity Sequence
+Codename:      Strict Active Battle Player Link
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.48` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
+Phases 0.4–0.7 are complete. Phase 0.8 is in progress. Tracks `0.8.100` through `0.8.600` are complete and audited. Revisions `.2` through `.49` are maintenance/hardening revisions over the closed `0.8.600` track, not new Phase 0.8 feature tracks.
 
 ## Product version format
 
@@ -65,6 +65,8 @@ Current rules:
 12. Active-battle deterministic combat/stat snapshots are persisted and validated; live battle RNG is transient.
 13. Current place ID, display location, and position must form one canonical persisted location state.
 14. `combatSequence` is the encounter-ID allocator and must agree with `activeBattle.id` when a battle exists.
+15. The persisted battle player must match the root player ID. While the encounter is active, its mutable resources/statuses and deterministic combat profile must agree with root combat-driving authority; terminal battle snapshots remain historical.
+16. Root-owned combat skill gains during an active encounter must be synchronized into the battle-player snapshot before the encounter combat cache refreshes, including after save/load has separated nested object identities.
 
 ### Current raw validation
 
@@ -86,6 +88,7 @@ top-level world flags
 current location/position coherence
 combat identity sequence
 active battle and deterministic encounter combat/stat snapshots
+active battle player / root player live-authority coherence
 ```
 
 Optional persisted authority validates when present:
@@ -135,34 +138,38 @@ npm run benchmark:sample
 
 Benchmark 3 is the current comparability baseline. No hard timing threshold is accepted yet.
 
-## Latest maintenance train `.44`–`.48`
+## Latest maintenance line `.44`–`.49`
 
-| Revision | Contract | PR | Exact head | Check | Promoted main |
+| Revision | Contract | Validation PR | Exact validated head | Check | Runtime/main checkpoint |
 | --- | --- | ---: | --- | ---: | --- |
 | `.44` | Strict Player Identity Facts | #367 | `ec77c85573dacfe9c8148c8d602b565288f356fa` | `32279241023` | `6ef317c75d5181ddc316caeefe342d14492ab8e2` |
 | `.45` | Strict Player Envelope and World Flags | #368 | `b65d80707073db0a1f5ebe1941c9b48c8c34fd67` | `32280196036` | `c02c8ec72f5e78c93b27ae2fed9f3ff233114c9b` |
 | `.46` | Strict Battle Derived Caches | #369 | `a8eec6ef34ff96ed53bc37ee14aab6280d36a93e` | `32281825598` | `2e143daf63f8874d6135e61af79ddfcd474fc418` |
 | `.47` | Strict Current Location State | #371 | `9a59dc8cd67f136dd857e04277522f5074ea32d3` | `32286661683` | `1c8698147a98e80a0a519aadb520f6808fe61323` |
 | `.48` | Strict Combat Identity Sequence | #372 | `8cdc20aecf40201e82cd560eccd19d7f34700798` | `32287076773` | `512f8c3d5edbb22d07d857fa98d6f0755d043d89` |
+| `.49` | Strict Active Battle Player Link | #373 validation-only | `49df1a5379da51e15cfb3ce0320008047a70c768` | `32290206583` | `49df1a5379da51e15cfb3ce0320008047a70c768` |
 
-Every final head passed Test, Benchmark 3, and Benchmark Sample before promotion. `.47` passed 665/665 tests; `.48` passed 670/670 tests on Node 24.19.0.
+Every final validated head passed Test, Benchmark 3, and Benchmark Sample. `.47` passed 665/665 tests; `.48` passed 670/670; `.49` passed 676/676 on Node 24.19.0.
 
-### `.44`–`.48` version decision
+`.49` was a direct-main bounded maintenance packet. Validation-only PR #373 existed solely to expose the standard pull-request Check for that exact frozen `main` SHA through the available connector; it was closed without merge after validation.
 
-Account Save 5, Game State 9, Data 37, and Benchmark 3 remain unchanged. These revisions tighten existing Game State 9 invariants rather than changing serialized shape or meaning:
+### `.44`–`.49` version decision
+
+Account Save 5, Game State 9, Data 37, and Benchmark 3 remain unchanged. These revisions tighten existing Game State 9 invariants or synchronize already-persisted authorities rather than changing serialized shape or meaning:
 
 - `.44` classifies canonical player identity, key items, and boolean player flags as strict durable facts.
 - `.45` validates the stable player envelope and boolean top-level world conditions.
 - `.46` validates already-persisted deterministic active-battle combat/stat snapshots against recomputation.
 - `.47` enforces coherence among already-persisted current place, display name, and position.
 - `.48` enforces coherence between the existing encounter sequence allocator and active battle identity.
+- `.49` enforces live active-battle player/root authority coherence and repairs post-load combat-skill synchronization without changing the serialized shape.
 
 ## Latest runtime evidence
 
-Exact validated `.48` gate: PR #372, head `8cdc20aecf40201e82cd560eccd19d7f34700798`, Check `32287076773`, Node 24.19.0:
+Exact validated `.49` gate: validation-only PR #373, head `49df1a5379da51e15cfb3ce0320008047a70c768`, Check `32290206583`, Node 24.19.0:
 
 ```text
-670/670 tests
+676/676 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -172,24 +179,24 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player profiles  0.268864 ms/op
-enemy profiles   0.052262 ms/op
-basic attacks    0.003205 ms/op
-tick dispatch    0.000825 ms/op
-route lookup     0.005607 ms/op
+player profiles  0.382805 ms/op
+enemy profiles   0.069545 ms/op
+basic attacks    0.003288 ms/op
+tick dispatch    0.000952 ms/op
+route lookup     0.007661 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.260915 ms/op    6.23%
-enemy profiles   0.050549 ms/op    8.78%
-basic attacks    0.001223 ms/op  224.79%
-tick dispatch    0.000587 ms/op  123.28%
-route lookup     0.005258 ms/op    8.89%
+player profiles  0.362564 ms/op    6.88%
+enemy profiles   0.068110 ms/op    8.11%
+basic attacks    0.001199 ms/op  209.52%
+tick dispatch    0.000681 ms/op   57.21%
+route lookup     0.007336 ms/op    3.69%
 ```
 
-Runtime freeze for this train: `512f8c3d5edbb22d07d857fa98d6f0755d043d89`.
+Runtime freeze: `49df1a5379da51e15cfb3ce0320008047a70c768`.
 
 ## Timed-task ownership contract
 
@@ -197,7 +204,7 @@ Direct production task creators remain limited to ability, campaign recovery, pr
 
 ## Release discipline
 
-A coherent runtime checkpoint requires one bounded contract, focused regression coverage, observed full Test and current Benchmark gates, deliberate version decisions, and promotion only after the exact head is green. Freeze runtime before documentation. Documentation-only synchronization after the freeze is not a new runtime validation checkpoint.
+A coherent runtime checkpoint requires one bounded contract, focused regression coverage, observed full Test and current Benchmark gates, deliberate version decisions, and promotion/direct-main completion only after the exact head is green. Freeze runtime before documentation. Documentation-only synchronization after the freeze is not a new runtime validation checkpoint.
 
 ## Next Phase 0.8 decision
 
