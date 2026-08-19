@@ -35,13 +35,14 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 - `combatSequence` is the durable encounter-ID allocator. A persisted active battle must carry the corresponding `battle-NNNNNN` identity.
 - Active battles persist ongoing combat authority: combatants, resources, sides, statuses, action history/timeline, phase, and deterministic combat/stat snapshots survive save/load. The live battle RNG is transient and is not serialized.
 - While a battle is active, the battle-player snapshot is bound to the durable root player for stable player ID, mutable resources, canonical statuses, and the deterministic combat profile derived from live root combat-driving authority. A terminal battle is historical and may legitimately diverge from later root-character changes.
-- Root-owned combat skill gains that occur during an active encounter are copied into the battle-player snapshot before encounter cache refresh. This synchronization is explicit because save/load breaks the nested object sharing that happens to exist immediately after encounter construction.
+- Root-owned combat skill gains that occur during an active encounter are copied into the battle-player snapshot before encounter cache refresh.
 - Projects own persistent material/labor progress and exactly-once completion state.
 - Home/infrastructure composes projects, timed tasks, materials, inventory, furnishings, workstations, production, and container unlocks rather than creating parallel stores or timers.
 - Transport owns fares, cadence, departure, arrival, journey cargo snapshots, and service limits, deriving carried load from inventory.
 - Commitments own accepted/resolved/follow-up state and one-time rewards; relationship continuity remains a separate authority.
 - NPC schedules are recurring authored availability evaluated against canonical fictional time; availability is derived, not serialized as a second clock.
 - `state.npcs` is a reconstructible runtime world projection, not serialized authority. Canonical seed NPC definitions plus persisted party companion state rebuild it after raw validation.
+- `state.enemies` is a reconstructible encounter-template projection, not serialized mutable world authority. Canonical seed enemy definitions rebuild it after raw validation; place spawn rules reference stable enemy IDs, and `activeBattle` owns mutable ongoing encounter state.
 - Campaign recovery remains the one player/party recovery authority.
 - Atlas/POI discovery persists acquired knowledge; atlas visit timing uses canonical fictional seconds rather than wall-clock timestamps.
 - Maps, Journal guidance, service boards, player information, home opportunity models, and social schedule decoration are projections of acquired/current state.
@@ -71,54 +72,60 @@ Adapters render `display.text` or consume semantic fields. Do not restore `.mess
 
 The flat `player.inventory` array is a runtime convenience alias relinked to the main inventory container after decode. Its object identity is a **post-revival invariant**, not a raw serialized invariant.
 
-## NPC world projection authority
+## Runtime world/entity projections
 
-Product `.50` completed the dedicated `state.npcs` ownership audit.
+### NPC world projection
 
-Current production ownership is split cleanly:
+Product `.50` completed the dedicated `state.npcs` ownership audit. Canonical seed NPC definitions provide baseline identity/services/location; `state.party.companions` owns recruited companion continuity; schedules are derived from authored schedule data plus world time; relationships and commitments own their separate durable facts.
+
+No independent production system owns mutable durable facts solely in `state.npcs`. The runtime mutations found there are companion-backing identity/location/active flags projected from party authority. Game State 10 therefore removed `state.npcs` from serialized authority. `refreshNpcWorldProjection()` rebuilds it after raw validation from `createSeedNpcs()` and persisted companion participation.
+
+### Enemy encounter projection
+
+Product `.51` completed the dedicated `state.enemies` ownership audit.
+
+Current production ownership is:
 
 ```text
-authored seed NPC definitions
-  -> canonical baseline identity/services/location
+canonical seed enemy definitions
+  -> encounter-template identity/species/zone/level/loot/aggro inputs
+  -> factory-derived template combat/resources
 
-state.party.companions
-  -> durable recruited companion membership/location/tactics/resources
+place spawn rules / player opportunities
+  -> stable enemy IDs describing which encounter template may be used
 
-NPC schedule catalog + world time
-  -> derived availability
+startEncounter()
+  -> resolves one template and constructs a distinct encounter combatant
 
-state.relationships
-  -> durable named-NPC social continuity
-
-state.commitments
-  -> durable accepted/resolved/follow-up continuity
+activeBattle
+  -> durable mutable combatants/resources/statuses/actions/timeline/phase
 ```
 
-No independent production system owns mutable durable facts solely in `state.npcs`. The only runtime mutations found there are companion-backing identity/location/active flags, and those values are projections of `state.party` plus the companion catalog.
+No production system mutates `state.enemies`, and no durable world fact exists solely there. `createEnemy()` currently calculates combat and initial resources while constructing the template, but those values are deterministic construction data, not persisted mutable entity history.
 
-Accordingly, Game State 10 encoding omits `state.npcs`. `refreshNpcWorldProjection()` rebuilds the array during revival from `createSeedNpcs()` and overlays persisted companion participation. Raw validation happens first. A forged or stale serialized `npcs` field therefore cannot become canonical state; revival replaces it with the deterministic projection.
+Game State 11 therefore removes `state.enemies` from serialized authority. `refreshEnemyEncounterProjection()` reconstructs fresh seed templates from `createSeedEnemies()` after raw validation. The existing post-validation projection chain invokes this during revival. A forged or stale serialized `enemies` field cannot become canonical: revival replaces it before gameplay lookup.
 
-This is deliberately different from adding a broad NPC validator. If a future system introduces genuinely mutable non-companion NPC world facts, that system must first define its durable owner rather than silently making the projection array authoritative again.
+This must not be confused with active battle persistence. Once an encounter starts, the unique combatant snapshot inside `activeBattle` is the ongoing mutable authority and remains persisted under the established battle contracts.
 
 ## Persistence authority — strict current schema
 
 Compatibility mode: `pre-release-current-schema`.
 
 ```text
-Product:       0.8.600.50
+Product:       0.8.600.51
 Package:       0.8.600
 Account Save:  5
-Game State:    10
+Game State:    11
 Data:          37
 Benchmark:     3
-Codename:      Derived NPC World Projection
+Codename:      Derived Enemy Encounter Projection
 ```
 
 `js/text/save.js` owns account/session/character persistence. Accepted payload encoding is `base64-json-v1` with exact current Account/Game State versions.
 
 ### Raw validation precedes revival
 
-`currentGameStateSchema.js` validates decoded Game State 10 **before reference revival and before runtime `ensure*` normalization or projection reconstruction**.
+`currentGameStateSchema.js` validates decoded Game State 11 **before reference revival and before runtime `ensure*` normalization or projection reconstruction**.
 
 Current required raw domain validation covers:
 
@@ -143,6 +150,7 @@ current location/position coherence
 combat identity sequence
 active battle state and deterministic encounter caches when present
 active battle player / root player live-authority coherence
+state.log array pending its dedicated ownership audit
 ```
 
 Optional persisted authority currently includes:
@@ -159,6 +167,7 @@ Derived/post-revival state includes:
 
 ```text
 state.npcs
+state.enemies
 flat player.inventory alias identity
 player.combat
 player.statState
@@ -170,9 +179,10 @@ Malformed current persisted authority is rejected rather than repaired or rewrit
 ### Historical schema transitions
 
 - **Game State 7** — Product `.34` replaced wall-clock atlas `visitedAt` with canonical fictional `visitedAtWorldSeconds`.
-- **Game State 8** — Product `.39` removed root `player.combat` and `player.statState` from serialized authority and made them post-validation reconstructed caches.
-- **Game State 9** — Product `.41` changed valid persisted status modifiers to canonical nested `attributes`, `resources`, `derived`, and `resistances` blocks.
+- **Game State 8** — Product `.39` removed root `player.combat` and `player.statState` from serialized authority.
+- **Game State 9** — Product `.41` changed valid persisted status modifiers to canonical nested modifier blocks.
 - **Game State 10** — Product `.50` removed the reconstructible `state.npcs` runtime projection from serialized authority.
+- **Game State 11** — Product `.51` removed the reconstructible `state.enemies` encounter-template projection from serialized authority.
 
 No automatic pre-alpha migrations were added for those transitions.
 
@@ -189,23 +199,15 @@ player.statState
   -> reconstructible root caches, omitted from saves
 ```
 
-Active battle snapshots are different. Product `.46` made deterministic encounter `combat` caches, and the player combatant's `statState`, strict persisted snapshots. They must match deterministic recomputation from the persisted combatant inputs. This preserves an internally coherent ongoing encounter while still keeping root player caches non-authoritative.
+Active battle snapshots are different. Product `.46` made deterministic encounter `combat` caches, and the player combatant's `statState`, strict persisted snapshots. They must match deterministic recomputation from persisted combatant inputs. This preserves an internally coherent ongoing encounter while root player caches remain non-authoritative.
 
-Product `.49` adds a second, cross-boundary invariant for the one active battle player. Its stable ID must match the root player. While `activeBattle.phase === 'active'`, its mutable resources and statuses must match the root player and its persisted combat cache must equal a fresh deterministic profile reconstructed from root combat-driving authority. This catches a battle snapshot that is internally self-consistent but no longer represents the live character.
+Product `.49` adds the active battle/root player invariant. While `activeBattle.phase === 'active'`, stable ID, resources, statuses, and deterministic combat-driving profile must agree. Terminal encounters are historical and may legitimately diverge from later root-character changes.
 
-Terminal encounters are intentionally different: after victory/defeat the encounter snapshot is historical, so later root progression, recovery, loadout, or resource changes do not have to rewrite the terminal battle.
-
-`reconcileCombatStatuses()` refreshes battle combatant derived profiles after status timing changes. `syncPlayerFromCombat()` copies durable resources/statuses back to the root player, clones nested status modifiers, and refreshes root caches. `combatActionEngine.js` additionally copies a newly gained root combat-skill map into the active battle player before final cache refresh. That explicit step matters after save/load because JSON revival recreates root and battle progression as separate nested objects rather than preserving construction-time object sharing.
+`reconcileCombatStatuses()` refreshes battle combatant derived profiles after status timing changes. `syncPlayerFromCombat()` copies durable resources/statuses back to the root player and refreshes root caches. `combatActionEngine.js` additionally copies a newly gained root combat-skill map into the active battle player before final cache refresh, which is required because JSON revival breaks construction-time nested object sharing.
 
 ### Identity, flags, location, and encounter identity
 
-Products `.44` and `.45` made player identity/key items/player flags, the stable player envelope, and top-level world flags strict current-state facts. Flags are booleans rather than generic truthy values.
-
-Product `.47` made persisted location coherent: exact canonical `currentPlaceId`, matching `location`, and a `position` owned by that place. Topology places require navigable normalized coordinates, valid level and facing, and no grid x/y. Grid places require stored x/y within raw bounds; any external coordinate must map exactly to those values.
-
-Product `.48` made encounter allocation strict: `combatSequence` is the persisted allocator and an existing `activeBattle.id` must exactly match its padded sequence identity. Forged counters or IDs are rejected before revival rather than repaired.
-
-Product `.49` makes the battle-player identity/live-authority link strict while the encounter is active. A forged root player ID, live resource/status split, or combat-driving split is rejected before revival. Load does not repair either side. A terminal battle remains historical.
+Products `.44` and `.45` made player identity/key items/player flags, the stable player envelope, and top-level world flags strict current-state facts. Product `.47` made current place/display name/position one coherent authority. Product `.48` made `combatSequence` and `activeBattle.id` coherent. Product `.49` made the live active-battle player/root link strict.
 
 ### State-classification rule
 
@@ -216,7 +218,7 @@ Before tightening another raw persistence seam, classify the state:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not during current-save load;
 4. **optional persisted authority** — absence is valid, but a present stored value must satisfy its domain contract.
 
-Do not compose broad `validatePlayer()` wholesale at the raw boundary. `state.npcs` has now been classified as derived/reconstructible. Do not mechanically promote `state.enemies` or presentation `state.log` before their separate ownership audits.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. `state.npcs` and `state.enemies` are now classified as derived/reconstructible. Do not mechanically promote presentation `state.log` before its dedicated ownership audit.
 
 ## Timed-task lifecycle ownership
 
@@ -239,16 +241,16 @@ workTaskEngine.js
 
 `domRoot.js` owns the mounted DOM app and onboarding observer. Tick subscriber replacement is stale-disposer safe. `tests/longSessionLifecycle.test.js` proves deterministic multi-day advancement with periodic current-schema save/load, bounded event/day-summary histories, exactly-once task transitions, and zero-retained-task steady state for owner-managed lifecycles.
 
-`tests/playerPersistenceIntegration.test.js` proves the player boundary together. `tests/currentSchemaCombatIdentityPersistence.test.js` proves active battle/root player linkage, malformed split rejection/no repair, terminal historical divergence, and post-load combat-skill synchronization. `tests/currentSchemaNpcWorldProjection.test.js` proves Game State 10 does not require serialized `npcs`, save encoding omits it, canonical seed plus party authority rebuild it, and injected NPC projection data cannot become authoritative on load.
+`tests/playerPersistenceIntegration.test.js` proves the player boundary together. `tests/currentSchemaCombatIdentityPersistence.test.js` proves active battle/root player linkage. `tests/currentSchemaNpcWorldProjection.test.js` proves NPC projection reconstruction. `tests/currentSchemaEnemyEncounterProjection.test.js` proves Game State 11 omits enemy templates, rebuilds canonical definitions, preserves encounter lookup after load, and rejects injected projection authority by replacement.
 
 ## Runtime, validation, and performance guardrails
 
 `package.json` requires Node `>=24`. Hosted Check uses Node 24 LTS, `actions/checkout@v7`, and `actions/setup-node@v6`.
 
-Latest exact runtime gate: validation-only PR #374 / head `181bc67b69172390d1a59fa3dfca35980a026b3d` / Check `32292959171`, Node 24.19.0. The PR existed only to surface the standard pull-request Check for the direct-main runtime and was closed without merge after validation.
+Latest exact runtime gate: validation-only PR #375 / head `5a97a109d9476438d001ee75b8e20293f57360dd` / Check `32297557960`, Node 24.19.0. The PR existed only to surface the standard pull-request Check for the direct-main runtime and was closed without merge after validation.
 
 ```text
-680/680 tests
+684/684 tests
 0 failed
 0 skipped
 Benchmark 3 success
@@ -258,27 +260,27 @@ Benchmark Sample success
 Benchmark 3 single run:
 
 ```text
-player combat profiles  0.372865 ms/op
-enemy combat profiles   0.071050 ms/op
-basic attacks            0.003425 ms/op
-tick dispatch            0.000818 ms/op
-direct route lookup      0.007469 ms/op
+player combat profiles  0.360644 ms/op
+enemy combat profiles   0.069621 ms/op
+basic attacks            0.002998 ms/op
+tick dispatch            0.000941 ms/op
+direct route lookup      0.007920 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.364304 ms/op    3.27%
-enemy profiles   0.067755 ms/op   10.57%
-basic attacks    0.001213 ms/op  162.66%
-tick dispatch    0.000876 ms/op   44.41%
-route lookup     0.007423 ms/op    6.50%
+player profiles  0.361064 ms/op    3.82%
+enemy profiles   0.067427 ms/op    9.06%
+basic attacks    0.001015 ms/op  191.25%
+tick dispatch    0.000908 ms/op   38.68%
+route lookup     0.007617 ms/op    8.23%
 ```
 
-Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. The runtime freeze for this packet is `181bc67b69172390d1a59fa3dfca35980a026b3d`. Documentation commits after that freeze are synchronization only.
+Benchmark 3 remains the current comparability protocol; no hard performance thresholds are accepted. Runtime freeze: `5a97a109d9476438d001ee75b8e20293f57360dd`. Documentation commits after that freeze are synchronization only.
 
 ## Carried-forward rule
 
 Presentation adapters and reconstructed projections may make canonical state easier to understand and operate, but they must not become second authorities. Future persistence work must continue one bounded family at a time.
 
-The `state.npcs` audit is complete. The next strongest classification work is `state.enemies`, followed separately by `state.log`. Authored encounter definitions, mutable encounter state, derived combat caches, and presentation history must not be conflated into one broad validator. Do not automatically begin `0.8.700`.
+The NPC and enemy audits are complete. The next strongest classification work is `state.log` alone: determine whether command/presentation history is disposable projection, durable player-facing memory, or compatibility baggage without conflating it with semantic events. Do not automatically begin `0.8.700`.
