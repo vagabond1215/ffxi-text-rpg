@@ -53,7 +53,7 @@ A replacement thread should do this before any implementation:
 3. read docs/THREAD_HANDOFF.md
 4. read this file
 5. compare current main with the handoff SHA
-6. run/inspect only the active pass evidence
+6. run/inspect only the named next-pass evidence
 7. continue the named bounded unit
 ```
 
@@ -61,7 +61,7 @@ Only reopen broad discovery when one of these is true:
 
 - `main` materially diverged from the handoff checkpoint;
 - the handoff says the next unit is unselected;
-- the active pass has become impossible because an authority changed;
+- the named next pass has become impossible because an authority changed;
 - the user explicitly asks for a fresh audit or roadmap revision.
 
 Do not spend a new thread rediscovering closed Phase 0.4–0.7 work, the `.39`–`.52` persistence history, or the completed `state.npcs` / `state.enemies` / `state.log` classification sequence unless the active task directly touches those contracts.
@@ -71,14 +71,14 @@ Do not spend a new thread rediscovering closed Phase 0.4–0.7 work, the `.39`�
 Statuses:
 
 - **ACTIVE** — current bounded unit.
-- **READY NEXT** — recommended next unit after the active pass closes; still requires a new explicit work order/message under `AGENTS.md`.
+- **READY NEXT** — recommended next unit; still requires a new explicit work order/message under `AGENTS.md`.
 - **QUEUED** — ordered candidate after its dependencies are satisfied.
 - **DEFERRED** — intentionally not part of the current phase/pass.
-- **DONE** — implemented and validated.
+- **DONE** — implemented, validated, and synchronized.
 
 ## C0 — Continuation Infrastructure + Content Census
 
-**Status: ACTIVE (implementation validated; documentation synchronization finishing).**
+**Status: DONE.**
 
 Purpose: make repository progress measurable and handoffs cheap before opening another feature track.
 
@@ -112,13 +112,15 @@ C0 exit criteria:
 - [x] executable content census exists;
 - [x] focused tests exist;
 - [x] full hosted Test/Benchmark gate passed exact implementation head;
-- [ ] authority/read-order docs point future threads here;
-- [ ] roadmap records the next Phase 0.8 sequence;
-- [ ] handoff updated last with exact next bounded unit.
+- [x] authority/read-order docs point future threads here;
+- [x] roadmap records the next Phase 0.8 sequence;
+- [x] machine-readable project profile records the next bounded unit;
+- [x] quality/performance/lifecycle docs are synchronized to the current baseline;
+- [x] final handoff names the exact next bounded unit.
 
 ## 0.8.700 — Cultivation & Stewardship
 
-**Status: READY NEXT after C0 closes.**
+**Status: READY NEXT.**
 
 Player-facing question:
 
@@ -143,7 +145,7 @@ Authority constraints:
 - canonical world time remains the only clock;
 - inventory owns physical inputs/outputs;
 - provenance remains attached to outputs;
-- work proficiency owns repeated-practice efficiency;
+- work proficiency owns repeated-practice efficiency where the work model fits;
 - home/project authority owns durable infrastructure where needed;
 - do not create one long-lived timed-task owner per crop by reflex;
 - persisted plot/crop state should derive elapsed growth from canonical world time when that is sufficient;
@@ -156,7 +158,31 @@ Required first-pass evidence:
 - no duplicate harvest or repeated completion reward;
 - output participates in at least three existing sinks/systems;
 - browser/semantic action path does not require command expertise;
-- `npm run census` records any content breadth added by the track.
+- content-heavy additions remain original, cross-linked, provenance-valid and content-pack-valid;
+- `npm run census` records any content breadth added by the track when run in a capable environment.
+
+### Next-thread inspection set
+
+Start with these surfaces rather than another repository-wide audit:
+
+```text
+docs/THREAD_HANDOFF.md
+docs/EXECUTION_PIPELINE.md
+docs/ROADMAP.md
+js/text/systems/contentScaleGate.js
+js/text/systems/worldTime.js
+js/text/systems/workTaskEngine.js
+js/text/systems/workProficiency.js
+js/text/systems/projectEngine.js
+js/text/systems/productionEngine.js
+js/text/systems/ecologyEngine.js
+js/text/data/ecologyCatalog.js
+js/text/data/resourceProvenance.js
+js/text/data/homeInfrastructure.js
+relevant inventory/container + semantic UI intent/view-model paths
+```
+
+Use code search if exact filenames have moved; the authority list, not any one filename spelling, is what matters.
 
 ## 0.8.800 — Earned Routine Delegation
 
@@ -244,18 +270,13 @@ Keep these visible so future threads do not rediscover them as surprises.
 
 ## Content breadth — highest strategic debt
 
-**Open.** Use `npm run census` at the start/end of content-heavy tracks.
+**Open.** Use `npm run census` at the start/end of content-heavy tracks when it can actually be executed.
 
 The current architecture supports substantially more content than is authored. Phase 0.9 must shift developer time toward connected regional content, not another long generic persistence-hardening chain unless a concrete defect requires it.
 
-## Documentation drift cleanup
+## Documentation baseline drift
 
-**Open, low risk.** Some long-lived docs can lag the latest checkpoint even when core authorities are correct. Examples identified by the August 19, 2026 audit:
-
-- `docs/PERFORMANCE_BUDGET.md` still names an older `.12` checkpoint as its latest accepted baseline;
-- `docs/RESOURCE_LIFECYCLE.md` contains a historical `Game State 6` label in the current-task-integrity section even though the current schema is Game State 12.
-
-Fix when synchronizing the relevant authority or before Phase 0.9 hardening; do not launch a separate broad audit solely to find more wording drift.
+**C0 cleanup complete for identified audit findings.** `docs/PERFORMANCE_BUDGET.md` now references the #377 / 692-test Benchmark 3 checkpoint, and `docs/RESOURCE_LIFECYCLE.md` now labels current task-integrity validation as Game State 12. Do not launch a new broad wording audit unless contradictory documentation is encountered during real work.
 
 ## Branch protection / required review
 
@@ -316,7 +337,7 @@ Every implementation pass should use this sequence unless the active task clearl
 13. Stop; do not silently launch the next independent pass.
 ```
 
-For lifecycle-sensitive systems, add ownership/cleanup and long-session evidence. For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, run `npm run census` and record what categories changed.
+For lifecycle-sensitive systems, add ownership/cleanup and long-session evidence. For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, run `npm run census` and record what categories changed when the command actually ran.
 
 # Handoff template
 
