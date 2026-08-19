@@ -34,7 +34,7 @@ function firstVisit(state) {
 test('current discovery uses canonical fictional time and validates acquired POI knowledge', () => {
     const state = createInitialState();
     assert.equal(state.version, VERSION.gameState);
-    assert.equal(VERSION.gameState, 8);
+    assert.equal(VERSION.gameState, 9);
     assert.equal(firstVisit(state).visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS);
     assert.equal(Object.hasOwn(firstVisit(state), 'visitedAt'), false);
 
