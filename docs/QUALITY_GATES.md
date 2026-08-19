@@ -1,13 +1,15 @@
 # Quality Gates
 
-These repository-level gates supplement the current handoff and focused design authorities.
+These repository-level gates supplement the current handoff, execution pipeline, and focused design authorities.
 
 ## Before implementation
 
 - Confirm current `main` and read `docs/THREAD_HANDOFF.md`.
+- Read `docs/EXECUTION_PIPELINE.md` and use its active/next/deferred queue instead of restarting broad discovery when the checkpoint is current.
 - Identify the authoritative state owner and production caller for the requested behavior.
 - Inspect focused tests and nearby persistence/runtime/UI contracts.
 - Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for lifecycle- or performance-sensitive work.
+- For content-heavy work, inspect the current `npm run census` result and the relevant regional/content-pack validators.
 
 ## Validation
 
@@ -17,13 +19,38 @@ Repository entry points are:
 npm test
 npm run benchmark
 npm run benchmark:sample
+npm run census
 npm run hardening
 npm run check
 ```
 
-Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report only checks that actually ran. Documentation-only synchronization after a frozen green runtime does not create a new runtime checkpoint.
+Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new runtime/tooling validation checkpoint.
 
 `tests/architectureDebtGuard.test.js` protects selected compatibility and lifecycle seams, including the exact direct timed-task owner set and the removal of runtime legacy active-travel reconstruction.
+
+`tests/contentScaleGate.test.js` protects the criteria-driven content-scale target definitions and census behavior. Future content targets are progression indicators, not CI pass/fail thresholds: a game can be valid while still being below mechanics-integration, playable-alpha, or 1.0 breadth.
+
+## Content progression
+
+`npm run census` reports unique canonical breadth across the main runtime catalogs and regional content packs for:
+
+```text
+places/localities
+named NPCs
+functional shop/service sites
+creature definitions
+resource sources
+canonical items
+recipes/processes
+abilities/techniques
+quests/contracts
+companions
+scheduled transport services
+```
+
+Use it before and after content-heavy tracks when the metric is material. Do not optimize the census with disconnected filler records. A content tranche should still satisfy stable-ID, originality, source/sink, topology, provenance, cross-reference, regional ownership, and player-facing integration requirements.
+
+The lower-bound targets come from `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`. Meeting a numeric target is scale evidence only; it is not a balance, originality, usability, or release-quality claim.
 
 ## Persistence
 
@@ -115,7 +142,7 @@ Before adding a raw validator, classify the state first:
 3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration;
 4. **optional persisted authority** — absence is allowed, but once present the stored value must satisfy its domain contract.
 
-Do not compose broad `validatePlayer()` wholesale at the raw boundary. The dedicated broad-array sequence is now complete: `state.npcs`, `state.enemies`, and top-level `state.log` are classified.
+Do not compose broad `validatePlayer()` wholesale at the raw boundary. The dedicated broad-array sequence is complete: `state.npcs`, `state.enemies`, and top-level `state.log` are classified. Do not reopen that sequence merely to find another revision.
 
 ## Current strict-persistence evidence
 
@@ -142,30 +169,32 @@ New long-lived runtime resources require a clear owner, creation condition, dupl
 
 A new direct production timed-task creator must define its durable consequence, exactly-once reconciliation point, and terminal release responsibility. The architecture guard currently admits only the six audited task-owner modules.
 
+For the planned `0.8.700` cultivation pass, do not create one long-lived timed task per growing plot by reflex. Prefer persisted domain state plus canonical-world-time derivation when growth itself does not need active task ownership.
+
 ## Performance and long-session stability
 
 Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
 
-Latest validated runtime evidence is validation-only PR #376 exact head `0fb444aee8b6dbd3a35bb1d3b7662728d85fd691`, Check `32301160532`, Node 24.19.0: **688/688 tests**, Benchmark 3 success, Benchmark Sample success. Runtime freeze is the same exact `main` SHA. The PR was closed without merge after validation.
+Latest validated implementation/tooling evidence is validation-only PR #377 exact head `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, Node 24.19.0: **692/692 tests**, Benchmark 3 success, Benchmark Sample success. The PR was closed without merge after validation. Product remains `0.8.600.52`; this checkpoint adds continuation/content-census tooling rather than a new gameplay version.
 
 Benchmark 3 single run:
 
 ```text
-player profiles  0.399417 ms/op
-enemy profiles   0.070029 ms/op
-basic attacks    0.003675 ms/op
-tick dispatch    0.000898 ms/op
-route lookup     0.007617 ms/op
+player profiles  0.393820 ms/op
+enemy profiles   0.070731 ms/op
+basic attacks    0.003811 ms/op
+tick dispatch    0.001062 ms/op
+route lookup     0.007603 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.357454 ms/op    7.63%
-enemy profiles   0.070214 ms/op   11.19%
-basic attacks    0.001153 ms/op  214.09%
-tick dispatch    0.000873 ms/op   30.99%
-route lookup     0.007237 ms/op    6.02%
+player profiles  0.362912 ms/op   10.42%
+enemy profiles   0.065795 ms/op    9.93%
+basic attacks    0.001204 ms/op  200.40%
+tick dispatch    0.000696 ms/op   33.93%
+route lookup     0.006992 ms/op    9.64%
 ```
 
 No hard threshold is accepted.
@@ -178,4 +207,4 @@ Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`
 
 ## Definition of done
 
-A bounded implementation is complete when production behavior is coherent, relevant validation actually ran or limitations are reported, persistence/lifecycle contracts are preserved, performance evidence is collected when material, architecture guards remain green, deliberate version decisions are recorded, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changes.
+A bounded implementation is complete when production behavior is coherent, relevant validation actually ran or limitations are reported, persistence/lifecycle contracts are preserved, performance evidence is collected when material, architecture guards remain green, content-scale evidence is recorded when material, deliberate version decisions are recorded, the exact implementation SHA is frozen before documentation synchronization, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changes.
