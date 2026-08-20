@@ -65,14 +65,14 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.ok(counts.creatures > 0);
     assert.ok(counts.supplemental.routes > 0);
     assert.equal(counts.supplemental.spellSchools, 3);
-    assert.equal(counts.supplemental.capabilities, 12);
-    assert.equal(counts.supplemental.npcSchedules, 4);
-    assert.equal(counts.supplemental.contentPacks, 8);
-    assert.ok(counts.supplemental.ownedPackRecords >= 125);
+    assert.equal(counts.supplemental.capabilities, 16);
+    assert.equal(counts.supplemental.npcSchedules, 5);
+    assert.equal(counts.supplemental.contentPacks, 9);
+    assert.ok(counts.supplemental.ownedPackRecords >= 156);
     assert.equal(counts.supplemental.packOwnedByCollection.spellSchools, 3);
-    assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 12);
-    assert.equal(counts.supplemental.packOwnedByCollection.abilities, 9);
-    assert.equal(counts.supplemental.packOwnedByCollection.npcSchedules, 4);
+    assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 16);
+    assert.equal(counts.supplemental.packOwnedByCollection.abilities, 13);
+    assert.equal(counts.supplemental.packOwnedByCollection.npcSchedules, 5);
     assert.equal(counts.supplemental.packOwnedByCollection.companions, 1);
     assert.ok(counts.supplemental.seedNpcs > 0);
     assert.ok(counts.supplemental.seedEnemies > 0);
@@ -110,9 +110,9 @@ test('census counts future pack-owned abilities and companions without double-co
     });
     const counts = collectContentScaleCounts({ contentPacks: [pack] });
 
-    assert.equal(counts.abilities, 10);
+    assert.equal(counts.abilities, 14);
     assert.equal(counts.companions, 2);
-    assert.equal(counts.supplemental.capabilities, 13);
+    assert.equal(counts.supplemental.capabilities, 17);
     assert.equal(counts.supplemental.packOwnedByCollection.abilities, 1);
     assert.equal(counts.supplemental.packOwnedByCollection.companions, 1);
 });
