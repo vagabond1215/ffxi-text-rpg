@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.900.1';
-export const PACKAGE_VERSION = '0.8.900';
+export const PRODUCT_VERSION = '0.9.100.1';
+export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 39,
+    data: 40,
     benchmark: 3,
-    codename: 'Household & Community Continuity',
+    codename: 'Content Pack Scale Contract v2',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.900.1',
+    versionManifest: '0.9.100.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -29,7 +29,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     cultivation: '0.2.0',
     commitments: '0.4.0',
     relationships: '0.1.0',
-    npcSchedules: '0.2.0',
+    npcSchedules: '0.3.0',
     npcWorldProjection: '0.1.1',
     enemyEncounterProjection: '0.1.0',
     presentationLog: '0.1.0',
@@ -64,9 +64,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     carriedInventory: '0.1.0',
     carriedLoad: '0.2.1',
     transportServiceBoard: '0.2.0',
-    contentPackSchema: '0.1.0',
-    regionalContentPacks: '0.2.0',
-    contentPackValidation: '0.1.0',
+    contentCatalogRegistry: '0.1.0',
+    contentPackSchema: '0.2.0',
+    regionalContentPacks: '0.3.0',
+    contentPackValidation: '0.2.0',
+    contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
     simulationSubstrateGate: '0.1.0',
     integratedMechanicsGate: '0.1.0',
