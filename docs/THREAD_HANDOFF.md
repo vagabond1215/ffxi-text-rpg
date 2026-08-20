@@ -11,15 +11,16 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. only the architecture/runtime/tests named by the next bounded action
+8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` only if Phase 0.9 planning/implementation is the authorized task
+9. only the architecture/runtime/tests named by the next bounded action
 
 If these checkpoints still match repository state, **do not restart a broad repository audit**.
 
 ## Current checkpoint
 
-**Phase 0.8 — Life and Infrastructure Expansion is complete.**
+**Phase 0.8 is complete. The requested current-status audit, repair/optimization pass, and future implementation planning pass are also complete.**
 
-Current runtime contract:
+Current runtime contract remains unchanged:
 
 ```text
 Product:       0.8.900.1
@@ -33,170 +34,114 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Exact frozen runtime implementation SHA:
+Exact frozen gameplay/runtime implementation SHA remains:
 
 ```text
 ca7d37c643adc4115b519148615f6120d03228df
 ```
 
-The documentation tip immediately before this handoff write was:
+The documentation/planning tip immediately before this handoff write was:
 
 ```text
-64216f9550110c9a9c8711bdf3751a8d4f92d07a
+7fca0f2added3a51b6e873208b145375a3c5d221
 ```
 
-This handoff is the final repository-file write for the completed Phase 0.8 pass. A future thread must refresh `main` rather than assuming this chat's final commit SHA is still current.
+This handoff is the final repository-file write for the status-audit/repair/planning pass. Refresh `main` before future work rather than assuming this chat's final commit SHA is still current.
 
-There is no active feature branch or open PR. Validation-only PR #380 is closed without merge.
+There is no active feature PR. Validation-only PR #381 is closed without merge.
 
-## Exact validation evidence
+## Audit conclusion
 
-Frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed hosted Check:
+The repository is technically healthy at the Phase 0.8 boundary.
+
+No new gameplay, persistence, lifecycle, deterministic-simulation, version, or content-data defect was found that requires reopening Phase 0.8. The largest project risk remains **connected authored-content breadth and production throughput**, not persistence/state coherence.
+
+Current `main` remains unprotected by deliberate policy. The recommendation remains to transition to protected `main` + required green hosted Check + PR-based integration only when Phase 0.9 is explicitly opened.
+
+Several historical validation branches and `feature/0.8.700-cultivation-stewardship` remain remotely. The available connector exposes no safe branch-delete action. Treat them as manual cleanup debt only; do not continue new work from them.
+
+## Repairs and optimizations completed
+
+### Repository contract audit
+
+Added:
 
 ```text
-Check:              32395768383
+npm run audit:repo
+scripts/repositoryAudit.js
+tests/repositoryContractAudit.test.js
+```
+
+The audit detects drift between runtime/package/profile/core documentation and hosted validation contracts.
+
+### Local/hosted validation parity
+
+`npm run check` now runs:
+
+```text
+npm run audit:repo
+npm test
+npm run benchmark
+npm run benchmark:sample
+```
+
+Hosted `Check` runs the same Repository Audit + Test + Benchmark + Benchmark Sample stages.
+
+### Historical guidance cleanup
+
+`docs/BASELINE_PIPELINE.md` is now explicitly historical. Its old App 0.2.0 / Save 2 / Data 1 / Benchmark 1 lanes, live-tick-as-canonical-clock guidance, command-first assumptions, FFXI-oriented next-version instructions, and `0.3.0` target are retired and must not be treated as current authority.
+
+## Maintenance validation evidence
+
+Validated maintenance head:
+
+```text
+c3d610e1f3820248a20de28bdc605e82da29e6f1
+```
+
+Validation-only PR #381:
+
+```text
+state:              closed without merge
+Check:              32398650493
+Job:                96521318203
 Node:               24.19.0
-Tests:              699
-Passed:             699
+npm:                11.17.0
+Repository Audit:   PASS
+Tests:              700/700 passed
 Failed:             0
 Skipped:            0
 Benchmark 3:        success
 Benchmark Sample:   success
 ```
 
-Frozen-runtime sample medians/spreads:
+Single Benchmark 3 run:
 
 ```text
-player profiles  0.359735 ms/op    6.77%
-enemy profiles   0.068665 ms/op    8.93%
-basic attacks    0.001223 ms/op  172.92%
-tick dispatch    0.000821 ms/op   27.23%
-route lookup     0.007260 ms/op    6.40%
+player profiles  0.382597 ms/op
+enemy profiles   0.070456 ms/op
+basic attacks    0.003109 ms/op
+tick dispatch    0.000811 ms/op
+route lookup     0.007480 ms/op
 ```
 
-No hard performance threshold is accepted.
-
-### Phase 0.8 exit validation
-
-Validation-only PR #380 temporarily added Census + Hardening steps on its validation branch only. Production runtime remained frozen at `ca7d37c6...`.
-
-Hosted Check:
+Sample medians/spreads:
 
 ```text
-Check:              32395959505
-Test:               success
-Benchmark 3:        success
-Benchmark Sample:   success
-Content Census:     success
-Hardening:          success
+player profiles  0.370199 ms/op    5.23%
+enemy profiles   0.067141 ms/op    7.72%
+basic attacks    0.001190 ms/op  188.10%
+tick dispatch    0.000812 ms/op   25.13%
+route lookup     0.006983 ms/op    6.44%
 ```
 
-Hardening passed `tests/longSessionLifecycle.test.js` **2/2** plus another Benchmark Sample. It confirms deterministic multi-day save/load continuation and mixed owner-managed task lifecycles returning retained task state to zero.
+No hard performance thresholds were introduced. Results remain qualitatively consistent with Benchmark 3 history; attack/tick microbenchmarks remain noise-sensitive.
 
-## Phase 0.8 connected-life proof
+The new 700th test is the repository contract guard. No gameplay version increment is warranted for this maintenance packet.
 
-The completed player-facing arc is:
+## Content-scale status remains unchanged
 
-```text
-regional materials
-  -> home storage improvement
-  -> home workshop capability
-  -> carried-load / Field Satchel logistics
-  -> fictional-time NPC schedules and companion convalescence
-  -> home Sweetroot cultivation
-  -> repeated manual cultivation mastery
-  -> earned paid delegation of one tending chore
-  -> cultivated produce with home-plot provenance
-  -> scheduled named community commitments and persistent relationships
-  -> ordinary services / preparation / travel / adventure remain connected
-```
-
-No second simulation clock, crop scheduler, helper clock, generic automation platform, social clock, duplicate inventory, or parallel progression system was introduced.
-
-## Current authority decisions to preserve
-
-### Persistence
-
-Game State 14 is strict current-schema-only pre-alpha authority. No automatic migrations are supported by default.
-
-`state.cultivation` is required persisted authority. It owns plot/crop lifecycle facts and the bounded paid tending assignment when present.
-
-Optional persisted authority remains:
-
-```text
-state.work
-player.progression.workProficiencies
-state.dayCycle
-```
-
-Derived/transient runtime state remains:
-
-```text
-state.npcs
-state.enemies
-state.log
-player.inventory alias identity
-player.combat
-player.statState
-activeBattle.rng
-```
-
-`state.events` remains persisted structured semantic observation history. `activeBattle.log` remains persisted encounter-local history.
-
-### Cultivation and delegation
-
-Canonical fictional world time is the only crop/helper completion clock.
-
-Manual preparation/tending reuse existing `workTaskEngine` ownership. Crop growth and delegated tending create no direct timed-task owner.
-
-Direct production timed-task creators remain exactly:
-
-```text
-abilityEngine.js
-campaignRecoveryEngine.js
-projectEngine.js
-resourceOpportunityEngine.js
-transportEngine.js
-workTaskEngine.js
-```
-
-After one manually completed cultivation cycle, the player may pay **12 gil** for one tending appointment. The wage is charged once, the appointment survives save/load, helper work grants no player mastery, completion is exactly once, and harvest remains normal cultivation output.
-
-Planting and harvest use the existing canonical `item-elderwood-sweetroot`. Home cultivation is distinguished by provenance source:
-
-```text
-plot-home-sweetroot-bed
-```
-
-### Household/community continuity
-
-Three existing locality people are persistent scheduled community contacts:
-
-```text
-Mira Fen  — Thornwall Southgate     06:00–11:00
-Mae Oris   — Brasshaven Market Ring 11:00–17:00
-Kiri Fen   — Mistmere Canal Ward    16:00–21:00
-```
-
-Their home-produce commitments require Sweetroot provenance from `plot-home-sweetroot-bed`; wild Sweetroot does not satisfy them.
-
-These loops reuse existing commitment, relationship, NPC schedule, wallet, inventory/provenance, semantic-event and save/load authorities. No new social persistence family or clock exists.
-
-Direct semantic Journal intents include:
-
-```text
-cultivation.prepare
-cultivation.plant
-cultivation.tend
-cultivation.harvest
-commitment.accept
-commitment.resolve
-commitment.followUp
-```
-
-## Content-scale exit evidence
-
-Current census:
+No canonical content records changed during this pass, so the Phase 0.8 census remains authoritative:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -212,88 +157,126 @@ companions                1 / 4
 transport services        3 / 5
 ```
 
-Supplemental evidence:
+Mechanics-scale gate: **NOT READY**. Places already exceed their mechanics floor; abilities/techniques remain the largest relative gap.
+
+## Phase 0.9 readiness finding
+
+The current regional content-pack schema owns:
 
 ```text
-routes                  7
-regional content packs  6
-pack-owned records      80
-runtime seed NPCs       11
-runtime seed enemies    13
+places
+routes
+transportServices
+ecologyFamilies
+species
+populations
+gatheringSources
+items
+npcs
+shops
+recipes
+quests
+relationships
 ```
 
-Mechanics-scale gate: **NOT READY**.
-
-Places already exceed their mechanics floor. Every other tracked category remains below it. The largest relative gap is abilities/techniques.
-
-This is the central strategic input for Phase 0.9. Do **not** game counts with disconnected filler.
-
-## Documentation synchronized after runtime freeze
-
-Runtime was frozen before documentation synchronization. Current authorities now describe the completed phase:
+It does **not** yet own several families that Phase 0.9 must scale heavily:
 
 ```text
-docs/PHASE_0_8_EXIT_GATE.md
-docs/ROADMAP.md
-docs/EXECUTION_PIPELINE.md
-docs/SYSTEM_CATALOG.md
-docs/VERSIONING_AND_RELEASE_ROADMAP.md
-docs/ARCHITECTURE.md
-docs/QUALITY_GATES.md
-docs/PERFORMANCE_BUDGET.md
-docs/RESOURCE_LIFECYCLE.md
-docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md
-PROJECT_PROFILE.yaml
-README.md
-this handoff (last)
+abilities / techniques
+capability / training definitions
+NPC schedules
+companions
 ```
 
-Documentation-only synchronization does not create a new runtime validation checkpoint.
+The validator therefore cannot yet provide the same regional stable-ID ownership, dependency and cross-reference guarantees for those families.
+
+**Do not begin Phase 0.9 by mass-authoring those categories into parallel global lists.** The first future implementation packet should repair this production boundary first.
+
+## Future implementation plan
+
+Detailed planning is recorded in:
+
+```text
+docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
+```
+
+Phase 0.9 and `0.9.100` remain **planned / not opened**. The plan does not authorize implementation by itself.
+
+### Proposed first packet — Content Pack Scale Contract v2
+
+After explicit Phase 0.9 opening:
+
+1. decide/perform the recommended protected-main + required Check + PR-integration transition;
+2. extend regional/shared pack ownership for abilities/techniques, capability/training references, NPC schedules and companions where appropriate;
+3. extend collision/dependency/cross-reference validation and generated scale fixtures;
+4. keep census counts tied to canonical playable content rather than pack bookkeeping;
+5. preserve existing runtime authorities and current-schema policy;
+6. decide Product/Package/Data/Game State changes from the actual implementation rather than planning them in advance.
+
+A Data-version increase is plausible for the expanded stable content contract. Game State should remain unchanged unless the implementation adds genuinely new durable player/world facts.
+
+### Following proposed Gate A tranches
+
+After Pack v2 is proven:
+
+```text
+Redstone Forge-Road
+  -> mining / production / shops / caravan logistics / equipment / techniques / contracts
+
+Elderwood Hunt-Timber
+  -> creatures / forestry / body recovery / food-material chains / field techniques / recurring people
+
+Starfen Marshcraft-Practical Magic
+  -> wetland ecology / herbs / medicine-cooking / practical magic / training / schedules / water context
+
+Gate A integration
+  -> audit / tests / Benchmark 3 / sample / census
+```
+
+The planning document uses a relative 12-week envelope after explicit opening: Weeks 1–2 Pack v2/governance, Weeks 3–5 Redstone, Weeks 6–8 Elderwood, Weeks 9–11 Starfen, Week 12 integration/census. These are planning bands, not delivery promises.
+
+Proposed Gate A content bands are also recorded there; they are not quotas and must not be satisfied with disconnected filler.
 
 ## Current decision boundary
 
 There is **no active implementation unit**.
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is planned but **not opened**.
-
-Proposed first unit:
-
 ```text
-0.9.100 — Content Scale Gate A
+Phase 0.8:                  COMPLETE
+Status audit:               COMPLETE
+Repair/optimization pass:   COMPLETE
+Future planning pass:       COMPLETE
+Phase 0.9:                  PLANNED / NOT OPENED
+Next proposed unit:         0.9.100 Content Scale Gate A
+First proposed packet:      Content Pack Scale Contract v2
+Known runtime blocker:      none
+Open PRs:                   none
+Highest strategic debt:     connected authored-content breadth / throughput
 ```
 
-A future thread must not begin `0.9.100` merely because it is next in the roadmap. It requires a new explicit work order.
+A future `continue` must not automatically open Phase 0.9. Implementation requires a new explicit work order.
 
-If Phase 0.9 is explicitly opened, the recommended first planning packet is:
+## Authority decisions to preserve
 
-1. refresh `main` and this handoff;
-2. run/read the current census rather than estimating content breadth;
-3. choose a dense cross-linked regional content tranche rather than adding empty geography/filler;
-4. prioritize systems that create multiple playable connections, with special attention to the large ability/technique, recipe/process, NPC, item, quest, companion and ecology gaps;
-5. explicitly decide the recommended governance transition to protected `main`, PR-based track integration and required green hosted Check before high-volume Phase 0.9 work accelerates.
-
-Do not change branch protection or runtime to `0.9.x` without that explicit opening decision.
-
-## Known blockers
-
-```text
-Phase 0.8 runtime blockers: none known
-Open pull requests:           none
-Mechanics-scale gate:         not ready by design
-Highest strategic debt:       connected authored content breadth / throughput
-```
-
-The largest project risk has shifted from persistence/state coherence to producing enough interconnected original content on the mature substrate.
+- fictional simulation time remains separate from wall-clock scheduling;
+- Game State 14 remains strict current-schema-only pre-alpha authority;
+- `state.cultivation` remains durable authority for crop/delegation facts;
+- direct production timed-task owners remain the audited existing owner set;
+- `state.npcs`, `state.enemies`, top-level `state.log`, root player combat/stat caches and `activeBattle.rng` remain derived/transient;
+- `state.events` remains persisted semantic observation history;
+- regional content expansion must preserve original-world IDs and source/sink/cross-reference integrity;
+- content scale is release progression evidence, not an excuse for disconnected filler.
 
 ## Deferred work — do not rediscover
 
 - protected `main` / required Check / PR integration — recommended at explicit Phase 0.9 opening;
+- manual deletion of stale historical remote branches;
 - supported-save compatibility/migrations — later deliberate release-transition work unless explicitly requested earlier;
 - dedicated browser E2E/accessibility program — proposed `0.9.700`;
 - hard performance thresholds — deferred until representative evidence supports them;
 - balance certification — deferred until sustained content-scale play exists;
 - quality/HQ crafting depth — deferred until it creates real decisions;
-- mounts/warehouses/large logistics — deferred until existing logistics are stressed by content;
+- mounts/warehouses/large logistics — deferred until current logistics are stressed by content;
 - deep romance framework — deferred until broader authored social life exists.
 
 ## Do not redo
@@ -302,34 +285,29 @@ Closed unless a concrete regression/change directly touches them:
 
 ```text
 Phase 0.4–0.8 broad discovery
-C0 candidate-selection audit
-state.npcs persistence classification
-state.enemies persistence classification
-top-level state.log persistence classification
-root derived-cache serialization audit
-active-battle identity/cache/player-link hardening sequence
-0.8.700 cultivation clock/authority decision
-0.8.800 delegation ownership decision
-0.8.900 household/community authority discovery
 Phase 0.8 exit audit
+post-0.8 current-status audit
+late-0.8 persistence classification sequence
+cultivation/delegation clock and ownership decisions
+household/community authority discovery
+obsolete baseline-pipeline archaeology
 ```
 
 ## Session status
 
 ```text
-Documentation tip before handoff: 64216f9550110c9a9c8711bdf3751a8d4f92d07a
-Frozen runtime:                   ca7d37c643adc4115b519148615f6120d03228df
-Product / Package:                0.8.900.1 / 0.8.900
-Account Save / Game State:        5 / 14
-Data / Benchmark:                 39 / 3
-Hosted runtime Check:             32395768383 success
-Tests:                            699/699 passed
-Phase-exit Check:                 32395959505 success
-Census / Hardening:               success / success
-Phase 0.8:                        COMPLETE
-Open PRs:                         none
-Active implementation:            none
-Next proposed unit:               0.9.100 Content Scale Gate A
-Next proposed unit status:        planned, not opened
-Known Phase 0.8 blocker:          none
+Documentation/planning tip before handoff: 7fca0f2added3a51b6e873208b145375a3c5d221
+Frozen gameplay runtime:                  ca7d37c643adc4115b519148615f6120d03228df
+Validated maintenance head:               c3d610e1f3820248a20de28bdc605e82da29e6f1
+Product / Package:                         0.8.900.1 / 0.8.900
+Account Save / Game State:                 5 / 14
+Data / Benchmark:                          39 / 3
+Maintenance Check:                         32398650493 success
+Repository Audit:                          PASS
+Tests:                                     700/700 passed
+Benchmark 3 / Sample:                      success / success
+Open PRs:                                  none
+Active implementation:                     none
+Next proposed unit:                        0.9.100 Content Scale Gate A
+Next proposed unit status:                 planned, not opened
 ```
