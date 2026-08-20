@@ -4,7 +4,14 @@ import { getPlace } from './places.js';
 import { getProductionItem } from './productionItems.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const COMMITMENT_CATALOG_VERSION = 2;
+export const COMMITMENT_CATALOG_VERSION = 3;
+
+const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
+    'plot-home-sweetroot-bed': Object.freeze({
+        itemId: 'item-elderwood-sweetroot',
+        domain: 'cultivation',
+    }),
+});
 
 const COMMITMENT_DEFINITIONS = Object.freeze({
     'commitment-thornwall-sweetroot-return': commitment({
@@ -76,6 +83,72 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         resolvedText: 'Soli compares the leaves against the Ward notes, marks where you gathered them, and credits the work. Your name is written beside a useful observation rather than beside another newcomer instruction.',
         followUpText: 'When you return on a later day, Soli remembers the Marrowleaf without reopening the old notes. They point out that the same reed country supports useful gathering and troublesome rootlings: knowing Starfen means learning when to work the marsh and when to make the ground safer first.',
     }),
+    'commitment-thornwall-hearth-sweetroot-share': commitment({
+        id: 'commitment-thornwall-hearth-sweetroot-share',
+        name: 'A Root for the Morning Pot',
+        giverNpcId: 'npc-thornwall-mira-fen',
+        offerPoiId: 'poi-sandoria-s-aveline',
+        offerPlaceId: 'thornwall-southgate',
+        description: 'Mira Fen wants one Sweetroot grown at a Southgate lodging for the neighborhood breakfast pot, where a home-grown root means more than another anonymous bundle from the road.',
+        objective: 'Bring Mira Fen one Elderwood Sweetroot harvested from your own home cultivation bed.',
+        requiredItems: [{
+            itemId: 'item-elderwood-sweetroot',
+            quantity: 1,
+            provenanceSourceId: 'plot-home-sweetroot-bed',
+        }],
+        reward: {
+            gil: 18,
+            relationship: { familiarity: 1, obligation: 1 },
+        },
+        followUpDelayDays: 2,
+        offerText: 'Mira has seen plenty of forest Sweetroot come through Southgate. She asks for something different: one root you kept alive and brought to harvest at your own lodging, for the shared morning pot used by neighbors and road hands.',
+        resolvedText: 'Mira turns the cultivated root over in her hand, recognizes the care marks from a tended bed, and slices it into the morning pot. Your lodging is no longer only somewhere you sleep; it has supplied a meal other people will remember.',
+        followUpText: 'Two mornings later, Mira points out the empty place in the pot where your root went first. A pair of regulars now ask whether the lodging garden is still producing, and she treats your next visit like a neighbor returning rather than a customer passing through.',
+    }),
+    'commitment-brasshaven-courtyard-sweetroot-share': commitment({
+        id: 'commitment-brasshaven-courtyard-sweetroot-share',
+        name: 'Courtyard-Grown Sweetroot',
+        giverNpcId: 'npc-brasshaven-mae-oris',
+        offerPoiId: 'poi-bastok-markets-carmelide',
+        offerPlaceId: 'brasshaven-market-ring',
+        description: 'Mae Oris wants one Sweetroot grown at a Market Ring lodging to prove the crowded courtyards can contribute something useful instead of importing every fresh root through the gates.',
+        objective: 'Bring Mae Oris one Elderwood Sweetroot harvested from your own home cultivation bed.',
+        requiredItems: [{
+            itemId: 'item-elderwood-sweetroot',
+            quantity: 1,
+            provenanceSourceId: 'plot-home-sweetroot-bed',
+        }],
+        reward: {
+            gil: 24,
+            relationship: { respect: 1, trust: 1 },
+        },
+        followUpDelayDays: 1,
+        offerText: 'Mae has a practical wager with two courtyard cooks: if a traveler can keep a Sweetroot bed producing in the Ring, the block can stop treating every patch of soil as wasted space. She wants one root from your own bed, not one bought back from a stall.',
+        resolvedText: 'Mae checks the root against the little cultivation notes she has been keeping and wins her wager without ceremony. By evening, your lodging is being cited as evidence that the Ring can grow a little of what it consumes.',
+        followUpText: 'The next day Mae has already lent her notes to another courtyard. She trusts your account of the bed enough to stop asking for proof and starts asking what you learned about keeping routine work from swallowing the rest of your day.',
+    }),
+    'commitment-mistmere-canalside-sweetroot-share': commitment({
+        id: 'commitment-mistmere-canalside-sweetroot-share',
+        name: 'Sweetroot for the Remedy Shelf',
+        giverNpcId: 'npc-mistmere-kiri-fen',
+        offerPoiId: 'poi-waters-hilkomu-makimu',
+        offerPlaceId: 'mistmere-canal-ward',
+        description: 'Kiri Fen wants one Sweetroot raised at a Canal Ward lodging for the neighborhood remedy shelf, where its known home history matters as much as the root itself.',
+        objective: 'Bring Kiri Fen one Elderwood Sweetroot harvested from your own home cultivation bed.',
+        requiredItems: [{
+            itemId: 'item-elderwood-sweetroot',
+            quantity: 1,
+            provenanceSourceId: 'plot-home-sweetroot-bed',
+        }],
+        reward: {
+            gil: 20,
+            relationship: { familiarity: 1, trust: 1 },
+        },
+        followUpDelayDays: 2,
+        offerText: 'Kiri is comparing roots whose history she actually knows. She asks for one Sweetroot grown at your own Canal Ward lodging so the shared remedy shelf has a batch tied to a person, a place, and days of care rather than a market label.',
+        resolvedText: 'Kiri records the root beside your name and sets it among the practical remedies kept for the nearest households. The small bed at your lodging has become part of how the ward looks after people who live there.',
+        followUpText: 'When you return two days later, Kiri has already used part of the root in a simple broth for a feverish neighbor. She remembers exactly where it came from and asks after the bed before asking whether you need to buy anything.',
+    }),
 });
 
 export function getCommitmentDefinition(commitmentId) {
@@ -104,8 +177,13 @@ export function validateCommitmentCatalog() {
                 continue;
             }
             if (!positiveInteger(requirement.quantity)) issues.push(`${definition.id} has invalid quantity for ${requirement.itemId}.`);
-            if (requirement.provenanceSourceId && !item.provenance.some((entry) => entry.sourceId === requirement.provenanceSourceId)) {
-                issues.push(`${definition.id} provenance requirement ${requirement.provenanceSourceId} is not a source for ${requirement.itemId}.`);
+            if (requirement.provenanceSourceId) {
+                const staticSource = item.provenance.some((entry) => entry.sourceId === requirement.provenanceSourceId);
+                const dynamicSource = DYNAMIC_PROVENANCE_SOURCES[requirement.provenanceSourceId];
+                const validDynamicSource = dynamicSource?.itemId === requirement.itemId;
+                if (!staticSource && !validDynamicSource) {
+                    issues.push(`${definition.id} provenance requirement ${requirement.provenanceSourceId} is not a source for ${requirement.itemId}.`);
+                }
             }
         }
         if (definition.fieldSourceId) {
