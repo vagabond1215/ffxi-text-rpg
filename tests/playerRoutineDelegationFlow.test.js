@@ -98,6 +98,7 @@ test('0.8.800 earns paid Sweetroot tending delegation without a second clock, ha
     let state = createNewGameState({ nationId: 'thornwall', name: 'Delegation Auditor' });
     const uiState = createUiState({ screen: 'game', activeView: 'journal' });
     completeManualFirstCycle(state, uiState);
+    state.player.wallet.gil = CULTIVATION_DELEGATION_WAGE_GIL * 2;
 
     assert.equal(dispatchCultivation(state, uiState).entry.action.intent, 'cultivation.prepare');
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
