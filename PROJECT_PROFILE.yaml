@@ -5,7 +5,7 @@ repository:
 project:
   title: Hearth & Horizon
   type: persistent-game-application
-  phase: pre-alpha-active-development
+  phase: pre-alpha-phase-0.8-complete
   assurance_tier: B-plus
 authority:
   instructions: AGENTS.md
@@ -18,42 +18,43 @@ authority:
   quality_gates: docs/QUALITY_GATES.md
   performance_budget: docs/PERFORMANCE_BUDGET.md
   resource_lifecycle: docs/RESOURCE_LIFECYCLE.md
+  phase_0_8_exit_gate: docs/PHASE_0_8_EXIT_GATE.md
 tools:
   github_connector: repository-inspection-and-bounded-doc-work
   repository_capable_execution: runtime-implementation-and-executable-validation
   principle: least-powerful-safe-tool
 git:
-  normal_work: direct-main
+  current_normal_work: direct-main
   risky_or_explicit_review_work: feature-branch-pr
-  stabilization_transition: protect-default-branch-and-require-green-ci
+  recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
+  phase_0_9_transition_status: not-started-requires-explicit-opening
 active_change:
-  branch: feature/0.8.700-cultivation-stewardship
-  pull_request: 378
-  pull_request_state: open-draft-unmerged
-  validated_implementation_sha: c125f7ae5f94800893dc28c7fa0ceb61553e3db8
-  base_main_sha: a77db18722a1c55daa7c4666db9aabd785d91eaf
-  hosted_check: 32340190710
-  hosted_job: 96337561458
-  test_result: 695-of-695-pass
+  branch: null
+  pull_request: null
+  pull_request_state: none
+  validated_implementation_sha: ca7d37c643adc4115b519148615f6120d03228df
+  hosted_check: 32395768383
+  test_result: 699-of-699-pass
   benchmark_result: benchmark-3-and-sample-success
+  phase_exit_check: 32395959505
+  phase_exit_result: census-and-hardening-success
 progression:
   continuation_pass: C0-continuation-infrastructure-content-census
   continuation_pass_status: complete
-  current_bounded_unit: 0.8.700-cultivation-stewardship
-  current_bounded_unit_status: validated-pending-landing
-  next_bounded_unit_after_landing: 0.8.800-earned-routine-delegation
-  next_bounded_unit_status: not-started
+  current_bounded_unit: phase-0.8-exit-audit
+  current_bounded_unit_status: complete
+  next_proposed_unit: 0.9.100-content-scale-gate-a
+  next_proposed_unit_status: planned-not-opened
   content_scale_gate_version: 1
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
   phase_0_8_sequence:
-    - 0.8.700-cultivation-stewardship
-    - 0.8.800-earned-routine-delegation
-    - 0.8.900-household-community-continuity
-    - phase-0.8-exit-audit
+    - 0.8.700-cultivation-stewardship-complete
+    - 0.8.800-earned-routine-delegation-complete
+    - 0.8.900-household-community-continuity-complete
+    - phase-0.8-exit-audit-complete
   deferred_release_transition:
     - browser-e2e-accessibility-program
     - supported-save-migrations
-    - protected-main-required-check
     - accepted-hard-performance-budgets
 validation:
   tests: npm test
@@ -68,103 +69,50 @@ validation:
   content_scale_guard: tests/contentScaleGate.test.js
   cultivation_schema_guard: tests/currentSchemaCultivation.test.js
   cultivation_player_flow_guard: tests/playerCultivationStewardshipFlow.test.js
+  delegation_player_flow_guard: tests/playerRoutineDelegationFlow.test.js
+  household_community_guard: tests/playerHouseholdCommunityFlow.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
-  current_schema_registry_guards:
-    - tests/currentSchemaProjectRegistry.test.js
-    - tests/currentSchemaContinuityRegistries.test.js
-    - tests/currentSchemaResourceOpportunities.test.js
-    - tests/currentSchemaEcologyRegistry.test.js
-    - tests/currentSchemaCharacterRuntime.test.js
-    - tests/currentSchemaWorldSimulation.test.js
-    - tests/currentSchemaPlayerCapabilities.test.js
-    - tests/currentSchemaInventoryState.test.js
-    - tests/currentSchemaSemanticEvents.test.js
-    - tests/currentSchemaWorkRegistry.test.js
-    - tests/currentSchemaPlayerProgression.test.js
-    - tests/currentSchemaDiscoveryPersistence.test.js
-    - tests/currentSchemaWorkProficiencies.test.js
-    - tests/currentSchemaPlayerResources.test.js
-    - tests/currentSchemaDayCycle.test.js
-    - tests/currentSchemaPlayerWallet.test.js
-    - tests/currentSchemaDerivedPlayerState.test.js
-    - tests/currentSchemaPlayerEquipment.test.js
-    - tests/currentSchemaPlayerStatuses.test.js
-    - tests/currentSchemaActiveBattle.test.js
-    - tests/playerPersistenceIntegration.test.js
-    - tests/currentSchemaLocationPersistence.test.js
-    - tests/currentSchemaCombatIdentityPersistence.test.js
-    - tests/currentSchemaNpcWorldProjection.test.js
-    - tests/currentSchemaEnemyEncounterProjection.test.js
-    - tests/currentSchemaPresentationLog.test.js
-    - tests/currentSchemaCultivation.test.js
-modules:
-  - game-runtime
-  - persistent-state
-  - web-ui
-  - deterministic-simulation
-  - cultivation-stewardship
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  proposed_product_version: 0.8.700.1
-  proposed_package_version: 0.8.700
+  current_product_version: 0.8.900.1
+  current_package_version: 0.8.900
   current_account_save: 5
-  proposed_game_state: 13
-  proposed_data_version: 38
+  current_game_state: 14
+  current_data_version: 39
   current_benchmark_version: 3
   current_game_state_must_be_complete_before_revival: true
   raw_current_schema_validation_before_runtime_normalization: true
   active_task_links_must_be_persisted_and_consistent: true
-  raw_domain_validation:
-    required:
-      - world-time
-      - simulation-control
-      - timed-tasks
-      - active-travel
-      - projects
-      - commitments
-      - relationships
-      - resource-opportunities
-      - ecology
-      - cultivation
-      - party
-      - ability-runtime
-      - semantic-events
-      - atlas-discovery
-      - poi-discovery
-      - player-envelope
-      - player-identity-key-items-flags
-      - player-progression-and-skills
-      - player-capabilities
-      - player-inventory-state
-      - player-mutable-resources
-      - player-wallet
-      - player-equipment
-      - player-statuses
-      - world-flags
-      - current-location-position
-      - combat-identity-sequence
-      - active-battle-when-present
-      - active-battle-deterministic-combat-caches
-      - active-battle-root-player-link
-    optional_when_present:
-      - work-registry
-      - player-work-proficiencies
-      - day-cycle-history
   cultivation_authority:
     state_owner: state.cultivation
     growth_clock: canonical-world-time-only
     crop_owned_timed_task: false
-    short_labor_owner: workTaskEngine
+    short_manual_labor_owner: workTaskEngine
     physical_input_output_owner: inventory
     provenance_owner: resource-provenance
     mastery_owner: player-work-proficiencies
     stable_proficiency_id: cultivation
+    delegation:
+      state_owner: state.cultivation
+      direct_timed_task_owner: false
+      wage_gil: 12
+      completion_clock: canonical-world-time-only
+      player_mastery_for_helper_work: false
     semantic_intents:
       - cultivation.prepare
       - cultivation.plant
       - cultivation.tend
       - cultivation.harvest
+  household_community:
+    persistence_owner: existing-commitments-and-relationships
+    schedule_clock: canonical-world-time-only
+    social_clock: false
+    home_produce_source_id: plot-home-sweetroot-bed
+    semantic_intents:
+      - commitment.accept
+      - commitment.resolve
+      - commitment.followUp
   post_revival_or_derived:
     - broad-player-validation
     - flat-inventory-alias-identity
@@ -189,26 +137,39 @@ quality:
   benchmark_warmup_ratio: 0.1
   hard_performance_thresholds: not-yet-accepted
   content_scale_is_release_progress_not_ci_pass_fail: true
+content_scale:
+  mechanics_gate: not-ready
+  current:
+    places_localities: 26
+    named_npcs: 12
+    shop_service_sites: 17
+    creature_definitions: 16
+    resource_sources: 13
+    canonical_items: 50
+    recipes_processes: 11
+    abilities_techniques: 5
+    quests_contracts: 8
+    companions: 1
+    transport_services: 3
+  largest_relative_gap: abilities-techniques
 constraints:
   - use current repository authority rather than conversation memory
   - read thread handoff and execution pipeline before broad discovery
-  - if pull request 378 remains unmerged resolve its status before starting 0.8.800 by default
   - preserve the original-world canon and legacy/reference boundary
   - preserve the distinction between fictional simulation time and wall-clock scheduling
   - reject incompatible or incomplete pre-alpha saves/accounts rather than adding compatibility scaffolding by default
-  - raw Game State 13 must reject malformed cultivation authority before runtime ensure helpers normalize it
-  - cultivation growth is timestamp-derived from canonical fictional time and must not create a crop-owned long-lived timed task
-  - cultivation preparation and tending reuse the existing work task owner and exactly-once terminal release contract
+  - raw Game State 14 must reject malformed cultivation/delegation authority before runtime ensure helpers normalize it
+  - cultivation growth and delegated tending are timestamp-derived from canonical fictional time and do not create long-lived direct timed tasks
+  - manual cultivation preparation and tending reuse the existing work task owner and exactly-once terminal release contract
   - planting consumes a physical inventory item and harvest creates ordinary inventory output
   - cultivated output remains the existing canonical Sweetroot item and provenance distinguishes its home-grown origin
-  - seed provenance must survive the growth cycle into harvest provenance
-  - harvest must be exactly once and replay-safe
-  - cultivation mastery belongs to persistent work proficiency rather than a parallel progression counter
+  - delegated helper work does not grant player mastery or free resources
+  - community commitments reuse existing commitment relationship schedule wallet inventory and event authorities
   - semantic player actions must not require command-string manufacture
-  - cultivation recommendation priority must not suppress existing active or ready commitment livelihood home or recovery decisions
   - state.events remains the persisted structured semantic observation channel
   - state.npcs state.enemies and top-level state.log remain non-authoritative projections/presentation state
   - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
   - do not add blind global timed-task pruning
   - content-heavy work should run the census without gaming counts with disconnected filler
+  - Phase 0.9 and 0.9.100 are planned but not opened without explicit authorization
   - roadmap sequencing does not authorize unbounded implementation
