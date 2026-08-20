@@ -1,27 +1,25 @@
 # Player Experience Upgrade Path
 
-This document records the player-facing progression proof for Hearth & Horizon. Historical implementation/checkpoint detail remains in git and `docs/ROADMAP.md`; this file stays focused on what a normal player should be able to understand and accomplish next.
-
-For exact current work order and deferred sequencing, read `docs/THREAD_HANDOFF.md` and `docs/EXECUTION_PIPELINE.md` first.
+This document records the player-facing progression proof for Hearth & Horizon. Historical checkpoint detail remains in git and `docs/ROADMAP.md`; exact current work and deferred sequencing live in `docs/THREAD_HANDOFF.md` and `docs/EXECUTION_PIPELINE.md`.
 
 ## Player promise
 
 A normal player should be able to answer from ordinary browser play:
 
-1. **Who am I and what was I trained to do?**
-2. **Why am I here and who can I trust first?**
-3. **What can I do next without command expertise?**
-4. **How does effort create persistent progress?**
-5. **Why should I leave town, and why should I return?**
-6. **What do I know, carry, and have prepared?**
-7. **Who is traveling with me?**
-8. **Why improve a home or foothold?**
-9. **How should I prepare for travel constraints?**
-10. **When are people actually available?**
-11. **What happens when a companion is too hurt to continue?**
-12. **What can I cultivate or steward over several days, and why does it matter to the rest of my life?**
-13. **When have I earned the ability to spend less attention on a solved routine?**
-14. **Who in the community changes because of the life I am building?**
+1. Who am I and what was I trained to do?
+2. Why am I here and who can I trust first?
+3. What can I do next without command expertise?
+4. How does effort create persistent progress?
+5. Why should I leave town, and why should I return?
+6. What do I know, carry, and have prepared?
+7. Who is traveling with me?
+8. Why improve a home or foothold?
+9. How should I prepare for travel constraints?
+10. When are people actually available?
+11. What happens when a companion is too hurt to continue?
+12. What can I cultivate or steward over several days, and why does it matter?
+13. When have I earned the ability to spend less attention on a solved routine?
+14. Who in the community changes because of the life I am building?
 
 The intended loop remains:
 
@@ -29,136 +27,117 @@ The intended loop remains:
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-No convenience layer may create a parallel quest clock, hidden teleport graph, omniscient map/index, duplicate progression counter, duplicate economy, construction currency, property timer, workstation registry, crafting engine, cargo wallet, social clock, romance meter, companion recovery clock, cultivation clock, or reward path that bypasses provenance/authority.
+No convenience layer may create a duplicate clock, inventory, progression counter, economy, cargo wallet, social clock, cultivation clock, or reward path that bypasses canonical authority/provenance.
 
-## Pre-alpha rule
+## Completed foundation
 
-Target the clean current model. Old local-save compatibility is not a design requirement. Prefer one explicit authority, keep derived values derived, and version real contract changes deliberately.
+Phase 0.7 established original-world onboarding, first-day opportunities, field tools, regional livelihood/production, named-NPC continuity, acquired-knowledge readability, danger/combat/recovery, multiple commitments, semantic transport, settlement services, semantic information access and persistent companions.
 
-Ordinary character-facing information tells the player what the character **sees, knows, carries, remembers, needs, or can decide**. Architecture, compatibility, raw state channels, hidden topology, and implementation rationale stay outside normal play.
-
-# Completed player-experience foundation
-
-Phase 0.7 is complete. Its player proof established:
-
-- distinct original-world origin footing and first contacts;
-- first-day opportunities without command expertise;
-- real field tools and preparation;
-- regional livelihood/production loops;
-- several-day named-NPC continuity;
-- acquired-knowledge campaign readability;
-- danger, combat, recovery, and provenance-aware body/resource recovery;
-- multiple community/commitment loops;
-- semantic scheduled transport;
-- settlement work/trade/recovery;
-- semantic information access;
-- persistent companion preparation and travel.
-
-Phase 0.8 completed tracks currently prove:
+Phase 0.8 landed tracks:
 
 | Track | Player-facing proof | Status |
 | --- | --- | --- |
 | `0.8.100` | Regional materials + fictional labor create durable home storage | Complete |
-| `0.8.200` | Home investment creates reusable production/workshop capability | Complete |
-| `0.8.300` | Real carried inventory creates transport-capacity decisions | Complete |
-| `0.8.400` | Project labor and materials earn portable field capacity | Complete |
-| `0.8.500` | Named-person availability depends on canonical fictional time | Complete |
-| `0.8.600` | Injured companions can convalesce safely and rejoin explicitly | Complete |
+| `0.8.200` | Home investment creates reusable workshop capability | Complete |
+| `0.8.300` | Carried inventory creates transport-capacity decisions | Complete |
+| `0.8.400` | Project labor/materials earn portable field capacity | Complete |
+| `0.8.500` | Named-person availability depends on fictional time | Complete |
+| `0.8.600` | Injured companions convalesce safely and rejoin explicitly | Complete |
 
-The persistence/hardening revisions through Product `.52` do not add another player-facing life track; they protect the authorities those loops depend on.
+## `0.8.700` — Cultivation & Stewardship
 
-# Current player-experience boundary
+**Status: implemented and validated on draft PR #378; pending merge authorization.**
 
-The August 19, 2026 audit and C0 continuation pass completed the previously required fresh candidate selection. The next bounded player-facing track is no longer unselected.
-
-## `0.8.700` — Cultivation & Stewardship — READY NEXT
-
-Player-facing question:
-
-> Can the character invest in a home/foothold cultivation activity that unfolds over fictional days, requires meaningful preparation/care, and returns useful provenance-bearing goods into the same economy and life systems already in play?
-
-Smallest useful proof:
+The bounded player proof is deliberately small and connected:
 
 ```text
-access a cultivation plot
-  -> prepare the plot
-  -> plant a physical/provenance-bearing input
-  -> canonical fictional time advances
-  -> condition/tending creates a real decision
-  -> harvest exactly once
-  -> goods enter ordinary inventory with provenance
-  -> goods support at least three existing sinks/systems
-  -> practice improves persistent efficiency
+one home Sweetroot bed
+  -> prepare with hands-on labor
+  -> plant one physical Elderwood Sweetroot
+  -> wait through canonical fictional time
+  -> tend after the first fictional day
+  -> harvest after the second fictional day
+  -> receive three ordinary Sweetroots with cultivated provenance
+  -> use them through existing consumption, cooking and trade paths
+  -> cultivation mastery shortens later preparation/tending
 ```
 
-The player should understand:
+### What the player understands
 
-- what is growing;
-- when it will be ready or needs attention;
-- what preparation/tool/input is missing;
-- why tending or ignoring it changes the outcome;
-- where the result can be used;
-- what mastery made easier compared with earlier work.
+The Journal/context model can tell the player:
 
-### Authority constraints
+- the bed needs preparation;
+- one physical Sweetroot is required to propagate it;
+- the crop is growing;
+- tending is due;
+- the crop is ready to harvest;
+- the next hands-on work duration reflects accumulated cultivation proficiency.
 
-Cultivation should compose existing systems instead of creating a farming minigame with duplicate infrastructure:
+The normal path does **not** expose raw plot IDs, internal timestamps, provenance objects or command vocabulary.
 
-- **world time** owns elapsed fictional time;
-- **inventory** owns seeds/inputs/tools/harvested goods;
-- **provenance** owns physical origin/transformation history;
-- **work proficiency** should own repeated-practice efficiency where applicable;
-- **home/project/infrastructure** owns durable plot/furnishing improvements where needed;
-- **production/economy/commitments** provide sinks and reasons to cultivate;
-- **semantic UI intents/view models** expose normal browser actions.
+### Why the loop matters
 
-Do not add passive real-world/offline growth. Do not automatically make every crop a new long-lived timed task; persisted crop/plot state plus canonical-world-time boundaries is preferable when it expresses the domain cleanly.
-
-### Required end-to-end proof
-
-Before closing the track, demonstrate:
-
-- deterministic multi-day growth;
-- at least one meaningful tending/condition choice;
-- save/load while growth is in progress;
-- exactly-once harvest and no duplicate completion reward;
-- provenance-bearing harvested output;
-- outputs with at least three real existing sinks/systems;
-- persistent mastery/efficiency residue;
-- ordinary browser actions without command expertise;
-- content-pack/cross-reference validation;
-- content census evidence when `npm run census` is actually run.
-
-# Following Phase 0.8 player sequence
-
-## `0.8.800` — Earned Routine Delegation — QUEUED
-
-After cultivation or another real recurring chore has been established, prove that mastery, infrastructure, reputation, or wages can reduce player attention without removing fictional costs or creating free resources.
+The first proof reuses `item-elderwood-sweetroot` rather than adding a duplicate farm-only item. Harvested Sweetroot retains existing sinks:
 
 ```text
-manual routine
-  -> investment/mastery
-  -> bounded helper/hired-labor option
+consume          -> food/medicine material context
+craftIngredient  -> existing Silverfin Sweetroot Stew production chain
+trade            -> existing shop-sale economy
+```
+
+Cultivation therefore turns prior field access into a repeatable home supply without bypassing the rest of the game.
+
+### Time and attention
+
+Growth is not a real-time timer and does not allocate one long-lived timed task per crop. Planting persists fictional-time boundaries. World time advances through the existing simulation; crop status derives from those timestamps.
+
+Only the moments when the character is personally preparing or tending the bed create short normal work tasks. Those tasks use the existing activity/work lifecycle and release after their consequence is durable.
+
+### Persistence and replay safety
+
+Game State 13 makes cultivation durable authority. The end-to-end proof saves and reloads mid-growth and after tending, then harvests once. A second harvest attempt is rejected without duplicating output.
+
+The propagation root's provenance is preserved during growth and nested into the cultivated harvest provenance, so the game does not forget where the new crop originated.
+
+### Mastery
+
+Cultivation uses the existing persistent work-proficiency model via stable id `cultivation`. Practice improves future hands-on duration; there is no separate farming level, crop XP or parallel mastery system.
+
+### Exact validation
+
+```text
+Head:   c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+PR:     #378 draft/open/unmerged
+Check:  32340190710
+Tests:  695/695
+Node:   24.19.0
+Benchmark 3 + sample: success
+```
+
+## `0.8.800` — Earned Routine Delegation
+
+**Status: READY NEXT only after #378 lands; not started.**
+
+The strongest next player proof is now concrete: after manually establishing a Sweetroot routine, can the character earn a bounded way to spend less attention on one cultivation chore without free output or a second clock?
+
+```text
+manual cultivation routine
+  -> mastery / infrastructure / social access
+  -> one bounded helper or hired-labor option
   -> wages/material/time constraints remain
-  -> same authoritative consequence
+  -> cultivation remains domain consequence authority
   -> less repetitive player attention
 ```
 
-Do not begin with a generic automation platform.
+Do not start with generic automation.
 
-## `0.8.900` — Household & Community Continuity — QUEUED
+## `0.8.900` — Household & Community Continuity
 
-Make the foothold socially consequential:
+**Status: queued.**
 
-- 2–3 additional recurring named social characters with distinct needs/schedules;
-- at least one additional companion candidate when justified by regional content;
-- livelihood/property-linked commitments or services;
-- several-day return consequences;
-- no full romance framework yet.
+Make the foothold socially consequential through additional recurring named characters, livelihood/property-linked commitments/services, several-day consequences, and companion breadth where justified. No full romance framework yet.
 
-## Phase 0.8 exit proof — QUEUED
-
-The life/infrastructure phase should close only when a normal player can experience this connected arc:
+## Phase 0.8 exit proof
 
 ```text
 home/storage/workshop
@@ -169,10 +148,10 @@ home/storage/workshop
   -> preparation for travel/adventure
 ```
 
-# Architecture rule carried forward
+## Architecture rule carried forward
 
-Player-experience guidance, service boards, information/search, home opportunities, onboarding helpers, cultivation guidance, and social opportunity decoration are projections/adapters over canonical state.
+Player-experience guidance, service boards, information/search, home opportunities, cultivation guidance and social opportunity decoration are projections/adapters over canonical state.
 
-Projects, commitments, relationships, NPC schedules/fictional time, party state, campaign recovery, transport journeys, inventory/container state, provenance, production, workstations, resource opportunities, wallet ownership, furnishings, storage capacity, carried load, work mastery, and future cultivation domain state remain in their declared domain authorities.
+World time, cultivation state, work/tasks, inventory, provenance, production, commitments, relationships, party/recovery, home infrastructure and work mastery remain in their declared domain authorities.
 
-Use `docs/EXECUTION_PIPELINE.md` for the later 0.9 progression envelope and deferred runs. Roadmap order does not authorize automatically starting `0.8.800`, `0.8.900`, or Phase 0.9 work during the bounded `0.8.700` pass.
+If PR #378 remains unmerged, a replacement thread should resolve its state before starting `0.8.800`; do not repeat broad cultivation discovery unless repository authority materially changed.
