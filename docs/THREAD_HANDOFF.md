@@ -18,7 +18,7 @@ If these checkpoints still match repository state, **do not restart a broad repo
 
 ## Current checkpoint
 
-Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is in progress. Content Pack Scale Contract v2 is merged, and the first authored regional tranche — **Redstone Forge-Road** — is implemented, validated before promotion, version/document synchronized, and awaiting only the final exact-head hosted Check + PR landing.
+Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is in progress. Content Pack Scale Contract v2 is merged, and the first authored regional tranche — **Redstone Forge-Road** — is implemented, validated, version/document synchronized, and awaiting only the final exact-head hosted Check + PR landing.
 
 ```text
 Product:       0.9.100.2
@@ -32,17 +32,19 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-### Repository state immediately before this handoff write
+### Repository state immediately before this final handoff write
 
 ```text
 main:            68fa9ba483571699e9a448201364381099bd53c8
 main protected:  false
 PR:              #383 open / draft / mergeable
 branch:          feature/0.9.100-redstone-forge-road
-pre-handoff tip: beb43e723f5c71bc9595adf21b93948193f8e0bd
+pre-handoff tip: c9da0a6367addb07249d08e114f5d6c0b28db232
 ```
 
-This file is the **final repository-file write** for the Redstone Forge-Road packet. GitHub-side final validation/readiness/merge occur after this write. If a future thread resumes before/after those operations, refresh PR #383 and `main` instead of guessing final status from this document.
+A transient empty `__noop__` file was accidentally created during GitHub-side landing preparation after the first handoff write. It was immediately removed at commit `c9da0a6367addb07249d08e114f5d6c0b28db232`; it is not present in the branch contents and changed no gameplay, data, tests, version contract, or documentation content. This rewritten handoff is therefore the **true final repository-file write** for the packet.
+
+GitHub-side final validation/readiness/merge occur after this write. If a future thread resumes before/after those operations, refresh PR #383 and `main` instead of guessing final status from this document.
 
 ## Frozen implementation/content checkpoint
 
@@ -52,7 +54,7 @@ The exact gameplay/content implementation freeze is:
 440a77c542fcc6a6efcce7a45ca989e9068499f8
 ```
 
-No gameplay/content behavior was changed after this SHA. Later commits only promoted version/system metadata, updated version assertions, and synchronized repository documentation/profile contracts.
+No gameplay/content behavior was changed after this SHA. Later intended commits only promoted version/system metadata, updated version assertions, and synchronized repository documentation/profile contracts; the transient empty-file creation/removal described above had no net tree content effect.
 
 Pre-promotion hosted evidence on the frozen implementation SHA:
 
@@ -66,6 +68,20 @@ Content Census:     success
 Benchmark 3:        success
 Benchmark Sample:   success
 ```
+
+A fully synchronized exact-head Check also passed on head `91776b9467ea79c297e281249913b9dabaee5234` before the transient empty-file cleanup:
+
+```text
+Check:              32419101781
+Job:                96586936595
+Repository Audit:   PASS
+Tests:              707/707 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
+```
+
+Because this handoff rewrite creates a new exact PR head, landing still requires one final hosted Check on that exact head.
 
 ## What Redstone Forge-Road implements
 
@@ -120,7 +136,7 @@ Mae Oris
   -> existing 11:00–17:00 fictional-time schedule remains authoritative
 ```
 
-The original PX4 copper continuity test was left unchanged and passed on the final frozen implementation Check.
+The original PX4 copper continuity test was left unchanged and passed on the frozen implementation and synchronized exact-head Checks.
 
 ## Version decisions
 
@@ -155,7 +171,7 @@ abilityCatalog        0.2.0
 
 ## Current content census
 
-Validated canonical gameplay breadth on the frozen implementation Check:
+Validated canonical gameplay breadth:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -188,24 +204,22 @@ Mechanics-scale gate remains **NOT READY**. This is correct progression evidence
 
 ## Benchmark 3 evidence
 
-Single run from Check `32416678697`:
+The synchronized Check `32419101781` reported:
 
 ```text
-player combat profiles  0.189561 ms/op
-enemy combat profiles   0.037361 ms/op
-basic attacks            0.002428 ms/op
-tick dispatch            0.000569 ms/op
-direct route lookup      0.003900 ms/op
-```
+single run
+player combat profiles  0.391072 ms/op
+enemy combat profiles   0.069125 ms/op
+basic attacks            0.003426 ms/op
+tick dispatch            0.000922 ms/op
+direct route lookup      0.007589 ms/op
 
-Three-sample medians/spreads:
-
-```text
-player profiles  0.184621 ms/op    8.18%
-enemy profiles   0.037303 ms/op    5.66%
-basic attacks    0.001110 ms/op  138.43%
-tick dispatch    0.000492 ms/op   30.77%
-route lookup     0.004237 ms/op   11.77%
+three-sample medians/spreads
+player profiles          0.358718 ms/op    5.60%
+enemy profiles           0.068325 ms/op   10.93%
+basic attacks            0.001113 ms/op  201.54%
+tick dispatch            0.000698 ms/op   24.35%
+route lookup             0.007067 ms/op    6.08%
 ```
 
 No hard performance threshold is accepted. Benchmark protocol remains 3.
@@ -213,14 +227,14 @@ No hard performance threshold is accepted. Benchmark protocol remains 3.
 ## Closure operation after this handoff
 
 1. Refresh PR #383 and record the exact head produced by this handoff write.
-2. Ignore intermediate CI runs from partially synchronized documentation heads.
-3. Require the hosted `Check` associated with the **exact final handoff head** to pass:
+2. Ignore intermediate CI runs from earlier branch heads.
+3. Require hosted `Check` on the **exact final handoff head** to pass:
    - Repository Audit
    - full test suite
    - Content Census
    - Benchmark 3
    - Benchmark Sample
-4. Confirm census remains the same unless the exact head unexpectedly contains material changes.
+4. Confirm census remains the same.
 5. If PR #383 is still draft, mark it ready for review.
 6. Merge only the exact green head into `main`, using expected-head protection.
 7. Refresh `main` and verify the Redstone changes landed.
