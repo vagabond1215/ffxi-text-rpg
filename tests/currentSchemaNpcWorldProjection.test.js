@@ -33,9 +33,9 @@ function storedCharacterState() {
     return { registry, record, state: decodePayload(record.encodedState) };
 }
 
-test('Game State 13 raw payload does not require derived NPC world projection', () => {
+test('Game State 14 raw payload does not require derived NPC world projection', () => {
     const state = createInitialState();
-    assert.equal(VERSION.gameState, 13);
+    assert.equal(VERSION.gameState, 14);
     delete state.npcs;
     delete state.enemies;
     delete state.log;
