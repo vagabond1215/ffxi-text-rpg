@@ -1,8 +1,10 @@
-import { listAbilities } from '../data/abilities.js';
+import { listAbilities, listSpellSchools } from '../data/abilities.js';
+import { listCapabilities } from '../data/capabilities.js';
 import { listCommitmentDefinitions } from '../data/commitments.js';
 import { listCompanionDefinitions } from '../data/companions.js';
 import { listGatheringSources, listSpecies } from '../data/ecologyCatalog.js';
 import { listEquipmentCatalogEntries } from '../data/equipmentCatalog.js';
+import { listNpcSchedules } from '../data/npcSchedules.js';
 import { PLACES } from '../data/places.js';
 import { listProductionDefinitions } from '../data/productionCatalog.js';
 import { listProductionItems } from '../data/productionItems.js';
@@ -12,7 +14,7 @@ import { listRoutes, listTransportServices } from '../data/routeCatalog.js';
 import { createSeedEnemies, createSeedNpcs } from '../data/seedEntities.js';
 import { buildContentPackIndex } from './contentPackValidator.js';
 
-export const CONTENT_SCALE_GATE_VERSION = 1;
+export const CONTENT_SCALE_GATE_VERSION = 2;
 
 export const CONTENT_SCALE_METRICS = Object.freeze([
     'places',
@@ -109,9 +111,17 @@ export function collectContentScaleCounts(options = {}) {
         ...listProductionDefinitions(),
         ...packRecords(packs, 'recipes'),
     ]);
+    const abilities = uniqueIds([
+        ...listAbilities(),
+        ...packRecords(packs, 'abilities'),
+    ]);
     const quests = uniqueIds([
         ...listCommitmentDefinitions(),
         ...packRecords(packs, 'quests'),
+    ]);
+    const companions = uniqueIds([
+        ...listCompanionDefinitions(),
+        ...packRecords(packs, 'companions'),
     ]);
     const transportServices = uniqueIds([
         ...listTransportServices(),
@@ -126,17 +136,30 @@ export function collectContentScaleCounts(options = {}) {
         resources: resources.size,
         items: items.size,
         recipes: recipes.size,
-        abilities: uniqueIds(listAbilities()).size,
+        abilities: abilities.size,
         quests: quests.size,
-        companions: uniqueIds(listCompanionDefinitions()).size,
+        companions: companions.size,
         transportServices: transportServices.size,
         supplemental: {
             routes: uniqueIds([
                 ...listRoutes(),
                 ...packRecords(packs, 'routes'),
             ]).size,
+            spellSchools: uniqueIds([
+                ...listSpellSchools(),
+                ...packRecords(packs, 'spellSchools'),
+            ]).size,
+            capabilities: uniqueIds([
+                ...listCapabilities(),
+                ...packRecords(packs, 'capabilities'),
+            ]).size,
+            npcSchedules: uniqueIds([
+                ...listNpcSchedules(),
+                ...packRecords(packs, 'npcSchedules'),
+            ]).size,
             contentPacks: packs.length,
             ownedPackRecords: packIndex.ownerCount ?? 0,
+            packOwnedByCollection: { ...(packIndex.recordCounts ?? {}) },
             seedNpcs: createSeedNpcs().length,
             seedEnemies: createSeedEnemies().length,
             packIndexIssues: [...(packIndex.issues ?? [])],
@@ -193,12 +216,17 @@ export function formatContentScaleReport(report = evaluateContentScaleGate()) {
     }
 
     const supplemental = report.current.supplemental ?? {};
+    const owned = supplemental.packOwnedByCollection ?? {};
     lines.push(
         '',
         'Supplemental:',
         `- routes: ${supplemental.routes ?? 0}`,
+        `- spell schools: ${supplemental.spellSchools ?? 0}`,
+        `- capabilities/training definitions: ${supplemental.capabilities ?? 0}`,
+        `- NPC schedules: ${supplemental.npcSchedules ?? 0}`,
         `- regional content packs: ${supplemental.contentPacks ?? 0}`,
         `- pack-owned records: ${supplemental.ownedPackRecords ?? 0}`,
+        `- pack-owned abilities/capabilities/schedules/companions: ${owned.abilities ?? 0}/${owned.capabilities ?? 0}/${owned.npcSchedules ?? 0}/${owned.companions ?? 0}`,
         `- runtime seed NPCs: ${supplemental.seedNpcs ?? 0}`,
         `- runtime seed enemies: ${supplemental.seedEnemies ?? 0}`,
     );
