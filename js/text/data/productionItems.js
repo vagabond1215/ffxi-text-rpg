@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const PRODUCTION_ITEM_CATALOG_VERSION = 4;
+export const PRODUCTION_ITEM_CATALOG_VERSION = 5;
 
 const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-copper-ingot': productionItem({ id: 'item-redstone-copper-ingot', name: 'Redstone Copper Ingot', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'copper', 'component', 'crafted'], valueGil: 28, sourceId: 'process-redstone-copper-ingot', action: 'process', sinks: ['craftIngredient', 'processInput', 'construction', 'trade'] }),
@@ -11,16 +11,16 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-elderwood-hide-binding': productionItem({ id: 'item-elderwood-hide-binding', name: 'Resin-Cured Hide Binding', kind: ITEM_KINDS.MATERIAL, tags: ['hide', 'binding', 'component', 'elderwood'], valueGil: 34, sourceId: 'craft-elderwood-hide-binding', action: 'craft', sinks: ['craftIngredient', 'construction', 'repair', 'trade'] }),
     'item-redstone-iron-bloom': productionItem({ id: 'item-redstone-iron-bloom', name: 'Redstone Iron Bloom', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'iron', 'component', 'redstone'], valueGil: 36, sourceId: 'process-redstone-iron-bloom', action: 'process', sinks: ['craftIngredient', 'processInput', 'repair', 'trade'] }),
     'item-starfen-bluekelp-broth': productionItem({ id: 'item-starfen-bluekelp-broth', name: 'Bluekelp Silverfin Broth', kind: ITEM_KINDS.CONSUMABLE, tags: ['food', 'meal', 'cooked', 'starfen'], valueGil: 27, sourceId: 'cook-starfen-bluekelp-broth', action: 'craft', sinks: ['consume', 'trade'] }),
+    'item-redstone-forge-flux': productionItem({ id: 'item-redstone-forge-flux', name: 'Sunstone Forge Flux', kind: ITEM_KINDS.MATERIAL, tags: ['mineral', 'flux', 'forge', 'redstone'], valueGil: 22, sourceId: 'process-redstone-forge-flux', action: 'process', sinks: ['craftIngredient', 'processInput', 'repair', 'trade'] }),
+    'item-redstone-tempered-iron-bar': productionItem({ id: 'item-redstone-tempered-iron-bar', name: 'Tempered Redstone Iron Bar', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'iron', 'tempered', 'component', 'redstone'], valueGil: 58, sourceId: 'process-redstone-tempered-iron', action: 'process', sinks: ['craftIngredient', 'construction', 'repair', 'trade'] }),
+    'item-redstone-rivet-set': productionItem({ id: 'item-redstone-rivet-set', name: 'Redstone Rivet Set', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'iron', 'fastener', 'component', 'redstone'], valueGil: 30, sourceId: 'craft-redstone-rivet-set', action: 'craft', sinks: ['craftIngredient', 'construction', 'repair', 'trade'] }),
+    'item-redstone-miners-brace': productionItem({ id: 'item-redstone-miners-brace', name: "Miner's Iron Brace", kind: ITEM_KINDS.EQUIPMENT, tags: ['equipment', 'armor', 'waist', 'mining', 'redstone'], valueGil: 92, sourceId: 'craft-redstone-miners-brace', action: 'craft', sinks: ['equipment', 'repair', 'trade'], equipmentSlot: 'waist', allowedSlots: ['waist'], modifiers: { attributes: { vit: 1 }, derived: { defense: 2 } } }),
+    'item-redstone-forge-gloves': productionItem({ id: 'item-redstone-forge-gloves', name: 'Riveted Forge Gloves', kind: ITEM_KINDS.EQUIPMENT, tags: ['equipment', 'armor', 'hands', 'forge', 'redstone'], valueGil: 105, sourceId: 'craft-redstone-forge-gloves', action: 'craft', sinks: ['equipment', 'repair', 'trade'], equipmentSlot: 'hands', allowedSlots: ['hands'], modifiers: { derived: { defense: 2, attack: 1 } } }),
+    'item-redstone-caravan-shoe': productionItem({ id: 'item-redstone-caravan-shoe', name: 'Redstone Caravan Shoe', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'iron', 'caravan', 'repair', 'redstone'], valueGil: 40, sourceId: 'craft-redstone-caravan-shoe', action: 'craft', sinks: ['construction', 'repair', 'contract', 'trade'] }),
 });
 
-export function getProductionItem(itemId) {
-    const definition = PRODUCTION_ITEM_DEFINITIONS[String(itemId ?? '').trim()] ?? null;
-    return definition ? normalizeItem(definition) : null;
-}
-
-export function listProductionItems() {
-    return Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition));
-}
+export function getProductionItem(itemId) { const definition = PRODUCTION_ITEM_DEFINITIONS[String(itemId ?? '').trim()] ?? null; return definition ? normalizeItem(definition) : null; }
+export function listProductionItems() { return Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)); }
 
 function productionItem({ id, name, kind, tags, valueGil, sourceId, action, sinks, equipmentSlot = null, allowedSlots = [], modifiers = {} }) {
     return Object.freeze({
@@ -29,6 +29,6 @@ function productionItem({ id, name, kind, tags, valueGil, sourceId, action, sink
         sinks: Object.freeze(sinks.map((type) => Object.freeze({ type, data: Object.freeze({}) }))),
         equipmentSlot, allowedSlots: Object.freeze([...allowedSlots]),
         requirements: Object.freeze({ minLevel: 1, allowedJobs: [], allowedRaces: [] }), flags: Object.freeze([]), modifiers: Object.freeze(modifiers),
-        metadata: Object.freeze({ confidence: 'intentionalSimplification', source: 'Hearth & Horizon production substrate', notes: 'Representative production output used to validate provenance-bearing transformation loops before broad recipe authoring.' }),
+        metadata: Object.freeze({ confidence: 'intentionalSimplification', source: 'Hearth & Horizon production substrate', notes: 'Original production output participating in connected regional source, work, equipment, repair, contract, and trade loops.' }),
     });
 }
