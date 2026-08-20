@@ -1,7 +1,7 @@
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { getProductionItem } from './productionItems.js';
 
-export const PRODUCTION_CATALOG_VERSION = 2;
+export const PRODUCTION_CATALOG_VERSION = 3;
 export const PRODUCTION_KINDS = Object.freeze(['processing', 'crafting', 'cooking', 'salvage']);
 
 const PRODUCTION_DEFINITIONS = Object.freeze({
@@ -14,6 +14,12 @@ const PRODUCTION_DEFINITIONS = Object.freeze({
     'craft-elderwood-hide-binding': processDefinition({ id: 'craft-elderwood-hide-binding', name: 'Cure Barkboar Hide Binding', kind: 'crafting', durationSeconds: 210, proficiencyId: 'crafting', proficiencyGain: 2, requiredStationTags: ['tannery'], inputs: [{ itemId: 'item-elderwood-barkboar-hide', quantity: 1 }, { itemId: 'item-elderwood-amber-resin', quantity: 1 }], outputs: [{ itemId: 'item-elderwood-hide-binding', quantity: 1 }] }),
     'process-redstone-iron-bloom': processDefinition({ id: 'process-redstone-iron-bloom', name: 'Smelt Redstone Iron Bloom', kind: 'processing', durationSeconds: 360, proficiencyId: 'metalworking', minProficiency: 2, proficiencyGain: 3, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-iron-ore', quantity: 2 }], outputs: [{ itemId: 'item-redstone-iron-bloom', quantity: 1 }] }),
     'cook-starfen-bluekelp-broth': processDefinition({ id: 'cook-starfen-bluekelp-broth', name: 'Cook Bluekelp Silverfin Broth', kind: 'cooking', durationSeconds: 160, proficiencyId: 'cooking', proficiencyGain: 2, requiredStationTags: ['kitchen'], inputs: [{ itemId: 'item-starfen-bluekelp', quantity: 1 }, { itemId: 'item-starfen-silverfin', quantity: 1 }], outputs: [{ itemId: 'item-starfen-bluekelp-broth', quantity: 2 }] }),
+    'process-redstone-forge-flux': processDefinition({ id: 'process-redstone-forge-flux', name: 'Refine Sunstone Forge Flux', kind: 'processing', durationSeconds: 180, proficiencyId: 'metalworking', proficiencyGain: 2, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-sunstone-grit', quantity: 2 }], outputs: [{ itemId: 'item-redstone-forge-flux', quantity: 1 }] }),
+    'process-redstone-tempered-iron': processDefinition({ id: 'process-redstone-tempered-iron', name: 'Temper Redstone Iron', kind: 'processing', durationSeconds: 420, proficiencyId: 'metalworking', minProficiency: 3, proficiencyGain: 3, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-iron-bloom', quantity: 1 }, { itemId: 'item-redstone-forge-flux', quantity: 1 }], outputs: [{ itemId: 'item-redstone-tempered-iron-bar', quantity: 1 }] }),
+    'craft-redstone-rivet-set': processDefinition({ id: 'craft-redstone-rivet-set', name: 'Forge Redstone Rivet Set', kind: 'crafting', durationSeconds: 210, proficiencyId: 'metalworking', minProficiency: 3, proficiencyGain: 2, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-tempered-iron-bar', quantity: 1 }], outputs: [{ itemId: 'item-redstone-rivet-set', quantity: 2 }] }),
+    'craft-redstone-miners-brace': processDefinition({ id: 'craft-redstone-miners-brace', name: "Craft Miner's Iron Brace", kind: 'crafting', durationSeconds: 300, proficiencyId: 'metalworking', minProficiency: 3, proficiencyGain: 3, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-tempered-iron-bar', quantity: 1 }, { itemId: 'item-redstone-ibex-hide', quantity: 1 }], outputs: [{ itemId: 'item-redstone-miners-brace', quantity: 1 }] }),
+    'craft-redstone-forge-gloves': processDefinition({ id: 'craft-redstone-forge-gloves', name: 'Craft Riveted Forge Gloves', kind: 'crafting', durationSeconds: 330, proficiencyId: 'metalworking', minProficiency: 4, proficiencyGain: 3, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-rivet-set', quantity: 1 }, { itemId: 'item-redstone-ibex-hide', quantity: 1 }], outputs: [{ itemId: 'item-redstone-forge-gloves', quantity: 1 }] }),
+    'craft-redstone-caravan-shoe': processDefinition({ id: 'craft-redstone-caravan-shoe', name: 'Forge Caravan Repair Shoes', kind: 'crafting', durationSeconds: 270, proficiencyId: 'metalworking', minProficiency: 3, proficiencyGain: 2, requiredStationTags: ['forge'], inputs: [{ itemId: 'item-redstone-tempered-iron-bar', quantity: 1 }, { itemId: 'item-redstone-rivet-set', quantity: 1 }], outputs: [{ itemId: 'item-redstone-caravan-shoe', quantity: 2 }] }),
 });
 
 export function getProductionDefinition(processId) { return PRODUCTION_DEFINITIONS[String(processId ?? '').trim()] ?? null; }
@@ -36,29 +42,13 @@ export function validateProductionCatalog() {
         if (!Array.isArray(definition.requiredStationTags)) issues.push(`${definition.id}.requiredStationTags must be an array.`);
         if (!Array.isArray(definition.inputs) || !definition.inputs.length) issues.push(`${definition.id} requires inputs.`);
         if (!Array.isArray(definition.outputs) || !definition.outputs.length) issues.push(`${definition.id} requires outputs.`);
-        for (const input of definition.inputs ?? []) {
-            if (!getProductionInputItem(input.itemId)) issues.push(`${definition.id} input references unknown item ${input.itemId}.`);
-            if (!positiveInteger(input.quantity)) issues.push(`${definition.id} input ${input.itemId} has invalid quantity.`);
-        }
-        for (const output of definition.outputs ?? []) {
-            if (!getProductionItem(output.itemId)) issues.push(`${definition.id} output references unknown production item ${output.itemId}.`);
-            if (!positiveInteger(output.quantity)) issues.push(`${definition.id} output ${output.itemId} has invalid quantity.`);
-        }
+        for (const input of definition.inputs ?? []) { if (!getProductionInputItem(input.itemId)) issues.push(`${definition.id} input references unknown item ${input.itemId}.`); if (!positiveInteger(input.quantity)) issues.push(`${definition.id} input ${input.itemId} has invalid quantity.`); }
+        for (const output of definition.outputs ?? []) { if (!getProductionItem(output.itemId)) issues.push(`${definition.id} output references unknown production item ${output.itemId}.`); if (!positiveInteger(output.quantity)) issues.push(`${definition.id} output ${output.itemId} has invalid quantity.`); }
     }
     return issues;
 }
 
-function processDefinition(definition) {
-    return deepFreeze({
-        id: String(definition.id), name: String(definition.name), kind: definition.kind,
-        durationSeconds: Math.max(1, Math.floor(Number(definition.durationSeconds) || 1)),
-        proficiencyId: String(definition.proficiencyId), minProficiency: Math.max(0, Math.floor(Number(definition.minProficiency) || 0)),
-        proficiencyGain: Math.max(1, Math.floor(Number(definition.proficiencyGain) || 1)),
-        requiredToolTags: [...(definition.requiredToolTags ?? [])], requiredStationTags: [...(definition.requiredStationTags ?? [])],
-        inputs: (definition.inputs ?? []).map((entry) => ({ itemId: String(entry.itemId), quantity: Math.max(1, Math.floor(Number(entry.quantity) || 1)) })),
-        outputs: (definition.outputs ?? []).map((entry) => ({ itemId: String(entry.itemId), quantity: Math.max(1, Math.floor(Number(entry.quantity) || 1)) })),
-    });
-}
+function processDefinition(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), kind: definition.kind, durationSeconds: Math.max(1, Math.floor(Number(definition.durationSeconds) || 1)), proficiencyId: String(definition.proficiencyId), minProficiency: Math.max(0, Math.floor(Number(definition.minProficiency) || 0)), proficiencyGain: Math.max(1, Math.floor(Number(definition.proficiencyGain) || 1)), requiredToolTags: [...(definition.requiredToolTags ?? [])], requiredStationTags: [...(definition.requiredStationTags ?? [])], inputs: (definition.inputs ?? []).map((entry) => ({ itemId: String(entry.itemId), quantity: Math.max(1, Math.floor(Number(entry.quantity) || 1)) })), outputs: (definition.outputs ?? []).map((entry) => ({ itemId: String(entry.itemId), quantity: Math.max(1, Math.floor(Number(entry.quantity) || 1)) })) }); }
 function validStableId(value) { return typeof value === 'string' && /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/.test(value); }
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
 function deepFreeze(value) { if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value; for (const child of Object.values(value)) deepFreeze(child); return Object.freeze(value); }
