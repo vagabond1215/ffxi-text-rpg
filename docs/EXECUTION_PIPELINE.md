@@ -17,18 +17,18 @@ Authority order remains:
 ## Current baseline
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
 Phase:         0.9 in progress
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 Runtime:       Node >=24
 ```
 
-Phase 0.8 is complete. The post-0.8 status/repair/planning audit is complete. Phase 0.9 is explicitly open and is using PR-based integration for its cross-file scale work.
+Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and uses PR-based integration for cross-file scale packets.
 
 ## Fast restart protocol
 
@@ -42,7 +42,7 @@ Phase 0.8 is complete. The post-0.8 status/repair/planning audit is complete. Ph
 7. proceed only with the immediate bounded unit
 ```
 
-Do not redo Phase 0.4–0.8 discovery, persistence classification, or the post-0.8 audit unless a concrete regression/change requires it.
+Do not redo Phase 0.4–0.8 discovery, persistence classification, the post-0.8 audit, or Pack v2 infrastructure discovery unless a concrete regression/change requires it.
 
 # Completed foundation
 
@@ -53,8 +53,6 @@ Phase 0.8 exit audit           COMPLETE
 post-0.8 status/repair audit   COMPLETE
 repository contract audit      COMPLETE
 ```
-
-Phase 0.8 closed at Product `0.8.900.1`, Game State 14, Data 39. The first Phase 0.9 packet changes authored-data infrastructure only; existing persistence ownership remains unchanged.
 
 # Active phase — 0.9 Content Scale, Adventure Depth and Release Hardening
 
@@ -68,35 +66,62 @@ Primary question:
 
 ### Packet A — Content Pack Scale Contract v2
 
-**Status: COMPLETE on the Phase 0.9 integration branch; validated before content expansion.**
+**Status: COMPLETE and merged.**
 
-Implemented infrastructure:
+The Pack v2 foundation owns stable regional/shared placement and dependencies across geography, ecology, resources, items, NPCs, schedules, services, recipes, quests, relationships, spell schools, capabilities, abilities, and companions while preserving existing catalogs as definition authorities. Its generated scale fixture validates 1,401 ownership records without contributing to gameplay census counts.
 
-- Pack schema v2 owns `spellSchools`, `capabilities`, `abilities`, `npcSchedules`, and `companions` in addition to existing geography/ecology/item/NPC/shop/recipe/quest/relationship families.
-- `contentCatalogRegistry` resolves packs against existing canonical catalogs rather than copying definitions for ownership bookkeeping.
-- Item lookup spans resource, production, and equipment catalogs.
-- Recipes, commitments, seed NPCs, route/ecology records, abilities/capabilities, schedules, and companions can be claimed through catalog refs.
-- Pack validator enforces scale-family structure, stable-ID collisions, cross-pack dependencies, dangling references, and legacy boundaries.
-- NPC schedule definitions now have structural catalog validation and stable schedule-ID lookup.
-- Existing current catalog records are assigned to shared/region roots, including a Redstone opening root, without adding new gameplay records.
-- Census can count future inline Pack v2 abilities/companions while de-duplicating catalog references.
-- Generated validation exercises 1,401 ownership records across one place plus 200 each of items, recipes, NPCs, schedules, capabilities, abilities, and companions.
-- Hosted/local `check` now executes Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample.
+### Packet B — Redstone Forge-Road
+
+**Status: IMPLEMENTED + HOSTED VALIDATION GREEN / PENDING FINAL LANDING.**
+
+Frozen implementation/content SHA:
+
+```text
+440a77c542fcc6a6efcce7a45ca989e9068499f8
+```
+
+Pre-promotion hosted evidence:
+
+```text
+Check:              32416678697
+Job:                96579293377
+Node:               24.19.0
+Repository Audit:   PASS
+Tests:              707/707 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
+```
+
+Bounded graph:
+
+```text
+existing Redstone iron / sunstone / Ridge Ibex inputs
+  -> existing forge + work proficiency + inventory/provenance authorities
+  -> tempered iron / rivets / wearable work gear / caravan hardware
+  -> provenance-qualified Brasshaven commitments
+  -> character-owned Redstone techniques and spells
+  -> Pack v2 ownership through pack-redstone-forge-road
+```
+
+The tranche adds no new simulation clock, persistence family, direct timed-task owner, inventory authority, social authority, or progression authority.
+
+The established Varric copper-return continuity remains intact. Later Forge-Road orders use Mae Oris as a separate scheduled Market Ring contact so later jobs do not displace Varric's existing copper follow-up.
 
 Version decision:
 
 ```text
-Product:      0.9.100.1
+Product:      0.9.100.2
 Package:      0.9.100
-Data:         40
+Data:         41
 Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
 
-### Current census
+Data 41 advances for new stable canonical authored records and their source/sink/social/Pack-v2 relationships. Game State remains 14 because no new durable player/world fact is introduced.
 
-Gameplay breadth did not change in Packet A:
+### Current census
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -104,10 +129,10 @@ named NPCs              12 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         50 / 200
-recipes/processes       11 / 75
-abilities/techniques     5 / 100
-quests/contracts         8 / 30
+canonical items         56 / 200
+recipes/processes       17 / 75
+abilities/techniques     9 / 100
+quests/contracts        11 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -117,23 +142,23 @@ Infrastructure coverage:
 ```text
 routes                                   7
 spell schools                            3
-capabilities/training definitions        8
+capabilities/training definitions       12
 NPC schedules                            4
-regional/shared packs                    7
-pack-owned records                     115
+regional/shared packs                    8
+pack-owned records                     140
 pack-owned abilities/capabilities/
-  schedules/companions                 5/8/4/1
+  schedules/companions               9/12/4/1
 ```
 
 Mechanics-scale gate remains **NOT READY** by design. This is not a failing CI condition.
 
-### Next bounded packet — Redstone Forge-Road
+### Next bounded packet — Elderwood Hunt-Timber
 
-**Status: NOT STARTED / not authorized by Packet A completion alone.**
+**Status: NOT STARTED / not authorized by Redstone completion alone.**
 
-When explicitly authorized, use `pack-redstone-opening` as the regional root and add one dense cross-linked tranche spanning mining/resources, production, equipment, techniques/training, scheduled people/services, contracts, transport/economy, field danger, and provenance. Do not add isolated records merely to move the census.
+When explicitly authorized after Redstone lands, deepen the existing Elderwood root rather than bulk-generating global lists. Prefer a connected hunt/timber graph that joins named people and schedules to creature/resource recovery, wood/hide/resin processing, equipment/consumables, practical techniques, contracts/services, economy, field danger, and provenance through Pack v2.
 
-Following Gate A tranches remain Elderwood Hunt-Timber and Starfen Marshcraft-Practical Magic, then integration/census review.
+Following Gate A tranches remain Starfen Marshcraft-Practical Magic and then Gate A integration/census review.
 
 # Phase 0.9 progression envelope
 
@@ -152,8 +177,8 @@ Following Gate A tranches remain Elderwood Hunt-Timber and Starfen Marshcraft-Pr
 # Governance and deferred operations
 
 - Phase 0.9 uses PR-based integration for track packets.
-- Protected `main` + required Check remains recommended. The repository connector used for Packet A exposes no safe branch-protection mutation action, so this remains administrative follow-up rather than a claimed completed change.
-- Historical stale remote branches remain manual cleanup debt where the connector exposes no safe delete operation.
+- Protected `main` + required Check remains recommended; if the repository action surface cannot configure protection, record that administrative limitation rather than claiming it was changed.
+- Historical stale remote branches remain manual cleanup debt where no safe delete action exists.
 - Supported-save compatibility/migrations remain deferred to `0.9.800` unless explicitly required earlier.
 - Browser E2E/accessibility remains `0.9.700`.
 - Hard performance budgets, balance certification, quality/HQ depth, large logistics, and deep romance remain deferred until their prerequisites exist.
