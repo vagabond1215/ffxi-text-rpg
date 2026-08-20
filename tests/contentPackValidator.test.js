@@ -40,6 +40,7 @@ test('content pack index records expanded stable ownership without changing cano
     assert.deepEqual(index.packIds, [
         'pack-shared-foundation',
         'pack-elderwood-opening',
+        'pack-elderwood-hunt-timber',
         'pack-redstone-opening',
         'pack-redstone-forge-road',
         'pack-starfen-opening',
@@ -48,15 +49,15 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-starfen-ecology-breadth',
     ]);
     assert.equal(index.recordCounts.places, 8);
-    assert.equal(index.recordCounts.items, 23);
-    assert.equal(index.recordCounts.recipes, 9);
-    assert.equal(index.recordCounts.npcs, 8);
-    assert.equal(index.recordCounts.npcSchedules, 4);
+    assert.equal(index.recordCounts.items, 31);
+    assert.equal(index.recordCounts.recipes, 17);
+    assert.equal(index.recordCounts.npcs, 11);
+    assert.equal(index.recordCounts.npcSchedules, 5);
     assert.equal(index.recordCounts.spellSchools, 3);
-    assert.equal(index.recordCounts.capabilities, 12);
-    assert.equal(index.recordCounts.abilities, 9);
+    assert.equal(index.recordCounts.capabilities, 16);
+    assert.equal(index.recordCounts.abilities, 13);
     assert.equal(index.recordCounts.companions, 1);
-    assert.ok(index.ownerCount >= 125);
+    assert.ok(index.ownerCount >= 156);
 });
 
 test('catalog refs bridge canonical resource production equipment recipe quest and NPC catalogs', () => {
