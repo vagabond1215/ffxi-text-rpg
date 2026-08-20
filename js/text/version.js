@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.700.1';
-export const PACKAGE_VERSION = '0.8.700';
+export const PRODUCT_VERSION = '0.8.800.1';
+export const PACKAGE_VERSION = '0.8.800';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 13,
+    gameState: 14,
     data: 38,
     benchmark: 3,
-    codename: 'Cultivation & Stewardship',
+    codename: 'Earned Routine Delegation',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.700.1',
+    versionManifest: '0.8.800.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -26,7 +26,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     timedTasks: '0.2.0',
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
-    cultivation: '0.1.0',
+    cultivation: '0.2.0',
     commitments: '0.3.1',
     relationships: '0.1.0',
     npcSchedules: '0.1.0',
@@ -76,7 +76,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     domUi: '0.10.0',
     domRoot: '0.1.0',
     domOnboarding: '0.1.0',
-    gameViewModels: '0.16.0',
+    gameViewModels: '0.17.0',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
@@ -91,7 +91,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.44.0',
+    validation: '0.45.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',
