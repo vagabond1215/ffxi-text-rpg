@@ -1,7 +1,7 @@
 import { JOB_DEFINITIONS } from './jobs.js';
 import { SKILL_KEYS } from './systemConstants.js';
 
-export const CAPABILITY_CATALOG_VERSION = 3;
+export const CAPABILITY_CATALOG_VERSION = 4;
 export const CAPABILITY_TYPES = Object.freeze(['spell', 'technique', 'practical', 'passive']);
 export const CAPABILITY_CONTEXTS = Object.freeze(['combat', 'exploration', 'gathering', 'resourceRecovery', 'travel', 'project']);
 
@@ -82,6 +82,30 @@ const CAPABILITY_DEFINITIONS = Object.freeze({
         tags: ['magic', 'ward-lore', 'defensive', 'redstone'],
         learning: { anyDiscipline: [{ disciplineId: 'oathguard', minLevel: 3 }, { disciplineId: 'lifewarden', minLevel: 3 }, { disciplineId: 'savant', minLevel: 3 }] },
         use: { contexts: ['combat', 'exploration'], requiredSkills: [{ skillId: 'enhancingMagic', min: 2 }] },
+    }),
+    'technique-barkboar-brace': capability({
+        id: 'technique-barkboar-brace', name: 'Barkboar Brace', type: 'technique',
+        tags: ['martial', 'weapon-technique', 'axe', 'defensive', 'elderwood'],
+        learning: { anyDiscipline: [{ disciplineId: 'vanguard', minLevel: 3 }, { disciplineId: 'wayfinder', minLevel: 3 }] },
+        use: { contexts: ['combat'], requiredSkills: [{ skillId: 'axe', min: 2 }], mainHandTags: ['axe'], resources: { tp: 300 } },
+    }),
+    'technique-thicket-feint': capability({
+        id: 'technique-thicket-feint', name: 'Thicket Feint', type: 'technique',
+        tags: ['martial', 'weapon-technique', 'dagger', 'mobility', 'elderwood'],
+        learning: { anyDiscipline: [{ disciplineId: 'shadowhand', minLevel: 2 }, { disciplineId: 'wayfinder', minLevel: 3 }] },
+        use: { contexts: ['combat'], requiredSkills: [{ skillId: 'dagger', min: 2 }], mainHandTags: ['dagger'], resources: { tp: 225 } },
+    }),
+    'spell-barkskin-ward': capability({
+        id: 'spell-barkskin-ward', name: 'Barkskin Ward', type: 'spell',
+        tags: ['magic', 'ward-lore', 'defensive', 'elderwood'],
+        learning: { anyDiscipline: [{ disciplineId: 'oathguard', minLevel: 3 }, { disciplineId: 'lifewarden', minLevel: 3 }, { disciplineId: 'savant', minLevel: 3 }] },
+        use: { contexts: ['combat', 'exploration'], requiredSkills: [{ skillId: 'enhancingMagic', min: 2 }] },
+    }),
+    'practical-elderwood-trail-read': capability({
+        id: 'practical-elderwood-trail-read', name: 'Elderwood Trail Read', type: 'practical',
+        tags: ['fieldcraft', 'navigation', 'tracking', 'elderwood'],
+        learning: { anyDiscipline: [{ disciplineId: 'wayfinder', minLevel: 2 }, { disciplineId: 'leykeeper', minLevel: 3 }] },
+        use: { contexts: ['exploration'] },
     }),
 });
 
