@@ -7,240 +7,405 @@ Read this before continuing implementation in a new ChatGPT/Codex thread.
 1. `AGENTS.md`
 2. this file
 3. `docs/EXECUTION_PIPELINE.md`
-4. `docs/DEVELOPMENT_DIRECTION.md`
-5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
-6. `docs/ROADMAP.md`
-7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. only the architecture/runtime/tests named for the next bounded unit
+4. inspect PR #378 status
+5. `docs/ROADMAP.md`
+6. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+7. only the architecture/runtime/tests named by the next bounded action
 
-If current `main` still matches this handoff's assumptions, **do not restart a broad repository audit**. The durable active/next/deferred queue now lives in `docs/EXECUTION_PIPELINE.md`.
+If these checkpoints still match repository state, **do not restart a broad repository audit**.
 
-## Current baseline
+## Current repository state
+
+`main` was refreshed immediately before this handoff and remains:
 
 ```text
-Product:       0.8.600.52
-Package:       0.8.600
+a77db18722a1c55daa7c4666db9aabd785d91eaf
+```
+
+Active feature branch:
+
+```text
+feature/0.8.700-cultivation-stewardship
+```
+
+Active PR:
+
+```text
+#378 — 0.8.700 Cultivation & Stewardship
+state: open
+review state: draft
+merged: false
+base: main @ a77db18722a1c55daa7c4666db9aabd785d91eaf
+```
+
+The exact **implementation/runtime/test freeze** is:
+
+```text
+c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+```
+
+No runtime/source/test changes were made after that SHA. Documentation/config synchronization commits follow it on the feature branch.
+
+The documentation tip immediately before this handoff write was:
+
+```text
+0d16bbe046f239c731e98aeb52c106317107a98c
+```
+
+The commit containing this handoff is the final repository-file write for this pass. A future thread must fetch the branch/PR rather than assuming this chat's SHA is still current.
+
+## Proposed 0.8.700 baseline — feature branch only
+
+```text
+Product:       0.8.700.1
+Package:       0.8.700
 Account Save:  5
-Game State:    12
-Data:          37
+Game State:    13
+Data:          38
 Benchmark:     3
-Codename:      Transient Command Presentation Log
+Codename:      Cultivation & Stewardship
 Compatibility: pre-release-current-schema
 Phase:         0.8 in progress
 ```
 
-Gameplay behavior remains Product `.52`. The continuation/content-census pass does **not** change Product, Game State, Data, or Benchmark versions.
+These values are **not on `main` yet** because PR #378 has not been merged.
 
-## Current repository checkpoint
+## `0.8.700` status
 
-Normal branch: `main`.
+**IMPLEMENTED AND VALIDATED / PENDING LANDING.**
 
-Pre-handoff documentation tip immediately before this file was written:
+The bounded player-facing proof is one reusable home Sweetroot bed:
 
 ```text
-f9d8e13f8cdd2472195f4db50f4df732fe6069f2
+prepare bed
+  -> short existing work task
+  -> consume 1 physical Elderwood Sweetroot
+  -> persist crop state + seed provenance
+  -> canonical fictional time advances
+  -> tending becomes due after 1 fictional day
+  -> short existing work task performs tending
+  -> maturity after 2 fictional days
+  -> harvest exactly once
+  -> 3 ordinary Sweetroots enter normal inventory
+  -> cultivated provenance records home plot + seed history
+  -> existing consume / cooking / trade sinks remain valid
+  -> cultivation proficiency reduces later hands-on duration
 ```
 
-The commit containing this handoff is the final documentation tip for the session; a new thread must fetch current `main` first rather than assuming a hardcoded chat SHA.
+## Authority decisions to preserve
 
-Exact validated implementation/tooling freeze:
+### Cultivation state
+
+`state.cultivation` is **required durable Game State authority** in Game State 13.
+
+It owns:
 
 ```text
-b0c1e067a1907a8587a08a128126f9207c6d6134
+plot id / home place
+phase / cycle / harvest count
+active cultivation work link when present
+preparation and last-harvest fictional timestamps
+crop item/cycle
+growth/tending/readiness fictional timestamps
+seed provenance while crop is growing
 ```
 
-Prior `.52` gameplay runtime freeze remains:
+These facts cannot be reconstructed safely without losing consumed inputs, elapsed growth, tending state, replay protection or provenance.
+
+### Growth clock
+
+Canonical fictional world time is the **only** growth clock.
+
+Crop growth creates:
 
 ```text
-0fb444aee8b6dbd3a35bb1d3b7662728d85fd691
+no timer
+no interval
+no background worker
+no offline/wall-clock authority
+no crop-owned timed task
 ```
 
-## C0 — Continuation Infrastructure + Content Census — COMPLETE
+Readiness is derived by comparing canonical world time with persisted crop timestamps.
 
-The August 19, 2026 audit found that deterministic simulation, persistence ownership, and lifecycle discipline are comparatively mature while authored player-facing breadth is now the larger strategic gap.
+### Hands-on labor
 
-C0 added a durable continuation system so future threads do not need to repeat that audit:
+Preparation and tending reuse the existing `workTaskEngine` owner. Cultivation does not call the generic timed-task creator directly.
+
+The sequence is:
 
 ```text
-docs/EXECUTION_PIPELINE.md
-  -> active / ready-next / queued / deferred work
-  -> fast restart protocol
-  -> standard bounded-pass pipeline
-  -> Phase 0.8 and 0.9 progression sequence
-  -> outstanding/deferred work
-
-js/text/systems/contentScaleGate.js
-  -> criteria-driven mechanics / playable-alpha / 1.0 scale indicators
-
-scripts/contentCensus.js
-  -> npm run census
-  -> npm run census -- --json
-
-tests/contentScaleGate.test.js
-  -> protects target definitions, counting, readiness and gap reporting
+start cultivation labor
+  -> existing work record
+  -> existing work timed task
+  -> activity advancement reaches boundary
+  -> cultivation reconciliation copies durable consequence
+  -> cultivation proficiency gain
+  -> work completion
+  -> work owner releases terminal task
 ```
 
-`AGENTS.md`, `PROJECT_PROFILE.yaml`, `README.md`, `ROADMAP.md`, `VERSIONING_AND_RELEASE_ROADMAP.md`, `PLAYER_EXPERIENCE_UPGRADE_PATH.md`, `QUALITY_GATES.md`, `PERFORMANCE_BUDGET.md`, and `RESOURCE_LIFECYCLE.md` were synchronized around that queue. Identified stale performance/lifecycle baseline wording was corrected.
+### Inventory/provenance
 
-The census is a progression indicator, not a CI failure threshold. Do not game it with disconnected filler content.
+Planting consumes one existing `item-elderwood-sweetroot` from ordinary inventory.
 
-## Exact hosted validation for C0 implementation
-
-Validation-only draft PR **#377** existed only to surface the normal pull-request `Check` for exact head `b0c1e067a1907a8587a08a128126f9207c6d6134`. It was closed **without merge** after success.
+The exact removed item's provenance is persisted in crop state. Harvest produces the **same canonical item ID**, not a farm-only duplicate, with:
 
 ```text
-PR:                  #377 validation-only, closed without merge
-Check:               32308719621
-Job:                 96247035026
-Node:                24.19.0
-npm:                 11.17.0
-Tests:               692/692 passed
-Failed/skipped:      0 / 0
-Benchmark 3:         success
-Benchmark Sample:    success
+sourceId = plot-home-sweetroot-bed
+placeId  = character home place
+seed provenance nested in cultivated provenance data
 ```
 
-New focused tests all passed:
+Existing Sweetroot sink families remain:
 
 ```text
-content scale targets preserve repository planning lower bounds
-default content census derives nonzero canonical breadth and supplemental evidence
-content scale stage readiness is criteria-driven rather than calendar-driven
-content scale report exposes outstanding gaps without treating them as failures
+consume
+craftIngredient
+trade
 ```
 
-Benchmark 3 single run:
+The existing Silverfin Sweetroot Stew process proves production participation; normal item behavior proves trade/shop-sale participation.
+
+### Mastery
+
+Stable persistent work-proficiency id:
 
 ```text
-player profiles  0.393820 ms/op
-enemy profiles   0.070731 ms/op
-basic attacks    0.003811 ms/op
-tick dispatch    0.001062 ms/op
-route lookup     0.007603 ms/op
+cultivation
+```
+
+Preparation/tending/harvest add cultivation mastery. Existing `workDurationForProficiency` reduces later hands-on duration. There is no separate farming level or crop XP system.
+
+### Semantic UI
+
+Direct player intents:
+
+```text
+cultivation.prepare
+cultivation.plant
+cultivation.tend
+cultivation.harvest
+```
+
+The Journal/context model exposes status and actions without requiring command strings or leaking raw plot/timestamp/provenance implementation data.
+
+Recommendation integration learned during CI:
+
+- active cultivation work may surface strongly;
+- a merely ready cultivation bed must not displace stronger existing active/ready commitment, livelihood, home or recovery decisions;
+- ready commitment follow-ups retain their existing priority;
+- cultivation entries inherit the canonical home region for campaign grouping.
+
+## Exact validation evidence
+
+PR #378 current frozen implementation head:
+
+```text
+c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+```
+
+Hosted run:
+
+```text
+Check:              32340190710
+Job:                96337561458
+Node:               24.19.0
+npm:                11.17.0
+Tests:              695
+Passed:             695
+Failed:             0
+Cancelled:          0
+Skipped:            0
+Benchmark 3:        success
+Benchmark Sample:   success
+```
+
+Focused cultivation tests passed:
+
+```text
+Game State 13 requires durable cultivation authority before runtime normalization
+cultivation schema rejects forged crop timing and malformed active work links
+0.8.700 turns one physical Sweetroot into a deterministic multi-day home crop with provenance, mastery, and exactly-once harvest
+```
+
+Full regression coverage also remained green after two recommendation-integration fixes.
+
+### Integration CI history
+
+The first feature Check found four presentation/recommendation regressions while all cultivation-domain tests were green. The second reduced that to one ready-commitment priority regression. The third run above is fully green.
+
+Do not rediscover these as cultivation-domain defects; the final policy is already encoded in `playerSocialScheduleEngine.js`.
+
+## Benchmark 3 evidence
+
+Single run:
+
+```text
+player profiles  0.350069 ms/op
+enemy profiles   0.068868 ms/op
+basic attacks    0.003197 ms/op
+tick dispatch    0.000788 ms/op
+route lookup     0.007068 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.362912 ms/op   10.42%
-enemy profiles   0.065795 ms/op    9.93%
-basic attacks    0.001204 ms/op  200.40%
-tick dispatch    0.000696 ms/op   33.93%
-route lookup     0.006992 ms/op    9.64%
+player profiles  0.331167 ms/op    6.35%
+enemy profiles   0.062892 ms/op    7.69%
+basic attacks    0.001206 ms/op  166.26%
+tick dispatch    0.000613 ms/op   54.43%
+route lookup     0.006783 ms/op    5.66%
 ```
 
-No hard performance threshold is accepted. `npm run census` was added and its underlying census logic was exercised by tests; do not claim a standalone census command output unless it is actually run in the next capable environment.
+No hard performance threshold is accepted. Benchmark 3 protocol did not change.
 
-## Next bounded unit — `0.8.700` Cultivation & Stewardship
-
-**Status: READY NEXT; selected by the fresh repo audit, not yet opened in runtime version metadata.**
-
-A future explicit `continue` may proceed directly with this bounded unit after refreshing `main` and this handoff. Do not re-run the broad candidate-selection audit unless repository authority materially changed.
-
-Player-facing question:
-
-> Can a player turn a home/foothold and existing material economy into a multi-day cultivation loop whose output feeds food, medicine, trade, production, or commitments without creating a parallel clock or inventory?
-
-Smallest proof:
+## Version decision
 
 ```text
-access plot
-  -> prepare
-  -> plant physical/provenance-bearing input
-  -> canonical fictional time passes
-  -> tend when meaningful
-  -> harvest exactly once
-  -> provenance-bearing output enters normal inventory
-  -> output feeds at least three existing systems/sinks
-  -> persistent work/cultivation mastery improves efficiency
+Product      0.8.600.52 -> 0.8.700.1
+Package      0.8.600    -> 0.8.700
+Game State   12         -> 13
+Data         37         -> 38
+Account Save 5 unchanged
+Benchmark    3 unchanged
 ```
 
-### Inspect these first
+Game State 13 is required because cultivation lifecycle/provenance/replay facts are durable authority. Data 38 records the new stable cultivation proficiency/state contract.
 
-Use repository/code search if exact filenames have moved, but start with these authorities instead of broad discovery:
+No Game State 12 -> 13 migration was added. That is deliberate under the pre-alpha current-schema-only policy. Hosted tests observed the expected old-save rejection: Game State 12 is incompatible with current Game State 13 on this branch.
+
+## Main files for 0.8.700
+
+Runtime/data/integration:
+
+```text
+js/text/systems/cultivationEngine.js
+js/text/systems/workProficiencyEngine.js
+js/text/gameState.js
+js/text/systems/currentGameStateSchema.js
+js/text/systems/activityAdvanceEngine.js
+js/text/systems/validation.js
+js/text/systems/playerSocialScheduleEngine.js
+js/text/ui/uiIntentDispatcher.js
+js/text/ui/gameViewModel.js
+js/text/version.js
+package.json
+```
+
+Focused tests:
+
+```text
+tests/currentSchemaCultivation.test.js
+tests/playerCultivationStewardshipFlow.test.js
+```
+
+Related Game State/version regression suites were advanced to Game State 13.
+
+## Documentation synchronized after freeze
+
+After implementation freeze `c125f7ae...`, documentation/configuration was synchronized without changing runtime/source/tests:
 
 ```text
 docs/EXECUTION_PIPELINE.md
 docs/ROADMAP.md
+docs/VERSIONING_AND_RELEASE_ROADMAP.md
+PROJECT_PROFILE.yaml
+docs/QUALITY_GATES.md
+docs/RESOURCE_LIFECYCLE.md
+docs/PERFORMANCE_BUDGET.md
+docs/ARCHITECTURE.md
 docs/PLAYER_EXPERIENCE_UPGRADE_PATH.md
-js/text/systems/contentScaleGate.js
-world-time / simulation authority
-work-task + work-proficiency authority
-project/home-infrastructure authority
-inventory/container authority
-resource provenance authority
-ecology/gathering authority
-production/economy/commitment sinks
-semantic DOM intent/view-model paths
-focused save/load and lifecycle tests for those systems
+README.md
+docs/SYSTEM_CATALOG.md
+this handoff (last)
 ```
 
-### Constraints for `0.8.700`
+## Content census note
 
-- canonical fictional time is the only growth clock;
-- no passive wall-clock/offline growth authority;
-- inventory owns physical inputs/tools/outputs;
-- provenance stays explicit;
-- existing work proficiency should own repeated-practice efficiency where appropriate;
-- home/project authority owns durable infrastructure where appropriate;
-- do **not** create one long-lived timed-task owner per crop by reflex;
-- prefer persisted crop/plot state plus canonical-time derivation when sufficient;
-- prove save/load mid-growth and exactly-once harvest;
-- provide an ordinary semantic browser path without command expertise;
-- run content-pack/cross-reference validation for added content;
-- run `npm run census` before/after content-heavy changes when a capable execution surface is available;
-- make Product/Data/Game State decisions from the actual changed contracts when implementation begins.
+No standalone `npm run census` output was recorded during 0.8.700.
 
-## Following queue — not started
+No scale-count increase is claimed because the bounded proof deliberately reuses existing content and adds no census-counted place, named NPC, service site, creature, resource source, canonical item, recipe, ability, quest, companion or transport service.
+
+Do not claim a census delta that was not actually run.
+
+## Next action — landing decision first
+
+PR #378 is still **draft and unmerged**.
+
+A future `continue` should **not** start `0.8.800` while #378 remains unresolved by default. First:
 
 ```text
-0.8.800  Earned Routine Delegation        QUEUED
-0.8.900  Household & Community Continuity QUEUED
-0.8 exit Phase 0.8 connected-life audit   QUEUED
+1. refresh main
+2. inspect PR #378 status/head/check
+3. if user authorizes merge, merge only the validated feature PR using the then-current head
+4. refresh main after merge and update landing handoff/status
+5. only then treat 0.8.800 as the next feature track
 ```
 
-Do not launch these during the `0.8.700` bounded pass merely because they are listed.
+Do not merge #378 without explicit merge authorization.
 
-Phase 0.9 progression and planning windows are recorded in `docs/EXECUTION_PIPELINE.md` and `docs/ROADMAP.md`.
+If #378 was externally merged before the new thread begins, verify `main` contains the feature and then mark 0.8.700 DONE before selecting/starting the next pass.
 
-## Deferred work already recorded
+If #378 was closed/replaced, resolve that repository state rather than blindly continuing from chat memory.
 
-Do not rediscover these as new surprises:
+## Next bounded feature after landing
 
-- protected `main` / required review transition — deferred to Phase 0.9 stabilization;
-- supported-save compatibility/migrations — deferred to `0.9.800` unless explicitly requested earlier;
-- dedicated real-browser E2E/accessibility program — deferred to `0.9.700`;
-- hard performance thresholds — deferred until representative Benchmark 3 evidence supports them;
+`0.8.800 — Earned Routine Delegation` is **READY NEXT after 0.8.700 lands**, not started.
+
+Preferred first proof:
+
+> After manually establishing the Sweetroot routine, can the player earn a bounded helper/hired-labor option for one cultivation chore that reduces repetitive attention while preserving wages/material/time costs, cultivation authority, save/load integrity and exactly-once consequences?
+
+Do not start with a generic automation framework.
+
+Following units remain queued:
+
+```text
+0.8.900 Household & Community Continuity
+Phase 0.8 exit audit
+```
+
+## Deferred work — do not rediscover
+
+- protected `main` / required-check transition — Phase 0.9 stabilization;
+- supported-save compatibility/migrations — `0.9.800` unless explicitly requested earlier;
+- dedicated browser E2E/accessibility program — `0.9.700`;
+- hard performance thresholds — deferred until representative evidence supports them;
 - balance certification — deferred until sustained content-scale play exists;
 - quality/HQ crafting depth — deferred until it creates real decisions;
-- mounts/warehouses/large logistics — deferred until current logistics are stressed by real content;
-- deep romance framework — deferred beyond the bounded 0.8 social-breadth work.
+- mounts/warehouses/large logistics — deferred until existing logistics are stressed by content;
+- deep romance framework — deferred beyond bounded household/community work.
 
 ## Do not redo
 
-The following work is closed unless a concrete regression or changed requirement directly touches it:
+Closed unless a concrete regression/change directly touches them:
 
 ```text
 Phase 0.4–0.7 broad discovery
+C0 candidate-selection audit
 state.npcs persistence classification
 state.enemies persistence classification
 top-level state.log persistence classification
-root player derived-cache serialization audit
+root derived-cache serialization audit
 active-battle identity/cache/player-link hardening sequence
+0.8.700 authority discovery / crop-clock decision
 ```
 
 ## Session status
 
 ```text
-Branch:                         main
-C0 pass:                        complete
-Validated implementation head: b0c1e067a1907a8587a08a128126f9207c6d6134
-Validation PR:                  #377 closed without merge
-Hosted Check:                   32308719621 success
-Tests:                          692/692 passed
+Main:                           a77db18722a1c55daa7c4666db9aabd785d91eaf
+Feature branch:                 feature/0.8.700-cultivation-stewardship
+PR:                             #378 open draft, unmerged
+Validated implementation head:  c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+Hosted Check:                   32340190710 success
+Tests:                          695/695 passed
 Benchmark 3 / Sample:           success / success
-Known implementation failures:  none observed
-Known blocker:                  none
-Next bounded unit:              0.8.700 Cultivation & Stewardship
-Next unit runtime work started:  no
+0.8.700 implementation:         complete and validated
+0.8.700 landing:                pending explicit merge authorization
+Known implementation blocker:   none
+Next action:                     resolve PR #378 landing state
+0.8.800:                        ready next only after landing; not started
 ```
