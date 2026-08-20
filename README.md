@@ -10,21 +10,23 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.8 — Life and Infrastructure Expansion — is complete.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is now open. `0.9.100 Content Scale Gate A` is in progress, with its first infrastructure packet complete and the first high-volume content tranche deliberately not started.
 
 ```text
-Product:       0.8.900.1
-Package:       0.8.900
+Product:       0.9.100.1
+Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          39
+Data:          40
 Benchmark:     3
-Codename:      Household & Community Continuity
+Codename:      Content Pack Scale Contract v2
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed hosted Check `32395768383` on Node 24.19.0 with **699/699 tests**, Benchmark 3 success, and Benchmark Sample success. Phase-exit validation Check `32395959505` additionally passed Content Census and Hardening. See `docs/PHASE_0_8_EXIT_GATE.md`.
+The 0.9.100 infrastructure packet extends the regional/shared content-pack contract before content volume grows. It adds one catalog bridge and Pack v2 ownership/validation for spell schools, capabilities/training definitions, executable abilities, NPC schedules, and companions while preserving the existing runtime catalogs as canonical definition authorities.
+
+No new gameplay content, simulation clock, task engine, persistence family, or save migration was introduced by this packet. Game State therefore remains 14; Data advances to 40 because the canonical authored-data ownership/validation contract changed.
 
 ## Product direction
 
@@ -32,21 +34,23 @@ The game is one persistent life, not a collection of disconnected minigames. Hun
 
 Fictional time is separate from wall-clock waiting. Maps represent acquired knowledge. Materials preserve provenance. Disciplines describe training traditions; learned capabilities and mastery belong to the character.
 
-## Completed Phase 0.8 arc
+## Content infrastructure
+
+The current Pack v2 contract can own and cross-validate:
 
 ```text
-home storage + workshop
-  -> carried-load and portable logistics
-  -> fictional-time NPC/companion life
-  -> deterministic home Sweetroot cultivation
-  -> repeated manual mastery
-  -> paid delegation of one tending chore
-  -> home-grown provenance
-  -> scheduled named community commitments and relationships
-  -> ordinary services, preparation, travel and adventure remain connected
+places / routes / transport services
+ecology families / species / populations / gathering sources
+items / recipes
+NPCs / NPC schedules / shops
+quests / relationships
+spell schools / capabilities / executable abilities
+companions
 ```
 
-Cultivation growth and delegated tending do not introduce a second clock or direct timed-task owner. The current direct player intents include cultivation actions plus `commitment.accept`, `commitment.resolve`, and `commitment.followUp`.
+`js/text/data/contentCatalogRegistry.js` bridges packs to the existing canonical catalogs rather than duplicating definitions merely to claim ownership. Items resolve across resource, production, and equipment catalogs; recipes, commitments, seed NPCs, routes/ecology, abilities/capabilities, schedules, and companions are also resolvable through the same boundary.
+
+The content-pack validator enforces stable-ID ownership, cross-pack dependencies, dangling references, legacy leaks, and family-specific structure. A generated fixture validates more than 1,400 Pack v2 ownership records across items, recipes, NPCs, schedules, capabilities, abilities, and companions before equivalent canonical volume is authored.
 
 ## Content-scale census
 
@@ -55,7 +59,7 @@ npm run census
 npm run census -- --json
 ```
 
-Current exit census:
+Current gameplay breadth remains intentionally unchanged by the infrastructure packet:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -71,38 +75,29 @@ companions                1 / 4
 transport services        3 / 5
 ```
 
-The mechanics-scale gate is **NOT READY**. This is expected and is the main strategic input for planned Phase 0.9 content-scale work. Counts should not be gamed with disconnected filler.
+Infrastructure coverage now reports separately:
+
+```text
+spell schools                         3
+capabilities/training definitions     8
+NPC schedules                          4
+regional/shared content packs          7
+pack-owned records                    115
+pack-owned abilities/capabilities/
+  schedules/companions              5/8/4/1
+```
+
+The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 14 requires durable cultivation plot/crop/delegation authority. Some runtime state remains deliberately non-serialized:
-
-- root `player.combat` and `player.statState` are reconstructed caches;
-- `activeBattle.rng` is transient;
-- flat `player.inventory` reference identity is relinked after decode;
-- `state.npcs` is a reconstructed world projection;
-- `state.enemies` is a reconstructed encounter-template projection;
-- top-level `state.log` is session command presentation history.
-
-`state.events` remains persisted structured semantic observation history. `activeBattle.log` remains separate persisted encounter-local history.
+Game State 14 still owns the same durable player/world facts. Important non-serialized runtime state includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
-The player-facing UI is a **world interface**, not a permanent command console.
-
-```text
-index.html
-  -> js/main.js
-      -> createDomRoot(...)
-          -> createDomApp(host)
-              -> authoritative game/save/intent services
-              -> createGameViewModel(state, uiState)
-              -> renderDomApp(...)
-```
-
-Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual gameplay actions use semantic intents into domain systems; command routing remains an optional adapter/regression surface.
+The player-facing UI is a **world interface**, not a permanent command console. Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual gameplay actions use semantic intents into domain systems; command routing remains an optional adapter/regression surface.
 
 ## Systems already playable / proven
 
@@ -115,13 +110,13 @@ Primary information navigation includes Scene, Character, Spellbook, Journal, Co
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- current-schema persistence, lifecycle guards, content-scale census, and repeatable benchmark sampling.
+- current-schema persistence, lifecycle guards, connected Pack v2 validation, content-scale census, and repeatable benchmark sampling.
 
-High-volume authored content, deeper combat/ability breadth, broader social/companion life, larger property/logistics systems, browser E2E hardening, supported-save compatibility, and release support remain future work.
+## Current decision boundary
 
-## Next decision boundary
+`0.9.100 Content Scale Gate A` is open. **Content Pack Scale Contract v2 is the completed first packet.** The next proposed bounded packet is the Redstone Forge-Road regional tranche, but it has not been started by this infrastructure work order.
 
-Phase 0.9 is planned but **not opened**. Proposed first unit: `0.9.100 — Content Scale Gate A`. A separate explicit work order is required before implementation or the recommended protected-main/required-Check governance transition begins.
+Before any high-volume authoring/import, content must use the connected Pack v2 ownership/validation path and the census must continue distinguishing real gameplay breadth from pack bookkeeping.
 
 ## Read these first
 
@@ -145,12 +140,13 @@ npm start
 Validation/progression entry points:
 
 ```bash
+npm run audit:repo
 npm test
+npm run census
 npm run benchmark
 npm run benchmark:sample
-npm run census
 npm run hardening
 npm run check
 ```
 
-`package.json` requires Node 24 or newer. Hosted `Check` uses Node 24 LTS.
+`npm run check` and hosted `Check` now execute Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample. Census target shortfalls remain informational. `package.json` requires Node 24 or newer.
