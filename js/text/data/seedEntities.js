@@ -12,6 +12,11 @@ export function createSeedNpcs() {
             questIds: ['commitment-thornwall-sweetroot-return'],
         }),
         createNpc({
+            id: 'npc-thornwall-mira-fen', name: 'Mira Fen', title: 'Southgate Cook', faction: 'Thornwall',
+            locationId: 'thornwall-southgate', services: ['food', 'household', 'commissions'],
+            questIds: ['commitment-thornwall-hearth-sweetroot-share'],
+        }),
+        createNpc({
             id: 'npc-road-instructor', name: 'Road Instructor', title: 'Combat Tutor',
             locationId: 'thornwall-southgate', services: ['tutorial', 'sparring'],
         }),
@@ -25,6 +30,11 @@ export function createSeedNpcs() {
             questIds: ['commitment-brasshaven-copper-return'],
         }),
         createNpc({
+            id: 'npc-brasshaven-mae-oris', name: 'Mae Oris', title: 'Market Ring Provisioner', faction: 'Brasshaven',
+            locationId: 'brasshaven-market-ring', services: ['items', 'household', 'commissions'],
+            questIds: ['commitment-brasshaven-courtyard-sweetroot-share'],
+        }),
+        createNpc({
             id: 'npc-mistmere-marsh-warden', name: 'Mistmere Marsh Warden', title: 'Road Warden', faction: 'Mistmere',
             locationId: 'mistmere-canal-ward', services: ['realmSeal', 'regionalRewards'],
         }),
@@ -32,6 +42,11 @@ export function createSeedNpcs() {
             id: 'npc-mistmere-reader-soli-venn', name: 'Reader Soli Venn', title: 'Canal Ward Reader', faction: 'Mistmere',
             locationId: 'mistmere-canal-ward', services: ['orientation', 'commissions', 'civic'],
             questIds: ['commitment-mistmere-marrowleaf-return'],
+        }),
+        createNpc({
+            id: 'npc-mistmere-kiri-fen', name: 'Kiri Fen', title: 'Canal Herbkeeper', faction: 'Mistmere',
+            locationId: 'mistmere-canal-ward', services: ['herbs', 'household', 'commissions'],
+            questIds: ['commitment-mistmere-canalside-sweetroot-share'],
         }),
         createNpc({
             id: 'npc-elderwood-waywarden', name: 'Mara Venn', title: 'Waywarden', faction: 'Thornwall',
