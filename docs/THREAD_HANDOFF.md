@@ -18,103 +18,144 @@ If these checkpoints still match repository state, **do not restart a broad repo
 
 ## Current checkpoint
 
-Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` has been explicitly opened only far enough to complete the infrastructure-first **Content Pack Scale Contract v2** packet.
+Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is in progress. Content Pack Scale Contract v2 is merged, and the first authored regional tranche — **Redstone Forge-Road** — is implemented, validated before promotion, version/document synchronized, and awaiting only the final exact-head hosted Check + PR landing.
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Exact implementation/version checkpoint before documentation synchronization:
+### Repository state immediately before this handoff write
 
 ```text
-739f88801ddd66587b6b45bdbd0784dff351c986
+main:            68fa9ba483571699e9a448201364381099bd53c8
+main protected:  false
+PR:              #383 open / draft / mergeable
+branch:          feature/0.9.100-redstone-forge-road
+pre-handoff tip: beb43e723f5c71bc9595adf21b93948193f8e0bd
 ```
 
-Architecture/documentation tip immediately before this handoff write:
+This file is the **final repository-file write** for the Redstone Forge-Road packet. GitHub-side final validation/readiness/merge occur after this write. If a future thread resumes before/after those operations, refresh PR #383 and `main` instead of guessing final status from this document.
+
+## Frozen implementation/content checkpoint
+
+The exact gameplay/content implementation freeze is:
 
 ```text
-e0f820f9b5f739683ca71773a6017f7c3c8e4451
+440a77c542fcc6a6efcce7a45ca989e9068499f8
 ```
 
-This handoff is the **final repository-file write** for the Pack v2 closure. GitHub-side validation and merge occur after this file write, so a future continuation must refresh `main` and PR #382 rather than assuming their final status from this document.
+No gameplay/content behavior was changed after this SHA. Later commits only promoted version/system metadata, updated version assertions, and synchronized repository documentation/profile contracts.
 
-At handoff-write time:
+Pre-promotion hosted evidence on the frozen implementation SHA:
 
 ```text
-main:   a58001c95282b215a1ee939365fcab7b4e1bbb91
-PR:     #382 open / mergeable
-branch: feature/0.9.100-content-pack-v2
+Check:              32416678697
+Job:                96579293377
+Node:               24.19.0
+Repository Audit:   PASS
+Tests:              707/707 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
 ```
 
-## What Pack v2 completed
+## What Redstone Forge-Road implements
 
-The infrastructure packet intentionally scaled supporting architecture before authored data volume.
-
-### Regional/shared ownership contract
-
-Content packs can now own:
+The tranche deliberately deepens existing Brasshaven/Redstone authorities instead of bulk-generating disconnected records.
 
 ```text
-places
-routes
-transportServices
-ecologyFamilies
-species
-populations
-gatheringSources
-items
-npcs
-npcSchedules
-shops
-recipes
-quests
-relationships
-spellSchools
-capabilities
-abilities
-companions
+existing Redstone iron / sunstone / Ridge Ibex inputs
+  -> existing inventory + provenance
+  -> existing forge / production / work-task / work-proficiency authority
+  -> forge flux / tempered iron / rivets
+  -> wearable work gear / caravan hardware
+  -> provenance-qualified Brasshaven commitments
+  -> character-owned Redstone techniques/spells
+  -> Pack v2 regional ownership
 ```
 
-Pack ownership is metadata/graph authority, **not duplicate gameplay state or a replacement domain catalog**.
+Implemented content:
 
-### Canonical catalog bridge
+- four character-owned Redstone capabilities:
+  - Ridge Breaker
+  - Rivet Guard
+  - Forge Spark
+  - Ironbound Ward
+- four executable abilities using the existing ability engine;
+- six additional downstream forge outputs, including tempered iron, rivets, work equipment and caravan hardware;
+- six additional forge processes connected to existing iron, sunstone, Ridge Ibex recovery, station, work, inventory and provenance authorities;
+- three provenance-qualified Brasshaven commitments consuming real forged output;
+- `pack-redstone-forge-road`, depending on:
+  - `pack-shared-foundation`
+  - `pack-redstone-opening`
+  - `pack-redstone-ecology-breadth`
+- `tests/playerRedstoneForgeRoadFlow.test.js` proving Pack v2 ownership, production/provenance, exactly-once contract consumption/reward behavior, census growth and real Ridge Breaker execution.
 
-`js/text/data/contentCatalogRegistry.js` resolves pack-owned references into existing canonical catalogs, including:
+No new simulation clock, persistence family, direct timed-task owner, inventory authority, progression meter, social state family, companion system, or bulk import/generation was introduced.
+
+## Continuity regression learned and closed
+
+The first hosted integration run reached 707 tests with 702 passing and five failures.
+
+Four failures were stale baseline assertions caused by the intended pack/ability/census growth.
+
+The real regression was campaign readability: later Forge-Road jobs offered through Varric's already-discovered contact could outrank the established `Copper for the Ring` continuity path.
+
+The repair was made at authored-content placement rather than by weakening recommendation/continuity tests:
 
 ```text
-resource / production / equipment items
-production recipes/processes
-commitments
-seed NPCs
-places / routes / transport / ecology
-spell schools / capabilities / abilities
-NPC schedules
-companions
+Varric Stone
+  -> existing Copper for the Ring path remains intact
+
+Mae Oris
+  -> later Forge-Road orders
+  -> existing 11:00–17:00 fictional-time schedule remains authoritative
 ```
 
-Do not copy canonical definitions into packs merely so a region can claim them.
+The original PX4 copper continuity test was left unchanged and passed on the final frozen implementation Check.
 
-### Validation boundary
+## Version decisions
 
-Pack v2 validation now checks stable ownership, collisions, declared cross-pack dependencies, dangling catalog references, ability/capability/school links, NPC schedule links, companion/NPC/home/recruitment links, topology/source-sink/quest/relationship links, and legacy-boundary violations.
+```text
+Product       0.9.100.1 -> 0.9.100.2
+Package       0.9.100   -> 0.9.100
+Data          40        -> 41
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
 
-NPC schedule definitions also have structural validation for stable schedule identity, canonical fictional-time windows, overlap and required presentation fields.
+### Why Data 41
 
-### Scale proof
+Data 41 adds stable canonical authored abilities/capabilities, production items/processes, commitments, and their source/sink/social/Pack-v2 relationships.
 
-The generated Pack v2 fixture validates **1,401 owned records** across items, recipes, NPCs, schedules, capabilities, abilities and companions. It is validation-only and must never contribute to canonical content counts.
+### Why Game State remains 14
 
-## Census / anti-filler result
+The tranche reuses existing character capability/ability, production/work, inventory/provenance, commitment/relationship/schedule, and fictional-time authorities. It adds no new durable player/world fact.
 
-Canonical gameplay breadth did not increase during the infrastructure packet:
+Current promoted system/catalog bookkeeping includes:
+
+```text
+versionManifest       0.9.100.2
+commitments           0.5.0
+productionCatalog     0.3.0
+productionItems       0.5.0
+regionalContentPacks  0.4.0
+capabilities          0.3.0
+abilityCatalog        0.2.0
+```
+
+## Current content census
+
+Validated canonical gameplay breadth on the frozen implementation Check:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -122,137 +163,118 @@ named NPCs              12 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         50 / 200
-recipes/processes       11 / 75
-abilities/techniques     5 / 100
-quests/contracts         8 / 30
+canonical items         56 / 200
+recipes/processes       17 / 75
+abilities/techniques     9 / 100
+quests/contracts        11 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
 
-Mechanics-scale gate remains **NOT READY**. This is correct.
-
-Infrastructure coverage is now separately visible:
+Supplemental infrastructure coverage:
 
 ```text
-routes:                                     7
-spell schools:                              3
-capabilities/training definitions:          8
-NPC schedules:                              4
-regional/shared content packs:              7
-pack-owned records:                       115
+routes                                   7
+spell schools                            3
+capabilities/training definitions       12
+NPC schedules                            4
+regional/shared content packs            8
+pack-owned records                     140
 pack-owned abilities/capabilities/
-  schedules/companions:                 5/8/4/1
+  schedules/companions                9/12/4/1
 ```
 
-Do not convert these ownership counts into gameplay-content progress.
+Mechanics-scale gate remains **NOT READY**. This is correct progression evidence, not a CI failure. Generated fixtures and catalog refs must not be counted as canonical gameplay breadth.
 
-## Validation evidence already collected
+## Benchmark 3 evidence
 
-Pre-promotion implementation Check:
+Single run from Check `32416678697`:
 
 ```text
-Check:              32402373472
-Job:                96533356513
-Node:               24.19.0
-Repository Audit:   PASS
-Tests:              704/704 passed
-Content Census:     success
-Benchmark 3:        success
-Benchmark Sample:   success
+player combat profiles  0.189561 ms/op
+enemy combat profiles   0.037361 ms/op
+basic attacks            0.002428 ms/op
+tick dispatch            0.000569 ms/op
+direct route lookup      0.003900 ms/op
 ```
 
-This Check proved the Pack v2 runtime/validator/census/CI implementation before product/data promotion and documentation synchronization.
-
-The hosted `Check` contract now runs:
+Three-sample medians/spreads:
 
 ```text
-Repository Audit
-npm test
-npm run census
-npm run benchmark
-npm run benchmark:sample
+player profiles  0.184621 ms/op    8.18%
+enemy profiles   0.037303 ms/op    5.66%
+basic attacks    0.001110 ms/op  138.43%
+tick dispatch    0.000492 ms/op   30.77%
+route lookup     0.004237 ms/op   11.77%
 ```
 
-Census execution is required, but future target shortfalls remain progression evidence rather than ordinary CI failures.
-
-## Version decisions
-
-```text
-Product      0.8.900.1 -> 0.9.100.1
-Package      0.8.900   -> 0.9.100
-Data         39        -> 40
-
-Account Save 5         -> 5
-Game State   14        -> 14
-Benchmark    3         -> 3
-```
-
-Data 40 advances because stable content ownership/catalog-validation semantics changed.
-
-Game State remains 14 because Pack v2 introduces no new durable player/world fact. No new simulation clock, direct timed-task owner, inventory authority, progression authority, persistence family or compatibility layer was added.
-
-Focused system versions include:
-
-```text
-contentCatalogRegistry 0.1.0
-contentPackSchema      0.2.0
-regionalContentPacks   0.3.0
-contentPackValidation  0.2.0
-contentScaleGate       0.2.0
-npcSchedules           0.3.0
-```
+No hard performance threshold is accepted. Benchmark protocol remains 3.
 
 ## Closure operation after this handoff
 
-PR #382's exact head containing this handoff must pass the promoted-version hosted `Check`. Merge only that exact green head into `main`.
+1. Refresh PR #383 and record the exact head produced by this handoff write.
+2. Ignore intermediate CI runs from partially synchronized documentation heads.
+3. Require the hosted `Check` associated with the **exact final handoff head** to pass:
+   - Repository Audit
+   - full test suite
+   - Content Census
+   - Benchmark 3
+   - Benchmark Sample
+4. Confirm census remains the same unless the exact head unexpectedly contains material changes.
+5. If PR #383 is still draft, mark it ready for review.
+6. Merge only the exact green head into `main`, using expected-head protection.
+7. Refresh `main` and verify the Redstone changes landed.
+8. Stop. Do **not** begin Elderwood Hunt-Timber automatically.
 
-Because those are GitHub-side operations after the final repository-file write, their exact final Check ID / merge SHA are intentionally not guessed here. Refresh them from GitHub before the next implementation pass.
+No repository file should be changed after this handoff write merely to record the final Check or merge SHA; those GitHub-side facts can be refreshed by the next thread or reported in chat.
 
 ## Next bounded unit
 
-**Redstone Forge-Road is not started.**
+**Elderwood Hunt-Timber — NOT STARTED.**
 
-It is the next proposed `0.9.100` content tranche only after Pack v2 closure is green and merged.
+It is the next proposed Gate A authored tranche only after Redstone lands and after a new explicit user continuation.
 
-The intended graph is:
+Preferred connected graph:
 
 ```text
-named NPCs / mentors / services
-  -> schedules / training / contracts
-  -> creatures + mineral/resource sources
-  -> raw materials
-  -> processing / recipes
-  -> tools / equipment / consumables
-  -> techniques / capability access
-  -> shops / wages / trade / transport
+named people / schedules / services
+  -> hunt + forestry needs
+  -> creature recovery / timber-resin sources
+  -> hide / wood / resin transformations
+  -> equipment / consumables / repair-home inputs
+  -> practical techniques / capability access
+  -> contracts / trade / relationships
   -> field danger / recovery / provenance
 ```
 
-Do not bulk-generate/import records and then retrofit connections. Author a dense connected regional tranche through Pack v2 and existing runtime catalogs.
+Do not start with a global NPC/item/ability quota dump. Places should not be added merely for count because the place mechanics floor is already exceeded.
+
+Following Gate A work remains Starfen Marshcraft-Practical Magic, then Gate A integration/census review.
 
 ## Authority decisions to preserve
 
-- fictional simulation time remains separate from wall-clock scheduling;
+- canonical fictional simulation time remains separate from wall-clock scheduling;
 - Game State 14 remains strict current-schema-only pre-alpha authority;
-- content packs own regional/shared identity and dependencies, not gameplay state;
+- content packs own regional/shared identity/dependencies, not gameplay state;
 - canonical domain catalogs remain definition authorities;
-- direct production timed-task owners remain the audited existing owner set;
-- `state.npcs`, `state.enemies`, top-level `state.log`, root player combat/stat caches and `activeBattle.rng` remain derived/transient;
-- `state.events` remains persisted semantic observation history;
-- content-scale fixtures and ownership counts must not inflate canonical breadth;
-- content-heavy packets must preserve sources, sinks, reachable references and cross-pack dependency integrity;
+- generated scale fixtures and Pack ownership counts do not inflate canonical breadth;
+- direct timed-task creators remain the existing audited owner set; Redstone adds none;
+- production uses existing work/task/proficiency/station/inventory/provenance ownership;
+- capabilities remain character-owned and executable abilities use the existing ability engine;
+- commitments/relationships/NPC schedules remain existing social authorities;
+- `state.npcs`, `state.enemies`, top-level `state.log`, root combat/stat caches and active-battle RNG remain derived/transient as previously classified;
+- `state.events` remains persisted structured semantic observation history;
 - roadmap sequencing does not authorize the next independent packet automatically.
 
 ## Deferred work — do not rediscover
 
-- protected `main` / required Check policy remains a governance follow-up unless repository settings have changed;
-- stale historical branch deletion remains manual cleanup debt;
-- supported-save migrations remain deferred to a deliberate release-transition packet;
-- dedicated browser E2E/accessibility remains proposed for `0.9.700`;
+- protected `main` / required Check remains recommended governance work; current `main` is unprotected;
+- stale historical remote branch deletion remains manual cleanup debt where no safe delete action exists;
+- supported-save migrations remain deferred to the deliberate `0.9.800` transition;
+- browser E2E/accessibility remains `0.9.700`;
 - hard performance thresholds remain deferred;
 - balance certification remains deferred;
-- quality/HQ crafting, mounts/warehouses/large logistics and deep romance remain later content/system decisions.
+- quality/HQ crafting, mounts/warehouses/large logistics and deep romance remain later decisions.
 
 ## Do not redo
 
@@ -266,6 +288,8 @@ late-0.8 persistence classification
 Content Pack v2 ownership-gap discovery
 catalog-bridge design
 Pack v2 generated-scale proof
+Redstone Forge-Road substrate discovery
+Redstone Varric/Mae continuity diagnosis
 cultivation/delegation clock and ownership decisions
 ```
 
@@ -273,9 +297,9 @@ cultivation/delegation clock and ownership decisions
 
 ```text
 1. refresh current main SHA
-2. refresh PR #382 state / merge SHA if relevant
+2. refresh PR #383 state / final Check / merge state if relevant
 3. read this handoff and EXECUTION_PIPELINE
-4. confirm Product 0.9.100.1 / Package 0.9.100 / Game State 14 / Data 40
-5. confirm final Pack v2 Check on the exact merged or PR head
-6. only then select/authorize the next bounded content packet
+4. confirm Product 0.9.100.2 / Package 0.9.100 / Game State 14 / Data 41
+5. confirm the exact final Redstone PR head was green and landed
+6. only then select/authorize Elderwood Hunt-Timber
 ```
