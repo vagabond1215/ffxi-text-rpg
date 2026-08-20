@@ -29,6 +29,8 @@ jobs:
         run: npm run audit:repo
       - name: Test
         run: npm test
+      - name: Content Census
+        run: npm run census
       - name: Benchmark
         run: npm run benchmark
       - name: Benchmark Sample
