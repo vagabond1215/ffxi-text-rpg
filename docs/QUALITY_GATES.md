@@ -22,7 +22,7 @@ npm run hardening
 npm run check
 ```
 
-Ordinary local/hosted `Check` now runs, in order:
+Ordinary local/hosted `Check` runs, in order:
 
 ```text
 Repository Audit
@@ -37,30 +37,30 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 ```
 
-The first 0.9.100 infrastructure checkpoint passed 704/704 tests, census, Benchmark 3, and Benchmark Sample on Node 24.19.0 before documentation promotion. Final promoted-version PR validation is required before merge.
+Frozen Redstone implementation/content SHA `440a77c542fcc6a6efcce7a45ca989e9068499f8` passed hosted Check `32416678697` / job `96579293377` on Node 24.19.0 with **707/707 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
 
 ## Persistence/lifecycle
 
 Current mode remains strict pre-alpha current-schema-only.
 
-- Account Save must remain 5 unless account/session shape changes.
-- Game State must remain 14 unless a genuinely new durable player/world fact changes the serialized contract.
+- Account Save remains 5 unless account/session shape changes.
+- Game State remains 14 unless a genuinely new durable player/world fact changes the serialized contract.
 - Data changes do not automatically imply Game State changes.
 - Required persisted authority validates before runtime normalization/revival.
 - Active owner/task links remain coherent until owner reconciliation.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-The Pack v2 infrastructure packet adds **no persistence or lifecycle owner**, so `npm run hardening` is not required merely because authored-data infrastructure changed. It remains required for lifecycle-sensitive packets and phase/release gates.
+Redstone Forge-Road adds **no persistence or lifecycle owner**. Forge jobs reuse production/work-task ownership; abilities reuse character capability/ability runtime authority; commitments reuse existing commitment/relationship/schedule authority. `npm run hardening` is therefore not required solely because this authored-data tranche grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -87,20 +87,6 @@ spellSchools / capabilities / abilities / companions
 
 `contentCatalogRegistry` bridges ownership to existing canonical catalogs. Packs must not copy canonical definitions solely to establish ownership metadata.
 
-### Current catalog bridge
-
-```text
-items        -> resource + production + equipment catalogs
-recipes      -> production catalog
-quests       -> commitment catalog where applicable
-npcs         -> canonical seed NPC catalog
-routes       -> route/transport catalogs
-ecology      -> ecology catalogs
-training     -> spell-school/capability/ability catalogs
-schedules    -> NPC schedule catalog
-companions   -> companion catalog
-```
-
 ### Scale proof
 
 `tests/contentPackValidator.test.js` contains a generated Pack v2 fixture with 1,401 ownership records:
@@ -118,6 +104,18 @@ companions   -> companion catalog
 
 Fixtures are validation data only and must never contribute to canonical content census counts.
 
+### Redstone connected-content proof
+
+`tests/playerRedstoneForgeRoadFlow.test.js` verifies a real Pack-v2-owned regional graph rather than a count-only fixture:
+
+- existing Redstone field inputs become provenance-bearing forge outputs through production work;
+- work uses existing station/proficiency/task/inventory authorities;
+- caravan hardware satisfies a provenance-qualified commitment exactly once;
+- a Redstone technique is learned on character capability authority and executes through the existing ability engine;
+- Pack v2 ownership/dependencies and the default census remain valid.
+
+An earlier integration run exposed a real campaign-readability regression: later Varric jobs displaced the established copper commitment. The repair moved later Forge-Road orders to Mae Oris's existing scheduled contact while leaving the old copper continuity test unchanged.
+
 ## Current content progression
 
 ```text
@@ -126,10 +124,10 @@ named NPCs              12 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         50 / 200
-recipes/processes       11 / 75
-abilities/techniques     5 / 100
-quests/contracts         8 / 30
+canonical items         56 / 200
+recipes/processes       17 / 75
+abilities/techniques     9 / 100
+quests/contracts        11 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -138,15 +136,15 @@ Infrastructure coverage is separately visible:
 
 ```text
 spell schools                            3
-capability/training definitions          8
+capability/training definitions         12
 NPC schedules                            4
-regional/shared packs                    7
-pack-owned records                     115
+regional/shared packs                    8
+pack-owned records                     140
 pack-owned abilities/capabilities/
-  schedules/companions                 5/8/4/1
+  schedules/companions                9/12/4/1
 ```
 
-Do not game counts with disconnected filler. The next regional tranche must demonstrate a connected graph across multiple families rather than a category-by-category dump.
+Do not game counts with disconnected filler. Elderwood Hunt-Timber, when separately authorized, must demonstrate another connected graph across multiple families rather than a category-by-category dump.
 
 ## Performance
 
@@ -166,4 +164,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-For the current work order, Content Pack Scale Contract v2 is complete; Redstone Forge-Road is not part of this definition of done.
+For the current work order, Redstone Forge-Road is implemented and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #383 landing; Elderwood Hunt-Timber is outside this work order.

@@ -1,23 +1,23 @@
 # Phase 0.9 Implementation Plan
 
-Phase 0.9 is now **open**. This document sequences future bounded packets; it does not authorize later packets merely because they appear here.
+Phase 0.9 is **open**. This document sequences future bounded packets; it does not authorize later packets merely because they appear here.
 
 Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`, `docs/ROADMAP.md`, and `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
 
 ## Current baseline
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 ```
 
-The strategic risk is authored-content breadth and throughput, but the first Phase 0.9 implementation packet deliberately scaled the supporting infrastructure **before** adding volume.
+The strategic risk remains authored-content breadth and throughput. Packet A scaled supporting infrastructure first; Packet B now proves that infrastructure with one real connected Redstone regional tranche.
 
 ## Current census
 
@@ -28,25 +28,23 @@ The strategic risk is authored-content breadth and throughput, but the first Pha
 | Shop/service sites | 17 | 20 | 3 |
 | Creature definitions | 16 | 40 | 24 |
 | Resource sources | 13 | 40 | 27 |
-| Canonical items | 50 | 200 | 150 |
-| Recipes/processes | 11 | 75 | 64 |
-| Abilities/techniques | 5 | 100 | 95 |
-| Quests/contracts | 8 | 30 | 22 |
+| Canonical items | 56 | 200 | 144 |
+| Recipes/processes | 17 | 75 | 58 |
+| Abilities/techniques | 9 | 100 | 91 |
+| Quests/contracts | 11 | 30 | 19 |
 | Recruitable companions | 1 | 4 | 3 |
 | Transport services | 3 | 5 | 2 |
 
-Packet A intentionally left these gameplay counts unchanged.
-
-Infrastructure coverage now records separately:
+Infrastructure coverage:
 
 ```text
 spell schools                            3
-capability/training definitions          8
+capability/training definitions         12
 NPC schedules                            4
-regional/shared packs                    7
-pack-owned records                     115
+regional/shared packs                    8
+pack-owned records                     140
 pack-owned abilities/capabilities/
-  schedules/companions                 5/8/4/1
+  schedules/companions                9/12/4/1
 ```
 
 # `0.9.100` — Content Scale Gate A
@@ -57,11 +55,9 @@ Prove that Hearth & Horizon can repeatedly author, validate, integrate, and revi
 
 ## Packet A — Content Pack Scale Contract v2
 
-**Status: COMPLETE.**
+**Status: COMPLETE / MERGED.**
 
-### Implemented decisions
-
-The pack contract now owns regional/shared placement for:
+Pack v2 owns regional/shared placement for:
 
 ```text
 places / routes / transportServices
@@ -71,124 +67,81 @@ recipes / quests / relationships
 spellSchools / capabilities / abilities / companions
 ```
 
-Canonical definitions remain in their existing catalogs. `contentCatalogRegistry` bridges Pack v2 ownership to those definitions so ownership metadata does not become a second data model.
+Canonical definitions remain in their existing catalogs. `contentCatalogRegistry` bridges Pack v2 ownership to those definitions so ownership metadata does not become a second data model. Validation covers stable-ID ownership, cross-pack dependencies, dangling references, family-specific structure, legacy boundaries, and a generated 1,401-record scale fixture that is never counted as canonical gameplay breadth.
 
-Catalog bridges cover:
+## Packet B — Redstone Forge-Road regional tranche
 
-- resource, production, and equipment items;
-- production recipes/processes;
-- commitment definitions used as quest/contract catalog records;
-- seed NPCs;
-- route, transport and ecology catalogs;
-- spell schools, capabilities and executable abilities;
-- NPC schedules;
-- companions.
+**Status: IMPLEMENTED + VALIDATED / PENDING FINAL LANDING.**
 
-### Validator upgrades
-
-Pack v2 validation now covers:
-
-- stable-ID ownership and cross-collection collision detection;
-- explicit cross-pack dependency enforcement;
-- missing catalog refs and dangling inline references;
-- ability -> capability and spell-school references;
-- NPC schedule -> NPC/place references plus fictional-day structural validation;
-- companion -> NPC/home/recruitment-place references and approach/tactics structure;
-- existing topology, source/sink, recipe, quest, relationship and legacy-leak rules.
-
-POI ownership was **not** duplicated merely to support schedules. Schedule POI IDs retain their existing transitional authority while schedule structure and NPC/place ownership are validated.
-
-### Scale proof
-
-The generated Pack v2 fixture validates:
+Frozen implementation/content SHA:
 
 ```text
-1 place
-200 items
-200 recipes
-200 NPCs
-200 NPC schedules
-200 capabilities
-200 abilities
-200 companions
------------------
-1,401 owned records
+440a77c542fcc6a6efcce7a45ca989e9068499f8
 ```
 
-These records are test fixtures only and are never counted as canonical gameplay breadth.
+Hosted implementation Check `32416678697` / job `96579293377` passed Repository Audit, **707/707 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
 
-### CI/census upgrade
-
-Ordinary local/hosted `Check` now executes:
+The accepted bounded graph deliberately reused existing Redstone substrate instead of chasing the representative planning band as a quota:
 
 ```text
-npm run audit:repo
-npm test
-npm run census
-npm run benchmark
-npm run benchmark:sample
+existing Redstone iron / sunstone / Ridge Ibex
+  -> existing forge / work / inventory / provenance authorities
+  -> forge flux / tempered iron / rivets
+  -> wearable work gear / caravan hardware
+  -> provenance-qualified Brasshaven commitments
+  -> character-owned Redstone techniques and spells
+  -> Pack v2 child ownership
 ```
 
-Census shortfalls remain informational; Check proves census/catalog integration executes successfully, not that arbitrary volume quotas have been met.
+Implemented content:
 
-### Version decision
+- four character-owned capabilities and four executable abilities;
+- six additional downstream forge outputs and six additional forge processes;
+- three provenance-qualified Brasshaven commitments;
+- `pack-redstone-forge-road` depending on shared foundation, Redstone opening, and Redstone ecology breadth;
+- focused end-to-end coverage for ownership, production/provenance, exactly-once contract resolution, and real ability execution.
+
+No new simulation clock, direct timed-task owner, persistence family, inventory authority, progression authority, or social authority was introduced.
+
+A first integration Check caught one real continuity regression: later Forge-Road jobs sharing Varric's discovered contact displaced his established copper commitment. The content repair preserved the old copper test unchanged and moved later orders to Mae Oris's existing scheduled Market Ring contact.
+
+Version decision:
 
 ```text
-Product:      0.9.100.1
-Package:      0.9.100
-Data:         40
+Product:      0.9.100.2
+Package:      0.9.100 unchanged
+Data:         41
 Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
 
-Data advances because pack ownership/stable-ID validation changed. Game State remains 14 because no new durable runtime authority was introduced.
+## Packet C — Elderwood Hunt-Timber
 
-## Packet B — Redstone Forge-Road regional tranche
+**Status: NEXT / NOT STARTED / REQUIRES NEW BOUNDED AUTHORIZATION AFTER REDSTONE LANDS.**
 
-**Status: NOT STARTED. A new bounded authorization is required.**
+Use the existing Elderwood opening/ecology roots and stress hunting, forestry, body recovery, food/material chains, practical field techniques, home supply, relationships, and dangerous travel.
 
-Use `pack-redstone-opening` as the regional root. The tranche should build one playable graph rather than independent category batches:
+Prefer a connected graph such as:
 
 ```text
-named people / mentors / service contacts
-  -> schedules / training / contracts
-  -> Redstone creatures + mineral/resource sources
-  -> raw materials
-  -> processing / recipes
-  -> tools, equipment, consumables
-  -> techniques / capability access
-  -> shops / wages / trade / transport
+named people / schedules / local services
+  -> hunt + forestry needs
+  -> creature recovery / timber-resin resources
+  -> hide / wood / resin transformations
+  -> equipment / consumables / repair/home inputs
+  -> practical techniques / capability access
+  -> contracts / trade / relationship consequences
   -> field danger / recovery / provenance
 ```
 
-Representative planning band, not quota:
-
-- 4–6 named NPCs;
-- 1–2 useful service/shop/training contexts;
-- 3–5 creatures or meaningful variants;
-- 3–5 resource sources;
-- 15–20 source/sink-connected items;
-- 8–12 recipes/processes;
-- 8–12 techniques/abilities/training hooks where mechanically coherent;
-- 3–4 contracts/quests;
-- transport only where topology creates a real decision.
-
-Before acceptance, every new record family must pass Pack v2 ownership/dependency checks and relevant runtime use coverage.
-
-## Packet C — Elderwood Hunt-Timber
-
-**Status: QUEUED.**
-
-Stress hunting, forestry, body recovery, food/material chains, field techniques, home supply, relationships and dangerous travel. Resources should feed multiple downstream decisions where practical.
-
-A companion candidate is appropriate only if the authored person warrants recruitment; companion count is not a quota.
+A companion candidate is appropriate only if the authored person warrants recruitment; companion count is not a quota. Places should not expand merely for count because 26 already exceeds the mechanics floor.
 
 ## Packet D — Starfen Marshcraft-Practical Magic
 
 **Status: QUEUED.**
 
-Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context and community/research contracts. This is a strong later tranche for ability breadth after Redstone proves the production workflow.
+Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context, and community/research contracts. This remains a strong later tranche for ability breadth after Redstone proves the production workflow and Elderwood tests hunt/timber recovery chains.
 
 ## Packet E — Gate A integration and census audit
 
@@ -216,14 +169,12 @@ These are progression bands, never permission to create filler:
 | Shop/service sites | 17 | 20+ |
 | Creature definitions | 16 | 28+ |
 | Resource sources | 13 | 28+ |
-| Canonical items | 50 | 110+ |
-| Recipes/processes | 11 | 40+ |
-| Abilities/techniques | 5 | 40+ |
-| Quests/contracts | 8 | 18+ |
+| Canonical items | 56 | 110+ |
+| Recipes/processes | 17 | 40+ |
+| Abilities/techniques | 9 | 40+ |
+| Quests/contracts | 11 | 18+ |
 | Recruitable companions | 1 | 4 only when authored characters justify them |
 | Transport services | 3 | 5 only when topology justifies them |
-
-Places should not be expanded simply to increase count; 26 already exceeds the mechanics floor of 10.
 
 ### Qualitative Gate A requirements
 
@@ -242,13 +193,11 @@ Gate A fails regardless of count if the graph is weak. Require:
 
 # Relative planning envelope
 
-The original relative envelope remains useful as capacity planning, but Packet A is now complete:
-
 | Relative band | Packet | Status |
 | --- | --- | --- |
 | Weeks 1–2 equivalent | Governance + Pack v2 | COMPLETE |
-| Weeks 3–5 equivalent | Redstone Forge-Road | NOT STARTED |
-| Weeks 6–8 equivalent | Elderwood Hunt-Timber | QUEUED |
+| Weeks 3–5 equivalent | Redstone Forge-Road | IMPLEMENTED + VALIDATED / PENDING LANDING |
+| Weeks 6–8 equivalent | Elderwood Hunt-Timber | NOT STARTED |
 | Weeks 9–11 equivalent | Starfen Marshcraft-Practical Magic | QUEUED |
 | Week 12 equivalent | Gate A integration/census | QUEUED |
 

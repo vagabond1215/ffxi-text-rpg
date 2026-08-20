@@ -19,19 +19,23 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
-Codename:      Content Pack Scale Contract v2
-Phase:         0.9 / Content Scale Gate A infrastructure
+Codename:      Redstone Forge-Road
+Phase:         0.9 / Content Scale Gate A
 ```
 
-Frozen implementation checkpoint before documentation synchronization: `739f88801ddd66587b6b45bdbd0784dff351c986`.
+Frozen Redstone implementation/content checkpoint before version/document synchronization:
 
-The version transition is intentionally narrow. Data advanced because canonical content ownership and validation contracts changed. Game State remains 14 because no new durable player/world fact was introduced.
+```text
+440a77c542fcc6a6efcce7a45ca989e9068499f8
+```
+
+The version transition is intentionally narrow. Data advances because stable canonical authored content and cross-linked Pack-v2 relationships changed. Game State remains 14 because no new durable player/world fact was introduced.
 
 ## Core authority rules
 
@@ -51,11 +55,9 @@ The version transition is intentionally narrow. Data advanced because canonical 
 
 # Phase 0.9 content-scale architecture
 
-The first `0.9.100` packet is deliberately infrastructure-first. It prepares the repository to scale authored content before large data tranches are added.
-
 ## Content Pack Scale Contract v2
 
-Pack v2 expands regional/shared ownership across the scale-critical families:
+Pack v2 owns regional/shared placement across:
 
 ```text
 places
@@ -80,85 +82,137 @@ companions
 
 A pack record establishes stable ownership and declared dependencies. It does not replace the canonical runtime catalog for the referenced system.
 
-This distinction is intentional:
-
 ```text
 regional/shared pack
-  -> owns stable content identity + dependency placement
+  -> stable content identity + dependency placement
 
 contentCatalogRegistry
   -> resolves pack references
 
 canonical domain catalogs
-  -> own definitions consumed by runtime systems
+  -> definitions consumed by runtime systems
 
 runtime systems
-  -> own gameplay behavior/state
+  -> gameplay behavior/state
 ```
 
 The architecture therefore scales regional organization without creating pack-specific inventories, progression state, quest state, companion state, clocks, or other parallel authorities.
 
-## Catalog bridge
+### Catalog bridge
 
-`js/text/data/contentCatalogRegistry.js` is the bridge between regional ownership and canonical definitions. Current resolution spans:
+`js/text/data/contentCatalogRegistry.js` resolves pack ownership into existing definitions:
 
 ```text
-items
-  -> resource item registry
-  -> production item catalog
-  -> equipment catalog
-
-recipes/processes
-  -> production catalog
-
-quests/contracts
-  -> commitment catalog
-
-NPCs
-  -> canonical seed NPC definitions
-
-world/ecology
-  -> place / route / transport / ecology catalogs
-
-training/combat access
-  -> spell-school / capability / ability catalogs
-
-NPC life
-  -> NPC schedule catalog
-
-companions
-  -> companion catalog
+items                  -> resource / production / equipment catalogs
+recipes/processes      -> production catalog
+quests/contracts       -> commitment catalog
+NPCs                    -> canonical seed NPC definitions
+world/ecology           -> place / route / transport / ecology catalogs
+training/combat access  -> spell-school / capability / ability catalogs
+NPC life                -> NPC schedule catalog
+companions              -> companion catalog
 ```
 
-The registry prevents content-pack validation from re-implementing each domain catalog and prevents regional packs from copying canonical records merely to claim ownership.
+### Cross-pack validation
 
-## Cross-pack validation
-
-Pack v2 validation enforces both structure and graph integrity before content volume grows. The validator checks:
+Pack v2 validation enforces:
 
 - stable IDs and collection ownership;
 - duplicate ownership and cross-collection collisions;
 - declared dependencies for cross-pack references;
-- canonical catalog references for referenced records;
+- canonical catalog references;
 - ability -> capability and spell-school relationships;
 - NPC schedule -> NPC/place relationships;
 - companion -> backing NPC/home/recruitment relationships;
 - topology, source/sink, quest and relationship references;
 - bounded legacy-ID adapters rather than accidental legacy leakage.
 
-NPC schedules also have structural validation for stable schedule identity, valid fictional-time windows, non-overlap and required presentation fields.
+The generated validation fixture exercises **1,401 ownership records** and is never counted as gameplay content.
 
-## Scale fixture versus game content
+# Redstone Forge-Road composition
 
-Generated scale fixtures are validation evidence, not canonical content. The current generated Pack v2 fixture exercises 1,401 owned records across items, recipes, NPCs, NPC schedules, capabilities, abilities and companions.
+`0.9.100.2` is the first authored regional tranche after Pack v2. Its architectural requirement is reuse, not parallel infrastructure.
 
-The fixture proves the ownership/dependency validator can operate at four-digit record volume. It must never contribute to the content census or be presented as authored gameplay breadth.
+```text
+existing Redstone ecology/resources
+  iron ore / sunstone grit / Ridge Ibex recovery
+          |
+          v
+existing inventory + provenance
+          |
+          v
+existing forge/workstation + work-task + work-proficiency authority
+          |
+          v
+forge flux / tempered iron / rivets
+work equipment / caravan repair hardware
+          |
+          +-----------------------+
+          |                       |
+          v                       v
+existing commitments       existing character capability
+relationships/schedules    + ability runtime authority
+          |                       |
+          v                       v
+Brasshaven social use      Redstone techniques/spells
+```
 
-## Census separation
+## Production and physical ownership
 
-The content census distinguishes actual canonical breadth from supporting infrastructure coverage.
+Redstone processing/crafting definitions live in the existing production catalog. Work execution remains under the existing production/work-task engines.
 
-Current gameplay breadth remains:
+Consequences remain split by existing authority:
+
+```text
+work duration / task lifecycle  -> work-task + canonical fictional time
+work mastery                    -> player work proficiencies
+physical inputs/outputs         -> inventory containers
+source/transformation history   -> resource provenance
+station availability            -> existing workstation/locality context
+```
+
+The Redstone pack creates **no direct timed-task owner**. It does not add a forge clock, recipe queue, offline worker, or pack-owned inventory.
+
+## Capability and ability ownership
+
+Ridge Breaker, Rivet Guard, Forge Spark, and Ironbound Ward are ordinary character-owned capabilities backed by executable entries in the existing ability catalog/engine.
+
+Learning a Redstone capability changes the character's existing capability authority. Activation still uses existing context, learned-skill, equipment, resource, target, timing, cooldown, status, and combat rules. There is no regional ability bar or second advancement meter.
+
+## Commitments, schedules, and continuity
+
+The Forge-Road contracts use existing commitment, relationship, wallet, inventory, semantic-event, NPC-projection, and NPC-schedule authorities.
+
+A first integration run exposed an important projection/content interaction: later Forge-Road jobs offered through Varric's already-discovered contact could outrank his established copper-return continuity in the Journal. The repair was authored-content placement, not a new priority subsystem:
+
+```text
+Varric Stone
+  -> existing Copper for the Ring path remains intact
+
+Mae Oris
+  -> later Forge-Road orders
+  -> existing 11:00–17:00 fictional-time schedule applies
+```
+
+The old copper continuity test was not weakened.
+
+## Pack ownership
+
+`pack-redstone-forge-road` is a child regional pack with dependencies:
+
+```text
+pack-shared-foundation
+pack-redstone-opening
+pack-redstone-ecology-breadth
+```
+
+It claims the downstream Redstone items, recipes/processes, capabilities, abilities, and commitments through Pack v2. Canonical definitions continue to live in their domain catalogs.
+
+# Census separation
+
+The content census distinguishes actual canonical breadth from infrastructure coverage.
+
+Current gameplay breadth:
 
 ```text
 places/localities       26
@@ -166,35 +220,32 @@ named NPCs              12
 shop/service sites      17
 creatures               16
 resource sources        13
-canonical items         50
-recipes/processes       11
-abilities/techniques     5
-quests/contracts         8
+canonical items         56
+recipes/processes       17
+abilities/techniques     9
+quests/contracts        11
 companions                1
 transport services        3
 ```
 
-Supplemental infrastructure visibility includes routes, spell schools, capability/training definitions, NPC schedules, regional/shared pack count, pack-owned records, and ownership by collection.
-
-The mechanics-scale gate remains **NOT READY**. Infrastructure improvements do not manufacture gameplay-content progress.
-
-## Hosted validation path
-
-Phase 0.9 hosted `Check` now exercises:
+Supplemental infrastructure:
 
 ```text
-Repository Audit
-  -> full test suite
-  -> Content Census
-  -> Benchmark 3
-  -> Benchmark Sample
+routes                                   7
+spell schools                            3
+capability/training definitions         12
+NPC schedules                            4
+regional/shared packs                    8
+pack-owned records                     140
+pack-owned abilities/capabilities/
+  schedules/companions                9/12/4/1
 ```
 
-Census execution is mandatory as an integration check; falling short of future content targets is not an ordinary CI failure. This keeps catalog/pack/census wiring continuously executable without turning roadmap counts into filler quotas.
+The mechanics-scale gate remains **NOT READY**. Pack references and generated fixtures do not manufacture gameplay-content progress.
 
 # Phase 0.8 connected-life architecture
 
-Phase 0.8 deliberately composes existing authorities rather than creating isolated property, farming, automation or social simulators.
+Phase 0.8 deliberately composed existing authorities rather than creating isolated property, farming, automation or social simulators.
 
 ```text
 regional world + provenance
@@ -212,23 +263,15 @@ regional world + provenance
 
 Game State 13 introduced required `state.cultivation` because the plot/crop lifecycle contains player-costly facts that cannot be reconstructed safely.
 
-Core durable facts include:
-
 ```text
 state.cultivation
   version
   plot
-    id
-    homePlaceId
-    phase
-    cycle
-    harvestCount
+    id / homePlaceId / phase / cycle / harvestCount
     activeWorkId / activeWorkKind
-    preparedAtWorldSeconds
-    lastHarvestedAtWorldSeconds
+    preparedAtWorldSeconds / lastHarvestedAtWorldSeconds
     crop
-      itemId
-      cycle
+      itemId / cycle
       plantedAtWorldSeconds
       tendDueAtWorldSeconds
       readyAtWorldSeconds
@@ -236,40 +279,11 @@ state.cultivation
       seedProvenance
 ```
 
-### Growth has no task owner
+Crop growth has no task owner. Planting persists fictional-time boundaries; status derives from canonical world time. Manual preparation/tending reuse `workTaskEngine`.
 
-```text
-plant
-  -> persist crop timestamps
-  -> no timer / interval / timed-task / background worker
+Planting consumes an ordinary `item-elderwood-sweetroot`; harvest creates ordinary Sweetroot inventory with cultivated provenance `sourceId = plot-home-sweetroot-bed` and nested seed provenance. Existing consumption, production, and trade sinks remain valid.
 
-world time advances
-  -> cultivation status compares now with persisted boundaries
-
-save/load
-  -> same timestamps survive
-  -> readiness derives identically
-```
-
-Manual preparation/tending are short character work under the existing work-task authority. Cultivation itself never calls the generic timed-task creator directly.
-
-### Physical input/output and provenance
-
-Planting consumes one ordinary existing `item-elderwood-sweetroot` from inventory. Its provenance is retained through the growing crop.
-
-Harvest creates ordinary Sweetroots in normal inventory with cultivated provenance:
-
-```text
-sourceId = plot-home-sweetroot-bed
-placeId  = character home place
-data.seedProvenance = original propagation-root provenance
-```
-
-The canonical item ID remains unchanged, so existing consume, production and trade sinks remain valid while provenance keeps wild and cultivated histories distinct.
-
-### Mastery
-
-The stable work proficiency `cultivation` lives in existing character work-proficiency authority. Manual preparation/tending/harvest can improve player mastery and later reduce hands-on duration. There is no crop XP or farming-level authority.
+The stable work proficiency `cultivation` lives in existing character work-proficiency authority. There is no crop XP or farming-level authority.
 
 ## Earned routine delegation
 
@@ -277,67 +291,21 @@ Game State 14 extends cultivation authority with one bounded paid tending assign
 
 ```text
 manual crop cycle completed
-  -> delegation becomes eligible
+  -> delegation eligible
   -> player pays 12 gil once
   -> assignment persists on cultivation authority
   -> canonical fictional time reaches helper completion boundary
-  -> cultivation records tending exactly once
-  -> no player work proficiency awarded for helper labor
-  -> eventual harvest remains ordinary cultivation output
+  -> tending records exactly once
+  -> helper work grants no player mastery
 ```
 
-The assignment does **not**:
-
-- create a seventh direct timed-task owner;
-- create a helper/social/offline clock;
-- occupy the player's hands-on work channel;
-- generate free resources;
-- award player mastery for work the player did not perform.
-
-This is the architectural meaning of earned automation in the current game: lower attention only after the manual routine exists, while cost/time/material consequences remain real.
+The assignment creates no seventh direct timed-task owner, helper/offline clock, hands-on player lock, free resources, or duplicate progression authority.
 
 ## Household & community continuity
 
-`0.8.900` adds no new persistence family. It expands authored data consumed by existing authorities.
+`0.8.900` adds no new persistence family. Existing named scheduled people consume home-grown Sweetroot provenance through existing commitment/relationship/wallet/inventory/event/save authorities.
 
-Three existing named locality people are persistent NPC-backed scheduled participants:
-
-- Mira Fen — Thornwall Southgate, 06:00–11:00;
-- Mae Oris — Brasshaven Market Ring, 11:00–17:00;
-- Kiri Fen — Mistmere Canal Ward, 16:00–21:00.
-
-Their home-produce commitments use existing commitment/relationship/wallet/inventory/event/save authorities and require provenance source `plot-home-sweetroot-bed`. A wild Sweetroot has the same canonical item identity but does not meet that social requirement.
-
-No social clock, household relationship engine, duplicate quest state or reputation meter was created.
-
-## Semantic action contract
-
-Canonical `ActionResult` exposes:
-
-```text
-ok
-action
-code
-outcome
-data
-display
-```
-
-Adapters render `display.text` or consume semantic fields. Domain logic must not parse presentation prose.
-
-Direct semantic player intents include:
-
-```text
-cultivation.prepare
-cultivation.plant
-cultivation.tend
-cultivation.harvest
-commitment.accept
-commitment.resolve
-commitment.followUp
-```
-
-The Journal projects these decisions without manufacturing command strings.
+No social clock, household relationship engine, duplicate quest state, or reputation meter was created.
 
 # Persistence authority — Game State 14
 
@@ -376,40 +344,19 @@ No automatic Game State migrations are added under the current pre-alpha exact-s
 
 ## Runtime projections and transient state
 
-### NPC projection
-
-`state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
-
-### Enemy projection
-
-`state.enemies` is omitted from saves and rebuilt from canonical seed encounter templates. Mutable ongoing enemy combat belongs to `activeBattle`.
-
-### Presentation log
-
-Top-level `state.log` is bounded session-only command presentation history, omitted from saves and reset on character load.
-
-### Root combat/stat caches
-
-`player.combat` and `player.statState` are reconstructed after raw validation. Mutable HP/MP/TP remain durable separately.
-
-### Active battle
-
-Active battle combatants/resources/statuses/actions/timeline/phase and deterministic encounter snapshots persist; live battle RNG is transient. `combatSequence` remains the durable encounter-ID allocator.
+- `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
+- `state.enemies` is omitted from saves and rebuilt from canonical seed encounter templates; mutable ongoing enemy combat belongs to `activeBattle`.
+- top-level `state.log` is bounded session-only command presentation history and is omitted from saves.
+- `player.combat` and `player.statState` are reconstructed after raw validation; mutable HP/MP/TP remain durable separately.
+- active battle combatants/resources/statuses/actions/timeline/phase and deterministic encounter snapshots persist; live battle RNG is transient.
 
 ## Semantic history boundaries
 
 ```text
-state.events
-  -> persisted typed semantic observations with fictional-time context
-
-state.log
-  -> transient command presentation/diagnostic history
-
-activeBattle.log
-  -> persisted encounter-local narrative/action history
-
-Canvas command/output history
-  -> transient UI state
+state.events      -> persisted typed semantic observations
+state.log         -> transient command presentation history
+activeBattle.log  -> persisted encounter-local narrative/action history
+Canvas history    -> transient UI state
 ```
 
 No domain consumer should parse top-level command prose as authority.
@@ -427,7 +374,7 @@ transportEngine.js
 workTaskEngine.js
 ```
 
-Cultivation manual labor reuses `workTaskEngine`; crop growth and delegated tending do not add direct creators. Each owner releases terminal tasks only after durable exactly-once consequence reconciliation. There is no accepted blind global pruning policy.
+Redstone production reuses `workTaskEngine`; it does not add a direct creator. Cultivation manual labor also reuses that owner; crop growth and delegated tending do not add direct creators. Each owner releases terminal tasks only after durable exactly-once consequence reconciliation. There is no accepted blind global pruning policy.
 
 ## Historical Game State transitions
 
@@ -440,28 +387,29 @@ Cultivation manual labor reuses `workTaskEngine`; crop growth and delegated tend
 - Game State 13 — required cultivation plot/crop authority introduced.
 - Game State 14 — required paid cultivation delegation appointment state introduced.
 
-## Validated Pack v2 implementation checkpoint
+## Validation checkpoints
 
-Before version/document synchronization, hosted Check `32402373472` on Node 24.19.0 passed:
-
-```text
-Repository Audit PASS
-704/704 tests
-Content Census success
-Benchmark 3 success
-Benchmark Sample success
-```
-
-The exact implementation/version checkpoint before documentation synchronization is:
+Pack v2 infrastructure history:
 
 ```text
-739f88801ddd66587b6b45bdbd0784dff351c986
+implementation SHA 739f88801ddd66587b6b45bdbd0784dff351c986
+Check              32402373472
+704/704 tests + census + Benchmark 3 + sample
 ```
 
-A final promoted-version PR Check is required after documentation/handoff synchronization before merge.
+Current Redstone implementation/content freeze:
+
+```text
+implementation SHA 440a77c542fcc6a6efcce7a45ca989e9068499f8
+Check              32416678697
+Job                96579293377
+707/707 tests + census + Benchmark 3 + sample
+```
+
+A final promoted/documented exact-head PR Check is required before landing `0.9.100.2`.
 
 ## Carried-forward rule
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-The next `0.9.100` content packet is Redstone Forge-Road, but it remains a separate not-started unit. Do not bulk-author/import it until this Pack v2 closure is green and merged.
+Redstone Forge-Road is the current completed bounded tranche pending landing. **Elderwood Hunt-Timber is the next independent packet and is not started or authorized by this document.**

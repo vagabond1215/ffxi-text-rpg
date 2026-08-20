@@ -13,7 +13,7 @@ npm run hardening
 - `npm run benchmark` runs one Benchmark 3 measurement.
 - `npm run benchmark:sample` runs three measurements by default and reports min, median, max, mean, and spread.
 - `npm run hardening` runs focused deterministic long-session lifecycle smoke followed by sampled benchmark evidence.
-- Hosted `Check` normally runs the full test suite, Benchmark 3, and Benchmark Sample on Node 24.
+- Hosted `Check` runs Repository Audit, the full test suite, Content Census, Benchmark 3, and Benchmark Sample on Node 24.
 
 ## Benchmark 3 protocol
 
@@ -29,66 +29,46 @@ Benchmark 3 remains the current comparability contract. Benchmark 1/2 are histor
 
 Each workload receives an unreported separate-context warm-up equal to 10% of measured iterations.
 
-## Latest validated runtime baseline
+## Latest validated authored-content checkpoint
 
 ```text
-Runtime SHA: ca7d37c643adc4115b519148615f6120d03228df
-Check:       32395768383
-Node:        24.19.0
-Product:     0.8.900.1
-Benchmark:   3
-Tests:       699/699
+Runtime/content SHA: 440a77c542fcc6a6efcce7a45ca989e9068499f8
+Check:               32416678697
+Job:                 96579293377
+Node:                24.19.0
+Product target:      0.9.100.2
+Benchmark:           3
+Tests:               707/707
+Content Census:      success
 ```
 
-Phase 0.8 did not change Benchmark 3 workloads or measurement protocol, so the results remain comparable to other Benchmark 3 checkpoints.
+Redstone Forge-Road did not change Benchmark 3 workloads or measurement protocol, so these results remain comparable to other Benchmark 3 checkpoints.
 
-Single run from the frozen-runtime Check:
+Single run from the validated implementation Check:
 
 ```text
-player combat profiles  0.396198 ms/op
-enemy combat profiles   0.071316 ms/op
-basic attacks            0.003386 ms/op
-tick dispatch            0.000809 ms/op
-direct route lookup      0.007450 ms/op
+player combat profiles  0.189561 ms/op
+enemy combat profiles   0.037361 ms/op
+basic attacks            0.002428 ms/op
+tick dispatch            0.000569 ms/op
+direct route lookup      0.003900 ms/op
 ```
 
 Three-sample evidence from the same Check:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.359735 | 6.77% |
-| enemy combat profiles | 0.068665 | 8.93% |
-| basic attacks | 0.001223 | 172.92% |
-| tick dispatch | 0.000821 | 27.23% |
-| direct route lookup | 0.007260 | 6.40% |
+| player combat profiles | 0.184621 | 8.18% |
+| enemy combat profiles | 0.037303 | 5.66% |
+| basic attacks | 0.001110 | 138.43% |
+| tick dispatch | 0.000492 | 30.77% |
+| direct route lookup | 0.004237 | 11.77% |
 
 The very fast attack/tick microbenchmarks remain dominated by runtime/timing noise. **Do not create CI thresholds from these figures.** Profile creation and route lookup are more stable but still are not accepted release budgets.
 
-## Phase 0.8 exit rerun
+## Historical Phase 0.8 reference
 
-Validation-only Check `32395959505` reran Test + Benchmark 3 + Benchmark Sample and additionally ran Content Census + Hardening. All steps succeeded.
-
-That rerun's normal sample medians/spreads were:
-
-```text
-player profiles  0.357405 ms/op    5.82%
-enemy profiles   0.071194 ms/op   10.41%
-basic attacks    0.001104 ms/op  189.28%
-tick dispatch    0.000877 ms/op   30.05%
-route lookup     0.007036 ms/op    5.41%
-```
-
-Hardening then reran the lifecycle smoke (2/2 pass) and another sample:
-
-```text
-player profiles  0.366008 ms/op    7.13%
-enemy profiles   0.071743 ms/op   11.52%
-basic attacks    0.001110 ms/op  169.06%
-tick dispatch    0.000693 ms/op   53.45%
-route lookup     0.007213 ms/op    9.45%
-```
-
-This repeated evidence does not justify hard thresholds; it confirms the current qualitative envelope remained stable while Phase 0.8 closed.
+Phase 0.8's frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed Check `32395768383` with 699/699 tests under the same Benchmark 3 protocol. Phase-exit validation `32395959505` additionally passed Census and Hardening. Those values remain useful historical like-for-like evidence but are no longer the latest checkpoint.
 
 ## Performance rules
 

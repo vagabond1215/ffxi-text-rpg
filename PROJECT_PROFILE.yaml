@@ -25,27 +25,26 @@ tools:
   principle: least-powerful-safe-tool
 git:
   current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/0.9.100-content-pack-v2
-  active_pull_request: 382
+  active_branch: feature/0.9.100-redstone-forge-road
+  active_pull_request: 383
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
   pr_integration_status: active
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  validated_implementation_sha: 739f88801ddd66587b6b45bdbd0784dff351c986
-  pre_promotion_infrastructure_sha: 613a5b841d0622f67372d2c4af59af79330b5046
-  infrastructure_check: 32402373472
-  infrastructure_job: 96533356513
-  infrastructure_result: repository-audit-pass-704-of-704-tests-census-benchmark-3-and-sample-success
-  pull_request: 382
-  pull_request_state: open
+  validated_implementation_sha: 440a77c542fcc6a6efcce7a45ca989e9068499f8
+  implementation_check: 32416678697
+  implementation_job: 96579293377
+  implementation_result: repository-audit-pass-707-of-707-tests-census-benchmark-3-and-sample-success
+  pull_request: 383
+  pull_request_state: open-draft
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: content-pack-scale-contract-v2
-  current_bounded_unit_status: complete-awaiting-final-promotion-validation-and-merge
-  next_bounded_unit: redstone-forge-road-regional-tranche
+  current_bounded_unit: redstone-forge-road-regional-tranche
+  current_bounded_unit_status: implementation-complete-awaiting-final-check-and-merge
+  next_bounded_unit: elderwood-hunt-timber-regional-tranche
   next_bounded_unit_status: not-started-not-authorized-by-current-packet
   content_scale_gate_version: 2
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
@@ -68,18 +67,19 @@ validation:
   repository_contract_guard: tests/repositoryContractAudit.test.js
   content_pack_guard: tests/contentPackValidator.test.js
   content_scale_guard: tests/contentScaleGate.test.js
+  redstone_flow_guard: tests/playerRedstoneForgeRoadFlow.test.js
   architecture_debt_guard: tests/architectureDebtGuard.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.1
+  current_product_version: 0.9.100.2
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 40
+  current_data_version: 41
   current_benchmark_version: 3
-  current_codename: Content Pack Scale Contract v2
+  current_codename: Redstone Forge-Road
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
   future_migrations: deliberate-only-when-required
@@ -91,38 +91,21 @@ quality:
     canonical_definition_authority: existing-catalogs
     pack_authority: stable-id-ownership-regional-shared-dependencies
     duplicate_catalog_authority: forbidden
-    collections:
-      - places
-      - routes
-      - transportServices
-      - ecologyFamilies
-      - species
-      - populations
-      - gatheringSources
-      - items
-      - npcs
-      - npcSchedules
-      - shops
-      - recipes
-      - quests
-      - relationships
-      - spellSchools
-      - capabilities
-      - abilities
-      - companions
-    catalog_bridge:
-      items:
-        - resource-items
-        - production-items
-        - equipment-catalog
-      recipes: production-catalog
-      quests: commitment-catalog
-      npcs: seed-npc-catalog
-      routes_and_ecology: canonical-route-ecology-catalogs
-      training_and_abilities: canonical-capability-ability-catalogs
-      schedules: canonical-npc-schedule-catalog
-      companions: canonical-companion-catalog
     generated_scale_fixture_ownership_records: 1401
+  redstone_forge_road:
+    pack_id: pack-redstone-forge-road
+    dependencies:
+      - pack-shared-foundation
+      - pack-redstone-opening
+      - pack-redstone-ecology-breadth
+    direct_timed_task_owner_added: false
+    persistence_family_added: false
+    simulation_clock_added: false
+    capability_authority: existing-character-capabilities
+    work_authority: existing-production-and-work-task-engines
+    physical_items_authority: inventory
+    provenance_authority: resource-provenance
+    social_authority: existing-commitments-relationships-schedules
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -131,26 +114,25 @@ content_scale:
     shop_service_sites: 17
     creature_definitions: 16
     resource_sources: 13
-    canonical_items: 50
-    recipes_processes: 11
-    abilities_techniques: 5
-    quests_contracts: 8
+    canonical_items: 56
+    recipes_processes: 17
+    abilities_techniques: 9
+    quests_contracts: 11
     companions: 1
     transport_services: 3
   supplemental:
     routes: 7
     spell_schools: 3
-    capability_training_definitions: 8
+    capability_training_definitions: 12
     npc_schedules: 4
-    regional_shared_packs: 7
-    pack_owned_records: 115
-    pack_owned_abilities: 5
-    pack_owned_capabilities: 8
+    regional_shared_packs: 8
+    pack_owned_records: 140
+    pack_owned_abilities: 9
+    pack_owned_capabilities: 12
     pack_owned_schedules: 4
     pack_owned_companions: 1
   largest_relative_gap: abilities-techniques
 constraints:
-  - scale supporting ownership validation and catalog bridges before high-volume authoring or import
   - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
   - do not add disconnected filler merely to satisfy content targets
   - preserve existing canonical catalog definition authority behind content-pack ownership metadata
@@ -158,4 +140,5 @@ constraints:
   - preserve fictional simulation time versus wall-clock scheduling
   - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
   - do not add a second simulation clock task engine inventory progression or social authority
-  - roadmap sequencing does not authorize the next independent regional content tranche
+  - preserve the existing Brasshaven copper continuity path while later Forge-Road jobs use Mae Oris as a separate scheduled contact
+  - roadmap sequencing does not authorize the Elderwood Hunt-Timber tranche automatically

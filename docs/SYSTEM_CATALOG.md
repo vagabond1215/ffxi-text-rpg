@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,20 +50,21 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
 
-## Content infrastructure — Data 40
+## Content infrastructure and regional packs — Data 41
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
-| Content Pack schema v2 | integrated | Adds spell schools, capabilities, abilities, NPC schedules, companions to existing families. |
-| Regional/shared pack ownership | integrated | Seven current packs; 115 current ownership records. |
+| Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
+| Regional/shared pack ownership | integrated | Eight current packs; 140 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
-| Catalog-ref validation | integrated | Canonical resource/production/equipment items, recipes, commitments, seed NPCs and other catalogs resolve without definition duplication. |
+| Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
-| High-volume canonical regional content | seeded | Infrastructure is prepared; real authored breadth remains below mechanics floors. |
+| Redstone Forge-Road pack | playable | Child Pack v2 graph joins existing Redstone ecology to forge production, equipment, abilities, and Brasshaven commitments. |
+| High-volume canonical regional content | seeded | Real authored breadth is growing but remains below most mechanics floors. |
 
 ### Pack v2 collections
 
@@ -75,7 +76,7 @@ recipes / quests / relationships
 spellSchools / capabilities / abilities / companions
 ```
 
-`contentCatalogRegistry` intentionally prevents packs from becoming a second canonical gameplay catalog. A `catalogRef` claims ownership/dependency context while resolving the real existing definition. Inline pack records remain valid for future region-native content.
+`contentCatalogRegistry` intentionally prevents packs from becoming a second canonical gameplay catalog. A `catalogRef` claims ownership/dependency context while resolving the real existing definition.
 
 ## World, travel, and knowledge
 
@@ -96,7 +97,8 @@ spellSchools / capabilities / abilities / companions
 | Continuous player entity | playable | One persistent person across disciplines. |
 | Disciplines/capabilities/skills | playable | Learned capability and mastery stay character-owned. |
 | Ability/spell engine | playable | Learned abilities, timing, costs, cooldowns, interruption. |
-| Ability/training pack ownership | integrated | Current 3 schools / 8 capabilities / 5 abilities are claimed through shared Pack v2 authority. |
+| Ability/training pack ownership | integrated | Current 3 schools / 12 capabilities / 9 abilities are represented through Pack v2 ownership. |
+| Redstone combat training | playable | Ridge Breaker, Rivet Guard, Forge Spark, and Ironbound Ward use existing character capability/ability authority. |
 | Equipment/tool context | playable | Gear/tools constrain and enhance real capability. |
 | Combat 2.0 | playable | Deterministic readiness/action/resource model. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
@@ -116,7 +118,8 @@ spellSchools / capabilities / abilities / companions
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks. |
 | Gathering sources | playable | Place/tool/time/capacity/provenance. |
-| Production | playable | Processing/crafting/cooking/salvage with mastery and provenance. |
+| Production | playable | 17 current processing/crafting/cooking/salvage definitions with mastery and provenance. |
+| Redstone forge chain | playable | Existing iron/sunstone/Ridge Ibex inputs feed flux, tempered iron, rivets, work gear, and caravan hardware through existing forge/work authorities. |
 | Workstations | playable | Locality/home context. |
 | Home/storage/workshop | playable | Durable life infrastructure. |
 | Cultivation/stewardship | playable | Multi-day Sweetroot crop using canonical world time. |
@@ -127,18 +130,19 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 11 runtime seed NPCs. |
+| NPC seed definitions | integrated | 11 runtime seed NPCs; census currently counts 12 named NPC definitions across canonical sources. |
 | NPC recurring schedules | playable | Four current schedules derive availability from fictional time. |
-| NPC schedule validation | integrated | Data 40 adds stable schedule lookup + structural validation before scale. |
-| Commitments | playable | Persistent accept/resolve/follow-up/reward state. |
+| NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
+| Commitments | playable | 11 current persistent contracts with accept/resolve/follow-up/reward state. |
+| Redstone Forge-Road commitments | playable | Three provenance-qualified Brasshaven orders consume real forged output; later work uses Mae's scheduled contact without displacing Varric's copper continuity. |
 | Relationships | playable | Persistent NPC-specific continuity. |
 | Journal/information projection | playable | Decision-first guidance over canonical state. |
-| Broad branching narrative | seeded | Census still counts eight quests/contracts. |
+| Broad branching narrative | seeded | Contract breadth is growing but remains below mechanics-scale target. |
 | Romance/deep social life | planned | Requires broader authored people/goals/boundaries first. |
 
 ## Content-scale status
 
-Gameplay breadth after the infrastructure packet:
+Gameplay breadth after Redstone Forge-Road:
 
 ```text
 places/localities       26 / mechanics 10
@@ -146,10 +150,10 @@ named NPCs              12 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         50 / 200
-recipes/processes       11 / 75
-abilities/techniques     5 / 100
-quests/contracts         8 / 30
+canonical items         56 / 200
+recipes/processes       17 / 75
+abilities/techniques     9 / 100
+quests/contracts        11 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -159,16 +163,16 @@ Infrastructure coverage:
 ```text
 routes                                   7
 spell schools                            3
-capability/training definitions          8
+capability/training definitions         12
 NPC schedules                            4
-regional/shared packs                    7
-pack-owned records                     115
+regional/shared packs                    8
+pack-owned records                     140
 pack-owned abilities/capabilities/
-  schedules/companions                 5/8/4/1
+  schedules/companions                9/12/4/1
 ```
 
-Mechanics-scale gate remains **NOT READY**. This is expected: Packet A prepared the production substrate rather than creating fake content progress.
+Mechanics-scale gate remains **NOT READY**. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` are open. **Content Pack Scale Contract v2 is complete.** The next proposed bounded packet is Redstone Forge-Road and has not been started by this work order.
+Phase 0.9 and `0.9.100` are open. **Content Pack Scale Contract v2 is complete; Redstone Forge-Road is implemented and validated pending final landing.** Elderwood Hunt-Timber is next but has not been started.
