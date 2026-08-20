@@ -20,59 +20,32 @@ Applicable resources include timers, scheduled callbacks, simulation tasks, list
 - Fictional simulation state remains authoritative; wall-clock scheduling is only an input mechanism where the architecture defines it.
 - Re-entering or remounting a view/activity must not silently register another equivalent listener, timer, observer, or background job.
 - Ending or replacing an owner releases resources that no longer belong to the current owner.
-- A stale disposer must not be able to tear down a newer resource that reused the same stable identifier.
+- A stale disposer must not tear down a newer resource that reused the same stable identifier.
 - Save/load must not recreate both an old live resource and a second restored equivalent.
-- Cached/history data needs an explicit invalidation or bounded-retention rule when it is safe and justified.
+- Cached/history data needs an explicit invalidation or bounded-retention rule where justified.
 - Presentation resources must not become hidden authority for game state.
 
 ## Current deterministic evidence
 
-`tests/longSessionLifecycle.test.js` is the accepted long-session/lifecycle smoke.
+`tests/longSessionLifecycle.test.js` remains the accepted long-session/lifecycle smoke. Existing production-owner evidence proves repeated work/project/travel/ability/resource lifecycles return the task registry to **zero retained tasks** after reconciliation, including real save/load while owner tasks are active. Task IDs remain monotonic and are never reused.
 
-Long-session evidence:
-
-- one deliberately low-level timed task survives repeated current-schema save/load as one task;
-- its `task.started` and `task.completed` events remain exactly once;
-- a second reconciliation does not manufacture another completion;
-- 130 fictional days advance deterministically with current save/load every ten days;
-- semantic event history remains bounded at 200 records with unique event IDs/sequences;
-- day-summary history remains bounded at 120 summaries with unique day identities;
-- final fictional time and persisted registry counts survive another save/load unchanged.
-
-Production-owner evidence now proves repeated work/project/travel/ability/resource lifecycles return the task registry to **zero retained tasks** after reconciliation, including real save/load while an owner task is active. Task IDs remain monotonic and are never reused.
-
-This is deterministic state/lifecycle evidence, not a claim about total process memory or browser heap retention.
+This is deterministic state/lifecycle evidence, not a claim about process memory or browser heap retention.
 
 ## Wall-clock tick subscription ownership
 
-`tickEngine` allows a stable subscription ID to be replaced by a newer owner. The disposer returned to the old owner removes the subscription only if that exact subscriber record is still current.
-
-```text
-owner A subscribes id X
-owner B replaces id X
-owner A disposes
-  -> owner B remains subscribed
-explicit unsubscribe(X)
-  -> current owner B is removed
-```
+`tickEngine` allows a stable subscription ID to be replaced by a newer owner. A stale disposer removes the subscription only if its exact subscriber record is still current.
 
 `tests/tickLifecycle.test.js` guards replacement safety and explicit current-owner unsubscribe behavior.
 
 ## Browser root ownership
 
-`js/text/ui/domRoot.js` owns the active browser shell lifecycle.
-
-A remount first disposes the current onboarding enhancement observer and destroys the current DOM app. `domApp.destroy()` removes its host/window listeners and movement interval. Failed enhancement installation destroys the newly created app and leaves the root unmounted. Repeated unmount is idempotent.
-
-`tests/domRootLifecycle.test.js` guards remount teardown, repeated unmount, and failed-install cleanup.
+`js/text/ui/domRoot.js` owns active browser shell lifecycle. Remount first disposes the current enhancement observer and destroys the current DOM app. Repeated unmount is idempotent. `tests/domRootLifecycle.test.js` guards this boundary.
 
 ## Timed-task ownership — current contract
 
-The generic timed-task authority exposes `releaseTimedTask(state, taskId)` for terminal tasks only. Active tasks cannot be released. Releasing a terminal task removes the task record but does not rewind `nextSequence`; stable domain records/events may retain `taskId` as historical correlation.
+The generic timed-task authority exposes `releaseTimedTask(state, taskId)` for terminal tasks only. Releasing a terminal task removes the task record but never rewinds `nextSequence`; stable domain records/events may retain the old `taskId` as correlation.
 
-The release point belongs to the domain that owns the consequence. A task is released only after the owner has durably copied every required outcome and recorded the exactly-once semantic transition.
-
-Current direct runtime task owners are exactly:
+Current direct runtime task owners remain exactly:
 
 - `abilityEngine.js`;
 - `campaignRecoveryEngine.js`;
@@ -81,64 +54,108 @@ Current direct runtime task owners are exactly:
 - `transportEngine.js`;
 - `workTaskEngine.js`.
 
-`tests/architectureDebtGuard.test.js` makes this owner set executable: another production module cannot begin creating timed tasks silently, and each allowed owner must depend on `releaseTimedTask`.
+`tests/architectureDebtGuard.test.js` makes this owner set executable.
 
-Current owner release points:
+The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-- campaign recovery — after recovery consequence/event reconciliation;
-- work — after completed, failed, awaiting-storage, or cancelled transition/event;
-- projects — after completion or cancellation;
-- transport — after arrival/cancellation updates location/travel state and emits its event;
-- abilities — after resolution/cooldown/effects or interruption state/event;
-- resource recovery — after recovered/failed-storage outcome and completion event.
+## Game State 13 task integrity on PR #378
 
-An unreconciled terminal task remains persisted until its owner consumes it. Campaign recovery directly proves the terminal-before-owner-reconciliation save/load boundary. Project, travel, work, timed ability, and resource recovery have active-task save/load continuation evidence. After terminal owner reconciliation, the task record is gone while domain correlation may remain.
-
-## Current-schema task integrity
-
-Game State 12 persistence validates task ownership before revival/runtime access.
-
-The raw current-schema boundary validates:
+The proposed current-schema boundary validates:
 
 - timed-task registry version, sequence, IDs, statuses, timing, data shape, duplicate IDs, and monotonic `nextSequence`;
-- active Travel State 2 shape and matching travel task kind/channel/endpoints/deadline;
-- active project -> `project.labor` task ownership;
-- active work -> matching `work.<kind>` task ownership;
-- active timed ability -> `ability.activation` task ownership;
-- active resource recovery -> matching `resource.recovery` task ownership.
+- active travel -> matching travel task;
+- active project -> `project.labor` task;
+- active work -> matching `work.<kind>` task;
+- active ability -> `ability.activation` task;
+- active resource recovery -> matching `resource.recovery` task;
+- active cultivation labor -> `state.cultivation.plot.activeWorkId` must reference the persisted active work record for that plot/action.
 
-An active owner may reference an active task or a task that has just completed and is awaiting owner reconciliation. A terminal owner record may retain a historical `taskId` after its task record has been released.
+An active owner may reference an active task or a task that has just completed and awaits owner reconciliation. Malformed current saves are rejected rather than reconstructed.
 
-Malformed current saves are rejected rather than repaired. Runtime active-travel compatibility reconstruction has been removed; a missing or legacy-shaped active travel/task link is not silently rebuilt.
+## Cultivation lifecycle — 0.8.700
+
+Draft PR #378 deliberately **does not add a seventh direct timed-task owner**.
+
+Cultivation uses two different lifecycles:
+
+### Crop growth lifecycle
+
+```text
+plant physical Sweetroot
+  -> state.cultivation.plot.crop persists
+      plantedAtWorldSeconds
+      tendDueAtWorldSeconds
+      readyAtWorldSeconds
+      tendedAtWorldSeconds
+      seedProvenance
+  -> fictional world time advances normally
+  -> status is derived by comparing persisted boundaries with world time
+  -> no crop timer / interval / callback / background job / timed-task record exists
+  -> harvest clears crop and increments durable harvestCount exactly once
+```
+
+The crop survives save/load because its durable timestamps and seed provenance survive, not because a scheduler is recreated.
+
+### Hands-on labor lifecycle
+
+Preparation and tending are real character work and reuse the existing work owner:
+
+```text
+cultivation action
+  -> workTaskEngine.startWorkTask(...)
+  -> one work record + one normal work timed task
+  -> activity advancement reaches task boundary
+  -> cultivation reconciliation copies durable consequence
+      prepare: plot becomes prepared
+      tend: crop receives tendedAtWorldSeconds
+  -> cultivation mastery gain is recorded
+  -> markWorkCompleted(...)
+  -> work owner releases terminal timed task
+```
+
+`tests/playerCultivationStewardshipFlow.test.js` explicitly proves the preparation task is released, tending consequence does not replay, save/load preserves crop state without a growth task, and harvest cannot duplicate output.
+
+### Ownership summary
+
+| Concern | Owner |
+| --- | --- |
+| elapsed crop growth | canonical world time + persisted cultivation timestamps |
+| plot/crop lifecycle facts | `state.cultivation` |
+| short preparation/tending labor | `workTaskEngine` |
+| physical input/output | inventory/container authority |
+| cultivated/seed history | resource provenance |
+| repeated-practice efficiency | work proficiency |
+| player-facing action projection | semantic Journal/context view model |
+
+No wall-clock/offline growth, crop scheduler, cultivation interval, extra task engine, or passive background producer exists.
 
 ## Generic terminal history policy
 
-There is currently **no production generic/unowned timed-task producer**. The low-level generic terminal task used by lifecycle tests deliberately remains retained because `timedTaskEngine` does not perform blind global pruning.
-
-Therefore no generic age/count retention policy is currently justified. Future code that needs a new direct task owner must first define:
+There is still **no production generic/unowned timed-task producer**. Therefore no generic age/count pruning policy is justified. Future code that needs a new direct task owner must first define:
 
 ```text
 owner -> durable consequence -> exactly-once reconciliation -> terminal release
 ```
 
-If a future diagnostic/history use case introduces genuinely generic tasks, design retention from that concrete requirement. Do not add global pruning preemptively, duplicate task state into consumers, or reconstruct missing task records as compatibility behavior.
+Do not add global pruning preemptively or reconstruct missing task records as compatibility behavior.
 
-## Planned cultivation caution
+## 0.8.800 caution
 
-The next recommended Phase 0.8 feature is cultivation/stewardship. Growing plots should not automatically become a seventh direct timed-task owner. If growth can be represented as persisted plot/crop state plus canonical world-time boundaries and deterministic reconciliation, prefer that simpler ownership model. Introduce a direct task owner only if cultivation has a real active-work consequence that needs timed-task semantics and can satisfy the same exactly-once/release contract as existing owners.
+Earned Routine Delegation is the proposed next track only after 0.8.700 lands. Delegating a cultivation chore must not convert timestamp-derived crop growth into a permanent background worker by accident. A helper may own a bounded paid/manual consequence only when its owner, costs, failure semantics, save/load behavior, and exactly-once reconciliation are explicit.
 
 ## Review checklist
 
-For lifecycle-sensitive changes, inspect the relevant repeated transitions:
+For lifecycle-sensitive changes, inspect:
 
 - enter -> leave -> re-enter a view/location;
-- mount -> unmount -> remount the browser shell;
+- mount -> unmount -> remount;
 - subscribe -> replace owner -> dispose stale owner;
 - start -> pause/resume -> finish an activity;
-- task becomes terminal -> owner reconciles consequence -> owner releases task;
-- save -> load -> continue before and after owner reconciliation;
+- task becomes terminal -> owner reconciles -> owner releases;
+- save -> load -> continue before and after reconciliation;
+- growth timestamp persists -> world time advances -> readiness derives once;
+- harvest -> repeat harvest attempt -> no duplicate output;
 - malformed current save -> reject before revival, never repair implicitly;
-- open -> close -> reopen an overlay/view;
 - repeated multi-day advancement with periodic persistence.
 
-The desired steady state is bounded, explicitly owned resource growth after warm-up. Focused deterministic tests should prove duplicate prevention and cleanup where the resource can be inspected; browser/runtime profiling may supplement tests where heap/DOM retention requires a capable environment.
+The desired steady state is bounded, explicitly owned resource growth after warm-up.
