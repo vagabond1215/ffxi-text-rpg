@@ -26,6 +26,17 @@ const DAILY_SCHEDULES = [
         unavailableText: 'Mira has closed the morning cookfire and is away handling household errands.',
     }),
     schedule({
+        id: 'schedule-thornwall-oren-vale',
+        npcId: 'npc-thornwall-oren-vale',
+        poiId: 'poi-sandoria-s-ambrotien',
+        placeId: 'thornwall-southgate',
+        label: 'West-road works desk',
+        windows: [
+            window(7, 0, 15, 0, 'Coordinating West-road repairs'),
+        ],
+        unavailableText: 'Oren is away from the works desk inspecting road crews and timber deliveries.',
+    }),
+    schedule({
         id: 'schedule-brasshaven-mae-oris',
         npcId: 'npc-brasshaven-mae-oris',
         poiId: 'poi-bastok-markets-carmelide',
