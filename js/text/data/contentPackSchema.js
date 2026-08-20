@@ -1,4 +1,4 @@
-export const CONTENT_PACK_SCHEMA_VERSION = 1;
+export const CONTENT_PACK_SCHEMA_VERSION = 2;
 
 export const CONTENT_PACK_COLLECTIONS = Object.freeze([
     'places',
@@ -10,10 +10,15 @@ export const CONTENT_PACK_COLLECTIONS = Object.freeze([
     'gatheringSources',
     'items',
     'npcs',
+    'npcSchedules',
     'shops',
     'recipes',
     'quests',
     'relationships',
+    'spellSchools',
+    'capabilities',
+    'abilities',
+    'companions',
 ]);
 
 export function createContentPack(definition = {}) {
@@ -89,7 +94,7 @@ export function validateContentPackManifest(pack) {
             }
             if (!validStableId(adapter.legacyId)) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}].legacyId is invalid.`);
             if (!validStableId(adapter.canonicalId)) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}].canonicalId is invalid.`);
-            if (!adapter.reason) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}] requires a reason.`);
+            if (!adapter.reason) issues.push(`${pack.id || 'pack'} legacyAdapters[${index} requires a reason.`);
         }
     }
 
