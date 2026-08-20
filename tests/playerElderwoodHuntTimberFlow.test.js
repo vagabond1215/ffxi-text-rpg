@@ -84,7 +84,7 @@ test('Elderwood Hunt-Timber is one Pack-v2-owned hunt, forestry, production, civ
     assert.equal(counts.supplemental.contentPacks, 9);
     assert.ok(counts.supplemental.capabilities >= 16);
     assert.ok(counts.supplemental.npcSchedules >= 5);
-    assert.ok(counts.supplemental.packOwnedRecords >= 171);
+    assert.ok(counts.supplemental.ownedPackRecords >= 171);
 });
 
 test('Barkboar recovery and forest gathering become provenance-bearing field gear and road repair stock with exactly-once civic delivery', () => {
