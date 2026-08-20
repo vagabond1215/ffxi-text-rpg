@@ -26,6 +26,11 @@ import {
     validateCreator,
 } from '../systems/characterCreationModel.js';
 import {
+    acceptCommitment,
+    performCommitmentFollowUp,
+    resolveCommitment,
+} from '../systems/commitmentEngine.js';
+import {
     harvestCultivationCrop,
     plantCultivationCrop,
     startCultivationPreparation,
@@ -114,6 +119,9 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'ability.activate': return activateCanonicalAbility(context);
+        case 'commitment.accept': return recordCommitmentResult(context, acceptCommitment(context.state, context.payload.commitmentId));
+        case 'commitment.resolve': return recordCommitmentResult(context, resolveCommitment(context.state, context.payload.commitmentId));
+        case 'commitment.followUp': return recordCommitmentResult(context, performCommitmentFollowUp(context.state, context.payload.commitmentId));
         case 'cultivation.prepare': return recordCultivationResult(context, startCultivationPreparation(context.state));
         case 'cultivation.plant': return recordCultivationResult(context, plantCultivationCrop(context.state));
         case 'cultivation.tend': return recordCultivationResult(context, startCultivationTending(context.state));
@@ -397,6 +405,14 @@ function activateCanonicalAbility(context) {
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
     return ok(context, { abilityResult: result, message });
+}
+
+function recordCommitmentResult(context, result) {
+    const message = result.display?.text ?? result.message ?? result.reason ?? 'Commitment updated.';
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { commitmentResult: result, message });
 }
 
 function recordCultivationResult(context, result) {
