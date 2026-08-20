@@ -17,6 +17,21 @@ export function createSeedNpcs() {
             questIds: ['commitment-thornwall-hearth-sweetroot-share'],
         }),
         createNpc({
+            id: 'npc-thornwall-edrin-bale', name: 'Edrin Bale', title: 'Tanning Guild Master', faction: 'Thornwall',
+            locationId: 'thornwall-southgate', services: ['tanning', 'training', 'commissions'],
+            questIds: ['commitment-thornwall-tanned-hide-order'],
+        }),
+        createNpc({
+            id: 'npc-thornwall-nessa-woodmere', name: 'Nessa Woodmere', title: 'Elderwood Factor', faction: 'Thornwall',
+            locationId: 'thornwall-southgate', services: ['regional-goods', 'forestry', 'commissions'],
+            questIds: ['commitment-thornwall-forester-gloves'],
+        }),
+        createNpc({
+            id: 'npc-thornwall-oren-vale', name: 'Oren Vale', title: 'Road Works Clerk', faction: 'Thornwall',
+            locationId: 'thornwall-southgate', services: ['civic', 'roadworks', 'commissions'],
+            questIds: ['commitment-thornwall-trail-repair-bundles'],
+        }),
+        createNpc({
             id: 'npc-road-instructor', name: 'Road Instructor', title: 'Combat Tutor',
             locationId: 'thornwall-southgate', services: ['tutorial', 'sparring'],
         }),
