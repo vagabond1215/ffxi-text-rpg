@@ -7,6 +7,7 @@ import { getPlace } from './data/places.js';
 import { createAbilityRuntimeState } from './systems/abilityEngine.js';
 import { createAtlasState, describeCurrentGrid, setPositionAndDiscover } from './systems/atlasEngine.js';
 import { createCommitmentState } from './systems/commitmentEngine.js';
+import { createCultivationState } from './systems/cultivationEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
 import { addItemToContainer } from './systems/inventoryEngine.js';
 import { createPartyState } from './systems/partyEngine.js';
@@ -64,6 +65,7 @@ export function createNewGameState(options = {}) {
         relationships: createRelationshipState(),
         resourceOpportunities: createResourceOpportunityState(),
         ecology: createEcologyState(),
+        cultivation: createCultivationState({ homePlaceId: player.progression.unlockedHomePoints[0] }),
         currentPlaceId: startPlace.id,
         location: startPlace.name,
         position: startCoordinate,

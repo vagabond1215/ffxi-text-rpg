@@ -13,211 +13,178 @@ It does not replace the design north star or roadmap. Authority order remains:
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md` — version protocol.
 8. relevant architecture/runtime/tests for the active pass only.
 
-If this file and `THREAD_HANDOFF.md` already identify the active pass, **do not restart a broad repository audit**. Refresh `main`, verify the handoff checkpoint still matches, inspect only the files/tests named by the active pass, and proceed.
+If this file and `THREAD_HANDOFF.md` already identify the active pass, **do not restart a broad repository audit**. Refresh `main`, verify the handoff/PR checkpoint still matches, inspect only the files/tests named by the active pass, and proceed.
 
-## Current baseline
+## Proposed post-0.8.700 baseline
+
+The following baseline exists on draft PR #378 and is **not yet merged to `main`**:
 
 ```text
-Product:       0.8.600.52
-Package:       0.8.600
+Product:       0.8.700.1
+Package:       0.8.700
 Account Save:  5
-Game State:    12
-Data:          37
+Game State:    13
+Data:          38
 Benchmark:     3
 Phase:         0.8 in progress
+Codename:      Cultivation & Stewardship
 ```
 
-Latest gameplay behavior remains Product `.52` (`Transient Command Presentation Log`).
-
-Latest validated repository/tooling checkpoint:
+Exact frozen implementation head:
 
 ```text
-b0c1e067a1907a8587a08a128126f9207c6d6134
-PR #377 validation-only, closed without merge
-Check 32308719621
+c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+PR #378 draft, open, unmerged
+Check 32340190710
+Job 96337561458
 Node 24.19.0
-692/692 tests
+695/695 tests
 Benchmark 3 success
 Benchmark Sample success
 ```
 
-The checkpoint adds the content-scale progression gate and `npm run census`; it does not change Game State, gameplay authority, or Product version.
+`main` remains on the pre-0.8.700 baseline until #378 is explicitly merged. A replacement thread must check PR #378 before starting independent work.
 
 ## Fast restart protocol
 
-A replacement thread should do this before any implementation:
-
 ```text
 1. fetch current main SHA
-2. read AGENTS.md
-3. read docs/THREAD_HANDOFF.md
-4. read this file
-5. compare current main with the handoff SHA
-6. run/inspect only the named next-pass evidence
-7. continue the named bounded unit
+2. inspect PR #378 status when 0.8.700 is not yet on main
+3. read AGENTS.md
+4. read docs/THREAD_HANDOFF.md
+5. read this file
+6. compare current main / PR head with the handoff
+7. inspect only the named next-pass evidence
+8. continue the named bounded unit
 ```
 
-Only reopen broad discovery when one of these is true:
+Only reopen broad discovery when:
 
-- `main` materially diverged from the handoff checkpoint;
+- `main` or the active feature PR materially diverged from the handoff;
 - the handoff says the next unit is unselected;
-- the named next pass has become impossible because an authority changed;
+- the named pass has become impossible because an authority changed;
 - the user explicitly asks for a fresh audit or roadmap revision.
 
-Do not spend a new thread rediscovering closed Phase 0.4–0.7 work, the `.39`–`.52` persistence history, or the completed `state.npcs` / `state.enemies` / `state.log` classification sequence unless the active task directly touches those contracts.
+Do not spend a new thread rediscovering closed Phase 0.4–0.7 work, the `.39`–`.52` persistence history, the completed `state.npcs` / `state.enemies` / `state.log` classification sequence, or the 0.8.700 cultivation architecture unless the active task directly touches those contracts.
 
 # Active progression queue
 
 Statuses:
 
 - **ACTIVE** — current bounded unit.
-- **READY NEXT** — recommended next unit; still requires a new explicit work order/message under `AGENTS.md`.
-- **QUEUED** — ordered candidate after its dependencies are satisfied.
+- **READY NEXT** — recommended next unit after current landing; still requires explicit authorization.
+- **QUEUED** — ordered candidate after dependencies are satisfied.
 - **DEFERRED** — intentionally not part of the current phase/pass.
-- **DONE** — implemented, validated, and synchronized.
+- **DONE** — implemented, validated, synchronized, and landed.
+- **VALIDATED / PENDING LANDING** — implementation is green on a feature PR but has not been merged.
 
 ## C0 — Continuation Infrastructure + Content Census
 
 **Status: DONE.**
 
-Purpose: make repository progress measurable and handoffs cheap before opening another feature track.
-
-Implemented at validated checkpoint `b0c1e067a1907a8587a08a128126f9207c6d6134`:
+Validated checkpoint `b0c1e067a1907a8587a08a128126f9207c6d6134`, validation-only PR #377 / Check `32308719621`, 692/692 tests. C0 added:
 
 - `js/text/systems/contentScaleGate.js`
 - `scripts/contentCensus.js`
 - `tests/contentScaleGate.test.js`
 - `npm run census`
+- this durable active/next/deferred queue.
 
-The gate tracks the lower-bound planning targets already defined by `WORLD_IDENTITY_AND_CONTENT_POLICY.md` for:
-
-```text
-places/localities
-named NPCs
-functional shop/service sites
-creature definitions
-resource sources
-canonical items
-recipes/processes
-abilities/techniques
-quests/contracts
-companions
-scheduled transport services
-```
-
-It reports mechanics-integration, playable-alpha, and 1.0 lower-bound targets. Missing future content is a roadmap gap, **not a CI failure**. Tests protect the target definitions, counting logic, and criteria-driven gate behavior.
-
-C0 exit criteria:
-
-- [x] executable content census exists;
-- [x] focused tests exist;
-- [x] full hosted Test/Benchmark gate passed exact implementation head;
-- [x] authority/read-order docs point future threads here;
-- [x] roadmap records the next Phase 0.8 sequence;
-- [x] machine-readable project profile records the next bounded unit;
-- [x] quality/performance/lifecycle docs are synchronized to the current baseline;
-- [x] final handoff names the exact next bounded unit.
+The census reports mechanics-integration, playable-alpha, and 1.0 lower-bound gaps. Missing future content is a roadmap gap, **not a CI failure**.
 
 ## 0.8.700 — Cultivation & Stewardship
 
-**Status: READY NEXT.**
+**Status: VALIDATED / PENDING LANDING on draft PR #378.**
 
-Player-facing question:
-
-> Can a player turn a home/foothold and existing material economy into a multi-day cultivation loop whose output feeds food, medicine, trade, production, or commitments without creating a parallel clock or inventory?
-
-First bounded proof should prefer an existing home or settlement plot and compose existing authorities:
+Player-facing proof now implemented:
 
 ```text
-obtain/access plot
-  -> prepare soil/bed
-  -> plant provenance-bearing seed/input
-  -> canonical fictional time passes
-  -> tend/maintain when required
-  -> harvest
-  -> provenance-bearing output
-  -> output has multiple real sinks
-  -> cultivation/work mastery improves future efficiency
+one reusable home Sweetroot bed
+  -> 15m hands-on preparation
+  -> consume 1 physical Elderwood Sweetroot propagation root
+  -> persist planting/tending/readiness timestamps in canonical fictional seconds
+  -> after 1 fictional day, short hands-on tending becomes due
+  -> after 2 fictional days and tending, harvest exactly once
+  -> 3 ordinary Elderwood Sweetroots enter normal inventory
+  -> output provenance records the home plot and preserves seed provenance
+  -> existing consume / craftIngredient / trade sinks remain available
+  -> cultivation work proficiency reduces later preparation/tending duration
 ```
 
-Authority constraints:
+Authority decisions:
 
-- canonical world time remains the only clock;
-- inventory owns physical inputs/outputs;
-- provenance remains attached to outputs;
-- work proficiency owns repeated-practice efficiency where the work model fits;
-- home/project authority owns durable infrastructure where needed;
-- do not create one long-lived timed-task owner per crop by reflex;
-- persisted plot/crop state should derive elapsed growth from canonical world time when that is sufficient;
-- no wall-clock/offline growth authority.
+- `state.cultivation` is new required durable Game State authority;
+- crop growth is timestamp-derived and creates **no crop-owned long-lived timed task**;
+- only short preparation/tending labor uses existing `workTaskEngine` / timed-task ownership;
+- inventory owns the physical propagation input and harvest output;
+- resource provenance stays on the existing Sweetroot item instead of creating a duplicate crop item;
+- work proficiency owns repeated-practice efficiency through new stable proficiency id `cultivation`;
+- semantic Journal/context actions use direct cultivation intents, not command strings;
+- recommendation integration does not let a merely ready cultivation bed displace existing active/ready commitment, livelihood, home, or recovery decisions.
 
-Required first-pass evidence:
-
-- deterministic multi-day growth/tending/harvest test;
-- save/load during growth;
-- no duplicate harvest or repeated completion reward;
-- output participates in at least three existing sinks/systems;
-- browser/semantic action path does not require command expertise;
-- content-heavy additions remain original, cross-linked, provenance-valid and content-pack-valid;
-- `npm run census` records any content breadth added by the track when run in a capable environment.
-
-### Next-thread inspection set
-
-Start with these surfaces rather than another repository-wide audit:
+Version decision on #378:
 
 ```text
-docs/THREAD_HANDOFF.md
-docs/EXECUTION_PIPELINE.md
-docs/ROADMAP.md
-js/text/systems/contentScaleGate.js
-js/text/systems/worldTime.js
-js/text/systems/workTaskEngine.js
-js/text/systems/workProficiency.js
-js/text/systems/projectEngine.js
-js/text/systems/productionEngine.js
-js/text/systems/ecologyEngine.js
-js/text/data/ecologyCatalog.js
-js/text/data/resourceProvenance.js
-js/text/data/homeInfrastructure.js
-relevant inventory/container + semantic UI intent/view-model paths
+Product      0.8.600.52 -> 0.8.700.1
+Package      0.8.600    -> 0.8.700
+Game State   12         -> 13
+Data         37         -> 38
+Account Save 5 unchanged
+Benchmark    3 unchanged
 ```
 
-Use code search if exact filenames have moved; the authority list, not any one filename spelling, is what matters.
+No Game State 12 -> 13 migration was added under the pre-alpha current-schema-only policy.
+
+Focused evidence:
+
+- Game State 13 requires cultivation before runtime normalization;
+- forged crop timing and active-work links are rejected;
+- real account save/load succeeds mid-growth and after tending;
+- growth has no active crop timer/task;
+- work tasks release after cultivation reconciliation;
+- seed provenance survives planting and is nested into harvest provenance;
+- harvest cannot replay or duplicate output;
+- cultivation mastery reduces later hands-on labor duration;
+- Journal/browser rendering exposes ordinary actions without leaking raw plot/timestamp/provenance internals.
+
+No standalone `npm run census` output was recorded in this pass. The bounded proof reuses an existing canonical item and does not add a census-counted place, NPC, service, creature, resource source, recipe, ability, quest, companion, or transport service, so no claimed scale-count increase is recorded.
+
+### Landing gate
+
+Before starting `0.8.800`:
+
+1. refresh `main` and PR #378 status;
+2. if #378 is still unmerged, do not start an independent next track by default;
+3. merge/close/replace #378 only with explicit authorization;
+4. after landing, refresh the handoff and mark 0.8.700 DONE.
 
 ## 0.8.800 — Earned Routine Delegation
 
-**Status: QUEUED; depends on a real established repetitive chore, preferably 0.8.700.**
+**Status: READY NEXT only after 0.8.700 lands. Not started.**
 
 Player-facing question:
 
 > Can established mastery, infrastructure, reputation, or wages reduce player attention spent on a solved routine without producing free resources or a second simulation clock?
 
-Proof direction:
+Preferred first proof should delegate **one cultivation chore** rather than invent generic automation:
 
 ```text
-manual routine established
-  -> mastery/infrastructure/social investment
-  -> bounded helper/hired-labor option
-  -> player pays fictional time/wages/material constraints
-  -> routine consequence remains under existing domain authority
+manual Sweetroot routine proven
+  -> player earns mastery / infrastructure / social access
+  -> bounded helper or hired-labor option
+  -> wages/material/time constraints remain real
+  -> cultivation remains domain authority
+  -> no free output and no second clock
   -> player attention decreases
 ```
 
-Do not implement generic automation first. Delegate one proven chore and prove ownership/exactly-once behavior before generalizing.
+Do not generalize until one real delegated routine proves ownership, cost, failure, save/load, and exactly-once consequences.
 
 ## 0.8.900 — Household & Community Continuity
 
-**Status: QUEUED; follows cultivation/delegation unless a stronger concrete social defect appears.**
+**Status: QUEUED.**
 
-Goal: make the foothold socially consequential rather than only a storage/workstation container.
-
-Target bounded breadth:
-
-- 2–3 additional recurring named NPC relationships with distinct schedules/needs;
-- at least one additional recruitable companion candidate if justified by the regional content graph;
-- commitments or services that intersect with livelihood/property rather than gift-spam;
-- multi-day consequences and return visits;
-- no full romance framework yet.
+Goal: make the foothold socially consequential rather than only storage/workstation/cultivation infrastructure. Target 2–3 additional recurring named relationships with distinct needs/schedules, possible additional companion breadth where justified, and multi-day livelihood/property consequences. No full romance framework yet.
 
 ## Phase 0.8 exit audit
 
@@ -234,17 +201,15 @@ home/storage/workshop
   -> preparation for travel/adventure
 ```
 
-Run:
+Run when closing the phase:
 
 ```text
 npm run census
 npm test
 npm run benchmark
 npm run benchmark:sample
-npm run hardening   # when lifecycle-sensitive work in the closing set warrants it
+npm run hardening   # when lifecycle-sensitive work warrants it
 ```
-
-The Phase 0.8 exit review chooses whether remaining life-system gaps belong in a small final 0.8 track or move to 0.9. Do not add a numeric track merely to fill the sequence.
 
 # Phase 0.9 progression envelope
 
@@ -270,56 +235,41 @@ Keep these visible so future threads do not rediscover them as surprises.
 
 ## Content breadth — highest strategic debt
 
-**Open.** Use `npm run census` at the start/end of content-heavy tracks when it can actually be executed.
-
-The current architecture supports substantially more content than is authored. Phase 0.9 must shift developer time toward connected regional content, not another long generic persistence-hardening chain unless a concrete defect requires it.
-
-## Documentation baseline drift
-
-**C0 cleanup complete for identified audit findings.** `docs/PERFORMANCE_BUDGET.md` now references the #377 / 692-test Benchmark 3 checkpoint, and `docs/RESOURCE_LIFECYCLE.md` now labels current task-integrity validation as Game State 12. Do not launch a new broad wording audit unless contradictory documentation is encountered during real work.
+**Open.** Use `npm run census` at the start/end of genuinely content-heavy tracks when it can actually be executed. The architecture supports substantially more content than is authored; Phase 0.9 should shift developer time toward connected regional content rather than another generic persistence-hardening chain without a concrete defect.
 
 ## Branch protection / required review
 
-**DEFERRED to Phase 0.9 stabilization.** Current single-maintainer pre-alpha policy remains direct `main`. Transition when release/stabilization work begins:
-
-```text
-protected main
-required hosted Check
-feature/track branch or PR
-no merge on failing required checks
-```
+**DEFERRED to Phase 0.9 stabilization.** Current pre-alpha policy remains unprotected `main`; substantial cross-system feature work may still use a feature PR when risk warrants it, as 0.8.700 does.
 
 ## Supported save compatibility and migrations
 
-**DEFERRED to `0.9.800` unless explicitly requested earlier.** Current pre-alpha policy remains exact current-schema only. Do not accumulate compatibility scaffolding before the product has a supported-save promise.
+**DEFERRED to `0.9.800` unless explicitly requested earlier.** Current pre-alpha policy remains exact current-schema only.
 
 ## Browser E2E and accessibility harness
 
-**DEFERRED as a dedicated program to `0.9.700`.** Continue semantic DOM, keyboard, focus and POV tests during normal development. Add a real browser E2E matrix once the UI flow is stable enough to justify maintenance cost.
+**DEFERRED as a dedicated program to `0.9.700`.** Continue semantic DOM, keyboard, focus and POV tests during normal development.
 
 ## Hard performance budgets
 
-**DEFERRED.** Benchmark 3 remains comparative evidence; current very-fast attack/tick workloads are noisy. Do not invent pass/fail numbers until repeated representative evidence supports them. A workload/protocol change requires a Benchmark version decision.
+**DEFERRED.** Benchmark 3 remains comparative evidence. Do not invent pass/fail numbers from noisy microbenchmarks; protocol changes require a Benchmark version decision.
 
 ## Balance certification
 
-**DEFERRED.** Green mechanics tests do not mean the game is balanced. Do not mark systems `balanced` until sustained play/content-scale evidence exists.
+**DEFERRED.** Green mechanics tests do not mean the game is balanced.
 
 ## Quality/HQ crafting depth
 
-**DEFERRED.** Add only when quality creates meaningful material/tool/proficiency decisions rather than inherited MMO rarity tiers.
+**DEFERRED.** Add only when quality creates meaningful material/tool/proficiency decisions.
 
 ## Mounts, warehouses and large-logistics breadth
 
-**DEFERRED.** Existing carried-load, transport and home storage authorities should be stressed by real content first.
+**DEFERRED.** Stress existing carried-load, transport, home storage, and cultivation authorities with real content first.
 
 ## Romance/deep social-life framework
 
-**DEFERRED beyond 0.8.900.** First prove broader authored social characters with goals, schedules, boundaries and useful non-romance roles.
+**DEFERRED beyond 0.8.900.** Prove broader authored social characters with goals, schedules, boundaries and useful non-romance roles first.
 
 # Standard bounded-pass pipeline
-
-Every implementation pass should use this sequence unless the active task clearly does not need one of the steps:
 
 ```text
 1. Select one player-facing or repository-risk question.
@@ -328,27 +278,26 @@ Every implementation pass should use this sequence unless the active task clearl
 4. Write the smallest end-to-end proof.
 5. Implement runtime/data first.
 6. Add focused deterministic tests.
-7. Add realistic content breadth for the changed system.
+7. Add realistic connected content for the changed system.
 8. Run focused validation.
-9. Run full Test + Benchmark evidence when the change is coherent.
+9. Run full Test + Benchmark evidence when coherent.
 10. Freeze exact implementation SHA.
 11. Synchronize roadmap/profile/catalog/docs only after freeze.
 12. Update THREAD_HANDOFF.md last.
 13. Stop; do not silently launch the next independent pass.
 ```
 
-For lifecycle-sensitive systems, add ownership/cleanup and long-session evidence. For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, run `npm run census` and record what categories changed when the command actually ran.
+For lifecycle-sensitive systems, add ownership/cleanup and long-session evidence. For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, run `npm run census` and record only output that actually ran.
 
 # Handoff template
 
-Every substantive closing handoff should make the following explicit so a new thread can continue without reconstructing chat history:
-
 ```text
 Current main SHA:
+Active branch / PR:
 Validated implementation SHA:
 Product / Package / Account Save / Game State / Data / Benchmark:
 Active pass:
-Pass status: active | blocked | complete
+Pass status: active | blocked | validated-pending-landing | complete
 Completed behavior:
 Exact validation evidence:
 Known failures/blockers:

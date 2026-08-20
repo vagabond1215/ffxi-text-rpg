@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.600.52');
-    assert.equal(PACKAGE_VERSION, '0.8.600');
+    assert.equal(PRODUCT_VERSION, '0.8.700.1');
+    assert.equal(PACKAGE_VERSION, '0.8.700');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
-    assert.equal(VERSION.gameState, 12);
-    assert.equal(VERSION.data, 37);
+    assert.equal(VERSION.gameState, 13);
+    assert.equal(VERSION.data, 38);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Transient Command Presentation Log');
+    assert.equal(VERSION.codename, 'Cultivation & Stewardship');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -36,6 +36,7 @@ test('version manifest separates product package persistence data and focused cl
             lifecycleHarness: SYSTEM_VERSIONS.lifecycleHarness,
             timedTasks: SYSTEM_VERSIONS.timedTasks,
             projects: SYSTEM_VERSIONS.projects,
+            cultivation: SYSTEM_VERSIONS.cultivation,
             campaignRecovery: SYSTEM_VERSIONS.campaignRecovery,
             workTasks: SYSTEM_VERSIONS.workTasks,
             workProficiencies: SYSTEM_VERSIONS.workProficiencies,
@@ -78,15 +79,16 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.600.52',
+            versionManifest: '0.8.700.1',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
             timedTasks: '0.2.0',
             projects: '0.2.0',
+            cultivation: '0.1.0',
             campaignRecovery: '0.3.0',
             workTasks: '0.2.0',
-            workProficiencies: '0.1.0',
+            workProficiencies: '0.2.0',
             dayCycle: '0.2.0',
             dayCyclePersistence: '0.1.0',
             resourceOpportunities: '0.2.0',
@@ -102,7 +104,7 @@ test('version manifest separates product package persistence data and focused cl
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.43.0',
+            validation: '0.44.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.2',
             npcWorldProjection: '0.1.1',
@@ -123,20 +125,21 @@ test('version manifest separates product package persistence data and focused cl
             placeAtlas: '0.6.0',
             discoveryPersistence: '0.1.0',
             poiDiscovery: '0.4.0',
-            gameViewModels: '0.15.1',
+            gameViewModels: '0.16.0',
         },
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.600\.52/);
-    assert.match(describeVersion(), /Package: 0\.8\.600/);
+    assert.match(describeVersion(), /Product: 0\.8\.700\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.700/);
     assert.match(describeVersion(), /Account Save: 5/);
-    assert.match(describeVersion(), /Game State: 12/);
-    assert.match(describeVersion(), /Data: 37/);
+    assert.match(describeVersion(), /Game State: 13/);
+    assert.match(describeVersion(), /Data: 38/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Transient Command Presentation Log/);
+    assert.match(describeVersion(), /Codename: Cultivation & Stewardship/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /validation: 0\.43\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.44\.0/);
+    assert.match(describeSystemVersions(), /cultivation: 0\.1\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
     assert.match(describeSystemVersions(), /enemyEncounterProjection: 0\.1\.0/);
     assert.match(describeSystemVersions(), /presentationLog: 0\.1\.0/);
@@ -155,7 +158,7 @@ test('version manifest separates product package persistence data and focused cl
     assert.match(describeSystemVersions(), /statusEngine: 0\.3\.0/);
     assert.match(describeSystemVersions(), /saveEncoding: 0\.9\.0/);
     assert.match(describeSystemVersions(), /dayCyclePersistence: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /workProficiencies: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /workProficiencies: 0\.2\.0/);
     assert.match(describeSystemVersions(), /placeAtlas: 0\.6\.0/);
     assert.match(describeSystemVersions(), /discoveryPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /poiDiscovery: 0\.4\.0/);
@@ -200,6 +203,7 @@ test('tick engine dispatches to subscribers', () => {
     let handled = 0;
     tickEngine.subscribe('test', (event) => { handled += 1; assert.equal(event.tick, 1); });
     assert.equal(tickEngine.elapsedTicks, 0);
+    assert.equal(tickEngine.subscriberCount, 1);
     tickEngine.tick();
     assert.equal(handled, 1);
     assert.equal(tickEngine.subscriberCount, 1);

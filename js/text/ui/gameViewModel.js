@@ -3,6 +3,7 @@ import { getCompanionDefinition } from '../data/companions.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { listAbilityAvailability } from '../systems/abilityEngine.js';
+import { decorateCultivationOpportunityModel } from '../systems/cultivationEngine.js';
 import { getLatestDaySummary } from '../systems/dayCycleEngine.js';
 import { decorateHomeInfrastructureOpportunityModel } from '../systems/homeInfrastructureEngine.js';
 import {
@@ -56,7 +57,10 @@ export function createGameViewModel(state, uiState = {}) {
     const guidance = createPlayerExperienceModel(state);
     const opportunities = decoratePlayerSocialScheduleModel(
         state,
-        decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+        decorateCultivationOpportunityModel(
+            state,
+            decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+        ),
     );
     const information = createPlayerInformationModel(state, { query: uiState.informationQuery ?? '' });
     const transportDesk = navigationMode === 'locality'
@@ -145,7 +149,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
         const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
         const opportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
             state,
-            decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+            decorateCultivationOpportunityModel(
+                state,
+                decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+            ),
         );
         const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
         const recommendedAction = recommendedOpportunity?.action
@@ -189,7 +196,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
     const actions = [...recruitActions];
     const opportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
         state,
-        decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+        decorateCultivationOpportunityModel(
+            state,
+            decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+        ),
     );
     const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
     if (recommendedOpportunity?.action) actions.push(Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category }));

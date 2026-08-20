@@ -11,68 +11,76 @@ npm run hardening
 ```
 
 - `npm run benchmark` runs one Benchmark 3 measurement.
-- `npm run benchmark:sample` runs three measurements by default and reports min, median, max, mean, and spread for each workload. `HNH_BENCHMARK_SAMPLES` may request 2–10 samples.
-- `npm run hardening` runs the focused deterministic long-session lifecycle smoke followed by sampled benchmark evidence.
+- `npm run benchmark:sample` runs three measurements by default and reports min, median, max, mean, and spread.
+- `npm run hardening` runs focused deterministic long-session lifecycle smoke followed by sampled benchmark evidence.
 - Hosted `Check` runs the full test suite, Benchmark 3, and the three-sample benchmark on Node 24.
 
 ## Benchmark 3 protocol
 
-Benchmark 3 is the current comparability contract. Benchmark 1 and Benchmark 2 remain historical evidence but are **not numerically comparable** to Benchmark 3 because their measurement boundaries differ.
+Benchmark 3 remains the current comparability contract. Benchmark 1/2 are historical and not numerically comparable.
 
-Current workloads:
-
-| Workload | Measured iterations | Setup/timing rule |
+| Workload | Measured iterations | Timing rule |
 | --- | ---: | --- |
-| create player combat profile | 1,000 | entity creation + combat-profile calculation are measured |
-| create enemy combat profile | 1,000 | entity creation + combat-profile calculation are measured |
-| resolve basic attack | 1,000 | independent battle fixtures are prepared before timing; only attack resolution is measured |
-| dispatch tick to 5 steady subscribers | 10,000 | one tick engine and five subscribers are prepared before timing; only dispatch is measured |
-| direct travel route lookup | 10,000 | one game-state fixture is prepared before timing; only route lookup is measured |
+| create player combat profile | 1,000 | entity creation + combat-profile calculation measured |
+| create enemy combat profile | 1,000 | entity creation + combat-profile calculation measured |
+| resolve basic attack | 1,000 | battle fixtures prepared before timing |
+| dispatch tick to 5 steady subscribers | 10,000 | engine/subscribers prepared before timing |
+| direct travel route lookup | 10,000 | game-state fixture prepared before timing |
 
-Each workload performs an **unreported warm-up equal to 10% of its measured iterations** before the timer starts. Warm-up uses a separate setup context so mutable warm-up activity cannot contaminate the measured fixture.
+Each workload receives an unreported separate-context warm-up equal to 10% of measured iterations.
 
-Protocol history:
+## Latest validated feature baseline
 
-- **Benchmark 1** included setup inside several timed loops.
-- **Benchmark 2** separated setup from timed attack/tick/route work and therefore established a new comparability baseline.
-- **Benchmark 3** adds the separate-context 10% warm-up and therefore establishes another new comparability baseline.
-
-## Latest accepted baseline
-
-Latest validated implementation/tooling checkpoint: validation-only PR #377 exact head `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, Node `24.19.0`, Product `0.8.600.52`, Benchmark `3`.
-
-The full gate observed **692/692 tests passing** before benchmark execution. PR #377 was closed without merge after validation; the checkpoint adds continuation/content-census tooling and does not change gameplay version or the Benchmark protocol.
-
-Single Benchmark 3 run:
+Draft PR #378 exact frozen implementation head:
 
 ```text
-player combat profiles  0.393820 ms/op   warmup=100
-enemy combat profiles   0.070731 ms/op   warmup=100
-basic attacks            0.003811 ms/op   warmup=100
-tick dispatch            0.001062 ms/op   warmup=1000
-direct route lookup      0.007603 ms/op   warmup=1000
+c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+Check 32340190710
+Job 96337561458
+Node 24.19.0
+Product 0.8.700.1
+Benchmark 3
+695/695 tests
 ```
 
-Three-sample evidence from the same exact-head Check:
+The feature adds cultivation state, semantic actions, and save/load coverage but **does not change Benchmark 3 workloads or measurement protocol**, so the results remain comparable to other Benchmark 3 checkpoints.
+
+Single run:
+
+```text
+player combat profiles  0.350069 ms/op   warmup=100
+enemy combat profiles   0.068868 ms/op   warmup=100
+basic attacks            0.003197 ms/op   warmup=100
+tick dispatch            0.000788 ms/op   warmup=1000
+direct route lookup      0.007068 ms/op   warmup=1000
+```
+
+Three-sample evidence:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.362912 | 10.42% |
-| enemy combat profiles | 0.065795 | 9.93% |
-| basic attacks | 0.001204 | 200.40% |
-| tick dispatch | 0.000696 | 33.93% |
-| direct route lookup | 0.006992 | 9.64% |
+| player combat profiles | 0.331167 | 6.35% |
+| enemy combat profiles | 0.062892 | 7.69% |
+| basic attacks | 0.001206 | 166.26% |
+| tick dispatch | 0.000613 | 54.43% |
+| direct route lookup | 0.006783 | 5.66% |
 
-The very fast basic-attack and tick microbenchmarks remain dominated by timing/runtime noise at this duration. **Do not create CI thresholds from those figures yet.** Player/enemy profile creation and route lookup are more stable in the current hosted environment, but they still need additional repeated evidence before a release budget is accepted.
+The very fast attack/tick microbenchmarks remain dominated by runtime/timing noise. **Do not create CI thresholds from these figures.** Profile creation and route lookup are more stable but still are not accepted release budgets.
+
+PR #378 remains draft/unmerged. This evidence validates its frozen implementation head; it does not claim the feature has landed on `main`.
+
+## Prior C0 checkpoint
+
+C0 continuation/content-census tooling validated at `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, 692/692 tests. That checkpoint did not change gameplay Product version.
 
 ## Performance rules
 
 - Compare only the same Benchmark version in comparable environments.
 - Preserve correctness, deterministic simulation, save/load meaning, and player behavior while optimizing.
-- Do not optimize a benchmark by moving required gameplay work outside the production path.
-- Use median/spread and multiple runs when interpreting small changes; one fast run is not a performance claim.
+- Do not optimize a benchmark by moving required gameplay work outside production behavior.
+- Use median/spread and multiple runs; one fast run is not a performance claim.
 - Prioritize simulation advancement, action resolution, map/view-model derivation, save/load, content validation, UI rendering, and representative long-session behavior.
-- Treat cumulative retained-state growth as a lifecycle/ownership problem when repeated use does not return toward a stable application-owned state.
-- Advance the Benchmark version whenever workload or measurement protocol changes enough to break comparability.
+- Treat retained-state growth as lifecycle/ownership debt when repeated use does not return toward stable application-owned state.
+- Advance Benchmark version whenever workload or measurement protocol changes enough to break comparability.
 
-Hard thresholds may be adopted later only after a repeatable baseline and acceptable variance are established for the specific surface and environment. The execution pipeline currently defers accepted hard budgets to Phase 0.9 release hardening rather than treating current microbenchmarks as release gates.
+Hard thresholds remain deferred until repeated representative evidence supports them.

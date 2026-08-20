@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.600.52';
-export const PACKAGE_VERSION = '0.8.600';
+export const PRODUCT_VERSION = '0.8.700.1';
+export const PACKAGE_VERSION = '0.8.700';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 12,
-    data: 37,
+    gameState: 13,
+    data: 38,
     benchmark: 3,
-    codename: 'Transient Command Presentation Log',
+    codename: 'Cultivation & Stewardship',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.600.52',
+    versionManifest: '0.8.700.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -26,6 +26,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     timedTasks: '0.2.0',
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
+    cultivation: '0.1.0',
     commitments: '0.3.1',
     relationships: '0.1.0',
     npcSchedules: '0.1.0',
@@ -38,10 +39,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceRecovery: '0.1.0',
     resourceRecoveryWork: '0.3.0',
     characterActivity: '0.3.0',
-    activityAdvance: '0.5.0',
+    activityAdvance: '0.6.0',
     campaignRecovery: '0.3.0',
     workTasks: '0.2.0',
-    workProficiencies: '0.1.0',
+    workProficiencies: '0.2.0',
     workstations: '0.3.1',
     productionCatalog: '0.2.0',
     productionItems: '0.4.0',
@@ -75,7 +76,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     domUi: '0.10.0',
     domRoot: '0.1.0',
     domOnboarding: '0.1.0',
-    gameViewModels: '0.15.1',
+    gameViewModels: '0.16.0',
     playerInformation: '0.1.1',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
@@ -84,13 +85,13 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.2.0',
     canvasUi: '0.8.0',
-    uiIntents: '0.10.1',
+    uiIntents: '0.11.0',
     slashCommands: '0.5.0',
     accountSaves: '0.7.1',
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.43.0',
+    validation: '0.44.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',

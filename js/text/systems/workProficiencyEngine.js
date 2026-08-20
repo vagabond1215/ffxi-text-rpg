@@ -12,6 +12,7 @@ export const WORK_PROFICIENCY_IDS = Object.freeze([
     'metalworking',
     'crafting',
     'cooking',
+    'cultivation',
 ]);
 
 export function ensureWorkProficiencies(player) {

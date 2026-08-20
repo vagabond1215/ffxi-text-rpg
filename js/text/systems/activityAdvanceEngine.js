@@ -1,6 +1,7 @@
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { reconcileCampaignRecoveries } from './campaignRecoveryEngine.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
+import { reconcileCultivationWork } from './cultivationEngine.js';
 import { reconcileGatheringWork } from './gatheringWorkEngine.js';
 import { reconcileHomeInfrastructureProjects } from './homeInfrastructureEngine.js';
 import { reconcileProductionWork } from './productionEngine.js';
@@ -12,7 +13,7 @@ import { advanceTravel } from './travelEngine.js';
 import { listWorkRecords, WORK_STATUSES } from './workTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
-export const ACTIVITY_ADVANCE_VERSION = 5;
+export const ACTIVITY_ADVANCE_VERSION = 6;
 
 export function advanceActiveActivityToCompletion(state) {
     if (state?.activeBattle?.phase === 'active') {
@@ -206,6 +207,7 @@ function advanceActiveTravel(state) {
 }
 
 function resolveWorkDomain(state, work) {
+    if (work.kind === 'cultivation-prepare' || work.kind === 'cultivation-tend') return reconcileCultivationWork(state);
     if (work.kind === 'gathering' || work.data?.sourceId) return reconcileGatheringWork(state);
     if (work.data?.processId) return reconcileProductionWork(state);
     return [];
