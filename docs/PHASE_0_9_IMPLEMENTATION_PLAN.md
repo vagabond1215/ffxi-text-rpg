@@ -1,33 +1,25 @@
 # Phase 0.9 Implementation Plan
 
-This document is a **planning artifact, not an implementation authorization**. Phase 0.9 remains planned and unopened until a future work order explicitly opens it.
+Phase 0.9 is now **open**. This document sequences future bounded packets; it does not authorize later packets merely because they appear here.
 
 Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/DEVELOPMENT_DIRECTION.md`, `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`, `docs/ROADMAP.md`, and `docs/VERSIONING_AND_RELEASE_ROADMAP.md`.
 
-## Current planning baseline
+## Current baseline
 
 ```text
-Product:       0.8.900.1
-Package:       0.8.900
+Product:       0.9.100.1
+Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          39
+Data:          40
 Benchmark:     3
-Phase:         0.8 complete
-Codename:      Household & Community Continuity
+Phase:         0.9 / 0.9.100 in progress
+Codename:      Content Pack Scale Contract v2
 ```
 
-Frozen gameplay/runtime implementation remains:
+The strategic risk is authored-content breadth and throughput, but the first Phase 0.9 implementation packet deliberately scaled the supporting infrastructure **before** adding volume.
 
-```text
-ca7d37c643adc4115b519148615f6120d03228df
-```
-
-Phase 0.8 already proved the core persistent-life architecture. The strategic risk has moved from state coherence toward **authored content breadth, content-production throughput, and cross-system density**.
-
-## Audit inputs that shape Phase 0.9
-
-Current census:
+## Current census
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -43,151 +35,180 @@ Current census:
 | Recruitable companions | 1 | 4 | 3 |
 | Transport services | 3 | 5 | 2 |
 
-Places are not the immediate scaling problem. The largest relative deficit is abilities/techniques, followed by recipes/processes and the broader item/NPC/ecology graph.
+Packet A intentionally left these gameplay counts unchanged.
 
-### Content-pack ownership gap
-
-The current `CONTENT_PACK_COLLECTIONS` contract owns:
+Infrastructure coverage now records separately:
 
 ```text
-places
-routes
-transportServices
-ecologyFamilies
-species
-populations
-gatheringSources
-items
-npcs
-shops
-recipes
-quests
-relationships
+spell schools                            3
+capability/training definitions          8
+NPC schedules                            4
+regional/shared packs                    7
+pack-owned records                     115
+pack-owned abilities/capabilities/
+  schedules/companions                 5/8/4/1
 ```
 
-That contract does **not yet own several categories Phase 0.9 must scale heavily**, including player abilities/techniques, capability/training definitions, NPC schedule definitions, and companion definitions. The validator likewise has no regional cross-reference rules for those families.
-
-Therefore Phase 0.9 should not begin by mass-authoring those categories in parallel global lists. The first implementation packet should make the pack/validation architecture capable of owning the content that Phase 0.9 intends to scale.
-
-## Recommended Phase 0.9 opening decision
-
-When the phase is explicitly opened, make these decisions before the first large content commit:
-
-1. transition to protected `main`;
-2. require the hosted `Check` workflow;
-3. use PR-based integration for Phase 0.9 track packets;
-4. keep `npm run census` as a progression metric, not an ordinary pass/fail threshold;
-5. preserve current-schema-only persistence until a later deliberate supported-save transition;
-6. do not advance Product/Package to `0.9.100` until actual implementation begins.
-
-The governance recommendation is stronger now because Phase 0.9 will involve larger cross-file authored-data changes where accidental stable-ID, reference, or count drift is more likely than during bounded single-system work.
-
-# Proposed `0.9.100` — Content Scale Gate A
+# `0.9.100` — Content Scale Gate A
 
 ## Objective
 
-Prove that Hearth & Horizon can author, validate, integrate, and review **dense cross-linked regional content at materially higher volume** without creating parallel authorities or disconnected filler.
-
-Gate A is a production-throughput and architecture gate. It does not need to reach every mechanics-integration lower bound in one track, but it must make large measurable progress and close the smallest strategic gaps where doing so is genuinely useful.
+Prove that Hearth & Horizon can repeatedly author, validate, integrate, and review **dense cross-linked regional content at materially higher volume** without creating parallel authorities, bypassing catalog rules, or manufacturing filler.
 
 ## Packet A — Content Pack Scale Contract v2
 
-This should be the first implementation packet after Phase 0.9 opens.
+**Status: COMPLETE.**
 
-### Required decisions
+### Implemented decisions
 
-- define pack ownership for abilities/techniques and their capability/training references;
-- define pack ownership for NPC schedules;
-- define pack ownership for companion definitions and NPC/relationship references;
-- decide whether service/trainer definitions require a distinct pack collection or remain projections over existing POI/shop/NPC authority;
-- preserve shared-foundation ownership for content that is intentionally cross-regional;
-- avoid duplicating canonical catalogs merely so packs can claim ownership.
-
-### Expected implementation work
-
-- advance the content-pack schema deliberately if the collection contract changes;
-- extend pack index ownership/collision detection to the new families;
-- extend cross-reference validation for the new families;
-- extend generated scale fixtures so hundreds-record validation exercises the new categories;
-- make the census count canonical content regardless of whether the record is shared or region-owned;
-- add tests proving duplicate IDs, dangling trainer/ability/NPC/companion/schedule references, and undeclared cross-pack dependencies fail clearly.
-
-### Version expectation
-
-Likely decisions, to be confirmed from the exact implementation:
+The pack contract now owns regional/shared placement for:
 
 ```text
-Product:      open 0.9.100 only when implementation starts
-Package:      0.9.100 when the track opens
-Data:         likely advance because stable content-pack/data contracts expand
-Game State:   expected unchanged unless a genuinely new durable runtime fact is introduced
-Benchmark:    expected unchanged unless workload/protocol changes
-Account Save: expected unchanged
+places / routes / transportServices
+ecologyFamilies / species / populations / gatheringSources
+items / npcs / npcSchedules / shops
+recipes / quests / relationships
+spellSchools / capabilities / abilities / companions
 ```
 
-Do not pre-commit these version increments from planning alone.
+Canonical definitions remain in their existing catalogs. `contentCatalogRegistry` bridges Pack v2 ownership to those definitions so ownership metadata does not become a second data model.
+
+Catalog bridges cover:
+
+- resource, production, and equipment items;
+- production recipes/processes;
+- commitment definitions used as quest/contract catalog records;
+- seed NPCs;
+- route, transport and ecology catalogs;
+- spell schools, capabilities and executable abilities;
+- NPC schedules;
+- companions.
+
+### Validator upgrades
+
+Pack v2 validation now covers:
+
+- stable-ID ownership and cross-collection collision detection;
+- explicit cross-pack dependency enforcement;
+- missing catalog refs and dangling inline references;
+- ability -> capability and spell-school references;
+- NPC schedule -> NPC/place references plus fictional-day structural validation;
+- companion -> NPC/home/recruitment-place references and approach/tactics structure;
+- existing topology, source/sink, recipe, quest, relationship and legacy-leak rules.
+
+POI ownership was **not** duplicated merely to support schedules. Schedule POI IDs retain their existing transitional authority while schedule structure and NPC/place ownership are validated.
+
+### Scale proof
+
+The generated Pack v2 fixture validates:
+
+```text
+1 place
+200 items
+200 recipes
+200 NPCs
+200 NPC schedules
+200 capabilities
+200 abilities
+200 companions
+-----------------
+1,401 owned records
+```
+
+These records are test fixtures only and are never counted as canonical gameplay breadth.
+
+### CI/census upgrade
+
+Ordinary local/hosted `Check` now executes:
+
+```text
+npm run audit:repo
+npm test
+npm run census
+npm run benchmark
+npm run benchmark:sample
+```
+
+Census shortfalls remain informational; Check proves census/catalog integration executes successfully, not that arbitrary volume quotas have been met.
+
+### Version decision
+
+```text
+Product:      0.9.100.1
+Package:      0.9.100
+Data:         40
+Game State:   14 unchanged
+Account Save: 5 unchanged
+Benchmark:    3 unchanged
+```
+
+Data advances because pack ownership/stable-ID validation changed. Game State remains 14 because no new durable runtime authority was introduced.
 
 ## Packet B — Redstone Forge-Road regional tranche
 
-Use Brasshaven / Redstone Reach as the first scale proof because it already intersects mining, production, shops, caravan travel, combat, equipment, contracts and provenance.
+**Status: NOT STARTED. A new bounded authorization is required.**
 
-A useful tranche should aim for a connected graph, not a quota dump:
+Use `pack-redstone-opening` as the regional root. The tranche should build one playable graph rather than independent category batches:
 
 ```text
-new NPCs / mentors / service contacts
-  -> schedules and contracts
+named people / mentors / service contacts
+  -> schedules / training / contracts
   -> Redstone creatures + mineral/resource sources
   -> raw materials
   -> processing / recipes
-  -> tools, equipment and consumables
-  -> techniques or training access
+  -> tools, equipment, consumables
+  -> techniques / capability access
   -> shops / wages / trade / transport
-  -> field danger and recovery
+  -> field danger / recovery / provenance
 ```
 
-Representative tranche band:
+Representative planning band, not quota:
 
 - 4–6 named NPCs;
-- 1–2 functional service/shop/training contexts;
-- 3–5 creature definitions or meaningful variants;
+- 1–2 useful service/shop/training contexts;
+- 3–5 creatures or meaningful variants;
 - 3–5 resource sources;
-- 15–20 canonical items participating in real sources/sinks;
+- 15–20 source/sink-connected items;
 - 8–12 recipes/processes;
-- 8–12 abilities/techniques or training hooks where mechanically coherent;
+- 8–12 techniques/abilities/training hooks where mechanically coherent;
 - 3–4 contracts/quests;
-- transport expansion only where route topology creates a real decision.
+- transport only where topology creates a real decision.
 
-## Packet C — Elderwood Hunt-Timber regional tranche
+Before acceptance, every new record family must pass Pack v2 ownership/dependency checks and relevant runtime use coverage.
 
-Use Thornwall / Elderwood to stress hunting, forestry, body recovery, food/material processing, field techniques, home supply, relationships and dangerous travel.
+## Packet C — Elderwood Hunt-Timber
 
-The content graph should connect creature bodies and forest resources into multiple downstream uses rather than creating one-recipe materials.
+**Status: QUEUED.**
 
-Prefer at least one companion-candidate or deeper recurring field character if the authored role is strong enough; do not add a recruitable companion solely to increment the census.
+Stress hunting, forestry, body recovery, food/material chains, field techniques, home supply, relationships and dangerous travel. Resources should feed multiple downstream decisions where practical.
 
-## Packet D — Starfen Marshcraft-Practical Magic regional tranche
+A companion candidate is appropriate only if the authored person warrants recruitment; companion count is not a quota.
 
-Use Mistmere / Starfen to stress practical magic, herbs/fungi, wetland ecology, medicine/cooking/processing, magical training, canal/water transport, schedules and research/community contracts.
+## Packet D — Starfen Marshcraft-Practical Magic
 
-This tranche is the strongest place to expand the currently tiny ability/technique catalog while preserving the rule that abilities are learned capabilities with real requirements rather than class-toggle permissions.
+**Status: QUEUED.**
+
+Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context and community/research contracts. This is a strong later tranche for ability breadth after Redstone proves the production workflow.
 
 ## Packet E — Gate A integration and census audit
+
+**Status: QUEUED.**
 
 After the regional tranches:
 
 ```text
 npm run audit:repo
 npm test
+npm run census
 npm run benchmark
 npm run benchmark:sample
-npm run census
 ```
 
-Run `npm run hardening` only if the track changes lifecycle-sensitive runtime ownership; content breadth alone should not manufacture new long-lived resources.
+Run `npm run hardening` only if a tranche changes lifecycle-sensitive runtime ownership.
 
-### Proposed Gate A progression targets
+### Gate A planning bands
 
-These are **planning bands**, not permission to add filler and not release quotas:
+These are progression bands, never permission to create filler:
 
 | Category | Current | Gate A planning band |
 | --- | ---: | ---: |
@@ -199,75 +220,46 @@ These are **planning bands**, not permission to add filler and not release quota
 | Recipes/processes | 11 | 40+ |
 | Abilities/techniques | 5 | 40+ |
 | Quests/contracts | 8 | 18+ |
-| Recruitable companions | 1 | 4 when justified by authored characters |
-| Transport services | 3 | 5 when topology justifies them |
+| Recruitable companions | 1 | 4 only when authored characters justify them |
+| Transport services | 3 | 5 only when topology justifies them |
 
-Places/localities should not be expanded just to increase the count; 26 already exceeds the mechanics floor of 10.
+Places should not be expanded simply to increase count; 26 already exceeds the mechanics floor of 10.
 
 ### Qualitative Gate A requirements
 
-Gate A should fail even with attractive counts if the content graph is weak. Require:
+Gate A fails regardless of count if the graph is weak. Require:
 
-- new items have intentional sources and sinks or explicit exemptions;
-- new resources participate in more than one downstream decision where practical;
-- abilities/techniques have real learning/access/use requirements and at least representative runtime use coverage;
-- NPC schedules and services use canonical fictional time/location authority;
-- quests/contracts are reachable and reference valid content;
-- companion definitions remain NPC-backed persistent people, not combat vending machines;
-- cross-pack references declare dependencies;
-- legacy identifiers do not leak into canonical packs;
-- the generated scale fixture and real regional packs both validate;
-- census gains come from playable connected records rather than inert fixtures.
+- intentional item sources and sinks or explicit exemptions;
+- resources participating in multiple decisions where practical;
+- abilities with real learning/access/use requirements and runtime coverage;
+- schedules/services tied to canonical fictional time/location authority;
+- reachable quests/contracts with valid references;
+- NPC-backed persistent companions rather than combat vending machines;
+- declared cross-pack dependencies;
+- no legacy identifier leakage;
+- generated scale fixtures and real packs both validating;
+- census gains coming from playable connected canonical records rather than fixtures or ownership refs.
 
-# Relative implementation timeline
+# Relative planning envelope
 
-The following is a capacity-planning envelope after an explicit Phase 0.9 opening, not a delivery promise:
+The original relative envelope remains useful as capacity planning, but Packet A is now complete:
 
-| Relative window | Packet |
-| --- | --- |
-| Weeks 1–2 | Phase opening governance + Content Pack Scale Contract v2 |
-| Weeks 3–5 | Redstone Forge-Road tranche |
-| Weeks 6–8 | Elderwood Hunt-Timber tranche |
-| Weeks 9–11 | Starfen Marshcraft-Practical Magic tranche |
-| Week 12 | Gate A integration, census, docs and handoff |
+| Relative band | Packet | Status |
+| --- | --- | --- |
+| Weeks 1–2 equivalent | Governance + Pack v2 | COMPLETE |
+| Weeks 3–5 equivalent | Redstone Forge-Road | NOT STARTED |
+| Weeks 6–8 equivalent | Elderwood Hunt-Timber | QUEUED |
+| Weeks 9–11 equivalent | Starfen Marshcraft-Practical Magic | QUEUED |
+| Week 12 equivalent | Gate A integration/census | QUEUED |
 
-If Pack v2 reveals deeper ownership problems, stop and repair those before content volume increases. If a regional tranche reveals categorization or balance problems, adjust the next tranche rather than copying the defect at scale.
+These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-## `0.9.200` — Adventure vertical slices
+`0.9.200` deeper adventure vertical slices, `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale remain ordered future tracks. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
-Select the strongest newly dense region and create a deeper dangerous expedition/dungeon slice that combines preparation, route knowledge, ecology, combat, resource recovery, provenance, equipment, companions and return-home consequences.
+# Explicit non-goals
 
-## `0.9.300` — Advanced combat and training
+Do not use Gate A to introduce a second simulation clock, generic background automation, full romance, mounts/warehouses merely for breadth, supported-save migrations without a separate decision, hard benchmark thresholds, giant global content files that bypass pack ownership, or procedural filler intended only to satisfy census numbers.
 
-Use the larger ability catalog to deepen enemy tactics, techniques, mentor/certification access and equipment interaction. Do not build advanced combat around five representative abilities.
-
-## `0.9.400` — Economy and production depth
-
-Add material tiers, repair/replacement, advanced stations and durable sinks only after Gate A provides enough real item/process breadth to expose the economy's actual weak points.
-
-## `0.9.500` — Quest and social depth
-
-Build regional arcs, reputation/community consequences and companion breadth over the larger NPC/content graph established by Gate A.
-
-## `0.9.600` — Playable-alpha content-scale push
-
-This is the appropriate track to drive toward the much larger playable-alpha lower bounds after the production pipeline has proven that it can scale without loss of coherence.
-
-Later `0.9.700`–`0.9.900` remain the planned browser accessibility/E2E, supported-persistence/release transition, and release-candidate hardening programs.
-
-# Explicit non-goals for the first Phase 0.9 track
-
-Do not use `0.9.100` to introduce:
-
-- a new simulation clock;
-- generic background automation;
-- full romance;
-- mounts/warehouses merely for breadth;
-- supported-save migrations unless separately authorized;
-- hard benchmark thresholds;
-- a giant global content file that bypasses regional ownership;
-- procedural filler whose only purpose is satisfying the census.
-
-The desired outcome is a content-production system that can repeatedly produce **original, regional, cross-linked, testable gameplay**, not merely a larger database.
+The desired outcome is a production system that repeatedly creates **original, regional, cross-linked, testable gameplay** on infrastructure that is already prepared to own it.
