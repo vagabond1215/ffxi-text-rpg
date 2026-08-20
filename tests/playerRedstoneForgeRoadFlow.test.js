@@ -100,6 +100,9 @@ test('Redstone field inputs become provenance-bearing caravan hardware through e
     assert.ok(shoes.provenance[0].data.inputSources.some((entry) => entry.itemId === 'item-redstone-tempered-iron-bar'));
     assert.ok(getProductionItem('item-redstone-miners-brace').sinks.some((sink) => sink.type === 'equipment'));
 
+    // Mae owns the later Forge-Road order and is available 11:00–17:00.
+    // The work itself advances fictional time; this final wait enters her authored window.
+    advanceWorldTime(state, 3 * 60 * 60);
     const beforeGil = state.player.wallet.gil;
     const accepted = acceptCommitment(state, 'commitment-brasshaven-caravan-shoes');
     assert.equal(accepted.ok, true, accepted.display?.text);
