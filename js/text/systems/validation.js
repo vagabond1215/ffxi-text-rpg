@@ -24,6 +24,7 @@ import {
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { VERSION } from '../version.js';
 import { validateCommitmentState } from './commitmentEngine.js';
+import { validateCultivationState } from './cultivationEngine.js';
 import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
 import { getContainerCapacity } from './inventoryEngine.js';
 import { validateProjectState } from './projectEngine.js';
@@ -69,6 +70,12 @@ export function validateGameState(state) {
         const projectIssues = validateProjectState(state.projects);
         issues.push(...projectIssues);
         if (!projectIssues.length) issues.push(...validateHomeInfrastructureState(state).map((issue) => `homeInfrastructure.${issue}`));
+    }
+
+    if (!isObject(state.cultivation)) {
+        issues.push('cultivation must be an object.');
+    } else {
+        issues.push(...validateCultivationState(state.cultivation, state.work).map((issue) => `cultivation.${issue}`));
     }
 
     if (!isObject(state.commitments)) {
