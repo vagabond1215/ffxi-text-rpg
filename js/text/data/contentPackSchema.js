@@ -94,7 +94,7 @@ export function validateContentPackManifest(pack) {
             }
             if (!validStableId(adapter.legacyId)) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}].legacyId is invalid.`);
             if (!validStableId(adapter.canonicalId)) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}].canonicalId is invalid.`);
-            if (!adapter.reason) issues.push(`${pack.id || 'pack'} legacyAdapters[${index} requires a reason.`);
+            if (!adapter.reason) issues.push(`${pack.id || 'pack'} legacyAdapters[${index}] requires a reason.`);
         }
     }
 
