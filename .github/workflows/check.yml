@@ -31,3 +31,7 @@ jobs:
         run: npm run benchmark
       - name: Benchmark Sample
         run: npm run benchmark:sample
+      - name: Content Census
+        run: npm run census
+      - name: Hardening
+        run: npm run hardening
