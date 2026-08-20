@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.8.800.1';
-export const PACKAGE_VERSION = '0.8.800';
+export const PRODUCT_VERSION = '0.8.900.1';
+export const PACKAGE_VERSION = '0.8.900';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 38,
+    data: 39,
     benchmark: 3,
-    codename: 'Earned Routine Delegation',
+    codename: 'Household & Community Continuity',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.8.800.1',
+    versionManifest: '0.8.900.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -27,9 +27,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     cultivation: '0.2.0',
-    commitments: '0.3.1',
+    commitments: '0.4.0',
     relationships: '0.1.0',
-    npcSchedules: '0.1.0',
+    npcSchedules: '0.2.0',
     npcWorldProjection: '0.1.1',
     enemyEncounterProjection: '0.1.0',
     presentationLog: '0.1.0',
