@@ -1,5 +1,7 @@
 export const NPC_SCHEDULE_DATA_VERSION = 2;
 
+const SECONDS_PER_DAY = 24 * 60 * 60;
+
 const DAILY_SCHEDULES = [
     schedule({
         id: 'schedule-thornwall-sera-talwin',
@@ -53,6 +55,11 @@ export function listNpcSchedules() {
     return NPC_SCHEDULES;
 }
 
+export function getNpcScheduleById(scheduleId) {
+    const key = String(scheduleId ?? '').trim();
+    return NPC_SCHEDULES.find((entry) => entry.id === key) ?? null;
+}
+
 export function getNpcScheduleByNpcId(npcId) {
     const key = String(npcId ?? '').trim();
     return NPC_SCHEDULES.find((entry) => entry.npcId === key) ?? null;
@@ -61,6 +68,61 @@ export function getNpcScheduleByNpcId(npcId) {
 export function getNpcScheduleByPoiId(poiId) {
     const key = String(poiId ?? '').trim();
     return NPC_SCHEDULES.find((entry) => entry.poiId === key) ?? null;
+}
+
+export function validateNpcScheduleDefinition(definition) {
+    const issues = [];
+    const label = definition?.id || 'npc schedule';
+    if (!definition || typeof definition !== 'object' || Array.isArray(definition)) return ['npc schedule must be an object.'];
+    if (!stableId(definition.id, 'schedule-')) issues.push(`${label}.id must be a stable schedule id.`);
+    if (!stableId(definition.npcId, 'npc-')) issues.push(`${label}.npcId must be a stable NPC id.`);
+    if (!stableId(definition.poiId, 'poi-')) issues.push(`${label}.poiId must be a stable POI id.`);
+    if (!stableId(definition.placeId)) issues.push(`${label}.placeId must be a stable place id.`);
+    if (!String(definition.label ?? '').trim()) issues.push(`${label}.label is required.`);
+    if (!String(definition.unavailableText ?? '').trim()) issues.push(`${label}.unavailableText is required.`);
+    if (!Array.isArray(definition.windows) || definition.windows.length === 0) {
+        issues.push(`${label}.windows must be a non-empty array.`);
+        return issues;
+    }
+
+    const sorted = [...definition.windows].sort((a, b) => Number(a?.startSecond) - Number(b?.startSecond));
+    let priorEnd = -1;
+    for (const [index, entry] of sorted.entries()) {
+        const windowLabel = `${label}.windows[${index}]`;
+        if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+            issues.push(`${windowLabel} must be an object.`);
+            continue;
+        }
+        if (!Number.isInteger(entry.startSecond) || entry.startSecond < 0 || entry.startSecond >= SECONDS_PER_DAY) {
+            issues.push(`${windowLabel}.startSecond must be within the fictional day.`);
+        }
+        if (!Number.isInteger(entry.endSecond) || entry.endSecond <= 0 || entry.endSecond > SECONDS_PER_DAY) {
+            issues.push(`${windowLabel}.endSecond must be within the fictional day.`);
+        }
+        if (Number.isInteger(entry.startSecond) && Number.isInteger(entry.endSecond) && entry.endSecond <= entry.startSecond) {
+            issues.push(`${windowLabel} must end after it starts.`);
+        }
+        if (Number.isInteger(entry.startSecond) && entry.startSecond < priorEnd) {
+            issues.push(`${windowLabel} overlaps an earlier schedule window.`);
+        }
+        if (!String(entry.label ?? '').trim()) issues.push(`${windowLabel}.label is required.`);
+        if (Number.isInteger(entry.endSecond)) priorEnd = Math.max(priorEnd, entry.endSecond);
+    }
+    return issues;
+}
+
+export function validateNpcScheduleCatalog() {
+    const issues = [];
+    const ids = new Set();
+    const npcIds = new Set();
+    for (const definition of NPC_SCHEDULES) {
+        issues.push(...validateNpcScheduleDefinition(definition));
+        if (ids.has(definition.id)) issues.push(`Duplicate NPC schedule id ${definition.id}.`);
+        ids.add(definition.id);
+        if (npcIds.has(definition.npcId)) issues.push(`NPC ${definition.npcId} has more than one canonical daily schedule.`);
+        npcIds.add(definition.npcId);
+    }
+    return issues;
 }
 
 function schedule(definition) {
@@ -80,4 +142,10 @@ function window(startHour, startMinute, endHour, endMinute, label) {
 
 function toSecondOfDay(hour, minute) {
     return (hour * 60 * 60) + (minute * 60);
+}
+
+function stableId(value, prefix = '') {
+    return typeof value === 'string'
+        && (!prefix || value.startsWith(prefix))
+        && /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/.test(value);
 }

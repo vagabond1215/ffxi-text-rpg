@@ -4,247 +4,166 @@ These repository-level gates supplement the current handoff, execution pipeline,
 
 ## Before implementation
 
-- Confirm current `main` and read `docs/THREAD_HANDOFF.md`.
-- Read `docs/EXECUTION_PIPELINE.md`; do not restart broad discovery when the checkpoint is current.
-- Identify the authoritative state owner and production caller for the requested behavior.
-- Inspect focused tests and nearby persistence/runtime/UI contracts.
-- Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for lifecycle- or performance-sensitive work.
-- For content-heavy work, use `npm run census` when the metric is material and executable.
-- A planned roadmap unit is not authorization to implement it.
+- Refresh `main`, PR state, `docs/THREAD_HANDOFF.md`, and `docs/EXECUTION_PIPELINE.md`.
+- Identify the authoritative state/data owner and production caller for the requested behavior.
+- Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for performance/lifecycle-sensitive work.
+- For Phase 0.9 content work, prove the relevant catalog/Pack v2 ownership and validation path exists **before** high-volume authoring or import.
+- A roadmap packet is not authorization for later packets.
 
 ## Validation entry points
 
 ```bash
+npm run audit:repo
 npm test
+npm run census
 npm run benchmark
 npm run benchmark:sample
-npm run census
 npm run hardening
 npm run check
 ```
 
-Hosted `Check` normally runs the full test suite, Benchmark 3 and Benchmark Sample on Node 24. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new runtime checkpoint.
-
-`tests/architectureDebtGuard.test.js` protects selected compatibility/lifecycle seams. `tests/contentScaleGate.test.js` protects criteria-driven content-scale target definitions. Future breadth targets are progression indicators, not ordinary CI pass/fail thresholds.
-
-## Current Phase 0.8 validation baseline
-
-Frozen runtime:
+Ordinary local/hosted `Check` now runs, in order:
 
 ```text
-ca7d37c643adc4115b519148615f6120d03228df
-Product 0.8.900.1
-Package 0.8.900
-Account Save 5
-Game State 14
-Data 39
-Benchmark 3
-```
-
-Hosted Check `32395768383` / Node 24.19.0:
-
-```text
-699/699 tests
-0 failed
-0 skipped
-Benchmark 3 success
-Benchmark Sample success
-```
-
-Phase-exit validation-only Check `32395959505` additionally ran and passed:
-
-```text
+Repository Audit
+Test
 Content Census
-Hardening
+Benchmark 3
+Benchmark Sample
 ```
 
-Hardening includes `tests/longSessionLifecycle.test.js` (2/2 pass) followed by Benchmark Sample.
+Census execution is a CI contract; census **target completion is not**. A mechanics-scale shortfall is roadmap/progression evidence and must not fail ordinary Check merely because the project has not authored enough content yet.
 
-Validation-only PR #380 is closed without merge.
-
-## Persistence
-
-Current mode remains **pre-alpha current-schema only**.
-
-- Account/session payloads must match Account Save 5 exactly.
-- Character payloads must match Game State 14 and contain complete required persisted authority before reference revival.
-- Raw validation runs before runtime `ensure*` helpers, reconstructed projections, or presentation initialization may normalize state.
-- Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
-- Optional persisted authority may be absent only where its domain contract permits absence.
-- Active owner/task links must remain consistent until owner reconciliation.
-- Changing serialized shape/meaning requires a deliberate schema decision; derived/session state is not serialized merely for convenience.
-
-### Game State 14 raw validation
-
-Required persisted families include:
+## Current baseline
 
 ```text
-world time and simulation control
-timed tasks and active owner/task links
-active Travel State 2
-projects, commitments, relationships
-resource opportunities and ecology
-cultivation plot/crop/delegation authority
-party and ability runtime
-semantic events
-atlas and POI discovery
-player envelope / identity / key items / player flags
-player progression / lifetime training / learned skills / capabilities
-player inventory/container state
-player mutable HP/MP/TP
-player canonical wallet
-player equipment/loadout state
-player canonical status state
-top-level world flags
-current place / display location / position coherence
-combatSequence / activeBattle.id identity coherence
-active battle state when present, including deterministic combat/stat snapshots
-active battle player / root player live-authority coherence
+Product:       0.9.100.1
+Package:       0.9.100
+Account Save:  5
+Game State:    14
+Data:          40
+Benchmark:     3
+Codename:      Content Pack Scale Contract v2
 ```
 
-Optional persisted authorities remain:
+The first 0.9.100 infrastructure checkpoint passed 704/704 tests, census, Benchmark 3, and Benchmark Sample on Node 24.19.0 before documentation promotion. Final promoted-version PR validation is required before merge.
+
+## Persistence/lifecycle
+
+Current mode remains strict pre-alpha current-schema-only.
+
+- Account Save must remain 5 unless account/session shape changes.
+- Game State must remain 14 unless a genuinely new durable player/world fact changes the serialized contract.
+- Data changes do not automatically imply Game State changes.
+- Required persisted authority validates before runtime normalization/revival.
+- Active owner/task links remain coherent until owner reconciliation.
+- Direct timed-task creation remains limited to audited domain owners.
+- No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
+
+The Pack v2 infrastructure packet adds **no persistence or lifecycle owner**, so `npm run hardening` is not required merely because authored-data infrastructure changed. It remains required for lifecycle-sensitive packets and phase/release gates.
+
+## Content Pack v2 gate
+
+Before high-volume canonical content enters a family, verify it has:
+
+1. a canonical definition authority;
+2. a Pack v2 ownership collection or an explicit reason it should not have one;
+3. stable-ID collision detection;
+4. cross-pack dependency enforcement;
+5. dangling-reference validation;
+6. legacy-ID boundary validation;
+7. census behavior that counts real canonical breadth without double-counting catalog refs or fixtures;
+8. representative scale-fixture coverage.
+
+Current Pack v2 owns:
 
 ```text
-state.work
-player.progression.workProficiencies
-state.dayCycle
+places / routes / transportServices
+ecologyFamilies / species / populations / gatheringSources
+items / npcs / npcSchedules / shops
+recipes / quests / relationships
+spellSchools / capabilities / abilities / companions
 ```
 
-### Cultivation and delegation classification
+`contentCatalogRegistry` bridges ownership to existing canonical catalogs. Packs must not copy canonical definitions solely to establish ownership metadata.
 
-`state.cultivation` is **persistent required authority**. It preserves player-costly facts that cannot be reconstructed safely: prepared/growing state, cycle/harvest counts, active manual work link, crop timing, seed provenance, and paid delegation appointment state.
-
-Crop growth is **not** a timed-task resource. Manual preparation/tending reuse the existing work/timed-task chain. Paid delegated tending uses no new direct timed-task owner and resolves from persisted canonical fictional-time boundaries.
-
-### Derived/transient state
-
-Current non-authoritative runtime state still includes:
+### Current catalog bridge
 
 ```text
-state.npcs
-state.enemies
-state.log
-player.inventory alias identity
-player.combat
-player.statState
-activeBattle.rng
+items        -> resource + production + equipment catalogs
+recipes      -> production catalog
+quests       -> commitment catalog where applicable
+npcs         -> canonical seed NPC catalog
+routes       -> route/transport catalogs
+ecology      -> ecology catalogs
+training     -> spell-school/capability/ability catalogs
+schedules    -> NPC schedule catalog
+companions   -> companion catalog
 ```
 
-`state.events` remains persisted structured semantic observation history. `activeBattle.log` remains persisted encounter-local history. Top-level `state.log` remains session-only presentation history.
+### Scale proof
 
-### Historical schema decisions
-
-- Game State 7 — canonical fictional-time atlas visits.
-- Game State 8 — root player combat/stat caches removed from serialization.
-- Game State 9 — canonical persisted status modifier shape.
-- Game State 10 — `state.npcs` projection removed from serialization.
-- Game State 11 — `state.enemies` projection removed from serialization.
-- Game State 12 — top-level command presentation history removed from serialization.
-- Game State 13 — required durable cultivation plot/crop authority introduced.
-- Game State 14 — durable paid cultivation delegation appointment introduced.
-
-No automatic pre-alpha migrations were added.
-
-## Lifecycle gates
-
-Current direct timed-task creators remain the audited six owners:
+`tests/contentPackValidator.test.js` contains a generated Pack v2 fixture with 1,401 ownership records:
 
 ```text
-abilityEngine.js
-campaignRecoveryEngine.js
-projectEngine.js
-resourceOpportunityEngine.js
-transportEngine.js
-workTaskEngine.js
+1 place
+200 items
+200 recipes
+200 NPCs
+200 schedules
+200 capabilities
+200 abilities
+200 companions
 ```
 
-Cultivation growth and delegated tending do not add another owner.
+Fixtures are validation data only and must never contribute to canonical content census counts.
 
-Required properties:
-
-- owner defines durable consequence;
-- exactly-once reconciliation occurs before terminal release;
-- save/load preserves active ownership without duplicate resources;
-- task sequence IDs remain monotonic;
-- no blind global task pruning;
-- no wall-clock/offline simulation becomes canonical.
-
-`npm run hardening` is required for phase/release gates or material lifecycle-sensitive changes.
-
-## Phase 0.8 connected-life gate
-
-Phase 0.8 is complete only because the following remain connected in one authority model:
+## Current content progression
 
 ```text
-home/storage/workshop
-  -> cultivation
-  -> repeated manual routine/mastery
-  -> bounded paid delegation
-  -> home-grown provenance
-  -> scheduled named community commitments/relationships
-  -> ordinary services, preparation, travel and adventure
+places/localities       26 / mechanics 10
+named NPCs              12 / 50
+shop/service sites      17 / 20
+creatures               16 / 40
+resource sources        13 / 40
+canonical items         50 / 200
+recipes/processes       11 / 75
+abilities/techniques     5 / 100
+quests/contracts         8 / 30
+companions                1 / 4
+transport services        3 / 5
 ```
 
-See `docs/PHASE_0_8_EXIT_GATE.md` for exact evidence.
-
-## Content progression
-
-Current census:
-
-| Metric | Current | Mechanics floor |
-| --- | ---: | ---: |
-| Places/localities | 26 | 10 |
-| Named NPCs | 12 | 50 |
-| Shop/service sites | 17 | 20 |
-| Creature definitions | 16 | 40 |
-| Resource sources | 13 | 40 |
-| Canonical items | 50 | 200 |
-| Recipes/processes | 11 | 75 |
-| Abilities/techniques | 5 | 100 |
-| Quests/contracts | 8 | 30 |
-| Companions | 1 | 4 |
-| Transport services | 3 | 5 |
-
-Mechanics-scale gate is **NOT READY**. Places exceed their mechanics floor; all other tracked categories remain below it. The largest relative gap is abilities/techniques.
-
-Do not game counts with disconnected filler. Phase 0.9 content work should build dense cross-linked regional graphs.
-
-## Performance and long-session stability
-
-Benchmark 3 remains the current comparability protocol. No hard thresholds are accepted.
-
-Frozen-runtime sample medians/spreads from Check `32395768383`:
+Infrastructure coverage is separately visible:
 
 ```text
-player profiles  0.359735 ms/op    6.77%
-enemy profiles   0.068665 ms/op    8.93%
-basic attacks    0.001223 ms/op  172.92%
-tick dispatch    0.000821 ms/op   27.23%
-route lookup     0.007260 ms/op    6.40%
+spell schools                            3
+capability/training definitions          8
+NPC schedules                            4
+regional/shared packs                    7
+pack-owned records                     115
+pack-owned abilities/capabilities/
+  schedules/companions                 5/8/4/1
 ```
 
-The very fast attack/tick workloads remain noisy; do not convert these numbers into CI thresholds.
+Do not game counts with disconnected filler. The next regional tranche must demonstrate a connected graph across multiple families rather than a category-by-category dump.
 
-## UI and adapter boundaries
+## Performance
 
-The semantic DOM shell is the active player interface. Direct gameplay intents include:
-
-```text
-cultivation.prepare
-cultivation.plant
-cultivation.tend
-cultivation.harvest
-commitment.accept
-commitment.resolve
-commitment.followUp
-```
-
-The Journal/context model may project player decisions but must not expose raw plot IDs, internal timestamps/provenance structures, or require command-string manufacture.
-
-Canonical `ActionResult` consumers continue using `ok`, `action`, `code`, `outcome`, `data`, and `display`; domain logic must not parse presentation prose.
+Benchmark 3 remains comparative evidence. No hard timing thresholds are accepted. Very fast attack/tick microbenchmarks remain noise-sensitive; do not derive CI pass/fail budgets from them without a separate evidence-backed decision.
 
 ## Definition of done
 
-A bounded implementation is complete when production behavior is coherent, relevant validation actually ran, persistence/lifecycle contracts are preserved, performance/content-scale evidence is recorded when material, version decisions are explicit, the exact implementation SHA is frozen before documentation synchronization, and `docs/THREAD_HANDOFF.md` is updated last.
+A bounded implementation is complete when:
 
-Phase 0.8 is closed. Phase 0.9 is planned but not opened; a separate explicit work order is required before `0.9.100` implementation or governance changes begin.
+- the production/data authority is coherent;
+- focused/adversarial tests cover the changed boundary;
+- relevant scale validation actually ran;
+- Repository Audit + Test + Census + Benchmark 3 + Sample are green when material;
+- persistence/lifecycle decisions are explicit;
+- Product/Package/Data/Game State/Benchmark decisions are explicit and independent;
+- the exact implementation SHA is frozen before docs synchronization;
+- `docs/THREAD_HANDOFF.md` is the final repository-file write;
+- the next independent packet is recorded but not silently started.
+
+For the current work order, Content Pack Scale Contract v2 is complete; Redstone Forge-Road is not part of this definition of done.

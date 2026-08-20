@@ -1,6 +1,6 @@
 {
   "name": "hearth-and-horizon",
-  "version": "0.8.900",
+  "version": "0.9.100",
   "private": true,
   "type": "module",
   "description": "Original text-first persistent fantasy life RPG with deterministic simulation, exploration, livelihoods, relationships, and dangerous travel.",
@@ -14,7 +14,7 @@
     "census": "node scripts/contentCensus.js",
     "audit:repo": "node scripts/repositoryAudit.js",
     "hardening": "node --test tests/longSessionLifecycle.test.js && npm run benchmark:sample",
-    "check": "npm run audit:repo && npm test && npm run benchmark && npm run benchmark:sample"
+    "check": "npm run audit:repo && npm test && npm run census && npm run benchmark && npm run benchmark:sample"
   },
   "devDependencies": {},
   "engines": {

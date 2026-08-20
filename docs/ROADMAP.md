@@ -2,49 +2,24 @@
 
 This is the authoritative phase and feature-track roadmap for **Hearth & Horizon**, an original text-first persistent fantasy life RPG.
 
-Operational sequencing lives in `docs/EXECUTION_PIPELINE.md`. Exact restart state lives in `docs/THREAD_HANDOFF.md`. Phase 0.8 closure evidence lives in `docs/PHASE_0_8_EXIT_GATE.md`.
-
-Authoritative companions:
-
-- `docs/DEVELOPMENT_DIRECTION.md`
-- `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
-- `docs/EXECUTION_PIPELINE.md`
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-- `docs/ARCHITECTURE.md`
-- `docs/QUALITY_GATES.md`
+Operational sequencing lives in `docs/EXECUTION_PIPELINE.md`. Exact restart state lives in `docs/THREAD_HANDOFF.md`. Detailed Gate A planning lives in `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
 
 ## Current validated baseline
 
 ```text
-Product:       0.8.900.1
-Package:       0.8.900
+Product:       0.9.100.1
+Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          39
+Data:          40
 Benchmark:     3
-Codename:      Household & Community Continuity
+Codename:      Content Pack Scale Contract v2
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Exact frozen runtime:
-
-```text
-ca7d37c643adc4115b519148615f6120d03228df
-```
-
-Hosted evidence:
-
-```text
-Check 32395768383
-Node 24.19.0
-699/699 tests
-Benchmark 3 success
-Benchmark Sample success
-```
-
-Phase-exit validation-only Check `32395959505` additionally passed Content Census and Hardening. Validation-only PR #380 is closed without merge.
+Phase 0.8 remains complete. Phase 0.9 is now **open / in progress**. The first `0.9.100` infrastructure packet is complete on the integration branch; high-volume regional content authoring has deliberately not begun.
 
 ## Product laws
 
@@ -58,11 +33,6 @@ Capabilities enable.
 Loadouts and preparation constrain and enhance.
 ```
 
-```text
-Use fine movement where movement itself creates decisions.
-Use named localities and actions where destinations and relationships create decisions.
-```
-
 Campaign guidance reflects acquired knowledge. Resources preserve provenance. Fictional time is separate from wall-clock scheduling. Persistent authorities remain canonical; projections and presentation remain derived. Legacy FFXI-derived material is research/reference only.
 
 ## Phase summary
@@ -74,95 +44,34 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. Fi
 | `0.6` | Integrated character/mechanics | **Complete** |
 | `0.7` | Multi-region playable-alpha foundation | **Complete** |
 | `0.8` | Life and infrastructure expansion | **Complete** |
-| `0.9` | Content scale, adventure depth and release hardening | **Planned; not opened** |
+| `0.9` | Content scale, adventure depth and release hardening | **In progress** |
 | `1.0` | Live foundation | Planned |
 
 # Phase 0.8 — Life and infrastructure expansion
 
-**Status: COMPLETE.** See `docs/PHASE_0_8_EXIT_GATE.md`.
+**Status: COMPLETE.** See `docs/PHASE_0_8_EXIT_GATE.md` for the validated connected-life arc and historical evidence.
 
-| Track | Player-facing gate | Status |
-| --- | --- | --- |
-| `0.8.100` | Home foothold: durable storage from regional materials + project labor | **Complete** |
-| `0.8.200` | Home workshop: locality-bound production capability | **Complete** |
-| `0.8.300` | Carried-load transport from actual inventory | **Complete** |
-| `0.8.400` | Earned Field Satchel portable logistics | **Complete** |
-| `0.8.500` | Fictional-time NPC availability | **Complete** |
-| `0.8.600` | Companion convalescence and safe reunion | **Complete** |
-| `0.8.700` | Cultivation & Stewardship | **Complete** |
-| `0.8.800` | Earned Routine Delegation | **Complete** |
-| `0.8.900` | Household & Community Continuity | **Complete** |
-
-Revisions `.2`–`.52` after `0.8.600` completed the late-phase persistence/lifecycle classification sequence. C0 then added durable continuation guidance and executable content census tooling. The subsequent player-facing tracks proved the connected life arc rather than manufacturing another persistence audit.
-
-## `0.8.700` — Cultivation & Stewardship
-
-A reusable home Sweetroot bed now composes canonical world time, inventory, provenance, work tasks, work proficiency and semantic Journal actions.
+Completed tracks:
 
 ```text
-physical Sweetroot propagation input
-  -> prepare / plant
-  -> timestamp-derived growth
-  -> manual tending after one fictional day
-  -> maturity after two fictional days
-  -> exactly-once ordinary Sweetroot harvest
-  -> cultivated + seed provenance
-  -> existing consume / production / trade sinks
-  -> repeated practice reduces later hands-on duration
+0.8.100 home foothold/storage
+0.8.200 home workshop
+0.8.300 carried-load transport
+0.8.400 Field Satchel
+0.8.500 fictional-time NPC availability
+0.8.600 companion convalescence
+0.8.700 cultivation/stewardship
+0.8.800 earned routine delegation
+0.8.900 household/community continuity
 ```
 
-Game State advanced 12 -> 13 for required cultivation plot/crop authority. Data advanced 37 -> 38 for stable cultivation identifiers. No crop-owned long-lived timed task was introduced.
-
-## `0.8.800` — Earned Routine Delegation
-
-After one manually completed cultivation cycle, the player can pay **12 gil** to arrange one future Sweetroot tending visit.
-
-The appointment persists under cultivation authority, resolves from canonical fictional time, occupies no player hands-on channel, creates no new direct timed-task owner, grants no player mastery, and cannot charge or complete twice across save/load. Insufficient funds fail atomically.
-
-Game State advanced 13 -> 14 because the paid pending appointment is durable player-costly state.
-
-## `0.8.900` — Household & Community Continuity
-
-Three existing named locality people now participate as persistent scheduled community contacts:
-
-- Mira Fen — Thornwall Southgate, 06:00–11:00;
-- Mae Oris — Brasshaven Market Ring, 11:00–17:00;
-- Kiri Fen — Mistmere Canal Ward, 16:00–21:00.
-
-Their commitments require Sweetroot provenance from `plot-home-sweetroot-bed`; wild Sweetroot does not substitute. Resolution and later-day follow-up reuse existing commitment, relationship, wallet, inventory, NPC schedule, semantic event, save/load and Journal authorities. Semantic actions are `commitment.accept`, `commitment.resolve`, and `commitment.followUp`.
-
-Data advanced 38 -> 39 for the expanded canonical NPC/schedule/commitment identifiers. Game State remains 14 because existing generic persistence contracts already own the new records.
-
-## Phase 0.8 exit result
-
-The validated connected-life chain is:
-
-```text
-home/storage/workshop
-  -> cultivation/stewardship
-  -> repeated manual routine
-  -> earned paid delegation
-  -> named scheduled community consequences
-  -> ordinary inventory/services/travel/adventure remain connected
-```
-
-Exit gates all passed:
-
-```text
-npm test                 699/699
-npm run benchmark        Benchmark 3 success
-npm run benchmark:sample success
-npm run census           success
-npm run hardening        2/2 lifecycle tests + sample success
-```
-
-No second simulation clock, second task engine, generic automation platform, social clock or duplicate inventory/progression authority was introduced.
+Game State ended Phase 0.8 at 14 and remains 14 in the first Phase 0.9 packet.
 
 # Content scale as the Phase 0.9 gate
 
-`npm run census` is an executable progression indicator. Counts measure authored breadth, not quality or balance.
+`npm run census` is an executable progression indicator. It now runs in ordinary hosted `Check`, but incomplete content targets are **not CI failures**.
 
-Current Phase 0.8 exit census:
+Current gameplay breadth remains:
 
 | Category | Current | Mechanics integration | Playable alpha | 1.0 lower bound |
 | --- | ---: | ---: | ---: | ---: |
@@ -178,49 +87,82 @@ Current Phase 0.8 exit census:
 | Recruitable companions | 1 | 4 | 12 | 25 |
 | Scheduled transport services | 3 | 5 | 20 | 50 |
 
-Mechanics-scale status is **NOT READY**. Places already exceed the mechanics floor; all other tracked categories remain below it. The largest relative gap is abilities/techniques.
+Mechanics-scale status is **NOT READY**. Places already exceed the mechanics floor; abilities/techniques remain the largest relative gap.
 
-This is the central strategic input for the next phase. Do not game the census with disconnected filler.
+The first Phase 0.9 packet intentionally did **not** change these gameplay counts. Instead it scaled the infrastructure that must own later growth:
+
+```text
+regional/shared content packs                         7
+pack-owned records                                  115
+pack-owned abilities/capabilities/schedules/companions 5/8/4/1
+spell schools                                          3
+capability/training definitions                        8
+NPC schedules                                          4
+```
+
+This separation between authored breadth and infrastructure ownership is deliberate. Do not satisfy roadmap targets with disconnected filler or by counting catalog references twice.
 
 # Phase 0.9 — Content scale, adventure depth and release hardening
 
-**Status: planned; not opened.** The following are ordered planning tracks, not authorization to implement them.
+**Status: IN PROGRESS.**
 
-| Proposed track | Gate | Planning envelope |
+| Track | Gate | Status |
 | --- | --- | --- |
-| `0.9.100` | Content Scale Gate A: move core categories toward mechanics-integration lower bounds through connected regional packs | Q1 2027 |
-| `0.9.200` | Adventure vertical slices: deeper dangerous regions/dungeons combining maps, preparation, ecology, combat, recovery and provenance | Q1–Q2 2027 |
-| `0.9.300` | Advanced combat/training: tactical families, techniques, mentors/certification and equipment interaction | Q2 2027 |
-| `0.9.400` | Economy/production depth: material tiers, repair/replacement, advanced stations and durable sinks | Q2–Q3 2027 |
-| `0.9.500` | Quest/social depth: regional arcs, reputation/community consequences, companion breadth | Q3 2027 |
-| `0.9.600` | Playable-alpha content-scale push | Q4 2027–Q1 2028 |
-| `0.9.700` | Browser UX/accessibility/E2E hardening | Q1–Q2 2028 |
-| `0.9.800` | Supported persistence/release transition; deliberate migrations | Q2 2028 |
-| `0.9.900` | Release-candidate soak, accepted performance budgets, packaging/recovery/content/balance sweeps | Q3 2028 |
+| `0.9.100` | Content Scale Gate A | **IN PROGRESS** |
+| `0.9.200` | Adventure vertical slices | QUEUED |
+| `0.9.300` | Advanced combat/training | QUEUED |
+| `0.9.400` | Economy/production depth | QUEUED |
+| `0.9.500` | Quest/social depth | QUEUED |
+| `0.9.600` | Playable-alpha content-scale push | QUEUED |
+| `0.9.700` | Browser UX/accessibility/E2E hardening | DEFERRED |
+| `0.9.800` | Supported persistence/release transition | DEFERRED |
+| `0.9.900` | Release-candidate soak/performance/release hardening | DEFERRED |
 
-Calendar windows are planning envelopes, not promises. Track completion remains criteria-driven.
+## `0.9.100` — Content Scale Gate A
 
-## Phase 0.9 governance transition
+### Packet A — Content Pack Scale Contract v2
 
-Before high-volume Phase 0.9 work is explicitly opened, revisit repository governance. The recommended transition is protected `main` with required green hosted Check and PR-based track integration. Supported-save migrations remain a later deliberate release-transition decision unless a work order explicitly changes that policy.
+**Status: COMPLETE / validated before content expansion.**
 
-Do not perform this transition merely because Phase 0.8 closed; it belongs to the explicit Phase 0.9 opening decision.
+The packet adds infrastructure rather than content volume:
 
-# 1.0 — Live foundation
+- Content Pack schema v2 adds `spellSchools`, `capabilities`, `abilities`, `npcSchedules`, and `companions` to the existing regional/shared ownership model.
+- `contentCatalogRegistry` bridges packs to canonical resource/production/equipment items, production recipes, commitments, seed NPCs, routes/ecology, abilities/capabilities, schedules, and companions instead of duplicating definition authority.
+- Pack validation now checks scale-family structure, dangling references, stable-ID ownership, cross-pack dependencies, and legacy leakage.
+- NPC schedules gain structural catalog validation and stable schedule lookup.
+- Existing shared abilities/training, regional schedules, Mara, and Redstone roots are claimed by packs as ownership metadata without creating duplicate gameplay records.
+- Census counts future pack-owned abilities/companions but de-duplicates catalog refs.
+- A generated fixture validates more than 1,400 ownership records across Pack v2 families.
+- Hosted Check now runs Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample.
 
-A 1.0 release is justified when the continuous-character persistent-life/adventure promise works at sustained content scale: original world identity, interconnected life/adventure systems, meaningful mastery, sufficient authored content, ordinary browser usability, supported persistence, stable long sessions, accepted performance budgets, and proven release/recovery tooling.
+Version decision:
+
+```text
+Product:      0.9.100.1
+Package:      0.9.100
+Data:         39 -> 40
+Game State:   remains 14
+Account Save: remains 5
+Benchmark:    remains 3
+```
+
+Data advances because the canonical authored-data ownership/validation contract changed. Game State does not advance because no new durable player/world fact was introduced.
+
+### Next bounded packet — Redstone Forge-Road
+
+**Status: NOT STARTED.**
+
+Use the new Pack v2 path for a dense Redstone/Brasshaven graph linking existing geography to mining, production, equipment, training, schedules, services, contracts, transport, danger, and provenance. Do not begin by dumping isolated items or abilities into global catalogs.
+
+Following Gate A tranches remain Elderwood Hunt-Timber, Starfen Marshcraft-Practical Magic, then Gate A integration/census review. Their numeric planning bands remain guidance, not quotas.
+
+## Phase 0.9 governance
+
+Phase 0.9 work is using PR-based integration. The repository tool available in this session does not expose branch-protection mutation, so protected `main` / required-check enforcement remains an administrative follow-up rather than a fabricated completed step.
 
 # Current Game State 14 persistence boundary
 
-Required current-schema authority includes world/simulation/task state, active travel, projects, commitments, relationships, resource opportunities/ecology, cultivation including paid delegation appointment state, party, ability runtime, semantic events, discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, world flags, location and active combat authority when present.
-
-Optional persisted authority remains:
-
-```text
-state.work
-player.progression.workProficiencies
-state.dayCycle
-```
+The Phase 0.9 infrastructure packet changes no persistence ownership. Required current-schema authority still includes world/simulation/task state, travel, projects, commitments, relationships, ecology/resource opportunities, cultivation/delegation, party/ability runtime, semantic events, discovery, player state, location, and active combat when present.
 
 Derived/transient state remains:
 
@@ -236,6 +178,6 @@ activeBattle.rng
 
 # Deferred work
 
-Detailed deferred work lives in `docs/EXECUTION_PIPELINE.md`: supported-save migrations, branch-protection transition, dedicated browser E2E/accessibility, hard performance thresholds, balance certification, quality/HQ crafting depth, mounts/warehouses/large logistics, and deep romance.
+Supported-save migrations, browser E2E/accessibility, hard performance thresholds, balance certification, quality/HQ depth, large logistics, and deep romance remain deferred to their planned tracks unless explicitly opened earlier.
 
-A future continuation should start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. Do not automatically begin `0.9.100` from this roadmap alone.
+A future continuation must start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. The next regional content packet is not authorized merely because it appears here.

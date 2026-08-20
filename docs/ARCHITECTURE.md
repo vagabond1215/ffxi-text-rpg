@@ -19,17 +19,19 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.8.900.1
-Package:       0.8.900
+Product:       0.9.100.1
+Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          39
+Data:          40
 Benchmark:     3
-Codename:      Household & Community Continuity
-Phase:         0.8 complete
+Codename:      Content Pack Scale Contract v2
+Phase:         0.9 / Content Scale Gate A infrastructure
 ```
 
-Frozen runtime: `ca7d37c643adc4115b519148615f6120d03228df`.
+Frozen implementation checkpoint before documentation synchronization: `739f88801ddd66587b6b45bdbd0784dff351c986`.
+
+The version transition is intentionally narrow. Data advanced because canonical content ownership and validation contracts changed. Game State remains 14 because no new durable player/world fact was introduced.
 
 ## Core authority rules
 
@@ -42,8 +44,153 @@ Frozen runtime: `ca7d37c643adc4115b519148615f6120d03228df`.
 - Commitments own accepted/resolved/follow-up state; relationships remain separate durable authority.
 - NPC schedules derive authored availability from canonical fictional time and own no separate clock.
 - Persistent companions are NPC-backed participants whose party authority owns recruitment, active membership, location continuity, field approach and battle/recovery synchronization.
+- Content packs own regional/shared **content identity and dependency metadata**, not duplicate gameplay state.
+- Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+# Phase 0.9 content-scale architecture
+
+The first `0.9.100` packet is deliberately infrastructure-first. It prepares the repository to scale authored content before large data tranches are added.
+
+## Content Pack Scale Contract v2
+
+Pack v2 expands regional/shared ownership across the scale-critical families:
+
+```text
+places
+routes
+transportServices
+ecologyFamilies
+species
+populations
+gatheringSources
+items
+npcs
+npcSchedules
+shops
+recipes
+quests
+relationships
+spellSchools
+capabilities
+abilities
+companions
+```
+
+A pack record establishes stable ownership and declared dependencies. It does not replace the canonical runtime catalog for the referenced system.
+
+This distinction is intentional:
+
+```text
+regional/shared pack
+  -> owns stable content identity + dependency placement
+
+contentCatalogRegistry
+  -> resolves pack references
+
+canonical domain catalogs
+  -> own definitions consumed by runtime systems
+
+runtime systems
+  -> own gameplay behavior/state
+```
+
+The architecture therefore scales regional organization without creating pack-specific inventories, progression state, quest state, companion state, clocks, or other parallel authorities.
+
+## Catalog bridge
+
+`js/text/data/contentCatalogRegistry.js` is the bridge between regional ownership and canonical definitions. Current resolution spans:
+
+```text
+items
+  -> resource item registry
+  -> production item catalog
+  -> equipment catalog
+
+recipes/processes
+  -> production catalog
+
+quests/contracts
+  -> commitment catalog
+
+NPCs
+  -> canonical seed NPC definitions
+
+world/ecology
+  -> place / route / transport / ecology catalogs
+
+training/combat access
+  -> spell-school / capability / ability catalogs
+
+NPC life
+  -> NPC schedule catalog
+
+companions
+  -> companion catalog
+```
+
+The registry prevents content-pack validation from re-implementing each domain catalog and prevents regional packs from copying canonical records merely to claim ownership.
+
+## Cross-pack validation
+
+Pack v2 validation enforces both structure and graph integrity before content volume grows. The validator checks:
+
+- stable IDs and collection ownership;
+- duplicate ownership and cross-collection collisions;
+- declared dependencies for cross-pack references;
+- canonical catalog references for referenced records;
+- ability -> capability and spell-school relationships;
+- NPC schedule -> NPC/place relationships;
+- companion -> backing NPC/home/recruitment relationships;
+- topology, source/sink, quest and relationship references;
+- bounded legacy-ID adapters rather than accidental legacy leakage.
+
+NPC schedules also have structural validation for stable schedule identity, valid fictional-time windows, non-overlap and required presentation fields.
+
+## Scale fixture versus game content
+
+Generated scale fixtures are validation evidence, not canonical content. The current generated Pack v2 fixture exercises 1,401 owned records across items, recipes, NPCs, NPC schedules, capabilities, abilities and companions.
+
+The fixture proves the ownership/dependency validator can operate at four-digit record volume. It must never contribute to the content census or be presented as authored gameplay breadth.
+
+## Census separation
+
+The content census distinguishes actual canonical breadth from supporting infrastructure coverage.
+
+Current gameplay breadth remains:
+
+```text
+places/localities       26
+named NPCs              12
+shop/service sites      17
+creatures               16
+resource sources        13
+canonical items         50
+recipes/processes       11
+abilities/techniques     5
+quests/contracts         8
+companions                1
+transport services        3
+```
+
+Supplemental infrastructure visibility includes routes, spell schools, capability/training definitions, NPC schedules, regional/shared pack count, pack-owned records, and ownership by collection.
+
+The mechanics-scale gate remains **NOT READY**. Infrastructure improvements do not manufacture gameplay-content progress.
+
+## Hosted validation path
+
+Phase 0.9 hosted `Check` now exercises:
+
+```text
+Repository Audit
+  -> full test suite
+  -> Content Census
+  -> Benchmark 3
+  -> Benchmark Sample
+```
+
+Census execution is mandatory as an integration check; falling short of future content targets is not an ordinary CI failure. This keeps catalog/pack/census wiring continuously executable without turning roadmap counts into filler quotas.
 
 # Phase 0.8 connected-life architecture
 
@@ -178,7 +325,7 @@ display
 
 Adapters render `display.text` or consume semantic fields. Domain logic must not parse presentation prose.
 
-Direct semantic player intents now include:
+Direct semantic player intents include:
 
 ```text
 cultivation.prepare
@@ -293,20 +440,28 @@ Cultivation manual labor reuses `workTaskEngine`; crop growth and delegated tend
 - Game State 13 — required cultivation plot/crop authority introduced.
 - Game State 14 — required paid cultivation delegation appointment state introduced.
 
-## Validated Phase 0.8 checkpoint
+## Validated Pack v2 implementation checkpoint
+
+Before version/document synchronization, hosted Check `32402373472` on Node 24.19.0 passed:
 
 ```text
-Runtime: ca7d37c643adc4115b519148615f6120d03228df
-Check:   32395768383
-Tests:   699/699
-Node:    24.19.0
-Benchmark 3 + sample: success
+Repository Audit PASS
+704/704 tests
+Content Census success
+Benchmark 3 success
+Benchmark Sample success
 ```
 
-Phase-exit validation Check `32395959505` also passed Content Census and Hardening. Documentation commits after the runtime freeze are synchronization only.
+The exact implementation/version checkpoint before documentation synchronization is:
+
+```text
+739f88801ddd66587b6b45bdbd0784dff351c986
+```
+
+A final promoted-version PR Check is required after documentation/handoff synchronization before merge.
 
 ## Carried-forward rule
 
-Presentation adapters and projections may make canonical state easier to understand and operate, but they must not become second authorities.
+Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Phase 0.9 is planned but not opened. The next architectural risk is no longer state coherence; it is scaling connected authored content without introducing content-specific parallel systems.
+The next `0.9.100` content packet is Redstone Forge-Road, but it remains a separate not-started unit. Do not bulk-author/import it until this Pack v2 closure is green and merged.

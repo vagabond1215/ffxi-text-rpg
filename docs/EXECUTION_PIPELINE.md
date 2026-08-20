@@ -11,115 +11,92 @@ Authority order remains:
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. relevant architecture/runtime/tests for the active pass only
+8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
+9. relevant architecture/runtime/tests for the active bounded pass
 
-Detailed future Phase 0.9 packet design is recorded in `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`. That file is a planning artifact, not independent authorization to open the phase.
-
-If this file and `THREAD_HANDOFF.md` identify the active boundary, do not restart a broad audit. Refresh `main`, verify the checkpoint, inspect only the named next-pass evidence, and proceed only when the user has authorized that pass.
-
-## Current validated baseline
+## Current baseline
 
 ```text
-Product:       0.8.900.1
-Package:       0.8.900
+Product:       0.9.100.1
+Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          39
+Data:          40
 Benchmark:     3
-Phase:         0.8 complete
-Codename:      Household & Community Continuity
+Phase:         0.9 in progress
+Codename:      Content Pack Scale Contract v2
 Runtime:       Node >=24
 ```
 
-Frozen gameplay/runtime implementation:
-
-```text
-ca7d37c643adc4115b519148615f6120d03228df
-```
-
-Phase 0.8 evidence:
-
-```text
-Check 32395768383
-Node 24.19.0
-699/699 tests
-Benchmark 3 success
-Benchmark Sample success
-
-Phase-exit validation Check 32395959505
-Content Census success
-Hardening success
-Validation-only PR #380 closed without merge
-```
-
-See `docs/PHASE_0_8_EXIT_GATE.md` for the closure record.
-
-## Post-Phase-0.8 status audit and maintenance pass
-
-**Status: DONE.**
-
-The current-status audit found no gameplay/persistence blocker and did not change Product, Package, Account Save, Game State, Data, or Benchmark versions.
-
-Maintenance changes:
-
-- added `npm run audit:repo` to detect drift between runtime/package/profile/core docs/hosted Check;
-- aligned local `npm run check` with Repository Audit + Test + Benchmark + Benchmark Sample;
-- added the Repository Audit step to hosted `Check`;
-- added `tests/repositoryContractAudit.test.js`;
-- retired the obsolete pre-roadmap `docs/BASELINE_PIPELINE.md` instructions in favor of current authority documents.
-
-Validated maintenance head:
-
-```text
-c3d610e1f3820248a20de28bdc605e82da29e6f1
-```
-
-Validation-only PR #381 / Check `32398650493` / Job `96521318203` passed:
-
-```text
-Repository Audit PASS
-700/700 tests
-Benchmark 3 success
-Benchmark Sample success
-```
-
-PR #381 was closed without merge because the maintenance changes had already landed directly on `main`.
-
-### Repository-hygiene note
-
-Several historical validation branches and `feature/0.8.700-cultivation-stewardship` remain remotely. The available connector has no safe branch-delete action. They are manual cleanup debt, not active work or a runtime blocker. Do not continue new implementation from those stale branches.
+Phase 0.8 is complete. The post-0.8 status/repair/planning audit is complete. Phase 0.9 is explicitly open and is using PR-based integration for its cross-file scale work.
 
 ## Fast restart protocol
 
 ```text
-1. fetch current main SHA
+1. refresh current main and open PR state
 2. read AGENTS.md
 3. read docs/THREAD_HANDOFF.md
 4. read this file
-5. compare current main with the handoff
-6. if Phase 0.9 is explicitly opened, read docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
-7. inspect only the named next-pass evidence
-8. proceed only if that bounded unit is explicitly authorized
+5. read docs/PHASE_0_9_IMPLEMENTATION_PLAN.md only for the authorized Phase 0.9 packet
+6. inspect the named runtime/data/tests only
+7. proceed only with the immediate bounded unit
 ```
 
-Only reopen broad discovery when `main` materially diverged from the handoff, the handoff says the next unit is unselected, the named pass became impossible because authority changed, or the user explicitly asks for a fresh audit/roadmap revision.
+Do not redo Phase 0.4–0.8 discovery, persistence classification, or the post-0.8 audit unless a concrete regression/change requires it.
 
-Do not rediscover closed Phase 0.4–0.8 work or the completed post-0.8 status audit without a concrete regression/change.
+# Completed foundation
 
-# Completed Phase 0.8 queue
+```text
+Phase 0.4–0.7                  COMPLETE
+Phase 0.8 life/infrastructure  COMPLETE
+Phase 0.8 exit audit           COMPLETE
+post-0.8 status/repair audit   COMPLETE
+repository contract audit      COMPLETE
+```
 
-| Unit | Outcome |
-| --- | --- |
-| C0 continuation infrastructure + content census | DONE |
-| `0.8.700` Cultivation & Stewardship | DONE |
-| `0.8.800` Earned Routine Delegation | DONE |
-| `0.8.900` Household & Community Continuity | DONE |
-| Phase 0.8 exit audit | DONE |
-| Post-0.8 status audit / maintenance / planning pass | DONE |
+Phase 0.8 closed at Product `0.8.900.1`, Game State 14, Data 39. The first Phase 0.9 packet changes authored-data infrastructure only; existing persistence ownership remains unchanged.
 
-Phase 0.8 established the connected life loop and closed without adding parallel simulation clocks, generic task engines, duplicate inventories, or duplicate progression authorities.
+# Active phase — 0.9 Content Scale, Adventure Depth and Release Hardening
 
-## Current census
+## `0.9.100` — Content Scale Gate A
+
+**Status: IN PROGRESS.**
+
+Primary question:
+
+> Can the repository repeatedly author and validate materially larger connected regional content without bypassing ownership rules, duplicating canonical catalogs, or manufacturing filler?
+
+### Packet A — Content Pack Scale Contract v2
+
+**Status: COMPLETE on the Phase 0.9 integration branch; validated before content expansion.**
+
+Implemented infrastructure:
+
+- Pack schema v2 owns `spellSchools`, `capabilities`, `abilities`, `npcSchedules`, and `companions` in addition to existing geography/ecology/item/NPC/shop/recipe/quest/relationship families.
+- `contentCatalogRegistry` resolves packs against existing canonical catalogs rather than copying definitions for ownership bookkeeping.
+- Item lookup spans resource, production, and equipment catalogs.
+- Recipes, commitments, seed NPCs, route/ecology records, abilities/capabilities, schedules, and companions can be claimed through catalog refs.
+- Pack validator enforces scale-family structure, stable-ID collisions, cross-pack dependencies, dangling references, and legacy boundaries.
+- NPC schedule definitions now have structural catalog validation and stable schedule-ID lookup.
+- Existing current catalog records are assigned to shared/region roots, including a Redstone opening root, without adding new gameplay records.
+- Census can count future inline Pack v2 abilities/companions while de-duplicating catalog references.
+- Generated validation exercises 1,401 ownership records across one place plus 200 each of items, recipes, NPCs, schedules, capabilities, abilities, and companions.
+- Hosted/local `check` now executes Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample.
+
+Version decision:
+
+```text
+Product:      0.9.100.1
+Package:      0.9.100
+Data:         40
+Game State:   14 unchanged
+Account Save: 5 unchanged
+Benchmark:    3 unchanged
+```
+
+### Current census
+
+Gameplay breadth did not change in Packet A:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -135,75 +112,34 @@ companions                1 / 4
 transport services        3 / 5
 ```
 
-Mechanics-scale gate: **NOT READY**. Largest relative gap: abilities/techniques. Places already exceed the mechanics floor, so empty geography is not a useful response.
-
-# Current decision boundary
-
-There is **no active implementation unit**.
-
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — remains **planned / not opened**. Opening it requires explicit authorization. Do not infer authorization from this queue, the roadmap, or `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
-
-## Proposed `0.9.100` — Content Scale Gate A
-
-**Status: PLANNED / NOT OPENED.**
-
-Primary question:
-
-> Can the existing architecture support materially greater authored breadth without turning content production into disconnected filler or duplicating runtime authorities?
-
-### First future packet — Content Pack Scale Contract v2
-
-The post-0.8 audit found that the current regional content-pack contract owns places, routes, transport services, ecology, gathering sources, items, NPCs, shops, recipes, quests, and relationships, but does **not** yet own several content families Phase 0.9 must scale heavily:
+Infrastructure coverage:
 
 ```text
-abilities / techniques
-capability / training definitions
-NPC schedules
-companions
+routes                                   7
+spell schools                            3
+capabilities/training definitions        8
+NPC schedules                            4
+regional/shared packs                    7
+pack-owned records                     115
+pack-owned abilities/capabilities/
+  schedules/companions                 5/8/4/1
 ```
 
-Therefore the recommended first implementation packet after explicit Phase 0.9 opening is **Content Pack Scale Contract v2**, before mass content generation.
+Mechanics-scale gate remains **NOT READY** by design. This is not a failing CI condition.
 
-It should:
+### Next bounded packet — Redstone Forge-Road
 
-- define regional/shared ownership for the missing content families where appropriate;
-- extend stable-ID collision and dependency validation;
-- validate ability/training, NPC/schedule, and NPC/companion cross-references;
-- extend generated scale fixtures to exercise the new collections;
-- keep the census measuring canonical content rather than pack bookkeeping;
-- preserve existing runtime authorities rather than creating pack-owned duplicate gameplay state.
+**Status: NOT STARTED / not authorized by Packet A completion alone.**
 
-Likely version impact must be decided from the actual implementation. A Data-version change is plausible; Game State should remain unchanged unless the packet introduces genuinely new durable player/world facts. Do not pre-open `0.9.100` versions from planning alone.
+When explicitly authorized, use `pack-redstone-opening` as the regional root and add one dense cross-linked tranche spanning mining/resources, production, equipment, techniques/training, scheduled people/services, contracts, transport/economy, field danger, and provenance. Do not add isolated records merely to move the census.
 
-### Following Gate A tranches
-
-After Pack v2 proves ownership/validation, `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` proposes three dense regional tranches:
-
-1. **Redstone Forge-Road** — mining, production, shops/services, caravan logistics, equipment, contracts and techniques.
-2. **Elderwood Hunt-Timber** — creatures, forestry, body recovery, food/material processing, field techniques and recurring characters.
-3. **Starfen Marshcraft-Practical Magic** — herbs/fungi, wetland ecology, medicine/cooking, practical magic, training, schedules and water/canal context.
-
-Then run Gate A integration and census validation. Counts are planning bands, not filler quotas.
-
-### Recommended Phase 0.9 opening governance decision
-
-Before high-volume Phase 0.9 implementation begins, explicitly decide the transition to:
-
-```text
-protected main
-  + PR-based track integration
-  + required green hosted Check
-```
-
-The recommendation is yes once Phase 0.9 is explicitly opened. Keep current-schema-only persistence until a later deliberate release-transition work order changes that policy.
+Following Gate A tranches remain Elderwood Hunt-Timber and Starfen Marshcraft-Practical Magic, then integration/census review.
 
 # Phase 0.9 progression envelope
 
-These are ordered planning tracks, not blanket authorization.
-
 | Track | Primary gate | Status |
 | --- | --- | --- |
-| `0.9.100` | Content Scale Gate A | PLANNED / NOT OPENED |
+| `0.9.100` | Content Scale Gate A | **IN PROGRESS** |
 | `0.9.200` | Adventure vertical slices | QUEUED |
 | `0.9.300` | Advanced combat/training | QUEUED |
 | `0.9.400` | Economy/production depth | QUEUED |
@@ -213,80 +149,30 @@ These are ordered planning tracks, not blanket authorization.
 | `0.9.800` | Supported persistence/release transition | DEFERRED |
 | `0.9.900` | Release-candidate soak/performance/release hardening | DEFERRED |
 
-# Outstanding improvements and deferred runs
+# Governance and deferred operations
 
-## Content breadth — highest strategic debt
-
-Open. Use `npm run census` at the start/end of genuinely content-heavy tracks. Do not game counts with disconnected filler.
-
-## Branch protection / required review
-
-Decision deferred to explicit Phase 0.9 opening. Recommended transition: protected `main` + required green Check + PR-based track integration.
-
-## Supported save compatibility and migrations
-
-Deferred to release-transition work unless explicitly requested earlier. Current pre-alpha policy remains exact current-schema only.
-
-## Browser E2E and accessibility harness
-
-Deferred as a dedicated program to `0.9.700`. Continue semantic DOM, keyboard, focus and POV tests during ordinary development.
-
-## Hard performance budgets
-
-Deferred. Benchmark 3 remains comparative evidence; do not invent pass/fail numbers from noisy microbenchmarks.
-
-## Balance certification
-
-Deferred. Green mechanics tests do not imply balance.
-
-## Quality/HQ crafting depth
-
-Deferred until quality creates real material/tool/proficiency decisions.
-
-## Mounts, warehouses and large-logistics breadth
-
-Deferred. Stress existing carried-load, transport, home storage and cultivation with real content first.
-
-## Romance/deep social-life framework
-
-Deferred. Broader authored people/goals/schedules/boundaries should precede a romance framework.
+- Phase 0.9 uses PR-based integration for track packets.
+- Protected `main` + required Check remains recommended. The repository connector used for Packet A exposes no safe branch-protection mutation action, so this remains administrative follow-up rather than a claimed completed change.
+- Historical stale remote branches remain manual cleanup debt where the connector exposes no safe delete operation.
+- Supported-save compatibility/migrations remain deferred to `0.9.800` unless explicitly required earlier.
+- Browser E2E/accessibility remains `0.9.700`.
+- Hard performance budgets, balance certification, quality/HQ depth, large logistics, and deep romance remain deferred until their prerequisites exist.
 
 # Standard bounded-pass pipeline
 
 ```text
-1. Select one player-facing or repository-risk question.
-2. Identify existing authority and production caller.
-3. Define explicit non-goals.
-4. Write the smallest end-to-end proof.
-5. Implement runtime/data first.
-6. Add focused deterministic tests.
-7. Add realistic connected content for the changed system.
-8. Run focused validation.
-9. Run full Repository Audit + Test + Benchmark + Benchmark Sample evidence when coherent.
-10. Run census for content-heavy work; hardening for lifecycle-sensitive work.
-11. Freeze exact implementation SHA.
-12. Synchronize roadmap/profile/catalog/docs only after freeze.
-13. Update THREAD_HANDOFF.md last.
-14. Stop; do not silently launch the next independent pass.
+1. select one player-facing or repository-risk question
+2. identify existing authority and production caller
+3. define non-goals
+4. implement the smallest complete runtime/data path
+5. add focused deterministic/adversarial tests
+6. add connected content only when the infrastructure can own and validate it
+7. run Repository Audit + Test + Census + Benchmark 3 + Sample
+8. add hardening only for lifecycle-sensitive ownership changes
+9. freeze the exact implementation SHA
+10. synchronize profile/roadmap/catalog/version docs after runtime freeze
+11. update THREAD_HANDOFF.md last
+12. stop before the next independent packet
 ```
 
-For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, record only census output that actually ran.
-
-# Handoff template
-
-```text
-Current main SHA:
-Validated implementation SHA:
-Product / Package / Account Save / Game State / Data / Benchmark:
-Active pass:
-Pass status:
-Completed behavior:
-Exact validation evidence:
-Known failures/blockers:
-Files/authorities to inspect next:
-Next bounded unit:
-Deferred work discovered but not started:
-Do-not-redo notes:
-```
-
-`THREAD_HANDOFF.md` should remain short enough to read first. Historical detail belongs in roadmap/version history, git, or this queue.
+Content targets are lower-bound progression indicators. Never game them with disconnected filler, fixtures counted as canonical content, or duplicate catalog refs.

@@ -1,4 +1,4 @@
-export const CONTENT_PACK_SCHEMA_VERSION = 1;
+export const CONTENT_PACK_SCHEMA_VERSION = 2;
 
 export const CONTENT_PACK_COLLECTIONS = Object.freeze([
     'places',
@@ -10,10 +10,15 @@ export const CONTENT_PACK_COLLECTIONS = Object.freeze([
     'gatheringSources',
     'items',
     'npcs',
+    'npcSchedules',
     'shops',
     'recipes',
     'quests',
     'relationships',
+    'spellSchools',
+    'capabilities',
+    'abilities',
+    'companions',
 ]);
 
 export function createContentPack(definition = {}) {

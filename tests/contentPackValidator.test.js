@@ -1,9 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createContentPack } from '../js/text/data/contentPackSchema.js';
+import {
+    CONTENT_PACK_SCHEMA_VERSION,
+    createContentPack,
+} from '../js/text/data/contentPackSchema.js';
 import {
     ELDERWOOD_PACK,
+    REDSTONE_PACK,
     REGIONAL_CONTENT_PACKS,
     SHARED_FOUNDATION_PACK,
     STARFEN_PACK,
@@ -18,36 +22,67 @@ import {
 } from '../js/text/systems/contentPackValidator.js';
 
 
-test('representative shared Elderwood and Starfen packs validate as one cross-linked graph', () => {
+test('Pack v2 owns the scale-critical catalog families in one cross-linked regional graph', () => {
+    assert.equal(CONTENT_PACK_SCHEMA_VERSION, 2);
+    assert.equal(SHARED_FOUNDATION_PACK.schemaVersion, 2);
     assert.equal(SHARED_FOUNDATION_PACK.ownership.scope, 'shared');
     assert.deepEqual(ELDERWOOD_PACK.ownership.regionIds, ['elderwood']);
+    assert.deepEqual(REDSTONE_PACK.ownership.regionIds, ['redstone-reach']);
     assert.deepEqual(STARFEN_PACK.ownership.regionIds, ['starfen']);
     assert.ok(STARFEN_PACK.dependencies.includes('pack-elderwood-opening'));
     assert.deepEqual(validateContentPacks(REGIONAL_CONTENT_PACKS), []);
 });
 
-test('content pack index records stable ownership without rewriting canonical ids', () => {
+test('content pack index records expanded stable ownership without changing canonical ids', () => {
     const index = buildContentPackIndex(REGIONAL_CONTENT_PACKS);
 
     assert.deepEqual(index.issues, []);
     assert.deepEqual(index.packIds, [
         'pack-shared-foundation',
         'pack-elderwood-opening',
+        'pack-redstone-opening',
         'pack-starfen-opening',
         'pack-elderwood-ecology-breadth',
         'pack-redstone-ecology-breadth',
         'pack-starfen-ecology-breadth',
     ]);
-    assert.equal(index.recordCounts.places, 6);
+    assert.equal(index.recordCounts.places, 8);
     assert.equal(index.recordCounts.items, 16);
     assert.equal(index.recordCounts.recipes, 2);
-    assert.ok(index.ownerCount > 40);
+    assert.equal(index.recordCounts.npcs, 8);
+    assert.equal(index.recordCounts.npcSchedules, 4);
+    assert.equal(index.recordCounts.spellSchools, 3);
+    assert.equal(index.recordCounts.capabilities, 8);
+    assert.equal(index.recordCounts.abilities, 5);
+    assert.equal(index.recordCounts.companions, 1);
+    assert.ok(index.ownerCount >= 100);
+});
+
+test('catalog refs bridge canonical resource production equipment recipe quest and NPC catalogs', () => {
+    const bridgePack = createContentPack({
+        id: 'pack-catalog-bridge-fixture',
+        dataVersion: 26,
+        ownership: { scope: 'region', regionIds: ['catalog-bridge'] },
+        records: {
+            places: [{ id: 'brasshaven-market-ring', catalogRef: true }],
+            items: [
+                { id: 'item-elderwood-sweetroot', catalogRef: true },
+                { id: 'item-redstone-copper-ingot', catalogRef: true },
+                { id: 'bronze-sword', catalogRef: true },
+            ],
+            recipes: [{ id: 'process-redstone-copper-ingot', catalogRef: true }],
+            quests: [{ id: 'commitment-brasshaven-copper-return', catalogRef: true }],
+            npcs: [{ id: 'npc-brasshaven-marshal-varric-stone', catalogRef: true }],
+        },
+    });
+
+    assert.deepEqual(validateContentPacks([bridgePack], { includeCanonicalCatalogs: false }), []);
 });
 
 test('duplicate stable-id ownership across packs is rejected', () => {
     const conflicting = createContentPack({
         id: 'pack-conflicting-owner',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['conflict-reach'] },
         records: { items: [{ id: 'item-elderwood-root-tonic', exemptions: { source: true, sink: true } }] },
     });
@@ -56,10 +91,54 @@ test('duplicate stable-id ownership across packs is rejected', () => {
     assert.ok(issues.some((issue) => issue.includes('stable-id ownership conflict for items:item-elderwood-root-tonic')));
 });
 
+test('cross-pack references require declared dependencies even for new ability-capability families', () => {
+    const capabilityPack = createContentPack({
+        id: 'pack-training-owner',
+        dataVersion: 26,
+        ownership: { scope: 'shared', regionIds: [] },
+        records: {
+            capabilities: [{
+                id: 'technique-scale-dependency',
+                name: 'Scale Dependency',
+                type: 'technique',
+                tags: ['test'],
+                learning: { open: true, anyDiscipline: [] },
+                use: {
+                    contexts: ['combat'], requiredSkills: [], mainHandTags: [], requiredToolTags: [],
+                    requiredPreparationTags: [], requiredFlags: [], resources: {},
+                },
+            }],
+        },
+    });
+    const abilityPack = createContentPack({
+        id: 'pack-ability-consumer',
+        dataVersion: 26,
+        ownership: { scope: 'region', regionIds: ['dependency-test'] },
+        records: {
+            abilities: [{
+                id: 'ability-scale-dependency',
+                name: 'Scale Dependency',
+                kind: 'technique',
+                capabilityId: 'technique-scale-dependency',
+                tags: ['test'],
+                contexts: ['combat'],
+                target: { kind: 'enemy' },
+                activation: { durationSeconds: 0, interruptible: false },
+                cooldownSeconds: 1,
+                costs: {},
+                effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 1, coefficient: 1 }],
+            }],
+        },
+    });
+
+    const issues = validateContentPacks([capabilityPack, abilityPack], { includeCanonicalCatalogs: false });
+    assert.ok(issues.some((issue) => issue.includes('capabilities:technique-scale-dependency owned by pack-training-owner without declaring it as a dependency')));
+});
+
 test('cross-pack references require declared dependencies even when the target id is canonical', () => {
     const dependent = createContentPack({
         id: 'pack-unannounced-trade',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['trade-test'] },
         records: {
             npcs: [{ id: 'npc-trade-test-keeper', placeId: 'west-elderwood' }],
@@ -76,10 +155,44 @@ test('cross-pack references require declared dependencies even when the target i
     assert.ok(issues.some((issue) => issue.includes('owned by pack-elderwood-opening without declaring it as a dependency')));
 });
 
+test('dangling scale-family references are reported before content volume can grow', () => {
+    const broken = createContentPack({
+        id: 'pack-broken-scale-families',
+        dataVersion: 26,
+        ownership: { scope: 'region', regionIds: ['broken-scale'] },
+        records: {
+            abilities: [{
+                id: 'ability-broken-scale', name: 'Broken Scale', kind: 'spell', schoolId: 'school-missing', capabilityId: 'capability-missing',
+                tags: ['test'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 1, interruptible: true },
+                cooldownSeconds: 1, costs: { mp: 1 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 1, coefficient: 1 }],
+            }],
+            npcSchedules: [{
+                id: 'schedule-broken-scale', npcId: 'npc-missing-scale', poiId: 'poi-broken-scale', placeId: 'missing-scale-place',
+                label: 'Broken schedule', windows: [{ startSecond: 0, endSecond: 60, label: 'Broken window' }], unavailableText: 'Missing.',
+            }],
+            companions: [{
+                id: 'companion-broken-scale', npcId: 'npc-missing-scale', name: 'Broken Scale', description: 'Fixture.', homePlaceId: 'missing-scale-place',
+                recruitment: { placeIds: ['missing-scale-place'], requiredFlags: [] }, level: 1, tactics: { role: 'test', policy: 'basic-attack-v1', defaultApproachId: 'steady-road' },
+                fieldApproaches: [
+                    { id: 'steady-road', name: 'Steady', summary: 'Fixture.', quote: '“Steady.”', attributeModifiers: {} },
+                    { id: 'quick-road', name: 'Quick', summary: 'Fixture.', quote: '“Quick.”', attributeModifiers: {} },
+                ],
+                relationshipDimensions: ['trust'],
+            }],
+        },
+    });
+
+    const issues = validateContentPacks([broken], { includeCanonicalCatalogs: false });
+    assert.ok(issues.some((issue) => issue.includes('missing spellSchools id school-missing')));
+    assert.ok(issues.some((issue) => issue.includes('missing capabilities id capability-missing')));
+    assert.ok(issues.some((issue) => issue.includes('missing npcs id npc-missing-scale')));
+    assert.ok(issues.some((issue) => issue.includes('missing places id missing-scale-place')));
+});
+
 test('dangling topology, source-sink, quest, and relationship references are reported', () => {
     const broken = createContentPack({
         id: 'pack-broken-fixture',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['broken-fixture'] },
         records: {
             routes: [{
@@ -120,13 +233,13 @@ test('dangling topology, source-sink, quest, and relationship references are rep
 test('legacy identifiers are rejected from canonical packs unless an explicit adapter is declared', () => {
     const leaking = createContentPack({
         id: 'pack-legacy-leak-fixture',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['legacy-test'] },
         records: { places: [{ id: 'west-ronfaure', catalogRef: true }] },
     });
     const adapted = createContentPack({
         id: 'pack-legacy-adapter-fixture',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['legacy-test-adapted'] },
         legacyAdapters: [{
             legacyId: 'west-ronfaure',
@@ -157,14 +270,26 @@ test('legacy normalization produces review-only candidates rather than canonical
     assert.deepEqual(validateLegacyCandidateRecord(candidate), []);
 });
 
-test('generated hundreds-record fixture validates lookup and cross-reference breadth', () => {
-    const count = 300;
+test('generated scale fixture validates all Pack v2 families at four-digit ownership volume', () => {
+    const count = 200;
     const items = [];
     const recipes = [];
+    const npcs = [];
+    const npcSchedules = [];
+    const capabilities = [];
+    const abilities = [];
+    const companions = [];
+
     for (let index = 0; index < count; index += 1) {
         const suffix = String(index).padStart(3, '0');
         const itemId = `item-scale-fixture-${suffix}`;
         const recipeId = `recipe-scale-fixture-${suffix}`;
+        const npcId = `npc-scale-fixture-${suffix}`;
+        const scheduleId = `schedule-scale-fixture-${suffix}`;
+        const capabilityId = `technique-scale-fixture-${suffix}`;
+        const abilityId = `ability-scale-fixture-${suffix}`;
+        const companionId = `companion-scale-fixture-${suffix}`;
+
         items.push({
             id: itemId,
             name: `Scale Fixture ${suffix}`,
@@ -173,7 +298,7 @@ test('generated hundreds-record fixture validates lookup and cross-reference bre
                 version: 1,
                 type: 'crafting',
                 sourceId: recipeId,
-                placeId: 'west-elderwood',
+                placeId: 'scale-fixture-place',
                 action: 'craft',
                 exceptional: false,
                 notes: '',
@@ -184,23 +309,86 @@ test('generated hundreds-record fixture validates lookup and cross-reference bre
         recipes.push({
             id: recipeId,
             name: `Scale Recipe ${suffix}`,
-            placeIds: ['west-elderwood'],
+            placeIds: ['scale-fixture-place'],
             inputs: [{ itemId: 'item-elderwood-sweetroot', quantity: 1 }],
             outputs: [{ itemId, quantity: 1 }],
+        });
+        npcs.push({ id: npcId, name: `Scale NPC ${suffix}`, placeId: 'scale-fixture-place' });
+        npcSchedules.push({
+            id: scheduleId,
+            npcId,
+            poiId: `poi-scale-fixture-${suffix}`,
+            placeId: 'scale-fixture-place',
+            label: `Scale schedule ${suffix}`,
+            windows: [{ startSecond: 3600, endSecond: 7200, label: 'Scale window' }],
+            unavailableText: 'Off duty.',
+        });
+        capabilities.push({
+            id: capabilityId,
+            name: `Scale Technique ${suffix}`,
+            type: 'technique',
+            tags: ['scale'],
+            learning: { open: true, anyDiscipline: [] },
+            use: {
+                contexts: ['combat'], requiredSkills: [], mainHandTags: [], requiredToolTags: [],
+                requiredPreparationTags: [], requiredFlags: [], resources: {},
+            },
+        });
+        abilities.push({
+            id: abilityId,
+            name: `Scale Technique ${suffix}`,
+            kind: 'technique',
+            capabilityId,
+            tags: ['scale'],
+            contexts: ['combat'],
+            target: { kind: 'enemy' },
+            activation: { durationSeconds: 0, interruptible: false },
+            cooldownSeconds: 1,
+            costs: {},
+            effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 1, coefficient: 1 }],
+        });
+        companions.push({
+            id: companionId,
+            npcId,
+            name: `Scale Companion ${suffix}`,
+            description: 'Generated validation fixture.',
+            homePlaceId: 'scale-fixture-place',
+            recruitment: { placeIds: ['scale-fixture-place'], requiredFlags: [] },
+            level: 1,
+            tactics: { role: 'skirmisher', policy: 'basic-attack-v1', defaultApproachId: 'steady-road' },
+            fieldApproaches: [
+                { id: 'steady-road', name: 'Steady Road', summary: 'Generated validation fixture.', quote: '“Steady.”', attributeModifiers: {} },
+                { id: 'quick-road', name: 'Quick Road', summary: 'Generated validation fixture.', quote: '“Quick.”', attributeModifiers: {} },
+            ],
+            relationshipDimensions: ['trust'],
         });
     }
 
     const scalePack = createContentPack({
         id: 'pack-scale-fixture',
-        dataVersion: 19,
+        dataVersion: 26,
         ownership: { scope: 'region', regionIds: ['scale-fixture'] },
-        records: { items, recipes },
+        records: {
+            places: [{ id: 'scale-fixture-place', name: 'Scale Fixture Place' }],
+            items,
+            recipes,
+            npcs,
+            npcSchedules,
+            capabilities,
+            abilities,
+            companions,
+        },
     });
     const issues = validateContentPacks([scalePack], { includeCanonicalCatalogs: false });
     const index = buildContentPackIndex([scalePack]);
 
     assert.deepEqual(issues, []);
-    assert.equal(index.recordCounts.items, 300);
-    assert.equal(index.recordCounts.recipes, 300);
-    assert.equal(index.ownerCount, 600);
+    assert.equal(index.recordCounts.items, count);
+    assert.equal(index.recordCounts.recipes, count);
+    assert.equal(index.recordCounts.npcs, count);
+    assert.equal(index.recordCounts.npcSchedules, count);
+    assert.equal(index.recordCounts.capabilities, count);
+    assert.equal(index.recordCounts.abilities, count);
+    assert.equal(index.recordCounts.companions, count);
+    assert.equal(index.ownerCount, 1 + (count * 7));
 });
