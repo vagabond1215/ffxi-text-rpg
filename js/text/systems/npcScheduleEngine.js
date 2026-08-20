@@ -48,7 +48,7 @@ export function validateNpcScheduleCatalog() {
     const npcIds = new Set(createSeedNpcs().map((npc) => npc.id));
     const poiIds = new Set();
 
-    if (NPC_SCHEDULE_DATA_VERSION !== 1) issues.push('npcSchedules data version must be 1.');
+    if (NPC_SCHEDULE_DATA_VERSION !== 2) issues.push('npcSchedules data version must be 2.');
 
     for (const schedule of listNpcSchedules()) {
         if (!schedule.id) issues.push('npc schedule is missing id.');
