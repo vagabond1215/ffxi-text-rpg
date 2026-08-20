@@ -14,34 +14,37 @@ Authoritative companions:
 - `docs/ARCHITECTURE.md`
 - `docs/QUALITY_GATES.md`
 
-## Current baseline
+## Current feature proposal
+
+Draft PR #378 contains the validated `0.8.700` feature baseline. It is **open, draft, and unmerged**:
 
 ```text
-Product:       0.8.600.52
-Package:       0.8.600
+Product:       0.8.700.1
+Package:       0.8.700
 Account Save:  5
-Game State:    12
-Data:          37
+Game State:    13
+Data:          38
 Benchmark:     3
-Codename:      Transient Command Presentation Log
+Codename:      Cultivation & Stewardship
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Latest validated implementation/tooling checkpoint:
+Exact frozen implementation evidence:
 
 ```text
-b0c1e067a1907a8587a08a128126f9207c6d6134
-PR #377 validation-only, closed without merge
-Check 32308719621
-Node 24.19.0
-692/692 tests
-Benchmark 3 success
-Benchmark Sample success
+Head:   c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+PR:     #378 draft, open, unmerged
+Check:  32340190710
+Job:    96337561458
+Node:   24.19.0
+Tests:  695/695
+Benchmark 3: success
+Benchmark Sample: success
 ```
 
-That checkpoint adds the content-scale progression gate and `npm run census`; it does not change Product version, Game State, or gameplay authority.
+`main` remains on the prior baseline until #378 is explicitly merged.
 
 ## Product laws
 
@@ -76,7 +79,7 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. Fi
 
 # Phase 0.8 — Life and infrastructure expansion
 
-## Completed tracks
+## Landed tracks
 
 | Track | Player-facing gate | Status |
 | --- | --- | --- |
@@ -87,93 +90,95 @@ Campaign guidance reflects acquired knowledge. Resources preserve provenance. Fi
 | `0.8.500` | Fictional-time NPC availability | **Complete** |
 | `0.8.600` | Companion convalescence and safe reunion | **Complete** |
 
-Revisions `.2` through `.52` after the closed `0.8.600` feature track hardened current-schema persistence, action/semantic boundaries, deterministic lifecycle ownership, current location/combat authority, and the derived/transient classification of root player caches, `state.npcs`, `state.enemies`, and top-level `state.log`.
+Revisions `.2` through `.52` after the closed `0.8.600` track hardened current-schema persistence, semantic/action boundaries, deterministic lifecycle ownership, current location/combat authority, and the derived/transient classification of root player caches, `state.npcs`, `state.enemies`, and top-level `state.log`. That classification sequence is complete.
 
-The dedicated broad-array classification sequence is complete. Do not manufacture another persistence audit merely to advance a revision number.
+C0 then added the durable execution queue and executable content census. The project-risk conclusion was that player-facing breadth now deserves priority over manufacturing another generic persistence audit.
 
-## Continuation infrastructure gate
+## `0.8.700` — Cultivation & Stewardship
 
-Before opening a new feature track, the August 19, 2026 repo audit identified a transition in project risk:
+**Status: implemented and validated on draft PR #378; pending landing.**
 
-> The deterministic/persistence substrate is comparatively mature; the largest strategic gap is now player-facing life/adventure breadth and authored content scale.
-
-The C0 continuation pass therefore adds:
-
-- `docs/EXECUTION_PIPELINE.md` — durable active/next/deferred queue and restart rules;
-- `js/text/systems/contentScaleGate.js` — criteria-driven content scale metrics;
-- `scripts/contentCensus.js` / `npm run census` — developer-visible census;
-- `tests/contentScaleGate.test.js` — protects the target definitions and readiness logic.
-
-This tooling is intentionally informational: being below future content targets does not fail CI.
-
-## Next Phase 0.8 sequence
-
-The following tracks are the recommended current progression path. Roadmap order does **not** authorize unbounded autonomous implementation; each new independent track still needs an explicit work order/message under `AGENTS.md`.
-
-### `0.8.700` — Cultivation & Stewardship
-
-**Status: next recommended feature track after the C0 documentation pass closes.**
-
-Bounded first proof:
+Bounded proof:
 
 ```text
-access plot
-  -> prepare
-  -> plant provenance-bearing input
-  -> canonical fictional time passes
-  -> tend when required
-  -> harvest
-  -> provenance-bearing outputs
-  -> outputs feed multiple existing systems
-  -> persistent work/cultivation mastery improves efficiency
+home Sweetroot bed
+  -> prepare with short hands-on work
+  -> consume 1 physical existing Sweetroot as propagation input
+  -> canonical fictional time drives growth
+  -> tending becomes due after 1 fictional day
+  -> maturity follows after 2 fictional days
+  -> harvest exactly once
+  -> 3 ordinary Sweetroots enter normal inventory
+  -> output carries home-cultivation provenance + seed provenance history
+  -> consume / production / trade sinks remain real
+  -> cultivation mastery reduces later hands-on duration
 ```
 
-Required design constraints:
+### Authority model
 
-- one canonical fictional clock;
-- no real-time/offline-growth authority;
-- inventory owns physical seed/input/output location;
-- provenance remains explicit;
-- existing work proficiency should own repeated-practice efficiency where it fits;
-- home/projects may own durable infrastructure;
-- do not create a new timed-task owner for every growing plot unless the domain truly requires task semantics.
+- `state.cultivation` is required persisted Game State 13 authority.
+- Growth stores canonical fictional timestamps and **does not own a long-lived timed task**.
+- Preparation/tending are short hands-on work records under the existing `workTaskEngine` timed-task owner.
+- Inventory owns propagation input and harvest output.
+- Existing Sweetroot remains the canonical item; provenance distinguishes cultivated and wild stacks.
+- Existing work proficiency owns repeated-practice efficiency through stable proficiency id `cultivation`.
+- Journal/context actions use semantic intents (`cultivation.prepare`, `.plant`, `.tend`, `.harvest`) rather than command strings.
+- A merely ready cultivation action does not steal recommendation priority from existing active/ready commitments, livelihood, home, or recovery choices.
 
-Exit proof must include deterministic multi-day behavior, save/load mid-growth, exactly-once harvest, meaningful output sinks, and an ordinary semantic browser path.
-
-### `0.8.800` — Earned Routine Delegation
-
-**Status: queued after a real repetitive routine exists.**
-
-The system should prove the progression law by allowing investment/mastery/infrastructure/social capital to reduce attention spent on a solved chore.
-
-First proof should delegate one concrete routine rather than build a generic automation platform.
+### Persistence/data decision
 
 ```text
-manual chore
-  -> mastery/infrastructure/reputation
-  -> bounded hired/helper option
-  -> wages/material/time constraints remain real
-  -> same domain consequence
-  -> less player attention
+Product      0.8.600.52 -> 0.8.700.1
+Package      0.8.600    -> 0.8.700
+Game State   12         -> 13   required cultivation authority
+Data         37         -> 38   stable cultivation proficiency/contract
+Account Save 5 unchanged
+Benchmark    3 unchanged
 ```
 
-No free resource generation, passive wall-clock simulation, or second generic task engine.
+No Game State 12 -> 13 migration was added under the pre-alpha current-schema-only policy.
 
-### `0.8.900` — Household & Community Continuity
+### Exit evidence
+
+- deterministic multi-day growth/tending/harvest;
+- real account save/load mid-growth and after tending;
+- malformed crop timing and active-work links rejected before normalization;
+- no crop-owned growth timer/task;
+- cultivation work task released after exactly-once reconciliation;
+- physical propagation input consumed once;
+- seed provenance retained through crop state and harvest provenance;
+- harvest replay blocked with no duplicated output;
+- harvested Sweetroot retains three existing sink families: consume, craft ingredient, trade;
+- semantic Journal/browser path exposes player decisions without raw implementation fields;
+- full hosted gate: 695/695 tests + Benchmark 3 + Benchmark Sample.
+
+No content-scale increase is claimed: this bounded proof reuses an existing item and adds no census-counted place, NPC, service site, creature, resource source, recipe, ability, quest, companion, or transport service.
+
+## `0.8.800` — Earned Routine Delegation
+
+**Status: READY NEXT after #378 lands; not started.**
+
+The preferred first proof should use the now-proven cultivation routine rather than invent a generic automation system:
+
+```text
+manual Sweetroot routine established
+  -> mastery / infrastructure / social investment
+  -> one bounded hired/helper option
+  -> wages, materials and fictional-time constraints remain real
+  -> cultivation remains consequence authority
+  -> no free resource generation
+  -> less repetitive player attention
+```
+
+A future work order must define who/what performs the delegated action, what it costs, when it can fail, how save/load works, and where exactly-once responsibility lives. Do not generalize until one chore proves those contracts.
+
+## `0.8.900` — Household & Community Continuity
 
 **Status: queued.**
 
-Make the player's foothold socially consequential through existing schedule, relationship, commitment, party, work, recovery, home and economy authorities.
+Make the player's foothold socially consequential through existing schedule, relationship, commitment, party, work, recovery, home, cultivation and economy authorities. Target 2–3 additional recurring named social characters with distinct needs/routines, possible companion breadth where justified, livelihood/property-linked commitments or services, and several-day return consequences. No full romance framework yet.
 
-Target breadth for the track:
-
-- 2–3 additional recurring named social characters with distinct routines/needs;
-- one additional companion candidate when the regional content graph justifies it;
-- livelihood/property-linked commitments or services;
-- several-day return consequences;
-- no full romance framework yet.
-
-### Phase 0.8 exit audit
+## Phase 0.8 exit audit
 
 After `0.8.900`, prove one coherent life arc:
 
@@ -186,11 +191,11 @@ home/storage/workshop
   -> preparation for travel/adventure
 ```
 
-Run the content census and normal quality gates. Close 0.8 only when the life/infrastructure additions feel connected to the existing adventure loop rather than like isolated menu systems.
+Run the content census and normal quality gates. Close 0.8 only when life/infrastructure additions remain connected to the adventure loop rather than isolated menu systems.
 
 # Content scale as a roadmap gate
 
-`docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` defines lower-bound planning ranges. `npm run census` now turns the most important categories into an executable progression indicator.
+`docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md` defines lower-bound planning ranges. `npm run census` turns the most important categories into an executable progression indicator.
 
 | Category | Mechanics integration | Playable alpha | 1.0 lower bound |
 | --- | ---: | ---: | ---: |
@@ -206,11 +211,9 @@ Run the content census and normal quality gates. Close 0.8 only when the life/in
 | Recruitable companions | 4 | 12 | 25 |
 | Scheduled transport services | 5 | 20 | 50 |
 
-These counts are **scale evidence, not quality/balance claims**. A category can meet a numeric lower bound and still need better cross-linking, originality, balance, presentation, or regional distribution.
+Counts are scale evidence, not quality/balance claims.
 
 # Phase 0.9 — Content scale, adventure depth and release hardening
-
-Phase 0.9 should spend substantially more effort on connected authored breadth than the late 0.8 maintenance line did.
 
 | Proposed track | Gate | Planning envelope |
 | --- | --- | --- |
@@ -228,52 +231,36 @@ Calendar windows are planning envelopes, not promises. Track completion remains 
 
 ## Phase 0.9 governance transition
 
-Current early single-maintainer work may continue directly on `main` under `AGENTS.md`.
-
-Before release/stabilization work, transition toward:
-
-```text
-protected main
-  -> required hosted Check
-  -> feature/track PRs
-  -> supported persistence policy
-  -> explicit release fixtures
-  -> accepted representative performance budgets
-```
-
-Do not adopt these controls simply as ceremony before they materially improve project safety.
+Before release/stabilization work, transition toward protected `main`, required hosted Check, deliberate supported persistence, explicit release fixtures, and accepted representative performance budgets. Do not adopt ceremony before it materially improves project safety.
 
 # 1.0 — Live foundation
 
-A 1.0 release is justified when the game fulfills the continuous-character persistent-life/adventure promise at sustained content scale:
+A 1.0 release is justified when the continuous-character persistent-life/adventure promise works at sustained content scale: original world identity, interconnected life/adventure systems, meaningful mastery, sufficient authored content, ordinary browser usability, supported persistence, stable long sessions, accepted performance budgets, and proven release/recovery tooling.
 
-- original world identity is coherent and no legacy proprietary setting leaks into canonical content;
-- life, livelihood, preparation, travel, danger, combat, recovery, home and social systems materially feed one another;
-- repeated effort produces mastery/efficiency/capability rather than only larger denominators;
-- the content graph is large enough for sustained play and passes source/sink/topology/cross-reference validation;
-- normal browser play is accessible without command expertise;
-- supported saves have a deliberate compatibility/migration policy;
-- long-session/resource behavior is stable;
-- accepted performance budgets cover representative workloads;
-- release tooling, recovery and packaging are proven.
+# Proposed Game State 13 persistence boundary
 
-Q4 2028 is an aggressive planning target for a 1.0 candidate, not a commitment. Do not lock a release date before the `0.9.600` content-scale push proves sustainable authoring throughput.
+On PR #378, required current-schema authority adds:
 
-# Current persistence boundary
+```text
+state.cultivation
+  plot id / home place
+  phase / cycle / harvest count
+  active cultivation work link when present
+  preparation / last-harvest fictional timestamps
+  growing crop timestamps and seed provenance when present
+```
 
-Game State 12 remains strict current-schema-only during pre-alpha.
-
-Required persisted authority includes world/simulation/task state, active travel, projects, commitments, relationships, resource opportunities/ecology, party, ability runtime, semantic events, discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, world flags, location and active combat authority when present.
+Existing required authorities remain world/simulation/task state, active travel, projects, commitments, relationships, resource opportunities/ecology, party, ability runtime, semantic events, discovery, player identity/progression/inventory/resources/wallet/equipment/statuses, world flags, location and active combat authority when present.
 
 Optional persisted authority remains:
 
 ```text
-state.work
+state.work                  # optional globally, required while cultivation has active hands-on work
 player.progression.workProficiencies
 state.dayCycle
 ```
 
-Derived/transient state includes:
+Derived/transient state remains:
 
 ```text
 state.npcs
@@ -285,17 +272,8 @@ root player.statState
 activeBattle.rng
 ```
 
-`state.events` remains durable structured semantic observation history. Top-level `state.log` remains session-only command presentation. `activeBattle.log` remains separate persisted encounter-local history.
-
 # Deferred work
 
-The authoritative detailed deferred queue is `docs/EXECUTION_PIPELINE.md`. Key items include:
+Detailed deferred work lives in `docs/EXECUTION_PIPELINE.md`: supported-save migrations, branch-protection transition, dedicated browser E2E/accessibility, hard performance thresholds, balance certification, quality/HQ crafting depth, mounts/warehouses/large logistics, and deep romance.
 
-- supported-save migrations until release policy requires them;
-- branch protection until Phase 0.9 stabilization;
-- dedicated real-browser E2E/accessibility program until the UI flow stabilizes;
-- hard performance thresholds until Benchmark 3 evidence is repeatable enough;
-- full balance certification until content-scale play exists;
-- quality/HQ crafting, mounts/warehouses/large logistics, and deep romance until existing systems create the need.
-
-When a future thread is asked to continue, start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. Do not repeat broad discovery unless repository evidence has invalidated those checkpoints.
+When a future thread is asked to continue, start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. If PR #378 remains open/unmerged, resolve that state before beginning `0.8.800`; do not repeat broad cultivation discovery.
