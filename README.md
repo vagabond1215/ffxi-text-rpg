@@ -8,63 +8,45 @@ Earlier FFXI-derived experiments may remain only as explicit research, migration
 effort -> mastery -> efficiency -> capability -> larger ambition
 ```
 
-## Draft 0.8.700 feature baseline
+## Current baseline
 
-Draft PR #378 is open and unmerged. Its validated proposed baseline is:
+Phase 0.8 — Life and Infrastructure Expansion — is complete.
 
 ```text
-Product:       0.8.700.1
-Package:       0.8.700
+Product:       0.8.900.1
+Package:       0.8.900
 Account Save:  5
-Game State:    13
-Data:          38
+Game State:    14
+Data:          39
 Benchmark:     3
-Codename:      Cultivation & Stewardship
+Codename:      Household & Community Continuity
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Exact frozen implementation head `c125f7ae5f94800893dc28c7fa0ceb61553e3db8` passed Check `32340190710` on Node 24.19.0 with **695/695 tests**, Benchmark 3 success, and Benchmark Sample success.
-
-`main` remains on the previous baseline until #378 is explicitly merged.
+Frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed hosted Check `32395768383` on Node 24.19.0 with **699/699 tests**, Benchmark 3 success, and Benchmark Sample success. Phase-exit validation Check `32395959505` additionally passed Content Census and Hardening. See `docs/PHASE_0_8_EXIT_GATE.md`.
 
 ## Product direction
 
-The game is one persistent life, not a collection of disconnected minigames. Hunting, gathering, work, production, trade, commitments, relationships, travel, combat, recovery, companions, home infrastructure, and cultivation should feed one another through shared authorities.
+The game is one persistent life, not a collection of disconnected minigames. Hunting, gathering, work, production, trade, commitments, relationships, travel, combat, recovery, companions, home infrastructure, cultivation, and earned delegation feed one another through shared authorities.
 
 Fictional time is separate from wall-clock waiting. Maps represent acquired knowledge. Materials preserve provenance. Disciplines describe training traditions; learned capabilities and mastery belong to the character.
 
-## Current Phase 0.8 progression
+## Completed Phase 0.8 arc
 
 ```text
-C0 Continuation Infrastructure + Content Census  -> complete
-0.8.700 Cultivation & Stewardship                -> validated on PR #378, pending landing
-0.8.800 Earned Routine Delegation                -> ready next only after #378 lands
-0.8.900 Household & Community Continuity         -> queued
-Phase 0.8 exit audit                             -> queued
+home storage + workshop
+  -> carried-load and portable logistics
+  -> fictional-time NPC/companion life
+  -> deterministic home Sweetroot cultivation
+  -> repeated manual mastery
+  -> paid delegation of one tending chore
+  -> home-grown provenance
+  -> scheduled named community commitments and relationships
+  -> ordinary services, preparation, travel and adventure remain connected
 ```
 
-`docs/THREAD_HANDOFF.md` states the exact checkpoint. `docs/EXECUTION_PIPELINE.md` contains the durable active/next/deferred queue and restart rules. New threads should use those documents instead of restarting broad discovery when the checkpoint is current.
-
-## Cultivation & Stewardship
-
-The bounded 0.8.700 proof adds one reusable home Sweetroot bed:
-
-```text
-prepare
-  -> plant one physical existing Sweetroot
-  -> fictional time passes
-  -> tend after one fictional day
-  -> harvest after two fictional days
-  -> three ordinary Sweetroots enter inventory
-  -> provenance records home cultivation + seed history
-  -> existing consume / cooking / trade sinks remain usable
-  -> cultivation mastery reduces later hands-on work duration
-```
-
-Growth itself owns no timer, interval, background worker or long-lived timed task. `state.cultivation` persists crop lifecycle timestamps; only short preparation/tending labor reuses the existing work/task owner.
-
-The Journal/context UI exposes cultivation through direct semantic intents rather than generated command strings.
+Cultivation growth and delegated tending do not introduce a second clock or direct timed-task owner. The current direct player intents include cultivation actions plus `commitment.accept`, `commitment.resolve`, and `commitment.followUp`.
 
 ## Content-scale census
 
@@ -73,17 +55,29 @@ npm run census
 npm run census -- --json
 ```
 
-The census reports unique canonical breadth against mechanics-integration, playable-alpha, and 1.0 planning targets. Being below a future target is not a CI failure and counts should not be gamed with disconnected filler.
+Current exit census:
 
-The first cultivation proof deliberately reuses existing Sweetroot content, so no census-count increase is claimed for this track.
+```text
+places/localities       26 / mechanics floor 10
+named NPCs              12 / 50
+shop/service sites      17 / 20
+creatures               16 / 40
+resource sources        13 / 40
+canonical items         50 / 200
+recipes/processes       11 / 75
+abilities/techniques     5 / 100
+quests/contracts         8 / 30
+companions                1 / 4
+transport services        3 / 5
+```
+
+The mechanics-scale gate is **NOT READY**. This is expected and is the main strategic input for planned Phase 0.9 content-scale work. Counts should not be gamed with disconnected filler.
 
 ## Persistence model
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-On PR #378, Game State 13 adds required durable `state.cultivation` authority for plot phase/cycle, crop timestamps, seed provenance, harvest replay protection, and active cultivation-work links.
-
-Some runtime state remains deliberately non-serialized:
+Game State 14 requires durable cultivation plot/crop/delegation authority. Some runtime state remains deliberately non-serialized:
 
 - root `player.combat` and `player.statState` are reconstructed caches;
 - `activeBattle.rng` is transient;
@@ -120,10 +114,14 @@ Primary information navigation includes Scene, Character, Spellbook, Journal, Co
 - ecology, gathering, work proficiency, production, workstations;
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
-- cultivation/stewardship on draft PR #378;
+- cultivation/stewardship, earned tending delegation, and home-linked community continuity;
 - current-schema persistence, lifecycle guards, content-scale census, and repeatable benchmark sampling.
 
-High-volume content, deeper combat/ability breadth, broader social life, earned routine delegation, larger property/logistics systems, browser E2E hardening, and release support remain future work.
+High-volume authored content, deeper combat/ability breadth, broader social/companion life, larger property/logistics systems, browser E2E hardening, supported-save compatibility, and release support remain future work.
+
+## Next decision boundary
+
+Phase 0.9 is planned but **not opened**. Proposed first unit: `0.9.100 — Content Scale Gate A`. A separate explicit work order is required before implementation or the recommended protected-main/required-Check governance transition begins.
 
 ## Read these first
 
@@ -136,7 +134,7 @@ High-volume content, deeper combat/ability breadth, broader social life, earned 
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 8. relevant architecture/runtime/tests for the active pass
 
-Repository evidence beats conversation memory. If PR #378 remains open/unmerged, resolve its status before starting `0.8.800` by default.
+Repository evidence beats conversation memory.
 
 ## Running
 
