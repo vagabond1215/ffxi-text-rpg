@@ -29,6 +29,8 @@ Applicable resources include timers, scheduled callbacks, simulation tasks, list
 
 `tests/longSessionLifecycle.test.js` remains the accepted long-session/lifecycle smoke. Existing production-owner evidence proves repeated work/project/travel/ability/resource lifecycles return the task registry to **zero retained tasks** after reconciliation, including real save/load while owner tasks are active. Task IDs remain monotonic and are never reused.
 
+Phase 0.8 exit `npm run hardening` passed both long-session tests plus Benchmark Sample in hosted Check `32395959505`.
+
 This is deterministic state/lifecycle evidence, not a claim about process memory or browser heap retention.
 
 ## Wall-clock tick subscription ownership
@@ -58,9 +60,9 @@ Current direct runtime task owners remain exactly:
 
 The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-## Game State 13 task integrity on PR #378
+## Game State 14 task integrity
 
-The proposed current-schema boundary validates:
+The current-schema boundary validates:
 
 - timed-task registry version, sequence, IDs, statuses, timing, data shape, duplicate IDs, and monotonic `nextSequence`;
 - active travel -> matching travel task;
@@ -68,15 +70,14 @@ The proposed current-schema boundary validates:
 - active work -> matching `work.<kind>` task;
 - active ability -> `ability.activation` task;
 - active resource recovery -> matching `resource.recovery` task;
-- active cultivation labor -> `state.cultivation.plot.activeWorkId` must reference the persisted active work record for that plot/action.
+- active manual cultivation labor -> `state.cultivation.plot.activeWorkId` references the persisted active work record for that plot/action;
+- cultivation delegation appointment state is internally coherent but **does not reference a timed task**, because delegated tending is timestamp-derived under cultivation authority.
 
 An active owner may reference an active task or a task that has just completed and awaits owner reconciliation. Malformed current saves are rejected rather than reconstructed.
 
-## Cultivation lifecycle — 0.8.700
+## Cultivation lifecycle
 
-Draft PR #378 deliberately **does not add a seventh direct timed-task owner**.
-
-Cultivation uses two different lifecycles:
+Cultivation deliberately **does not add a seventh direct timed-task owner**.
 
 ### Crop growth lifecycle
 
@@ -89,16 +90,16 @@ plant physical Sweetroot
       tendedAtWorldSeconds
       seedProvenance
   -> fictional world time advances normally
-  -> status is derived by comparing persisted boundaries with world time
+  -> status derives from persisted boundaries
   -> no crop timer / interval / callback / background job / timed-task record exists
   -> harvest clears crop and increments durable harvestCount exactly once
 ```
 
 The crop survives save/load because its durable timestamps and seed provenance survive, not because a scheduler is recreated.
 
-### Hands-on labor lifecycle
+### Manual hands-on labor lifecycle
 
-Preparation and tending are real character work and reuse the existing work owner:
+Preparation and manual tending reuse the existing work owner:
 
 ```text
 cultivation action
@@ -106,14 +107,31 @@ cultivation action
   -> one work record + one normal work timed task
   -> activity advancement reaches task boundary
   -> cultivation reconciliation copies durable consequence
-      prepare: plot becomes prepared
-      tend: crop receives tendedAtWorldSeconds
-  -> cultivation mastery gain is recorded
-  -> markWorkCompleted(...)
+  -> player cultivation mastery gain is recorded
+  -> work owner marks complete
   -> work owner releases terminal timed task
 ```
 
-`tests/playerCultivationStewardshipFlow.test.js` explicitly proves the preparation task is released, tending consequence does not replay, save/load preserves crop state without a growth task, and harvest cannot duplicate output.
+### Earned delegation lifecycle
+
+After the manual routine has been proven, one tending visit may be delegated for 12 gil:
+
+```text
+player pays wage once
+  -> cultivation stores bounded assignment
+      crop cycle
+      arranged/scheduled/completion fictional-time boundaries
+      wage
+      active/completed status
+  -> no direct timed-task record is created
+  -> canonical world time reaches completion boundary
+  -> cultivation reconciliation records tendedAtWorldSeconds exactly once
+  -> assignment becomes completed
+  -> no player work proficiency is awarded
+  -> harvest later consumes the completed tending fact normally
+```
+
+The wage is not recomputed on load and the helper does not own an offline clock. Reconciliation cannot replay the helper visit.
 
 ### Ownership summary
 
@@ -121,13 +139,20 @@ cultivation action
 | --- | --- |
 | elapsed crop growth | canonical world time + persisted cultivation timestamps |
 | plot/crop lifecycle facts | `state.cultivation` |
-| short preparation/tending labor | `workTaskEngine` |
+| paid tending appointment | `state.cultivation` |
+| short manual preparation/tending labor | `workTaskEngine` |
 | physical input/output | inventory/container authority |
 | cultivated/seed history | resource provenance |
-| repeated-practice efficiency | work proficiency |
+| player repeated-practice efficiency | work proficiency |
 | player-facing action projection | semantic Journal/context view model |
 
-No wall-clock/offline growth, crop scheduler, cultivation interval, extra task engine, or passive background producer exists.
+No wall-clock/offline growth, crop scheduler, helper scheduler, cultivation interval, extra task engine, or passive background producer exists.
+
+## NPC schedule and community lifecycle
+
+NPC recurring availability also derives from canonical fictional time. Schedule definitions are authored data; there is no persisted per-NPC timer or social scheduler.
+
+Household/community commitments use existing durable commitment and relationship records. Follow-up availability derives from recorded resolution day + authored delay. They do not create retained callbacks or a separate social clock.
 
 ## Generic terminal history policy
 
@@ -139,10 +164,6 @@ owner -> durable consequence -> exactly-once reconciliation -> terminal release
 
 Do not add global pruning preemptively or reconstruct missing task records as compatibility behavior.
 
-## 0.8.800 caution
-
-Earned Routine Delegation is the proposed next track only after 0.8.700 lands. Delegating a cultivation chore must not convert timestamp-derived crop growth into a permanent background worker by accident. A helper may own a bounded paid/manual consequence only when its owner, costs, failure semantics, save/load behavior, and exactly-once reconciliation are explicit.
-
 ## Review checklist
 
 For lifecycle-sensitive changes, inspect:
@@ -153,8 +174,10 @@ For lifecycle-sensitive changes, inspect:
 - start -> pause/resume -> finish an activity;
 - task becomes terminal -> owner reconciles -> owner releases;
 - save -> load -> continue before and after reconciliation;
-- growth timestamp persists -> world time advances -> readiness derives once;
+- cultivation growth timestamps persist -> world time advances -> readiness derives once;
+- paid delegation persists -> completion boundary passes -> no duplicate charge/consequence;
 - harvest -> repeat harvest attempt -> no duplicate output;
+- scheduled NPC availability -> next window derives from world time without a timer;
 - malformed current save -> reject before revival, never repair implicitly;
 - repeated multi-day advancement with periodic persistence.
 
