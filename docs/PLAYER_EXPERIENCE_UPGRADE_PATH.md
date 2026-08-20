@@ -1,6 +1,6 @@
 # Player Experience Upgrade Path
 
-This document records the player-facing progression proof for Hearth & Horizon. Historical checkpoint detail remains in git and `docs/ROADMAP.md`; exact current work and deferred sequencing live in `docs/THREAD_HANDOFF.md` and `docs/EXECUTION_PIPELINE.md`.
+This document records the player-facing progression proof for **Hearth & Horizon**. Historical checkpoint detail remains in git and `docs/ROADMAP.md`; exact current work and deferred sequencing live in `docs/THREAD_HANDOFF.md` and `docs/EXECUTION_PIPELINE.md`.
 
 ## Player promise
 
@@ -33,7 +33,7 @@ No convenience layer may create a duplicate clock, inventory, progression counte
 
 Phase 0.7 established original-world onboarding, first-day opportunities, field tools, regional livelihood/production, named-NPC continuity, acquired-knowledge readability, danger/combat/recovery, multiple commitments, semantic transport, settlement services, semantic information access and persistent companions.
 
-Phase 0.8 landed tracks:
+Phase 0.8 is now complete:
 
 | Track | Player-facing proof | Status |
 | --- | --- | --- |
@@ -43,10 +43,11 @@ Phase 0.8 landed tracks:
 | `0.8.400` | Project labor/materials earn portable field capacity | Complete |
 | `0.8.500` | Named-person availability depends on fictional time | Complete |
 | `0.8.600` | Injured companions convalesce safely and rejoin explicitly | Complete |
+| `0.8.700` | Multi-day Sweetroot cultivation connects home, work, provenance and existing sinks | Complete |
+| `0.8.800` | Paid tending delegation reduces attention only after manual mastery | Complete |
+| `0.8.900` | Home-grown produce creates scheduled named community consequences | Complete |
 
-## `0.8.700` — Cultivation & Stewardship
-
-**Status: implemented and validated on draft PR #378; pending merge authorization.**
+## Cultivation & Stewardship
 
 The bounded player proof is deliberately small and connected:
 
@@ -57,96 +58,97 @@ one home Sweetroot bed
   -> wait through canonical fictional time
   -> tend after the first fictional day
   -> harvest after the second fictional day
-  -> receive three ordinary Sweetroots with cultivated provenance
-  -> use them through existing consumption, cooking and trade paths
-  -> cultivation mastery shortens later preparation/tending
+  -> receive ordinary Sweetroots with cultivated provenance
+  -> use them through existing consumption, production and trade paths
+  -> cultivation mastery shortens later manual work
 ```
 
 ### What the player understands
 
-The Journal/context model can tell the player:
-
-- the bed needs preparation;
-- one physical Sweetroot is required to propagate it;
-- the crop is growing;
-- tending is due;
-- the crop is ready to harvest;
-- the next hands-on work duration reflects accumulated cultivation proficiency.
+The Journal/context model tells the player when the bed needs preparation, when a physical propagation root is required, when the crop is growing, when tending is due, when harvest is ready, and when accumulated mastery has shortened later hands-on work.
 
 The normal path does **not** expose raw plot IDs, internal timestamps, provenance objects or command vocabulary.
 
 ### Why the loop matters
 
-The first proof reuses `item-elderwood-sweetroot` rather than adding a duplicate farm-only item. Harvested Sweetroot retains existing sinks:
-
-```text
-consume          -> food/medicine material context
-craftIngredient  -> existing Silverfin Sweetroot Stew production chain
-trade            -> existing shop-sale economy
-```
-
-Cultivation therefore turns prior field access into a repeatable home supply without bypassing the rest of the game.
+The proof reuses `item-elderwood-sweetroot` instead of adding a farm-only duplicate. Cultivated Sweetroot remains compatible with existing consume, production and trade sinks. Provenance distinguishes home-grown and wild histories without fragmenting item identity.
 
 ### Time and attention
 
-Growth is not a real-time timer and does not allocate one long-lived timed task per crop. Planting persists fictional-time boundaries. World time advances through the existing simulation; crop status derives from those timestamps.
+Growth is not a wall-clock timer and does not allocate one long-lived timed task per crop. Planting persists fictional-time boundaries; world time advances through the existing simulation and crop status derives from those timestamps.
 
-Only the moments when the character is personally preparing or tending the bed create short normal work tasks. Those tasks use the existing activity/work lifecycle and release after their consequence is durable.
+Only moments when the character personally prepares or tends the bed create short normal work tasks. Those tasks use the existing work lifecycle and release after their consequence is durable.
 
 ### Persistence and replay safety
 
-Game State 13 makes cultivation durable authority. The end-to-end proof saves and reloads mid-growth and after tending, then harvests once. A second harvest attempt is rejected without duplicating output.
-
-The propagation root's provenance is preserved during growth and nested into the cultivated harvest provenance, so the game does not forget where the new crop originated.
+Game State 13 made cultivation durable authority. Save/load preserves mid-growth and tended state. Harvest is exactly once; the propagation root's provenance survives growth and is retained in harvested provenance.
 
 ### Mastery
 
-Cultivation uses the existing persistent work-proficiency model via stable id `cultivation`. Practice improves future hands-on duration; there is no separate farming level, crop XP or parallel mastery system.
+Cultivation uses existing persistent work proficiency through stable id `cultivation`. There is no farming level, crop XP or parallel mastery system.
 
-### Exact validation
+## Earned Routine Delegation
 
-```text
-Head:   c125f7ae5f94800893dc28c7fa0ceb61553e3db8
-PR:     #378 draft/open/unmerged
-Check:  32340190710
-Tests:  695/695
-Node:   24.19.0
-Benchmark 3 + sample: success
-```
-
-## `0.8.800` — Earned Routine Delegation
-
-**Status: READY NEXT only after #378 lands; not started.**
-
-The strongest next player proof is now concrete: after manually establishing a Sweetroot routine, can the character earn a bounded way to spend less attention on one cultivation chore without free output or a second clock?
+After one manually completed cultivation cycle, the player can pay **12 gil** to arrange the next tending visit.
 
 ```text
-manual cultivation routine
-  -> mastery / infrastructure / social access
-  -> one bounded helper or hired-labor option
-  -> wages/material/time constraints remain
-  -> cultivation remains domain consequence authority
-  -> less repetitive player attention
+manual routine proven
+  -> pay real wage
+  -> bounded tending appointment persists
+  -> canonical fictional time reaches the visit boundary
+  -> crop is tended exactly once
+  -> player remains free for other activity
+  -> helper labor grants no player mastery
+  -> harvest proceeds through ordinary cultivation authority
 ```
 
-Do not start with generic automation.
+This is the first concrete proof of the product law that solved chores may demand less attention only after efficiency/automation is earned.
 
-## `0.8.900` — Household & Community Continuity
+The feature adds no helper clock, background producer, generic automation framework, free output or seventh direct timed-task owner. Game State 14 exists because a paid pending appointment is durable player-costly state that cannot be reconstructed safely after save/load.
 
-**Status: queued.**
+## Household & Community Continuity
 
-Make the foothold socially consequential through additional recurring named characters, livelihood/property-linked commitments/services, several-day consequences, and companion breadth where justified. No full romance framework yet.
+The foothold now creates social consequences through three existing named locality people:
+
+- **Mira Fen** — Thornwall Southgate, available 06:00–11:00;
+- **Mae Oris** — Brasshaven Market Ring, available 11:00–17:00;
+- **Kiri Fen** — Mistmere Canal Ward, available 16:00–21:00.
+
+Each has a commitment that requires an Elderwood Sweetroot whose provenance includes `plot-home-sweetroot-bed`. Wild-foraged Sweetroot does not satisfy the same request merely because it shares the item ID.
+
+Resolution and later-day follow-up use existing commitment, relationship, wallet, inventory, schedule, semantic-event and save/load authorities. The Journal uses direct semantic intents:
+
+```text
+commitment.accept
+commitment.resolve
+commitment.followUp
+```
+
+No social clock, household XP or second quest framework exists.
 
 ## Phase 0.8 exit proof
+
+The completed player-facing arc is:
 
 ```text
 home/storage/workshop
   -> cultivation/stewardship
-  -> recurring productive routine
-  -> earned reduction in repetitive attention
-  -> named community consequences
-  -> preparation for travel/adventure
+  -> recurring manual productive routine
+  -> mastery and earned reduction in repetitive attention
+  -> home-grown provenance
+  -> named scheduled community consequences
+  -> preparation, services, travel and adventure remain ordinary competing choices
 ```
+
+The phase closed only after the complete suite, Benchmark 3, Benchmark Sample, Content Census and long-session Hardening were green. See `docs/PHASE_0_8_EXIT_GATE.md`.
+
+## Content-scale implication
+
+The current mechanics-scale census is **NOT READY**. Places/localities already exceed the mechanics floor, while abilities/techniques, recipes/processes, NPCs, items, companions, quests/contracts, ecology/resources/creatures, service sites and transport services remain below their planning floors.
+
+The largest relative gap is abilities/techniques. This means the next product challenge is authored breadth and connected content throughput, not another generic state-coherence pass.
+
+Do not answer the census by adding disconnected filler. New content should arrive as dense regional graphs that give the player additional reasons to prepare, travel, work, fight, trade, return home and remember people.
 
 ## Architecture rule carried forward
 
@@ -154,4 +156,8 @@ Player-experience guidance, service boards, information/search, home opportuniti
 
 World time, cultivation state, work/tasks, inventory, provenance, production, commitments, relationships, party/recovery, home infrastructure and work mastery remain in their declared domain authorities.
 
-If PR #378 remains unmerged, a replacement thread should resolve its state before starting `0.8.800`; do not repeat broad cultivation discovery unless repository authority materially changed.
+## Next decision boundary
+
+Phase 0.9 is planned but **not opened**. Proposed first unit: `0.9.100 — Content Scale Gate A`.
+
+A future thread should read `docs/THREAD_HANDOFF.md` and `docs/EXECUTION_PIPELINE.md`, refresh `main`, and wait for explicit authorization before opening Phase 0.9 implementation or changing repository governance.
