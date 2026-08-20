@@ -5,7 +5,7 @@ repository:
 project:
   title: Hearth & Horizon
   type: persistent-game-application
-  phase: pre-alpha-phase-0.8-complete
+  phase: pre-alpha-phase-0.9-content-scale
   assurance_tier: B-plus
 authority:
   instructions: AGENTS.md
@@ -21,134 +21,108 @@ authority:
   phase_0_8_exit_gate: docs/PHASE_0_8_EXIT_GATE.md
   phase_0_9_plan: docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
 tools:
-  github_connector: repository-inspection-and-bounded-doc-work
-  repository_capable_execution: runtime-implementation-and-executable-validation
+  github_connector: repository-inspection-implementation-pr-validation
   principle: least-powerful-safe-tool
 git:
-  current_normal_work: direct-main
-  risky_or_explicit_review_work: feature-branch-pr
+  current_normal_work: phase-0.9-pr-integration
+  active_branch: feature/0.9.100-content-pack-v2
+  active_pull_request: 382
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
-  phase_0_9_transition_status: not-started-requires-explicit-opening
+  pr_integration_status: active
+  branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  branch: null
-  pull_request: null
-  pull_request_state: none
-  validated_implementation_sha: ca7d37c643adc4115b519148615f6120d03228df
-  hosted_check: 32395768383
-  test_result: 699-of-699-pass
-  benchmark_result: benchmark-3-and-sample-success
-  phase_exit_check: 32395959505
-  phase_exit_result: census-and-hardening-success
-  maintenance_validation_sha: c3d610e1f3820248a20de28bdc605e82da29e6f1
-  maintenance_validation_pr: 381-closed-without-merge
-  maintenance_check: 32398650493
-  maintenance_job: 96521318203
-  maintenance_result: repository-audit-pass-700-of-700-tests-benchmark-3-and-sample-success
+  validated_implementation_sha: 739f88801ddd66587b6b45bdbd0784dff351c986
+  pre_promotion_infrastructure_sha: 613a5b841d0622f67372d2c4af59af79330b5046
+  infrastructure_check: 32402373472
+  infrastructure_job: 96533356513
+  infrastructure_result: repository-audit-pass-704-of-704-tests-census-benchmark-3-and-sample-success
+  pull_request: 382
+  pull_request_state: open
 progression:
-  continuation_pass: C0-continuation-infrastructure-content-census
-  continuation_pass_status: complete
-  current_bounded_unit: current-status-audit-repair-optimization-planning
-  current_bounded_unit_status: complete
-  next_proposed_unit: 0.9.100-content-scale-gate-a
-  next_proposed_unit_status: planned-not-opened
-  phase_0_9_planning_pass: complete
-  phase_0_9_first_packet: content-pack-scale-contract-v2
-  phase_0_9_first_packet_status: planned-not-opened
-  content_scale_gate_version: 1
+  current_phase: 0.9
+  current_track: 0.9.100-content-scale-gate-a
+  current_track_status: in-progress
+  current_bounded_unit: content-pack-scale-contract-v2
+  current_bounded_unit_status: complete-awaiting-final-promotion-validation-and-merge
+  next_bounded_unit: redstone-forge-road-regional-tranche
+  next_bounded_unit_status: not-started-not-authorized-by-current-packet
+  content_scale_gate_version: 2
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
-  phase_0_8_sequence:
-    - 0.8.700-cultivation-stewardship-complete
-    - 0.8.800-earned-routine-delegation-complete
-    - 0.8.900-household-community-continuity-complete
-    - phase-0.8-exit-audit-complete
-  deferred_release_transition:
-    - browser-e2e-accessibility-program
-    - supported-save-migrations
-    - accepted-hard-performance-budgets
 validation:
   repository_audit: npm run audit:repo
   tests: npm test
+  census: npm run census
   benchmark: npm run benchmark
   benchmark_sample: npm run benchmark:sample
-  census: npm run census
   hardening: npm run hardening
   aggregate: npm run check
   hosted_check: Check
+  hosted_check_contract:
+    - repository-audit
+    - test
+    - content-census
+    - benchmark-3
+    - benchmark-sample
   node_baseline: 24
   repository_contract_guard: tests/repositoryContractAudit.test.js
-  architecture_debt_guard: tests/architectureDebtGuard.test.js
+  content_pack_guard: tests/contentPackValidator.test.js
   content_scale_guard: tests/contentScaleGate.test.js
-  cultivation_schema_guard: tests/currentSchemaCultivation.test.js
-  cultivation_player_flow_guard: tests/playerCultivationStewardshipFlow.test.js
-  delegation_player_flow_guard: tests/playerRoutineDelegationFlow.test.js
-  household_community_guard: tests/playerHouseholdCommunityFlow.test.js
+  architecture_debt_guard: tests/architectureDebtGuard.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.8.900.1
-  current_package_version: 0.8.900
+  current_product_version: 0.9.100.1
+  current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 39
+  current_data_version: 40
   current_benchmark_version: 3
-  current_game_state_must_be_complete_before_revival: true
-  raw_current_schema_validation_before_runtime_normalization: true
-  active_task_links_must_be_persisted_and_consistent: true
-  cultivation_authority:
-    state_owner: state.cultivation
-    growth_clock: canonical-world-time-only
-    crop_owned_timed_task: false
-    short_manual_labor_owner: workTaskEngine
-    physical_input_output_owner: inventory
-    provenance_owner: resource-provenance
-    mastery_owner: player-work-proficiencies
-    stable_proficiency_id: cultivation
-    delegation:
-      state_owner: state.cultivation
-      direct_timed_task_owner: false
-      wage_gil: 12
-      completion_clock: canonical-world-time-only
-      player_mastery_for_helper_work: false
-    semantic_intents:
-      - cultivation.prepare
-      - cultivation.plant
-      - cultivation.tend
-      - cultivation.harvest
-  household_community:
-    persistence_owner: existing-commitments-and-relationships
-    schedule_clock: canonical-world-time-only
-    social_clock: false
-    home_produce_source_id: plot-home-sweetroot-bed
-    semantic_intents:
-      - commitment.accept
-      - commitment.resolve
-      - commitment.followUp
-  post_revival_or_derived:
-    - broad-player-validation
-    - flat-inventory-alias-identity
-    - player-combat-profile
-    - player-stat-state
-    - derived-combat-stat-maxima
-    - active-battle-rng
-    - npc-world-projection
-    - enemy-encounter-projection
-    - command-presentation-log
-  serialization_exclusions:
-    - player-combat-profile
-    - player-stat-state
-    - active-battle-rng
-    - state-npcs
-    - state-enemies
-    - state-log
-  future_migrations: deliberate-only-when-required
-  canonical_action_results_only: true
-  resource_lifecycle_review: required
-  benchmark_protocol: 3
-  benchmark_warmup_ratio: 0.1
-  hard_performance_thresholds: not-yet-accepted
+  current_codename: Content Pack Scale Contract v2
   content_scale_is_release_progress_not_ci_pass_fail: true
+  hard_performance_thresholds: not-yet-accepted
+  future_migrations: deliberate-only-when-required
+  content_pack_scale_contract:
+    schema_version: 2
+    validator_version: 2
+    catalog_registry_version: 1
+    scale_gate_version: 2
+    canonical_definition_authority: existing-catalogs
+    pack_authority: stable-id-ownership-regional-shared-dependencies
+    duplicate_catalog_authority: forbidden
+    collections:
+      - places
+      - routes
+      - transportServices
+      - ecologyFamilies
+      - species
+      - populations
+      - gatheringSources
+      - items
+      - npcs
+      - npcSchedules
+      - shops
+      - recipes
+      - quests
+      - relationships
+      - spellSchools
+      - capabilities
+      - abilities
+      - companions
+    catalog_bridge:
+      items:
+        - resource-items
+        - production-items
+        - equipment-catalog
+      recipes: production-catalog
+      quests: commitment-catalog
+      npcs: seed-npc-catalog
+      routes_and_ecology: canonical-route-ecology-catalogs
+      training_and_abilities: canonical-capability-ability-catalogs
+      schedules: canonical-npc-schedule-catalog
+      companions: canonical-companion-catalog
+    generated_scale_fixture_ownership_records: 1401
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -163,31 +137,25 @@ content_scale:
     quests_contracts: 8
     companions: 1
     transport_services: 3
+  supplemental:
+    routes: 7
+    spell_schools: 3
+    capability_training_definitions: 8
+    npc_schedules: 4
+    regional_shared_packs: 7
+    pack_owned_records: 115
+    pack_owned_abilities: 5
+    pack_owned_capabilities: 8
+    pack_owned_schedules: 4
+    pack_owned_companions: 1
   largest_relative_gap: abilities-techniques
-  phase_0_9_pack_ownership_gap:
-    - abilities-techniques
-    - capability-training-definitions
-    - npc-schedules
-    - companions
 constraints:
-  - use current repository authority rather than conversation memory
-  - read thread handoff and execution pipeline before broad discovery
-  - preserve the original-world canon and legacy/reference boundary
-  - preserve the distinction between fictional simulation time and wall-clock scheduling
-  - reject incompatible or incomplete pre-alpha saves/accounts rather than adding compatibility scaffolding by default
-  - raw Game State 14 must reject malformed cultivation/delegation authority before runtime ensure helpers normalize it
-  - cultivation growth and delegated tending are timestamp-derived from canonical fictional time and do not create long-lived direct timed tasks
-  - manual cultivation preparation and tending reuse the existing work task owner and exactly-once terminal release contract
-  - planting consumes a physical inventory item and harvest creates ordinary inventory output
-  - cultivated output remains the existing canonical Sweetroot item and provenance distinguishes its home-grown origin
-  - delegated helper work does not grant player mastery or free resources
-  - community commitments reuse existing commitment relationship schedule wallet inventory and event authorities
-  - semantic player actions must not require command-string manufacture
-  - state.events remains the persisted structured semantic observation channel
-  - state.npcs state.enemies and top-level state.log remain non-authoritative projections/presentation state
-  - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
-  - do not add blind global timed-task pruning
-  - content-heavy work should run the census without gaming counts with disconnected filler
-  - expand content-pack ownership and validation before mass-authoring Phase 0.9 categories that currently live outside regional pack ownership
-  - Phase 0.9 and 0.9.100 are planned but not opened without explicit authorization
-  - roadmap sequencing does not authorize unbounded implementation
+  - scale supporting ownership validation and catalog bridges before high-volume authoring or import
+  - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
+  - do not add disconnected filler merely to satisfy content targets
+  - preserve existing canonical catalog definition authority behind content-pack ownership metadata
+  - preserve original-world canon and legacy/reference boundaries
+  - preserve fictional simulation time versus wall-clock scheduling
+  - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
+  - do not add a second simulation clock task engine inventory progression or social authority
+  - roadmap sequencing does not authorize the next independent regional content tranche
