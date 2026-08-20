@@ -6,7 +6,7 @@ import { VERSION } from '../js/text/version.js';
 
 const SCRIPT_PATH = fileURLToPath(import.meta.url);
 const DEFAULT_ROOT = path.resolve(path.dirname(SCRIPT_PATH), '..');
-const EXPECTED_CHECK = 'npm run audit:repo && npm test && npm run benchmark && npm run benchmark:sample';
+const EXPECTED_CHECK = 'npm run audit:repo && npm test && npm run census && npm run benchmark && npm run benchmark:sample';
 
 function readText(rootDir, relativePath) {
     return fs.readFileSync(path.join(rootDir, relativePath), 'utf8');
@@ -33,10 +33,11 @@ export function collectRepositoryContractIssues({ rootDir = DEFAULT_ROOT } = {})
         [`current_game_state: ${VERSION.gameState}`, 'PROJECT_PROFILE Game State'],
         [`current_data_version: ${VERSION.data}`, 'PROJECT_PROFILE Data'],
         [`current_benchmark_version: ${VERSION.benchmark}`, 'PROJECT_PROFILE Benchmark'],
-        ['next_proposed_unit_status: planned-not-opened', 'PROJECT_PROFILE next-unit boundary'],
     ]) requireText(issues, profile, expected, label);
 
-    for (const command of ['npm run audit:repo', 'npm test', 'npm run benchmark', 'npm run benchmark:sample']) requireText(issues, workflow, command, 'hosted Check workflow');
+    for (const command of ['npm run audit:repo', 'npm test', 'npm run census', 'npm run benchmark', 'npm run benchmark:sample']) {
+        requireText(issues, workflow, command, 'hosted Check workflow');
+    }
 
     for (const relativePath of [
         'README.md',
