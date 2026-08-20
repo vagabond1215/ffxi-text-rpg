@@ -25,6 +25,8 @@ jobs:
         with:
           node-version: 24
           package-manager-cache: false
+      - name: Repository Audit
+        run: npm run audit:repo
       - name: Test
         run: npm test
       - name: Benchmark
