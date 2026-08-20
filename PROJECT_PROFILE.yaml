@@ -19,6 +19,7 @@ authority:
   performance_budget: docs/PERFORMANCE_BUDGET.md
   resource_lifecycle: docs/RESOURCE_LIFECYCLE.md
   phase_0_8_exit_gate: docs/PHASE_0_8_EXIT_GATE.md
+  phase_0_9_plan: docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
 tools:
   github_connector: repository-inspection-and-bounded-doc-work
   repository_capable_execution: runtime-implementation-and-executable-validation
@@ -28,6 +29,7 @@ git:
   risky_or_explicit_review_work: feature-branch-pr
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
   phase_0_9_transition_status: not-started-requires-explicit-opening
+  stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
   branch: null
   pull_request: null
@@ -38,13 +40,21 @@ active_change:
   benchmark_result: benchmark-3-and-sample-success
   phase_exit_check: 32395959505
   phase_exit_result: census-and-hardening-success
+  maintenance_validation_sha: c3d610e1f3820248a20de28bdc605e82da29e6f1
+  maintenance_validation_pr: 381-closed-without-merge
+  maintenance_check: 32398650493
+  maintenance_job: 96521318203
+  maintenance_result: repository-audit-pass-700-of-700-tests-benchmark-3-and-sample-success
 progression:
   continuation_pass: C0-continuation-infrastructure-content-census
   continuation_pass_status: complete
-  current_bounded_unit: phase-0.8-exit-audit
+  current_bounded_unit: current-status-audit-repair-optimization-planning
   current_bounded_unit_status: complete
   next_proposed_unit: 0.9.100-content-scale-gate-a
   next_proposed_unit_status: planned-not-opened
+  phase_0_9_planning_pass: complete
+  phase_0_9_first_packet: content-pack-scale-contract-v2
+  phase_0_9_first_packet_status: planned-not-opened
   content_scale_gate_version: 1
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
   phase_0_8_sequence:
@@ -57,6 +67,7 @@ progression:
     - supported-save-migrations
     - accepted-hard-performance-budgets
 validation:
+  repository_audit: npm run audit:repo
   tests: npm test
   benchmark: npm run benchmark
   benchmark_sample: npm run benchmark:sample
@@ -65,6 +76,7 @@ validation:
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
+  repository_contract_guard: tests/repositoryContractAudit.test.js
   architecture_debt_guard: tests/architectureDebtGuard.test.js
   content_scale_guard: tests/contentScaleGate.test.js
   cultivation_schema_guard: tests/currentSchemaCultivation.test.js
@@ -152,6 +164,11 @@ content_scale:
     companions: 1
     transport_services: 3
   largest_relative_gap: abilities-techniques
+  phase_0_9_pack_ownership_gap:
+    - abilities-techniques
+    - capability-training-definitions
+    - npc-schedules
+    - companions
 constraints:
   - use current repository authority rather than conversation memory
   - read thread handoff and execution pipeline before broad discovery
@@ -171,5 +188,6 @@ constraints:
   - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
   - do not add blind global timed-task pruning
   - content-heavy work should run the census without gaming counts with disconnected filler
+  - expand content-pack ownership and validation before mass-authoring Phase 0.9 categories that currently live outside regional pack ownership
   - Phase 0.9 and 0.9.100 are planned but not opened without explicit authorization
   - roadmap sequencing does not authorize unbounded implementation
