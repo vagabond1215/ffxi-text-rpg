@@ -10,23 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is now open. `0.9.100 Content Scale Gate A` is in progress, with its first infrastructure packet complete and the first high-volume content tranche deliberately not started.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. The infrastructure-first Content Pack Scale Contract v2 packet is complete, and the Redstone Forge-Road regional tranche is implemented and validated pending final PR landing.
 
 ```text
-Product:       0.9.100.1
+Product:       0.9.100.2
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          40
+Data:          41
 Benchmark:     3
-Codename:      Content Pack Scale Contract v2
+Codename:      Redstone Forge-Road
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-The 0.9.100 infrastructure packet extends the regional/shared content-pack contract before content volume grows. It adds one catalog bridge and Pack v2 ownership/validation for spell schools, capabilities/training definitions, executable abilities, NPC schedules, and companions while preserving the existing runtime catalogs as canonical definition authorities.
-
-No new gameplay content, simulation clock, task engine, persistence family, or save migration was introduced by this packet. Game State therefore remains 14; Data advances to 40 because the canonical authored-data ownership/validation contract changed.
+Data advances from 40 to 41 because Redstone Forge-Road adds stable canonical abilities/capabilities, production items/processes, commitments, and one child Pack v2 ownership graph. Game State remains 14 because the tranche adds no new durable player/world authority, simulation clock, task engine, persistence family, or save migration.
 
 ## Product direction
 
@@ -48,9 +46,22 @@ spell schools / capabilities / executable abilities
 companions
 ```
 
-`js/text/data/contentCatalogRegistry.js` bridges packs to the existing canonical catalogs rather than duplicating definitions merely to claim ownership. Items resolve across resource, production, and equipment catalogs; recipes, commitments, seed NPCs, routes/ecology, abilities/capabilities, schedules, and companions are also resolvable through the same boundary.
+`js/text/data/contentCatalogRegistry.js` bridges packs to the existing canonical catalogs rather than duplicating definitions merely to claim ownership. The content-pack validator enforces stable-ID ownership, cross-pack dependencies, dangling references, legacy leaks, and family-specific structure. A generated fixture validates 1,401 Pack v2 ownership records without contributing to canonical content counts.
 
-The content-pack validator enforces stable-ID ownership, cross-pack dependencies, dangling references, legacy leaks, and family-specific structure. A generated fixture validates more than 1,400 Pack v2 ownership records across items, recipes, NPCs, schedules, capabilities, abilities, and companions before equivalent canonical volume is authored.
+## Redstone Forge-Road
+
+The current regional tranche deliberately deepens existing Brasshaven/Redstone loops instead of creating disconnected breadth.
+
+It adds:
+
+- four character-owned Redstone capabilities and four executable abilities;
+- six additional downstream Redstone forge outputs, including tempered iron, rivets, wearable forge/mining equipment, and caravan repair hardware;
+- six additional forge processes using existing iron, sunstone, Ridge Ibex, forge, work-proficiency, inventory, and provenance authorities;
+- three provenance-qualified Brasshaven commitments that consume real forged output;
+- `pack-redstone-forge-road`, dependent on the shared foundation, Redstone opening root, and Redstone ecology breadth pack;
+- focused end-to-end coverage for Pack v2 ownership, real production/provenance, exactly-once commitment resolution, and executable Redstone combat training.
+
+The established Varric copper-return continuity remains intact. Later Forge-Road orders use Mae Oris as a separate scheduled Market Ring contact so new work does not displace that earlier relationship path.
 
 ## Content-scale census
 
@@ -59,7 +70,7 @@ npm run census
 npm run census -- --json
 ```
 
-Current gameplay breadth remains intentionally unchanged by the infrastructure packet:
+Validated Redstone checkpoint:
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -67,24 +78,25 @@ named NPCs              12 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         50 / 200
-recipes/processes       11 / 75
-abilities/techniques     5 / 100
-quests/contracts         8 / 30
+canonical items         56 / 200
+recipes/processes       17 / 75
+abilities/techniques     9 / 100
+quests/contracts        11 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
 
-Infrastructure coverage now reports separately:
+Infrastructure coverage:
 
 ```text
+routes                                7
 spell schools                         3
-capabilities/training definitions     8
-NPC schedules                          4
-regional/shared content packs          7
-pack-owned records                    115
+capabilities/training definitions    12
+NPC schedules                         4
+regional/shared content packs         8
+pack-owned records                   140
 pack-owned abilities/capabilities/
-  schedules/companions              5/8/4/1
+  schedules/companions             9/12/4/1
 ```
 
 The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Counts must not be gamed with disconnected filler.
@@ -110,13 +122,13 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- current-schema persistence, lifecycle guards, connected Pack v2 validation, content-scale census, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road production/training/contracts, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` is open. **Content Pack Scale Contract v2 is the completed first packet.** The next proposed bounded packet is the Redstone Forge-Road regional tranche, but it has not been started by this infrastructure work order.
+`0.9.100 Content Scale Gate A` remains open. Redstone Forge-Road is the completed first authored regional tranche after Pack v2 infrastructure. **Elderwood Hunt-Timber is next but has not been started by this work order.**
 
-Before any high-volume authoring/import, content must use the connected Pack v2 ownership/validation path and the census must continue distinguishing real gameplay breadth from pack bookkeeping.
+Before any further high-volume authoring/import, content must continue through the connected Pack v2 ownership/validation path and the census must distinguish real gameplay breadth from pack bookkeeping.
 
 ## Read these first
 
@@ -149,4 +161,4 @@ npm run hardening
 npm run check
 ```
 
-`npm run check` and hosted `Check` now execute Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample. Census target shortfalls remain informational. `package.json` requires Node 24 or newer.
+`npm run check` and hosted `Check` execute Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample. Census target shortfalls remain informational. `package.json` requires Node 24 or newer.
