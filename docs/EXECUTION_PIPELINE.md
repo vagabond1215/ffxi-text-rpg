@@ -13,6 +13,8 @@ Authority order remains:
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 8. relevant architecture/runtime/tests for the active pass only
 
+Detailed future Phase 0.9 packet design is recorded in `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`. That file is a planning artifact, not independent authorization to open the phase.
+
 If this file and `THREAD_HANDOFF.md` identify the active boundary, do not restart a broad audit. Refresh `main`, verify the checkpoint, inspect only the named next-pass evidence, and proceed only when the user has authorized that pass.
 
 ## Current validated baseline
@@ -29,13 +31,13 @@ Codename:      Household & Community Continuity
 Runtime:       Node >=24
 ```
 
-Frozen runtime:
+Frozen gameplay/runtime implementation:
 
 ```text
 ca7d37c643adc4115b519148615f6120d03228df
 ```
 
-Evidence:
+Phase 0.8 evidence:
 
 ```text
 Check 32395768383
@@ -52,6 +54,41 @@ Validation-only PR #380 closed without merge
 
 See `docs/PHASE_0_8_EXIT_GATE.md` for the closure record.
 
+## Post-Phase-0.8 status audit and maintenance pass
+
+**Status: DONE.**
+
+The current-status audit found no gameplay/persistence blocker and did not change Product, Package, Account Save, Game State, Data, or Benchmark versions.
+
+Maintenance changes:
+
+- added `npm run audit:repo` to detect drift between runtime/package/profile/core docs/hosted Check;
+- aligned local `npm run check` with Repository Audit + Test + Benchmark + Benchmark Sample;
+- added the Repository Audit step to hosted `Check`;
+- added `tests/repositoryContractAudit.test.js`;
+- retired the obsolete pre-roadmap `docs/BASELINE_PIPELINE.md` instructions in favor of current authority documents.
+
+Validated maintenance head:
+
+```text
+c3d610e1f3820248a20de28bdc605e82da29e6f1
+```
+
+Validation-only PR #381 / Check `32398650493` / Job `96521318203` passed:
+
+```text
+Repository Audit PASS
+700/700 tests
+Benchmark 3 success
+Benchmark Sample success
+```
+
+PR #381 was closed without merge because the maintenance changes had already landed directly on `main`.
+
+### Repository-hygiene note
+
+Several historical validation branches and `feature/0.8.700-cultivation-stewardship` remain remotely. The available connector has no safe branch-delete action. They are manual cleanup debt, not active work or a runtime blocker. Do not continue new implementation from those stale branches.
+
 ## Fast restart protocol
 
 ```text
@@ -60,17 +97,16 @@ See `docs/PHASE_0_8_EXIT_GATE.md` for the closure record.
 3. read docs/THREAD_HANDOFF.md
 4. read this file
 5. compare current main with the handoff
-6. inspect only the named next-pass evidence
-7. proceed only if that bounded unit is explicitly authorized
+6. if Phase 0.9 is explicitly opened, read docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
+7. inspect only the named next-pass evidence
+8. proceed only if that bounded unit is explicitly authorized
 ```
 
 Only reopen broad discovery when `main` materially diverged from the handoff, the handoff says the next unit is unselected, the named pass became impossible because authority changed, or the user explicitly asks for a fresh audit/roadmap revision.
 
-Do not rediscover closed Phase 0.4–0.8 work without a concrete reason.
+Do not rediscover closed Phase 0.4–0.8 work or the completed post-0.8 status audit without a concrete regression/change.
 
 # Completed Phase 0.8 queue
-
-Statuses here are historical outcomes, not active work.
 
 | Unit | Outcome |
 | --- | --- |
@@ -79,52 +115,11 @@ Statuses here are historical outcomes, not active work.
 | `0.8.800` Earned Routine Delegation | DONE |
 | `0.8.900` Household & Community Continuity | DONE |
 | Phase 0.8 exit audit | DONE |
+| Post-0.8 status audit / maintenance / planning pass | DONE |
 
-## `0.8.700` — Cultivation & Stewardship
+Phase 0.8 established the connected life loop and closed without adding parallel simulation clocks, generic task engines, duplicate inventories, or duplicate progression authorities.
 
-The home Sweetroot bed uses persisted timestamps and existing world time, work, inventory, provenance and proficiency authorities. Growth creates no crop-owned timer/task. Preparation/tending are normal hands-on work. Harvest is exactly once and retains seed/home provenance.
-
-Version decisions:
-
-```text
-Game State 12 -> 13
-Data 37 -> 38
-```
-
-## `0.8.800` — Earned Routine Delegation
-
-After one manual crop cycle, the player can pay 12 gil to arrange one Sweetroot tending visit. The appointment persists under cultivation authority, completes from canonical fictional time, creates no direct timed-task owner, grants no helper mastery, and is exactly once across save/load.
-
-Version decision:
-
-```text
-Game State 13 -> 14
-```
-
-## `0.8.900` — Household & Community Continuity
-
-Mira Fen, Mae Oris and Kiri Fen are persistent scheduled community contacts. Their home-produce commitments require Sweetroot provenance `plot-home-sweetroot-bed`, reject wild substitutes, and use existing commitment/relationship/wallet/inventory/schedule/event/save authorities. Journal actions are semantic commitment intents.
-
-Version decision:
-
-```text
-Data 38 -> 39
-Game State remains 14
-```
-
-## Phase 0.8 exit audit
-
-All required commands passed:
-
-```text
-npm test                 699/699
-npm run benchmark        success
-npm run benchmark:sample success
-npm run census           success
-npm run hardening        success
-```
-
-Current census:
+## Current census
 
 ```text
 places/localities       26 / mechanics floor 10
@@ -140,13 +135,13 @@ companions                1 / 4
 transport services        3 / 5
 ```
 
-Mechanics-scale gate: **NOT READY**. Largest relative gap: abilities/techniques.
+Mechanics-scale gate: **NOT READY**. Largest relative gap: abilities/techniques. Places already exceed the mechanics floor, so empty geography is not a useful response.
 
 # Current decision boundary
 
-There is **no active implementation unit** after Phase 0.8 closure.
+There is **no active implementation unit**.
 
-The next proposed phase is Phase 0.9. Opening it requires explicit authorization. Do not infer authorization from the roadmap, this queue, or the fact that Phase 0.8 is complete.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — remains **planned / not opened**. Opening it requires explicit authorization. Do not infer authorization from this queue, the roadmap, or `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
 
 ## Proposed `0.9.100` — Content Scale Gate A
 
@@ -156,23 +151,43 @@ Primary question:
 
 > Can the existing architecture support materially greater authored breadth without turning content production into disconnected filler or duplicating runtime authorities?
 
-The first Phase 0.9 planning packet should use the census to select connected regional content tranches. Priority is not simply the smallest numeric gap; content should create playable cross-system graphs.
+### First future packet — Content Pack Scale Contract v2
 
-Current evidence suggests special attention to:
+The post-0.8 audit found that the current regional content-pack contract owns places, routes, transport services, ecology, gathering sources, items, NPCs, shops, recipes, quests, and relationships, but does **not** yet own several content families Phase 0.9 must scale heavily:
 
-- ability/technique breadth: 5/100 mechanics floor;
-- recipe/process breadth: 11/75;
-- named NPC breadth: 12/50;
-- canonical items: 50/200;
-- companion breadth: 1/4;
-- quests/contracts: 8/30;
-- ecology/resource/creature breadth.
+```text
+abilities / techniques
+capability / training definitions
+NPC schedules
+companions
+```
 
-Places are already 26/10, so adding empty geography is not a useful first response.
+Therefore the recommended first implementation packet after explicit Phase 0.9 opening is **Content Pack Scale Contract v2**, before mass content generation.
+
+It should:
+
+- define regional/shared ownership for the missing content families where appropriate;
+- extend stable-ID collision and dependency validation;
+- validate ability/training, NPC/schedule, and NPC/companion cross-references;
+- extend generated scale fixtures to exercise the new collections;
+- keep the census measuring canonical content rather than pack bookkeeping;
+- preserve existing runtime authorities rather than creating pack-owned duplicate gameplay state.
+
+Likely version impact must be decided from the actual implementation. A Data-version change is plausible; Game State should remain unchanged unless the packet introduces genuinely new durable player/world facts. Do not pre-open `0.9.100` versions from planning alone.
+
+### Following Gate A tranches
+
+After Pack v2 proves ownership/validation, `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` proposes three dense regional tranches:
+
+1. **Redstone Forge-Road** — mining, production, shops/services, caravan logistics, equipment, contracts and techniques.
+2. **Elderwood Hunt-Timber** — creatures, forestry, body recovery, food/material processing, field techniques and recurring characters.
+3. **Starfen Marshcraft-Practical Magic** — herbs/fungi, wetland ecology, medicine/cooking, practical magic, training, schedules and water/canal context.
+
+Then run Gate A integration and census validation. Counts are planning bands, not filler quotas.
 
 ### Recommended Phase 0.9 opening governance decision
 
-Before high-volume Phase 0.9 implementation begins, explicitly decide whether to transition to:
+Before high-volume Phase 0.9 implementation begins, explicitly decide the transition to:
 
 ```text
 protected main
@@ -180,7 +195,7 @@ protected main
   + required green hosted Check
 ```
 
-The recommendation is yes once Phase 0.9 is opened. Do not change branch protection merely as a documentation side effect of closing Phase 0.8.
+The recommendation is yes once Phase 0.9 is explicitly opened. Keep current-schema-only persistence until a later deliberate release-transition work order changes that policy.
 
 # Phase 0.9 progression envelope
 
@@ -247,14 +262,15 @@ Deferred. Broader authored people/goals/schedules/boundaries should precede a ro
 6. Add focused deterministic tests.
 7. Add realistic connected content for the changed system.
 8. Run focused validation.
-9. Run full Test + Benchmark evidence when coherent.
-10. Freeze exact implementation SHA.
-11. Synchronize roadmap/profile/catalog/docs only after freeze.
-12. Update THREAD_HANDOFF.md last.
-13. Stop; do not silently launch the next independent pass.
+9. Run full Repository Audit + Test + Benchmark + Benchmark Sample evidence when coherent.
+10. Run census for content-heavy work; hardening for lifecycle-sensitive work.
+11. Freeze exact implementation SHA.
+12. Synchronize roadmap/profile/catalog/docs only after freeze.
+13. Update THREAD_HANDOFF.md last.
+14. Stop; do not silently launch the next independent pass.
 ```
 
-For lifecycle-sensitive systems, add ownership/cleanup and long-session evidence. For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, run `npm run census` and record only output that actually ran.
+For persistence changes, classify state before validation and make a deliberate Game State decision. For content-heavy work, record only census output that actually ran.
 
 # Handoff template
 
