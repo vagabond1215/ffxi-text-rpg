@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and focused cleanup versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.8.800.1');
-    assert.equal(PACKAGE_VERSION, '0.8.800');
+    assert.equal(PRODUCT_VERSION, '0.8.900.1');
+    assert.equal(PACKAGE_VERSION, '0.8.900');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 14);
-    assert.equal(VERSION.data, 38);
+    assert.equal(VERSION.data, 39);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Earned Routine Delegation');
+    assert.equal(VERSION.codename, 'Household & Community Continuity');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -51,6 +51,7 @@ test('version manifest separates product package persistence data and focused cl
             slashCommands: SYSTEM_VERSIONS.slashCommands,
             accountSaves: SYSTEM_VERSIONS.accountSaves,
             commitments: SYSTEM_VERSIONS.commitments,
+            npcSchedules: SYSTEM_VERSIONS.npcSchedules,
             carriedInventory: SYSTEM_VERSIONS.carriedInventory,
             carriedLoad: SYSTEM_VERSIONS.carriedLoad,
             inventoryContainers: SYSTEM_VERSIONS.inventoryContainers,
@@ -79,7 +80,7 @@ test('version manifest separates product package persistence data and focused cl
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.8.800.1',
+            versionManifest: '0.8.900.1',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -99,7 +100,8 @@ test('version manifest separates product package persistence data and focused cl
             commandShell: '0.5.1',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
-            commitments: '0.3.1',
+            commitments: '0.4.0',
+            npcSchedules: '0.2.0',
             carriedInventory: '0.1.0',
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
@@ -130,16 +132,18 @@ test('version manifest separates product package persistence data and focused cl
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.8\.800\.1/);
-    assert.match(describeVersion(), /Package: 0\.8\.800/);
+    assert.match(describeVersion(), /Product: 0\.8\.900\.1/);
+    assert.match(describeVersion(), /Package: 0\.8\.900/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
-    assert.match(describeVersion(), /Data: 38/);
+    assert.match(describeVersion(), /Data: 39/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Earned Routine Delegation/);
+    assert.match(describeVersion(), /Codename: Household & Community Continuity/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /validation: 0\.45\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /commitments: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /npcSchedules: 0\.2\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
     assert.match(describeSystemVersions(), /enemyEncounterProjection: 0\.1\.0/);
     assert.match(describeSystemVersions(), /presentationLog: 0\.1\.0/);
