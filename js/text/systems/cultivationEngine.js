@@ -24,7 +24,8 @@ import {
 } from './workTaskEngine.js';
 import { ensureWorldTimeState, SECONDS_PER_DAY } from './worldTimeEngine.js';
 
-export const CULTIVATION_STATE_VERSION = 1;
+export const CULTIVATION_STATE_VERSION = 2;
+export const CULTIVATION_DELEGATION_VERSION = 1;
 export const CULTIVATION_PLOT_ID = 'plot-home-sweetroot-bed';
 export const CULTIVATION_ITEM_ID = 'item-elderwood-sweetroot';
 export const CULTIVATION_PROFICIENCY_ID = 'cultivation';
@@ -33,8 +34,13 @@ export const CULTIVATION_TEND_DUE_SECONDS = SECONDS_PER_DAY;
 export const CULTIVATION_BASE_PREPARE_SECONDS = 15 * 60;
 export const CULTIVATION_BASE_TEND_SECONDS = 10 * 60;
 export const CULTIVATION_BASE_HARVEST_QUANTITY = 3;
+export const CULTIVATION_DELEGATION_WAGE_GIL = 12;
+export const CULTIVATION_DELEGATION_UNLOCK_HARVESTS = 1;
+export const CULTIVATION_DELEGATION_UNLOCK_PROFICIENCY = 4;
+export const CULTIVATION_DELEGATED_TEND_SECONDS = CULTIVATION_BASE_TEND_SECONDS;
 
 const CULTIVATION_PHASES = Object.freeze(['unprepared', 'prepared', 'growing']);
+const CULTIVATION_DELEGATION_STATUSES = Object.freeze(['active', 'completed']);
 const CULTIVATION_WORK_KINDS = Object.freeze({
     prepare: 'cultivation-prepare',
     tend: 'cultivation-tend',
@@ -53,6 +59,11 @@ export function createCultivationState(options = {}) {
             activeWorkKind: null,
             preparedAtWorldSeconds: null,
             lastHarvestedAtWorldSeconds: null,
+            delegation: {
+                version: CULTIVATION_DELEGATION_VERSION,
+                completedCount: 0,
+                assignment: null,
+            },
             crop: null,
         },
     };
@@ -70,9 +81,12 @@ export function ensureCultivationState(state) {
 
 export function getCultivationPlotStatus(state) {
     const cultivation = ensureCultivationState(state);
+    reconcileCultivationDelegation(state, cultivation);
     const plot = cultivation.plot;
     if (plot.activeWorkId) return plot.activeWorkKind === 'tend' ? 'tending' : 'preparing';
     if (plot.phase !== 'growing' || !plot.crop) return plot.phase;
+    const assignment = plot.delegation.assignment;
+    if (assignment?.status === 'active') return 'delegatedTending';
     const now = ensureWorldTimeState(state).totalSeconds;
     if (plot.crop.tendedAtWorldSeconds !== null && now >= plot.crop.readyAtWorldSeconds) return 'ready';
     if (plot.crop.tendedAtWorldSeconds === null && now >= plot.crop.tendDueAtWorldSeconds) return 'needsTending';
@@ -128,6 +142,7 @@ export function plantCultivationCrop(state, options = {}) {
     const plot = cultivation.plot;
     const blockers = handsOnBlockers(state, plot, 'plant');
     if (plot.phase !== 'prepared' || plot.crop) blockers.push('Prepare the Sweetroot bed before planting it.');
+    if (plot.delegation.assignment) blockers.push('Finish the prior delegated tending record before starting another crop.');
     if (blockers.length) return failure('cultivation.plant-blocked', blockers[0], { blockers });
 
     const containerId = String(options.containerId ?? 'inventory');
@@ -167,12 +182,126 @@ export function plantCultivationCrop(state, options = {}) {
     });
 }
 
+export function canDelegateCultivationTending(state) {
+    const cultivation = ensureCultivationState(state);
+    reconcileCultivationDelegation(state, cultivation);
+    const plot = cultivation.plot;
+    const proficiency = getWorkProficiency(state.player, CULTIVATION_PROFICIENCY_ID);
+    const now = ensureWorldTimeState(state).totalSeconds;
+    const gil = state.player?.wallet?.gil ?? 0;
+    const blockers = [];
+    if (plot.harvestCount < CULTIVATION_DELEGATION_UNLOCK_HARVESTS || proficiency < CULTIVATION_DELEGATION_UNLOCK_PROFICIENCY) {
+        blockers.push('Complete one full Sweetroot cycle yourself before paying someone else to handle the routine tending.');
+    }
+    if (plot.phase !== 'growing' || !plot.crop) blockers.push('A growing Sweetroot crop is required before tending can be delegated.');
+    if (plot.crop?.tendedAtWorldSeconds !== null) blockers.push('This crop has already been tended.');
+    if (plot.delegation.assignment) blockers.push('Tending help is already assigned for this crop.');
+    if (!isAtHomePlace(state) || state.currentPlaceId !== plot.homePlaceId) blockers.push('Arrange local tending help from your home foothold.');
+    if (state.activeBattle?.phase === 'active') blockers.push('Tending help cannot be arranged during combat.');
+    if (state.travel?.active) blockers.push('Tending help cannot be arranged during active travel.');
+    if (plot.crop && now >= plot.crop.tendDueAtWorldSeconds) blockers.push('Tending help must be arranged before the crop reaches its tending boundary.');
+    if (gil < CULTIVATION_DELEGATION_WAGE_GIL) blockers.push(`Tending help costs ${CULTIVATION_DELEGATION_WAGE_GIL} gil.`);
+    return Object.freeze({
+        ok: blockers.length === 0,
+        blockers: Object.freeze(blockers),
+        proficiency,
+        harvestCount: plot.harvestCount,
+        gil,
+        wageGil: CULTIVATION_DELEGATION_WAGE_GIL,
+    });
+}
+
+export function scheduleCultivationTendingDelegation(state) {
+    const eligibility = canDelegateCultivationTending(state);
+    if (!eligibility.ok) return failure('cultivation.delegation-blocked', eligibility.blockers[0], { blockers: eligibility.blockers });
+    const cultivation = ensureCultivationState(state);
+    const plot = cultivation.plot;
+    const crop = plot.crop;
+    const now = ensureWorldTimeState(state).totalSeconds;
+    const startsAtWorldSeconds = crop.tendDueAtWorldSeconds;
+    const completesAtWorldSeconds = startsAtWorldSeconds + CULTIVATION_DELEGATED_TEND_SECONDS;
+
+    state.player.wallet.gil -= CULTIVATION_DELEGATION_WAGE_GIL;
+    plot.delegation.assignment = {
+        version: CULTIVATION_DELEGATION_VERSION,
+        cycle: crop.cycle,
+        status: 'active',
+        wageGil: CULTIVATION_DELEGATION_WAGE_GIL,
+        hiredAtWorldSeconds: now,
+        startsAtWorldSeconds,
+        completesAtWorldSeconds,
+        completedAtWorldSeconds: null,
+    };
+    const event = emitSemanticEvent(state, 'cultivation.tending-delegated', {
+        plotId: plot.id,
+        cycle: crop.cycle,
+        wageGil: CULTIVATION_DELEGATION_WAGE_GIL,
+        gilRemaining: state.player.wallet.gil,
+        hiredAtWorldSeconds: now,
+        startsAtWorldSeconds,
+        completesAtWorldSeconds,
+    }, { source: 'cultivationEngine' });
+    return actionSuccess({
+        action: 'cultivation.delegate-tend',
+        code: 'cultivation.tending-delegated',
+        outcome: 'scheduled',
+        data: {
+            assignment: snapshotDelegationAssignment(plot.delegation.assignment),
+            wageGil: CULTIVATION_DELEGATION_WAGE_GIL,
+            gilRemaining: state.player.wallet.gil,
+            eventId: event.id,
+        },
+        display: {
+            text: `You pay ${CULTIVATION_DELEGATION_WAGE_GIL} gil for local tending help. The bed will be handled ten fictional minutes after tending becomes due, leaving your own time free.`,
+        },
+    });
+}
+
+export function reconcileCultivationDelegation(state, cultivationState = null) {
+    const cultivation = cultivationState ?? ensureCultivationState(state);
+    const plot = cultivation.plot;
+    const assignment = plot.delegation?.assignment;
+    if (!assignment || assignment.status !== 'active' || !plot.crop) return [];
+    const now = ensureWorldTimeState(state).totalSeconds;
+    if (now < assignment.completesAtWorldSeconds) return [];
+    if (assignment.cycle !== plot.crop.cycle || plot.crop.tendedAtWorldSeconds !== null) return [];
+
+    plot.crop.tendedAtWorldSeconds = assignment.completesAtWorldSeconds;
+    assignment.status = 'completed';
+    assignment.completedAtWorldSeconds = assignment.completesAtWorldSeconds;
+    plot.delegation.completedCount += 1;
+    const event = emitSemanticEvent(state, 'cultivation.delegated-tending-completed', {
+        plotId: plot.id,
+        cycle: plot.crop.cycle,
+        wageGil: assignment.wageGil,
+        tendedAtWorldSeconds: assignment.completedAtWorldSeconds,
+        readyAtWorldSeconds: plot.crop.readyAtWorldSeconds,
+    }, { source: 'cultivationEngine' });
+    return [actionSuccess({
+        action: 'cultivation.reconcile-delegation',
+        code: 'cultivation.delegated-tending-completed',
+        outcome: 'completed',
+        data: {
+            assignment: snapshotDelegationAssignment(assignment),
+            crop: snapshotCrop(plot.crop),
+            eventId: event.id,
+        },
+        display: { text: 'The paid tending visit is complete. The Sweetroot crop can mature without taking your hands-on time.' },
+    })];
+}
+
 export function startCultivationTending(state) {
     reconcileCultivationWork(state);
     const cultivation = ensureCultivationState(state);
     const plot = cultivation.plot;
+    const status = getCultivationPlotStatus(state);
+    if (status === 'growing') {
+        const delegation = canDelegateCultivationTending(state);
+        if (delegation.ok) return scheduleCultivationTendingDelegation(state);
+    }
+
     const blockers = handsOnBlockers(state, plot, 'tend');
-    if (getCultivationPlotStatus(state) !== 'needsTending') blockers.push('The Sweetroot bed does not need tending yet.');
+    if (status !== 'needsTending') blockers.push('The Sweetroot bed does not need hands-on tending yet.');
     if (blockers.length) return failure('cultivation.tend-blocked', blockers[0], { blockers });
 
     const proficiency = getWorkProficiency(state.player, CULTIVATION_PROFICIENCY_ID);
@@ -274,6 +403,7 @@ export function reconcileCultivationWork(state) {
 export function harvestCultivationCrop(state, options = {}) {
     reconcileCultivationWork(state);
     const cultivation = ensureCultivationState(state);
+    reconcileCultivationDelegation(state, cultivation);
     const plot = cultivation.plot;
     const blockers = handsOnBlockers(state, plot, 'harvest');
     if (getCultivationPlotStatus(state) !== 'ready') blockers.push('The Sweetroot bed is not ready to harvest.');
@@ -292,11 +422,14 @@ export function harvestCultivationCrop(state, options = {}) {
 
     const now = ensureWorldTimeState(state).totalSeconds;
     const harvestedCrop = snapshotCrop(plot.crop);
+    const delegatedTending = plot.delegation.assignment?.status === 'completed'
+        && plot.delegation.assignment.cycle === harvestedCrop.cycle;
     plot.crop = null;
     plot.phase = 'unprepared';
     plot.harvestCount += 1;
     plot.lastHarvestedAtWorldSeconds = now;
     plot.preparedAtWorldSeconds = null;
+    plot.delegation.assignment = null;
     gainWorkProficiency(state, CULTIVATION_PROFICIENCY_ID, 2, { sourceId: plot.id });
 
     const event = emitSemanticEvent(state, 'cultivation.harvested', {
@@ -307,12 +440,13 @@ export function harvestCultivationCrop(state, options = {}) {
         quantity,
         containerId,
         harvestedAtWorldSeconds: now,
+        tendingMode: delegatedTending ? 'delegated' : 'manual',
     }, { source: 'cultivationEngine' });
     return actionSuccess({
         action: 'cultivation.harvest',
         code: 'cultivation.harvested',
         outcome: 'harvested',
-        data: { item: stored.item, quantity, containerId, crop: harvestedCrop, eventId: event.id },
+        data: { item: stored.item, quantity, containerId, crop: harvestedCrop, delegatedTending, eventId: event.id },
         display: { text: `You harvest ${quantity} Elderwood Sweetroots. Their provenance now records this home cultivation cycle.` },
     });
 }
@@ -328,6 +462,9 @@ export function createCultivationModel(state) {
     const tendSeconds = workDurationForProficiency(CULTIVATION_BASE_TEND_SECONDS, proficiency);
     const carriedSweetroot = carriedQuantity(state, CULTIVATION_ITEM_ID);
     const now = ensureWorldTimeState(state).totalSeconds;
+    const delegationUnlocked = plot.harvestCount >= CULTIVATION_DELEGATION_UNLOCK_HARVESTS
+        && proficiency >= CULTIVATION_DELEGATION_UNLOCK_PROFICIENCY;
+    const gil = state.player?.wallet?.gil ?? 0;
 
     let opportunityStatus = atHome ? 'ready' : 'available';
     let summary = 'Keep a small Sweetroot bed at your lodging and turn field material into a repeatable local food-and-medicine crop.';
@@ -357,6 +494,26 @@ export function createCultivationModel(state) {
         opportunityStatus = 'available';
         const remaining = Math.max(0, plot.crop.tendDueAtWorldSeconds - now);
         progress = `Growing. Tending becomes due in ${formatDuration(remaining)}; maturity follows on the second fictional day.`;
+        if (delegationUnlocked) {
+            if (atHome && gil >= CULTIVATION_DELEGATION_WAGE_GIL) {
+                action = cultivationAction(
+                    'cultivation:delegate-tend',
+                    `Arrange tending help · ${CULTIVATION_DELEGATION_WAGE_GIL} gil`,
+                    'cultivation.tend',
+                );
+                progress = `Growing. You have earned the option to pay ${CULTIVATION_DELEGATION_WAGE_GIL} gil now so routine tending is handled after the first fictional day while your own time stays free.`;
+            } else if (atHome) {
+                progress = `Growing. Tending help is unlocked, but it costs ${CULTIVATION_DELEGATION_WAGE_GIL} gil and you currently have ${gil}.`;
+            } else {
+                progress = `Growing. Return to ${homeName} before the tending boundary if you want to arrange paid local help.`;
+            }
+        }
+    } else if (status === 'delegatedTending') {
+        opportunityStatus = 'available';
+        const assignment = plot.delegation.assignment;
+        const remaining = Math.max(0, assignment.completesAtWorldSeconds - now);
+        summary = 'A paid local helper is responsible for this crop’s routine tending visit.';
+        progress = `Tending help is assigned and already paid. The visit completes in ${formatDuration(remaining)} of fictional time without occupying your hands-on work channel.`;
     } else if (status === 'needsTending') {
         opportunityStatus = atHome ? 'ready' : 'available';
         progress = `The crop needs ${formatDuration(tendSeconds)} of tending before it can be harvested. Cultivation proficiency: ${proficiency}.`;
@@ -374,7 +531,7 @@ export function createCultivationModel(state) {
         category: 'livelihood',
         title: 'Sweetroot Stewardship',
         summary,
-        motivation: 'A tended home crop turns prior field access into a repeatable local supply while preserving time, inventory, provenance, and mastery costs.',
+        motivation: 'A tended home crop turns prior field access into a repeatable local supply while preserving time, inventory, provenance, mastery, and paid-help costs.',
         progress,
         status: opportunityStatus,
         reason: 'Your lodging includes one small reusable cultivation bed tied to your existing home foothold.',
@@ -382,6 +539,7 @@ export function createCultivationModel(state) {
             Object.freeze({ label: `Work at ${homeName}`, met: atHome || ['growing', 'active'].includes(opportunityStatus) }),
             Object.freeze({ label: 'Use one physical Elderwood Sweetroot as propagation input', met: Boolean(plot.crop) || carriedSweetroot > 0 || plot.harvestCount > 0 }),
             Object.freeze({ label: 'Let two fictional days pass and tend after the first', met: status === 'ready' || plot.harvestCount > 0 }),
+            Object.freeze({ label: 'Earn paid tending help by completing one crop manually', met: delegationUnlocked }),
         ]),
         blockers: Object.freeze(blockers),
         action,
@@ -392,6 +550,8 @@ export function createCultivationModel(state) {
         version: CULTIVATION_STATE_VERSION,
         status,
         proficiency,
+        delegationUnlocked,
+        delegation: snapshotDelegation(plot.delegation),
         plot: snapshotPlot(plot),
         entries: Object.freeze([entry]),
         actions: Object.freeze(action ? [action] : []),
@@ -408,7 +568,7 @@ export function decorateCultivationOpportunityModel(state, baseModel) {
     const readyEntry = cultivation.entries.find((entry) => entry.status === 'ready' && entry.action);
     return Object.freeze({
         ...baseModel,
-        version: Math.max(Number(baseModel.version) || 0, 12),
+        version: Math.max(Number(baseModel.version) || 0, 13),
         cultivationVersion: CULTIVATION_STATE_VERSION,
         recommendedOpportunityId: activeEntry?.id ?? readyEntry?.id ?? baseModel.recommendedOpportunityId,
         entries: Object.freeze(entries),
@@ -432,6 +592,15 @@ export function validateCultivationState(cultivation, workState = null) {
     if (plot.activeWorkId !== null && !/^work-\d{6,}$/.test(plot.activeWorkId ?? '')) issues.push('cultivation.plot.activeWorkId is invalid.');
     if (plot.activeWorkKind !== null && !['prepare', 'tend'].includes(plot.activeWorkKind)) issues.push('cultivation.plot.activeWorkKind is invalid.');
     if ((plot.activeWorkId === null) !== (plot.activeWorkKind === null)) issues.push('cultivation.plot active work id/kind must be present together.');
+
+    if (!plainObject(plot.delegation)) {
+        issues.push('cultivation.plot.delegation must be an object.');
+    } else {
+        const delegation = plot.delegation;
+        if (delegation.version !== CULTIVATION_DELEGATION_VERSION) issues.push(`cultivation.plot.delegation.version must be ${CULTIVATION_DELEGATION_VERSION}.`);
+        if (!nonNegativeInteger(delegation.completedCount)) issues.push('cultivation.plot.delegation.completedCount must be a non-negative integer.');
+        if (delegation.assignment !== null && !plainObject(delegation.assignment)) issues.push('cultivation.plot.delegation.assignment must be null or an object.');
+    }
 
     if (plot.phase === 'growing') {
         if (!plainObject(plot.crop)) issues.push('cultivation.plot.crop must exist while growing.');
@@ -460,6 +629,38 @@ export function validateCultivationState(cultivation, workState = null) {
         else issues.push(...validateProvenance(crop.seedProvenance).map((issue) => `cultivation.plot.crop.${issue}`));
     }
 
+    const assignment = plainObject(plot.delegation) ? plot.delegation.assignment : null;
+    if (assignment !== null && plainObject(assignment)) {
+        const crop = plot.crop;
+        if (!plainObject(crop)) issues.push('cultivation delegation requires a growing crop.');
+        if (assignment.version !== CULTIVATION_DELEGATION_VERSION) issues.push(`cultivation.plot.delegation.assignment.version must be ${CULTIVATION_DELEGATION_VERSION}.`);
+        if (!positiveInteger(assignment.cycle) || assignment.cycle !== crop?.cycle) issues.push('cultivation.plot.delegation.assignment.cycle must match the growing crop cycle.');
+        if (!CULTIVATION_DELEGATION_STATUSES.includes(assignment.status)) issues.push('cultivation.plot.delegation.assignment.status is invalid.');
+        if (assignment.wageGil !== CULTIVATION_DELEGATION_WAGE_GIL) issues.push(`cultivation.plot.delegation.assignment.wageGil must be ${CULTIVATION_DELEGATION_WAGE_GIL}.`);
+        if (!nonNegativeInteger(assignment.hiredAtWorldSeconds)) issues.push('cultivation.plot.delegation.assignment.hiredAtWorldSeconds is invalid.');
+        if (!nonNegativeInteger(assignment.startsAtWorldSeconds)) issues.push('cultivation.plot.delegation.assignment.startsAtWorldSeconds is invalid.');
+        if (!nonNegativeInteger(assignment.completesAtWorldSeconds)) issues.push('cultivation.plot.delegation.assignment.completesAtWorldSeconds is invalid.');
+        if (!nullableNonNegativeInteger(assignment.completedAtWorldSeconds)) issues.push('cultivation.plot.delegation.assignment.completedAtWorldSeconds is invalid.');
+        if (plainObject(crop) && assignment.startsAtWorldSeconds !== crop.tendDueAtWorldSeconds) issues.push('cultivation delegation must start at the crop tending boundary.');
+        if (nonNegativeInteger(assignment.startsAtWorldSeconds)
+            && assignment.completesAtWorldSeconds !== assignment.startsAtWorldSeconds + CULTIVATION_DELEGATED_TEND_SECONDS) {
+            issues.push('cultivation delegation completion must derive from its tending boundary.');
+        }
+        if (plainObject(crop) && nonNegativeInteger(assignment.hiredAtWorldSeconds) && assignment.hiredAtWorldSeconds >= crop.tendDueAtWorldSeconds) {
+            issues.push('cultivation delegation must be hired before the tending boundary.');
+        }
+        if (assignment.status === 'active') {
+            if (assignment.completedAtWorldSeconds !== null) issues.push('active cultivation delegation cannot have a completion timestamp.');
+            if (crop?.tendedAtWorldSeconds !== null) issues.push('active cultivation delegation cannot coexist with completed tending.');
+        }
+        if (assignment.status === 'completed') {
+            if (assignment.completedAtWorldSeconds !== assignment.completesAtWorldSeconds) issues.push('completed cultivation delegation must use its scheduled completion timestamp.');
+            if (crop?.tendedAtWorldSeconds !== assignment.completedAtWorldSeconds) issues.push('completed cultivation delegation must match crop tending authority.');
+        }
+    } else if (plot.phase !== 'growing' && plainObject(plot.delegation) && plot.delegation.assignment !== null) {
+        issues.push('cultivation delegation assignment must be null when no crop is growing.');
+    }
+
     if (plot.activeWorkId !== null) {
         if (!plainObject(workState) || !Array.isArray(workState.records)) {
             issues.push('cultivation active work requires a persisted work registry.');
@@ -481,6 +682,8 @@ function createCultivatedOutput(plot, quantity) {
     const base = getResourceItem(CULTIVATION_ITEM_ID);
     if (!base) throw new Error(`Missing cultivation item ${CULTIVATION_ITEM_ID}.`);
     const crop = plot.crop;
+    const delegatedTending = plot.delegation.assignment?.status === 'completed'
+        && plot.delegation.assignment.cycle === crop.cycle;
     return {
         ...base,
         quantity,
@@ -498,6 +701,7 @@ function createCultivatedOutput(plot, quantity) {
                 plantedAtWorldSeconds: crop.plantedAtWorldSeconds,
                 tendedAtWorldSeconds: crop.tendedAtWorldSeconds,
                 readyAtWorldSeconds: crop.readyAtWorldSeconds,
+                tendingMode: delegatedTending ? 'delegated' : 'manual',
                 seedItemId: crop.itemId,
                 seedProvenance: structuredCloneSafe(crop.seedProvenance),
             },
@@ -549,8 +753,16 @@ function snapshotCrop(crop) {
     return Object.freeze({ ...crop, seedProvenance: Object.freeze(structuredCloneSafe(crop.seedProvenance ?? [])) });
 }
 
+function snapshotDelegationAssignment(assignment) {
+    return assignment ? Object.freeze({ ...assignment }) : null;
+}
+
+function snapshotDelegation(delegation) {
+    return Object.freeze({ ...delegation, assignment: snapshotDelegationAssignment(delegation.assignment) });
+}
+
 function snapshotPlot(plot) {
-    return Object.freeze({ ...plot, crop: snapshotCrop(plot.crop) });
+    return Object.freeze({ ...plot, delegation: snapshotDelegation(plot.delegation), crop: snapshotCrop(plot.crop) });
 }
 
 function structuredCloneSafe(value) {
