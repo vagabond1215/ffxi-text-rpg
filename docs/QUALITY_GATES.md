@@ -4,12 +4,13 @@ These repository-level gates supplement the current handoff, execution pipeline,
 
 ## Before implementation
 
-- Confirm current `main`, active PR state, and read `docs/THREAD_HANDOFF.md`.
+- Confirm current `main` and read `docs/THREAD_HANDOFF.md`.
 - Read `docs/EXECUTION_PIPELINE.md`; do not restart broad discovery when the checkpoint is current.
 - Identify the authoritative state owner and production caller for the requested behavior.
 - Inspect focused tests and nearby persistence/runtime/UI contracts.
 - Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for lifecycle- or performance-sensitive work.
-- For content-heavy work, use `npm run census` when the metric is material and actually executable.
+- For content-heavy work, use `npm run census` when the metric is material and executable.
+- A planned roadmap unit is not authorization to implement it.
 
 ## Validation entry points
 
@@ -22,50 +23,58 @@ npm run hardening
 npm run check
 ```
 
-Hosted `Check` runs on Node 24 LTS. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new implementation validation checkpoint.
+Hosted `Check` normally runs the full test suite, Benchmark 3 and Benchmark Sample on Node 24. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new runtime checkpoint.
 
-`tests/architectureDebtGuard.test.js` protects selected compatibility and lifecycle seams. `tests/contentScaleGate.test.js` protects criteria-driven content-scale target definitions. Future breadth targets are progression indicators, not CI pass/fail thresholds.
+`tests/architectureDebtGuard.test.js` protects selected compatibility/lifecycle seams. `tests/contentScaleGate.test.js` protects criteria-driven content-scale target definitions. Future breadth targets are progression indicators, not ordinary CI pass/fail thresholds.
 
-## Draft 0.8.700 validation baseline
+## Current Phase 0.8 validation baseline
 
-Draft PR #378 is open/unmerged. Exact frozen implementation head:
+Frozen runtime:
 
 ```text
-c125f7ae5f94800893dc28c7fa0ceb61553e3db8
-Check 32340190710
-Job 96337561458
-Node 24.19.0
-695/695 tests
+ca7d37c643adc4115b519148615f6120d03228df
+Product 0.8.900.1
+Package 0.8.900
+Account Save 5
+Game State 14
+Data 39
+Benchmark 3
+```
+
+Hosted Check `32395768383` / Node 24.19.0:
+
+```text
+699/699 tests
 0 failed
 0 skipped
 Benchmark 3 success
 Benchmark Sample success
 ```
 
-Focused cultivation coverage:
+Phase-exit validation-only Check `32395959505` additionally ran and passed:
 
 ```text
-tests/currentSchemaCultivation.test.js
-tests/playerCultivationStewardshipFlow.test.js
+Content Census
+Hardening
 ```
 
-It proves required raw cultivation authority, timing/link rejection, real save/load mid-growth, no crop-owned growth task, exactly-once work reconciliation/harvest, provenance continuity, mastery-based duration improvement, existing sink participation, and semantic browser presentation.
+Hardening includes `tests/longSessionLifecycle.test.js` (2/2 pass) followed by Benchmark Sample.
+
+Validation-only PR #380 is closed without merge.
 
 ## Persistence
 
 Current mode remains **pre-alpha current-schema only**.
 
-On PR #378:
-
 - Account/session payloads must match Account Save 5 exactly.
-- Character payloads must match Game State 13 and contain complete required persisted authority before reference revival.
+- Character payloads must match Game State 14 and contain complete required persisted authority before reference revival.
 - Raw validation runs before runtime `ensure*` helpers, reconstructed projections, or presentation initialization may normalize state.
 - Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
 - Optional persisted authority may be absent only where its domain contract permits absence.
 - Active owner/task links must remain consistent until owner reconciliation.
 - Changing serialized shape/meaning requires a deliberate schema decision; derived/session state is not serialized merely for convenience.
 
-### Game State 13 raw validation
+### Game State 14 raw validation
 
 Required persisted families include:
 
@@ -75,7 +84,7 @@ timed tasks and active owner/task links
 active Travel State 2
 projects, commitments, relationships
 resource opportunities and ecology
-cultivation plot/crop authority
+cultivation plot/crop/delegation authority
 party and ability runtime
 semantic events
 atlas and POI discovery
@@ -101,19 +110,11 @@ player.progression.workProficiencies
 state.dayCycle
 ```
 
-When `state.cultivation.plot.activeWorkId` is non-null, cross-link validation requires the matching persisted active `state.work` record. The existing work record in turn requires its normal persisted timed task.
+### Cultivation and delegation classification
 
-### Cultivation state classification
+`state.cultivation` is **persistent required authority**. It preserves player-costly facts that cannot be reconstructed safely: prepared/growing state, cycle/harvest counts, active manual work link, crop timing, seed provenance, and paid delegation appointment state.
 
-`state.cultivation` is **persistent required authority**, not a derived projection. It preserves player-costly facts that cannot be reconstructed safely:
-
-- whether the bed is prepared/growing;
-- cycle/harvest counts;
-- active cultivation labor link;
-- planting/tending/readiness fictional timestamps;
-- seed provenance during growth.
-
-Crop growth itself is **not** a timed-task resource. Readiness derives from canonical world time against persisted timestamps. Only preparation/tending are short hands-on work tasks.
+Crop growth is **not** a timed-task resource. Manual preparation/tending reuse the existing work/timed-task chain. Paid delegated tending uses no new direct timed-task owner and resolves from persisted canonical fictional-time boundaries.
 
 ### Derived/transient state
 
@@ -140,78 +141,105 @@ activeBattle.rng
 - Game State 11 — `state.enemies` projection removed from serialization.
 - Game State 12 — top-level command presentation history removed from serialization.
 - Game State 13 — required durable cultivation plot/crop authority introduced.
+- Game State 14 — durable paid cultivation delegation appointment introduced.
 
 No automatic pre-alpha migrations were added.
 
-## Cultivation lifecycle gate
+## Lifecycle gates
 
-The cultivation architecture must continue to satisfy:
+Current direct timed-task creators remain the audited six owners:
 
 ```text
-plant/grow state
-  -> persisted cultivation timestamps
-  -> no crop-owned timer/task
-
-prepare/tend
-  -> existing work record
-  -> existing work timed task
-  -> domain reconciliation copies durable consequence
-  -> terminal task released exactly once
-
-harvest
-  -> validates readiness
-  -> stores ordinary canonical item in inventory
-  -> records cultivated provenance + seed provenance
-  -> clears crop / increments harvest count
-  -> replay cannot duplicate output
+abilityEngine.js
+campaignRecoveryEngine.js
+projectEngine.js
+resourceOpportunityEngine.js
+transportEngine.js
+workTaskEngine.js
 ```
 
-Adding a per-crop scheduler, background job, offline clock, duplicate inventory, or second mastery counter requires a new explicit architecture decision rather than incremental convenience code.
+Cultivation growth and delegated tending do not add another owner.
+
+Required properties:
+
+- owner defines durable consequence;
+- exactly-once reconciliation occurs before terminal release;
+- save/load preserves active ownership without duplicate resources;
+- task sequence IDs remain monotonic;
+- no blind global task pruning;
+- no wall-clock/offline simulation becomes canonical.
+
+`npm run hardening` is required for phase/release gates or material lifecycle-sensitive changes.
+
+## Phase 0.8 connected-life gate
+
+Phase 0.8 is complete only because the following remain connected in one authority model:
+
+```text
+home/storage/workshop
+  -> cultivation
+  -> repeated manual routine/mastery
+  -> bounded paid delegation
+  -> home-grown provenance
+  -> scheduled named community commitments/relationships
+  -> ordinary services, preparation, travel and adventure
+```
+
+See `docs/PHASE_0_8_EXIT_GATE.md` for exact evidence.
 
 ## Content progression
 
-`npm run census` measures unique canonical breadth across places, NPCs, service sites, creatures, resource sources, items, recipes, abilities, quests, companions, and transport services. Do not game counts with disconnected filler.
+Current census:
 
-No scale-count increase is claimed for `0.8.700`: its first proof deliberately reuses an existing Sweetroot item and existing sinks rather than adding breadth solely for the metric. A standalone census output was not recorded in this pass.
+| Metric | Current | Mechanics floor |
+| --- | ---: | ---: |
+| Places/localities | 26 | 10 |
+| Named NPCs | 12 | 50 |
+| Shop/service sites | 17 | 20 |
+| Creature definitions | 16 | 40 |
+| Resource sources | 13 | 40 |
+| Canonical items | 50 | 200 |
+| Recipes/processes | 11 | 75 |
+| Abilities/techniques | 5 | 100 |
+| Quests/contracts | 8 | 30 |
+| Companions | 1 | 4 |
+| Transport services | 3 | 5 |
+
+Mechanics-scale gate is **NOT READY**. Places exceed their mechanics floor; all other tracked categories remain below it. The largest relative gap is abilities/techniques.
+
+Do not game counts with disconnected filler. Phase 0.9 content work should build dense cross-linked regional graphs.
 
 ## Performance and long-session stability
 
 Benchmark 3 remains the current comparability protocol. No hard thresholds are accepted.
 
-PR #378 single run:
+Frozen-runtime sample medians/spreads from Check `32395768383`:
 
 ```text
-player profiles  0.350069 ms/op
-enemy profiles   0.068868 ms/op
-basic attacks    0.003197 ms/op
-tick dispatch    0.000788 ms/op
-route lookup     0.007068 ms/op
+player profiles  0.359735 ms/op    6.77%
+enemy profiles   0.068665 ms/op    8.93%
+basic attacks    0.001223 ms/op  172.92%
+tick dispatch    0.000821 ms/op   27.23%
+route lookup     0.007260 ms/op    6.40%
 ```
 
-Three-sample medians/spreads:
-
-```text
-player profiles  0.331167 ms/op    6.35%
-enemy profiles   0.062892 ms/op    7.69%
-basic attacks    0.001206 ms/op  166.26%
-tick dispatch    0.000613 ms/op   54.43%
-route lookup     0.006783 ms/op    5.66%
-```
-
-The very fast attack/tick workloads remain noisy; do not turn these figures into CI thresholds.
+The very fast attack/tick workloads remain noisy; do not convert these numbers into CI thresholds.
 
 ## UI and adapter boundaries
 
-The semantic DOM shell is the active player interface. Cultivation actions are direct intents:
+The semantic DOM shell is the active player interface. Direct gameplay intents include:
 
 ```text
 cultivation.prepare
 cultivation.plant
 cultivation.tend
 cultivation.harvest
+commitment.accept
+commitment.resolve
+commitment.followUp
 ```
 
-The Journal/context model may project cultivation status but must not expose raw plot IDs, internal timestamps, seed-provenance structures, or command vocabulary as required gameplay. Recommendation logic must not allow a merely ready cultivation bed to suppress stronger active/ready commitment, livelihood, home, or recovery decisions.
+The Journal/context model may project player decisions but must not expose raw plot IDs, internal timestamps/provenance structures, or require command-string manufacture.
 
 Canonical `ActionResult` consumers continue using `ok`, `action`, `code`, `outcome`, `data`, and `display`; domain logic must not parse presentation prose.
 
@@ -219,4 +247,4 @@ Canonical `ActionResult` consumers continue using `ok`, `action`, `code`, `outco
 
 A bounded implementation is complete when production behavior is coherent, relevant validation actually ran, persistence/lifecycle contracts are preserved, performance/content-scale evidence is recorded when material, version decisions are explicit, the exact implementation SHA is frozen before documentation synchronization, and `docs/THREAD_HANDOFF.md` is updated last.
 
-For feature-branch work, a green implementation is **validated but not landed** until the PR is explicitly merged. Do not start the next independent track by default while the current feature PR remains unresolved.
+Phase 0.8 is closed. Phase 0.9 is planned but not opened; a separate explicit work order is required before `0.9.100` implementation or governance changes begin.
