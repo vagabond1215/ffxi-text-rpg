@@ -12,8 +12,9 @@
     "benchmark:sample": "node scripts/benchmarkSample.js",
     "bench": "npm run benchmark",
     "census": "node scripts/contentCensus.js",
+    "audit:repo": "node scripts/repositoryAudit.js",
     "hardening": "node --test tests/longSessionLifecycle.test.js && npm run benchmark:sample",
-    "check": "npm test && npm run benchmark"
+    "check": "npm run audit:repo && npm test && npm run benchmark && npm run benchmark:sample"
   },
   "devDependencies": {},
   "engines": {
