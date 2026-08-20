@@ -70,6 +70,9 @@ function chooseRecommended(entries, baseRecommendedId) {
     const activeNonCultivation = entries.find((entry) => entry.groupKind !== 'cultivation' && entry.status === 'active' && entry.action);
     if (activeNonCultivation) return activeNonCultivation;
 
+    const readyCommitment = entries.find((entry) => entry.category === 'commitment' && entry.status === 'ready' && entry.action);
+    if (readyCommitment) return readyCommitment;
+
     const baseRecommended = entries.find((entry) => entry.id === baseRecommendedId);
     if (baseRecommended?.groupKind !== 'cultivation' && baseRecommended?.action && ['active', 'ready'].includes(baseRecommended.status)) {
         return baseRecommended;
