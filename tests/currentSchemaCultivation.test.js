@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import {
+    CULTIVATION_DELEGATED_TEND_SECONDS,
+    CULTIVATION_DELEGATION_WAGE_GIL,
     CULTIVATION_GROWTH_SECONDS,
     CULTIVATION_TEND_DUE_SECONDS,
     startCultivationPreparation,
@@ -15,17 +17,24 @@ function clone(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
-test('Game State 13 requires durable cultivation authority before runtime normalization', () => {
+test('Game State 14 requires durable cultivation and delegation authority before runtime normalization', () => {
     const state = createNewGameState({ nationId: 'thornwall' });
-    assert.equal(VERSION.gameState, 13);
+    assert.equal(VERSION.gameState, 14);
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
+    assert.equal(state.cultivation.version, 2);
+    assert.equal(state.cultivation.plot.delegation.version, 1);
 
     const missing = clone(state);
     delete missing.cultivation;
     assert.ok(validateCurrentGameStateStructure(missing).includes('cultivation must be a persisted object.'));
+
+    const missingDelegation = clone(state);
+    delete missingDelegation.cultivation.plot.delegation;
+    assert.ok(validateCurrentGameStateStructure(missingDelegation)
+        .some((issue) => issue.includes('cultivation.plot.delegation must be an object')));
 });
 
-test('cultivation schema rejects forged crop timing and malformed active work links', () => {
+test('cultivation schema rejects forged crop timing, delegated tending, and malformed active work links', () => {
     const state = createNewGameState({ nationId: 'thornwall' });
     const now = state.worldTime.totalSeconds;
     state.cultivation.plot.phase = 'growing';
@@ -41,6 +50,32 @@ test('cultivation schema rejects forged crop timing and malformed active work li
     };
     const timingIssues = validateCultivationState(state.cultivation, state.work);
     assert.ok(timingIssues.some((issue) => issue.includes('tendDueAtWorldSeconds must derive from planted time')));
+
+    const delegated = createNewGameState({ nationId: 'thornwall' });
+    const plantedAt = delegated.worldTime.totalSeconds;
+    delegated.cultivation.plot.phase = 'growing';
+    delegated.cultivation.plot.cycle = 1;
+    delegated.cultivation.plot.crop = {
+        itemId: 'item-elderwood-sweetroot',
+        cycle: 1,
+        plantedAtWorldSeconds: plantedAt,
+        tendDueAtWorldSeconds: plantedAt + CULTIVATION_TEND_DUE_SECONDS,
+        readyAtWorldSeconds: plantedAt + CULTIVATION_GROWTH_SECONDS,
+        tendedAtWorldSeconds: null,
+        seedProvenance: [],
+    };
+    delegated.cultivation.plot.delegation.assignment = {
+        version: 1,
+        cycle: 1,
+        status: 'active',
+        wageGil: CULTIVATION_DELEGATION_WAGE_GIL,
+        hiredAtWorldSeconds: plantedAt + CULTIVATION_TEND_DUE_SECONDS,
+        startsAtWorldSeconds: plantedAt + CULTIVATION_TEND_DUE_SECONDS,
+        completesAtWorldSeconds: plantedAt + CULTIVATION_TEND_DUE_SECONDS + CULTIVATION_DELEGATED_TEND_SECONDS,
+        completedAtWorldSeconds: null,
+    };
+    const delegationIssues = validateCultivationState(delegated.cultivation, delegated.work);
+    assert.ok(delegationIssues.some((issue) => issue.includes('must be hired before the tending boundary')));
 
     const active = createNewGameState({ nationId: 'thornwall' });
     const started = startCultivationPreparation(active);
