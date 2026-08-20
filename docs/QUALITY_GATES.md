@@ -4,16 +4,14 @@ These repository-level gates supplement the current handoff, execution pipeline,
 
 ## Before implementation
 
-- Confirm current `main` and read `docs/THREAD_HANDOFF.md`.
-- Read `docs/EXECUTION_PIPELINE.md` and use its active/next/deferred queue instead of restarting broad discovery when the checkpoint is current.
+- Confirm current `main`, active PR state, and read `docs/THREAD_HANDOFF.md`.
+- Read `docs/EXECUTION_PIPELINE.md`; do not restart broad discovery when the checkpoint is current.
 - Identify the authoritative state owner and production caller for the requested behavior.
 - Inspect focused tests and nearby persistence/runtime/UI contracts.
 - Read `docs/PERFORMANCE_BUDGET.md` and `docs/RESOURCE_LIFECYCLE.md` for lifecycle- or performance-sensitive work.
-- For content-heavy work, inspect the current `npm run census` result and the relevant regional/content-pack validators.
+- For content-heavy work, use `npm run census` when the metric is material and actually executable.
 
-## Validation
-
-Repository entry points are:
+## Validation entry points
 
 ```bash
 npm test
@@ -24,50 +22,52 @@ npm run hardening
 npm run check
 ```
 
-Hosted `Check` runs on Node 24 LTS. `package.json` requires Node `>=24`. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new runtime/tooling validation checkpoint.
+Hosted `Check` runs on Node 24 LTS. Report only checks that actually ran. Documentation-only synchronization after a frozen green implementation does not create a new implementation validation checkpoint.
 
-`tests/architectureDebtGuard.test.js` protects selected compatibility and lifecycle seams, including the exact direct timed-task owner set and the removal of runtime legacy active-travel reconstruction.
+`tests/architectureDebtGuard.test.js` protects selected compatibility and lifecycle seams. `tests/contentScaleGate.test.js` protects criteria-driven content-scale target definitions. Future breadth targets are progression indicators, not CI pass/fail thresholds.
 
-`tests/contentScaleGate.test.js` protects the criteria-driven content-scale target definitions and census behavior. Future content targets are progression indicators, not CI pass/fail thresholds: a game can be valid while still being below mechanics-integration, playable-alpha, or 1.0 breadth.
+## Draft 0.8.700 validation baseline
 
-## Content progression
-
-`npm run census` reports unique canonical breadth across the main runtime catalogs and regional content packs for:
+Draft PR #378 is open/unmerged. Exact frozen implementation head:
 
 ```text
-places/localities
-named NPCs
-functional shop/service sites
-creature definitions
-resource sources
-canonical items
-recipes/processes
-abilities/techniques
-quests/contracts
-companions
-scheduled transport services
+c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+Check 32340190710
+Job 96337561458
+Node 24.19.0
+695/695 tests
+0 failed
+0 skipped
+Benchmark 3 success
+Benchmark Sample success
 ```
 
-Use it before and after content-heavy tracks when the metric is material. Do not optimize the census with disconnected filler records. A content tranche should still satisfy stable-ID, originality, source/sink, topology, provenance, cross-reference, regional ownership, and player-facing integration requirements.
+Focused cultivation coverage:
 
-The lower-bound targets come from `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`. Meeting a numeric target is scale evidence only; it is not a balance, originality, usability, or release-quality claim.
+```text
+tests/currentSchemaCultivation.test.js
+tests/playerCultivationStewardshipFlow.test.js
+```
+
+It proves required raw cultivation authority, timing/link rejection, real save/load mid-growth, no crop-owned growth task, exactly-once work reconciliation/harvest, provenance continuity, mastery-based duration improvement, existing sink participation, and semantic browser presentation.
 
 ## Persistence
 
-Current mode is **pre-alpha current-schema only**.
+Current mode remains **pre-alpha current-schema only**.
+
+On PR #378:
 
 - Account/session payloads must match Account Save 5 exactly.
-- Character payloads must match Game State 12 and contain complete required persisted authority before reference revival.
-- Raw validation runs before runtime `ensure*` helpers, reconstructed projections, or session-presentation initialization may normalize state.
+- Character payloads must match Game State 13 and contain complete required persisted authority before reference revival.
+- Raw validation runs before runtime `ensure*` helpers, reconstructed projections, or presentation initialization may normalize state.
 - Malformed required persisted authority is rejected rather than repaired, backfilled, migrated, or silently rewritten.
-- Optional persisted authority may be absent where construction semantics permit it, but once present must satisfy its domain contract.
+- Optional persisted authority may be absent only where its domain contract permits absence.
 - Active owner/task links must remain consistent until owner reconciliation.
-- Tightening enforcement of an existing invariant does not alone require a schema bump; changing serialized shape or meaning does.
-- Derived or session-only runtime state must not be serialized merely because it is convenient to consume.
+- Changing serialized shape/meaning requires a deliberate schema decision; derived/session state is not serialized merely for convenience.
 
-### Current raw Game State 12 validation
+### Game State 13 raw validation
 
-The current boundary validates these persisted families before revival:
+Required persisted families include:
 
 ```text
 world time and simulation control
@@ -75,6 +75,7 @@ timed tasks and active owner/task links
 active Travel State 2
 projects, commitments, relationships
 resource opportunities and ecology
+cultivation plot/crop authority
 party and ability runtime
 semantic events
 atlas and POI discovery
@@ -88,8 +89,8 @@ player canonical status state
 top-level world flags
 current place / display location / position coherence
 combatSequence / activeBattle.id identity coherence
-active battle state when present, including deterministic combat/stat cache snapshots
-active battle player / root player identity and live combat-authority coherence
+active battle state when present, including deterministic combat/stat snapshots
+active battle player / root player live-authority coherence
 ```
 
 Optional persisted authorities remain:
@@ -100,9 +101,23 @@ player.progression.workProficiencies
 state.dayCycle
 ```
 
-### Derived, transient, and post-validation state
+When `state.cultivation.plot.activeWorkId` is non-null, cross-link validation requires the matching persisted active `state.work` record. The existing work record in turn requires its normal persisted timed task.
 
-Current non-serialized/runtime-only state includes:
+### Cultivation state classification
+
+`state.cultivation` is **persistent required authority**, not a derived projection. It preserves player-costly facts that cannot be reconstructed safely:
+
+- whether the bed is prepared/growing;
+- cycle/harvest counts;
+- active cultivation labor link;
+- planting/tending/readiness fictional timestamps;
+- seed provenance during growth.
+
+Crop growth itself is **not** a timed-task resource. Readiness derives from canonical world time against persisted timestamps. Only preparation/tending are short hands-on work tasks.
+
+### Derived/transient state
+
+Current non-authoritative runtime state still includes:
 
 ```text
 state.npcs
@@ -114,97 +129,94 @@ player.statState
 activeBattle.rng
 ```
 
-Product `.50` classified `state.npcs` as a runtime world projection. Product `.51` classified `state.enemies` as a runtime encounter-template projection whose mutable encounter authority lives in `activeBattle`.
-
-Product `.52` classifies top-level `state.log` as **session-only command presentation history**. The command adapter appends bounded wall-clock-stamped command input for `log`/`inspect log` diagnostics. Save encoding omits it, saving does not clear the live session, and character load resets any supplied/injected log to `[]` after raw validation and before broad runtime validation.
-
-This top-level log is not a substitute for durable chronology. `state.events` remains the persisted structured semantic observation channel with typed data and fictional-time context. Tests prove semantic consumers do not parse `state.log` prose. Canvas `commandHistory` and output buffers are separate transient UI state. `activeBattle.log` is separate persisted encounter-local history and remains under active-battle authority.
-
-Root `player.combat` and `player.statState` remain reconstructible caches. Mutable HP/MP/TP remain persisted independently. `activeBattle.rng` remains transient.
+`state.events` remains persisted structured semantic observation history. `activeBattle.log` remains persisted encounter-local history. Top-level `state.log` remains session-only presentation history.
 
 ### Historical schema decisions
 
-- Game State 7 replaced wall-clock atlas `visitedAt` with fictional-time `visitedAtWorldSeconds`.
-- Game State 8 removed root player combat/stat caches from serialized authority.
-- Game State 9 canonicalized persisted player-status modifiers into nested modifier blocks.
-- Game State 10 removed the reconstructible `state.npcs` runtime projection from serialized authority.
-- Game State 11 removed the reconstructible `state.enemies` encounter-template projection from serialized authority.
-- Game State 12 removed top-level session command presentation history from serialized authority.
+- Game State 7 — canonical fictional-time atlas visits.
+- Game State 8 — root player combat/stat caches removed from serialization.
+- Game State 9 — canonical persisted status modifier shape.
+- Game State 10 — `state.npcs` projection removed from serialization.
+- Game State 11 — `state.enemies` projection removed from serialization.
+- Game State 12 — top-level command presentation history removed from serialization.
+- Game State 13 — required durable cultivation plot/crop authority introduced.
 
-No automatic compatibility migrations were added for those pre-alpha transitions.
+No automatic pre-alpha migrations were added.
 
-### State-classification rule
+## Cultivation lifecycle gate
 
-Before adding a raw validator, classify the state first:
-
-1. **persistent required authority** — validate before revival;
-2. **derived/transient** — recompute or initialize from authoritative/runtime inputs;
-3. **construction convenience** — initialize in factory/new-state/internal paths, not as implicit current-save migration;
-4. **optional persisted authority** — absence is allowed, but once present the stored value must satisfy its domain contract.
-
-Do not compose broad `validatePlayer()` wholesale at the raw boundary. The dedicated broad-array sequence is complete: `state.npcs`, `state.enemies`, and top-level `state.log` are classified. Do not reopen that sequence merely to find another revision.
-
-## Current strict-persistence evidence
-
-Focused evidence includes the existing registry/resource/discovery/player suites plus:
+The cultivation architecture must continue to satisfy:
 
 ```text
-tests/currentSchemaDerivedPlayerState.test.js
-tests/currentSchemaPlayerEquipment.test.js
-tests/currentSchemaPlayerStatuses.test.js
-tests/currentSchemaActiveBattle.test.js
-tests/playerPersistenceIntegration.test.js
-tests/currentSchemaLocationPersistence.test.js
-tests/currentSchemaCombatIdentityPersistence.test.js
-tests/currentSchemaNpcWorldProjection.test.js
-tests/currentSchemaEnemyEncounterProjection.test.js
-tests/currentSchemaPresentationLog.test.js
+plant/grow state
+  -> persisted cultivation timestamps
+  -> no crop-owned timer/task
+
+prepare/tend
+  -> existing work record
+  -> existing work timed task
+  -> domain reconciliation copies durable consequence
+  -> terminal task released exactly once
+
+harvest
+  -> validates readiness
+  -> stores ordinary canonical item in inventory
+  -> records cultivated provenance + seed provenance
+  -> clears crop / increments harvest count
+  -> replay cannot duplicate output
 ```
 
-Revisions `.50`–`.52` demonstrate that ownership audits can correctly remove convenient runtime arrays from serialization rather than promote them to false durable authority.
+Adding a per-crop scheduler, background job, offline clock, duplicate inventory, or second mastery counter requires a new explicit architecture decision rather than incremental convenience code.
 
-## Resource lifecycle
+## Content progression
 
-New long-lived runtime resources require a clear owner, creation condition, duplicate-prevention strategy, and cleanup behavior. Repeated scene/view changes, activity transitions, save/load, and pause/resume must not accumulate duplicate resources. See `docs/RESOURCE_LIFECYCLE.md`.
+`npm run census` measures unique canonical breadth across places, NPCs, service sites, creatures, resource sources, items, recipes, abilities, quests, companions, and transport services. Do not game counts with disconnected filler.
 
-A new direct production timed-task creator must define its durable consequence, exactly-once reconciliation point, and terminal release responsibility. The architecture guard currently admits only the six audited task-owner modules.
-
-For the planned `0.8.700` cultivation pass, do not create one long-lived timed task per growing plot by reflex. Prefer persisted domain state plus canonical-world-time derivation when growth itself does not need active task ownership.
+No scale-count increase is claimed for `0.8.700`: its first proof deliberately reuses an existing Sweetroot item and existing sinks rather than adding breadth solely for the metric. A standalone census output was not recorded in this pass.
 
 ## Performance and long-session stability
 
-Benchmark 3 and repeated sampling are the current comparability protocol. Do not invent hard thresholds before a repeatable baseline is explicitly accepted. Lifecycle-sensitive work must preserve deterministic long-session smoke and owner-managed zero-retained-task steady-state evidence.
+Benchmark 3 remains the current comparability protocol. No hard thresholds are accepted.
 
-Latest validated implementation/tooling evidence is validation-only PR #377 exact head `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, Node 24.19.0: **692/692 tests**, Benchmark 3 success, Benchmark Sample success. The PR was closed without merge after validation. Product remains `0.8.600.52`; this checkpoint adds continuation/content-census tooling rather than a new gameplay version.
-
-Benchmark 3 single run:
+PR #378 single run:
 
 ```text
-player profiles  0.393820 ms/op
-enemy profiles   0.070731 ms/op
-basic attacks    0.003811 ms/op
-tick dispatch    0.001062 ms/op
-route lookup     0.007603 ms/op
+player profiles  0.350069 ms/op
+enemy profiles   0.068868 ms/op
+basic attacks    0.003197 ms/op
+tick dispatch    0.000788 ms/op
+route lookup     0.007068 ms/op
 ```
 
 Three-sample medians/spreads:
 
 ```text
-player profiles  0.362912 ms/op   10.42%
-enemy profiles   0.065795 ms/op    9.93%
-basic attacks    0.001204 ms/op  200.40%
-tick dispatch    0.000696 ms/op   33.93%
-route lookup     0.006992 ms/op    9.64%
+player profiles  0.331167 ms/op    6.35%
+enemy profiles   0.062892 ms/op    7.69%
+basic attacks    0.001206 ms/op  166.26%
+tick dispatch    0.000613 ms/op   54.43%
+route lookup     0.006783 ms/op    5.66%
 ```
 
-No hard threshold is accepted.
+The very fast attack/tick workloads remain noisy; do not turn these figures into CI thresholds.
 
 ## UI and adapter boundaries
 
-The semantic DOM shell is the active player interface. UI work must preserve keyboard usability, acquired-knowledge map privacy, sensible focus/navigation behavior, and separation of authoritative game state from presentation.
+The semantic DOM shell is the active player interface. Cultivation actions are direct intents:
 
-Canonical `ActionResult` consumers use `ok`, `action`, `code`, `outcome`, `data`, and `display`; do not restore `.message`/`.reason` compatibility aliases or prose parsing as domain logic.
+```text
+cultivation.prepare
+cultivation.plant
+cultivation.tend
+cultivation.harvest
+```
+
+The Journal/context model may project cultivation status but must not expose raw plot IDs, internal timestamps, seed-provenance structures, or command vocabulary as required gameplay. Recommendation logic must not allow a merely ready cultivation bed to suppress stronger active/ready commitment, livelihood, home, or recovery decisions.
+
+Canonical `ActionResult` consumers continue using `ok`, `action`, `code`, `outcome`, `data`, and `display`; domain logic must not parse presentation prose.
 
 ## Definition of done
 
-A bounded implementation is complete when production behavior is coherent, relevant validation actually ran or limitations are reported, persistence/lifecycle contracts are preserved, performance evidence is collected when material, architecture guards remain green, content-scale evidence is recorded when material, deliberate version decisions are recorded, the exact implementation SHA is frozen before documentation synchronization, and `docs/THREAD_HANDOFF.md` is updated last when current state or immediate next work changes.
+A bounded implementation is complete when production behavior is coherent, relevant validation actually ran, persistence/lifecycle contracts are preserved, performance/content-scale evidence is recorded when material, version decisions are explicit, the exact implementation SHA is frozen before documentation synchronization, and `docs/THREAD_HANDOFF.md` is updated last.
+
+For feature-branch work, a green implementation is **validated but not landed** until the PR is explicitly merged. Do not start the next independent track by default while the current feature PR remains unresolved.
