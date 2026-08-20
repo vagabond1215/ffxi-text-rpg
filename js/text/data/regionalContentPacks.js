@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 27;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 28;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -47,6 +47,58 @@ export const ELDERWOOD_PACK = createContentPack({
         ],
         relationships: [{ id: 'relationship-elderwood-waywarden', npcId: 'npc-elderwood-waywarden', dimensions: ['trust', 'respect'], unlockQuestIds: ['quest-elderwood-road-repair'] }],
         companions: [{ id: 'companion-mara-venn', catalogRef: true }],
+    },
+});
+
+export const ELDERWOOD_HUNT_TIMBER_PACK = createContentPack({
+    id: 'pack-elderwood-hunt-timber', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['elderwood'], steward: 'thornwall-hunt-timber' },
+    dependencies: ['pack-shared-foundation', 'pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
+    metadata: { name: 'Elderwood Hunt-Timber Pack', notes: 'Dense Elderwood hunt, forestry, tanning, road-repair, and field-technique tranche connecting Barkboar recovery and forest gathering to useful gear, civic work, and persistent relationships.' },
+    records: {
+        items: [
+            { id: 'item-elderwood-resin-board', catalogRef: true },
+            { id: 'item-elderwood-hide-binding', catalogRef: true },
+            { id: 'item-elderwood-tanned-hide', catalogRef: true },
+            { id: 'item-elderwood-resin-pitch', catalogRef: true },
+            { id: 'item-elderwood-forester-gloves', catalogRef: true },
+            { id: 'item-elderwood-hunters-bracer', catalogRef: true },
+            { id: 'item-elderwood-trail-repair-bundle', catalogRef: true },
+            { id: 'item-elderwood-waywarden-mantle', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-thornwall-edrin-bale', catalogRef: true },
+            { id: 'npc-thornwall-nessa-woodmere', catalogRef: true },
+            { id: 'npc-thornwall-oren-vale', catalogRef: true },
+        ],
+        npcSchedules: [{ id: 'schedule-thornwall-oren-vale', catalogRef: true }],
+        recipes: [
+            { id: 'craft-elderwood-resin-board', catalogRef: true },
+            { id: 'craft-elderwood-hide-binding', catalogRef: true },
+            { id: 'process-elderwood-tanned-hide', catalogRef: true },
+            { id: 'process-elderwood-resin-pitch', catalogRef: true },
+            { id: 'craft-elderwood-forester-gloves', catalogRef: true },
+            { id: 'craft-elderwood-hunters-bracer', catalogRef: true },
+            { id: 'craft-elderwood-trail-repair-bundle', catalogRef: true },
+            { id: 'craft-elderwood-waywarden-mantle', catalogRef: true },
+        ],
+        capabilities: [
+            { id: 'technique-barkboar-brace', catalogRef: true },
+            { id: 'technique-thicket-feint', catalogRef: true },
+            { id: 'spell-barkskin-ward', catalogRef: true },
+            { id: 'practical-elderwood-trail-read', catalogRef: true },
+        ],
+        abilities: [
+            { id: 'ability-barkboar-brace', catalogRef: true },
+            { id: 'ability-thicket-feint', catalogRef: true },
+            { id: 'ability-barkskin-ward', catalogRef: true },
+            { id: 'ability-elderwood-trail-read', catalogRef: true },
+        ],
+        quests: [
+            { id: 'commitment-thornwall-tanned-hide-order', catalogRef: true },
+            { id: 'commitment-thornwall-forester-gloves', catalogRef: true },
+            { id: 'commitment-thornwall-trail-repair-bundles', catalogRef: true },
+        ],
     },
 });
 
@@ -136,6 +188,7 @@ export const STARFEN_PACK = createContentPack({
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
+    ELDERWOOD_HUNT_TIMBER_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
