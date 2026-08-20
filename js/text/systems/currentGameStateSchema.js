@@ -4,6 +4,7 @@ import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validatePersistedCombatIdentity } from './combatIdentityPersistence.js';
 import { validateCommitmentState } from './commitmentEngine.js';
+import { validateCultivationState } from './cultivationEngine.js';
 import { validatePersistedDayCycle } from './dayCyclePersistence.js';
 import { validateAtlasState, validatePoiDiscoveryState } from './discoveryPersistence.js';
 import { validateEcologyState } from './ecologyEngine.js';
@@ -35,7 +36,7 @@ import { validateWorldTimeState } from './worldTimeEngine.js';
 
 const REQUIRED_OBJECT_FIELDS = Object.freeze([
     'worldTime', 'simulation', 'tasks', 'abilities', 'party', 'projects', 'commitments', 'relationships',
-    'resourceOpportunities', 'ecology', 'position', 'atlas', 'discoveredPois', 'player', 'flags', 'events',
+    'resourceOpportunities', 'ecology', 'cultivation', 'position', 'atlas', 'discoveredPois', 'player', 'flags', 'events',
 ]);
 const REQUIRED_PLAYER_OBJECT_FIELDS = Object.freeze([
     'identity', 'jobs', 'progression', 'wallet', 'equipment', 'inventoryState', 'resources', 'flags',
@@ -58,6 +59,7 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.relationships)) issues.push(...validateRelationshipState(state.relationships));
     if (isObject(state.resourceOpportunities)) issues.push(...validateResourceOpportunityState(state.resourceOpportunities));
     if (isObject(state.ecology)) issues.push(...validateEcologyState(state.ecology));
+    if (isObject(state.cultivation)) issues.push(...validateCultivationState(state.cultivation, state.work));
     if (isObject(state.events)) issues.push(...validateSemanticEventState(state.events));
     if (isObject(state.atlas)) issues.push(...validateAtlasState(state.atlas));
     if (isObject(state.discoveredPois)) issues.push(...validatePoiDiscoveryState(state.discoveredPois));
