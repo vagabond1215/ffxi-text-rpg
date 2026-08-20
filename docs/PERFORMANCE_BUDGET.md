@@ -13,7 +13,7 @@ npm run hardening
 - `npm run benchmark` runs one Benchmark 3 measurement.
 - `npm run benchmark:sample` runs three measurements by default and reports min, median, max, mean, and spread.
 - `npm run hardening` runs focused deterministic long-session lifecycle smoke followed by sampled benchmark evidence.
-- Hosted `Check` runs the full test suite, Benchmark 3, and the three-sample benchmark on Node 24.
+- Hosted `Check` normally runs the full test suite, Benchmark 3, and Benchmark Sample on Node 24.
 
 ## Benchmark 3 protocol
 
@@ -29,49 +29,66 @@ Benchmark 3 remains the current comparability contract. Benchmark 1/2 are histor
 
 Each workload receives an unreported separate-context warm-up equal to 10% of measured iterations.
 
-## Latest validated feature baseline
-
-Draft PR #378 exact frozen implementation head:
+## Latest validated runtime baseline
 
 ```text
-c125f7ae5f94800893dc28c7fa0ceb61553e3db8
-Check 32340190710
-Job 96337561458
-Node 24.19.0
-Product 0.8.700.1
-Benchmark 3
-695/695 tests
+Runtime SHA: ca7d37c643adc4115b519148615f6120d03228df
+Check:       32395768383
+Node:        24.19.0
+Product:     0.8.900.1
+Benchmark:   3
+Tests:       699/699
 ```
 
-The feature adds cultivation state, semantic actions, and save/load coverage but **does not change Benchmark 3 workloads or measurement protocol**, so the results remain comparable to other Benchmark 3 checkpoints.
+Phase 0.8 did not change Benchmark 3 workloads or measurement protocol, so the results remain comparable to other Benchmark 3 checkpoints.
 
-Single run:
+Single run from the frozen-runtime Check:
 
 ```text
-player combat profiles  0.350069 ms/op   warmup=100
-enemy combat profiles   0.068868 ms/op   warmup=100
-basic attacks            0.003197 ms/op   warmup=100
-tick dispatch            0.000788 ms/op   warmup=1000
-direct route lookup      0.007068 ms/op   warmup=1000
+player combat profiles  0.396198 ms/op
+enemy combat profiles   0.071316 ms/op
+basic attacks            0.003386 ms/op
+tick dispatch            0.000809 ms/op
+direct route lookup      0.007450 ms/op
 ```
 
-Three-sample evidence:
+Three-sample evidence from the same Check:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.331167 | 6.35% |
-| enemy combat profiles | 0.062892 | 7.69% |
-| basic attacks | 0.001206 | 166.26% |
-| tick dispatch | 0.000613 | 54.43% |
-| direct route lookup | 0.006783 | 5.66% |
+| player combat profiles | 0.359735 | 6.77% |
+| enemy combat profiles | 0.068665 | 8.93% |
+| basic attacks | 0.001223 | 172.92% |
+| tick dispatch | 0.000821 | 27.23% |
+| direct route lookup | 0.007260 | 6.40% |
 
 The very fast attack/tick microbenchmarks remain dominated by runtime/timing noise. **Do not create CI thresholds from these figures.** Profile creation and route lookup are more stable but still are not accepted release budgets.
 
-PR #378 remains draft/unmerged. This evidence validates its frozen implementation head; it does not claim the feature has landed on `main`.
+## Phase 0.8 exit rerun
 
-## Prior C0 checkpoint
+Validation-only Check `32395959505` reran Test + Benchmark 3 + Benchmark Sample and additionally ran Content Census + Hardening. All steps succeeded.
 
-C0 continuation/content-census tooling validated at `b0c1e067a1907a8587a08a128126f9207c6d6134`, Check `32308719621`, 692/692 tests. That checkpoint did not change gameplay Product version.
+That rerun's normal sample medians/spreads were:
+
+```text
+player profiles  0.357405 ms/op    5.82%
+enemy profiles   0.071194 ms/op   10.41%
+basic attacks    0.001104 ms/op  189.28%
+tick dispatch    0.000877 ms/op   30.05%
+route lookup     0.007036 ms/op    5.41%
+```
+
+Hardening then reran the lifecycle smoke (2/2 pass) and another sample:
+
+```text
+player profiles  0.366008 ms/op    7.13%
+enemy profiles   0.071743 ms/op   11.52%
+basic attacks    0.001110 ms/op  169.06%
+tick dispatch    0.000693 ms/op   53.45%
+route lookup     0.007213 ms/op    9.45%
+```
+
+This repeated evidence does not justify hard thresholds; it confirms the current qualitative envelope remained stable while Phase 0.8 closed.
 
 ## Performance rules
 
@@ -83,4 +100,4 @@ C0 continuation/content-census tooling validated at `b0c1e067a1907a8587a08a12812
 - Treat retained-state growth as lifecycle/ownership debt when repeated use does not return toward stable application-owned state.
 - Advance Benchmark version whenever workload or measurement protocol changes enough to break comparability.
 
-Hard thresholds remain deferred until repeated representative evidence supports them.
+Hard thresholds remain deferred until repeated representative evidence supports them. Phase 0.9 content-scale work should continue collecting comparable evidence when broad content materially changes lookup, validation, view-model, or long-session costs.
