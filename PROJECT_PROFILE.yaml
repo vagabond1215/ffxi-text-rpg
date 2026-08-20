@@ -26,10 +26,23 @@ git:
   normal_work: direct-main
   risky_or_explicit_review_work: feature-branch-pr
   stabilization_transition: protect-default-branch-and-require-green-ci
+active_change:
+  branch: feature/0.8.700-cultivation-stewardship
+  pull_request: 378
+  pull_request_state: open-draft-unmerged
+  validated_implementation_sha: c125f7ae5f94800893dc28c7fa0ceb61553e3db8
+  base_main_sha: a77db18722a1c55daa7c4666db9aabd785d91eaf
+  hosted_check: 32340190710
+  hosted_job: 96337561458
+  test_result: 695-of-695-pass
+  benchmark_result: benchmark-3-and-sample-success
 progression:
   continuation_pass: C0-continuation-infrastructure-content-census
   continuation_pass_status: complete
-  next_bounded_unit: 0.8.700-cultivation-stewardship
+  current_bounded_unit: 0.8.700-cultivation-stewardship
+  current_bounded_unit_status: validated-pending-landing
+  next_bounded_unit_after_landing: 0.8.800-earned-routine-delegation
+  next_bounded_unit_status: not-started
   content_scale_gate_version: 1
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
   phase_0_8_sequence:
@@ -53,15 +66,9 @@ validation:
   node_baseline: 24
   architecture_debt_guard: tests/architectureDebtGuard.test.js
   content_scale_guard: tests/contentScaleGate.test.js
+  cultivation_schema_guard: tests/currentSchemaCultivation.test.js
+  cultivation_player_flow_guard: tests/playerCultivationStewardshipFlow.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
-  lifecycle_guards:
-    - tests/tickLifecycle.test.js
-    - tests/domRootLifecycle.test.js
-    - tests/timedTaskReleaseLifecycle.test.js
-    - tests/workProjectTaskReleaseLifecycle.test.js
-    - tests/currentSchemaTaskLinks.test.js
-    - tests/currentSchemaTaskRegistry.test.js
-    - tests/activeTaskPersistenceMatrix.test.js
   current_schema_registry_guards:
     - tests/currentSchemaProjectRegistry.test.js
     - tests/currentSchemaContinuityRegistries.test.js
@@ -89,18 +96,21 @@ validation:
     - tests/currentSchemaNpcWorldProjection.test.js
     - tests/currentSchemaEnemyEncounterProjection.test.js
     - tests/currentSchemaPresentationLog.test.js
-  benchmark_protocol_guard: tests/benchmarkProtocol.test.js
+    - tests/currentSchemaCultivation.test.js
 modules:
   - game-runtime
   - persistent-state
   - web-ui
   - deterministic-simulation
+  - cultivation-stewardship
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
+  proposed_product_version: 0.8.700.1
+  proposed_package_version: 0.8.700
   current_account_save: 5
-  current_game_state: 12
-  current_data_version: 37
+  proposed_game_state: 13
+  proposed_data_version: 38
   current_benchmark_version: 3
   current_game_state_must_be_complete_before_revival: true
   raw_current_schema_validation_before_runtime_normalization: true
@@ -116,6 +126,7 @@ quality:
       - relationships
       - resource-opportunities
       - ecology
+      - cultivation
       - party
       - ability-runtime
       - semantic-events
@@ -140,6 +151,20 @@ quality:
       - work-registry
       - player-work-proficiencies
       - day-cycle-history
+  cultivation_authority:
+    state_owner: state.cultivation
+    growth_clock: canonical-world-time-only
+    crop_owned_timed_task: false
+    short_labor_owner: workTaskEngine
+    physical_input_output_owner: inventory
+    provenance_owner: resource-provenance
+    mastery_owner: player-work-proficiencies
+    stable_proficiency_id: cultivation
+    semantic_intents:
+      - cultivation.prepare
+      - cultivation.plant
+      - cultivation.tend
+      - cultivation.harvest
   post_revival_or_derived:
     - broad-player-validation
     - flat-inventory-alias-identity
@@ -157,11 +182,9 @@ quality:
     - state-npcs
     - state-enemies
     - state-log
-  next_classification_audit: []
   future_migrations: deliberate-only-when-required
   canonical_action_results_only: true
   resource_lifecycle_review: required
-  long_session_stability: deterministic-smoke-required-for-lifecycle-sensitive-work
   benchmark_protocol: 3
   benchmark_warmup_ratio: 0.1
   hard_performance_thresholds: not-yet-accepted
@@ -169,36 +192,23 @@ quality:
 constraints:
   - use current repository authority rather than conversation memory
   - read thread handoff and execution pipeline before broad discovery
+  - if pull request 378 remains unmerged resolve its status before starting 0.8.800 by default
   - preserve the original-world canon and legacy/reference boundary
   - preserve the distinction between fictional simulation time and wall-clock scheduling
-  - preserve player-facing acquired-knowledge map privacy
   - reject incompatible or incomplete pre-alpha saves/accounts rather than adding compatibility scaffolding by default
-  - keep the generic migration substrate available for future deliberate migrations without making migration automatic
-  - keep carried inventory/container facts under inventory authority rather than duplicating container knowledge in consumers
-  - do not reintroduce retired FFXI command runtime compatibility
+  - raw Game State 13 must reject malformed cultivation authority before runtime ensure helpers normalize it
+  - cultivation growth is timestamp-derived from canonical fictional time and must not create a crop-owned long-lived timed task
+  - cultivation preparation and tending reuse the existing work task owner and exactly-once terminal release contract
+  - planting consumes a physical inventory item and harvest creates ordinary inventory output
+  - cultivated output remains the existing canonical Sweetroot item and provenance distinguishes its home-grown origin
+  - seed provenance must survive the growth cycle into harvest provenance
+  - harvest must be exactly once and replay-safe
+  - cultivation mastery belongs to persistent work proficiency rather than a parallel progression counter
+  - semantic player actions must not require command-string manufacture
+  - cultivation recommendation priority must not suppress existing active or ready commitment livelihood home or recovery decisions
+  - state.events remains the persisted structured semantic observation channel
+  - state.npcs state.enemies and top-level state.log remain non-authoritative projections/presentation state
   - direct production timed-task creation requires an explicit domain owner exactly-once reconciliation and terminal release responsibility
-  - do not add blind global timed-task pruning when no concrete generic producer/history requirement exists
-  - raw Game State 12 validation must reject malformed persisted authority before runtime ensure helpers can normalize it
-  - classify state as persistent authority derived-transient construction convenience or optional persisted authority before adding a raw validator
-  - do not compose broad validatePlayer at the raw boundary because it mixes post-revival identity and derived-state checks
-  - keep work work-proficiencies and day-cycle state optional when absent but strict when persisted
-  - persist atlas discovery timing in canonical fictional seconds never wall-clock timestamps
-  - omit root player combat and stat caches from save payloads and rebuild them after raw validation
-  - keep mutable player HP MP TP independent from derived maximum-resource calculations
-  - equipped items and canonical player statuses are durable persistence authority
-  - player identity key-items player flags and world flags are strict durable authority
-  - currentPlaceId location and position must remain one coherent canonical location state
-  - combatSequence is the persisted encounter-id allocator and must agree with activeBattle.id when a battle is present
-  - active battle state and deterministic combat/stat snapshots are persisted while battle rng is transient and non-persisted
-  - an active battle player must remain bound to the root player id resources statuses and combat-driving profile while terminal battle snapshots remain historical
-  - post-load root-owned combat skill gains must synchronize into the active battle player before encounter cache refresh
-  - refresh combatant and root player derived profiles after status reconciliation and durable combat synchronization
-  - state.npcs is a post-validation runtime projection rebuilt from canonical seed NPC definitions plus persisted party companion authority and must not be serialized as a second authority
-  - state.enemies is a post-validation encounter-template projection rebuilt from canonical seed enemy definitions; authored template combat/resources are derived construction data while mutable encounter authority belongs to activeBattle
-  - top-level state.log is session-only command presentation history with wall-clock display timestamps; it is omitted from Game State and reset on character load
-  - state.events remains the persisted structured semantic observation channel and must not parse or depend on command-log prose
-  - activeBattle.log is separate persisted encounter-local history and is not the top-level presentation log
-  - canvas command history and output buffers remain transient UI state separate from Game State
-  - the broad top-level npcs enemies and log classification series is complete; do not rediscover or extend it without a concrete defect
+  - do not add blind global timed-task pruning
   - content-heavy work should run the census without gaming counts with disconnected filler
   - roadmap sequencing does not authorize unbounded implementation
