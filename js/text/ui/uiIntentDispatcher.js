@@ -26,6 +26,12 @@ import {
     validateCreator,
 } from '../systems/characterCreationModel.js';
 import {
+    harvestCultivationCrop,
+    plantCultivationCrop,
+    startCultivationPreparation,
+    startCultivationTending,
+} from '../systems/cultivationEngine.js';
+import {
     beginHomeInfrastructureProject,
     contributeHomeInfrastructureMaterial,
     startHomeInfrastructureLabor,
@@ -108,6 +114,10 @@ export function dispatchUiIntent(request = {}) {
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
         case 'ability.activate': return activateCanonicalAbility(context);
+        case 'cultivation.prepare': return recordCultivationResult(context, startCultivationPreparation(context.state));
+        case 'cultivation.plant': return recordCultivationResult(context, plantCultivationCrop(context.state));
+        case 'cultivation.tend': return recordCultivationResult(context, startCultivationTending(context.state));
+        case 'cultivation.harvest': return recordCultivationResult(context, harvestCultivationCrop(context.state));
         case 'home.infrastructure.begin': return beginHomeInfrastructure(context);
         case 'home.infrastructure.contribute': return contributeHomeInfrastructure(context);
         case 'home.infrastructure.start': return startHomeInfrastructure(context);
@@ -387,6 +397,14 @@ function activateCanonicalAbility(context) {
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
     return ok(context, { abilityResult: result, message });
+}
+
+function recordCultivationResult(context, result) {
+    const message = result.display?.text ?? result.message ?? result.reason ?? 'Cultivation updated.';
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { cultivationResult: result, message });
 }
 
 function beginHomeInfrastructure(context) {
