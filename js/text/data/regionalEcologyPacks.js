@@ -8,7 +8,7 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 25;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 26;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -20,7 +20,7 @@ export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
 });
 
 export const REDSTONE_ECOLOGY_PACK = regionalPack({
-    id: 'pack-redstone-ecology-breadth', regionId: 'redstone-reach', steward: 'brasshaven-south', dependencies: ['pack-shared-foundation'],
+    id: 'pack-redstone-ecology-breadth', regionId: 'redstone-reach', steward: 'brasshaven-south', dependencies: ['pack-redstone-opening'],
     placeId: 'south-redstone-reach', ownsPlace: true,
     speciesIds: ['species-redstone-ridge-ibex', 'species-redstone-glass-shell'],
     populationIds: ['population-south-redstone-ridge-ibex', 'population-south-redstone-glass-shells'],
