@@ -1,4 +1,4 @@
-export const NPC_SCHEDULE_DATA_VERSION = 1;
+export const NPC_SCHEDULE_DATA_VERSION = 2;
 
 const DAILY_SCHEDULES = [
     schedule({
@@ -11,6 +11,39 @@ const DAILY_SCHEDULES = [
             window(8, 0, 18, 0, 'On duty at Southgate'),
         ],
         unavailableText: 'Sera is away from Southgate duties.',
+    }),
+    schedule({
+        id: 'schedule-thornwall-mira-fen',
+        npcId: 'npc-thornwall-mira-fen',
+        poiId: 'poi-sandoria-s-aveline',
+        placeId: 'thornwall-southgate',
+        label: 'Morning cookfire and pantry round',
+        windows: [
+            window(6, 0, 11, 0, 'Serving the Southgate morning pot'),
+        ],
+        unavailableText: 'Mira has closed the morning cookfire and is away handling household errands.',
+    }),
+    schedule({
+        id: 'schedule-brasshaven-mae-oris',
+        npcId: 'npc-brasshaven-mae-oris',
+        poiId: 'poi-bastok-markets-carmelide',
+        placeId: 'brasshaven-market-ring',
+        label: 'Market Ring provision hours',
+        windows: [
+            window(11, 0, 17, 0, 'Keeping the courtyard provision stall'),
+        ],
+        unavailableText: 'Mae is away from the stall making courtyard deliveries.',
+    }),
+    schedule({
+        id: 'schedule-mistmere-kiri-fen',
+        npcId: 'npc-mistmere-kiri-fen',
+        poiId: 'poi-waters-hilkomu-makimu',
+        placeId: 'mistmere-canal-ward',
+        label: 'Canalside remedy hours',
+        windows: [
+            window(16, 0, 21, 0, 'Tending the evening remedy shelf'),
+        ],
+        unavailableText: 'Kiri is away from the remedy shelf visiting nearby households.',
     }),
 ];
 
