@@ -43,7 +43,7 @@ progression:
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   current_bounded_unit: elderwood-hunt-timber-regional-tranche
-  current_bounded_unit_status: implementation-complete-version-and-document-synchronization
+  current_bounded_unit_status: implementation-and-promotion-complete-awaiting-final-handoff-check-and-merge
   next_bounded_unit: starfen-marshcraft-practical-magic-regional-tranche
   next_bounded_unit_status: not-started-not-authorized-by-current-packet
   content_scale_gate_version: 2
