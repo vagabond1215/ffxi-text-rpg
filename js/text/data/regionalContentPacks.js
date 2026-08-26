@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 28;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 29;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -185,6 +185,57 @@ export const STARFEN_PACK = createContentPack({
     },
 });
 
+export const STARFEN_MARSHCRAFT_MAGIC_PACK = createContentPack({
+    id: 'pack-starfen-marshcraft-magic', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['starfen'], steward: 'mistmere-marshcraft-magic' },
+    dependencies: ['pack-shared-foundation', 'pack-starfen-opening', 'pack-starfen-ecology-breadth'],
+    metadata: { name: 'Starfen Marshcraft-Practical Magic Pack', notes: 'Dense wetland production and instruction tranche connecting Starfen herbs, kelp, reed fiber, and recovered heron material to medicine, waterproof marshcraft, civic use, and executable practical magic.' },
+    records: {
+        items: [
+            { id: 'item-starfen-reed-cord', catalogRef: true },
+            { id: 'item-starfen-bluekelp-extract', catalogRef: true },
+            { id: 'item-starfen-marsh-poultice', catalogRef: true },
+            { id: 'item-starfen-bogberry-tonic', catalogRef: true },
+            { id: 'item-starfen-waterproof-wrap', catalogRef: true },
+            { id: 'item-starfen-marsh-survey-kit', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-mistmere-pelu-senn', catalogRef: true },
+            { id: 'npc-mistmere-tavi-meren', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-mistmere-pelu-senn', catalogRef: true },
+            { id: 'schedule-mistmere-tavi-meren', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-starfen-reed-cord', catalogRef: true },
+            { id: 'process-starfen-bluekelp-extract', catalogRef: true },
+            { id: 'craft-starfen-marsh-poultice', catalogRef: true },
+            { id: 'cook-starfen-bogberry-tonic', catalogRef: true },
+            { id: 'craft-starfen-waterproof-wrap', catalogRef: true },
+            { id: 'craft-starfen-marsh-survey-kit', catalogRef: true },
+        ],
+        capabilities: [
+            { id: 'spell-marsh-mending', catalogRef: true },
+            { id: 'spell-reedveil-ward', catalogRef: true },
+            { id: 'spell-fenlight-spark', catalogRef: true },
+            { id: 'practical-starfen-current-reading', catalogRef: true },
+        ],
+        abilities: [
+            { id: 'ability-marsh-mending', catalogRef: true },
+            { id: 'ability-reedveil-ward', catalogRef: true },
+            { id: 'ability-fenlight-spark', catalogRef: true },
+            { id: 'ability-starfen-current-reading', catalogRef: true },
+        ],
+        quests: [
+            { id: 'commitment-mistmere-marsh-poultice', catalogRef: true },
+            { id: 'commitment-mistmere-waterproof-wraps', catalogRef: true },
+            { id: 'commitment-mistmere-bogberry-tonic', catalogRef: true },
+            { id: 'commitment-mistmere-marsh-survey-kit', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -192,6 +243,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
+    STARFEN_MARSHCRAFT_MAGIC_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
 ]);
 
