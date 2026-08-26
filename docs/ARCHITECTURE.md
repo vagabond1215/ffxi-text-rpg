@@ -19,20 +19,20 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Frozen Redstone implementation/content checkpoint before version/document synchronization:
+Frozen Elderwood implementation/content checkpoint before version/document synchronization:
 
 ```text
-440a77c542fcc6a6efcce7a45ca989e9068499f8
+acb24b73b4894d3febab370aa279bdfd12cbd02e
 ```
 
 The version transition is intentionally narrow. Data advances because stable canonical authored content and cross-linked Pack-v2 relationships changed. Game State remains 14 because no new durable player/world fact was introduced.
@@ -157,9 +157,39 @@ relationships/schedules    + ability runtime authority
 Brasshaven social use      Redstone techniques/spells
 ```
 
+Redstone processing/crafting definitions live in the existing production catalog; work execution remains under the production/work-task engines. Its contracts reuse commitment, relationship, wallet, inventory, semantic-event, NPC-projection, and NPC-schedule authority. `pack-redstone-forge-road` depends on shared foundation, Redstone opening, and Redstone ecology breadth. It adds no direct timed-task owner or parallel state family.
+
+# Elderwood Hunt-Timber composition
+
+`0.9.100.3` is the second authored Gate A regional tranche and deliberately stresses a different composition: hunting/body recovery, forestry materials, downstream field equipment, fictional-time civic availability, provenance-qualified community work, and learned forest techniques.
+
+```text
+existing Elderwood field substrate
+  Barkboar hide recovery / Duskcap / amber resin / hardwood
+          |
+          v
+existing inventory + provenance
+          |
+          v
+existing tannery + woodshop / work-task / work-proficiency authority
+          |
+          v
+tanned hide / hide bindings / resin boards + pitch
+forester gloves / hunter bracer / trail repair bundles
+          |
+          +----------------------------+
+          |                            |
+          v                            v
+existing commitment +            existing character capability
+relationship + schedule          + ability runtime authority
+          |                            |
+          v                            v
+Thornwall civic/social use       Elderwood techniques/warding
+```
+
 ## Production and physical ownership
 
-Redstone processing/crafting definitions live in the existing production catalog. Work execution remains under the existing production/work-task engines.
+Elderwood processing/crafting definitions live in the existing production catalog. Work execution remains under the existing production/work-task engines.
 
 Consequences remain split by existing authority:
 
@@ -171,42 +201,33 @@ source/transformation history   -> resource provenance
 station availability            -> existing workstation/locality context
 ```
 
-The Redstone pack creates **no direct timed-task owner**. It does not add a forge clock, recipe queue, offline worker, or pack-owned inventory.
+The Elderwood pack creates **no direct timed-task owner**. It does not add a tannery clock, woodshop queue, offline worker, pack-owned inventory, or second resource-recovery authority.
 
 ## Capability and ability ownership
 
-Ridge Breaker, Rivet Guard, Forge Spark, and Ironbound Ward are ordinary character-owned capabilities backed by executable entries in the existing ability catalog/engine.
+The four Elderwood techniques/warding actions are ordinary character-owned capabilities backed by executable entries in the existing ability catalog/engine. Barkboar Brace is covered end-to-end through the same learned-skill, equipment, resource, target, timing, cooldown, status, and combat rules already used elsewhere.
 
-Learning a Redstone capability changes the character's existing capability authority. Activation still uses existing context, learned-skill, equipment, resource, target, timing, cooldown, status, and combat rules. There is no regional ability bar or second advancement meter.
+There is no regional ability bar or second advancement meter.
 
 ## Commitments, schedules, and continuity
 
-The Forge-Road contracts use existing commitment, relationship, wallet, inventory, semantic-event, NPC-projection, and NPC-schedule authorities.
+The Elderwood contracts use existing commitment, relationship, wallet, inventory, semantic-event, NPC-projection, and NPC-schedule authorities.
 
-A first integration run exposed an important projection/content interaction: later Forge-Road jobs offered through Varric's already-discovered contact could outrank his established copper-return continuity in the Journal. The repair was authored-content placement, not a new priority subsystem:
+Three already-visible Thornwall/Elderwood service people become persistent NPC-backed contacts rather than new filler locations. Oren Vale's roadworks availability is derived from the existing schedule engine at **07:00–15:00 fictional time**. There is no social clock.
 
-```text
-Varric Stone
-  -> existing Copper for the Ring path remains intact
-
-Mae Oris
-  -> later Forge-Road orders
-  -> existing 11:00–17:00 fictional-time schedule applies
-```
-
-The old copper continuity test was not weakened.
+The road-repair commitment consumes real provenance-bearing produced bundles and pays exactly once through existing commitment authority.
 
 ## Pack ownership
 
-`pack-redstone-forge-road` is a child regional pack with dependencies:
+`pack-elderwood-hunt-timber` is a child regional pack with dependencies:
 
 ```text
 pack-shared-foundation
-pack-redstone-opening
-pack-redstone-ecology-breadth
+pack-elderwood-opening
+pack-elderwood-ecology-breadth
 ```
 
-It claims the downstream Redstone items, recipes/processes, capabilities, abilities, and commitments through Pack v2. Canonical definitions continue to live in their domain catalogs.
+It claims the downstream Elderwood items, recipes/processes, persistent NPCs, schedule, capabilities, abilities, and commitments through Pack v2. Canonical definitions continue to live in their domain catalogs.
 
 # Census separation
 
@@ -216,14 +237,14 @@ Current gameplay breadth:
 
 ```text
 places/localities       26
-named NPCs              12
+named NPCs              15
 shop/service sites      17
 creatures               16
 resource sources        13
-canonical items         56
-recipes/processes       17
-abilities/techniques     9
-quests/contracts        11
+canonical items         62
+recipes/processes       23
+abilities/techniques    13
+quests/contracts        14
 companions                1
 transport services        3
 ```
@@ -233,15 +254,17 @@ Supplemental infrastructure:
 ```text
 routes                                   7
 spell schools                            3
-capability/training definitions         12
-NPC schedules                            4
-regional/shared packs                    8
-pack-owned records                     140
+capability/training definitions         16
+NPC schedules                            5
+regional/shared packs                    9
+pack-owned records                     171
 pack-owned abilities/capabilities/
-  schedules/companions                9/12/4/1
+  schedules/companions              13/16/5/1
+runtime seed NPCs                       14
+runtime seed enemies                    13
 ```
 
-The mechanics-scale gate remains **NOT READY**. Pack references and generated fixtures do not manufacture gameplay-content progress.
+The mechanics-scale gate remains **NOT READY**. Abilities/techniques remain the largest relative gap. Pack references and generated fixtures do not manufacture gameplay-content progress.
 
 # Phase 0.8 connected-life architecture
 
@@ -374,7 +397,7 @@ transportEngine.js
 workTaskEngine.js
 ```
 
-Redstone production reuses `workTaskEngine`; it does not add a direct creator. Cultivation manual labor also reuses that owner; crop growth and delegated tending do not add direct creators. Each owner releases terminal tasks only after durable exactly-once consequence reconciliation. There is no accepted blind global pruning policy.
+Redstone and Elderwood production both reuse `workTaskEngine`; neither adds a direct creator. Cultivation manual labor also reuses that owner; crop growth and delegated tending do not add direct creators. Each owner releases terminal tasks only after durable exactly-once consequence reconciliation. There is no accepted blind global pruning policy.
 
 ## Historical Game State transitions
 
@@ -397,7 +420,7 @@ Check              32402373472
 704/704 tests + census + Benchmark 3 + sample
 ```
 
-Current Redstone implementation/content freeze:
+Redstone implementation/content freeze:
 
 ```text
 implementation SHA 440a77c542fcc6a6efcce7a45ca989e9068499f8
@@ -406,10 +429,19 @@ Job                96579293377
 707/707 tests + census + Benchmark 3 + sample
 ```
 
-A final promoted/documented exact-head PR Check is required before landing `0.9.100.2`.
+Current Elderwood implementation/content freeze:
+
+```text
+implementation SHA acb24b73b4894d3febab370aa279bdfd12cbd02e
+Check              32423676980
+Job                96600958329
+711/711 tests + census + Benchmark 3 + sample
+```
+
+A final promoted/documented exact-head PR Check is required before landing `0.9.100.3`.
 
 ## Carried-forward rule
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Redstone Forge-Road is the current completed bounded tranche pending landing. **Elderwood Hunt-Timber is the next independent packet and is not started or authorized by this document.**
+Elderwood Hunt-Timber is the current completed bounded tranche pending landing. **Starfen Marshcraft-Practical Magic is the next independent packet and is not started or authorized by this document.**
