@@ -7,19 +7,19 @@ Operational sequencing lives in `docs/EXECUTION_PIPELINE.md`. Exact restart stat
 ## Current validated baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Content Pack Scale Contract v2 is complete and Redstone Forge-Road is the first authored Gate A regional tranche, implemented and validated pending final landing.
+Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Content Pack Scale Contract v2 and Redstone Forge-Road are complete; Elderwood Hunt-Timber is implemented and validated on its frozen implementation/data head pending final promoted-head validation and landing.
 
 ## Product laws
 
@@ -71,19 +71,19 @@ Game State ended Phase 0.8 at 14 and remains 14 through the current Gate A conte
 
 `npm run census` is an executable progression indicator and runs in ordinary hosted `Check`, but incomplete content targets are **not CI failures**.
 
-Current gameplay breadth after Redstone Forge-Road:
+Current gameplay breadth after Elderwood Hunt-Timber:
 
 | Category | Current | Mechanics integration | Playable alpha | 1.0 lower bound |
 | --- | ---: | ---: | ---: | ---: |
 | Places/localities | 26 | 10 | 30 | 75 |
-| Named NPCs | 12 | 50 | 250 | 700 |
+| Named NPCs | 15 | 50 | 250 | 700 |
 | Functional shop/service sites | 17 | 20 | 60 | 150 |
 | Creature definitions | 16 | 40 | 120 | 300 |
 | Resource sources | 13 | 40 | 100 | 250 |
-| Canonical items | 56 | 200 | 800 | 2,500 |
-| Recipes/processes | 17 | 75 | 300 | 800 |
-| Abilities/techniques | 9 | 100 | 250 | 500 |
-| Quests/contracts | 11 | 30 | 150 | 500 |
+| Canonical items | 62 | 200 | 800 | 2,500 |
+| Recipes/processes | 23 | 75 | 300 | 800 |
+| Abilities/techniques | 13 | 100 | 250 | 500 |
+| Quests/contracts | 14 | 30 | 150 | 500 |
 | Recruitable companions | 1 | 4 | 12 | 25 |
 | Scheduled transport services | 3 | 5 | 20 | 50 |
 
@@ -92,12 +92,14 @@ Mechanics-scale status is **NOT READY**. Places already exceed the mechanics flo
 Infrastructure coverage is tracked separately from authored breadth:
 
 ```text
-regional/shared content packs                          8
-pack-owned records                                   140
-pack-owned abilities/capabilities/schedules/companions 9/12/4/1
-spell schools                                           3
-capability/training definitions                        12
-NPC schedules                                           4
+regional/shared content packs                           9
+pack-owned records                                    171
+pack-owned abilities/capabilities/schedules/companions 13/16/5/1
+spell schools                                            3
+capability/training definitions                         16
+NPC schedules                                            5
+runtime seed NPCs                                       14
+runtime seed enemies                                    13
 ```
 
 This separation between authored breadth and infrastructure ownership is deliberate. Do not satisfy roadmap targets with disconnected filler or by counting catalog references twice.
@@ -128,46 +130,51 @@ The packet established Pack v2 ownership for geography, ecology, items, NPCs, sc
 
 ### Packet B — Redstone Forge-Road
 
-**Status: IMPLEMENTED + VALIDATED / PENDING FINAL LANDING.**
+**Status: COMPLETE / MERGED.**
+
+Redstone established the first authored regional tranche on Pack v2, composing existing iron/sunstone/Ridge Ibex recovery, forge/work, inventory/provenance, scheduled Brasshaven contacts, commitments, and character-owned techniques without adding parallel authorities.
+
+### Packet C — Elderwood Hunt-Timber
+
+**Status: IMPLEMENTED + VALIDATED / PENDING FINAL PROMOTED-HEAD CHECK AND LANDING.**
 
 Frozen implementation/content SHA:
 
 ```text
-440a77c542fcc6a6efcce7a45ca989e9068499f8
+acb24b73b4894d3febab370aa279bdfd12cbd02e
 ```
 
-Pre-promotion hosted Check `32416678697` / job `96579293377` passed Repository Audit, **707/707 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
+Pre-promotion hosted Check `32423676980` / job `96600958329` passed Repository Audit, **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
 
-The tranche reuses the existing Redstone/Brasshaven substrate and adds one connected downstream graph:
+The tranche reuses the existing Elderwood/Thornwall substrate and adds one connected downstream graph:
 
-- four character-owned Redstone capabilities plus four executable abilities;
-- six additional forge outputs and six additional forge processes connected to existing iron, sunstone, Ridge Ibex, work-proficiency, workstation, inventory, and provenance authorities;
-- three provenance-qualified Brasshaven commitments consuming those outputs;
-- a `pack-redstone-forge-road` child Pack v2 graph depending on shared foundation, Redstone opening, and Redstone ecology breadth;
-- focused end-to-end proof for ownership, production/provenance, exactly-once social resolution, and executable combat training.
-
-The Varric copper-return continuity remains intact. Later Forge-Road orders use Mae Oris as a separate scheduled Market Ring contact rather than crowding the already-established Varric path.
+- four character-owned Elderwood capabilities plus four executable abilities;
+- six downstream outputs and six processes connected to existing Barkboar recovery, Duskcap, amber resin, hardwood, tannery/woodshop, work-proficiency, inventory, and provenance authorities;
+- three existing POI people promoted to persistent NPC-backed contacts, with Oren Vale on a canonical fictional-time roadworks schedule;
+- three provenance-qualified Thornwall commitments consuming real produced output;
+- a `pack-elderwood-hunt-timber` child Pack v2 graph depending on shared foundation, Elderwood opening, and Elderwood ecology breadth;
+- focused end-to-end proof for ownership, production/provenance, exactly-once civic resolution, schedule behavior, census growth, and executable Barkboar Brace.
 
 Version decision:
 
 ```text
-Product:      0.9.100.1 -> 0.9.100.2
+Product:      0.9.100.2 -> 0.9.100.3
 Package:      0.9.100 unchanged
-Data:         40 -> 41
+Data:         41 -> 42
 Game State:   remains 14
 Account Save: remains 5
 Benchmark:    remains 3
 ```
 
-Data advances because new stable canonical authored records and their cross-linked source/sink/social/Pack ownership relationships are part of the current data contract. Game State does not advance because no new durable player/world fact was introduced.
+Data advances because new stable canonical authored records and their cross-linked source/sink/social/schedule/Pack ownership relationships are part of the current data contract. Game State does not advance because no new durable player/world fact was introduced.
 
-### Next bounded packet — Elderwood Hunt-Timber
+### Next bounded packet — Starfen Marshcraft-Practical Magic
 
 **Status: NOT STARTED.**
 
-After Redstone lands and only with a new explicit continuation, deepen the existing Elderwood root with a dense hunt/timber graph joining named people and schedules to creature/resource recovery, timber/hide/resin processing, equipment/consumables, practical techniques, contracts/services, economy, field danger, and provenance through Pack v2.
+After Elderwood lands and only with a new explicit continuation, deepen the existing Starfen/Mistmere root with a dense marshcraft/practical-magic graph joining named people and schedules to wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, canal/water context, community/research contracts, field danger, and provenance through Pack v2.
 
-Following Gate A tranches remain Starfen Marshcraft-Practical Magic, then Gate A integration/census review. Their numeric planning bands remain guidance, not quotas.
+After Starfen comes Gate A integration/census review. Numeric planning bands remain guidance, not quotas.
 
 ## Phase 0.9 governance
 
@@ -193,4 +200,4 @@ activeBattle.rng
 
 Supported-save migrations, browser E2E/accessibility, hard performance thresholds, balance certification, quality/HQ depth, large logistics, and deep romance remain deferred to their planned tracks unless explicitly opened earlier.
 
-A future continuation must start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. Elderwood Hunt-Timber is not authorized merely because it appears here.
+A future continuation must start from `THREAD_HANDOFF.md` and `EXECUTION_PIPELINE.md`. Starfen Marshcraft-Practical Magic is not authorized merely because it appears here.

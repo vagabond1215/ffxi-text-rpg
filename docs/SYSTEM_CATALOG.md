@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,13 +50,13 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
 
-## Content infrastructure and regional packs — Data 41
+## Content infrastructure and regional packs — Data 42
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Eight current packs; 140 current ownership records. |
+| Regional/shared pack ownership | integrated | Nine current packs; 171 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -64,6 +64,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
 | Redstone Forge-Road pack | playable | Child Pack v2 graph joins existing Redstone ecology to forge production, equipment, abilities, and Brasshaven commitments. |
+| Elderwood Hunt-Timber pack | playable | Child Pack v2 graph joins existing Barkboar/forest inputs to tannery/woodshop production, persistent contacts, scheduled civic work, field equipment, commitments, and Elderwood abilities. |
 | High-volume canonical regional content | seeded | Real authored breadth is growing but remains below most mechanics floors. |
 
 ### Pack v2 collections
@@ -97,8 +98,9 @@ spellSchools / capabilities / abilities / companions
 | Continuous player entity | playable | One persistent person across disciplines. |
 | Disciplines/capabilities/skills | playable | Learned capability and mastery stay character-owned. |
 | Ability/spell engine | playable | Learned abilities, timing, costs, cooldowns, interruption. |
-| Ability/training pack ownership | integrated | Current 3 schools / 12 capabilities / 9 abilities are represented through Pack v2 ownership. |
+| Ability/training pack ownership | integrated | Current 3 schools / 16 capabilities / 13 abilities are represented through Pack v2 ownership. |
 | Redstone combat training | playable | Ridge Breaker, Rivet Guard, Forge Spark, and Ironbound Ward use existing character capability/ability authority. |
+| Elderwood field training | playable | Four Elderwood capabilities/abilities, including Barkboar Brace, use the same character-owned capability and existing ability runtime authority. |
 | Equipment/tool context | playable | Gear/tools constrain and enhance real capability. |
 | Combat 2.0 | playable | Deterministic readiness/action/resource model. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
@@ -118,8 +120,9 @@ spellSchools / capabilities / abilities / companions
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks. |
 | Gathering sources | playable | Place/tool/time/capacity/provenance. |
-| Production | playable | 17 current processing/crafting/cooking/salvage definitions with mastery and provenance. |
+| Production | playable | 23 current processing/crafting/cooking/salvage definitions with mastery and provenance. |
 | Redstone forge chain | playable | Existing iron/sunstone/Ridge Ibex inputs feed flux, tempered iron, rivets, work gear, and caravan hardware through existing forge/work authorities. |
+| Elderwood hunt-timber chain | playable | Barkboar hide recovery, Duskcap, amber resin and hardwood feed tanned hide, bindings, resin products, field gear and trail-repair stock through existing tannery/woodshop/work authorities. |
 | Workstations | playable | Locality/home context. |
 | Home/storage/workshop | playable | Durable life infrastructure. |
 | Cultivation/stewardship | playable | Multi-day Sweetroot crop using canonical world time. |
@@ -130,11 +133,12 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 11 runtime seed NPCs; census currently counts 12 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Four current schedules derive availability from fictional time. |
+| NPC seed definitions | integrated | 14 runtime seed NPCs; census currently counts 15 named NPC definitions across canonical sources. |
+| NPC recurring schedules | playable | Five current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
-| Commitments | playable | 11 current persistent contracts with accept/resolve/follow-up/reward state. |
+| Commitments | playable | 14 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Redstone Forge-Road commitments | playable | Three provenance-qualified Brasshaven orders consume real forged output; later work uses Mae's scheduled contact without displacing Varric's copper continuity. |
+| Elderwood Hunt-Timber commitments | playable | Three provenance-qualified Thornwall orders consume real Elderwood production output; Oren's roadworks availability remains fictional-time-derived. |
 | Relationships | playable | Persistent NPC-specific continuity. |
 | Journal/information projection | playable | Decision-first guidance over canonical state. |
 | Broad branching narrative | seeded | Contract breadth is growing but remains below mechanics-scale target. |
@@ -142,18 +146,18 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth after Redstone Forge-Road:
+Gameplay breadth after Elderwood Hunt-Timber:
 
 ```text
 places/localities       26 / mechanics 10
-named NPCs              12 / 50
+named NPCs              15 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         56 / 200
-recipes/processes       17 / 75
-abilities/techniques     9 / 100
-quests/contracts        11 / 30
+canonical items         62 / 200
+recipes/processes       23 / 75
+abilities/techniques    13 / 100
+quests/contracts        14 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -163,16 +167,18 @@ Infrastructure coverage:
 ```text
 routes                                   7
 spell schools                            3
-capability/training definitions         12
-NPC schedules                            4
-regional/shared packs                    8
-pack-owned records                     140
+capability/training definitions         16
+NPC schedules                            5
+regional/shared packs                    9
+pack-owned records                     171
 pack-owned abilities/capabilities/
-  schedules/companions                9/12/4/1
+  schedules/companions              13/16/5/1
+runtime seed NPCs                       14
+runtime seed enemies                    13
 ```
 
-Mechanics-scale gate remains **NOT READY**. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
+Mechanics-scale gate remains **NOT READY**. Abilities/techniques remain the largest relative gap. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` are open. **Content Pack Scale Contract v2 is complete; Redstone Forge-Road is implemented and validated pending final landing.** Elderwood Hunt-Timber is next but has not been started.
+Phase 0.9 and `0.9.100` are open. **Content Pack Scale Contract v2 and Redstone Forge-Road are complete; Elderwood Hunt-Timber is implemented and pre-promotion validation is green pending final exact-head validation and landing.** Starfen Marshcraft-Practical Magic is next but has not been started or authorized by this packet.

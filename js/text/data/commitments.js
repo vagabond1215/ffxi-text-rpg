@@ -4,7 +4,7 @@ import { getPlace } from './places.js';
 import { getProductionItem } from './productionItems.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const COMMITMENT_CATALOG_VERSION = 4;
+export const COMMITMENT_CATALOG_VERSION = 5;
 
 const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
     'plot-home-sweetroot-bed': Object.freeze({ itemId: 'item-elderwood-sweetroot', domain: 'cultivation' }),
@@ -58,6 +58,24 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         description: 'The Forge Road caravan pool needs replacement iron shoes fabricated from the same tempered stock used for civic repairs.', objective: 'Bring Mae two Redstone Caravan Shoes forged from tempered Redstone iron and matching rivets.',
         requiredItems: [{ itemId: 'item-redstone-caravan-shoe', quantity: 2, provenanceSourceId: 'craft-redstone-caravan-shoe' }], reward: { gil: 76, relationship: { respect: 2, trust: 2 } }, followUpDelayDays: 2,
         offerText: 'Mae has a practical Forge Road order: two replacement shoes for caravan draft stock. The job only matters if the iron is good enough to leave Brasshaven and come back worn rather than broken.', resolvedText: 'Mae checks the bend and nail holes, then marks the pair for the next Forge Road rotation. Your metalwork is leaving the city as working infrastructure.', followUpText: 'When the caravan returns, Mae shows you the scuffed shoes rather than a ledger entry. They held. The next useful question is what else the road can carry, repair, or teach without turning every improvement into a new isolated system.',
+    }),
+    'commitment-thornwall-tanned-hide-order': commitment({
+        id: 'commitment-thornwall-tanned-hide-order', name: 'A Hide Worth Stitching', giverNpcId: 'npc-thornwall-edrin-bale', offerPoiId: 'poi-sandoria-s-faulpie', offerPlaceId: 'thornwall-southgate',
+        description: 'Edrin Bale wants a Barkboar hide that has been recovered in the Elderwood and properly worked with Duskcap at a tannery.', objective: 'Bring Edrin one Dusk-Tanned Barkboar Hide made from recovered Elderwood hide.',
+        requiredItems: [{ itemId: 'item-elderwood-tanned-hide', quantity: 1, provenanceSourceId: 'process-elderwood-tanned-hide' }], reward: { gil: 52, relationship: { respect: 2, trust: 1 } }, followUpDelayDays: 1,
+        offerText: 'Edrin has no shortage of rough hides. He asks for one you recovered, cleaned, and tanned well enough that the guild can judge the fieldwork and the bench work together.', resolvedText: 'Edrin bends the hide across both hands, checks the grain and cure, and marks the piece as usable stock rather than practice scrap. Your hunt has become material another craftsperson would trust.', followUpText: 'The next day Edrin has cut a narrow test strip from the hide. He points out that useful leather is only the middle of the chain: bindings and field gear matter when they solve the next problem instead of ending at the tannery door.',
+    }),
+    'commitment-thornwall-forester-gloves': commitment({
+        id: 'commitment-thornwall-forester-gloves', name: 'Grip for the Resin Crews', giverNpcId: 'npc-thornwall-nessa-woodmere', offerPoiId: 'poi-sandoria-s-corua', offerPlaceId: 'thornwall-southgate',
+        description: 'Nessa Woodmere needs a pair of locally made gloves suited to cutters working resinous Elderwood bark and rough timber.', objective: 'Bring Nessa one pair of Forester Grip Gloves stitched from Elderwood-tanned hide and cured binding.',
+        requiredItems: [{ itemId: 'item-elderwood-forester-gloves', quantity: 1, provenanceSourceId: 'craft-elderwood-forester-gloves' }], reward: { gil: 68, relationship: { familiarity: 1, respect: 2 } }, followUpDelayDays: 2,
+        offerText: 'Nessa wants a pair of gloves whose materials can be traced back through the woods. Resin crews need grip and protection, not another decorative market piece.', resolvedText: 'Nessa flexes the gloves, rubs the palms against a resin-marked billet, and sets them aside for the next cutter heading west. The value is visible because someone will use them where the materials came from.', followUpText: 'Two days later Nessa reports that the gloves came back stained but intact. She is already asking whether the same boards, bindings, and pitch can be packed into repair stock for crews farther down the road.',
+    }),
+    'commitment-thornwall-trail-repair-bundles': commitment({
+        id: 'commitment-thornwall-trail-repair-bundles', name: 'Bundles for the West Road', giverNpcId: 'npc-thornwall-oren-vale', offerPoiId: 'poi-sandoria-s-ambrotien', offerPlaceId: 'thornwall-southgate',
+        description: 'Oren Vale needs compact repair stock assembled from Elderwood boards, hide binding, and resin pitch for crews maintaining the west road.', objective: 'Bring Oren two Elderwood Trail Repair Bundles assembled through the woodshop chain.',
+        requiredItems: [{ itemId: 'item-elderwood-trail-repair-bundle', quantity: 2, provenanceSourceId: 'craft-elderwood-trail-repair-bundle' }], reward: { gil: 84, relationship: { respect: 2, trust: 2 } }, followUpDelayDays: 2,
+        offerText: 'Oren asks for two matched repair bundles. He wants the sort of stock a road crew can carry into the trees and use without hauling half a workshop behind them.', resolvedText: 'Oren checks the sealed boards, binding, and pitch, then assigns both bundles to west-road crews. What began as hunting and gathering has become infrastructure that will be used outside the gate.', followUpText: 'When Oren is back at the desk two days later, one crew has already returned an empty wrapping. The repair held. He treats your next Elderwood trip as part of an ongoing road economy rather than an isolated errand.',
     }),
 });
 

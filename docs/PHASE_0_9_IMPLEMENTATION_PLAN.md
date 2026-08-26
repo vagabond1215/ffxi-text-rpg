@@ -7,31 +7,31 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 ```
 
-The strategic risk remains authored-content breadth and throughput. Packet A scaled supporting infrastructure first; Packet B now proves that infrastructure with one real connected Redstone regional tranche.
+The strategic risk remains authored-content breadth and throughput. Packet A scaled supporting infrastructure first; Packet B proved forge/contract/training throughput in Redstone; Packet C now proves the same infrastructure can support a materially different hunt/timber/civic graph in Elderwood without parallel authorities.
 
 ## Current census
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
 | Places/localities | 26 | 10 | ready |
-| Named NPCs | 12 | 50 | 38 |
+| Named NPCs | 15 | 50 | 35 |
 | Shop/service sites | 17 | 20 | 3 |
 | Creature definitions | 16 | 40 | 24 |
 | Resource sources | 13 | 40 | 27 |
-| Canonical items | 56 | 200 | 144 |
-| Recipes/processes | 17 | 75 | 58 |
-| Abilities/techniques | 9 | 100 | 91 |
-| Quests/contracts | 11 | 30 | 19 |
+| Canonical items | 62 | 200 | 138 |
+| Recipes/processes | 23 | 75 | 52 |
+| Abilities/techniques | 13 | 100 | 87 |
+| Quests/contracts | 14 | 30 | 16 |
 | Recruitable companions | 1 | 4 | 3 |
 | Transport services | 3 | 5 | 2 |
 
@@ -39,12 +39,14 @@ Infrastructure coverage:
 
 ```text
 spell schools                            3
-capability/training definitions         12
-NPC schedules                            4
-regional/shared packs                    8
-pack-owned records                     140
+capability/training definitions         16
+NPC schedules                            5
+regional/shared packs                    9
+pack-owned records                     171
 pack-owned abilities/capabilities/
-  schedules/companions                9/12/4/1
+  schedules/companions              13/16/5/1
+runtime seed NPCs                       14
+runtime seed enemies                    13
 ```
 
 # `0.9.100` — Content Scale Gate A
@@ -71,7 +73,7 @@ Canonical definitions remain in their existing catalogs. `contentCatalogRegistry
 
 ## Packet B — Redstone Forge-Road regional tranche
 
-**Status: IMPLEMENTED + VALIDATED / PENDING FINAL LANDING.**
+**Status: COMPLETE / MERGED.**
 
 Frozen implementation/content SHA:
 
@@ -81,7 +83,7 @@ Frozen implementation/content SHA:
 
 Hosted implementation Check `32416678697` / job `96579293377` passed Repository Audit, **707/707 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
 
-The accepted bounded graph deliberately reused existing Redstone substrate instead of chasing the representative planning band as a quota:
+The accepted bounded graph reused existing Redstone substrate:
 
 ```text
 existing Redstone iron / sunstone / Ridge Ibex
@@ -93,55 +95,77 @@ existing Redstone iron / sunstone / Ridge Ibex
   -> Pack v2 child ownership
 ```
 
+A first integration Check caught one real continuity regression: later Forge-Road jobs sharing Varric's discovered contact displaced his established copper commitment. The content repair preserved the old copper test unchanged and moved later orders to Mae Oris's existing scheduled Market Ring contact.
+
+## Packet C — Elderwood Hunt-Timber
+
+**Status: IMPLEMENTED + VALIDATED / PENDING FINAL PROMOTED-HEAD CHECK AND LANDING.**
+
+Frozen implementation/content SHA:
+
+```text
+acb24b73b4894d3febab370aa279bdfd12cbd02e
+```
+
+Hosted implementation Check `32423676980` / job `96600958329` passed Repository Audit, **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
+
+The accepted bounded graph deliberately reuses existing Elderwood substrate and stresses a different regional composition:
+
+```text
+existing Barkboar recovery / Duskcap / amber resin / hardwood
+  -> existing tannery / woodshop / work / inventory / provenance authorities
+  -> tanned hide / bindings / resin boards + pitch
+  -> forester gloves / hunter bracer / trail-repair bundles
+  -> persistent Thornwall service contacts + fictional-time roadworks schedule
+  -> provenance-qualified civic/community commitments
+  -> character-owned Elderwood techniques/warding
+  -> Pack v2 child ownership
+```
+
 Implemented content:
 
 - four character-owned capabilities and four executable abilities;
-- six additional downstream forge outputs and six additional forge processes;
-- three provenance-qualified Brasshaven commitments;
-- `pack-redstone-forge-road` depending on shared foundation, Redstone opening, and Redstone ecology breadth;
-- focused end-to-end coverage for ownership, production/provenance, exactly-once contract resolution, and real ability execution.
+- six downstream production outputs and six production processes;
+- three existing POI people promoted to persistent NPC-backed contacts;
+- Oren Vale on a canonical fictional-time 07:00–15:00 roadworks schedule;
+- three provenance-qualified Thornwall commitments;
+- `pack-elderwood-hunt-timber` depending on shared foundation, Elderwood opening, and Elderwood ecology breadth;
+- focused end-to-end coverage for Pack v2 ownership, production/provenance, exactly-once civic resolution, schedule behavior, census growth, and Barkboar Brace execution.
 
-No new simulation clock, direct timed-task owner, persistence family, inventory authority, progression authority, or social authority was introduced.
+No new simulation clock, direct timed-task owner, persistence family, inventory authority, progression authority, social authority, place, or companion system was introduced.
 
-A first integration Check caught one real continuity regression: later Forge-Road jobs sharing Varric's discovered contact displaced his established copper commitment. The content repair preserved the old copper test unchanged and moved later orders to Mae Oris's existing scheduled Market Ring contact.
+The first hosted integration run reached 711 tests with 705 passing and six failures. All six were stale count/index expectations caused by intentional content growth; the Elderwood production, civic delivery, schedule, and ability behavior already passed. The repair updated those assertions without weakening validators or gameplay behavior.
 
 Version decision:
 
 ```text
-Product:      0.9.100.2
+Product:      0.9.100.3
 Package:      0.9.100 unchanged
-Data:         41
+Data:         42
 Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
 
-## Packet C — Elderwood Hunt-Timber
+## Packet D — Starfen Marshcraft-Practical Magic
 
-**Status: NEXT / NOT STARTED / REQUIRES NEW BOUNDED AUTHORIZATION AFTER REDSTONE LANDS.**
+**Status: NEXT / NOT STARTED / REQUIRES NEW BOUNDED AUTHORIZATION AFTER ELDERWOOD LANDS.**
 
-Use the existing Elderwood opening/ecology roots and stress hunting, forestry, body recovery, food/material chains, practical field techniques, home supply, relationships, and dangerous travel.
+Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context, and community/research contracts. Reuse existing Starfen/Mistmere roots and favor another connected graph rather than broad category dumps.
 
-Prefer a connected graph such as:
+Prefer a graph such as:
 
 ```text
-named people / schedules / local services
-  -> hunt + forestry needs
-  -> creature recovery / timber-resin resources
-  -> hide / wood / resin transformations
-  -> equipment / consumables / repair/home inputs
-  -> practical techniques / capability access
-  -> contracts / trade / relationship consequences
+named people / schedules / canal and research needs
+  -> wetland herbs / fungi / water-context resources
+  -> medicine / cooking / marshcraft transformations
+  -> practical magic and training access
+  -> equipment / consumables / preparation choices
+  -> community / research contracts and relationships
   -> field danger / recovery / provenance
 ```
 
-A companion candidate is appropriate only if the authored person warrants recruitment; companion count is not a quota. Places should not expand merely for count because 26 already exceeds the mechanics floor.
-
-## Packet D — Starfen Marshcraft-Practical Magic
-
-**Status: QUEUED.**
-
-Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context, and community/research contracts. This remains a strong later tranche for ability breadth after Redstone proves the production workflow and Elderwood tests hunt/timber recovery chains.
+A companion candidate is appropriate only if an authored person warrants recruitment; companion count is not a quota. Places should not expand merely for count because 26 already exceeds the mechanics floor.
 
 ## Packet E — Gate A integration and census audit
 
@@ -157,7 +181,7 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-Run `npm run hardening` only if a tranche changes lifecycle-sensitive runtime ownership.
+Run `npm run hardening` only if a tranche changes lifecycle-sensitive runtime ownership or the integration gate explicitly requires it.
 
 ### Gate A planning bands
 
@@ -165,14 +189,14 @@ These are progression bands, never permission to create filler:
 
 | Category | Current | Gate A planning band |
 | --- | ---: | ---: |
-| Named NPCs | 12 | 30+ |
+| Named NPCs | 15 | 30+ |
 | Shop/service sites | 17 | 20+ |
 | Creature definitions | 16 | 28+ |
 | Resource sources | 13 | 28+ |
-| Canonical items | 56 | 110+ |
-| Recipes/processes | 17 | 40+ |
-| Abilities/techniques | 9 | 40+ |
-| Quests/contracts | 11 | 18+ |
+| Canonical items | 62 | 110+ |
+| Recipes/processes | 23 | 40+ |
+| Abilities/techniques | 13 | 40+ |
+| Quests/contracts | 14 | 18+ |
 | Recruitable companions | 1 | 4 only when authored characters justify them |
 | Transport services | 3 | 5 only when topology justifies them |
 
@@ -196,9 +220,9 @@ Gate A fails regardless of count if the graph is weak. Require:
 | Relative band | Packet | Status |
 | --- | --- | --- |
 | Weeks 1–2 equivalent | Governance + Pack v2 | COMPLETE |
-| Weeks 3–5 equivalent | Redstone Forge-Road | IMPLEMENTED + VALIDATED / PENDING LANDING |
-| Weeks 6–8 equivalent | Elderwood Hunt-Timber | NOT STARTED |
-| Weeks 9–11 equivalent | Starfen Marshcraft-Practical Magic | QUEUED |
+| Weeks 3–5 equivalent | Redstone Forge-Road | COMPLETE |
+| Weeks 6–8 equivalent | Elderwood Hunt-Timber | IMPLEMENTED + VALIDATED / PENDING LANDING |
+| Weeks 9–11 equivalent | Starfen Marshcraft-Practical Magic | QUEUED / NOT STARTED |
 | Week 12 equivalent | Gate A integration/census | QUEUED |
 
 These are planning bands, not delivery promises.

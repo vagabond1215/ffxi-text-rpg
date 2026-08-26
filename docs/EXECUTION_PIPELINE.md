@@ -17,14 +17,14 @@ Authority order remains:
 ## Current baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
 Phase:         0.9 in progress
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 Runtime:       Node >=24
 ```
 
@@ -42,7 +42,7 @@ Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and 
 7. proceed only with the immediate bounded unit
 ```
 
-Do not redo Phase 0.4–0.8 discovery, persistence classification, the post-0.8 audit, or Pack v2 infrastructure discovery unless a concrete regression/change requires it.
+Do not redo Phase 0.4–0.8 discovery, persistence classification, the post-0.8 audit, Pack v2 infrastructure discovery, or earlier Gate A packet discovery unless a concrete regression/change requires it.
 
 # Completed foundation
 
@@ -52,6 +52,8 @@ Phase 0.8 life/infrastructure  COMPLETE
 Phase 0.8 exit audit           COMPLETE
 post-0.8 status/repair audit   COMPLETE
 repository contract audit      COMPLETE
+Pack v2 infrastructure         COMPLETE
+Redstone Forge-Road            COMPLETE / MERGED
 ```
 
 # Active phase — 0.9 Content Scale, Adventure Depth and Release Hardening
@@ -72,22 +74,28 @@ The Pack v2 foundation owns stable regional/shared placement and dependencies ac
 
 ### Packet B — Redstone Forge-Road
 
-**Status: IMPLEMENTED + HOSTED VALIDATION GREEN / PENDING FINAL LANDING.**
+**Status: COMPLETE and merged.**
+
+Redstone established the first authored regional proof on Pack v2 by joining existing iron, sunstone, Ridge Ibex recovery, forge work, equipment, provenance, Brasshaven commitments, schedules, and character-owned techniques without adding a parallel authority.
+
+### Packet C — Elderwood Hunt-Timber
+
+**Status: IMPLEMENTED + HOSTED IMPLEMENTATION VALIDATION GREEN / PENDING FINAL PROMOTED-HEAD VALIDATION AND LANDING.**
 
 Frozen implementation/content SHA:
 
 ```text
-440a77c542fcc6a6efcce7a45ca989e9068499f8
+acb24b73b4894d3febab370aa279bdfd12cbd02e
 ```
 
 Pre-promotion hosted evidence:
 
 ```text
-Check:              32416678697
-Job:                96579293377
+Check:              32423676980
+Job:                96600958329
 Node:               24.19.0
 Repository Audit:   PASS
-Tests:              707/707 passed
+Tests:              711/711 passed
 Content Census:     success
 Benchmark 3:        success
 Benchmark Sample:   success
@@ -96,43 +104,42 @@ Benchmark Sample:   success
 Bounded graph:
 
 ```text
-existing Redstone iron / sunstone / Ridge Ibex inputs
-  -> existing forge + work proficiency + inventory/provenance authorities
-  -> tempered iron / rivets / wearable work gear / caravan hardware
-  -> provenance-qualified Brasshaven commitments
-  -> character-owned Redstone techniques and spells
-  -> Pack v2 ownership through pack-redstone-forge-road
+existing Barkboar recovery / Duskcap / amber resin / hardwood
+  -> existing tannery + woodshop + work proficiency + inventory/provenance authorities
+  -> tanned hide / bindings / resin boards + pitch / field gear / road repair bundles
+  -> persistent Thornwall contacts + Oren Vale schedule
+  -> provenance-qualified commitments
+  -> character-owned Elderwood techniques/warding
+  -> Pack v2 ownership through pack-elderwood-hunt-timber
 ```
 
-The tranche adds no new simulation clock, persistence family, direct timed-task owner, inventory authority, social authority, or progression authority.
-
-The established Varric copper-return continuity remains intact. Later Forge-Road orders use Mae Oris as a separate scheduled Market Ring contact so later jobs do not displace Varric's existing copper follow-up.
+The tranche adds no new simulation clock, persistence family, direct timed-task owner, inventory authority, social authority, progression authority, place, or companion system.
 
 Version decision:
 
 ```text
-Product:      0.9.100.2
+Product:      0.9.100.3
 Package:      0.9.100
-Data:         41
+Data:         42
 Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
 
-Data 41 advances for new stable canonical authored records and their source/sink/social/Pack-v2 relationships. Game State remains 14 because no new durable player/world fact is introduced.
+Data 42 advances for new stable canonical authored records and their source/sink/social/schedule/Pack-v2 relationships. Game State remains 14 because no new durable player/world fact is introduced.
 
 ### Current census
 
 ```text
 places/localities       26 / mechanics floor 10
-named NPCs              12 / 50
+named NPCs              15 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         56 / 200
-recipes/processes       17 / 75
-abilities/techniques     9 / 100
-quests/contracts        11 / 30
+canonical items         62 / 200
+recipes/processes       23 / 75
+abilities/techniques    13 / 100
+quests/contracts        14 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -142,23 +149,25 @@ Infrastructure coverage:
 ```text
 routes                                   7
 spell schools                            3
-capabilities/training definitions       12
-NPC schedules                            4
-regional/shared packs                    8
-pack-owned records                     140
+capabilities/training definitions       16
+NPC schedules                            5
+regional/shared packs                    9
+pack-owned records                     171
 pack-owned abilities/capabilities/
-  schedules/companions               9/12/4/1
+  schedules/companions              13/16/5/1
+runtime seed NPCs                       14
+runtime seed enemies                    13
 ```
 
-Mechanics-scale gate remains **NOT READY** by design. This is not a failing CI condition.
+Mechanics-scale gate remains **NOT READY** by design. Abilities/techniques remain the largest relative gap. This is not a failing CI condition.
 
-### Next bounded packet — Elderwood Hunt-Timber
+### Next bounded packet — Starfen Marshcraft-Practical Magic
 
-**Status: NOT STARTED / not authorized by Redstone completion alone.**
+**Status: NOT STARTED / not authorized by Elderwood completion alone.**
 
-When explicitly authorized after Redstone lands, deepen the existing Elderwood root rather than bulk-generating global lists. Prefer a connected hunt/timber graph that joins named people and schedules to creature/resource recovery, wood/hide/resin processing, equipment/consumables, practical techniques, contracts/services, economy, field danger, and provenance through Pack v2.
+After Elderwood lands and only with a new explicit continuation, deepen the existing Starfen/Mistmere root rather than bulk-generating global lists. Prefer a connected wetland graph that joins named people/schedules and community/research needs to herbs/fungi, medicine/cooking, practical magic, training, canal/water context, contracts/services, field danger, and provenance through Pack v2.
 
-Following Gate A tranches remain Starfen Marshcraft-Practical Magic and then Gate A integration/census review.
+Following that regional tranche is Gate A integration/census review.
 
 # Phase 0.9 progression envelope
 

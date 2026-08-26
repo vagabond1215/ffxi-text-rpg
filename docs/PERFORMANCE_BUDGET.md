@@ -32,43 +32,43 @@ Each workload receives an unreported separate-context warm-up equal to 10% of me
 ## Latest validated authored-content checkpoint
 
 ```text
-Runtime/content SHA: 440a77c542fcc6a6efcce7a45ca989e9068499f8
-Check:               32416678697
-Job:                 96579293377
+Runtime/content SHA: acb24b73b4894d3febab370aa279bdfd12cbd02e
+Check:               32423676980
+Job:                 96600958329
 Node:                24.19.0
-Product target:      0.9.100.2
+Product target:      0.9.100.3
 Benchmark:           3
-Tests:               707/707
+Tests:               711/711
 Content Census:      success
 ```
 
-Redstone Forge-Road did not change Benchmark 3 workloads or measurement protocol, so these results remain comparable to other Benchmark 3 checkpoints.
+Elderwood Hunt-Timber did not change Benchmark 3 workloads or measurement protocol, so these results remain comparable to other Benchmark 3 checkpoints.
 
 Single run from the validated implementation Check:
 
 ```text
-player combat profiles  0.189561 ms/op
-enemy combat profiles   0.037361 ms/op
-basic attacks            0.002428 ms/op
-tick dispatch            0.000569 ms/op
-direct route lookup      0.003900 ms/op
+player combat profiles  0.385203 ms/op
+enemy combat profiles   0.076660 ms/op
+basic attacks            0.003461 ms/op
+tick dispatch            0.000827 ms/op
+direct route lookup      0.007519 ms/op
 ```
 
 Three-sample evidence from the same Check:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.184621 | 8.18% |
-| enemy combat profiles | 0.037303 | 5.66% |
-| basic attacks | 0.001110 | 138.43% |
-| tick dispatch | 0.000492 | 30.77% |
-| direct route lookup | 0.004237 | 11.77% |
+| player combat profiles | 0.363494 | 6.41% |
+| enemy combat profiles | 0.069119 | 12.38% |
+| basic attacks | 0.001282 | 177.11% |
+| tick dispatch | 0.000879 | 28.27% |
+| direct route lookup | 0.007145 | 9.38% |
 
 The very fast attack/tick microbenchmarks remain dominated by runtime/timing noise. **Do not create CI thresholds from these figures.** Profile creation and route lookup are more stable but still are not accepted release budgets.
 
-## Historical Phase 0.8 reference
+## Historical references
 
-Phase 0.8's frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed Check `32395768383` with 699/699 tests under the same Benchmark 3 protocol. Phase-exit validation `32395959505` additionally passed Census and Hardening. Those values remain useful historical like-for-like evidence but are no longer the latest checkpoint.
+Redstone Forge-Road froze at `440a77c542fcc6a6efcce7a45ca989e9068499f8` and passed Check `32416678697` with 707/707 tests under Benchmark 3. Phase 0.8's frozen runtime `ca7d37c643adc4115b519148615f6120d03228df` passed Check `32395768383` with 699/699 tests; Phase-exit validation `32395959505` additionally passed Census and Hardening. These remain useful like-for-like historical evidence but are no longer the latest checkpoint.
 
 ## Performance rules
 

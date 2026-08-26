@@ -25,26 +25,26 @@ tools:
   principle: least-powerful-safe-tool
 git:
   current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/0.9.100-redstone-forge-road
-  active_pull_request: 383
+  active_branch: feature/0.9.100-elderwood-hunt-timber
+  active_pull_request: 384
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
   pr_integration_status: active
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  validated_implementation_sha: 440a77c542fcc6a6efcce7a45ca989e9068499f8
-  implementation_check: 32416678697
-  implementation_job: 96579293377
-  implementation_result: repository-audit-pass-707-of-707-tests-census-benchmark-3-and-sample-success
-  pull_request: 383
+  validated_implementation_sha: acb24b73b4894d3febab370aa279bdfd12cbd02e
+  implementation_check: 32423676980
+  implementation_job: 96600958329
+  implementation_result: repository-audit-pass-711-of-711-tests-census-benchmark-3-and-sample-success
+  pull_request: 384
   pull_request_state: open-draft
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: redstone-forge-road-regional-tranche
-  current_bounded_unit_status: implementation-complete-awaiting-final-check-and-merge
-  next_bounded_unit: elderwood-hunt-timber-regional-tranche
+  current_bounded_unit: elderwood-hunt-timber-regional-tranche
+  current_bounded_unit_status: implementation-and-promotion-complete-awaiting-final-handoff-check-and-merge
+  next_bounded_unit: starfen-marshcraft-practical-magic-regional-tranche
   next_bounded_unit_status: not-started-not-authorized-by-current-packet
   content_scale_gate_version: 2
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
@@ -68,18 +68,19 @@ validation:
   content_pack_guard: tests/contentPackValidator.test.js
   content_scale_guard: tests/contentScaleGate.test.js
   redstone_flow_guard: tests/playerRedstoneForgeRoadFlow.test.js
+  elderwood_flow_guard: tests/playerElderwoodHuntTimberFlow.test.js
   architecture_debt_guard: tests/architectureDebtGuard.test.js
   long_session_guard: tests/longSessionLifecycle.test.js
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.2
+  current_product_version: 0.9.100.3
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 41
+  current_data_version: 42
   current_benchmark_version: 3
-  current_codename: Redstone Forge-Road
+  current_codename: Elderwood Hunt-Timber
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
   future_migrations: deliberate-only-when-required
@@ -92,12 +93,12 @@ quality:
     pack_authority: stable-id-ownership-regional-shared-dependencies
     duplicate_catalog_authority: forbidden
     generated_scale_fixture_ownership_records: 1401
-  redstone_forge_road:
-    pack_id: pack-redstone-forge-road
+  elderwood_hunt_timber:
+    pack_id: pack-elderwood-hunt-timber
     dependencies:
       - pack-shared-foundation
-      - pack-redstone-opening
-      - pack-redstone-ecology-breadth
+      - pack-elderwood-opening
+      - pack-elderwood-ecology-breadth
     direct_timed_task_owner_added: false
     persistence_family_added: false
     simulation_clock_added: false
@@ -110,27 +111,29 @@ content_scale:
   mechanics_gate: not-ready
   current:
     places_localities: 26
-    named_npcs: 12
+    named_npcs: 15
     shop_service_sites: 17
     creature_definitions: 16
     resource_sources: 13
-    canonical_items: 56
-    recipes_processes: 17
-    abilities_techniques: 9
-    quests_contracts: 11
+    canonical_items: 62
+    recipes_processes: 23
+    abilities_techniques: 13
+    quests_contracts: 14
     companions: 1
     transport_services: 3
   supplemental:
     routes: 7
     spell_schools: 3
-    capability_training_definitions: 12
-    npc_schedules: 4
-    regional_shared_packs: 8
-    pack_owned_records: 140
-    pack_owned_abilities: 9
-    pack_owned_capabilities: 12
-    pack_owned_schedules: 4
+    capability_training_definitions: 16
+    npc_schedules: 5
+    regional_shared_packs: 9
+    pack_owned_records: 171
+    pack_owned_abilities: 13
+    pack_owned_capabilities: 16
+    pack_owned_schedules: 5
     pack_owned_companions: 1
+    runtime_seed_npcs: 14
+    runtime_seed_enemies: 13
   largest_relative_gap: abilities-techniques
 constraints:
   - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
@@ -140,5 +143,4 @@ constraints:
   - preserve fictional simulation time versus wall-clock scheduling
   - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
   - do not add a second simulation clock task engine inventory progression or social authority
-  - preserve the existing Brasshaven copper continuity path while later Forge-Road jobs use Mae Oris as a separate scheduled contact
-  - roadmap sequencing does not authorize the Elderwood Hunt-Timber tranche automatically
+  - roadmap sequencing does not authorize the Starfen Marshcraft-Practical Magic tranche automatically

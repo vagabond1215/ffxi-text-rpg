@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. The infrastructure-first Content Pack Scale Contract v2 packet is complete, and the Redstone Forge-Road regional tranche is implemented and validated pending final PR landing.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Content Pack Scale Contract v2 and Redstone Forge-Road are complete; **Elderwood Hunt-Timber** is implemented, validated on its frozen implementation/data head, and pending final promoted-head validation + PR landing.
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data advances from 40 to 41 because Redstone Forge-Road adds stable canonical abilities/capabilities, production items/processes, commitments, and one child Pack v2 ownership graph. Game State remains 14 because the tranche adds no new durable player/world authority, simulation clock, task engine, persistence family, or save migration.
+Data advances from 41 to 42 because Elderwood Hunt-Timber adds stable canonical NPCs, schedule placement, capabilities/abilities, production items/processes, commitments, and one child Pack v2 ownership graph. Game State remains 14 because the tranche adds no new durable player/world authority, simulation clock, task engine, persistence family, or save migration.
 
 ## Product direction
 
@@ -48,20 +48,20 @@ companions
 
 `js/text/data/contentCatalogRegistry.js` bridges packs to the existing canonical catalogs rather than duplicating definitions merely to claim ownership. The content-pack validator enforces stable-ID ownership, cross-pack dependencies, dangling references, legacy leaks, and family-specific structure. A generated fixture validates 1,401 Pack v2 ownership records without contributing to canonical content counts.
 
-## Redstone Forge-Road
+## Elderwood Hunt-Timber
 
-The current regional tranche deliberately deepens existing Brasshaven/Redstone loops instead of creating disconnected breadth.
+The current regional tranche deliberately deepens existing Thornwall/Elderwood loops instead of creating disconnected breadth.
 
 It adds:
 
-- four character-owned Redstone capabilities and four executable abilities;
-- six additional downstream Redstone forge outputs, including tempered iron, rivets, wearable forge/mining equipment, and caravan repair hardware;
-- six additional forge processes using existing iron, sunstone, Ridge Ibex, forge, work-proficiency, inventory, and provenance authorities;
-- three provenance-qualified Brasshaven commitments that consume real forged output;
-- `pack-redstone-forge-road`, dependent on the shared foundation, Redstone opening root, and Redstone ecology breadth pack;
-- focused end-to-end coverage for Pack v2 ownership, real production/provenance, exactly-once commitment resolution, and executable Redstone combat training.
+- four character-owned Elderwood capabilities and four executable abilities;
+- six downstream Elderwood outputs and six processes using existing Barkboar recovery, Duskcap, amber resin, hardwood, tannery/woodshop, work-proficiency, inventory, and provenance authorities;
+- three existing POI people promoted to persistent NPC-backed contacts, with Oren Vale on a canonical-fictional-time 07:00–15:00 roadworks schedule;
+- three provenance-qualified Thornwall commitments consuming real Elderwood production output;
+- `pack-elderwood-hunt-timber`, dependent on the shared foundation, Elderwood opening root, and Elderwood ecology breadth pack;
+- focused end-to-end coverage for Pack v2 ownership, real production/provenance, exactly-once civic resolution, schedule behavior, census growth, and executable Barkboar Brace.
 
-The established Varric copper-return continuity remains intact. Later Forge-Road orders use Mae Oris as a separate scheduled Market Ring contact so new work does not displace that earlier relationship path.
+No new place, companion, simulation clock, persistence family, direct timed-task owner, inventory authority, progression authority, or social authority was introduced.
 
 ## Content-scale census
 
@@ -70,20 +70,20 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Redstone checkpoint:
+Validated Elderwood implementation checkpoint:
 
 ```text
 places/localities       26 / mechanics floor 10
-named NPCs              12 / 50
+named NPCs              15 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         56 / 200
-recipes/processes       17 / 75
-abilities/techniques     9 / 100
-quests/contracts        11 / 30
-companions                1 / 4
-transport services        3 / 5
+canonical items         62 / 200
+recipes/processes       23 / 75
+abilities/techniques    13 / 100
+quests/contracts        14 / 30
+companions               1 / 4
+transport services       3 / 5
 ```
 
 Infrastructure coverage:
@@ -91,15 +91,17 @@ Infrastructure coverage:
 ```text
 routes                                7
 spell schools                         3
-capabilities/training definitions    12
-NPC schedules                         4
-regional/shared content packs         8
-pack-owned records                   140
+capabilities/training definitions    16
+NPC schedules                         5
+regional/shared content packs         9
+pack-owned records                   171
 pack-owned abilities/capabilities/
-  schedules/companions             9/12/4/1
+  schedules/companions            13/16/5/1
+runtime seed NPCs                    14
+runtime seed enemies                 13
 ```
 
-The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Abilities/techniques remain the largest relative gap. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
@@ -122,11 +124,11 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road production/training/contracts, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road and Elderwood Hunt-Timber connected regional content, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Redstone Forge-Road is the completed first authored regional tranche after Pack v2 infrastructure. **Elderwood Hunt-Timber is next but has not been started by this work order.**
+`0.9.100 Content Scale Gate A` remains open. Elderwood Hunt-Timber is the completed second authored regional tranche after Redstone, pending final exact-head validation and PR landing. **Starfen Marshcraft-Practical Magic is next but has not been started or authorized by this work order.**
 
 Before any further high-volume authoring/import, content must continue through the connected Pack v2 ownership/validation path and the census must distinguish real gameplay breadth from pack bookkeeping.
 
@@ -139,7 +141,8 @@ Before any further high-volume authoring/import, content must continue through t
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. relevant architecture/runtime/tests for the active pass
+8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
+9. relevant architecture/runtime/tests for the active pass
 
 Repository evidence beats conversation memory.
 

@@ -28,7 +28,7 @@ test('original ability and spell-school catalogs validate against character capa
     assert.deepEqual(validateCapabilityCatalog(), []);
     assert.deepEqual(validateAbilityCatalog(), []);
     assert.equal(listSpellSchools().length, 3);
-    assert.equal(listAbilities().length, 9);
+    assert.equal(listAbilities().length, 13);
     assert.equal(getAbility('ability-ember-dart').capabilityId, 'spell-ember-dart');
     assert.equal(listAbilities().some((entry) => ['Cure', 'Fire'].includes(entry.name)), false);
 });
