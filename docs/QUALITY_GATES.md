@@ -37,16 +37,16 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.2
+Product:       0.9.100.3
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          41
+Data:          42
 Benchmark:     3
-Codename:      Redstone Forge-Road
+Codename:      Elderwood Hunt-Timber
 ```
 
-Frozen Redstone implementation/content SHA `440a77c542fcc6a6efcce7a45ca989e9068499f8` passed hosted Check `32416678697` / job `96579293377` on Node 24.19.0 with **707/707 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
+Frozen Elderwood implementation/content SHA `acb24b73b4894d3febab370aa279bdfd12cbd02e` passed hosted Check `32423676980` / job `96600958329` on Node 24.19.0 with **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
 
 ## Persistence/lifecycle
 
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Redstone Forge-Road adds **no persistence or lifecycle owner**. Forge jobs reuse production/work-task ownership; abilities reuse character capability/ability runtime authority; commitments reuse existing commitment/relationship/schedule authority. `npm run hardening` is therefore not required solely because this authored-data tranche grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
+Elderwood Hunt-Timber adds **no persistence or lifecycle owner**. Tannery/woodshop work reuses production/work-task ownership; abilities reuse character capability/ability runtime authority; commitments reuse existing commitment/relationship/schedule authority. `npm run hardening` is therefore not required solely because this authored-data tranche grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -106,28 +106,33 @@ Fixtures are validation data only and must never contribute to canonical content
 
 ### Redstone connected-content proof
 
-`tests/playerRedstoneForgeRoadFlow.test.js` verifies a real Pack-v2-owned regional graph rather than a count-only fixture:
+`tests/playerRedstoneForgeRoadFlow.test.js` verifies the first real Pack-v2-owned regional graph: existing Redstone field inputs become provenance-bearing forge outputs, caravan hardware satisfies a provenance-qualified commitment exactly once, and a Redstone technique executes through existing character capability/ability authority. The old Varric copper continuity remained unchanged after a real integration conflict was repaired through authored contact placement.
 
-- existing Redstone field inputs become provenance-bearing forge outputs through production work;
-- work uses existing station/proficiency/task/inventory authorities;
-- caravan hardware satisfies a provenance-qualified commitment exactly once;
-- a Redstone technique is learned on character capability authority and executes through the existing ability engine;
+### Elderwood connected-content proof
+
+`tests/playerElderwoodHuntTimberFlow.test.js` verifies a second regional graph with different stresses:
+
+- Barkboar recovery and forest gathering become provenance-bearing tannery/woodshop outputs through existing work authorities;
+- wearable field gear and trail-repair stock are real inventory outputs, not log rewards;
+- Oren Vale's roadworks availability is derived from canonical fictional time rather than a social clock;
+- trail-repair bundles satisfy a provenance-qualified civic commitment exactly once;
+- Barkboar Brace is character-owned and executes through the existing ability engine;
 - Pack v2 ownership/dependencies and the default census remain valid.
 
-An earlier integration run exposed a real campaign-readability regression: later Varric jobs displaced the established copper commitment. The repair moved later Forge-Road orders to Mae Oris's existing scheduled contact while leaving the old copper continuity test unchanged.
+The first Elderwood integration run found no product-behavior regression: its six failures were stale pack/count assertions caused by intentional content growth. Those assertions were updated without weakening validators or runtime behavior.
 
 ## Current content progression
 
 ```text
 places/localities       26 / mechanics 10
-named NPCs              12 / 50
+named NPCs              15 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         56 / 200
-recipes/processes       17 / 75
-abilities/techniques     9 / 100
-quests/contracts        11 / 30
+canonical items         62 / 200
+recipes/processes       23 / 75
+abilities/techniques    13 / 100
+quests/contracts        14 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -136,15 +141,17 @@ Infrastructure coverage is separately visible:
 
 ```text
 spell schools                            3
-capability/training definitions         12
-NPC schedules                            4
-regional/shared packs                    8
-pack-owned records                     140
+capability/training definitions         16
+NPC schedules                            5
+regional/shared packs                    9
+pack-owned records                     171
 pack-owned abilities/capabilities/
-  schedules/companions                9/12/4/1
+  schedules/companions              13/16/5/1
+runtime seed NPCs                       14
+runtime seed enemies                    13
 ```
 
-Do not game counts with disconnected filler. Elderwood Hunt-Timber, when separately authorized, must demonstrate another connected graph across multiple families rather than a category-by-category dump.
+Do not game counts with disconnected filler. Starfen Marshcraft-Practical Magic, when separately authorized, must demonstrate another connected graph across multiple families rather than a category-by-category dump.
 
 ## Performance
 
@@ -164,4 +171,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-For the current work order, Redstone Forge-Road is implemented and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #383 landing; Elderwood Hunt-Timber is outside this work order.
+For the current work order, Elderwood Hunt-Timber is implemented and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #384 landing; Starfen Marshcraft-Practical Magic is outside this work order.
