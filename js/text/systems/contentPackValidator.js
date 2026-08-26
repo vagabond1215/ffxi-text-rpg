@@ -33,7 +33,7 @@ import { validateNpcScheduleDefinition } from '../data/npcSchedules.js';
 import { validateItemResourceMetadata } from '../data/resourceProvenance.js';
 import { SKILL_KEYS } from '../data/systemConstants.js';
 
-export const CONTENT_PACK_VALIDATOR_VERSION = 2;
+export const CONTENT_PACK_VALIDATOR_VERSION = 3;
 
 const LEGACY_IDS = new Set([
     ...Object.keys(LEGACY_NATION_IDS),
@@ -53,6 +53,7 @@ const LEGACY_PREFIXES = Object.freeze([
 
 const CATALOG_REF_CROSS_REFERENCE_COLLECTIONS = new Set([
     'abilities',
+    'quests',
     'npcSchedules',
     'companions',
 ]);
@@ -301,6 +302,11 @@ function validateRecipeRecord(pack, recipe, context, issues, label) {
 }
 
 function validateQuestRecord(pack, quest, context, issues, label) {
+    if (Array.isArray(quest.requiredItems)) {
+        validateCommitmentQuestRecord(pack, quest, context, issues, label);
+        return;
+    }
+
     requireRef(pack, 'npcs', quest.giverNpcId, label, context, issues);
     requireRef(pack, 'places', quest.placeId, label, context, issues);
     if (!Array.isArray(quest.objectives) || quest.objectives.length === 0) issues.push(`${label} requires objectives.`);
@@ -312,6 +318,21 @@ function validateQuestRecord(pack, quest, context, issues, label) {
     for (const reward of quest.rewards ?? []) {
         if (reward.type === 'item') requireRef(pack, 'items', reward.itemId, `${label} reward`, context, issues);
         if (reward.type === 'quest') requireRef(pack, 'quests', reward.questId, `${label} reward`, context, issues);
+    }
+}
+
+function validateCommitmentQuestRecord(pack, commitment, context, issues, label) {
+    requireRef(pack, 'npcs', commitment.giverNpcId, label, context, issues);
+    requireRef(pack, 'places', commitment.offerPlaceId, label, context, issues);
+    if (commitment.returnViaPlaceId) requireRef(pack, 'places', commitment.returnViaPlaceId, `${label} return`, context, issues);
+    if (commitment.fieldSourceId) requireRef(pack, 'gatheringSources', commitment.fieldSourceId, `${label} field source`, context, issues);
+    if (!Array.isArray(commitment.requiredItems) || commitment.requiredItems.length === 0) issues.push(`${label} requires delivered items.`);
+    for (const requirement of commitment.requiredItems ?? []) {
+        requireRef(pack, 'items', requirement.itemId, `${label} requirement`, context, issues);
+        if (!positiveInteger(requirement.quantity)) issues.push(`${label} requirement quantity must be positive.`);
+    }
+    if (commitment.reward?.capabilityId) {
+        requireRef(pack, 'capabilities', commitment.reward.capabilityId, `${label} capability reward`, context, issues);
     }
 }
 
