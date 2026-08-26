@@ -1,10 +1,12 @@
+import { getCapability } from './capabilities.js';
 import { getCanonicalGatheringSource } from './ecologyRegistry.js';
 import { getPointOfInterest } from './pointsOfInterest.js';
 import { getPlace } from './places.js';
 import { getProductionItem } from './productionItems.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
+import { STARFEN_MARSHCRAFT_COMMITMENT_DATA } from './starfenMarshcraftCommitments.js';
 
-export const COMMITMENT_CATALOG_VERSION = 5;
+export const COMMITMENT_CATALOG_VERSION = 6;
 
 const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
     'plot-home-sweetroot-bed': Object.freeze({ itemId: 'item-elderwood-sweetroot', domain: 'cultivation' }),
@@ -79,8 +81,15 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
     }),
 });
 
-export function getCommitmentDefinition(commitmentId) { return COMMITMENT_DEFINITIONS[String(commitmentId ?? '').trim()] ?? null; }
-export function listCommitmentDefinitions() { return Object.values(COMMITMENT_DEFINITIONS); }
+const STARFEN_MARSHCRAFT_COMMITMENTS = Object.freeze(Object.fromEntries(
+    STARFEN_MARSHCRAFT_COMMITMENT_DATA.map((definition) => [definition.id, commitment(definition)]),
+));
+
+export function getCommitmentDefinition(commitmentId) {
+    const id = String(commitmentId ?? '').trim();
+    return COMMITMENT_DEFINITIONS[id] ?? STARFEN_MARSHCRAFT_COMMITMENTS[id] ?? null;
+}
+export function listCommitmentDefinitions() { return [...Object.values(COMMITMENT_DEFINITIONS), ...Object.values(STARFEN_MARSHCRAFT_COMMITMENTS)]; }
 
 export function validateCommitmentCatalog() {
     const issues = [];
@@ -105,12 +114,25 @@ export function validateCommitmentCatalog() {
         if (definition.returnViaPlaceId && !getPlace(definition.returnViaPlaceId)) issues.push(`${definition.id} references unknown return-via place ${definition.returnViaPlaceId}.`);
         if (!nonNegativeInteger(definition.reward.gil)) issues.push(`${definition.id} reward.gil must be a non-negative integer.`);
         for (const [dimension, delta] of Object.entries(definition.reward.relationship)) { if (!['familiarity', 'respect', 'trust', 'obligation'].includes(dimension)) issues.push(`${definition.id} uses unknown relationship dimension ${dimension}.`); if (!Number.isInteger(delta)) issues.push(`${definition.id} relationship delta ${dimension} must be an integer.`); }
+        if (definition.reward.capabilityId && !getCapability(definition.reward.capabilityId)) issues.push(`${definition.id} reward references unknown capability ${definition.reward.capabilityId}.`);
         if (!positiveInteger(definition.followUpDelayDays)) issues.push(`${definition.id} followUpDelayDays must be positive.`);
     }
     return issues;
 }
 
-function commitment(definition) { return Object.freeze({ ...definition, fieldSourceId: definition.fieldSourceId ?? null, returnViaPlaceId: definition.returnViaPlaceId ?? null, requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))), reward: Object.freeze({ ...definition.reward, relationship: Object.freeze({ ...definition.reward.relationship }) }) }); }
+function commitment(definition) {
+    return Object.freeze({
+        ...definition,
+        fieldSourceId: definition.fieldSourceId ?? null,
+        returnViaPlaceId: definition.returnViaPlaceId ?? null,
+        requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))),
+        reward: Object.freeze({
+            ...definition.reward,
+            capabilityId: definition.reward.capabilityId ?? null,
+            relationship: Object.freeze({ ...definition.reward.relationship }),
+        }),
+    });
+}
 function getCommitmentItem(itemId) { return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId); }
 function stableId(value) { return typeof value === 'string' && /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/.test(value); }
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
