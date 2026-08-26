@@ -1,7 +1,7 @@
 import { JOB_DEFINITIONS } from './jobs.js';
 import { SKILL_KEYS } from './systemConstants.js';
 
-export const CAPABILITY_CATALOG_VERSION = 4;
+export const CAPABILITY_CATALOG_VERSION = 5;
 export const CAPABILITY_TYPES = Object.freeze(['spell', 'technique', 'practical', 'passive']);
 export const CAPABILITY_CONTEXTS = Object.freeze(['combat', 'exploration', 'gathering', 'resourceRecovery', 'travel', 'project']);
 
@@ -105,6 +105,30 @@ const CAPABILITY_DEFINITIONS = Object.freeze({
         id: 'practical-elderwood-trail-read', name: 'Elderwood Trail Read', type: 'practical',
         tags: ['fieldcraft', 'navigation', 'tracking', 'elderwood'],
         learning: { anyDiscipline: [{ disciplineId: 'wayfinder', minLevel: 2 }, { disciplineId: 'leykeeper', minLevel: 3 }] },
+        use: { contexts: ['exploration'] },
+    }),
+    'spell-marsh-mending': capability({
+        id: 'spell-marsh-mending', name: 'Marsh Mending', type: 'spell',
+        tags: ['magic', 'vital-weave', 'restorative', 'starfen'],
+        learning: { anyDiscipline: [{ disciplineId: 'lifewarden', minLevel: 2 }, { disciplineId: 'savant', minLevel: 3 }] },
+        use: { contexts: ['combat', 'exploration'], requiredSkills: [{ skillId: 'healingMagic', min: 2 }] },
+    }),
+    'spell-reedveil-ward': capability({
+        id: 'spell-reedveil-ward', name: 'Reedveil Ward', type: 'spell',
+        tags: ['magic', 'ward-lore', 'defensive', 'starfen'],
+        learning: { anyDiscipline: [{ disciplineId: 'oathguard', minLevel: 3 }, { disciplineId: 'lifewarden', minLevel: 3 }, { disciplineId: 'leykeeper', minLevel: 3 }] },
+        use: { contexts: ['combat', 'exploration'], requiredSkills: [{ skillId: 'enhancingMagic', min: 2 }] },
+    }),
+    'spell-fenlight-spark': capability({
+        id: 'spell-fenlight-spark', name: 'Fenlight Spark', type: 'spell',
+        tags: ['magic', 'embercraft', 'offensive', 'starfen'],
+        learning: { anyDiscipline: [{ disciplineId: 'elementalist', minLevel: 3 }, { disciplineId: 'spellblade', minLevel: 4 }, { disciplineId: 'savant', minLevel: 3 }] },
+        use: { contexts: ['combat'], requiredSkills: [{ skillId: 'elementalMagic', min: 2 }] },
+    }),
+    'practical-starfen-current-reading': capability({
+        id: 'practical-starfen-current-reading', name: 'Starfen Current Reading', type: 'practical',
+        tags: ['fieldcraft', 'navigation', 'water', 'observation', 'starfen'],
+        learning: { anyDiscipline: [{ disciplineId: 'wayfinder', minLevel: 2 }, { disciplineId: 'leykeeper', minLevel: 2 }] },
         use: { contexts: ['exploration'] },
     }),
 });
