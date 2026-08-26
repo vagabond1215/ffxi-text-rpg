@@ -55,13 +55,23 @@ export function createSeedNpcs() {
         }),
         createNpc({
             id: 'npc-mistmere-reader-soli-venn', name: 'Reader Soli Venn', title: 'Canal Ward Reader', faction: 'Mistmere',
-            locationId: 'mistmere-canal-ward', services: ['orientation', 'commissions', 'civic'],
-            questIds: ['commitment-mistmere-marrowleaf-return'],
+            locationId: 'mistmere-canal-ward', services: ['orientation', 'commissions', 'civic', 'field-instruction'],
+            questIds: ['commitment-mistmere-marrowleaf-return', 'commitment-mistmere-marsh-survey-kit'],
         }),
         createNpc({
             id: 'npc-mistmere-kiri-fen', name: 'Kiri Fen', title: 'Canal Herbkeeper', faction: 'Mistmere',
-            locationId: 'mistmere-canal-ward', services: ['herbs', 'household', 'commissions'],
-            questIds: ['commitment-mistmere-canalside-sweetroot-share'],
+            locationId: 'mistmere-canal-ward', services: ['herbs', 'household', 'commissions', 'remedy-instruction'],
+            questIds: ['commitment-mistmere-canalside-sweetroot-share', 'commitment-mistmere-marsh-poultice'],
+        }),
+        createNpc({
+            id: 'npc-mistmere-pelu-senn', name: 'Pelu Senn', title: 'Starfen Factor', faction: 'Mistmere',
+            locationId: 'mistmere-canal-ward', services: ['regional-goods', 'marshcraft', 'training', 'commissions'],
+            questIds: ['commitment-mistmere-waterproof-wraps'],
+        }),
+        createNpc({
+            id: 'npc-mistmere-tavi-meren', name: 'Tavi Meren', title: 'Canal Culinary Instructor', faction: 'Mistmere',
+            locationId: 'mistmere-canal-ward', services: ['cooking', 'training', 'commissions'],
+            questIds: ['commitment-mistmere-bogberry-tonic'],
         }),
         createNpc({
             id: 'npc-elderwood-waywarden', name: 'Mara Venn', title: 'Waywarden', faction: 'Thornwall',
