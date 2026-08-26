@@ -1,6 +1,6 @@
 import { getCapability } from './capabilities.js';
 
-export const ABILITY_CATALOG_VERSION = 3;
+export const ABILITY_CATALOG_VERSION = 4;
 export const ABILITY_KINDS = Object.freeze(['spell', 'technique', 'utility']);
 export const ABILITY_CONTEXTS = Object.freeze(['combat', 'exploration']);
 export const ABILITY_TARGET_KINDS = Object.freeze(['self', 'enemy', 'context']);
@@ -52,6 +52,13 @@ const ABILITIES = Object.freeze({
         effects: [{ type: 'status', recipient: 'self', status: { id: 'status-barkskin-ward', name: 'Barkskin Ward', category: 'buff', durationSeconds: 36, stackGroup: 'ward-defense', stackRule: 'replace', modifiers: { defense: 5 }, flags: { magicalWard: true, barkskin: true } } }],
     }),
     'ability-elderwood-trail-read': ability({ id: 'ability-elderwood-trail-read', name: 'Elderwood Trail Read', kind: 'utility', capabilityId: 'practical-elderwood-trail-read', tags: ['fieldcraft', 'navigation', 'tracking', 'elderwood'], contexts: ['exploration'], target: { kind: 'context' }, activation: { durationSeconds: 3, interruptible: true }, cooldownSeconds: 5, costs: {}, effects: [{ type: 'context', recipient: 'context', operation: 'survey-current-place' }] }),
+    'ability-marsh-mending': ability({ id: 'ability-marsh-mending', name: 'Marsh Mending', kind: 'spell', schoolId: 'school-vital-weave', capabilityId: 'spell-marsh-mending', tags: ['magic', 'restorative', 'support', 'starfen'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 5, interruptible: true }, cooldownSeconds: 12, costs: { mp: 10 }, effects: [{ type: 'heal', recipient: 'self', stat: 'mnd', base: 10, coefficient: 1.6 }] }),
+    'ability-reedveil-ward': ability({
+        id: 'ability-reedveil-ward', name: 'Reedveil Ward', kind: 'spell', schoolId: 'school-ward-lore', capabilityId: 'spell-reedveil-ward', tags: ['magic', 'warding', 'defensive', 'starfen'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 5, interruptible: true }, cooldownSeconds: 22, costs: { mp: 8 },
+        effects: [{ type: 'status', recipient: 'self', status: { id: 'status-reedveil-ward', name: 'Reedveil Ward', category: 'buff', durationSeconds: 36, stackGroup: 'ward-defense', stackRule: 'replace', modifiers: { defense: 4 }, flags: { magicalWard: true, reedveil: true } } }],
+    }),
+    'ability-fenlight-spark': ability({ id: 'ability-fenlight-spark', name: 'Fenlight Spark', kind: 'spell', schoolId: 'school-embercraft', capabilityId: 'spell-fenlight-spark', tags: ['magic', 'offensive', 'heat', 'starfen'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 5, interruptible: true }, cooldownSeconds: 14, costs: { mp: 11 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 9, coefficient: 1.45 }] }),
+    'ability-starfen-current-reading': ability({ id: 'ability-starfen-current-reading', name: 'Starfen Current Reading', kind: 'utility', capabilityId: 'practical-starfen-current-reading', tags: ['fieldcraft', 'navigation', 'water', 'observation', 'starfen'], contexts: ['exploration'], target: { kind: 'context' }, activation: { durationSeconds: 3, interruptible: true }, cooldownSeconds: 5, costs: {}, effects: [{ type: 'context', recipient: 'context', operation: 'survey-current-place' }] }),
 });
 
 export function getSpellSchool(schoolId) { return SPELL_SCHOOLS[String(schoolId ?? '').trim()] ?? null; }
