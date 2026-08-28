@@ -135,7 +135,7 @@ The pre-promotion Crownfields implementation head passed hosted Check #1294 / ru
 - Ghost Orchid + Moonlotus each become intermediate extracts before a cross-regional finished perfume;
 - chained outputs preserve input provenance.
 
-The pre-promotion implementation head passed Check #1311 / run `33202128019` with **736/736 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+The pre-promotion implementation head passed Check #1311 / run `33202128019` with **736/736 tests**, Content Census, Benchmark 3, and Benchmark Sample. The final promoted head passed Check #1326 / run `33202537431`; PR #394 merged at `fb7a4ec0145c6072aac21525cb15e931125fc327`, and post-merge main Check #1327 / run `33202596523` also passed.
 
 ### Ecology/geography integrity proof
 
@@ -204,4 +204,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-For the current work order, Regional Ingredient & Luxury Processing is implemented and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #394 landing.
+Regional Ingredient & Luxury Processing completed through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`; final PR Check #1326 and post-merge main Check #1327 both passed the full hosted gate.
