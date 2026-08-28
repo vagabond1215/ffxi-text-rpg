@@ -42,6 +42,7 @@ test('regional ecology breadth validates as one canonical registry and pack grap
     assert.ok(packIds.has('pack-redstone-ecology-breadth'));
     assert.ok(packIds.has('pack-starfen-ecology-breadth'));
     assert.ok(packIds.has('pack-coppergrass-steppe-ecology'));
+    assert.ok(packIds.has('pack-slatewater-foothills-ecology'));
 });
 
 test('ecology breadth covers missing animal families, underused environments, and staple/luxury resources', () => {
@@ -51,17 +52,18 @@ test('ecology breadth covers missing animal families, underused environments, an
         'family-marmot', 'family-lizard', 'family-scorpion', 'family-salamander', 'family-vulture',
         'family-frog', 'family-crab', 'family-waterfowl', 'family-mussel', 'family-spider',
         'family-courser', 'family-steppe-wolf', 'family-bustard', 'family-locust', 'family-steppe-kite',
+        'family-bear', 'family-lynx', 'family-grouse', 'family-mountain-eagle',
     ];
     for (const familyId of expectedFamilies) assert.ok(familyIds.has(familyId), `missing ecology family ${familyId}`);
 
-    assert.ok(listCanonicalEcologyFamilies().length >= 35);
-    assert.ok(listCanonicalSpecies().length >= 36);
-    assert.ok(listCanonicalPopulations().length >= 34);
+    assert.ok(listCanonicalEcologyFamilies().length >= 39);
+    assert.ok(listCanonicalSpecies().length >= 40);
+    assert.ok(listCanonicalPopulations().length >= 38);
 
     const populatedPlaces = new Set(listCanonicalPopulations().map((entry) => entry.placeId));
     for (const placeId of [
         'east-elderwood', 'timbercross-landing', 'north-redstone-reach',
-        'deepvein-mine', 'east-starfen', 'sunken-archive', 'coppergrass-steppe',
+        'deepvein-mine', 'east-starfen', 'sunken-archive', 'coppergrass-steppe', 'slatewater-foothills',
     ]) {
         assert.ok(populatedPlaces.has(placeId), `expected ecology breadth in ${placeId}`);
     }
@@ -69,8 +71,8 @@ test('ecology breadth covers missing animal families, underused environments, an
     const resources = listCanonicalResourceItems();
     const staples = resources.filter((item) => item.tags.includes('staple'));
     const luxuries = resources.filter((item) => item.tags.includes('luxury'));
-    assert.ok(staples.length >= 8);
-    assert.ok(luxuries.length >= 8);
+    assert.ok(staples.length >= 12);
+    assert.ok(luxuries.length >= 10);
 
     for (const item of [...staples, ...luxuries]) {
         const provenance = item.provenance[0];

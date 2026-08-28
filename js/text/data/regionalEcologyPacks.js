@@ -8,7 +8,7 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 28;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 29;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -112,7 +112,31 @@ export const COPPERGRASS_ECOLOGY_PACK = regionalPack({
     ],
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK]);
+export const SLATEWATER_ECOLOGY_PACK = regionalPack({
+    id: 'pack-slatewater-foothills-ecology', regionId: 'slatewater-foothills', steward: 'crown-forge-road',
+    dependencies: ['pack-elderwood-opening', 'pack-redstone-opening'],
+    placeId: 'slatewater-foothills', ownsPlace: true,
+    speciesIds: [
+        'species-slatewater-greyback-bear', 'species-slatewater-scree-lynx',
+        'species-slatewater-russet-grouse', 'species-slatewater-ridge-eagle',
+    ],
+    populationIds: [
+        'population-slatewater-greyback-bears', 'population-slatewater-scree-lynxes',
+        'population-slatewater-russet-grouse', 'population-slatewater-ridge-eagles',
+    ],
+    sourceIds: [
+        'source-slatewater-serviceberry-brake', 'source-slatewater-pitch-pine-stand',
+        'source-slatewater-white-clay-bank', 'source-slatewater-mountain-thyme-slope',
+        'source-slatewater-silver-lichen-face', 'source-slatewater-blue-slate-shelf',
+    ],
+    itemIds: [
+        'item-slatewater-serviceberry', 'item-slatewater-pitch-pine-resin',
+        'item-slatewater-white-clay', 'item-slatewater-mountain-thyme',
+        'item-slatewater-silver-lichen', 'item-slatewater-blue-slate',
+    ],
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));

@@ -166,6 +166,35 @@ export const PLACES = Object.freeze({
         restrictions: [{ type: 'minLevel', value: 5, reason: 'The fortified camp is too dangerous to approach safely without more experience and preparation.' }],
     }),
 
+    slatewaterFoothills: place({
+        id: 'slatewater-foothills',
+        name: 'Slatewater Foothills',
+        type: 'wilderness',
+        region: 'Slatewater Foothills',
+        nation: null,
+        mapId: 'map-slatewater-foothills',
+        dangerLevel: 3,
+        description: 'A long belt of mixed woodland, river-cut slopes, slate shelves, and increasingly dry montane scrub between Timbercross and Brasshaven. The Crown-Forge road follows valleys and engineered cuts because many ridge faces are too steep for wagons or ordinary cross-country travel.',
+        services: [],
+        coordinateSystem: grid(10, 8, { x: 5, y: 4 }),
+        spawnRules: [],
+        restrictions: [],
+    }),
+    slatewaterWaylodge: place({
+        id: 'slatewater-waylodge',
+        name: 'Slatewater Waylodge',
+        type: 'travelHub',
+        region: 'Slatewater Foothills',
+        nation: null,
+        mapId: 'map-slatewater-foothills',
+        dangerLevel: 0,
+        description: 'A neutral stone-and-timber guild lodge beside the Crown-Forge road, serving gatherers, hunters, drovers, and traders with bunks, hot food, an exchange counter, route information, and sheltered pens for mounts and pack animals.',
+        services: ['shops', 'guilds', 'travel', 'lodging', 'stabling'],
+        coordinateSystem: grid(5, 5, { x: 2, y: 2 }),
+        spawnRules: [],
+        restrictions: [],
+    }),
+
     brasshavenMarketRing: place({
         id: 'brasshaven-market-ring',
         name: 'Brasshaven Market Ring',
@@ -435,6 +464,9 @@ export const ZONE_CONNECTIONS = Object.freeze([
         restrictions: [{ type: 'minLevel', value: 5, reason: 'The fortified camp is too dangerous to approach safely without more experience and preparation.' }],
     }),
     connection('redfang-camp', 'west-elderwood', { mode: 'walk', travelSeconds: 90, departFrom: { x: 2, y: 5 }, arriveAt: { x: 4, y: 1 } }),
+
+    connection('slatewater-waylodge', 'slatewater-foothills', { mode: 'walk', travelSeconds: 45, departFrom: { x: 2, y: 4 }, arriveAt: { x: 5, y: 4 }, directions: ['south'] }),
+    connection('slatewater-foothills', 'slatewater-waylodge', { mode: 'walk', travelSeconds: 45, departFrom: { x: 5, y: 4 }, arriveAt: { x: 2, y: 4 }, directions: ['north'] }),
 
     connection('brasshaven-market-ring', 'brasshaven-delvers-ward', { mode: 'walk', travelSeconds: 20, departFrom: { x: 2, y: 4 }, arriveAt: { x: 2, y: 0 } }),
     connection('brasshaven-delvers-ward', 'brasshaven-market-ring', { mode: 'walk', travelSeconds: 20, departFrom: { x: 2, y: 0 }, arriveAt: { x: 2, y: 4 } }),

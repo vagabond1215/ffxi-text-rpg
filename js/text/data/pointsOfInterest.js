@@ -49,6 +49,11 @@ const POI_SEEDS = [
     poi('poi-sandoria-n-grilau', 'thornwall-crownward', 'Deren Oathclerk', POI_TYPES.MISSION, 'C-8', ['mission', 'thornwall'], 'Thornwall civic commission contact'),
     poi('poi-sandoria-n-jeanvirgaud', 'thornwall-crownward', 'Roadmaster Kett', POI_TYPES.TRAVEL, 'L-10', ['roadTravel'], 'Regional road-travel contact'),
 
+    poi('poi-slatewater-waylodge-exchange', 'slatewater-waylodge', 'Eira Voss', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'slatewater', 'fieldGoods'], 'Waylodge factor buying field finds and selling provisions, tools, and road gear'),
+    poi('poi-slatewater-waylodge-trailguild', 'slatewater-waylodge', 'Toren Marr', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'guildMaster', 'gathering', 'hunting', 'trade'], 'Foothill guild steward for gathering, hunting, route conditions, and field exchange'),
+    poi('poi-slatewater-waylodge-stableyard', 'slatewater-waylodge', 'Bram Pell', POI_TYPES.TRAVEL, 'H-8', ['travel', 'stabling', 'mountCare', 'packAnimals'], 'Stableyard with water, feed, sheltered pens, tack checks, and caravan boarding for mounts and pack animals'),
+    poi('poi-slatewater-waylodge-hearth', 'slatewater-waylodge', 'Slatewater Hearth and Bunkroom', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest'], 'Common hearth, hot meals, drying racks, and simple bunks for road crews and field workers'),
+
     poi('poi-bastok-markets-rabid-wolf', 'brasshaven-market-ring', 'Marshal Varric Stone', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'realm'], 'Market Ring gate marshal'),
     poi('poi-bastok-markets-brunhilde', 'brasshaven-market-ring', 'Dessa Rivet', POI_TYPES.VENDOR, 'F-10', ['armor', 'shop'], 'Armor vendor'),
     poi('poi-bastok-markets-ciqala', 'brasshaven-market-ring', 'Tessa Rook', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapons merchant'),

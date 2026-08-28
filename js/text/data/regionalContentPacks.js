@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 29;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 30;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -168,6 +168,40 @@ export const ELDERWOOD_HUNT_TIMBER_PACK = createContentPack({
     },
 });
 
+export const SLATEWATER_WAYLODGE_PACK = createContentPack({
+    id: 'pack-slatewater-waylodge', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['slatewater-foothills'], steward: 'slatewater-field-guild' },
+    dependencies: ['pack-shared-foundation', 'pack-elderwood-opening', 'pack-redstone-opening', 'pack-slatewater-foothills-ecology'],
+    metadata: { name: 'Slatewater Waylodge Pack', notes: 'Neutral Crown-Forge road lodge connecting foothill gathering and hunting country to safe recovery, trade exchange, guild information, stabling, and local caravan service.' },
+    records: {
+        places: [{ id: 'slatewater-waylodge', catalogRef: true }],
+        transportServices: [{ id: 'service-slatewater-foothill-caravan', catalogRef: true }],
+        npcs: [
+            { id: 'npc-slatewater-eira-voss', catalogRef: true },
+            { id: 'npc-slatewater-toren-marr', catalogRef: true },
+            { id: 'npc-slatewater-bram-pell', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-slatewater-eira-voss', catalogRef: true },
+            { id: 'schedule-slatewater-toren-marr', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-slatewater-field-exchange',
+            name: 'Slatewater Field Exchange',
+            placeId: 'slatewater-waylodge',
+            keeperNpcId: 'npc-slatewater-eira-voss',
+            stockItemIds: [
+                'item-slatewater-serviceberry',
+                'item-slatewater-pitch-pine-resin',
+                'item-slatewater-white-clay',
+                'item-slatewater-mountain-thyme',
+                'item-slatewater-silver-lichen',
+                'item-slatewater-blue-slate',
+            ],
+        }],
+    },
+});
+
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
@@ -296,6 +330,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
     ELDERWOOD_HUNT_TIMBER_PACK,
+    SLATEWATER_WAYLODGE_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,

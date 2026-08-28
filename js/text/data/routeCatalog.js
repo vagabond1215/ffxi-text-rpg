@@ -1,7 +1,7 @@
 import { getMap } from './maps.js';
 import { getPlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 2;
+export const ROUTE_CATALOG_VERSION = 3;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -66,15 +66,17 @@ const ROUTE_DEFINITIONS = Object.freeze({
         id: 'route-crown-forge-caravan-road',
         name: 'Crown-Forge Caravan Road',
         type: 'caravanRoad',
-        allowedModes: ['caravan', 'wagon', 'mount'],
+        allowedModes: ['walk', 'caravan', 'wagon', 'mount'],
         stops: [
             stop('stop-thornwall-rivergate-caravan', 'thornwall-rivergate'),
             stop('stop-timbercross-landing-caravan', 'timbercross-landing'),
+            stop('stop-slatewater-waylodge-caravan', 'slatewater-waylodge', { x: 2, y: 2 }),
             stop('stop-brasshaven-iron-quay-caravan', 'brasshaven-iron-quay'),
         ],
         segments: [
             segment('stop-thornwall-rivergate-caravan', 'stop-timbercross-landing-caravan', 7200, 18000, ['forest-weather', 'roadside-raiders']),
-            segment('stop-timbercross-landing-caravan', 'stop-brasshaven-iron-quay-caravan', 14400, 36000, ['upland-weather', 'roadside-raiders']),
+            segment('stop-timbercross-landing-caravan', 'stop-slatewater-waylodge-caravan', 7200, 18000, ['forest-weather', 'river-crossings', 'fallen-rock', 'roadside-raiders']),
+            segment('stop-slatewater-waylodge-caravan', 'stop-brasshaven-iron-quay-caravan', 7200, 18000, ['upland-weather', 'steep-grades', 'fallen-rock', 'roadside-raiders']),
         ],
         bidirectional: true,
         knowledge: { mapId: null, discoveryTag: 'route.crown-forge-caravan-road' },
@@ -126,6 +128,18 @@ const TRANSPORT_SERVICE_DEFINITIONS = Object.freeze({
         fare: { currencyId: 'gil', baseAmount: 24, perSegmentAmount: 18 },
         cargoAllowanceUnits: 24,
         boardingLeadSeconds: 300,
+    }),
+    'service-slatewater-foothill-caravan': transportService({
+        id: 'service-slatewater-foothill-caravan',
+        name: 'Slatewater Foothill Caravan',
+        mode: 'caravan',
+        routeId: 'route-crown-forge-caravan-road',
+        stopIds: ['stop-timbercross-landing-caravan', 'stop-slatewater-waylodge-caravan', 'stop-brasshaven-iron-quay-caravan'],
+        cadenceSeconds: 14400,
+        firstDepartureOffsetSeconds: 9000,
+        fare: { currencyId: 'gil', baseAmount: 10, perSegmentAmount: 8 },
+        cargoAllowanceUnits: 18,
+        boardingLeadSeconds: 180,
     }),
     'service-forge-mere-caravan': transportService({
         id: 'service-forge-mere-caravan',

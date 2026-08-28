@@ -57,6 +57,28 @@ test('Forge-Mere road now crosses Coppergrass without changing the full corridor
     assert.ok(fullJourney.hazardTags.includes('fen-weather'));
 });
 
+test('Crown-Forge road now crosses Slatewater while preserving the established through journey', () => {
+    const westLeg = findRouteLeg('timbercross-landing', 'slatewater-waylodge', { mode: 'walk' });
+    const eastLeg = findRouteLeg('slatewater-waylodge', 'brasshaven-iron-quay', { mode: 'walk' });
+    const throughJourney = getServiceJourney('service-crown-forge-caravan', 'thornwall-rivergate', 'brasshaven-iron-quay');
+    const localJourney = getServiceJourney('service-slatewater-foothill-caravan', 'timbercross-landing', 'brasshaven-iron-quay');
+
+    assert.ok(westLeg);
+    assert.ok(eastLeg);
+    assert.equal(westLeg.durationSeconds, 7200);
+    assert.equal(eastLeg.durationSeconds, 7200);
+    assert.equal(westLeg.distanceYalms, 18000);
+    assert.equal(eastLeg.distanceYalms, 18000);
+    assert.ok(westLeg.hazardTags.includes('river-crossings'));
+    assert.ok(eastLeg.hazardTags.includes('steep-grades'));
+
+    assert.equal(throughJourney.durationSeconds, 21600);
+    assert.equal(throughJourney.distanceYalms, 54000);
+    assert.equal(localJourney.durationSeconds, 14400);
+    assert.equal(localJourney.distanceYalms, 36000);
+    assert.equal(localJourney.segmentCount, 2);
+});
+
 test('service departures are deterministic from canonical world seconds', () => {
     assert.equal(getNextServiceDeparture('service-crown-forge-caravan', 0), 21600);
     assert.equal(getNextServiceDeparture('service-crown-forge-caravan', 21600), 21600);
