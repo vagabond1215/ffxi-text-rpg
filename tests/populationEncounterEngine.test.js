@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { getPlace } from '../js/text/data/places.js';
 import { createNewGameState } from '../js/text/gameState.js';
+import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { performPlayerAttack } from '../js/text/systems/combatActionEngine.js';
 import { validateCurrentGameStateStructure } from '../js/text/systems/currentGameStateSchema.js';
 import { consumePopulationUnits, getPopulationAvailability } from '../js/text/systems/ecologyEngine.js';
@@ -11,10 +13,11 @@ import {
 } from '../js/text/systems/populationEncounterEngine.js';
 
 function elderwoodState() {
-    return createNewGameState({
-        nationId: 'thornwall',
-        startingPlaceId: 'west-elderwood',
-    });
+    const state = createNewGameState({ nationId: 'thornwall' });
+    const place = getPlace('west-elderwood');
+    const moved = setPositionAndDiscover(state, place.id, place.coordinateSystem.start);
+    assert.equal(moved.ok, true, moved.reason);
+    return state;
 }
 
 test('deliberate wildlife tracking exposes non-hostile encounter-backed populations without converting hostile ecology into hunt targets', () => {
