@@ -181,6 +181,44 @@ No new durable player/world state family was introduced. The tranche reuses exis
 
 Mount and pack-animal care at Slatewater is currently represented by place/POI/NPC/travel-service content. A durable mount-condition authority is still planned and was not introduced indirectly by this data pass.
 
+### `0.9.100.6` — Ecology & Geography Integrity
+
+This revision performs a post-Slatewater integrity audit over canonical world/ecology data and closes validation blind spots exposed by the larger geography graph.
+
+```text
+Product       0.9.100.5 -> 0.9.100.6
+Package       0.9.100   -> 0.9.100
+Data          44        -> 45
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 45
+
+Stable canonical authored geography changed:
+
+- five obsolete direct zone edges that duplicated canonical route legs with contradictory travel times were removed;
+- Strider Yard, Old Gaol, and the Thornwall skyferry mooring gained outbound return paths;
+- Crownward/West Elderwood ordinary walk gates became reciprocal;
+- one reversed Rivergate/Crownward direction label was corrected.
+
+Data-validation contracts also became stricter:
+
+- raw foundation + regional ecology IDs are checked for duplicates before canonical deduplication;
+- resource IDs receive the same raw duplicate protection plus provenance/sink/place validation;
+- regional ecology validation now covers stable IDs, enums, conditions, source/action/tool/proficiency shape, and provenance at foundation-level rigor;
+- Pack-v2 catalog references resolve canonical regional ecology through the ecology registry;
+- place/map membership is validated reciprocally;
+- route stop coordinates, ordered segment chains, service-stop subsequences, boarding lead, fare shape, and cargo multipliers are validated;
+- a dedicated ecology/geography integrity regression test covers the connected graph.
+
+The content census remains 29 places, 20 NPCs, 19 shop/service sites, 40 creatures, 35 resource sources, 90 items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 1 companion, and 4 transport services. Supplemental coverage remains 7 routes, 4 spell schools, 44 capabilities, 9 schedules, 13 packs, and 374 pack-owned records.
+
+#### Why Game State stays 14
+
+No new durable player/world fact was introduced. Data 45 changes authored records and validation behavior only. Existing place/map, route/transport, ecology/population, inventory/provenance, and Pack-v2 authorities remain the runtime owners.
+
 ## Persistence history
 
 Relevant late history:
@@ -200,6 +238,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.3           no Game State change; Data 41 -> 42
 0.9.100.4           no Game State change; Data 42 -> 43
 0.9.100.5           no Game State change; Data 43 -> 44
+0.9.100.6           no Game State change; Data 44 -> 45
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -223,7 +262,7 @@ spellSchools / capabilities / abilities / companions
 Key current system/catalog versions include:
 
 ```text
-contentCatalogRegistry 0.1.0
+contentCatalogRegistry 0.2.0
 contentPackSchema      0.2.0
 regionalContentPacks   0.6.0
 contentPackValidation  0.3.0
