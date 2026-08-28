@@ -99,7 +99,7 @@ NPC schedules                        11
 regional/shared content packs        16
 pack-owned records                   470
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/9/1
+  schedules/companions            41/44/11/1
 runtime seed NPCs                    22
 runtime seed enemies                 13
 ```
