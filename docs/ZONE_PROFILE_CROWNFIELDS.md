@@ -10,6 +10,7 @@
 - **Countryside danger:** 1
 - **Primary route:** Southfield Farm Road
 - **Scheduled transport:** Crownfields Produce Wagon
+- **Data contract:** 46
 
 Crownfields is Thornwall’s southern agricultural hinterland. It exists to answer a basic worldbuilding and economic question that the earlier map left unresolved: **where does a forest capital get its grain, pulses, fodder, orchard fruit, fiber crops, draft animals, and routine market surplus?**
 
