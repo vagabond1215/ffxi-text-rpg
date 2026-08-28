@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 ```
 
 The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
