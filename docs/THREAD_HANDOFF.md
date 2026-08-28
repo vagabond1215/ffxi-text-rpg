@@ -34,7 +34,7 @@ Ironspine Highlands / Data 49 promotion:
 - promoted exact-head Check #1381 / run `33217086478`: full gate green;
 - tests at both checkpoints: **753/753**.
 
-The post-merge continuity/document synchronization is on `main`; its final hosted Check should be treated as the authoritative current-main validation once green.
+The current GitHub connector enumerates pull-request-triggered workflow runs but not `push` runs on `main`. Treat promoted exact-head Check #1381 / run `33217086478` as the last directly observable full gate: 753/753 tests plus Repository Audit, Census, Benchmark 3, and Benchmark Sample passed. Post-merge changes were continuity documents and `PROJECT_PROFILE.yaml` only; the final repository-audit contract was re-read against `main` and is internally consistent.
 
 ## Default Git workflow
 
