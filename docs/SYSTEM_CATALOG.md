@@ -204,4 +204,4 @@ Mechanics-scale gate remains **NOT READY**. Companions are now the largest relat
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` are open. Packets A–C are merged. **Packet D — Universal Magic & Starfen Marshcraft — is implemented, validated, promoted to Product 0.9.100.4 / Data 43, and pending final exact-head validation + PR landing.** Packet E Gate A integration/census is next but not started by this work order.
+Phase 0.9 and `0.9.100` remain open. Packets A–D and the Great Mere Data 48 tranche are merged. No implementation unit is active. Packet E Gate A integration/census remains the next formal roadmap gate; Ironspine Highlands is the next ranked world-edge candidate. Neither is auto-started.
