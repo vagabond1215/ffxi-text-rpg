@@ -6,6 +6,7 @@ import {
     getLocationProfile,
     getRegionProfile,
     getSettlementProfile,
+    getWorldPopulationSummary,
     listLocationProfiles,
     listRegionProfiles,
     listSettlementProfiles,
@@ -119,8 +120,16 @@ test('local ecology is distinguished from regional context rather than invented 
     assert.ok(eastStarfen.ecology.regionalRepresentative.fauna.some((entry) => entry.name === 'Mirecrest Heron'));
 });
 
+test('world population is derived once from all 26 place profiles', () => {
+    const world = getWorldPopulationSummary();
+    assert.equal(world.residents, 92785);
+    assert.equal(world.typicalTransient, 26693);
+    assert.equal(world.typicalPresent, 119478);
+});
+
 test('profile descriptions expose population and ecology for every area', () => {
     const description = describeLocationProfileCatalog();
+    assert.match(description, /Modeled world population: 92,785 residents; ~119,478 typically present/);
     assert.match(description, /# Elderwood/);
     assert.match(description, /# Redstone Reach/);
     assert.match(description, /# Starfen/);
