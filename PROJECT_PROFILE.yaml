@@ -16,41 +16,25 @@ authority:
   architecture: docs/ARCHITECTURE.md
   runtime_version: js/text/version.js
   quality_gates: docs/QUALITY_GATES.md
-  performance_budget: docs/PERFORMANCE_BUDGET.md
-  resource_lifecycle: docs/RESOURCE_LIFECYCLE.md
-  phase_0_9_plan: docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   slatewater_profile: docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
-tools:
-  github_connector: repository-inspection-implementation-pr-validation
-  principle: least-powerful-safe-tool
 git:
-  current_normal_work: phase-0.9-pr-integration
-  active_branch: audit/ecology-geography-consistency
-  active_pull_request: 390
-  pr_integration_status: active
-  merged_slatewater_pr: 389
+  current_normal_work: awaiting-next-bounded-unit
+  latest_product_merge_sha: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
+  latest_product_pull_request: 390
+  latest_product_post_merge_check: 33189839043
+  latest_product_post_merge_check_number: 1291
+  latest_product_post_merge_check_result: success-728-of-728-tests-census-benchmark-and-sample
   slatewater_merge_sha: edca59ac8955d999f7c80812688e7153d5aaafeb
-  slatewater_post_merge_check: 33187962625
-  slatewater_post_merge_check_result: success
+  slatewater_pull_request: 389
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
-  stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
-active_change:
-  base_main_sha: edca59ac8955d999f7c80812688e7153d5aaafeb
-  pull_request: 390
-  scope: ecology-geography-integrity-audit-and-repair
-  pre_promotion_validated_head: 7a6b0e5aead05403f74a76e37480c26b2807efa0
-  pre_promotion_check: 33189086957
-  pre_promotion_check_number: 1267
-  pre_promotion_result: repository-audit-tests-census-benchmark-and-sample-success
-  promoted_contract_requires_final_exact_head_check: true
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: ecology-geography-integrity-audit
-  current_bounded_unit_status: implementation-complete-version-and-document-sync-in-progress
+  latest_bounded_unit: ecology-geography-integrity-audit
+  latest_bounded_unit_status: complete-merged-and-post-merge-green
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: crownfields
@@ -65,12 +49,7 @@ validation:
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
-  repository_contract_guard: tests/repositoryContractAudit.test.js
-  content_pack_guard: tests/contentPackValidator.test.js
-  content_scale_guard: tests/contentScaleGate.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
-  transport_guard: tests/transportEngine.test.js
-  ecology_guard: tests/regionalEcologyBreadth.test.js
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
@@ -83,7 +62,6 @@ quality:
   current_codename: Ecology & Geography Integrity
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
-  future_migrations: deliberate-only-when-required
   data_45:
     canonical_geography_connections_repaired: true
     stale_direct_route_overlaps_removed: 5
@@ -97,7 +75,6 @@ quality:
     regional_ecology_catalog_refs_supported: true
     resource_provenance_registry_validation_connected: true
     persistence_family_added: false
-    game_state_change_required: false
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -113,13 +90,9 @@ content_scale:
     companions: 1
     transport_services: 4
     routes: 7
-    spell_schools: 4
-    capability_training_definitions: 44
     npc_schedules: 9
     regional_shared_packs: 13
     pack_owned_records: 374
-    runtime_seed_npcs: 19
-    runtime_seed_enemies: 13
   largest_relative_gap: companions
 deferred_ecology_geography:
   thornwall_old_gaol_ecology: absent-content-gap
@@ -128,14 +101,9 @@ deferred_ecology_geography:
   population_backed_hunting_encounters: architecture-player-loop-gap
   express_services_skip_intermediate_route_stops: reviewed-intentional
 constraints:
-  - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
   - do not add disconnected filler merely to satisfy content targets
-  - preserve existing canonical catalog definition authority behind content-pack ownership metadata
-  - preserve original-world canon and legacy/reference boundaries
-  - preserve fictional simulation time versus wall-clock scheduling
   - keep Game State 14 unless a new durable player/world fact actually requires change
-  - do not add duplicate simulation clock task inventory progression social ecology or mount authority
+  - do not create duplicate domain authorities
   - local map edges are not automatically walkable world boundaries
-  - physical legal and environmental access restrictions remain distinct
   - ordinary two-way roads and gates should be reciprocal unless explicitly modeled otherwise
-  - roadmap sequencing and temporary world-edge sequencing do not auto-authorize later units
+  - roadmap and world-edge sequencing do not auto-authorize later units

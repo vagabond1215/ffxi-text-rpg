@@ -1,21 +1,8 @@
 # Execution Pipeline
 
-This file is the operational continuation path for Hearth & Horizon.
+Operational continuation path for Hearth & Horizon.
 
-## Resume sequence
-
-1. Read `AGENTS.md`.
-2. Read `docs/THREAD_HANDOFF.md`.
-3. Read this file.
-4. Read `docs/ROADMAP.md`.
-5. For ecology/geography work, read `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`.
-6. For new world-edge work, read `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
-7. Verify current `main`, active PR and latest hosted Check.
-8. Inspect only files/tests relevant to the immediate bounded unit.
-
-Do not redo completed historical discovery without contradictory repository evidence.
-
-## Current contract
+## Current baseline
 
 ```text
 Product:       0.9.100.6
@@ -25,56 +12,28 @@ Game State:    14
 Data:          45
 Benchmark:     3
 Codename:      Ecology & Geography Integrity
+
+latest main product merge: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
+PR #390:                  MERGED
+post-merge Check #1291:   PASS
+tests:                     728/728
 ```
 
-## Current integration unit
+## Resume sequence
 
-**PR #390 — Ecology & Geography Integrity Audit**
+1. Read `AGENTS.md`.
+2. Read `docs/THREAD_HANDOFF.md`.
+3. Read this file and `docs/ROADMAP.md`.
+4. Read `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for current world/ecology integrity findings.
+5. Read `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` only when world-edge expansion is relevant.
+6. Verify current `main` and latest hosted Check.
+7. Inspect only files relevant to the next bounded unit.
 
-Base main is the landed Slatewater merge:
+## Current status
 
-`edca59ac8955d999f7c80812688e7153d5aaafeb`
+No implementation unit is active after PR #390.
 
-Slatewater post-merge Check #1265 / run `33187962625` passed.
-
-Audit implementation before Data 45 synchronization passed:
-- Check #1266 / run `33188833540`, 728/728 tests;
-- Check #1267 / run `33189086957` after reciprocal Crownward forest-gate repair.
-
-Final exact-head validation is required after Data 45 documentation synchronization.
-
-## Data 45 scope
-
-```text
-canonical geography repair
-  -> remove competing legacy direct route edges
-  -> repair accidental no-exit places
-  -> repair ordinary gate reciprocity / direction metadata
-
-validator hardening
-  -> map <-> place reciprocity
-  -> route stop coordinates + ordered chains
-  -> service stop subsequences
-  -> regional ecology schema parity
-  -> raw duplicate detection before dedupe
-  -> resource provenance registry validation
-  -> canonical regional ecology catalog refs
-
-regression proof
-  -> tests/ecologyGeographyIntegrity.test.js
-```
-
-No persisted state family changed.
-
-## Immediate landing sequence
-
-1. Finish Data 45 authority-document synchronization.
-2. Run exact-head hosted Check on PR #390.
-3. Require Repository Audit + Test + Census + Benchmark + Benchmark Sample success.
-4. Verify PR #390 mergeable.
-5. Merge PR #390.
-6. Verify post-merge main Check.
-7. Land a tiny docs-only continuity sync if handoff/profile still describe PR #390 as active.
+The repository has a clean post-merge baseline and waits for explicit next authorization.
 
 ## Current measured census
 
@@ -90,35 +49,38 @@ abilities/techniques    41
 quests/contracts        18
 companions               1
 transport services       4
-
 routes                    7
-spell schools             4
-capabilities             44
-NPC schedules             9
+NPC schedules            9
 content packs            13
 pack-owned records      374
 ```
 
-## Deferred audit findings
+## Known deferred gaps
 
-These are recorded work candidates, not current failures:
-- Old Gaol ecology/content substrate;
-- Timbercross gathering;
+- population-backed hunt encounter discovery;
+- Old Gaol ecology/resource substrate;
+- Timbercross gathering sources;
 - sparse dungeon gathering/salvage;
-- population-backed hunting/encounter discovery.
+- companions remain largest mechanics-scale relative gap.
 
-The express-service stop policy is intentionally retained.
+These are roadmap inputs, not red CI conditions.
 
-## Decision boundary after audit
+## Next decision boundary
 
-Do not auto-start another unit.
+Formal roadmap:
+- **Packet E — Gate A integration/census audit**.
 
-Candidate directions:
-- formal Packet E Gate A integration/census audit;
-- Crownfields, ranked next in temporary world-edge planning;
-- population-backed hunting encounter integration if ecology gameplay depth is prioritized.
+World-edge planning:
+- **Crownfields** is ranked next.
+
+Ecology gameplay:
+- **population-backed hunting encounter bridge** is a strong bounded candidate.
+
+Do not auto-start any of them without an explicit work order.
 
 ## Validation
+
+Every landing candidate:
 
 ```bash
 npm run audit:repo
@@ -126,7 +88,20 @@ npm test
 npm run census
 npm run benchmark
 npm run benchmark:sample
-npm run hardening   # lifecycle-sensitive/release work
 ```
 
-Census target completion is informational for ordinary Check.
+Use `npm run hardening` for lifecycle-sensitive/release work.
+
+## Invariants carried forward
+
+- one authority per domain;
+- one fictional world clock;
+- Pack v2 owns placement/dependencies, not duplicate definitions;
+- canonical map/place references must be reciprocal;
+- canonical routes must not be shadowed by contradictory direct edges;
+- player-enterable places need an outbound path unless trapping is deliberate;
+- service stops may be express ordered subsequences;
+- regional ecology must pass canonical registry validation;
+- resource provenance must resolve end-to-end;
+- do not make passive wildlife aggressive merely to simulate hunting;
+- Game State changes only for new durable serialized state.
