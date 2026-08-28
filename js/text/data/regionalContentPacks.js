@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 30;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 31;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -168,6 +168,41 @@ export const ELDERWOOD_HUNT_TIMBER_PACK = createContentPack({
     },
 });
 
+export const CROWNFIELDS_GRANGE_PACK = createContentPack({
+    id: 'pack-crownfields-grange', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['crownfields'], steward: 'thornwall-south-farms' },
+    dependencies: ['pack-shared-foundation', 'pack-elderwood-opening', 'pack-crownfields-agricultural-ecology'],
+    metadata: { name: 'Crownfields Grange Pack', notes: 'Agricultural service hamlet connecting managed field production to Thornwall through a produce market, growers guild, wagon transport, safe recovery, and animal-care logistics.' },
+    records: {
+        places: [{ id: 'crownfields-grange', catalogRef: true }],
+        routes: [{ id: 'route-thornwall-crownfields-road', catalogRef: true }],
+        transportServices: [{ id: 'service-crownfields-produce-wagon', catalogRef: true }],
+        npcs: [
+            { id: 'npc-crownfields-maelin-rook', catalogRef: true },
+            { id: 'npc-crownfields-hessa-vale', catalogRef: true },
+            { id: 'npc-crownfields-perrin-bale', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-crownfields-maelin-rook', catalogRef: true },
+            { id: 'schedule-crownfields-hessa-vale', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-crownfields-produce-exchange',
+            name: 'Crownfields Produce Exchange',
+            placeId: 'crownfields-grange',
+            keeperNpcId: 'npc-crownfields-maelin-rook',
+            stockItemIds: [
+                'item-crownfields-crown-rye',
+                'item-crownfields-field-pea',
+                'item-crownfields-flax-straw',
+                'item-crownfields-cider-apple',
+                'item-crownfields-meadow-hay',
+                'item-crownfields-dyers-woad',
+            ],
+        }],
+    },
+});
+
 export const SLATEWATER_WAYLODGE_PACK = createContentPack({
     id: 'pack-slatewater-waylodge', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['slatewater-foothills'], steward: 'slatewater-field-guild' },
@@ -330,6 +365,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
     ELDERWOOD_HUNT_TIMBER_PACK,
+    CROWNFIELDS_GRANGE_PACK,
     SLATEWATER_WAYLODGE_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
