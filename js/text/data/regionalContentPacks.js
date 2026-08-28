@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 31;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 32;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -203,6 +203,90 @@ export const CROWNFIELDS_GRANGE_PACK = createContentPack({
     },
 });
 
+export const REGIONAL_INGREDIENT_LUXURY_PACK = createContentPack({
+    id: 'pack-regional-ingredient-luxury-processing', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'shared', regionIds: [], steward: 'regional-craft-exchange' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-elderwood-ecology-breadth',
+        'pack-redstone-ecology-breadth',
+        'pack-starfen-ecology-breadth',
+        'pack-coppergrass-steppe-ecology',
+        'pack-slatewater-foothills-ecology',
+        'pack-crownfields-agricultural-ecology',
+    ],
+    metadata: {
+        name: 'Regional Ingredient & Luxury Processing Pack',
+        notes: 'Cross-regional processing graph that turns existing staple and luxury raw materials into intermediate ingredients/components and selected finished foods, textiles, jewelry, perfumery, decorative stonework, and a multi-region dyer reference good.',
+    },
+    records: {
+        items: [
+            { id: 'item-crownfields-rye-flour', catalogRef: true },
+            { id: 'item-crownfields-rye-loaf', catalogRef: true },
+            { id: 'item-crownfields-pea-meal', catalogRef: true },
+            { id: 'item-crownfields-herbed-pea-pottage', catalogRef: true },
+            { id: 'item-crownfields-flax-thread', catalogRef: true },
+            { id: 'item-crownfields-linen-cloth', catalogRef: true },
+            { id: 'item-crownfields-woad-pigment', catalogRef: true },
+            { id: 'item-crownfields-woad-linen', catalogRef: true },
+            { id: 'item-crownfields-apple-must', catalogRef: true },
+            { id: 'item-crownfields-cider-vinegar', catalogRef: true },
+            { id: 'item-elderwood-orchid-absolute', catalogRef: true },
+            { id: 'item-elderwood-blackheart-veneer', catalogRef: true },
+            { id: 'item-elderwood-orchid-scent-casket', catalogRef: true },
+            { id: 'item-redstone-crocus-pigment', catalogRef: true },
+            { id: 'item-redstone-cut-fire-opal', catalogRef: true },
+            { id: 'item-redstone-fire-opal-brooch', catalogRef: true },
+            { id: 'item-starfen-indigo-pigment', catalogRef: true },
+            { id: 'item-starfen-moonlotus-essence', catalogRef: true },
+            { id: 'item-starfen-indigo-linen', catalogRef: true },
+            { id: 'item-starfen-moonlotus-orchid-perfume', catalogRef: true },
+            { id: 'item-coppergrass-madder-pigment', catalogRef: true },
+            { id: 'item-coppergrass-windglass-cabochon', catalogRef: true },
+            { id: 'item-coppergrass-crimson-linen', catalogRef: true },
+            { id: 'item-coppergrass-windglass-travel-charm', catalogRef: true },
+            { id: 'item-slatewater-lichen-pigment', catalogRef: true },
+            { id: 'item-slatewater-polished-blue-slate-tile', catalogRef: true },
+            { id: 'item-slatewater-fine-white-slip', catalogRef: true },
+            { id: 'item-slatewater-silver-lichen-glaze', catalogRef: true },
+            { id: 'item-slatewater-glazed-blue-slate-plaque', catalogRef: true },
+            { id: 'item-regional-dyers-sample-book', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-crownfields-rye-flour', catalogRef: true },
+            { id: 'cook-crownfields-rye-loaf', catalogRef: true },
+            { id: 'process-crownfields-pea-meal', catalogRef: true },
+            { id: 'cook-crownfields-herbed-pea-pottage', catalogRef: true },
+            { id: 'process-crownfields-flax-thread', catalogRef: true },
+            { id: 'process-crownfields-linen-cloth', catalogRef: true },
+            { id: 'process-crownfields-woad-pigment', catalogRef: true },
+            { id: 'craft-crownfields-woad-linen', catalogRef: true },
+            { id: 'process-crownfields-apple-must', catalogRef: true },
+            { id: 'cook-crownfields-cider-vinegar', catalogRef: true },
+            { id: 'process-elderwood-orchid-absolute', catalogRef: true },
+            { id: 'process-elderwood-blackheart-veneer', catalogRef: true },
+            { id: 'craft-elderwood-orchid-scent-casket', catalogRef: true },
+            { id: 'process-redstone-crocus-pigment', catalogRef: true },
+            { id: 'process-redstone-fire-opal-cut', catalogRef: true },
+            { id: 'craft-redstone-fire-opal-brooch', catalogRef: true },
+            { id: 'process-starfen-indigo-pigment', catalogRef: true },
+            { id: 'process-starfen-moonlotus-essence', catalogRef: true },
+            { id: 'craft-starfen-indigo-linen', catalogRef: true },
+            { id: 'craft-starfen-moonlotus-orchid-perfume', catalogRef: true },
+            { id: 'process-coppergrass-madder-pigment', catalogRef: true },
+            { id: 'process-coppergrass-windglass-cabochon', catalogRef: true },
+            { id: 'craft-coppergrass-crimson-linen', catalogRef: true },
+            { id: 'craft-coppergrass-windglass-travel-charm', catalogRef: true },
+            { id: 'process-slatewater-lichen-pigment', catalogRef: true },
+            { id: 'process-slatewater-blue-slate-tile', catalogRef: true },
+            { id: 'process-slatewater-white-clay-slip', catalogRef: true },
+            { id: 'craft-slatewater-silver-glaze', catalogRef: true },
+            { id: 'craft-slatewater-glazed-blue-slate-plaque', catalogRef: true },
+            { id: 'craft-regional-dyers-sample-book', catalogRef: true },
+        ],
+    },
+});
+
 export const SLATEWATER_WAYLODGE_PACK = createContentPack({
     id: 'pack-slatewater-waylodge', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['slatewater-foothills'], steward: 'slatewater-field-guild' },
@@ -366,6 +450,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     ELDERWOOD_PACK,
     ELDERWOOD_HUNT_TIMBER_PACK,
     CROWNFIELDS_GRANGE_PACK,
+    REGIONAL_INGREDIENT_LUXURY_PACK,
     SLATEWATER_WAYLODGE_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
