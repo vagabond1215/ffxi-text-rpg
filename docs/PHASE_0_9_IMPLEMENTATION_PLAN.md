@@ -207,7 +207,7 @@ The temporary world-edge sequence is planning only and does not auto-authorize t
 
 ## Ecology & Geography Integrity Audit — Data 45
 
-**Status: IMPLEMENTED / FINAL PR #390 INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #390.**
 
 This bounded repair followed the Slatewater merge and does not increase content census volume. It:
 - removes stale direct travel edges that competed with canonical routes;
@@ -374,7 +374,7 @@ Gate A fails regardless of count if the graph is weak. Require:
 | Weeks 1–2 equivalent | Governance + Pack v2 | COMPLETE |
 | Weeks 3–5 equivalent | Redstone Forge-Road | COMPLETE |
 | Weeks 6–8 equivalent | Elderwood Hunt-Timber | COMPLETE / MERGED |
-| Weeks 9–11 equivalent | Universal Magic & Starfen Marshcraft | IMPLEMENTED + VALIDATED / PENDING LANDING |
+| Weeks 9–11 equivalent | Universal Magic & Starfen Marshcraft | COMPLETE / MERGED |
 | Week 12 equivalent | Gate A integration/census | QUEUED |
 
 These are planning bands, not delivery promises.

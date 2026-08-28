@@ -189,7 +189,7 @@ transport services       6 / 5
 Infrastructure coverage:
 
 ```text
-routes                                   8
+routes                                  10
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           13
@@ -199,7 +199,7 @@ pack-owned abilities/capabilities/
   schedules/companions              41/44/11/1
 ```
 
-The mechanics-scale gate remains NOT READY. Recipes/processes are now 59/75 and canonical items 126/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+The mechanics-scale gate remains NOT READY. Recipes/processes are now 81/75 and canonical items 158/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
 
 ## Performance
 
@@ -219,4 +219,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Great Mere Freshwater Economy & Food Safety is implemented on PR #396 and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #396 landing.
+Great Mere Freshwater Economy & Food Safety is complete and merged through PR #396. Final exact-head Check #1348 / run `33212388143` and post-merge main Check #1349 / run `33212454122` passed with 743/743 tests and the full hosted gate.
