@@ -462,6 +462,7 @@ export const IRONSPINE_HIGHLANDS_PACK = createContentPack({
             { id: 'item-ironspine-lodestone-pointer', catalogRef: true },
             { id: 'item-ironspine-polished-cloud-quartz', catalogRef: true },
             { id: 'item-ironspine-high-pass-compass', catalogRef: true },
+            { id: 'item-ironspine-bearhide-bedroll', catalogRef: true },
             { id: 'item-ironspine-weather-mantle', catalogRef: true },
         ],
         recipes: [
@@ -476,6 +477,7 @@ export const IRONSPINE_HIGHLANDS_PACK = createContentPack({
             { id: 'craft-ironspine-lodestone-pointer', catalogRef: true },
             { id: 'process-ironspine-polished-cloud-quartz', catalogRef: true },
             { id: 'craft-ironspine-high-pass-compass', catalogRef: true },
+            { id: 'craft-ironspine-bearhide-bedroll', catalogRef: true },
             { id: 'craft-ironspine-weather-mantle', catalogRef: true },
         ],
         shops: [{
