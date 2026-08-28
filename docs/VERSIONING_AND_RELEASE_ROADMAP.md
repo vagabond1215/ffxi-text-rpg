@@ -396,7 +396,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The Data 47 ingredient/luxury processing implementation head passed hosted Check #1311 / run `33202128019` with **736/736 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #394 merge.
+The Data 47 ingredient/luxury processing implementation head passed hosted Check #1311 / run `33202128019` with **736/736 tests**. The final promoted PR head passed Check #1326 / run `33202537431`; PR #394 merged at `fb7a4ec0145c6072aac21525cb15e931125fc327`, and post-merge main Check #1327 / run `33202596523` passed the full hosted gate.
 
 The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 
