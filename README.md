@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–C are merged; **Packet D — Universal Magic & Starfen Marshcraft** is implemented, validated on its frozen implementation/data head, promoted to the Data 43 contract, and pending final exact-head validation + PR landing.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D are merged. Subsequent ecology breadth and Coppergrass geography expansions are also on `main`; **Slatewater Foothills & Waylodge** is the active bounded world-edge tranche on PR #389, promoted to the Data 44 contract while hosted validation is in progress.
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data advances from 42 to 43 because the packet adds and reorganizes stable canonical magic/capability IDs under shared ownership, adds the Veilscript seal-magic school, expands executable spell breadth, strengthens commitment cross-reference validation, and adds connected Starfen marshcraft/NPC/schedule/process/contract records. Game State remains 14 because no new durable player/world authority, simulation clock, task engine, persistence family, or save migration was introduced.
+Data 44 covers the stable canonical geography/ecology/resource/service additions landed after Data 43, including Coppergrass and the active Slatewater tranche. Game State remains 14 because these additions reuse existing place, route, shop, recovery, ecology, inventory/provenance, schedule, and transport authorities without adding a new durable player/world state family.
 
 ## Product direction
 
