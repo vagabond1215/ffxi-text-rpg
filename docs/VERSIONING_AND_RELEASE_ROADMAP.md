@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 43 | canonical authored-data, stable-ID, pack ownership and validation contract |
+| Data | 44 | canonical authored-data, stable-ID, pack ownership, world-profile and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -139,6 +139,27 @@ Data 43 changes stable canonical authored data and ownership/validation relation
 
 No new durable player/world fact was introduced. Universal magic reuses existing character capability/skill and ability-runtime state; Starfen marshcraft reuses inventory/provenance, production/work, NPC schedules, commitments/relationships, and fictional time. The optional commitment capability reward writes into the existing capability registry rather than creating a new progression family.
 
+### `0.9.100.5` — Location & Area Profiles
+
+A separately authorized supporting-data pass adds complete biome/demographic/ecology summaries for the current world without creating parallel geography or ecology authorities.
+
+```text
+Product       0.9.100.4 -> 0.9.100.5
+Package       0.9.100   -> 0.9.100
+Data          43        -> 44
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 44
+
+Data 44 adds canonical authored biome and demographic estimates for all 26 current places plus a derived profile contract for five settlements, three regions, and modeled-world population totals. Local and regional ecology summaries resolve existing species/populations/gathering sources/spawn definitions rather than copying them.
+
+#### Why Game State stays 14
+
+Location profiles are data/projection authority, not a durable character/world-state family. No save field, simulation clock, task owner, inventory state, progression state, or social state changes.
+
 ## Persistence history
 
 Relevant late history:
@@ -157,6 +178,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.2           no Game State change; Data 40 -> 41
 0.9.100.3           no Game State change; Data 41 -> 42
 0.9.100.4           no Game State change; Data 42 -> 43
+0.9.100.5           no Game State change; Data 43 -> 44
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -209,13 +231,13 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The frozen Packet D gameplay/content head before version/document synchronization is:
+The frozen Location & Area Profiles implementation/data head before version/document synchronization is:
 
 ```text
-ee81069defe59a55979bc262ea595c3c9df42f40
+ba156a416026835ccc483b8644d134a8d3d062d9
 ```
 
-Hosted Check `33139128883` / job `98745791538` on Node 24.19.0 passed Repository Audit, **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
+Hosted Check `33149570962` / job `98778174178` on Node 24.19.0 passed Repository Audit, **725/725 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
 
 Current census at the freeze is 17 named NPCs, 68 canonical items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 44 capabilities, 7 schedules, 10 packs, and 248 pack-owned records.
 
