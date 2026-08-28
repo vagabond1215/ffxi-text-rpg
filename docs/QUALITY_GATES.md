@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 48 adds **no persistence or lifecycle owner**. Great Mere and item-consumption safety reuse route/transport, ecology/gathering, inventory/provenance, production/work, workstation, player-information, shop/recovery, and Pack-v2 authorities. The consumption profile is authored item metadata, not a new mutable hunger/poison state family. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Data 49 adds **no persistence or lifecycle owner**. Population-backed hunting records its source on the existing active battle and consumes the existing ecology population only on victory; Ironspine reuses route, ecology, inventory/provenance, production/workstation, shops, schedules, recovery, and Pack-v2 authorities. Food hazards remain authored item metadata rather than hunger/poison simulation. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -152,6 +152,20 @@ The pre-promotion implementation head passed Check #1311 / run `33202128019` wit
 
 The repaired pre-promotion implementation head passed Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact-head Check #1348 / run `33212388143` passed the same full gate; PR #396 merged at `e327181fcd1e93579f335045a817de1fdae842a5`, and post-merge main Check #1349 / run `33212454122` passed with **743/743 tests**.
 
+### Ironspine alpine geography and population-hunting proof
+
+`tests/playerIronspineHighlandsFlow.test.js` proves:
+- the lower pass admits wagons while the high trail is walk/mount only;
+- cliff/scree hazards remain explicit route data rather than implicit walkable edges;
+- six alpine species/populations and six gathering sources validate through the canonical ecology registry;
+- Snowhorn hunting does not deplete ecology on encounter start and consumes exactly one population unit on victory;
+- ordinary defeated-body recovery yields exact-provenance hide/meat rather than fake animal gathering nodes;
+- every new Ironspine raw has production demand;
+- raw game is marked preparation-required while player-facing language says it can cause sickness if eaten raw;
+- both Ironspine Pack-v2 graphs validate.
+
+Implementation-freeze Check #1368 / run `33215878907` passed Repository Audit, **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
 ### Ecology/geography integrity proof
 
 `tests/ecologyGeographyIntegrity.test.js` verifies reciprocal map/place references, valid route-stop coordinates, no competing zone-edge/canonical-route authority, outbound escape paths, encounter-template resolution, population/source references, and end-to-end gathering/body provenance. Regional ecology now receives the same structural classes of validation as foundation ecology.
@@ -173,13 +187,13 @@ The repaired pre-promotion implementation head passed Check #1334 / run `3320908
 ## Current content progression
 
 ```text
-places/localities       34 / mechanics 10
-named NPCs              26 / 50
-shop/service sites      23 / 20
-creatures               52 / 40
-resource sources        50 / 40
-canonical items        158 / 200
-recipes/processes       81 / 75
+places/localities       37 / mechanics 10
+named NPCs              29 / 50
+shop/service sites      25 / 20
+creatures               58 / 40
+resource sources        56 / 40
+canonical items        182 / 200
+recipes/processes       94 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -189,17 +203,17 @@ transport services       6 / 5
 Infrastructure coverage:
 
 ```text
-routes                                  10
+routes                                  12
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           13
-regional/shared packs                   18
-pack-owned records                     564
+NPC schedules                           15
+regional/shared packs                   20
+pack-owned records                     630
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/11/1
+  schedules/companions              41/44/15/1
 ```
 
-The mechanics-scale gate remains NOT READY. Recipes/processes are now 81/75 and canonical items 158/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+The mechanics-scale gate remains NOT READY. Recipes/processes are now 94/75 and canonical items 182/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
 
 ## Performance
 
@@ -219,4 +233,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Great Mere Freshwater Economy & Food Safety is complete and merged through PR #396. Final exact-head Check #1348 / run `33212388143` and post-merge main Check #1349 / run `33212454122` passed with 743/743 tests and the full hosted gate.
+Ironspine Highlands is frozen for Data 49 promotion at `53323564ac724044ff06b1341c5466e73a34ab37`. Check #1368 / run `33215878907` passed with 753/753 tests and the full hosted gate; final promoted exact-head validation remains required before PR #401 lands.

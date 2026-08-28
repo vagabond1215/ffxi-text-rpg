@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.9';
+export const PRODUCT_VERSION = '0.9.100.10';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 48,
+    data: 49,
     benchmark: 3,
-    codename: 'Great Mere Freshwater Economy & Food Safety',
+    codename: 'Ironspine Highlands & Population Hunting',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.9',
+    versionManifest: '0.9.100.10',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -50,12 +50,15 @@ export const SYSTEM_VERSIONS = Object.freeze({
     ingredientLuxuryProductionItems: '0.1.0',
     greatMereProductionCatalog: '0.1.0',
     greatMereProductionItems: '0.1.0',
+    ironspineProductionCatalog: '0.1.0',
+    ironspineProductionItems: '0.1.0',
     production: '0.1.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
     regionalEcology: '0.2.0',
     ecologyRegistry: '0.3.0',
     greatMereEcology: '0.1.0',
+    ironspineEcology: '0.1.0',
     ecologyState: '0.1.0',
     populations: '0.2.0',
     gatheringSources: '0.3.0',
@@ -65,6 +68,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     huntingResourceItems: '0.1.0',
     resourceItemRegistry: '0.4.0',
     greatMereResourceItems: '0.1.0',
+    ironspineResourceItems: '0.1.0',
+    populationEncounter: '0.1.0',
     routeCatalog: '0.3.0',
     transport: '0.4.1',
     carriedInventory: '0.1.0',

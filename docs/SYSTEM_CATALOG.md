@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -48,19 +48,21 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 passed 753/753 tests. |
 
-## Content infrastructure and regional packs — Data 48
+## Content infrastructure and regional packs — Data 49
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Eighteen current packs; 564 current ownership records. |
+| Regional/shared pack ownership | integrated | Twenty current packs; 630 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
 | Canonical commitment ref validation | integrated | Catalog-referenced commitments validate giver/place/item/source/capability relationships and dependencies. |
+| Population-backed encounter discovery | playable | Passive/wary/territorial encounter-backed populations can be deliberately located; population depletion occurs only after victory and existing body recovery remains authoritative. |
+| Ironspine alpine geography/economy | integrated | Wagon-limited pass, walk/mount high trail, alpine ecology, hunted body resources, preservation, hide/fur work, remedies, and survey craft. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
@@ -155,7 +157,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | NPC seed definitions | integrated | 22 runtime seed NPCs; census counts 23 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Eleven current schedules derive availability from fictional time. |
+| NPC recurring schedules | playable | Fifteen current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
@@ -169,39 +171,39 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth after Packet D:
+Gameplay breadth at the Data 49 Ironspine checkpoint:
 
 ```text
-places/localities       26 / mechanics 10
-named NPCs              17 / 50
-shop/service sites      17 / 20
-creatures               16 / 40
-resource sources        13 / 40
-canonical items         68 / 200
-recipes/processes       29 / 75
+places/localities       37 / mechanics 10
+named NPCs              29 / 50
+shop/service sites      25 / 20
+creatures               58 / 40
+resource sources        56 / 40
+canonical items        182 / 200
+recipes/processes       94 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
-companions                1 / 4
-transport services        3 / 5
+companions               1 / 4
+transport services       6 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                                   7
+routes                                  12
 spell schools                            4
 capability/training definitions         44
-NPC schedules                            7
-regional/shared packs                   10
-pack-owned records                     248
+NPC schedules                           15
+regional/shared packs                   20
+pack-owned records                     630
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/7/1
-runtime seed NPCs                       16
-runtime seed enemies                    13
+  schedules/companions              41/44/15/1
+runtime seed NPCs                       28
+runtime seed enemies                    16
 ```
 
-Mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
+Mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap; canonical items are 18 short of their mechanics floor. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. Packets A–D and the Great Mere Data 48 tranche are merged. No implementation unit is active. Packet E Gate A integration/census remains the next formal roadmap gate; Ironspine Highlands is the next ranked world-edge candidate. Neither is auto-started.
+Phase 0.9 and `0.9.100` remain open. Packets A–D, Great Mere, population-backed hunting, and the Ironspine Data 49 tranche are implemented. Packet E Gate A integration/census remains the next formal roadmap gate; Emberwash Badlands is the next ranked world-edge candidate. Neither is auto-started.

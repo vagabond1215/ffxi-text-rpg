@@ -57,6 +57,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['south-redstone-reach', 'north-redstone-reach'],
         notes: 'Regional map for the dry uplands, quarry roads, mine routes, and caravan approaches around Brasshaven.',
     }),
+    mapIronspineHighlands: map({
+        id: 'map-ironspine-highlands',
+        name: 'Survey of the Ironspine Highlands',
+        nation: 'Brasshaven',
+        region: 'Ironspine Highlands',
+        placeIds: ['ironspine-lower-pass', 'ironspine-watchpost', 'ironspine-high-meadow'],
+        notes: 'A survey map of the maintained lower pass, high-pass watchpost, and the marked alpine trail into upper meadow and scree country. Broad cliff and unstable scree bands are barriers, not walkable map edges.',
+    }),
     mapCoppergrassSteppe: map({
         id: 'map-coppergrass-steppe',
         name: 'Map of Coppergrass Steppe',

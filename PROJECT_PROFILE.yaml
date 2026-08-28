@@ -18,16 +18,17 @@ authority:
   quality_gates: docs/QUALITY_GATES.md
   item_consumption_safety: docs/ITEM_CONSUMPTION_SAFETY.md
   great_mere_profile: docs/ZONE_PROFILE_GREAT_MERE.md
+  ironspine_profile: docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
 git:
-  current_normal_work: awaiting-next-bounded-unit
+  current_normal_work: ironspine-data-49-promotion-pr-401
   latest_product_merge_sha: e327181fcd1e93579f335045a817de1fdae842a5
-  latest_product_pull_request: 396
-  latest_product_pr_check: 33212388143
-  latest_product_pr_check_number: 1348
-  latest_product_pr_check_result: success-743-of-743-tests-census-benchmark-and-sample
+  latest_product_pull_request: 401
+  latest_product_pr_check: 33215878907
+  latest_product_pr_check_number: 1368
+  latest_product_pr_check_result: success-753-of-753-tests-census-benchmark-and-sample-implementation-freeze
   latest_product_post_merge_check: 33212454122
   latest_product_post_merge_check_number: 1349
   latest_product_post_merge_check_result: success-743-of-743-tests-census-benchmark-and-sample
@@ -35,14 +36,14 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: great-mere-freshwater-economy
-  latest_bounded_unit_status: complete-merged-and-post-merge-green
+  latest_bounded_unit: ironspine-highlands-and-population-hunting
+  latest_bounded_unit_status: implemented-promotion-pending-pr-401
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: ironspine-highlands
+  next_world_edge_candidate: emberwash-badlands
   next_world_edge_candidate_status: planning-only-not-auto-authorized
   ecology_system_candidate: population-backed-hunting
-  ecology_system_candidate_status: planning-only-not-auto-authorized
+  ecology_system_candidate_status: complete-merged-pr-400
 validation:
   repository_audit: npm run audit:repo
   tests: npm test
@@ -53,53 +54,57 @@ validation:
   hosted_check: Check
   node_baseline: 24
   great_mere_flow_guard: tests/playerGreatMereFreshwaterFlow.test.js
+  ironspine_flow_guard: tests/playerIronspineHighlandsFlow.test.js
+  population_hunting_guard: tests/populationEncounterEngine.test.js
   ingredient_luxury_guard: tests/ingredientLuxuryProcessing.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
 quality:
-  current_product_version: 0.9.100.9
+  current_product_version: 0.9.100.10
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 48
+  current_data_version: 49
   current_benchmark_version: 3
-  current_codename: Great Mere Freshwater Economy & Food Safety
+  current_codename: Ironspine Highlands & Population Hunting
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
-  data_48:
-    great_mere_places_added: 3
-    great_mere_species_added: 7
-    great_mere_sources_added: 9
-    great_mere_raw_resources_added: 9
-    great_mere_transformations_added: 22
-    great_mere_production_outputs_added: 23
-    raw_resource_production_utilization: 45-of-53
-    luxury_raw_production_utilization: 12-of-12
+  data_49:
+    ironspine_places_added: 3
+    ironspine_species_added: 6
+    ironspine_sources_added: 6
+    ironspine_raw_and_body_resources_added: 11
+    ironspine_transformations_added: 13
+    ironspine_production_outputs_added: 13
+    population_backed_hunting: true
+    population_consumed_only_on_victory: true
+    raw_resource_production_utilization: 56-of-64
+    luxury_raw_production_utilization: 13-of-13
     explicit_food_consumption_metadata: true
-    raw_toxic_food_classification: true
+    period_appropriate_food_safety_presentation: true
     persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 34
-    named_npcs: 26
-    shop_service_sites: 23
-    creature_definitions: 52
-    resource_sources: 50
-    canonical_items: 158
-    recipes_processes: 81
+    places_localities: 37
+    named_npcs: 29
+    shop_service_sites: 25
+    creature_definitions: 58
+    resource_sources: 56
+    canonical_items: 182
+    recipes_processes: 94
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
     transport_services: 6
-    routes: 10
+    routes: 12
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 13
-    regional_shared_packs: 18
-    pack_owned_records: 564
-    runtime_seed_npcs: 25
-    runtime_seed_enemies: 13
+    npc_schedules: 15
+    regional_shared_packs: 20
+    pack_owned_records: 630
+    runtime_seed_npcs: 28
+    runtime_seed_enemies: 16
   mechanics_floors_reached:
     - places
     - shop_service_sites
@@ -111,9 +116,11 @@ content_scale:
 constraints:
   - new zones require plausible flora fauna resources drops or catches and connected processing
   - food-capable items require explicit direct-vs-processing-required consumption metadata
+  - world-facing food safety should use practical late-medieval fantasy knowledge rather than modern microbiology language
   - raw toxic or irritant foods require explicit hazards and plausible preparation instructions
   - do not add disconnected filler merely to satisfy content targets
   - keep Game State 14 unless a new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
   - roadmap and world-edge sequencing do not auto-authorize later units
+  - prefer direct work on main unless a change has material rollback risk that ordinary GitHub revert cannot safely contain

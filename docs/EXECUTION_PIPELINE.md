@@ -5,49 +5,48 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 ```
 
 ## Current bounded-unit state
 
-No implementation unit is active.
+Ironspine Highlands is in version/document promotion after a green frozen implementation head.
 
-Latest product unit:
-- Great Mere Freshwater Economy & Food Safety;
-- PR #396;
-- merge `e327181fcd1e93579f335045a817de1fdae842a5`;
-- exact PR-head Check #1348 / run `33212388143`: full gate green, 743/743 tests;
-- post-merge main Check #1349 / run `33212454122`: full gate green, 743/743 tests.
+Latest bounded implementation:
+- population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
+- Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`;
+- Check #1368 / run `33215878907`: full gate green, 753/753 tests;
+- PR #401 carries the Data 49 promotion/document synchronization.
 
-The repository is back at a clean `main` baseline and waits for explicit authorization before Packet E, Ironspine Highlands, population-backed hunting, or another bounded unit begins.
+After this tranche lands, no later unit is auto-started.
 
-## Data 48 metrics
+## Data 49 metrics
 
 ```text
-places/localities                       34
-named NPCs                              26
-shop/service sites                      23
-creatures                               52
-resource sources                        50
-canonical items                        158
-recipes/processes                       81
+places/localities                       37
+named NPCs                              29
+shop/service sites                      25
+creatures                               58
+resource sources                        56
+canonical items                        182
+recipes/processes                       94
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       6
 
-raw resources with production demand   45 / 53
-luxury raws with production demand      12 / 12
-routes                                  10
-NPC schedules                           13
-regional/shared packs                   18
-pack-owned records                     564
+raw resources with production demand   56 / 64
+luxury raws with production demand      13 / 13
+routes                                  12
+NPC schedules                           15
+regional/shared packs                   20
+pack-owned records                     630
 ```
 
 ## Standing zone-authoring rule
@@ -60,7 +59,7 @@ Every newly authored zone should, where ecologically appropriate, include:
 4. resources/drops/catches with provenance;
 5. connected processing and recipes;
 6. intentional economic/use sinks;
-7. explicit food-consumption safety for food-capable items;
+7. explicit food-consumption safety for food-capable items, presented as practical late-medieval/fantasy preparation knowledge;
 8. no conversion of passive wildlife into aggression merely to force drops.
 
 See `docs/ITEM_CONSUMPTION_SAFETY.md`.
@@ -78,9 +77,9 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 26/50;
+- named NPCs: 29/50;
 - quests/contracts: 18/30;
-- canonical items: 158/200.
+- canonical items: 182/200.
 
 Do not close these gaps with disconnected filler.
 
@@ -90,10 +89,9 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Ironspine Highlands after Great Mere.
+- Emberwash Badlands after Ironspine Highlands.
 
 Strong system/content candidates:
-- population-backed hunting;
 - companion breadth;
 - NPC/quest/ability density.
 

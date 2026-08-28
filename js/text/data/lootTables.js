@@ -26,6 +26,17 @@ export const LOOT_TABLES = Object.freeze({
     starfenMireHeron: lootTable('starfenMireHeron', 'Mirecrest Heron Recoveries', [
         drop('item-starfen-heron-feather', 'Mirecrest Feather', 'material', 0.8, { tags: ['material', 'feather', 'bird', 'starfen'], valueGil: 14 }),
     ]),
+    ironspineSnowhorn: lootTable('ironspineSnowhorn', 'Snowhorn Ibex Recoveries', [
+        drop('item-ironspine-snowhorn-hide', 'Snowhorn Ibex Hide', 'material', 0.82, { tags: ['material', 'hide', 'beast', 'ironspine'], valueGil: 24 }),
+        drop('item-ironspine-snowhorn-meat', 'Fresh Snowhorn Meat', 'material', 0.88, { tags: ['meat', 'food', 'game', 'beast', 'ironspine'], valueGil: 16 }),
+    ]),
+    ironspineCliffBear: lootTable('ironspineCliffBear', 'Cliff Bear Recoveries', [
+        drop('item-ironspine-cliff-bear-hide', 'Cliff Bear Hide', 'material', 0.72, { tags: ['material', 'hide', 'fur', 'beast', 'ironspine'], valueGil: 42 }),
+        drop('item-ironspine-bear-fat', 'Cliff Bear Fat', 'material', 0.76, { tags: ['material', 'fat', 'beast', 'ironspine'], valueGil: 18 }),
+    ]),
+    ironspineFroststepLynx: lootTable('ironspineFroststepLynx', 'Froststep Lynx Recoveries', [
+        drop('item-ironspine-froststep-pelt', 'Froststep Lynx Pelt', 'material', 0.7, { tags: ['material', 'hide', 'fur', 'beast', 'ironspine'], valueGil: 48 }),
+    ]),
 });
 
 export function getLootTable(tableId) {

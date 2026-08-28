@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Data 48 extends the world into Great Mere and adds explicit authored consumption-safety metadata. The zone composes existing geography, route/transport, ecology/gathering, inventory/provenance, production/workstation, shops, schedules, recovery, and player-information authorities; Game State remains 14 because no new durable state family is introduced.
+Data 49 extends the world into the Ironspine Highlands and composes persistent ecology populations with deliberate hunting encounters. The zone reuses existing geography, battle, ecology, resource recovery, inventory/provenance, production/workstation, shops, schedules, and Pack-v2 authorities; Game State remains 14 because no new durable state family is introduced.
 
 ## Core authority rules
 
@@ -46,6 +46,38 @@ Data 48 extends the world into Great Mere and adds explicit authored consumption
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+## Data 49 Ironspine and population-hunting composition
+
+Population hunting is a bridge, not a second ecology or encounter database:
+
+```text
+canonical population
+  -> deliberate population encounter discovery
+  -> existing active battle
+  -> victory
+  -> consume one ecology population unit exactly once
+  -> existing defeated-body recovery
+  -> existing inventory/provenance
+```
+
+The active battle carries optional source population/species identifiers and an exactly-once consumption marker. Encounter start alone does not alter population availability. Hostile automatic encounters remain owned by the aggro/spawn system.
+
+Ironspine geography preserves boundary semantics through canonical routes:
+
+```text
+North Redstone
+  -> wagon-capable maintained pass road
+  -> Ironspine Lower Pass
+  -> High-Pass Watch [wagon limit]
+  -> walk/mount High Trail
+  -> Ironspine High Meadow
+
+broad cliffs / unstable scree
+  -> no implicit adjacency
+```
+
+Ironspine food preparation uses the existing authored consumption metadata. Internal hazards remain explicit for validation while normal presentation describes experiential period knowledge such as raw game causing sickness and cooking, salting, or smoking making it fit for use.
 
 ## Data 48 Great Mere and consumption-safety composition
 
@@ -574,4 +606,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current Data 48 baseline has Great Mere merged and no implementation unit active; current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
+Historical packet sequencing above is retained for provenance only. The current Data 49 baseline includes population-backed hunting and Ironspine Highlands; current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.

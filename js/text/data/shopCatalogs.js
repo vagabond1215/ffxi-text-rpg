@@ -50,6 +50,17 @@ export const SHOP_CATALOGS = Object.freeze({
         item('marsh-rod', 'Marsh Fishing Rod', 106, ['equipment', 'tool', 'fishing', 'field']),
         item('field-knife', 'Field Knife', 74, ['equipment', 'tool', 'cutting', 'field']),
     ]),
+    'poi-ironspine-survey-exchange': shop('poi-ironspine-survey-exchange', 'Ironspine Survey Exchange', 'A high-pass counter buying ordinary sellable mountain finds and stocking durable provisions, warm road gear, cutting tools, and mining equipment.', [
+        item('travel-ration', 'Travel Ration', 22, ['food', 'travel']),
+        item('flask-of-water', 'Flask of Water', 9, ['consumable', 'travel']),
+        item('simple-bandage', 'Simple Bandage', 22, ['consumable', 'healing']),
+        item('item-ironspine-stonepine-kernels', 'Roasted Stonepine Kernels', 24, ['food', 'prepared', 'trail-food']),
+        item('item-ironspine-smoked-snowhorn', 'Salt-Smoked Snowhorn', 44, ['food', 'prepared', 'preserved']),
+        item('item-ironspine-frost-lichen-salve', 'Frost Lichen Tallow Salve', 58, ['remedy', 'field-medicine']),
+        item('field-knife', 'Field Knife', 78, ['equipment', 'tool', 'cutting', 'field']),
+        item('prospector-pick', 'Prospector Pick', 108, ['equipment', 'tool', 'mining', 'field']),
+        item('road-cloak', 'Road Cloak', 102, ['equipment', 'armor', 'back', 'travel']),
+    ]),
     'poi-slatewater-waylodge-exchange': shop('poi-slatewater-waylodge-exchange', 'Slatewater Field Exchange', 'A guild-backed road counter that buys ordinary sellable field finds and stocks food, water, first aid, gathering tools, and durable travel gear.', [
         item('loaf-of-bread', 'Loaf of Bread', 12, ['food', 'travel']),
         item('travel-ration', 'Travel Ration', 20, ['food', 'travel']),

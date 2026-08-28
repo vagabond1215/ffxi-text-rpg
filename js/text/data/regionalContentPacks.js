@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 33;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 34;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -419,6 +419,81 @@ export const GREAT_MERE_MEREWATCH_PACK = createContentPack({
     },
 });
 
+export const IRONSPINE_HIGHLANDS_PACK = createContentPack({
+    id: 'pack-ironspine-highlands',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['ironspine-highlands'], steward: 'brasshaven-high-pass' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-redstone-opening',
+        'pack-redstone-ecology-breadth',
+        'pack-redstone-forge-road',
+        'pack-regional-ingredient-luxury-processing',
+        'pack-ironspine-highlands-ecology',
+    ],
+    metadata: {
+        name: 'Ironspine Highlands & High-Pass Watch',
+        notes: 'Sparse alpine travel, survey lodge services, population-backed hunting, preserved provisions, hide/fur work, survey instruments, and cold-weather gear.',
+    },
+    records: {
+        places: [{ id: 'ironspine-watchpost', catalogRef: true }],
+        routes: [
+            { id: 'route-redstone-ironspine-pass-road', catalogRef: true },
+            { id: 'route-ironspine-high-trail', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-ironspine-vara-kell', catalogRef: true },
+            { id: 'npc-ironspine-dain-rove', catalogRef: true },
+            { id: 'npc-ironspine-mara-fell', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-ironspine-vara-kell', catalogRef: true },
+            { id: 'schedule-ironspine-dain-rove', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-ironspine-stonepine-kernels', catalogRef: true },
+            { id: 'item-ironspine-snowhorn-stew', catalogRef: true },
+            { id: 'item-ironspine-smoked-snowhorn', catalogRef: true },
+            { id: 'item-ironspine-rendered-tallow', catalogRef: true },
+            { id: 'item-ironspine-highland-leather', catalogRef: true },
+            { id: 'item-ironspine-froststep-fur-lining', catalogRef: true },
+            { id: 'item-ironspine-frost-lichen-salve', catalogRef: true },
+            { id: 'item-ironspine-lodestone-billet', catalogRef: true },
+            { id: 'item-ironspine-lodestone-pointer', catalogRef: true },
+            { id: 'item-ironspine-polished-cloud-quartz', catalogRef: true },
+            { id: 'item-ironspine-high-pass-compass', catalogRef: true },
+            { id: 'item-ironspine-bearhide-bedroll', catalogRef: true },
+            { id: 'item-ironspine-weather-mantle', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-ironspine-stonepine-kernels', catalogRef: true },
+            { id: 'cook-ironspine-snowhorn-stew', catalogRef: true },
+            { id: 'process-ironspine-smoked-snowhorn', catalogRef: true },
+            { id: 'process-ironspine-render-bear-tallow', catalogRef: true },
+            { id: 'process-ironspine-highland-leather', catalogRef: true },
+            { id: 'process-ironspine-froststep-fur-lining', catalogRef: true },
+            { id: 'craft-ironspine-frost-lichen-salve', catalogRef: true },
+            { id: 'process-ironspine-lodestone-billet', catalogRef: true },
+            { id: 'craft-ironspine-lodestone-pointer', catalogRef: true },
+            { id: 'process-ironspine-polished-cloud-quartz', catalogRef: true },
+            { id: 'craft-ironspine-high-pass-compass', catalogRef: true },
+            { id: 'craft-ironspine-bearhide-bedroll', catalogRef: true },
+            { id: 'craft-ironspine-weather-mantle', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-ironspine-survey-exchange',
+            name: 'Ironspine Survey Exchange',
+            placeId: 'ironspine-watchpost',
+            keeperNpcId: 'npc-ironspine-vara-kell',
+            stockItemIds: [
+                'item-ironspine-stonepine-kernels',
+                'item-ironspine-smoked-snowhorn',
+                'item-ironspine-frost-lichen-salve',
+            ],
+        }],
+    },
+});
+
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
@@ -551,6 +626,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     REGIONAL_INGREDIENT_LUXURY_PACK,
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
+    IRONSPINE_HIGHLANDS_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,

@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 48 | canonical authored-data, stable-ID, item-safety, pack ownership and validation contract |
+| Data | 49 | canonical authored-data, stable-ID, item-safety, population-hunting linkage, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -403,6 +403,67 @@ The new consumption profile is static canonical item-definition metadata. Great 
 
 No hunger, nutrition, spoilage, poison timer, food queue, lake-state family, or second inventory/production authority is added.
 
+### `0.9.100.10` — Ironspine Highlands & Population Hunting
+
+This revision adds the fourth ranked world-edge zone and makes passive/wary wildlife populations directly playable through deliberate hunting without collapsing ecology into ordinary aggro behavior.
+
+```text
+Product       0.9.100.9 -> 0.9.100.10
+Package       0.9.100   -> 0.9.100
+Data          48        -> 49
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 49
+
+Stable authored geography/content expands with:
+
+- Ironspine Lower Pass, High-Pass Watch, and High Meadow;
+- `map-ironspine-highlands`;
+- a wagon-capable maintained lower pass road and a separate walk/mount-only high trail;
+- six alpine species/populations reusing established Ibex, Bear, Lynx, Marmot, Mountain Eagle, and Grouse families;
+- six gathering sources and eleven exact-provenance gathered/body resources;
+- three high-pass NPCs and two schedules;
+- thirteen production transformations and thirteen outputs across provisions, preservation, tanning, fur work, field remedies, survey instruments, bedding, and weather gear;
+- two Ironspine Pack-v2 ownership graphs;
+- a population-backed encounter bridge that consumes one population unit only after encounter victory and leaves defeated-body recovery authoritative;
+- period-appropriate player-facing food-preparation wording while preserving explicit internal safety metadata.
+
+Implementation-freeze Check #1368 / run `33215878907` passed Repository Audit, **753/753 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Validated census:
+
+```text
+places/localities       37
+named NPCs              29
+shop/service sites      25
+creature definitions    58
+resource sources        56
+canonical items        182
+recipes/processes       94
+abilities/techniques    41
+quests/contracts        18
+companions               1
+transport services       6
+
+routes                   12
+spell schools             4
+capabilities             44
+NPC schedules            15
+regional/shared packs    20
+pack-owned records      630
+runtime seed NPCs        28
+runtime seed enemies     16
+```
+
+Raw-resource production utilization is 56/64 and luxury raw utilization is 13/13.
+
+#### Why Game State stays 14
+
+No new durable state family is introduced. The hunting bridge stores its population source on the existing active-battle record, uses the existing ecology population state, and reconciles population depletion through existing battle rewards. Ironspine otherwise reuses existing geography, travel, ecology, resource recovery, inventory/provenance, production/work, workstation, shop, schedule, and Pack-v2 authorities.
+
 ## Persistence history
 
 Relevant late history:
@@ -426,6 +487,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.7           no Game State change; Data 45 -> 46
 0.9.100.8           no Game State change; Data 46 -> 47
 0.9.100.9           no Game State change; Data 47 -> 48
+0.9.100.10          no Game State change; Data 48 -> 49
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -478,9 +540,9 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-Great Mere final exact PR-head Check #1348 / run `33212388143` passed with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. PR #396 merged at `e327181fcd1e93579f335045a817de1fdae842a5`; post-merge main Check #1349 / run `33212454122` also passed the full hosted gate with 743/743 tests.
+Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Final promoted-head validation and PR #401 landing remain required.
 
-The current Data 48 Great Mere checkpoint supersedes the earlier Slatewater and Packet D census freezes: 34 places, 26 named NPCs, 23 service sites, 52 creatures, 50 sources, 158 items, 81 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 13 schedules, 18 packs, and 564 pack-owned records.
+The current Data 49 Ironspine checkpoint supersedes the earlier Great Mere and prior census freezes: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 56 sources, 182 items, 94 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 20 packs, and 630 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
