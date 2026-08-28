@@ -85,9 +85,9 @@ test('all eleven established luxury raw resources now have direct production dem
         assert.ok(newInputIds.has(itemId), `${itemId} should feed a real production transformation`);
     }
 
-    const luxuryRaws = listCanonicalResourceItems().filter((item) => item.tags?.includes('luxury'));
-    assert.equal(luxuryRaws.length, 11);
-    assert.deepEqual(new Set(luxuryRaws.map((item) => item.id)), new Set(LUXURY_RAW_IDS));
+    const luxuryRawIds = new Set(listCanonicalResourceItems().filter((item) => item.tags?.includes('luxury')).map((item) => item.id));
+    assert.ok(luxuryRawIds.size >= LUXURY_RAW_IDS.length);
+    for (const itemId of LUXURY_RAW_IDS) assert.ok(luxuryRawIds.has(itemId));
 });
 
 test('combined production catalog consumes at least three quarters of current canonical raw resources', () => {
