@@ -29,6 +29,7 @@ import {
     startEncounter,
 } from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
+import { describePopulationEncounterOptions, startPopulationEncounter } from './systems/populationEncounterEngine.js';
 import { describeEquippableSources, equipItem, inspectItem, unequipItem } from './systems/equipmentEngine.js';
 import {
     describeContainerContents,
@@ -122,6 +123,8 @@ const HELP_TEXT = [
     '  disciplineabilities  Show bounded recovered discipline abilities and traits.',
     '  bestiary             Show recovered bestiary notes for the current place.',
     '  encounter <enemy>    Start a battle against a loaded enemy seed.',
+    '  wildlife             Show trackable local wildlife populations.',
+    '  hunt <wildlife>       Deliberately locate a passive/wary/territorial population encounter.',
     '  battle               Show the active battle state.',
     '  attack [target]      Perform a basic attack in battle.',
     '  technique <name>     Use the current TP-gated combat technique adapter.',
@@ -230,6 +233,9 @@ export function createCommandRouter(state, services = {}) {
             case 'disciplineabilities': return describeJobAbilities(state);
             case 'bestiary': return describeBestiary(state);
             case 'encounter': return describeEncounterStart(state, parsed.args.join(' '));
+            case 'wildlife': return describePopulationEncounterOptions(state);
+            case 'hunt':
+            case 'track': return describeActionResult(startPopulationEncounter(state, parsed.args.join(' ')));
             case 'battle': return describeBattle(state.activeBattle);
             case 'attack': return performPlayerAttack(state, parsed.args[0]);
             case 'technique': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
