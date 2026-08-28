@@ -36,6 +36,18 @@ export function createSeedNpcs() {
             locationId: 'thornwall-southgate', services: ['tutorial', 'sparring'],
         }),
         createNpc({
+            id: 'npc-crownfields-maelin-rook', name: 'Maelin Rook', title: 'Grange Produce Factor', faction: 'Thornwall',
+            locationId: 'crownfields-grange', services: ['regional-goods', 'produce-trade', 'crop-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-crownfields-hessa-vale', name: 'Hessa Vale', title: 'Growers’ Hall Steward', faction: 'Thornwall',
+            locationId: 'crownfields-grange', services: ['agriculture', 'fieldcraft', 'harvest-guidance', 'market-notices', 'drover-notices'],
+        }),
+        createNpc({
+            id: 'npc-crownfields-perrin-bale', name: 'Perrin Bale', title: 'Produce Wagonmaster', faction: 'Thornwall',
+            locationId: 'crownfields-grange', services: ['wagon-travel', 'stabling', 'draft-animal-care', 'produce-freight'],
+        }),
+        createNpc({
             id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
             locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
         }),

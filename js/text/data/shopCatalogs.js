@@ -29,6 +29,18 @@ export const SHOP_CATALOGS = Object.freeze({
         item('woodsman-hatchet', 'Woodsman Hatchet', 92, ['equipment', 'tool', 'weapon', 'axe', 'woodcutting', 'field']),
         item('digging-spade', 'Digging Spade', 84, ['equipment', 'tool', 'digging', 'field']),
     ]),
+    'poi-crownfields-grange-exchange': shop('poi-crownfields-grange-exchange', 'Crownfields Produce Exchange', 'A grange market counter buying ordinary sellable farm goods and stocking staple produce, food, water, field tools, and road necessities.', [
+        item('loaf-of-bread', 'Loaf of Bread', 10, ['food', 'staple']),
+        item('flask-of-water', 'Flask of Water', 8, ['consumable', 'travel']),
+        item('item-crownfields-crown-rye', 'Crown Rye', 8, ['material', 'regional', 'grain', 'staple']),
+        item('item-crownfields-field-pea', 'Field Pea', 10, ['material', 'regional', 'pulse', 'staple']),
+        item('item-crownfields-flax-straw', 'Blue Flax Straw', 12, ['material', 'regional', 'fiber', 'staple']),
+        item('item-crownfields-cider-apple', 'Cider Apple', 11, ['material', 'regional', 'fruit', 'staple']),
+        item('item-crownfields-meadow-hay', 'Meadow Hay', 7, ['material', 'regional', 'fodder', 'staple']),
+        item('item-crownfields-dyers-woad', 'Dyer’s Woad', 36, ['material', 'regional', 'dye', 'luxury']),
+        item('field-knife', 'Field Knife', 72, ['equipment', 'tool', 'cutting', 'field']),
+        item('digging-spade', 'Digging Spade', 82, ['equipment', 'tool', 'digging', 'field']),
+    ]),
     'poi-slatewater-waylodge-exchange': shop('poi-slatewater-waylodge-exchange', 'Slatewater Field Exchange', 'A guild-backed road counter that buys ordinary sellable field finds and stocks food, water, first aid, gathering tools, and durable travel gear.', [
         item('loaf-of-bread', 'Loaf of Bread', 12, ['food', 'travel']),
         item('travel-ration', 'Travel Ration', 20, ['food', 'travel']),

@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
-Codename:      Ecology & Geography Integrity
+Codename:      Crownfields Agricultural Lowlands
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Data 45 is an integrity contract over the existing world graph. It removes competing legacy direct travel edges, repairs accidental no-exit places and ordinary gate reciprocity, validates map/place and route/service topology in both directions, and makes regional ecology/resource validation canonical. Game State remains 14 because no new durable runtime state is introduced.
+Data 46 extends that validated world graph with Crownfields and its Grange. The tranche reuses existing geography, travel, ecology, gathering/provenance, commerce, schedule, and recovery authorities; Game State remains 14 because no new durable runtime state is introduced.
 
 ## Core authority rules
 
@@ -46,6 +46,35 @@ Data 45 is an integrity contract over the existing world graph. It removes compe
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+## Crownfields managed-agriculture composition
+
+Data 46 adds a managed agricultural landscape without creating a second cultivation or husbandry state authority.
+
+```text
+Crownfields crop strips / orchard / hay meadow
+        |
+        v
+existing ecology gathering sources
+        |
+        v
+existing timed gathering + work proficiency
+        |
+        v
+existing inventory + exact provenance
+        |
+        v
+Crownfields Produce Exchange
+        |
+        +--> safe Grange recovery / provisions
+        |
+        +--> Southfield Farm Road / Produce Wagon
+        |
+        v
+Thornwall economy
+```
+
+Cattle, sheep, hens, rats, and orchard bees are persistent ecology populations. They do not yet emit milk, wool, eggs, honey, manure, meat, or hides through a fake flora source. Those products require a deliberate managed-animal/husbandry source model if later authorized.
 
 ## Geography and ecology integrity rules
 

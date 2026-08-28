@@ -22,6 +22,8 @@ test('describePlace includes exits for starting city', () => {
     assert.match(text, /Thornwall Southgate/);
     assert.match(text, /West Elderwood/);
     assert.match(text, /Southgate Forest Road/);
+    assert.match(text, /Southfield Farm Road/);
+    assert.match(text, /Crownfields Grange/);
 });
 
 test('starter cities and associated maps are populated', () => {
@@ -34,15 +36,19 @@ test('starter cities and associated maps are populated', () => {
     assert.ok(placeIds.includes('coppergrass-steppe'));
     assert.ok(placeIds.includes('slatewater-foothills'));
     assert.ok(placeIds.includes('slatewater-waylodge'));
+    assert.ok(placeIds.includes('crownfields'));
+    assert.ok(placeIds.includes('crownfields-grange'));
     assert.ok(mapIds.includes('map-thornwall'));
     assert.ok(mapIds.includes('map-brasshaven'));
     assert.ok(mapIds.includes('map-mistmere'));
     assert.ok(mapIds.includes('map-coppergrass-steppe'));
     assert.ok(mapIds.includes('map-slatewater-foothills'));
+    assert.ok(mapIds.includes('map-crownfields'));
     assert.match(describeMaps(), /Map of Brasshaven/);
     assert.match(describeMap('map-mistmere'), /mistmere-canal-ward/);
     assert.match(describeMap('map-coppergrass-steppe'), /coppergrass-steppe/);
     assert.match(describeMap('map-slatewater-foothills'), /slatewater-waylodge/);
+    assert.match(describeMap('map-crownfields'), /crownfields-grange/);
 });
 
 test('world data validates maps places and connection grids', () => {

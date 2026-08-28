@@ -18,26 +18,26 @@ authority:
   quality_gates: docs/QUALITY_GATES.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
+  crownfields_profile: docs/ZONE_PROFILE_CROWNFIELDS.md
   slatewater_profile: docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
 git:
-  current_normal_work: awaiting-next-bounded-unit
-  latest_product_merge_sha: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
-  latest_product_pull_request: 390
-  latest_product_post_merge_check: 33189839043
-  latest_product_post_merge_check_number: 1291
-  latest_product_post_merge_check_result: success-728-of-728-tests-census-benchmark-and-sample
-  slatewater_merge_sha: edca59ac8955d999f7c80812688e7153d5aaafeb
-  slatewater_pull_request: 389
-  branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
+  current_normal_work: phase-0.9-pr-integration
+  active_branch: feature/crownfields-agricultural-lowlands
+  active_pull_request: 392
+  base_main_sha: 9876721e218b5b256a8963221250fe4896ad8f05
+  pre_promotion_check: 33199542741
+  pre_promotion_check_number: 1294
+  pre_promotion_result: success-731-of-731-tests-census-benchmark-and-sample
+  final_exact_head_check_required: true
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: ecology-geography-integrity-audit
-  latest_bounded_unit_status: complete-merged-and-post-merge-green
+  current_bounded_unit: crownfields-agricultural-lowlands
+  current_bounded_unit_status: implementation-validated-version-and-continuity-sync-in-progress
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: crownfields
+  next_world_edge_candidate: great-mere
   next_world_edge_candidate_status: planning-only-not-auto-authorized
 validation:
   repository_audit: npm run audit:repo
@@ -45,65 +45,64 @@ validation:
   census: npm run census
   benchmark: npm run benchmark
   benchmark_sample: npm run benchmark:sample
-  hardening: npm run hardening
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
+  crownfields_flow_guard: tests/playerCrownfieldsAgricultureFlow.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
 quality:
-  deterministic_simulation: preserve
-  save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.6
+  current_product_version: 0.9.100.7
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 45
+  current_data_version: 46
   current_benchmark_version: 3
-  current_codename: Ecology & Geography Integrity
+  current_codename: Crownfields Agricultural Lowlands
+  deterministic_simulation: preserve
+  save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
-  hard_performance_thresholds: not-yet-accepted
-  data_45:
-    canonical_geography_connections_repaired: true
-    stale_direct_route_overlaps_removed: 5
-    player_trapping_places_repaired: 3
-    crownward_forest_gate_reciprocity_repaired: true
-    reciprocal_map_place_validation: true
-    route_stop_coordinate_validation: true
-    canonical_ecology_duplicate_validation: true
-    canonical_resource_duplicate_validation: true
-    regional_ecology_validation_hardened: true
-    regional_ecology_catalog_refs_supported: true
-    resource_provenance_registry_validation_connected: true
+  data_46:
+    crownfields_region_added: true
+    crownfields_grange_added: true
+    southfield_farm_road_added: true
+    produce_wagon_added: true
+    managed_agricultural_ecology_added: true
+    crop_resource_provenance_added: true
     persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 29
-    named_npcs: 20
-    shop_service_sites: 19
-    creature_definitions: 40
-    resource_sources: 35
-    canonical_items: 90
+    places_localities: 31
+    named_npcs: 23
+    shop_service_sites: 21
+    creature_definitions: 45
+    resource_sources: 41
+    canonical_items: 96
     recipes_processes: 29
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
-    transport_services: 4
-    routes: 7
-    npc_schedules: 9
-    regional_shared_packs: 13
-    pack_owned_records: 374
+    transport_services: 5
+    routes: 8
+    spell_schools: 4
+    capability_training_definitions: 44
+    npc_schedules: 11
+    regional_shared_packs: 15
+    pack_owned_records: 410
+    runtime_seed_npcs: 22
+    runtime_seed_enemies: 13
+  mechanics_floors_reached:
+    - places
+    - shop_service_sites
+    - creature_definitions
+    - resource_sources
+    - transport_services
   largest_relative_gap: companions
-deferred_ecology_geography:
-  thornwall_old_gaol_ecology: absent-content-gap
-  timbercross_gathering_sources: absent-content-gap
-  redfang_deepvein_sunken_archive_gathering: sparse-content-gap
-  population_backed_hunting_encounters: architecture-player-loop-gap
-  express_services_skip_intermediate_route_stops: reviewed-intentional
 constraints:
   - do not add disconnected filler merely to satisfy content targets
   - keep Game State 14 unless a new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - local map edges are not automatically walkable world boundaries
   - ordinary two-way roads and gates should be reciprocal unless explicitly modeled otherwise
+  - managed livestock products require an intentional husbandry source model rather than fake flora provenance
   - roadmap and world-edge sequencing do not auto-authorize later units

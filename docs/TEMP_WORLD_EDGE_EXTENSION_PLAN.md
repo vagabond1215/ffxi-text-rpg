@@ -71,7 +71,7 @@ Likely ecology/resource direction:
 - hides, resin, nuts/berries, upland fungi;
 - staple + specialty trade goods.
 
-### 2. Crownfields
+### 2. Crownfields — IMPLEMENTED / VALIDATED ON PR #392
 
 Placement: south of Thornwall.
 
@@ -86,6 +86,29 @@ Access: broadly walkable and wagon/mount friendly.
 Habitation: dispersed farms, hamlets, mills, shepherd camps, granaries, agricultural guild sites; no need for another major city.
 
 Priority content: cattle, sheep/goats, poultry, working animals, cats/dogs, crop pests, cereals, pulses, flax/oil crops, orchards, hay/fodder, managed apiaries.
+
+## Item 2 implementation result
+
+The user explicitly authorized continuing with the next recommended zone, **Crownfields**.
+
+Implemented on PR #392:
+
+1. `crownfields` added as Thornwall's danger-1 managed agricultural lowlands;
+2. `crownfields-grange` added as a danger-0 farm-market/service hamlet rather than a city;
+3. `map-crownfields` added under Data 45 reciprocal map/place integrity rules;
+4. Southfield Farm Road connects Thornwall Southgate and the Grange at 9,000 yalms / 3,600 seconds;
+5. Crownfields Produce Wagon adds scheduled wagon/freight transport;
+6. Grange Produce Exchange, Growers' Hall, wagon yard, millhouse/common loft, three staff NPCs, and two schedules make the hamlet functional;
+7. managed ecology adds cattle, sheep, hens, field rats, and orchard honeybees;
+8. six exact-provenance crop resources add grain, pulse, fiber, orchard fruit, fodder, and dye-crop roles;
+9. the existing Bee family is reused through an explicit Elderwood ecology dependency rather than duplicate ownership;
+10. husbandry products are deferred until a proper managed-animal source model exists.
+
+Pre-promotion hosted Check #1294 / run `33199542741` passed Repository Audit, **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
+Measured census: 31 places, 23 NPCs, 21 service sites, 45 creatures, 41 resource sources, 96 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 5 transport services, 8 routes, 11 schedules, 15 packs, and 410 owned records.
+
+**No later numbered item is automatically authorized by completion of Item 2.** Great Mere is the next ranked geography candidate.
 
 ### 3. Great Mere
 

@@ -8,7 +8,7 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 29;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 30;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -112,6 +112,33 @@ export const COPPERGRASS_ECOLOGY_PACK = regionalPack({
     ],
 });
 
+export const CROWNFIELDS_ECOLOGY_PACK = regionalPack({
+    id: 'pack-crownfields-agricultural-ecology', regionId: 'crownfields', steward: 'thornwall-south-farms',
+    dependencies: ['pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
+    placeId: 'crownfields', ownsPlace: true,
+    ownedFamilyIds: ['family-cattle', 'family-sheep', 'family-chicken', 'family-field-rat'],
+    speciesIds: [
+        'species-crownfields-cattle', 'species-crownfields-whitefleece-sheep',
+        'species-crownfields-redcomb-hen', 'species-crownfields-hedgerow-rat',
+        'species-crownfields-orchard-bee',
+    ],
+    populationIds: [
+        'population-crownfields-cattle', 'population-crownfields-whitefleece-sheep',
+        'population-crownfields-redcomb-hens', 'population-crownfields-hedgerow-rats',
+        'population-crownfields-orchard-bees',
+    ],
+    sourceIds: [
+        'source-crownfields-crown-rye-strip', 'source-crownfields-field-pea-row',
+        'source-crownfields-flax-strip', 'source-crownfields-cider-apple-orchard',
+        'source-crownfields-hay-meadow', 'source-crownfields-woad-bed',
+    ],
+    itemIds: [
+        'item-crownfields-crown-rye', 'item-crownfields-field-pea',
+        'item-crownfields-flax-straw', 'item-crownfields-cider-apple',
+        'item-crownfields-meadow-hay', 'item-crownfields-dyers-woad',
+    ],
+});
+
 export const SLATEWATER_ECOLOGY_PACK = regionalPack({
     id: 'pack-slatewater-foothills-ecology', regionId: 'slatewater-foothills', steward: 'crown-forge-road',
     dependencies: ['pack-elderwood-opening', 'pack-redstone-opening'],
@@ -136,11 +163,11 @@ export const SLATEWATER_ECOLOGY_PACK = regionalPack({
     ],
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK]);
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK]);
 
-function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, speciesIds, populationIds, sourceIds, itemIds }) {
+function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
-    const familyIds = new Set(species.map((entry) => entry.familyId));
+    const familyIds = new Set(ownedFamilyIds ?? species.map((entry) => entry.familyId));
     const families = listRegionalEcologyFamilies().filter((entry) => familyIds.has(entry.id));
     const populations = listRegionalPopulations().filter((entry) => populationIds.includes(entry.id));
     const sources = listRegionalGatheringSources().filter((entry) => sourceIds.includes(entry.id));

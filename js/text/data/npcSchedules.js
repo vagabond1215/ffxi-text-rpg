@@ -37,6 +37,28 @@ const DAILY_SCHEDULES = [
         unavailableText: 'Oren is away from the works desk inspecting road crews and timber deliveries.',
     }),
     schedule({
+        id: 'schedule-crownfields-maelin-rook',
+        npcId: 'npc-crownfields-maelin-rook',
+        poiId: 'poi-crownfields-grange-exchange',
+        placeId: 'crownfields-grange',
+        label: 'Grange produce-market hours',
+        windows: [
+            window(5, 30, 16, 30, 'Weighing loads and keeping the produce exchange'),
+        ],
+        unavailableText: 'Maelin has closed the public scales and is reconciling farm ledgers and wagon lots.',
+    }),
+    schedule({
+        id: 'schedule-crownfields-hessa-vale',
+        npcId: 'npc-crownfields-hessa-vale',
+        poiId: 'poi-crownfields-grange-growers-hall',
+        placeId: 'crownfields-grange',
+        label: 'Growers’ Hall desk',
+        windows: [
+            window(7, 0, 18, 0, 'Posting harvest, grazing, and market notices'),
+        ],
+        unavailableText: 'Hessa is away from the hall walking field boundaries and speaking with tenant farmers.',
+    }),
+    schedule({
         id: 'schedule-slatewater-eira-voss',
         npcId: 'npc-slatewater-eira-voss',
         poiId: 'poi-slatewater-waylodge-exchange',

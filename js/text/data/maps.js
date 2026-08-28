@@ -17,6 +17,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
         notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
+    mapCrownfields: map({
+        id: 'map-crownfields',
+        name: 'Map of the Crownfields',
+        nation: 'Thornwall',
+        region: 'Crownfields',
+        placeIds: ['crownfields', 'crownfields-grange'],
+        notes: 'Regional map for Thornwall’s southern agricultural lowlands, including pasture, hedgerows, orchards, mill roads, and the Crownfields Grange market hamlet.',
+    }),
     mapSlatewaterFoothills: map({
         id: 'map-slatewater-foothills',
         name: 'Map of Slatewater Foothills',

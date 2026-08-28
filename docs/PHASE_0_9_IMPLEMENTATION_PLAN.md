@@ -7,52 +7,52 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Ecology & Geography Integrity
+Codename:      Crownfields Agricultural Lowlands
 ```
 
 The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
 
 ## Current census
 
-Validated Slatewater branch checkpoint:
+Validated Crownfields pre-promotion checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
-| Places/localities | 29 | 10 | ready |
-| Named NPCs | 20 | 50 | 30 |
-| Shop/service sites | 19 | 20 | 1 |
-| Creature definitions | 40 | 40 | ready |
-| Resource sources | 35 | 40 | 5 |
-| Canonical items | 90 | 200 | 110 |
+| Places/localities | 31 | 10 | ready |
+| Named NPCs | 23 | 50 | 27 |
+| Shop/service sites | 21 | 20 | ready |
+| Creature definitions | 45 | 40 | ready |
+| Resource sources | 41 | 40 | ready |
+| Canonical items | 96 | 200 | 104 |
 | Recipes/processes | 29 | 75 | 46 |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
-| Transport services | 4 | 5 | 1 |
+| Transport services | 5 | 5 | ready |
 
 Infrastructure coverage:
 
 ```text
-routes                                   7
+routes                                   8
 spell schools                            4
 capability/training definitions         44
-NPC schedules                            9
-regional/shared packs                   13
-pack-owned records                     374
+NPC schedules                           11
+regional/shared packs                   15
+pack-owned records                     410
 pack-owned abilities/capabilities/
   schedules/companions              41/44/9/1
-runtime seed NPCs                       19
+runtime seed NPCs                       22
 runtime seed enemies                    13
 ```
 
-Mechanics-scale gate remains **NOT READY**. Creature definitions now meet the mechanics floor; companions remain the largest relative gap.
+Mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, and transport services now meet their mechanics floors; companions remain the largest relative gap.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, and Slatewater are merged. The subsequent ecology/geography integrity audit is active on PR #390 and promoted to Data 45.**
+**Status: ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity audit are merged. Crownfields is implemented and validated on PR #392, promoted to Data 46 pending final exact-head integration.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -219,6 +219,25 @@ This bounded repair followed the Slatewater merge and does not increase content 
 - adds end-to-end ecology/geography integrity regression coverage.
 
 Permanent findings and deferred gaps are in `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`.
+
+## Crownfields Agricultural Lowlands — Data 46
+
+**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / FINAL PR #392 INTEGRATION IN PROGRESS.**
+
+Crownfields adds a fourth distinct regional economic/ecological shape:
+
+```text
+managed grain / pulses / flax / orchard / hay / woad
+  -> existing timed gathering + provenance
+  -> Crownfields Grange produce exchange
+  -> Growers' Hall + safe rest + wagon logistics
+  -> Southfield Farm Road
+  -> Thornwall
+```
+
+It also adds managed cattle, sheep, poultry, crop-pest, and pollinator populations without inventing a second cultivation/husbandry state authority.
+
+Pre-promotion Check #1294 / run `33199542741` passed Repository Audit, **731/731 tests**, Census, Benchmark 3, and Benchmark Sample.
 
 ## Packet E — Gate A integration and census audit
 

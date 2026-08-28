@@ -49,6 +49,11 @@ const POI_SEEDS = [
     poi('poi-sandoria-n-grilau', 'thornwall-crownward', 'Deren Oathclerk', POI_TYPES.MISSION, 'C-8', ['mission', 'thornwall'], 'Thornwall civic commission contact'),
     poi('poi-sandoria-n-jeanvirgaud', 'thornwall-crownward', 'Roadmaster Kett', POI_TYPES.TRAVEL, 'L-10', ['roadTravel'], 'Regional road-travel contact'),
 
+    poi('poi-crownfields-grange-exchange', 'crownfields-grange', 'Maelin Rook', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'crownfields', 'produce'], 'Produce factor buying field goods and selling farm staples, provisions, and practical tools'),
+    poi('poi-crownfields-grange-growers-hall', 'crownfields-grange', 'Hessa Vale', POI_TYPES.GUILD, 'F-6', ['fieldcraft', 'guildMaster', 'agriculture', 'marketNotices'], 'Growers’ and drovers’ hall for harvest guidance, crop appraisal, field notices, and livestock-road coordination'),
+    poi('poi-crownfields-grange-wagon-yard', 'crownfields-grange', 'Perrin Bale', POI_TYPES.TRAVEL, 'H-8', ['travel', 'wagon', 'stabling', 'produceFreight'], 'Produce-wagon yard with feed, watering troughs, harness checks, and scheduled Southgate departures'),
+    poi('poi-crownfields-grange-millhouse', 'crownfields-grange', 'Crownfields Millhouse and Common Loft', POI_TYPES.LANDMARK, 'E-6', ['mill', 'granary', 'lodging', 'food', 'safeRest'], 'Watermill, granary scales, common kitchen, and simple loft bunks serving farm crews and wagoners'),
+
     poi('poi-slatewater-waylodge-exchange', 'slatewater-waylodge', 'Eira Voss', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'slatewater', 'fieldGoods'], 'Waylodge factor buying field finds and selling provisions, tools, and road gear'),
     poi('poi-slatewater-waylodge-trailguild', 'slatewater-waylodge', 'Toren Marr', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'guildMaster', 'gathering', 'hunting', 'trade'], 'Foothill guild steward for gathering, hunting, route conditions, and field exchange'),
     poi('poi-slatewater-waylodge-stableyard', 'slatewater-waylodge', 'Bram Pell', POI_TYPES.TRAVEL, 'H-8', ['travel', 'stabling', 'mountCare', 'packAnimals'], 'Stableyard with water, feed, sheltered pens, tack checks, and caravan boarding for mounts and pack animals'),

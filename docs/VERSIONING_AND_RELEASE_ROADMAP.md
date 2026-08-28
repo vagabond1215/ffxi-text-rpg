@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
-Codename:      Ecology & Geography Integrity
+Codename:      Crownfields Agricultural Lowlands
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 43 | canonical authored-data, stable-ID, pack ownership and validation contract |
+| Data | 46 | canonical authored-data, stable-ID, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -219,6 +219,41 @@ The content census remains 29 places, 20 NPCs, 19 shop/service sites, 40 creatur
 
 No new durable player/world fact was introduced. Data 45 changes authored records and validation behavior only. Existing place/map, route/transport, ecology/population, inventory/provenance, and Pack-v2 authorities remain the runtime owners.
 
+### `0.9.100.7` — Crownfields Agricultural Lowlands
+
+This revision adds Thornwall's agricultural hinterland as a managed ecological/economic region rather than another monster-heavy wilderness.
+
+```text
+Product       0.9.100.6 -> 0.9.100.7
+Package       0.9.100   -> 0.9.100
+Data          45        -> 46
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 46
+
+Stable canonical authored data expands with:
+
+- `crownfields` and `crownfields-grange`;
+- `map-crownfields`;
+- Southfield Farm Road and a scheduled Crownfields Produce Wagon;
+- four new managed-agriculture families plus five species/populations, with Orchard Honeybee reusing the existing canonical Bee family through a declared pack dependency;
+- six exact-provenance field/orchard resources: Crown Rye, Field Pea, Blue Flax Straw, Cider Apple, Meadow Hay, and Dyer's Woad;
+- three Grange staff NPCs, two fictional-time schedules, produce-market/guild/travel service content;
+- `pack-crownfields-agricultural-ecology` and `pack-crownfields-grange`.
+
+The validated pre-promotion census is 31 places/localities, 23 named NPCs, 21 shop/service sites, 45 creature definitions, 41 resource sources, 96 canonical items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 1 companion, and 5 transport services. Supplemental coverage is 8 routes, 4 spell schools, 44 capabilities, 11 schedules, 15 packs, and 410 pack-owned records.
+
+Places, shop/service sites, creature definitions, resource sources, and transport services now meet or exceed their mechanics floors.
+
+#### Why Game State stays 14
+
+No new durable player/world state family is introduced. Managed crops reuse ecology gathering sources, timed gathering, work proficiency, inventory/provenance, commerce, and transport. Cattle, sheep, hens, rats, and bees are ecology populations only.
+
+Animal products such as milk, wool, eggs, honey, manure, meat, or hides are deliberately **not** modeled through fake flora sources. A future husbandry/managed-animal source authority must be deliberate if those loops are added.
+
 ## Persistence history
 
 Relevant late history:
@@ -239,6 +274,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.4           no Game State change; Data 42 -> 43
 0.9.100.5           no Game State change; Data 43 -> 44
 0.9.100.6           no Game State change; Data 44 -> 45
+0.9.100.7           no Game State change; Data 45 -> 46
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -291,13 +327,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The frozen Packet D gameplay/content head before version/document synchronization is:
-
-```text
-ee81069defe59a55979bc262ea595c3c9df42f40
-```
-
-Hosted Check `33139128883` / job `98745791538` on Node 24.19.0 passed Repository Audit, **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
+The Crownfields pre-promotion implementation head passed hosted Check #1294 / run `33199542741` with **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #392 merge.
 
 The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 

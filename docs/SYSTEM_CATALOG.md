@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
-Codename:      Ecology & Geography Integrity
+Codename:      Crownfields Agricultural Lowlands
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,13 +50,13 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
 
-## Content infrastructure and regional packs — Data 45
+## Content infrastructure and regional packs — Data 46
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Thirteen current packs; 374 current ownership records. |
+| Regional/shared pack ownership | integrated | Fifteen current packs; 410 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -71,6 +71,8 @@ Phase:         0.9 / 0.9.100 in progress
 | Coppergrass Steppe ecology pack | integrated | Neutral steppe transition on the Forge-Mere corridor with preserved route geometry, five fauna niches, and staple/luxury resource provenance. |
 | Slatewater Foothills ecology pack | integrated | Mixed-wood foothill transition with four fauna families, six gathering sources, exact resource provenance, and physical pass/cliff geography. |
 | Slatewater Waylodge pack | playable | Safe road lodge with functional field exchange, field guild, campaign-recovery-backed lodging, stableyard/travel services, staff schedules, and foothill caravan. |
+| Crownfields agricultural ecology | integrated | Managed cattle, sheep, poultry, crop pests, pollinators, and six exact-provenance crops broaden ecology into a human-shaped production landscape without inventing a second farming authority. |
+| Crownfields Grange pack | playable | Produce exchange, growers’ hall, safe lodging, wagon yard, staff schedules, Southfield Farm Road, and scheduled produce transport connect field goods to Thornwall. |
 | Ecology/geography integrity validation | integrated | Canonical raw duplicate detection, reciprocal map/place references, ordered route/service topology, regional ecology parity, provenance validation, and no-trap geography are regression-guarded. |
 | High-volume canonical regional content | seeded | Real authored breadth is growing but remains below most mechanics floors. |
 
@@ -91,7 +93,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 29 current places/localities; reciprocal map/place and route-stop integrity is validated. |
+| Places/routes/maps | playable | 31 current places/localities; reciprocal map/place and route-stop integrity is validated. |
 | Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
@@ -128,12 +130,13 @@ spellSchools / capabilities / abilities / companions
 | Shops/buy/sell | playable | Wallet/inventory transactions. |
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
-| Ecology/species/populations | playable | Deterministic habitat/population hooks. |
-| Gathering sources | playable | Place/tool/time/capacity/provenance. |
+| Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
+| Gathering sources | playable | 41 current sources with place/tool/time/capacity/provenance, including managed Crownfields crops. |
 | Production | playable | 29 current processing/crafting/cooking/salvage definitions with mastery and provenance. |
 | Redstone forge chain | playable | Existing iron/sunstone/Ridge Ibex inputs feed flux, tempered iron, rivets, work gear, and caravan hardware through existing forge/work authorities. |
 | Elderwood hunt-timber chain | playable | Barkboar hide recovery, Duskcap, amber resin and hardwood feed tanned hide, bindings, resin products, field gear and trail-repair stock through existing tannery/woodshop/work authorities. |
 | Starfen marshcraft chain | playable | Reed fiber, Bluekelp, Marrowleaf, Bogberry and Mirecrest Heron recovery feed cord, extract, medicine, waterproofing and survey gear through existing production/work authorities. |
+| Crownfields agricultural loop | playable | Managed crops move through timed gathering/provenance to the Grange exchange, safe recovery, and scheduled produce wagon; livestock products remain deferred to a deliberate husbandry model. |
 | Workstations | playable | Locality/home context. |
 | Home/storage/workshop | playable | Durable life infrastructure. |
 | Cultivation/stewardship | playable | Multi-day Sweetroot crop using canonical world time. |
@@ -144,8 +147,8 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 19 runtime seed NPCs; census counts 20 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Nine current schedules derive availability from fictional time. |
+| NPC seed definitions | integrated | 22 runtime seed NPCs; census counts 23 named NPC definitions across canonical sources. |
+| NPC recurring schedules | playable | Eleven current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |

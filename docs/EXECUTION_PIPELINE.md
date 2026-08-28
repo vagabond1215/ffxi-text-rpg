@@ -5,82 +5,87 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
-Codename:      Ecology & Geography Integrity
-
-latest main product merge: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
-PR #390:                  MERGED
-post-merge Check #1291:   PASS
-tests:                     728/728
+Codename:      Crownfields Agricultural Lowlands
 ```
 
-## Resume sequence
+## Active bounded unit
 
-1. Read `AGENTS.md`.
-2. Read `docs/THREAD_HANDOFF.md`.
-3. Read this file and `docs/ROADMAP.md`.
-4. Read `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for current world/ecology integrity findings.
-5. Read `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` only when world-edge expansion is relevant.
-6. Verify current `main` and latest hosted Check.
-7. Inspect only files relevant to the next bounded unit.
+**PR #392 — Crownfields Agricultural Lowlands**
 
-## Current status
+Pre-promotion implementation Check #1294 / run `33199542741` passed **731/731 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
 
-No implementation unit is active after PR #390.
+## Immediate integration sequence
 
-The repository has a clean post-merge baseline and waits for explicit next authorization.
+1. finish Data 46 continuity/document synchronization;
+2. run exact-head hosted Check on PR #392;
+3. require the full gate green;
+4. verify PR mergeable;
+5. merge PR #392;
+6. verify post-merge `main` Check;
+7. if needed, perform a tiny docs-only handoff sync with the actual merge SHA.
 
 ## Current measured census
 
 ```text
-places/localities       29
-named NPCs              20
-shop/service sites      19
-creature definitions    40
-resource sources        35
-canonical items         90
+places/localities       31
+named NPCs              23
+shop/service sites      21
+creature definitions    45
+resource sources        41
+canonical items         96
 recipes/processes       29
 abilities/techniques    41
 quests/contracts        18
 companions               1
-transport services       4
-routes                    7
-NPC schedules            9
-content packs            13
-pack-owned records      374
+transport services       5
+routes                    8
+NPC schedules           11
+content packs           15
+pack-owned records     410
 ```
 
-## Known deferred gaps
+## Gate interpretation
 
-- population-backed hunt encounter discovery;
-- Old Gaol ecology/resource substrate;
-- Timbercross gathering sources;
-- sparse dungeon gathering/salvage;
-- companions remain largest mechanics-scale relative gap.
+Mechanics floors are now satisfied for:
+- places;
+- functional shop/service sites;
+- creature definitions;
+- resource sources;
+- transport services.
 
-These are roadmap inputs, not red CI conditions.
+The overall gate remains NOT READY because major gaps remain in:
+- companions;
+- recipes/processes;
+- abilities/techniques;
+- named NPCs;
+- canonical items;
+- quests/contracts.
 
-## Next decision boundary
+Do not chase those counts with disconnected filler.
+
+## Next decision boundary after Crownfields
 
 Formal roadmap:
-- **Packet E — Gate A integration/census audit**.
+- Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- **Crownfields** is ranked next.
+- Great Mere is the next ranked zone.
 
-Ecology gameplay:
-- **population-backed hunting encounter bridge** is a strong bounded candidate.
+Ecology systems:
+- population-backed hunting remains a strong player-loop gap.
 
-Do not auto-start any of them without an explicit work order.
+Agricultural depth:
+- milling, cooking, flax processing, livestock husbandry and crop stewardship are valid future Crownfields follow-ons, but should use existing authorities or deliberately introduce a single canonical husbandry model.
+
+No next unit is auto-started.
 
 ## Validation
-
-Every landing candidate:
 
 ```bash
 npm run audit:repo
@@ -89,19 +94,3 @@ npm run census
 npm run benchmark
 npm run benchmark:sample
 ```
-
-Use `npm run hardening` for lifecycle-sensitive/release work.
-
-## Invariants carried forward
-
-- one authority per domain;
-- one fictional world clock;
-- Pack v2 owns placement/dependencies, not duplicate definitions;
-- canonical map/place references must be reciprocal;
-- canonical routes must not be shadowed by contradictory direct edges;
-- player-enterable places need an outbound path unless trapping is deliberate;
-- service stops may be express ordered subsequences;
-- regional ecology must pass canonical registry validation;
-- resource provenance must resolve end-to-end;
-- do not make passive wildlife aggressive merely to simulate hunting;
-- Game State changes only for new durable serialized state.

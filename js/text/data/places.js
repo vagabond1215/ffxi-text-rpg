@@ -166,6 +166,35 @@ export const PLACES = Object.freeze({
         restrictions: [{ type: 'minLevel', value: 5, reason: 'The fortified camp is too dangerous to approach safely without more experience and preparation.' }],
     }),
 
+    crownfields: place({
+        id: 'crownfields',
+        name: 'Crownfields',
+        type: 'wilderness',
+        region: 'Crownfields',
+        nation: 'Thornwall',
+        mapId: 'map-crownfields',
+        dangerLevel: 1,
+        description: 'Thornwall’s broad southern agricultural lowlands: hedged grain strips, pasture, orchard belts, hay meadows, drainage ditches, farm tracks, and scattered coppices feeding the capital’s granaries and markets.',
+        services: [],
+        coordinateSystem: grid(10, 8, { x: 5, y: 4 }),
+        spawnRules: [],
+        restrictions: [],
+    }),
+    crownfieldsGrange: place({
+        id: 'crownfields-grange',
+        name: 'Crownfields Grange',
+        type: 'travelHub',
+        region: 'Crownfields',
+        nation: 'Thornwall',
+        mapId: 'map-crownfields',
+        dangerLevel: 0,
+        description: 'A compact farm-market hamlet of granaries, a watermill, produce sheds, guild rooms, wagon yards, and common kitchens where the surrounding farms consolidate goods for Thornwall.',
+        services: ['shops', 'guilds', 'travel', 'lodging', 'stabling'],
+        coordinateSystem: grid(5, 5, { x: 2, y: 2 }),
+        spawnRules: [],
+        restrictions: [],
+    }),
+
     slatewaterFoothills: place({
         id: 'slatewater-foothills',
         name: 'Slatewater Foothills',
@@ -466,6 +495,9 @@ export const ZONE_CONNECTIONS = Object.freeze([
         restrictions: [{ type: 'minLevel', value: 5, reason: 'The fortified camp is too dangerous to approach safely without more experience and preparation.' }],
     }),
     connection('redfang-camp', 'west-elderwood', { mode: 'walk', travelSeconds: 90, departFrom: { x: 2, y: 5 }, arriveAt: { x: 4, y: 1 } }),
+
+    connection('crownfields-grange', 'crownfields', { mode: 'walk', travelSeconds: 45, departFrom: { x: 2, y: 4 }, arriveAt: { x: 5, y: 1 }, directions: ['south'] }),
+    connection('crownfields', 'crownfields-grange', { mode: 'walk', travelSeconds: 45, departFrom: { x: 5, y: 1 }, arriveAt: { x: 2, y: 4 }, directions: ['north'] }),
 
     connection('slatewater-waylodge', 'slatewater-foothills', { mode: 'walk', travelSeconds: 45, departFrom: { x: 2, y: 4 }, arriveAt: { x: 5, y: 4 }, directions: ['south'] }),
     connection('slatewater-foothills', 'slatewater-waylodge', { mode: 'walk', travelSeconds: 45, departFrom: { x: 5, y: 4 }, arriveAt: { x: 2, y: 4 }, directions: ['north'] }),
