@@ -33,7 +33,7 @@ Ecology & Geography Integrity           COMPLETE / MERGED
 
 ### Crownfields Agricultural Lowlands
 
-**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`; post-merge main Check #1308 / run `33200236952` is the final baseline verification.**
+**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`; post-merge main Check #1308 / run `33200236952` passed the full hosted gate.**
 
 Purpose:
 - give Thornwall a believable food-producing hinterland;
