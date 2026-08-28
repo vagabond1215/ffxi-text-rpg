@@ -1,7 +1,7 @@
 import { getPlace } from './places.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const REGIONAL_ECOLOGY_VERSION = 2;
+export const REGIONAL_ECOLOGY_VERSION = 3;
 
 const FAMILIES = Object.freeze({
     'family-barkboar': family('family-barkboar', 'Barkboar', ['beast', 'omnivore', 'forest']),
@@ -25,6 +25,11 @@ const FAMILIES = Object.freeze({
     'family-waterfowl': family('family-waterfowl', 'Waterfowl', ['bird', 'omnivore', 'wetland']),
     'family-mussel': family('family-mussel', 'Freshwater Mussel', ['mollusk', 'filter-feeder', 'aquatic']),
     'family-spider': family('family-spider', 'Spider', ['arachnid', 'predator', 'ruin']),
+    'family-courser': family('family-courser', 'Steppe Courser', ['beast', 'herbivore', 'steppe']),
+    'family-steppe-wolf': family('family-steppe-wolf', 'Steppe Wolf', ['beast', 'carnivore', 'steppe']),
+    'family-bustard': family('family-bustard', 'Bustard', ['bird', 'ground-bird', 'steppe']),
+    'family-locust': family('family-locust', 'Locust', ['insect', 'herbivore', 'steppe']),
+    'family-steppe-kite': family('family-steppe-kite', 'Steppe Kite', ['bird', 'predator', 'steppe']),
 });
 
 const SPECIES = Object.freeze({
@@ -114,6 +119,26 @@ const SPECIES = Object.freeze({
     'species-archive-threadspider': species({
         id: 'species-archive-threadspider', name: 'Archive Threadspider', familyId: 'family-spider', ecosystem: 'arachnid',
         habitatTags: ['ruin', 'dry-chamber'], behavior: behavior('territorial', ['vibration'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-coppergrass-dun-courser': species({
+        id: 'species-coppergrass-dun-courser', name: 'Dun Courser', familyId: 'family-courser', ecosystem: 'beast',
+        habitatTags: ['temperate-steppe', 'open-grassland'], behavior: behavior('wary', ['sight', 'sound'], 'herd', []), encounterTemplateId: null,
+    }),
+    'species-coppergrass-slateback-wolf': species({
+        id: 'species-coppergrass-slateback-wolf', name: 'Slateback Wolf', familyId: 'family-steppe-wolf', ecosystem: 'beast',
+        habitatTags: ['temperate-steppe', 'dry-swale'], behavior: behavior('territorial', ['sight', 'sound'], 'pack', ['family-courser']), encounterTemplateId: null,
+    }),
+    'species-coppergrass-tallcrest-bustard': species({
+        id: 'species-coppergrass-tallcrest-bustard', name: 'Tallcrest Bustard', familyId: 'family-bustard', ecosystem: 'bird',
+        habitatTags: ['open-grassland', 'seasonal-basin'], behavior: behavior('wary', ['sight', 'sound'], 'flock', []), encounterTemplateId: null,
+    }),
+    'species-coppergrass-copperwing-locust': species({
+        id: 'species-coppergrass-copperwing-locust', name: 'Copperwing Locust', familyId: 'family-locust', ecosystem: 'insect',
+        habitatTags: ['temperate-steppe', 'seedgrass'], behavior: behavior('passive', ['vibration'], 'swarm', []), encounterTemplateId: null,
+    }),
+    'species-coppergrass-stormglass-kite': species({
+        id: 'species-coppergrass-stormglass-kite', name: 'Stormglass Kite', familyId: 'family-steppe-kite', ecosystem: 'bird',
+        habitatTags: ['open-grassland', 'wind-ridge'], behavior: behavior('wary', ['sight'], 'solitary', ['family-locust']), encounterTemplateId: null,
     }),
 });
 
@@ -211,6 +236,30 @@ const POPULATIONS = Object.freeze({
         id: 'population-sunken-archive-threadspiders', speciesId: 'species-archive-threadspider', placeId: 'sunken-archive',
         biomeTags: ['ruin', 'dry-chamber'], capacity: 4, density: 'moderate', rarity: 'uncommon', respawn: regeneration(1, 3600),
     }),
+    'population-coppergrass-dun-coursers': population({
+        id: 'population-coppergrass-dun-coursers', speciesId: 'species-coppergrass-dun-courser', placeId: 'coppergrass-steppe',
+        biomeTags: ['temperate-steppe', 'open-grassland'], capacity: 8, density: 'moderate', rarity: 'common', respawn: regeneration(1, 3600),
+    }),
+    'population-coppergrass-slateback-wolves': population({
+        id: 'population-coppergrass-slateback-wolves', speciesId: 'species-coppergrass-slateback-wolf', placeId: 'coppergrass-steppe',
+        biomeTags: ['temperate-steppe', 'dry-swale'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 7200),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 17, endHour: 24 }],
+    }),
+    'population-coppergrass-tallcrest-bustards': population({
+        id: 'population-coppergrass-tallcrest-bustards', speciesId: 'species-coppergrass-tallcrest-bustard', placeId: 'coppergrass-steppe',
+        biomeTags: ['open-grassland', 'seasonal-basin'], capacity: 6, density: 'moderate', rarity: 'common', respawn: regeneration(1, 2700),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 6, endHour: 18 }],
+    }),
+    'population-coppergrass-copperwing-locusts': population({
+        id: 'population-coppergrass-copperwing-locusts', speciesId: 'species-coppergrass-copperwing-locust', placeId: 'coppergrass-steppe',
+        biomeTags: ['temperate-steppe', 'seedgrass'], capacity: 12, density: 'high', rarity: 'common', respawn: regeneration(3, 1800),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 8, endHour: 20 }],
+    }),
+    'population-coppergrass-stormglass-kites': population({
+        id: 'population-coppergrass-stormglass-kites', speciesId: 'species-coppergrass-stormglass-kite', placeId: 'coppergrass-steppe',
+        biomeTags: ['open-grassland', 'wind-ridge'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 5400),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 7, endHour: 18 }],
+    }),
 });
 
 const SOURCES = Object.freeze({
@@ -307,6 +356,26 @@ const SOURCES = Object.freeze({
         biomeTags: ['clear-pool', 'reed-channel'], action: 'gather', outputItemId: 'item-starfen-moonlotus-blossom', capacity: 2,
         regeneration: regeneration(1, 21600), requiredToolTags: ['cutting'], proficiencyId: 'gathering', minProficiency: 2,
         appearanceConditions: [{ type: 'timeWindow', startHour: 18, endHour: 24 }],
+    }),
+    'source-coppergrass-groundpea-patch': source({
+        id: 'source-coppergrass-groundpea-patch', name: 'Groundpea Patch', type: 'flora', placeId: 'coppergrass-steppe',
+        biomeTags: ['open-grassland', 'loess-soil'], action: 'forage', outputItemId: 'item-coppergrass-groundpea', capacity: 8,
+        regeneration: regeneration(2, 3600), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-coppergrass-prairie-flax-stand': source({
+        id: 'source-coppergrass-prairie-flax-stand', name: 'Prairie Flax Stand', type: 'flora', placeId: 'coppergrass-steppe',
+        biomeTags: ['temperate-steppe', 'seasonal-basin'], action: 'gather', outputItemId: 'item-coppergrass-prairie-flax', capacity: 8,
+        regeneration: regeneration(2, 3600), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-coppergrass-crimson-madder-bed': source({
+        id: 'source-coppergrass-crimson-madder-bed', name: 'Crimson Madder Bed', type: 'flora', placeId: 'coppergrass-steppe',
+        biomeTags: ['dry-swale', 'deep-loam'], action: 'forage', outputItemId: 'item-coppergrass-crimson-madder', capacity: 4,
+        regeneration: regeneration(1, 7200), requiredToolTags: [], proficiencyId: 'foraging', minProficiency: 1,
+    }),
+    'source-coppergrass-windglass-gravel': source({
+        id: 'source-coppergrass-windglass-gravel', name: 'Windglass Gravel', type: 'mineral', placeId: 'coppergrass-steppe',
+        biomeTags: ['stony-fan', 'seasonal-wash'], action: 'gather', outputItemId: 'item-coppergrass-windglass-agate', capacity: 3,
+        regeneration: regeneration(1, 14400), requiredToolTags: ['digging'], proficiencyId: 'gathering', minProficiency: 2,
     }),
 });
 
