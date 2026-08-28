@@ -21,7 +21,7 @@ The strategic risk remains authored-content breadth and throughput. Packets A–
 
 ## Current census
 
-Validated Ironspine Data 49 implementation-freeze checkpoint:
+Validated Ironspine Data 49 merged checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, Data 47 processing, Great Mere Data 48, the population-backed hunting bridge, and Ironspine Data 49 have been implemented. Ironspine is in final promotion/landing.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, Data 47 processing, Great Mere Data 48, the population-backed hunting bridge, and Ironspine Data 49 are complete and merged through Data 49.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -321,7 +321,7 @@ Permanent records:
 
 ## Population-backed Hunting & Ironspine Highlands — Data 49
 
-**Status: IMPLEMENTED / VERSION-DOC PROMOTION on PR #401.**
+**Status: COMPLETE / MERGED. Population hunting landed through PR #400; Ironspine/Data 49 promotion landed through PR #402 at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`. Promoted exact-head Check #1381 / run `33217086478` passed 753/753 tests and the full hosted gate.**
 
 The enabling hunting bridge first connected persistent passive/wary/territorial populations to deliberate encounters without turning wildlife into ordinary aggro spawns. Encounter start does not consume ecology; victory consumes one population unit exactly once and existing body recovery remains authoritative.
 
@@ -346,7 +346,7 @@ Data 49 adds 3 places, 3 NPCs, 6 species/populations, 6 gathering sources, 11 ne
 
 Food-safety presentation is now explicitly period-framed: internal hazard metadata remains precise, but ordinary player-facing prose describes practical outcomes and preparations such as raw game causing sickness and salting/smoking/stewing making it fit for use.
 
-Implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`; Check #1368 / run `33215878907` passed Repository Audit, **753/753 tests**, Census, Benchmark 3, and Benchmark Sample.
+Implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`; Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed Repository Audit, **753/753 tests**, Census, Benchmark 3, and Benchmark Sample.
 
 Permanent profile: `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`.
 
