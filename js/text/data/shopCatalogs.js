@@ -29,6 +29,16 @@ export const SHOP_CATALOGS = Object.freeze({
         item('woodsman-hatchet', 'Woodsman Hatchet', 92, ['equipment', 'tool', 'weapon', 'axe', 'woodcutting', 'field']),
         item('digging-spade', 'Digging Spade', 84, ['equipment', 'tool', 'digging', 'field']),
     ]),
+    'poi-slatewater-waylodge-exchange': shop('poi-slatewater-waylodge-exchange', 'Slatewater Field Exchange', 'A guild-backed road counter that buys ordinary sellable field finds and stocks food, water, first aid, gathering tools, and durable travel gear.', [
+        item('loaf-of-bread', 'Loaf of Bread', 12, ['food', 'travel']),
+        item('travel-ration', 'Travel Ration', 20, ['food', 'travel']),
+        item('flask-of-water', 'Flask of Water', 8, ['consumable', 'travel']),
+        item('simple-bandage', 'Simple Bandage', 20, ['consumable', 'healing']),
+        item('field-knife', 'Field Knife', 74, ['equipment', 'tool', 'weapon', 'dagger', 'cutting', 'field']),
+        item('woodsman-hatchet', 'Woodsman Hatchet', 96, ['equipment', 'tool', 'weapon', 'axe', 'woodcutting', 'field']),
+        item('digging-spade', 'Digging Spade', 88, ['equipment', 'tool', 'digging', 'field']),
+        item('road-cloak', 'Road Cloak', 96, ['equipment', 'armor', 'back', 'travel']),
+    ]),
     'poi-bastok-markets-brunhilde': shop('poi-bastok-markets-brunhilde', 'Market Ring Armorer', 'Protective gear made for foundry crews, caravans, and civic guards.', [
         item('bronze-subligar', 'Bronze Subligar', 90, ['armor', 'legs', 'starter']),
         item('bronze-mittens', 'Bronze Mittens', 62, ['armor', 'hands', 'starter']),
