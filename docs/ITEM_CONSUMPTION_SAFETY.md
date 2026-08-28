@@ -103,12 +103,26 @@ Regression coverage ensures:
 - processed Great Mere foods preserve input provenance;
 - carried-item/search information exposes safety labels.
 
+## World-facing framing
+
+The schema is an authoring and validation contract, not an assertion that ordinary characters possess modern germ theory or laboratory food-safety language.
+
+Hearth & Horizon should present food knowledge as practical late-medieval/fantasy experience:
+
+- fresh game or fish may make a person ill if eaten raw or poorly cooked;
+- boiling, roasting, stewing, smoking, salting, pickling, drying, purging, washing, and leaching are understood preparations because generations of cooks, hunters, healers, and travelers know their consequences;
+- foul smell, slime, rot, bitterness, discoloration, insects, or other obvious spoilage signs may be described directly;
+- known poisonous or irritating plants may be treated as traditional fieldcraft, herbal, guild, household, or local knowledge;
+- technical internal hazard identifiers such as `pathogenRisk` must not force NPCs or ordinary player-facing prose to sound like modern microbiology.
+
+Fantasy knowledge may exceed historical Earth practice when the setting supports it through magic, alchemy, monsters, supernatural senses, or established scholarly traditions, but the default voice remains experiential and period-appropriate.
+
 ## Presentation
 
 The character information surface can display labels such as:
 
 - `Safe to consume as-is`
-- `Process before eating: raw food-safety risk; clean, cook`
+- `Process before eating: can cause sickness if eaten raw; clean, cook`
 - `Process before eating: toxic if eaten raw; slice, leach, boil`
 - `Not food`
 
