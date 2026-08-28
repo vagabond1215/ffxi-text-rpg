@@ -32,7 +32,7 @@ import {
     getProductionDefinition,
     validateProductionCatalog,
 } from './productionCatalog.js';
-import { getProductionItem } from './productionItems.js';
+import { getProductionItem, validateProductionItemCatalog } from './productionItems.js';
 import { getCanonicalResourceItem, validateResourceItemRegistry } from './resourceItemRegistry.js';
 import {
     getRoute,
@@ -69,6 +69,7 @@ const CONNECTED_CATALOG_VALIDATORS = Object.freeze([
     ['ecologyRegistry', validateEcologyRegistry],
     ['resourceItemRegistry', validateResourceItemRegistry],
     ['productionCatalog', validateProductionCatalog],
+    ['productionItems', validateProductionItemCatalog],
     ['commitmentCatalog', validateCommitmentCatalog],
     ['capabilityCatalog', validateCapabilityCatalog],
     ['abilityCatalog', validateAbilityCatalog],
