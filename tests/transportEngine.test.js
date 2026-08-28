@@ -27,8 +27,8 @@ import { stopTravel } from '../js/text/systems/navigationEngine.js';
 
 test('canonical route and transport catalogs cross-validate known places, maps, stops, and modes', () => {
     assert.deepEqual(validateRouteCatalog(), []);
-    assert.ok(listRoutes().length >= 7);
-    assert.ok(listTransportServices().length >= 3);
+    assert.ok(listRoutes().length >= 8);
+    assert.ok(listTransportServices().length >= 5);
 
     const journey = getServiceJourney('service-crown-forge-caravan', 'thornwall-rivergate', 'brasshaven-iron-quay');
     assert.equal(journey.route.id, 'route-crown-forge-caravan-road');
@@ -77,6 +77,25 @@ test('Crown-Forge road now crosses Slatewater while preserving the established t
     assert.equal(localJourney.durationSeconds, 14400);
     assert.equal(localJourney.distanceYalms, 36000);
     assert.equal(localJourney.segmentCount, 2);
+});
+
+test('Southfield Farm Road connects Thornwall to Crownfields with scheduled produce transport', () => {
+    const leg = findRouteLeg('thornwall-southgate', 'crownfields-grange', { mode: 'wagon' });
+    const journey = getServiceJourney('service-crownfields-produce-wagon', 'thornwall-southgate', 'crownfields-grange');
+
+    assert.ok(leg);
+    assert.equal(leg.route.id, 'route-thornwall-crownfields-road');
+    assert.equal(leg.durationSeconds, 3600);
+    assert.equal(leg.distanceYalms, 9000);
+    assert.ok(leg.hazardTags.includes('seasonal-mud'));
+    assert.ok(leg.hazardTags.includes('livestock-crossing'));
+
+    assert.ok(journey);
+    assert.equal(journey.segmentCount, 1);
+    assert.equal(journey.durationSeconds, 3600);
+    assert.equal(journey.distanceYalms, 9000);
+    assert.equal(journey.service.mode, 'wagon');
+    assert.equal(getNextServiceDeparture('service-crownfields-produce-wagon', 0), 5400);
 });
 
 test('service departures are deterministic from canonical world seconds', () => {
