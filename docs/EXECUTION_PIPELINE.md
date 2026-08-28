@@ -22,13 +22,13 @@ Do **not** redo Phase 0.4–0.8 discovery, persistence classification, Pack-v2 i
 ## Current contract
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
