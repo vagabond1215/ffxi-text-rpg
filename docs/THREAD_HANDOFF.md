@@ -61,6 +61,8 @@ The exact gameplay/content implementation freeze is:
 ee81069defe59a55979bc262ea595c3c9df42f40
 ```
 
+A first promoted-head Check after documentation synchronization found one stale `pipeline.test.js` version-description assertion still expecting Product 0.9.100.3 / Data 42. That assertion block was corrected without gameplay/data changes; this rewritten handoff is therefore the true final repository-file write before the rerun.
+
 Pre-promotion hosted evidence:
 
 ```text
