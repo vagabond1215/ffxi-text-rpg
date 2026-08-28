@@ -19,23 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Frozen Packet D gameplay/content checkpoint before version/document synchronization:
-
-```text
-ee81069defe59a55979bc262ea595c3c9df42f40
-```
-
-Data advances because stable canonical spell/capability IDs, shared Pack-v2 ownership, commitment-reference validation, and connected Starfen authored content changed. Game State remains 14 because the packet reuses existing durable character capability, ability runtime, inventory/provenance, production/work, schedule, commitment/relationship, and fictional-time authorities.
+Current Data 44 world/content expansion includes the merged ecology/Coppergrass work plus the active Slatewater Foothills & Waylodge tranche. Game State remains 14 because these additions reuse existing place/map, route/transport, shop, campaign recovery, NPC schedule, ecology/gathering, inventory/provenance, and Pack-v2 authorities. No new durable mount authority is introduced; mount and pack-animal care at the Waylodge is currently service content layered on travel/logistics.
 
 ## Core authority rules
 
