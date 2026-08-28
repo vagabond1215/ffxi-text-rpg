@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity audit are merged. Crownfields is implemented and validated on PR #392, promoted to Data 46 pending final exact-head integration.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, and Crownfields are merged.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -222,7 +222,7 @@ Permanent findings and deferred gaps are in `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AU
 
 ## Crownfields Agricultural Lowlands — Data 46
 
-**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / FINAL PR #392 INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Post-merge main Check #1308 / run `33200236952` is the final baseline verification.**
 
 Crownfields adds a fourth distinct regional economic/ecological shape:
 
