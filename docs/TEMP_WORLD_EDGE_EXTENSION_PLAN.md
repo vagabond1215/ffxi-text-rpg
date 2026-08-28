@@ -110,7 +110,7 @@ Measured census: 31 places, 23 NPCs, 21 service sites, 45 creatures, 41 resource
 
 **No later numbered item is automatically authorized by completion of Item 2.** Great Mere is the next ranked geography candidate.
 
-### 3. Great Mere — IMPLEMENTED / VALIDATED ON PR #396
+### 3. Great Mere — MERGED / VALIDATED
 
 Placement: east or southeast of Starfen as a deep-freshwater body connected to the wetland system.
 
@@ -130,7 +130,7 @@ Priority ecology: multiple fish families, predatory fish, freshwater crustaceans
 
 The user explicitly authorized continuing with the next recommended zone, **Great Mere**, with a standing requirement that new zones receive plausible flora/fauna, resources/catches/drops, connected processing/recipes, and explicit food-safety labeling.
 
-Implemented on PR #396:
+Implemented on PR #396 and merged at `e327181fcd1e93579f335045a817de1fdae842a5`:
 
 1. Great Mere Westshore, Merewatch Landing, and boat-only Reedcrown Isle;
 2. Chart of the Great Mere;
@@ -145,7 +145,7 @@ Implemented on PR #396:
 11. Bitterflag Rhizome as the reference raw-toxic food with an actual slice/leach/boil detoxification chain;
 12. recipes/processes rise past the mechanics floor.
 
-Pre-promotion repaired hosted Check #1334 / run `33209084881` passed Repository Audit, **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+Final exact PR-head Check #1348 / run `33212388143` and post-merge main Check #1349 / run `33212454122` passed Repository Audit, **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample.
 
 Measured census: 34 places, 26 NPCs, 23 service sites, 52 creatures, 50 resource sources, 158 items, 81 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 10 routes, 13 schedules, 18 packs, and 564 owned records.
 
