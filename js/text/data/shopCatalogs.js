@@ -1,4 +1,4 @@
-export const SHOP_CATALOG_VERSION = 2;
+export const SHOP_CATALOG_VERSION = 3;
 
 export const SHOP_CATALOGS = Object.freeze({
     'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Southgate Arms', 'Practical arms for road wardens, travelers, and apprentices.', [
@@ -40,6 +40,15 @@ export const SHOP_CATALOGS = Object.freeze({
         item('item-crownfields-dyers-woad', 'Dyer’s Woad', 36, ['material', 'regional', 'dye', 'luxury']),
         item('field-knife', 'Field Knife', 72, ['equipment', 'tool', 'cutting', 'field']),
         item('digging-spade', 'Digging Spade', 82, ['equipment', 'tool', 'digging', 'field']),
+    ]),
+    'poi-great-mere-fishery-exchange': shop('poi-great-mere-fishery-exchange', 'Merewatch Fishery Exchange', 'A lakeside exchange buying sellable catches and shore goods while stocking food-safe prepared fish, fresh produce, and practical fishing supplies.', [
+        item('item-great-mere-silver-perch', 'Great Mere Silver Perch', 18, ['material', 'regional', 'fish', 'requires-cooking']),
+        item('item-great-mere-lake-cress', 'Lake Cress', 11, ['material', 'regional', 'food', 'safe-raw']),
+        item('item-great-mere-lake-rush-stem', 'Great Mere Lake Rush', 10, ['material', 'regional', 'fiber']),
+        item('item-great-mere-smoked-perch-ration', 'Smoked Perch Ration', 34, ['food', 'prepared', 'safe-ready']),
+        item('item-great-mere-pickled-pike', 'Pickled Reed Pike', 46, ['food', 'prepared', 'safe-ready']),
+        item('marsh-rod', 'Marsh Fishing Rod', 106, ['equipment', 'tool', 'fishing', 'field']),
+        item('field-knife', 'Field Knife', 74, ['equipment', 'tool', 'cutting', 'field']),
     ]),
     'poi-slatewater-waylodge-exchange': shop('poi-slatewater-waylodge-exchange', 'Slatewater Field Exchange', 'A guild-backed road counter that buys ordinary sellable field finds and stocks food, water, first aid, gathering tools, and durable travel gear.', [
         item('loaf-of-bread', 'Loaf of Bread', 12, ['food', 'travel']),

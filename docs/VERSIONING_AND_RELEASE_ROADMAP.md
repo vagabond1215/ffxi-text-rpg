@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 47 | canonical authored-data, stable-ID, pack ownership and validation contract |
+| Data | 48 | canonical authored-data, stable-ID, item-safety, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -322,6 +322,87 @@ No new durable player/world state family is introduced. Data 47 reuses:
 
 Intermediate goods are ordinary canonical inventory items. They do not require a separate crafting queue, luxury inventory, recipe-state family, or processing clock.
 
+### `0.9.100.9` — Great Mere Freshwater Economy & Food Safety
+
+This revision adds the third ranked world-edge zone and establishes a standing authored consumption-safety contract for canonical food-capable items.
+
+```text
+Product       0.9.100.8 -> 0.9.100.9
+Package       0.9.100   -> 0.9.100
+Data          47        -> 48
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 48
+
+Stable canonical authored data expands with:
+
+- Great Mere Westshore, Merewatch Landing, and Reedcrown Isle;
+- `map-great-mere`;
+- East Fen Shore Track and Reedport-Mere Waterway;
+- Great Mere Ferry;
+- five new freshwater ecology families, seven species/populations, and declared reuse of canonical turtle/mussel families;
+- nine gathering/fishing sources and nine exact-provenance raw resources;
+- three Merewatch NPCs and two schedules;
+- 22 production transformations producing 23 outputs;
+- two Great Mere Pack-v2 ownership graphs;
+- explicit item consumption metadata covering direct, process-required, non-food, pathogen-risk, raw-irritant, and raw-toxic states;
+- player-information presentation of consumption-safety labels;
+- retrofitted safety metadata for existing canonical food-tagged resource and production items.
+
+Data 48 also repairs nearby economic depth:
+- Starfen Reedgrain gains milling and fishcake use;
+- Starfen Fen Mussel gains a safe cooked dish;
+- Slatewater Pitch Pine Resin gains tarred-net-line use.
+
+The repaired pre-promotion census is:
+
+```text
+places/localities       34
+named NPCs              26
+shop/service sites      23
+creature definitions    52
+resource sources        50
+canonical items        158
+recipes/processes       81
+abilities/techniques    41
+quests/contracts        18
+companions               1
+transport services       6
+
+routes                   10
+spell schools             4
+capabilities             44
+NPC schedules            13
+regional/shared packs    18
+pack-owned records      564
+runtime seed NPCs        25
+runtime seed enemies     13
+```
+
+Recipes/processes now exceed the mechanics floor. Raw-resource production utilization is 45/53 and all 12 current luxury raws have production demand.
+
+#### Why Game State stays 14
+
+No new durable mutable player/world fact is introduced.
+
+The new consumption profile is static canonical item-definition metadata. Great Mere reuses existing:
+
+- place/map/route/transport state;
+- ecology populations and gathering work;
+- inventory/container authority;
+- item provenance;
+- production/work tasks and work proficiency;
+- workstation resolution;
+- shops and campaign recovery;
+- NPC schedules and fictional world time;
+- player-information presentation;
+- Pack-v2 ownership/dependencies.
+
+No hunger, nutrition, spoilage, poison timer, food queue, lake-state family, or second inventory/production authority is added.
+
 ## Persistence history
 
 Relevant late history:
@@ -344,6 +425,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.6           no Game State change; Data 44 -> 45
 0.9.100.7           no Game State change; Data 45 -> 46
 0.9.100.8           no Game State change; Data 46 -> 47
+0.9.100.9           no Game State change; Data 47 -> 48
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -367,15 +449,15 @@ spellSchools / capabilities / abilities / companions
 Key current system/catalog versions include:
 
 ```text
-contentCatalogRegistry 0.2.0
+contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.7.0
+regionalContentPacks   0.8.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.3.0
 commitments            0.7.0
-productionCatalog      0.5.0
-productionItems        0.7.0
+productionCatalog      0.6.0
+productionItems        0.8.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -396,7 +478,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The Data 47 ingredient/luxury processing implementation head passed hosted Check #1311 / run `33202128019` with **736/736 tests**. The final promoted PR head passed Check #1326 / run `33202537431`; PR #394 merged at `fb7a4ec0145c6072aac21525cb15e931125fc327`, and post-merge main Check #1327 / run `33202596523` passed the full hosted gate.
+The Great Mere repaired pre-promotion implementation head passed hosted Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #396 merge.
 
 The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 

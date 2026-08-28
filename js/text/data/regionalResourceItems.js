@@ -11,7 +11,8 @@ const DEFINITIONS = Object.freeze({
     'item-elderwood-duskcap': resource({
         id: 'item-elderwood-duskcap', name: 'Duskcap Mushroom', tags: ['flora', 'fungus', 'food', 'medicine'], valueGil: 10,
         sourceId: 'source-west-elderwood-duskcap-ring', placeId: 'west-elderwood', action: 'forage',
-        sinks: ['consume', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'rawIrritant', preparation: ['cook'], notes: 'Cook before eating; the raw mushroom is irritating and difficult to digest.' },
+        sinks: ['craftIngredient', 'trade'],
     }),
     'item-redstone-iron-ore': resource({
         id: 'item-redstone-iron-ore', name: 'Redstone Iron Ore', tags: ['mineral', 'ore', 'iron', 'metal'], valueGil: 14,
@@ -26,21 +27,25 @@ const DEFINITIONS = Object.freeze({
     'item-starfen-bluekelp': resource({
         id: 'item-starfen-bluekelp', name: 'Bluekelp', tags: ['flora', 'aquatic', 'food', 'medicine'], valueGil: 8,
         sourceId: 'source-west-starfen-bluekelp-pool', placeId: 'west-starfen', action: 'gather',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Tender fronds are safe raw after rinsing and may also be cooked or reduced.' },
         sinks: ['consume', 'craftIngredient', 'trade'],
     }),
     'item-starfen-bogberry': resource({
         id: 'item-starfen-bogberry', name: 'Bogberry', tags: ['flora', 'berry', 'food', 'dye'], valueGil: 7,
         sourceId: 'source-west-starfen-bogberry-brake', placeId: 'west-starfen', action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Ripe bogberries are safe to eat as gathered.' },
         sinks: ['consume', 'craftIngredient', 'trade'],
     }),
     'item-elderwood-hazel-nut': resource({
         id: 'item-elderwood-hazel-nut', name: 'Elderwood Hazel Nut', tags: ['flora', 'nut', 'food', 'oilseed', 'staple'], valueGil: 6,
         sourceId: 'source-east-elderwood-hazel-coppice', placeId: 'east-elderwood', action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Shelled ripe nuts are safe to eat as gathered.' },
         sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
     }),
     'item-elderwood-crabapple': resource({
         id: 'item-elderwood-crabapple', name: 'Elderwood Crabapple', tags: ['flora', 'fruit', 'food', 'preserve', 'staple'], valueGil: 5,
         sourceId: 'source-east-elderwood-crabapple-thicket', placeId: 'east-elderwood', action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Tart but safe to eat raw; commonly cooked or preserved.' },
         sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
     }),
     'item-elderwood-ghost-orchid': resource({
@@ -56,11 +61,13 @@ const DEFINITIONS = Object.freeze({
     'item-redstone-ridge-millet': resource({
         id: 'item-redstone-ridge-millet', name: 'Ridge Millet', tags: ['flora', 'grain', 'food', 'fodder', 'staple'], valueGil: 6,
         sourceId: 'source-north-redstone-ridge-millet-stand', placeId: 'north-redstone-reach', action: 'gather',
-        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'none', preparation: ['thresh', 'mill-or-cook'], notes: 'Whole field grain is food stock, not ready-to-eat food.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
     'item-redstone-rock-salt': resource({
         id: 'item-redstone-rock-salt', name: 'Redstone Rock Salt', tags: ['mineral', 'salt', 'food', 'preservation', 'staple'], valueGil: 7,
         sourceId: 'source-south-redstone-rock-salt-pan', placeId: 'south-redstone-reach', action: 'gather',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Food-grade salt is safe as a seasoning, though not a meal by itself.' },
         sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
     }),
     'item-redstone-sun-crocus-stigma': resource({
@@ -76,12 +83,14 @@ const DEFINITIONS = Object.freeze({
     'item-starfen-reedgrain': resource({
         id: 'item-starfen-reedgrain', name: 'Starfen Reedgrain', tags: ['flora', 'grain', 'food', 'staple'], valueGil: 5,
         sourceId: 'source-east-starfen-reedgrain-shelf', placeId: 'east-starfen', action: 'gather',
-        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'none', preparation: ['thresh', 'mill', 'cook'], notes: 'Reedgrain must be cleaned and cooked or milled before eating.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
     'item-starfen-fen-mussel': resource({
         id: 'item-starfen-fen-mussel', name: 'Fen Mussel', tags: ['shellfish', 'mollusk', 'food', 'protein', 'staple'], valueGil: 8,
         sourceId: 'source-west-starfen-fen-mussel-bed', placeId: 'west-starfen', action: 'fish',
-        sinks: ['consume', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'pathogenRisk', preparation: ['clean', 'cook'], notes: 'Freshwater mussels should be thoroughly cooked before eating.' },
+        sinks: ['craftIngredient', 'trade'],
     }),
     'item-starfen-indigo-iris-petal': resource({
         id: 'item-starfen-indigo-iris-petal', name: 'Indigo Iris Petal', tags: ['flora', 'flower', 'dye', 'textile', 'luxury'], valueGil: 30,
@@ -96,7 +105,8 @@ const DEFINITIONS = Object.freeze({
     'item-coppergrass-groundpea': resource({
         id: 'item-coppergrass-groundpea', name: 'Coppergrass Groundpea', tags: ['flora', 'pulse', 'food', 'protein', 'staple'], valueGil: 6,
         sourceId: 'source-coppergrass-groundpea-patch', placeId: 'coppergrass-steppe', action: 'forage',
-        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'rawIrritant', preparation: ['soak-or-grind', 'cook'], notes: 'Field groundpeas are intended for cooking; raw pulses can cause digestive irritation.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
     'item-coppergrass-prairie-flax': resource({
         id: 'item-coppergrass-prairie-flax', name: 'Prairie Flax', tags: ['flora', 'fiber', 'oilseed', 'textile', 'staple'], valueGil: 7,
@@ -116,6 +126,7 @@ const DEFINITIONS = Object.freeze({
     'item-slatewater-serviceberry': resource({
         id: 'item-slatewater-serviceberry', name: 'Slatewater Serviceberry', tags: ['flora', 'berry', 'food', 'preserve', 'staple'], valueGil: 6,
         sourceId: 'source-slatewater-serviceberry-brake', placeId: 'slatewater-foothills', action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Ripe berries are safe to eat directly.' },
         sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
     }),
     'item-slatewater-pitch-pine-resin': resource({
@@ -131,6 +142,7 @@ const DEFINITIONS = Object.freeze({
     'item-slatewater-mountain-thyme': resource({
         id: 'item-slatewater-mountain-thyme', name: 'Mountain Thyme', tags: ['flora', 'herb', 'food', 'medicine', 'staple'], valueGil: 7,
         sourceId: 'source-slatewater-mountain-thyme-slope', placeId: 'slatewater-foothills', action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'An edible culinary herb safe to use fresh.' },
         sinks: ['consume', 'craftIngredient', 'trade'],
     }),
     'item-slatewater-silver-lichen': resource({
@@ -146,12 +158,14 @@ const DEFINITIONS = Object.freeze({
     'item-crownfields-crown-rye': resource({
         id: 'item-crownfields-crown-rye', name: 'Crown Rye', tags: ['flora', 'grain', 'food', 'agriculture', 'staple'], valueGil: 5,
         sourceId: 'source-crownfields-crown-rye-strip', placeId: 'crownfields', action: 'gather',
-        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'none', preparation: ['thresh', 'mill', 'cook-or-bake'], notes: 'Harvested rye is grain stock and must be processed before eating.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
     'item-crownfields-field-pea': resource({
         id: 'item-crownfields-field-pea', name: 'Field Pea', tags: ['flora', 'pulse', 'food', 'agriculture', 'staple'], valueGil: 6,
         sourceId: 'source-crownfields-field-pea-row', placeId: 'crownfields', action: 'gather',
-        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'rawIrritant', preparation: ['soak-or-grind', 'cook'], notes: 'Dry field peas are intended for cooking rather than eating raw.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
     'item-crownfields-flax-straw': resource({
         id: 'item-crownfields-flax-straw', name: 'Blue Flax Straw', tags: ['flora', 'fiber', 'textile', 'agriculture', 'staple'], valueGil: 7,
@@ -161,6 +175,7 @@ const DEFINITIONS = Object.freeze({
     'item-crownfields-cider-apple': resource({
         id: 'item-crownfields-cider-apple', name: 'Cider Apple', tags: ['flora', 'fruit', 'food', 'orchard', 'staple'], valueGil: 7,
         sourceId: 'source-crownfields-cider-apple-orchard', placeId: 'crownfields', action: 'gather',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Tart cider apples are safe to eat raw and are commonly pressed or cooked.' },
         sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
     }),
     'item-crownfields-meadow-hay': resource({
@@ -184,7 +199,7 @@ export function listRegionalResourceItems() {
     return Object.values(DEFINITIONS).map((entry) => normalizeItem(entry));
 }
 
-function resource({ id, name, tags, valueGil, sourceId, placeId, action, sinks }) {
+function resource({ id, name, tags, valueGil, sourceId, placeId, action, consumption = null, sinks }) {
     return Object.freeze({
         id,
         name,
@@ -193,6 +208,7 @@ function resource({ id, name, tags, valueGil, sourceId, placeId, action, sinks }
         maxStack: 99,
         valueGil,
         tags: Object.freeze([...tags]),
+        consumption,
         provenance: Object.freeze([Object.freeze({
             type: action === 'mine' || tags.includes('mineral') ? 'mineral' : action === 'fish' ? 'fishing' : 'flora',
             sourceId,

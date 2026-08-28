@@ -62,7 +62,7 @@ test('normalized items expose provenance and sink metadata without removing lega
         sinks: [{ type: 'craftIngredient', targetId: 'recipe-cured-hide' }],
     });
 
-    assert.equal(item.schemaVersion, 3);
+    assert.equal(item.schemaVersion, 4);
     assert.equal(item.source.type, 'legacy-loot-note');
     assert.equal(item.provenance[0].type, 'body');
     assert.equal(item.sinks[0].type, 'craftIngredient');

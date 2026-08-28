@@ -7,48 +7,48 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 ```
 
 The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
 
 ## Current census
 
-Validated Data 47 pre-promotion checkpoint:
+Validated Great Mere Data 48 pre-promotion checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
-| Places/localities | 31 | 10 | ready |
-| Named NPCs | 23 | 50 | 27 |
-| Shop/service sites | 21 | 20 | ready |
-| Creature definitions | 45 | 40 | ready |
-| Resource sources | 41 | 40 | ready |
-| Canonical items | 126 | 200 | 74 |
-| Recipes/processes | 59 | 75 | 16 |
+| Places/localities | 34 | 10 | ready |
+| Named NPCs | 26 | 50 | 24 |
+| Shop/service sites | 23 | 20 | ready |
+| Creature definitions | 52 | 40 | ready |
+| Resource sources | 50 | 40 | ready |
+| Canonical items | 158 | 200 | 42 |
+| Recipes/processes | 81 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
-| Transport services | 5 | 5 | ready |
+| Transport services | 6 | 5 | ready |
 
 Infrastructure coverage:
 
 ```text
-routes                                   8
+routes                                  10
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           11
-regional/shared packs                   16
-pack-owned records                     470
+NPC schedules                           13
+regional/shared packs                   18
+pack-owned records                     564
 pack-owned abilities/capabilities/
   schedules/companions              41/44/11/1
-runtime seed NPCs                       22
+runtime seed NPCs                       25
 runtime seed enemies                    13
 ```
 
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, and the Data 47 ingredient/luxury processing tranche are merged.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, and Data 47 processing are merged. Great Mere Data 48 is active on PR #396.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -267,6 +267,58 @@ Pre-promotion Check #1311 / run `33202128019` passed Repository Audit, **736/736
 
 Permanent design record: `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`.
 
+## Great Mere Freshwater Economy & Food Safety — Data 48
+
+**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #396 FINAL INTEGRATION IN PROGRESS.**
+
+Great Mere adds a distinct freshwater ecology/economy shape:
+
+```text
+Starfen wetland edge
+  -> walkable lake shore
+  -> Merewatch fishing hamlet
+  -> ferry-only Reedcrown Isle
+```
+
+Content graph:
+
+```text
+freshwater fish / crayfish / mussels
+shore herbs / starch roots / rush fiber / pearl
+  -> explicit raw consumption-safety state
+  -> cleaning / detoxification / preservation / cooking
+  -> edible rations/meals + reusable byproducts
+  -> lakecraft / pearl work / trade
+```
+
+Data 48 also establishes the standing rule that food-capable raws declare whether they are directly consumable or require processing and whether the raw state carries pathogen, irritant, or toxic risk.
+
+Measured change:
+
+```text
+places/localities              31 -> 34
+named NPCs                     23 -> 26
+shop/service sites             21 -> 23
+creatures                      45 -> 52
+resource sources               41 -> 50
+canonical items               126 -> 158
+recipes/processes              59 -> 81
+transport services              5 -> 6
+routes                           8 -> 10
+packs                           16 -> 18
+pack-owned records             470 -> 564
+raw production utilization  33/44 -> 45/53
+luxury raw utilization      11/11 -> 12/12
+```
+
+Recipes/processes now exceed the mechanics floor.
+
+Pre-promotion repaired Check #1334 / run `33209084881` passed Repository Audit, **743/743 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent records:
+- `docs/ZONE_PROFILE_GREAT_MERE.md`;
+- `docs/ITEM_CONSUMPTION_SAFETY.md`.
+
 ## Packet E — Gate A integration and census audit
 
 **Status: QUEUED.**
@@ -289,16 +341,16 @@ These are progression bands, never permission to create filler:
 
 | Category | Current | Gate A planning band |
 | --- | ---: | ---: |
-| Named NPCs | 23 | 30+ |
-| Shop/service sites | 21 | 20+ |
-| Creature definitions | 45 | 28+ |
-| Resource sources | 41 | 28+ |
-| Canonical items | 126 | 110+ |
-| Recipes/processes | 59 | 40+ |
+| Named NPCs | 26 | 30+ |
+| Shop/service sites | 23 | 20+ |
+| Creature definitions | 52 | 28+ |
+| Resource sources | 50 | 28+ |
+| Canonical items | 158 | 110+ |
+| Recipes/processes | 81 | 40+ |
 | Abilities/techniques | 41 | 40+ |
 | Quests/contracts | 18 | 18+ |
 | Recruitable companions | 1 | 4 only when authored characters justify them |
-| Transport services | 5 | 5 only when topology justifies them |
+| Transport services | 6 | 5 only when topology justifies them |
 
 ### Qualitative Gate A requirements
 

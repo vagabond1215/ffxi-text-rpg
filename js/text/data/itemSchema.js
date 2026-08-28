@@ -41,7 +41,10 @@ export const ITEM_FLAGS = Object.freeze([
     'chargeBased',
 ]);
 
-export const ITEM_SCHEMA_VERSION = 3;
+export const ITEM_CONSUMPTION_MODES = Object.freeze(['direct', 'processRequired', 'nonFood']);
+export const ITEM_CONSUMPTION_HAZARDS = Object.freeze(['none', 'pathogenRisk', 'rawToxic', 'rawIrritant']);
+
+export const ITEM_SCHEMA_VERSION = 4;
 
 export function normalizeItem(rawItem = {}) {
     const kind = rawItem.kind ?? ITEM_KINDS.MISC;
@@ -65,6 +68,7 @@ export function normalizeItem(rawItem = {}) {
         maxStack,
         valueGil: rawItem.valueGil ?? 0,
         tags: [...(rawItem.tags ?? [])],
+        consumption: normalizeItemConsumption(rawItem.consumption),
         source: rawItem.source ?? null,
         provenance: normalizeProvenance(rawItem.provenance),
         sinks: normalizeItemSinks(rawItem.sinks),
@@ -86,6 +90,60 @@ export function normalizeItem(rawItem = {}) {
         metadata: normalizeMetadata(rawItem.metadata),
         fieldNotes: normalizeFieldNotes(rawItem.fieldNotes),
     };
+}
+
+
+export function normalizeItemConsumption(rawConsumption = null) {
+    const explicit = Boolean(rawConsumption && typeof rawConsumption === 'object' && !Array.isArray(rawConsumption));
+    const raw = explicit ? rawConsumption : {};
+    const mode = ITEM_CONSUMPTION_MODES.includes(raw.mode) ? raw.mode : ITEM_CONSUMPTION_MODES[2];
+    const hazard = ITEM_CONSUMPTION_HAZARDS.includes(raw.hazard) ? raw.hazard : 'none';
+    return {
+        explicit,
+        mode,
+        hazard,
+        preparation: normalizeStringArray(raw.preparation),
+        notes: String(raw.notes ?? ''),
+    };
+}
+
+export function validateItemConsumption(item, options = {}) {
+    const issues = [];
+    const profile = item?.consumption ?? normalizeItemConsumption(null);
+    const tags = new Set(item?.tags ?? []);
+    const foodTagged = tags.has('food');
+
+    if (options.requireExplicitFood !== false && foodTagged && profile.explicit !== true) {
+        issues.push('food-tagged item requires explicit consumption metadata.');
+    }
+    if (!ITEM_CONSUMPTION_MODES.includes(profile.mode)) issues.push(`consumption.mode is unknown: ${profile.mode}.`);
+    if (!ITEM_CONSUMPTION_HAZARDS.includes(profile.hazard)) issues.push(`consumption.hazard is unknown: ${profile.hazard}.`);
+    if (!Array.isArray(profile.preparation)) issues.push('consumption.preparation must be an array.');
+
+    if (profile.mode === 'direct' && profile.hazard !== 'none') {
+        issues.push('direct-consumption item cannot carry a raw hazard.');
+    }
+    if (profile.mode === 'processRequired' && profile.preparation.length === 0) {
+        issues.push('processRequired item requires at least one preparation label.');
+    }
+    if (profile.mode === 'nonFood' && profile.hazard !== 'none') {
+        issues.push('nonFood item should not carry an ingestion hazard.');
+    }
+    return issues;
+}
+
+export function describeItemConsumption(item) {
+    const profile = item?.consumption ?? normalizeItemConsumption(null);
+    if (profile.mode === 'direct') return 'Safe to consume as-is';
+    if (profile.mode === 'nonFood') return 'Not food';
+    const hazard = {
+        pathogenRisk: 'raw food-safety risk',
+        rawToxic: 'toxic if eaten raw',
+        rawIrritant: 'irritating if eaten raw',
+        none: 'preparation required',
+    }[profile.hazard] ?? 'preparation required';
+    const preparation = profile.preparation.length ? `; ${profile.preparation.join(', ')}` : '';
+    return `Process before eating: ${hazard}${preparation}`;
 }
 
 export function normalizeRequirements(rawRequirements = {}) {

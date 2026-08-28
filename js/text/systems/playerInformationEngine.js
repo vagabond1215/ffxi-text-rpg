@@ -1,4 +1,5 @@
 import { getContainerDefinition, listContainerDefinitions } from '../data/inventoryContainers.js';
+import { describeItemConsumption } from '../data/itemSchema.js';
 import { getMap } from '../data/maps.js';
 import { getPlace } from '../data/places.js';
 import { listAbilityAvailability } from './abilityEngine.js';
@@ -113,6 +114,7 @@ function toCarriedItem(state, item, containerId, index) {
         slot,
         equipReady: Boolean(action),
         blocker: slot && !eligibility?.ok ? eligibility?.reason ?? 'Cannot equip now.' : null,
+        consumptionLabel: item.consumption?.explicit ? describeItemConsumption(item) : null,
         action,
     });
 }
@@ -240,7 +242,7 @@ function buildSearchEntries(model) {
     }
     for (const container of model.preparation.containers) {
         for (const item of container.items) {
-            entries.push(searchEntry(`search:${item.id}`, 'Carried', item.name, `${item.quantity} · ${container.label}`, item.action, [item.kind, container.label]));
+            entries.push(searchEntry(`search:${item.id}`, 'Carried', item.name, `${item.quantity} · ${container.label}${item.consumptionLabel ? ` · ${item.consumptionLabel}` : ''}`, item.action, [item.kind, container.label, item.consumptionLabel]));
         }
     }
     for (const capability of model.capabilities.entries) {

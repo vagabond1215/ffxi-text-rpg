@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -28,61 +28,68 @@ Coppergrass Steppe                       COMPLETE / MERGED
 Slatewater Foothills & Waylodge         COMPLETE / MERGED
 Ecology & Geography Integrity           COMPLETE / MERGED
 Crownfields Agricultural Lowlands        COMPLETE / MERGED
+Regional Ingredient & Luxury Processing COMPLETE / MERGED
 ```
 
 ## Active bounded unit
 
-### Regional Ingredient & Luxury Processing
+### Great Mere Freshwater Economy & Food Safety
 
-**Status: COMPLETE / MERGED through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`; final PR Check #1326 and post-merge main Check #1327 passed.**
+**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #396 FINAL INTEGRATION IN PROGRESS.**
 
 Purpose:
-- make intermediate crafting ingredients first-class rather than skipping raw -> finished;
-- deepen existing regional raw-resource demand before adding another large gatherable tranche;
-- convert all 11 existing luxury raws from trade-only potential into real production inputs;
-- add cross-regional textile, perfume, gem, veneer, ceramic/glaze, food, and reference-artifact chains.
+- extend Starfen into a believable large freshwater lake with shore/boat boundary semantics;
+- give the zone plausible lake flora/fauna and working fishery ecology;
+- connect every new preparation-required Great Mere food raw to a real safe processing path;
+- establish explicit direct/process-required/toxic/irritant/pathogen consumption metadata;
+- deepen cross-regional preservation, lakecraft, and food processing without new parallel authorities.
 
-Permanent design record:
+Permanent profiles:
 
-`docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`
+- `docs/ZONE_PROFILE_GREAT_MERE.md`
+- `docs/ITEM_CONSUMPTION_SAFETY.md`
 
-Pre-promotion Check #1311 / run `33202128019`: **736/736 tests**, full gate green.
+Pre-promotion repaired Check #1334 / run `33209084881`: **743/743 tests**, full gate green.
 
-Depth result:
+Measured change from Data 47:
 
 ```text
-raw resource utilization    15/44 -> 33/44
-luxury raw utilization       0/11 -> 11/11
-canonical items                96 -> 126
-recipes/processes              29 -> 59
+places/localities              31 -> 34
+creatures                      45 -> 52
+resource sources               41 -> 50
+canonical items               126 -> 158
+recipes/processes              59 -> 81
+transport services              5 -> 6
+raw production utilization  33/44 -> 45/53
+luxury raw utilization      11/11 -> 12/12
 ```
 
 ## Current content census
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 31 | 10 | reached |
-| Named NPCs | 23 | 50 | 27 short |
-| Shop/service sites | 21 | 20 | reached |
-| Creature definitions | 45 | 40 | reached |
-| Resource sources | 41 | 40 | reached |
-| Canonical items | 126 | 200 | 74 short |
-| Recipes/processes | 59 | 75 | 16 short |
+| Places/localities | 34 | 10 | reached |
+| Named NPCs | 26 | 50 | 24 short |
+| Shop/service sites | 23 | 20 | reached |
+| Creature definitions | 52 | 40 | reached |
+| Resource sources | 50 | 40 | reached |
+| Canonical items | 158 | 200 | 42 short |
+| Recipes/processes | 81 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
-| Transport services | 5 | 5 | reached |
+| Transport services | 6 | 5 | reached |
 
 Supplemental:
 
 ```text
-routes                         8
+routes                        10
 spell schools                  4
 capabilities                  44
-NPC schedules                 11
-regional/shared packs         16
-pack-owned records           470
-runtime seed NPCs             22
+NPC schedules                 13
+regional/shared packs         18
+pack-owned records           564
+runtime seed NPCs             25
 runtime seed enemies          13
 ```
 
@@ -115,8 +122,10 @@ Implemented:
 1. Slatewater Foothills;
 2. Crownfields.
 
-Next ranked candidates:
+Active / validated on PR #396:
 3. Great Mere;
+
+Next ranked candidates:
 4. Ironspine Highlands;
 5. Emberwash Badlands;
 6. Gloamwood;
@@ -133,7 +142,7 @@ The sequence is planning, not automatic authorization.
 
 - population-backed passive/wary hunting encounters;
 - companion breadth;
-- production/recipe breadth: Data 47 closes most of the gap, leaving 16 recipes/processes to the mechanics floor;
+- production/recipe breadth: Great Mere pushes recipes/processes past the mechanics floor; future recipes should deepen utility rather than chase count;
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
@@ -149,6 +158,7 @@ The sequence is planning, not automatic authorization.
 - Pack v2 owns placement/dependencies, not duplicate definitions;
 - universal magic remains shared/character-owned;
 - managed animal products should wait for a real husbandry source model;
+- new zone food-capable raws require explicit consumption safety plus plausible processing paths;
 - Game State changes only for new durable serialized state.
 
 ## Validation contract

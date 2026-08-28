@@ -250,6 +250,7 @@ function renderCharacterView(model) {
                 <div class="nearby-list">${container.items.length ? container.items.map((item) => `
                     <article class="nearby-card">
                         <div><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.quantity)} · ${escapeHtml(formatType(item.kind))}</small></div>
+                        ${item.consumptionLabel ? `<p class="muted item-consumption-label">${escapeHtml(item.consumptionLabel)}</p>` : ''}
                         ${item.blocker ? `<p class="muted">${escapeHtml(item.blocker)}</p>` : ''}
                         ${informationActionButton(item.action)}
                     </article>

@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 32;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 33;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -321,6 +321,104 @@ export const SLATEWATER_WAYLODGE_PACK = createContentPack({
     },
 });
 
+export const GREAT_MERE_MEREWATCH_PACK = createContentPack({
+    id: 'pack-great-mere-merewatch',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['great-mere'], steward: 'mistmere-merewatch' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-starfen-opening',
+        'pack-starfen-ecology-breadth',
+        'pack-great-mere-freshwater-ecology',
+        'pack-regional-ingredient-luxury-processing',
+        'pack-redstone-ecology-breadth',
+        'pack-slatewater-foothills-ecology',
+    ],
+    metadata: {
+        name: 'Great Mere & Merewatch Pack',
+        notes: 'Freshwater shore, boat travel, fishery services, food-safety-aware processing, preservation, lakecraft, pearl work, and cross-regional cuisine around Merewatch Landing.',
+    },
+    records: {
+        places: [{ id: 'merewatch-landing', catalogRef: true }],
+        routes: [
+            { id: 'route-starfen-great-mere-shore', catalogRef: true },
+            { id: 'route-mistmere-great-mere-waterway', catalogRef: true },
+        ],
+        transportServices: [{ id: 'service-great-mere-ferry', catalogRef: true }],
+        npcs: [
+            { id: 'npc-great-mere-essel-wren', catalogRef: true },
+            { id: 'npc-great-mere-jory-tamm', catalogRef: true },
+            { id: 'npc-great-mere-nara-veil', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-great-mere-essel-wren', catalogRef: true },
+            { id: 'schedule-great-mere-jory-tamm', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-great-mere-perch-fillet', catalogRef: true },
+            { id: 'item-great-mere-smoked-perch-ration', catalogRef: true },
+            { id: 'item-great-mere-pike-fillet', catalogRef: true },
+            { id: 'item-great-mere-preservation-brine', catalogRef: true },
+            { id: 'item-great-mere-pickled-pike', catalogRef: true },
+            { id: 'item-great-mere-crayfish-tail-meat', catalogRef: true },
+            { id: 'item-great-mere-thyme-crayfish-pot', catalogRef: true },
+            { id: 'item-great-mere-mussel-meat', catalogRef: true },
+            { id: 'item-great-mere-mussel-shell', catalogRef: true },
+            { id: 'item-great-mere-cress-mussel-broth', catalogRef: true },
+            { id: 'item-great-mere-arrowroot-starch', catalogRef: true },
+            { id: 'item-great-mere-arrowroot-cake', catalogRef: true },
+            { id: 'item-great-mere-bitterflag-starch', catalogRef: true },
+            { id: 'item-great-mere-fisher-biscuit', catalogRef: true },
+            { id: 'item-great-mere-rush-cord', catalogRef: true },
+            { id: 'item-great-mere-tarred-net-line', catalogRef: true },
+            { id: 'item-great-mere-polished-cloudwater-pearl', catalogRef: true },
+            { id: 'item-great-mere-pearl-net-needle', catalogRef: true },
+            { id: 'item-starfen-reedgrain-meal', catalogRef: true },
+            { id: 'item-great-mere-reedgrain-fishcake', catalogRef: true },
+            { id: 'item-starfen-fen-mussel-cress-pot', catalogRef: true },
+            { id: 'item-great-mere-shell-lime', catalogRef: true },
+            { id: 'item-great-mere-fish-creel', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-great-mere-clean-perch', catalogRef: true },
+            { id: 'cook-great-mere-smoked-perch', catalogRef: true },
+            { id: 'process-great-mere-clean-pike', catalogRef: true },
+            { id: 'process-great-mere-preservation-brine', catalogRef: true },
+            { id: 'cook-great-mere-pickled-pike', catalogRef: true },
+            { id: 'process-great-mere-clean-crayfish', catalogRef: true },
+            { id: 'cook-great-mere-thyme-crayfish', catalogRef: true },
+            { id: 'process-great-mere-shuck-mussel', catalogRef: true },
+            { id: 'cook-great-mere-cress-mussel-broth', catalogRef: true },
+            { id: 'process-great-mere-arrowroot-starch', catalogRef: true },
+            { id: 'cook-great-mere-arrowroot-cake', catalogRef: true },
+            { id: 'process-great-mere-detox-bitterflag', catalogRef: true },
+            { id: 'cook-great-mere-fisher-biscuit', catalogRef: true },
+            { id: 'process-great-mere-rush-cord', catalogRef: true },
+            { id: 'craft-great-mere-tarred-net-line', catalogRef: true },
+            { id: 'process-great-mere-polish-pearl', catalogRef: true },
+            { id: 'craft-great-mere-pearl-net-needle', catalogRef: true },
+            { id: 'process-starfen-reedgrain-meal', catalogRef: true },
+            { id: 'cook-great-mere-reedgrain-fishcake', catalogRef: true },
+            { id: 'cook-starfen-fen-mussel-cress-pot', catalogRef: true },
+            { id: 'process-great-mere-shell-lime', catalogRef: true },
+            { id: 'craft-great-mere-fish-creel', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-great-mere-fishery-exchange',
+            name: 'Merewatch Fishery Exchange',
+            placeId: 'merewatch-landing',
+            keeperNpcId: 'npc-great-mere-essel-wren',
+            stockItemIds: [
+                'item-great-mere-silver-perch',
+                'item-great-mere-lake-cress',
+                'item-great-mere-lake-rush-stem',
+                'item-great-mere-smoked-perch-ration',
+                'item-great-mere-pickled-pike',
+            ],
+        }],
+    },
+});
+
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
@@ -452,6 +550,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     CROWNFIELDS_GRANGE_PACK,
     REGIONAL_INGREDIENT_LUXURY_PACK,
     SLATEWATER_WAYLODGE_PACK,
+    GREAT_MERE_MEREWATCH_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
