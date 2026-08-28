@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.6
+Product:       0.9.100.7
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          45
+Data:          46
 Benchmark:     3
-Codename:      Ecology & Geography Integrity
+Codename:      Crownfields Agricultural Lowlands
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair. A final exact-head Check remains required after version/document synchronization before PR #390 merge.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 45 adds **no persistence or lifecycle owner**. The audit changes canonical authored geography and validation contracts while reusing existing place/map, route/transport, ecology, provenance, and Pack-v2 authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Data 46 adds **no persistence or lifecycle owner**. Crownfields reuses place/map, route/transport, ecology/population, gathering/provenance, shop, NPC schedule, campaign recovery, and Pack-v2 authorities. No husbandry state or managed-animal product authority is introduced. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -120,6 +120,10 @@ Fixtures are validation data only and must never contribute to canonical content
 - Pack v2 ownership/dependencies and the default census remain valid.
 
 The first Elderwood integration run found no product-behavior regression: its six failures were stale pack/count assertions caused by intentional content growth. Those assertions were updated without weakening validators or runtime behavior.
+
+### Crownfields agricultural geography proof
+
+The pre-promotion Crownfields implementation head passed hosted Check #1294 / run `33199542741` with **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample. Focused coverage proves managed crop gathering → exact provenance → Grange sale → provision purchase → safe recovery, plus Southfield Farm Road/produce-wagon topology and Data 45 geography-integrity invariants. A final exact-head Check is required after Data 46 version/document synchronization before PR #392 merges.
 
 ### Ecology/geography integrity proof
 
