@@ -17,18 +17,18 @@ Authority order remains:
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
 Phase:         0.9 in progress
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Runtime:       Node >=24
 ```
 
-Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and uses PR-based integration for cross-file scale packets. Packets A–C are merged. Packet D is implemented, validated, promoted, and pending final exact-head Check + PR landing.
+Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active. Packets A–D are merged. A separately authorized Location & Area Profiles pass is implemented, validated, promoted, and pending final exact-head Check + PR landing.
 
 ## Fast restart protocol
 
@@ -174,21 +174,56 @@ Benchmark:    3 unchanged
 
 Data 43 advances because stable canonical magic IDs/ownership, capability/ability catalogs, commitment-reference validation, Starfen marshcraft outputs/processes/NPCs/schedules/contracts, and the child regional pack changed. Game State remains 14 because no new durable player/world authority was introduced.
 
+### Location & Area Profiles — authorized supporting-data pass
+
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL CHECK AND LANDING.**
+
+Frozen implementation/data SHA:
+
+```text
+ba156a416026835ccc483b8644d134a8d3d062d9
+```
+
+Pre-promotion hosted evidence:
+
+```text
+Check:              33149570962
+Job:                98778174178
+Repository Audit:   PASS
+Tests:              725/725 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
+```
+
+The pass provides 26 place profiles, five settlement aggregates, three region aggregates, and a world population summary. It composes existing place/ecology authority rather than creating a second geography or species database.
+
+Demographic semantics:
+
+```text
+resident population
++ typical transient/workforce presence
+= typical present population
+```
+
+Settlement, region, and world totals are derived from place profiles. Flora/fauna distinguish local canonical records from regional context; missing local ecology remains visible rather than fabricated.
+
+Version decision:
+
+```text
+Product:      0.9.100.5
+Package:      0.9.100 unchanged
+Data:         44
+Game State:   14 unchanged
+Account Save: 5 unchanged
+Benchmark:    3 unchanged
+```
+
 ### Next bounded packet — Packet E Gate A integration/census audit
 
 **Status: QUEUED / NOT STARTED.**
 
-Do not auto-start Packet E merely because Packet D lands. Its purpose is to review the combined Gate A graph, census, remaining target gaps, and integration evidence without inventing filler. The ordinary gate remains:
-
-```text
-npm run audit:repo
-npm test
-npm run census
-npm run benchmark
-npm run benchmark:sample
-```
-
-Run `npm run hardening` only if the integration review changes lifecycle-sensitive authority or explicitly requires it.
+This profile pass does not auto-start Packet E.
 
 # Phase 0.9 progression envelope
 
