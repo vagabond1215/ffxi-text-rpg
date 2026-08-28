@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, and Crownfields are merged. **Regional Ingredient & Luxury Processing is merged** through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`. Final PR Check #1326 and post-merge main Check #1327 both passed the full hosted gate with **736/736 tests**.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, and Data 47 processing are merged. The active bounded unit is **PR #396 — Great Mere Freshwater Economy & Food Safety**; its repaired pre-promotion head passed the full hosted gate with **743/743 tests**.
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 47 adds 30 production transformations and 30 production outputs, with processed ingredients/components treated as first-class canonical items. It raises raw-resource production utilization from 15/44 to 33/44 and luxury-raw utilization from 0/11 to 11/11 while reusing existing inventory, provenance, work, proficiency, workstation, and Pack-v2 authorities. Game State remains 14.
+Data 48 adds Great Mere Westshore, Merewatch Landing, boat-only Reedcrown Isle, two canonical routes, the Great Mere Ferry, seven freshwater species, nine resource sources/raws, and 22 transformations producing 23 outputs. It also introduces explicit item-consumption safety metadata so food raws distinguish direct consumption, preparation requirements, pathogen risk, raw irritation, and raw toxicity. Game State remains 14 because these are authored definitions using existing authorities.
 
 ## Product direction
 
@@ -73,38 +73,38 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 47 pre-promotion census:
+Validated Data 48 pre-promotion census:
 
 ```text
-places/localities       31 / mechanics floor 10
-named NPCs              23 / 50
-shop/service sites      21 / 20
-creatures               45 / 40
-resource sources        41 / 40
-canonical items        126 / 200
-recipes/processes       59 / 75
+places/localities       34 / mechanics floor 10
+named NPCs              26 / 50
+shop/service sites      23 / 20
+creatures               52 / 40
+resource sources        50 / 40
+canonical items        158 / 200
+recipes/processes       81 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       5 / 5
+transport services       6 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                                8
+routes                               10
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        11
-regional/shared content packs        16
-pack-owned records                   470
+NPC schedules                        13
+regional/shared content packs        18
+pack-owned records                   564
 pack-owned abilities/capabilities/
   schedules/companions            41/44/11/1
-runtime seed NPCs                    22
+runtime seed NPCs                    25
 runtime seed enemies                 13
 ```
 
-The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, and transport services meet their mechanics floors. Recipes are now only 16 short and items 74 short; companions remain the largest relative gap. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, recipes/processes, and transport services now meet their mechanics floors. Items are 42 short; companions remain the largest relative gap, with abilities, NPC breadth, and quests also materially short. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
@@ -127,11 +127,11 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, explicit item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Data 47 processing is merged. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Great Mere** remains the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. Great Mere is the active PR #396 geography/economy tranche. After it lands, **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Ironspine Highlands** becomes the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
@@ -144,11 +144,13 @@ Future magic expansion must preserve the universal/shared ownership rule. Region
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md` for Data 47 production-depth state
-9. `docs/ZONE_PROFILE_CROWNFIELDS.md` for the agricultural region
-10. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
-11. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
-12. relevant architecture/runtime/tests for the active pass
+8. `docs/ZONE_PROFILE_GREAT_MERE.md` for the active freshwater region
+9. `docs/ITEM_CONSUMPTION_SAFETY.md` for the standing food-safety item contract
+10. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md` for Data 47 production-depth state
+11. `docs/ZONE_PROFILE_CROWNFIELDS.md` for the agricultural region
+12. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
+13. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
+14. relevant architecture/runtime/tests for the active pass
 
 Repository evidence beats conversation memory.
 
