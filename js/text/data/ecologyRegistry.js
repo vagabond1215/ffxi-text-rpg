@@ -39,10 +39,10 @@ export function validateEcologyRegistry() {
         ...validateRegionalEcologyExpansion().map((issue) => `[regional] ${issue}`),
     ];
     const collections = [
-        ['family', listCanonicalEcologyFamilies()],
-        ['species', listCanonicalSpecies()],
-        ['population', listCanonicalPopulations()],
-        ['source', listCanonicalGatheringSources()],
+        ['family', [...listEcologyFamilies(), ...listRegionalEcologyFamilies()]],
+        ['species', [...listSpecies(), ...listRegionalSpecies()]],
+        ['population', [...listPopulations(), ...listRegionalPopulations()]],
+        ['source', [...listGatheringSources(), ...listRegionalGatheringSources()]],
     ];
     for (const [label, records] of collections) {
         const ids = new Set();
