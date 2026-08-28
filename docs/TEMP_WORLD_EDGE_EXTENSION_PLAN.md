@@ -151,7 +151,7 @@ Measured census: 34 places, 26 NPCs, 23 service sites, 52 creatures, 50 resource
 
 **No later numbered item is automatically authorized by completion of Item 3. Ironspine Highlands becomes the next ranked geography candidate after Great Mere lands.**
 
-### 4. Ironspine Highlands
+### 4. Ironspine Highlands — MERGED / VALIDATED
 
 Placement: north of North Redstone Reach.
 
@@ -166,6 +166,31 @@ Access:
 Habitation: sparse prospector camps, mining survey lodge, high-pass watchpost, herder shelters; no city required.
 
 Priority ecology/resources: bears, lynx-like cats, pikas/marmots, mountain sheep/goats, eagles/grouse, conifers, lichens, alpine medicine, wool/fur, high-altitude minerals.
+
+## Item 4 implementation result
+
+The user explicitly authorized continuing with the next recommended zone, **Ironspine Highlands**, after first completing the population-backed hunting bridge.
+
+Implemented through PR #400 (hunting bridge) and PR #402 (Ironspine/Data 49), with Ironspine merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`:
+
+1. Ironspine Lower Pass, High-Pass Watch, and High Meadow establish a sparse alpine/subalpine region north of North Redstone Reach;
+2. a maintained lower pass road supports walking, mounts, and wagons, while the upper High Trail supports only walking/mounts;
+3. broad cliff/scree bands remain non-walkable except through authored route corridors;
+4. the High-Pass Watch provides a survey exchange, warden desk, common hearth/sleeping space, and sheltered animal yard at the wagon limit;
+5. six alpine species/populations reuse established regional families rather than duplicating taxonomy;
+6. Snowhorn Ibex, Cliff Bear, and Froststep Lynx use population-backed deliberate hunting rather than forced generic aggression;
+7. encounter start does not deplete ecology; victory consumes exactly one population unit and existing defeated-body recovery remains authoritative;
+8. six gathering sources plus hunted-body recovery provide eleven exact-provenance raw/body resources;
+9. thirteen transformations/outputs connect those materials to preserved provisions, leather/fur work, salves, survey instruments, bedding, and cold-weather gear;
+10. every new Ironspine raw/body resource has intentional production demand;
+11. food-safety metadata remains explicit, but player-facing language uses practical late-medieval/fantasy preparation knowledge such as raw game causing sickness and salting/smoking/stewing making it fit for use;
+12. Game State remains 14 because no new durable state family was added.
+
+Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed Repository Audit, **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
+Measured Data 49 census: 37 places, 29 NPCs, 25 service sites, 58 creatures, 56 resource sources, 182 items, 94 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 12 routes, 15 schedules, 20 packs, and 630 owned records.
+
+**No later numbered item is automatically authorized by completion of Item 4. Emberwash Badlands is now the next ranked geography candidate.**
 
 ### 5. Emberwash Badlands
 
