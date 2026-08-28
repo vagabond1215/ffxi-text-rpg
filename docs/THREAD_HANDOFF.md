@@ -18,25 +18,20 @@ Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
-## Current integration state
-
-Active PR: **#392 — Crownfields agricultural lowlands**
-
-Base main:
-
-`9876721e218b5b256a8963221250fe4896ad8f05`
-
-The implementation head before Data 46/version-document synchronization passed hosted Check **#1294 / run `33199542741`**:
+## Current main checkpoint
 
 ```text
-Repository Audit: PASS
-Tests:            731/731
-Content Census:   PASS
-Benchmark 3:      PASS
-Benchmark Sample: PASS
+Crownfields merge: 738faa5813e4aca30950b0d787f1209ae9a3d917
+PR #392:           MERGED
+PR Check #1307:   PASS / run 33200172961
+main Check #1308: PASS / run 33200236952
 ```
 
-A final exact-head Check is still required after the Data 46 continuity updates before PR #392 merges.
+The implementation is merged and post-merge main verification is green. This docs-only handoff branch records the final landed state.
+
+## Crownfields landed state
+
+The pre-promotion implementation head passed Check #1294 / run `33199542741` with 731/731 tests and the full gate. The final promoted/documented PR head passed Check #1307 / run `33200172961`.
 
 ## Recently completed sequence
 
@@ -45,7 +40,7 @@ A final exact-head Check is still required after the Data 46 continuity updates 
 - PR #389: Slatewater Foothills & Waylodge;
 - PR #390: Ecology & Geography Integrity;
 - PR #391: post-audit continuity sync;
-- PR #392: Crownfields — active.
+- PR #392: Crownfields — merged.
 
 ## Crownfields implementation
 
@@ -120,7 +115,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` remains the temporary world-edge plan.
 
-Slatewater is merged/audited. Crownfields is now the active/implemented second zone.
+Slatewater and Crownfields are merged/audited.
 
 Next ranked zone after Crownfields: **Great Mere**.
 
@@ -130,7 +125,7 @@ That ranking is planning only and does not auto-authorize Great Mere.
 
 Packet E — **Gate A integration/census audit** — remains queued and not started.
 
-After Crownfields lands, the next work order should explicitly choose among:
+The next work order should explicitly choose among:
 - Packet E;
 - Great Mere or another authorized geography tranche;
 - population-backed hunting encounter integration;

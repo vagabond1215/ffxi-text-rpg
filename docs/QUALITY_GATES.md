@@ -123,7 +123,7 @@ The first Elderwood integration run found no product-behavior regression: its si
 
 ### Crownfields agricultural geography proof
 
-The pre-promotion Crownfields implementation head passed hosted Check #1294 / run `33199542741` with **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample. Focused coverage proves managed crop gathering → exact provenance → Grange sale → provision purchase → safe recovery, plus Southfield Farm Road/produce-wagon topology and Data 45 geography-integrity invariants. A final exact-head Check is required after Data 46 version/document synchronization before PR #392 merges.
+The pre-promotion Crownfields implementation head passed hosted Check #1294 / run `33199542741` with **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample. The final promoted PR head passed Check #1307 / run `33200172961`. PR #392 merged at `738faa5813e4aca30950b0d787f1209ae9a3d917`; post-merge main Check #1308 / run `33200236952` passed the full hosted gate.
 
 ### Ecology/geography integrity proof
 

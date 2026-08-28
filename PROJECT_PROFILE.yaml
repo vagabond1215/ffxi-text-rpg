@@ -21,24 +21,28 @@ authority:
   crownfields_profile: docs/ZONE_PROFILE_CROWNFIELDS.md
   slatewater_profile: docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
 git:
-  current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/crownfields-agricultural-lowlands
-  active_pull_request: 392
-  base_main_sha: 9876721e218b5b256a8963221250fe4896ad8f05
-  pre_promotion_check: 33199542741
-  pre_promotion_check_number: 1294
-  pre_promotion_result: success-731-of-731-tests-census-benchmark-and-sample
-  final_exact_head_check_required: true
+  current_normal_work: awaiting-next-bounded-unit
+  latest_product_merge_sha: 738faa5813e4aca30950b0d787f1209ae9a3d917
+  latest_product_pull_request: 392
+  latest_product_pr_check: 33200172961
+  latest_product_pr_check_number: 1307
+  latest_product_pr_check_result: success
+  latest_product_post_merge_check: 33200236952
+  latest_product_post_merge_check_number: 1308
+  latest_product_post_merge_check_result: success-731-of-731-tests-census-benchmark-and-sample
+  previous_integrity_merge_sha: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: crownfields-agricultural-lowlands
-  current_bounded_unit_status: implementation-validated-version-and-continuity-sync-in-progress
+  latest_bounded_unit: crownfields-agricultural-lowlands
+  latest_bounded_unit_status: complete-merged-and-post-merge-green
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: great-mere
   next_world_edge_candidate_status: planning-only-not-auto-authorized
+  ecology_system_candidate: population-backed-hunting
+  ecology_system_candidate_status: planning-only-not-auto-authorized
 validation:
   repository_audit: npm run audit:repo
   tests: npm test

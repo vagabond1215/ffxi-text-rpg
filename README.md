@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity pass are merged. The active bounded unit is **PR #392 — Crownfields Agricultural Lowlands**, promoted to Data 46 after its implementation head passed the full hosted gate.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity pass are merged. **Crownfields Agricultural Lowlands is merged** through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Its post-merge main Check #1308 / run `33200236952` passed the full hosted gate with 731/731 tests.
 
 ```text
 Product:       0.9.100.7
@@ -131,7 +131,7 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Crownfields is the active validated world/content tranche on PR #392. After it lands, **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Great Mere** becomes the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. Crownfields is merged. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Great Mere** is the next ranked world-edge candidate. Population-backed hunting also remains a strong ecology-system candidate. None is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
