@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth + Coppergrass merged; Slatewater implementation/validation complete on PR #389 pending final exact-head integration.**
+**Status: ecology breadth, Coppergrass, and Slatewater are merged. The subsequent ecology/geography integrity audit is active on PR #390 and promoted to Data 45.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -204,6 +204,21 @@ See:
 - `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
 The temporary world-edge sequence is planning only and does not auto-authorize the next zone.
+
+## Ecology & Geography Integrity Audit — Data 45
+
+**Status: IMPLEMENTED / FINAL PR #390 INTEGRATION IN PROGRESS.**
+
+This bounded repair followed the Slatewater merge and does not increase content census volume. It:
+- removes stale direct travel edges that competed with canonical routes;
+- repairs accidental no-exit places and ordinary gate reciprocity;
+- strengthens reciprocal map/place and route/service topology validation;
+- closes duplicate-ID validator blind spots;
+- brings regional ecology validation to foundation parity;
+- makes Pack-v2 ecology catalog references canonical across foundation + regional data;
+- adds end-to-end ecology/geography integrity regression coverage.
+
+Permanent findings and deferred gaps are in `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`.
 
 ## Packet E — Gate A integration and census audit
 
