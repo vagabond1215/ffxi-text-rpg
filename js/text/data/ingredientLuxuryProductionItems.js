@@ -7,24 +7,28 @@ const DEFINITIONS = Object.freeze({
         id: 'item-crownfields-rye-flour', name: 'Crown Rye Flour', kind: ITEM_KINDS.MATERIAL,
         tags: ['food', 'grain', 'flour', 'ingredient', 'crownfields'], valueGil: 14,
         sourceId: 'process-crownfields-rye-flour', action: 'process',
+        consumption: { mode: 'processRequired', hazard: 'none', preparation: ['cook-or-bake'], notes: 'Raw flour is a cooking ingredient, not ready-to-eat food.' },
         sinks: ['craftIngredient', 'processInput', 'trade'],
     }),
     'item-crownfields-rye-loaf': item({
         id: 'item-crownfields-rye-loaf', name: 'Crown Rye Hearth Loaf', kind: ITEM_KINDS.CONSUMABLE,
         tags: ['food', 'bread', 'meal', 'cooked', 'crownfields'], valueGil: 28,
         sourceId: 'cook-crownfields-rye-loaf', action: 'craft',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Baked bread; safe to eat as-is.' },
         sinks: ['consume', 'trade'],
     }),
     'item-crownfields-pea-meal': item({
         id: 'item-crownfields-pea-meal', name: 'Field Pea Meal', kind: ITEM_KINDS.MATERIAL,
         tags: ['food', 'pulse', 'meal', 'ingredient', 'crownfields'], valueGil: 15,
         sourceId: 'process-crownfields-pea-meal', action: 'process',
+        consumption: { mode: 'processRequired', hazard: 'none', preparation: ['cook'], notes: 'Ground pulse meal must be cooked before eating.' },
         sinks: ['craftIngredient', 'processInput', 'trade'],
     }),
     'item-crownfields-herbed-pea-pottage': item({
         id: 'item-crownfields-herbed-pea-pottage', name: 'Herbed Field Pea Pottage', kind: ITEM_KINDS.CONSUMABLE,
         tags: ['food', 'meal', 'pulse', 'cooked', 'crownfields'], valueGil: 32,
         sourceId: 'cook-crownfields-herbed-pea-pottage', action: 'craft',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Fully cooked meal; safe to eat as served.' },
         sinks: ['consume', 'trade'],
     }),
     'item-crownfields-flax-thread': item({
@@ -55,12 +59,14 @@ const DEFINITIONS = Object.freeze({
         id: 'item-crownfields-apple-must', name: 'Pressed Cider Apple Must', kind: ITEM_KINDS.MATERIAL,
         tags: ['food', 'fruit', 'pressed', 'ingredient', 'crownfields'], valueGil: 16,
         sourceId: 'process-crownfields-apple-must', action: 'process',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Fresh pressed apple must is food-safe as-is and can also be fermented or cooked.' },
         sinks: ['craftIngredient', 'processInput', 'trade'],
     }),
     'item-crownfields-cider-vinegar': item({
         id: 'item-crownfields-cider-vinegar', name: 'Crownfields Cider Vinegar', kind: ITEM_KINDS.MATERIAL,
         tags: ['food', 'vinegar', 'preservation', 'ingredient', 'crownfields'], valueGil: 27,
         sourceId: 'cook-crownfields-cider-vinegar', action: 'craft',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Food-safe vinegar intended mainly as seasoning, pickling liquid, or recipe input.' },
         sinks: ['craftIngredient', 'processInput', 'trade'],
     }),
 
@@ -200,7 +206,7 @@ export function listIngredientLuxuryProductionItems() {
     return Object.values(DEFINITIONS).map((entry) => normalizeItem(entry));
 }
 
-function item({ id, name, kind, tags, valueGil, sourceId, action, sinks }) {
+function item({ id, name, kind, tags, valueGil, sourceId, action, consumption = null, sinks }) {
     return Object.freeze({
         id,
         name,
@@ -209,6 +215,7 @@ function item({ id, name, kind, tags, valueGil, sourceId, action, sinks }) {
         maxStack: 99,
         valueGil,
         tags: Object.freeze([...tags]),
+        consumption,
         provenance: Object.freeze([Object.freeze({
             type: 'crafting',
             sourceId,
