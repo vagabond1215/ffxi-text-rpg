@@ -46,7 +46,7 @@ Benchmark:     3
 Codename:      Great Mere Freshwater Economy & Food Safety
 ```
 
-The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair. A final exact-head Check remains required after version/document synchronization before PR #390 merge.
+The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
 
 ## Persistence/lifecycle
 
@@ -150,7 +150,7 @@ The pre-promotion implementation head passed Check #1311 / run `33202128019` wit
 - the player information model exposes toxic/raw and direct-safe labels;
 - both Great Mere Pack-v2 graphs validate without dangling references.
 
-The repaired pre-promotion implementation head passed Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+The repaired pre-promotion implementation head passed Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact-head Check #1348 / run `33212388143` passed the same full gate; PR #396 merged at `e327181fcd1e93579f335045a817de1fdae842a5`, and post-merge main Check #1349 / run `33212454122` passed with **743/743 tests**.
 
 ### Ecology/geography integrity proof
 
