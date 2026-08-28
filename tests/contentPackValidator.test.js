@@ -50,7 +50,7 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-starfen-ecology-breadth',
     ]);
     assert.equal(index.recordCounts.places, 8);
-    assert.equal(index.recordCounts.items, 37);
+    assert.equal(index.recordCounts.items, 49);
     assert.equal(index.recordCounts.recipes, 23);
     assert.equal(index.recordCounts.npcs, 13);
     assert.equal(index.recordCounts.npcSchedules, 7);
