@@ -23,25 +23,25 @@ authority:
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
 git:
-  current_normal_work: ironspine-data-49-promotion-pr-401
-  latest_product_merge_sha: e327181fcd1e93579f335045a817de1fdae842a5
-  latest_product_pull_request: 401
-  latest_product_pr_check: 33215878907
-  latest_product_pr_check_number: 1368
-  latest_product_pr_check_result: success-753-of-753-tests-census-benchmark-and-sample-implementation-freeze
-  latest_product_post_merge_check: 33212454122
-  latest_product_post_merge_check_number: 1349
-  latest_product_post_merge_check_result: success-743-of-743-tests-census-benchmark-and-sample
+  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
+  latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
+  latest_product_pull_request: 402
+  latest_product_pr_check: 33217086478
+  latest_product_pr_check_number: 1381
+  latest_product_pr_check_result: success-753-of-753-tests-census-benchmark-and-sample-promoted-head
+  latest_product_post_merge_check: pending-data-49-main-continuity-check
+  latest_product_post_merge_check_number: pending
+  latest_product_post_merge_check_result: pending
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   latest_bounded_unit: ironspine-highlands-and-population-hunting
-  latest_bounded_unit_status: implemented-promotion-pending-pr-401
+  latest_bounded_unit_status: complete-merged-pr-402
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: emberwash-badlands
-  next_world_edge_candidate_status: planning-only-not-auto-authorized
+  next_world_edge_candidate_status: ranked-next-not-auto-authorized
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
 validation:
