@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 3;
+export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 4;
 
 const DEFINITIONS = Object.freeze({
     'item-elderwood-amber-resin': resource({
@@ -112,6 +112,36 @@ const DEFINITIONS = Object.freeze({
         id: 'item-coppergrass-windglass-agate', name: 'Windglass Agate', tags: ['mineral', 'agate', 'gem', 'ornament', 'luxury'], valueGil: 40,
         sourceId: 'source-coppergrass-windglass-gravel', placeId: 'coppergrass-steppe', action: 'gather',
         sinks: ['craftIngredient', 'trade', 'decorative', 'collectible'],
+    }),
+    'item-slatewater-serviceberry': resource({
+        id: 'item-slatewater-serviceberry', name: 'Slatewater Serviceberry', tags: ['flora', 'berry', 'food', 'preserve', 'staple'], valueGil: 6,
+        sourceId: 'source-slatewater-serviceberry-brake', placeId: 'slatewater-foothills', action: 'forage',
+        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-slatewater-pitch-pine-resin': resource({
+        id: 'item-slatewater-pitch-pine-resin', name: 'Pitch Pine Resin', tags: ['flora', 'resin', 'binder', 'repair', 'staple'], valueGil: 8,
+        sourceId: 'source-slatewater-pitch-pine-stand', placeId: 'slatewater-foothills', action: 'forage',
+        sinks: ['processInput', 'craftIngredient', 'repair', 'trade'],
+    }),
+    'item-slatewater-white-clay': resource({
+        id: 'item-slatewater-white-clay', name: 'Slatewater White Clay', tags: ['mineral', 'clay', 'ceramic', 'construction', 'staple'], valueGil: 7,
+        sourceId: 'source-slatewater-white-clay-bank', placeId: 'slatewater-foothills', action: 'gather',
+        sinks: ['processInput', 'craftIngredient', 'construction', 'trade'],
+    }),
+    'item-slatewater-mountain-thyme': resource({
+        id: 'item-slatewater-mountain-thyme', name: 'Mountain Thyme', tags: ['flora', 'herb', 'food', 'medicine', 'staple'], valueGil: 7,
+        sourceId: 'source-slatewater-mountain-thyme-slope', placeId: 'slatewater-foothills', action: 'forage',
+        sinks: ['consume', 'craftIngredient', 'trade'],
+    }),
+    'item-slatewater-silver-lichen': resource({
+        id: 'item-slatewater-silver-lichen', name: 'Silver Lichen', tags: ['flora', 'lichen', 'dye', 'alchemical', 'luxury'], valueGil: 34,
+        sourceId: 'source-slatewater-silver-lichen-face', placeId: 'slatewater-foothills', action: 'forage',
+        sinks: ['processInput', 'craftIngredient', 'trade', 'collectible'],
+    }),
+    'item-slatewater-blue-slate': resource({
+        id: 'item-slatewater-blue-slate', name: 'Slatewater Blue Slate', tags: ['mineral', 'stone', 'fine-craft', 'masonry', 'luxury'], valueGil: 32,
+        sourceId: 'source-slatewater-blue-slate-shelf', placeId: 'slatewater-foothills', action: 'mine',
+        sinks: ['processInput', 'craftIngredient', 'construction', 'trade', 'decorative'],
     }),
 });
 
