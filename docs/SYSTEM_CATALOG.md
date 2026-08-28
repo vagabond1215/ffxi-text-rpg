@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,7 +50,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
 
-## Content infrastructure and regional packs — Data 43
+## Content infrastructure and regional packs — Data 44
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -93,6 +93,10 @@ spellSchools / capabilities / abilities / companions
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
 | Direct travel | playable | Route authority + fictional time. |
 | Scheduled transport | playable | Deterministic departures/fares/cargo limits. |
+| Location / area profiles | integrated | All 26 places have biome + demographic profiles; five settlements and three regions aggregate from those place records. |
+| Population profile semantics | integrated | Resident, typical transient/workforce, and typical-present counts remain distinct; settlement/region/world totals are derived. |
+| Ecology profile projection | integrated | Flora/fauna resolve from canonical ecology; regional representative context is separate from local records and gaps remain visible. |
+| Location profile reporting | integrated | `npm run profiles:locations` and `-- --json` expose the complete profile catalog. |
 
 ## Character, abilities, combat, and companions
 
@@ -190,4 +194,4 @@ Mechanics-scale gate remains **NOT READY**. Companions are now the largest relat
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` are open. Packets A–C are merged. **Packet D — Universal Magic & Starfen Marshcraft — is implemented, validated, promoted to Product 0.9.100.4 / Data 43, and pending final exact-head validation + PR landing.** Packet E Gate A integration/census is next but not started by this work order.
+Phase 0.9 and `0.9.100` are open. Gate A Packets A–D are merged. **Location & Area Profiles is implemented, validated, promoted to Product 0.9.100.5 / Data 44, and pending final exact-head validation + PR landing.** Packet E Gate A integration/census remains queued and is not started by this profile pass.
