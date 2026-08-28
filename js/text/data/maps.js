@@ -17,6 +17,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
         notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
+    mapSlatewaterFoothills: map({
+        id: 'map-slatewater-foothills',
+        name: 'Map of Slatewater Foothills',
+        nation: null,
+        region: 'Slatewater Foothills',
+        placeIds: ['slatewater-foothills', 'slatewater-waylodge'],
+        notes: 'Regional map for the mixed-wood foothills, river-cut slopes, road passes, and neutral guild lodge between Timbercross and Brasshaven.',
+    }),
     mapRedfangCamp: map({
         id: 'map-redfang-camp',
         name: 'Sketch of Redfang Camp',
