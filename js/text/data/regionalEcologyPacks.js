@@ -7,8 +7,15 @@ import {
 } from './regionalEcologyExpansion.js';
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
+import {
+    listGreatMereEcologyFamilies,
+    listGreatMereGatheringSources,
+    listGreatMerePopulations,
+    listGreatMereSpecies,
+} from './greatMereEcology.js';
+import { listGreatMereResourceItems } from './greatMereResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 30;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 31;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -163,7 +170,29 @@ export const SLATEWATER_ECOLOGY_PACK = regionalPack({
     ],
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK]);
+export const GREAT_MERE_ECOLOGY_PACK = createContentPack({
+    id: 'pack-great-mere-freshwater-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['great-mere'], steward: 'mistmere-merewatch' },
+    dependencies: ['pack-starfen-opening', 'pack-starfen-ecology-breadth', 'pack-elderwood-ecology-breadth'],
+    metadata: {
+        name: 'Great Mere Freshwater Ecology',
+        notes: 'Freshwater lake ecology for the Great Mere shore and Reedcrown Isle. Reuses canonical turtle and freshwater-mussel families through declared dependencies while owning new lake fish, crayfish, grebe, and dragonfly families.',
+    },
+    records: {
+        places: [
+            { id: 'great-mere-westshore', catalogRef: true },
+            { id: 'reedcrown-isle', catalogRef: true },
+        ],
+        ecologyFamilies: listGreatMereEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listGreatMereSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listGreatMerePopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listGreatMereGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listGreatMereResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
