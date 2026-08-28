@@ -14,8 +14,15 @@ import {
     listGreatMereSpecies,
 } from './greatMereEcology.js';
 import { listGreatMereResourceItems } from './greatMereResourceItems.js';
+import {
+    listIronspineEcologyFamilies,
+    listIronspineGatheringSources,
+    listIronspinePopulations,
+    listIronspineSpecies,
+} from './ironspineEcology.js';
+import { listIronspineResourceItems } from './ironspineResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 31;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 32;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -192,7 +199,29 @@ export const GREAT_MERE_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK]);
+export const IRONSPINE_ECOLOGY_PACK = createContentPack({
+    id: 'pack-ironspine-highlands-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['ironspine-highlands'], steward: 'brasshaven-high-pass' },
+    dependencies: ['pack-redstone-opening', 'pack-redstone-ecology-breadth', 'pack-slatewater-foothills-ecology'],
+    metadata: {
+        name: 'Ironspine Highlands Ecology',
+        notes: 'Alpine/subalpine ecology using existing regional animal families, population-backed hunting for game and predators, six gathering sources, and exact highland resource provenance.',
+    },
+    records: {
+        places: [
+            { id: 'ironspine-lower-pass', catalogRef: true },
+            { id: 'ironspine-high-meadow', catalogRef: true },
+        ],
+        ecologyFamilies: listIronspineEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listIronspineSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listIronspinePopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listIronspineGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listIronspineResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
