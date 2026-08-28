@@ -1,5 +1,4 @@
 import {
-    getCanonicalPopulation,
     getCanonicalSpecies,
     listCanonicalPopulations,
 } from '../data/ecologyRegistry.js';
