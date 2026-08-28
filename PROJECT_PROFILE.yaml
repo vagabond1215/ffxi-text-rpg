@@ -25,24 +25,24 @@ tools:
   principle: least-powerful-safe-tool
 git:
   current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/0.9.100-starfen-marshcraft-practical-magic
-  active_pull_request: 385
+  active_branch: feature/0.9.100-location-area-profiles
+  active_pull_request: 386
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
   pr_integration_status: active
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  validated_implementation_sha: ee81069defe59a55979bc262ea595c3c9df42f40
-  implementation_check: 33139128883
-  implementation_job: 98745791538
-  implementation_result: repository-audit-pass-719-of-719-tests-census-benchmark-3-and-sample-success
-  pull_request: 385
+  validated_implementation_sha: ba156a416026835ccc483b8644d134a8d3d062d9
+  implementation_check: 33149570962
+  implementation_job: 98778174178
+  implementation_result: repository-audit-pass-725-of-725-tests-census-benchmark-3-and-sample-success
+  pull_request: 386
   pull_request_state: open-draft
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: universal-magic-starfen-marshcraft-packet
+  current_bounded_unit: location-area-profiles-supporting-data-pass
   current_bounded_unit_status: implementation-and-promotion-complete-awaiting-final-handoff-check-and-merge
   next_bounded_unit: gate-a-integration-census-audit
   next_bounded_unit_status: not-started-not-authorized-by-current-packet
@@ -66,6 +66,7 @@ validation:
   node_baseline: 24
   repository_contract_guard: tests/repositoryContractAudit.test.js
   content_pack_guard: tests/contentPackValidator.test.js
+  location_profile_guard: tests/locationProfileCatalog.test.js
   content_scale_guard: tests/contentScaleGate.test.js
   redstone_flow_guard: tests/playerRedstoneForgeRoadFlow.test.js
   elderwood_flow_guard: tests/playerElderwoodHuntTimberFlow.test.js
@@ -74,13 +75,13 @@ validation:
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.4
+  current_product_version: 0.9.100.5
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 43
+  current_data_version: 44
   current_benchmark_version: 3
-  current_codename: Universal Magic & Starfen Marshcraft
+  current_codename: Location & Area Profiles
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
   future_migrations: deliberate-only-when-required
@@ -112,6 +113,20 @@ quality:
     physical_items_authority: inventory
     provenance_authority: resource-provenance
     social_authority: existing-commitments-relationships-schedules
+world_profiles:
+  catalog_version: 1
+  canonical_places: 26
+  settlements: 5
+  regions: 3
+  population_basis: authored-pre-alpha-estimate
+  modeled_residents: 92785
+  typical_transient: 26693
+  typical_present: 119478
+  ecology_authority: existing-ecology-registry-and-place-spawns
+  local_vs_regional_ecology_separated: true
+  current_known_flora_gap: redstone-reach
+  persistence_family_added: false
+  simulation_clock_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -149,3 +164,4 @@ constraints:
   - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
   - do not add a second simulation clock task engine inventory progression or social authority
   - roadmap sequencing does not authorize Packet E Gate A integration/census automatically
+  - location demographic estimates are profile data and must not be confused with ecological population capacities
