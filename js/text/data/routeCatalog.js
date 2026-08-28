@@ -115,6 +115,40 @@ const ROUTE_DEFINITIONS = Object.freeze({
         knowledge: { mapId: null, discoveryTag: 'route.forge-mere-long-road' },
         cargo: { encumbranceMultiplier: 1.4 },
     }),
+    'route-redstone-ironspine-pass-road': route({
+        id: 'route-redstone-ironspine-pass-road',
+        name: 'Ironspine Lower Pass Road',
+        type: 'road',
+        allowedModes: ['walk', 'mount', 'wagon'],
+        stops: [
+            stop('stop-north-redstone-ironspine-road', 'north-redstone-reach', { x: 4, y: 0 }),
+            stop('stop-ironspine-lower-pass-road', 'ironspine-lower-pass', { x: 4, y: 7 }),
+            stop('stop-ironspine-watchpost-road', 'ironspine-watchpost', { x: 3, y: 5 }),
+        ],
+        segments: [
+            segment('stop-north-redstone-ironspine-road', 'stop-ironspine-lower-pass-road', 3600, 8000, ['steep-grade', 'falling-rock', 'cold-weather']),
+            segment('stop-ironspine-lower-pass-road', 'stop-ironspine-watchpost-road', 1800, 4000, ['switchbacks', 'fog', 'cold-weather']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-ironspine-highlands', discoveryTag: 'route.ironspine-lower-pass-road' },
+        cargo: { encumbranceMultiplier: 1.35 },
+    }),
+    'route-ironspine-high-trail': route({
+        id: 'route-ironspine-high-trail',
+        name: 'Ironspine High Trail',
+        type: 'track',
+        allowedModes: ['walk', 'mount'],
+        stops: [
+            stop('stop-ironspine-watchpost-high-trail', 'ironspine-watchpost', { x: 3, y: 0 }),
+            stop('stop-ironspine-high-meadow-trail', 'ironspine-high-meadow', { x: 4, y: 7 }),
+        ],
+        segments: [
+            segment('stop-ironspine-watchpost-high-trail', 'stop-ironspine-high-meadow-trail', 2400, 5000, ['scree', 'cliff-exposure', 'cold-weather', 'whiteout']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-ironspine-highlands', discoveryTag: 'route.ironspine-high-trail' },
+        cargo: { encumbranceMultiplier: 1.5 },
+    }),
     'route-starfen-great-mere-shore': route({
         id: 'route-starfen-great-mere-shore',
         name: 'East Fen Shore Track',
