@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
