@@ -110,7 +110,7 @@ Measured census: 31 places, 23 NPCs, 21 service sites, 45 creatures, 41 resource
 
 **No later numbered item is automatically authorized by completion of Item 2.** Great Mere is the next ranked geography candidate.
 
-### 3. Great Mere
+### 3. Great Mere — IMPLEMENTED / VALIDATED ON PR #396
 
 Placement: east or southeast of Starfen as a deep-freshwater body connected to the wetland system.
 
@@ -125,6 +125,31 @@ Access:
 Habitation: fishing hamlets, ferry stations, fisheries guild lodge, research post, shrine, or uninhabited nesting islands.
 
 Priority ecology: multiple fish families, predatory fish, freshwater crustaceans, aquatic insects, diving birds, turtles/amphibians, mussels, aquatic plants.
+
+## Item 3 implementation result
+
+The user explicitly authorized continuing with the next recommended zone, **Great Mere**, with a standing requirement that new zones receive plausible flora/fauna, resources/catches/drops, connected processing/recipes, and explicit food-safety labeling.
+
+Implemented on PR #396:
+
+1. Great Mere Westshore, Merewatch Landing, and boat-only Reedcrown Isle;
+2. Chart of the Great Mere;
+3. East Fen Shore Track and Reedport-Mere Waterway;
+4. scheduled Great Mere Ferry;
+5. five new freshwater ecology families plus reuse of canonical turtle/mussel families;
+6. seven passive/wary species/populations;
+7. nine resource sources and nine exact-provenance raws;
+8. Merewatch fishery exchange, lakesmen’s hall, smokehouse/common loft, ferry landing, three NPCs, and two schedules;
+9. 22 transformations producing 23 outputs across cleaning, preservation, cooking, detoxification, shell-lime byproducts, rush/net craft, and pearl work;
+10. explicit item consumption metadata distinguishing direct, process-required, non-food, pathogen-risk, raw-irritant, and raw-toxic states;
+11. Bitterflag Rhizome as the reference raw-toxic food with an actual slice/leach/boil detoxification chain;
+12. recipes/processes rise past the mechanics floor.
+
+Pre-promotion repaired hosted Check #1334 / run `33209084881` passed Repository Audit, **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
+Measured census: 34 places, 26 NPCs, 23 service sites, 52 creatures, 50 resource sources, 158 items, 81 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 10 routes, 13 schedules, 18 packs, and 564 owned records.
+
+**No later numbered item is automatically authorized by completion of Item 3. Ironspine Highlands becomes the next ranked geography candidate after Great Mere lands.**
 
 ### 4. Ironspine Highlands
 
