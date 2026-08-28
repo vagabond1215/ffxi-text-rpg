@@ -25,26 +25,26 @@ tools:
   principle: least-powerful-safe-tool
 git:
   current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/0.9.100-elderwood-hunt-timber
-  active_pull_request: 384
+  active_branch: feature/0.9.100-starfen-marshcraft-practical-magic
+  active_pull_request: 385
   recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
   pr_integration_status: active
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  validated_implementation_sha: acb24b73b4894d3febab370aa279bdfd12cbd02e
-  implementation_check: 32423676980
-  implementation_job: 96600958329
-  implementation_result: repository-audit-pass-711-of-711-tests-census-benchmark-3-and-sample-success
-  pull_request: 384
+  validated_implementation_sha: ee81069defe59a55979bc262ea595c3c9df42f40
+  implementation_check: 33139128883
+  implementation_job: 98745791538
+  implementation_result: repository-audit-pass-719-of-719-tests-census-benchmark-3-and-sample-success
+  pull_request: 385
   pull_request_state: open-draft
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: elderwood-hunt-timber-regional-tranche
+  current_bounded_unit: universal-magic-starfen-marshcraft-packet
   current_bounded_unit_status: implementation-and-promotion-complete-awaiting-final-handoff-check-and-merge
-  next_bounded_unit: starfen-marshcraft-practical-magic-regional-tranche
+  next_bounded_unit: gate-a-integration-census-audit
   next_bounded_unit_status: not-started-not-authorized-by-current-packet
   content_scale_gate_version: 2
   content_scale_targets: criteria-driven-lower-bound-planning-indicators
@@ -74,35 +74,40 @@ validation:
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.3
+  current_product_version: 0.9.100.4
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 42
+  current_data_version: 43
   current_benchmark_version: 3
-  current_codename: Elderwood Hunt-Timber
+  current_codename: Universal Magic & Starfen Marshcraft
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
   future_migrations: deliberate-only-when-required
   content_pack_scale_contract:
     schema_version: 2
-    validator_version: 2
+    validator_version: 3
     catalog_registry_version: 1
     scale_gate_version: 2
     canonical_definition_authority: existing-catalogs
     pack_authority: stable-id-ownership-regional-shared-dependencies
     duplicate_catalog_authority: forbidden
     generated_scale_fixture_ownership_records: 1401
-  elderwood_hunt_timber:
-    pack_id: pack-elderwood-hunt-timber
-    dependencies:
-      - pack-shared-foundation
-      - pack-elderwood-opening
-      - pack-elderwood-ecology-breadth
+  universal_magic_starfen_marshcraft:
+    shared_magic_ownership: true
+    regional_spell_ownership: forbidden
+    spell_schools: 4
+    shared_spell_capabilities: 33
+    shared_executable_spells: 33
+    veilscript_skill_authority: ninjutsu
+    research_reference: docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md
+    canonical_external_franchise_names_allowed: false
+    starfen_pack_id: pack-starfen-marshcraft
     direct_timed_task_owner_added: false
     persistence_family_added: false
     simulation_clock_added: false
     capability_authority: existing-character-capabilities
+    ability_authority: existing-ability-engine
     work_authority: existing-production-and-work-task-engines
     physical_items_authority: inventory
     provenance_authority: resource-provenance
@@ -111,30 +116,30 @@ content_scale:
   mechanics_gate: not-ready
   current:
     places_localities: 26
-    named_npcs: 15
+    named_npcs: 17
     shop_service_sites: 17
     creature_definitions: 16
     resource_sources: 13
-    canonical_items: 62
-    recipes_processes: 23
-    abilities_techniques: 13
-    quests_contracts: 14
+    canonical_items: 68
+    recipes_processes: 29
+    abilities_techniques: 41
+    quests_contracts: 18
     companions: 1
     transport_services: 3
   supplemental:
     routes: 7
-    spell_schools: 3
-    capability_training_definitions: 16
-    npc_schedules: 5
-    regional_shared_packs: 9
-    pack_owned_records: 171
-    pack_owned_abilities: 13
-    pack_owned_capabilities: 16
-    pack_owned_schedules: 5
+    spell_schools: 4
+    capability_training_definitions: 44
+    npc_schedules: 7
+    regional_shared_packs: 10
+    pack_owned_records: 248
+    pack_owned_abilities: 41
+    pack_owned_capabilities: 44
+    pack_owned_schedules: 7
     pack_owned_companions: 1
-    runtime_seed_npcs: 14
+    runtime_seed_npcs: 16
     runtime_seed_enemies: 13
-  largest_relative_gap: abilities-techniques
+  largest_relative_gap: companions
 constraints:
   - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
   - do not add disconnected filler merely to satisfy content targets
@@ -143,4 +148,4 @@ constraints:
   - preserve fictional simulation time versus wall-clock scheduling
   - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
   - do not add a second simulation clock task engine inventory progression or social authority
-  - roadmap sequencing does not authorize the Starfen Marshcraft-Practical Magic tranche automatically
+  - roadmap sequencing does not authorize Packet E Gate A integration/census automatically
