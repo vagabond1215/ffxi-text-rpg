@@ -19,23 +19,23 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Frozen Packet D gameplay/content checkpoint before version/document synchronization:
+Frozen location-profile implementation/data checkpoint before version/document synchronization:
 
 ```text
-ee81069defe59a55979bc262ea595c3c9df42f40
+ba156a416026835ccc483b8644d134a8d3d062d9
 ```
 
-Data advances because stable canonical spell/capability IDs, shared Pack-v2 ownership, commitment-reference validation, and connected Starfen authored content changed. Game State remains 14 because the packet reuses existing durable character capability, ability runtime, inventory/provenance, production/work, schedule, commitment/relationship, and fictional-time authorities.
+Data advances because all current places gain canonical biome/demographic metadata and a derived location/settlement/region profile contract. Game State remains 14 because the new catalog composes existing place/ecology authority and adds no durable gameplay state.
 
 ## Core authority rules
 
@@ -52,6 +52,33 @@ Data advances because stable canonical spell/capability IDs, shared Pack-v2 owne
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+# Location / area profile architecture
+
+`js/text/data/locationProfileCatalog.js` is a **derived world-information catalog**, not a second place or ecology database.
+
+```text
+places.js                         authoritative place identity/topology
+ecologyRegistry.js                authoritative species/populations/sources
+seed encounter species links      current local encounter context
+authored profile metadata         biome + demographic estimates
+        \                          /
+         -> locationProfileCatalog
+             -> 26 place profiles
+             -> 5 settlement aggregates
+             -> 3 region aggregates
+             -> modeled world population
+```
+
+Population is authored only at the place-profile level. Settlement, region, and world totals are calculated from those place values. Each place distinguishes residents from typical transient/workforce presence.
+
+Ecology projections distinguish:
+
+- **local canonical** — actual population/source/spawn records tied to the place;
+- **regional context** — representative ecology from the surrounding canonical region when the place has no direct record;
+- **not yet modeled** — no ecology evidence exists.
+
+This prevents a city ward from falsely claiming a local Barkboar population merely because Barkboars exist elsewhere in Elderwood, and it exposes Redstone's current absence of canonical flora instead of fabricating plants.
 
 # Phase 0.9 content-scale architecture
 
