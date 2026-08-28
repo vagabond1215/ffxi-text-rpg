@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.3';
+export const PRODUCT_VERSION = '0.9.100.4';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 42,
+    data: 43,
     benchmark: 3,
-    codename: 'Elderwood Hunt-Timber',
+    codename: 'Universal Magic & Starfen Marshcraft',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.3',
+    versionManifest: '0.9.100.4',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -27,7 +27,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     cultivation: '0.2.0',
-    commitments: '0.6.0',
+    commitments: '0.7.0',
     relationships: '0.1.0',
     npcSchedules: '0.3.0',
     npcWorldProjection: '0.1.1',
@@ -66,8 +66,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     transportServiceBoard: '0.2.0',
     contentCatalogRegistry: '0.1.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.5.0',
-    contentPackValidation: '0.2.0',
+    regionalContentPacks: '0.6.0',
+    contentPackValidation: '0.3.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
     simulationSubstrateGate: '0.1.0',
@@ -110,8 +110,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     characterNames: '0.1.0',
     startingDisciplineKits: '0.1.0',
     characterStats: '0.1.0',
-    capabilities: '0.4.0',
-    abilityCatalog: '0.3.0',
+    capabilities: '0.5.0',
+    abilityCatalog: '0.4.0',
     abilityEngine: '0.3.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.2.0',
@@ -166,7 +166,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     achievements: 'planned',
     items: '0.7.0',
     keyItems: 'planned',
-    magic: '0.1.0',
+    magic: '0.2.0',
     abilities: '0.1.0',
     loot: '0.6.0',
     leveling: '0.6.0',
