@@ -71,7 +71,7 @@ Likely ecology/resource direction:
 - hides, resin, nuts/berries, upland fungi;
 - staple + specialty trade goods.
 
-### 2. Crownfields — IMPLEMENTED / VALIDATED ON PR #392
+### 2. Crownfields — MERGED / VALIDATED
 
 Placement: south of Thornwall.
 
@@ -91,7 +91,7 @@ Priority content: cattle, sheep/goats, poultry, working animals, cats/dogs, crop
 
 The user explicitly authorized continuing with the next recommended zone, **Crownfields**.
 
-Implemented on PR #392:
+Implemented on PR #392 and merged at `738faa5813e4aca30950b0d787f1209ae9a3d917`:
 
 1. `crownfields` added as Thornwall's danger-1 managed agricultural lowlands;
 2. `crownfields-grange` added as a danger-0 farm-market/service hamlet rather than a city;
