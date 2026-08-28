@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Content Pack Scale Contract v2 and Redstone Forge-Road are complete; **Elderwood Hunt-Timber** is implemented, validated on its frozen implementation/data head, and pending final promoted-head validation + PR landing.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–C are merged; **Packet D — Universal Magic & Starfen Marshcraft** is implemented, validated on its frozen implementation/data head, promoted to the Data 43 contract, and pending final exact-head validation + PR landing.
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data advances from 41 to 42 because Elderwood Hunt-Timber adds stable canonical NPCs, schedule placement, capabilities/abilities, production items/processes, commitments, and one child Pack v2 ownership graph. Game State remains 14 because the tranche adds no new durable player/world authority, simulation clock, task engine, persistence family, or save migration.
+Data advances from 42 to 43 because the packet adds and reorganizes stable canonical magic/capability IDs under shared ownership, adds the Veilscript seal-magic school, expands executable spell breadth, strengthens commitment cross-reference validation, and adds connected Starfen marshcraft/NPC/schedule/process/contract records. Game State remains 14 because no new durable player/world authority, simulation clock, task engine, persistence family, or save migration was introduced.
 
 ## Product direction
 
@@ -48,20 +48,23 @@ companions
 
 `js/text/data/contentCatalogRegistry.js` bridges packs to the existing canonical catalogs rather than duplicating definitions merely to claim ownership. The content-pack validator enforces stable-ID ownership, cross-pack dependencies, dangling references, legacy leaks, and family-specific structure. A generated fixture validates 1,401 Pack v2 ownership records without contributing to canonical content counts.
 
-## Elderwood Hunt-Timber
+## Universal Magic & Starfen Marshcraft
 
-The current regional tranche deliberately deepens existing Thornwall/Elderwood loops instead of creating disconnected breadth.
+Magic is now a **shared universal character capability**, not a Redstone, Elderwood, Starfen, city, or trainer-location possession. Regions may provide teachers, traditions, contracts, and examples, but canonical spell stable IDs live in the shared foundation and learning/use depends on character training, skill, resources, and context rather than geography.
 
-It adds:
+The packet adds:
 
-- four character-owned Elderwood capabilities and four executable abilities;
-- six downstream Elderwood outputs and six processes using existing Barkboar recovery, Duskcap, amber resin, hardwood, tannery/woodshop, work-proficiency, inventory, and provenance authorities;
-- three existing POI people promoted to persistent NPC-backed contacts, with Oren Vale on a canonical-fictional-time 07:00–15:00 roadworks schedule;
-- three provenance-qualified Thornwall commitments consuming real Elderwood production output;
-- `pack-elderwood-hunt-timber`, dependent on the shared foundation, Elderwood opening root, and Elderwood ecology breadth pack;
-- focused end-to-end coverage for Pack v2 ownership, real production/provenance, exactly-once civic resolution, schedule behavior, census growth, and executable Barkboar Brace.
+- four universal spell schools: Elemental Form, Vital Weave, Ward Lore, and **Veilscript**;
+- 33 shared spell capabilities and 33 shared executable spell abilities, including eight elemental families, restoration/support, and four Veilscript seal arts using the existing `ninjutsu` skill;
+- original Hearth & Horizon names/mechanics derived from systemic research rather than copied franchise identity; `docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md` is explicitly non-canonical research;
+- six downstream Starfen marshcraft outputs/processes using existing reed fiber, Bluekelp, Marrowleaf, Bogberry, Mirecrest Heron recovery, kitchen/work, inventory, proficiency, and provenance authorities;
+- Pelu Senn and Tavi Meren as persistent Mistmere contacts with fictional-time schedules;
+- four provenance-qualified Mistmere commitments, with universal spells deliberately **not** gated by regional contract completion;
+- Starfen Current Reading retained as regional field knowledge rather than magic;
+- `pack-starfen-marshcraft` for regional marshcraft ownership while all spell schools/spells remain owned by `pack-shared-foundation`;
+- Pack-v2 catalog-ref validation extended across canonical commitment giver/place/item/source/capability relationships.
 
-No new place, companion, simulation clock, persistence family, direct timed-task owner, inventory authority, progression authority, or social authority was introduced.
+No new place, companion, simulation clock, persistence family, direct timed-task owner, inventory authority, progression state family, or social-state family was introduced.
 
 ## Content-scale census
 
@@ -70,18 +73,18 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Elderwood implementation checkpoint:
+Validated Packet D implementation checkpoint:
 
 ```text
 places/localities       26 / mechanics floor 10
-named NPCs              15 / 50
+named NPCs              17 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         62 / 200
-recipes/processes       23 / 75
-abilities/techniques    13 / 100
-quests/contracts        14 / 30
+canonical items         68 / 200
+recipes/processes       29 / 75
+abilities/techniques    41 / 100
+quests/contracts        18 / 30
 companions               1 / 4
 transport services       3 / 5
 ```
@@ -90,18 +93,18 @@ Infrastructure coverage:
 
 ```text
 routes                                7
-spell schools                         3
-capabilities/training definitions    16
-NPC schedules                         5
-regional/shared content packs         9
-pack-owned records                   171
+spell schools                         4
+capabilities/training definitions    44
+NPC schedules                         7
+regional/shared content packs        10
+pack-owned records                   248
 pack-owned abilities/capabilities/
-  schedules/companions            13/16/5/1
-runtime seed NPCs                    14
+  schedules/companions            41/44/7/1
+runtime seed NPCs                    16
 runtime seed enemies                 13
 ```
 
-The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Abilities/techniques remain the largest relative gap. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Companions are now the largest relative gap; counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
@@ -124,13 +127,13 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road and Elderwood Hunt-Timber connected regional content, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Elderwood Hunt-Timber is the completed second authored regional tranche after Redstone, pending final exact-head validation and PR landing. **Starfen Marshcraft-Practical Magic is next but has not been started or authorized by this work order.**
+`0.9.100 Content Scale Gate A` remains open. Packet D is the completed third authored content tranche after Redstone and Elderwood, pending final exact-head validation and PR landing. **Packet E — Gate A integration/census audit — is next and has not been started by this work order.**
 
-Before any further high-volume authoring/import, content must continue through the connected Pack v2 ownership/validation path and the census must distinguish real gameplay breadth from pack bookkeeping.
+Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
 ## Read these first
 
