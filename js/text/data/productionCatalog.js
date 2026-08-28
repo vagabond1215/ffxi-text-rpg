@@ -2,8 +2,9 @@ import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { getProductionItem } from './productionItems.js';
 import { getIngredientLuxuryProcessDefinition, listIngredientLuxuryProcessDefinitions } from './ingredientLuxuryProductionCatalog.js';
 import { getGreatMereProcessDefinition, listGreatMereProcessDefinitions } from './greatMereProductionCatalog.js';
+import { getIronspineProcessDefinition, listIronspineProcessDefinitions } from './ironspineProductionCatalog.js';
 
-export const PRODUCTION_CATALOG_VERSION = 7;
+export const PRODUCTION_CATALOG_VERSION = 8;
 export const PRODUCTION_KINDS = Object.freeze(['processing', 'crafting', 'cooking', 'salvage']);
 
 const PRODUCTION_DEFINITIONS = Object.freeze({
@@ -36,8 +37,8 @@ const PRODUCTION_DEFINITIONS = Object.freeze({
     'craft-starfen-marsh-survey-kit': processDefinition({ id: 'craft-starfen-marsh-survey-kit', name: 'Assemble Starfen Marsh Survey Kit', kind: 'crafting', durationSeconds: 300, proficiencyId: 'crafting', minProficiency: 3, proficiencyGain: 3, requiredStationTags: ['workshop'], inputs: [{ itemId: 'item-starfen-waterproof-wrap', quantity: 1 }, { itemId: 'item-starfen-reed-cord', quantity: 1 }, { itemId: 'item-starfen-heron-feather', quantity: 1 }], outputs: [{ itemId: 'item-starfen-marsh-survey-kit', quantity: 1 }] }),
 });
 
-export function getProductionDefinition(processId) { const key = String(processId ?? '').trim(); return PRODUCTION_DEFINITIONS[key] ?? getIngredientLuxuryProcessDefinition(key) ?? getGreatMereProcessDefinition(key); }
-export function listProductionDefinitions() { return [...Object.values(PRODUCTION_DEFINITIONS), ...listIngredientLuxuryProcessDefinitions(), ...listGreatMereProcessDefinitions()]; }
+export function getProductionDefinition(processId) { const key = String(processId ?? '').trim(); return PRODUCTION_DEFINITIONS[key] ?? getIngredientLuxuryProcessDefinition(key) ?? getGreatMereProcessDefinition(key) ?? getIronspineProcessDefinition(key); }
+export function listProductionDefinitions() { return [...Object.values(PRODUCTION_DEFINITIONS), ...listIngredientLuxuryProcessDefinitions(), ...listGreatMereProcessDefinitions(), ...listIronspineProcessDefinitions()]; }
 export function getProductionInputItem(itemId) { return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId); }
 
 export function validateProductionCatalog() {
