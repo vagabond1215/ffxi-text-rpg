@@ -29,7 +29,7 @@ Codename:      Ecology & Geography Integrity
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Current Data 44 world/content expansion includes the merged ecology/Coppergrass work plus the active Slatewater Foothills & Waylodge tranche. Game State remains 14 because these additions reuse existing place/map, route/transport, shop, campaign recovery, NPC schedule, ecology/gathering, inventory/provenance, and Pack-v2 authorities. No new durable mount authority is introduced; mount and pack-animal care at the Waylodge is currently service content layered on travel/logistics.
+Data 45 is an integrity contract over the existing world graph. It removes competing legacy direct travel edges, repairs accidental no-exit places and ordinary gate reciprocity, validates map/place and route/service topology in both directions, and makes regional ecology/resource validation canonical. Game State remains 14 because no new durable runtime state is introduced.
 
 ## Core authority rules
 
@@ -46,6 +46,16 @@ Current Data 44 world/content expansion includes the merged ecology/Coppergrass 
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+## Geography and ecology integrity rules
+
+- A canonical route and a legacy direct connection must not independently describe the same leg with conflicting time/distance authority.
+- Player-enterable places require an outbound path unless trapping is explicit game design.
+- Place ↔ map membership is reciprocal.
+- Route stops must be valid/navigable coordinates and segments must follow authored stop order.
+- Regional ecology resolves through the same canonical registry as foundation ecology.
+- Resource provenance must resolve to known places/sources and cannot be hidden by pre-validation deduplication.
+- Population state remains ecology authority; automatic aggro remains spawn-rule authority. A future hunt-discovery bridge should compose them rather than making passive wildlife aggressive.
 
 # Phase 0.9 content-scale architecture
 
