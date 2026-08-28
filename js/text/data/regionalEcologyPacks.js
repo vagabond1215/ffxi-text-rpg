@@ -8,7 +8,7 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 27;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 28;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -88,7 +88,31 @@ export const STARFEN_ECOLOGY_PACK = regionalPack({
     ],
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK]);
+export const COPPERGRASS_ECOLOGY_PACK = regionalPack({
+    id: 'pack-coppergrass-steppe-ecology', regionId: 'coppergrass-steppe', steward: 'forge-mere-road',
+    dependencies: ['pack-redstone-opening', 'pack-starfen-opening'],
+    placeId: 'coppergrass-steppe', ownsPlace: true,
+    speciesIds: [
+        'species-coppergrass-dun-courser', 'species-coppergrass-slateback-wolf',
+        'species-coppergrass-tallcrest-bustard', 'species-coppergrass-copperwing-locust',
+        'species-coppergrass-stormglass-kite',
+    ],
+    populationIds: [
+        'population-coppergrass-dun-coursers', 'population-coppergrass-slateback-wolves',
+        'population-coppergrass-tallcrest-bustards', 'population-coppergrass-copperwing-locusts',
+        'population-coppergrass-stormglass-kites',
+    ],
+    sourceIds: [
+        'source-coppergrass-groundpea-patch', 'source-coppergrass-prairie-flax-stand',
+        'source-coppergrass-crimson-madder-bed', 'source-coppergrass-windglass-gravel',
+    ],
+    itemIds: [
+        'item-coppergrass-groundpea', 'item-coppergrass-prairie-flax',
+        'item-coppergrass-crimson-madder', 'item-coppergrass-windglass-agate',
+    ],
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
