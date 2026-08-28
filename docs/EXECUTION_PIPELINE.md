@@ -5,67 +5,62 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 ```
 
-## Current product state
+## Active bounded unit
 
-**Crownfields Agricultural Lowlands is merged through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`.**
+**PR #394 — Regional Ingredient & Luxury Processing**
 
-Final promoted PR Check #1307 / run `33200172961` passed. Post-merge main Check #1308 / run `33200236952` passed the full hosted gate with 731/731 tests.
-
-Pre-promotion implementation Check #1294 / run `33199542741` passed **731/731 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
+Pre-promotion implementation Check #1311 / run `33202128019` passed **736/736 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
 
 ## Immediate integration sequence
 
-1. open/validate/merge this docs-only handoff PR;
-2. verify the resulting final main Check;
-3. await the next explicit bounded work order.
+1. finish Data 47 continuity/document synchronization;
+2. run exact-head hosted Check on PR #394;
+3. require the full gate green;
+4. merge PR #394 with expected-head protection;
+5. verify post-merge `main` Check;
+6. perform a docs-only handoff sync if the merge SHA/check result must be recorded;
+7. await the next explicit bounded work order.
 
-## Current measured census
+## Data 47 depth metrics
 
 ```text
-places/localities       31
-named NPCs              23
-shop/service sites      21
-creature definitions    45
-resource sources        41
-canonical items         96
-recipes/processes       29
-abilities/techniques    41
-quests/contracts        18
-companions               1
-transport services       5
-routes                    8
-NPC schedules           11
-content packs           15
-pack-owned records     410
+raw resources with production demand     33 / 44  (75%)
+luxury raw resources with demand         11 / 11 (100%)
+new transformations                      30
+new outputs                              30
+canonical items                         126
+recipes/processes                        59
+regional/shared packs                    16
+pack-owned records                      470
 ```
 
-## Gate interpretation
+## Mechanics-floor status
 
-Mechanics floors are now satisfied for:
+Reached:
 - places;
-- functional shop/service sites;
-- creature definitions;
+- shop/service sites;
+- creatures;
 - resource sources;
 - transport services.
 
-The overall gate remains NOT READY because major gaps remain in:
-- companions;
-- recipes/processes;
-- abilities/techniques;
-- named NPCs;
-- canonical items;
-- quests/contracts.
+Still short:
+- companions: 1/4;
+- abilities/techniques: 41/100;
+- named NPCs: 23/50;
+- quests/contracts: 18/30;
+- canonical items: 126/200;
+- recipes/processes: 59/75.
 
-Do not chase those counts with disconnected filler.
+Do not close those gaps with disconnected filler.
 
 ## Next decision boundary
 
@@ -73,13 +68,12 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Great Mere is the next ranked zone.
+- Great Mere.
 
-Ecology systems:
-- population-backed hunting remains a strong player-loop gap.
-
-Agricultural depth:
-- milling, cooking, flax processing, livestock husbandry and crop stewardship are valid future Crownfields follow-ons, but should use existing authorities or deliberately introduce a single canonical husbandry model.
+System/content candidates:
+- population-backed hunting;
+- companion breadth;
+- connected production depth using the eleven still-unused raw resources.
 
 No next unit is auto-started.
 
