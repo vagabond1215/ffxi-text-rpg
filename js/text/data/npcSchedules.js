@@ -1,4 +1,4 @@
-export const NPC_SCHEDULE_DATA_VERSION = 3;
+export const NPC_SCHEDULE_DATA_VERSION = 2;
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
