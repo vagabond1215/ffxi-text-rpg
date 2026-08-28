@@ -24,10 +24,10 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 Crownfields merge: 738faa5813e4aca30950b0d787f1209ae9a3d917
 PR #392:           MERGED
 PR Check #1307:   PASS / run 33200172961
-main Check #1308: PENDING / run 33200236952
+main Check #1308: PASS / run 33200236952
 ```
 
-The implementation is merged. This docs-only handoff branch exists only to replace stale active-PR wording after the post-merge main Check completes.
+The implementation is merged and post-merge main verification is green. This docs-only handoff branch records the final landed state.
 
 ## Crownfields landed state
 
