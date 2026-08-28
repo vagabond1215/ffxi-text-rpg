@@ -2,6 +2,8 @@
 
 ## Status
 
+Status: **COMPLETE / MERGED via PR #394** at `fb7a4ec0145c6072aac21525cb15e931125fc327`.
+
 Data 47 bounded content-depth tranche.
 
 This pass converts the existing regional raw-resource catalog from mostly harvest/trade breadth into a more connected production economy. It deliberately treats **processed ingredients and components as first-class outputs** rather than jumping directly from raw resource to finished product.
