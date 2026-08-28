@@ -273,6 +273,21 @@ export const PLACES = Object.freeze({
         restrictions: [],
     }),
 
+    coppergrassSteppe: place({
+        id: 'coppergrass-steppe',
+        name: 'Coppergrass Steppe',
+        type: 'wilderness',
+        region: 'Coppergrass Steppe',
+        nation: null,
+        mapId: 'map-coppergrass-steppe',
+        dangerLevel: 2,
+        description: 'A broad neutral steppe between Redstone Reach and Starfen where copper-colored bunchgrass covers rolling loess, stony western fans give way to seasonal streambeds, and lower eastern swales begin to hold the water that eventually feeds the fen.',
+        services: [],
+        coordinateSystem: grid(10, 8, { x: 5, y: 4 }),
+        spawnRules: [],
+        restrictions: [],
+    }),
+
     mistmereCanalWard: place({
         id: 'mistmere-canal-ward',
         name: 'Mistmere Canal Ward',

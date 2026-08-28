@@ -31,11 +31,14 @@ test('starter cities and associated maps are populated', () => {
     assert.ok(placeIds.includes('thornwall-southgate'));
     assert.ok(placeIds.includes('brasshaven-market-ring'));
     assert.ok(placeIds.includes('mistmere-canal-ward'));
+    assert.ok(placeIds.includes('coppergrass-steppe'));
     assert.ok(mapIds.includes('map-thornwall'));
     assert.ok(mapIds.includes('map-brasshaven'));
     assert.ok(mapIds.includes('map-mistmere'));
+    assert.ok(mapIds.includes('map-coppergrass-steppe'));
     assert.match(describeMaps(), /Map of Brasshaven/);
     assert.match(describeMap('map-mistmere'), /mistmere-canal-ward/);
+    assert.match(describeMap('map-coppergrass-steppe'), /coppergrass-steppe/);
 });
 
 test('world data validates maps places and connection grids', () => {

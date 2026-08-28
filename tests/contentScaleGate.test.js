@@ -67,7 +67,7 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.equal(counts.supplemental.spellSchools, 4);
     assert.equal(counts.supplemental.capabilities, 44);
     assert.equal(counts.supplemental.npcSchedules, 7);
-    assert.equal(counts.supplemental.contentPacks, 10);
+    assert.equal(counts.supplemental.contentPacks, 11);
     assert.ok(counts.supplemental.ownedPackRecords >= 248);
     assert.equal(counts.supplemental.packOwnedByCollection.spellSchools, 4);
     assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 44);

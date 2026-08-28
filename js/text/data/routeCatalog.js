@@ -1,7 +1,7 @@
 import { getMap } from './maps.js';
 import { getPlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 1;
+export const ROUTE_CATALOG_VERSION = 2;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -84,12 +84,16 @@ const ROUTE_DEFINITIONS = Object.freeze({
         id: 'route-forge-mere-caravan-road',
         name: 'Forge-Mere Long Road',
         type: 'caravanRoad',
-        allowedModes: ['caravan', 'wagon', 'mount'],
+        allowedModes: ['walk', 'caravan', 'wagon', 'mount'],
         stops: [
             stop('stop-brasshaven-iron-quay-eastbound', 'brasshaven-iron-quay'),
+            stop('stop-coppergrass-long-road', 'coppergrass-steppe', { x: 5, y: 4 }),
             stop('stop-mistmere-reedport-westbound', 'mistmere-reedport'),
         ],
-        segments: [segment('stop-brasshaven-iron-quay-eastbound', 'stop-mistmere-reedport-westbound', 18000, 45000, ['upland-weather', 'fen-weather', 'roadside-raiders'])],
+        segments: [
+            segment('stop-brasshaven-iron-quay-eastbound', 'stop-coppergrass-long-road', 9000, 22500, ['upland-weather', 'crosswind', 'grassfire', 'roadside-raiders']),
+            segment('stop-coppergrass-long-road', 'stop-mistmere-reedport-westbound', 9000, 22500, ['seasonal-flood', 'fen-weather', 'roadside-raiders']),
+        ],
         bidirectional: true,
         knowledge: { mapId: null, discoveryTag: 'route.forge-mere-long-road' },
         cargo: { encumbranceMultiplier: 1.4 },
