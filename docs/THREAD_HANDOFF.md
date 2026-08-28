@@ -7,160 +7,205 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-Great Mere is **complete, merged, and post-merge green**.
+Population-backed hunting is merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`.
 
-Product merge:
-- PR **#396 — Great Mere freshwater economy and food safety metadata**
-- merge commit: `e327181fcd1e93579f335045a817de1fdae842a5`
-- final exact PR-head Check: **#1348 / run `33212388143`**
-- post-merge main Check: **#1349 / run `33212454122`**
-- tests: **743/743**
-- Repository Audit, Content Census, Benchmark 3, and Benchmark Sample: PASS
+Ironspine Highlands is implemented on PR #401. The implementation freeze before version/document promotion is:
 
-No implementation PR is active. The repository is awaiting the next explicitly authorized bounded unit.
+- head: `53323564ac724044ff06b1341c5466e73a34ab37`;
+- Check #1368 / run `33215878907`;
+- Repository Audit: PASS;
+- tests: **753/753**;
+- Content Census: PASS;
+- Benchmark 3: PASS;
+- Benchmark Sample: PASS.
 
-## Great Mere implementation
+The promoted Data 49 PR head must pass the same full hosted gate before merge. After PR #401 lands, work should normally continue directly on `main`. Use a branch only when a change has material rollback/blast-radius risk that an ordinary GitHub revert would not safely contain.
 
-Geography:
-- `great-mere-westshore` — danger-1 freshwater shore;
-- `merewatch-landing` — danger-0 fishing hamlet;
-- `reedcrown-isle` — boat-only nesting/shoal island;
-- `map-great-mere`;
-- East Fen Shore Track;
-- Reedport-Mere Waterway;
-- Great Mere Ferry.
+## Data 49 Ironspine geography
 
-Physical boundary rule:
-- shore travel is authored;
-- open/deep water is not walkable;
-- Reedcrown has no overland connection.
+Canonical places:
 
-Ecology:
-- five new families: Lake Perch, Lake Pike, Crayfish, Grebe, Dragonfly;
-- seven Great Mere species/populations, reusing canonical turtle and freshwater-mussel families where appropriate;
-- all ordinary wildlife remains passive/wary rather than being made aggressive for drops;
-- nine freshwater/shoreside sources and nine exact-provenance raw resources.
+- `ironspine-lower-pass` — danger-2 subalpine pass wilderness;
+- `ironspine-watchpost` — danger-0 survey lodge/watch locality;
+- `ironspine-high-meadow` — danger-3 alpine meadow/scree wilderness.
 
-Merewatch:
-- Essel Wren — fishery factor;
-- Jory Tamm — Lakesmen’s Hall steward;
-- Nara Veil — ferrymaster;
-- fishery exchange, lakesmen’s hall, ferry landing, smokehouse/common loft;
-- two fictional-time schedules.
+Canonical routes:
 
-## Food safety contract
+- `route-redstone-ironspine-pass-road` — North Redstone -> Lower Pass -> High-Pass Watch; walk/mount/wagon;
+- `route-ironspine-high-trail` — High-Pass Watch -> High Meadow; walk/mount only.
 
-Data 48 adds explicit canonical item consumption metadata.
+Boundary rule:
 
-Permanent authority:
+- maintained pass corridors are traversable;
+- wagons stop at the watchpost;
+- broad cliff bands and unstable scree are not implicit exits;
+- route hazards include falling rock, fog, exposure, cold, scree, and whiteout.
 
-`docs/ITEM_CONSUMPTION_SAFETY.md`
+High-Pass Watch staff:
 
-Modes:
-- direct;
-- processRequired;
-- nonFood.
+- Vara Kell — High-Pass Survey Factor;
+- Dain Rove — Ironspine Warden;
+- Mara Fell — Pass Lodge Keeper.
 
-Hazards:
-- none;
-- pathogenRisk;
-- rawIrritant;
-- rawToxic.
+## Population-backed hunting
 
-Reference example:
-- Bitterflag Rhizome is `processRequired/rawToxic`;
-- it has no direct consume sink;
-- it must be sliced, leached, and boiled;
-- its safe production path creates detoxified starch, then a cooked fisher biscuit.
-
-The carried-item/search information surface now exposes the safety label.
-
-## Great Mere processing
-
-22 transformations / 23 outputs include:
-- fish cleaning, smoking, brining, and pickling;
-- crayfish and mussel cleaning/cooking;
-- mussel shell byproduct -> shell lime;
-- arrowroot starch/cakes;
-- toxic Bitterflag -> detoxified starch -> fisher biscuits;
-- rush cord -> pitch-tarred net line -> fish creel;
-- pearl polishing -> fine net needle;
-- Starfen Reedgrain meal/fishcake;
-- Starfen Fen Mussel cooked use.
-
-Raw-resource production utilization is now **45/53 (~85%)**.
-Current luxury raws are **12/12** used by production.
-
-## Current census
+The hunting bridge deliberately avoids a second hunting-state authority.
 
 ```text
-places/localities                        34
-named NPCs                               26
-shop/service sites                       23
-creature definitions                    52
-resource sources                        50
-canonical items                        158
-recipes/processes                       81
+persistent ecology population
+  -> deliberate track/hunt discovery
+  -> existing encounter template
+  -> existing battle
+  -> victory
+  -> consume one population unit exactly once
+  -> existing defeated-body recovery
+  -> provenance-bearing materials
+```
+
+Encounter start alone does **not** deplete population availability. Defeat, retreat, or merely locating sign does not falsely reduce ecology.
+
+Hostile populations remain governed by ordinary encounter/aggro authority.
+
+Ironspine encounter-backed populations:
+
+- Ironspine Snowhorn Ibex;
+- Ironspine Cliff Bear;
+- Froststep Lynx.
+
+## Ironspine ecology and resources
+
+Species/populations:
+
+- Ironspine Snowhorn Ibex;
+- Ironspine Cliff Bear;
+- Froststep Lynx;
+- Ironspine Crag Marmot;
+- Whitecrest Eagle;
+- Ironspine Snow Grouse.
+
+Gathering sources:
+
+- Stonepine Cone Grove;
+- Alpine Sorrel Patch;
+- Frost Lichen Face;
+- Dwarf Willow Scrub;
+- Lodestone Iron Seam;
+- Cloud Quartz Pocket.
+
+Body recovery:
+
+- Snowhorn -> hide + fresh game meat;
+- Cliff Bear -> hide + fat;
+- Froststep Lynx -> pelt.
+
+No passive species was made generically aggressive merely to force loot.
+
+## Production and food preparation
+
+Data 49 adds thirteen regional transformations and thirteen outputs across:
+
+- roasted trail kernels;
+- Snowhorn Sorrel Stew;
+- salt-smoked Snowhorn;
+- rendered bear tallow;
+- willow-tanned highland leather;
+- dressed Froststep fur lining;
+- frost-lichen tallow salve;
+- lodestone billet and pointer;
+- polished Cloud Quartz;
+- High-Pass Survey Compass;
+- bearhide bedroll;
+- Ironspine Weather Mantle.
+
+Every new Ironspine raw/body resource has intentional production demand.
+
+Food-safety metadata remains explicit internally, but normal world-facing prose uses practical late-medieval/fantasy knowledge:
+
+- raw or poorly prepared game can cause sickness;
+- roasting, boiling, stewing, salting, smoking, leaching, washing, drying, or similar preparation is described as accumulated field/kitchen knowledge;
+- technical hazard identifiers do not force NPC/player-facing prose to sound like modern microbiology.
+
+Permanent authorities:
+
+- `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`;
+- `docs/ITEM_CONSUMPTION_SAFETY.md`.
+
+## Data 49 census
+
+Validated implementation-freeze census:
+
+```text
+places/localities                        37
+named NPCs                               29
+shop/service sites                       25
+creature definitions                    58
+resource sources                        56
+canonical items                        182
+recipes/processes                       94
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       6
 
-routes                                   10
+routes                                   12
 spell schools                             4
 capabilities/training definitions        44
-NPC schedules                            13
-regional/shared content packs            18
-pack-owned records                      564
-runtime seed NPCs                        25
-runtime seed enemies                     13
+NPC schedules                            15
+regional/shared content packs            20
+pack-owned records                      630
+runtime seed NPCs                        28
+runtime seed enemies                     16
 ```
 
-Mechanics floors now reached:
-- places;
-- shop/service sites;
-- creatures;
-- resource sources;
-- **recipes/processes**;
-- transport services.
+Raw-resource production utilization: **56/64 (87.5%)**.
 
-Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap. Abilities, NPC breadth, quests, and items remain short.
+Luxury raw production utilization: **13/13**.
 
-## Next decision boundary after Great Mere
+Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap. Canonical items are now 18 short; abilities, NPC breadth, and quests remain materially short.
+
+## Next decision boundary
 
 Formal roadmap:
+
 - Packet E — Gate A integration/census audit.
 
-World-edge planning:
-- Ironspine Highlands becomes the next ranked geography candidate after Great Mere.
+World-edge sequence:
 
-System/content:
-- population-backed hunting remains a strong separate candidate;
-- companion/NPC/quest/ability breadth remain major scale gaps.
+- Ironspine Highlands is Item 4;
+- **Emberwash Badlands** is the next ranked geography candidate.
 
-None is auto-started.
+Other high-value gaps:
+
+- companion breadth;
+- NPC/quest network density;
+- ability/technique breadth;
+- deeper managed husbandry only when a real husbandry source authority is intentionally designed;
+- deferred sparse-resource coverage in Old Gaol, Timbercross, and dungeon spaces.
+
+No later unit is auto-started merely because it appears in planning.
 
 ## Restart order
 
 1. `AGENTS.md`
 2. this file
-3. `docs/EXECUTION_PIPELINE.md`
-4. `docs/ZONE_PROFILE_GREAT_MERE.md`
-5. `docs/ITEM_CONSUMPTION_SAFETY.md`
-6. `docs/ROADMAP.md`
-7. relevant runtime/data/tests for the explicitly selected next unit
+3. `PROJECT_PROFILE.yaml`
+4. `docs/EXECUTION_PIPELINE.md`
+5. `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`
+6. `docs/ITEM_CONSUMPTION_SAFETY.md`
+7. `docs/ROADMAP.md`
+8. relevant runtime/data/tests for the explicitly selected next unit
 
 Do not redo broad discovery unless repository evidence contradicts this checkpoint.
