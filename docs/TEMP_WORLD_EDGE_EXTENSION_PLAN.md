@@ -37,7 +37,7 @@ Physical impossibility, legal restriction, and environmental danger should remai
 
 ## Prioritized zone/biome extensions
 
-### 1. Slatewater Foothills — IMPLEMENTED / VALIDATED ON PR #389
+### 1. Slatewater Foothills — MERGED / AUDITED
 
 Placement: between Timbercross/Elderwood and Brasshaven/Redstone along the long Crown-Forge road.
 
@@ -229,7 +229,7 @@ Sparse geography is a feature when it creates meaningful travel, preparation, ec
 
 The user explicitly authorized **Item 1: Slatewater Foothills**, with a guild lodge for gatherers, hunters, and traders.
 
-Implemented on PR #389:
+Implemented on PR #389 and merged at `edca59ac8955d999f7c80812688e7153d5aaafeb`:
 
 1. Slatewater inserted into the Crown-Forge corridor with the established through-road distance/time preserved;
 2. Slatewater Foothills created as danger-3 wilderness;
@@ -246,6 +246,8 @@ Validated before final documentation synchronization by hosted Check #1253 / run
 Validated census: 29 places, 20 named NPCs, 19 shop/service sites, 40 creature definitions, 35 resource sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, 374 pack-owned records.
 
 **No later numbered item is automatically authorized by completion of Item 1.**
+
+The subsequent Data 45 ecology/geography integrity audit is recorded in `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`. It repaired route/connection conflicts and strengthened world/ecology validation without changing this ranked expansion sequence.
 
 ## Current repository checkpoint before Slatewater work
 
