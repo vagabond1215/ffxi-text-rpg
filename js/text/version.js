@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.6';
+export const PRODUCT_VERSION = '0.9.100.7';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 45,
+    data: 46,
     benchmark: 3,
-    codename: 'Ecology & Geography Integrity',
+    codename: 'Crownfields Agricultural Lowlands',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.6',
+    versionManifest: '0.9.100.7',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
