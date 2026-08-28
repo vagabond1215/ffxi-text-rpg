@@ -20,23 +20,17 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-Active PR: **#396 — Great Mere freshwater economy and food safety metadata**
+Great Mere is **complete, merged, and post-merge green**.
 
-Base main:
+Product merge:
+- PR **#396 — Great Mere freshwater economy and food safety metadata**
+- merge commit: `e327181fcd1e93579f335045a817de1fdae842a5`
+- final exact PR-head Check: **#1348 / run `33212388143`**
+- post-merge main Check: **#1349 / run `33212454122`**
+- tests: **743/743**
+- Repository Audit, Content Census, Benchmark 3, and Benchmark Sample: PASS
 
-`77e5ac0bce738be5b8ba65a8c3786ac0a98ae7dd`
-
-The repaired implementation head before Data 48/version-document synchronization passed hosted Check **#1334 / run `33209084881`**:
-
-```text
-Repository Audit: PASS
-Tests:            743/743
-Content Census:   PASS
-Benchmark 3:      PASS
-Benchmark Sample: PASS
-```
-
-A final exact-head Check is required after Data 48 continuity synchronization before PR #396 merges.
+No implementation PR is active. The repository is awaiting the next explicitly authorized bounded unit.
 
 ## Great Mere implementation
 
