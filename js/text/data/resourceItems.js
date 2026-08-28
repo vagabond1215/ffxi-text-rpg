@@ -11,6 +11,7 @@ const RESOURCE_ITEM_DEFINITIONS = Object.freeze({
         sourceId: 'source-west-elderwood-sweetroot-patch',
         placeId: 'west-elderwood',
         action: 'forage',
+        consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'The peeled root may be eaten raw or used in cooking and remedies.' },
         sinks: ['consume', 'craftIngredient', 'trade'],
     }),
     'item-elderwood-hardwood': resourceItem({
@@ -71,7 +72,8 @@ const RESOURCE_ITEM_DEFINITIONS = Object.freeze({
         sourceId: 'source-west-starfen-silverfin-water',
         placeId: 'west-starfen',
         action: 'fish',
-        sinks: ['consume', 'craftIngredient', 'trade'],
+        consumption: { mode: 'processRequired', hazard: 'pathogenRisk', preparation: ['clean', 'cook'], notes: 'Freshwater fish should be cleaned and cooked before eating.' },
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
 });
 
@@ -84,7 +86,7 @@ export function listResourceItems() {
     return Object.values(RESOURCE_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition));
 }
 
-function resourceItem({ id, name, tags, valueGil, sourceId, placeId, action, sinks }) {
+function resourceItem({ id, name, tags, valueGil, sourceId, placeId, action, consumption = null, sinks }) {
     return Object.freeze({
         id,
         name,
@@ -93,6 +95,7 @@ function resourceItem({ id, name, tags, valueGil, sourceId, placeId, action, sin
         maxStack: 99,
         valueGil,
         tags: Object.freeze([...tags]),
+        consumption,
         provenance: Object.freeze([Object.freeze({
             type: action === 'mine' || tags.includes('mineral') ? 'mineral' : action === 'fish' ? 'fishing' : 'flora',
             sourceId,
