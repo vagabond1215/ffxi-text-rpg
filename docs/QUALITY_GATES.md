@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 ```
 
 Slatewater hosted Check #1253 / run `33182827321` / job `98888188450` on Node 24.19.0 passed Repository Audit, **724/724 tests**, Content Census, Benchmark 3, and Benchmark Sample before final documentation synchronization. A final exact-head Check remains required before PR #389 merge.
