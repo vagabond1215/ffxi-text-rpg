@@ -35,7 +35,13 @@ export function describePlace(placeId) {
         });
     const canonicalRoutes = listRoutes()
         .filter((route) => route.stops.some((stop) => stop.placeId === place.id))
-        .map((route) => `- ${route.name} (${route.id}) [${route.type}; ${route.allowedModes.join(', ')}]`);
+        .map((route) => {
+            const destinations = route.stops
+                .filter((stop) => stop.placeId !== place.id)
+                .map((stop) => getPlace(stop.placeId)?.name ?? stop.placeId)
+                .join(', ');
+            return `- ${route.name} (${route.id}) [${route.type}; ${route.allowedModes.join(', ')}] → ${destinations}`;
+        });
 
     return [
         place.name,
