@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, Great Mere, the population-backed hunting bridge, and **Ironspine Highlands** are implemented through the current Data 49 candidate. The frozen Ironspine implementation head `53323564ac724044ff06b1341c5466e73a34ab37` passed Check #1368 / run `33215878907` with **753/753 tests** and the full hosted gate before version/document synchronization.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, Great Mere, the population-backed hunting bridge, and **Ironspine Highlands** are complete through Data 49. Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37` passed Check #1368 / run `33215878907`, promoted exact-head Check #1381 / run `33217086478` passed the same full gate with **753/753 tests**, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
 ```text
 Product:       0.9.100.10
@@ -131,7 +131,7 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Ironspine Highlands and the population-backed hunting bridge are the latest completed bounded work on the current branch. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Emberwash Badlands** is the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. Ironspine Highlands and the population-backed hunting bridge are the latest completed bounded work on `main`. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Emberwash Badlands** is the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
@@ -153,7 +153,7 @@ Future magic expansion must preserve the universal/shared ownership rule. Region
 14. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
 15. relevant architecture/runtime/tests for the active pass
 
-Repository evidence beats conversation memory.
+Repository evidence beats conversation memory. Low-risk normal development now prefers direct work on `main`; create a branch only when rollback/blast-radius risk exceeds what an ordinary GitHub revert can safely contain.
 
 ## Running
 
