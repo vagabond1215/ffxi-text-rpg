@@ -19,13 +19,13 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 Phase:         0.9 / Content Scale Gate A
 ```
 
