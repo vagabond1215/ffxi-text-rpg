@@ -48,7 +48,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 passed 753/753 tests. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 and promoted exact-head Check #1381 both passed 753/753 tests. |
 
 ## Content infrastructure and regional packs — Data 49
 
@@ -206,4 +206,4 @@ Mechanics-scale gate remains **NOT READY**. Companions are now the largest relat
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. Packets A–D, Great Mere, population-backed hunting, and the Ironspine Data 49 tranche are implemented. Packet E Gate A integration/census remains the next formal roadmap gate; Emberwash Badlands is the next ranked world-edge candidate. Neither is auto-started.
+Phase 0.9 and `0.9.100` remain open. Packets A–D, Great Mere, population-backed hunting, and the Ironspine Data 49 tranche are complete and merged. Packet E Gate A integration/census remains the next formal roadmap gate; Emberwash Badlands is the next ranked world-edge candidate. Neither is auto-started.
