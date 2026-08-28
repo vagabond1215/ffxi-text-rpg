@@ -118,7 +118,7 @@ const ROUTE_DEFINITIONS = Object.freeze({
     'route-starfen-great-mere-shore': route({
         id: 'route-starfen-great-mere-shore',
         name: 'East Fen Shore Track',
-        type: 'trail',
+        type: 'track',
         allowedModes: ['walk', 'mount'],
         stops: [
             stop('stop-east-starfen-mere-track', 'east-starfen', { x: 7, y: 4 }),
