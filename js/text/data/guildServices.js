@@ -11,6 +11,10 @@ export const GUILD_SERVICES = Object.freeze({
         recipe('bronze-ingot', 'Bronze Ingot', 1, ['copper-ore', 'tin-ore']),
         recipe('bronze-sword', 'Bronze Sword', 4, ['bronze-ingot', 'ash-lumber']),
     ]),
+    'poi-crownfields-grange-growers-hall': guild('poi-crownfields-grange-growers-hall', 'Crownfields Growers’ Hall', 'fieldcraft', ['cropAppraisal', 'harvestGuidance', 'marketNotices', 'droverNotices', 'fieldExchange'], [
+        recipe('grange-grain-sack', 'Grange Grain Sack', 1, ['item-crownfields-crown-rye']),
+        recipe('field-fodder-bundle', 'Field Fodder Bundle', 1, ['item-crownfields-meadow-hay']),
+    ]),
     'poi-slatewater-waylodge-trailguild': guild('poi-slatewater-waylodge-trailguild', 'Slatewater Field Guild', 'fieldcraft', ['resourceAppraisal', 'routeGuidance', 'gatheringNotices', 'huntingNotices', 'tradeExchange'], [
         recipe('field-dressing-bundle', 'Field Dressing Bundle', 1, ['simple-bandage']),
         recipe('trail-provision-pack', 'Trail Provision Pack', 1, ['travel-ration', 'flask-of-water']),
