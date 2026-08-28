@@ -1,3 +1,5 @@
+import { getPlace } from './places.js';
+import { validateItemResourceMetadata } from './resourceProvenance.js';
 import { getHuntingResourceItem, listHuntingResourceItems } from './huntingResourceItems.js';
 import { getResourceItem, listResourceItems } from './resourceItems.js';
 import { getRegionalResourceItem, listRegionalResourceItems } from './regionalResourceItems.js';
@@ -21,11 +23,18 @@ export function listCanonicalResourceItems() {
 export function validateResourceItemRegistry() {
     const issues = [];
     const ids = new Set();
-    for (const item of listCanonicalResourceItems()) {
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems()];
+    for (const item of items) {
         if (ids.has(item.id)) issues.push(`Duplicate canonical resource item ${item.id}.`);
         ids.add(item.id);
-        if (!Array.isArray(item.provenance) || item.provenance.length === 0) issues.push(`${item.id} requires provenance.`);
-        if (!Array.isArray(item.sinks) || item.sinks.length === 0) issues.push(`${item.id} requires at least one sink.`);
+        for (const issue of validateItemResourceMetadata(item, { requireSource: true, requireSink: true })) {
+            issues.push(`${item.id} ${issue}`);
+        }
+        for (const provenance of item.provenance ?? []) {
+            if (provenance.placeId && !getPlace(provenance.placeId)) {
+                issues.push(`${item.id} provenance references unknown place ${provenance.placeId}.`);
+            }
+        }
     }
     return issues;
 }
