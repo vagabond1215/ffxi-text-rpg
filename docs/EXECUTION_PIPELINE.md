@@ -18,17 +18,15 @@ Codename:      Crownfields Agricultural Lowlands
 
 **Crownfields Agricultural Lowlands is merged through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`.**
 
-Final promoted PR Check #1307 / run `33200172961` passed. Post-merge main Check #1308 / run `33200236952` is pending at the time of this docs branch.
+Final promoted PR Check #1307 / run `33200172961` passed. Post-merge main Check #1308 / run `33200236952` passed the full hosted gate with 731/731 tests.
 
 Pre-promotion implementation Check #1294 / run `33199542741` passed **731/731 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
 
 ## Immediate integration sequence
 
-1. require post-merge main Check #1308 to pass;
-2. mark this continuity branch with that green result;
-3. open/validate/merge the docs-only handoff PR;
-4. verify final main Check;
-5. await the next explicit bounded work order.
+1. open/validate/merge this docs-only handoff PR;
+2. verify the resulting final main Check;
+3. await the next explicit bounded work order.
 
 ## Current measured census
 
