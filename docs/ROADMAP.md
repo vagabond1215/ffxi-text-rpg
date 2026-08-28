@@ -34,7 +34,7 @@ Crownfields Agricultural Lowlands        COMPLETE / MERGED
 
 ### Regional Ingredient & Luxury Processing
 
-**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #394 FINAL INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`; final PR Check #1326 and post-merge main Check #1327 passed.**
 
 Purpose:
 - make intermediate crafting ingredients first-class rather than skipping raw -> finished;

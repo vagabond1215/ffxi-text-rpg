@@ -14,21 +14,19 @@ Benchmark:     3
 Codename:      Regional Ingredient & Luxury Processing
 ```
 
-## Active bounded unit
+## Latest completed bounded unit
 
-**PR #394 — Regional Ingredient & Luxury Processing**
+**Regional Ingredient & Luxury Processing — COMPLETE / MERGED**
 
-Pre-promotion implementation Check #1311 / run `33202128019` passed **736/736 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
+```text
+PR:             #394
+merge:          fb7a4ec0145c6072aac21525cb15e931125fc327
+PR Check:       #1326 / 33202537431 PASS
+main Check:     #1327 / 33202596523 PASS
+tests:          736/736
+```
 
-## Immediate integration sequence
-
-1. finish Data 47 continuity/document synchronization;
-2. run exact-head hosted Check on PR #394;
-3. require the full gate green;
-4. merge PR #394 with expected-head protection;
-5. verify post-merge `main` Check;
-6. perform a docs-only handoff sync if the merge SHA/check result must be recorded;
-7. await the next explicit bounded work order.
+No implementation unit is active.
 
 ## Data 47 depth metrics
 
@@ -60,7 +58,7 @@ Still short:
 - canonical items: 126/200;
 - recipes/processes: 59/75.
 
-Do not close those gaps with disconnected filler.
+Do not close gaps with disconnected filler.
 
 ## Next decision boundary
 
@@ -73,7 +71,8 @@ World-edge planning:
 System/content candidates:
 - population-backed hunting;
 - companion breadth;
-- connected production depth using the eleven still-unused raw resources.
+- NPC/quest/ability density;
+- further connected production depth.
 
 No next unit is auto-started.
 
@@ -86,3 +85,5 @@ npm run census
 npm run benchmark
 npm run benchmark:sample
 ```
+
+Census targets are progression evidence, not ordinary CI pass/fail thresholds.

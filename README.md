@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, and Crownfields are merged. The active bounded unit is **PR #394 — Regional Ingredient & Luxury Processing**; its pre-promotion implementation head passed the full hosted gate with **736/736 tests**.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, and Crownfields are merged. **Regional Ingredient & Luxury Processing is merged** through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`. Final PR Check #1326 and post-merge main Check #1327 both passed the full hosted gate with **736/736 tests**.
 
 ```text
 Product:       0.9.100.8
@@ -131,7 +131,7 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. PR #394 is the active production-depth tranche. After it lands, **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Great Mere** remains the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. Data 47 processing is merged. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Great Mere** remains the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
