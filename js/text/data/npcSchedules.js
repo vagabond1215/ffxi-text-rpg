@@ -76,7 +76,7 @@ const DAILY_SCHEDULES = [
         placeId: 'mistmere-canal-ward',
         label: 'Culinary guild instruction hours',
         windows: [
-            window(10, 0, 18, 0, 'Working the guild kitchen and teaching marsh preparations'),
+            window(8, 0, 18, 0, 'Working the guild kitchen and teaching marsh preparations'),
         ],
         unavailableText: 'Tavi has closed the guild lesson bench and is away buying fresh marsh ingredients.',
     }),
