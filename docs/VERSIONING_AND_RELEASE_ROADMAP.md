@@ -480,7 +480,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Great Mere final exact PR-head Check #1348 / run `33212388143` passed with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. PR #396 merged at `e327181fcd1e93579f335045a817de1fdae842a5`; post-merge main Check #1349 / run `33212454122` also passed the full hosted gate with 743/743 tests.
 
-The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
+The current Data 48 Great Mere checkpoint supersedes the earlier Slatewater and Packet D census freezes: 34 places, 26 named NPCs, 23 service sites, 52 creatures, 50 sources, 158 items, 81 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 13 schedules, 18 packs, and 564 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
