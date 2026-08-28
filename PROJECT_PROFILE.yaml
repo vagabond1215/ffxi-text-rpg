@@ -21,20 +21,21 @@ authority:
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   crownfields_profile: docs/ZONE_PROFILE_CROWNFIELDS.md
 git:
-  current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/regional-ingredient-luxury-processing
-  active_pull_request: 394
-  base_main_sha: 07e5b01a2db80830bf272ec0175ecae14b2f10b6
-  pre_promotion_check: 33202128019
-  pre_promotion_check_number: 1311
-  pre_promotion_check_result: success-736-of-736-tests-census-benchmark-and-sample
-  final_exact_head_check_required: true
+  current_normal_work: awaiting-next-bounded-unit
+  latest_product_merge_sha: fb7a4ec0145c6072aac21525cb15e931125fc327
+  latest_product_pull_request: 394
+  latest_product_pr_check: 33202537431
+  latest_product_pr_check_number: 1326
+  latest_product_pr_check_result: success-736-of-736-tests-census-benchmark-and-sample
+  latest_product_post_merge_check: 33202596523
+  latest_product_post_merge_check_number: 1327
+  latest_product_post_merge_check_result: success-736-of-736-tests-census-benchmark-and-sample
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: regional-ingredient-luxury-processing
-  current_bounded_unit_status: implementation-validated-version-and-continuity-sync-in-progress
+  latest_bounded_unit: regional-ingredient-luxury-processing
+  latest_bounded_unit_status: complete-merged-and-post-merge-green
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: great-mere
