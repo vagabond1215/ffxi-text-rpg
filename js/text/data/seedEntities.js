@@ -60,6 +60,18 @@ export function createSeedNpcs() {
             locationId: 'merewatch-landing', services: ['ferry-booking', 'skiff-guidance', 'lake-weather', 'cargo'],
         }),
         createNpc({
+            id: 'npc-ironspine-vara-kell', name: 'Vara Kell', title: 'High-Pass Survey Factor', faction: 'Brasshaven',
+            locationId: 'ironspine-watchpost', services: ['regional-goods', 'survey-trade', 'resource-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-ironspine-dain-rove', name: 'Dain Rove', title: 'Ironspine Warden', faction: 'Brasshaven',
+            locationId: 'ironspine-watchpost', services: ['route-guidance', 'hunting', 'wildlife-tracking', 'weather', 'field-training'],
+        }),
+        createNpc({
+            id: 'npc-ironspine-mara-fell', name: 'Mara Fell', title: 'Pass Lodge Keeper', faction: 'Brasshaven',
+            locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions'],
+        }),
+        createNpc({
             id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
             locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
         }),
@@ -181,6 +193,21 @@ export function createSeedEnemies() {
             id: 'enemy-starfen-mire-heron', speciesId: 'species-starfen-mire-heron', name: 'Mirecrest Heron', family: 'mire-heron', ecosystem: 'bird',
             zoneId: 'west-starfen', level: 4, expValue: 90, lootTableId: 'starfenMireHeron', baseAttributes: { dex: 2, agi: 2, vit: -1 },
             aggro: { sight: false, sound: false, magic: false, lowHp: false },
+        }),
+        createEnemy({
+            id: 'enemy-ironspine-snowhorn-ibex', speciesId: 'species-ironspine-snowhorn-ibex', name: 'Ironspine Snowhorn Ibex', family: 'ridge-ibex', ecosystem: 'beast',
+            zoneId: 'ironspine-high-meadow', level: 5, expValue: 115, lootTableId: 'ironspineSnowhorn', baseAttributes: { vit: 2, agi: 2, str: 1 },
+            aggro: { sight: false, sound: true, magic: false, lowHp: false },
+        }),
+        createEnemy({
+            id: 'enemy-ironspine-cliff-bear', speciesId: 'species-ironspine-cliff-bear', name: 'Ironspine Cliff Bear', family: 'bear', ecosystem: 'beast',
+            zoneId: 'ironspine-lower-pass', level: 6, expValue: 145, lootTableId: 'ironspineCliffBear', baseAttributes: { str: 3, vit: 3, agi: -1 },
+            aggro: { sight: true, sound: true, magic: false, lowHp: false },
+        }),
+        createEnemy({
+            id: 'enemy-ironspine-froststep-lynx', speciesId: 'species-ironspine-froststep-lynx', name: 'Froststep Lynx', family: 'lynx', ecosystem: 'beast',
+            zoneId: 'ironspine-high-meadow', level: 6, expValue: 135, lootTableId: 'ironspineFroststepLynx', baseAttributes: { dex: 2, agi: 3, vit: 0 },
+            aggro: { sight: false, sound: true, magic: false, lowHp: false },
         }),
     ];
 }
