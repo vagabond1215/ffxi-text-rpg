@@ -98,8 +98,8 @@ test('combined production catalog consumes at least three quarters of current ca
             .filter((itemId) => rawIds.has(itemId)),
     );
 
-    assert.equal(rawIds.size, 44);
-    assert.equal(usedRawIds.size, 33);
+    assert.equal(rawIds.size, 53);
+    assert.equal(usedRawIds.size, 45);
     assert.ok(usedRawIds.size / rawIds.size >= 0.75);
 });
 
