@@ -114,8 +114,9 @@ export const COPPERGRASS_ECOLOGY_PACK = regionalPack({
 
 export const CROWNFIELDS_ECOLOGY_PACK = regionalPack({
     id: 'pack-crownfields-agricultural-ecology', regionId: 'crownfields', steward: 'thornwall-south-farms',
-    dependencies: ['pack-elderwood-opening'],
+    dependencies: ['pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
     placeId: 'crownfields', ownsPlace: true,
+    ownedFamilyIds: ['family-cattle', 'family-sheep', 'family-chicken', 'family-field-rat'],
     speciesIds: [
         'species-crownfields-cattle', 'species-crownfields-whitefleece-sheep',
         'species-crownfields-redcomb-hen', 'species-crownfields-hedgerow-rat',
@@ -164,9 +165,9 @@ export const SLATEWATER_ECOLOGY_PACK = regionalPack({
 
 export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK]);
 
-function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, speciesIds, populationIds, sourceIds, itemIds }) {
+function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
-    const familyIds = new Set(species.map((entry) => entry.familyId));
+    const familyIds = new Set(ownedFamilyIds ?? species.map((entry) => entry.familyId));
     const families = listRegionalEcologyFamilies().filter((entry) => familyIds.has(entry.id));
     const populations = listRegionalPopulations().filter((entry) => populationIds.includes(entry.id));
     const sources = listRegionalGatheringSources().filter((entry) => sourceIds.includes(entry.id));
