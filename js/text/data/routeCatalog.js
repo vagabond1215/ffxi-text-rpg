@@ -2,11 +2,25 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 3;
+export const ROUTE_CATALOG_VERSION = 4;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
 const ROUTE_DEFINITIONS = Object.freeze({
+    'route-thornwall-crownfields-road': route({
+        id: 'route-thornwall-crownfields-road',
+        name: 'Southfield Farm Road',
+        type: 'road',
+        allowedModes: ['walk', 'mount', 'wagon', 'caravan'],
+        stops: [
+            stop('stop-thornwall-southgate-crownfields', 'thornwall-southgate'),
+            stop('stop-crownfields-grange-north-road', 'crownfields-grange', { x: 2, y: 2 }),
+        ],
+        segments: [segment('stop-thornwall-southgate-crownfields', 'stop-crownfields-grange-north-road', 3600, 9000, ['farm-traffic', 'seasonal-mud', 'livestock-crossing'])],
+        bidirectional: true,
+        knowledge: { mapId: 'map-crownfields', discoveryTag: 'route.southfield-farm-road' },
+        cargo: { encumbranceMultiplier: 1.05 },
+    }),
     'route-thornwall-west-elderwood-road': route({
         id: 'route-thornwall-west-elderwood-road',
         name: 'Southgate Forest Road',
@@ -118,6 +132,18 @@ const ROUTE_DEFINITIONS = Object.freeze({
 });
 
 const TRANSPORT_SERVICE_DEFINITIONS = Object.freeze({
+    'service-crownfields-produce-wagon': transportService({
+        id: 'service-crownfields-produce-wagon',
+        name: 'Crownfields Produce Wagon',
+        mode: 'wagon',
+        routeId: 'route-thornwall-crownfields-road',
+        stopIds: ['stop-thornwall-southgate-crownfields', 'stop-crownfields-grange-north-road'],
+        cadenceSeconds: 7200,
+        firstDepartureOffsetSeconds: 5400,
+        fare: { currencyId: 'gil', baseAmount: 5, perSegmentAmount: 3 },
+        cargoAllowanceUnits: 20,
+        boardingLeadSeconds: 120,
+    }),
     'service-crown-forge-caravan': transportService({
         id: 'service-crown-forge-caravan',
         name: 'Crown-Forge Caravan',
