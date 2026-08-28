@@ -48,9 +48,10 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-elderwood-ecology-breadth',
         'pack-redstone-ecology-breadth',
         'pack-starfen-ecology-breadth',
+        'pack-coppergrass-steppe-ecology',
     ]);
-    assert.equal(index.recordCounts.places, 8);
-    assert.equal(index.recordCounts.items, 49);
+    assert.equal(index.recordCounts.places, 9);
+    assert.equal(index.recordCounts.items, 53);
     assert.equal(index.recordCounts.recipes, 23);
     assert.equal(index.recordCounts.npcs, 13);
     assert.equal(index.recordCounts.npcSchedules, 7);
