@@ -27,6 +27,9 @@ export function validatePersistedActiveBattle(battle) {
     }
     if (battle.source !== undefined && !nonEmptyString(battle.source)) issues.push('activeBattle.source must be a non-empty string when present.');
     if (battle.sourceEnemyId !== undefined && !nonEmptyString(battle.sourceEnemyId)) issues.push('activeBattle.sourceEnemyId must be a non-empty string when present.');
+    if (battle.sourcePopulationId !== undefined && !nonEmptyString(battle.sourcePopulationId)) issues.push('activeBattle.sourcePopulationId must be a non-empty string when present.');
+    if (battle.sourceSpeciesId !== undefined && !nonEmptyString(battle.sourceSpeciesId)) issues.push('activeBattle.sourceSpeciesId must be a non-empty string when present.');
+    if (battle.sourcePopulationConsumed !== undefined && typeof battle.sourcePopulationConsumed !== 'boolean') issues.push('activeBattle.sourcePopulationConsumed must be boolean when present.');
     if (battle.endLogged !== undefined && typeof battle.endLogged !== 'boolean') issues.push('activeBattle.endLogged must be boolean when present.');
 
     const ids = new Set();

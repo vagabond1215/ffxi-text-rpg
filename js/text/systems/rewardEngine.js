@@ -1,3 +1,4 @@
+import { consumePopulationUnits } from './ecologyEngine.js';
 import { awardExperience } from './progressionEngine.js';
 import { createDefeatedEnemyResourceOpportunity } from './resourceOpportunityEngine.js';
 
@@ -5,6 +6,25 @@ export function resolveBattleRewards(state, battle, options = {}) {
     if (!state?.player || !battle) return { ok: false, message: 'No battle rewards can be resolved.' };
     if (battle.phase !== 'victory') return { ok: false, message: 'Battle rewards require victory.' };
     if (battle.rewards?.resolved) return { ok: false, duplicate: true, message: 'Battle rewards already resolved.' };
+
+    let populationConsumption = null;
+    if (battle.source === 'population' && battle.sourcePopulationId && battle.sourcePopulationConsumed !== true) {
+        const consumed = consumePopulationUnits(state, battle.sourcePopulationId, 1);
+        if (!consumed.ok) {
+            return {
+                ok: false,
+                code: 'rewards.population-consumption-failed',
+                message: `Victory could not reconcile ecology population ${battle.sourcePopulationId}: ${consumed.display?.text ?? consumed.code}`,
+            };
+        }
+        battle.sourcePopulationConsumed = true;
+        populationConsumption = {
+            populationId: battle.sourcePopulationId,
+            speciesId: battle.sourceSpeciesId ?? consumed.data.population.speciesId,
+            remaining: consumed.data.population.availableUnits,
+            eventId: consumed.data.eventId,
+        };
+    }
 
     const defeatedEnemies = battle.combatants.filter((combatant) => combatant.type === 'enemy' && combatant.battle.defeated);
     const exp = defeatedEnemies.reduce((total, enemy) => total + (Number(enemy.expValue) || 0), 0);
@@ -31,6 +51,7 @@ export function resolveBattleRewards(state, battle, options = {}) {
         items: [],
         failedItems: [],
         resourceOpportunities,
+        populationConsumption,
     };
 
     return {
@@ -41,7 +62,8 @@ export function resolveBattleRewards(state, battle, options = {}) {
         items: [],
         failedItems: [],
         resourceOpportunities,
-        message: describeRewardResult({ exp, gil, progression, resourceOpportunities }),
+        populationConsumption,
+        message: describeRewardResult({ exp, gil, progression, resourceOpportunities, populationConsumption }),
     };
 }
 
@@ -54,6 +76,9 @@ export function describeRewardResult(result) {
     ];
     if (result.progression?.levelUps?.length) {
         lines.push(`- Level up: ${result.progression.levelUps.join(', ')}`);
+    }
+    if (result.populationConsumption) {
+        lines.push(`- Ecology: ${result.populationConsumption.populationId} reduced by 1; ${result.populationConsumption.remaining} currently available.`);
     }
     if (opportunities.length) {
         lines.push(`- Recoverable resources: ${opportunities.map((entry) => `${entry.id} ${entry.sourceName}`).join(', ')}`);
