@@ -105,13 +105,24 @@ export function validateGameState(state) {
 export function validateWorldData() {
     const issues = [];
     const places = listPlaces();
-    const placeIds = new Set(places.map((place) => place.id));
+    const placeIds = new Set();
+    for (const place of places) {
+        if (placeIds.has(place.id)) issues.push(`duplicate place id ${place.id}.`);
+        placeIds.add(place.id);
+    }
     const maps = listMaps();
-    const mapIds = new Set(maps.map((map) => map.id));
+    const mapIds = new Set();
+    for (const map of maps) {
+        if (mapIds.has(map.id)) issues.push(`duplicate map id ${map.id}.`);
+        mapIds.add(map.id);
+    }
 
     for (const place of places) {
         if (!place.mapId) issues.push(`${place.id} is missing mapId.`);
         if (place.mapId && !mapIds.has(place.mapId)) issues.push(`${place.id} references unknown map ${place.mapId}.`);
+        if (place.mapId && mapIds.has(place.mapId) && !getMap(place.mapId)?.placeIds.includes(place.id)) {
+            issues.push(`${place.id} references map ${place.mapId}, but that map does not list the place.`);
+        }
         if (!isObject(place.coordinateSystem)) issues.push(`${place.id} is missing coordinateSystem.`);
         if (place.coordinateSystem && !isCoordinateInsidePlace(place, place.coordinateSystem.start)) {
             issues.push(`${place.id} start coordinate is outside its bounds.`);
@@ -134,12 +145,20 @@ export function validateWorldData() {
     }
 
     for (const map of maps) {
+        const mappedPlaceIds = new Set();
         for (const placeId of map.placeIds) {
+            if (mappedPlaceIds.has(placeId)) issues.push(`${map.id} lists place ${placeId} more than once.`);
+            mappedPlaceIds.add(placeId);
             if (!placeIds.has(placeId)) issues.push(`${map.id} references unknown place ${placeId}.`);
+            const place = getPlace(placeId);
+            if (place && place.mapId !== map.id) issues.push(`${map.id} lists ${placeId}, but the place points to map ${place.mapId}.`);
         }
     }
 
+    const connectionIds = new Set();
     for (const connection of ZONE_CONNECTIONS) {
+        if (connectionIds.has(connection.id)) issues.push(`duplicate zone connection id ${connection.id}.`);
+        connectionIds.add(connection.id);
         const from = getPlace(connection.from);
         const to = getPlace(connection.to);
         if (!from) issues.push(`${connection.id} has unknown from place ${connection.from}.`);

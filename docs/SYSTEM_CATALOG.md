@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,7 +50,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24. |
 
-## Content infrastructure and regional packs — Data 44
+## Content infrastructure and regional packs — Data 45
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -71,6 +71,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Coppergrass Steppe ecology pack | integrated | Neutral steppe transition on the Forge-Mere corridor with preserved route geometry, five fauna niches, and staple/luxury resource provenance. |
 | Slatewater Foothills ecology pack | integrated | Mixed-wood foothill transition with four fauna families, six gathering sources, exact resource provenance, and physical pass/cliff geography. |
 | Slatewater Waylodge pack | playable | Safe road lodge with functional field exchange, field guild, campaign-recovery-backed lodging, stableyard/travel services, staff schedules, and foothill caravan. |
+| Ecology/geography integrity validation | integrated | Canonical raw duplicate detection, reciprocal map/place references, ordered route/service topology, regional ecology parity, provenance validation, and no-trap geography are regression-guarded. |
 | High-volume canonical regional content | seeded | Real authored breadth is growing but remains below most mechanics floors. |
 
 ### Pack v2 collections
@@ -90,7 +91,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 26 current places/localities. |
+| Places/routes/maps | playable | 29 current places/localities; reciprocal map/place and route-stop integrity is validated. |
 | Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
@@ -143,8 +144,8 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 16 runtime seed NPCs; census counts 17 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Seven current schedules derive availability from fictional time. |
+| NPC seed definitions | integrated | 19 runtime seed NPCs; census counts 20 named NPC definitions across canonical sources. |
+| NPC recurring schedules | playable | Nine current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |

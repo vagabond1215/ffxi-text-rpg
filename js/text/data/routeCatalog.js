@@ -1,5 +1,6 @@
+import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
-import { getPlace } from './places.js';
+import { getPlace, isCoordinateInsidePlace } from './places.js';
 
 export const ROUTE_CATALOG_VERSION = 3;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
@@ -235,15 +236,30 @@ export function validateRouteCatalog() {
         for (const routeStopDefinition of routeDefinition.stops) {
             if (stopIds.has(routeStopDefinition.id)) issues.push(`${routeDefinition.id} duplicates stop ${routeStopDefinition.id}.`);
             stopIds.add(routeStopDefinition.id);
-            if (!getPlace(routeStopDefinition.placeId)) issues.push(`${routeDefinition.id} stop ${routeStopDefinition.id} references unknown place ${routeStopDefinition.placeId}.`);
+            const place = getPlace(routeStopDefinition.placeId);
+            if (!place) {
+                issues.push(`${routeDefinition.id} stop ${routeStopDefinition.id} references unknown place ${routeStopDefinition.placeId}.`);
+            } else if (routeStopDefinition.coordinate) {
+                if (!isCoordinateInsidePlace(place, routeStopDefinition.coordinate)) {
+                    issues.push(`${routeDefinition.id} stop ${routeStopDefinition.id} coordinate is outside ${place.id}.`);
+                } else if (isTopologyPlace(place) && !isNavigableCoordinate(place, routeStopDefinition.coordinate, routeStopDefinition.coordinate.levelId)) {
+                    issues.push(`${routeDefinition.id} stop ${routeStopDefinition.id} coordinate is not navigable in ${place.id}.`);
+                }
+            }
         }
         if (routeDefinition.segments.length !== routeDefinition.stops.length - 1) issues.push(`${routeDefinition.id} segment count must equal stops - 1.`);
-        for (const routeSegment of routeDefinition.segments) {
+        for (const [index, routeSegment] of routeDefinition.segments.entries()) {
             if (!stopIds.has(routeSegment.fromStopId) || !stopIds.has(routeSegment.toStopId)) issues.push(`${routeDefinition.id} has segment with unknown stop.`);
+            const expectedFrom = routeDefinition.stops[index]?.id;
+            const expectedTo = routeDefinition.stops[index + 1]?.id;
+            if (routeSegment.fromStopId !== expectedFrom || routeSegment.toStopId !== expectedTo) {
+                issues.push(`${routeDefinition.id} segment ${index} must connect ${expectedFrom} to ${expectedTo} in route order.`);
+            }
             if (!positiveInteger(routeSegment.durationSeconds)) issues.push(`${routeDefinition.id} has invalid segment duration.`);
             if (!positiveInteger(routeSegment.distanceYalms)) issues.push(`${routeDefinition.id} has invalid segment distance.`);
         }
         if (routeDefinition.knowledge.mapId && !getMap(routeDefinition.knowledge.mapId)) issues.push(`${routeDefinition.id} references unknown map ${routeDefinition.knowledge.mapId}.`);
+        if (!positiveNumber(routeDefinition.cargo.encumbranceMultiplier)) issues.push(`${routeDefinition.id} has invalid cargo encumbranceMultiplier.`);
     }
 
     for (const service of listTransportServices()) {
@@ -256,11 +272,25 @@ export function validateRouteCatalog() {
             continue;
         }
         if (!routeDefinition.allowedModes.includes(service.mode)) issues.push(`${service.id} mode ${service.mode} is not allowed on ${service.routeId}.`);
-        for (const stopId of service.stopIds) if (!routeStop(routeDefinition, stopId)) issues.push(`${service.id} references unknown route stop ${stopId}.`);
+        if (service.stopIds.length < 2) issues.push(`${service.id} requires at least two service stops.`);
+        const serviceStopIds = new Set();
+        let previousRouteIndex = -1;
+        for (const stopId of service.stopIds) {
+            if (serviceStopIds.has(stopId)) issues.push(`${service.id} duplicates service stop ${stopId}.`);
+            serviceStopIds.add(stopId);
+            const routeIndex = routeDefinition.stops.findIndex((entry) => entry.id === stopId);
+            if (routeIndex < 0) {
+                issues.push(`${service.id} references unknown route stop ${stopId}.`);
+                continue;
+            }
+            if (routeIndex <= previousRouteIndex) issues.push(`${service.id} service stops must follow ${service.routeId} route order.`);
+            previousRouteIndex = routeIndex;
+        }
         if (!positiveInteger(service.cadenceSeconds)) issues.push(`${service.id} has invalid cadenceSeconds.`);
         if (!nonNegativeInteger(service.firstDepartureOffsetSeconds)) issues.push(`${service.id} has invalid firstDepartureOffsetSeconds.`);
+        if (!nonNegativeInteger(service.boardingLeadSeconds) || service.boardingLeadSeconds >= service.cadenceSeconds) issues.push(`${service.id} has invalid boardingLeadSeconds.`);
         if (!positiveInteger(service.cargoAllowanceUnits)) issues.push(`${service.id} has invalid cargoAllowanceUnits.`);
-        if (!nonNegativeInteger(service.fare.baseAmount) || !nonNegativeInteger(service.fare.perSegmentAmount)) issues.push(`${service.id} has invalid fare.`);
+        if (!String(service.fare.currencyId ?? '').trim() || !nonNegativeInteger(service.fare.baseAmount) || !nonNegativeInteger(service.fare.perSegmentAmount)) issues.push(`${service.id} has invalid fare.`);
     }
 
     return issues;
@@ -336,6 +366,7 @@ function transportService(options) {
 
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
 function nonNegativeInteger(value) { return Number.isInteger(value) && value >= 0; }
+function positiveNumber(value) { return Number.isFinite(Number(value)) && Number(value) > 0; }
 function deepFreeze(value) {
     if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value;
     for (const child of Object.values(value)) deepFreeze(child);

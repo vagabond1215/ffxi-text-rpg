@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D are merged. Subsequent ecology breadth and Coppergrass geography expansions are also on `main`; **Slatewater Foothills & Waylodge** is the active bounded world-edge tranche on PR #389, promoted to the Data 44 contract while hosted validation is in progress.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, the ecology breadth pass, Coppergrass Steppe, and **Slatewater Foothills & Waylodge** are merged. The active bounded unit is **PR #390 — Ecology & Geography Integrity Audit**, promoted to Data 45 after hardening canonical geography/ecology references and validators.
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 44 covers the stable canonical geography/ecology/resource/service additions landed after Data 43, including Coppergrass and the active Slatewater tranche. Game State remains 14 because these additions reuse existing place, route, shop, recovery, ecology, inventory/provenance, schedule, and transport authorities without adding a new durable player/world state family.
+Data 45 advances because canonical geography connections changed and map/place, route/service, ecology-registry, resource-provenance, and Pack-v2 catalog-reference validation were strengthened. Game State remains 14 because the audit adds no new durable player/world fact or persistence authority.
 
 ## Product direction
 
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Slatewater checkpoint:
+Validated Data 45 audit census:
 
 ```text
 places/localities       29 / mechanics floor 10
@@ -127,11 +127,11 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Packets A–D, the ecology breadth pass, and Coppergrass are merged. Slatewater Foothills & Waylodge is the active validated bounded tranche on PR #389 while final documentation/exact-head integration completes. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate; the temporary world-edge plan also ranks Crownfields next, but neither is auto-started without a new work order.**
+`0.9.100 Content Scale Gate A` remains open. Slatewater is merged; PR #390 is the active integrity repair. After it lands, **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**, while Crownfields remains the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
@@ -144,8 +144,9 @@ Future magic expansion must preserve the universal/shared ownership rule. Region
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
-9. relevant architecture/runtime/tests for the active pass
+8. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
+9. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
+10. relevant architecture/runtime/tests for the active pass
 
 Repository evidence beats conversation memory.
 

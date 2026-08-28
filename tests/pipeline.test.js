@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.100.5');
+    assert.equal(PRODUCT_VERSION, '0.9.100.6');
     assert.equal(PACKAGE_VERSION, '0.9.100');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 14);
-    assert.equal(VERSION.data, 44);
+    assert.equal(VERSION.data, 45);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'World Edge Expansion & Slatewater Waylodge');
+    assert.equal(VERSION.codename, 'Ecology & Geography Integrity');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -89,7 +89,7 @@ test('version manifest separates product package persistence data and scale-cont
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.9.100.5',
+            versionManifest: '0.9.100.6',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -111,7 +111,7 @@ test('version manifest separates product package persistence data and scale-cont
             accountSaves: '0.7.1',
             commitments: '0.7.0',
             npcSchedules: '0.3.0',
-            contentCatalogRegistry: '0.1.0',
+            contentCatalogRegistry: '0.2.0',
             contentPackSchema: '0.2.0',
             regionalContentPacks: '0.6.0',
             contentPackValidation: '0.3.0',
@@ -124,7 +124,7 @@ test('version manifest separates product package persistence data and scale-cont
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.7.0',
-            validation: '0.45.0',
+            validation: '0.46.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.2',
             npcWorldProjection: '0.1.1',
@@ -150,15 +150,15 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.100\.5/);
+    assert.match(describeVersion(), /Product: 0\.9\.100\.6/);
     assert.match(describeVersion(), /Package: 0\.9\.100/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
-    assert.match(describeVersion(), /Data: 44/);
+    assert.match(describeVersion(), /Data: 45/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: World Edge Expansion & Slatewater Waylodge/);
+    assert.match(describeVersion(), /Codename: Ecology & Geography Integrity/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.2\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
     assert.match(describeSystemVersions(), /regionalContentPacks: 0\.6\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.3\.0/);
@@ -168,7 +168,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.4\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.3\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.45\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.46\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.7\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);

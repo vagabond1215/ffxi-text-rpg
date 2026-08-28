@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.5';
+export const PRODUCT_VERSION = '0.9.100.6';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 44,
+    data: 45,
     benchmark: 3,
-    codename: 'World Edge Expansion & Slatewater Waylodge',
+    codename: 'Ecology & Geography Integrity',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.5',
+    versionManifest: '0.9.100.6',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -49,8 +49,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     production: '0.1.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
-    regionalEcology: '0.1.0',
-    ecologyRegistry: '0.1.0',
+    regionalEcology: '0.2.0',
+    ecologyRegistry: '0.2.0',
     ecologyState: '0.1.0',
     populations: '0.2.0',
     gatheringSources: '0.3.0',
@@ -58,13 +58,13 @@ export const SYSTEM_VERSIONS = Object.freeze({
     resourceItems: '0.1.0',
     regionalResourceItems: '0.1.0',
     huntingResourceItems: '0.1.0',
-    resourceItemRegistry: '0.2.0',
-    routeCatalog: '0.1.0',
+    resourceItemRegistry: '0.3.0',
+    routeCatalog: '0.2.0',
     transport: '0.4.1',
     carriedInventory: '0.1.0',
     carriedLoad: '0.2.1',
     transportServiceBoard: '0.2.0',
-    contentCatalogRegistry: '0.1.0',
+    contentCatalogRegistry: '0.2.0',
     contentPackSchema: '0.2.0',
     regionalContentPacks: '0.6.0',
     contentPackValidation: '0.3.0',
@@ -93,7 +93,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.45.0',
+    validation: '0.46.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',
@@ -141,7 +141,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
-    travel: '0.5.0',
+    travel: '0.5.1',
     pois: '0.3.7',
     poiDiscovery: '0.4.0',
     poiFastTravel: '0.3.6',

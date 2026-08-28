@@ -1,86 +1,72 @@
 # Hearth & Horizon Roadmap
 
-This roadmap records the current product phase, accepted sequence, and deferred work. It is criteria-driven rather than calendar-driven.
-
-Repository evidence beats conversation memory. For restart state, read `AGENTS.md`, `docs/THREAD_HANDOFF.md`, and `docs/EXECUTION_PIPELINE.md` before using this roadmap.
+Milestones are criteria-driven rather than calendar-driven. Repository evidence beats conversation memory.
 
 ## Current baseline
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
-Compatibility: pre-release-current-schema
-Runtime:       Node >=24
+Codename:      Ecology & Geography Integrity
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
-## Completed foundation
+## Completed foundation and content tranches
 
 ```text
 Phase 0.4–0.7                         COMPLETE
 Phase 0.8 life/infrastructure         COMPLETE
-Phase 0.8 exit audit                  COMPLETE
-post-0.8 status/repair audit          COMPLETE
-repository contract audit             COMPLETE
+Phase 0.8 exit/status repair          COMPLETE
 Content Pack Scale Contract v2        COMPLETE / MERGED
 Redstone Forge-Road                    COMPLETE / MERGED
 Elderwood Hunt-Timber                  COMPLETE / MERGED
 Universal Magic & Starfen Marshcraft  COMPLETE / MERGED
-Ecology family/resource breadth pass  COMPLETE / MERGED
+Ecology family/resource breadth       COMPLETE / MERGED
 Coppergrass Steppe                     COMPLETE / MERGED
+Slatewater Foothills & Waylodge       COMPLETE / MERGED (#389)
 ```
+
+Slatewater merge checkpoint:
+
+`edca59ac8955d999f7c80812688e7153d5aaafeb`
+
+Post-merge Check #1265 / run `33187962625` passed.
 
 ## Active bounded unit
 
-### Slatewater Foothills & Waylodge
+### Ecology & Geography Integrity Audit
 
-**Status: implementation + hosted validation complete on PR #389; final documentation synchronization / exact-head validation / landing in progress.**
+**Status: implemented; Data 45 promotion/document synchronization and final PR #390 integration in progress.**
 
-Purpose:
+This pass fixes integrity rather than increasing census volume.
 
-- fill the long geographic gap between Timbercross/Elderwood and Brasshaven/Redstone;
-- preserve the existing Crown-Forge route distance/time while giving it real intermediate geography;
-- establish mountain/pass boundary logic rather than treating every zone edge as automatically walkable;
-- add a neutral field-guild lodge without requiring a town or city;
-- connect gathering/hunting/trade travel into one usable roadside loop.
+Major repaired classes:
+- competing legacy direct edges versus canonical routes;
+- accidental player-trapping places;
+- asymmetric ordinary gates/direction metadata;
+- hidden duplicate ecology/resource IDs;
+- weak regional ecology validation;
+- foundation-only ecology catalog resolution;
+- non-reciprocal map/place validation;
+- under-validated route stop/service topology.
 
-Implemented graph:
+Permanent audit:
 
-```text
-Timbercross / Elderwood
-  -> Crown-Forge road
-  -> Slatewater Foothills
-       mixed woodland
-       river ravines
-       upland meadow
-       slate ridges
-       montane scrub
-  -> Slatewater Waylodge
-       field exchange
-       field guild
-       safe hearth/bunks
-       stableyard / pack-animal care
-       scheduled foothill caravan
-  -> Brasshaven / Redstone
-```
+`docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`
 
-Current route preservation:
+Dedicated guard:
 
-```text
-Thornwall Rivergate -> Timbercross              18,000 yalms / 7,200s
-Timbercross -> Slatewater Waylodge              18,000 yalms / 7,200s
-Slatewater Waylodge -> Brasshaven Iron Quay     18,000 yalms / 7,200s
-FULL CROWN-FORGE                               54,000 yalms / 21,600s
-```
+`tests/ecologyGeographyIntegrity.test.js`
 
-Validated Slatewater branch census:
+Pre-promotion audit Check #1266 passed 728/728 tests and the full hosted gate. Check #1267 also passed after the final Crownward reciprocity repair.
 
-| Category | Current | Mechanics floor | Remaining |
+## Current content census
+
+| Category | Current | Mechanics floor | Gap |
 | --- | ---: | ---: | ---: |
 | Places/localities | 29 | 10 | ready |
 | Named NPCs | 20 | 50 | 30 |
@@ -91,154 +77,103 @@ Validated Slatewater branch census:
 | Recipes/processes | 29 | 75 | 46 |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
-| Recruitable companions | 1 | 4 | 3 |
+| Companions | 1 | 4 | 3 |
 | Transport services | 4 | 5 | 1 |
 
-Supplemental coverage:
+Supplemental:
 
 ```text
-routes                                   7
-spell schools                            4
-capability/training definitions         44
-NPC schedules                            9
-regional/shared content packs           13
-pack-owned records                      374
-pack-owned abilities/capabilities/
-  schedules/companions               41/44/9/1
-runtime seed NPCs                       19
-runtime seed enemies                    13
+routes                         7
+spell schools                  4
+capabilities                  44
+NPC schedules                  9
+regional/shared packs         13
+pack-owned records           374
+runtime seed NPCs             19
+runtime seed enemies          13
 ```
 
-Hosted Check #1253 / run `33182827321` / job `98888188450` passed Repository Audit, **724/724 tests**, Content Census, Benchmark 3, and Benchmark Sample before this final documentation synchronization.
+Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap.
 
-Mechanics-scale gate remains **NOT READY**. Creature breadth now reaches the mechanics floor. Companions remain the largest relative gap.
-
-## World-edge expansion plan
-
-The current world-edge audit is intentionally preserved in:
-
-`docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`
-
-It is a temporary handoff/planning artifact and may be deleted once its decisions are absorbed into permanent world-cartography/regional documents.
-
-Accepted design rule:
-
-> A local exploration-map edge is not automatically a walkable world boundary.
-
-Physical barriers, legal restrictions, and environmental preparation gates should remain separate concepts.
-
-Prioritized candidate sequence recorded there:
-
-1. Slatewater Foothills — active/implemented in PR #389.
-2. Crownfields — agricultural lowlands south of Thornwall.
-3. Great Mere — deep freshwater lake east/southeast of Starfen.
-4. Ironspine Highlands — alpine mountains north of North Redstone.
-5. Emberwash Badlands — arid transition south of South Redstone.
-6. Gloamwood — deeper old-growth continuation west of Elderwood.
-7. Headwater Vale — upstream river valley north of Timbercross.
-8. Lower Deepvein — subterranean-only continuation.
-9. Drowned Vaults — submerged continuation beyond Sunken Archive.
-10. Coppergrass north/south biome-belt extensions.
-11. Starfen delta/brackish coast.
-12. Waymeet approach regions while preserving direct Thornwall–Waymeet as a skyferry bypass.
-
-**This sequence is planning, not automatic authorization.** Finishing Slatewater does not automatically start Crownfields.
-
-## Phase 0.9 Content Scale Gate A
-
-Primary question:
-
-> Can the repository repeatedly author and validate materially larger connected content without creating parallel authorities, bypassing stable-ID ownership, or manufacturing filler?
+## Formal Phase 0.9 sequence
 
 ### Packet A — Content Pack Scale Contract v2
-
 **COMPLETE / MERGED.**
-
-Established Pack-v2 ownership/dependency validation while preserving existing canonical catalogs as definition authority.
 
 ### Packet B — Redstone Forge-Road
-
 **COMPLETE / MERGED.**
-
-Proved a connected mining → production → equipment → commitment → technique regional graph.
 
 ### Packet C — Elderwood Hunt-Timber
-
 **COMPLETE / MERGED.**
-
-Proved a different hunt/forestry → recovery → processing → equipment → civic-work graph.
 
 ### Packet D — Universal Magic & Starfen Marshcraft
-
 **COMPLETE / MERGED.**
 
-Established universal/shared magic ownership and a third regional marshcraft/community graph.
-
-### User-authorized geography/ecology expansion
-
-After Packet D, explicit work orders authorized:
-
-- ecology family/resource breadth expansion;
-- Coppergrass Steppe;
-- world-edge planning and Slatewater Foothills/Waylodge.
-
-These are legitimate Gate-A content-scale work because they exercise the same canonical place/route/ecology/resource/service/pack contracts at higher breadth.
-
 ### Packet E — Gate A integration/census audit
-
 **QUEUED / NOT STARTED.**
 
-Packet E remains the next formal roadmap gate unless a future work order explicitly prioritizes another bounded world/content tranche first.
+Packet E remains the next formal roadmap gate. User-authorized ecology/geography tranches after Packet D are additional Gate-A scale evidence; they do not silently replace Packet E.
 
-Packet E should:
-- run and inspect current scale census after all landed tranches;
-- identify underrepresented connected families rather than raw count gaps only;
-- inspect pack ownership/dependency density;
-- inspect route/service connectivity and unreachable content;
-- inspect provenance/source/sink coverage;
-- inspect NPC/service/quest/companion gaps;
-- identify scaling pressure or architecture debt exposed by larger content;
-- produce the next bounded phase decision.
+Packet E should inspect:
+- current census and connected-family gaps;
+- Pack-v2 ownership/dependency density;
+- route/service reachability;
+- provenance/source/sink coverage;
+- NPC/service/quest/companion gaps;
+- scaling pressure and architecture debt;
+- next bounded phase decision.
 
-## Near-term content priorities after Slatewater
+## World-edge plan
 
-These are evidence-based gaps, not automatic tasks:
+`docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` remains the temporary detailed planning authority.
 
-1. **companions** — 1/4 mechanics floor;
-2. **service sites** — 19/20;
-3. **transport services** — 4/5;
-4. **resource sources** — 35/40;
-5. **recipes/processes** — 29/75;
-6. **named NPCs** — 20/50;
-7. **quests/contracts** — 18/30;
-8. **abilities/techniques** — 41/100;
-9. **canonical items** — 90/200.
+Current ranked sequence after completed Slatewater starts with:
+1. Crownfields;
+2. Great Mere;
+3. Ironspine Highlands;
+4. Emberwash Badlands;
+5. Gloamwood;
+6. Headwater Vale;
+7. Lower Deepvein;
+8. Drowned Vaults;
+9. Coppergrass extensions;
+10. Starfen delta/coast;
+11. Waymeet approaches.
 
-Counts must not be gamed. New records should arrive through coherent regional, livelihood, social, combat, or exploration graphs.
+This ranking is planning, not automatic authorization.
+
+## Ecology/geography deferred gaps
+
+From the Data 45 integrity audit:
+- Thornwall Old Gaol has no ecology/resource substrate;
+- Timbercross has fauna but no gathering source;
+- Redfang/Deepvein/Sunken Archive lack gathering/salvage sources;
+- persistent ecology populations do not yet drive player-facing passive/wary hunt encounters.
+
+Do not solve these with disconnected filler.
+
+A future population-backed hunting bridge is a strong bounded system candidate because it can reuse:
+- canonical population authority;
+- enemy encounter templates;
+- defeated-body recovery;
+- provenance;
+without making passive wildlife aggressive.
 
 ## Durable architectural constraints
 
-Do not introduce a second authority for an existing domain.
-
-Examples:
-
-- one fictional simulation clock;
-- canonical timed-task ownership remains domain-specific;
-- inventory remains physical item authority;
-- provenance remains resource-origin authority;
-- existing shop engine remains trade authority;
-- existing campaign recovery remains safe-rest authority;
-- existing route/transport systems remain travel authority;
-- existing ecology registry remains ecology authority;
-- Pack v2 owns stable-ID placement/dependencies, not duplicate gameplay definitions;
-- canonical magic remains character-owned/shared, not region-owned;
-- mount/pack-animal care may be represented through services until a canonical mount state system is deliberately implemented.
-
-Game State remains 14 unless a future bounded change introduces a new durable player/world fact that truly requires a compatibility boundary.
+- one fictional world clock;
+- one domain authority per state family;
+- inventory owns physical items;
+- provenance owns resource history;
+- canonical ecology registry owns ecology definitions;
+- Pack v2 owns stable-ID placement/dependencies, not duplicate definitions;
+- maps/places/routes must cross-reference consistently;
+- canonical routes must not be shadowed by contradictory direct edges;
+- every player-enterable place needs an escape path unless deliberate trapping is explicitly modeled;
+- universal magic remains character/shared-owned;
+- Game State only changes for new durable state.
 
 ## Validation contract
-
-Every bounded implementation intended for landing must pass:
 
 ```bash
 npm run audit:repo
@@ -248,18 +183,15 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-Census target shortfalls are progression evidence rather than ordinary CI failures.
+Census shortfalls are progression evidence rather than ordinary CI failures.
 
 ## Restart rule
 
-A new thread should not repeat Phase 0.4–0.8 or earlier Gate-A discovery if the repository checkpoint is coherent.
-
 Read:
-
 1. `AGENTS.md`
 2. `docs/THREAD_HANDOFF.md`
 3. `docs/EXECUTION_PIPELINE.md`
-4. `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` if continuing geography work
-5. the relevant current zone/profile/catalog/tests only
+4. this roadmap
+5. the relevant dedicated audit/profile docs
 
-Then verify `main` and current hosted Check state and continue the immediate bounded unit.
+Then verify current `main`/PR/Check and continue only the explicit bounded unit.
