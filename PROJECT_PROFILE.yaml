@@ -38,6 +38,9 @@ active_change:
   current_feature_head_before_continuity_sync: c180582c21be9ad301edba0449421b40d0ae4ca9
   first_pull_request_check: 33182561392
   first_check_result: repository-audit-failed-only-because-version-authority-docs-were-stale
+  validated_pr_check_before_final_docs: 33182827321
+  validated_pr_job_before_final_docs: 98888188450
+  validated_pr_result_before_final_docs: repository-audit-pass-724-of-724-tests-census-benchmark-3-and-sample-success
   pull_request: 389
   pull_request_state: open
   scope: slatewater-foothills-waylodge-world-edge-expansion
@@ -46,7 +49,7 @@ progression:
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   current_bounded_unit: world-edge-expansion-slatewater-foothills-waylodge
-  current_bounded_unit_status: implementation-and-hosted-validation-complete-final-continuity-sync-in-progress
+  current_bounded_unit_status: implementation-and-hosted-validation-complete-final-exact-head-check-required
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: crownfields
