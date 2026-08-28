@@ -1,3 +1,4 @@
+import { validateItemConsumption } from './itemSchema.js';
 import { getPlace } from './places.js';
 import { validateItemResourceMetadata } from './resourceProvenance.js';
 import { getHuntingResourceItem, listHuntingResourceItems } from './huntingResourceItems.js';
@@ -30,6 +31,7 @@ export function validateResourceItemRegistry() {
         for (const issue of validateItemResourceMetadata(item, { requireSource: true, requireSink: true })) {
             issues.push(`${item.id} ${issue}`);
         }
+        for (const issue of validateItemConsumption(item)) issues.push(`${item.id} ${issue}`);
         for (const provenance of item.provenance ?? []) {
             if (provenance.placeId && !getPlace(provenance.placeId)) {
                 issues.push(`${item.id} provenance references unknown place ${provenance.placeId}.`);
