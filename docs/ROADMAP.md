@@ -29,13 +29,14 @@ Slatewater Foothills & Waylodge         COMPLETE / MERGED
 Ecology & Geography Integrity           COMPLETE / MERGED
 Crownfields Agricultural Lowlands        COMPLETE / MERGED
 Regional Ingredient & Luxury Processing COMPLETE / MERGED
+Great Mere Freshwater Economy & Food Safety COMPLETE / MERGED
 ```
 
-## Active bounded unit
+## Latest bounded unit
 
 ### Great Mere Freshwater Economy & Food Safety
 
-**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #396 FINAL INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #396 at `e327181fcd1e93579f335045a817de1fdae842a5`. Final exact PR-head Check #1348 / run `33212388143` and post-merge main Check #1349 / run `33212454122` both passed with 743/743 tests and the full hosted gate.**
 
 Purpose:
 - extend Starfen into a believable large freshwater lake with shore/boat boundary semantics;
@@ -49,7 +50,7 @@ Permanent profiles:
 - `docs/ZONE_PROFILE_GREAT_MERE.md`
 - `docs/ITEM_CONSUMPTION_SAFETY.md`
 
-Pre-promotion repaired Check #1334 / run `33209084881`: **743/743 tests**, full gate green.
+Final exact-head Check #1348 / run `33212388143`: **743/743 tests**, full gate green. Post-merge main Check #1349 / run `33212454122`: **743/743 tests**, full gate green.
 
 Measured change from Data 47:
 
@@ -120,10 +121,8 @@ The temporary detailed plan remains in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
 Implemented:
 1. Slatewater Foothills;
-2. Crownfields.
-
-Active / validated on PR #396:
-3. Great Mere;
+2. Crownfields;
+3. Great Mere.
 
 Next ranked candidates:
 4. Ironspine Highlands;
