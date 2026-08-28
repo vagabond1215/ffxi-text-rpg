@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Data 47 deepens the production graph without adding a new runtime authority. Existing raw resources and canonical production work now compose through intermediate ingredients/components into later recipes; Game State remains 14 because no new durable state family is introduced.
+Data 48 extends the world into Great Mere and adds explicit authored consumption-safety metadata. The zone composes existing geography, route/transport, ecology/gathering, inventory/provenance, production/workstation, shops, schedules, recovery, and player-information authorities; Game State remains 14 because no new durable state family is introduced.
 
 ## Core authority rules
 
@@ -46,6 +46,41 @@ Data 47 deepens the production graph without adding a new runtime authority. Exi
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+## Data 48 Great Mere and consumption-safety composition
+
+Great Mere preserves physical boundary authority:
+
+```text
+East Starfen
+  -> East Fen Shore Track
+  -> Great Mere Westshore
+  -> Merewatch Landing
+
+Mistmere Reedport
+  -> canonical ferry waterway
+  -> Merewatch Landing
+  -> Reedcrown Isle
+```
+
+Open/deep water is not a walkable place edge. Reedcrown is reachable through the route/transport system only.
+
+The item-safety extension remains definition metadata:
+
+```text
+canonical item
+  -> food/use tags
+  -> explicit consumption profile
+       mode: direct | processRequired | nonFood
+       hazard: none | pathogenRisk | rawIrritant | rawToxic
+       preparation: authored labels
+  -> player information presentation
+  -> existing production recipes transform unsafe/raw ingredients
+```
+
+No hunger meter, poison clock, nutrition store, or second item authority is introduced. A future explicit eat/consume mechanic can compose this metadata with existing item/status systems if authorized.
+
+See `docs/ITEM_CONSUMPTION_SAFETY.md` and `docs/ZONE_PROFILE_GREAT_MERE.md`.
 
 ## Data 47 intermediate-first production composition
 
