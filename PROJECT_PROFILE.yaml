@@ -21,7 +21,7 @@ authority:
   crownfields_profile: docs/ZONE_PROFILE_CROWNFIELDS.md
   slatewater_profile: docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
 git:
-  current_normal_work: awaiting-post-merge-main-verification
+  current_normal_work: awaiting-next-bounded-unit
   latest_product_merge_sha: 738faa5813e4aca30950b0d787f1209ae9a3d917
   latest_product_pull_request: 392
   latest_product_pr_check: 33200172961
@@ -29,14 +29,14 @@ git:
   latest_product_pr_check_result: success
   latest_product_post_merge_check: 33200236952
   latest_product_post_merge_check_number: 1308
-  latest_product_post_merge_check_result: pending
+  latest_product_post_merge_check_result: success-731-of-731-tests-census-benchmark-and-sample
   previous_integrity_merge_sha: 8a6faf63832b9443a175cc9031dd881ca1b7a2a8
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   latest_bounded_unit: crownfields-agricultural-lowlands
-  latest_bounded_unit_status: merged-post-merge-verification-pending
+  latest_bounded_unit_status: complete-merged-and-post-merge-green
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: great-mere
