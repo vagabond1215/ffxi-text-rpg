@@ -31,14 +31,14 @@ Crownfields Agricultural Lowlands        COMPLETE / MERGED
 Regional Ingredient & Luxury Processing COMPLETE / MERGED
 Great Mere Freshwater Economy & Food Safety COMPLETE / MERGED
 Population-backed Hunting Bridge             COMPLETE / MERGED
-Ironspine Highlands                           IMPLEMENTED / DATA 49 PROMOTION
+Ironspine Highlands                           COMPLETE / MERGED
 ```
 
 ## Latest bounded unit
 
 ### Ironspine Highlands & Population Hunting
 
-**Status: implementation frozen on `53323564ac724044ff06b1341c5466e73a34ab37`; Check #1368 / run `33215878907` passed Repository Audit, 753/753 tests, Census, Benchmark 3, and Benchmark Sample. PR #401 performs Data 49 promotion/document synchronization.**
+**Status: COMPLETE / MERGED through PR #402 at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`. Implementation freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed Repository Audit, 753/753 tests, Census, Benchmark 3, and Benchmark Sample.**
 
 Purpose:
 - extend North Redstone into believable alpine/subalpine terrain with pass, wagon-limit, cliff, scree, and high-trail semantics;
@@ -52,7 +52,7 @@ Permanent profiles:
 - `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`
 - `docs/ITEM_CONSUMPTION_SAFETY.md`
 
-Implementation-freeze Check #1368 / run `33215878907`: **753/753 tests**, full gate green.
+Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478`: **753/753 tests**, full gate green.
 
 Measured change from Data 47:
 
