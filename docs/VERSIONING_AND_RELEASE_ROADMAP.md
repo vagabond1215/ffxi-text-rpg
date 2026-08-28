@@ -139,6 +139,48 @@ Data 43 changes stable canonical authored data and ownership/validation relation
 
 No new durable player/world fact was introduced. Universal magic reuses existing character capability/skill and ability-runtime state; Starfen marshcraft reuses inventory/provenance, production/work, NPC schedules, commitments/relationships, and fictional time. The optional commitment capability reward writes into the existing capability registry rather than creating a new progression family.
 
+### `0.9.100.5` — World Edge Expansion & Slatewater Waylodge
+
+This revision synchronizes the canonical data contract after the post-Packet-D ecology/geography expansion and lands the first world-edge corridor tranche.
+
+```text
+Product       0.9.100.4 -> 0.9.100.5
+Package       0.9.100   -> 0.9.100
+Data          43        -> 44
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 44
+
+Stable canonical authored data changed materially after Data 43:
+
+- ecology breadth expanded across previously missing families and staple/luxury resource classes;
+- Coppergrass Steppe was inserted into the Forge-Mere corridor with its own map, place, ecology pack, populations, sources, items, and preserved route geometry;
+- Slatewater Foothills was inserted into the Crown-Forge corridor;
+- Slatewater Waylodge adds a neutral safe locality with a field exchange, field guild, hearth/bunkroom, stableyard, NPC staff, schedules, and a scheduled foothill caravan;
+- four Slatewater fauna families/species/populations and six exact-provenance gathering resources were added;
+- Pack-v2 ownership expands to `pack-slatewater-foothills-ecology` and `pack-slatewater-waylodge`;
+- route, map, place, schedule, shop, ecology, resource, and content-pack catalogs all gained stable records.
+
+The validated Slatewater branch census is 29 places/localities, 20 named NPCs, 19 shop/service sites, 40 creature definitions, 35 resource sources, 90 canonical items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 1 companion, and 4 transport services. Supplemental coverage is 7 routes, 4 spell schools, 44 capabilities, 9 schedules, 13 packs, and 374 pack-owned records.
+
+#### Why Game State stays 14
+
+No new durable player/world state family was introduced. The tranche reuses existing:
+
+- place/map/atlas and travel state;
+- canonical routes and transport tasks;
+- shop transactions and wallet/inventory;
+- campaign recovery for safe lodge rest;
+- NPC projection and fictional-time schedules;
+- ecology populations and gathering work;
+- resource provenance;
+- Pack-v2 ownership metadata.
+
+Mount and pack-animal care at Slatewater is currently represented by place/POI/NPC/travel-service content. A durable mount-condition authority is still planned and was not introduced indirectly by this data pass.
+
 ## Persistence history
 
 Relevant late history:
@@ -157,6 +199,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.2           no Game State change; Data 40 -> 41
 0.9.100.3           no Game State change; Data 41 -> 42
 0.9.100.4           no Game State change; Data 42 -> 43
+0.9.100.5           no Game State change; Data 43 -> 44
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -217,7 +260,7 @@ ee81069defe59a55979bc262ea595c3c9df42f40
 
 Hosted Check `33139128883` / job `98745791538` on Node 24.19.0 passed Repository Audit, **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
 
-Current census at the freeze is 17 named NPCs, 68 canonical items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 44 capabilities, 7 schedules, 10 packs, and 248 pack-owned records.
+The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
