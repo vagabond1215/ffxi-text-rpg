@@ -17,18 +17,18 @@ Authority order remains:
 ## Current baseline
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
 Phase:         0.9 in progress
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 Runtime:       Node >=24
 ```
 
-Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and uses PR-based integration for cross-file scale packets.
+Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and uses PR-based integration for cross-file scale packets. Packets A–C are merged. Packet D is implemented, validated, promoted, and pending final exact-head Check + PR landing.
 
 ## Fast restart protocol
 
@@ -80,66 +80,24 @@ Redstone established the first authored regional proof on Pack v2 by joining exi
 
 ### Packet C — Elderwood Hunt-Timber
 
-**Status: IMPLEMENTED + HOSTED IMPLEMENTATION VALIDATION GREEN / PENDING FINAL PROMOTED-HEAD VALIDATION AND LANDING.**
+**Status: COMPLETE / MERGED.**
 
-Frozen implementation/content SHA:
-
-```text
-acb24b73b4894d3febab370aa279bdfd12cbd02e
-```
-
-Pre-promotion hosted evidence:
-
-```text
-Check:              32423676980
-Job:                96600958329
-Node:               24.19.0
-Repository Audit:   PASS
-Tests:              711/711 passed
-Content Census:     success
-Benchmark 3:        success
-Benchmark Sample:   success
-```
-
-Bounded graph:
-
-```text
-existing Barkboar recovery / Duskcap / amber resin / hardwood
-  -> existing tannery + woodshop + work proficiency + inventory/provenance authorities
-  -> tanned hide / bindings / resin boards + pitch / field gear / road repair bundles
-  -> persistent Thornwall contacts + Oren Vale schedule
-  -> provenance-qualified commitments
-  -> character-owned Elderwood techniques/warding
-  -> Pack v2 ownership through pack-elderwood-hunt-timber
-```
-
-The tranche adds no new simulation clock, persistence family, direct timed-task owner, inventory authority, social authority, progression authority, place, or companion system.
-
-Version decision:
-
-```text
-Product:      0.9.100.3
-Package:      0.9.100
-Data:         42
-Game State:   14 unchanged
-Account Save: 5 unchanged
-Benchmark:    3 unchanged
-```
-
-Data 42 advances for new stable canonical authored records and their source/sink/social/schedule/Pack-v2 relationships. Game State remains 14 because no new durable player/world fact is introduced.
+Elderwood established the second authored Pack-v2 regional proof with hunt/timber recovery, tannery/woodshop production, persistent contacts, fictional-time civic availability, commitments, and field techniques. Its frozen implementation checkpoint was `acb24b73b4894d3febab370aa279bdfd12cbd02e`; the promoted packet landed before Packet D opened.
 
 ### Current census
 
+Validated Packet D implementation/content checkpoint:
+
 ```text
 places/localities       26 / mechanics floor 10
-named NPCs              15 / 50
+named NPCs              17 / 50
 shop/service sites      17 / 20
 creatures               16 / 40
 resource sources        13 / 40
-canonical items         62 / 200
-recipes/processes       23 / 75
-abilities/techniques    13 / 100
-quests/contracts        14 / 30
+canonical items         68 / 200
+recipes/processes       29 / 75
+abilities/techniques    41 / 100
+quests/contracts        18 / 30
 companions                1 / 4
 transport services        3 / 5
 ```
@@ -148,26 +106,89 @@ Infrastructure coverage:
 
 ```text
 routes                                   7
-spell schools                            3
-capabilities/training definitions       16
-NPC schedules                            5
-regional/shared packs                    9
-pack-owned records                     171
+spell schools                            4
+capabilities/training definitions       44
+NPC schedules                            7
+regional/shared packs                   10
+pack-owned records                     248
 pack-owned abilities/capabilities/
-  schedules/companions              13/16/5/1
-runtime seed NPCs                       14
+  schedules/companions              41/44/7/1
+runtime seed NPCs                       16
 runtime seed enemies                    13
 ```
 
-Mechanics-scale gate remains **NOT READY** by design. Abilities/techniques remain the largest relative gap. This is not a failing CI condition.
+Mechanics-scale gate remains **NOT READY** by design. Companions are now the largest relative gap. This is not a failing CI condition.
 
-### Next bounded packet — Starfen Marshcraft-Practical Magic
+### Packet D — Universal Magic & Starfen Marshcraft
 
-**Status: NOT STARTED / not authorized by Elderwood completion alone.**
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL EXACT-HEAD CHECK AND LANDING.**
 
-After Elderwood lands and only with a new explicit continuation, deepen the existing Starfen/Mistmere root rather than bulk-generating global lists. Prefer a connected wetland graph that joins named people/schedules and community/research needs to herbs/fungi, medicine/cooking, practical magic, training, canal/water context, contracts/services, field danger, and provenance through Pack v2.
+Frozen gameplay/content implementation SHA:
 
-Following that regional tranche is Gate A integration/census review.
+```text
+ee81069defe59a55979bc262ea595c3c9df42f40
+```
+
+Pre-promotion hosted evidence:
+
+```text
+Check:              33139128883
+Job:                98745791538
+Node:               24.19.0
+Repository Audit:   PASS
+Tests:              719/719 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
+```
+
+Bounded graph:
+
+```text
+shared character magic authority
+  -> Elemental Form / Vital Weave / Ward Lore / Veilscript
+  -> universal learned spell capabilities + executable abilities
+  -> no regional spell ownership or location gate
+
+existing Starfen resources/recovery
+  -> existing production/work/provenance/inventory authorities
+  -> marsh medicine / cord / waterproofing / survey gear
+  -> persistent Mistmere contacts + fictional-time schedules
+  -> provenance-qualified community/research commitments
+  -> regional Starfen Current Reading field knowledge
+  -> pack-starfen-marshcraft
+```
+
+The external Tales of Symphonia material is retained only as non-canonical taxonomy research in `docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md`. Canonical spell names, stable IDs, schools, effects, and lore are original Hearth & Horizon content.
+
+Version decision:
+
+```text
+Product:      0.9.100.4
+Package:      0.9.100 unchanged
+Data:         43
+Game State:   14 unchanged
+Account Save: 5 unchanged
+Benchmark:    3 unchanged
+```
+
+Data 43 advances because stable canonical magic IDs/ownership, capability/ability catalogs, commitment-reference validation, Starfen marshcraft outputs/processes/NPCs/schedules/contracts, and the child regional pack changed. Game State remains 14 because no new durable player/world authority was introduced.
+
+### Next bounded packet — Packet E Gate A integration/census audit
+
+**Status: QUEUED / NOT STARTED.**
+
+Do not auto-start Packet E merely because Packet D lands. Its purpose is to review the combined Gate A graph, census, remaining target gaps, and integration evidence without inventing filler. The ordinary gate remains:
+
+```text
+npm run audit:repo
+npm test
+npm run census
+npm run benchmark
+npm run benchmark:sample
+```
+
+Run `npm run hardening` only if the integration review changes lifecycle-sensitive authority or explicitly requires it.
 
 # Phase 0.9 progression envelope
 
