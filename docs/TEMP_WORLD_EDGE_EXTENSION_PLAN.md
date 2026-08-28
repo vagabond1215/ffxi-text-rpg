@@ -37,7 +37,7 @@ Physical impossibility, legal restriction, and environmental danger should remai
 
 ## Prioritized zone/biome extensions
 
-### 1. Slatewater Foothills — ACTIVE FIRST EXTENSION
+### 1. Slatewater Foothills — IMPLEMENTED / VALIDATED ON PR #389
 
 Placement: between Timbercross/Elderwood and Brasshaven/Redstone along the long Crown-Forge road.
 
@@ -225,20 +225,27 @@ Valid content densities include:
 
 Sparse geography is a feature when it creates meaningful travel, preparation, ecology, and isolation.
 
-## Immediate authorized implementation
+## Item 1 implementation result
 
-The user explicitly authorized starting **Item 1: Slatewater Foothills**, with a guild lodge for gatherers, hunters, and traders.
+The user explicitly authorized **Item 1: Slatewater Foothills**, with a guild lodge for gatherers, hunters, and traders.
 
-The first bounded implementation should:
-1. insert Slatewater into the Crown-Forge corridor without changing the established total long-road distance/time unless a later design decision requires it;
-2. create Slatewater Foothills as wilderness;
-3. create Slatewater Waylodge as a safe locality/travel hub;
-4. make the lodge a functional buy/sell point using existing shop authority;
-5. provide food and safe recovery/sleep through existing settlement/recovery authorities where possible;
-6. represent mount/pack-animal stabling/care through existing travel/logistics/service content without inventing duplicate durable mount state;
-7. add an initial foothill ecology/resource tranche and exact provenance;
-8. register Pack-v2 ownership and update tests/census expectations;
-9. update THREAD_HANDOFF.md last with exact landed/validation state.
+Implemented on PR #389:
+
+1. Slatewater inserted into the Crown-Forge corridor with the established through-road distance/time preserved;
+2. Slatewater Foothills created as danger-3 wilderness;
+3. Slatewater Waylodge created as a neutral danger-0 locality/travel hub;
+4. functional field exchange uses existing shop authority to buy sellable field finds and sell supplies/local goods;
+5. hearth/bunkroom fiction uses existing safe-locality campaign recovery for actual rest;
+6. stableyard/mount/pack-animal care uses place/POI/NPC/travel-service content without creating duplicate durable mount state;
+7. four fauna families/species/populations and six exact-provenance gathering resources added;
+8. ecology and lodge Pack-v2 ownership registered;
+9. focused field→trade→provision→recovery and route/ecology/pack tests added.
+
+Validated before final documentation synchronization by hosted Check #1253 / run `33182827321`: Repository Audit PASS, **724/724 tests**, Census PASS, Benchmark 3 PASS, Benchmark Sample PASS.
+
+Validated census: 29 places, 20 named NPCs, 19 shop/service sites, 40 creature definitions, 35 resource sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, 374 pack-owned records.
+
+**No later numbered item is automatically authorized by completion of Item 1.**
 
 ## Current repository checkpoint before Slatewater work
 
