@@ -37,16 +37,16 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 ```
 
-Frozen Packet D gameplay/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40` passed hosted Check `33139128883` / job `98745791538` on Node 24.19.0 with **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
+Slatewater hosted Check #1253 / run `33182827321` / job `98888188450` on Node 24.19.0 passed Repository Audit, **724/724 tests**, Content Census, Benchmark 3, and Benchmark Sample before final documentation synchronization. A final exact-head Check remains required before PR #389 merge.
 
 ## Persistence/lifecycle
 
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Packet D adds **no persistence or lifecycle owner**. Universal magic reuses character capability/skill + ability runtime authority; Starfen marshcraft reuses production/work-task, inventory/provenance, commitment/relationship/schedule, and fictional-time authority. `npm run hardening` is therefore not required solely because this authored-data packet grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
+Data 44 adds **no persistence or lifecycle owner**. Coppergrass and Slatewater reuse place/route/transport, shop, recovery, ecology/gathering, inventory/provenance, NPC schedule, and Pack-v2 authorities. Slatewater mount/pack-animal care is service content only; no durable mount state was introduced. `npm run hardening` is therefore not required solely because this authored-data tranche grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
