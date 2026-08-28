@@ -1,6 +1,7 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
+import { getIngredientLuxuryProductionItem, listIngredientLuxuryProductionItems } from './ingredientLuxuryProductionItems.js';
 
-export const PRODUCTION_ITEM_CATALOG_VERSION = 7;
+export const PRODUCTION_ITEM_CATALOG_VERSION = 8;
 
 const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-copper-ingot': productionItem({ id: 'item-redstone-copper-ingot', name: 'Redstone Copper Ingot', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'copper', 'component', 'crafted'], valueGil: 28, sourceId: 'process-redstone-copper-ingot', action: 'process', sinks: ['craftIngredient', 'processInput', 'construction', 'trade'] }),
@@ -31,8 +32,8 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-starfen-marsh-survey-kit': productionItem({ id: 'item-starfen-marsh-survey-kit', name: 'Starfen Marsh Survey Kit', kind: ITEM_KINDS.MATERIAL, tags: ['survey', 'fieldcraft', 'water', 'research', 'starfen'], valueGil: 68, sourceId: 'craft-starfen-marsh-survey-kit', action: 'craft', sinks: ['contract', 'trade'] }),
 });
 
-export function getProductionItem(itemId) { const definition = PRODUCTION_ITEM_DEFINITIONS[String(itemId ?? '').trim()] ?? null; return definition ? normalizeItem(definition) : null; }
-export function listProductionItems() { return Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)); }
+export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getIngredientLuxuryProductionItem(key); }
+export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listIngredientLuxuryProductionItems()]; }
 
 function productionItem({ id, name, kind, tags, valueGil, sourceId, action, sinks, equipmentSlot = null, allowedSlots = [], modifiers = {} }) {
     return Object.freeze({
