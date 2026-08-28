@@ -7,31 +7,31 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 ```
 
 The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
 
 ## Current census
 
-Validated Great Mere Data 48 post-merge checkpoint:
+Validated Ironspine Data 49 implementation-freeze checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
-| Places/localities | 34 | 10 | ready |
-| Named NPCs | 26 | 50 | 24 |
-| Shop/service sites | 23 | 20 | ready |
-| Creature definitions | 52 | 40 | ready |
-| Resource sources | 50 | 40 | ready |
-| Canonical items | 158 | 200 | 42 |
-| Recipes/processes | 81 | 75 | ready |
+| Places/localities | 37 | 10 | ready |
+| Named NPCs | 29 | 50 | 21 |
+| Shop/service sites | 25 | 20 | ready |
+| Creature definitions | 58 | 40 | ready |
+| Resource sources | 56 | 40 | ready |
+| Canonical items | 182 | 200 | 18 |
+| Recipes/processes | 94 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
@@ -40,16 +40,16 @@ Validated Great Mere Data 48 post-merge checkpoint:
 Infrastructure coverage:
 
 ```text
-routes                                  10
+routes                                  12
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           13
-regional/shared packs                   18
-pack-owned records                     564
+NPC schedules                           15
+regional/shared packs                   20
+pack-owned records                     630
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/11/1
-runtime seed NPCs                       25
-runtime seed enemies                    13
+  schedules/companions              41/44/15/1
+runtime seed NPCs                       28
+runtime seed enemies                    16
 ```
 
 Mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, and transport services now meet their mechanics floors; companions remain the largest relative gap.
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, Data 47 processing, and Great Mere Data 48 are merged. No implementation unit is active.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, Data 47 processing, Great Mere Data 48, the population-backed hunting bridge, and Ironspine Data 49 have been implemented. Ironspine is in final promotion/landing.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -318,6 +318,37 @@ Exact PR-head Check #1348 / run `33212388143` and post-merge main Check #1349 / 
 Permanent records:
 - `docs/ZONE_PROFILE_GREAT_MERE.md`;
 - `docs/ITEM_CONSUMPTION_SAFETY.md`.
+
+## Population-backed Hunting & Ironspine Highlands — Data 49
+
+**Status: IMPLEMENTED / VERSION-DOC PROMOTION on PR #401.**
+
+The enabling hunting bridge first connected persistent passive/wary/territorial populations to deliberate encounters without turning wildlife into ordinary aggro spawns. Encounter start does not consume ecology; victory consumes one population unit exactly once and existing body recovery remains authoritative.
+
+Ironspine then exercises that bridge in alpine terrain:
+
+```text
+North Redstone
+  -> wagon-capable maintained lower pass
+  -> High-Pass Watch
+  -> walk/mount high trail
+  -> alpine meadow / scree / cliff country
+
+persistent Snowhorn / Cliff Bear / Froststep Lynx populations
+  -> deliberate hunt
+  -> existing combat
+  -> population depletion on victory
+  -> defeated-body recovery
+  -> preservation / leather / fur / field remedy / survey craft
+```
+
+Data 49 adds 3 places, 3 NPCs, 6 species/populations, 6 gathering sources, 11 new raws/body resources, 13 transformations/outputs, 2 routes, 2 schedules, and 2 packs. It raises raw production utilization from 45/53 to 56/64 and keeps luxury raw utilization complete at 13/13.
+
+Food-safety presentation is now explicitly period-framed: internal hazard metadata remains precise, but ordinary player-facing prose describes practical outcomes and preparations such as raw game causing sickness and salting/smoking/stewing making it fit for use.
+
+Implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`; Check #1368 / run `33215878907` passed Repository Audit, **753/753 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent profile: `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`.
 
 ## Packet E — Gate A integration and census audit
 
