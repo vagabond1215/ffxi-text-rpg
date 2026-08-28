@@ -20,19 +20,33 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-Population-backed hunting is merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`.
+Data 49 is **complete and merged on `main`**.
 
-Ironspine Highlands is implemented on PR #401. The implementation freeze before version/document promotion is:
+Population-backed hunting:
+- PR #400;
+- merge: `e18990188935f52b66fe96cfa9d374ff845618ef`.
 
-- head: `53323564ac724044ff06b1341c5466e73a34ab37`;
-- Check #1368 / run `33215878907`;
-- Repository Audit: PASS;
-- tests: **753/753**;
-- Content Census: PASS;
-- Benchmark 3: PASS;
-- Benchmark Sample: PASS.
+Ironspine Highlands / Data 49 promotion:
+- PR #402;
+- merge: `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
+- implementation freeze: `53323564ac724044ff06b1341c5466e73a34ab37`;
+- freeze Check #1368 / run `33215878907`: full gate green;
+- promoted exact-head Check #1381 / run `33217086478`: full gate green;
+- tests at both checkpoints: **753/753**.
 
-The promoted Data 49 PR head must pass the same full hosted gate before merge. After PR #401 lands, work should normally continue directly on `main`. Use a branch only when a change has material rollback/blast-radius risk that an ordinary GitHub revert would not safely contain.
+The post-merge continuity/document synchronization is on `main`; its final hosted Check should be treated as the authoritative current-main validation once green.
+
+## Default Git workflow
+
+Normal work should now prefer direct commits to `main`.
+
+Create a branch only when a change has material blast radius, migration risk, multi-file destructive potential, or another rollback concern that an ordinary GitHub revert would not safely contain.
+
+For ordinary authored content, documentation, bounded data additions, and low-risk fixes, use `main` directly and rely on:
+- small commits;
+- repository validation;
+- GitHub history/revert;
+- exact-head evidence.
 
 ## Data 49 Ironspine geography
 
@@ -51,6 +65,7 @@ Boundary rule:
 
 - maintained pass corridors are traversable;
 - wagons stop at the watchpost;
+- the high trail is foot/mount terrain;
 - broad cliff bands and unstable scree are not implicit exits;
 - route hazards include falling rock, fog, exposure, cold, scree, and whiteout.
 
@@ -145,7 +160,7 @@ Permanent authorities:
 
 ## Data 49 census
 
-Validated implementation-freeze census:
+Validated Data 49 census:
 
 ```text
 places/localities                        37
@@ -179,16 +194,16 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 ## Next decision boundary
 
 Formal roadmap:
-
 - Packet E — Gate A integration/census audit.
 
 World-edge sequence:
-
-- Ironspine Highlands is Item 4;
-- **Emberwash Badlands** is the next ranked geography candidate.
+- Slatewater Foothills — complete;
+- Crownfields — complete;
+- Great Mere — complete;
+- Ironspine Highlands — complete;
+- **Emberwash Badlands — next ranked candidate**.
 
 Other high-value gaps:
-
 - companion breadth;
 - NPC/quest network density;
 - ability/technique breadth;
@@ -206,6 +221,7 @@ No later unit is auto-started merely because it appears in planning.
 5. `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`
 6. `docs/ITEM_CONSUMPTION_SAFETY.md`
 7. `docs/ROADMAP.md`
-8. relevant runtime/data/tests for the explicitly selected next unit
+8. `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`
+9. relevant runtime/data/tests for the explicitly selected next unit
 
 Do not redo broad discovery unless repository evidence contradicts this checkpoint.
