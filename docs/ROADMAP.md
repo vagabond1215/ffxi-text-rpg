@@ -7,19 +7,19 @@ Operational sequencing lives in `docs/EXECUTION_PIPELINE.md`. Exact restart stat
 ## Current validated baseline
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Content Pack Scale Contract v2 and Redstone Forge-Road are complete; Elderwood Hunt-Timber is implemented and validated on its frozen implementation/data head pending final promoted-head validation and landing.
+Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Packets A–C are merged; Packet D is implemented, validated on frozen gameplay/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40`, promoted to Product 0.9.100.4 / Data 43, and pending final exact-head validation + PR landing.
 
 ## Product laws
 
@@ -71,38 +71,38 @@ Game State ended Phase 0.8 at 14 and remains 14 through the current Gate A conte
 
 `npm run census` is an executable progression indicator and runs in ordinary hosted `Check`, but incomplete content targets are **not CI failures**.
 
-Current gameplay breadth after Elderwood Hunt-Timber:
+Current gameplay breadth after Packet D:
 
 | Category | Current | Mechanics integration | Playable alpha | 1.0 lower bound |
 | --- | ---: | ---: | ---: | ---: |
 | Places/localities | 26 | 10 | 30 | 75 |
-| Named NPCs | 15 | 50 | 250 | 700 |
+| Named NPCs | 17 | 50 | 250 | 700 |
 | Functional shop/service sites | 17 | 20 | 60 | 150 |
 | Creature definitions | 16 | 40 | 120 | 300 |
 | Resource sources | 13 | 40 | 100 | 250 |
-| Canonical items | 62 | 200 | 800 | 2,500 |
-| Recipes/processes | 23 | 75 | 300 | 800 |
-| Abilities/techniques | 13 | 100 | 250 | 500 |
-| Quests/contracts | 14 | 30 | 150 | 500 |
+| Canonical items | 68 | 200 | 800 | 2,500 |
+| Recipes/processes | 29 | 75 | 300 | 800 |
+| Abilities/techniques | 41 | 100 | 250 | 500 |
+| Quests/contracts | 18 | 30 | 150 | 500 |
 | Recruitable companions | 1 | 4 | 12 | 25 |
 | Scheduled transport services | 3 | 5 | 20 | 50 |
 
-Mechanics-scale status is **NOT READY**. Places already exceed the mechanics floor; abilities/techniques remain the largest relative gap.
+Mechanics-scale status is **NOT READY**. Places already exceed the mechanics floor. Companions are now the largest relative gap.
 
-Infrastructure coverage is tracked separately from authored breadth:
+Infrastructure coverage remains distinct from authored breadth:
 
 ```text
-regional/shared content packs                           9
-pack-owned records                                    171
-pack-owned abilities/capabilities/schedules/companions 13/16/5/1
-spell schools                                            3
-capability/training definitions                         16
-NPC schedules                                            5
-runtime seed NPCs                                       14
-runtime seed enemies                                    13
+regional/shared content packs                           10
+pack-owned records                                     248
+pack-owned abilities/capabilities/schedules/companions 41/44/7/1
+spell schools                                             4
+capability/training definitions                          44
+NPC schedules                                             7
+runtime seed NPCs                                        16
+runtime seed enemies                                     13
 ```
 
-This separation between authored breadth and infrastructure ownership is deliberate. Do not satisfy roadmap targets with disconnected filler or by counting catalog references twice.
+The ability jump is intentional connected catalog breadth, not a regional ownership shortcut: all 33 canonical spells are shared-owned and character-learned, while regional packs retain only non-spell techniques/field knowledge.
 
 # Phase 0.9 — Content scale, adventure depth and release hardening
 
@@ -136,45 +136,36 @@ Redstone established the first authored regional tranche on Pack v2, composing e
 
 ### Packet C — Elderwood Hunt-Timber
 
-**Status: IMPLEMENTED + VALIDATED / PENDING FINAL PROMOTED-HEAD CHECK AND LANDING.**
+**Status: COMPLETE / MERGED.**
 
-Frozen implementation/content SHA:
+Elderwood proved Pack-v2 throughput across hunt/timber recovery, tannery/woodshop production, persistent contacts, fictional-time civic availability, commitments, and field techniques. It remains a historical completed Packet C checkpoint.
 
-```text
-acb24b73b4894d3febab370aa279bdfd12cbd02e
-```
+### Packet D — Universal Magic & Starfen Marshcraft
 
-Pre-promotion hosted Check `32423676980` / job `96600958329` passed Repository Audit, **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL CHECK AND LANDING.**
 
-The tranche reuses the existing Elderwood/Thornwall substrate and adds one connected downstream graph:
+Packet D changes the originally planned Starfen-magic ownership model: **magic is universal/shared**. Regions may teach or contextualize spells, but no canonical spell definition is owned by a place or region.
 
-- four character-owned Elderwood capabilities plus four executable abilities;
-- six downstream outputs and six processes connected to existing Barkboar recovery, Duskcap, amber resin, hardwood, tannery/woodshop, work-proficiency, inventory, and provenance authorities;
-- three existing POI people promoted to persistent NPC-backed contacts, with Oren Vale on a canonical fictional-time roadworks schedule;
-- three provenance-qualified Thornwall commitments consuming real produced output;
-- a `pack-elderwood-hunt-timber` child Pack v2 graph depending on shared foundation, Elderwood opening, and Elderwood ecology breadth;
-- focused end-to-end proof for ownership, production/provenance, exactly-once civic resolution, schedule behavior, census growth, and executable Barkboar Brace.
+Implemented:
 
-Version decision:
+- four shared spell schools, including original **Veilscript** seal magic using the existing `ninjutsu` skill;
+- 33 shared spell capabilities and 33 shared executable spells, spanning eight elemental families plus restoration/support/warding/sigils;
+- no `redstone`, `elderwood`, or `starfen` tags on canonical spell definitions;
+- external Tales of Symphonia material retained only as non-canonical taxonomy research, with original Hearth & Horizon names and mechanics entering canon;
+- six connected Starfen marshcraft outputs/processes;
+- two persistent Mistmere contacts and two schedules;
+- four Starfen/Mistmere production/community commitments;
+- Starfen Current Reading retained as regional non-magical field knowledge;
+- `pack-starfen-marshcraft` for regional ownership and `pack-shared-foundation` for universal spell ownership;
+- stronger canonical commitment cross-reference validation.
 
-```text
-Product:      0.9.100.2 -> 0.9.100.3
-Package:      0.9.100 unchanged
-Data:         41 -> 42
-Game State:   remains 14
-Account Save: remains 5
-Benchmark:    remains 3
-```
+Frozen implementation/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40` passed hosted Check `33139128883` / job `98745791538` with **719/719 tests**, census, Benchmark 3, and Benchmark Sample.
 
-Data advances because new stable canonical authored records and their cross-linked source/sink/social/schedule/Pack ownership relationships are part of the current data contract. Game State does not advance because no new durable player/world fact was introduced.
+### Packet E — Gate A integration/census audit
 
-### Next bounded packet — Starfen Marshcraft-Practical Magic
+**Status: QUEUED / NOT STARTED.**
 
-**Status: NOT STARTED.**
-
-After Elderwood lands and only with a new explicit continuation, deepen the existing Starfen/Mistmere root with a dense marshcraft/practical-magic graph joining named people and schedules to wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, canal/water context, community/research contracts, field danger, and provenance through Pack v2.
-
-After Starfen comes Gate A integration/census review. Numeric planning bands remain guidance, not quotas.
+After Packet D lands, the next bounded review is combined Gate A integration/census. It should assess connectedness, target gaps, and validation evidence rather than manufacture records to hit planning bands. It is not authorized automatically by this roadmap entry.
 
 ## Phase 0.9 governance
 

@@ -7,47 +7,49 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 ```
 
-The strategic risk remains authored-content breadth and throughput. Packet A scaled supporting infrastructure first; Packet B proved forge/contract/training throughput in Redstone; Packet C now proves the same infrastructure can support a materially different hunt/timber/civic graph in Elderwood without parallel authorities.
+The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D proves two things at once: a third regional production/community graph can land through Pack v2, and magic can scale as a **shared universal character catalog** without turning regional ownership into a spell-learning constraint.
 
 ## Current census
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
 | Places/localities | 26 | 10 | ready |
-| Named NPCs | 15 | 50 | 35 |
+| Named NPCs | 17 | 50 | 33 |
 | Shop/service sites | 17 | 20 | 3 |
 | Creature definitions | 16 | 40 | 24 |
 | Resource sources | 13 | 40 | 27 |
-| Canonical items | 62 | 200 | 138 |
-| Recipes/processes | 23 | 75 | 52 |
-| Abilities/techniques | 13 | 100 | 87 |
-| Quests/contracts | 14 | 30 | 16 |
+| Canonical items | 68 | 200 | 132 |
+| Recipes/processes | 29 | 75 | 46 |
+| Abilities/techniques | 41 | 100 | 59 |
+| Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
 | Transport services | 3 | 5 | 2 |
 
 Infrastructure coverage:
 
 ```text
-spell schools                            3
-capability/training definitions         16
-NPC schedules                            5
-regional/shared packs                    9
-pack-owned records                     171
+spell schools                            4
+capability/training definitions         44
+NPC schedules                            7
+regional/shared packs                   10
+pack-owned records                     248
 pack-owned abilities/capabilities/
-  schedules/companions              13/16/5/1
-runtime seed NPCs                       14
+  schedules/companions              41/44/7/1
+runtime seed NPCs                       16
 runtime seed enemies                    13
 ```
+
+The mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap. Ability breadth has materially improved, but the remaining 59 abilities should still come from coherent training/combat/support needs rather than list-filling.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -99,73 +101,71 @@ A first integration Check caught one real continuity regression: later Forge-Roa
 
 ## Packet C — Elderwood Hunt-Timber
 
-**Status: IMPLEMENTED + VALIDATED / PENDING FINAL PROMOTED-HEAD CHECK AND LANDING.**
+**Status: COMPLETE / MERGED.**
 
-Frozen implementation/content SHA:
+Packet C proved a hunt/timber/civic graph through the same Pack-v2 infrastructure without repeating Redstone's forge shape. Its frozen implementation/content SHA was `acb24b73b4894d3febab370aa279bdfd12cbd02e`.
 
-```text
-acb24b73b4894d3febab370aa279bdfd12cbd02e
-```
+## Packet D — Universal Magic & Starfen Marshcraft
 
-Hosted implementation Check `32423676980` / job `96600958329` passed Repository Audit, **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample on Node 24.19.0.
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL CHECK AND LANDING.**
 
-The accepted bounded graph deliberately reuses existing Elderwood substrate and stresses a different regional composition:
+Frozen gameplay/content SHA:
 
 ```text
-existing Barkboar recovery / Duskcap / amber resin / hardwood
-  -> existing tannery / woodshop / work / inventory / provenance authorities
-  -> tanned hide / bindings / resin boards + pitch
-  -> forester gloves / hunter bracer / trail-repair bundles
-  -> persistent Thornwall service contacts + fictional-time roadworks schedule
-  -> provenance-qualified civic/community commitments
-  -> character-owned Elderwood techniques/warding
-  -> Pack v2 child ownership
+ee81069defe59a55979bc262ea595c3c9df42f40
 ```
 
-Implemented content:
+Hosted implementation evidence:
 
-- four character-owned capabilities and four executable abilities;
-- six downstream production outputs and six production processes;
-- three existing POI people promoted to persistent NPC-backed contacts;
-- Oren Vale on a canonical fictional-time 07:00–15:00 roadworks schedule;
-- three provenance-qualified Thornwall commitments;
-- `pack-elderwood-hunt-timber` depending on shared foundation, Elderwood opening, and Elderwood ecology breadth;
-- focused end-to-end coverage for Pack v2 ownership, production/provenance, exactly-once civic resolution, schedule behavior, census growth, and Barkboar Brace execution.
+```text
+Check:              33139128883
+Job:                98745791538
+Node:               24.19.0
+Repository Audit:   PASS
+Tests:              719/719 passed
+Content Census:     success
+Benchmark 3:        success
+Benchmark Sample:   success
+```
 
-No new simulation clock, direct timed-task owner, persistence family, inventory authority, progression authority, social authority, place, or companion system was introduced.
+### Universal-magic rule
 
-The first hosted integration run reached 711 tests with 705 passing and six failures. All six were stale count/index expectations caused by intentional content growth; the Elderwood production, civic delivery, schedule, and ability behavior already passed. The repair updated those assertions without weakening validators or gameplay behavior.
+Canonical spells are character-owned/shared definitions. A region may offer instruction or narrative context, but it must not own the spell stable ID or make geography a use requirement. `pack-shared-foundation` owns spell schools and spells; regional packs own only regional non-spell capabilities where appropriate.
+
+Current shared magic:
+
+- Elemental Form: fire, earth, wind, water, lightning, ice, light, dark;
+- Vital Weave: restoration;
+- Ward Lore: defensive/support magic;
+- Veilscript: original seal magic using existing `ninjutsu` skill;
+- 33 spell capabilities / 33 executable spell abilities.
+
+`docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md` is research-only. It preserves mechanical/taxonomic observations from an external game while canonical Hearth & Horizon names, IDs, effects, lore, and progression remain original.
+
+### Starfen marshcraft graph
+
+```text
+existing Starfen reed fiber / Bluekelp / Marrowleaf / Bogberry / Mirecrest Heron recovery
+  -> existing production / workstation / work proficiency / inventory / provenance
+  -> reed cord / kelp extract / poultice / tonic / waterproof wrap / survey kit
+  -> Pelu Senn + Tavi Meren + existing Mistmere contacts and schedules
+  -> provenance-qualified community/research commitments
+  -> Starfen Current Reading as regional field knowledge
+  -> pack-starfen-marshcraft
+```
+
+Universal spells are deliberately not commitment rewards in this regional graph. The generic commitment capability-reward seam remains available for qualified character instruction, but regional spell ownership is forbidden.
 
 Version decision:
 
 ```text
-Product:      0.9.100.3
+Product:      0.9.100.4
 Package:      0.9.100 unchanged
-Data:         42
+Data:         43
 Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
-
-## Packet D — Starfen Marshcraft-Practical Magic
-
-**Status: NEXT / NOT STARTED / REQUIRES NEW BOUNDED AUTHORIZATION AFTER ELDERWOOD LANDS.**
-
-Stress wetland ecology, herbs/fungi, medicine/cooking, practical magic, training, schedules, canal/water context, and community/research contracts. Reuse existing Starfen/Mistmere roots and favor another connected graph rather than broad category dumps.
-
-Prefer a graph such as:
-
-```text
-named people / schedules / canal and research needs
-  -> wetland herbs / fungi / water-context resources
-  -> medicine / cooking / marshcraft transformations
-  -> practical magic and training access
-  -> equipment / consumables / preparation choices
-  -> community / research contracts and relationships
-  -> field danger / recovery / provenance
-```
-
-A companion candidate is appropriate only if an authored person warrants recruitment; companion count is not a quota. Places should not expand merely for count because 26 already exceeds the mechanics floor.
 
 ## Packet E — Gate A integration and census audit
 
@@ -189,14 +189,14 @@ These are progression bands, never permission to create filler:
 
 | Category | Current | Gate A planning band |
 | --- | ---: | ---: |
-| Named NPCs | 15 | 30+ |
+| Named NPCs | 17 | 30+ |
 | Shop/service sites | 17 | 20+ |
 | Creature definitions | 16 | 28+ |
 | Resource sources | 13 | 28+ |
-| Canonical items | 62 | 110+ |
-| Recipes/processes | 23 | 40+ |
-| Abilities/techniques | 13 | 40+ |
-| Quests/contracts | 14 | 18+ |
+| Canonical items | 68 | 110+ |
+| Recipes/processes | 29 | 40+ |
+| Abilities/techniques | 41 | 40+ |
+| Quests/contracts | 18 | 18+ |
 | Recruitable companions | 1 | 4 only when authored characters justify them |
 | Transport services | 3 | 5 only when topology justifies them |
 
@@ -221,8 +221,8 @@ Gate A fails regardless of count if the graph is weak. Require:
 | --- | --- | --- |
 | Weeks 1–2 equivalent | Governance + Pack v2 | COMPLETE |
 | Weeks 3–5 equivalent | Redstone Forge-Road | COMPLETE |
-| Weeks 6–8 equivalent | Elderwood Hunt-Timber | IMPLEMENTED + VALIDATED / PENDING LANDING |
-| Weeks 9–11 equivalent | Starfen Marshcraft-Practical Magic | QUEUED / NOT STARTED |
+| Weeks 6–8 equivalent | Elderwood Hunt-Timber | COMPLETE / MERGED |
+| Weeks 9–11 equivalent | Universal Magic & Starfen Marshcraft | IMPLEMENTED + VALIDATED / PENDING LANDING |
 | Week 12 equivalent | Gate A integration/census | QUEUED |
 
 These are planning bands, not delivery promises.

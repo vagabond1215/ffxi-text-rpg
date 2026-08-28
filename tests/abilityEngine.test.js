@@ -27,8 +27,8 @@ import { VERSION } from '../js/text/version.js';
 test('original ability and spell-school catalogs validate against character capabilities', () => {
     assert.deepEqual(validateCapabilityCatalog(), []);
     assert.deepEqual(validateAbilityCatalog(), []);
-    assert.equal(listSpellSchools().length, 3);
-    assert.equal(listAbilities().length, 13);
+    assert.equal(listSpellSchools().length, 4);
+    assert.equal(listAbilities().length, 41);
     assert.equal(getAbility('ability-ember-dart').capabilityId, 'spell-ember-dart');
     assert.equal(listAbilities().some((entry) => ['Cure', 'Fire'].includes(entry.name)), false);
 });

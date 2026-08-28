@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 42 | canonical authored-data, stable-ID, pack ownership and validation contract |
+| Data | 43 | canonical authored-data, stable-ID, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -107,6 +107,38 @@ No new durable player/world fact was introduced. Elderwood Hunt-Timber reuses ex
 
 There is no new simulation clock, direct timed-task owner, persistence family, inventory store, progression meter, social state family, place authority, or companion state. Bumping Game State merely because authored content grew would create a false compatibility boundary.
 
+### `0.9.100.4` — Universal Magic & Starfen Marshcraft
+
+Packet D adds the third authored Gate A tranche and corrects an important ownership rule: canonical magic is universal/shared rather than location-owned.
+
+```text
+Product       0.9.100.3 -> 0.9.100.4
+Package       0.9.100   -> 0.9.100
+Data          42        -> 43
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 43
+
+Data 43 changes stable canonical authored data and ownership/validation relationships:
+
+- four spell schools, including the new original Veilscript seal-magic tradition;
+- 33 shared spell capabilities and 33 shared executable spell abilities, including eight elemental families plus restoration/support/warding/sigils;
+- regional spell IDs/tags removed or renamed so spell ownership is shared/universal;
+- external Tales of Symphonia research retained only in a non-canonical reference document; canonical names, IDs, effects, lore, and progression are original Hearth & Horizon content;
+- six downstream Starfen marshcraft outputs/processes;
+- two persistent Mistmere NPCs and two fictional-time schedules;
+- four Starfen/Mistmere production/community commitments;
+- `pack-starfen-marshcraft`, while universal spell ownership remains in `pack-shared-foundation`;
+- commitment catalog-ref cross-reference validation extended to giver/place/item/source/capability relationships;
+- one existing cross-pack Redstone Sweetroot dependency made explicit.
+
+#### Why Game State stays 14
+
+No new durable player/world fact was introduced. Universal magic reuses existing character capability/skill and ability-runtime state; Starfen marshcraft reuses inventory/provenance, production/work, NPC schedules, commitments/relationships, and fictional time. The optional commitment capability reward writes into the existing capability registry rather than creating a new progression family.
+
 ## Persistence history
 
 Relevant late history:
@@ -124,6 +156,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.1           no Game State change; Data 39 -> 40
 0.9.100.2           no Game State change; Data 40 -> 41
 0.9.100.3           no Game State change; Data 41 -> 42
+0.9.100.4           no Game State change; Data 42 -> 43
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -149,15 +182,15 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.1.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.5.0
-contentPackValidation  0.2.0
+regionalContentPacks   0.6.0
+contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.3.0
-commitments            0.6.0
+commitments            0.7.0
 productionCatalog      0.4.0
 productionItems        0.6.0
-capabilities           0.4.0
-abilityCatalog         0.3.0
+capabilities           0.5.0
+abilityCatalog         0.4.0
 ```
 
 The schedule system version stays 0.3.0 because only authored schedule data grew; the schedule contract/behavior did not change.
@@ -176,13 +209,15 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The frozen Elderwood implementation/content head before promotion/document synchronization is:
+The frozen Packet D gameplay/content head before version/document synchronization is:
 
 ```text
-acb24b73b4894d3febab370aa279bdfd12cbd02e
+ee81069defe59a55979bc262ea595c3c9df42f40
 ```
 
-Hosted Check `32423676980` / job `96600958329` on Node 24.19.0 passed Repository Audit, **711/711 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
+Hosted Check `33139128883` / job `98745791538` on Node 24.19.0 passed Repository Audit, **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before merge.
+
+Current census at the freeze is 17 named NPCs, 68 canonical items, 29 recipes/processes, 41 abilities/techniques, 18 quests/contracts, 44 capabilities, 7 schedules, 10 packs, and 248 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
@@ -192,9 +227,9 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 0.9.100 Content Scale Gate A                  IN PROGRESS
   Packet A Content Pack Scale Contract v2     COMPLETE / MERGED
   Packet B Redstone Forge-Road                COMPLETE / MERGED
-  Packet C Elderwood Hunt-Timber              IMPLEMENTED + VALIDATED / PENDING LANDING
-  Packet D Starfen Marshcraft-Practical Magic QUEUED / NOT STARTED
-  Packet E Gate A integration/census          QUEUED
+  Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
+  Packet D Universal Magic + Starfen          VALIDATED + PROMOTED / PENDING LANDING
+  Packet E Gate A integration/census          QUEUED / NOT STARTED
 0.9.200 Adventure vertical slices             QUEUED
 0.9.300 Advanced combat/training              QUEUED
 0.9.400 Economy/production depth              QUEUED
@@ -202,7 +237,7 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
 0.9.800 Supported persistence transition      DEFERRED
-0.9.900 Release-candidate hardening           DEFERRED
+0.9.900 RC soak/performance/release hardening DEFERRED
 ```
 
 ## Governance and release discipline

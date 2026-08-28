@@ -1,3 +1,4 @@
+import { getCapability } from '../data/capabilities.js';
 import { getCommitmentDefinition } from '../data/commitments.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import {
@@ -5,6 +6,11 @@ import {
     getCarriedItemQuantity,
     listCarriedItemEntries,
 } from './carriedInventoryEngine.js';
+import {
+    evaluateLearningRequirements,
+    learnCapability,
+    knowsCapability,
+} from './capabilityEngine.js';
 import { describeNpcScheduleStatus, getNpcScheduleStatus } from './npcScheduleEngine.js';
 import { applyNpcRelationshipChange, ensureRelationshipState } from './relationshipEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
@@ -99,6 +105,10 @@ export function checkCommitmentRequirements(state, commitmentId) {
         const available = qualifyingItemQuantity(state, requirement);
         if (available < requirement.quantity) blockers.push(`Requires ${requirement.quantity} ${requirement.itemId} with source ${requirement.provenanceSourceId ?? 'any'}.`);
     }
+    if (definition.reward.capabilityId && !knowsCapability(state.player, definition.reward.capabilityId)) {
+        const learning = evaluateLearningRequirements(state.player, definition.reward.capabilityId);
+        if (!learning.ok) blockers.push(learning.reason);
+    }
     return { ok: blockers.length === 0, blockers, definition, record };
 }
 
@@ -150,6 +160,14 @@ export function resolveCommitment(state, commitmentId) {
 
     const now = ensureWorldTimeState(state).totalSeconds;
     const resolvedDay = dayNumber(now);
+    let capabilityResult = null;
+    if (definition.reward.capabilityId) {
+        capabilityResult = learnCapability(state.player, definition.reward.capabilityId, {
+            source: 'quest',
+            worldSeconds: now,
+        });
+        if (!capabilityResult.ok) throw new Error(capabilityResult.reason ?? `Capability reward ${definition.reward.capabilityId} failed.`);
+    }
     state.player.wallet.gil += definition.reward.gil;
     const relationshipResult = applyNpcRelationshipChange(state, definition.giverNpcId, definition.reward.relationship, {
         reason: `Resolved ${definition.id}`,
@@ -169,10 +187,16 @@ export function resolveCommitment(state, commitmentId) {
         deliveredItems: removed.map((item) => ({ itemId: item.id, quantity: item.quantity, provenance: item.provenance })),
         gilReward: definition.reward.gil,
         relationshipDeltas: { ...definition.reward.relationship },
+        capabilityRewardId: definition.reward.capabilityId,
+        capabilityLearned: Boolean(capabilityResult && capabilityResult.unchanged !== true),
         resolvedDay,
         followUpAvailableDay: record.followUpAvailableDay,
     }, { source: 'commitmentEngine' });
 
+    const learnedCapability = capabilityResult && capabilityResult.unchanged !== true
+        ? getCapability(definition.reward.capabilityId)
+        : null;
+    const learnedText = learnedCapability ? ` Learned ${learnedCapability.name}.` : '';
     return actionSuccess({
         action: 'commitment.resolve',
         code: 'commitment.resolved',
@@ -181,10 +205,12 @@ export function resolveCommitment(state, commitmentId) {
             commitmentId: definition.id,
             gilReward: definition.reward.gil,
             relationship: relationshipResult.data,
+            capabilityRewardId: definition.reward.capabilityId,
+            capabilityLearned: Boolean(learnedCapability),
             eventId: event.id,
             followUpAvailableDay: record.followUpAvailableDay,
         },
-        display: { text: `${definition.resolvedText}\nReward: ${definition.reward.gil} gil. ${relationshipResult.display.text}` },
+        display: { text: `${definition.resolvedText}\nReward: ${definition.reward.gil} gil. ${relationshipResult.display.text}${learnedText}` },
     });
 }
 

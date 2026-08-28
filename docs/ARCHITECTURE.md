@@ -19,23 +19,23 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.3
+Product:       0.9.100.4
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          42
+Data:          43
 Benchmark:     3
-Codename:      Elderwood Hunt-Timber
+Codename:      Universal Magic & Starfen Marshcraft
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Frozen Elderwood implementation/content checkpoint before version/document synchronization:
+Frozen Packet D gameplay/content checkpoint before version/document synchronization:
 
 ```text
-acb24b73b4894d3febab370aa279bdfd12cbd02e
+ee81069defe59a55979bc262ea595c3c9df42f40
 ```
 
-The version transition is intentionally narrow. Data advances because stable canonical authored content and cross-linked Pack-v2 relationships changed. Game State remains 14 because no new durable player/world fact was introduced.
+Data advances because stable canonical spell/capability IDs, shared Pack-v2 ownership, commitment-reference validation, and connected Starfen authored content changed. Game State remains 14 because the packet reuses existing durable character capability, ability runtime, inventory/provenance, production/work, schedule, commitment/relationship, and fictional-time authorities.
 
 ## Core authority rules
 
@@ -122,12 +122,44 @@ Pack v2 validation enforces:
 - declared dependencies for cross-pack references;
 - canonical catalog references;
 - ability -> capability and spell-school relationships;
+- canonical commitment -> giver/place/item/source/capability relationships;
 - NPC schedule -> NPC/place relationships;
 - companion -> backing NPC/home/recruitment relationships;
 - topology, source/sink, quest and relationship references;
 - bounded legacy-ID adapters rather than accidental legacy leakage.
 
 The generated validation fixture exercises **1,401 ownership records** and is never counted as gameplay content.
+
+# Universal magic and Starfen marshcraft composition
+
+Packet D deliberately separates **universal magic ownership** from **regional authored context**.
+
+```text
+pack-shared-foundation
+  -> Elemental Form / Vital Weave / Ward Lore / Veilscript
+  -> shared spell capabilities
+  -> shared executable abilities
+  -> character learning/use requirements
+  -> abilityEngine
+```
+
+A spell's definition is not owned by the region where a teacher, contract, or story happens. Regions may reference shared spells through declared dependencies, but regional packs must not claim spell ownership or add geography as an implicit use gate.
+
+Veilscript is the original Hearth & Horizon seal-magic tradition. It uses the existing `ninjutsu` character skill and existing damage/status ability contracts; it does not introduce a second magic state family.
+
+Starfen remains regional where regionality is meaningful:
+
+```text
+Starfen ecology/resources
+  -> production/work/inventory/provenance
+  -> medicine / cord / waterproofing / survey gear
+  -> persistent Mistmere people + fictional-time schedules
+  -> commitments / relationships
+  -> Starfen Current Reading field knowledge
+  -> pack-starfen-marshcraft
+```
+
+External Tales of Symphonia material is isolated in `docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md` as non-canonical design research. Canonical Hearth & Horizon names, stable IDs, schools, effects, lore, and learning paths are original.
 
 # Redstone Forge-Road composition
 

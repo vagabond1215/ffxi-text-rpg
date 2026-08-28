@@ -32,37 +32,37 @@ Each workload receives an unreported separate-context warm-up equal to 10% of me
 ## Latest validated authored-content checkpoint
 
 ```text
-Runtime/content SHA: acb24b73b4894d3febab370aa279bdfd12cbd02e
-Check:               32423676980
-Job:                 96600958329
+Runtime/content SHA: ee81069defe59a55979bc262ea595c3c9df42f40
+Check:               33139128883
+Job:                 98745791538
 Node:                24.19.0
-Product target:      0.9.100.3
+Product target:      0.9.100.4
 Benchmark:           3
-Tests:               711/711
+Tests:               719/719
 Content Census:      success
 ```
 
-Elderwood Hunt-Timber did not change Benchmark 3 workloads or measurement protocol, so these results remain comparable to other Benchmark 3 checkpoints.
+Universal Magic & Starfen Marshcraft did not change Benchmark 3 workloads or measurement protocol, so these results remain comparable to other Benchmark 3 checkpoints.
 
 Single run from the validated implementation Check:
 
 ```text
-player combat profiles  0.385203 ms/op
-enemy combat profiles   0.076660 ms/op
-basic attacks            0.003461 ms/op
-tick dispatch            0.000827 ms/op
-direct route lookup      0.007519 ms/op
+player combat profiles  0.350067 ms/op
+enemy combat profiles   0.069801 ms/op
+basic attacks            0.003693 ms/op
+tick dispatch            0.000746 ms/op
+direct route lookup      0.007094 ms/op
 ```
 
 Three-sample evidence from the same Check:
 
 | Workload | Median ms/op | Spread |
 | --- | ---: | ---: |
-| player combat profiles | 0.363494 | 6.41% |
-| enemy combat profiles | 0.069119 | 12.38% |
-| basic attacks | 0.001282 | 177.11% |
-| tick dispatch | 0.000879 | 28.27% |
-| direct route lookup | 0.007145 | 9.38% |
+| player combat profiles | 0.332334 | 6.74% |
+| enemy combat profiles | 0.062607 | 6.32% |
+| basic attacks | 0.001525 | 128.37% |
+| tick dispatch | 0.000618 | 72.36% |
+| direct route lookup | 0.006927 | 1.09% |
 
 The very fast attack/tick microbenchmarks remain dominated by runtime/timing noise. **Do not create CI thresholds from these figures.** Profile creation and route lookup are more stable but still are not accepted release budgets.
 

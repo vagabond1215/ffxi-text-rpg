@@ -58,6 +58,28 @@ const DAILY_SCHEDULES = [
         ],
         unavailableText: 'Kiri is away from the remedy shelf visiting nearby households.',
     }),
+    schedule({
+        id: 'schedule-mistmere-pelu-senn',
+        npcId: 'npc-mistmere-pelu-senn',
+        poiId: 'poi-waters-baehu-faehu',
+        placeId: 'mistmere-canal-ward',
+        label: 'Starfen factor hours',
+        windows: [
+            window(7, 0, 14, 0, 'Sorting marsh goods and instructing field hands'),
+        ],
+        unavailableText: 'Pelu is away from the Canal Ward checking reed lots and ferry-bound marsh goods.',
+    }),
+    schedule({
+        id: 'schedule-mistmere-tavi-meren',
+        npcId: 'npc-mistmere-tavi-meren',
+        poiId: 'poi-waters-chomo-jinjahl',
+        placeId: 'mistmere-canal-ward',
+        label: 'Culinary guild instruction hours',
+        windows: [
+            window(8, 0, 18, 0, 'Working the guild kitchen and teaching marsh preparations'),
+        ],
+        unavailableText: 'Tavi has closed the guild lesson bench and is away buying fresh marsh ingredients.',
+    }),
 ];
 
 export const NPC_SCHEDULES = Object.freeze(DAILY_SCHEDULES);

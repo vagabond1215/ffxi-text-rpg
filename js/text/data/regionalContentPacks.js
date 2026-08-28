@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 28;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 29;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -10,15 +10,83 @@ export const SHARED_FOUNDATION_PACK = createContentPack({
     records: {
         routes: [{ id: 'route-crown-forge-caravan-road', catalogRef: true }, { id: 'route-forge-mere-caravan-road', catalogRef: true }],
         transportServices: [{ id: 'service-crown-forge-caravan', catalogRef: true }, { id: 'service-forge-mere-caravan', catalogRef: true }],
-        spellSchools: [{ id: 'school-embercraft', catalogRef: true }, { id: 'school-vital-weave', catalogRef: true }, { id: 'school-ward-lore', catalogRef: true }],
+        spellSchools: [{ id: 'school-elemental-form', catalogRef: true }, { id: 'school-vital-weave', catalogRef: true }, { id: 'school-ward-lore', catalogRef: true }, { id: 'school-veilscript', catalogRef: true }],
         capabilities: [
-            { id: 'spell-ember-dart', catalogRef: true }, { id: 'spell-mending-thread', catalogRef: true }, { id: 'spell-stone-ward', catalogRef: true },
-            { id: 'technique-guarded-cut', catalogRef: true }, { id: 'technique-shadow-feint', catalogRef: true }, { id: 'practical-field-dressing', catalogRef: true },
-            { id: 'practical-ore-survey', catalogRef: true }, { id: 'practical-waymark-reading', catalogRef: true },
+            { id: 'spell-ember-dart', catalogRef: true },
+            { id: 'spell-mending-thread', catalogRef: true },
+            { id: 'spell-stone-ward', catalogRef: true },
+            { id: 'spell-cinder-spark', catalogRef: true },
+            { id: 'spell-tempered-ward', catalogRef: true },
+            { id: 'spell-barkskin-ward', catalogRef: true },
+            { id: 'spell-wellspring-mending', catalogRef: true },
+            { id: 'spell-mistveil-ward', catalogRef: true },
+            { id: 'spell-storm-spark', catalogRef: true },
+            { id: 'spell-cinder-bolt', catalogRef: true },
+            { id: 'spell-stone-shards', catalogRef: true },
+            { id: 'spell-gale-cutter', catalogRef: true },
+            { id: 'spell-tide-needle', catalogRef: true },
+            { id: 'spell-storm-jolt', catalogRef: true },
+            { id: 'spell-rime-splinters', catalogRef: true },
+            { id: 'spell-sunlance', catalogRef: true },
+            { id: 'spell-gloam-spike', catalogRef: true },
+            { id: 'spell-flare-bloom', catalogRef: true },
+            { id: 'spell-fault-rush', catalogRef: true },
+            { id: 'spell-tempest-ring', catalogRef: true },
+            { id: 'spell-riptide-lance', catalogRef: true },
+            { id: 'spell-thunder-cage', catalogRef: true },
+            { id: 'spell-rimefall', catalogRef: true },
+            { id: 'spell-radiant-arc', catalogRef: true },
+            { id: 'spell-umbral-well', catalogRef: true },
+            { id: 'spell-renewing-pulse', catalogRef: true },
+            { id: 'spell-steady-heart', catalogRef: true },
+            { id: 'spell-spellguard', catalogRef: true },
+            { id: 'spell-swiftstep', catalogRef: true },
+            { id: 'spell-fracture-sigil', catalogRef: true },
+            { id: 'spell-haze-sigil', catalogRef: true },
+            { id: 'spell-snare-sigil', catalogRef: true },
+            { id: 'spell-guardian-sigil', catalogRef: true },
+            { id: 'technique-guarded-cut', catalogRef: true },
+            { id: 'technique-shadow-feint', catalogRef: true },
+            { id: 'practical-field-dressing', catalogRef: true },
+            { id: 'practical-ore-survey', catalogRef: true },
+            { id: 'practical-waymark-reading', catalogRef: true },
         ],
         abilities: [
-            { id: 'ability-ember-dart', catalogRef: true }, { id: 'ability-mending-thread', catalogRef: true }, { id: 'ability-stone-ward', catalogRef: true },
-            { id: 'ability-guarded-cut', catalogRef: true }, { id: 'ability-waymark-reading', catalogRef: true },
+            { id: 'ability-ember-dart', catalogRef: true },
+            { id: 'ability-mending-thread', catalogRef: true },
+            { id: 'ability-stone-ward', catalogRef: true },
+            { id: 'ability-cinder-spark', catalogRef: true },
+            { id: 'ability-tempered-ward', catalogRef: true },
+            { id: 'ability-barkskin-ward', catalogRef: true },
+            { id: 'ability-wellspring-mending', catalogRef: true },
+            { id: 'ability-mistveil-ward', catalogRef: true },
+            { id: 'ability-storm-spark', catalogRef: true },
+            { id: 'ability-cinder-bolt', catalogRef: true },
+            { id: 'ability-stone-shards', catalogRef: true },
+            { id: 'ability-gale-cutter', catalogRef: true },
+            { id: 'ability-tide-needle', catalogRef: true },
+            { id: 'ability-storm-jolt', catalogRef: true },
+            { id: 'ability-rime-splinters', catalogRef: true },
+            { id: 'ability-sunlance', catalogRef: true },
+            { id: 'ability-gloam-spike', catalogRef: true },
+            { id: 'ability-flare-bloom', catalogRef: true },
+            { id: 'ability-fault-rush', catalogRef: true },
+            { id: 'ability-tempest-ring', catalogRef: true },
+            { id: 'ability-riptide-lance', catalogRef: true },
+            { id: 'ability-thunder-cage', catalogRef: true },
+            { id: 'ability-rimefall', catalogRef: true },
+            { id: 'ability-radiant-arc', catalogRef: true },
+            { id: 'ability-umbral-well', catalogRef: true },
+            { id: 'ability-renewing-pulse', catalogRef: true },
+            { id: 'ability-steady-heart', catalogRef: true },
+            { id: 'ability-spellguard', catalogRef: true },
+            { id: 'ability-swiftstep', catalogRef: true },
+            { id: 'ability-fracture-sigil', catalogRef: true },
+            { id: 'ability-haze-sigil', catalogRef: true },
+            { id: 'ability-snare-sigil', catalogRef: true },
+            { id: 'ability-guardian-sigil', catalogRef: true },
+            { id: 'ability-guarded-cut', catalogRef: true },
+            { id: 'ability-waymark-reading', catalogRef: true },
         ],
     },
 });
@@ -85,13 +153,11 @@ export const ELDERWOOD_HUNT_TIMBER_PACK = createContentPack({
         capabilities: [
             { id: 'technique-barkboar-brace', catalogRef: true },
             { id: 'technique-thicket-feint', catalogRef: true },
-            { id: 'spell-barkskin-ward', catalogRef: true },
             { id: 'practical-elderwood-trail-read', catalogRef: true },
         ],
         abilities: [
             { id: 'ability-barkboar-brace', catalogRef: true },
             { id: 'ability-thicket-feint', catalogRef: true },
-            { id: 'ability-barkskin-ward', catalogRef: true },
             { id: 'ability-elderwood-trail-read', catalogRef: true },
         ],
         quests: [
@@ -104,7 +170,7 @@ export const ELDERWOOD_HUNT_TIMBER_PACK = createContentPack({
 
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
-    ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation'],
+    ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
     metadata: { name: 'Redstone Opening Pack', notes: 'Regional root for Brasshaven people, schedules, commitments, and downstream Redstone content packs.' },
     records: {
         places: [{ id: 'brasshaven-market-ring', catalogRef: true }],
@@ -141,14 +207,10 @@ export const REDSTONE_FORGE_ROAD_PACK = createContentPack({
         capabilities: [
             { id: 'technique-ridge-breaker', catalogRef: true },
             { id: 'technique-rivet-guard', catalogRef: true },
-            { id: 'spell-forge-spark', catalogRef: true },
-            { id: 'spell-ironbound-ward', catalogRef: true },
         ],
         abilities: [
             { id: 'ability-ridge-breaker', catalogRef: true },
             { id: 'ability-rivet-guard', catalogRef: true },
-            { id: 'ability-forge-spark', catalogRef: true },
-            { id: 'ability-ironbound-ward', catalogRef: true },
         ],
         quests: [
             { id: 'commitment-brasshaven-iron-bloom-return', catalogRef: true },
@@ -185,6 +247,51 @@ export const STARFEN_PACK = createContentPack({
     },
 });
 
+export const STARFEN_MARSHCRAFT_PACK = createContentPack({
+    id: 'pack-starfen-marshcraft', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['starfen'], steward: 'mistmere-marshcraft' },
+    dependencies: ['pack-shared-foundation', 'pack-starfen-opening', 'pack-starfen-ecology-breadth'],
+    metadata: { name: 'Starfen Marshcraft Pack', notes: 'Dense wetland production and community tranche connecting Starfen herbs, kelp, reed fiber, and recovered heron material to medicine, waterproof marshcraft, civic use, and regional field knowledge. Magic remains shared/universal.' },
+    records: {
+        items: [
+            { id: 'item-starfen-reed-cord', catalogRef: true },
+            { id: 'item-starfen-bluekelp-extract', catalogRef: true },
+            { id: 'item-starfen-marsh-poultice', catalogRef: true },
+            { id: 'item-starfen-bogberry-tonic', catalogRef: true },
+            { id: 'item-starfen-waterproof-wrap', catalogRef: true },
+            { id: 'item-starfen-marsh-survey-kit', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-mistmere-pelu-senn', catalogRef: true },
+            { id: 'npc-mistmere-tavi-meren', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-mistmere-pelu-senn', catalogRef: true },
+            { id: 'schedule-mistmere-tavi-meren', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-starfen-reed-cord', catalogRef: true },
+            { id: 'process-starfen-bluekelp-extract', catalogRef: true },
+            { id: 'craft-starfen-marsh-poultice', catalogRef: true },
+            { id: 'cook-starfen-bogberry-tonic', catalogRef: true },
+            { id: 'craft-starfen-waterproof-wrap', catalogRef: true },
+            { id: 'craft-starfen-marsh-survey-kit', catalogRef: true },
+        ],
+        capabilities: [
+            { id: 'practical-starfen-current-reading', catalogRef: true },
+        ],
+        abilities: [
+            { id: 'ability-starfen-current-reading', catalogRef: true },
+        ],
+        quests: [
+            { id: 'commitment-mistmere-marsh-poultice', catalogRef: true },
+            { id: 'commitment-mistmere-waterproof-wraps', catalogRef: true },
+            { id: 'commitment-mistmere-bogberry-tonic', catalogRef: true },
+            { id: 'commitment-mistmere-marsh-survey-kit', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -192,6 +299,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
+    STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
 ]);
 

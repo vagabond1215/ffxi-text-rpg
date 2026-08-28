@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const PRODUCTION_ITEM_CATALOG_VERSION = 6;
+export const PRODUCTION_ITEM_CATALOG_VERSION = 7;
 
 const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-copper-ingot': productionItem({ id: 'item-redstone-copper-ingot', name: 'Redstone Copper Ingot', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'copper', 'component', 'crafted'], valueGil: 28, sourceId: 'process-redstone-copper-ingot', action: 'process', sinks: ['craftIngredient', 'processInput', 'construction', 'trade'] }),
@@ -23,6 +23,12 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-miners-brace': productionItem({ id: 'item-redstone-miners-brace', name: "Miner's Iron Brace", kind: ITEM_KINDS.EQUIPMENT, tags: ['equipment', 'armor', 'waist', 'mining', 'redstone'], valueGil: 92, sourceId: 'craft-redstone-miners-brace', action: 'craft', sinks: ['equipment', 'repair', 'trade'], equipmentSlot: 'waist', allowedSlots: ['waist'], modifiers: { attributes: { vit: 1 }, derived: { defense: 2 } } }),
     'item-redstone-forge-gloves': productionItem({ id: 'item-redstone-forge-gloves', name: 'Riveted Forge Gloves', kind: ITEM_KINDS.EQUIPMENT, tags: ['equipment', 'armor', 'hands', 'forge', 'redstone'], valueGil: 105, sourceId: 'craft-redstone-forge-gloves', action: 'craft', sinks: ['equipment', 'repair', 'trade'], equipmentSlot: 'hands', allowedSlots: ['hands'], modifiers: { derived: { defense: 2, attack: 1 } } }),
     'item-redstone-caravan-shoe': productionItem({ id: 'item-redstone-caravan-shoe', name: 'Redstone Caravan Shoe', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'iron', 'caravan', 'repair', 'redstone'], valueGil: 40, sourceId: 'craft-redstone-caravan-shoe', action: 'craft', sinks: ['construction', 'repair', 'contract', 'trade'] }),
+    'item-starfen-reed-cord': productionItem({ id: 'item-starfen-reed-cord', name: 'Twisted Starfen Reed Cord', kind: ITEM_KINDS.MATERIAL, tags: ['reed', 'fiber', 'binding', 'component', 'starfen'], valueGil: 22, sourceId: 'process-starfen-reed-cord', action: 'process', sinks: ['craftIngredient', 'repair', 'trade'] }),
+    'item-starfen-bluekelp-extract': productionItem({ id: 'item-starfen-bluekelp-extract', name: 'Bluekelp Mineral Extract', kind: ITEM_KINDS.MATERIAL, tags: ['kelp', 'extract', 'remedy', 'component', 'starfen'], valueGil: 26, sourceId: 'process-starfen-bluekelp-extract', action: 'process', sinks: ['craftIngredient', 'processInput', 'trade'] }),
+    'item-starfen-marsh-poultice': productionItem({ id: 'item-starfen-marsh-poultice', name: 'Marrowleaf Marsh Poultice', kind: ITEM_KINDS.CONSUMABLE, tags: ['remedy', 'poultice', 'medicine', 'starfen'], valueGil: 42, sourceId: 'craft-starfen-marsh-poultice', action: 'craft', sinks: ['consume', 'contract', 'trade'] }),
+    'item-starfen-bogberry-tonic': productionItem({ id: 'item-starfen-bogberry-tonic', name: 'Bogberry Fen Tonic', kind: ITEM_KINDS.CONSUMABLE, tags: ['remedy', 'tonic', 'medicine', 'starfen'], valueGil: 46, sourceId: 'cook-starfen-bogberry-tonic', action: 'craft', sinks: ['consume', 'contract', 'trade'] }),
+    'item-starfen-waterproof-wrap': productionItem({ id: 'item-starfen-waterproof-wrap', name: 'Bluekelp-Sealed Reed Wrap', kind: ITEM_KINDS.MATERIAL, tags: ['reed', 'sealant', 'waterproof', 'repair', 'starfen'], valueGil: 38, sourceId: 'craft-starfen-waterproof-wrap', action: 'craft', sinks: ['craftIngredient', 'repair', 'contract', 'trade'] }),
+    'item-starfen-marsh-survey-kit': productionItem({ id: 'item-starfen-marsh-survey-kit', name: 'Starfen Marsh Survey Kit', kind: ITEM_KINDS.MATERIAL, tags: ['survey', 'fieldcraft', 'water', 'research', 'starfen'], valueGil: 68, sourceId: 'craft-starfen-marsh-survey-kit', action: 'craft', sinks: ['contract', 'trade'] }),
 });
 
 export function getProductionItem(itemId) { const definition = PRODUCTION_ITEM_DEFINITIONS[String(itemId ?? '').trim()] ?? null; return definition ? normalizeItem(definition) : null; }
