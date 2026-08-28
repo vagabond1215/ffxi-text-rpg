@@ -72,7 +72,7 @@ test('Redstone Forge-Road is one Pack-v2-owned connected production, contract, a
     assert.ok(counts.recipes >= 17);
     assert.ok(counts.abilities >= 9);
     assert.ok(counts.quests >= 11);
-    assert.equal(counts.supplemental.contentPacks, 15);
+    assert.equal(counts.supplemental.contentPacks, 16);
     assert.ok(counts.supplemental.capabilities >= 12);
 });
 
