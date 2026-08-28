@@ -35,8 +35,8 @@ test('Ironspine geography has a wagon-limited lower pass and foot-or-mount high 
     assert.ok(lower.allowedModes.includes('mount'));
     assert.equal(high.allowedModes.includes('wagon'), false);
     assert.deepEqual(new Set(high.allowedModes), new Set(['walk', 'mount']));
-    assert.ok(high.segments[0].hazards.includes('scree'));
-    assert.ok(high.segments[0].hazards.includes('cliff-exposure'));
+    assert.ok(high.segments[0].hazardTags.includes('scree'));
+    assert.ok(high.segments[0].hazardTags.includes('cliff-exposure'));
     assert.deepEqual(validateRouteCatalog(), []);
 });
 
@@ -62,7 +62,7 @@ test('Ironspine ecology and resource registries validate with alpine niches and 
 
 test('population-backed Snowhorn hunting depletes ecology only on victory and leaves ordinary body recovery', () => {
     const state = highMeadowState();
-    const options = listPopulationEncounterOptions(state);
+    const options = listPopulationEncounterOptions(state, { includeInactive: true });
     assert.ok(options.some((entry) => entry.speciesId === 'species-ironspine-snowhorn-ibex'));
     assert.ok(options.some((entry) => entry.speciesId === 'species-ironspine-froststep-lynx'));
 
