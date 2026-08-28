@@ -233,4 +233,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Ironspine Highlands is frozen for Data 49 promotion at `53323564ac724044ff06b1341c5466e73a34ab37`. Check #1368 / run `33215878907` passed with 753/753 tests and the full hosted gate; final promoted exact-head validation remains required before PR #401 lands.
+Ironspine Highlands is complete through PR #402 at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`. Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed with 753/753 tests and the full hosted gate.
