@@ -222,7 +222,7 @@ Permanent findings and deferred gaps are in `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AU
 
 ## Crownfields Agricultural Lowlands — Data 46
 
-**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Post-merge main Check #1308 / run `33200236952` is the final baseline verification.**
+**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Post-merge main Check #1308 / run `33200236952` passed the full hosted gate.**
 
 Crownfields adds a fourth distinct regional economic/ecological shape:
 
