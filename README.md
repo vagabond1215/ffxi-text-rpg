@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, and **Great Mere Freshwater Economy & Food Safety** are merged. PR #396 landed at `e327181fcd1e93579f335045a817de1fdae842a5`; exact-head Check #1348 and post-merge main Check #1349 both passed the full hosted gate with **743/743 tests**.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, Great Mere, the population-backed hunting bridge, and **Ironspine Highlands** are implemented through the current Data 49 candidate. The frozen Ironspine implementation head `53323564ac724044ff06b1341c5466e73a34ab37` passed Check #1368 / run `33215878907` with **753/753 tests** and the full hosted gate before version/document synchronization.
 
 ```text
-Product:       0.9.100.9
+Product:       0.9.100.10
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          48
+Data:          49
 Benchmark:     3
-Codename:      Great Mere Freshwater Economy & Food Safety
+Codename:      Ironspine Highlands & Population Hunting
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 48 adds Great Mere Westshore, Merewatch Landing, boat-only Reedcrown Isle, two canonical routes, the Great Mere Ferry, seven freshwater species, nine resource sources/raws, and 22 transformations producing 23 outputs. It also introduces explicit item-consumption safety metadata so food raws distinguish direct consumption, preparation requirements, pathogen risk, raw irritation, and raw toxicity. Game State remains 14 because these are authored definitions using existing authorities.
+Data 49 adds Ironspine Lower Pass, High-Pass Watch, and High Meadow; two mountain routes with explicit wagon/high-trail limits; six alpine species/populations; eleven new gathered/body resources; thirteen transformations/outputs; and a population-backed hunting bridge that consumes ecology only after victory while preserving existing defeated-body recovery. Food-safety metadata remains explicit internally, while player-facing wording treats preparation as practical late-medieval/fantasy fieldcraft rather than modern microbiology. Game State remains 14 because the tranche reuses existing battle, ecology, inventory/provenance, production, travel, and schedule authorities.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 48 post-merge census:
+Validated Data 49 implementation-freeze census:
 
 ```text
-places/localities       34 / mechanics floor 10
-named NPCs              26 / 50
-shop/service sites      23 / 20
-creatures               52 / 40
-resource sources        50 / 40
-canonical items        158 / 200
-recipes/processes       81 / 75
+places/localities       37 / mechanics floor 10
+named NPCs              29 / 50
+shop/service sites      25 / 20
+creatures               58 / 40
+resource sources        56 / 40
+canonical items        182 / 200
+recipes/processes       94 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -92,19 +92,19 @@ transport services       6 / 5
 Infrastructure coverage:
 
 ```text
-routes                               10
+routes                               12
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        13
-regional/shared content packs        18
-pack-owned records                   564
+NPC schedules                        15
+regional/shared content packs        20
+pack-owned records                   630
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/11/1
-runtime seed NPCs                    25
-runtime seed enemies                 13
+  schedules/companions            41/44/15/1
+runtime seed NPCs                    28
+runtime seed enemies                 16
 ```
 
-The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, recipes/processes, and transport services now meet their mechanics floors. Items are 42 short; companions remain the largest relative gap, with abilities, NPC breadth, and quests also materially short. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, recipes/processes, and transport services now meet their mechanics floors. Items are 18 short; companions remain the largest relative gap, with abilities, NPC breadth, and quests also materially short. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
@@ -127,11 +127,11 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, explicit item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. No implementation unit is active after Great Mere. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Ironspine Highlands** is the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. Ironspine Highlands and the population-backed hunting bridge are the latest completed bounded work on the current branch. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Emberwash Badlands** is the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
@@ -144,13 +144,14 @@ Future magic expansion must preserve the universal/shared ownership rule. Region
 5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
 6. `docs/ROADMAP.md`
 7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/ZONE_PROFILE_GREAT_MERE.md` for the active freshwater region
-9. `docs/ITEM_CONSUMPTION_SAFETY.md` for the standing food-safety item contract
-10. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md` for Data 47 production-depth state
-11. `docs/ZONE_PROFILE_CROWNFIELDS.md` for the agricultural region
-12. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
-13. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
-14. relevant architecture/runtime/tests for the active pass
+8. `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md` for the latest alpine region
+9. `docs/ZONE_PROFILE_GREAT_MERE.md` for the freshwater region
+10. `docs/ITEM_CONSUMPTION_SAFETY.md` for the standing food-safety item contract
+11. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md` for Data 47 production-depth state
+12. `docs/ZONE_PROFILE_CROWNFIELDS.md` for the agricultural region
+13. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
+14. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
+15. relevant architecture/runtime/tests for the active pass
 
 Repository evidence beats conversation memory.
 
