@@ -29,13 +29,13 @@ Packets A–C are merged:
 Packet D — **Universal Magic & Starfen Marshcraft** — is implemented, validated on its frozen gameplay/content head, promoted to the Product 0.9.100.4 / Data 43 contract, and synchronized across the repository. Only the final exact-head hosted Check + PR #385 landing remain after this handoff write.
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
