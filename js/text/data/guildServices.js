@@ -11,6 +11,10 @@ export const GUILD_SERVICES = Object.freeze({
         recipe('bronze-ingot', 'Bronze Ingot', 1, ['copper-ore', 'tin-ore']),
         recipe('bronze-sword', 'Bronze Sword', 4, ['bronze-ingot', 'ash-lumber']),
     ]),
+    'poi-slatewater-waylodge-trailguild': guild('poi-slatewater-waylodge-trailguild', 'Slatewater Field Guild', 'fieldcraft', ['resourceAppraisal', 'routeGuidance', 'gatheringNotices', 'huntingNotices', 'tradeExchange'], [
+        recipe('field-dressing-bundle', 'Field Dressing Bundle', 1, ['simple-bandage']),
+        recipe('trail-provision-pack', 'Trail Provision Pack', 1, ['travel-ration', 'flask-of-water']),
+    ]),
     'poi-bastok-markets-reinberta': guild('poi-bastok-markets-reinberta', 'Goldsmiths’ Guild', 'goldsmithing', ['guildMaster', 'synthesisSupport', 'guildVendor'], [
         recipe('copper-ingot', 'Copper Ingot', 1, ['copper-ore']),
         recipe('brass-ring', 'Brass Ring', 5, ['brass-ingot']),
