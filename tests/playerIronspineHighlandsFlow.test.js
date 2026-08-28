@@ -8,7 +8,7 @@ import { getProductionDefinition, validateProductionCatalog } from '../js/text/d
 import { getProductionItem, validateProductionItemCatalog } from '../js/text/data/productionItems.js';
 import { getRoute, validateRouteCatalog } from '../js/text/data/routeCatalog.js';
 import { REGIONAL_CONTENT_PACKS } from '../js/text/data/regionalContentPacks.js';
-import { validateContentPacks } from '../js/text/data/contentPackValidator.js';
+import { validateContentPacks } from '../js/text/systems/contentPackValidator.js';
 import { describeItemConsumption } from '../js/text/data/itemSchema.js';
 import { getPlace } from '../js/text/data/places.js';
 import { createNewGameState } from '../js/text/gameState.js';
