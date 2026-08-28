@@ -157,7 +157,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | NPC seed definitions | integrated | 22 runtime seed NPCs; census counts 23 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Eleven current schedules derive availability from fictional time. |
+| NPC recurring schedules | playable | Fifteen current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
@@ -171,35 +171,35 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth after Packet D:
+Gameplay breadth at the Data 49 Ironspine checkpoint:
 
 ```text
-places/localities       26 / mechanics 10
-named NPCs              17 / 50
-shop/service sites      17 / 20
-creatures               16 / 40
-resource sources        13 / 40
-canonical items         68 / 200
-recipes/processes       29 / 75
+places/localities       37 / mechanics 10
+named NPCs              29 / 50
+shop/service sites      25 / 20
+creatures               58 / 40
+resource sources        56 / 40
+canonical items        182 / 200
+recipes/processes       94 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
-companions                1 / 4
-transport services        3 / 5
+companions               1 / 4
+transport services       6 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                                   7
+routes                                  12
 spell schools                            4
 capability/training definitions         44
-NPC schedules                            7
-regional/shared packs                   10
-pack-owned records                     248
+NPC schedules                           15
+regional/shared packs                   20
+pack-owned records                     630
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/7/1
-runtime seed NPCs                       16
-runtime seed enemies                    13
+  schedules/companions              41/44/15/1
+runtime seed NPCs                       28
+runtime seed enemies                    16
 ```
 
 Mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap; canonical items are 18 short of their mechanics floor. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
