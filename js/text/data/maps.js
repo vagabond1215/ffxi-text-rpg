@@ -41,6 +41,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['south-redstone-reach', 'north-redstone-reach'],
         notes: 'Regional map for the dry uplands, quarry roads, mine routes, and caravan approaches around Brasshaven.',
     }),
+    mapCoppergrassSteppe: map({
+        id: 'map-coppergrass-steppe',
+        name: 'Map of Coppergrass Steppe',
+        nation: null,
+        region: 'Coppergrass Steppe',
+        placeIds: ['coppergrass-steppe'],
+        notes: 'Regional map for the neutral steppe corridor between Redstone Reach and Starfen, centered on the Forge-Mere Long Road and its seasonal drainage basins.',
+    }),
     mapDeepveinMine: map({
         id: 'map-deepvein-mine',
         name: 'Survey of Deepvein Mine',
