@@ -72,6 +72,12 @@ const DEFINITIONS = Object.freeze({
         sourceId: 'craft-ironspine-high-pass-compass', action: 'craft',
         sinks: ['contract', 'trade', 'collectible'],
     }),
+    'item-ironspine-bearhide-bedroll': item({
+        id: 'item-ironspine-bearhide-bedroll', name: 'High-Pass Bearhide Bedroll', kind: ITEM_KINDS.MATERIAL,
+        tags: ['camp', 'bedding', 'hide', 'cold-weather', 'travel', 'ironspine'], valueGil: 118,
+        sourceId: 'craft-ironspine-bearhide-bedroll', action: 'craft',
+        sinks: ['contract', 'trade', 'repair'],
+    }),
     'item-ironspine-weather-mantle': item({
         id: 'item-ironspine-weather-mantle', name: 'Ironspine Weather Mantle', kind: ITEM_KINDS.EQUIPMENT,
         tags: ['equipment', 'armor', 'body', 'cold-weather', 'travel', 'ironspine'], valueGil: 168,
