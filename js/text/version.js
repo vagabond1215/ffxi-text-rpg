@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.4';
+export const PRODUCT_VERSION = '0.9.100.5';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 43,
+    data: 44,
     benchmark: 3,
-    codename: 'Universal Magic & Starfen Marshcraft',
+    codename: 'Location & Area Profiles',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.4',
+    versionManifest: '0.9.100.5',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -134,6 +134,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     liveTick: '0.2.1',
     maps: '0.5.0',
     places: '0.5.0',
+    locationProfiles: '0.1.0',
     coordinates: '0.1.0',
     navigation: '0.1.1',
     placeAtlas: '0.6.0',
