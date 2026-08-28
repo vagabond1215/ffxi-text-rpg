@@ -1,20 +1,25 @@
-# Execution Pipeline and Continuation Queue
+# Execution Pipeline
 
-This document is the operational progression path for **Hearth & Horizon**. It minimizes repeated discovery when work moves to a new thread. It does not replace the design north star or roadmap.
+This file is the operational continuation path for Hearth & Horizon. It exists so a fresh development thread can resume from repository state without repeating broad discovery.
 
-Authority order remains:
+## Resume sequence
 
-1. `AGENTS.md`
-2. `docs/THREAD_HANDOFF.md`
-3. this file
-4. `docs/DEVELOPMENT_DIRECTION.md`
-5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
-6. `docs/ROADMAP.md`
-7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
-9. relevant architecture/runtime/tests for the active bounded pass
+When starting a new thread:
 
-## Current baseline
+1. read `AGENTS.md`;
+2. read `docs/THREAD_HANDOFF.md`;
+3. read this file;
+4. read `docs/DEVELOPMENT_DIRECTION.md`;
+5. read `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`;
+6. read `docs/ROADMAP.md`;
+7. if geography/world-edge work is relevant, read `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`;
+8. inspect only runtime/data/tests named by the immediate bounded action;
+9. verify current `main`, relevant PR state, and latest hosted Check;
+10. continue from that evidence.
+
+Do **not** redo Phase 0.4–0.8 discovery, persistence classification, Pack-v2 infrastructure discovery, or completed regional-packet analysis unless a concrete regression requires it.
+
+## Current contract
 
 ```text
 Product:       0.9.100.5
@@ -23,164 +28,172 @@ Account Save:  5
 Game State:    14
 Data:          44
 Benchmark:     3
-Phase:         0.9 in progress
 Codename:      World Edge Expansion & Slatewater Waylodge
+Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Phase 0.8 is complete. Phase 0.9 / `0.9.100 Content Scale Gate A` is active and uses PR-based integration for cross-file scale packets. Packets A–C are merged. Packet D is implemented, validated, promoted, and pending final exact-head Check + PR landing.
+## Current bounded unit
 
-## Fast restart protocol
+**Slatewater Foothills & Waylodge — PR #389.**
 
-```text
-1. refresh current main and open PR state
-2. read AGENTS.md
-3. read docs/THREAD_HANDOFF.md
-4. read this file
-5. read docs/PHASE_0_9_IMPLEMENTATION_PLAN.md only for the authorized Phase 0.9 packet
-6. inspect the named runtime/data/tests only
-7. proceed only with the immediate bounded unit
-```
+Base main before the tranche:
 
-Do not redo Phase 0.4–0.8 discovery, persistence classification, the post-0.8 audit, Pack v2 infrastructure discovery, or earlier Gate A packet discovery unless a concrete regression/change requires it.
+`4c1b1956e5d3126fced402188f00f1612be853f3`
 
-# Completed foundation
+That main checkpoint already includes:
+- Packet D / Universal Magic & Starfen Marshcraft;
+- ecology family/resource breadth expansion;
+- Coppergrass Steppe.
 
-```text
-Phase 0.4–0.7                  COMPLETE
-Phase 0.8 life/infrastructure  COMPLETE
-Phase 0.8 exit audit           COMPLETE
-post-0.8 status/repair audit   COMPLETE
-repository contract audit      COMPLETE
-Pack v2 infrastructure         COMPLETE
-Redstone Forge-Road            COMPLETE / MERGED
-```
+Slatewater implementation is complete and validated before final documentation synchronization.
 
-# Active phase — 0.9 Content Scale, Adventure Depth and Release Hardening
-
-## `0.9.100` — Content Scale Gate A
-
-**Status: IN PROGRESS.**
-
-Primary question:
-
-> Can the repository repeatedly author and validate materially larger connected regional content without bypassing ownership rules, duplicating canonical catalogs, or manufacturing filler?
-
-### Packet A — Content Pack Scale Contract v2
-
-**Status: COMPLETE and merged.**
-
-The Pack v2 foundation owns stable regional/shared placement and dependencies across geography, ecology, resources, items, NPCs, schedules, services, recipes, quests, relationships, spell schools, capabilities, abilities, and companions while preserving existing catalogs as definition authorities. Its generated scale fixture validates 1,401 ownership records without contributing to gameplay census counts.
-
-### Packet B — Redstone Forge-Road
-
-**Status: COMPLETE and merged.**
-
-Redstone established the first authored regional proof on Pack v2 by joining existing iron, sunstone, Ridge Ibex recovery, forge work, equipment, provenance, Brasshaven commitments, schedules, and character-owned techniques without adding a parallel authority.
-
-### Packet C — Elderwood Hunt-Timber
-
-**Status: COMPLETE / MERGED.**
-
-Elderwood established the second authored Pack-v2 regional proof with hunt/timber recovery, tannery/woodshop production, persistent contacts, fictional-time civic availability, commitments, and field techniques. Its frozen implementation checkpoint was `acb24b73b4894d3febab370aa279bdfd12cbd02e`; the promoted packet landed before Packet D opened.
-
-### Current census
-
-Validated Packet D implementation/content checkpoint:
+Validated hosted evidence:
 
 ```text
-places/localities       26 / mechanics floor 10
-named NPCs              17 / 50
-shop/service sites      17 / 20
-creatures               16 / 40
-resource sources        13 / 40
-canonical items         68 / 200
-recipes/processes       29 / 75
-abilities/techniques    41 / 100
-quests/contracts        18 / 30
-companions                1 / 4
-transport services        3 / 5
-```
-
-Infrastructure coverage:
-
-```text
-routes                                   7
-spell schools                            4
-capabilities/training definitions       44
-NPC schedules                            7
-regional/shared packs                   10
-pack-owned records                     248
-pack-owned abilities/capabilities/
-  schedules/companions              41/44/7/1
-runtime seed NPCs                       16
-runtime seed enemies                    13
-```
-
-Mechanics-scale gate remains **NOT READY** by design. Companions are now the largest relative gap. This is not a failing CI condition.
-
-### Packet D — Universal Magic & Starfen Marshcraft
-
-**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL EXACT-HEAD CHECK AND LANDING.**
-
-Frozen gameplay/content implementation SHA:
-
-```text
-ee81069defe59a55979bc262ea595c3c9df42f40
-```
-
-Pre-promotion hosted evidence:
-
-```text
-Check:              33139128883
-Job:                98745791538
+Check:              #1253 / 33182827321
+Job:                98888188450
 Node:               24.19.0
 Repository Audit:   PASS
-Tests:              719/719 passed
-Content Census:     success
-Benchmark 3:        success
-Benchmark Sample:   success
+Tests:              724/724
+Content Census:     PASS
+Benchmark 3:        PASS
+Benchmark Sample:   PASS
 ```
 
-Bounded graph:
+Because this file and other authority docs are being synchronized after that Check, a final exact-head Check is still required before merging PR #389.
+
+## Slatewater bounded graph
 
 ```text
-shared character magic authority
-  -> Elemental Form / Vital Weave / Ward Lore / Veilscript
-  -> universal learned spell capabilities + executable abilities
-  -> no regional spell ownership or location gate
-
-existing Starfen resources/recovery
-  -> existing production/work/provenance/inventory authorities
-  -> marsh medicine / cord / waterproofing / survey gear
-  -> persistent Mistmere contacts + fictional-time schedules
-  -> provenance-qualified community/research commitments
-  -> regional Starfen Current Reading field knowledge
-  -> pack-starfen-marshcraft
+Timbercross Landing
+  -> Crown-Forge Caravan Road
+  -> Slatewater Foothills
+       ecology + gathering
+       cliffs/pass logic
+       local field travel
+  -> Slatewater Waylodge
+       Eira Voss / Field Exchange
+       Toren Marr / Field Guild
+       Bram Pell / Stableyard
+       Hearth + Bunkroom
+       safe recovery
+       scheduled foothill caravan
+  -> Brasshaven Iron Quay
 ```
 
-The external Tales of Symphonia material is retained only as non-canonical taxonomy research in `docs/research/TALES_OF_SYMPHONIA_MAGIC_REFERENCE.md`. Canonical spell names, stable IDs, schools, effects, and lore are original Hearth & Horizon content.
-
-Version decision:
+The original Crown-Forge through journey remains:
 
 ```text
-Product:      0.9.100.4
-Package:      0.9.100 unchanged
-Data:         43
-Game State:   14 unchanged
-Account Save: 5 unchanged
-Benchmark:    3 unchanged
+54,000 yalms / 21,600 seconds
 ```
 
-Data 43 advances because stable canonical magic IDs/ownership, capability/ability catalogs, commitment-reference validation, Starfen marshcraft outputs/processes/NPCs/schedules/contracts, and the child regional pack changed. Game State remains 14 because no new durable player/world authority was introduced.
+The former Timbercross→Brasshaven 36,000-yalm segment is now represented as:
+- Timbercross→Waylodge: 18,000 yalms / 7,200s;
+- Waylodge→Brasshaven: 18,000 yalms / 7,200s.
 
-### Next bounded packet — Packet E Gate A integration/census audit
-
-**Status: QUEUED / NOT STARTED.**
-
-Do not auto-start Packet E merely because Packet D lands. Its purpose is to review the combined Gate A graph, census, remaining target gaps, and integration evidence without inventing filler. The ordinary gate remains:
+## Validated census
 
 ```text
+places/localities                        29
+named NPCs                               20
+shop/service sites                       19
+creature definitions                    40
+resource sources                        35
+canonical items                         90
+recipes/processes                       29
+abilities/techniques                    41
+quests/contracts                        18
+companions                               1
+transport services                       4
+
+routes                                    7
+spell schools                             4
+capabilities/training definitions        44
+NPC schedules                             9
+regional/shared content packs            13
+pack-owned records                      374
+pack-owned abilities/capabilities/
+  schedules/companions                41/44/9/1
+runtime seed NPCs                        19
+runtime seed enemies                     13
+```
+
+Mechanics-scale gate: **NOT READY**.
+
+Creature definitions now meet the mechanics floor at 40/40. Companions remain the largest relative gap.
+
+## Immediate pipeline
+
+### A. Finish Slatewater integration
+
+Required before landing:
+1. finish continuity/document synchronization;
+2. run exact-head hosted Check;
+3. require Repository Audit + Test + Census + Benchmark + Benchmark Sample success;
+4. verify PR #389 mergeable;
+5. merge through PR;
+6. verify post-merge `main` Check.
+
+### B. Refresh final thread handoff
+
+The repository restart contract should record the landed Slatewater state rather than leaving an active-PR fiction. If PR #389 is merged, update `docs/THREAD_HANDOFF.md` (and PROJECT_PROFILE if needed) through a bounded documentation-only follow-up so a fresh thread sees the true main checkpoint.
+
+### C. Next work is a decision boundary
+
+Do **not** automatically start the next numbered world-edge item.
+
+Two valid next directions exist:
+
+- formal roadmap: **Packet E — Gate A integration/census audit**;
+- world-edge plan: **Crownfields** is the next ranked geography candidate.
+
+A future work order must choose or otherwise explicitly authorize the next bounded unit.
+
+## Temporary geography artifact
+
+`docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` is intentionally temporary but currently important.
+
+It records:
+- macro-geographic interpretation;
+- walkable versus restricted/transport-only boundary logic;
+- all 12 ranked zone-extension candidates;
+- habitation-density policy;
+- exact pre-Slatewater checkpoint;
+- Slatewater authorization and design rationale.
+
+Do not delete it until its surviving decisions are incorporated into permanent cartography/world-expansion documentation.
+
+## Data/version decision
+
+Data 44 covers stable canonical authored additions after Data 43, including Coppergrass and Slatewater.
+
+```text
+Product       0.9.100.4 -> 0.9.100.5
+Package       0.9.100   -> 0.9.100
+Data          43        -> 44
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+Game State stays 14 because the tranche reuses existing:
+- place/map/atlas authority;
+- route/transport authority;
+- safe-locality recovery;
+- shop transactions;
+- NPC/schedule projection;
+- ecology/population/gathering;
+- inventory/provenance;
+- Pack-v2 ownership.
+
+No durable mount state was added. Mount and pack-animal care at Slatewater is currently service/world content layered over existing travel/logistics authority. `SYSTEM_VERSIONS.mounts` remains planned.
+
+## Quality gate
+
+Ordinary landing gate:
+
+```bash
 npm run audit:repo
 npm test
 npm run census
@@ -188,46 +201,39 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-Run `npm run hardening` only if the integration review changes lifecycle-sensitive authority or explicitly requires it.
+Hosted `Check` must pass the same sequence.
 
-# Phase 0.9 progression envelope
+Census readiness thresholds are not CI pass/fail thresholds.
 
-| Track | Primary gate | Status |
-| --- | --- | --- |
-| `0.9.100` | Content Scale Gate A | **IN PROGRESS** |
-| `0.9.200` | Adventure vertical slices | QUEUED |
-| `0.9.300` | Advanced combat/training | QUEUED |
-| `0.9.400` | Economy/production depth | QUEUED |
-| `0.9.500` | Quest/social depth | QUEUED |
-| `0.9.600` | Playable-alpha content-scale push | QUEUED |
-| `0.9.700` | Browser UX/accessibility/E2E hardening | DEFERRED |
-| `0.9.800` | Supported persistence/release transition | DEFERRED |
-| `0.9.900` | Release-candidate soak/performance/release hardening | DEFERRED |
+## PR discipline
 
-# Governance and deferred operations
+- use bounded feature branches;
+- run hosted validation on exact PR head;
+- do not merge red checks;
+- avoid unrelated cleanups in an active packet;
+- update continuity docs when their state would otherwise mislead a fresh thread;
+- do not create a second domain authority merely to make new content convenient.
 
-- Phase 0.9 uses PR-based integration for track packets.
-- Protected `main` + required Check remains recommended; if the repository action surface cannot configure protection, record that administrative limitation rather than claiming it was changed.
-- Historical stale remote branches remain manual cleanup debt where no safe delete action exists.
-- Supported-save compatibility/migrations remain deferred to `0.9.800` unless explicitly required earlier.
-- Browser E2E/accessibility remains `0.9.700`.
-- Hard performance budgets, balance certification, quality/HQ depth, large logistics, and deep romance remain deferred until their prerequisites exist.
-
-# Standard bounded-pass pipeline
+## Key files for Slatewater
 
 ```text
-1. select one player-facing or repository-risk question
-2. identify existing authority and production caller
-3. define non-goals
-4. implement the smallest complete runtime/data path
-5. add focused deterministic/adversarial tests
-6. add connected content only when the infrastructure can own and validate it
-7. run Repository Audit + Test + Census + Benchmark 3 + Sample
-8. add hardening only for lifecycle-sensitive ownership changes
-9. freeze the exact implementation SHA
-10. synchronize profile/roadmap/catalog/version docs after runtime freeze
-11. update THREAD_HANDOFF.md last
-12. stop before the next independent packet
+docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
+docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
+js/text/data/maps.js
+js/text/data/places.js
+js/text/data/routeCatalog.js
+js/text/data/pointsOfInterest.js
+js/text/data/shopCatalogs.js
+js/text/data/guildServices.js
+js/text/data/seedEntities.js
+js/text/data/npcSchedules.js
+js/text/data/regionalEcologyExpansion.js
+js/text/data/regionalResourceItems.js
+js/text/data/regionalEcologyPacks.js
+js/text/data/regionalContentPacks.js
+tests/playerSlatewaterWaylodgeFlow.test.js
+tests/transportEngine.test.js
+tests/regionalEcologyBreadth.test.js
+tests/contentPackValidator.test.js
+tests/contentScaleGate.test.js
 ```
-
-Content targets are lower-bound progression indicators. Never game them with disconnected filler, fixtures counted as canonical content, or duplicate catalog refs.
