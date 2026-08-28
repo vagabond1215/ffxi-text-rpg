@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 46 | canonical authored-data, stable-ID, pack ownership and validation contract |
+| Data | 47 | canonical authored-data, stable-ID, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -254,6 +254,74 @@ No new durable player/world state family is introduced. Managed crops reuse ecol
 
 Animal products such as milk, wool, eggs, honey, manure, meat, or hides are deliberately **not** modeled through fake flora sources. A future husbandry/managed-animal source authority must be deliberate if those loops are added.
 
+### `0.9.100.8` — Regional Ingredient & Luxury Processing
+
+This revision deepens the existing regional resource economy by making processed ingredients and components first-class canonical outputs.
+
+```text
+Product       0.9.100.7 -> 0.9.100.8
+Package       0.9.100   -> 0.9.100
+Data          46        -> 47
+Game State    14        -> 14
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
+
+#### Why Data 47
+
+Stable canonical authored data expands with:
+
+- 30 production transformations;
+- 30 production outputs;
+- `ingredientLuxuryProductionCatalog` and `ingredientLuxuryProductionItems` modular subcatalogs behind the existing canonical production interfaces;
+- `pack-regional-ingredient-luxury-processing`, owning those 60 stable records;
+- Crownfields staple chains for flour/bread, pea meal/pottage, flax thread/linen, woad pigment/dyed linen, and apple must/vinegar;
+- Elderwood perfume/veneer/fine-casket work;
+- Redstone crocus pigment, cut Fire Opal, and brooch work;
+- Starfen indigo textile and Moonlotus perfume chains;
+- Coppergrass madder textile and Windglass ornament work;
+- Slatewater lichen pigment, clay slip/glaze, polished Blue Slate, and decorative plaque work;
+- a Five-Region Dyer's Sample Book combining processed dye inputs across Crownfields, Redstone, Starfen, Coppergrass, and Slatewater.
+
+The pre-promotion validated census is:
+
+```text
+places/localities       31
+named NPCs              23
+shop/service sites      21
+creature definitions    45
+resource sources        41
+canonical items        126
+recipes/processes       59
+abilities/techniques    41
+quests/contracts        18
+companions               1
+transport services       5
+
+routes                    8
+spell schools             4
+capabilities             44
+NPC schedules            11
+regional/shared packs    16
+pack-owned records      470
+```
+
+Production-depth evidence moves from 15/44 to 33/44 canonical raw resources with direct production demand, and from 0/11 to 11/11 luxury raws.
+
+#### Why Game State stays 14
+
+No new durable player/world state family is introduced. Data 47 reuses:
+
+- production work/task state;
+- work proficiency;
+- workstation resolution;
+- inventory/container state;
+- canonical item provenance;
+- fictional world time;
+- Pack-v2 placement/dependency metadata.
+
+Intermediate goods are ordinary canonical inventory items. They do not require a separate crafting queue, luxury inventory, recipe-state family, or processing clock.
+
 ## Persistence history
 
 Relevant late history:
@@ -275,6 +343,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.5           no Game State change; Data 43 -> 44
 0.9.100.6           no Game State change; Data 44 -> 45
 0.9.100.7           no Game State change; Data 45 -> 46
+0.9.100.8           no Game State change; Data 46 -> 47
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -300,13 +369,13 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.2.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.6.0
+regionalContentPacks   0.7.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.3.0
 commitments            0.7.0
-productionCatalog      0.4.0
-productionItems        0.6.0
+productionCatalog      0.5.0
+productionItems        0.7.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -327,7 +396,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The Crownfields pre-promotion implementation head passed hosted Check #1294 / run `33199542741` with **731/731 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #392 merge.
+The Data 47 ingredient/luxury processing implementation head passed hosted Check #1311 / run `33202128019` with **736/736 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #394 merge.
 
 The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 

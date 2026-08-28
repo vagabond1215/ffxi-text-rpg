@@ -7,77 +7,75 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
-## Current main checkpoint
+## Current integration state
+
+Active PR: **#394 — Regional Ingredient & Luxury Processing**
+
+Base main:
+
+`07e5b01a2db80830bf272ec0175ecae14b2f10b6`
+
+The implementation head before Data 47/version-document synchronization passed hosted Check **#1311 / run `33202128019`**:
 
 ```text
-Crownfields merge: 738faa5813e4aca30950b0d787f1209ae9a3d917
-PR #392:           MERGED
-PR Check #1307:   PASS / run 33200172961
-main Check #1308: PASS / run 33200236952
+Repository Audit: PASS
+Tests:            736/736
+Content Census:   PASS
+Benchmark 3:      PASS
+Benchmark Sample: PASS
 ```
 
-The implementation is merged and post-merge main verification is green. This docs-only handoff branch records the final landed state.
+A final exact-head Check is required after Data 47 continuity synchronization before merge.
 
-## Crownfields landed state
+## What Data 47 adds
 
-The pre-promotion implementation head passed Check #1294 / run `33199542741` with 731/731 tests and the full gate. The final promoted/documented PR head passed Check #1307 / run `33200172961`.
+- 30 new production transformations;
+- 30 new production outputs;
+- intermediate ingredients/components as first-class canonical items;
+- Crownfields milling, baking, pulse cooking, flax/linen, woad, apple must and vinegar;
+- luxury pigment, perfume, gem-cutting, veneer, textile, glaze, jewelry/decorative chains across Elderwood, Redstone, Starfen, Coppergrass, Slatewater and Crownfields;
+- a Five-Region Dyer's Sample Book requiring processed inputs from five regional dye traditions;
+- `pack-regional-ingredient-luxury-processing`;
+- Crownfields Grange workshop/kitchen access through existing workstation tags.
 
-## Recently completed sequence
+Permanent design record:
 
-- PR #387: ecology breadth;
-- PR #388: Coppergrass Steppe;
-- PR #389: Slatewater Foothills & Waylodge;
-- PR #390: Ecology & Geography Integrity;
-- PR #391: post-audit continuity sync;
-- PR #392: Crownfields — merged.
+`docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`
 
-## Crownfields implementation
+## Production-depth result
 
-New canonical geography:
-- `crownfields` — danger-1 managed agricultural countryside;
-- `crownfields-grange` — danger-0 farm-market service hamlet;
-- `map-crownfields`;
-- `route-thornwall-crownfields-road` / Southfield Farm Road;
-- `service-crownfields-produce-wagon`.
+Before this pass:
 
-Grange services:
-- Produce Exchange — Maelin Rook;
-- Growers’ Hall — Hessa Vale;
-- Produce Wagon Yard — Perrin Bale;
-- Millhouse/Common Loft;
-- shop trade, safe recovery, guild presentation, stabling/freight, scheduled transport.
+```text
+canonical raw resources used by production   15 / 44
+luxury raws used by production                0 / 11
+canonical items                              96
+recipes/processes                            29
+```
 
-Managed ecology:
-- Crownfield Cattle;
-- Whitefleece Sheep;
-- Redcomb Hen;
-- Hedgerow Rat;
-- Orchard Honeybee.
+After this pass:
 
-The Orchard Honeybee reuses the canonical Bee family owned by Elderwood ecology; Crownfields declares that dependency rather than duplicating family ownership.
+```text
+canonical raw resources used by production   33 / 44
+luxury raws used by production               11 / 11
+canonical items                             126
+recipes/processes                            59
+```
 
-Agricultural resources:
-- Crown Rye;
-- Field Pea;
-- Blue Flax Straw;
-- Cider Apple;
-- Meadow Hay;
-- Dyer’s Woad.
+The remaining eleven unused raws are documented as future content opportunities, not reference failures.
 
-All six use the existing gathering/provenance authority. Honey, wool, milk, eggs and other animal products are deliberately deferred until a proper husbandry/managed-animal source model exists.
-
-## Validated census
+## Current census
 
 ```text
 places/localities                        31
@@ -85,8 +83,8 @@ named NPCs                               23
 shop/service sites                       21
 creature definitions                    45
 resource sources                        41
-canonical items                         96
-recipes/processes                       29
+canonical items                        126
+recipes/processes                       59
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
@@ -96,50 +94,46 @@ routes                                    8
 spell schools                             4
 capabilities/training definitions        44
 NPC schedules                            11
-regional/shared content packs            15
-pack-owned records                      410
+regional/shared content packs            16
+pack-owned records                      470
 runtime seed NPCs                        22
 runtime seed enemies                     13
 ```
 
-Mechanics floors now reached:
-- places;
-- shop/service sites;
-- creatures;
-- resource sources;
-- transport services.
+Mechanics-scale gate remains **NOT READY**. Recipes are now only 16 short of their mechanics floor; items are 74 short. Companions remain the largest relative gap.
 
-Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; recipes, abilities, NPC breadth, items and quests are also materially short.
+## Important deferred content
 
-## Geography planning
+Do not misclassify these as broken references:
 
-`docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` remains the temporary world-edge plan.
+- remaining unused raw resources are intentional future production opportunities;
+- animal products still require a deliberate husbandry/managed-animal source model;
+- population-backed hunting remains an ecology/player-loop gap;
+- sparse Old Gaol/Timbercross/dungeon resource coverage remains deferred.
 
-Slatewater and Crownfields are merged/audited.
+## Next decision boundary
 
-Next ranked zone after Crownfields: **Great Mere**.
+Formal roadmap:
+- Packet E — Gate A integration/census audit.
 
-That ranking is planning only and does not auto-authorize Great Mere.
+World-edge planning:
+- Great Mere remains the next ranked zone.
 
-## Formal roadmap
+System/content candidates:
+- population-backed hunting;
+- companion breadth;
+- another production pass could close the remaining 16-recipe mechanics gap, but should only do so through connected useful chains.
 
-Packet E — **Gate A integration/census audit** — remains queued and not started.
-
-The next work order should explicitly choose among:
-- Packet E;
-- Great Mere or another authorized geography tranche;
-- population-backed hunting encounter integration;
-- another bounded content-depth tranche aimed at the remaining scale gaps.
+None is auto-started.
 
 ## Restart order
 
 1. `AGENTS.md`
 2. this file
 3. `docs/EXECUTION_PIPELINE.md`
-4. `docs/ROADMAP.md`
-5. `docs/ZONE_PROFILE_CROWNFIELDS.md`
-6. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md`
-7. `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md` if geography work is relevant
-8. verify current `main`/PR/Check state
+4. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`
+5. `docs/ROADMAP.md`
+6. `docs/ZONE_PROFILE_CROWNFIELDS.md`
+7. relevant runtime/data/tests for the explicitly selected next unit
 
-Do not redo earlier phase discovery unless repository evidence contradicts this checkpoint.
+Do not redo broad discovery unless repository evidence contradicts this checkpoint.

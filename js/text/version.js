@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.7';
+export const PRODUCT_VERSION = '0.9.100.8';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 46,
+    data: 47,
     benchmark: 3,
-    codename: 'Crownfields Agricultural Lowlands',
+    codename: 'Regional Ingredient & Luxury Processing',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.7',
+    versionManifest: '0.9.100.8',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -44,8 +44,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     workTasks: '0.2.0',
     workProficiencies: '0.2.0',
     workstations: '0.3.1',
-    productionCatalog: '0.4.0',
-    productionItems: '0.6.0',
+    productionCatalog: '0.5.0',
+    productionItems: '0.7.0',
+    ingredientLuxuryProductionCatalog: '0.1.0',
+    ingredientLuxuryProductionItems: '0.1.0',
     production: '0.1.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
@@ -66,7 +68,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     transportServiceBoard: '0.2.0',
     contentCatalogRegistry: '0.2.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.6.0',
+    regionalContentPacks: '0.7.0',
     contentPackValidation: '0.3.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',

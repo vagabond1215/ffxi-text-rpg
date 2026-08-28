@@ -7,21 +7,21 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 ```
 
 The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
 
 ## Current census
 
-Validated Crownfields pre-promotion checkpoint:
+Validated Data 47 pre-promotion checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -30,8 +30,8 @@ Validated Crownfields pre-promotion checkpoint:
 | Shop/service sites | 21 | 20 | ready |
 | Creature definitions | 45 | 40 | ready |
 | Resource sources | 41 | 40 | ready |
-| Canonical items | 96 | 200 | 104 |
-| Recipes/processes | 29 | 75 | 46 |
+| Canonical items | 126 | 200 | 74 |
+| Recipes/processes | 59 | 75 | 16 |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
@@ -44,10 +44,10 @@ routes                                   8
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           11
-regional/shared packs                   15
-pack-owned records                     410
+regional/shared packs                   16
+pack-owned records                     470
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/9/1
+  schedules/companions              41/44/11/1
 runtime seed NPCs                       22
 runtime seed enemies                    13
 ```
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, and Crownfields are merged.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, and Crownfields are merged. The Data 47 ingredient/luxury processing tranche is active on PR #394.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -239,6 +239,34 @@ It also adds managed cattle, sheep, poultry, crop-pest, and pollinator populatio
 
 Pre-promotion Check #1294 / run `33199542741` passed Repository Audit, **731/731 tests**, Census, Benchmark 3, and Benchmark Sample.
 
+## Regional Ingredient & Luxury Processing — Data 47
+
+**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #394 FINAL INTEGRATION IN PROGRESS.**
+
+This tranche converts breadth into connected depth:
+
+```text
+existing regional raw resources
+  -> intermediate ingredients/components
+  -> later production inputs
+  -> selected finished food / textile / perfume / jewelry / decorative goods
+```
+
+Measured change:
+
+```text
+raw production utilization    15/44 -> 33/44
+luxury raw utilization         0/11 -> 11/11
+canonical items                  96 -> 126
+recipes/processes                29 -> 59
+packs                            15 -> 16
+pack-owned records              410 -> 470
+```
+
+Pre-promotion Check #1311 / run `33202128019` passed Repository Audit, **736/736 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent design record: `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`.
+
 ## Packet E — Gate A integration and census audit
 
 **Status: QUEUED.**
@@ -261,16 +289,16 @@ These are progression bands, never permission to create filler:
 
 | Category | Current | Gate A planning band |
 | --- | ---: | ---: |
-| Named NPCs | 17 | 30+ |
-| Shop/service sites | 17 | 20+ |
-| Creature definitions | 16 | 28+ |
-| Resource sources | 13 | 28+ |
-| Canonical items | 68 | 110+ |
-| Recipes/processes | 29 | 40+ |
+| Named NPCs | 23 | 30+ |
+| Shop/service sites | 21 | 20+ |
+| Creature definitions | 45 | 28+ |
+| Resource sources | 41 | 28+ |
+| Canonical items | 126 | 110+ |
+| Recipes/processes | 59 | 40+ |
 | Abilities/techniques | 41 | 40+ |
 | Quests/contracts | 18 | 18+ |
 | Recruitable companions | 1 | 4 only when authored characters justify them |
-| Transport services | 3 | 5 only when topology justifies them |
+| Transport services | 5 | 5 only when topology justifies them |
 
 ### Qualitative Gate A requirements
 

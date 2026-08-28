@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -27,25 +27,35 @@ Ecology family/resource breadth         COMPLETE / MERGED
 Coppergrass Steppe                       COMPLETE / MERGED
 Slatewater Foothills & Waylodge         COMPLETE / MERGED
 Ecology & Geography Integrity           COMPLETE / MERGED
+Crownfields Agricultural Lowlands        COMPLETE / MERGED
 ```
 
 ## Active bounded unit
 
-### Crownfields Agricultural Lowlands
+### Regional Ingredient & Luxury Processing
 
-**Status: COMPLETE / MERGED through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`; post-merge main Check #1308 / run `33200236952` passed the full hosted gate.**
+**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #394 FINAL INTEGRATION IN PROGRESS.**
 
 Purpose:
-- give Thornwall a believable food-producing hinterland;
-- introduce managed/agricultural ecology;
-- add a non-urban service hamlet rather than another major city;
-- connect farm production to Thornwall through real route/transport/trade authorities.
+- make intermediate crafting ingredients first-class rather than skipping raw -> finished;
+- deepen existing regional raw-resource demand before adding another large gatherable tranche;
+- convert all 11 existing luxury raws from trade-only potential into real production inputs;
+- add cross-regional textile, perfume, gem, veneer, ceramic/glaze, food, and reference-artifact chains.
 
-Permanent profile:
+Permanent design record:
 
-`docs/ZONE_PROFILE_CROWNFIELDS.md`
+`docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`
 
-Validated pre-promotion Check #1294 / run `33199542741`: **731/731 tests**, full gate green.
+Pre-promotion Check #1311 / run `33202128019`: **736/736 tests**, full gate green.
+
+Depth result:
+
+```text
+raw resource utilization    15/44 -> 33/44
+luxury raw utilization       0/11 -> 11/11
+canonical items                96 -> 126
+recipes/processes              29 -> 59
+```
 
 ## Current content census
 
@@ -56,8 +66,8 @@ Validated pre-promotion Check #1294 / run `33199542741`: **731/731 tests**, full
 | Shop/service sites | 21 | 20 | reached |
 | Creature definitions | 45 | 40 | reached |
 | Resource sources | 41 | 40 | reached |
-| Canonical items | 96 | 200 | 104 short |
-| Recipes/processes | 29 | 75 | 46 short |
+| Canonical items | 126 | 200 | 74 short |
+| Recipes/processes | 59 | 75 | 16 short |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -70,8 +80,8 @@ routes                         8
 spell schools                  4
 capabilities                  44
 NPC schedules                 11
-regional/shared packs         15
-pack-owned records           410
+regional/shared packs         16
+pack-owned records           470
 runtime seed NPCs             22
 runtime seed enemies          13
 ```
@@ -123,7 +133,7 @@ The sequence is planning, not automatic authorization.
 
 - population-backed passive/wary hunting encounters;
 - companion breadth;
-- production/recipe breadth;
+- production/recipe breadth: Data 47 closes most of the gap, leaving 16 recipes/processes to the mechanics floor;
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
