@@ -478,7 +478,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-The Great Mere repaired pre-promotion implementation head passed hosted Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. A final exact promoted/documented PR-head Check is required before PR #396 merge.
+Great Mere final exact PR-head Check #1348 / run `33212388143` passed with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample. PR #396 merged at `e327181fcd1e93579f335045a817de1fdae842a5`; post-merge main Check #1349 / run `33212454122` also passed the full hosted gate with 743/743 tests.
 
 The later 0.9.100.5 Slatewater validation supersedes the Packet D freeze for current census: 29 places, 20 named NPCs, 19 service sites, 40 creatures, 35 sources, 90 items, 29 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 4 transport services, 9 schedules, 13 packs, and 374 pack-owned records.
 
@@ -491,7 +491,7 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
   Packet A Content Pack Scale Contract v2     COMPLETE / MERGED
   Packet B Redstone Forge-Road                COMPLETE / MERGED
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
-  Packet D Universal Magic + Starfen          VALIDATED + PROMOTED / PENDING LANDING
+  Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          QUEUED / NOT STARTED
 0.9.200 Adventure vertical slices             QUEUED
 0.9.300 Advanced combat/training              QUEUED

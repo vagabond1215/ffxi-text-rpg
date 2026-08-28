@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, and Data 47 processing are merged. The active bounded unit is **PR #396 — Great Mere Freshwater Economy & Food Safety**; its repaired pre-promotion head passed the full hosted gate with **743/743 tests**.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, and **Great Mere Freshwater Economy & Food Safety** are merged. PR #396 landed at `e327181fcd1e93579f335045a817de1fdae842a5`; exact-head Check #1348 and post-merge main Check #1349 both passed the full hosted gate with **743/743 tests**.
 
 ```text
 Product:       0.9.100.9
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 48 pre-promotion census:
+Validated Data 48 post-merge census:
 
 ```text
 places/localities       34 / mechanics floor 10
@@ -131,7 +131,7 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Great Mere is the active PR #396 geography/economy tranche. After it lands, **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Ironspine Highlands** becomes the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
+`0.9.100 Content Scale Gate A` remains open. No implementation unit is active after Great Mere. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Ironspine Highlands** is the next ranked world-edge candidate, and population-backed hunting remains a separate ecology-system candidate. None is auto-started without an explicit bounded work order.
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 

@@ -22,20 +22,21 @@ authority:
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
 git:
-  current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/great-mere-freshwater-economy
-  active_pull_request: 396
-  base_main_sha: 77e5ac0bce738be5b8ba65a8c3786ac0a98ae7dd
-  pre_promotion_check: 33209084881
-  pre_promotion_check_number: 1334
-  pre_promotion_check_result: success-743-of-743-tests-census-benchmark-and-sample
-  final_exact_head_check_required: true
+  current_normal_work: awaiting-next-bounded-unit
+  latest_product_merge_sha: e327181fcd1e93579f335045a817de1fdae842a5
+  latest_product_pull_request: 396
+  latest_product_pr_check: 33212388143
+  latest_product_pr_check_number: 1348
+  latest_product_pr_check_result: success-743-of-743-tests-census-benchmark-and-sample
+  latest_product_post_merge_check: 33212454122
+  latest_product_post_merge_check_number: 1349
+  latest_product_post_merge_check_result: success-743-of-743-tests-census-benchmark-and-sample
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: great-mere-freshwater-economy
-  current_bounded_unit_status: implementation-validated-version-and-continuity-sync-in-progress
+  latest_bounded_unit: great-mere-freshwater-economy
+  latest_bounded_unit_status: complete-merged-and-post-merge-green
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: ironspine-highlands

@@ -14,21 +14,18 @@ Benchmark:     3
 Codename:      Great Mere Freshwater Economy & Food Safety
 ```
 
-## Active bounded unit
+## Current bounded-unit state
 
-**PR #396 — Great Mere Freshwater Economy & Food Safety**
+No implementation unit is active.
 
-Pre-promotion repaired implementation Check #1334 / run `33209084881` passed **743/743 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
+Latest product unit:
+- Great Mere Freshwater Economy & Food Safety;
+- PR #396;
+- merge `e327181fcd1e93579f335045a817de1fdae842a5`;
+- exact PR-head Check #1348 / run `33212388143`: full gate green, 743/743 tests;
+- post-merge main Check #1349 / run `33212454122`: full gate green, 743/743 tests.
 
-## Immediate integration sequence
-
-1. finish Data 48 version/continuity/document synchronization;
-2. run exact-head hosted Check on PR #396;
-3. require the full gate green;
-4. merge PR #396 with expected-head protection;
-5. verify post-merge `main` Check;
-6. perform a tiny docs-only handoff sync if the merge SHA/check result must be recorded;
-7. await the next explicit bounded work order.
+The repository is back at a clean `main` baseline and waits for explicit authorization before Packet E, Ironspine Highlands, population-backed hunting, or another bounded unit begins.
 
 ## Data 48 metrics
 
