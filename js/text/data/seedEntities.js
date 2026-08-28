@@ -48,6 +48,18 @@ export function createSeedNpcs() {
             locationId: 'crownfields-grange', services: ['wagon-travel', 'stabling', 'draft-animal-care', 'produce-freight'],
         }),
         createNpc({
+            id: 'npc-great-mere-essel-wren', name: 'Essel Wren', title: 'Merewatch Fishery Factor', faction: 'Mistmere',
+            locationId: 'merewatch-landing', services: ['regional-goods', 'fishery-trade', 'catch-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-great-mere-jory-tamm', name: 'Jory Tamm', title: 'Lakesmen’s Hall Steward', faction: 'Mistmere',
+            locationId: 'merewatch-landing', services: ['fishing', 'lakecraft', 'food-safety', 'processing-guidance', 'fishery-notices'],
+        }),
+        createNpc({
+            id: 'npc-great-mere-nara-veil', name: 'Nara Veil', title: 'Great Mere Ferrymaster', faction: 'Mistmere',
+            locationId: 'merewatch-landing', services: ['ferry-booking', 'skiff-guidance', 'lake-weather', 'cargo'],
+        }),
+        createNpc({
             id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
             locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
         }),
