@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 2;
+export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 3;
 
 const DEFINITIONS = Object.freeze({
     'item-elderwood-amber-resin': resource({
@@ -91,6 +91,26 @@ const DEFINITIONS = Object.freeze({
     'item-starfen-moonlotus-blossom': resource({
         id: 'item-starfen-moonlotus-blossom', name: 'Moonlotus Blossom', tags: ['flora', 'flower', 'perfume', 'medicine', 'luxury'], valueGil: 45,
         sourceId: 'source-west-starfen-moonlotus-pool', placeId: 'west-starfen', action: 'gather',
+        sinks: ['craftIngredient', 'trade', 'decorative', 'collectible'],
+    }),
+    'item-coppergrass-groundpea': resource({
+        id: 'item-coppergrass-groundpea', name: 'Coppergrass Groundpea', tags: ['flora', 'pulse', 'food', 'protein', 'staple'], valueGil: 6,
+        sourceId: 'source-coppergrass-groundpea-patch', placeId: 'coppergrass-steppe', action: 'forage',
+        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-coppergrass-prairie-flax': resource({
+        id: 'item-coppergrass-prairie-flax', name: 'Prairie Flax', tags: ['flora', 'fiber', 'oilseed', 'textile', 'staple'], valueGil: 7,
+        sourceId: 'source-coppergrass-prairie-flax-stand', placeId: 'coppergrass-steppe', action: 'gather',
+        sinks: ['processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-coppergrass-crimson-madder': resource({
+        id: 'item-coppergrass-crimson-madder', name: 'Crimson Madder Root', tags: ['flora', 'root', 'dye', 'textile', 'luxury'], valueGil: 24,
+        sourceId: 'source-coppergrass-crimson-madder-bed', placeId: 'coppergrass-steppe', action: 'forage',
+        sinks: ['processInput', 'craftIngredient', 'trade', 'decorative'],
+    }),
+    'item-coppergrass-windglass-agate': resource({
+        id: 'item-coppergrass-windglass-agate', name: 'Windglass Agate', tags: ['mineral', 'agate', 'gem', 'ornament', 'luxury'], valueGil: 40,
+        sourceId: 'source-coppergrass-windglass-gravel', placeId: 'coppergrass-steppe', action: 'gather',
         sinks: ['craftIngredient', 'trade', 'decorative', 'collectible'],
     }),
 });
