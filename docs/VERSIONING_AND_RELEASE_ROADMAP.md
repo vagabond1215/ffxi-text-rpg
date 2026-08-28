@@ -540,7 +540,7 @@ npm run benchmark:sample
 
 Census is continuously executable but mechanics-scale target shortfalls remain progression information rather than pass/fail thresholds.
 
-Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Final promoted-head validation and PR #401 landing remain required.
+Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
 The current Data 49 Ironspine checkpoint supersedes the earlier Great Mere and prior census freezes: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 56 sources, 182 items, 94 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 20 packs, and 630 pack-owned records.
 
