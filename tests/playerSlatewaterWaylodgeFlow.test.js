@@ -70,8 +70,8 @@ test('Slatewater Waylodge turns nearby field work into trade, provisions, safe r
     assert.equal(state.player.resources.hp, createSettlementServiceBoard(state).recovery.maxHp);
 
     const stableyard = performLocalityPoiAction(state, 'poi-slatewater-waylodge-stableyard', 'travel');
-    assert.equal(stableyard.ok, true, stableyard.display?.text ?? stableyard.reason);
-    assert.match(stableyard.display?.text ?? '', /Stableyard|stabling|pack animals/i);
+    assert.equal(stableyard.ok, true, stableyard.message ?? stableyard.reason);
+    assert.match(stableyard.message ?? '', /Stableyard|stabling|pack animals/i);
 });
 
 test('Slatewater map, lodge, wilderness, and local connection validate as canonical world data', () => {
