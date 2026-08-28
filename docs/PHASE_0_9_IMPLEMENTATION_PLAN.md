@@ -21,7 +21,7 @@ The strategic risk remains authored-content breadth and throughput. Packets A–
 
 ## Current census
 
-Validated Great Mere Data 48 pre-promotion checkpoint:
+Validated Great Mere Data 48 post-merge checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, and Data 47 processing are merged. Great Mere Data 48 is active on PR #396.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, Data 47 processing, and Great Mere Data 48 are merged. No implementation unit is active.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -269,7 +269,7 @@ Permanent design record: `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md`.
 
 ## Great Mere Freshwater Economy & Food Safety — Data 48
 
-**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #396 FINAL INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #396 at `e327181fcd1e93579f335045a817de1fdae842a5`; exact-head Check #1348 and post-merge main Check #1349 both passed with 743/743 tests and the full hosted gate.**
 
 Great Mere adds a distinct freshwater ecology/economy shape:
 
@@ -313,7 +313,7 @@ luxury raw utilization      11/11 -> 12/12
 
 Recipes/processes now exceed the mechanics floor.
 
-Pre-promotion repaired Check #1334 / run `33209084881` passed Repository Audit, **743/743 tests**, Census, Benchmark 3, and Benchmark Sample.
+Exact PR-head Check #1348 / run `33212388143` and post-merge main Check #1349 / run `33212454122` passed Repository Audit, **743/743 tests**, Census, Benchmark 3, and Benchmark Sample.
 
 Permanent records:
 - `docs/ZONE_PROFILE_GREAT_MERE.md`;
