@@ -7,19 +7,19 @@ Operational sequencing lives in `docs/EXECUTION_PIPELINE.md`. Exact restart stat
 ## Current validated baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Compatibility: pre-release-current-schema
 Released:      false
 Runtime:       Node >=24
 ```
 
-Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Packets A–C are merged; Packet D is implemented, validated on frozen gameplay/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40`, promoted to Product 0.9.100.4 / Data 43, and pending final exact-head validation + PR landing.
+Phase 0.8 remains complete. Phase 0.9 is **open / in progress**. Gate A Packets A–D are merged. The separately authorized Location & Area Profiles supporting-data pass is implemented and validated on frozen SHA `ba156a416026835ccc483b8644d134a8d3d062d9`, promoted to Product 0.9.100.5 / Data 44, and pending final exact-head validation + landing.
 
 ## Product laws
 
@@ -160,6 +160,23 @@ Implemented:
 - stronger canonical commitment cross-reference validation.
 
 Frozen implementation/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40` passed hosted Check `33139128883` / job `98745791538` with **719/719 tests**, census, Benchmark 3, and Benchmark Sample.
+
+### Supporting pass — Location & Area Profiles
+
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING LANDING.**
+
+All 26 places now have biome/demographic profiles. Five settlement aggregates and three region aggregates derive population totals from place-level estimates, and ecology is projected from canonical populations/gathering sources/spawn records without inventing missing flora/fauna.
+
+Current modeled population:
+
+| Area | Residents | Typical present |
+| --- | ---: | ---: |
+| Elderwood | 33,175 | 41,168 |
+| Redstone Reach | 30,080 | 40,320 |
+| Starfen | 29,530 | 37,990 |
+| **Modeled world** | **92,785** | **119,478** |
+
+This is supporting world-data infrastructure, not a replacement for Packet E and not evidence that ecology/content-scale targets are complete.
 
 ### Packet E — Gate A integration/census audit
 
