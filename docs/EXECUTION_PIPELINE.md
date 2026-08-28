@@ -14,21 +14,21 @@ Benchmark:     3
 Codename:      Crownfields Agricultural Lowlands
 ```
 
-## Active bounded unit
+## Current product state
 
-**PR #392 — Crownfields Agricultural Lowlands**
+**Crownfields Agricultural Lowlands is merged through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`.**
+
+Final promoted PR Check #1307 / run `33200172961` passed. Post-merge main Check #1308 / run `33200236952` is pending at the time of this docs branch.
 
 Pre-promotion implementation Check #1294 / run `33199542741` passed **731/731 tests**, Repository Audit, Census, Benchmark 3 and Benchmark Sample.
 
 ## Immediate integration sequence
 
-1. finish Data 46 continuity/document synchronization;
-2. run exact-head hosted Check on PR #392;
-3. require the full gate green;
-4. verify PR mergeable;
-5. merge PR #392;
-6. verify post-merge `main` Check;
-7. if needed, perform a tiny docs-only handoff sync with the actual merge SHA.
+1. require post-merge main Check #1308 to pass;
+2. mark this continuity branch with that green result;
+3. open/validate/merge the docs-only handoff PR;
+4. verify final main Check;
+5. await the next explicit bounded work order.
 
 ## Current measured census
 
@@ -69,7 +69,7 @@ The overall gate remains NOT READY because major gaps remain in:
 
 Do not chase those counts with disconnected filler.
 
-## Next decision boundary after Crownfields
+## Next decision boundary
 
 Formal roadmap:
 - Packet E — Gate A integration/census audit.
