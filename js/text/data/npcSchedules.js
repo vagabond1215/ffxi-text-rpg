@@ -1,4 +1,4 @@
-export const NPC_SCHEDULE_DATA_VERSION = 2;
+export const NPC_SCHEDULE_DATA_VERSION = 3;
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
@@ -35,6 +35,28 @@ const DAILY_SCHEDULES = [
             window(7, 0, 15, 0, 'Coordinating West-road repairs'),
         ],
         unavailableText: 'Oren is away from the works desk inspecting road crews and timber deliveries.',
+    }),
+    schedule({
+        id: 'schedule-slatewater-eira-voss',
+        npcId: 'npc-slatewater-eira-voss',
+        poiId: 'poi-slatewater-waylodge-exchange',
+        placeId: 'slatewater-waylodge',
+        label: 'Waylodge exchange hours',
+        windows: [
+            window(6, 0, 21, 0, 'Buying field finds and keeping the exchange counter'),
+        ],
+        unavailableText: 'Eira has closed the exchange ledger and is counting stores in the back room.',
+    }),
+    schedule({
+        id: 'schedule-slatewater-toren-marr',
+        npcId: 'npc-slatewater-toren-marr',
+        poiId: 'poi-slatewater-waylodge-trailguild',
+        placeId: 'slatewater-waylodge',
+        label: 'Foothill guild desk',
+        windows: [
+            window(7, 0, 19, 0, 'Posting route conditions and field notices'),
+        ],
+        unavailableText: 'Toren is away from the lodge desk checking trails, camps, and reported wildlife.',
     }),
     schedule({
         id: 'schedule-brasshaven-mae-oris',
