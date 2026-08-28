@@ -414,6 +414,18 @@ export function listRegionProfiles() {
     return unique(listPlaces().map((place) => place.region)).map((region) => getRegionProfile(region));
 }
 
+export function getWorldPopulationSummary() {
+    const profiles = listLocationProfiles();
+    const residents = sum(profiles.map((entry) => entry.population.residents));
+    const typicalTransient = sum(profiles.map((entry) => entry.population.typicalTransient));
+    return Object.freeze({
+        residents,
+        typicalTransient,
+        typicalPresent: residents + typicalTransient,
+        basis: POPULATION_BASIS,
+    });
+}
+
 export function validateLocationProfileCatalog() {
     const issues = [];
     const places = listPlaces();
@@ -473,6 +485,8 @@ export function describeLocationProfileCatalog() {
     lines.push(`Places: ${listLocationProfiles().length}`);
     lines.push(`Settlements: ${listSettlementProfiles().length}`);
     lines.push(`Regions: ${listRegionProfiles().length}`);
+    const worldPopulation = getWorldPopulationSummary();
+    lines.push(`Modeled world population: ${formatNumber(worldPopulation.residents)} residents; ~${formatNumber(worldPopulation.typicalPresent)} typically present`);
     lines.push('');
     for (const region of listRegionProfiles()) {
         lines.push(`# ${region.name}`);
