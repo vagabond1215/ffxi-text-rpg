@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.8
+Product:       0.9.100.9
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          47
+Data:          48
 Benchmark:     3
-Codename:      Regional Ingredient & Luxury Processing
+Codename:      Great Mere Freshwater Economy & Food Safety
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair. A final exact-head Check remains required after version/document synchronization before PR #390 merge.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 47 adds **no persistence or lifecycle owner**. Ingredient/luxury processing reuses production work, work proficiency, workstation, inventory/container, item provenance, fictional time, and Pack-v2 authorities. No parallel crafting state or special luxury inventory authority is introduced. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Data 48 adds **no persistence or lifecycle owner**. Great Mere and item-consumption safety reuse route/transport, ecology/gathering, inventory/provenance, production/work, workstation, player-information, shop/recovery, and Pack-v2 authorities. The consumption profile is authored item metadata, not a new mutable hunger/poison state family. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -137,6 +137,21 @@ The pre-promotion Crownfields implementation head passed hosted Check #1294 / ru
 
 The pre-promotion implementation head passed Check #1311 / run `33202128019` with **736/736 tests**, Content Census, Benchmark 3, and Benchmark Sample. The final promoted head passed Check #1326 / run `33202537431`; PR #394 merged at `fb7a4ec0145c6072aac21525cb15e931125fc327`, and post-merge main Check #1327 / run `33202596523` also passed.
 
+### Great Mere freshwater and item-safety proof
+
+`tests/playerGreatMereFreshwaterFlow.test.js` proves:
+- Great Mere geography/map/routes validate and Reedcrown Isle remains boat-only;
+- seven plausible freshwater species remain passive/wary;
+- nine resources have exact source/place/action provenance;
+- every canonical food-tagged resource/production item explicitly declares consumption safety;
+- every preparation-required Great Mere raw food feeds a real production path;
+- Bitterflag is raw-toxic, lacks a direct consume sink, and detoxifies through leaching/boiling;
+- fish processing preserves intermediate provenance into a safe prepared ration;
+- the player information model exposes toxic/raw and direct-safe labels;
+- both Great Mere Pack-v2 graphs validate without dangling references.
+
+The repaired pre-promotion implementation head passed Check #1334 / run `33209084881` with **743/743 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
 ### Ecology/geography integrity proof
 
 `tests/ecologyGeographyIntegrity.test.js` verifies reciprocal map/place references, valid route-stop coordinates, no competing zone-edge/canonical-route authority, outbound escape paths, encounter-template resolution, population/source references, and end-to-end gathering/body provenance. Regional ecology now receives the same structural classes of validation as foundation ecology.
@@ -158,17 +173,17 @@ The pre-promotion implementation head passed Check #1311 / run `33202128019` wit
 ## Current content progression
 
 ```text
-places/localities       31 / mechanics 10
-named NPCs              23 / 50
-shop/service sites      21 / 20
-creatures               45 / 40
-resource sources        41 / 40
-canonical items        126 / 200
-recipes/processes       59 / 75
+places/localities       34 / mechanics 10
+named NPCs              26 / 50
+shop/service sites      23 / 20
+creatures               52 / 40
+resource sources        50 / 40
+canonical items        158 / 200
+recipes/processes       81 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       5 / 5
+transport services       6 / 5
 ```
 
 Infrastructure coverage:
@@ -177,9 +192,9 @@ Infrastructure coverage:
 routes                                   8
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           11
-regional/shared packs                   16
-pack-owned records                     470
+NPC schedules                           13
+regional/shared packs                   18
+pack-owned records                     564
 pack-owned abilities/capabilities/
   schedules/companions              41/44/11/1
 ```
@@ -204,4 +219,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Regional Ingredient & Luxury Processing completed through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`; final PR Check #1326 and post-merge main Check #1327 both passed the full hosted gate.
+Great Mere Freshwater Economy & Food Safety is implemented on PR #396 and pre-promotion validation is green. Completion requires the synchronized exact-head Check and PR #396 landing.
