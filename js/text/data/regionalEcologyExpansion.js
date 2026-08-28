@@ -1,7 +1,7 @@
 import { getPlace } from './places.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const REGIONAL_ECOLOGY_VERSION = 3;
+export const REGIONAL_ECOLOGY_VERSION = 4;
 
 const FAMILIES = Object.freeze({
     'family-barkboar': family('family-barkboar', 'Barkboar', ['beast', 'omnivore', 'forest']),
@@ -30,6 +30,10 @@ const FAMILIES = Object.freeze({
     'family-bustard': family('family-bustard', 'Bustard', ['bird', 'ground-bird', 'steppe']),
     'family-locust': family('family-locust', 'Locust', ['insect', 'herbivore', 'steppe']),
     'family-steppe-kite': family('family-steppe-kite', 'Steppe Kite', ['bird', 'predator', 'steppe']),
+    'family-bear': family('family-bear', 'Bear', ['beast', 'omnivore', 'foothill']),
+    'family-lynx': family('family-lynx', 'Lynx', ['beast', 'carnivore', 'foothill']),
+    'family-grouse': family('family-grouse', 'Grouse', ['bird', 'ground-bird', 'foothill']),
+    'family-mountain-eagle': family('family-mountain-eagle', 'Mountain Eagle', ['bird', 'predator', 'foothill']),
 });
 
 const SPECIES = Object.freeze({
@@ -139,6 +143,22 @@ const SPECIES = Object.freeze({
     'species-coppergrass-stormglass-kite': species({
         id: 'species-coppergrass-stormglass-kite', name: 'Stormglass Kite', familyId: 'family-steppe-kite', ecosystem: 'bird',
         habitatTags: ['open-grassland', 'wind-ridge'], behavior: behavior('wary', ['sight'], 'solitary', ['family-locust']), encounterTemplateId: null,
+    }),
+    'species-slatewater-greyback-bear': species({
+        id: 'species-slatewater-greyback-bear', name: 'Greyback Bear', familyId: 'family-bear', ecosystem: 'beast',
+        habitatTags: ['mixed-woodland', 'river-ravine'], behavior: behavior('territorial', ['sight', 'sound'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-slatewater-scree-lynx': species({
+        id: 'species-slatewater-scree-lynx', name: 'Scree Lynx', familyId: 'family-lynx', ecosystem: 'beast',
+        habitatTags: ['rocky-foothill', 'montane-scrub'], behavior: behavior('wary', ['sight', 'sound'], 'solitary', ['family-grouse']), encounterTemplateId: null,
+    }),
+    'species-slatewater-russet-grouse': species({
+        id: 'species-slatewater-russet-grouse', name: 'Russet Grouse', familyId: 'family-grouse', ecosystem: 'bird',
+        habitatTags: ['mixed-woodland', 'upland-meadow'], behavior: behavior('wary', ['sight', 'sound'], 'covey', []), encounterTemplateId: null,
+    }),
+    'species-slatewater-ridge-eagle': species({
+        id: 'species-slatewater-ridge-eagle', name: 'Slatewater Ridge Eagle', familyId: 'family-mountain-eagle', ecosystem: 'bird',
+        habitatTags: ['slate-ridge', 'river-ravine'], behavior: behavior('wary', ['sight'], 'pair', ['family-grouse']), encounterTemplateId: null,
     }),
 });
 
@@ -260,6 +280,25 @@ const POPULATIONS = Object.freeze({
         biomeTags: ['open-grassland', 'wind-ridge'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 5400),
         appearanceConditions: [{ type: 'timeWindow', startHour: 7, endHour: 18 }],
     }),
+    'population-slatewater-greyback-bears': population({
+        id: 'population-slatewater-greyback-bears', speciesId: 'species-slatewater-greyback-bear', placeId: 'slatewater-foothills',
+        biomeTags: ['mixed-woodland', 'river-ravine'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 9000),
+    }),
+    'population-slatewater-scree-lynxes': population({
+        id: 'population-slatewater-scree-lynxes', speciesId: 'species-slatewater-scree-lynx', placeId: 'slatewater-foothills',
+        biomeTags: ['rocky-foothill', 'montane-scrub'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 7200),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 16, endHour: 24 }],
+    }),
+    'population-slatewater-russet-grouse': population({
+        id: 'population-slatewater-russet-grouse', speciesId: 'species-slatewater-russet-grouse', placeId: 'slatewater-foothills',
+        biomeTags: ['mixed-woodland', 'upland-meadow'], capacity: 7, density: 'moderate', rarity: 'common', respawn: regeneration(2, 2700),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 5, endHour: 19 }],
+    }),
+    'population-slatewater-ridge-eagles': population({
+        id: 'population-slatewater-ridge-eagles', speciesId: 'species-slatewater-ridge-eagle', placeId: 'slatewater-foothills',
+        biomeTags: ['slate-ridge', 'river-ravine'], capacity: 2, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 10800),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 7, endHour: 18 }],
+    }),
 });
 
 const SOURCES = Object.freeze({
@@ -376,6 +415,36 @@ const SOURCES = Object.freeze({
         id: 'source-coppergrass-windglass-gravel', name: 'Windglass Gravel', type: 'mineral', placeId: 'coppergrass-steppe',
         biomeTags: ['stony-fan', 'seasonal-wash'], action: 'gather', outputItemId: 'item-coppergrass-windglass-agate', capacity: 3,
         regeneration: regeneration(1, 14400), requiredToolTags: ['digging'], proficiencyId: 'gathering', minProficiency: 2,
+    }),
+    'source-slatewater-serviceberry-brake': source({
+        id: 'source-slatewater-serviceberry-brake', name: 'Serviceberry Brake', type: 'flora', placeId: 'slatewater-foothills',
+        biomeTags: ['mixed-woodland', 'sunny-slope'], action: 'forage', outputItemId: 'item-slatewater-serviceberry', capacity: 8,
+        regeneration: regeneration(2, 3600), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-slatewater-pitch-pine-stand': source({
+        id: 'source-slatewater-pitch-pine-stand', name: 'Pitch Pine Stand', type: 'flora', placeId: 'slatewater-foothills',
+        biomeTags: ['rocky-foothill', 'pine-slope'], action: 'forage', outputItemId: 'item-slatewater-pitch-pine-resin', capacity: 6,
+        regeneration: regeneration(1, 5400), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-slatewater-white-clay-bank': source({
+        id: 'source-slatewater-white-clay-bank', name: 'White Clay Bank', type: 'mineral', placeId: 'slatewater-foothills',
+        biomeTags: ['river-cut', 'clay-bank'], action: 'gather', outputItemId: 'item-slatewater-white-clay', capacity: 8,
+        regeneration: regeneration(2, 5400), requiredToolTags: ['digging'], proficiencyId: 'gathering',
+    }),
+    'source-slatewater-mountain-thyme-slope': source({
+        id: 'source-slatewater-mountain-thyme-slope', name: 'Mountain Thyme Slope', type: 'flora', placeId: 'slatewater-foothills',
+        biomeTags: ['upland-meadow', 'sunny-slope'], action: 'forage', outputItemId: 'item-slatewater-mountain-thyme', capacity: 7,
+        regeneration: regeneration(2, 3600), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-slatewater-silver-lichen-face': source({
+        id: 'source-slatewater-silver-lichen-face', name: 'Silver Lichen Face', type: 'flora', placeId: 'slatewater-foothills',
+        biomeTags: ['shaded-cliff', 'mist-face'], action: 'forage', outputItemId: 'item-slatewater-silver-lichen', capacity: 3,
+        regeneration: regeneration(1, 14400), requiredToolTags: [], proficiencyId: 'foraging', minProficiency: 2,
+    }),
+    'source-slatewater-blue-slate-shelf': source({
+        id: 'source-slatewater-blue-slate-shelf', name: 'Blue Slate Shelf', type: 'mineral', placeId: 'slatewater-foothills',
+        biomeTags: ['slate-ridge', 'road-cut'], action: 'mine', outputItemId: 'item-slatewater-blue-slate', capacity: 3,
+        regeneration: regeneration(1, 18000), requiredToolTags: ['mining'], proficiencyId: 'mining', minProficiency: 2,
     }),
 });
 
