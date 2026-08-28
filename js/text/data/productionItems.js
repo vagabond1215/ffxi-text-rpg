@@ -1,4 +1,4 @@
-import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
+import { ITEM_KINDS, normalizeItem, validateItemConsumption } from './itemSchema.js';
 import { getIngredientLuxuryProductionItem, listIngredientLuxuryProductionItems } from './ingredientLuxuryProductionItems.js';
 
 export const PRODUCTION_ITEM_CATALOG_VERSION = 8;
@@ -34,6 +34,17 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
 
 export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getIngredientLuxuryProductionItem(key); }
 export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listIngredientLuxuryProductionItems()]; }
+
+export function validateProductionItemCatalog() {
+    const issues = [];
+    const ids = new Set();
+    for (const item of listProductionItems()) {
+        if (ids.has(item.id)) issues.push(`Duplicate production item ${item.id}.`);
+        ids.add(item.id);
+        for (const issue of validateItemConsumption(item)) issues.push(`${item.id} ${issue}`);
+    }
+    return issues;
+}
 
 function productionItem({ id, name, kind, tags, valueGil, sourceId, action, consumption = null, sinks, equipmentSlot = null, allowedSlots = [], modifiers = {} }) {
     return Object.freeze({
