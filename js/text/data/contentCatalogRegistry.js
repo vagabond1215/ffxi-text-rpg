@@ -16,12 +16,12 @@ import {
     validateCompanionCatalog,
 } from './companions.js';
 import {
-    getEcologyFamily,
-    getGatheringSource,
-    getPopulation,
-    getSpecies,
-    validateEcologyCatalog,
-} from './ecologyCatalog.js';
+    getCanonicalEcologyFamily,
+    getCanonicalGatheringSource,
+    getCanonicalPopulation,
+    getCanonicalSpecies,
+    validateEcologyRegistry,
+} from './ecologyRegistry.js';
 import { getEquipmentCatalogEntry } from './equipmentCatalog.js';
 import {
     getNpcScheduleById,
@@ -33,7 +33,7 @@ import {
     validateProductionCatalog,
 } from './productionCatalog.js';
 import { getProductionItem } from './productionItems.js';
-import { getCanonicalResourceItem } from './resourceItemRegistry.js';
+import { getCanonicalResourceItem, validateResourceItemRegistry } from './resourceItemRegistry.js';
 import {
     getRoute,
     getTransportService,
@@ -49,10 +49,10 @@ const CONTENT_CATALOG_RESOLVERS = Object.freeze({
     places: getPlace,
     routes: getRoute,
     transportServices: getTransportService,
-    ecologyFamilies: getEcologyFamily,
-    species: getSpecies,
-    populations: getPopulation,
-    gatheringSources: getGatheringSource,
+    ecologyFamilies: getCanonicalEcologyFamily,
+    species: getCanonicalSpecies,
+    populations: getCanonicalPopulation,
+    gatheringSources: getCanonicalGatheringSource,
     items: getCanonicalItem,
     recipes: getProductionDefinition,
     quests: getCommitmentDefinition,
@@ -66,7 +66,8 @@ const CONTENT_CATALOG_RESOLVERS = Object.freeze({
 
 const CONNECTED_CATALOG_VALIDATORS = Object.freeze([
     ['routeCatalog', validateRouteCatalog],
-    ['ecologyCatalog', validateEcologyCatalog],
+    ['ecologyRegistry', validateEcologyRegistry],
+    ['resourceItemRegistry', validateResourceItemRegistry],
     ['productionCatalog', validateProductionCatalog],
     ['commitmentCatalog', validateCommitmentCatalog],
     ['capabilityCatalog', validateCapabilityCatalog],
