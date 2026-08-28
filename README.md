@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity pass are merged. **Crownfields Agricultural Lowlands is merged** through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Its post-merge main Check #1308 / run `33200236952` is the final product-baseline verification.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, and the Data 45 ecology/geography integrity pass are merged. **Crownfields Agricultural Lowlands is merged** through PR #392 at `738faa5813e4aca30950b0d787f1209ae9a3d917`. Its post-merge main Check #1308 / run `33200236952` passed the full hosted gate with 731/731 tests.
 
 ```text
 Product:       0.9.100.7
