@@ -46,7 +46,7 @@ Benchmark:     3
 Codename:      Ecology & Geography Integrity
 ```
 
-Slatewater hosted Check #1253 / run `33182827321` / job `98888188450` on Node 24.19.0 passed Repository Audit, **724/724 tests**, Content Census, Benchmark 3, and Benchmark Sample before final documentation synchronization. A final exact-head Check remains required before PR #389 merge.
+The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair. A final exact-head Check remains required after version/document synchronization before PR #390 merge.
 
 ## Persistence/lifecycle
 
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 44 adds **no persistence or lifecycle owner**. Coppergrass and Slatewater reuse place/route/transport, shop, recovery, ecology/gathering, inventory/provenance, NPC schedule, and Pack-v2 authorities. Slatewater mount/pack-animal care is service content only; no durable mount state was introduced. `npm run hardening` is therefore not required solely because this authored-data tranche grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
+Data 45 adds **no persistence or lifecycle owner**. The audit changes canonical authored geography and validation contracts while reusing existing place/map, route/transport, ecology, provenance, and Pack-v2 authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -120,6 +120,10 @@ Fixtures are validation data only and must never contribute to canonical content
 - Pack v2 ownership/dependencies and the default census remain valid.
 
 The first Elderwood integration run found no product-behavior regression: its six failures were stale pack/count assertions caused by intentional content growth. Those assertions were updated without weakening validators or runtime behavior.
+
+### Ecology/geography integrity proof
+
+`tests/ecologyGeographyIntegrity.test.js` verifies reciprocal map/place references, valid route-stop coordinates, no competing zone-edge/canonical-route authority, outbound escape paths, encounter-template resolution, population/source references, and end-to-end gathering/body provenance. Regional ecology now receives the same structural classes of validation as foundation ecology.
 
 ### Universal magic + Starfen connected-content proof
 
