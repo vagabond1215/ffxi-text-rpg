@@ -10,6 +10,17 @@ import {
     validateEcologyCatalog,
 } from './ecologyCatalog.js';
 import {
+    getGreatMereEcologyFamily,
+    getGreatMereGatheringSource,
+    getGreatMerePopulation,
+    getGreatMereSpecies,
+    listGreatMereEcologyFamilies,
+    listGreatMereGatheringSources,
+    listGreatMerePopulations,
+    listGreatMereSpecies,
+    validateGreatMereEcology,
+} from './greatMereEcology.js';
+import {
     getRegionalEcologyFamily,
     getRegionalGatheringSource,
     getRegionalPopulation,
@@ -21,28 +32,29 @@ import {
     validateRegionalEcologyExpansion,
 } from './regionalEcologyExpansion.js';
 
-export const ECOLOGY_REGISTRY_VERSION = 1;
+export const ECOLOGY_REGISTRY_VERSION = 2;
 
-export function getCanonicalEcologyFamily(id) { return getEcologyFamily(id) ?? getRegionalEcologyFamily(id); }
-export function getCanonicalSpecies(id) { return getSpecies(id) ?? getRegionalSpecies(id); }
-export function getCanonicalPopulation(id) { return getPopulation(id) ?? getRegionalPopulation(id); }
-export function getCanonicalGatheringSource(id) { return getGatheringSource(id) ?? getRegionalGatheringSource(id); }
+export function getCanonicalEcologyFamily(id) { return getEcologyFamily(id) ?? getRegionalEcologyFamily(id) ?? getGreatMereEcologyFamily(id); }
+export function getCanonicalSpecies(id) { return getSpecies(id) ?? getRegionalSpecies(id) ?? getGreatMereSpecies(id); }
+export function getCanonicalPopulation(id) { return getPopulation(id) ?? getRegionalPopulation(id) ?? getGreatMerePopulation(id); }
+export function getCanonicalGatheringSource(id) { return getGatheringSource(id) ?? getRegionalGatheringSource(id) ?? getGreatMereGatheringSource(id); }
 
-export function listCanonicalEcologyFamilies() { return unique([...listEcologyFamilies(), ...listRegionalEcologyFamilies()]); }
-export function listCanonicalSpecies() { return unique([...listSpecies(), ...listRegionalSpecies()]); }
-export function listCanonicalPopulations() { return unique([...listPopulations(), ...listRegionalPopulations()]); }
-export function listCanonicalGatheringSources() { return unique([...listGatheringSources(), ...listRegionalGatheringSources()]); }
+export function listCanonicalEcologyFamilies() { return unique([...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies()]); }
+export function listCanonicalSpecies() { return unique([...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies()]); }
+export function listCanonicalPopulations() { return unique([...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations()]); }
+export function listCanonicalGatheringSources() { return unique([...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources()]); }
 
 export function validateEcologyRegistry() {
     const issues = [
         ...validateEcologyCatalog().map((issue) => `[foundation] ${issue}`),
         ...validateRegionalEcologyExpansion().map((issue) => `[regional] ${issue}`),
+        ...validateGreatMereEcology().map((issue) => `[greatMere] ${issue}`),
     ];
     const collections = [
-        ['family', [...listEcologyFamilies(), ...listRegionalEcologyFamilies()]],
-        ['species', [...listSpecies(), ...listRegionalSpecies()]],
-        ['population', [...listPopulations(), ...listRegionalPopulations()]],
-        ['source', [...listGatheringSources(), ...listRegionalGatheringSources()]],
+        ['family', [...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies()]],
+        ['species', [...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies()]],
+        ['population', [...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations()]],
+        ['source', [...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources()]],
     ];
     for (const [label, records] of collections) {
         const ids = new Set();
