@@ -172,7 +172,7 @@ Benchmark:    3 unchanged
 
 ## User-authorized post-Packet-D breadth/geography tranches
 
-**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, and Crownfields are merged. The Data 47 ingredient/luxury processing tranche is active on PR #394.**
+**Status: ecology breadth, Coppergrass, Slatewater, the Data 45 ecology/geography integrity audit, Crownfields, and the Data 47 ingredient/luxury processing tranche are merged.**
 
 These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
 
@@ -241,7 +241,7 @@ Pre-promotion Check #1294 / run `33199542741` passed Repository Audit, **731/731
 
 ## Regional Ingredient & Luxury Processing — Data 47
 
-**Status: IMPLEMENTED / PRE-PROMOTION CHECK GREEN / PR #394 FINAL INTEGRATION IN PROGRESS.**
+**Status: COMPLETE / MERGED through PR #394 at `fb7a4ec0145c6072aac21525cb15e931125fc327`; final PR Check #1326 and post-merge main Check #1327 passed.**
 
 This tranche converts breadth into connected depth:
 
