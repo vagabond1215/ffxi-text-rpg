@@ -59,6 +59,28 @@ const DAILY_SCHEDULES = [
         unavailableText: 'Hessa is away from the hall walking field boundaries and speaking with tenant farmers.',
     }),
     schedule({
+        id: 'schedule-great-mere-essel-wren',
+        npcId: 'npc-great-mere-essel-wren',
+        poiId: 'poi-great-mere-fishery-exchange',
+        placeId: 'merewatch-landing',
+        label: 'Merewatch fish market hours',
+        windows: [
+            window(5, 0, 15, 0, 'Weighing catches and keeping the fishery exchange'),
+        ],
+        unavailableText: 'Essel has closed the public scales and is tallying boats, ice, salt, and smokehouse lots.',
+    }),
+    schedule({
+        id: 'schedule-great-mere-jory-tamm',
+        npcId: 'npc-great-mere-jory-tamm',
+        poiId: 'poi-great-mere-lakesmens-hall',
+        placeId: 'merewatch-landing',
+        label: 'Lakesmen’s Hall desk',
+        windows: [
+            window(7, 0, 19, 0, 'Posting lake conditions, catch notices, and processing guidance'),
+        ],
+        unavailableText: 'Jory is away checking traps, shore paths, and the morning catch.',
+    }),
+    schedule({
         id: 'schedule-slatewater-eira-voss',
         npcId: 'npc-slatewater-eira-voss',
         poiId: 'poi-slatewater-waylodge-exchange',
