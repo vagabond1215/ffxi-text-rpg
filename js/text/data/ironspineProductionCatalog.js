@@ -1,7 +1,3 @@
-import { getCanonicalResourceItem } from './resourceItemRegistry.js';
-import { getIronspineProductionItem } from './ironspineProductionItems.js';
-import { getProductionItem } from './productionItems.js';
-
 export const IRONSPINE_PRODUCTION_CATALOG_VERSION = 1;
 
 const DEFINITIONS = Object.freeze({
@@ -21,15 +17,6 @@ const DEFINITIONS = Object.freeze({
 
 export function getIronspineProcessDefinition(id) { return DEFINITIONS[String(id ?? '').trim()] ?? null; }
 export function listIronspineProcessDefinitions() { return Object.values(DEFINITIONS); }
-export function validateIronspineProductionCatalog() {
-    const issues = [];
-    for (const definition of listIronspineProcessDefinitions()) {
-        if (!definition.id || !definition.name) issues.push('Ironspine process requires id and name.');
-        for (const input of definition.inputs) if (!getCanonicalResourceItem(input.itemId) && !getProductionItem(input.itemId) && !getIronspineProductionItem(input.itemId)) issues.push(`${definition.id} input references unknown item ${input.itemId}.`);
-        for (const output of definition.outputs) if (!getIronspineProductionItem(output.itemId)) issues.push(`${definition.id} output references unknown Ironspine item ${output.itemId}.`);
-    }
-    return issues;
-}
 function process(definition) {
     return deepFreeze({
         id: definition.id, name: definition.name, kind: definition.kind, durationSeconds: definition.durationSeconds,
