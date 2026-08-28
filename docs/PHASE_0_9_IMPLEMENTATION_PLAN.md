@@ -7,49 +7,52 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      World Edge Expansion & Slatewater Waylodge
 ```
 
-The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D proves two things at once: a third regional production/community graph can land through Pack v2, and magic can scale as a **shared universal character catalog** without turning regional ownership into a spell-learning constraint.
+The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
 
 ## Current census
 
+Validated Slatewater branch checkpoint:
+
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
-| Places/localities | 26 | 10 | ready |
-| Named NPCs | 17 | 50 | 33 |
-| Shop/service sites | 17 | 20 | 3 |
-| Creature definitions | 16 | 40 | 24 |
-| Resource sources | 13 | 40 | 27 |
-| Canonical items | 68 | 200 | 132 |
+| Places/localities | 29 | 10 | ready |
+| Named NPCs | 20 | 50 | 30 |
+| Shop/service sites | 19 | 20 | 1 |
+| Creature definitions | 40 | 40 | ready |
+| Resource sources | 35 | 40 | 5 |
+| Canonical items | 90 | 200 | 110 |
 | Recipes/processes | 29 | 75 | 46 |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
-| Transport services | 3 | 5 | 2 |
+| Transport services | 4 | 5 | 1 |
 
 Infrastructure coverage:
 
 ```text
+routes                                   7
 spell schools                            4
 capability/training definitions         44
-NPC schedules                            7
-regional/shared packs                   10
-pack-owned records                     248
+NPC schedules                            9
+regional/shared packs                   13
+pack-owned records                     374
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/7/1
-runtime seed NPCs                       16
+  schedules/companions              41/44/9/1
+runtime seed NPCs                       19
 runtime seed enemies                    13
 ```
 
-The mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap. Ability breadth has materially improved, but the remaining 59 abilities should still come from coherent training/combat/support needs rather than list-filling.
+Mechanics-scale gate remains **NOT READY**. Creature definitions now meet the mechanics floor; companions remain the largest relative gap.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -107,7 +110,7 @@ Packet C proved a hunt/timber/civic graph through the same Pack-v2 infrastructur
 
 ## Packet D — Universal Magic & Starfen Marshcraft
 
-**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING FINAL CHECK AND LANDING.**
+**Status: COMPLETE / MERGED.**
 
 Frozen gameplay/content SHA:
 
@@ -166,6 +169,41 @@ Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
+
+## User-authorized post-Packet-D breadth/geography tranches
+
+**Status: ecology breadth + Coppergrass merged; Slatewater implementation/validation complete on PR #389 pending final exact-head integration.**
+
+These work orders are not replacements for Packet E. They are additional Gate-A scale evidence explicitly authorized by the user.
+
+### Ecology family/resource breadth
+
+Expanded missing fauna families and functional niches, distributed ecology into underused places, and added both staple and luxury resource classes with exact provenance.
+
+### Coppergrass Steppe
+
+Inserted a neutral temperate steppe transition into the Forge-Mere corridor while preserving the established through-road distance/time. Added steppe ecology and staple/luxury resources.
+
+### Slatewater Foothills & Waylodge
+
+Inserted a temperate foothill/montane transition into the Crown-Forge corridor while preserving established through-road distance/time. Added:
+
+- Slatewater Foothills wilderness;
+- Slatewater Waylodge danger-0 travel/guild locality;
+- functional field exchange;
+- gatherer/hunter/trader guild services;
+- safe hearth/bunks through existing recovery authority;
+- stableyard/pack-animal care through existing travel/service content;
+- scheduled foothill caravan;
+- four fauna families/species/populations;
+- six gathering resources;
+- two Pack-v2 ownership packs.
+
+See:
+- `docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md`;
+- `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
+
+The temporary world-edge sequence is planning only and does not auto-authorize the next zone.
 
 ## Packet E — Gate A integration and census audit
 
