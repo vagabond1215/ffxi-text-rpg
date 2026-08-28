@@ -50,6 +50,7 @@ export function validateProductionItemCatalog() {
 function productionItem({ id, name, kind, tags, valueGil, sourceId, action, consumption = null, sinks, equipmentSlot = null, allowedSlots = [], modifiers = {} }) {
     return Object.freeze({
         id, name, kind, quantity: 1, maxStack: kind === ITEM_KINDS.EQUIPMENT ? 1 : 99, valueGil, tags: Object.freeze([...tags]),
+        consumption,
         provenance: Object.freeze([Object.freeze({ type: action === 'salvage' ? 'salvage' : 'crafting', sourceId, placeId: null, action, data: Object.freeze({ catalogVersion: PRODUCTION_ITEM_CATALOG_VERSION }) })]),
         sinks: Object.freeze(sinks.map((type) => Object.freeze({ type, data: Object.freeze({}) }))),
         equipmentSlot, allowedSlots: Object.freeze([...allowedSlots]),
