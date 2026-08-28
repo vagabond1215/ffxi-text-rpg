@@ -13,13 +13,13 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D are merged. Subsequent ecology breadth and Coppergrass geography expansions are also on `main`; **Slatewater Foothills & Waylodge** is the active bounded world-edge tranche on PR #389, promoted to the Data 44 contract while hosted validation is in progress.
 
 ```text
-Product:       0.9.100.5
+Product:       0.9.100.6
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          44
+Data:          45
 Benchmark:     3
-Codename:      World Edge Expansion & Slatewater Waylodge
+Codename:      Ecology & Geography Integrity
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
