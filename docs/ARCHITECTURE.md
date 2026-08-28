@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.7
+Product:       0.9.100.8
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          46
+Data:          47
 Benchmark:     3
-Codename:      Crownfields Agricultural Lowlands
+Codename:      Regional Ingredient & Luxury Processing
 Phase:         0.9 / Content Scale Gate A
 ```
 
-Data 46 extends that validated world graph with Crownfields and its Grange. The tranche reuses existing geography, travel, ecology, gathering/provenance, commerce, schedule, and recovery authorities; Game State remains 14 because no new durable runtime state is introduced.
+Data 47 deepens the production graph without adding a new runtime authority. Existing raw resources and canonical production work now compose through intermediate ingredients/components into later recipes; Game State remains 14 because no new durable state family is introduced.
 
 ## Core authority rules
 
@@ -46,6 +46,36 @@ Data 46 extends that validated world graph with Crownfields and its Grange. The 
 - Canonical domain catalogs remain definition authorities; the content catalog registry resolves pack references into those catalogs.
 - Maps, Journal guidance, service boards, information models, home opportunities, social schedules and cultivation opportunities are projections over canonical state.
 - Ordinary presentation exposes what the character sees, knows, carries, remembers, needs or can decide; implementation rationale stays outside normal play.
+
+## Data 47 intermediate-first production composition
+
+The production architecture remains one canonical authority:
+
+```text
+canonical raw resource
+      |
+      v
+productionCatalog definition
+      |
+      v
+productionEngine / workTask / world time
+      |
+      v
+inventory item with transformation provenance
+      |
+      +--> trade / storage
+      |
+      +--> later production recipe input
+      |
+      v
+finished food / textile / luxury / decorative good
+```
+
+Data 47 adds modular regional subcatalogs behind the existing `getProductionDefinition` / `getProductionItem` interfaces. Runtime callers do not need a second production engine or regional dispatch path.
+
+The key architectural rule is that **intermediate goods are ordinary canonical items**. Flour, pea meal, thread, linen cloth, pigments, perfume extracts, cut gemstones, veneer, ceramic slip/glaze, apple must/vinegar and similar outputs preserve provenance and can feed later recipes.
+
+`pack-regional-ingredient-luxury-processing` owns placement/dependency metadata for these 30 items and 30 recipes. It does not own inventory state, work state, proficiency state, or a separate luxury economy.
 
 ## Crownfields managed-agriculture composition
 
