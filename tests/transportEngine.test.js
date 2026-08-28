@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { EQUIPMENT_CATALOG } from '../js/text/data/equipmentCatalog.js';
 import { createTestState } from './helpers/createTestState.js';
 import {
+    findRouteLeg,
     getNextServiceDeparture,
     getServiceJourney,
     listRoutes,
@@ -34,6 +35,26 @@ test('canonical route and transport catalogs cross-validate known places, maps, 
     assert.equal(journey.segmentCount, 2);
     assert.equal(journey.durationSeconds, 21600);
     assert.ok(journey.hazardTags.includes('roadside-raiders'));
+});
+
+test('Forge-Mere road now crosses Coppergrass without changing the full corridor distance or duration', () => {
+    const westLeg = findRouteLeg('brasshaven-iron-quay', 'coppergrass-steppe', { mode: 'walk' });
+    const eastLeg = findRouteLeg('coppergrass-steppe', 'mistmere-reedport', { mode: 'walk' });
+    const fullJourney = getServiceJourney('service-forge-mere-caravan', 'brasshaven-iron-quay', 'mistmere-reedport');
+
+    assert.ok(westLeg);
+    assert.ok(eastLeg);
+    assert.equal(westLeg.durationSeconds, 9000);
+    assert.equal(eastLeg.durationSeconds, 9000);
+    assert.equal(westLeg.distanceYalms, 22500);
+    assert.equal(eastLeg.distanceYalms, 22500);
+    assert.ok(westLeg.hazardTags.includes('grassfire'));
+    assert.ok(eastLeg.hazardTags.includes('seasonal-flood'));
+
+    assert.equal(fullJourney.durationSeconds, 18000);
+    assert.equal(fullJourney.distanceYalms, 45000);
+    assert.ok(fullJourney.hazardTags.includes('crosswind'));
+    assert.ok(fullJourney.hazardTags.includes('fen-weather'));
 });
 
 test('service departures are deterministic from canonical world seconds', () => {
