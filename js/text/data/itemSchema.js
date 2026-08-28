@@ -137,7 +137,7 @@ export function describeItemConsumption(item) {
     if (profile.mode === 'direct') return 'Safe to consume as-is';
     if (profile.mode === 'nonFood') return 'Not food';
     const hazard = {
-        pathogenRisk: 'raw food-safety risk',
+        pathogenRisk: 'can cause sickness if eaten raw',
         rawToxic: 'toxic if eaten raw',
         rawIrritant: 'irritating if eaten raw',
         none: 'preparation required',
