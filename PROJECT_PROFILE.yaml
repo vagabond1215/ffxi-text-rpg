@@ -16,29 +16,29 @@ authority:
   architecture: docs/ARCHITECTURE.md
   runtime_version: js/text/version.js
   quality_gates: docs/QUALITY_GATES.md
+  item_consumption_safety: docs/ITEM_CONSUMPTION_SAFETY.md
+  great_mere_profile: docs/ZONE_PROFILE_GREAT_MERE.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
-  crownfields_profile: docs/ZONE_PROFILE_CROWNFIELDS.md
 git:
-  current_normal_work: awaiting-next-bounded-unit
-  latest_product_merge_sha: fb7a4ec0145c6072aac21525cb15e931125fc327
-  latest_product_pull_request: 394
-  latest_product_pr_check: 33202537431
-  latest_product_pr_check_number: 1326
-  latest_product_pr_check_result: success-736-of-736-tests-census-benchmark-and-sample
-  latest_product_post_merge_check: 33202596523
-  latest_product_post_merge_check_number: 1327
-  latest_product_post_merge_check_result: success-736-of-736-tests-census-benchmark-and-sample
+  current_normal_work: phase-0.9-pr-integration
+  active_branch: feature/great-mere-freshwater-economy
+  active_pull_request: 396
+  base_main_sha: 77e5ac0bce738be5b8ba65a8c3786ac0a98ae7dd
+  pre_promotion_check: 33209084881
+  pre_promotion_check_number: 1334
+  pre_promotion_check_result: success-743-of-743-tests-census-benchmark-and-sample
+  final_exact_head_check_required: true
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: regional-ingredient-luxury-processing
-  latest_bounded_unit_status: complete-merged-and-post-merge-green
+  current_bounded_unit: great-mere-freshwater-economy
+  current_bounded_unit_status: implementation-validated-version-and-continuity-sync-in-progress
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: great-mere
+  next_world_edge_candidate: ironspine-highlands
   next_world_edge_candidate_status: planning-only-not-auto-authorized
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: planning-only-not-auto-authorized
@@ -51,58 +51,67 @@ validation:
   aggregate: npm run check
   hosted_check: Check
   node_baseline: 24
+  great_mere_flow_guard: tests/playerGreatMereFreshwaterFlow.test.js
   ingredient_luxury_guard: tests/ingredientLuxuryProcessing.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
 quality:
-  current_product_version: 0.9.100.8
+  current_product_version: 0.9.100.9
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 47
+  current_data_version: 48
   current_benchmark_version: 3
-  current_codename: Regional Ingredient & Luxury Processing
+  current_codename: Great Mere Freshwater Economy & Food Safety
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
-  data_47:
-    new_production_transformations: 30
-    new_production_outputs: 30
-    raw_resource_production_utilization: 33-of-44
-    luxury_raw_production_utilization: 11-of-11
-    intermediate_outputs_first_class: true
+  data_48:
+    great_mere_places_added: 3
+    great_mere_species_added: 7
+    great_mere_sources_added: 9
+    great_mere_raw_resources_added: 9
+    great_mere_transformations_added: 22
+    great_mere_production_outputs_added: 23
+    raw_resource_production_utilization: 45-of-53
+    luxury_raw_production_utilization: 12-of-12
+    explicit_food_consumption_metadata: true
+    raw_toxic_food_classification: true
     persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 31
-    named_npcs: 23
-    shop_service_sites: 21
-    creature_definitions: 45
-    resource_sources: 41
-    canonical_items: 126
-    recipes_processes: 59
+    places_localities: 34
+    named_npcs: 26
+    shop_service_sites: 23
+    creature_definitions: 52
+    resource_sources: 50
+    canonical_items: 158
+    recipes_processes: 81
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
-    transport_services: 5
-    routes: 8
+    transport_services: 6
+    routes: 10
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 11
-    regional_shared_packs: 16
-    pack_owned_records: 470
-    runtime_seed_npcs: 22
+    npc_schedules: 13
+    regional_shared_packs: 18
+    pack_owned_records: 564
+    runtime_seed_npcs: 25
     runtime_seed_enemies: 13
   mechanics_floors_reached:
     - places
     - shop_service_sites
     - creature_definitions
     - resource_sources
+    - recipes_processes
     - transport_services
   largest_relative_gap: companions
 constraints:
+  - new zones require plausible flora fauna resources drops or catches and connected processing
+  - food-capable items require explicit direct-vs-processing-required consumption metadata
+  - raw toxic or irritant foods require explicit hazards and plausible preparation instructions
   - do not add disconnected filler merely to satisfy content targets
-  - prefer connected intermediate-to-finished production chains over one-step census padding
   - keep Game State 14 unless a new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
