@@ -89,6 +89,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-starfen', 'east-starfen'],
         notes: 'Regional map for the marsh-grassland paths, reed routes, and gathering grounds surrounding Mistmere.',
     }),
+    mapGreatMere: map({
+        id: 'map-great-mere',
+        name: 'Chart of the Great Mere',
+        nation: 'Mistmere',
+        region: 'Great Mere',
+        placeIds: ['great-mere-westshore', 'merewatch-landing', 'reedcrown-isle'],
+        notes: 'Freshwater chart covering the western shore, Merewatch fishery landing, marked boat channels, shoals, and Reedcrown nesting island. Open water is route-travel terrain, not a walkable map edge.',
+    }),
     mapSunkenArchive: map({
         id: 'map-sunken-archive',
         name: 'Plan of the Sunken Archive',
