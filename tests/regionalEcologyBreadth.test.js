@@ -4,13 +4,14 @@ import assert from 'node:assert/strict';
 import { listRegionalContentPacks } from '../js/text/data/regionalContentPacks.js';
 import {
     getCanonicalGatheringSource,
+    listCanonicalEcologyFamilies,
     listCanonicalPopulations,
     listCanonicalSpecies,
     validateEcologyRegistry,
 } from '../js/text/data/ecologyRegistry.js';
 import { getEquipmentCatalogEntry } from '../js/text/data/equipmentCatalog.js';
 import { getProductionDefinition, validateProductionCatalog } from '../js/text/data/productionCatalog.js';
-import { getCanonicalResourceItem, validateResourceItemRegistry } from '../js/text/data/resourceItemRegistry.js';
+import { getCanonicalResourceItem, listCanonicalResourceItems, validateResourceItemRegistry } from '../js/text/data/resourceItemRegistry.js';
 import { createSeedEnemies } from '../js/text/data/seedEntities.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { validateContentPacks } from '../js/text/systems/contentPackValidator.js';
@@ -40,6 +41,43 @@ test('regional ecology breadth validates as one canonical registry and pack grap
     assert.ok(packIds.has('pack-elderwood-ecology-breadth'));
     assert.ok(packIds.has('pack-redstone-ecology-breadth'));
     assert.ok(packIds.has('pack-starfen-ecology-breadth'));
+});
+
+test('ecology breadth covers missing animal families, underused environments, and staple/luxury resources', () => {
+    const familyIds = new Set(listCanonicalEcologyFamilies().map((entry) => entry.id));
+    const expectedFamilies = [
+        'family-fox', 'family-otter', 'family-owl', 'family-bee', 'family-turtle',
+        'family-marmot', 'family-lizard', 'family-scorpion', 'family-salamander', 'family-vulture',
+        'family-frog', 'family-crab', 'family-waterfowl', 'family-mussel', 'family-spider',
+    ];
+    for (const familyId of expectedFamilies) assert.ok(familyIds.has(familyId), `missing ecology family ${familyId}`);
+
+    assert.ok(listCanonicalEcologyFamilies().length >= 30);
+    assert.ok(listCanonicalSpecies().length >= 31);
+    assert.ok(listCanonicalPopulations().length >= 29);
+
+    const populatedPlaces = new Set(listCanonicalPopulations().map((entry) => entry.placeId));
+    for (const placeId of [
+        'east-elderwood', 'timbercross-landing', 'north-redstone-reach',
+        'deepvein-mine', 'east-starfen', 'sunken-archive',
+    ]) {
+        assert.ok(populatedPlaces.has(placeId), `expected ecology breadth in ${placeId}`);
+    }
+
+    const resources = listCanonicalResourceItems();
+    const staples = resources.filter((item) => item.tags.includes('staple'));
+    const luxuries = resources.filter((item) => item.tags.includes('luxury'));
+    assert.ok(staples.length >= 6);
+    assert.ok(luxuries.length >= 6);
+
+    for (const item of [...staples, ...luxuries]) {
+        const provenance = item.provenance[0];
+        const source = getCanonicalGatheringSource(provenance.sourceId);
+        assert.ok(source, `${item.id} should resolve to a canonical gathering source`);
+        assert.equal(source.outputItemId, item.id);
+        assert.equal(source.placeId, provenance.placeId);
+        assert.equal(source.action, provenance.action);
+    }
 });
 
 test('each anchor region has new environmental resources connected to production', () => {

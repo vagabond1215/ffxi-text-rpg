@@ -1,7 +1,7 @@
 import { getPlace } from './places.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const REGIONAL_ECOLOGY_VERSION = 1;
+export const REGIONAL_ECOLOGY_VERSION = 2;
 
 const FAMILIES = Object.freeze({
     'family-barkboar': family('family-barkboar', 'Barkboar', ['beast', 'omnivore', 'forest']),
@@ -10,6 +10,21 @@ const FAMILIES = Object.freeze({
     'family-glass-shell': family('family-glass-shell', 'Glass-Shell Crawler', ['arthropod', 'scavenger', 'rocky']),
     'family-mire-heron': family('family-mire-heron', 'Mire Heron', ['bird', 'predator', 'wetland']),
     'family-reed-eel': family('family-reed-eel', 'Reed Eel', ['fish', 'wetland', 'aquatic']),
+    'family-fox': family('family-fox', 'Fox', ['beast', 'carnivore', 'forest']),
+    'family-otter': family('family-otter', 'River Otter', ['beast', 'carnivore', 'riverine']),
+    'family-owl': family('family-owl', 'Owl', ['bird', 'predator', 'nocturnal']),
+    'family-bee': family('family-bee', 'Bee', ['insect', 'pollinator', 'social']),
+    'family-turtle': family('family-turtle', 'River Turtle', ['reptile', 'omnivore', 'riverine']),
+    'family-marmot': family('family-marmot', 'Marmot', ['beast', 'herbivore', 'upland']),
+    'family-lizard': family('family-lizard', 'Lizard', ['reptile', 'insectivore', 'arid']),
+    'family-scorpion': family('family-scorpion', 'Scorpion', ['arachnid', 'predator', 'arid']),
+    'family-salamander': family('family-salamander', 'Cave Salamander', ['amphibian', 'insectivore', 'subterranean']),
+    'family-vulture': family('family-vulture', 'Vulture', ['bird', 'scavenger', 'upland']),
+    'family-frog': family('family-frog', 'Frog', ['amphibian', 'insectivore', 'wetland']),
+    'family-crab': family('family-crab', 'Reed Crab', ['crustacean', 'omnivore', 'wetland']),
+    'family-waterfowl': family('family-waterfowl', 'Waterfowl', ['bird', 'omnivore', 'wetland']),
+    'family-mussel': family('family-mussel', 'Freshwater Mussel', ['mollusk', 'filter-feeder', 'aquatic']),
+    'family-spider': family('family-spider', 'Spider', ['arachnid', 'predator', 'ruin']),
 });
 
 const SPECIES = Object.freeze({
@@ -40,6 +55,66 @@ const SPECIES = Object.freeze({
         id: 'species-starfen-reed-eel', name: 'Reed Eel', familyId: 'family-reed-eel', ecosystem: 'fish',
         habitatTags: ['wetland', 'reed-channel'], behavior: behavior('passive', ['vibration'], 'shoal', []), encounterTemplateId: null,
     }),
+    'species-elderwood-embercoat-fox': species({
+        id: 'species-elderwood-embercoat-fox', name: 'Embercoat Fox', familyId: 'family-fox', ecosystem: 'beast',
+        habitatTags: ['temperate-woodland', 'forest-edge'], behavior: behavior('wary', ['sight', 'sound'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-timbercross-river-otter': species({
+        id: 'species-timbercross-river-otter', name: 'Timbercross River Otter', familyId: 'family-otter', ecosystem: 'beast',
+        habitatTags: ['riverbank', 'timber-landing'], behavior: behavior('wary', ['sight', 'sound'], 'pair', []), encounterTemplateId: null,
+    }),
+    'species-elderwood-moss-owl': species({
+        id: 'species-elderwood-moss-owl', name: 'Moss Owl', familyId: 'family-owl', ecosystem: 'bird',
+        habitatTags: ['old-growth', 'forest-canopy'], behavior: behavior('territorial', ['sight', 'sound'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-elderwood-amber-bee': species({
+        id: 'species-elderwood-amber-bee', name: 'Amber Bee', familyId: 'family-bee', ecosystem: 'insect',
+        habitatTags: ['flowering-glade', 'forest-edge'], behavior: behavior('passive', ['sight'], 'swarm', []), encounterTemplateId: null,
+    }),
+    'species-timbercross-moss-shell-turtle': species({
+        id: 'species-timbercross-moss-shell-turtle', name: 'Moss-Shell River Turtle', familyId: 'family-turtle', ecosystem: 'reptile',
+        habitatTags: ['riverbank', 'shallow-water'], behavior: behavior('passive', ['sight'], 'basking-group', []), encounterTemplateId: null,
+    }),
+    'species-redstone-crag-marmot': species({
+        id: 'species-redstone-crag-marmot', name: 'Crag Marmot', familyId: 'family-marmot', ecosystem: 'beast',
+        habitatTags: ['wind-scoured-ridge', 'rocky-upland'], behavior: behavior('wary', ['sight', 'sound'], 'colony', []), encounterTemplateId: null,
+    }),
+    'species-redstone-sunscale-lizard': species({
+        id: 'species-redstone-sunscale-lizard', name: 'Sunscale Lizard', familyId: 'family-lizard', ecosystem: 'reptile',
+        habitatTags: ['dry-upland', 'sun-baked-scree'], behavior: behavior('passive', ['sight'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-redstone-ironclaw-scorpion': species({
+        id: 'species-redstone-ironclaw-scorpion', name: 'Ironclaw Scorpion', familyId: 'family-scorpion', ecosystem: 'arachnid',
+        habitatTags: ['quarry-rubble', 'dry-wash'], behavior: behavior('territorial', ['vibration'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-deepvein-glass-salamander': species({
+        id: 'species-deepvein-glass-salamander', name: 'Glass Salamander', familyId: 'family-salamander', ecosystem: 'amphibian',
+        habitatTags: ['cave', 'seep-wall'], behavior: behavior('passive', ['vibration'], 'solitary', []), encounterTemplateId: null,
+    }),
+    'species-redstone-cliff-vulture': species({
+        id: 'species-redstone-cliff-vulture', name: 'Cliff Vulture', familyId: 'family-vulture', ecosystem: 'bird',
+        habitatTags: ['wind-scoured-ridge', 'cliff'], behavior: behavior('wary', ['sight'], 'flock', []), encounterTemplateId: null,
+    }),
+    'species-starfen-bellfrog': species({
+        id: 'species-starfen-bellfrog', name: 'Starfen Bellfrog', familyId: 'family-frog', ecosystem: 'amphibian',
+        habitatTags: ['wetland', 'reed-margin'], behavior: behavior('passive', ['sound'], 'chorus', []), encounterTemplateId: null,
+    }),
+    'species-starfen-reed-crab': species({
+        id: 'species-starfen-reed-crab', name: 'Reed Crab', familyId: 'family-crab', ecosystem: 'crustacean',
+        habitatTags: ['mudflat', 'shallow-water'], behavior: behavior('territorial', ['vibration'], 'cluster', []), encounterTemplateId: null,
+    }),
+    'species-starfen-fen-duck': species({
+        id: 'species-starfen-fen-duck', name: 'Fen Duck', familyId: 'family-waterfowl', ecosystem: 'bird',
+        habitatTags: ['grass-island', 'shallow-water'], behavior: behavior('wary', ['sight', 'sound'], 'flock', []), encounterTemplateId: null,
+    }),
+    'species-starfen-pearl-mussel': species({
+        id: 'species-starfen-pearl-mussel', name: 'Fen Pearl Mussel', familyId: 'family-mussel', ecosystem: 'mollusk',
+        habitatTags: ['shallow-water', 'mud-bed'], behavior: behavior('passive', [], 'bed', []), encounterTemplateId: null,
+    }),
+    'species-archive-threadspider': species({
+        id: 'species-archive-threadspider', name: 'Archive Threadspider', familyId: 'family-spider', ecosystem: 'arachnid',
+        habitatTags: ['ruin', 'dry-chamber'], behavior: behavior('territorial', ['vibration'], 'solitary', []), encounterTemplateId: null,
+    }),
 });
 
 const POPULATIONS = Object.freeze({
@@ -68,6 +143,73 @@ const POPULATIONS = Object.freeze({
     'population-west-starfen-reed-eels': population({
         id: 'population-west-starfen-reed-eels', speciesId: 'species-starfen-reed-eel', placeId: 'west-starfen',
         biomeTags: ['wetland', 'reed-channel'], capacity: 9, density: 'high', rarity: 'common', respawn: regeneration(2, 1800),
+    }),
+    'population-east-elderwood-embercoat-foxes': population({
+        id: 'population-east-elderwood-embercoat-foxes', speciesId: 'species-elderwood-embercoat-fox', placeId: 'east-elderwood',
+        biomeTags: ['temperate-woodland', 'forest-edge'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 7200),
+    }),
+    'population-timbercross-river-otters': population({
+        id: 'population-timbercross-river-otters', speciesId: 'species-timbercross-river-otter', placeId: 'timbercross-landing',
+        biomeTags: ['riverbank', 'timber-landing'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 7200),
+    }),
+    'population-west-elderwood-moss-owls': population({
+        id: 'population-west-elderwood-moss-owls', speciesId: 'species-elderwood-moss-owl', placeId: 'west-elderwood',
+        biomeTags: ['old-growth', 'forest-canopy'], capacity: 2, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 5400),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 18, endHour: 24 }],
+    }),
+    'population-east-elderwood-amber-bees': population({
+        id: 'population-east-elderwood-amber-bees', speciesId: 'species-elderwood-amber-bee', placeId: 'east-elderwood',
+        biomeTags: ['flowering-glade', 'forest-edge'], capacity: 8, density: 'high', rarity: 'common', respawn: regeneration(2, 1800),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 6, endHour: 18 }],
+    }),
+    'population-timbercross-moss-shell-turtles': population({
+        id: 'population-timbercross-moss-shell-turtles', speciesId: 'species-timbercross-moss-shell-turtle', placeId: 'timbercross-landing',
+        biomeTags: ['riverbank', 'shallow-water'], capacity: 5, density: 'moderate', rarity: 'common', respawn: regeneration(1, 3600),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 8, endHour: 18 }],
+    }),
+    'population-north-redstone-crag-marmots': population({
+        id: 'population-north-redstone-crag-marmots', speciesId: 'species-redstone-crag-marmot', placeId: 'north-redstone-reach',
+        biomeTags: ['wind-scoured-ridge', 'rocky-upland'], capacity: 6, density: 'moderate', rarity: 'common', respawn: regeneration(1, 3000),
+    }),
+    'population-south-redstone-sunscale-lizards': population({
+        id: 'population-south-redstone-sunscale-lizards', speciesId: 'species-redstone-sunscale-lizard', placeId: 'south-redstone-reach',
+        biomeTags: ['dry-upland', 'sun-baked-scree'], capacity: 7, density: 'high', rarity: 'common', respawn: regeneration(2, 2400),
+    }),
+    'population-south-redstone-ironclaw-scorpions': population({
+        id: 'population-south-redstone-ironclaw-scorpions', speciesId: 'species-redstone-ironclaw-scorpion', placeId: 'south-redstone-reach',
+        biomeTags: ['quarry-rubble', 'dry-wash'], capacity: 4, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 5400),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 18, endHour: 24 }],
+    }),
+    'population-deepvein-glass-salamanders': population({
+        id: 'population-deepvein-glass-salamanders', speciesId: 'species-deepvein-glass-salamander', placeId: 'deepvein-mine',
+        biomeTags: ['cave', 'seep-wall'], capacity: 5, density: 'moderate', rarity: 'uncommon', respawn: regeneration(1, 3600),
+    }),
+    'population-north-redstone-cliff-vultures': population({
+        id: 'population-north-redstone-cliff-vultures', speciesId: 'species-redstone-cliff-vulture', placeId: 'north-redstone-reach',
+        biomeTags: ['wind-scoured-ridge', 'cliff'], capacity: 3, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 7200),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 6, endHour: 18 }],
+    }),
+    'population-east-starfen-bellfrogs': population({
+        id: 'population-east-starfen-bellfrogs', speciesId: 'species-starfen-bellfrog', placeId: 'east-starfen',
+        biomeTags: ['wetland', 'reed-margin'], capacity: 8, density: 'high', rarity: 'common', respawn: regeneration(2, 1800),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 18, endHour: 24 }],
+    }),
+    'population-west-starfen-reed-crabs': population({
+        id: 'population-west-starfen-reed-crabs', speciesId: 'species-starfen-reed-crab', placeId: 'west-starfen',
+        biomeTags: ['mudflat', 'shallow-water'], capacity: 7, density: 'high', rarity: 'common', respawn: regeneration(2, 1800),
+    }),
+    'population-east-starfen-fen-ducks': population({
+        id: 'population-east-starfen-fen-ducks', speciesId: 'species-starfen-fen-duck', placeId: 'east-starfen',
+        biomeTags: ['grass-island', 'shallow-water'], capacity: 6, density: 'moderate', rarity: 'common', respawn: regeneration(1, 2700),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 5, endHour: 20 }],
+    }),
+    'population-west-starfen-pearl-mussels': population({
+        id: 'population-west-starfen-pearl-mussels', speciesId: 'species-starfen-pearl-mussel', placeId: 'west-starfen',
+        biomeTags: ['shallow-water', 'mud-bed'], capacity: 10, density: 'high', rarity: 'common', respawn: regeneration(2, 3600),
+    }),
+    'population-sunken-archive-threadspiders': population({
+        id: 'population-sunken-archive-threadspiders', speciesId: 'species-archive-threadspider', placeId: 'sunken-archive',
+        biomeTags: ['ruin', 'dry-chamber'], capacity: 4, density: 'moderate', rarity: 'uncommon', respawn: regeneration(1, 3600),
     }),
 });
 
@@ -102,6 +244,69 @@ const SOURCES = Object.freeze({
         id: 'source-west-starfen-bogberry-brake', name: 'Bogberry Brake', type: 'flora', placeId: 'west-starfen',
         biomeTags: ['wetland-edge', 'peat-hummock'], action: 'forage', outputItemId: 'item-starfen-bogberry', capacity: 6,
         regeneration: regeneration(1, 2400), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-east-elderwood-hazel-coppice': source({
+        id: 'source-east-elderwood-hazel-coppice', name: 'Hazel Coppice', type: 'flora', placeId: 'east-elderwood',
+        biomeTags: ['forest-edge', 'nut-grove'], action: 'forage', outputItemId: 'item-elderwood-hazel-nut', capacity: 8,
+        regeneration: regeneration(2, 3600), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-east-elderwood-crabapple-thicket': source({
+        id: 'source-east-elderwood-crabapple-thicket', name: 'Crabapple Thicket', type: 'flora', placeId: 'east-elderwood',
+        biomeTags: ['forest-edge', 'fruiting-thicket'], action: 'forage', outputItemId: 'item-elderwood-crabapple', capacity: 7,
+        regeneration: regeneration(1, 2700), requiredToolTags: [], proficiencyId: 'foraging',
+    }),
+    'source-west-elderwood-ghost-orchid-hollow': source({
+        id: 'source-west-elderwood-ghost-orchid-hollow', name: 'Ghost Orchid Hollow', type: 'flora', placeId: 'west-elderwood',
+        biomeTags: ['old-growth', 'shaded-glade'], action: 'forage', outputItemId: 'item-elderwood-ghost-orchid', capacity: 2,
+        regeneration: regeneration(1, 21600), requiredToolTags: [], proficiencyId: 'foraging', minProficiency: 2,
+        appearanceConditions: [{ type: 'timeWindow', startHour: 4, endHour: 8 }],
+    }),
+    'source-west-elderwood-blackheart-windfall': source({
+        id: 'source-west-elderwood-blackheart-windfall', name: 'Blackheart Windfall', type: 'flora', placeId: 'west-elderwood',
+        biomeTags: ['old-growth', 'stormfall'], action: 'log', outputItemId: 'item-elderwood-blackheart-heartwood', capacity: 2,
+        regeneration: regeneration(1, 21600), requiredToolTags: ['woodcutting'], proficiencyId: 'logging', minProficiency: 3,
+    }),
+    'source-north-redstone-ridge-millet-stand': source({
+        id: 'source-north-redstone-ridge-millet-stand', name: 'Ridge Millet Stand', type: 'flora', placeId: 'north-redstone-reach',
+        biomeTags: ['wind-slope', 'dry-grassland'], action: 'gather', outputItemId: 'item-redstone-ridge-millet', capacity: 8,
+        regeneration: regeneration(2, 3600), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-south-redstone-rock-salt-pan': source({
+        id: 'source-south-redstone-rock-salt-pan', name: 'Rock Salt Pan', type: 'mineral', placeId: 'south-redstone-reach',
+        biomeTags: ['dry-wash', 'salt-crust'], action: 'gather', outputItemId: 'item-redstone-rock-salt', capacity: 7,
+        regeneration: regeneration(1, 5400), requiredToolTags: ['digging'], proficiencyId: 'gathering',
+    }),
+    'source-south-redstone-sun-crocus-terrace': source({
+        id: 'source-south-redstone-sun-crocus-terrace', name: 'Sun Crocus Terrace', type: 'flora', placeId: 'south-redstone-reach',
+        biomeTags: ['exposed-ridge', 'sun-baked-scree'], action: 'forage', outputItemId: 'item-redstone-sun-crocus-stigma', capacity: 2,
+        regeneration: regeneration(1, 21600), requiredToolTags: [], proficiencyId: 'foraging', minProficiency: 2,
+        appearanceConditions: [{ type: 'timeWindow', startHour: 6, endHour: 11 }],
+    }),
+    'source-north-redstone-fire-opal-pocket': source({
+        id: 'source-north-redstone-fire-opal-pocket', name: 'Fire Opal Pocket', type: 'mineral', placeId: 'north-redstone-reach',
+        biomeTags: ['ore-bearing-rock', 'fault-pocket'], action: 'mine', outputItemId: 'item-redstone-fire-opal', capacity: 2,
+        regeneration: regeneration(1, 28800), requiredToolTags: ['mining'], proficiencyId: 'mining', minProficiency: 3,
+    }),
+    'source-east-starfen-reedgrain-shelf': source({
+        id: 'source-east-starfen-reedgrain-shelf', name: 'Reedgrain Shelf', type: 'flora', placeId: 'east-starfen',
+        biomeTags: ['grass-island', 'reed-margin'], action: 'gather', outputItemId: 'item-starfen-reedgrain', capacity: 9,
+        regeneration: regeneration(2, 3600), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-west-starfen-fen-mussel-bed': source({
+        id: 'source-west-starfen-fen-mussel-bed', name: 'Fen Mussel Bed', type: 'fishing', placeId: 'west-starfen',
+        biomeTags: ['shallow-water', 'mudflat'], action: 'fish', outputItemId: 'item-starfen-fen-mussel', capacity: 10,
+        regeneration: regeneration(2, 1800), requiredToolTags: ['fishing'], proficiencyId: 'fishing',
+    }),
+    'source-east-starfen-indigo-iris-patch': source({
+        id: 'source-east-starfen-indigo-iris-patch', name: 'Indigo Iris Patch', type: 'flora', placeId: 'east-starfen',
+        biomeTags: ['wetland-edge', 'flowering-marsh'], action: 'forage', outputItemId: 'item-starfen-indigo-iris-petal', capacity: 4,
+        regeneration: regeneration(1, 5400), requiredToolTags: [], proficiencyId: 'foraging', minProficiency: 1,
+    }),
+    'source-west-starfen-moonlotus-pool': source({
+        id: 'source-west-starfen-moonlotus-pool', name: 'Moonlotus Pool', type: 'flora', placeId: 'west-starfen',
+        biomeTags: ['clear-pool', 'reed-channel'], action: 'gather', outputItemId: 'item-starfen-moonlotus-blossom', capacity: 2,
+        regeneration: regeneration(1, 21600), requiredToolTags: ['cutting'], proficiencyId: 'gathering', minProficiency: 2,
+        appearanceConditions: [{ type: 'timeWindow', startHour: 18, endHour: 24 }],
     }),
 });
 
