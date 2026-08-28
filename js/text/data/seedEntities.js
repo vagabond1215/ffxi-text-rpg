@@ -36,6 +36,18 @@ export function createSeedNpcs() {
             locationId: 'thornwall-southgate', services: ['tutorial', 'sparring'],
         }),
         createNpc({
+            id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
+            locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-slatewater-toren-marr', name: 'Toren Marr', title: 'Foothill Guild Steward',
+            locationId: 'slatewater-waylodge', services: ['gathering', 'hunting', 'route-guidance', 'field-training', 'trade-notices'],
+        }),
+        createNpc({
+            id: 'npc-slatewater-bram-pell', name: 'Bram Pell', title: 'Waylodge Stablemaster',
+            locationId: 'slatewater-waylodge', services: ['stabling', 'mount-care', 'pack-animal-care', 'caravan-boarding'],
+        }),
+        createNpc({
             id: 'npc-brasshaven-civic-warden', name: 'Brasshaven Civic Warden', title: 'Gate Warden', faction: 'Brasshaven',
             locationId: 'brasshaven-market-ring', services: ['realmSeal', 'regionalRewards'],
         }),
