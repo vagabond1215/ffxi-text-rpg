@@ -568,10 +568,10 @@ Job                96600958329
 711/711 tests + census + Benchmark 3 + sample
 ```
 
-A final promoted/documented exact-head PR Check is required before landing `0.9.100.3`.
+`0.9.100.3` subsequently landed; this historical freeze is retained only as earlier validation evidence.
 
 ## Carried-forward rule
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Elderwood Hunt-Timber is the current completed bounded tranche pending landing. **Starfen Marshcraft-Practical Magic is the next independent packet and is not started or authorized by this document.**
+Historical packet sequencing above is retained for provenance only. The current Data 48 baseline has Great Mere merged and no implementation unit active; current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
