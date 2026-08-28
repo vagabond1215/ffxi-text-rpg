@@ -1,4 +1,6 @@
+import { ECOLOGY_CONDITION_TYPES, ECOLOGY_DENSITIES, ECOLOGY_RARITIES, ECOLOGY_SOURCE_TYPES } from './ecologyCatalog.js';
 import { getPlace } from './places.js';
+import { RESOURCE_RECOVERY_ACTIONS } from './resourceProvenance.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
 export const REGIONAL_ECOLOGY_VERSION = 4;
@@ -461,25 +463,93 @@ export function validateRegionalEcologyExpansion() {
     const issues = [];
     const familyIds = new Set(listRegionalEcologyFamilies().map((entry) => entry.id));
     const speciesIds = new Set(listRegionalSpecies().map((entry) => entry.id));
+
+    for (const entry of listRegionalEcologyFamilies()) {
+        if (!validStableId(entry.id)) issues.push(`family ${entry.id} has invalid id.`);
+        if (!String(entry.name ?? '').trim()) issues.push(`${entry.id} requires a name.`);
+        if (!Array.isArray(entry.tags) || entry.tags.length === 0) issues.push(`${entry.id} requires tags.`);
+    }
+
     for (const entry of listRegionalSpecies()) {
+        if (!validStableId(entry.id)) issues.push(`species ${entry.id} has invalid id.`);
         if (!familyIds.has(entry.familyId)) issues.push(`${entry.id} references unknown regional family ${entry.familyId}.`);
-        for (const linked of entry.behavior.linksWithFamilyIds) {
-            if (!familyIds.has(linked)) issues.push(`${entry.id} links to unknown regional family ${linked}.`);
+        if (!String(entry.name ?? '').trim()) issues.push(`${entry.id} requires a name.`);
+        if (!String(entry.ecosystem ?? '').trim()) issues.push(`${entry.id} requires an ecosystem.`);
+        if (!Array.isArray(entry.habitatTags) || entry.habitatTags.length === 0) issues.push(`${entry.id} requires habitat tags.`);
+        if (!entry.behavior || typeof entry.behavior !== 'object' || Array.isArray(entry.behavior)) {
+            issues.push(`${entry.id} requires behavior.`);
+            continue;
+        }
+        if (!String(entry.behavior.aggression ?? '').trim()) issues.push(`${entry.id} behavior requires aggression.`);
+        if (!Array.isArray(entry.behavior.senses)) issues.push(`${entry.id} behavior senses must be an array.`);
+        if (!String(entry.behavior.socialMode ?? '').trim()) issues.push(`${entry.id} behavior requires socialMode.`);
+        if (!Array.isArray(entry.behavior.linksWithFamilyIds)) {
+            issues.push(`${entry.id} behavior linksWithFamilyIds must be an array.`);
+        } else {
+            for (const linked of entry.behavior.linksWithFamilyIds) {
+                if (!familyIds.has(linked)) issues.push(`${entry.id} links to unknown regional family ${linked}.`);
+            }
         }
     }
+
     for (const entry of listRegionalPopulations()) {
+        if (!validStableId(entry.id)) issues.push(`population ${entry.id} has invalid id.`);
         if (!speciesIds.has(entry.speciesId)) issues.push(`${entry.id} references unknown regional species ${entry.speciesId}.`);
         if (!getPlace(entry.placeId)) issues.push(`${entry.id} references unknown place ${entry.placeId}.`);
-        if (!positive(entry.capacity) || !positive(entry.respawn.units) || !positive(entry.respawn.everySeconds)) issues.push(`${entry.id} has invalid capacity/respawn.`);
+        if (!ECOLOGY_DENSITIES.includes(entry.density)) issues.push(`${entry.id} density is unknown: ${entry.density}.`);
+        if (!ECOLOGY_RARITIES.includes(entry.rarity)) issues.push(`${entry.id} rarity is unknown: ${entry.rarity}.`);
+        if (!positive(entry.capacity) || !positive(entry.respawn?.units) || !positive(entry.respawn?.everySeconds)) issues.push(`${entry.id} has invalid capacity/respawn.`);
+        for (const issue of validateConditions(entry.appearanceConditions)) issues.push(`${entry.id}.appearanceConditions ${issue}`);
     }
+
     for (const entry of listRegionalGatheringSources()) {
+        if (!validStableId(entry.id)) issues.push(`gathering source ${entry.id} has invalid id.`);
+        if (!ECOLOGY_SOURCE_TYPES.includes(entry.type)) issues.push(`${entry.id} source type is unknown: ${entry.type}.`);
         if (!getPlace(entry.placeId)) issues.push(`${entry.id} references unknown place ${entry.placeId}.`);
+        if (!RESOURCE_RECOVERY_ACTIONS.includes(entry.action)) issues.push(`${entry.id} references unknown action ${entry.action}.`);
         const item = getCanonicalResourceItem(entry.outputItemId);
         if (!item) issues.push(`${entry.id} references unknown output ${entry.outputItemId}.`);
         else if (!item.provenance.some((p) => p.sourceId === entry.id && p.placeId === entry.placeId && p.action === entry.action)) issues.push(`${entry.id} output provenance does not match source.`);
-        if (!positive(entry.capacity) || !positive(entry.regeneration.units) || !positive(entry.regeneration.everySeconds)) issues.push(`${entry.id} has invalid capacity/regeneration.`);
+        if (!positive(entry.capacity) || !positive(entry.regeneration?.units) || !positive(entry.regeneration?.everySeconds)) issues.push(`${entry.id} has invalid capacity/regeneration.`);
+        if (!Array.isArray(entry.requiredToolTags)) issues.push(`${entry.id} requiredToolTags must be an array.`);
+        if (!String(entry.proficiencyId ?? '').trim()) issues.push(`${entry.id} requires proficiencyId.`);
+        if (!nonNegativeInteger(entry.minProficiency)) issues.push(`${entry.id} minProficiency must be a non-negative integer.`);
+        for (const issue of validateConditions(entry.appearanceConditions)) issues.push(`${entry.id}.appearanceConditions ${issue}`);
     }
     return issues;
+}
+
+function validateConditions(conditions) {
+    const issues = [];
+    if (!Array.isArray(conditions)) return ['must be an array.'];
+    for (const [index, condition] of conditions.entries()) {
+        if (!condition || typeof condition !== 'object' || Array.isArray(condition)) {
+            issues.push(`[${index}] must be an object.`);
+            continue;
+        }
+        if (!ECOLOGY_CONDITION_TYPES.includes(condition.type)) {
+            issues.push(`[${index}] type is unknown: ${condition.type}.`);
+            continue;
+        }
+        if (condition.type === 'timeWindow') {
+            if (!Number.isInteger(condition.startHour) || condition.startHour < 0 || condition.startHour > 23) issues.push(`[${index}] startHour must be 0-23.`);
+            if (!Number.isInteger(condition.endHour) || condition.endHour < 1 || condition.endHour > 24) issues.push(`[${index}] endHour must be 1-24.`);
+        }
+        if (condition.type === 'dayModulo') {
+            if (!positive(condition.modulo)) issues.push(`[${index}] modulo must be positive.`);
+            if (!Number.isInteger(condition.remainder) || condition.remainder < 0 || condition.remainder >= condition.modulo) issues.push(`[${index}] remainder must be within modulo.`);
+        }
+        if (condition.type === 'requiresFlag' && !validStableId(condition.flagId)) issues.push(`[${index}] flagId is invalid.`);
+    }
+    return issues;
+}
+
+function validStableId(value) {
+    return typeof value === 'string' && /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/.test(value);
+}
+
+function nonNegativeInteger(value) {
+    return Number.isInteger(value) && value >= 0;
 }
 
 function family(id, name, tags) { return Object.freeze({ id, version: REGIONAL_ECOLOGY_VERSION, name, tags: Object.freeze([...tags]) }); }
