@@ -16,6 +16,7 @@ export const DATABASES = Object.freeze({
     workProficiencies: database('workProficiencies', 'Continuous-character gathering, recovery, processing, crafting, cooking, and salvage mastery.', 'implemented', '0.1.0'),
     workstations: database('workstations', 'Semantic workstation availability derived from current locality service/POI context and durable workstation-bearing home furnishings.', 'implemented', '0.2.0'),
     places: database('places', 'Continents, regions, localities, landmarks, cities, dungeons, interiors.', 'seeded', '0.3.1'),
+    locationProfiles: database('locationProfiles', 'Per-place, settlement, and regional biome/demographic/ecology profiles derived from canonical place and ecology authority plus authored population estimates.', 'implemented', '0.1.0'),
     maps: database('maps', 'Map records connecting map knowledge/ownership to place clusters.', 'seeded', '0.3.1'),
     powers: database('powers', 'Starting power definitions, start places, and initial map/permission grants.', 'seeded', '0.3.2'),
     placeConnections: database('placeConnections', 'Transitional local graph edges and exit coordinates between places.', 'seeded-transitional', '0.3.2'),
