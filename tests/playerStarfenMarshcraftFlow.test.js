@@ -154,7 +154,7 @@ test('Pelu and Tavi availability derives from canonical fictional time without a
     assert.equal(taviMorning.available, true);
     assert.equal(taviMorning.windowSummary, '08:00–18:00');
 
-    advanceWorldTime(state, 10 * 60 * 60);
+    advanceWorldTime(state, 9 * 60 * 60);
     assert.equal(getNpcScheduleStatus(state, 'npc-mistmere-pelu-senn').available, false);
     assert.equal(getNpcScheduleStatus(state, 'npc-mistmere-tavi-meren').available, true);
     assert.equal(Object.hasOwn(state, 'socialClock'), false);
