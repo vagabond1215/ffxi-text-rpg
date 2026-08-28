@@ -16,15 +16,16 @@ Codename:      Ironspine Highlands & Population Hunting
 
 ## Current bounded-unit state
 
-Ironspine Highlands is in version/document promotion after a green frozen implementation head.
+Ironspine Highlands and population-backed hunting are complete and merged on `main`.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
 - Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`;
 - Check #1368 / run `33215878907`: full gate green, 753/753 tests;
-- PR #401 carries the Data 49 promotion/document synchronization.
+- promoted PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
+- exact promoted-head Check #1381 / run `33217086478`: full gate green.
 
-After this tranche lands, no later unit is auto-started.
+No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
 ## Data 49 metrics
 
