@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 4;
+export const REGIONAL_RESOURCE_ITEM_CATALOG_VERSION = 5;
 
 const DEFINITIONS = Object.freeze({
     'item-elderwood-amber-resin': resource({
@@ -142,6 +142,36 @@ const DEFINITIONS = Object.freeze({
         id: 'item-slatewater-blue-slate', name: 'Slatewater Blue Slate', tags: ['mineral', 'stone', 'fine-craft', 'masonry', 'luxury'], valueGil: 32,
         sourceId: 'source-slatewater-blue-slate-shelf', placeId: 'slatewater-foothills', action: 'mine',
         sinks: ['processInput', 'craftIngredient', 'construction', 'trade', 'decorative'],
+    }),
+    'item-crownfields-crown-rye': resource({
+        id: 'item-crownfields-crown-rye', name: 'Crown Rye', tags: ['flora', 'grain', 'food', 'agriculture', 'staple'], valueGil: 5,
+        sourceId: 'source-crownfields-crown-rye-strip', placeId: 'crownfields', action: 'gather',
+        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-crownfields-field-pea': resource({
+        id: 'item-crownfields-field-pea', name: 'Field Pea', tags: ['flora', 'pulse', 'food', 'agriculture', 'staple'], valueGil: 6,
+        sourceId: 'source-crownfields-field-pea-row', placeId: 'crownfields', action: 'gather',
+        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-crownfields-flax-straw': resource({
+        id: 'item-crownfields-flax-straw', name: 'Blue Flax Straw', tags: ['flora', 'fiber', 'textile', 'agriculture', 'staple'], valueGil: 7,
+        sourceId: 'source-crownfields-flax-strip', placeId: 'crownfields', action: 'gather',
+        sinks: ['processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-crownfields-cider-apple': resource({
+        id: 'item-crownfields-cider-apple', name: 'Cider Apple', tags: ['flora', 'fruit', 'food', 'orchard', 'staple'], valueGil: 7,
+        sourceId: 'source-crownfields-cider-apple-orchard', placeId: 'crownfields', action: 'gather',
+        sinks: ['consume', 'processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-crownfields-meadow-hay': resource({
+        id: 'item-crownfields-meadow-hay', name: 'Meadow Hay', tags: ['flora', 'fodder', 'bedding', 'agriculture', 'staple'], valueGil: 4,
+        sourceId: 'source-crownfields-hay-meadow', placeId: 'crownfields', action: 'gather',
+        sinks: ['processInput', 'craftIngredient', 'trade'],
+    }),
+    'item-crownfields-dyers-woad': resource({
+        id: 'item-crownfields-dyers-woad', name: 'Dyer’s Woad', tags: ['flora', 'dye', 'agriculture', 'specialty', 'luxury'], valueGil: 24,
+        sourceId: 'source-crownfields-woad-bed', placeId: 'crownfields', action: 'gather',
+        sinks: ['processInput', 'craftIngredient', 'trade'],
     }),
 });
 
