@@ -73,20 +73,20 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Packet D implementation checkpoint:
+Validated Slatewater checkpoint:
 
 ```text
-places/localities       26 / mechanics floor 10
-named NPCs              17 / 50
-shop/service sites      17 / 20
-creatures               16 / 40
-resource sources        13 / 40
-canonical items         68 / 200
+places/localities       29 / mechanics floor 10
+named NPCs              20 / 50
+shop/service sites      19 / 20
+creatures               40 / 40
+resource sources        35 / 40
+canonical items         90 / 200
 recipes/processes       29 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       3 / 5
+transport services       4 / 5
 ```
 
 Infrastructure coverage:
@@ -95,16 +95,16 @@ Infrastructure coverage:
 routes                                7
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                         7
-regional/shared content packs        10
-pack-owned records                   248
+NPC schedules                         9
+regional/shared content packs        13
+pack-owned records                   374
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/7/1
-runtime seed NPCs                    16
+  schedules/companions            41/44/9/1
+runtime seed NPCs                    19
 runtime seed enemies                 13
 ```
 
-The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Companions are now the largest relative gap; counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Creature breadth now reaches the mechanics floor exactly; companions remain the largest relative gap. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
@@ -131,7 +131,7 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Packet D is the completed third authored content tranche after Redstone and Elderwood, pending final exact-head validation and PR landing. **Packet E — Gate A integration/census audit — is next and has not been started by this work order.**
+`0.9.100 Content Scale Gate A` remains open. Packets A–D, the ecology breadth pass, and Coppergrass are merged. Slatewater Foothills & Waylodge is the active validated bounded tranche on PR #389 while final documentation/exact-head integration completes. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate; the temporary world-edge plan also ranks Crownfields next, but neither is auto-started without a new work order.**
 
 Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
 
