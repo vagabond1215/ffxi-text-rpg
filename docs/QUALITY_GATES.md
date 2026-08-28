@@ -37,16 +37,16 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 ```
 
-Frozen Packet D gameplay/content SHA `ee81069defe59a55979bc262ea595c3c9df42f40` passed hosted Check `33139128883` / job `98745791538` on Node 24.19.0 with **719/719 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
+Frozen location-profile implementation/data SHA `ba156a416026835ccc483b8644d134a8d3d062d9` passed hosted Check `33149570962` / job `98778174178` on Node 24.19.0 with **725/725 tests**, Content Census, Benchmark 3, and Benchmark Sample. Final exact promoted/documented PR-head validation remains required before merge.
 
 ## Persistence/lifecycle
 
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Packet D adds **no persistence or lifecycle owner**. Universal magic reuses character capability/skill + ability runtime authority; Starfen marshcraft reuses production/work-task, inventory/provenance, commitment/relationship/schedule, and fictional-time authority. `npm run hardening` is therefore not required solely because this authored-data packet grew, though it remains required for lifecycle-sensitive packets and phase/release gates.
+Location & Area Profiles adds **no persistence or lifecycle owner**. It composes place/ecology data and authored demographic/biome metadata only. `npm run hardening` is therefore not required solely for this data/profile pass, though it remains required for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -134,6 +134,21 @@ The first Elderwood integration run found no product-behavior regression: its si
 - regional Starfen contracts do not unlock universal spells;
 - Starfen Current Reading remains a qualified regional field-knowledge reward;
 - Pelu/Tavi service availability derives from canonical fictional time.
+
+### Location-profile coverage proof
+
+`tests/locationProfileCatalog.test.js` verifies:
+
+- all 26 canonical places have exactly one profile;
+- every profile has biome and population semantics;
+- five settlement totals equal the sum of their member-place resident/transient counts;
+- three regional profiles cover all current places;
+- modeled world population is derived from all 26 place profiles;
+- local flora/fauna resolve existing canonical sources/populations/spawn species;
+- regional representative ecology is kept separate when a place lacks local records;
+- humanoid raiders/plantoids are not mislabeled as fauna;
+- Redstone's current lack of canonical flora remains visible rather than fabricated;
+- text reporting includes every region and place.
 
 ## Current content progression
 
