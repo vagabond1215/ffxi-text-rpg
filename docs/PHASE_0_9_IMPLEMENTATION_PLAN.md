@@ -7,17 +7,17 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
 Phase:         0.9 / 0.9.100 in progress
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 ```
 
-The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D proves two things at once: a third regional production/community graph can land through Pack v2, and magic can scale as a **shared universal character catalog** without turning regional ownership into a spell-learning constraint.
+Packets A–D are merged. A separately authorized supporting-data pass now gives every current place an explicit biome/demographic profile and derives settlement/region/world summaries from existing geography/ecology authority. This does not replace the queued Packet E integration/census audit.
 
 ## Current census
 
@@ -166,6 +166,24 @@ Game State:   14 unchanged
 Account Save: 5 unchanged
 Benchmark:    3 unchanged
 ```
+
+## Supporting pass — Location & Area Profiles
+
+**Status: IMPLEMENTED + VALIDATED + PROMOTED / PENDING LANDING.**
+
+Frozen implementation/data SHA `ba156a416026835ccc483b8644d134a8d3d062d9` passed Check `33149570962` / job `98778174178` with **725/725 tests**, census, Benchmark 3, and Benchmark Sample.
+
+Coverage:
+
+```text
+canonical place profiles    26
+settlement aggregates        5
+region aggregates            3
+modeled residents       92,785
+typical present        ~119,478
+```
+
+The pass intentionally exposes ecology gaps. Flora/fauna are derived from canonical source/population/spawn evidence; profiles without direct records use separately labeled regional context. Redstone currently has no canonical flora sources, so its flora profile is empty rather than invented.
 
 ## Packet E — Gate A integration and census audit
 
