@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–C are merged; **Packet D — Universal Magic & Starfen Marshcraft** is implemented, validated on its frozen implementation/data head, promoted to the Data 43 contract, and pending final exact-head validation + PR landing.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` remains in progress. Packets A–D are merged. The separately authorized **Location & Area Profiles** pass is implemented, validated on its frozen implementation/data head, promoted to Data 44, and pending final exact-head validation + PR landing.
 
 ```text
-Product:       0.9.100.4
+Product:       0.9.100.5
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          43
+Data:          44
 Benchmark:     3
-Codename:      Universal Magic & Starfen Marshcraft
+Codename:      Location & Area Profiles
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data advances from 42 to 43 because the packet adds and reorganizes stable canonical magic/capability IDs under shared ownership, adds the Veilscript seal-magic school, expands executable spell breadth, strengthens commitment cross-reference validation, and adds connected Starfen marshcraft/NPC/schedule/process/contract records. Game State remains 14 because no new durable player/world authority, simulation clock, task engine, persistence family, or save migration was introduced.
+Data advances from 43 to 44 because every current place now has canonical biome/demographic profile metadata and the repository has derived settlement/region population + ecology profiles. Game State remains 14 because profiles are authored/reference data and projections over existing place/ecology authority, not durable player/world state.
 
 ## Product direction
 
@@ -106,6 +106,45 @@ runtime seed enemies                 13
 
 The mechanics-scale gate remains **NOT READY**. That is a progression fact, not a CI failure. Companions are now the largest relative gap; counts must not be gamed with disconnected filler.
 
+## Location & area profiles
+
+`js/text/data/locationProfileCatalog.js` covers **all 26 canonical places**, plus **5 settlements** and **3 regions**.
+
+The profile layer records authored biome and demographic estimates, then derives ecology from existing canonical authorities:
+
+```text
+places.js
+  + authored biome/demographic metadata
+  + ecologyRegistry species/populations/gathering sources
+  + place spawn definitions
+  -> place profile
+  -> settlement aggregate
+  -> regional aggregate
+  -> modeled world population summary
+```
+
+Population fields distinguish residents, typical transient/workforce presence, and typical present population. Settlement totals are sums of member places; region/world totals are sums of place profiles, so the same population is not independently authored multiple times.
+
+Current modeled residents:
+
+```text
+Elderwood        33,175
+Redstone Reach   30,080
+Starfen          29,530
+-----------------------
+Modeled world    92,785
+Typical present ~119,478
+```
+
+Flora/fauna are never invented just to fill a profile. Local canonical records appear as local ecology; places without direct records show regional representative ecology separately. The current Redstone profile therefore honestly reports **no canonical flora sources yet**, exposing a real content gap.
+
+Run:
+
+```bash
+npm run profiles:locations
+npm run profiles:locations -- --json
+```
+
 ## Persistence model
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
@@ -131,9 +170,9 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Packet D is the completed third authored content tranche after Redstone and Elderwood, pending final exact-head validation and PR landing. **Packet E — Gate A integration/census audit — is next and has not been started by this work order.**
+`0.9.100 Content Scale Gate A` remains open. Packets A–D are merged. The Location & Area Profiles pass is implemented and promoted, pending final exact-head validation and PR landing. **Packet E — Gate A integration/census audit — remains queued and has not been started by this profile work.**
 
-Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
+Future geography/ecology authoring should keep place identity in `places.js`, ecological populations/sources in the ecology registry, and demographic/biome summaries in the profile layer rather than duplicating those authorities.
 
 ## Read these first
 
