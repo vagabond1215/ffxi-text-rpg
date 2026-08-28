@@ -18,8 +18,8 @@ authority:
   quality_gates: docs/QUALITY_GATES.md
   performance_budget: docs/PERFORMANCE_BUDGET.md
   resource_lifecycle: docs/RESOURCE_LIFECYCLE.md
-  phase_0_8_exit_gate: docs/PHASE_0_8_EXIT_GATE.md
   phase_0_9_plan: docs/PHASE_0_9_IMPLEMENTATION_PLAN.md
+  ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   slatewater_profile: docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md
 tools:
@@ -27,35 +27,34 @@ tools:
   principle: least-powerful-safe-tool
 git:
   current_normal_work: phase-0.9-pr-integration
-  active_branch: feature/slatewater-foothills-waylodge
-  active_pull_request: 389
-  recommended_phase_0_9_transition: protected-main-required-green-check-pr-integration
+  active_branch: audit/ecology-geography-consistency
+  active_pull_request: 390
   pr_integration_status: active
+  merged_slatewater_pr: 389
+  slatewater_merge_sha: edca59ac8955d999f7c80812688e7153d5aaafeb
+  slatewater_post_merge_check: 33187962625
+  slatewater_post_merge_check_result: success
   branch_protection_status: administrative-follow-up-tool-surface-has-no-protection-mutation
   stale_remote_branch_cleanup: manual-cleanup-connector-has-no-safe-delete-action
 active_change:
-  base_main_sha: 4c1b1956e5d3126fced402188f00f1612be853f3
-  current_feature_head_before_continuity_sync: c180582c21be9ad301edba0449421b40d0ae4ca9
-  first_pull_request_check: 33182561392
-  first_check_result: repository-audit-failed-only-because-version-authority-docs-were-stale
-  validated_pr_check_before_final_docs: 33182827321
-  validated_pr_job_before_final_docs: 98888188450
-  validated_pr_result_before_final_docs: repository-audit-pass-724-of-724-tests-census-benchmark-3-and-sample-success
-  pull_request: 389
-  pull_request_state: open
-  scope: slatewater-foothills-waylodge-world-edge-expansion
+  base_main_sha: edca59ac8955d999f7c80812688e7153d5aaafeb
+  pull_request: 390
+  scope: ecology-geography-integrity-audit-and-repair
+  pre_promotion_validated_head: 7a6b0e5aead05403f74a76e37480c26b2807efa0
+  pre_promotion_check: 33189086957
+  pre_promotion_check_number: 1267
+  pre_promotion_result: repository-audit-tests-census-benchmark-and-sample-success
+  promoted_contract_requires_final_exact_head_check: true
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  current_bounded_unit: world-edge-expansion-slatewater-foothills-waylodge
-  current_bounded_unit_status: implementation-and-hosted-validation-complete-final-exact-head-check-required
+  current_bounded_unit: ecology-geography-integrity-audit
+  current_bounded_unit_status: implementation-complete-version-and-document-sync-in-progress
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: crownfields
   next_world_edge_candidate_status: planning-only-not-auto-authorized
-  content_scale_gate_version: 2
-  content_scale_targets: criteria-driven-lower-bound-planning-indicators
 validation:
   repository_audit: npm run audit:repo
   tests: npm test
@@ -65,65 +64,43 @@ validation:
   hardening: npm run hardening
   aggregate: npm run check
   hosted_check: Check
-  hosted_check_contract:
-    - repository-audit
-    - test
-    - content-census
-    - benchmark-3
-    - benchmark-sample
   node_baseline: 24
   repository_contract_guard: tests/repositoryContractAudit.test.js
   content_pack_guard: tests/contentPackValidator.test.js
   content_scale_guard: tests/contentScaleGate.test.js
-  slatewater_flow_guard: tests/playerSlatewaterWaylodgeFlow.test.js
+  ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
   transport_guard: tests/transportEngine.test.js
   ecology_guard: tests/regionalEcologyBreadth.test.js
-  architecture_debt_guard: tests/architectureDebtGuard.test.js
-  long_session_guard: tests/longSessionLifecycle.test.js
 quality:
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
-  current_product_version: 0.9.100.5
+  current_product_version: 0.9.100.6
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 44
+  current_data_version: 45
   current_benchmark_version: 3
-  current_codename: World Edge Expansion & Slatewater Waylodge
+  current_codename: Ecology & Geography Integrity
   content_scale_is_release_progress_not_ci_pass_fail: true
   hard_performance_thresholds: not-yet-accepted
   future_migrations: deliberate-only-when-required
-  data_44:
-    includes_coppergrass_post-data43-expansion: true
-    includes_slatewater_foothills: true
-    includes_slatewater_waylodge: true
-    direct_timed_task_owner_added: false
+  data_45:
+    canonical_geography_connections_repaired: true
+    stale_direct_route_overlaps_removed: 5
+    player_trapping_places_repaired: 3
+    crownward_forest_gate_reciprocity_repaired: true
+    reciprocal_map_place_validation: true
+    route_stop_coordinate_validation: true
+    canonical_ecology_duplicate_validation: true
+    canonical_resource_duplicate_validation: true
+    regional_ecology_validation_hardened: true
+    regional_ecology_catalog_refs_supported: true
+    resource_provenance_registry_validation_connected: true
     persistence_family_added: false
-    simulation_clock_added: false
-    mount_state_added: false
-    mount_care_representation: existing-place-poi-npc-travel-service-authority
-    safe_lodge_recovery_authority: existing-campaign-recovery
-    trade_authority: existing-shop-engine
-    ecology_authority: existing-ecology-registry-and-packs
+    game_state_change_required: false
 content_scale:
   mechanics_gate: not-ready
-  pre_slatewater_main_checkpoint:
-    places_localities: 27
-    named_npcs: 17
-    shop_service_sites: 17
-    creature_definitions: 36
-    resource_sources: 29
-    canonical_items: 84
-    recipes_processes: 29
-    abilities_techniques: 41
-    quests_contracts: 18
-    companions: 1
-    transport_services: 3
-    routes: 7
-    npc_schedules: 7
-    regional_shared_packs: 11
-    pack_owned_records: 341
-  active_slatewater_validated:
+  current:
     places_localities: 29
     named_npcs: 20
     shop_service_sites: 19
@@ -141,21 +118,24 @@ content_scale:
     npc_schedules: 9
     regional_shared_packs: 13
     pack_owned_records: 374
-    pack_owned_abilities_capabilities_schedules_companions: 41-44-9-1
     runtime_seed_npcs: 19
     runtime_seed_enemies: 13
-    hosted_check: 33182827321
-    hosted_job: 98888188450
-    tests_passed: 724
   largest_relative_gap: companions
+deferred_ecology_geography:
+  thornwall_old_gaol_ecology: absent-content-gap
+  timbercross_gathering_sources: absent-content-gap
+  redfang_deepvein_sunken_archive_gathering: sparse-content-gap
+  population_backed_hunting_encounters: architecture-player-loop-gap
+  express_services_skip_intermediate_route_stops: reviewed-intentional
 constraints:
   - do not count catalog refs twice or generated fixtures as canonical gameplay breadth
   - do not add disconnected filler merely to satisfy content targets
   - preserve existing canonical catalog definition authority behind content-pack ownership metadata
   - preserve original-world canon and legacy/reference boundaries
   - preserve fictional simulation time versus wall-clock scheduling
-  - keep Game State 14 strict current-schema-only unless new durable player/world facts actually require a change
-  - do not add a second simulation clock task engine inventory progression social or mount authority
+  - keep Game State 14 unless a new durable player/world fact actually requires change
+  - do not add duplicate simulation clock task inventory progression social ecology or mount authority
   - local map edges are not automatically walkable world boundaries
   - physical legal and environmental access restrictions remain distinct
+  - ordinary two-way roads and gates should be reciprocal unless explicitly modeled otherwise
   - roadmap sequencing and temporary world-edge sequencing do not auto-authorize later units
