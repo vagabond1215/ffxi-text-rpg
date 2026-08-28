@@ -3,7 +3,7 @@ import { getPlace } from './places.js';
 import { RESOURCE_RECOVERY_ACTIONS } from './resourceProvenance.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 
-export const REGIONAL_ECOLOGY_VERSION = 4;
+export const REGIONAL_ECOLOGY_VERSION = 5;
 
 const FAMILIES = Object.freeze({
     'family-barkboar': family('family-barkboar', 'Barkboar', ['beast', 'omnivore', 'forest']),
@@ -36,6 +36,10 @@ const FAMILIES = Object.freeze({
     'family-lynx': family('family-lynx', 'Lynx', ['beast', 'carnivore', 'foothill']),
     'family-grouse': family('family-grouse', 'Grouse', ['bird', 'ground-bird', 'foothill']),
     'family-mountain-eagle': family('family-mountain-eagle', 'Mountain Eagle', ['bird', 'predator', 'foothill']),
+    'family-cattle': family('family-cattle', 'Cattle', ['beast', 'herbivore', 'domestic', 'agricultural']),
+    'family-sheep': family('family-sheep', 'Sheep', ['beast', 'herbivore', 'domestic', 'agricultural']),
+    'family-chicken': family('family-chicken', 'Chicken', ['bird', 'omnivore', 'domestic', 'agricultural']),
+    'family-field-rat': family('family-field-rat', 'Field Rat', ['beast', 'omnivore', 'pest', 'agricultural']),
 });
 
 const SPECIES = Object.freeze({
@@ -161,6 +165,26 @@ const SPECIES = Object.freeze({
     'species-slatewater-ridge-eagle': species({
         id: 'species-slatewater-ridge-eagle', name: 'Slatewater Ridge Eagle', familyId: 'family-mountain-eagle', ecosystem: 'bird',
         habitatTags: ['slate-ridge', 'river-ravine'], behavior: behavior('wary', ['sight'], 'pair', ['family-grouse']), encounterTemplateId: null,
+    }),
+    'species-crownfields-cattle': species({
+        id: 'species-crownfields-cattle', name: 'Crownfield Cattle', familyId: 'family-cattle', ecosystem: 'beast',
+        habitatTags: ['pasture', 'farmstead', 'water-meadow'], behavior: behavior('passive', ['sight', 'sound'], 'herd', []), encounterTemplateId: null,
+    }),
+    'species-crownfields-whitefleece-sheep': species({
+        id: 'species-crownfields-whitefleece-sheep', name: 'Whitefleece Sheep', familyId: 'family-sheep', ecosystem: 'beast',
+        habitatTags: ['pasture', 'hay-meadow', 'hedgerow'], behavior: behavior('passive', ['sight', 'sound'], 'flock', []), encounterTemplateId: null,
+    }),
+    'species-crownfields-redcomb-hen': species({
+        id: 'species-crownfields-redcomb-hen', name: 'Redcomb Hen', familyId: 'family-chicken', ecosystem: 'bird',
+        habitatTags: ['farmyard', 'orchard-edge', 'grain-yard'], behavior: behavior('passive', ['sight', 'sound'], 'flock', []), encounterTemplateId: null,
+    }),
+    'species-crownfields-hedgerow-rat': species({
+        id: 'species-crownfields-hedgerow-rat', name: 'Hedgerow Rat', familyId: 'family-field-rat', ecosystem: 'beast',
+        habitatTags: ['hedgerow', 'granary-edge', 'ditch-bank'], behavior: behavior('wary', ['sight', 'sound'], 'colony', []), encounterTemplateId: null,
+    }),
+    'species-crownfields-orchard-bee': species({
+        id: 'species-crownfields-orchard-bee', name: 'Orchard Honeybee', familyId: 'family-bee', ecosystem: 'insect',
+        habitatTags: ['orchard', 'clover-meadow', 'farm-garden'], behavior: behavior('passive', ['sight'], 'swarm', []), encounterTemplateId: null,
     }),
 });
 
@@ -300,6 +324,28 @@ const POPULATIONS = Object.freeze({
         id: 'population-slatewater-ridge-eagles', speciesId: 'species-slatewater-ridge-eagle', placeId: 'slatewater-foothills',
         biomeTags: ['slate-ridge', 'river-ravine'], capacity: 2, density: 'low', rarity: 'uncommon', respawn: regeneration(1, 10800),
         appearanceConditions: [{ type: 'timeWindow', startHour: 7, endHour: 18 }],
+    }),
+    'population-crownfields-cattle': population({
+        id: 'population-crownfields-cattle', speciesId: 'species-crownfields-cattle', placeId: 'crownfields',
+        biomeTags: ['pasture', 'water-meadow'], capacity: 12, density: 'high', rarity: 'common', respawn: regeneration(2, 5400),
+    }),
+    'population-crownfields-whitefleece-sheep': population({
+        id: 'population-crownfields-whitefleece-sheep', speciesId: 'species-crownfields-whitefleece-sheep', placeId: 'crownfields',
+        biomeTags: ['pasture', 'hay-meadow'], capacity: 14, density: 'high', rarity: 'common', respawn: regeneration(3, 5400),
+    }),
+    'population-crownfields-redcomb-hens': population({
+        id: 'population-crownfields-redcomb-hens', speciesId: 'species-crownfields-redcomb-hen', placeId: 'crownfields',
+        biomeTags: ['farmyard', 'orchard-edge'], capacity: 16, density: 'high', rarity: 'common', respawn: regeneration(3, 3600),
+    }),
+    'population-crownfields-hedgerow-rats': population({
+        id: 'population-crownfields-hedgerow-rats', speciesId: 'species-crownfields-hedgerow-rat', placeId: 'crownfields',
+        biomeTags: ['hedgerow', 'grain-yard'], capacity: 10, density: 'moderate', rarity: 'common', respawn: regeneration(2, 2700),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 17, endHour: 24 }],
+    }),
+    'population-crownfields-orchard-bees': population({
+        id: 'population-crownfields-orchard-bees', speciesId: 'species-crownfields-orchard-bee', placeId: 'crownfields',
+        biomeTags: ['orchard', 'clover-meadow'], capacity: 14, density: 'high', rarity: 'common', respawn: regeneration(3, 2400),
+        appearanceConditions: [{ type: 'timeWindow', startHour: 7, endHour: 19 }],
     }),
 });
 
@@ -447,6 +493,36 @@ const SOURCES = Object.freeze({
         id: 'source-slatewater-blue-slate-shelf', name: 'Blue Slate Shelf', type: 'mineral', placeId: 'slatewater-foothills',
         biomeTags: ['slate-ridge', 'road-cut'], action: 'mine', outputItemId: 'item-slatewater-blue-slate', capacity: 3,
         regeneration: regeneration(1, 18000), requiredToolTags: ['mining'], proficiencyId: 'mining', minProficiency: 2,
+    }),
+    'source-crownfields-crown-rye-strip': source({
+        id: 'source-crownfields-crown-rye-strip', name: 'Crown Rye Strip', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['grain-strip', 'open-field'], action: 'gather', outputItemId: 'item-crownfields-crown-rye', capacity: 12,
+        regeneration: regeneration(3, 5400), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-crownfields-field-pea-row': source({
+        id: 'source-crownfields-field-pea-row', name: 'Field Pea Row', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['pulse-field', 'hedged-strip'], action: 'gather', outputItemId: 'item-crownfields-field-pea', capacity: 10,
+        regeneration: regeneration(2, 4500), requiredToolTags: [], proficiencyId: 'gathering',
+    }),
+    'source-crownfields-flax-strip': source({
+        id: 'source-crownfields-flax-strip', name: 'Blue Flax Strip', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['flax-field', 'open-field'], action: 'gather', outputItemId: 'item-crownfields-flax-straw', capacity: 9,
+        regeneration: regeneration(2, 5400), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-crownfields-cider-apple-orchard': source({
+        id: 'source-crownfields-cider-apple-orchard', name: 'Cider Apple Orchard', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['orchard', 'hedgerow'], action: 'gather', outputItemId: 'item-crownfields-cider-apple', capacity: 10,
+        regeneration: regeneration(2, 5400), requiredToolTags: [], proficiencyId: 'gathering',
+    }),
+    'source-crownfields-hay-meadow': source({
+        id: 'source-crownfields-hay-meadow', name: 'Hay Meadow', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['hay-meadow', 'pasture-edge'], action: 'gather', outputItemId: 'item-crownfields-meadow-hay', capacity: 12,
+        regeneration: regeneration(3, 4500), requiredToolTags: ['cutting'], proficiencyId: 'gathering',
+    }),
+    'source-crownfields-woad-bed': source({
+        id: 'source-crownfields-woad-bed', name: 'Dyer’s Woad Bed', type: 'flora', placeId: 'crownfields',
+        biomeTags: ['dye-crop', 'garden-strip'], action: 'gather', outputItemId: 'item-crownfields-dyers-woad', capacity: 5,
+        regeneration: regeneration(1, 9000), requiredToolTags: [], proficiencyId: 'gathering', minProficiency: 1,
     }),
 });
 
