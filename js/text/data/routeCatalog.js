@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 7;
+export const ROUTE_CATALOG_VERSION = 8;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -62,6 +62,40 @@ const ROUTE_DEFINITIONS = Object.freeze({
         bidirectional: true,
         knowledge: { mapId: 'map-redstone-reach', discoveryTag: 'route.south-quarry-road' },
         cargo: { encumbranceMultiplier: 1.1 },
+    }),
+    'route-emberwash-cinderwell-caravan-road': route({
+        id: 'route-emberwash-cinderwell-caravan-road',
+        name: 'Cinderwell Caravan Road',
+        type: 'caravanRoad',
+        allowedModes: ['walk', 'mount', 'wagon', 'caravan'],
+        stops: [
+            stop('stop-south-redstone-emberwash-road', 'south-redstone-reach', { x: 4, y: 7 }),
+            stop('stop-emberwash-north-wash-road', 'emberwash-north-wash', { x: 4, y: 1 }),
+            stop('stop-cinderwell-caravan-road', 'cinderwell-station', { x: 3, y: 3 }),
+        ],
+        segments: [
+            segment('stop-south-redstone-emberwash-road', 'stop-emberwash-north-wash-road', 3000, 7500, ['heat', 'dust', 'loose-stone', 'flash-flood-wash']),
+            segment('stop-emberwash-north-wash-road', 'stop-cinderwell-caravan-road', 2400, 6000, ['heat', 'dust', 'scarce-shade', 'wash-crossing']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-emberwash-badlands', discoveryTag: 'route.emberwash-cinderwell-caravan-road' },
+        cargo: { encumbranceMultiplier: 1.2 },
+    }),
+    'route-emberwash-saltpan-foretrail': route({
+        id: 'route-emberwash-saltpan-foretrail',
+        name: 'Saltpan Foretrail',
+        type: 'track',
+        allowedModes: ['walk', 'mount', 'caravan'],
+        stops: [
+            stop('stop-cinderwell-saltpan-foretrail', 'cinderwell-station', { x: 3, y: 5 }),
+            stop('stop-emberwash-saltpan-foretrail', 'emberwash-saltpan-verge', { x: 4, y: 1 }),
+        ],
+        segments: [
+            segment('stop-cinderwell-saltpan-foretrail', 'stop-emberwash-saltpan-foretrail', 3600, 8000, ['heat', 'salt-glare', 'dust-wind', 'soft-crust', 'scarce-water', 'broken-gullies']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-emberwash-badlands', discoveryTag: 'route.emberwash-saltpan-foretrail' },
+        cargo: { encumbranceMultiplier: 1.3 },
     }),
     'route-mistmere-west-starfen-causeway': route({
         id: 'route-mistmere-west-starfen-causeway',
