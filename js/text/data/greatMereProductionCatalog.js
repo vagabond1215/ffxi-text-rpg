@@ -1,4 +1,4 @@
-export const GREAT_MERE_PRODUCTION_CATALOG_VERSION = 1;
+export const GREAT_MERE_PRODUCTION_CATALOG_VERSION = 2;
 
 const DEFINITIONS = Object.freeze({
     'process-great-mere-clean-perch': process({
@@ -89,6 +89,12 @@ const DEFINITIONS = Object.freeze({
             { itemId: 'item-redstone-rock-salt', quantity: 1 },
         ],
         outputs: [{ itemId: 'item-great-mere-fisher-biscuit', quantity: 3 }],
+    }),
+    'process-great-mere-dry-smoke-perch': process({
+        id: 'process-great-mere-dry-smoke-perch', name: 'Dry-Smoke Silver Perch', kind: 'processing',
+        durationSeconds: 480, proficiencyId: 'cooking', minProficiency: 2, proficiencyGain: 2, requiredStationTags: ['kitchen'],
+        inputs: [{ itemId: 'item-great-mere-perch-fillet', quantity: 2 }],
+        outputs: [{ itemId: 'item-great-mere-smoked-perch-ration', quantity: 1 }],
     }),
     'process-great-mere-rush-cord': process({
         id: 'process-great-mere-rush-cord', name: 'Twist Great Mere Rush Cord', kind: 'processing',
