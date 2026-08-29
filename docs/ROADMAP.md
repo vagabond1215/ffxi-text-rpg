@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.15
+Product:       0.9.100.16
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          54
+Data:          55
 Benchmark:     3
-Codename:      Gloamwood & Oldbough Refuge
+Codename:      Emberwash Badlands & Cinderwell Station
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -35,51 +35,48 @@ Ironspine Highlands                           COMPLETE / MERGED
 Headwater Vale & Waymeet Approach             COMPLETE / MAIN
 Starfen Delta & Brackish Coast                 COMPLETE / MAIN
 Gloamwood & Oldbough Refuge                    COMPLETE / MAIN
+Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Gloamwood & Oldbough Refuge
+### Emberwash Badlands & Cinderwell Station
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 54 / Product 0.9.100.15.**
+**Status: IMPLEMENTED ON `main`; promotion synchronization to Data 55 / Product 0.9.100.16 is in progress.**
 
 Purpose:
-- establish the first old-growth barrier beyond West Elderwood;
-- create a useful forester refuge without inventing a town or ancestral gate city;
-- make Oldbough the wagon turnaround;
-- continue only by a walk/mount deepwood trail;
-- stop before the western mountain crescent and Lethari homeland;
-- connect seven old-growth raws to ten practical production outputs.
+- establish the northern arid frontier beyond South Redstone without collapsing directly into the Veyra sphere;
+- create a useful fortified caravan well rather than a city or southern gate capital;
+- make Cinderwell the wagon turnaround;
+- continue only by a preparation-sensitive walk/mount/caravan foretrail;
+- stop before the farther true desert, southern strait, and Veyra lands;
+- connect seven arid-frontier raws to ten practical production outputs.
 
-Data 54 authored Gloamwood:
+Data 55 authored Emberwash:
 - 3 places and 2 routes;
 - 3 persistent NPCs and 2 schedules;
 - 8 species/populations and 7 exact-provenance sources/raws;
 - 10 transformations producing 10 outputs;
 - 2 Pack-v2 ownership graphs;
-- practical mushroom/berry safety with fantasy-era presentation.
+- practical Emberpod/Cinder Pear safety with fantasy-era presentation.
 
 Implementation freeze:
-- `83cfa4de61e315fb54689a5d7d2899d2ade41743`;
-- Check #1504 / run `33269167675`: Repository Audit, **781/781 tests**, Census, Benchmark 3, Benchmark Sample green.
+- `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
+- Check #1547 / run `33279116948`: Repository Audit, **786/786 tests**, Census, Benchmark 3, Benchmark Sample green.
 
-Promoted Data 54:
-- `2de11cd73302751e9a83088d77c2de42df3313e8`;
-- Check #1507 / run `33269370813`: same full gate green.
-
-Game State remains 14; no durable navigation, ward, pass, border, or hunting-state family was introduced.
+Game State remains 14; no durable survival, weather, border, desert-access, or wildlife-hunting-state family was introduced.
 
 ## Current content census
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 46 | 10 | reached |
-| Named NPCs | 38 | 50 | 12 short |
-| Shop/service sites | 31 | 20 | reached |
-| Creature definitions | 80 | 40 | reached |
-| Resource sources | 103 | 40 | reached |
-| Canonical items | 318 | 200 | reached |
-| Recipes/processes | 184 | 75 | reached |
+| Places/localities | 49 | 10 | reached |
+| Named NPCs | 41 | 50 | 9 short |
+| Shop/service sites | 33 | 20 | reached |
+| Creature definitions | 88 | 40 | reached |
+| Resource sources | 110 | 40 | reached |
+| Canonical items | 335 | 200 | reached |
+| Recipes/processes | 194 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -88,13 +85,13 @@ Game State remains 14; no durable navigation, ward, pass, border, or hunting-sta
 Supplemental:
 
 ```text
-routes                        19
+routes                        21
 spell schools                  4
 capabilities                  44
-NPC schedules                 21
-regional/shared packs         27
-pack-owned records           992
-runtime seed NPCs             37
+NPC schedules                 23
+regional/shared packs         29
+pack-owned records          1057
+runtime seed NPCs             40
 runtime seed enemies          17
 ```
 
@@ -106,7 +103,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 54.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 55.
 
 ## Formal Phase 0.9 sequence
 
@@ -152,13 +149,13 @@ Post-lock world-edge status:
 - **Headwater Vale — COMPLETE / Data 52.**
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
+- **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55 implementation.**
 
 Remaining ranking:
-1. Emberwash Badlands;
-2. Lower Deepvein;
-3. Waymeet Marches / central plateau approaches;
-4. Coppergrass extensions;
-5. Drowned Vaults.
+1. Lower Deepvein;
+2. Waymeet Marches / central plateau approaches;
+3. Coppergrass extensions;
+4. Drowned Vaults.
 
 The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
