@@ -49,7 +49,7 @@ test('Mere-Delta packet boat crosses the basin and distributaries without creati
     assert.equal(journey.segmentCount, 2);
     assert.equal(journey.distanceYalms, 20000);
     assert.equal(journey.durationSeconds, 6000);
-    assert.equal(journey.routeId, 'route-great-mere-delta-waterway');
+    assert.equal(journey.route.id, 'route-great-mere-delta-waterway');
 });
 
 test('delta ecology is brackish/coastal, provenance-complete, and does not force ordinary wildlife into encounters', () => {
