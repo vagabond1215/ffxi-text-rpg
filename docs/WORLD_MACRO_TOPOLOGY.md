@@ -277,28 +277,51 @@ The preferred representation is an irregular envelope with approximate scale, no
 
 ## 11. Post-lock world-edge priority
 
-The old edge list was generated before continental topology was known. After this lock, the recommended world-edge order is:
+The old edge list was generated before continental topology was known.
 
-1. **Headwater Vale** — resolves Timbercross headwaters and opens the first leg of the Waymeet overland corridor.
-2. **Starfen Delta / Brackish Coast** — realizes the now-locked Great Mere outflow and Eastern Sea boundary.
-3. **Gloamwood** — establishes the first true Lethari homeland barrier.
-4. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
-5. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
-6. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
-7. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
-8. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
+**Headwater Vale is now realized in Data 52** and opens the first grounded Timbercross-to-Waymeet leg while stopping short of the future plateau/march connection.
+
+Remaining recommended world-edge order:
+
+1. **Starfen Delta / Brackish Coast** — realizes the locked Great Mere outflow and Eastern Sea boundary.
+2. **Gloamwood** — establishes the first true Lethari homeland barrier.
+3. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
+4. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
+5. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
+6. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
+7. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
 
 This ranking is a planning recommendation, not automatic authorization.
 
-## 12. Version and persistence decision
+## 12. Version and persistence decision for the topology-lock pass
 
-This pass changes planning/documentation authority only.
+The topology-lock pass itself changed planning/documentation authority only.
 
-- Product remains **0.9.100.12**.
-- Package remains **0.9.100**.
-- Account Save remains **5**.
-- Game State remains **14**.
-- Data remains **51**.
-- Benchmark remains **3**.
+At the time of that lock:
 
-No new runtime state family, place, route, map, item, ecology record, or save contract is introduced.
+- Product was **0.9.100.12**;
+- Package was **0.9.100**;
+- Account Save was **5**;
+- Game State was **14**;
+- Data was **51**;
+- Benchmark was **3**.
+
+That pass introduced no runtime state family, place, route, map, item, ecology record, or save contract.
+
+## 13. Subsequent realization status
+
+Headwater Vale subsequently realized the first Waymeet-corridor leg as **Product 0.9.100.13 / Data 52** while keeping **Game State 14**.
+
+Canonical realized sequence:
+
+```text
+Timbercross Landing
+  -> Headwater Lower Vale
+  -> Headwater Warden Lodge [wagon limit]
+  -> Headwater Upper Vale [walk/mount trail]
+  -> future plateau/saddle [not yet routed]
+  -> future Waymeet Marches
+  -> Waymeet
+```
+
+The unfinished northern edge is intentional. Data 52 does not manufacture a route to the plateau or Waymeet simply because the macro envelopes are adjacent.

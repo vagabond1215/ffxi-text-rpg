@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.13
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          52
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Headwater Vale & Waymeet Approach
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 49 | canonical authored-data, stable-ID, item-safety, population-hunting linkage, pack ownership and validation contract |
+| Data | 52 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, population-hunting linkage, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -549,6 +549,68 @@ The intended census is 83 sources, 264 canonical items, 154 recipes/processes, 2
 
 No new durable player/world fact is introduced. Data 51 reuses route/service, POI/workstation, ecology/gathering, inventory/provenance, production, proficiency, and Pack-v2 authorities.
 
+### `0.9.100.13` — Headwater Vale & Waymeet Approach
+
+This revision realizes the Timbercross headwaters and the first grounded overland leg toward Waymeet without prematurely opening the later plateau/march connection.
+
+```text
+Product       0.9.100.12 -> 0.9.100.13
+Package       0.9.100    -> 0.9.100
+Data          51         -> 52
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 52
+
+Stable authored geography/content expands with:
+
+- Headwater Lower Vale, Headwater Warden Lodge, and Headwater Upper Vale;
+- `map-headwater-vale`;
+- a wagon-capable Timbercross river road whose wagon movement ends at the lodge;
+- a separate walk/mount-only Upper Trail;
+- six species/populations, including deliberate population-backed Red Deer hunting and Coldstream Trout fishing;
+- six exact-provenance gathering sources plus three Red Deer body resources;
+- three persistent lodge NPCs and two fictional-time schedules;
+- ten processing/crafting transformations and ten outputs spanning prepared fish/game, deer leather/antler components, alder/willow work, fishing gear, and bridge repair;
+- `pack-headwater-vale-ecology` and `pack-headwater-vale`;
+- practical fantasy-era food-safety presentation backed by explicit internal consumption metadata.
+
+The implementation deliberately leaves the Upper Vale northern rim without an onward route. Future central-plateau / Waymeet-Marches work must author a real route instead of treating map proximity as traversability.
+
+Implementation freeze `aa39347a0faa754690a194d926262256e92027f1` passed Check #1476 / run `33264692343` with Repository Audit, **770/770 tests**, Content Census, Benchmark 3, and Benchmark Sample.
+
+Validated Data 52 census:
+
+```text
+places/localities                        40
+named NPCs                               32
+shop/service sites                       27
+creature definitions                     64
+resource sources                         89
+canonical items                         283
+recipes/processes                       164
+abilities/techniques                     41
+quests/contracts                         18
+companions                                1
+transport services                        6
+routes                                   14
+spell schools                             4
+capabilities                             44
+NPC schedules                            17
+regional/shared packs                    23
+pack-owned records                      859
+runtime seed NPCs                        31
+runtime seed enemies                     17
+```
+
+Raw-resource production utilization is **89/100** and luxury raw utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+Data 52 composes existing place/map/route, ecology/population, population-encounter, battle/body-recovery, gathering, inventory/provenance, production/work/workstation, shop, NPC-schedule, and Pack-v2 authorities. No new durable serialized state family is introduced.
+
 ## Persistence history
 
 Relevant late history:
@@ -575,6 +637,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.10          no Game State change; Data 48 -> 49
 0.9.100.11          no Game State change; Data 49 -> 50
 0.9.100.12          no Game State change; Data 50 -> 51
+0.9.100.13          no Game State change; Data 51 -> 52
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -600,18 +663,23 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.8.0
+regionalContentPacks   0.11.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.3.0
+npcSchedules           0.4.0
 commitments            0.7.0
-productionCatalog      0.6.0
-productionItems        0.8.0
+productionCatalog      0.9.0
+productionItems        0.10.0
+ecologyRegistry        0.6.0
+resourceItemRegistry   0.7.0
+routeCatalog           0.4.0
+headwaterEcology       0.1.0
+headwaterProduction    0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
 
-The schedule system version stays 0.3.0 because only authored schedule data grew; the schedule contract/behavior did not change.
+Headwater uses the existing schedule behavior and durable-state contract; the catalog/system version advances only to reflect the expanded canonical authored schedule set and connected Data 52 registries.
 
 ## Validation baseline
 
@@ -629,7 +697,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 51 regional-resilience checkpoint supersedes Data 50: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 83 sources, 264 items, 154 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 21 packs, and 799 pack-owned records.
+The current Data 52 Headwater checkpoint supersedes Data 51: 40 places, 32 named NPCs, 27 service sites, 64 creatures, 89 sources, 283 items, 164 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 17 schedules, 23 packs, and 859 pack-owned records.
+
+Headwater implementation freeze Check #1476 / run `33264692343` passed the full gate with **770/770 tests**. The final promoted-main documentation synchronization must also pass the same hosted Check before the checkpoint is considered fully closed.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
@@ -654,7 +724,7 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 
 ## Governance and release discipline
 
-Phase 0.9 track work uses PR-based integration and merges only after required validation evidence is observed. Protected `main` remains recommended; if the available repository action surface cannot configure protection, record that administrative limitation rather than claiming it was changed.
+Normal low-risk Phase 0.9 work proceeds directly on `main`. Use a feature branch/PR only when rollback or blast-radius risk materially exceeds what ordinary GitHub history/revert can safely contain. Required validation evidence still applies before a bounded checkpoint is treated as complete.
 
 A coherent checkpoint requires one bounded contract, focused/adversarial tests, relevant scale validation, full hosted Check, deliberate version decisions, an exact frozen implementation SHA before documentation synchronization, and `THREAD_HANDOFF.md` updated last.
 

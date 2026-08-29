@@ -1,8 +1,8 @@
 # Temporary World Edge Extension Plan
 
-Status: **PAUSED as an implementation sequence pending macro-world/civilization planning.**
+Status: **ACTIVE AS A TEMPORARY PLANNING REFERENCE AFTER THE MACRO-TOPOLOGY LOCK.**
 
-The existing ranked zones remain useful candidates, but **do not continue the numbered edge sequence yet**. `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md` now takes precedence for deciding continents, coastlines, mountain systems, drainage, racial/cultural heartlands, capital separation, vertical realms, and major long-distance barriers.
+The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale has since been implemented as Data 52. The historical numbered sections remain design notes rather than automatic authorization for later zones.
 
 Purpose: preserve the current macro-geography, boundary-access rules, and prioritized zone-extension sequence so a new thread can resume from repository evidence without repeating the world-edge audit. This file may be deleted once its decisions have been absorbed into permanent regional/world-cartography documents.
 
@@ -45,16 +45,19 @@ That blocker is now resolved by `docs/WORLD_MACRO_TOPOLOGY.md`.
 
 The historical numbered sections below are retained as candidate design notes, **not as the current implementation order**.
 
-Post-lock recommended world-edge order:
+Post-lock world-edge status:
 
-1. Headwater Vale;
-2. Starfen Delta / Brackish Coast;
-3. Gloamwood;
-4. Emberwash Badlands;
-5. Lower Deepvein;
-6. Waymeet Marches / central plateau approaches;
-7. Coppergrass extensions;
-8. Drowned Vaults.
+- **Headwater Vale — COMPLETE / Data 52.**
+
+Remaining recommended order:
+
+1. Starfen Delta / Brackish Coast;
+2. Gloamwood;
+3. Emberwash Badlands;
+4. Lower Deepvein;
+5. Waymeet Marches / central plateau approaches;
+6. Coppergrass extensions;
+7. Drowned Vaults.
 
 Key reasons:
 
@@ -64,7 +67,28 @@ Key reasons:
 - Emberwash remains important but is now explicitly only the northern arid frontier before the southern strait/Veyra sphere;
 - Lower Deepvein is a Deep World approach rather than a shortcut directly to the Korren capital.
 
-No candidate is auto-authorized.
+No remaining candidate is auto-authorized.
+
+## Headwater Vale implementation result
+
+Headwater Vale is complete in Data 52 / Product 0.9.100.13.
+
+Implemented directly on `main` with:
+
+- Headwater Lower Vale, Warden Lodge, and Upper Vale;
+- Timbercross river road with wagon access only as far as the lodge;
+- walk/mount-only Upper Trail;
+- deliberate lack of an onward Upper Vale route until future plateau/Waymeet-Marches work;
+- six species/populations, six gathering sources, and population-backed Red Deer hunting;
+- nine raw/body resources;
+- ten production transformations and ten outputs;
+- three lodge NPCs, two schedules, exchange and workstation services;
+- two Pack-v2 ownership graphs;
+- exact provenance and practical fantasy-era food-safety treatment.
+
+Implementation freeze `aa39347a0faa754690a194d926262256e92027f1` passed Check #1476 / run `33264692343` with **770/770 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+The next ranked world-edge candidate is **Starfen Delta / Brackish Coast**.
 
 ## Prioritized zone/biome extensions
 
