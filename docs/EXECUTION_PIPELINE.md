@@ -16,7 +16,7 @@ Codename:      Gloamwood & Oldbough Refuge
 
 ## Current bounded-unit state
 
-**Starfen Delta & Brackish Coast** is the latest runtime/data bounded unit on `main`. It realizes the Great Mere outflow, Tideglass Landing, and the first true Eastern Sea coast without opening Miri or generalized ocean travel.
+**Gloamwood & Oldbough Refuge** is the latest runtime/data bounded unit on `main`. It establishes the old-growth barrier beyond West Elderwood, keeps wagons at Oldbough Refuge, and stops the runtime route graph before the western mountain crescent and Lethari homeland.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -29,31 +29,35 @@ Latest bounded implementation:
 - Starfen Delta implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166`;
 - Check #1491 / run `33267789356`: full gate green, 776/776 tests;
 - promoted Data 53 head `8f968155d092431b0a3314d38f4d890b0c87f599`;
-- Check #1493 / run `33267935109`: full gate green, 776/776 tests, Data 53 census confirmed.
+- Check #1493 / run `33267935109`: full gate green, 776/776 tests, Data 53 census confirmed;
+- Gloamwood implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743`;
+- Check #1504 / run `33269167675`: full gate green, 781/781 tests;
+- promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8`;
+- Check #1507 / run `33269370813`: full gate green, 781/781 tests, Data 54 census confirmed.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 53 metrics
+## Data 54 metrics
 
 ```text
-places/localities                       43
-named NPCs                              35
-shop/service sites                      29
-creatures                               72
-resource sources                        96
-canonical items                        301
-recipes/processes                      174
+places/localities                       46
+named NPCs                              38
+shop/service sites                      31
+creatures                               80
+resource sources                       103
+canonical items                        318
+recipes/processes                      184
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
 
-raw resources with production demand   96 / 107
+raw resources with production demand  103 / 114
 luxury raws with production demand      14 / 14
-routes                                  17
-NPC schedules                           19
-regional/shared packs                   25
-pack-owned records                     927
+routes                                  19
+NPC schedules                           21
+regional/shared packs                   27
+pack-owned records                     992
 ```
 
 ## Regional resilience rule
@@ -96,7 +100,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 35/50;
+- named NPCs: 38/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -115,7 +119,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale and Starfen Delta / Brackish Coast are complete. Next ranked world-edge candidate: **Gloamwood**. It is queued, not auto-authorized.
+Headwater Vale, Starfen Delta / Brackish Coast, and Gloamwood & Oldbough Refuge are complete. Next ranked world-edge candidate: **Emberwash Badlands**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -129,8 +133,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Gloamwood is now the next ranked candidate.
-- Emberwash follows; Lower Deepvein remains the next Deep World approach candidate.
+- Emberwash Badlands is now the next ranked candidate.
+- Lower Deepvein follows as the next Deep World approach candidate; Waymeet Marches / central plateau approaches follow after that.
 
 Strong system/content candidates:
 - companion breadth;
