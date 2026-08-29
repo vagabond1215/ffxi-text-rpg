@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.14
+Product:       0.9.100.15
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          53
+Data:          54
 Benchmark:     3
-Codename:      Starfen Delta & Brackish Coast
+Codename:      Gloamwood & Oldbough Refuge
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
