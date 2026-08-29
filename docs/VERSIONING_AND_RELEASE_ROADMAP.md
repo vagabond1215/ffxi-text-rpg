@@ -832,6 +832,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.13          no Game State change; Data 51 -> 52
 0.9.100.14          no Game State change; Data 52 -> 53
 0.9.100.15          no Game State change; Data 53 -> 54
+0.9.100.16          no Game State change; Data 54 -> 55
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -857,16 +858,16 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.13.0
+regionalContentPacks   0.14.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.6.0
+npcSchedules           0.7.0
 commitments            0.7.0
-productionCatalog      0.11.0
-productionItems        0.12.0
-ecologyRegistry        0.8.0
-resourceItemRegistry   0.9.0
-routeCatalog           0.6.0
+productionCatalog      0.12.0
+productionItems        0.13.0
+ecologyRegistry        0.9.0
+resourceItemRegistry   0.10.0
+routeCatalog           0.7.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
 starfenDeltaEcology    0.1.0
@@ -874,11 +875,14 @@ starfenDeltaProduction 0.1.0
 gloamwoodEcology        0.1.0
 gloamwoodProduction     0.1.0
 gloamwoodResourceItems  0.1.0
+emberwashEcology         0.1.0
+emberwashProduction      0.1.0
+emberwashResourceItems   0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
 
-Gloamwood uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 54 registries.
+Emberwash uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 55 registries.
 
 ## Validation baseline
 
@@ -896,9 +900,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 54 Gloamwood checkpoint supersedes Data 53: 46 places, 38 named NPCs, 31 service sites, 80 creatures, 103 sources, 318 items, 184 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 21 schedules, 27 packs, and 992 pack-owned records.
+The current Data 55 Emberwash implementation supersedes Data 54: 49 places, 41 named NPCs, 33 service sites, 88 creatures, 110 sources, 335 items, 194 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 23 schedules, 29 packs, and 1057 pack-owned records.
 
-Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**.
+Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
