@@ -72,6 +72,18 @@ export function createSeedNpcs() {
             locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions'],
         }),
         createNpc({
+            id: 'npc-headwater-elin-marr', name: 'Elin Marr', title: 'Headwater River Factor', faction: 'Thornwall',
+            locationId: 'headwater-warden-lodge', services: ['regional-goods', 'fishery-trade', 'timber-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-headwater-torin-ash', name: 'Torin Ash', title: 'Headwater Warden', faction: 'Thornwall',
+            locationId: 'headwater-warden-lodge', services: ['route-guidance', 'river-crossings', 'hunting', 'wildlife-tracking', 'roadwork'],
+        }),
+        createNpc({
+            id: 'npc-headwater-bessa-reed', name: 'Bessa Reed', title: 'Headwater Lodge Keeper', faction: 'Thornwall',
+            locationId: 'headwater-warden-lodge', services: ['lodging', 'food', 'smokehouse', 'animal-shelter', 'trail-provisions'],
+        }),
+        createNpc({
             id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
             locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
         }),
@@ -192,6 +204,11 @@ export function createSeedEnemies() {
         createEnemy({
             id: 'enemy-starfen-mire-heron', speciesId: 'species-starfen-mire-heron', name: 'Mirecrest Heron', family: 'mire-heron', ecosystem: 'bird',
             zoneId: 'west-starfen', level: 4, expValue: 90, lootTableId: 'starfenMireHeron', baseAttributes: { dex: 2, agi: 2, vit: -1 },
+            aggro: { sight: false, sound: false, magic: false, lowHp: false },
+        }),
+        createEnemy({
+            id: 'enemy-headwater-red-deer', speciesId: 'species-headwater-red-deer', name: 'Headwater Red Deer', family: 'red-deer', ecosystem: 'beast',
+            zoneId: 'headwater-upper-vale', level: 5, expValue: 110, lootTableId: 'headwaterRedDeer', baseAttributes: { vit: 1, agi: 2, str: 1 },
             aggro: { sight: false, sound: false, magic: false, lowHp: false },
         }),
         createEnemy({

@@ -26,6 +26,11 @@ export const LOOT_TABLES = Object.freeze({
     starfenMireHeron: lootTable('starfenMireHeron', 'Mirecrest Heron Recoveries', [
         drop('item-starfen-heron-feather', 'Mirecrest Feather', 'material', 0.8, { tags: ['material', 'feather', 'bird', 'starfen'], valueGil: 14 }),
     ]),
+    headwaterRedDeer: lootTable('headwaterRedDeer', 'Headwater Red Deer Recoveries', [
+        drop('item-headwater-red-deer-hide', 'Headwater Red Deer Hide', 'material', 0.82, { tags: ['material', 'hide', 'beast', 'game', 'headwater'], valueGil: 22 }),
+        drop('item-headwater-red-deer-venison', 'Fresh Headwater Venison', 'material', 0.9, { tags: ['meat', 'food', 'game', 'beast', 'headwater'], valueGil: 17 }),
+        drop('item-headwater-red-deer-antler', 'Headwater Red Deer Antler', 'material', 0.68, { tags: ['material', 'antler', 'bone', 'game', 'headwater'], valueGil: 20 }),
+    ]),
     ironspineSnowhorn: lootTable('ironspineSnowhorn', 'Snowhorn Ibex Recoveries', [
         drop('item-ironspine-snowhorn-hide', 'Snowhorn Ibex Hide', 'material', 0.82, { tags: ['material', 'hide', 'beast', 'ironspine'], valueGil: 24 }),
         drop('item-ironspine-snowhorn-meat', 'Fresh Snowhorn Meat', 'material', 0.88, { tags: ['meat', 'food', 'game', 'beast', 'ironspine'], valueGil: 16 }),
