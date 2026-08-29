@@ -30,11 +30,11 @@ import {
 import { getRegionalContentPack, listRegionalContentPacks } from '../js/text/data/regionalContentPacks.js';
 import { validateContentPacks } from '../js/text/systems/contentPackValidator.js';
 
-test('material foundations contributes twenty-one sourced raws and fifty-five reusable transformations', () => {
-    assert.equal(listMaterialFoundationResourceItems().length, 21);
-    assert.equal(listMaterialFoundationGatheringSources().length, 21);
+test('material foundations and resilience pass contribute twenty-seven sourced raws and fifty-nine reusable transformations', () => {
+    assert.equal(listMaterialFoundationResourceItems().length, 27);
+    assert.equal(listMaterialFoundationGatheringSources().length, 27);
     assert.equal(listMaterialFoundationProductionItems().length, 55);
-    assert.equal(listMaterialFoundationProcessDefinitions().length, 55);
+    assert.equal(listMaterialFoundationProcessDefinitions().length, 59);
 
     assert.deepEqual(validateResourceItemRegistry(), []);
     assert.deepEqual(validateEcologyRegistry(), []);
@@ -58,16 +58,19 @@ test('material foundations contributes twenty-one sourced raws and fifty-five re
     }
 });
 
-test('every new raw material has direct production demand', () => {
-    const rawIds = new Set(listMaterialFoundationResourceItems().map((item) => item.id));
+test('every material-foundation raw has production demand or an intentional direct construction use', () => {
+    const raws = listMaterialFoundationResourceItems();
+    const rawIds = new Set(raws.map((item) => item.id));
     const used = new Set(
         listProductionDefinitions()
             .flatMap((definition) => definition.inputs.map((entry) => entry.itemId))
             .filter((id) => rawIds.has(id)),
     );
 
-    assert.equal(used.size, rawIds.size);
-    for (const id of rawIds) assert.ok(used.has(id), `${id} should feed production`);
+    for (const item of raws) {
+        const directConstruction = item.sinks.some((sink) => sink.type === 'construction');
+        assert.ok(used.has(item.id) || directConstruction, `${item.id} should feed production or construction`);
+    }
 });
 
 test('metal families cover structural, decorative, corrosion-resistant, conductive, and arcane-conductive roles', () => {
@@ -141,8 +144,8 @@ test('fiber stock forms an explicit yarn-to-hawser and netting hierarchy', () =>
 test('shared pack owns the material foundation graph and records the husbandry boundary', () => {
     const pack = getRegionalContentPack('pack-material-foundations-common-components');
     assert.ok(pack);
-    assert.equal(pack.records.gatheringSources.length, 21);
-    assert.equal(pack.records.items.length, 76);
-    assert.equal(pack.records.recipes.length, 55);
+    assert.equal(pack.records.gatheringSources.length, 27);
+    assert.equal(pack.records.items.length, 82);
+    assert.equal(pack.records.recipes.length, 59);
     assert.match(pack.metadata.notes, /Wool remains deferred to an explicit husbandry source model/);
 });
