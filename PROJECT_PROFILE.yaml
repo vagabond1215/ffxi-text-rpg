@@ -23,8 +23,9 @@ authority:
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
+  regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
 git:
-  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
+  current_normal_work: regional-resource-resilience-data-51-final-validation-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -41,8 +42,8 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: material-foundations-and-common-components
-  latest_bounded_unit_status: complete-on-main-validated-check-1427
+  latest_bounded_unit: regional-resource-and-trade-resilience
+  latest_bounded_unit_status: implemented-on-main-final-validation-pending
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: emberwash-badlands
@@ -66,14 +67,15 @@ validation:
   ingredient_luxury_guard: tests/ingredientLuxuryProcessing.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
   material_foundations_guard: tests/materialFoundations.test.js
+  regional_resource_distribution_guard: tests/regionalResourceDistribution.test.js
 quality:
-  current_product_version: 0.9.100.11
+  current_product_version: 0.9.100.12
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 50
+  current_data_version: 51
   current_benchmark_version: 3
-  current_codename: Material Foundations & Common Components
+  current_codename: Regional Resource & Trade Resilience
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -106,6 +108,18 @@ quality:
     production_tool_tags_exercised: true
     husbandry_wool_deferred: true
     persistence_family_added: false
+  data_51:
+    resilience_sources_added: 6
+    resilience_raw_resources_added: 6
+    substitute_processes_added: 5
+    regional_charcoal_alternatives_added: 4
+    salt_free_fish_preservation_fallback: true
+    light_workstation_exposure_corrected: true
+    canonical_raw_production_utilization: 80-of-91
+    luxury_raw_production_utilization: 14-of-14
+    regional_trade_basin_audit: true
+    coppergrass_transit_wilderness_not_staffed_locality: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -113,9 +127,9 @@ content_scale:
     named_npcs: 29
     shop_service_sites: 25
     creature_definitions: 58
-    resource_sources: 77
-    canonical_items: 258
-    recipes_processes: 149
+    resource_sources: 83
+    canonical_items: 264
+    recipes_processes: 154
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
@@ -125,7 +139,7 @@ content_scale:
     capability_training_definitions: 44
     npc_schedules: 15
     regional_shared_packs: 21
-    pack_owned_records: 782
+    pack_owned_records: 799
     runtime_seed_npcs: 28
     runtime_seed_enemies: 16
   mechanics_floors_reached:
@@ -147,5 +161,8 @@ constraints:
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
   - portable replaceable cross-profession components should be canonical items when independently traded repaired replaced or reused
+  - regional resilience prefers ordinary substitute routes and dependable trade basins over duplicating specialty resources in every biome
+  - premium outcomes may still require specialty trade
+  - Coppergrass remains a transit wilderness until a staffed locality is intentionally authored
   - roadmap and world-edge sequencing do not auto-authorize later units
   - prefer direct work on main unless a change has material rollback risk that ordinary GitHub revert cannot safely contain
