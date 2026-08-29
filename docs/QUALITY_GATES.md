@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 50 adds **no persistence or lifecycle owner**. Material foundations are authored gathering/resource/production/Pack-v2 definitions using existing ecology, inventory/provenance, work/proficiency, workstation, and production authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Data 51 adds **no persistence or lifecycle owner**. The resilience pass adds authored gathering resources, substitute production routes, and POI workstation tags using existing ecology, inventory/provenance, work/proficiency, workstation, production, route, and Pack-v2 authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -191,9 +191,9 @@ places/localities       37 / mechanics 10
 named NPCs              29 / 50
 shop/service sites      25 / 20
 creatures               58 / 40
-resource sources        77 / 40
-canonical items        258 / 200
-recipes/processes      149 / 75
+resource sources        83 / 40
+canonical items        264 / 200
+recipes/processes      154 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -208,12 +208,20 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           15
 regional/shared packs                   21
-pack-owned records                     782
+pack-owned records                     799
 pack-owned abilities/capabilities/
   schedules/companions              41/44/15/1
 ```
 
-The mechanics-scale gate remains NOT READY. Recipes/processes are now 149/75 and canonical items 258/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+The mechanics-scale gate remains NOT READY. Recipes/processes are now 154/75 and canonical items 264/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+
+## Regional distribution gate
+
+For established economic areas, validate the local region plus reliable nearby trade partners rather than demanding local autarky. A viable basin should cover staple food/protein, structural stock, common metal access, bindings, fuel, medicine, a preservation path, and workstation access appropriate to the settlement.
+
+Do not satisfy this gate by duplicating specialty deposits everywhere. Ordinary substitutes are preferred; premium outcomes may still require regional trade. Coppergrass is exempt from settlement-workstation expectations while it remains an authored transit wilderness rather than a staffed locality.
+
+Permanent evidence: `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md` and `tests/regionalResourceDistribution.test.js`.
 
 ## Performance
 
