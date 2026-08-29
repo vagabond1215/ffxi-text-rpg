@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Data 51 census contract:
+Validated Data 51 census:
 
 ```text
 places/localities       37 / mechanics floor 10
