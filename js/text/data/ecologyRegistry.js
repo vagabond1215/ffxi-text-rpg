@@ -32,6 +32,17 @@ import {
     validateHeadwaterEcology,
 } from './headwaterEcology.js';
 import {
+    getStarfenDeltaEcologyFamily,
+    getStarfenDeltaGatheringSource,
+    getStarfenDeltaPopulation,
+    getStarfenDeltaSpecies,
+    listStarfenDeltaEcologyFamilies,
+    listStarfenDeltaGatheringSources,
+    listStarfenDeltaPopulations,
+    listStarfenDeltaSpecies,
+    validateStarfenDeltaEcology,
+} from './starfenDeltaEcology.js';
+import {
     getIronspineEcologyFamily,
     getIronspineGatheringSource,
     getIronspinePopulation,
@@ -59,17 +70,17 @@ import {
     validateRegionalEcologyExpansion,
 } from './regionalEcologyExpansion.js';
 
-export const ECOLOGY_REGISTRY_VERSION = 6;
+export const ECOLOGY_REGISTRY_VERSION = 7;
 
-export function getCanonicalEcologyFamily(id) { return getEcologyFamily(id) ?? getRegionalEcologyFamily(id) ?? getGreatMereEcologyFamily(id) ?? getIronspineEcologyFamily(id) ?? getHeadwaterEcologyFamily(id); }
-export function getCanonicalSpecies(id) { return getSpecies(id) ?? getRegionalSpecies(id) ?? getGreatMereSpecies(id) ?? getIronspineSpecies(id) ?? getHeadwaterSpecies(id); }
-export function getCanonicalPopulation(id) { return getPopulation(id) ?? getRegionalPopulation(id) ?? getGreatMerePopulation(id) ?? getIronspinePopulation(id) ?? getHeadwaterPopulation(id); }
-export function getCanonicalGatheringSource(id) { return getGatheringSource(id) ?? getRegionalGatheringSource(id) ?? getGreatMereGatheringSource(id) ?? getIronspineGatheringSource(id) ?? getHeadwaterGatheringSource(id) ?? getMaterialFoundationGatheringSource(id); }
+export function getCanonicalEcologyFamily(id) { return getEcologyFamily(id) ?? getRegionalEcologyFamily(id) ?? getGreatMereEcologyFamily(id) ?? getIronspineEcologyFamily(id) ?? getHeadwaterEcologyFamily(id) ?? getStarfenDeltaEcologyFamily(id); }
+export function getCanonicalSpecies(id) { return getSpecies(id) ?? getRegionalSpecies(id) ?? getGreatMereSpecies(id) ?? getIronspineSpecies(id) ?? getHeadwaterSpecies(id) ?? getStarfenDeltaSpecies(id); }
+export function getCanonicalPopulation(id) { return getPopulation(id) ?? getRegionalPopulation(id) ?? getGreatMerePopulation(id) ?? getIronspinePopulation(id) ?? getHeadwaterPopulation(id) ?? getStarfenDeltaPopulation(id); }
+export function getCanonicalGatheringSource(id) { return getGatheringSource(id) ?? getRegionalGatheringSource(id) ?? getGreatMereGatheringSource(id) ?? getIronspineGatheringSource(id) ?? getHeadwaterGatheringSource(id) ?? getStarfenDeltaGatheringSource(id) ?? getMaterialFoundationGatheringSource(id); }
 
-export function listCanonicalEcologyFamilies() { return unique([...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies(), ...listIronspineEcologyFamilies(), ...listHeadwaterEcologyFamilies()]); }
-export function listCanonicalSpecies() { return unique([...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies(), ...listIronspineSpecies(), ...listHeadwaterSpecies()]); }
-export function listCanonicalPopulations() { return unique([...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations(), ...listIronspinePopulations(), ...listHeadwaterPopulations()]); }
-export function listCanonicalGatheringSources() { return unique([...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources(), ...listIronspineGatheringSources(), ...listHeadwaterGatheringSources(), ...listMaterialFoundationGatheringSources()]); }
+export function listCanonicalEcologyFamilies() { return unique([...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies(), ...listIronspineEcologyFamilies(), ...listHeadwaterEcologyFamilies(), ...listStarfenDeltaEcologyFamilies()]); }
+export function listCanonicalSpecies() { return unique([...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies(), ...listIronspineSpecies(), ...listHeadwaterSpecies(), ...listStarfenDeltaSpecies()]); }
+export function listCanonicalPopulations() { return unique([...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations(), ...listIronspinePopulations(), ...listHeadwaterPopulations(), ...listStarfenDeltaPopulations()]); }
+export function listCanonicalGatheringSources() { return unique([...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources(), ...listIronspineGatheringSources(), ...listHeadwaterGatheringSources(), ...listStarfenDeltaGatheringSources(), ...listMaterialFoundationGatheringSources()]); }
 
 export function validateEcologyRegistry() {
     const issues = [
@@ -78,13 +89,14 @@ export function validateEcologyRegistry() {
         ...validateGreatMereEcology().map((issue) => `[greatMere] ${issue}`),
         ...validateIronspineEcology().map((issue) => `[ironspine] ${issue}`),
         ...validateHeadwaterEcology().map((issue) => `[headwater] ${issue}`),
+        ...validateStarfenDeltaEcology().map((issue) => `[starfenDelta] ${issue}`),
         ...validateMaterialFoundationSources().map((issue) => `[materialFoundation] ${issue}`),
     ];
     const collections = [
-        ['family', [...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies(), ...listIronspineEcologyFamilies(), ...listHeadwaterEcologyFamilies()]],
-        ['species', [...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies(), ...listIronspineSpecies(), ...listHeadwaterSpecies()]],
-        ['population', [...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations(), ...listIronspinePopulations(), ...listHeadwaterPopulations()]],
-        ['source', [...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources(), ...listIronspineGatheringSources(), ...listHeadwaterGatheringSources(), ...listMaterialFoundationGatheringSources()]],
+        ['family', [...listEcologyFamilies(), ...listRegionalEcologyFamilies(), ...listGreatMereEcologyFamilies(), ...listIronspineEcologyFamilies(), ...listHeadwaterEcologyFamilies(), ...listStarfenDeltaEcologyFamilies()]],
+        ['species', [...listSpecies(), ...listRegionalSpecies(), ...listGreatMereSpecies(), ...listIronspineSpecies(), ...listHeadwaterSpecies(), ...listStarfenDeltaSpecies()]],
+        ['population', [...listPopulations(), ...listRegionalPopulations(), ...listGreatMerePopulations(), ...listIronspinePopulations(), ...listHeadwaterPopulations(), ...listStarfenDeltaPopulations()]],
+        ['source', [...listGatheringSources(), ...listRegionalGatheringSources(), ...listGreatMereGatheringSources(), ...listIronspineGatheringSources(), ...listHeadwaterGatheringSources(), ...listStarfenDeltaGatheringSources(), ...listMaterialFoundationGatheringSources()]],
     ];
     for (const [label, records] of collections) {
         const ids = new Set();

@@ -28,8 +28,15 @@ import {
     listHeadwaterSpecies,
 } from './headwaterEcology.js';
 import { listHeadwaterResourceItems } from './headwaterResourceItems.js';
+import {
+    listStarfenDeltaEcologyFamilies,
+    listStarfenDeltaGatheringSources,
+    listStarfenDeltaPopulations,
+    listStarfenDeltaSpecies,
+} from './starfenDeltaEcology.js';
+import { listStarfenDeltaResourceItems } from './starfenDeltaResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 33;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 34;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -250,7 +257,29 @@ export const HEADWATER_VALE_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK]);
+export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
+    id: 'pack-starfen-delta-brackish-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['starfen-delta'], steward: 'mistmere-tideglass' },
+    dependencies: ['pack-starfen-ecology-breadth', 'pack-great-mere-freshwater-ecology'],
+    metadata: {
+        name: 'Starfen Delta & Brackish Coast Ecology',
+        notes: 'Freshwater-to-brackish transition ecology with eight coastal species, seven exact-provenance sources, and no forced encounter templates for ordinary wildlife.',
+    },
+    records: {
+        places: [
+            { id: 'starfen-lower-delta', catalogRef: true },
+            { id: 'starfen-brackish-coast', catalogRef: true },
+        ],
+        ecologyFamilies: listStarfenDeltaEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listStarfenDeltaSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listStarfenDeltaPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listStarfenDeltaGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listStarfenDeltaResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
