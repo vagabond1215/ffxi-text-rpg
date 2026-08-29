@@ -2,7 +2,7 @@
 
 Status: **ACTIVE AS A TEMPORARY PLANNING REFERENCE AFTER THE MACRO-TOPOLOGY LOCK.**
 
-The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale has since been implemented as Data 52. The historical numbered sections remain design notes rather than automatic authorization for later zones.
+The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale, Starfen Delta / Brackish Coast, and Gloamwood & Oldbough Refuge have since been realized through Data 54. The historical numbered sections remain design notes rather than automatic authorization for later zones.
 
 Purpose: preserve the current macro-geography, boundary-access rules, and prioritized zone-extension sequence so a new thread can resume from repository evidence without repeating the world-edge audit. This file may be deleted once its decisions have been absorbed into permanent regional/world-cartography documents.
 
@@ -49,15 +49,15 @@ Post-lock world-edge status:
 
 - **Headwater Vale — COMPLETE / Data 52.**
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
+- **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
 
 Remaining recommended order:
 
-1. Gloamwood;
-2. Emberwash Badlands;
-3. Lower Deepvein;
-4. Waymeet Marches / central plateau approaches;
-5. Coppergrass extensions;
-6. Drowned Vaults.
+1. Emberwash Badlands;
+2. Lower Deepvein;
+3. Waymeet Marches / central plateau approaches;
+4. Coppergrass extensions;
+5. Drowned Vaults.
 
 Key reasons:
 
@@ -109,7 +109,28 @@ Implemented directly on `main` with:
 
 Implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166` passed Check #1491 / run `33267789356` with **776/776 tests**. Promoted Data 53 Check #1493 / run `33267935109` was also fully green.
 
-The next ranked world-edge candidate is **Gloamwood**.
+The next ranked world-edge candidate is **Emberwash Badlands**.
+
+## Gloamwood & Oldbough Refuge implementation result
+
+Gloamwood & Oldbough Refuge is complete in Data 54 / Product 0.9.100.15.
+
+Implemented directly on `main` with:
+
+- Gloamwood Verge, Oldbough Refuge, and Gloamwood Deep;
+- Oldgrowth Cart Track from West Elderwood to Oldbough with walk/mount/wagon access;
+- Deepwood Forester Trail from Oldbough to Gloamwood Deep with walk/mount only;
+- Oldbough as the explicit wagon limit;
+- no onward route into the western mountain crescent or Lethari homeland;
+- eight old-growth species/populations and seven exact-provenance sources/raws;
+- ten transformations producing ten outputs;
+- three refuge staff, two schedules, exchange/forester/workyard/hearth services;
+- two Pack-v2 ownership graphs;
+- practical mushroom/berry safety treatment.
+
+Implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743` passed Check #1504 / run `33269167675` with **781/781 tests**. Promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8` passed Check #1507 / run `33269370813` with the same full gate.
+
+The next ranked world-edge candidate is **Emberwash Badlands**, followed by **Lower Deepvein**.
 
 ## Prioritized zone/biome extensions
 
@@ -278,7 +299,7 @@ Access: physically walkable but preparation-sensitive; water, heat, storms, well
 
 Habitation: caravan wells, salt camps, prospectors, fortified route station, ruins.
 
-### 6. Gloamwood
+### 6. Gloamwood — IMPLEMENTED / VALIDATED
 
 Placement: beyond West Elderwood / farther into old growth.
 
