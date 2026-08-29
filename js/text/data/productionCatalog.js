@@ -5,7 +5,7 @@ import { getGreatMereProcessDefinition, listGreatMereProcessDefinitions } from '
 import { getIronspineProcessDefinition, listIronspineProcessDefinitions } from './ironspineProductionCatalog.js';
 import { getMaterialFoundationProcessDefinition, listMaterialFoundationProcessDefinitions } from './materialFoundationProductionCatalog.js';
 
-export const PRODUCTION_CATALOG_VERSION = 9;
+export const PRODUCTION_CATALOG_VERSION = 10;
 export const PRODUCTION_KINDS = Object.freeze(['processing', 'crafting', 'cooking', 'salvage']);
 
 const PRODUCTION_DEFINITIONS = Object.freeze({
