@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.15
+Product:       0.9.100.16
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          54
+Data:          55
 Benchmark:     3
-Codename:      Gloamwood & Oldbough Refuge
+Codename:      Emberwash Badlands & Cinderwell Station
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -48,9 +48,9 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Gloamwood implementation freeze Check #1504 and promoted Data 54 Check #1507 both passed 781/781 tests. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Emberwash implementation freeze Check #1547 passed 786/786 tests after the earlier Data 54 Gloamwood promotion. |
 
-## Content infrastructure and regional packs — Data 54
+## Content infrastructure and regional packs — Data 55
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -66,6 +66,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Headwater Vale geography/economy | playable | Timbercross headwaters, wagon-limited warden lodge, upper trail, coldstream fishing, red-deer hunting/body recovery, alder/willow work, preservation, and bridge-repair production form the first overland Waymeet approach. |
 | Starfen Delta / Brackish Coast | playable | Great Mere outflow, lower delta levees, Tideglass pilot port, packet-boat service, tidal coast ecology, seafood/salt/shell/reed production, and explicit non-walkable Eastern Sea boundary. |
 | Gloamwood & Oldbough Refuge | playable | Old-growth barrier beyond West Elderwood, wagon-limited refuge, foot/mount deepwood trail, eight-species ecology, seven exact-provenance raws, and ten connected food/fieldcraft/timber/mineral outputs with no onward Lethari route. |
+| Emberwash Badlands & Cinderwell Station | playable | Northern arid frontier beyond South Redstone, wagon-limited caravan well, preparation-sensitive saltpan foretrail, eight-species ecology, seven exact-provenance raws, and ten connected food/cordage/salt/pigment/plaster/repair outputs with no farther-desert, strait, or Veyra route. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
@@ -102,7 +103,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 46 current places/localities; reciprocal map/place and route-stop integrity is validated. |
+| Places/routes/maps | playable | 49 current places/localities; reciprocal map/place and route-stop integrity is validated. |
 | Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
@@ -140,8 +141,8 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 103 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, and old-growth sources. |
-| Production | playable | 184 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
+| Gathering sources | playable | 110 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
+| Production | playable | 194 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
@@ -161,8 +162,8 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 37 runtime seed NPCs; census counts 38 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Twenty-one current schedules derive availability from fictional time. |
+| NPC seed definitions | integrated | 40 runtime seed NPCs; census counts 41 named NPC definitions across canonical sources. |
+| NPC recurring schedules | playable | Twenty-three current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
