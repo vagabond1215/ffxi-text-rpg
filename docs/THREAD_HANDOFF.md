@@ -300,6 +300,21 @@ Data 51 changes authored resources, gathering sources, recipes, POI workstation 
 
 No new durable state family was introduced.
 
+## Macro-world planning hold
+
+Further edge-by-edge biome expansion is **paused** until `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md` is resolved enough to place continents, coastlines, mountains, drainage, ancestral homelands, and major barriers.
+
+Current interpretation:
+- Thornwall, Brasshaven, and Mistmere are compact mixed-race political capitals in a Central Civilized Belt;
+- they should not be retrofitted into exclusive racial capitals;
+- Lethari, Korren, Miri, and Veyra ancestral heartlands should sit outside that core behind meaningful barriers;
+- Waymeet is recommended as a future neutral/cosmopolitan metropolis;
+- beastfolk ancestry/species must be separated from faction/allegiance;
+- merfolk/pelagic and deep-world civilizations are valid macro layers;
+- Emberwash remains a candidate only and is **not** the operative next zone until the macro map is settled.
+
+No Data or Game State change accompanies this planning hold.
+
 ## Next material-culture unit
 
 Recommended:
