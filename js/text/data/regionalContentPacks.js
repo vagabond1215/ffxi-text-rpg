@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 39;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 40;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -565,6 +565,78 @@ export const HEADWATER_VALE_PACK = createContentPack({
     },
 });
 
+export const EMBERWASH_PACK = createContentPack({
+    id: 'pack-emberwash-cinderwell-station',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['emberwash-badlands'], steward: 'brasshaven-cinderwell' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-redstone-opening',
+        'pack-redstone-ecology-breadth',
+        'pack-crownfields-agricultural-ecology',
+        'pack-regional-ingredient-luxury-processing',
+        'pack-emberwash-badlands-ecology',
+    ],
+    metadata: {
+        name: 'Emberwash Badlands & Cinderwell Station',
+        notes: 'Preparation-sensitive arid-frontier travel with Cinderwell as the wagon limit, a saltpan foretrail, water and route services, connected provisions and repair production, and no onward southern-strait or Veyra route.',
+    },
+    records: {
+        places: [{ id: 'cinderwell-station', catalogRef: true }],
+        routes: [
+            { id: 'route-emberwash-cinderwell-caravan-road', catalogRef: true },
+            { id: 'route-emberwash-saltpan-foretrail', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-cinderwell-tarin-hove', catalogRef: true },
+            { id: 'npc-cinderwell-merek-sorn', catalogRef: true },
+            { id: 'npc-cinderwell-pella-aven', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-cinderwell-tarin-hove', catalogRef: true },
+            { id: 'schedule-cinderwell-merek-sorn', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-emberwash-emberpod-meal', catalogRef: true },
+            { id: 'item-emberwash-trail-cakes', catalogRef: true },
+            { id: 'item-emberwash-dried-cinder-pear', catalogRef: true },
+            { id: 'item-emberwash-dried-desert-sage', catalogRef: true },
+            { id: 'item-emberwash-cinderbrush-cord', catalogRef: true },
+            { id: 'item-emberwash-caravan-salt', catalogRef: true },
+            { id: 'item-emberwash-red-ochre-pigment', catalogRef: true },
+            { id: 'item-emberwash-gypsum-plaster', catalogRef: true },
+            { id: 'item-emberwash-dustwrap-repair-kit', catalogRef: true },
+            { id: 'item-emberwash-cistern-patch-compound', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-emberwash-emberpod-meal', catalogRef: true },
+            { id: 'cook-emberwash-trail-cakes', catalogRef: true },
+            { id: 'process-emberwash-dry-cinder-pear', catalogRef: true },
+            { id: 'process-emberwash-dry-desert-sage', catalogRef: true },
+            { id: 'process-emberwash-cinderbrush-cord', catalogRef: true },
+            { id: 'process-emberwash-caravan-salt', catalogRef: true },
+            { id: 'process-emberwash-red-ochre-pigment', catalogRef: true },
+            { id: 'process-emberwash-gypsum-plaster', catalogRef: true },
+            { id: 'craft-emberwash-dustwrap-repair-kit', catalogRef: true },
+            { id: 'craft-emberwash-cistern-patch', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-cinderwell-exchange',
+            name: 'Cinderwell Exchange',
+            placeId: 'cinderwell-station',
+            keeperNpcId: 'npc-cinderwell-tarin-hove',
+            inventoryIds: [
+                'flask-of-water',
+                'item-emberwash-trail-cakes',
+                'item-emberwash-dried-cinder-pear',
+                'item-emberwash-caravan-salt',
+                'item-emberwash-dustwrap-repair-kit',
+                'item-emberwash-cistern-patch-compound',
+            ],
+        }],
+    },
+});
+
 export const GLOAMWOOD_PACK = createContentPack({
     id: 'pack-gloamwood-oldbough-refuge',
     dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1049,6 +1121,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
     HEADWATER_VALE_PACK,
+    EMBERWASH_PACK,
     GLOAMWOOD_PACK,
     STARFEN_DELTA_PACK,
     REDSTONE_PACK,
