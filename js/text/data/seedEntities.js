@@ -84,6 +84,18 @@ export function createSeedNpcs() {
             locationId: 'headwater-warden-lodge', services: ['lodging', 'food', 'smokehouse', 'animal-shelter', 'trail-provisions'],
         }),
         createNpc({
+            id: 'npc-tideglass-lessa-venn', name: 'Lessa Venn', title: 'Tideglass Delta Factor', faction: 'Mistmere',
+            locationId: 'tideglass-landing', services: ['regional-goods', 'fishery-trade', 'shellfish-appraisal', 'salt-trade', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-tideglass-orin-cade', name: 'Orin Cade', title: 'Delta Pilot', faction: 'Mistmere',
+            locationId: 'tideglass-landing', services: ['ferry-booking', 'pilotage', 'shoal-guidance', 'tide-notices', 'cargo'],
+        }),
+        createNpc({
+            id: 'npc-tideglass-maela-thorne', name: 'Maela Thorne', title: 'Tideglass Smokehouse Keeper', faction: 'Mistmere',
+            locationId: 'tideglass-landing', services: ['food', 'smokehouse', 'shellfish-preparation', 'lodging', 'net-repair'],
+        }),
+        createNpc({
             id: 'npc-slatewater-eira-voss', name: 'Eira Voss', title: 'Waylodge Factor',
             locationId: 'slatewater-waylodge', services: ['regional-goods', 'trade', 'resource-appraisal', 'provisions'],
         }),

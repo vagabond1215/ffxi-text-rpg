@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 37;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 38;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -565,6 +565,82 @@ export const HEADWATER_VALE_PACK = createContentPack({
     },
 });
 
+export const STARFEN_DELTA_PACK = createContentPack({
+    id: 'pack-starfen-delta-tideglass',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['starfen-delta'], steward: 'mistmere-tideglass' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-starfen-opening',
+        'pack-starfen-marshcraft',
+        'pack-great-mere-merewatch',
+        'pack-regional-ingredient-luxury-processing',
+        'pack-material-foundations-common-components',
+        'pack-starfen-delta-brackish-ecology',
+    ],
+    metadata: {
+        name: 'Starfen Delta, Tideglass & Brackish Coast',
+        notes: 'Freshwater-to-coast travel and production tranche with levee access, packet-boat travel, pilot services, brackish fish/shellfish, sea salt, marsh packing material, preservation, and an explicit open-sea boundary.',
+    },
+    records: {
+        places: [{ id: 'tideglass-landing', catalogRef: true }],
+        routes: [
+            { id: 'route-east-starfen-lower-delta-levee', catalogRef: true },
+            { id: 'route-great-mere-delta-waterway', catalogRef: true },
+            { id: 'route-tideglass-brackish-coast-track', catalogRef: true },
+        ],
+        transportServices: [{ id: 'service-mere-delta-packet', catalogRef: true }],
+        npcs: [
+            { id: 'npc-tideglass-lessa-venn', catalogRef: true },
+            { id: 'npc-tideglass-orin-cade', catalogRef: true },
+            { id: 'npc-tideglass-maela-thorne', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-tideglass-lessa-venn', catalogRef: true },
+            { id: 'schedule-tideglass-orin-cade', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-delta-cleaned-eel', catalogRef: true },
+            { id: 'item-delta-smoked-eel', catalogRef: true },
+            { id: 'item-delta-boiled-mud-crab', catalogRef: true },
+            { id: 'item-delta-oyster-meat', catalogRef: true },
+            { id: 'item-delta-oyster-shell', catalogRef: true },
+            { id: 'item-delta-roasted-oysters', catalogRef: true },
+            { id: 'item-delta-shell-lime', catalogRef: true },
+            { id: 'item-delta-dried-kelp', catalogRef: true },
+            { id: 'item-delta-refined-sea-salt', catalogRef: true },
+            { id: 'item-delta-woven-reed-matting', catalogRef: true },
+            { id: 'item-delta-pickled-samphire', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-delta-clean-eel', catalogRef: true },
+            { id: 'process-delta-smoke-eel', catalogRef: true },
+            { id: 'cook-delta-boiled-mud-crab', catalogRef: true },
+            { id: 'process-delta-shuck-oysters', catalogRef: true },
+            { id: 'cook-delta-roasted-oysters', catalogRef: true },
+            { id: 'process-delta-shell-lime', catalogRef: true },
+            { id: 'process-delta-dry-kelp', catalogRef: true },
+            { id: 'process-delta-refine-sea-salt', catalogRef: true },
+            { id: 'craft-delta-woven-reed-matting', catalogRef: true },
+            { id: 'cook-delta-pickled-samphire', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-tideglass-delta-exchange',
+            name: 'Tideglass Delta Exchange',
+            placeId: 'tideglass-landing',
+            keeperNpcId: 'npc-tideglass-lessa-venn',
+            stockItemIds: [
+                'item-delta-smoked-eel',
+                'item-delta-boiled-mud-crab',
+                'item-delta-dried-kelp',
+                'item-delta-pickled-samphire',
+                'item-delta-refined-sea-salt',
+                'item-delta-woven-reed-matting',
+            ],
+        }],
+    },
+});
+
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
@@ -904,6 +980,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
     HEADWATER_VALE_PACK,
+    STARFEN_DELTA_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
