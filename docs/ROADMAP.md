@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -36,43 +36,40 @@ Ironspine Highlands                           COMPLETE / MERGED
 
 ## Latest bounded unit
 
-### Material Foundations & Common Components
+### Regional Resource & Trade Resilience
 
-**Status: COMPLETE ON `main`; Data 50 promoted as Product 0.9.100.11.**
+**Status: IMPLEMENTED ON `main`; Data 51 promoted as Product 0.9.100.12; exact-head validation pending final continuity synchronization.**
 
 Purpose:
-- establish ordinary material culture as a shared economic substrate before profession-specific finished tools are authored;
-- give standard metals/alloys, differentiated woods, plant fibers/cordage, industrial minerals, hardware, maintenance goods, and magical-conductor stock explicit sources and production chains;
-- make reusable components tradeable and cross-profession instead of hiding them as scenery or one-off recipe assumptions;
-- begin using the existing `requiredToolTags` production seam without adding a second crafting authority.
+- audit established economic areas as local-region + dependable-trade basins;
+- ensure ordinary food, tools, repairs, fuel, bindings, construction stock, medicine, and preservation do not hinge on one implausibly distant specialty input;
+- preserve genuine regional specialties and premium trade.
 
-Data 50 adds:
-- 21 canonical gathering sources and 21 raw resources;
-- 55 reusable production outputs and 55 transformations;
-- tin, lead, silver, gold, bronze, brass, pewter, solder, steel, sheet/wire stock, fasteners/fittings, and Cloudsilver Spellwire;
-- ash, Crown Oak, Silvermaple, yew, hazel, spruce, fragrant cedar, applewood, and Starfen Giant Cane working stocks;
-- hemp fiber -> yarn -> twine -> cord -> rope -> hawser, plus canvas, net webbing, flax wick, and nettle thread;
-- charcoal, quicklime, whetstone, alum mordant, potash, clear glass batch, pine tar, and hide glue;
-- one shared Pack-v2 ownership unit: `pack-material-foundations-common-components`.
+Data 51 remediation:
+- Crownfields Brick Clay;
+- Starfen Alluvial Clay and Marsh Willow timber;
+- Coppergrass Thornwood;
+- Ironspine Stonepine timber and common pass stone;
+- four regional charcoal alternatives;
+- a lower-yield Great Mere dry-smoking fallback without imported rock salt;
+- practical kitchen/workshop exposure at Slatewater, Ironspine, and Mistmere where existing descriptions already implied it.
 
-Intentional boundary:
-- wool and other managed-animal products are not modeled as flora; they remain deferred until an explicit husbandry/managed-animal source authority exists.
-
-Growth from Data 49:
-
+Expected growth from Data 50:
 ```text
-resource sources               56 -> 77
-canonical items               182 -> 258
-recipes/processes              94 -> 149
-regional/shared packs          20 -> 21
-pack-owned records            630 -> 782
-raw production utilization  56/64 -> 77/85
-luxury raw utilization      13/13 -> 14/14
+resource sources               77 -> 83
+canonical items               258 -> 264
+recipes/processes             149 -> 154
+regional/shared packs          21 -> 21
+pack-owned records            782 -> 799
+raw production utilization  77/85 -> 80/91
+luxury raw utilization      14/14 -> 14/14
 ```
 
-Game State remains 14. The tranche adds authored source/item/recipe/pack definitions and reuses existing ecology, gathering, inventory/provenance, production/workstation, work-proficiency, and Pack-v2 authorities.
+The governing rule is **ordinary substitutes should exist; premium outcomes may still require specialty trade**. Coppergrass remains a transit wilderness rather than a staffed manufacturing locality.
 
-The durable follow-on plan is `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`. Its next recommended bounded unit is **Occupational Tool Conversion**, which should convert existing shop/equipment-only tools and starter goods into real production outputs and then add shared hand tools. It is queued, not auto-authorized.
+Permanent audit: `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`.
+
+Game State remains 14; no new durable state family was introduced.
 
 ## Current content census
 
