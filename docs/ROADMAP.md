@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -36,40 +36,43 @@ Ironspine Highlands                           COMPLETE / MERGED
 
 ## Latest bounded unit
 
-### Ironspine Highlands & Population Hunting
+### Material Foundations & Common Components
 
-**Status: COMPLETE / MERGED through PR #402 at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`. Implementation freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed Repository Audit, 753/753 tests, Census, Benchmark 3, and Benchmark Sample.**
+**Status: COMPLETE ON `main`; Data 50 promoted as Product 0.9.100.11.**
 
 Purpose:
-- extend North Redstone into believable alpine/subalpine terrain with pass, wagon-limit, cliff, scree, and high-trail semantics;
-- connect passive/wary/territorial ecology populations to deliberate encounters without making ordinary wildlife aggressive;
-- consume population units only after victory and preserve defeated-body recovery/provenance;
-- add alpine flora/fauna, highland gathering, hunted materials, preservation, leather/fur work, field remedies, survey craft, and cold-weather equipment;
-- keep food-safety metadata precise internally while presenting preparation as period-appropriate field and kitchen knowledge.
+- establish ordinary material culture as a shared economic substrate before profession-specific finished tools are authored;
+- give standard metals/alloys, differentiated woods, plant fibers/cordage, industrial minerals, hardware, maintenance goods, and magical-conductor stock explicit sources and production chains;
+- make reusable components tradeable and cross-profession instead of hiding them as scenery or one-off recipe assumptions;
+- begin using the existing `requiredToolTags` production seam without adding a second crafting authority.
 
-Permanent profiles:
+Data 50 adds:
+- 21 canonical gathering sources and 21 raw resources;
+- 55 reusable production outputs and 55 transformations;
+- tin, lead, silver, gold, bronze, brass, pewter, solder, steel, sheet/wire stock, fasteners/fittings, and Cloudsilver Spellwire;
+- ash, Crown Oak, Silvermaple, yew, hazel, spruce, fragrant cedar, applewood, and Starfen Giant Cane working stocks;
+- hemp fiber -> yarn -> twine -> cord -> rope -> hawser, plus canvas, net webbing, flax wick, and nettle thread;
+- charcoal, quicklime, whetstone, alum mordant, potash, clear glass batch, pine tar, and hide glue;
+- one shared Pack-v2 ownership unit: `pack-material-foundations-common-components`.
 
-- `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`
-- `docs/ITEM_CONSUMPTION_SAFETY.md`
+Intentional boundary:
+- wool and other managed-animal products are not modeled as flora; they remain deferred until an explicit husbandry/managed-animal source authority exists.
 
-Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478`: **753/753 tests**, full gate green.
-
-Measured change from Data 47:
+Growth from Data 49:
 
 ```text
-places/localities              34 -> 37
-named NPCs                     26 -> 29
-creatures                      52 -> 58
-resource sources               50 -> 56
-canonical items               158 -> 182
-recipes/processes              81 -> 94
-routes                          10 -> 12
-NPC schedules                  13 -> 15
-packs                          18 -> 20
-pack-owned records            564 -> 630
-raw production utilization  45/53 -> 56/64
-luxury raw utilization      12/12 -> 13/13
+resource sources               56 -> 77
+canonical items               182 -> 258
+recipes/processes              94 -> 149
+regional/shared packs          20 -> 21
+pack-owned records            630 -> 782
+raw production utilization  56/64 -> 77/85
+luxury raw utilization      13/13 -> 14/14
 ```
+
+Game State remains 14. The tranche adds authored source/item/recipe/pack definitions and reuses existing ecology, gathering, inventory/provenance, production/workstation, work-proficiency, and Pack-v2 authorities.
+
+The durable follow-on plan is `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`. Its next recommended bounded unit is **Occupational Tool Conversion**, which should convert existing shop/equipment-only tools and starter goods into real production outputs and then add shared hand tools. It is queued, not auto-authorized.
 
 ## Current content census
 
