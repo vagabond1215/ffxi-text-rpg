@@ -8,7 +8,7 @@ import { getMaterialFoundationResourceItem, listMaterialFoundationResourceItems 
 import { getResourceItem, listResourceItems } from './resourceItems.js';
 import { getRegionalResourceItem, listRegionalResourceItems } from './regionalResourceItems.js';
 
-export const RESOURCE_ITEM_REGISTRY_VERSION = 5;
+export const RESOURCE_ITEM_REGISTRY_VERSION = 6;
 
 export function getCanonicalResourceItem(itemId) {
     return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getHuntingResourceItem(itemId) ?? getGreatMereResourceItem(itemId) ?? getIronspineResourceItem(itemId) ?? getMaterialFoundationResourceItem(itemId);
