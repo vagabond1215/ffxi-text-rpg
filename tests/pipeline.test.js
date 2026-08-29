@@ -150,7 +150,7 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.100\.14/);
+    assert.match(describeVersion(), /Product: 0\.9\.100\.15/);
     assert.match(describeVersion(), /Package: 0\.9\.100/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
@@ -160,14 +160,14 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.12\.0/);
+    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.13\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentScaleGate: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /productionCatalog: 0\.10\.0/);
-    assert.match(describeSystemVersions(), /productionItems: 0\.11\.0/);
+    assert.match(describeSystemVersions(), /productionCatalog: 0\.11\.0/);
+    assert.match(describeSystemVersions(), /productionItems: 0\.12\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /npcSchedules: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /npcSchedules: 0\.6\.0/);
     assert.match(describeSystemVersions(), /validation: 0\.46\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.7\.0/);
