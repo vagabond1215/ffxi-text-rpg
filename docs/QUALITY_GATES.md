@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 49 adds **no persistence or lifecycle owner**. Population-backed hunting records its source on the existing active battle and consumes the existing ecology population only on victory; Ironspine reuses route, ecology, inventory/provenance, production/workstation, shops, schedules, recovery, and Pack-v2 authorities. Food hazards remain authored item metadata rather than hunger/poison simulation. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Data 50 adds **no persistence or lifecycle owner**. Material foundations are authored gathering/resource/production/Pack-v2 definitions using existing ecology, inventory/provenance, work/proficiency, workstation, and production authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -191,9 +191,9 @@ places/localities       37 / mechanics 10
 named NPCs              29 / 50
 shop/service sites      25 / 20
 creatures               58 / 40
-resource sources        56 / 40
-canonical items        182 / 200
-recipes/processes       94 / 75
+resource sources        77 / 40
+canonical items        258 / 200
+recipes/processes      149 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -207,13 +207,13 @@ routes                                  12
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           15
-regional/shared packs                   20
-pack-owned records                     630
+regional/shared packs                   21
+pack-owned records                     782
 pack-owned abilities/capabilities/
   schedules/companions              41/44/15/1
 ```
 
-The mechanics-scale gate remains NOT READY. Recipes/processes are now 94/75 and canonical items 182/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+The mechanics-scale gate remains NOT READY. Recipes/processes are now 149/75 and canonical items 258/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
 
 ## Performance
 
