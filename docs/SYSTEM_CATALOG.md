@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -50,13 +50,13 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 and promoted exact-head Check #1381 both passed 753/753 tests. |
 
-## Content infrastructure and regional packs — Data 49
+## Content infrastructure and regional packs — Data 50
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Twenty current packs; 630 current ownership records. |
+| Regional/shared pack ownership | integrated | Twenty-one current packs; 782 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -137,15 +137,16 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 41 current sources with place/tool/time/capacity/provenance, including managed Crownfields crops. |
-| Production | playable | 81 current processing/crafting/cooking/salvage definitions with mastery, provenance, multi-stage ingredients, preservation, and lakecraft chains. |
-| Ingredient/component chaining | playable | Flour, meal, thread, linen, must/vinegar, pigments, perfume extracts, cut stones, veneer, slip/glaze, and other intermediates are canonical items reusable by later recipes. |
+| Gathering sources | playable | 77 current sources with place/tool/capacity/provenance, including regional foods, ores, differentiated timbers, industrial minerals, hemp/nettle fiber, and managed Crownfields crops. |
+| Production | playable | 149 current processing/crafting/cooking/salvage definitions with provenance, multi-stage ingredients, preservation, regional craft, and shared material-stock chains. |
+| Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 12 current luxury raws now feed production, including Great Mere Cloudwater Pearl. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
 | Redstone forge chain | playable | Existing iron/sunstone/Ridge Ibex inputs feed flux, tempered iron, rivets, work gear, and caravan hardware through existing forge/work authorities. |
 | Elderwood hunt-timber chain | playable | Barkboar hide recovery, Duskcap, amber resin and hardwood feed tanned hide, bindings, resin products, field gear and trail-repair stock through existing tannery/woodshop/work authorities. |
 | Starfen marshcraft chain | playable | Reed fiber, Bluekelp, Marrowleaf, Bogberry and Mirecrest Heron recovery feed cord, extract, medicine, waterproofing and survey gear through existing production/work authorities. |
 | Crownfields agricultural loop | playable | Managed crops move through timed gathering/provenance to the Grange exchange, safe recovery, and scheduled produce wagon; livestock products remain deferred to a deliberate husbandry model. |
+| Material foundations | playable | Data 50 supplies 21 sourced raws and 55 reusable produced stocks/components; selected wood recipes exercise existing `requiredToolTags` through equipped cutting tools. Wool remains deferred to husbandry authority. |
 | Workstations | playable | Locality/home context. |
 | Home/storage/workshop | playable | Durable life infrastructure. |
 | Cultivation/stewardship | playable | Multi-day Sweetroot crop using canonical world time. |
@@ -171,16 +172,16 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 49 Ironspine checkpoint:
+Gameplay breadth at the Data 50 material-foundation checkpoint:
 
 ```text
 places/localities       37 / mechanics 10
 named NPCs              29 / 50
 shop/service sites      25 / 20
 creatures               58 / 40
-resource sources        56 / 40
-canonical items        182 / 200
-recipes/processes       94 / 75
+resource sources        77 / 40
+canonical items        258 / 200
+recipes/processes      149 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -194,16 +195,16 @@ routes                                  12
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           15
-regional/shared packs                   20
-pack-owned records                     630
+regional/shared packs                   21
+pack-owned records                     782
 pack-owned abilities/capabilities/
   schedules/companions              41/44/15/1
 runtime seed NPCs                       28
 runtime seed enemies                    16
 ```
 
-Mechanics-scale gate remains **NOT READY**. Companions are now the largest relative gap; canonical items are 18 short of their mechanics floor. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
+Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mechanics floor through connected material-economy depth. Companions remain the largest relative gap; abilities, NPC breadth, and quests remain materially short. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. Packets A–D, Great Mere, population-backed hunting, and the Ironspine Data 49 tranche are complete and merged. Packet E Gate A integration/census remains the next formal roadmap gate; Emberwash Badlands is the next ranked world-edge candidate. Neither is auto-started.
+Phase 0.9 and `0.9.100` remain open. Material Foundations & Common Components is complete on `main` at Data 50. Occupational Tool Conversion is the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; Emberwash Badlands remains the next ranked world-edge candidate. None is auto-started.
