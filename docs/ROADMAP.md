@@ -79,9 +79,9 @@ Game State remains 14; no new durable state family was introduced.
 | Named NPCs | 29 | 50 | 21 short |
 | Shop/service sites | 25 | 20 | reached |
 | Creature definitions | 58 | 40 | reached |
-| Resource sources | 56 | 40 | reached |
-| Canonical items | 182 | 200 | 18 short |
-| Recipes/processes | 94 | 75 | reached |
+| Resource sources | 83 | 40 | reached |
+| Canonical items | 264 | 200 | reached |
+| Recipes/processes | 154 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -94,8 +94,8 @@ routes                        12
 spell schools                  4
 capabilities                  44
 NPC schedules                 15
-regional/shared packs         20
-pack-owned records           630
+regional/shared packs         21
+pack-owned records           799
 runtime seed NPCs             28
 runtime seed enemies          16
 ```
