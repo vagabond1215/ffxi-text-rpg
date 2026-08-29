@@ -22,8 +22,9 @@ authority:
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
+  material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
 git:
-  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
+  current_normal_work: material-foundations-data-50-final-validation-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -36,14 +37,16 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: ironspine-highlands-and-population-hunting
-  latest_bounded_unit_status: complete-merged-pr-402
+  latest_bounded_unit: material-foundations-and-common-components
+  latest_bounded_unit_status: complete-on-main-final-validation-pending
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: emberwash-badlands
   next_world_edge_candidate_status: ranked-next-not-auto-authorized
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
+  next_material_culture_candidate: occupational-tool-conversion
+  next_material_culture_candidate_status: queued-not-auto-authorized
 validation:
   repository_audit: npm run audit:repo
   tests: npm test
@@ -58,14 +61,15 @@ validation:
   population_hunting_guard: tests/populationEncounterEngine.test.js
   ingredient_luxury_guard: tests/ingredientLuxuryProcessing.test.js
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
+  material_foundations_guard: tests/materialFoundations.test.js
 quality:
-  current_product_version: 0.9.100.10
+  current_product_version: 0.9.100.11
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 49
+  current_data_version: 50
   current_benchmark_version: 3
-  current_codename: Ironspine Highlands & Population Hunting
+  current_codename: Material Foundations & Common Components
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -83,6 +87,21 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_50:
+    material_sources_added: 21
+    material_raw_resources_added: 21
+    material_transformations_added: 55
+    material_production_outputs_added: 55
+    canonical_raw_production_utilization: 77-of-85
+    luxury_raw_production_utilization: 14-of-14
+    standard_metals_and_alloys: true
+    differentiated_working_woods: true
+    plant_fiber_cordage_hierarchy: true
+    common_hardware_components: true
+    cloudsilver_arcane_conductor: true
+    production_tool_tags_exercised: true
+    husbandry_wool_deferred: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
@@ -90,9 +109,9 @@ content_scale:
     named_npcs: 29
     shop_service_sites: 25
     creature_definitions: 58
-    resource_sources: 56
-    canonical_items: 182
-    recipes_processes: 94
+    resource_sources: 77
+    canonical_items: 258
+    recipes_processes: 149
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
@@ -101,8 +120,8 @@ content_scale:
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 15
-    regional_shared_packs: 20
-    pack_owned_records: 630
+    regional_shared_packs: 21
+    pack_owned_records: 782
     runtime_seed_npcs: 28
     runtime_seed_enemies: 16
   mechanics_floors_reached:
@@ -110,6 +129,7 @@ content_scale:
     - shop_service_sites
     - creature_definitions
     - resource_sources
+    - canonical_items
     - recipes_processes
     - transport_services
   largest_relative_gap: companions
@@ -122,5 +142,6 @@ constraints:
   - keep Game State 14 unless a new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
+  - portable replaceable cross-profession components should be canonical items when independently traded repaired replaced or reused
   - roadmap and world-edge sequencing do not auto-authorize later units
   - prefer direct work on main unless a change has material rollback risk that ordinary GitHub revert cannot safely contain
