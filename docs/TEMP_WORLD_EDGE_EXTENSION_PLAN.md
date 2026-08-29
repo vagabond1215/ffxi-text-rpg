@@ -1,6 +1,8 @@
 # Temporary World Edge Extension Plan
 
-Status: **temporary planning/handoff artifact**.
+Status: **PAUSED as an implementation sequence pending macro-world/civilization planning.**
+
+The existing ranked zones remain useful candidates, but **do not continue the numbered edge sequence yet**. `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md` now takes precedence for deciding continents, coastlines, mountain systems, drainage, racial/cultural heartlands, capital separation, vertical realms, and major long-distance barriers.
 
 Purpose: preserve the current macro-geography, boundary-access rules, and prioritized zone-extension sequence so a new thread can resume from repository evidence without repeating the world-edge audit. This file may be deleted once its decisions have been absorbed into permanent regional/world-cartography documents.
 
@@ -34,6 +36,24 @@ Boundary types should be selected from the fiction:
 - harsh environment: physically traversable but preparation-gated by water, weather, heat/cold, animals, supplies, or route knowledge.
 
 Physical impossibility, legal restriction, and environmental danger should remain distinct concepts.
+
+## Macro-planning hold
+
+The previous list was intentionally generated from currently visible world edges. That was useful for filling immediate geographic holes, but continuing indefinitely would risk turning the world into a chain of locally sensible biomes with no coherent continental structure.
+
+Before Item 5 or any later candidate is implemented:
+
+1. establish the Central Civilized Belt as a mixed-race core;
+2. place the Lethari, Korren, Miri, and Veyra ancestral heartland envelopes;
+3. decide surface continents/seas plus Deep World and pelagic layers;
+4. establish mountain chains, drainage, coastlines, desert belts, and major magical anomalies;
+5. reserve major capital and secondary-city sites;
+6. define barrier/access logic for each civilization;
+7. then re-rank this edge list against the macro map.
+
+Emberwash remains a valid **candidate**, not the currently authorized next extension.
+
+See `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`.
 
 ## Prioritized zone/biome extensions
 
