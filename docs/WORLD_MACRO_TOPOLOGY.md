@@ -277,19 +277,19 @@ The preferred representation is an irregular envelope with approximate scale, no
 
 ## 11. Post-lock world-edge priority
 
-The old edge list was generated before continental topology was known.
+Two post-lock geography units are now realized:
 
-**Headwater Vale is now realized in Data 52** and opens the first grounded Timbercross-to-Waymeet leg while stopping short of the future plateau/march connection.
+- **Headwater Vale — Data 52**: first grounded Timbercross-to-Waymeet corridor leg.
+- **Starfen Delta / Brackish Coast — Data 53**: Great Mere outflow, Tideglass Landing, first Eastern Sea coast, explicit open-sea boundary.
 
 Remaining recommended world-edge order:
 
-1. **Starfen Delta / Brackish Coast** — realizes the locked Great Mere outflow and Eastern Sea boundary.
-2. **Gloamwood** — establishes the first true Lethari homeland barrier.
-3. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
-4. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
-5. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
-6. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
-7. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
+1. **Gloamwood** — establishes the first true Lethari homeland barrier beyond the existing Elderwood.
+2. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
+3. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
+4. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
+5. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
+6. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
 
 This ranking is a planning recommendation, not automatic authorization.
 
@@ -325,3 +325,16 @@ Timbercross Landing
 ```
 
 The unfinished northern edge is intentional. Data 52 does not manufacture a route to the plateau or Waymeet simply because the macro envelopes are adjacent.
+
+Starfen Delta subsequently realized the eastern drainage transition as **Product 0.9.100.14 / Data 53**:
+
+```text
+Great Mere / Merewatch
+  -> Starfen Lower Delta
+  -> Tideglass Landing
+  -> Starfen Brackish Coast
+  -> Eastern Sea [not walkable]
+  -> future maritime/Miri routes [not yet authored]
+```
+
+This preserves the same doctrine: reaching the coastline does not manufacture an ocean route. Miri and pelagic long-distance access remain future authored connections.

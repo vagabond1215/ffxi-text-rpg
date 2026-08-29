@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 52 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, population-hunting linkage, pack ownership and validation contract |
+| Data | 53 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -611,6 +611,70 @@ Raw-resource production utilization is **89/100** and luxury raw utilization rem
 
 Data 52 composes existing place/map/route, ecology/population, population-encounter, battle/body-recovery, gathering, inventory/provenance, production/work/workstation, shop, NPC-schedule, and Pack-v2 authorities. No new durable serialized state family is introduced.
 
+### `0.9.100.14` — Starfen Delta & Brackish Coast
+
+This revision realizes the Great Mere's locked eastward outflow and the first canonical Eastern Sea coast.
+
+```text
+Product       0.9.100.13 -> 0.9.100.14
+Package       0.9.100    -> 0.9.100
+Data          52         -> 53
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 53
+
+Stable authored content expands with:
+
+- Starfen Lower Delta, Tideglass Landing, and Starfen Brackish Coast;
+- `map-starfen-delta`;
+- the East Fen Delta Levee, Mere-Delta Waterway, and Tideglass Coast Track;
+- the scheduled Mere-Delta Packet Boat with a real Lower Delta field stop;
+- eight brackish/coastal species and seven exact-provenance gathering/fishing/mineral sources;
+- seven new raw resources;
+- ten processing/crafting transformations producing eleven outputs;
+- three persistent Tideglass staff and two schedules;
+- `pack-starfen-delta-brackish-ecology` and `pack-starfen-delta-tideglass`;
+- explicit raw seafood safety metadata with practical fantasy-era presentation.
+
+The Eastern Sea remains outside walkable authority. No Miri route, generalized ship mode, durable tide simulation, or new ocean-state family is introduced.
+
+Implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166` passed Check #1491 / run `33267789356` with Repository Audit, **776/776 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted Data 53 head `8f968155d092431b0a3314d38f4d890b0c87f599` passed Check #1493 / run `33267935109` with the same full gate.
+
+Validated Data 53 census:
+
+```text
+places/localities                        43
+named NPCs                               35
+shop/service sites                       29
+creature definitions                     72
+resource sources                         96
+canonical items                         301
+recipes/processes                       174
+abilities/techniques                     41
+quests/contracts                         18
+companions                                1
+transport services                        7
+routes                                   17
+spell schools                             4
+capabilities                             44
+NPC schedules                            19
+regional/shared packs                    25
+pack-owned records                      927
+runtime seed NPCs                        34
+runtime seed enemies                     17
+```
+
+Raw-resource production utilization is **96/107**. Luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+Data 53 composes existing place/map/route/transport, ecology/population, gathering, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. Tides remain authored hazards/fiction rather than a new serialized simulation state.
+
 ## Persistence history
 
 Relevant late history:
@@ -638,6 +702,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.11          no Game State change; Data 49 -> 50
 0.9.100.12          no Game State change; Data 50 -> 51
 0.9.100.13          no Game State change; Data 51 -> 52
+0.9.100.14          no Game State change; Data 52 -> 53
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -663,18 +728,20 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.11.0
+regionalContentPacks   0.12.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.4.0
+npcSchedules           0.5.0
 commitments            0.7.0
-productionCatalog      0.9.0
-productionItems        0.10.0
-ecologyRegistry        0.6.0
-resourceItemRegistry   0.7.0
-routeCatalog           0.4.0
+productionCatalog      0.10.0
+productionItems        0.11.0
+ecologyRegistry        0.7.0
+resourceItemRegistry   0.8.0
+routeCatalog           0.5.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
+starfenDeltaEcology    0.1.0
+starfenDeltaProduction 0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -697,9 +764,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 52 Headwater checkpoint supersedes Data 51: 40 places, 32 named NPCs, 27 service sites, 64 creatures, 89 sources, 283 items, 164 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 17 schedules, 23 packs, and 859 pack-owned records.
+The current Data 53 Starfen Delta checkpoint supersedes Data 52: 43 places, 35 named NPCs, 29 service sites, 72 creatures, 96 sources, 301 items, 174 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 19 schedules, 25 packs, and 927 pack-owned records.
 
-Headwater implementation freeze Check #1476 / run `33264692343` passed the full gate with **770/770 tests**. The final promoted-main documentation synchronization must also pass the same hosted Check before the checkpoint is considered fully closed.
+Starfen Delta implementation freeze Check #1491 / run `33267789356` and promoted Data 53 Check #1493 / run `33267935109` both passed the full gate with **776/776 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 

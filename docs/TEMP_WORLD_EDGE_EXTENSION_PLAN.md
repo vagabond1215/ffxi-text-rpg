@@ -48,16 +48,16 @@ The historical numbered sections below are retained as candidate design notes, *
 Post-lock world-edge status:
 
 - **Headwater Vale — COMPLETE / Data 52.**
+- **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 
 Remaining recommended order:
 
-1. Starfen Delta / Brackish Coast;
-2. Gloamwood;
-3. Emberwash Badlands;
-4. Lower Deepvein;
-5. Waymeet Marches / central plateau approaches;
-6. Coppergrass extensions;
-7. Drowned Vaults.
+1. Gloamwood;
+2. Emberwash Badlands;
+3. Lower Deepvein;
+4. Waymeet Marches / central plateau approaches;
+5. Coppergrass extensions;
+6. Drowned Vaults.
 
 Key reasons:
 
@@ -88,7 +88,28 @@ Implemented directly on `main` with:
 
 Implementation freeze `aa39347a0faa754690a194d926262256e92027f1` passed Check #1476 / run `33264692343` with **770/770 tests**, Census, Benchmark 3, and Benchmark Sample.
 
-The next ranked world-edge candidate is **Starfen Delta / Brackish Coast**.
+The next ranked world-edge candidate is **Gloamwood**.
+
+## Starfen Delta / Brackish Coast implementation result
+
+Starfen Delta / Brackish Coast is complete in Data 53 / Product 0.9.100.14.
+
+Implemented directly on `main` with:
+
+- Lower Delta, Tideglass Landing, and Brackish Coast;
+- an East Starfen levee route;
+- a Merewatch -> Lower Delta -> Tideglass packet waterway/service;
+- Tideglass Coast Track;
+- explicit Eastern Sea non-walkability and no Miri/open-ocean route;
+- eight coastal species/populations and seven exact-provenance sources/raws;
+- ten transformations producing eleven outputs;
+- three Tideglass staff, two schedules, exchange/pilot/workstation services;
+- two Pack-v2 ownership graphs;
+- practical raw-seafood safety treatment.
+
+Implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166` passed Check #1491 / run `33267789356` with **776/776 tests**. Promoted Data 53 Check #1493 / run `33267935109` was also fully green.
+
+The next ranked world-edge candidate is **Gloamwood**.
 
 ## Prioritized zone/biome extensions
 
