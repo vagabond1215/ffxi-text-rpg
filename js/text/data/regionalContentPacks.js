@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 36;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 37;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -495,6 +495,76 @@ export const IRONSPINE_HIGHLANDS_PACK = createContentPack({
     },
 });
 
+export const HEADWATER_VALE_PACK = createContentPack({
+    id: 'pack-headwater-vale',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['headwater-vale'], steward: 'thornwall-headwater-wardens' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-elderwood-opening',
+        'pack-elderwood-ecology-breadth',
+        'pack-material-foundations-common-components',
+        'pack-headwater-vale-ecology',
+    ],
+    metadata: {
+        name: 'Headwater Vale & Warden Lodge',
+        notes: 'Upper watershed travel corridor with wagon-limited access, coldstream fishing, population-backed deer hunting, alder/willow work, bridge repair, preserved provisions, and a small warden lodge supporting the first overland leg toward Waymeet.',
+    },
+    records: {
+        places: [{ id: 'headwater-warden-lodge', catalogRef: true }],
+        routes: [
+            { id: 'route-timbercross-headwater-road', catalogRef: true },
+            { id: 'route-headwater-upper-trail', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-headwater-elin-marr', catalogRef: true },
+            { id: 'npc-headwater-torin-ash', catalogRef: true },
+            { id: 'npc-headwater-bessa-reed', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-headwater-elin-marr', catalogRef: true },
+            { id: 'schedule-headwater-torin-ash', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-headwater-dressed-trout', catalogRef: true },
+            { id: 'item-headwater-trout-cress-stew', catalogRef: true },
+            { id: 'item-headwater-alder-smoked-trout', catalogRef: true },
+            { id: 'item-headwater-dried-meadowsweet', catalogRef: true },
+            { id: 'item-headwater-alder-tanned-leather', catalogRef: true },
+            { id: 'item-headwater-antler-toggle-set', catalogRef: true },
+            { id: 'item-headwater-alder-board', catalogRef: true },
+            { id: 'item-headwater-willow-creel', catalogRef: true },
+            { id: 'item-headwater-smoked-venison', catalogRef: true },
+            { id: 'item-headwater-bridge-repair-kit', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'process-headwater-dress-trout', catalogRef: true },
+            { id: 'cook-headwater-trout-cress-stew', catalogRef: true },
+            { id: 'process-headwater-alder-smoked-trout', catalogRef: true },
+            { id: 'process-headwater-dry-meadowsweet', catalogRef: true },
+            { id: 'process-headwater-alder-tanned-leather', catalogRef: true },
+            { id: 'craft-headwater-antler-toggle-set', catalogRef: true },
+            { id: 'process-headwater-alder-board', catalogRef: true },
+            { id: 'craft-headwater-willow-creel', catalogRef: true },
+            { id: 'process-headwater-smoked-venison', catalogRef: true },
+            { id: 'craft-headwater-bridge-repair-kit', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-headwater-river-exchange',
+            name: 'Headwater River Exchange',
+            placeId: 'headwater-warden-lodge',
+            keeperNpcId: 'npc-headwater-elin-marr',
+            stockItemIds: [
+                'item-headwater-spring-cress',
+                'item-headwater-alder-smoked-trout',
+                'item-headwater-smoked-venison',
+                'item-headwater-dried-meadowsweet',
+                'item-headwater-willow-creel',
+            ],
+        }],
+    },
+});
+
 export const REDSTONE_PACK = createContentPack({
     id: 'pack-redstone-opening', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-south' }, dependencies: ['pack-shared-foundation', 'pack-elderwood-opening'],
@@ -833,6 +903,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
+    HEADWATER_VALE_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,
     STARFEN_PACK,
