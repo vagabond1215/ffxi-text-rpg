@@ -25,7 +25,7 @@ authority:
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
 git:
-  current_normal_work: regional-resource-resilience-data-51-final-validation-on-main
+  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -38,12 +38,16 @@ git:
   latest_main_data_check_number: 1427
   latest_main_data_check_sha: 3ae5ef94b011e52975b1c57d7e17e50a486f2f75
   latest_main_data_check_result: success-759-of-759-tests-repository-audit-census-benchmark-and-sample
+  latest_main_data_51_check: 33226362127
+  latest_main_data_51_check_number: 1454
+  latest_main_data_51_check_sha: d047bf03d7fb17af928ce9aae0838db25a2969e7
+  latest_main_data_51_check_result: success-764-of-764-tests-repository-audit-census-benchmark-and-sample
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   latest_bounded_unit: regional-resource-and-trade-resilience
-  latest_bounded_unit_status: implemented-on-main-final-validation-pending
+  latest_bounded_unit_status: complete-on-main-validated-check-1454
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: emberwash-badlands
