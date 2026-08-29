@@ -1,4 +1,4 @@
-export const NPC_SCHEDULE_DATA_VERSION = 2;
+export const NPC_SCHEDULE_DATA_VERSION = 3;
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
@@ -97,6 +97,28 @@ const DAILY_SCHEDULES = [
         label: 'Tideglass pilot desk',
         windows: [window(5, 0, 18, 0, 'Posting tide turns, shoal warnings, and packet departures')],
         unavailableText: 'Orin is away from the pilot house checking channel stakes, shoals, and the lower distributaries.',
+    }),
+    schedule({
+        id: 'schedule-cinderwell-tarin-hove',
+        npcId: 'npc-cinderwell-tarin-hove',
+        poiId: 'poi-cinderwell-exchange',
+        placeId: 'cinderwell-station',
+        label: 'Cinderwell exchange hours',
+        windows: [
+            window(6, 0, 16, 0, 'Keeping the Cinderwell exchange'),
+        ],
+        unavailableText: 'Tarin is away from the exchange tallying caravan stock.',
+    }),
+    schedule({
+        id: 'schedule-cinderwell-merek-sorn',
+        npcId: 'npc-cinderwell-merek-sorn',
+        poiId: 'poi-cinderwell-warden-desk',
+        placeId: 'cinderwell-station',
+        label: 'Cinderwell caravan warden desk',
+        windows: [
+            window(7, 0, 18, 0, 'Posting route, wash, and water notices'),
+        ],
+        unavailableText: 'Merek is away checking the road, cistern approaches, or animal pens.',
     }),
     schedule({
         id: 'schedule-oldbough-mara-oren',
