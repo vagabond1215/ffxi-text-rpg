@@ -7,365 +7,136 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.13
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          52
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Headwater Vale & Waymeet Approach
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Regional Resource & Trade Resilience is complete and validated on `main`.**
+**Headwater Vale & Waymeet Approach is implemented on `main` and promoted to Data 52.**
 
-Data 51 Check **#1454 / run `33226362127`** passed on head `d047bf03d7fb17af928ce9aae0838db25a2969e7`: Repository Audit, **764/764 tests**, Content Census, Benchmark 3, and Benchmark Sample all green.
+Implementation freeze `aa39347a0faa754690a194d926262256e92027f1` passed Check **#1476 / run `33264692343`** with Repository Audit, **770/770 tests**, Content Census, Benchmark 3, and Benchmark Sample green.
 
-Normal low-risk work should continue directly on `main`. Use a feature branch only when rollback/blast-radius risk materially exceeds what an ordinary GitHub revert can safely contain.
+The version/continuity synchronization followed that exact green implementation freeze. Final promoted-main Check should be recorded here once observed.
 
-Macro-World Topology Lock commit `999de2ca82ba410bfbb866a7f95786ca0991b3b3` passed Check **#1464 / run `33237680841`**: Repository Audit, **764/764 tests**, Content Census, Benchmark 3, and Benchmark Sample all green. This was a documentation/planning pass only; Product/Data/Game State remain unchanged.
+Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what an ordinary GitHub revert can safely contain.
 
-Prior validated product checkpoint:
-- Data 50 final Check #1429 / run `33224409426` on `0f94d44b72105982370ffabd859b7d8175effef4`: Repository Audit, **759/759 tests**, Census, Benchmark 3, Benchmark Sample green.
+## Data 52 — Headwater Vale
 
-## Data 51 — Regional Resource & Trade Resilience
+Permanent profile:
+- `docs/ZONE_PROFILE_HEADWATER_VALE.md`.
 
-The audit asks whether each established economic area, together with dependable nearby trade partners, can support ordinary food, tools, repair, construction, bindings, fuel, medicine, and preservation without requiring an implausibly unique distant ingredient.
+Geography:
+- Headwater Lower Vale — danger 2 river-valley wilderness;
+- Headwater Warden Lodge — danger 0 small service/work lodge and wagon limit;
+- Headwater Upper Vale — danger 3 upper watershed;
+- Headwater River Road — Timbercross -> Lower Vale -> lodge, walk/mount/wagon;
+- Headwater Upper Trail — lodge -> Upper Vale, walk/mount only;
+- no onward route from the Upper Vale is authored yet.
 
-The governing principle is:
+The missing onward edge is deliberate. Future Waymeet Marches / plateau geography must add a real route rather than treating map proximity as adjacency.
 
-> **Ordinary substitutes should exist; premium outcomes may still require specialty trade.**
+Ecology:
+- 6 species/populations;
+- Red Deer is deliberately encounter-backed for population hunting;
+- Coldstream Trout is recovered through fishing;
+- otter, fox, owl, and turtle remain ecological presence without forced aggression.
 
-This does not require every region to own every ore, tree, grain, herb, or luxury material.
+Resources/production:
+- 6 gathering sources;
+- 9 raw/body resources;
+- 10 transformations / 10 outputs;
+- alder/willow work, trout/venison preservation, deer leather/antler components, fishing creels, and bridge repair;
+- every new raw/body resource has production demand;
+- canonical raw utilization **89/100**;
+- luxury utilization **14/14**.
 
-Permanent audit:
-- `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`.
+Food:
+- raw trout and venison explicitly require preparation and are described as capable of causing sickness when eaten raw;
+- prepared stew/smoked foods are direct-ready;
+- world-facing language remains practical late-medieval/fantasy knowledge.
 
-Regression guard:
-- `tests/regionalResourceDistribution.test.js`.
+People:
+- Elin Marr — River Factor;
+- Torin Ash — Warden;
+- Bessa Reed — Lodge Keeper;
+- 2 schedules;
+- exchange, warden desk, common hearth, and riverworks yard.
 
-## Reliable trade basins
+Persistence:
+- Game State remains 14;
+- no new durable state family.
 
-Western manufacturing basin:
-- Elderwood / Thornwall;
-- Crownfields;
-- Slatewater Foothills;
-- Redstone Reach / Brasshaven.
-
-Reliable links:
-- Southfield Farm Road + Crownfields Produce Wagon;
-- Crown-Forge Caravan Road;
-- Slatewater Foothill Caravan.
-
-Eastern corridor:
-- Redstone Reach;
-- Coppergrass Steppe;
-- Starfen / Mistmere.
-
-Reliable physical link:
-- Forge-Mere Long Road.
-
-Scheduled through-service:
-- Forge-Mere Caravan between Brasshaven and Mistmere.
-
-Important: Coppergrass is a **transit wilderness**, not a staffed locality. The route crosses Coppergrass, but the current scheduled Forge-Mere service does not expose Coppergrass as a boarding stop.
-
-Freshwater basin:
-- Starfen / Mistmere;
-- Great Mere / Merewatch.
-
-Reliable links:
-- East Fen Shore Track;
-- Reedport-Mere Waterway;
-- Great Mere Ferry.
-
-Highland dependency:
-- Ironspine Highlands;
-- Redstone Reach / Brasshaven.
-
-Reliable link:
-- wagon-capable Ironspine Lower Pass Road to High-Pass Watch.
-
-## Area audit result
-
-### Elderwood / Thornwall
-**Robust.**
-
-Local:
-- abundant differentiated timber;
-- resin;
-- Barkboar hide;
-- roots, mushrooms, nuts, fruit, sap;
-- medicines;
-- forge/workshop/woodshop/tannery infrastructure.
-
-Trade fills:
-- Crownfields grain/fiber;
-- Slatewater stone/clay/abrasives;
-- Redstone metal/salt.
-
-No local ore duplication is required.
-
-### Crownfields
-**Robust agricultural basin.**
-
-Local:
-- rye, peas, apples;
-- flax/hemp;
-- orchard wood;
-- **new Crownfields Brick Clay**;
-- kitchen/workshop at the Grange.
-
-The added clay fixes an implausible omission for a drained alluvial farming lowland.
-
-### Slatewater Foothills
-**Robust corridor region.**
-
-Local:
-- spruce/cedar;
-- clay, slate, limestone, whetstone stone;
-- pitch resin;
-- herbs/berries.
-
-Trade:
-- Redstone metal/salt;
-- Elderwood/Crownfields food, hide, fiber.
-
-Corrections:
-- Slatewater Spruce can now make ordinary charcoal;
-- Waylodge Hearth now exposes kitchen + workshop support already implied by its fiction.
-
-### Redstone Reach / Brasshaven
-**Strong industrial center.**
-
-Local:
-- copper, iron, tin, calamine, lead, silver;
-- clay, abrasives, alum, glass sand;
-- rock salt;
-- millet;
-- Ridge Ibex hide;
-- major forge/workshop infrastructure.
-
-Key correction:
-- metallurgy no longer depends specifically on Elderwood Crown Oak for charcoal; Slatewater timber is an immediate and logical fuel source.
-
-### Coppergrass Steppe
-**Adequate as transit wilderness.**
-
-Local:
-- groundpea;
-- prairie flax;
-- madder;
-- agate;
-- **new Coppergrass Thornwood** for camp fuel, handles, and rough construction.
-
-Trade:
-- Redstone metals/salt/stone;
-- Starfen grain/fish/herbs/wetland materials.
-
-Do not infer settlement-level workshops until a permanent locality is intentionally authored.
-
-### Starfen / Mistmere
-**Robust wetland craft/food basin after remediation.**
-
-Local:
-- reedgrain;
-- fish/mussels;
-- herbs, berries, kelp;
-- reed/nettle fiber;
-- Giant Cane;
-- **new Marsh Willow timber**;
-- **new alluvial clay**.
-
-Corrections:
-- Willow gives ordinary wetland wood and local charcoal;
-- alluvial clay supports common ceramic/building work;
-- Mistmere regional exchange now exposes light workshop/craft support.
-
-Metal remains a Brasshaven import by design.
-
-### Great Mere / Merewatch
-**Robust freshwater basin after preservation fallback.**
-
-Local:
-- fish/crayfish/mussels;
-- roots/starches/cress;
-- rush fiber;
-- shell lime;
-- pearl;
-- kitchen/workshop.
-
-Correction:
-- Silver Perch can now be dry-smoked without imported Redstone salt at reduced yield.
-- imported salt still improves preservation and enables superior export-grade salted/pickled products.
-
-### Ironspine Highlands
-**Adequate highland frontier economy.**
-
-Local:
-- game, hides/furs, fat;
-- alpine herbs/remedies;
-- lodestone, quartz, gold;
-- **new Stonepine timber**;
-- **new common pass stone**.
-
-Corrections:
-- Stonepine was already present in the Lower Pass description but previously only cones were recoverable;
-- mountain building stone is now explicit;
-- Stonepine can produce local charcoal;
-- High-Pass common hearth now exposes kitchen + workshop support.
-
-Common metals/salt/forge flux remain Redstone imports.
-
-## Data 51 authored delta
-
-Added six gathering sources and six raw resources:
-- Crownfields Brick Clay;
-- Starfen Alluvial Clay;
-- Starfen Marsh Willow Timber;
-- Coppergrass Thornwood;
-- Ironspine Stonepine Timber;
-- Ironspine Pass Stone.
-
-Added five substitute/fallback production routes:
-- Slatewater Spruce Charcoal;
-- Starfen Marsh Willow Charcoal;
-- Coppergrass Thornwood Charcoal;
-- Ironspine Stonepine Charcoal;
-- Great Mere dry-smoked perch without salt.
-
-Workstation corrections:
-- Slatewater Hearth: kitchen + workshop;
-- Ironspine Common Hearth: kitchen + workshop;
-- Mistmere regional exchange: workshop.
-
-## Data 51 validated census
+## Data 52 census
 
 ```text
-places/localities                        37
-named NPCs                               29
-shop/service sites                       25
-creature definitions                    58
-resource sources                         83
-canonical items                         264
-recipes/processes                       154
+places/localities                        40
+named NPCs                               32
+shop/service sites                       27
+creature definitions                     64
+resource sources                         89
+canonical items                         283
+recipes/processes                       164
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
 transport services                        6
-
-routes                                   12
+routes                                   14
 spell schools                             4
 capabilities/training definitions        44
-NPC schedules                            15
-regional/shared content packs            21
-pack-owned records                      799
-runtime seed NPCs                        28
-runtime seed enemies                     16
+NPC schedules                            17
+regional/shared content packs            23
+pack-owned records                      859
+runtime seed NPCs                        31
+runtime seed enemies                     17
 ```
 
-Raw-resource production demand: **80/91**. Three newly explicit clay/stone resources intentionally have direct construction sinks rather than dummy processing recipes.
+Mechanics-scale gate remains **NOT READY**:
+- companions 1/4;
+- abilities 41/100;
+- quests 18/30;
+- named NPCs 32/50.
 
-Luxury raw utilization remains **14/14**.
+## Macro-world authority
 
-Mechanics-scale gate remains **NOT READY** because companions, abilities, NPC breadth, and quests remain materially short.
+`docs/WORLD_MACRO_TOPOLOGY.md` remains authoritative.
 
-## What should remain scarce
-
-Do not flatten:
-- silver — Redstone/Deepvein specialty;
-- gold — Ironspine specialty;
-- copper/tin/bronze/brass industry — Redstone-centered;
-- Cloud Quartz/lodestone — Ironspine;
-- premium hardwood/bow wood — Elderwood;
-- spruce/cedar mast stock — Slatewater;
-- hemp/linen — Crownfields;
-- wetland fiber/cane — Starfen/Great Mere;
-- pearls — Great Mere;
-- specialty dyes/perfumes/gems — regional.
-
-## Persistence decision
-
-Game State remains **14**.
-
-Data 51 changes authored resources, gathering sources, recipes, POI workstation tags, and Pack-v2 ownership only. It reuses:
-- route/service;
-- ecology/gathering;
-- inventory/provenance;
-- production/work tasks;
-- workstation;
-- work proficiency;
-- Pack-v2 authority.
-
-No new durable state family was introduced.
-
-## Macro-world topology lock
-
-The prior edge-expansion hold has been resolved at the topology level.
-
-Permanent authority:
-- `docs/WORLD_MACRO_TOPOLOGY.md`.
-
-Locked decisions:
-
+Key rules:
 - no global square/hex world board;
-- macro geography uses irregular envelopes;
+- irregular macro geographic envelopes;
 - routes/passages own inter-place traversability, distance, time, hazards, and modes;
 - local grids/topologies remain place-scale exploration abstractions;
-- Central Continent + Southern Landmass + Eastern Archipelago;
-- Deep World + Pelagic layers;
-- Ironspine northern massif + separate western mountain crescent;
-- Great Mere is an open freshwater lake draining east through a future brackish delta to the Eastern Sea;
-- Waymeet sits beyond Headwater Vale and additional plateau/march approaches; the current skyferry remains a long-distance bypass;
-- Emberwash is a northern arid frontier before a farther southern strait/Veyra landmass, not direct Veyra adjacency;
-- Lethari/Korren/Miri/Veyra homeland envelopes and barrier concepts are reserved.
+- touching regions do not automatically create exits.
 
-No Product, Data, Game State, or Benchmark version changed.
+Headwater now realizes the first leg of:
+`Timbercross -> Headwater Vale -> future plateau/saddle -> Waymeet Marches -> Waymeet`.
 
-Post-lock world-edge ranking begins with:
-1. **Headwater Vale**;
-2. Starfen Delta / Brackish Coast;
-3. Gloamwood;
-4. Emberwash Badlands.
-
-No edge unit is auto-authorized.
-
-## Next material-culture unit
-
-Recommended:
-- **Occupational Tool Conversion**.
-
-It should consume the now-resilient regional substrate instead of inventing one-off inputs.
-
-Priority conversions:
-- Field Knife;
-- Prospector Pick;
-- Woodsman Hatchet;
-- Digging Spade;
-- Reed Sickle;
-- Marsh Fishing Rod;
-- Ash Staff;
-- Maple Wand;
-- Iron Buckler;
-- Brass Ring;
-- Bronze arms/armor;
-- basic leather goods.
-
-Do not auto-start it merely because it is next.
-
-## Other queued decisions
+## Next bounded choices — not auto-authorized
 
 Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
-World edge:
-- Headwater Vale is now the next ranked candidate after the macro-topology lock.
-- Starfen Delta / Brackish Coast ranks second; Emberwash remains a later southern-frontier candidate.
+World geography:
+- **Starfen Delta / Brackish Coast** is now the next ranked candidate;
+- Gloamwood follows;
+- Emberwash remains the later southern-frontier candidate.
 
-Neither is auto-authorized.
+Material culture:
+- Occupational Tool Conversion remains the next ranked material-culture packet.
+
+High-value scale gaps:
+- companion breadth;
+- ability/technique breadth;
+- NPC/quest network density.
+
+Do not start any of these merely because they are listed next.
 
 ## Restart order
 
@@ -374,9 +145,8 @@ Neither is auto-authorized.
 3. `PROJECT_PROFILE.yaml`
 4. `docs/EXECUTION_PIPELINE.md`
 5. `docs/WORLD_MACRO_TOPOLOGY.md`
-6. `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`
-7. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`
-8. `docs/QUALITY_GATES.md`
-9. `docs/ROADMAP.md`
-10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-11. relevant runtime/data/tests for the explicitly selected next unit
+6. `docs/ZONE_PROFILE_HEADWATER_VALE.md`
+7. `docs/ITEM_CONSUMPTION_SAFETY.md`
+8. `docs/ROADMAP.md`
+9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+10. relevant runtime/data/tests for the explicitly selected next unit

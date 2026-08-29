@@ -19,6 +19,7 @@ authority:
   item_consumption_safety: docs/ITEM_CONSUMPTION_SAFETY.md
   great_mere_profile: docs/ZONE_PROFILE_GREAT_MERE.md
   ironspine_profile: docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md
+  headwater_profile: docs/ZONE_PROFILE_HEADWATER_VALE.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
@@ -52,15 +53,15 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: macro-world-topology-lock
-  latest_bounded_unit_status: complete-on-main-docs-only-no-version-change
-  latest_data_bounded_unit: regional-resource-and-trade-resilience
-  latest_data_bounded_unit_status: complete-on-main-validated-check-1454
+  latest_bounded_unit: headwater-vale-and-waymeet-approach
+  latest_bounded_unit_status: implemented-on-main-data-52-promotion-in-continuity-sync
+  latest_data_bounded_unit: headwater-vale-and-waymeet-approach
+  latest_data_bounded_unit_status: implementation-freeze-green-check-1476
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: headwater-vale
-  next_world_edge_candidate_status: ranked-after-macro-topology-not-auto-authorized
-  second_world_edge_candidate: starfen-delta-brackish-coast
+  next_world_edge_candidate: starfen-delta-brackish-coast
+  next_world_edge_candidate_status: ranked-after-headwater-not-auto-authorized
+  second_world_edge_candidate: gloamwood
   southern_world_edge_candidate: emberwash-badlands
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
@@ -84,14 +85,15 @@ validation:
   ecology_geography_integrity_guard: tests/ecologyGeographyIntegrity.test.js
   material_foundations_guard: tests/materialFoundations.test.js
   regional_resource_distribution_guard: tests/regionalResourceDistribution.test.js
+  headwater_flow_guard: tests/playerHeadwaterValeFlow.test.js
 quality:
-  current_product_version: 0.9.100.12
+  current_product_version: 0.9.100.13
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 51
+  current_data_version: 52
   current_benchmark_version: 3
-  current_codename: Regional Resource & Trade Resilience
+  current_codename: Headwater Vale & Waymeet Approach
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -136,28 +138,47 @@ quality:
     regional_trade_basin_audit: true
     coppergrass_transit_wilderness_not_staffed_locality: true
     persistence_family_added: false
+  data_52:
+    headwater_places_added: 3
+    headwater_routes_added: 2
+    headwater_npcs_added: 3
+    headwater_schedules_added: 2
+    headwater_species_added: 6
+    headwater_sources_added: 6
+    headwater_raw_and_body_resources_added: 9
+    headwater_transformations_added: 10
+    headwater_production_outputs_added: 10
+    population_backed_red_deer_hunting: true
+    trout_fishing_source: true
+    wagon_limit_at_warden_lodge: true
+    upper_vale_onward_route_deferred: true
+    canonical_raw_production_utilization: 89-of-100
+    luxury_raw_production_utilization: 14-of-14
+    explicit_food_consumption_metadata: true
+    period_appropriate_food_safety_presentation: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 37
-    named_npcs: 29
-    shop_service_sites: 25
-    creature_definitions: 58
-    resource_sources: 83
-    canonical_items: 264
-    recipes_processes: 154
+    places_localities: 40
+    named_npcs: 32
+    shop_service_sites: 27
+    creature_definitions: 64
+    resource_sources: 89
+    canonical_items: 283
+    recipes_processes: 164
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
     transport_services: 6
-    routes: 12
+    routes: 14
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 15
-    regional_shared_packs: 21
-    pack_owned_records: 799
-    runtime_seed_npcs: 28
-    runtime_seed_enemies: 16
+    npc_schedules: 17
+    regional_shared_packs: 23
+    pack_owned_records: 859
+    runtime_seed_npcs: 31
+    runtime_seed_enemies: 17
   mechanics_floors_reached:
     - places
     - shop_service_sites
