@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.13
+Product:       0.9.100.14
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          52
+Data:          53
 Benchmark:     3
-Codename:      Headwater Vale & Waymeet Approach
+Codename:      Starfen Delta & Brackish Coast
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
