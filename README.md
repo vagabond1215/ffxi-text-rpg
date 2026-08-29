@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. The shared material substrate is now followed by a **Regional Resource & Trade Resilience** audit through Data 51. The audit treats dependable trade basins—not identical local inventories—as the common-sense unit of economic sufficiency.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Headwater Vale & Waymeet Approach** is the current Data 52 geography/content checkpoint, extending Timbercross upstream into the first grounded overland approach toward Waymeet while preserving route-gated world geography.
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.13
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          52
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Headwater Vale & Waymeet Approach
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 51 adds six omitted common resources—Crownfields brick clay, Starfen alluvial clay and marsh willow, Coppergrass thornwood, and Ironspine Stonepine timber/pass stone—plus four regional charcoal substitutions and a lower-yield Great Mere dry-smoking fallback that does not require imported salt. Slatewater, Ironspine, and Mistmere also expose the light kitchen/workshop support their fiction already implied. Specialty ores, luxury woods, pearls, dyes, and premium preservation still reward trade. Game State remains 14.
+Data 52 adds Headwater Lower Vale, Headwater Warden Lodge, and Headwater Upper Vale; a wagon-capable river road followed by a foot/mount upper trail; six river/forest species; population-backed red-deer hunting; six gathering sources and nine raw/body resources; and ten connected processing/crafting outputs covering fish, venison, leather, alder/willow work, provisions, and bridge repair. The upper rim deliberately has no onward route yet. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 51 census:
+Validated Data 52 census:
 
 ```text
-places/localities       37 / mechanics floor 10
-named NPCs              29 / 50
-shop/service sites      25 / 20
-creatures               58 / 40
-resource sources        83 / 40
-canonical items        264 / 200
-recipes/processes      154 / 75
+places/localities       40 / mechanics floor 10
+named NPCs              32 / 50
+shop/service sites      27 / 20
+creatures               64 / 40
+resource sources        89 / 40
+canonical items        283 / 200
+recipes/processes      164 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -92,16 +92,16 @@ transport services       6 / 5
 Infrastructure coverage:
 
 ```text
-routes                               12
+routes                               14
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        15
-regional/shared content packs        21
-pack-owned records                   799
+NPC schedules                        17
+regional/shared content packs        23
+pack-owned records                   859
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/15/1
-runtime seed NPCs                    28
-runtime seed enemies                 16
+  schedules/companions            41/44/17/1
+runtime seed NPCs                    31
+runtime seed enemies                 17
 ```
 
 The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, canonical items, recipes/processes, and transport services meet their mechanics floors. Companions remain the largest relative gap, with abilities, NPC breadth, and quests materially short. Regional sufficiency should be improved with plausible substitutes and dependable trade—not duplicate specialty resources or disconnected filler.
