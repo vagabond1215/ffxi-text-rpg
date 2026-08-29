@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Headwater Vale & Waymeet Approach** is the current Data 52 geography/content checkpoint, extending Timbercross upstream into the first grounded overland approach toward Waymeet while preserving route-gated world geography.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Starfen Delta & Brackish Coast** is the current Data 53 geography/content checkpoint, realizing the Great Mere's eastward outflow, Tideglass pilot port, the first true Eastern Sea coast, and an explicit non-walkable open-sea boundary.
 
 ```text
 Product:       0.9.100.14
@@ -24,7 +24,7 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 52 adds Headwater Lower Vale, Headwater Warden Lodge, and Headwater Upper Vale; a wagon-capable river road followed by a foot/mount upper trail; six river/forest species; population-backed red-deer hunting; six gathering sources and nine raw/body resources; and ten connected processing/crafting outputs covering fish, venison, leather, alder/willow work, provisions, and bridge repair. The upper rim deliberately has no onward route yet. Game State remains 14.
+Data 53 adds Starfen Lower Delta, Tideglass Landing, and Starfen Brackish Coast; three route corridors plus the Mere-Delta Packet Boat; eight brackish/coastal species; seven gathering/fishing/mineral sources; seven exact-provenance raws; and ten transformations producing eleven outputs across seafood, salt, kelp, shell lime, reed matting, and preservation. The Eastern Sea is deliberately not walkable and no Miri/open-ocean route is authored yet. Game State remains 14.
 
 ## Product direction
 
@@ -73,34 +73,34 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 52 census:
+Validated Data 53 census:
 
 ```text
-places/localities       40 / mechanics floor 10
-named NPCs              32 / 50
-shop/service sites      27 / 20
-creatures               64 / 40
-resource sources        89 / 40
-canonical items        283 / 200
-recipes/processes      164 / 75
+places/localities       43 / mechanics floor 10
+named NPCs              35 / 50
+shop/service sites      29 / 20
+creatures               72 / 40
+resource sources        96 / 40
+canonical items        301 / 200
+recipes/processes      174 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       6 / 5
+transport services       7 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                               14
+routes                               17
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        17
-regional/shared content packs        23
-pack-owned records                   859
+NPC schedules                        19
+regional/shared content packs        25
+pack-owned records                   927
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/17/1
-runtime seed NPCs                    31
+  schedules/companions            41/44/19/1
+runtime seed NPCs                    34
 runtime seed enemies                 17
 ```
 
@@ -131,46 +131,4 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. Ironspine Highlands and the population-backed hunting bridge are the latest completed bounded work on `main`. **Packet E — Gate A integration/census audit — remains the next formal roadmap gate**; **Emberwash Badlands** is the next ranked world-edge candidate. Neither is auto-started without an explicit bounded work order.
-
-Future magic expansion must preserve the universal/shared ownership rule. Regional content may teach, contextualize, or reward access to character-owned magic, but it must not make a spell definition location-owned. External-game spell lists remain research inputs only and must pass originalization before entering canonical catalogs.
-
-## Read these first
-
-1. `AGENTS.md`
-2. `docs/THREAD_HANDOFF.md`
-3. `docs/EXECUTION_PIPELINE.md`
-4. `docs/DEVELOPMENT_DIRECTION.md`
-5. `docs/WORLD_IDENTITY_AND_CONTENT_POLICY.md`
-6. `docs/ROADMAP.md`
-7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md` for the latest alpine region
-9. `docs/ZONE_PROFILE_GREAT_MERE.md` for the freshwater region
-10. `docs/ITEM_CONSUMPTION_SAFETY.md` for the standing food-safety item contract
-11. `docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md` for Data 47 production-depth state
-12. `docs/ZONE_PROFILE_CROWNFIELDS.md` for the agricultural region
-13. `docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md` for ecology/geography state and deferred gaps
-14. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md` for active Phase 0.9 sequencing
-15. relevant architecture/runtime/tests for the active pass
-
-Repository evidence beats conversation memory. Low-risk normal development now prefers direct work on `main`; create a branch only when rollback/blast-radius risk exceeds what an ordinary GitHub revert can safely contain.
-
-## Running
-
-```bash
-npm start
-```
-
-Validation/progression entry points:
-
-```bash
-npm run audit:repo
-npm test
-npm run census
-npm run benchmark
-npm run benchmark:sample
-npm run hardening
-npm run check
-```
-
-`npm run check` and hosted `Check` execute Repository Audit + Test + Content Census + Benchmark 3 + Benchmark Sample. Census target shortfalls remain informational. `package.json` requires Node 24 or newer.
+`0.9.100 Content Scale Gate A` remains open. **Starfen Delta & Brackish Coast is complete as Data 53 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Gloamwood** is the next ranked world-edge candidate. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.

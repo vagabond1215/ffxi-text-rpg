@@ -50,13 +50,13 @@ Phase:         0.9 / 0.9.100 in progress
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 and promoted exact-head Check #1381 both passed 753/753 tests. |
 
-## Content infrastructure and regional packs — Data 52
+## Content infrastructure and regional packs — Data 53
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Twenty-three current packs; 859 current ownership records. |
+| Regional/shared pack ownership | integrated | Twenty-five current packs; 927 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -64,6 +64,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Population-backed encounter discovery | playable | Passive/wary/territorial encounter-backed populations can be deliberately located; population depletion occurs only after victory and existing body recovery remains authoritative. |
 | Ironspine alpine geography/economy | integrated | Wagon-limited pass, walk/mount high trail, alpine ecology, hunted body resources, preservation, hide/fur work, remedies, and survey craft. |
 | Headwater Vale geography/economy | playable | Timbercross headwaters, wagon-limited warden lodge, upper trail, coldstream fishing, red-deer hunting/body recovery, alder/willow work, preservation, and bridge-repair production form the first overland Waymeet approach. |
+| Starfen Delta / Brackish Coast | playable | Great Mere outflow, lower delta levees, Tideglass pilot port, packet-boat service, tidal coast ecology, seafood/salt/shell/reed production, and explicit non-walkable Eastern Sea boundary. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
@@ -174,34 +175,34 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 52 Headwater Vale checkpoint:
+Gameplay breadth at the Data 53 Starfen Delta checkpoint:
 
 ```text
-places/localities       40 / mechanics 10
-named NPCs              32 / 50
-shop/service sites      27 / 20
-creatures               64 / 40
-resource sources        89 / 40
-canonical items        283 / 200
-recipes/processes      164 / 75
+places/localities       43 / mechanics 10
+named NPCs              35 / 50
+shop/service sites      29 / 20
+creatures               72 / 40
+resource sources        96 / 40
+canonical items        301 / 200
+recipes/processes      174 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       6 / 5
+transport services       7 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                                  14
+routes                                  17
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           17
-regional/shared packs                   23
-pack-owned records                     859
+NPC schedules                           19
+regional/shared packs                   25
+pack-owned records                     927
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/17/1
-runtime seed NPCs                       31
+  schedules/companions              41/44/19/1
+runtime seed NPCs                       34
 runtime seed enemies                    17
 ```
 
@@ -209,4 +210,4 @@ Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mec
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. Headwater Vale & Waymeet Approach is the current Data 52 bounded unit on `main`. Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Starfen Delta / Brackish Coast** is now the next ranked world-edge candidate. None is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Starfen Delta & Brackish Coast is the current Data 53 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Gloamwood** is the next ranked world-edge candidate. None is auto-started.

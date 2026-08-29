@@ -16,7 +16,7 @@ Codename:      Starfen Delta & Brackish Coast
 
 ## Current bounded-unit state
 
-**Headwater Vale & Waymeet Approach** is the latest runtime/data bounded unit on `main`. It realizes the Timbercross headwaters and the first grounded overland leg toward Waymeet without opening the later plateau/march route.
+**Starfen Delta & Brackish Coast** is the latest runtime/data bounded unit on `main`. It realizes the Great Mere outflow, Tideglass Landing, and the first true Eastern Sea coast without opening Miri or generalized ocean travel.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -25,31 +25,35 @@ Latest bounded implementation:
 - promoted PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
 - exact promoted-head Check #1381 / run `33217086478`: full gate green;
 - Headwater implementation freeze `aa39347a0faa754690a194d926262256e92027f1`;
-- Check #1476 / run `33264692343`: full gate green, 770/770 tests, Data 52 pre-promotion census confirmed.
+- Check #1476 / run `33264692343`: full gate green, 770/770 tests, Data 52 pre-promotion census confirmed;
+- Starfen Delta implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166`;
+- Check #1491 / run `33267789356`: full gate green, 776/776 tests;
+- promoted Data 53 head `8f968155d092431b0a3314d38f4d890b0c87f599`;
+- Check #1493 / run `33267935109`: full gate green, 776/776 tests, Data 53 census confirmed.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 52 metrics
+## Data 53 metrics
 
 ```text
-places/localities                       40
-named NPCs                              32
-shop/service sites                      27
-creatures                               64
-resource sources                        89
-canonical items                        283
-recipes/processes                      164
+places/localities                       43
+named NPCs                              35
+shop/service sites                      29
+creatures                               72
+resource sources                        96
+canonical items                        301
+recipes/processes                      174
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
-transport services                       6
+transport services                       7
 
-raw resources with production demand   89 / 100
+raw resources with production demand   96 / 107
 luxury raws with production demand      14 / 14
-routes                                  14
-NPC schedules                           17
-regional/shared packs                   23
-pack-owned records                     859
+routes                                  17
+NPC schedules                           19
+regional/shared packs                   25
+pack-owned records                     927
 ```
 
 ## Regional resilience rule
@@ -92,7 +96,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 32/50;
+- named NPCs: 35/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -111,7 +115,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale is complete. Next ranked world-edge candidate: **Starfen Delta / Brackish Coast**. It is queued, not auto-authorized.
+Headwater Vale and Starfen Delta / Brackish Coast are complete. Next ranked world-edge candidate: **Gloamwood**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -125,8 +129,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Starfen Delta / Brackish Coast is now the next ranked candidate.
-- Gloamwood follows; Emberwash remains a later southern-frontier candidate.
+- Gloamwood is now the next ranked candidate.
+- Emberwash follows; Lower Deepvein remains the next Deep World approach candidate.
 
 Strong system/content candidates:
 - companion breadth;
