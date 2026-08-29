@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -464,6 +464,65 @@ Raw-resource production utilization is 56/64 and luxury raw utilization is 13/13
 
 No new durable state family is introduced. The hunting bridge stores its population source on the existing active-battle record, uses the existing ecology population state, and reconciles population depletion through existing battle rewards. Ironspine otherwise reuses existing geography, travel, ecology, resource recovery, inventory/provenance, production/work, workstation, shop, schedule, and Pack-v2 authorities.
 
+
+### `0.9.100.11` — Material Foundations & Common Components
+
+This revision establishes a shared late-medieval/fantasy material-culture substrate before profession-specific finished tools are expanded.
+
+```text
+Product       0.9.100.10 -> 0.9.100.11
+Package       0.9.100    -> 0.9.100
+Data          49         -> 50
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 50
+
+Stable authored content expands with:
+- 21 gathering sources and 21 raw materials across existing Elderwood, Redstone/Deepvein, Starfen, Crownfields, Slatewater, and Ironspine geography;
+- 55 reusable production outputs and 55 transformations;
+- standard nonferrous metals plus bronze, brass, pewter, solder, steel, sheet/wire stock, common iron hardware, tool/blade blanks, and silver setting stock;
+- differentiated woods for handles, structures, decorative work, bows, spars/masts, cooperage, carving, coppice, sap/syrup, and a Giant Cane bamboo analogue;
+- an explicit hemp fiber -> yarn -> twine -> cord -> rope -> hawser hierarchy plus canvas, net webbing, flax wick, and nettle thread;
+- charcoal, quicklime, whetstone, alum mordant, potash, glass batch, pine tar, and hide glue;
+- Cloudsilver Spellwire assembled from silver wire, polished Cloud Quartz, and lodestone billet rather than an isolated magical ore;
+- `pack-material-foundations-common-components` as the shared Pack-v2 owner.
+
+The census target for this authored delta is:
+
+```text
+places/localities              37
+named NPCs                     29
+shop/service sites             25
+creature definitions           58
+resource sources               77
+canonical items               258
+recipes/processes             149
+abilities/techniques           41
+quests/contracts               18
+companions                      1
+transport services              6
+
+routes                          12
+spell schools                    4
+capabilities                    44
+NPC schedules                   15
+regional/shared packs           21
+pack-owned records             782
+runtime seed NPCs               28
+runtime seed enemies             16
+```
+
+Raw-resource production utilization rises from 56/64 to **77/85**. Luxury raw utilization rises from 13/13 to **14/14**.
+
+#### Why Game State stays 14
+
+No new durable player/world state is introduced. Data 50 reuses existing gathering/ecology, inventory/container, provenance, production, workstation, work-proficiency, and Pack-v2 authorities. The production schema already supported `requiredToolTags`; selected woodworking transformations now exercise that existing seam.
+
+Wool and other managed-animal outputs remain deliberately deferred. Existing Crownfields sheep/cattle/hen/bee populations do not justify fake flora sources; a future husbandry/managed-animal source authority must be intentional.
+
 ## Persistence history
 
 Relevant late history:
@@ -488,6 +547,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.8           no Game State change; Data 46 -> 47
 0.9.100.9           no Game State change; Data 47 -> 48
 0.9.100.10          no Game State change; Data 48 -> 49
+0.9.100.11          no Game State change; Data 49 -> 50
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -542,7 +602,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 49 Ironspine checkpoint supersedes the earlier Great Mere and prior census freezes: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 56 sources, 182 items, 94 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 20 packs, and 630 pack-owned records.
+The current Data 50 material-foundation checkpoint supersedes the Data 49 census freeze: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 77 sources, 258 items, 149 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 21 packs, and 782 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
