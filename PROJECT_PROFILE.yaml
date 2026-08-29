@@ -24,6 +24,7 @@ authority:
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
+  world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
 git:
   current_normal_work: awaiting-next-explicit-bounded-unit-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
@@ -51,9 +52,11 @@ progression:
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: emberwash-badlands
-  next_world_edge_candidate_status: ranked-next-not-auto-authorized
+  next_world_edge_candidate_status: paused-pending-macro-world-civilization-plan
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
+  macro_world_planning: world-civilization-geography
+  macro_world_planning_status: active-planning-before-further-edge-expansion
   next_material_culture_candidate: occupational-tool-conversion
   next_material_culture_candidate_status: queued-not-auto-authorized
 validation:
@@ -168,5 +171,8 @@ constraints:
   - regional resilience prefers ordinary substitute routes and dependable trade basins over duplicating specialty resources in every biome
   - premium outcomes may still require specialty trade
   - Coppergrass remains a transit wilderness until a staffed locality is intentionally authored
+  - current starting nations are mixed-race political states rather than racial homelands
+  - future ancestral capitals should normally be separated by multiple macro-regions plus at least one meaningful physical magical environmental political or vertical barrier
+  - reserve continents coastlines mountain chains drainage and civilization envelopes before further edge-by-edge biome authoring
   - roadmap and world-edge sequencing do not auto-authorize later units
   - prefer direct work on main unless a change has material rollback risk that ordinary GitHub revert cannot safely contain
