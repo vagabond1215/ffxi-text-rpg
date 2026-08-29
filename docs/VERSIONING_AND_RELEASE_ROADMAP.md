@@ -740,6 +740,69 @@ Raw-resource production utilization is **103/114**. Luxury utilization remains *
 
 Data 54 composes existing place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. No new durable serialized state family is introduced.
 
+### `0.9.100.16` — Emberwash Badlands & Cinderwell Station
+
+This revision establishes the canonical northern arid frontier south of Redstone while deliberately stopping before the farther true desert, southern strait, and Veyra sphere.
+
+```text
+Product       0.9.100.15 -> 0.9.100.16
+Package       0.9.100    -> 0.9.100
+Data          54         -> 55
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 55
+
+Stable authored content expands with:
+
+- Emberwash North Wash, Cinderwell Station, and Emberwash Saltpan Verge;
+- `map-emberwash-badlands`;
+- Cinderwell Caravan Road from South Redstone through North Wash to Cinderwell with walk/mount/wagon/caravan access;
+- Saltpan Foretrail from Cinderwell to the saltpan verge with walk/mount/caravan access only;
+- Cinderwell as the explicit ordinary-wagon limit;
+- eight arid-frontier species/populations, reusing four established families and adding four Emberwash families;
+- seven exact-provenance forage/gather/mine sources and seven raw resources;
+- ten processing/crafting transformations producing ten outputs;
+- three persistent Cinderwell staff and two schedules;
+- `pack-emberwash-badlands-ecology` and `pack-emberwash-cinderwell-station`;
+- explicit practical preparation metadata for Emberpod and Cinder Pear.
+
+No route leaves Emberwash Saltpan Verge toward the farther true desert, southern strait, or Veyra realm. No generalized heat meter, thirst meter, weather persistence, desert-access state, or Veyra-border authority is introduced.
+
+Implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4` passed Check #1547 / run `33279116948` with Repository Audit, **786/786 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Validated Data 55 implementation census:
+
+```text
+places/localities                        49
+named NPCs                               41
+shop/service sites                       33
+creature definitions                     88
+resource sources                        110
+canonical items                         335
+recipes/processes                       194
+abilities/techniques                     41
+quests/contracts                         18
+companions                                1
+transport services                        7
+routes                                   21
+spell schools                             4
+capabilities                             44
+NPC schedules                            23
+regional/shared packs                    29
+pack-owned records                     1057
+runtime seed NPCs                        40
+runtime seed enemies                     17
+```
+
+Raw-resource production utilization is **110/121**. Luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+Data 55 composes existing place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. Preparation-sensitive travel remains authored through place/route hazards, services, and available stock rather than a new durable serialized state family.
+
 ## Persistence history
 
 Relevant late history:
