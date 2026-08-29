@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -523,6 +523,32 @@ No new durable player/world state is introduced. Data 50 reuses existing gatheri
 
 Wool and other managed-animal outputs remain deliberately deferred. Existing Crownfields sheep/cattle/hen/bee populations do not justify fake flora sources; a future husbandry/managed-animal source authority must be intentional.
 
+
+### `0.9.100.12` — Regional Resource & Trade Resilience
+
+This revision audits the established world as connected economic basins rather than isolated zones.
+
+```text
+Product       0.9.100.11 -> 0.9.100.12
+Package       0.9.100    -> 0.9.100
+Data          50         -> 51
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 51
+
+Stable authored content expands with six common regional resources/sources and five substitute production routes. The additions correct biome omissions and brittle dependencies: Crownfields brick clay; Starfen alluvial clay and marsh willow; Coppergrass thornwood; Ironspine Stonepine timber and pass stone; four non-Crown-Oak charcoal paths; and a lower-yield Great Mere dry-smoking fallback.
+
+Slatewater, Ironspine, and Mistmere also expose kitchen/light-workshop support already implied by their authored service spaces.
+
+The intended census is 83 sources, 264 canonical items, 154 recipes/processes, 21 packs, and 799 pack-owned records. Raw-resource production demand is 80/91, with three added clay/stone raws intentionally serving direct construction sinks rather than forced processing recipes. Luxury raw utilization remains 14/14.
+
+#### Why Game State stays 14
+
+No new durable player/world fact is introduced. Data 51 reuses route/service, POI/workstation, ecology/gathering, inventory/provenance, production, proficiency, and Pack-v2 authorities.
+
 ## Persistence history
 
 Relevant late history:
@@ -548,6 +574,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.9           no Game State change; Data 47 -> 48
 0.9.100.10          no Game State change; Data 48 -> 49
 0.9.100.11          no Game State change; Data 49 -> 50
+0.9.100.12          no Game State change; Data 50 -> 51
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -602,7 +629,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 50 material-foundation checkpoint supersedes the Data 49 census freeze: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 77 sources, 258 items, 149 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 21 packs, and 782 pack-owned records.
+The current Data 51 regional-resilience checkpoint supersedes Data 50: 37 places, 29 named NPCs, 25 service sites, 58 creatures, 83 sources, 264 items, 154 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 15 schedules, 21 packs, and 799 pack-owned records.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
