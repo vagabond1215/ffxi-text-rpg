@@ -60,13 +60,13 @@ const POI_SEEDS = [
     poi('poi-great-mere-smokehouse-loft', 'merewatch-landing', 'Merewatch Smokehouse and Common Loft', POI_TYPES.LANDMARK, 'E-6', ['smokehouse', 'lodging', 'food', 'safeRest', 'cooking', 'craftSupport'], 'Shared smokehouse, cook hearth, cleaning tables, drying racks, and simple loft bunks used by fishing crews'),
     poi('poi-ironspine-survey-exchange', 'ironspine-watchpost', 'Vara Kell', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'ironspine', 'surveyGoods'], 'High-pass exchange buying field finds and selling provisions, survey goods, and mountain tools'),
     poi('poi-ironspine-warden-desk', 'ironspine-watchpost', 'Dain Rove', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'hunting', 'wildlifeTracking', 'routeGuidance', 'ironspine'], 'Warden desk posting pass conditions, wildlife sign, and high-country notices'),
-    poi('poi-ironspine-common-hearth', 'ironspine-watchpost', 'Mara Fell', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'ironspine'], 'Stone common room with a banked hearth, stew pot, drying lines, and simple sleeping pallets'),
+    poi('poi-ironspine-common-hearth', 'ironspine-watchpost', 'Mara Fell', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'cooking', 'craftSupport', 'ironspine'], 'Stone common room with a banked hearth, stew pot, drying lines, a common repair bench, and simple sleeping pallets'),
     poi('poi-ironspine-animal-yard', 'ironspine-watchpost', 'Ironspine Sheltered Yard', POI_TYPES.TRAVEL, 'H-8', ['travel', 'mountCare', 'packAnimals', 'wagonLimit'], 'Roofed mountain yard where wagon teams stop and saddle animals are checked before the high trail'),
 
     poi('poi-slatewater-waylodge-exchange', 'slatewater-waylodge', 'Eira Voss', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'slatewater', 'fieldGoods'], 'Waylodge factor buying field finds and selling provisions, tools, and road gear'),
     poi('poi-slatewater-waylodge-trailguild', 'slatewater-waylodge', 'Toren Marr', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'guildMaster', 'gathering', 'hunting', 'trade'], 'Foothill guild steward for gathering, hunting, route conditions, and field exchange'),
     poi('poi-slatewater-waylodge-stableyard', 'slatewater-waylodge', 'Bram Pell', POI_TYPES.TRAVEL, 'H-8', ['travel', 'stabling', 'mountCare', 'packAnimals'], 'Stableyard with water, feed, sheltered pens, tack checks, and caravan boarding for mounts and pack animals'),
-    poi('poi-slatewater-waylodge-hearth', 'slatewater-waylodge', 'Slatewater Hearth and Bunkroom', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest'], 'Common hearth, hot meals, drying racks, and simple bunks for road crews and field workers'),
+    poi('poi-slatewater-waylodge-hearth', 'slatewater-waylodge', 'Slatewater Hearth and Bunkroom', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'cooking', 'craftSupport'], 'Common hearth, hot meals, drying racks, a shared repair bench, and simple bunks for road crews and field workers'),
 
     poi('poi-bastok-markets-rabid-wolf', 'brasshaven-market-ring', 'Marshal Varric Stone', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'realm'], 'Market Ring gate marshal'),
     poi('poi-bastok-markets-brunhilde', 'brasshaven-market-ring', 'Dessa Rivet', POI_TYPES.VENDOR, 'F-10', ['armor', 'shop'], 'Armor vendor'),
@@ -89,7 +89,7 @@ const POI_SEEDS = [
     poi('poi-port-bastok-travel-counter', 'brasshaven-iron-quay', 'Iron Quay Transit Office', POI_TYPES.TRAVEL, 'K-7', ['travel', 'futureTransit'], 'Freight clerks, caravan boards, and passenger bookings for routes beyond the quay'),
     poi('poi-port-bastok-shops', 'brasshaven-iron-quay', 'Iron Quay Exchange', POI_TYPES.SHOP, 'F-6', ['shops'], 'Quayside shop cluster'),
 
-    poi('poi-waters-baehu-faehu', 'mistmere-canal-ward', 'Pelu Senn', POI_TYPES.VENDOR, 'G-5', ['regionalVendor', 'starfen'], 'Regional vendor for Starfen goods'),
+    poi('poi-waters-baehu-faehu', 'mistmere-canal-ward', 'Pelu Senn', POI_TYPES.VENDOR, 'G-5', ['regionalVendor', 'starfen', 'craftSupport'], 'Regional vendor for Starfen goods with a shared reedcraft and repair bench'),
     poi('poi-waters-chomo-jinjahl', 'mistmere-canal-ward', 'Tavi Meren', POI_TYPES.GUILD, 'E-8', ['cooking', 'guildMerchant'], 'Culinary guild merchant'),
     poi('poi-waters-dagoza-beruza', 'mistmere-canal-ward', 'Reader Soli Venn', POI_TYPES.MISSION, 'F-5', ['mission', 'mistmere'], 'Mistmere civic commission contact'),
     poi('poi-waters-ensasa', 'mistmere-canal-ward', 'Nemi Vale', POI_TYPES.VENDOR, 'H-9', ['items', 'shop'], 'Canal-market goods vendor'),
