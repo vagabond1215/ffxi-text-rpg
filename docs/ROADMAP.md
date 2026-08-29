@@ -34,50 +34,52 @@ Population-backed Hunting Bridge             COMPLETE / MERGED
 Ironspine Highlands                           COMPLETE / MERGED
 Headwater Vale & Waymeet Approach             COMPLETE / MAIN
 Starfen Delta & Brackish Coast                 COMPLETE / MAIN
+Gloamwood & Oldbough Refuge                    COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Starfen Delta & Brackish Coast
+### Gloamwood & Oldbough Refuge
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 53 / Product 0.9.100.14.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 54 / Product 0.9.100.15.**
 
 Purpose:
-- realize the Great Mere eastward outflow;
-- establish the freshwater-to-brackish transition and first Eastern Sea coast;
-- keep Tideglass a small pilot/fishery/salt-work port rather than another major city;
-- preserve open-sea non-walkability and defer Miri/open-ocean travel;
-- connect coastal resources to preservation, packing, construction, and trade.
+- establish the first old-growth barrier beyond West Elderwood;
+- create a useful forester refuge without inventing a town or ancestral gate city;
+- make Oldbough the wagon turnaround;
+- continue only by a walk/mount deepwood trail;
+- stop before the western mountain crescent and Lethari homeland;
+- connect seven old-growth raws to ten practical production outputs.
 
-Data 53 authored delta:
-- 3 places, 3 routes, 1 scheduled packet-boat service;
+Data 54 authored Gloamwood:
+- 3 places and 2 routes;
 - 3 persistent NPCs and 2 schedules;
 - 8 species/populations and 7 exact-provenance sources/raws;
-- 10 transformations producing 11 outputs;
+- 10 transformations producing 10 outputs;
 - 2 Pack-v2 ownership graphs;
-- practical raw-seafood safety with fantasy-era presentation.
+- practical mushroom/berry safety with fantasy-era presentation.
 
 Implementation freeze:
-- `c515588c404c0f80a724d767b74535f1e39ae166`;
-- Check #1491 / run `33267789356`: Repository Audit, **776/776 tests**, Census, Benchmark 3, Benchmark Sample green.
+- `83cfa4de61e315fb54689a5d7d2899d2ade41743`;
+- Check #1504 / run `33269167675`: Repository Audit, **781/781 tests**, Census, Benchmark 3, Benchmark Sample green.
 
-Promoted Data 53:
-- `8f968155d092431b0a3314d38f4d890b0c87f599`;
-- Check #1493 / run `33267935109`: same full gate green.
+Promoted Data 54:
+- `2de11cd73302751e9a83088d77c2de42df3313e8`;
+- Check #1507 / run `33269370813`: same full gate green.
 
-Game State remains 14; no durable tide, ocean, ship, or fishing-state family was introduced.
+Game State remains 14; no durable navigation, ward, pass, border, or hunting-state family was introduced.
 
 ## Current content census
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 43 | 10 | reached |
-| Named NPCs | 35 | 50 | 15 short |
-| Shop/service sites | 29 | 20 | reached |
-| Creature definitions | 72 | 40 | reached |
-| Resource sources | 96 | 40 | reached |
-| Canonical items | 301 | 200 | reached |
-| Recipes/processes | 174 | 75 | reached |
+| Places/localities | 46 | 10 | reached |
+| Named NPCs | 38 | 50 | 12 short |
+| Shop/service sites | 31 | 20 | reached |
+| Creature definitions | 80 | 40 | reached |
+| Resource sources | 103 | 40 | reached |
+| Canonical items | 318 | 200 | reached |
+| Recipes/processes | 184 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -86,13 +88,13 @@ Game State remains 14; no durable tide, ocean, ship, or fishing-state family was
 Supplemental:
 
 ```text
-routes                        17
+routes                        19
 spell schools                  4
 capabilities                  44
-NPC schedules                 19
-regional/shared packs         25
-pack-owned records           927
-runtime seed NPCs             34
+NPC schedules                 21
+regional/shared packs         27
+pack-owned records           992
+runtime seed NPCs             37
 runtime seed enemies          17
 ```
 
@@ -104,7 +106,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 53.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 54.
 
 ## Formal Phase 0.9 sequence
 
@@ -149,14 +151,14 @@ Post-lock world-edge status:
 
 - **Headwater Vale — COMPLETE / Data 52.**
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
+- **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
 
 Remaining ranking:
-1. Gloamwood;
-2. Emberwash Badlands;
-3. Lower Deepvein;
-4. Waymeet Marches / central plateau approaches;
-5. Coppergrass extensions;
-6. Drowned Vaults.
+1. Emberwash Badlands;
+2. Lower Deepvein;
+3. Waymeet Marches / central plateau approaches;
+4. Coppergrass extensions;
+5. Drowned Vaults.
 
 The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
