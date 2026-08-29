@@ -20,7 +20,9 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-**Regional Resource & Trade Resilience is implemented on `main`; final exact-head Check evidence is the remaining closeout step.**
+**Regional Resource & Trade Resilience is complete and validated on `main`.**
+
+Data 51 Check **#1454 / run `33226362127`** passed on head `d047bf03d7fb17af928ce9aae0838db25a2969e7`: Repository Audit, **764/764 tests**, Content Census, Benchmark 3, and Benchmark Sample all green.
 
 Normal low-risk work should continue directly on `main`. Use a feature branch only when rollback/blast-radius risk materially exceeds what an ordinary GitHub revert can safely contain.
 
@@ -238,7 +240,7 @@ Workstation corrections:
 - Ironspine Common Hearth: kitchen + workshop;
 - Mistmere regional exchange: workshop.
 
-## Expected Data 51 census
+## Data 51 validated census
 
 ```text
 places/localities                        37
@@ -263,7 +265,7 @@ runtime seed NPCs                        28
 runtime seed enemies                     16
 ```
 
-Expected raw-resource production demand: **80/91**. Three newly explicit clay/stone resources intentionally have direct construction sinks rather than dummy processing recipes.
+Raw-resource production demand: **80/91**. Three newly explicit clay/stone resources intentionally have direct construction sinks rather than dummy processing recipes.
 
 Luxury raw utilization remains **14/14**.
 
