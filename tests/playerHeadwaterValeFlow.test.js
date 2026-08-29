@@ -11,12 +11,13 @@ import { REGIONAL_CONTENT_PACKS } from '../js/text/data/regionalContentPacks.js'
 import { validateContentPacks } from '../js/text/systems/contentPackValidator.js';
 import { describeItemConsumption } from '../js/text/data/itemSchema.js';
 import { getPlace } from '../js/text/data/places.js';
+import { getPointOfInterest } from '../js/text/data/pointsOfInterest.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { performPlayerAttack } from '../js/text/systems/combatActionEngine.js';
 import { getPopulationAvailability } from '../js/text/systems/ecologyEngine.js';
 import { listPopulationEncounterOptions, startPopulationEncounter } from '../js/text/systems/populationEncounterEngine.js';
-import { collectAvailableWorkstationTags } from '../js/text/systems/workstationEngine.js';
+import { getWorkstationTagsForPoi } from '../js/text/systems/workstationEngine.js';
 
 function stateAt(placeId) {
     const state = createNewGameState({ nationId: 'thornwall', name: 'Headwater Auditor' });
@@ -94,9 +95,11 @@ test('Headwater raw fish and game use practical safety language while prepared f
     assert.deepEqual(validateProductionItemCatalog(), []);
 });
 
-test('Headwater lodge exposes the workstations used by its local production graph', () => {
-    const state = stateAt('headwater-warden-lodge');
-    const tags = new Set(collectAvailableWorkstationTags(state));
+test('Headwater lodge POIs expose the workstations used by its local production graph', () => {
+    const tags = new Set([
+        ...getWorkstationTagsForPoi(getPointOfInterest('poi-headwater-riverworks-yard')),
+        ...getWorkstationTagsForPoi(getPointOfInterest('poi-headwater-common-hearth')),
+    ]);
     for (const required of ['kitchen', 'workshop', 'woodshop', 'tannery']) assert.ok(tags.has(required), required);
 });
 
