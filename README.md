@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, Crownfields, Great Mere, population-backed hunting, Ironspine Highlands, and **Material Foundations & Common Components** are complete through Data 50. Data 50 adds a shared cross-guild material substrate without adding a new persistence family.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. The shared material substrate is now followed by a **Regional Resource & Trade Resilience** audit through Data 51. The audit treats dependable trade basins—not identical local inventories—as the common-sense unit of economic sufficiency.
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 50 adds 21 gathering sources and raw materials plus 55 reusable produced stocks/components and 55 transformations across standard metals/alloys, differentiated working woods, hemp/nettle/flax cordage and textile grades, industrial minerals, hardware, maintenance goods, glass batch, glue, tar, and Cloudsilver Spellwire. Wool remains intentionally deferred to a real husbandry source model. Game State remains 14 because the tranche reuses existing ecology/gathering, inventory/provenance, production/workstation, proficiency, and Pack-v2 authorities.
+Data 51 adds six omitted common resources—Crownfields brick clay, Starfen alluvial clay and marsh willow, Coppergrass thornwood, and Ironspine Stonepine timber/pass stone—plus four regional charcoal substitutions and a lower-yield Great Mere dry-smoking fallback that does not require imported salt. Slatewater, Ironspine, and Mistmere also expose the light kitchen/workshop support their fiction already implied. Specialty ores, luxury woods, pearls, dyes, and premium preservation still reward trade. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Data 50 census target/validated-by-Check contract:
+Data 51 census contract:
 
 ```text
 places/localities       37 / mechanics floor 10
 named NPCs              29 / 50
 shop/service sites      25 / 20
 creatures               58 / 40
-resource sources        77 / 40
-canonical items        258 / 200
-recipes/processes      149 / 75
+resource sources        83 / 40
+canonical items        264 / 200
+recipes/processes      154 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -97,14 +97,14 @@ spell schools                         4
 capabilities/training definitions    44
 NPC schedules                        15
 regional/shared content packs        21
-pack-owned records                   782
+pack-owned records                   799
 pack-owned abilities/capabilities/
   schedules/companions            41/44/15/1
 runtime seed NPCs                    28
 runtime seed enemies                 16
 ```
 
-The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, canonical items, recipes/processes, and transport services now meet their mechanics floors. Companions remain the largest relative gap, with abilities, NPC breadth, and quests materially short. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, canonical items, recipes/processes, and transport services meet their mechanics floors. Companions remain the largest relative gap, with abilities, NPC breadth, and quests materially short. Regional sufficiency should be improved with plausible substitutes and dependable trade—not duplicate specialty resources or disconnected filler.
 
 ## Persistence model
 
