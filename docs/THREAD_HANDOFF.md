@@ -22,6 +22,30 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 Data 49 is **complete and merged on `main`**.
 
+## Branch cleanup checkpoint
+
+Repository branch cleanup completed from validated `main` baseline
+`c1f387e854c66481e39d334b0a3f4d38ef33250f`.
+
+- all 114 non-`main` remote branches were inventoried and deleted;
+- 77 were merged pull-request heads;
+- 13 were consumed aliases or validation-base refs;
+- 22 were obsolete closed validation-only heads;
+- `feature/0.9.100-location-area-profiles` was explicitly superseded by the later
+  Data 44-49 geography/ecology graph and was not merged;
+- `maintenance/active-battle-player-link` was explicitly superseded by the
+  stricter combat-identity work on `main`; its valid post-load skill-link fix is
+  already present at `9e12cfb`;
+- no unique current work required integration;
+- local and remote branch inventories now contain only `main` (plus the local
+  symbolic `origin/HEAD -> origin/main` ref);
+- GitHub reports zero open pull requests and `main` as the default branch;
+- GitHub reports `main` is currently unprotected.
+
+The pre-cleanup and aggregate local gates both passed Repository Audit,
+753/753 tests, Content Census, Benchmark 3, and Benchmark Sample. Content and
+runtime contracts remain Product 0.9.100.10 / Data 49 / Game State 14.
+
 Population-backed hunting:
 - PR #400;
 - merge: `e18990188935f52b66fe96cfa9d374ff845618ef`.
