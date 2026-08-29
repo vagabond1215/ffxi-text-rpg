@@ -7,146 +7,247 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Material Foundations & Common Components is complete and validated on `main`.**
+**Regional Resource & Trade Resilience is implemented on `main`; final exact-head Check evidence is the remaining closeout step.**
 
-Data 50 implementation Check **#1427 / run `33224347338`** passed on head `3ae5ef94b011e52975b1c57d7e17e50a486f2f75`: Repository Audit, **759/759 tests**, Content Census, Benchmark 3, and Benchmark Sample all green.
+Normal low-risk work should continue directly on `main`. Use a feature branch only when rollback/blast-radius risk materially exceeds what an ordinary GitHub revert can safely contain.
 
-The prior branch-cleanup checkpoint remains authoritative:
-- 114 non-`main` remote branches were inventoried and deleted;
-- local/remote branch inventory was reduced to `main` (plus symbolic `origin/HEAD -> origin/main`);
-- zero open pull requests remained;
-- `main` is the default branch;
-- normal low-risk work should continue directly on `main`.
+Prior validated product checkpoint:
+- Data 50 final Check #1429 / run `33224409426` on `0f94d44b72105982370ffabd859b7d8175effef4`: Repository Audit, **759/759 tests**, Census, Benchmark 3, Benchmark Sample green.
 
-Prior validated product checkpoints:
-- population-backed hunting: PR #400, merge `e18990188935f52b66fe96cfa9d374ff845618ef`;
-- Ironspine / Data 49: PR #402, merge `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
-- Ironspine promoted exact-head Check #1381 / run `33217086478`: Repository Audit, 753/753 tests, Census, Benchmark 3, Benchmark Sample green.
+## Data 51 — Regional Resource & Trade Resilience
 
-## Data 50 — Material Foundations & Common Components
+The audit asks whether each established economic area, together with dependable nearby trade partners, can support ordinary food, tools, repair, construction, bindings, fuel, medicine, and preservation without requiring an implausibly unique distant ingredient.
 
-Data 50 establishes the shared material substrate required for profession-scale industry without creating a second crafting authority.
+The governing principle is:
 
-Added:
-- **21 gathering sources** and **21 raw resources**;
-- **55 reusable production outputs** and **55 transformations**;
-- one shared Pack-v2 owner: `pack-material-foundations-common-components`.
+> **Ordinary substitutes should exist; premium outcomes may still require specialty trade.**
 
-### Metals and industrial minerals
+This does not require every region to own every ore, tree, grain, herb, or luxury material.
 
-New source families cover:
-- tin;
-- zinc-bearing calamine;
-- lead;
-- silver;
-- gold;
-- limestone;
-- whetstone stone;
-- alum shale;
-- glass sand.
+Permanent audit:
+- `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`.
 
-Produced stock covers:
-- bronze;
-- brass;
-- pewter;
-- solder;
-- steel;
-- copper/silver wire;
-- bronze/brass sheet;
-- nails, hinges, buckles/rings, ferrules/sockets, chain, hoops, tool-head blanks, blade blanks, and silver settings.
+Regression guard:
+- `tests/regionalResourceDistribution.test.js`.
 
-`Cloudsilver Spellwire` is deliberately cross-regional:
-```text
-silver wire
-+ polished Cloud Quartz
-+ lodestone billet
--> Cloudsilver Spellwire
-```
-Magical industry extends ordinary metal/mineral craft rather than bypassing it.
+## Reliable trade basins
 
-### Differentiated woods
+Western manufacturing basin:
+- Elderwood / Thornwall;
+- Crownfields;
+- Slatewater Foothills;
+- Redstone Reach / Brasshaven.
 
-New working-property families:
-- Ash — flexible handle/shaft stock;
-- Crown Oak — broad structural hardwood;
-- Silvermaple — pale fine-grained decorative stock plus sap/syrup;
-- Yew — elastic bow/stave stock;
-- Hazel — coppice rods/hoops;
-- Slatewater Spruce — tall straight spar/mast stock;
-- Fragrant Cedar — rot-resistant aromatic stock;
-- Crownfields Applewood — dense fruitwood/carving stock;
-- Starfen Giant Cane — hollow lightweight bamboo analogue.
+Reliable links:
+- Southfield Farm Road + Crownfields Produce Wagon;
+- Crown-Forge Caravan Road;
+- Slatewater Foothill Caravan.
 
-Reusable outputs include handle blanks, planks, beams, fine boards, bow staves, hoops, spars, cane poles, pegs/dowels, wheel-spoke sets, and cooper staves.
+Eastern corridor:
+- Redstone Reach;
+- Coppergrass Steppe;
+- Starfen / Mistmere.
 
-### Fiber and cordage
+Reliable physical link:
+- Forge-Mere Long Road.
 
-The shared plant-fiber hierarchy now includes:
+Scheduled through-service:
+- Forge-Mere Caravan between Brasshaven and Mistmere.
 
-```text
-hemp stalk
-  -> dressed hemp fiber
-  -> hemp yarn
-  -> hemp twine
-  -> hemp cord
-  -> hemp rope
-  -> heavy hemp hawser
-```
+Important: Coppergrass is a **transit wilderness**, not a staffed locality. The route crosses Coppergrass, but the current scheduled Forge-Mere service does not expose Coppergrass as a boarding stop.
 
-Parallel outputs:
-- hemp canvas;
-- hemp net webbing;
-- flax lamp wick;
-- Starfen nettle thread;
-- existing reed/rush/flax chains remain valid.
+Freshwater basin:
+- Starfen / Mistmere;
+- Great Mere / Merewatch.
 
-### Industrial consumables
+Reliable links:
+- East Fen Shore Track;
+- Reedport-Mere Waterway;
+- Great Mere Ferry.
 
-Added:
-- hardwood charcoal;
-- quicklime;
-- whetstone;
-- alum mordant;
-- wood-ash potash;
-- clear glass batch;
-- pine tar;
-- hide glue.
+Highland dependency:
+- Ironspine Highlands;
+- Redstone Reach / Brasshaven.
 
-Selected woodworking transformations now use the production engine's existing `requiredToolTags` seam through `cutting` capability. No new tool-state authority was added.
+Reliable link:
+- wagon-capable Ironspine Lower Pass Road to High-Pass Watch.
 
-## Husbandry boundary
+## Area audit result
 
-**Do not model wool, milk, eggs, honey, manure, or other managed-animal products as flora gathering sources.**
+### Elderwood / Thornwall
+**Robust.**
 
-Crownfields already has sheep/cattle/hen/bee ecology, but those products require a deliberate husbandry/managed-animal source authority. Wool and warm-textile chains therefore remain intentionally deferred.
+Local:
+- abundant differentiated timber;
+- resin;
+- Barkboar hide;
+- roots, mushrooms, nuts, fruit, sap;
+- medicines;
+- forge/workshop/woodshop/tannery infrastructure.
 
-Body-recovered animal materials continue to use legitimate body provenance.
+Trade fills:
+- Crownfields grain/fiber;
+- Slatewater stone/clay/abrasives;
+- Redstone metal/salt.
 
-## Data 50 validated census
+No local ore duplication is required.
 
-Check #1427 reported:
+### Crownfields
+**Robust agricultural basin.**
+
+Local:
+- rye, peas, apples;
+- flax/hemp;
+- orchard wood;
+- **new Crownfields Brick Clay**;
+- kitchen/workshop at the Grange.
+
+The added clay fixes an implausible omission for a drained alluvial farming lowland.
+
+### Slatewater Foothills
+**Robust corridor region.**
+
+Local:
+- spruce/cedar;
+- clay, slate, limestone, whetstone stone;
+- pitch resin;
+- herbs/berries.
+
+Trade:
+- Redstone metal/salt;
+- Elderwood/Crownfields food, hide, fiber.
+
+Corrections:
+- Slatewater Spruce can now make ordinary charcoal;
+- Waylodge Hearth now exposes kitchen + workshop support already implied by its fiction.
+
+### Redstone Reach / Brasshaven
+**Strong industrial center.**
+
+Local:
+- copper, iron, tin, calamine, lead, silver;
+- clay, abrasives, alum, glass sand;
+- rock salt;
+- millet;
+- Ridge Ibex hide;
+- major forge/workshop infrastructure.
+
+Key correction:
+- metallurgy no longer depends specifically on Elderwood Crown Oak for charcoal; Slatewater timber is an immediate and logical fuel source.
+
+### Coppergrass Steppe
+**Adequate as transit wilderness.**
+
+Local:
+- groundpea;
+- prairie flax;
+- madder;
+- agate;
+- **new Coppergrass Thornwood** for camp fuel, handles, and rough construction.
+
+Trade:
+- Redstone metals/salt/stone;
+- Starfen grain/fish/herbs/wetland materials.
+
+Do not infer settlement-level workshops until a permanent locality is intentionally authored.
+
+### Starfen / Mistmere
+**Robust wetland craft/food basin after remediation.**
+
+Local:
+- reedgrain;
+- fish/mussels;
+- herbs, berries, kelp;
+- reed/nettle fiber;
+- Giant Cane;
+- **new Marsh Willow timber**;
+- **new alluvial clay**.
+
+Corrections:
+- Willow gives ordinary wetland wood and local charcoal;
+- alluvial clay supports common ceramic/building work;
+- Mistmere regional exchange now exposes light workshop/craft support.
+
+Metal remains a Brasshaven import by design.
+
+### Great Mere / Merewatch
+**Robust freshwater basin after preservation fallback.**
+
+Local:
+- fish/crayfish/mussels;
+- roots/starches/cress;
+- rush fiber;
+- shell lime;
+- pearl;
+- kitchen/workshop.
+
+Correction:
+- Silver Perch can now be dry-smoked without imported Redstone salt at reduced yield.
+- imported salt still improves preservation and enables superior export-grade salted/pickled products.
+
+### Ironspine Highlands
+**Adequate highland frontier economy.**
+
+Local:
+- game, hides/furs, fat;
+- alpine herbs/remedies;
+- lodestone, quartz, gold;
+- **new Stonepine timber**;
+- **new common pass stone**.
+
+Corrections:
+- Stonepine was already present in the Lower Pass description but previously only cones were recoverable;
+- mountain building stone is now explicit;
+- Stonepine can produce local charcoal;
+- High-Pass common hearth now exposes kitchen + workshop support.
+
+Common metals/salt/forge flux remain Redstone imports.
+
+## Data 51 authored delta
+
+Added six gathering sources and six raw resources:
+- Crownfields Brick Clay;
+- Starfen Alluvial Clay;
+- Starfen Marsh Willow Timber;
+- Coppergrass Thornwood;
+- Ironspine Stonepine Timber;
+- Ironspine Pass Stone.
+
+Added five substitute/fallback production routes:
+- Slatewater Spruce Charcoal;
+- Starfen Marsh Willow Charcoal;
+- Coppergrass Thornwood Charcoal;
+- Ironspine Stonepine Charcoal;
+- Great Mere dry-smoked perch without salt.
+
+Workstation corrections:
+- Slatewater Hearth: kitchen + workshop;
+- Ironspine Common Hearth: kitchen + workshop;
+- Mistmere regional exchange: workshop.
+
+## Expected Data 51 census
 
 ```text
 places/localities                        37
 named NPCs                               29
 shop/service sites                       25
 creature definitions                    58
-resource sources                         77
-canonical items                         258
-recipes/processes                       149
+resource sources                         83
+canonical items                         264
+recipes/processes                       154
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
@@ -157,41 +258,54 @@ spell schools                             4
 capabilities/training definitions        44
 NPC schedules                            15
 regional/shared content packs            21
-pack-owned records                      782
+pack-owned records                      799
 runtime seed NPCs                        28
 runtime seed enemies                     16
 ```
 
-Expected raw-resource production utilization: **77/85 (90.6%)**.
+Expected raw-resource production demand: **80/91**. Three newly explicit clay/stone resources intentionally have direct construction sinks rather than dummy processing recipes.
 
-Expected luxury raw utilization: **14/14**.
+Luxury raw utilization remains **14/14**.
 
-Canonical items now exceed their mechanics floor through connected material-economy depth. The mechanics-scale gate remains **NOT READY** because companions, abilities, named NPC breadth, and quests remain materially short.
+Mechanics-scale gate remains **NOT READY** because companions, abilities, NPC breadth, and quests remain materially short.
+
+## What should remain scarce
+
+Do not flatten:
+- silver — Redstone/Deepvein specialty;
+- gold — Ironspine specialty;
+- copper/tin/bronze/brass industry — Redstone-centered;
+- Cloud Quartz/lodestone — Ironspine;
+- premium hardwood/bow wood — Elderwood;
+- spruce/cedar mast stock — Slatewater;
+- hemp/linen — Crownfields;
+- wetland fiber/cane — Starfen/Great Mere;
+- pearls — Great Mere;
+- specialty dyes/perfumes/gems — regional.
 
 ## Persistence decision
 
 Game State remains **14**.
 
-Data 50 adds authored source/item/recipe/pack definitions only and reuses:
+Data 51 changes authored resources, gathering sources, recipes, POI workstation tags, and Pack-v2 ownership only. It reuses:
+- route/service;
 - ecology/gathering;
-- inventory/container;
-- provenance;
-- production/work-task;
+- inventory/provenance;
+- production/work tasks;
 - workstation;
 - work proficiency;
-- Pack-v2 ownership.
+- Pack-v2 authority.
 
-No new durable player/world fact, direct timed-task owner, simulation clock, or inventory authority was introduced.
+No new durable state family was introduced.
 
-## Material-culture continuation
+## Next material-culture unit
 
-Permanent plan:
-- `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
-
-Next recommended material-culture bounded unit:
+Recommended:
 - **Occupational Tool Conversion**.
 
-That packet should first convert the existing shop/equipment-only baseline tools and goods into real production outputs:
+It should consume the now-resilient regional substrate instead of inventing one-off inputs.
+
+Priority conversions:
 - Field Knife;
 - Prospector Pick;
 - Woodsman Hatchet;
@@ -202,33 +316,20 @@ That packet should first convert the existing shop/equipment-only baseline tools
 - Maple Wand;
 - Iron Buckler;
 - Brass Ring;
-- Bronze weapons/armor;
-- basic leather garments.
+- Bronze arms/armor;
+- basic leather goods.
 
-Then add shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement hand tools, using durable `requiredToolTags` rather than consuming tools as recipe inputs.
+Do not auto-start it merely because it is next.
 
-Later material-culture packets cover:
-- fishing/netting/rigging/sails;
-- containers/milling/brewing/food-industry equipment;
-- construction/hardware/carts/harness;
-- scholarly/precision/luxury/magical craft;
-- managed husbandry products after a real source authority exists.
-
-These are sequencing notes, not automatic authorization.
-
-## Other decision queues
+## Other queued decisions
 
 Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
-World-edge sequence:
-- Slatewater Foothills — complete;
-- Crownfields — complete;
-- Great Mere — complete;
-- Ironspine Highlands — complete;
-- **Emberwash Badlands — next ranked candidate**.
+World edge:
+- Emberwash Badlands remains the next ranked candidate.
 
-No later unit is auto-started merely because it appears in planning.
+Neither is auto-authorized.
 
 ## Restart order
 
@@ -236,11 +337,9 @@ No later unit is auto-started merely because it appears in planning.
 2. this file
 3. `PROJECT_PROFILE.yaml`
 4. `docs/EXECUTION_PIPELINE.md`
-5. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`
-6. `docs/DEVELOPMENT_DIRECTION.md`
+5. `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`
+6. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`
 7. `docs/QUALITY_GATES.md`
 8. `docs/ROADMAP.md`
 9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
 10. relevant runtime/data/tests for the explicitly selected next unit
-
-Do not redo the broad material-culture discovery pass. Its durable result is the material-culture plan and Data 50 substrate.
