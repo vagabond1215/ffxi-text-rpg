@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 5;
+export const ROUTE_CATALOG_VERSION = 6;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -183,6 +183,56 @@ const ROUTE_DEFINITIONS = Object.freeze({
         knowledge: { mapId: 'map-ironspine-highlands', discoveryTag: 'route.ironspine-high-trail' },
         cargo: { encumbranceMultiplier: 1.5 },
     }),
+    'route-east-starfen-lower-delta-levee': route({
+        id: 'route-east-starfen-lower-delta-levee',
+        name: 'East Fen Delta Levee',
+        type: 'track',
+        allowedModes: ['walk', 'mount'],
+        stops: [
+            stop('stop-east-starfen-delta-levee', 'east-starfen', { x: 7, y: 4 }),
+            stop('stop-starfen-lower-delta-west-levee', 'starfen-lower-delta', { x: 0, y: 4 }),
+        ],
+        segments: [
+            segment('stop-east-starfen-delta-levee', 'stop-starfen-lower-delta-west-levee', 3200, 8000, ['reed-channels', 'soft-levee', 'seasonal-flood', 'fen-weather']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-starfen-delta', discoveryTag: 'route.east-fen-delta-levee' },
+        cargo: { encumbranceMultiplier: 1.3 },
+    }),
+    'route-great-mere-delta-waterway': route({
+        id: 'route-great-mere-delta-waterway',
+        name: 'Mere-Delta Waterway',
+        type: 'waterway',
+        allowedModes: ['ferry'],
+        stops: [
+            stop('stop-merewatch-delta-packet', 'merewatch-landing', { x: 4, y: 3 }),
+            stop('stop-starfen-lower-delta-waterway', 'starfen-lower-delta', { x: 4, y: 7 }),
+            stop('stop-tideglass-delta-packet', 'tideglass-landing', { x: 1, y: 3 }),
+        ],
+        segments: [
+            segment('stop-merewatch-delta-packet', 'stop-starfen-lower-delta-waterway', 3600, 12000, ['lake-weather', 'shallow-bars', 'river-current']),
+            segment('stop-starfen-lower-delta-waterway', 'stop-tideglass-delta-packet', 2400, 8000, ['distributary-channels', 'mud-banks', 'tide-turn']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-starfen-delta', discoveryTag: 'route.mere-delta-waterway' },
+        cargo: { encumbranceMultiplier: 1.25 },
+    }),
+    'route-tideglass-brackish-coast-track': route({
+        id: 'route-tideglass-brackish-coast-track',
+        name: 'Tideglass Coast Track',
+        type: 'track',
+        allowedModes: ['walk', 'mount'],
+        stops: [
+            stop('stop-tideglass-coast-track', 'tideglass-landing', { x: 5, y: 3 }),
+            stop('stop-starfen-brackish-coast-track', 'starfen-brackish-coast', { x: 0, y: 4 }),
+        ],
+        segments: [
+            segment('stop-tideglass-coast-track', 'stop-starfen-brackish-coast-track', 2400, 6000, ['tidal-cut', 'mudflat', 'saltwind', 'high-water']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-starfen-delta', discoveryTag: 'route.tideglass-coast-track' },
+        cargo: { encumbranceMultiplier: 1.25 },
+    }),
     'route-starfen-great-mere-shore': route({
         id: 'route-starfen-great-mere-shore',
         name: 'East Fen Shore Track',
@@ -283,6 +333,18 @@ const TRANSPORT_SERVICE_DEFINITIONS = Object.freeze({
         fare: { currencyId: 'gil', baseAmount: 30, perSegmentAmount: 22 },
         cargoAllowanceUnits: 30,
         boardingLeadSeconds: 300,
+    }),
+    'service-mere-delta-packet': transportService({
+        id: 'service-mere-delta-packet',
+        name: 'Mere-Delta Packet Boat',
+        mode: 'ferry',
+        routeId: 'route-great-mere-delta-waterway',
+        stopIds: ['stop-merewatch-delta-packet', 'stop-tideglass-delta-packet'],
+        cadenceSeconds: 10800,
+        firstDepartureOffsetSeconds: 5400,
+        fare: { currencyId: 'gil', baseAmount: 10, perSegmentAmount: 7 },
+        cargoAllowanceUnits: 16,
+        boardingLeadSeconds: 180,
     }),
     'service-great-mere-ferry': transportService({
         id: 'service-great-mere-ferry',

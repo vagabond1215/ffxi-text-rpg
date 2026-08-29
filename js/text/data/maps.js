@@ -113,6 +113,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['great-mere-westshore', 'merewatch-landing', 'reedcrown-isle'],
         notes: 'Freshwater chart covering the western shore, Merewatch fishery landing, marked boat channels, shoals, and Reedcrown nesting island. Open water is route-travel terrain, not a walkable map edge.',
     }),
+    mapStarfenDelta: map({
+        id: 'map-starfen-delta',
+        name: 'Chart of the Starfen Delta and Brackish Coast',
+        nation: 'Mistmere',
+        region: 'Starfen Delta',
+        placeIds: ['starfen-lower-delta', 'tideglass-landing', 'starfen-brackish-coast'],
+        notes: 'Pilot chart of the Great Mere outflow, lower distributaries, Tideglass Landing, salt marsh, tidal flats, and exposed eastern strand. Channels and open sea are route-travel water, not walkable adjacency.',
+    }),
     mapSunkenArchive: map({
         id: 'map-sunken-archive',
         name: 'Plan of the Sunken Archive',
