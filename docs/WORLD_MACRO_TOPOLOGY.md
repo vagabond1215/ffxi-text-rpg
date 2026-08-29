@@ -277,19 +277,19 @@ The preferred representation is an irregular envelope with approximate scale, no
 
 ## 11. Post-lock world-edge priority
 
-Two post-lock geography units are now realized:
+Three post-lock geography units are now realized:
 
 - **Headwater Vale — Data 52**: first grounded Timbercross-to-Waymeet corridor leg.
 - **Starfen Delta / Brackish Coast — Data 53**: Great Mere outflow, Tideglass Landing, first Eastern Sea coast, explicit open-sea boundary.
+- **Gloamwood & Oldbough Refuge — Data 54**: first western old-growth barrier, wagon-limited refuge, deepwood trail, and explicit stop before the western mountain crescent/Lethari realm.
 
 Remaining recommended world-edge order:
 
-1. **Gloamwood** — establishes the first true Lethari homeland barrier beyond the existing Elderwood.
-2. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
-3. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
-4. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
-5. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
-6. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
+1. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
+2. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
+3. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
+4. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
+5. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
 
 This ranking is a planning recommendation, not automatic authorization.
 
@@ -338,3 +338,17 @@ Great Mere / Merewatch
 ```
 
 This preserves the same doctrine: reaching the coastline does not manufacture an ocean route. Miri and pelagic long-distance access remain future authored connections.
+
+Gloamwood subsequently realized the first western ancestral-corridor barrier as **Product 0.9.100.15 / Data 54**:
+
+```text
+West Elderwood
+  -> Gloamwood Verge
+  -> Oldbough Refuge [wagon limit]
+  -> Gloamwood Deep [walk/mount trail]
+  -> western mountain crescent [not yet routed]
+  -> guarded Lethari pass/cities [not yet authored]
+  -> Lethari heartland [not yet authored]
+```
+
+This again preserves route authority over envelope adjacency. Gloamwood Deep has no ordinary route westward; the western crescent, guarded pass, and Lethari settlements remain separate future bounded units.
