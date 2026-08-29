@@ -8,6 +8,13 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 import {
+    listEmberwashEcologyFamilies,
+    listEmberwashGatheringSources,
+    listEmberwashPopulations,
+    listEmberwashSpecies,
+} from './emberwashEcology.js';
+import { listEmberwashResourceItems } from './emberwashResourceItems.js';
+import {
     listGloamwoodEcologyFamilies,
     listGloamwoodGatheringSources,
     listGloamwoodPopulations,
@@ -43,7 +50,7 @@ import {
 } from './starfenDeltaEcology.js';
 import { listStarfenDeltaResourceItems } from './starfenDeltaResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 35;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 36;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -264,6 +271,28 @@ export const HEADWATER_VALE_ECOLOGY_PACK = createContentPack({
     },
 });
 
+export const EMBERWASH_ECOLOGY_PACK = createContentPack({
+    id: 'pack-emberwash-badlands-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['emberwash-badlands'], steward: 'brasshaven-cinderwell' },
+    dependencies: ['pack-redstone-opening', 'pack-redstone-ecology-breadth'],
+    metadata: {
+        name: 'Emberwash Badlands Ecology',
+        notes: 'Northern arid-frontier ecology with eight passive, wary, or naturally territorial species, seven exact-provenance sources, and no manufactured hostile encounter templates.',
+    },
+    records: {
+        places: [
+            { id: 'emberwash-north-wash', catalogRef: true },
+            { id: 'emberwash-saltpan-verge', catalogRef: true },
+        ],
+        ecologyFamilies: listEmberwashEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listEmberwashSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listEmberwashPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listEmberwashGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listEmberwashResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
 export const GLOAMWOOD_ECOLOGY_PACK = createContentPack({
     id: 'pack-gloamwood-oldgrowth-ecology',
     dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
@@ -308,7 +337,7 @@ export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, EMBERWASH_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
