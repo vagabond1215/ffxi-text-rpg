@@ -20,7 +20,9 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-**Material Foundations & Common Components is complete on `main`; final exact-head Check evidence is the remaining closeout step for this handoff.**
+**Material Foundations & Common Components is complete and validated on `main`.**
+
+Data 50 implementation Check **#1427 / run `33224347338`** passed on head `3ae5ef94b011e52975b1c57d7e17e50a486f2f75`: Repository Audit, **759/759 tests**, Content Census, Benchmark 3, and Benchmark Sample all green.
 
 The prior branch-cleanup checkpoint remains authoritative:
 - 114 non-`main` remote branches were inventoried and deleted;
@@ -133,9 +135,9 @@ Crownfields already has sheep/cattle/hen/bee ecology, but those products require
 
 Body-recovered animal materials continue to use legitimate body provenance.
 
-## Data 50 census target
+## Data 50 validated census
 
-The authored delta should produce the following census when final Check completes:
+Check #1427 reported:
 
 ```text
 places/localities                        37
