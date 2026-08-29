@@ -3,7 +3,7 @@ import { getMaterialFoundationResourceItem } from './materialFoundationResourceI
 import { getPlace } from './places.js';
 import { RESOURCE_RECOVERY_ACTIONS } from './resourceProvenance.js';
 
-export const MATERIAL_FOUNDATION_SOURCE_VERSION = 1;
+export const MATERIAL_FOUNDATION_SOURCE_VERSION = 2;
 
 const SOURCES = Object.freeze({
     'source-north-redstone-tin-lode': source({ id: 'source-north-redstone-tin-lode', name: 'Grey Tin Lode', type: 'mineral', placeId: 'north-redstone-reach', biomeTags: ['ore-bearing-rock','upland-cut'], action: 'mine', outputItemId: 'item-redstone-tin-ore', capacity: 4, regeneration: regen(1, 18000), requiredToolTags: ['mining'], proficiencyId: 'mining', minProficiency: 2 }),
@@ -28,6 +28,13 @@ const SOURCES = Object.freeze({
     'source-east-starfen-giant-cane-brake': source({ id: 'source-east-starfen-giant-cane-brake', name: 'Giant Cane Brake', type: 'flora', placeId: 'east-starfen', biomeTags: ['wetland-edge','tall-cane'], action: 'gather', outputItemId: 'item-starfen-giant-cane', capacity: 10, regeneration: regen(2, 5400), requiredToolTags: ['cutting'], proficiencyId: 'gathering', minProficiency: 1 }),
     'source-crownfields-hemp-strip': source({ id: 'source-crownfields-hemp-strip', name: 'Hemp Strip', type: 'flora', placeId: 'crownfields', biomeTags: ['fiber-crop','field-strip'], action: 'gather', outputItemId: 'item-crownfields-hemp-stalk', capacity: 10, regeneration: regen(2, 7200), requiredToolTags: ['cutting'], proficiencyId: 'gathering', minProficiency: 1 }),
     'source-east-starfen-nettle-bank': source({ id: 'source-east-starfen-nettle-bank', name: 'Nettle Bast Bank', type: 'flora', placeId: 'east-starfen', biomeTags: ['wetland-edge','bast-fiber'], action: 'gather', outputItemId: 'item-starfen-nettle-bast', capacity: 9, regeneration: regen(2, 5400), requiredToolTags: ['cutting'], proficiencyId: 'gathering', minProficiency: 1 }),
+
+    'source-crownfields-brick-clay-bank': source({ id: 'source-crownfields-brick-clay-bank', name: 'Drainage-Bank Brick Clay', type: 'mineral', placeId: 'crownfields', biomeTags: ['alluvial-lowland','drainage-bank','brick-clay'], action: 'gather', outputItemId: 'item-crownfields-brick-clay', capacity: 10, regeneration: regen(2, 7200), requiredToolTags: ['digging'], proficiencyId: 'gathering', minProficiency: 1 }),
+    'source-west-starfen-alluvial-clay-bank': source({ id: 'source-west-starfen-alluvial-clay-bank', name: 'Fen Alluvial Clay Bank', type: 'mineral', placeId: 'west-starfen', biomeTags: ['wetland','canal-bank','alluvial-clay'], action: 'gather', outputItemId: 'item-starfen-alluvial-clay', capacity: 10, regeneration: regen(2, 7200), requiredToolTags: ['digging'], proficiencyId: 'gathering', minProficiency: 1 }),
+    'source-east-starfen-marsh-willow-carr': source({ id: 'source-east-starfen-marsh-willow-carr', name: 'Marsh Willow Carr', type: 'flora', placeId: 'east-starfen', biomeTags: ['wetland-edge','willow-carr','waterlogged-woodland'], action: 'log', outputItemId: 'item-starfen-marsh-willow-timber', capacity: 5, regeneration: regen(1, 18000), requiredToolTags: ['woodcutting'], proficiencyId: 'logging', minProficiency: 1 }),
+    'source-coppergrass-thornwood-scrub': source({ id: 'source-coppergrass-thornwood-scrub', name: 'Thornwood Scrub Belt', type: 'flora', placeId: 'coppergrass-steppe', biomeTags: ['dry-steppe','thorn-scrub','seasonal-wash'], action: 'log', outputItemId: 'item-coppergrass-thornwood', capacity: 5, regeneration: regen(1, 19800), requiredToolTags: ['woodcutting'], proficiencyId: 'logging', minProficiency: 2 }),
+    'source-ironspine-lower-pass-stonepine-stand': source({ id: 'source-ironspine-lower-pass-stonepine-stand', name: 'Lower Pass Stonepine Stand', type: 'flora', placeId: 'ironspine-lower-pass', biomeTags: ['subalpine','stonepine','wind-sheltered-slope'], action: 'log', outputItemId: 'item-ironspine-stonepine-timber', capacity: 4, regeneration: regen(1, 21600), requiredToolTags: ['woodcutting'], proficiencyId: 'logging', minProficiency: 2 }),
+    'source-ironspine-lower-pass-stone-scree': source({ id: 'source-ironspine-lower-pass-stone-scree', name: 'Lower Pass Building-Stone Scree', type: 'mineral', placeId: 'ironspine-lower-pass', biomeTags: ['subalpine','scree','building-stone'], action: 'mine', outputItemId: 'item-ironspine-pass-stone', capacity: 9, regeneration: regen(2, 10800), requiredToolTags: ['mining'], proficiencyId: 'mining', minProficiency: 1 }),
 });
 
 export function getMaterialFoundationGatheringSource(id) {
