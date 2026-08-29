@@ -5,18 +5,18 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.15
+Product:       0.9.100.16
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          54
+Data:          55
 Benchmark:     3
-Codename:      Gloamwood & Oldbough Refuge
+Codename:      Emberwash Badlands & Cinderwell Station
 ```
 
 ## Current bounded-unit state
 
-**Gloamwood & Oldbough Refuge** is the latest runtime/data bounded unit on `main`. It establishes the old-growth barrier beyond West Elderwood, keeps wagons at Oldbough Refuge, and stops the runtime route graph before the western mountain crescent and Lethari homeland.
+**Emberwash Badlands & Cinderwell Station** is the latest runtime/data bounded unit on `main`. It establishes the northern arid frontier beyond South Redstone, keeps ordinary wagons at Cinderwell, and stops the runtime route graph before the farther true desert, southern strait, and Veyra sphere.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -33,31 +33,33 @@ Latest bounded implementation:
 - Gloamwood implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743`;
 - Check #1504 / run `33269167675`: full gate green, 781/781 tests;
 - promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8`;
-- Check #1507 / run `33269370813`: full gate green, 781/781 tests, Data 54 census confirmed.
+- Check #1507 / run `33269370813`: full gate green, 781/781 tests, Data 54 census confirmed;
+- Emberwash implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
+- Check #1547 / run `33279116948`: full gate green, 786/786 tests, Data 55 implementation census confirmed.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 54 metrics
+## Data 55 metrics
 
 ```text
-places/localities                       46
-named NPCs                              38
-shop/service sites                      31
-creatures                               80
-resource sources                       103
-canonical items                        318
-recipes/processes                      184
+places/localities                       49
+named NPCs                              41
+shop/service sites                      33
+creatures                               88
+resource sources                       110
+canonical items                        335
+recipes/processes                      194
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
 
-raw resources with production demand  103 / 114
+raw resources with production demand  110 / 121
 luxury raws with production demand      14 / 14
-routes                                  19
-NPC schedules                           21
-regional/shared packs                   27
-pack-owned records                     992
+routes                                  21
+NPC schedules                           23
+regional/shared packs                   29
+pack-owned records                    1057
 ```
 
 ## Regional resilience rule
@@ -100,7 +102,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 38/50;
+- named NPCs: 41/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -119,7 +121,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale, Starfen Delta / Brackish Coast, and Gloamwood & Oldbough Refuge are complete. Next ranked world-edge candidate: **Emberwash Badlands**. It is queued, not auto-authorized.
+Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station are complete through the Data 55 implementation. Next ranked world-edge candidate: **Lower Deepvein**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -133,8 +135,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Emberwash Badlands is now the next ranked candidate.
-- Lower Deepvein follows as the next Deep World approach candidate; Waymeet Marches / central plateau approaches follow after that.
+- Lower Deepvein is now the next ranked Deep World approach candidate.
+- Waymeet Marches / central plateau approaches follow after that, then Coppergrass extensions.
 
 Strong system/content candidates:
 - companion breadth;
