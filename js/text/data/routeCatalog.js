@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 4;
+export const ROUTE_CATALOG_VERSION = 5;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -96,6 +96,40 @@ const ROUTE_DEFINITIONS = Object.freeze({
         bidirectional: true,
         knowledge: { mapId: null, discoveryTag: 'route.crown-forge-caravan-road' },
         cargo: { encumbranceMultiplier: 1.4 },
+    }),
+    'route-timbercross-headwater-road': route({
+        id: 'route-timbercross-headwater-road',
+        name: 'Headwater River Road',
+        type: 'road',
+        allowedModes: ['walk', 'mount', 'wagon'],
+        stops: [
+            stop('stop-timbercross-headwater-road', 'timbercross-landing'),
+            stop('stop-headwater-lower-vale-road', 'headwater-lower-vale', { x: 4, y: 7 }),
+            stop('stop-headwater-warden-lodge-road', 'headwater-warden-lodge', { x: 3, y: 5 }),
+        ],
+        segments: [
+            segment('stop-timbercross-headwater-road', 'stop-headwater-lower-vale-road', 2800, 7000, ['river-fog', 'seasonal-mud', 'bridge-crossing', 'fallen-timber']),
+            segment('stop-headwater-lower-vale-road', 'stop-headwater-warden-lodge-road', 2000, 5000, ['ford-crossing', 'river-weather', 'steep-grade']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-headwater-vale', discoveryTag: 'route.headwater-river-road' },
+        cargo: { encumbranceMultiplier: 1.2 },
+    }),
+    'route-headwater-upper-trail': route({
+        id: 'route-headwater-upper-trail',
+        name: 'Headwater Upper Trail',
+        type: 'track',
+        allowedModes: ['walk', 'mount'],
+        stops: [
+            stop('stop-headwater-warden-lodge-upper-trail', 'headwater-warden-lodge', { x: 3, y: 0 }),
+            stop('stop-headwater-upper-vale-trail', 'headwater-upper-vale', { x: 4, y: 7 }),
+        ],
+        segments: [
+            segment('stop-headwater-warden-lodge-upper-trail', 'stop-headwater-upper-vale-trail', 2800, 7000, ['rocky-ford', 'spring-flood', 'steep-side-ridges', 'fallen-timber']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-headwater-vale', discoveryTag: 'route.headwater-upper-trail' },
+        cargo: { encumbranceMultiplier: 1.35 },
     }),
     'route-forge-mere-caravan-road': route({
         id: 'route-forge-mere-caravan-road',

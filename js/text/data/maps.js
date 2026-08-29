@@ -17,6 +17,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
         notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
+    mapHeadwaterVale: map({
+        id: 'map-headwater-vale',
+        name: 'Survey of Headwater Vale',
+        nation: 'Thornwall',
+        region: 'Headwater Vale',
+        placeIds: ['headwater-lower-vale', 'headwater-warden-lodge', 'headwater-upper-vale'],
+        notes: 'River-warden survey of the young western drainage above Timbercross: maintained lower road and bridge crossings, the warden lodge at the wagon limit, and a marked upper trail toward meadow and plateau country. Side ridges and unbridged channels are barriers rather than automatic map edges.',
+    }),
     mapCrownfields: map({
         id: 'map-crownfields',
         name: 'Map of the Crownfields',
