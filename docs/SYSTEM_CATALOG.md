@@ -177,16 +177,16 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 54 Gloamwood checkpoint:
+Gameplay breadth at the Data 55 Emberwash checkpoint:
 
 ```text
-places/localities       46 / mechanics 10
-named NPCs              38 / 50
-shop/service sites      31 / 20
-creatures               80 / 40
-resource sources       103 / 40
-canonical items        318 / 200
-recipes/processes      184 / 75
+places/localities       49 / mechanics 10
+named NPCs              41 / 50
+shop/service sites      33 / 20
+creatures               88 / 40
+resource sources       110 / 40
+canonical items        335 / 200
+recipes/processes      194 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -196,15 +196,15 @@ transport services       7 / 5
 Infrastructure coverage:
 
 ```text
-routes                                  19
+routes                                  21
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           21
-regional/shared packs                   27
-pack-owned records                     992
+NPC schedules                           23
+regional/shared packs                   29
+pack-owned records                    1057
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/21/1
-runtime seed NPCs                       37
+  schedules/companions              41/44/23/1
+runtime seed NPCs                       40
 runtime seed enemies                    17
 ```
 
@@ -212,4 +212,4 @@ Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mec
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Gloamwood & Oldbough Refuge is the current Data 54 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Emberwash Badlands** is the next ranked world-edge candidate, followed by Lower Deepvein. None is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Emberwash Badlands & Cinderwell Station is the current Data 55 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Lower Deepvein** is the next ranked world-edge candidate, followed by Waymeet Marches / central plateau approaches. None is auto-started.
