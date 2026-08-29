@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Gloamwood & Oldbough Refuge** is the current Data 54 geography/content checkpoint, establishing the first true old-growth barrier beyond West Elderwood, a wagon-limited forester refuge, and an explicit stop before the western mountain crescent and Lethari homeland.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Emberwash Badlands & Cinderwell Station** is the current Data 55 geography/content checkpoint, establishing the northern arid frontier beyond South Redstone, a fortified caravan well at the practical wagon limit, and an explicit stop before the farther true desert, southern strait, and Veyra sphere.
 
 ```text
-Product:       0.9.100.15
+Product:       0.9.100.16
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          54
+Data:          55
 Benchmark:     3
-Codename:      Gloamwood & Oldbough Refuge
+Codename:      Emberwash Badlands & Cinderwell Station
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 54 adds Gloamwood Verge, Oldbough Refuge, and Gloamwood Deep; a wagon-capable oldgrowth cart track followed by a walk/mount-only deepwood trail; eight old-growth species; seven exact-provenance forage/gather/log/mine sources; seven raw resources; and ten transformations/outputs across food preservation, tannin, timber, moss packing, resin sealant, bog iron, route repair, and fieldcraft. Oldbough is deliberately the wagon limit and no western-mountain or Lethari onward route is authored yet. Game State remains 14.
+Data 55 adds Emberwash North Wash, Cinderwell Station, and Emberwash Saltpan Verge; a wagon/caravan-capable road from South Redstone to Cinderwell followed by a walk/mount/caravan foretrail to the saltpan edge; eight arid-frontier species; seven exact-provenance forage/gather/mine sources; seven raw resources; and ten transformations/outputs across trail food, herb drying, cordage, salt refining, pigment, plaster, field repair, and cistern maintenance. Cinderwell is deliberately the wagon limit and no farther-desert, southern-strait, or Veyra onward route is authored yet. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 54 census:
+Validated Data 55 census:
 
 ```text
-places/localities       46 / mechanics floor 10
-named NPCs              38 / 50
-shop/service sites      31 / 20
-creatures               80 / 40
-resource sources       103 / 40
-canonical items        318 / 200
-recipes/processes      184 / 75
+places/localities       49 / mechanics floor 10
+named NPCs              41 / 50
+shop/service sites      33 / 20
+creatures               88 / 40
+resource sources       110 / 40
+canonical items        335 / 200
+recipes/processes      194 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -92,15 +92,15 @@ transport services       7 / 5
 Infrastructure coverage:
 
 ```text
-routes                               19
+routes                               21
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        21
-regional/shared content packs        27
-pack-owned records                   992
+NPC schedules                        23
+regional/shared content packs        29
+pack-owned records                  1057
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/21/1
-runtime seed NPCs                    37
+  schedules/companions            41/44/23/1
+runtime seed NPCs                    40
 runtime seed enemies                 17
 ```
 
@@ -127,8 +127,8 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, Emberwash arid-frontier ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Gloamwood & Oldbough Refuge is complete as Data 54 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Emberwash Badlands** is the next ranked world-edge candidate, followed by Lower Deepvein. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+`0.9.100 Content Scale Gate A` remains open. **Emberwash Badlands & Cinderwell Station is complete as the Data 55 implementation on `main`; promotion synchronization is in progress.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Lower Deepvein** is the next ranked world-edge candidate, followed by Waymeet Marches / central plateau approaches. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
