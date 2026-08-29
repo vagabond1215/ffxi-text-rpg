@@ -5,18 +5,18 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 ```
 
 ## Current bounded-unit state
 
-Ironspine Highlands and population-backed hunting are complete and merged on `main`.
+Material Foundations & Common Components is the current completed bounded unit on `main`. It establishes the shared stock/component graph needed by profession-specific tools without starting the later occupational-tool packet.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -27,27 +27,27 @@ Latest bounded implementation:
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 49 metrics
+## Data 50 metrics
 
 ```text
 places/localities                       37
 named NPCs                              29
 shop/service sites                      25
 creatures                               58
-resource sources                        56
-canonical items                        182
-recipes/processes                       94
+resource sources                        77
+canonical items                        258
+recipes/processes                      149
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       6
 
-raw resources with production demand   56 / 64
-luxury raws with production demand      13 / 13
+raw resources with production demand   77 / 85
+luxury raws with production demand      14 / 14
 routes                                  12
 NPC schedules                           15
-regional/shared packs                   20
-pack-owned records                     630
+regional/shared packs                   21
+pack-owned records                     782
 ```
 
 ## Standing zone-authoring rule
@@ -80,9 +80,14 @@ Still short:
 - abilities/techniques: 41/100;
 - named NPCs: 29/50;
 - quests/contracts: 18/30;
-- canonical items: 182/200.
 
-Do not close these gaps with disconnected filler.
+Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
+
+## Next bounded material-culture candidate
+
+- Occupational Tool Conversion: turn existing shop/equipment-only tools and starter metal/leather goods into real production outputs, then add shared smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools.
+- This is queued but not auto-authorized.
+- See `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
 ## Next decision boundary
 
