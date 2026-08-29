@@ -99,13 +99,13 @@ validation:
   headwater_flow_guard: tests/playerHeadwaterValeFlow.test.js
   starfen_delta_flow_guard: tests/playerStarfenDeltaBrackishCoastFlow.test.js
 quality:
-  current_product_version: 0.9.100.14
+  current_product_version: 0.9.100.15
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 53
+  current_data_version: 54
   current_benchmark_version: 3
-  current_codename: Starfen Delta & Brackish Coast
+  current_codename: Gloamwood & Oldbough Refuge
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true

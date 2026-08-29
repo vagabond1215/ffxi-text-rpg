@@ -13,13 +13,13 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Starfen Delta & Brackish Coast** is the current Data 53 geography/content checkpoint, realizing the Great Mere's eastward outflow, Tideglass pilot port, the first true Eastern Sea coast, and an explicit non-walkable open-sea boundary.
 
 ```text
-Product:       0.9.100.14
+Product:       0.9.100.15
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          53
+Data:          54
 Benchmark:     3
-Codename:      Starfen Delta & Brackish Coast
+Codename:      Gloamwood & Oldbough Refuge
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
