@@ -16,7 +16,7 @@ const DEFINITIONS = Object.freeze({
     'item-elderwood-ash-timber': resource({ id: 'item-elderwood-ash-timber', name: 'Elderwood Ash Timber', tags: ['flora','timber','wood','ash','flexible','handle-stock'], valueGil: 14, sourceId: 'source-east-elderwood-ash-stand', placeId: 'east-elderwood', action: 'log' }),
     'item-elderwood-crown-oak-timber': resource({ id: 'item-elderwood-crown-oak-timber', name: 'Crown Oak Timber', tags: ['flora','timber','wood','oak','hardwood','structural','wide-board'], valueGil: 18, sourceId: 'source-west-elderwood-crown-oak-fall', placeId: 'west-elderwood', action: 'log' }),
     'item-elderwood-silvermaple-timber': resource({ id: 'item-elderwood-silvermaple-timber', name: 'Silvermaple Timber', tags: ['flora','timber','wood','maple','pale','fine-grain','decorative'], valueGil: 17, sourceId: 'source-east-elderwood-silvermaple-stand', placeId: 'east-elderwood', action: 'log' }),
-    'item-elderwood-silvermaple-sap': resource({ id: 'item-elderwood-silvermaple-sap', name: 'Silvermaple Sap', tags: ['flora','sap','syrup','food','binder'], valueGil: 7, sourceId: 'source-east-elderwood-silvermaple-taps', placeId: 'east-elderwood', action: 'gather', sinks: ['processInput','craftIngredient','trade'] }),
+    'item-elderwood-silvermaple-sap': resource({ id: 'item-elderwood-silvermaple-sap', name: 'Silvermaple Sap', tags: ['flora','sap','syrup','food','binder'], valueGil: 7, sourceId: 'source-east-elderwood-silvermaple-taps', placeId: 'east-elderwood', action: 'gather', consumption: { mode: 'direct', hazard: 'none', preparation: [], notes: 'Fresh, clean sap may be drunk as gathered, though it is usually boiled down for keeping and concentrated sweetness.' }, sinks: ['consume','processInput','craftIngredient','trade'] }),
     'item-elderwood-yew-stavewood': resource({ id: 'item-elderwood-yew-stavewood', name: 'Elderwood Yew Stavewood', tags: ['flora','timber','wood','yew','elastic','bowwood','fine-craft'], valueGil: 22, sourceId: 'source-west-elderwood-yew-grove', placeId: 'west-elderwood', action: 'log' }),
     'item-elderwood-hazel-rods': resource({ id: 'item-elderwood-hazel-rods', name: 'Hazel Coppice Rods', tags: ['flora','wood','hazel','coppice','flexible','hoop','wattle'], valueGil: 9, sourceId: 'source-east-elderwood-hazel-rod-coppice', placeId: 'east-elderwood', action: 'gather' }),
     'item-slatewater-spruce-timber': resource({ id: 'item-slatewater-spruce-timber', name: 'Slatewater Spruce Timber', tags: ['flora','timber','wood','softwood','spruce','tall','straight','mast-stock'], valueGil: 16, sourceId: 'source-slatewater-spruce-stand', placeId: 'slatewater-foothills', action: 'log' }),
@@ -35,7 +35,7 @@ export function listMaterialFoundationResourceItems() {
     return Object.values(DEFINITIONS).map((entry) => normalizeItem(entry));
 }
 
-function resource({ id, name, tags, valueGil, sourceId, placeId, action, sinks = ['processInput','craftIngredient','trade'] }) {
+function resource({ id, name, tags, valueGil, sourceId, placeId, action, consumption = null, sinks = ['processInput','craftIngredient','trade'] }) {
     return Object.freeze({
         id,
         name,
@@ -44,7 +44,7 @@ function resource({ id, name, tags, valueGil, sourceId, placeId, action, sinks =
         maxStack: 99,
         valueGil,
         tags: Object.freeze([...tags]),
-        consumption: null,
+        consumption,
         provenance: Object.freeze([Object.freeze({
             type: tags.includes('mineral') ? 'mineral' : 'flora',
             sourceId,
