@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Starfen Delta & Brackish Coast** is the current Data 53 geography/content checkpoint, realizing the Great Mere's eastward outflow, Tideglass pilot port, the first true Eastern Sea coast, and an explicit non-walkable open-sea boundary.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Gloamwood & Oldbough Refuge** is the current Data 54 geography/content checkpoint, establishing the first true old-growth barrier beyond West Elderwood, a wagon-limited forester refuge, and an explicit stop before the western mountain crescent and Lethari homeland.
 
 ```text
 Product:       0.9.100.15
@@ -24,7 +24,7 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 53 adds Starfen Lower Delta, Tideglass Landing, and Starfen Brackish Coast; three route corridors plus the Mere-Delta Packet Boat; eight brackish/coastal species; seven gathering/fishing/mineral sources; seven exact-provenance raws; and ten transformations producing eleven outputs across seafood, salt, kelp, shell lime, reed matting, and preservation. The Eastern Sea is deliberately not walkable and no Miri/open-ocean route is authored yet. Game State remains 14.
+Data 54 adds Gloamwood Verge, Oldbough Refuge, and Gloamwood Deep; a wagon-capable oldgrowth cart track followed by a walk/mount-only deepwood trail; eight old-growth species; seven exact-provenance forage/gather/log/mine sources; seven raw resources; and ten transformations/outputs across food preservation, tannin, timber, moss packing, resin sealant, bog iron, route repair, and fieldcraft. Oldbough is deliberately the wagon limit and no western-mountain or Lethari onward route is authored yet. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 53 census:
+Validated Data 54 census:
 
 ```text
-places/localities       43 / mechanics floor 10
-named NPCs              35 / 50
-shop/service sites      29 / 20
-creatures               72 / 40
-resource sources        96 / 40
-canonical items        301 / 200
-recipes/processes      174 / 75
+places/localities       46 / mechanics floor 10
+named NPCs              38 / 50
+shop/service sites      31 / 20
+creatures               80 / 40
+resource sources       103 / 40
+canonical items        318 / 200
+recipes/processes      184 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -92,15 +92,15 @@ transport services       7 / 5
 Infrastructure coverage:
 
 ```text
-routes                               17
+routes                               19
 spell schools                         4
 capabilities/training definitions    44
-NPC schedules                        19
-regional/shared content packs        25
-pack-owned records                   927
+NPC schedules                        21
+regional/shared content packs        27
+pack-owned records                   992
 pack-owned abilities/capabilities/
-  schedules/companions            41/44/19/1
-runtime seed NPCs                    34
+  schedules/companions            41/44/21/1
+runtime seed NPCs                    37
 runtime seed enemies                 17
 ```
 
@@ -127,8 +127,8 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Starfen Delta & Brackish Coast is complete as Data 53 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Gloamwood** is the next ranked world-edge candidate. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+`0.9.100 Content Scale Gate A` remains open. **Gloamwood & Oldbough Refuge is complete as Data 54 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Emberwash Badlands** is the next ranked world-edge candidate, followed by Lower Deepvein. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
