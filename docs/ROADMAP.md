@@ -121,9 +121,21 @@ Packet E should inspect:
 - production and ability breadth;
 - architecture debt exposed by the larger world.
 
-## World-edge sequence
+## Macro-world geography before further edge expansion
 
-The temporary detailed plan remains in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
+**ACTIVE PLANNING HOLD.**
+
+Before another edge biome is authored, settle the macro-world structure in `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`:
+
+- current Thornwall/Brasshaven/Mistmere corridor as a compact mixed-race core;
+- ancestral homeland envelopes for Lethari, Korren, Miri, and Veyra;
+- Waymeet's role as a neutral/cosmopolitan metropolis;
+- beastfolk political integration rather than species-wide hostility;
+- optional merfolk/pelagic civilization;
+- surface continents/seas, Deep World, coastlines, mountains, drainage, climate belts, and major magical barriers;
+- capital separation and long-distance route doctrine.
+
+The temporary detailed edge list remains in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`, but it is paused as an implementation sequence.
 
 Implemented:
 1. Slatewater Foothills;
@@ -131,7 +143,7 @@ Implemented:
 3. Great Mere;
 4. Ironspine Highlands.
 
-Next ranked candidates:
+Paused candidates to re-rank after macro planning:
 5. Emberwash Badlands;
 6. Gloamwood;
 7. Headwater Vale;
@@ -141,7 +153,7 @@ Next ranked candidates:
 11. Starfen delta/coast;
 12. Waymeet approaches.
 
-The sequence is planning, not automatic authorization.
+The sequence is planning, not automatic authorization. **Do not implement Item 5 merely because it is numerically next; macro-world placement now takes precedence.**
 
 ## High-value system/content gaps
 
