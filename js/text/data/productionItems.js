@@ -1,4 +1,5 @@
 import { ITEM_KINDS, normalizeItem, validateItemConsumption } from './itemSchema.js';
+import { getEmberwashProductionItem, listEmberwashProductionItems } from './emberwashProductionItems.js';
 import { getIngredientLuxuryProductionItem, listIngredientLuxuryProductionItems } from './ingredientLuxuryProductionItems.js';
 import { getGreatMereProductionItem, listGreatMereProductionItems } from './greatMereProductionItems.js';
 import { getGloamwoodProductionItem, listGloamwoodProductionItems } from './gloamwoodProductionItems.js';
@@ -7,7 +8,7 @@ import { getIronspineProductionItem, listIronspineProductionItems } from './iron
 import { getMaterialFoundationProductionItem, listMaterialFoundationProductionItems } from './materialFoundationProductionItems.js';
 import { getStarfenDeltaProductionItem, listStarfenDeltaProductionItems } from './starfenDeltaProductionItems.js';
 
-export const PRODUCTION_ITEM_CATALOG_VERSION = 14;
+export const PRODUCTION_ITEM_CATALOG_VERSION = 15;
 
 const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-redstone-copper-ingot': productionItem({ id: 'item-redstone-copper-ingot', name: 'Redstone Copper Ingot', kind: ITEM_KINDS.MATERIAL, tags: ['metal', 'copper', 'component', 'crafted'], valueGil: 28, sourceId: 'process-redstone-copper-ingot', action: 'process', sinks: ['craftIngredient', 'processInput', 'construction', 'trade'] }),
@@ -38,8 +39,8 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-starfen-marsh-survey-kit': productionItem({ id: 'item-starfen-marsh-survey-kit', name: 'Starfen Marsh Survey Kit', kind: ITEM_KINDS.MATERIAL, tags: ['survey', 'fieldcraft', 'water', 'research', 'starfen'], valueGil: 68, sourceId: 'craft-starfen-marsh-survey-kit', action: 'craft', sinks: ['contract', 'trade'] }),
 });
 
-export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getIngredientLuxuryProductionItem(key) ?? getGreatMereProductionItem(key) ?? getIronspineProductionItem(key) ?? getHeadwaterProductionItem(key) ?? getStarfenDeltaProductionItem(key) ?? getGloamwoodProductionItem(key) ?? getMaterialFoundationProductionItem(key); }
-export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listIngredientLuxuryProductionItems(), ...listGreatMereProductionItems(), ...listIronspineProductionItems(), ...listHeadwaterProductionItems(), ...listStarfenDeltaProductionItems(), ...listGloamwoodProductionItems(), ...listMaterialFoundationProductionItems()]; }
+export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getEmberwashProductionItem(key) ?? getIngredientLuxuryProductionItem(key) ?? getGreatMereProductionItem(key) ?? getIronspineProductionItem(key) ?? getHeadwaterProductionItem(key) ?? getStarfenDeltaProductionItem(key) ?? getGloamwoodProductionItem(key) ?? getMaterialFoundationProductionItem(key); }
+export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listEmberwashProductionItems(), ...listIngredientLuxuryProductionItems(), ...listGreatMereProductionItems(), ...listIronspineProductionItems(), ...listHeadwaterProductionItems(), ...listStarfenDeltaProductionItems(), ...listGloamwoodProductionItems(), ...listMaterialFoundationProductionItems()]; }
 
 export function validateProductionItemCatalog() {
     const issues = [];
