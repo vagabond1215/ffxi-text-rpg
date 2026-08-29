@@ -17,6 +17,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
         notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
+    mapGloamwood: map({
+        id: 'map-gloamwood',
+        name: 'Forester Survey of Gloamwood',
+        nation: null,
+        region: 'Gloamwood',
+        placeIds: ['gloamwood-verge', 'oldbough-refuge', 'gloamwood-deep'],
+        notes: 'A boundary-forester survey of the wet old-growth beyond West Elderwood: one maintained cart track reaches Oldbough Refuge, then a marked foot-and-mount trail continues into the deep forest. Ravines, flooded gullies, deadfall, and the uncharted western mountain approaches are barriers rather than implicit exits.',
+    }),
     mapHeadwaterVale: map({
         id: 'map-headwater-vale',
         name: 'Survey of Headwater Vale',

@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 6;
+export const ROUTE_CATALOG_VERSION = 7;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -96,6 +96,40 @@ const ROUTE_DEFINITIONS = Object.freeze({
         bidirectional: true,
         knowledge: { mapId: null, discoveryTag: 'route.crown-forge-caravan-road' },
         cargo: { encumbranceMultiplier: 1.4 },
+    }),
+    'route-gloamwood-oldgrowth-cart-track': route({
+        id: 'route-gloamwood-oldgrowth-cart-track',
+        name: 'Oldgrowth Cart Track',
+        type: 'track',
+        allowedModes: ['walk', 'mount', 'wagon'],
+        stops: [
+            stop('stop-west-elderwood-gloamwood-track', 'west-elderwood', { x: 0, y: 4 }),
+            stop('stop-gloamwood-verge-cart-track', 'gloamwood-verge', { x: 8, y: 4 }),
+            stop('stop-oldbough-refuge-cart-track', 'oldbough-refuge', { x: 5, y: 3 }),
+        ],
+        segments: [
+            segment('stop-west-elderwood-gloamwood-track', 'stop-gloamwood-verge-cart-track', 3000, 7000, ['forest-weather', 'root-heave', 'fallen-timber', 'seasonal-mud']),
+            segment('stop-gloamwood-verge-cart-track', 'stop-oldbough-refuge-cart-track', 2400, 5000, ['deep-mud', 'root-heave', 'fallen-timber', 'narrow-track']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-gloamwood', discoveryTag: 'route.gloamwood-oldgrowth-cart-track' },
+        cargo: { encumbranceMultiplier: 1.35 },
+    }),
+    'route-gloamwood-deepwood-forester-trail': route({
+        id: 'route-gloamwood-deepwood-forester-trail',
+        name: 'Deepwood Forester Trail',
+        type: 'track',
+        allowedModes: ['walk', 'mount'],
+        stops: [
+            stop('stop-oldbough-refuge-deepwood-trail', 'oldbough-refuge', { x: 0, y: 3 }),
+            stop('stop-gloamwood-deep-forester-trail', 'gloamwood-deep', { x: 8, y: 4 }),
+        ],
+        segments: [
+            segment('stop-oldbough-refuge-deepwood-trail', 'stop-gloamwood-deep-forester-trail', 3600, 7000, ['ravines', 'flooded-gullies', 'deadfall', 'root-tangles', 'low-visibility']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-gloamwood', discoveryTag: 'route.gloamwood-deepwood-forester-trail' },
+        cargo: { encumbranceMultiplier: 1.55 },
     }),
     'route-timbercross-headwater-road': route({
         id: 'route-timbercross-headwater-road',
