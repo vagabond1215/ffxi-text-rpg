@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.13
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          52
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Headwater Vale & Waymeet Approach
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -32,42 +32,33 @@ Regional Ingredient & Luxury Processing COMPLETE / MERGED
 Great Mere Freshwater Economy & Food Safety COMPLETE / MERGED
 Population-backed Hunting Bridge             COMPLETE / MERGED
 Ironspine Highlands                           COMPLETE / MERGED
+Headwater Vale & Waymeet Approach             COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Regional Resource & Trade Resilience
+### Headwater Vale & Waymeet Approach
 
-**Status: IMPLEMENTED ON `main`; Data 51 promoted as Product 0.9.100.12; exact-head validation pending final continuity synchronization.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 52 / Product 0.9.100.13.**
 
 Purpose:
-- audit established economic areas as local-region + dependable-trade basins;
-- ensure ordinary food, tools, repairs, fuel, bindings, construction stock, medicine, and preservation do not hinge on one implausibly distant specialty input;
-- preserve genuine regional specialties and premium trade.
+- establish the western drainage headwaters above Timbercross;
+- create the first real overland leg toward Waymeet without prematurely connecting the plateau;
+- add a small wagon-limit warden lodge rather than another city;
+- connect river fishing, deer hunting, alder/willow work, preservation, leatherwork, and bridge repair through existing authorities.
 
-Data 51 remediation:
-- Crownfields Brick Clay;
-- Starfen Alluvial Clay and Marsh Willow timber;
-- Coppergrass Thornwood;
-- Ironspine Stonepine timber and common pass stone;
-- four regional charcoal alternatives;
-- a lower-yield Great Mere dry-smoking fallback without imported rock salt;
-- practical kitchen/workshop exposure at Slatewater, Ironspine, and Mistmere where existing descriptions already implied it.
+Data 52 authored delta:
+- 3 places and 2 routes;
+- 3 persistent lodge NPCs and 2 schedules;
+- 6 species / populations, with Red Deer deliberately huntable and other wildlife remaining non-forced;
+- 6 gathering sources + 3 deer body resources;
+- 10 transformations and 10 production outputs;
+- 2 Pack-v2 ownership graphs;
+- practical raw-fish/raw-game safety with fantasy-era presentation.
 
-Expected growth from Data 50:
-```text
-resource sources               77 -> 83
-canonical items               258 -> 264
-recipes/processes             149 -> 154
-regional/shared packs          21 -> 21
-pack-owned records            782 -> 799
-raw production utilization  77/85 -> 80/91
-luxury raw utilization      14/14 -> 14/14
-```
-
-The governing rule is **ordinary substitutes should exist; premium outcomes may still require specialty trade**. Coppergrass remains a transit wilderness rather than a staffed manufacturing locality.
-
-Permanent audit: `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`.
+Implementation freeze:
+- `aa39347a0faa754690a194d926262256e92027f1`;
+- Check #1476 / run `33264692343`: Repository Audit, **770/770 tests**, Census, Benchmark 3, Benchmark Sample green.
 
 Game State remains 14; no new durable state family was introduced.
 
@@ -75,13 +66,13 @@ Game State remains 14; no new durable state family was introduced.
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 37 | 10 | reached |
-| Named NPCs | 29 | 50 | 21 short |
-| Shop/service sites | 25 | 20 | reached |
-| Creature definitions | 58 | 40 | reached |
-| Resource sources | 83 | 40 | reached |
-| Canonical items | 264 | 200 | reached |
-| Recipes/processes | 154 | 75 | reached |
+| Places/localities | 40 | 10 | reached |
+| Named NPCs | 32 | 50 | 18 short |
+| Shop/service sites | 27 | 20 | reached |
+| Creature definitions | 64 | 40 | reached |
+| Resource sources | 89 | 40 | reached |
+| Canonical items | 283 | 200 | reached |
+| Recipes/processes | 164 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -90,14 +81,14 @@ Game State remains 14; no new durable state family was introduced.
 Supplemental:
 
 ```text
-routes                        12
+routes                        14
 spell schools                  4
 capabilities                  44
-NPC schedules                 15
-regional/shared packs         21
-pack-owned records           799
-runtime seed NPCs             28
-runtime seed enemies          16
+NPC schedules                 17
+regional/shared packs         23
+pack-owned records           859
+runtime seed NPCs             31
+runtime seed enemies          17
 ```
 
 Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap.
@@ -108,7 +99,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint remains Data 51.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 52.
 
 ## Formal Phase 0.9 sequence
 
@@ -149,16 +140,18 @@ The lock establishes:
 
 The old macro-planning hold is lifted as a geography blocker. Edge implementation still requires an explicit bounded work order.
 
-Post-lock world-edge ranking:
+Post-lock world-edge status:
 
-1. Headwater Vale;
-2. Starfen Delta / Brackish Coast;
-3. Gloamwood;
-4. Emberwash Badlands;
-5. Lower Deepvein;
-6. Waymeet Marches / central plateau approaches;
-7. Coppergrass extensions;
-8. Drowned Vaults.
+- **Headwater Vale — COMPLETE / Data 52.**
+
+Remaining ranking:
+1. Starfen Delta / Brackish Coast;
+2. Gloamwood;
+3. Emberwash Badlands;
+4. Lower Deepvein;
+5. Waymeet Marches / central plateau approaches;
+6. Coppergrass extensions;
+7. Drowned Vaults.
 
 The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 

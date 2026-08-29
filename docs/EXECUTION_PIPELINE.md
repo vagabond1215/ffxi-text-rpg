@@ -5,49 +5,51 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.13
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          52
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Headwater Vale & Waymeet Approach
 ```
 
 ## Current bounded-unit state
 
-Regional Resource & Trade Resilience remains the latest runtime/data bounded unit. The latest completed planning bounded unit is the **Macro-World Topology Lock**, performed directly on `main` with no Product/Data/Game-State change.
+**Headwater Vale & Waymeet Approach** is the latest runtime/data bounded unit on `main`. It realizes the Timbercross headwaters and the first grounded overland leg toward Waymeet without opening the later plateau/march route.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
 - Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`;
 - Check #1368 / run `33215878907`: full gate green, 753/753 tests;
 - promoted PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
-- exact promoted-head Check #1381 / run `33217086478`: full gate green.
+- exact promoted-head Check #1381 / run `33217086478`: full gate green;
+- Headwater implementation freeze `aa39347a0faa754690a194d926262256e92027f1`;
+- Check #1476 / run `33264692343`: full gate green, 770/770 tests, Data 52 pre-promotion census confirmed.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 51 metrics
+## Data 52 metrics
 
 ```text
-places/localities                       37
-named NPCs                              29
-shop/service sites                      25
-creatures                               58
-resource sources                        83
-canonical items                        264
-recipes/processes                      154
+places/localities                       40
+named NPCs                              32
+shop/service sites                      27
+creatures                               64
+resource sources                        89
+canonical items                        283
+recipes/processes                      164
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       6
 
-raw resources with production demand   80 / 91
+raw resources with production demand   89 / 100
 luxury raws with production demand      14 / 14
-routes                                  12
-NPC schedules                           15
-regional/shared packs                   21
-pack-owned records                     799
+routes                                  14
+NPC schedules                           17
+regional/shared packs                   23
+pack-owned records                     859
 ```
 
 ## Regional resilience rule
@@ -90,7 +92,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 29/50;
+- named NPCs: 32/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -109,7 +111,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Next ranked world-edge candidate: **Headwater Vale**. It is queued, not auto-authorized.
+Headwater Vale is complete. Next ranked world-edge candidate: **Starfen Delta / Brackish Coast**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -123,8 +125,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Headwater Vale is the post-topology next ranked candidate.
-- Starfen Delta / Brackish Coast ranks second; Emberwash remains a later southern-frontier candidate.
+- Starfen Delta / Brackish Coast is now the next ranked candidate.
+- Gloamwood follows; Emberwash remains a later southern-frontier candidate.
 
 Strong system/content candidates:
 - companion breadth;
