@@ -88,7 +88,7 @@ Implemented directly on `main` with:
 
 Implementation freeze `aa39347a0faa754690a194d926262256e92027f1` passed Check #1476 / run `33264692343` with **770/770 tests**, Census, Benchmark 3, and Benchmark Sample.
 
-The next ranked world-edge candidate is **Gloamwood**.
+At the Headwater checkpoint, **Gloamwood** remained a ranked western candidate; Starfen Delta / Brackish Coast was subsequently selected and authored before it.
 
 ## Starfen Delta / Brackish Coast implementation result
 
