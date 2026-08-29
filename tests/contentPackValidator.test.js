@@ -43,6 +43,7 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-elderwood-hunt-timber',
         'pack-crownfields-grange',
         'pack-regional-ingredient-luxury-processing',
+        'pack-material-foundations-common-components',
         'pack-slatewater-waylodge',
         'pack-great-mere-merewatch',
         'pack-ironspine-highlands',
