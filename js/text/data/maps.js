@@ -17,6 +17,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['west-elderwood', 'east-elderwood', 'timbercross-landing'],
         notes: 'Regional map for Thornwall’s managed forests, work roads, and surrounding wild routes.',
     }),
+    mapEmberwashBadlands: map({
+        id: 'map-emberwash-badlands',
+        name: 'Cinderwell Survey of the Emberwash',
+        nation: null,
+        region: 'Emberwash Badlands',
+        placeIds: ['emberwash-north-wash', 'cinderwell-station', 'emberwash-saltpan-verge'],
+        notes: 'A caravan survey south of Redstone: maintained traffic reaches Cinderwell, while the marked foretrail continues through broken washes to the saltpan verge. Heat, dust, scarce water, gullies, and unstable crust are route hazards; no southern strait or Veyra route is implied.',
+    }),
     mapGloamwood: map({
         id: 'map-gloamwood',
         name: 'Forester Survey of Gloamwood',
