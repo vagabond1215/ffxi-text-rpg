@@ -385,7 +385,7 @@ This gives separation without requiring every civilization to be hundreds of emp
 
 ## 9. Climate and biome planning before more zone authoring
 
-Before authoring Emberwash, Gloamwood, or another edge zone, establish a coarse macro map with:
+The coarse macro framework required before further edge authoring is now established by `docs/WORLD_MACRO_TOPOLOGY.md`. Future zones such as Emberwash should continue to obey:
 
 1. north/south orientation and rough latitude;
 2. major mountain chains;
@@ -447,16 +447,19 @@ Still open for later bounded culture/capital work:
 
 The macro topology is now sufficiently resolved for bounded geography work to resume when explicitly authorized.
 
-Recommended world-edge order is maintained in `docs/WORLD_MACRO_TOPOLOGY.md`:
+Realization status and remaining world-edge order are maintained in `docs/WORLD_MACRO_TOPOLOGY.md`:
 
-1. Headwater Vale;
-2. Starfen Delta / Brackish Coast;
-3. Gloamwood;
-4. Emberwash Badlands;
-5. Lower Deepvein;
-6. Waymeet Marches / central plateau approaches;
-7. Coppergrass belt extensions;
-8. Drowned Vaults.
+Completed:
+1. Headwater Vale — Data 52;
+2. Starfen Delta / Brackish Coast — Data 53;
+3. Gloamwood & Oldbough Refuge — Data 54.
+
+Remaining:
+1. Emberwash Badlands;
+2. Lower Deepvein;
+3. Waymeet Marches / central plateau approaches;
+4. Coppergrass belt extensions;
+5. Drowned Vaults.
 
 The existing authored regions should be preserved unless later detailed cartography exposes a direct contradiction. The goal remains to place them into a larger coherent world, not redraw them gratuitously.
 
