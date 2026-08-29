@@ -114,6 +114,24 @@ A paved road narrowing into forest track, a ridge opening onto dry uplands, or c
 
 Hard boundaries remain appropriate where the fiction calls for them: gates, ferries, passes, locked doors, border controls, dungeon entrances, magical barriers, etc.
 
+## Macro geography is not a global tile grid
+
+The world should be geographically continuous and irregular rather than forced into one global square or hex tessellation.
+
+Use separate authorities for separate scales:
+
+- macro geographic envelopes describe relative placement, approximate extent, climate, drainage, and boundaries;
+- canonical routes/passages own actual inter-place traversability, distance, fictional travel time, hazards, and allowed modes;
+- local grids or topology coordinates support fine exploration inside a place.
+
+A local rectangular grid does not mean the represented forest, marsh, valley, or mountain basin is rectangular in world geography. Two regions touching on a map do not automatically create a walkable edge.
+
+Approximate regional length/width may be tracked for scale, but physical barriers and authored routes remain authoritative.
+
+A specialized local hex coordinate system may be introduced later if a specific place benefits from six-way uniform movement; this is not a reason to convert the entire world to hexes.
+
+See `docs/WORLD_MACRO_TOPOLOGY.md`.
+
 ## Maps are knowledge
 
 Maps are not merely menus containing automatically known coordinates.

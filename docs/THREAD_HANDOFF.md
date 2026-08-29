@@ -300,20 +300,36 @@ Data 51 changes authored resources, gathering sources, recipes, POI workstation 
 
 No new durable state family was introduced.
 
-## Macro-world planning hold
+## Macro-world topology lock
 
-Further edge-by-edge biome expansion is **paused** until `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md` is resolved enough to place continents, coastlines, mountains, drainage, ancestral homelands, and major barriers.
+The prior edge-expansion hold has been resolved at the topology level.
 
-Current interpretation:
-- Thornwall, Brasshaven, and Mistmere are compact mixed-race political capitals in a Central Civilized Belt;
-- they should not be retrofitted into exclusive racial capitals;
-- Lethari, Korren, Miri, and Veyra ancestral heartlands should sit outside that core behind meaningful barriers;
-- Waymeet is recommended as a future neutral/cosmopolitan metropolis;
-- beastfolk ancestry/species must be separated from faction/allegiance;
-- merfolk/pelagic and deep-world civilizations are valid macro layers;
-- Emberwash remains a candidate only and is **not** the operative next zone until the macro map is settled.
+Permanent authority:
+- `docs/WORLD_MACRO_TOPOLOGY.md`.
 
-No Data or Game State change accompanies this planning hold.
+Locked decisions:
+
+- no global square/hex world board;
+- macro geography uses irregular envelopes;
+- routes/passages own inter-place traversability, distance, time, hazards, and modes;
+- local grids/topologies remain place-scale exploration abstractions;
+- Central Continent + Southern Landmass + Eastern Archipelago;
+- Deep World + Pelagic layers;
+- Ironspine northern massif + separate western mountain crescent;
+- Great Mere is an open freshwater lake draining east through a future brackish delta to the Eastern Sea;
+- Waymeet sits beyond Headwater Vale and additional plateau/march approaches; the current skyferry remains a long-distance bypass;
+- Emberwash is a northern arid frontier before a farther southern strait/Veyra landmass, not direct Veyra adjacency;
+- Lethari/Korren/Miri/Veyra homeland envelopes and barrier concepts are reserved.
+
+No Product, Data, Game State, or Benchmark version changed.
+
+Post-lock world-edge ranking begins with:
+1. **Headwater Vale**;
+2. Starfen Delta / Brackish Coast;
+3. Gloamwood;
+4. Emberwash Badlands.
+
+No edge unit is auto-authorized.
 
 ## Next material-culture unit
 
@@ -344,7 +360,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World edge:
-- Emberwash Badlands remains the next ranked candidate.
+- Headwater Vale is now the next ranked candidate after the macro-topology lock.
+- Starfen Delta / Brackish Coast ranks second; Emberwash remains a later southern-frontier candidate.
 
 Neither is auto-authorized.
 
@@ -354,9 +371,10 @@ Neither is auto-authorized.
 2. this file
 3. `PROJECT_PROFILE.yaml`
 4. `docs/EXECUTION_PIPELINE.md`
-5. `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`
-6. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`
-7. `docs/QUALITY_GATES.md`
-8. `docs/ROADMAP.md`
-9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-10. relevant runtime/data/tests for the explicitly selected next unit
+5. `docs/WORLD_MACRO_TOPOLOGY.md`
+6. `docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md`
+7. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`
+8. `docs/QUALITY_GATES.md`
+9. `docs/ROADMAP.md`
+10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+11. relevant runtime/data/tests for the explicitly selected next unit

@@ -1,8 +1,27 @@
 # World Civilization & Macro-Geography Plan
 
-Status: **planning authority; no new zone implementation is authorized by this document.**
+Status: **macro topology phase resolved; civilization-detail planning authority. No later zone is auto-authorized by this document.**
 
 Purpose: establish the world-scale geography, civilizational heartlands, separation barriers, settlement hierarchy, and travel expectations before additional edge-by-edge biome expansion causes unrelated regions to mesh together unnaturally.
+
+## Macro topology lock — resolved
+
+The first macro-geography pass is complete in `docs/WORLD_MACRO_TOPOLOGY.md`.
+
+Locked decisions now include:
+
+- no global square/hex world tessellation; the world uses irregular geographic envelopes, a canonical route graph, and local place coordinate systems;
+- two principal surface landmasses (Central Continent + Southern Landmass), an Eastern Archipelago, plus Deep World and Pelagic layers;
+- Ironspine as the northern massif and a distinct western mountain crescent around the Lethari approach;
+- Great Mere as an open freshwater east-draining lake whose lower outflow reaches the Eastern Sea through a future brackish delta;
+- Waymeet reserved on the northwestern/north-central interior plateau, with Headwater Vale as the first overland approach from Timbercross;
+- Veyra separated from Emberwash by farther arid approaches plus a southern strait/inner sea;
+- Miri placed beyond the eastern coast in an island/archipelago realm;
+- Korren placed beyond/under Ironspine through controlled surface/deep gates;
+- the 3-8-major-leg / 12-30+ hour ancestral-capital separation doctrine retained.
+
+The macro planning hold is therefore lifted **as a geography blocker**, but no edge zone is auto-started. The post-lock recommended world-edge candidate is **Headwater Vale**.
+
 
 ## 1. Core design decision
 
@@ -399,51 +418,46 @@ Before implementation, fill one row per major civilization.
 | Merfolk realm | TBD | submerged capital | sea | underwater environment | guided aquatic route | breathing magic/diving | 1-2 | low/medium |
 | Waymeet | neutral/free city TBD | cosmopolitan metropolis | surface | distance | long roads | skyferry | satellite towns | very high |
 
-## 11. Decisions required before the next biome
+## 11. Resolved and still-open decisions
 
-The next planning packet should answer these in order:
+Resolved at macro level:
 
-### World geometry
-1. How many principal surface landmasses?
-2. Where is the ocean relative to the current Central Belt?
-3. Where are the major mountain chains?
-4. Which way do the major rivers drain?
-5. Is Great Mere landlocked, river-fed, or part of a larger drainage to the sea?
+1. two principal surface landmasses plus an eastern archipelago;
+2. western/eastern seas and a southern strait/inner-sea separation;
+3. Ironspine northern massif + separate western crescent;
+4. Great Mere as an open east-draining freshwater basin;
+5. Lethari/Korren/Miri/Veyra homeland envelopes confirmed;
+6. humans remain widespread rather than receiving an exclusive ancestral capital;
+7. merfolk/pelagic civilization remains a valid major world layer;
+8. the 3-8-leg / 12-30+ hour ancestral-capital separation target is retained;
+9. route times remain literal fictional travel time under the current route system;
+10. Waymeet is reserved as the neutral/cosmopolitan metropolis;
+11. each major homeland has a primary barrier and ordinary/specialist approach concept;
+12. capital/secondary-city slots are reserved before detailed wilderness fill.
 
-### Civilization geography
-6. Confirm or replace the proposed Lethari/Korren/Miri/Veyra homeland concepts.
-7. Decide whether humans have an ancestral kingdom at all or remain intentionally cosmopolitan/widespread.
-8. Decide whether merfolk are a major civilization.
-9. Decide whether a dark-elven concept is a Lethari culture, separate ancestry, or discarded.
-10. Decide the first beastfolk peoples that have recognized political communities.
+Still open for later bounded culture/capital work:
 
-### Scale
-11. Confirm the 3-8-major-leg / 12-30+ hour heartland separation target.
-12. Decide whether route times are literal world travel time, gameplay-compressed time, or intentionally abstracted.
+- final political forms and proper names for ancestral states/capitals;
+- exact coastlines and numerical regional extents;
+- the first beastfolk peoples with recognized political communities;
+- whether the dark-Lethari concept is a culture, separate ancestry, or discarded;
+- exact specialist access gates and start-of-game availability for distant capitals.
 
-### Settlement structure
-13. Reserve capital and secondary-city slots before filling wilderness around them.
-14. Decide Waymeet's role as neutral metropolis/treaty city.
-15. Identify 2-4 future mixed-race regional cities/ports independent of racial capitals.
+## 12. Implementation order after topology lock
 
-### Access
-16. Assign every major capital at least one meaningful barrier.
-17. Assign one ordinary travel route and one specialist/expensive alternative where appropriate.
-18. Decide which capitals are physically reachable at game start versus gated by knowledge, politics, equipment, or progression.
+The macro topology is now sufficiently resolved for bounded geography work to resume when explicitly authorized.
 
-## 12. Implementation order after planning
+Recommended world-edge order is maintained in `docs/WORLD_MACRO_TOPOLOGY.md`:
 
-Do **not** resume the old edge list immediately.
+1. Headwater Vale;
+2. Starfen Delta / Brackish Coast;
+3. Gloamwood;
+4. Emberwash Badlands;
+5. Lower Deepvein;
+6. Waymeet Marches / central plateau approaches;
+7. Coppergrass belt extensions;
+8. Drowned Vaults.
 
-Recommended order:
+The existing authored regions should be preserved unless later detailed cartography exposes a direct contradiction. The goal remains to place them into a larger coherent world, not redraw them gratuitously.
 
-1. macro-world topology document/map;
-2. civilization/capital matrix;
-3. climate/drainage/mountain/coast layout;
-4. major long-distance route skeleton;
-5. reserve homeland envelopes and secondary-city sites;
-6. audit current edge candidates against the macro map;
-7. re-rank Emberwash, Gloamwood, Headwater Vale, Lower Deepvein, Drowned Vaults, Starfen coast, and Waymeet approaches;
-8. only then resume bounded zone authoring.
-
-The existing authored regions should be preserved unless the macro plan exposes a direct contradiction. The goal is to place them into a larger world, not redraw them gratuitously.
+No item in this list is auto-authorized merely because the prior one is complete.

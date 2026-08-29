@@ -25,6 +25,7 @@ authority:
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
+  world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
   current_normal_work: awaiting-next-explicit-bounded-unit-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
@@ -47,16 +48,20 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: regional-resource-and-trade-resilience
-  latest_bounded_unit_status: complete-on-main-validated-check-1454
+  latest_bounded_unit: macro-world-topology-lock
+  latest_bounded_unit_status: complete-on-main-docs-only-no-version-change
+  latest_data_bounded_unit: regional-resource-and-trade-resilience
+  latest_data_bounded_unit_status: complete-on-main-validated-check-1454
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: emberwash-badlands
-  next_world_edge_candidate_status: paused-pending-macro-world-civilization-plan
+  next_world_edge_candidate: headwater-vale
+  next_world_edge_candidate_status: ranked-after-macro-topology-not-auto-authorized
+  second_world_edge_candidate: starfen-delta-brackish-coast
+  southern_world_edge_candidate: emberwash-badlands
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
   macro_world_planning: world-civilization-geography
-  macro_world_planning_status: active-planning-before-further-edge-expansion
+  macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   next_material_culture_candidate: occupational-tool-conversion
   next_material_culture_candidate_status: queued-not-auto-authorized
 validation:
@@ -173,6 +178,9 @@ constraints:
   - Coppergrass remains a transit wilderness until a staffed locality is intentionally authored
   - current starting nations are mixed-race political states rather than racial homelands
   - future ancestral capitals should normally be separated by multiple macro-regions plus at least one meaningful physical magical environmental political or vertical barrier
+  - world macro geography uses irregular envelopes plus canonical routes and local place coordinates rather than a global square or hex tessellation
+  - touching geographic envelopes do not imply traversability; routes passes gates waterways tunnels and other authored connections remain authoritative
+  - Great Mere is an open east-draining freshwater basin whose lower outflow reaches a future brackish delta and the Eastern Sea
   - reserve continents coastlines mountain chains drainage and civilization envelopes before further edge-by-edge biome authoring
   - roadmap and world-edge sequencing do not auto-authorize later units
   - prefer direct work on main unless a change has material rollback risk that ordinary GitHub revert cannot safely contain

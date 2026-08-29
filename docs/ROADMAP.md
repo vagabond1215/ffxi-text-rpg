@@ -102,6 +102,14 @@ runtime seed enemies          16
 
 Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap.
 
+## Latest planning pass
+
+### Macro-World Topology Lock
+
+**Status: COMPLETE ON `main`; documentation/planning only.**
+
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint remains Data 51.
+
 ## Formal Phase 0.9 sequence
 
 Packets A–D: **COMPLETE / MERGED**.
@@ -121,39 +129,38 @@ Packet E should inspect:
 - production and ability breadth;
 - architecture debt exposed by the larger world.
 
-## Macro-world geography before further edge expansion
+## Macro-world topology
 
-**ACTIVE PLANNING HOLD.**
+**TOPOLOGY LOCK COMPLETE / NO VERSION CHANGE.**
 
-Before another edge biome is authored, settle the macro-world structure in `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`:
+Permanent authority:
+- `docs/WORLD_MACRO_TOPOLOGY.md`.
 
-- current Thornwall/Brasshaven/Mistmere corridor as a compact mixed-race core;
-- ancestral homeland envelopes for Lethari, Korren, Miri, and Veyra;
-- Waymeet's role as a neutral/cosmopolitan metropolis;
-- beastfolk political integration rather than species-wide hostility;
-- optional merfolk/pelagic civilization;
-- surface continents/seas, Deep World, coastlines, mountains, drainage, climate belts, and major magical barriers;
-- capital separation and long-distance route doctrine.
+The lock establishes:
 
-The temporary detailed edge list remains in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`, but it is paused as an implementation sequence.
+- irregular continuous world geography rather than a global square/hex board;
+- route graph as inter-place traversability/distance/time authority;
+- local grids/topologies as place-scale exploration abstractions;
+- Central Continent + Southern Landmass + Eastern Archipelago;
+- Deep World + Pelagic layers;
+- Ironspine and western mountain-crescent barriers;
+- Great Mere east-draining freshwater outflow to a future brackish delta/Eastern Sea;
+- reserved Lethari, Korren, Miri, Veyra, Waymeet, and pelagic civilization envelopes.
 
-Implemented:
-1. Slatewater Foothills;
-2. Crownfields;
-3. Great Mere;
-4. Ironspine Highlands.
+The old macro-planning hold is lifted as a geography blocker. Edge implementation still requires an explicit bounded work order.
 
-Paused candidates to re-rank after macro planning:
-5. Emberwash Badlands;
-6. Gloamwood;
-7. Headwater Vale;
-8. Lower Deepvein;
-9. Drowned Vaults;
-10. Coppergrass extensions;
-11. Starfen delta/coast;
-12. Waymeet approaches.
+Post-lock world-edge ranking:
 
-The sequence is planning, not automatic authorization. **Do not implement Item 5 merely because it is numerically next; macro-world placement now takes precedence.**
+1. Headwater Vale;
+2. Starfen Delta / Brackish Coast;
+3. Gloamwood;
+4. Emberwash Badlands;
+5. Lower Deepvein;
+6. Waymeet Marches / central plateau approaches;
+7. Coppergrass extensions;
+8. Drowned Vaults.
+
+The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
 ## High-value system/content gaps
 

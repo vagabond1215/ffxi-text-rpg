@@ -37,23 +37,34 @@ Boundary types should be selected from the fiction:
 
 Physical impossibility, legal restriction, and environmental danger should remain distinct concepts.
 
-## Macro-planning hold
+## Macro topology lock completed
 
-The previous list was intentionally generated from currently visible world edges. That was useful for filling immediate geographic holes, but continuing indefinitely would risk turning the world into a chain of locally sensible biomes with no coherent continental structure.
+The prior edge-by-edge sequence was paused until continents, seas, mountain chains, drainage, homeland envelopes, and barriers were established.
 
-Before Item 5 or any later candidate is implemented:
+That blocker is now resolved by `docs/WORLD_MACRO_TOPOLOGY.md`.
 
-1. establish the Central Civilized Belt as a mixed-race core;
-2. place the Lethari, Korren, Miri, and Veyra ancestral heartland envelopes;
-3. decide surface continents/seas plus Deep World and pelagic layers;
-4. establish mountain chains, drainage, coastlines, desert belts, and major magical anomalies;
-5. reserve major capital and secondary-city sites;
-6. define barrier/access logic for each civilization;
-7. then re-rank this edge list against the macro map.
+The historical numbered sections below are retained as candidate design notes, **not as the current implementation order**.
 
-Emberwash remains a valid **candidate**, not the currently authorized next extension.
+Post-lock recommended world-edge order:
 
-See `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`.
+1. Headwater Vale;
+2. Starfen Delta / Brackish Coast;
+3. Gloamwood;
+4. Emberwash Badlands;
+5. Lower Deepvein;
+6. Waymeet Marches / central plateau approaches;
+7. Coppergrass extensions;
+8. Drowned Vaults.
+
+Key reasons:
+
+- Headwater Vale now anchors the Timbercross river headwaters and the first overland leg toward Waymeet;
+- the Great Mere outflow is now explicitly east-draining, so the brackish delta/coast has a valid hydrological placement;
+- Gloamwood is the first western barrier toward the Lethari heartland;
+- Emberwash remains important but is now explicitly only the northern arid frontier before the southern strait/Veyra sphere;
+- Lower Deepvein is a Deep World approach rather than a shortcut directly to the Korren capital.
+
+No candidate is auto-authorized.
 
 ## Prioritized zone/biome extensions
 

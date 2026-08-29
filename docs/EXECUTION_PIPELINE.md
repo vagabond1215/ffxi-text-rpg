@@ -16,7 +16,7 @@ Codename:      Regional Resource & Trade Resilience
 
 ## Current bounded-unit state
 
-Regional Resource & Trade Resilience is the current bounded unit on `main`. It audits established regions as dependable trade basins and repairs common-resource dead ends without erasing regional specialization.
+Regional Resource & Trade Resilience remains the latest runtime/data bounded unit. The latest completed planning bounded unit is the **Macro-World Topology Lock**, performed directly on `main` with no Product/Data/Game-State change.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -95,6 +95,22 @@ Still short:
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
 
+## Macro-world topology state
+
+The prior geography hold is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`.
+
+Locked model:
+
+- continuous irregular macro geography;
+- no global hex/square world tessellation;
+- route graph owns inter-place traversability, distance, time, hazards, and travel modes;
+- local place grids/topologies remain fine-exploration abstractions;
+- Great Mere drains east through a future brackish delta to the Eastern Sea;
+- Waymeet is approached overland through Headwater Vale and additional plateau/march country;
+- Emberwash is the northern arid frontier, not a direct Veyra adjacency.
+
+Next ranked world-edge candidate: **Headwater Vale**. It is queued, not auto-authorized.
+
 ## Next bounded material-culture candidate
 
 - Occupational Tool Conversion: turn existing shop/equipment-only tools and starter metal/leather goods into real production outputs, then add shared smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools.
@@ -107,7 +123,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Emberwash Badlands after Ironspine Highlands.
+- Headwater Vale is the post-topology next ranked candidate.
+- Starfen Delta / Brackish Coast ranks second; Emberwash remains a later southern-frontier candidate.
 
 Strong system/content candidates:
 - companion breadth;
