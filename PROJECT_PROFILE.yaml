@@ -44,6 +44,10 @@ git:
   latest_main_data_51_check_number: 1454
   latest_main_data_51_check_sha: d047bf03d7fb17af928ce9aae0838db25a2969e7
   latest_main_data_51_check_result: success-764-of-764-tests-repository-audit-census-benchmark-and-sample
+  latest_main_planning_check: 33237680841
+  latest_main_planning_check_number: 1464
+  latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
+  latest_main_planning_check_result: success-764-of-764-tests-repository-audit-census-benchmark-and-sample
 progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
