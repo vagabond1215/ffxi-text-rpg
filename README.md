@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, the Data 45 integrity pass, Crownfields, Data 47 processing, Great Mere, the population-backed hunting bridge, and **Ironspine Highlands** are complete through Data 49. Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37` passed Check #1368 / run `33215878907`, promoted exact-head Check #1381 / run `33217086478` passed the same full gate with **753/753 tests**, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. Packets A–D, ecology breadth, Coppergrass, Slatewater, Crownfields, Great Mere, population-backed hunting, Ironspine Highlands, and **Material Foundations & Common Components** are complete through Data 50. Data 50 adds a shared cross-guild material substrate without adding a new persistence family.
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.11
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          50
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
+Codename:      Material Foundations & Common Components
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 49 adds Ironspine Lower Pass, High-Pass Watch, and High Meadow; two mountain routes with explicit wagon/high-trail limits; six alpine species/populations; eleven new gathered/body resources; thirteen transformations/outputs; and a population-backed hunting bridge that consumes ecology only after victory while preserving existing defeated-body recovery. Food-safety metadata remains explicit internally, while player-facing wording treats preparation as practical late-medieval/fantasy fieldcraft rather than modern microbiology. Game State remains 14 because the tranche reuses existing battle, ecology, inventory/provenance, production, travel, and schedule authorities.
+Data 50 adds 21 gathering sources and raw materials plus 55 reusable produced stocks/components and 55 transformations across standard metals/alloys, differentiated working woods, hemp/nettle/flax cordage and textile grades, industrial minerals, hardware, maintenance goods, glass batch, glue, tar, and Cloudsilver Spellwire. Wool remains intentionally deferred to a real husbandry source model. Game State remains 14 because the tranche reuses existing ecology/gathering, inventory/provenance, production/workstation, proficiency, and Pack-v2 authorities.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 49 implementation-freeze census:
+Data 50 census target/validated-by-Check contract:
 
 ```text
 places/localities       37 / mechanics floor 10
 named NPCs              29 / 50
 shop/service sites      25 / 20
 creatures               58 / 40
-resource sources        56 / 40
-canonical items        182 / 200
-recipes/processes       94 / 75
+resource sources        77 / 40
+canonical items        258 / 200
+recipes/processes      149 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -96,15 +96,15 @@ routes                               12
 spell schools                         4
 capabilities/training definitions    44
 NPC schedules                        15
-regional/shared content packs        20
-pack-owned records                   630
+regional/shared content packs        21
+pack-owned records                   782
 pack-owned abilities/capabilities/
   schedules/companions            41/44/15/1
 runtime seed NPCs                    28
 runtime seed enemies                 16
 ```
 
-The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, recipes/processes, and transport services now meet their mechanics floors. Items are 18 short; companions remain the largest relative gap, with abilities, NPC breadth, and quests also materially short. Counts must not be gamed with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, canonical items, recipes/processes, and transport services now meet their mechanics floors. Companions remain the largest relative gap, with abilities, NPC breadth, and quests materially short. Counts must not be gamed with disconnected filler.
 
 ## Persistence model
 
