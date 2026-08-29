@@ -143,7 +143,7 @@ export function listIronspineResourceItems() {
 }
 
 function gathered({ id, name, tags, valueGil, sourceId, placeId, action, consumption = null, sinks }) {
-    return resource({ id, name, tags, valueGil, sourceId, placeId, action, consumption, sinks, provenanceType: 'gathering' });
+    return resource({ id, name, tags, valueGil, sourceId, placeId, action, consumption, sinks, provenanceType: tags.includes('mineral') ? 'mineral' : 'flora' });
 }
 
 function body({ id, name, tags, valueGil, sourceId, placeId, action, consumption = null, sinks }) {
