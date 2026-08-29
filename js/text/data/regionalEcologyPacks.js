@@ -21,8 +21,15 @@ import {
     listIronspineSpecies,
 } from './ironspineEcology.js';
 import { listIronspineResourceItems } from './ironspineResourceItems.js';
+import {
+    listHeadwaterEcologyFamilies,
+    listHeadwaterGatheringSources,
+    listHeadwaterPopulations,
+    listHeadwaterSpecies,
+} from './headwaterEcology.js';
+import { listHeadwaterResourceItems } from './headwaterResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 32;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 33;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -221,7 +228,29 @@ export const IRONSPINE_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK]);
+export const HEADWATER_VALE_ECOLOGY_PACK = createContentPack({
+    id: 'pack-headwater-vale-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['headwater-vale'], steward: 'thornwall-headwater-wardens' },
+    dependencies: ['pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
+    metadata: {
+        name: 'Headwater Vale Ecology',
+        notes: 'Cool river-valley ecology with red deer hunting, coldstream fishing, riverine forest species, six exact-provenance gathering sources, and no forced aggression for passive wildlife.',
+    },
+    records: {
+        places: [
+            { id: 'headwater-lower-vale', catalogRef: true },
+            { id: 'headwater-upper-vale', catalogRef: true },
+        ],
+        ecologyFamilies: listHeadwaterEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listHeadwaterSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listHeadwaterPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listHeadwaterGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listHeadwaterResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
