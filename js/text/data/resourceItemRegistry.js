@@ -2,20 +2,21 @@ import { validateItemConsumption } from './itemSchema.js';
 import { getPlace } from './places.js';
 import { validateItemResourceMetadata } from './resourceProvenance.js';
 import { getGreatMereResourceItem, listGreatMereResourceItems } from './greatMereResourceItems.js';
+import { getHeadwaterResourceItem, listHeadwaterResourceItems } from './headwaterResourceItems.js';
 import { getHuntingResourceItem, listHuntingResourceItems } from './huntingResourceItems.js';
 import { getIronspineResourceItem, listIronspineResourceItems } from './ironspineResourceItems.js';
 import { getMaterialFoundationResourceItem, listMaterialFoundationResourceItems } from './materialFoundationResourceItems.js';
 import { getResourceItem, listResourceItems } from './resourceItems.js';
 import { getRegionalResourceItem, listRegionalResourceItems } from './regionalResourceItems.js';
 
-export const RESOURCE_ITEM_REGISTRY_VERSION = 6;
+export const RESOURCE_ITEM_REGISTRY_VERSION = 7;
 
 export function getCanonicalResourceItem(itemId) {
-    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getHuntingResourceItem(itemId) ?? getGreatMereResourceItem(itemId) ?? getIronspineResourceItem(itemId) ?? getMaterialFoundationResourceItem(itemId);
+    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getHuntingResourceItem(itemId) ?? getGreatMereResourceItem(itemId) ?? getIronspineResourceItem(itemId) ?? getHeadwaterResourceItem(itemId) ?? getMaterialFoundationResourceItem(itemId);
 }
 
 export function listCanonicalResourceItems() {
-    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listMaterialFoundationResourceItems()];
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listMaterialFoundationResourceItems()];
     const ids = new Set();
     return items.filter((item) => {
         if (ids.has(item.id)) return false;
@@ -27,7 +28,7 @@ export function listCanonicalResourceItems() {
 export function validateResourceItemRegistry() {
     const issues = [];
     const ids = new Set();
-    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listMaterialFoundationResourceItems()];
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listHuntingResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listMaterialFoundationResourceItems()];
     for (const item of items) {
         if (ids.has(item.id)) issues.push(`Duplicate canonical resource item ${item.id}.`);
         ids.add(item.id);
