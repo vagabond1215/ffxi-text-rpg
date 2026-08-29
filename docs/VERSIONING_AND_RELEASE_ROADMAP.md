@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 53 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Data | 54 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -675,6 +675,71 @@ Raw-resource production utilization is **96/107**. Luxury utilization remains **
 
 Data 53 composes existing place/map/route/transport, ecology/population, gathering, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. Tides remain authored hazards/fiction rather than a new serialized simulation state.
 
+### `0.9.100.15` — Gloamwood & Oldbough Refuge
+
+This revision establishes the first canonical old-growth barrier on the western ancestral corridor while deliberately stopping before the western mountain crescent and Lethari homeland.
+
+```text
+Product       0.9.100.14 -> 0.9.100.15
+Package       0.9.100    -> 0.9.100
+Data          53         -> 54
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 54
+
+Stable authored content expands with:
+
+- Gloamwood Verge, Oldbough Refuge, and Gloamwood Deep;
+- `map-gloamwood`;
+- Oldgrowth Cart Track from West Elderwood to Oldbough with walk/mount/wagon access;
+- Deepwood Forester Trail from Oldbough to Gloamwood Deep with walk/mount access only;
+- Oldbough as the explicit wagon limit;
+- eight old-growth species/populations, reusing four established forest families and adding four Gloamwood families;
+- seven exact-provenance forage/gather/log/mine sources and seven raw resources;
+- ten processing/crafting transformations producing ten outputs;
+- three persistent Oldbough staff and two schedules;
+- `pack-gloamwood-oldgrowth-ecology` and `pack-gloamwood-oldbough-refuge`;
+- explicit practical preparation metadata for raincaps/nightberries.
+
+No route leaves Gloamwood Deep for the western mountain crescent or Lethari realm. No generalized magical-navigation, ward-state, pass-state, or border-state authority is introduced.
+
+Implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743` passed Check #1504 / run `33269167675` with Repository Audit, **781/781 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8` passed Check #1507 / run `33269370813` with the same full gate.
+
+Validated Data 54 census:
+
+```text
+places/localities                        46
+named NPCs                               38
+shop/service sites                       31
+creature definitions                     80
+resource sources                        103
+canonical items                         318
+recipes/processes                       184
+abilities/techniques                     41
+quests/contracts                         18
+companions                                1
+transport services                        7
+routes                                   19
+spell schools                             4
+capabilities                             44
+NPC schedules                            21
+regional/shared packs                    27
+pack-owned records                      992
+runtime seed NPCs                        37
+runtime seed enemies                     17
+```
+
+Raw-resource production utilization is **103/114**. Luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+Data 54 composes existing place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. No new durable serialized state family is introduced.
+
 ## Persistence history
 
 Relevant late history:
@@ -703,6 +768,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.12          no Game State change; Data 50 -> 51
 0.9.100.13          no Game State change; Data 51 -> 52
 0.9.100.14          no Game State change; Data 52 -> 53
+0.9.100.15          no Game State change; Data 53 -> 54
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -728,25 +794,28 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.12.0
+regionalContentPacks   0.13.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.5.0
+npcSchedules           0.6.0
 commitments            0.7.0
-productionCatalog      0.10.0
-productionItems        0.11.0
-ecologyRegistry        0.7.0
-resourceItemRegistry   0.8.0
-routeCatalog           0.5.0
+productionCatalog      0.11.0
+productionItems        0.12.0
+ecologyRegistry        0.8.0
+resourceItemRegistry   0.9.0
+routeCatalog           0.6.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
 starfenDeltaEcology    0.1.0
 starfenDeltaProduction 0.1.0
+gloamwoodEcology        0.1.0
+gloamwoodProduction     0.1.0
+gloamwoodResourceItems  0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
 
-Headwater uses the existing schedule behavior and durable-state contract; the catalog/system version advances only to reflect the expanded canonical authored schedule set and connected Data 52 registries.
+Gloamwood uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 54 registries.
 
 ## Validation baseline
 
@@ -764,9 +833,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 53 Starfen Delta checkpoint supersedes Data 52: 43 places, 35 named NPCs, 29 service sites, 72 creatures, 96 sources, 301 items, 174 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 19 schedules, 25 packs, and 927 pack-owned records.
+The current Data 54 Gloamwood checkpoint supersedes Data 53: 46 places, 38 named NPCs, 31 service sites, 80 creatures, 103 sources, 318 items, 184 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 21 schedules, 27 packs, and 992 pack-owned records.
 
-Starfen Delta implementation freeze Check #1491 / run `33267789356` and promoted Data 53 Check #1493 / run `33267935109` both passed the full gate with **776/776 tests**.
+Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
