@@ -22,6 +22,8 @@ authority:
   headwater_profile: docs/ZONE_PROFILE_HEADWATER_VALE.md
   starfen_delta_profile: docs/ZONE_PROFILE_STARFEN_DELTA_BRACKISH_COAST.md
   starfen_delta_plan: docs/ZONE_PLAN_STARFEN_DELTA_BRACKISH_COAST.md
+  gloamwood_profile: docs/ZONE_PROFILE_GLOAMWOOD.md
+  gloamwood_plan: docs/ZONE_PLAN_GLOAMWOOD.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
@@ -55,6 +57,10 @@ git:
   latest_main_data_53_check_number: 1493
   latest_main_data_53_check_sha: 8f968155d092431b0a3314d38f4d890b0c87f599
   latest_main_data_53_check_result: success-776-of-776-tests-repository-audit-census-benchmark-and-sample-promoted-head
+  latest_main_data_54_check: 33269370813
+  latest_main_data_54_check_number: 1507
+  latest_main_data_54_check_sha: 2de11cd73302751e9a83088d77c2de42df3313e8
+  latest_main_data_54_check_result: success-781-of-781-tests-repository-audit-census-benchmark-and-sample-promoted-head
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -63,16 +69,16 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: starfen-delta-and-brackish-coast
-  latest_bounded_unit_status: complete-on-main-validated-check-1493
-  latest_data_bounded_unit: starfen-delta-and-brackish-coast
-  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1493
+  latest_bounded_unit: gloamwood-and-oldbough-refuge
+  latest_bounded_unit_status: complete-on-main-validated-check-1507
+  latest_data_bounded_unit: gloamwood-and-oldbough-refuge
+  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1507
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: gloamwood
-  next_world_edge_candidate_status: ranked-after-starfen-delta-not-auto-authorized
-  second_world_edge_candidate: emberwash-badlands
-  third_world_edge_candidate: lower-deepvein
+  next_world_edge_candidate: emberwash-badlands
+  next_world_edge_candidate_status: ranked-after-gloamwood-not-auto-authorized
+  second_world_edge_candidate: lower-deepvein
+  third_world_edge_candidate: waymeet-marches-central-plateau-approaches
   southern_world_edge_candidate: emberwash-badlands
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
@@ -98,6 +104,7 @@ validation:
   regional_resource_distribution_guard: tests/regionalResourceDistribution.test.js
   headwater_flow_guard: tests/playerHeadwaterValeFlow.test.js
   starfen_delta_flow_guard: tests/playerStarfenDeltaBrackishCoastFlow.test.js
+  gloamwood_flow_guard: tests/playerGloamwoodFlow.test.js
 quality:
   current_product_version: 0.9.100.15
   current_package_version: 0.9.100
@@ -189,27 +196,45 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_54:
+    gloamwood_places_added: 3
+    gloamwood_routes_added: 2
+    gloamwood_npcs_added: 3
+    gloamwood_schedules_added: 2
+    gloamwood_species_added: 8
+    gloamwood_sources_added: 7
+    gloamwood_raw_resources_added: 7
+    gloamwood_transformations_added: 10
+    gloamwood_production_outputs_added: 10
+    oldbough_wagon_limit: true
+    western_mountain_and_lethari_onward_route_deferred: true
+    ordinary_wildlife_not_forced_hostile_for_loot: true
+    canonical_raw_production_utilization: 103-of-114
+    luxury_raw_production_utilization: 14-of-14
+    explicit_food_consumption_metadata: true
+    period_appropriate_food_safety_presentation: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 43
-    named_npcs: 35
-    shop_service_sites: 29
-    creature_definitions: 72
-    resource_sources: 96
-    canonical_items: 301
-    recipes_processes: 174
+    places_localities: 46
+    named_npcs: 38
+    shop_service_sites: 31
+    creature_definitions: 80
+    resource_sources: 103
+    canonical_items: 318
+    recipes_processes: 184
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
     transport_services: 7
-    routes: 17
+    routes: 19
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 19
-    regional_shared_packs: 25
-    pack_owned_records: 927
-    runtime_seed_npcs: 34
+    npc_schedules: 21
+    regional_shared_packs: 27
+    pack_owned_records: 992
+    runtime_seed_npcs: 37
     runtime_seed_enemies: 17
   mechanics_floors_reached:
     - places
