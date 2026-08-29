@@ -1,6 +1,6 @@
 import { ITEM_KINDS, normalizeItem } from './itemSchema.js';
 
-export const MATERIAL_FOUNDATION_RESOURCE_CATALOG_VERSION = 1;
+export const MATERIAL_FOUNDATION_RESOURCE_CATALOG_VERSION = 2;
 
 const DEFINITIONS = Object.freeze({
     'item-redstone-tin-ore': resource({ id: 'item-redstone-tin-ore', name: 'Redstone Tin Ore', tags: ['mineral','ore','tin','metal','industrial'], valueGil: 16, sourceId: 'source-north-redstone-tin-lode', placeId: 'north-redstone-reach', action: 'mine' }),
@@ -25,6 +25,13 @@ const DEFINITIONS = Object.freeze({
     'item-starfen-giant-cane': resource({ id: 'item-starfen-giant-cane', name: 'Starfen Giant Cane', tags: ['flora','cane','hollow','lightweight','pole','bamboo-analogue','construction'], valueGil: 10, sourceId: 'source-east-starfen-giant-cane-brake', placeId: 'east-starfen', action: 'gather' }),
     'item-crownfields-hemp-stalk': resource({ id: 'item-crownfields-hemp-stalk', name: 'Crownfields Hemp Stalk', tags: ['flora','fiber','hemp','textile','cordage','canvas'], valueGil: 8, sourceId: 'source-crownfields-hemp-strip', placeId: 'crownfields', action: 'gather' }),
     'item-starfen-nettle-bast': resource({ id: 'item-starfen-nettle-bast', name: 'Starfen Nettle Bast', tags: ['flora','fiber','bast','nettle','textile','twine'], valueGil: 7, sourceId: 'source-east-starfen-nettle-bank', placeId: 'east-starfen', action: 'gather' }),
+
+    'item-crownfields-brick-clay': resource({ id: 'item-crownfields-brick-clay', name: 'Crownfields Brick Clay', tags: ['mineral','clay','alluvial','brick','ceramic','construction'], valueGil: 7, sourceId: 'source-crownfields-brick-clay-bank', placeId: 'crownfields', action: 'gather', sinks: ['craftIngredient','construction','trade'] }),
+    'item-starfen-alluvial-clay': resource({ id: 'item-starfen-alluvial-clay', name: 'Starfen Alluvial Clay', tags: ['mineral','clay','alluvial','ceramic','construction','wetland'], valueGil: 7, sourceId: 'source-west-starfen-alluvial-clay-bank', placeId: 'west-starfen', action: 'gather', sinks: ['craftIngredient','construction','trade'] }),
+    'item-starfen-marsh-willow-timber': resource({ id: 'item-starfen-marsh-willow-timber', name: 'Starfen Marsh Willow Timber', tags: ['flora','timber','wood','willow','wetland','flexible','basketry','fuel'], valueGil: 12, sourceId: 'source-east-starfen-marsh-willow-carr', placeId: 'east-starfen', action: 'log' }),
+    'item-coppergrass-thornwood': resource({ id: 'item-coppergrass-thornwood', name: 'Coppergrass Thornwood', tags: ['flora','timber','wood','thornwood','steppe','dense','handle-stock','fuel'], valueGil: 13, sourceId: 'source-coppergrass-thornwood-scrub', placeId: 'coppergrass-steppe', action: 'log' }),
+    'item-ironspine-stonepine-timber': resource({ id: 'item-ironspine-stonepine-timber', name: 'Ironspine Stonepine Timber', tags: ['flora','timber','wood','stonepine','alpine','softwood','construction','fuel'], valueGil: 14, sourceId: 'source-ironspine-lower-pass-stonepine-stand', placeId: 'ironspine-lower-pass', action: 'log' }),
+    'item-ironspine-pass-stone': resource({ id: 'item-ironspine-pass-stone', name: 'Ironspine Pass Stone', tags: ['mineral','stone','alpine','masonry','construction'], valueGil: 8, sourceId: 'source-ironspine-lower-pass-stone-scree', placeId: 'ironspine-lower-pass', action: 'mine', sinks: ['construction','craftIngredient','trade'] }),
 });
 
 export function getMaterialFoundationResourceItem(id) {
