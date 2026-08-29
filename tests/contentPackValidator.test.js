@@ -61,8 +61,8 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-ironspine-highlands-ecology',
     ]);
     assert.equal(index.recordCounts.places, 19);
-    assert.equal(index.recordCounts.items, 227);
-    assert.equal(index.recordCounts.recipes, 143);
+    assert.equal(index.recordCounts.items, 233);
+    assert.equal(index.recordCounts.recipes, 148);
     assert.equal(index.recordCounts.npcs, 25);
     assert.equal(index.recordCounts.npcSchedules, 15);
     assert.equal(index.recordCounts.spellSchools, 4);
