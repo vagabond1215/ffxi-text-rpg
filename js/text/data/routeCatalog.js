@@ -339,7 +339,7 @@ const TRANSPORT_SERVICE_DEFINITIONS = Object.freeze({
         name: 'Mere-Delta Packet Boat',
         mode: 'ferry',
         routeId: 'route-great-mere-delta-waterway',
-        stopIds: ['stop-merewatch-delta-packet', 'stop-tideglass-delta-packet'],
+        stopIds: ['stop-merewatch-delta-packet', 'stop-starfen-lower-delta-waterway', 'stop-tideglass-delta-packet'],
         cadenceSeconds: 10800,
         firstDepartureOffsetSeconds: 5400,
         fare: { currencyId: 'gil', baseAmount: 10, perSegmentAmount: 7 },
