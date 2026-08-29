@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 38;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 39;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -565,6 +565,75 @@ export const HEADWATER_VALE_PACK = createContentPack({
     },
 });
 
+export const GLOAMWOOD_PACK = createContentPack({
+    id: 'pack-gloamwood-oldbough-refuge',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['gloamwood'], steward: 'oldbough-foresters' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-elderwood-opening',
+        'pack-elderwood-ecology-breadth',
+        'pack-material-foundations-common-components',
+        'pack-gloamwood-oldgrowth-ecology',
+    ],
+    metadata: {
+        name: 'Gloamwood & Oldbough Refuge',
+        notes: 'Old-growth barrier travel with a wagon-limited refuge, foot-and-mount deepwood trail, forester services, drying and wood/resin work, and no onward Lethari or western-mountain route.',
+    },
+    records: {
+        places: [{ id: 'oldbough-refuge', catalogRef: true }],
+        routes: [
+            { id: 'route-gloamwood-oldgrowth-cart-track', catalogRef: true },
+            { id: 'route-gloamwood-deepwood-forester-trail', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-oldbough-mara-oren', catalogRef: true },
+            { id: 'npc-oldbough-hale-rowan', catalogRef: true },
+            { id: 'npc-oldbough-tessa-brin', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-oldbough-mara-oren', catalogRef: true },
+            { id: 'schedule-oldbough-hale-rowan', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-gloamwood-cooked-raincaps', catalogRef: true },
+            { id: 'item-gloamwood-dried-raincaps', catalogRef: true },
+            { id: 'item-gloamwood-tannin-liquor', catalogRef: true },
+            { id: 'item-gloamwood-seasoned-ironoak', catalogRef: true },
+            { id: 'item-gloamwood-dry-moss-packing', catalogRef: true },
+            { id: 'item-gloamwood-dried-nightberries', catalogRef: true },
+            { id: 'item-gloamwood-weather-sealant', catalogRef: true },
+            { id: 'item-gloamwood-bog-iron-concentrate', catalogRef: true },
+            { id: 'item-gloamwood-route-repair-stakes', catalogRef: true },
+            { id: 'item-gloamwood-field-dressing-roll', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'cook-gloamwood-raincap-skillet', catalogRef: true },
+            { id: 'process-gloamwood-dry-raincaps', catalogRef: true },
+            { id: 'process-gloamwood-bitterbark-tannin', catalogRef: true },
+            { id: 'process-gloamwood-season-ironoak', catalogRef: true },
+            { id: 'process-gloamwood-dry-velvet-moss', catalogRef: true },
+            { id: 'process-gloamwood-dry-nightberries', catalogRef: true },
+            { id: 'process-gloamwood-candle-resin-sealant', catalogRef: true },
+            { id: 'process-gloamwood-wash-bog-iron', catalogRef: true },
+            { id: 'craft-gloamwood-route-repair-stakes', catalogRef: true },
+            { id: 'craft-gloamwood-field-dressing-roll', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-oldbough-field-exchange',
+            name: 'Oldbough Field Exchange',
+            placeId: 'oldbough-refuge',
+            keeperNpcId: 'npc-oldbough-mara-oren',
+            stockItemIds: [
+                'item-gloamwood-dried-raincaps',
+                'item-gloamwood-dried-nightberries',
+                'item-gloamwood-field-dressing-roll',
+                'item-gloamwood-route-repair-stakes',
+            ],
+        }],
+    },
+});
+
 export const STARFEN_DELTA_PACK = createContentPack({
     id: 'pack-starfen-delta-tideglass',
     dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -980,6 +1049,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
     HEADWATER_VALE_PACK,
+    GLOAMWOOD_PACK,
     STARFEN_DELTA_PACK,
     REDSTONE_PACK,
     REDSTONE_FORGE_ROAD_PACK,

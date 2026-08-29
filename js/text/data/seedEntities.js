@@ -72,6 +72,18 @@ export function createSeedNpcs() {
             locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions'],
         }),
         createNpc({
+            id: 'npc-oldbough-mara-oren', name: 'Mara Oren', title: 'Oldbough Field Factor', faction: 'Thornwall',
+            locationId: 'oldbough-refuge', services: ['regional-goods', 'forestry-trade', 'resource-appraisal', 'provisions'],
+        }),
+        createNpc({
+            id: 'npc-oldbough-hale-rowan', name: 'Hale Rowan', title: 'Gloamwood Boundary Forester', faction: 'Thornwall',
+            locationId: 'oldbough-refuge', services: ['route-guidance', 'forestry', 'deadfall-notices', 'fieldcraft', 'wagon-turnaround'],
+        }),
+        createNpc({
+            id: 'npc-oldbough-tessa-brin', name: 'Tessa Brin', title: 'Oldbough Refuge Keeper', faction: 'Thornwall',
+            locationId: 'oldbough-refuge', services: ['lodging', 'food', 'drying', 'woodwork', 'trail-provisions'],
+        }),
+        createNpc({
             id: 'npc-headwater-elin-marr', name: 'Elin Marr', title: 'Headwater River Factor', faction: 'Thornwall',
             locationId: 'headwater-warden-lodge', services: ['regional-goods', 'fishery-trade', 'timber-appraisal', 'provisions'],
         }),

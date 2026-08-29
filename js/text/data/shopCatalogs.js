@@ -64,6 +64,12 @@ export const SHOP_CATALOGS = Object.freeze({
         item('field-knife', 'Field Knife', 76, ['equipment', 'tool', 'cutting', 'field']),
         item('prospector-pick', 'Prospector Pick', 104, ['equipment', 'tool', 'mining', 'field']),
     ]),
+    'poi-oldbough-exchange': shop('poi-oldbough-exchange', 'Oldbough Field Exchange', 'A small boundary-forest counter buying usable old-growth finds and stocking preserved trail food, field dressings, and repair goods.', [
+        item('item-gloamwood-dried-raincaps', 'Dried Gloam Raincaps', 28, ['food','regional','travel','gloamwood']),
+        item('item-gloamwood-dried-nightberries', 'Dried Nightberries', 24, ['food','regional','travel','gloamwood']),
+        item('item-gloamwood-field-dressing-roll', 'Gloamwood Field Dressing Roll', 48, ['material','regional','fieldcraft','gloamwood']),
+        item('item-gloamwood-route-repair-stakes', 'Oldgrowth Route-Repair Stakes', 56, ['material','regional','repair','gloamwood']),
+    ]),
     'poi-headwater-river-exchange': shop('poi-headwater-river-exchange', 'Headwater River Exchange', 'A river-warden exchange buying ordinary vale goods and stocking food, first aid, fishing gear, cutting tools, and locally prepared provisions.', [
         item('travel-ration', 'Travel Ration', 20, ['food', 'travel']),
         item('flask-of-water', 'Flask of Water', 8, ['consumable', 'travel']),

@@ -8,6 +8,13 @@ import {
 import { listRegionalResourceItems } from './regionalResourceItems.js';
 import { listHuntingResourceItems } from './huntingResourceItems.js';
 import {
+    listGloamwoodEcologyFamilies,
+    listGloamwoodGatheringSources,
+    listGloamwoodPopulations,
+    listGloamwoodSpecies,
+} from './gloamwoodEcology.js';
+import { listGloamwoodResourceItems } from './gloamwoodResourceItems.js';
+import {
     listGreatMereEcologyFamilies,
     listGreatMereGatheringSources,
     listGreatMerePopulations,
@@ -36,7 +43,7 @@ import {
 } from './starfenDeltaEcology.js';
 import { listStarfenDeltaResourceItems } from './starfenDeltaResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 34;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 35;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -257,6 +264,28 @@ export const HEADWATER_VALE_ECOLOGY_PACK = createContentPack({
     },
 });
 
+export const GLOAMWOOD_ECOLOGY_PACK = createContentPack({
+    id: 'pack-gloamwood-oldgrowth-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['gloamwood'], steward: 'oldbough-foresters' },
+    dependencies: ['pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
+    metadata: {
+        name: 'Gloamwood Old-Growth Ecology',
+        notes: 'Wet old-growth barrier ecology with eight passive, wary, or naturally territorial species, seven exact-provenance sources, and no new hunting/body-recovery authority.',
+    },
+    records: {
+        places: [
+            { id: 'gloamwood-verge', catalogRef: true },
+            { id: 'gloamwood-deep', catalogRef: true },
+        ],
+        ecologyFamilies: listGloamwoodEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listGloamwoodSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listGloamwoodPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listGloamwoodGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listGloamwoodResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
 export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
     id: 'pack-starfen-delta-brackish-ecology',
     dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
@@ -279,7 +308,7 @@ export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
