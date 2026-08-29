@@ -20,6 +20,8 @@ authority:
   great_mere_profile: docs/ZONE_PROFILE_GREAT_MERE.md
   ironspine_profile: docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md
   headwater_profile: docs/ZONE_PROFILE_HEADWATER_VALE.md
+  starfen_delta_profile: docs/ZONE_PROFILE_STARFEN_DELTA_BRACKISH_COAST.md
+  starfen_delta_plan: docs/ZONE_PLAN_STARFEN_DELTA_BRACKISH_COAST.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
@@ -49,6 +51,10 @@ git:
   latest_main_data_52_check_number: 1481
   latest_main_data_52_check_sha: f78aad5636b5e7ab727949abd7df324906acec85
   latest_main_data_52_check_result: success-770-of-770-tests-repository-audit-census-benchmark-and-sample-promoted-sync-head
+  latest_main_data_53_check: 33267935109
+  latest_main_data_53_check_number: 1493
+  latest_main_data_53_check_sha: 8f968155d092431b0a3314d38f4d890b0c87f599
+  latest_main_data_53_check_result: success-776-of-776-tests-repository-audit-census-benchmark-and-sample-promoted-head
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -57,15 +63,16 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: headwater-vale-and-waymeet-approach
-  latest_bounded_unit_status: complete-on-main-validated-check-1481
-  latest_data_bounded_unit: headwater-vale-and-waymeet-approach
-  latest_data_bounded_unit_status: complete-on-main-promoted-sync-green-check-1481
+  latest_bounded_unit: starfen-delta-and-brackish-coast
+  latest_bounded_unit_status: complete-on-main-validated-check-1493
+  latest_data_bounded_unit: starfen-delta-and-brackish-coast
+  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1493
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: starfen-delta-brackish-coast
-  next_world_edge_candidate_status: ranked-after-headwater-not-auto-authorized
-  second_world_edge_candidate: gloamwood
+  next_world_edge_candidate: gloamwood
+  next_world_edge_candidate_status: ranked-after-starfen-delta-not-auto-authorized
+  second_world_edge_candidate: emberwash-badlands
+  third_world_edge_candidate: lower-deepvein
   southern_world_edge_candidate: emberwash-badlands
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
@@ -90,6 +97,7 @@ validation:
   material_foundations_guard: tests/materialFoundations.test.js
   regional_resource_distribution_guard: tests/regionalResourceDistribution.test.js
   headwater_flow_guard: tests/playerHeadwaterValeFlow.test.js
+  starfen_delta_flow_guard: tests/playerStarfenDeltaBrackishCoastFlow.test.js
 quality:
   current_product_version: 0.9.100.14
   current_package_version: 0.9.100
@@ -161,27 +169,47 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_53:
+    delta_places_added: 3
+    delta_routes_added: 3
+    delta_transport_services_added: 1
+    delta_npcs_added: 3
+    delta_schedules_added: 2
+    delta_species_added: 8
+    delta_sources_added: 7
+    delta_raw_resources_added: 7
+    delta_transformations_added: 10
+    delta_production_outputs_added: 11
+    tideglass_small_port_not_city: true
+    lower_delta_packet_stop: true
+    eastern_sea_open_water_not_walkable: true
+    miri_ocean_route_deferred: true
+    canonical_raw_production_utilization: 96-of-107
+    luxury_raw_production_utilization: 14-of-14
+    explicit_food_consumption_metadata: true
+    period_appropriate_food_safety_presentation: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 40
-    named_npcs: 32
-    shop_service_sites: 27
-    creature_definitions: 64
-    resource_sources: 89
-    canonical_items: 283
-    recipes_processes: 164
+    places_localities: 43
+    named_npcs: 35
+    shop_service_sites: 29
+    creature_definitions: 72
+    resource_sources: 96
+    canonical_items: 301
+    recipes_processes: 174
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
-    transport_services: 6
-    routes: 14
+    transport_services: 7
+    routes: 17
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 17
-    regional_shared_packs: 23
-    pack_owned_records: 859
-    runtime_seed_npcs: 31
+    npc_schedules: 19
+    regional_shared_packs: 25
+    pack_owned_records: 927
+    runtime_seed_npcs: 34
     runtime_seed_enemies: 17
   mechanics_floors_reached:
     - places
