@@ -24,6 +24,7 @@ authority:
   starfen_delta_plan: docs/ZONE_PLAN_STARFEN_DELTA_BRACKISH_COAST.md
   gloamwood_profile: docs/ZONE_PROFILE_GLOAMWOOD.md
   gloamwood_plan: docs/ZONE_PLAN_GLOAMWOOD.md
+  emberwash_plan: docs/ZONE_PLAN_EMBERWASH_BADLANDS.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
@@ -32,7 +33,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
+  current_normal_work: data-55-promotion-synchronization-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -61,6 +62,10 @@ git:
   latest_main_data_54_check_number: 1507
   latest_main_data_54_check_sha: 2de11cd73302751e9a83088d77c2de42df3313e8
   latest_main_data_54_check_result: success-781-of-781-tests-repository-audit-census-benchmark-and-sample-promoted-head
+  latest_emberwash_implementation_check: 33279116948
+  latest_emberwash_implementation_check_number: 1547
+  latest_emberwash_implementation_check_sha: 2e8d8a519dcc916f91a120fb66337fe16753f6a4
+  latest_emberwash_implementation_check_result: success-786-of-786-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -69,17 +74,17 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: gloamwood-and-oldbough-refuge
-  latest_bounded_unit_status: complete-on-main-validated-check-1507
-  latest_data_bounded_unit: gloamwood-and-oldbough-refuge
-  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1507
+  latest_bounded_unit: emberwash-badlands-and-cinderwell-station
+  latest_bounded_unit_status: complete-on-main-implementation-green-check-1547-promotion-in-progress
+  latest_data_bounded_unit: emberwash-badlands-and-cinderwell-station
+  latest_data_bounded_unit_status: promotion-in-progress-after-green-implementation-freeze
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
-  next_world_edge_candidate: emberwash-badlands
-  next_world_edge_candidate_status: ranked-after-gloamwood-not-auto-authorized
-  second_world_edge_candidate: lower-deepvein
-  third_world_edge_candidate: waymeet-marches-central-plateau-approaches
-  southern_world_edge_candidate: emberwash-badlands
+  next_world_edge_candidate: lower-deepvein
+  next_world_edge_candidate_status: ranked-after-emberwash-not-auto-authorized
+  second_world_edge_candidate: waymeet-marches-central-plateau-approaches
+  third_world_edge_candidate: coppergrass-extensions
+  southern_world_edge_candidate: emberwash-badlands-complete-data-55
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
   macro_world_planning: world-civilization-geography
@@ -105,14 +110,15 @@ validation:
   headwater_flow_guard: tests/playerHeadwaterValeFlow.test.js
   starfen_delta_flow_guard: tests/playerStarfenDeltaBrackishCoastFlow.test.js
   gloamwood_flow_guard: tests/playerGloamwoodFlow.test.js
+  emberwash_flow_guard: tests/playerEmberwashFlow.test.js
 quality:
-  current_product_version: 0.9.100.15
+  current_product_version: 0.9.100.16
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 54
+  current_data_version: 55
   current_benchmark_version: 3
-  current_codename: Gloamwood & Oldbough Refuge
+  current_codename: Emberwash Badlands & Cinderwell Station
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -214,27 +220,45 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_55:
+    emberwash_places_added: 3
+    emberwash_routes_added: 2
+    emberwash_npcs_added: 3
+    emberwash_schedules_added: 2
+    emberwash_species_added: 8
+    emberwash_sources_added: 7
+    emberwash_raw_resources_added: 7
+    emberwash_transformations_added: 10
+    emberwash_production_outputs_added: 10
+    cinderwell_wagon_limit: true
+    farther_desert_strait_and_veyra_onward_route_deferred: true
+    ordinary_wildlife_not_forced_hostile_for_loot: true
+    canonical_raw_production_utilization: 110-of-121
+    luxury_raw_production_utilization: 14-of-14
+    explicit_food_consumption_metadata: true
+    period_appropriate_food_safety_presentation: true
+    persistence_family_added: false
 content_scale:
   mechanics_gate: not-ready
   current:
-    places_localities: 46
-    named_npcs: 38
-    shop_service_sites: 31
-    creature_definitions: 80
-    resource_sources: 103
-    canonical_items: 318
-    recipes_processes: 184
+    places_localities: 49
+    named_npcs: 41
+    shop_service_sites: 33
+    creature_definitions: 88
+    resource_sources: 110
+    canonical_items: 335
+    recipes_processes: 194
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
     transport_services: 7
-    routes: 19
+    routes: 21
     spell_schools: 4
     capability_training_definitions: 44
-    npc_schedules: 21
-    regional_shared_packs: 27
-    pack_owned_records: 992
-    runtime_seed_npcs: 37
+    npc_schedules: 23
+    regional_shared_packs: 29
+    pack_owned_records: 1057
+    runtime_seed_npcs: 40
     runtime_seed_enemies: 17
   mechanics_floors_reached:
     - places
