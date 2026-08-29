@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 35;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 36;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -382,6 +382,7 @@ export const GREAT_MERE_MEREWATCH_PACK = createContentPack({
         recipes: [
             { id: 'process-great-mere-clean-perch', catalogRef: true },
             { id: 'cook-great-mere-smoked-perch', catalogRef: true },
+            { id: 'process-great-mere-dry-smoke-perch', catalogRef: true },
             { id: 'process-great-mere-clean-pike', catalogRef: true },
             { id: 'process-great-mere-preservation-brine', catalogRef: true },
             { id: 'cook-great-mere-pickled-pike', catalogRef: true },
@@ -667,6 +668,12 @@ export const MATERIAL_FOUNDATIONS_PACK = createContentPack({
             { id: 'source-east-starfen-giant-cane-brake', catalogRef: true },
             { id: 'source-crownfields-hemp-strip', catalogRef: true },
             { id: 'source-east-starfen-nettle-bank', catalogRef: true },
+            { id: 'source-crownfields-brick-clay-bank', catalogRef: true },
+            { id: 'source-west-starfen-alluvial-clay-bank', catalogRef: true },
+            { id: 'source-east-starfen-marsh-willow-carr', catalogRef: true },
+            { id: 'source-coppergrass-thornwood-scrub', catalogRef: true },
+            { id: 'source-ironspine-lower-pass-stonepine-stand', catalogRef: true },
+            { id: 'source-ironspine-lower-pass-stone-scree', catalogRef: true },
         ],
         items: [
             { id: 'item-redstone-tin-ore', catalogRef: true },
@@ -690,6 +697,12 @@ export const MATERIAL_FOUNDATIONS_PACK = createContentPack({
             { id: 'item-starfen-giant-cane', catalogRef: true },
             { id: 'item-crownfields-hemp-stalk', catalogRef: true },
             { id: 'item-starfen-nettle-bast', catalogRef: true },
+            { id: 'item-crownfields-brick-clay', catalogRef: true },
+            { id: 'item-starfen-alluvial-clay', catalogRef: true },
+            { id: 'item-starfen-marsh-willow-timber', catalogRef: true },
+            { id: 'item-coppergrass-thornwood', catalogRef: true },
+            { id: 'item-ironspine-stonepine-timber', catalogRef: true },
+            { id: 'item-ironspine-pass-stone', catalogRef: true },
             { id: 'item-material-tin-ingot', catalogRef: true },
             { id: 'item-material-lead-ingot', catalogRef: true },
             { id: 'item-material-silver-ingot', catalogRef: true },
@@ -771,6 +784,10 @@ export const MATERIAL_FOUNDATIONS_PACK = createContentPack({
             { id: 'craft-material-silver-setting-kit', catalogRef: true },
             { id: 'craft-material-cloudsilver-spellwire', catalogRef: true },
             { id: 'process-material-charcoal', catalogRef: true },
+            { id: 'process-material-charcoal-slatewater-spruce', catalogRef: true },
+            { id: 'process-material-charcoal-starfen-willow', catalogRef: true },
+            { id: 'process-material-charcoal-coppergrass-thornwood', catalogRef: true },
+            { id: 'process-material-charcoal-ironspine-stonepine', catalogRef: true },
             { id: 'craft-material-ash-handle-blank', catalogRef: true },
             { id: 'craft-material-oak-plank', catalogRef: true },
             { id: 'craft-material-oak-beam', catalogRef: true },
