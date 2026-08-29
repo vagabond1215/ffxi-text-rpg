@@ -201,6 +201,6 @@ test('Great Mere packs own the lake ecology and Merewatch service-production gra
     assert.ok(ecology.dependencies.includes('pack-starfen-ecology-breadth'));
     assert.ok(ecology.dependencies.includes('pack-elderwood-ecology-breadth'));
     assert.ok(merewatch.dependencies.includes(ecology.id));
-    assert.equal(merewatch.records.recipes.length, 22);
+    assert.equal(merewatch.records.recipes.length, 23);
     assert.equal(merewatch.records.items.length, 23);
 });
