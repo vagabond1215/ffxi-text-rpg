@@ -5,18 +5,18 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.11
+Product:       0.9.100.12
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          50
+Data:          51
 Benchmark:     3
-Codename:      Material Foundations & Common Components
+Codename:      Regional Resource & Trade Resilience
 ```
 
 ## Current bounded-unit state
 
-Material Foundations & Common Components is the current completed bounded unit on `main`. It establishes the shared stock/component graph needed by profession-specific tools without starting the later occupational-tool packet.
+Regional Resource & Trade Resilience is the current bounded unit on `main`. It audits established regions as dependable trade basins and repairs common-resource dead ends without erasing regional specialization.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -27,28 +27,40 @@ Latest bounded implementation:
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 50 metrics
+## Data 51 metrics
 
 ```text
 places/localities                       37
 named NPCs                              29
 shop/service sites                      25
 creatures                               58
-resource sources                        77
-canonical items                        258
-recipes/processes                      149
+resource sources                        83
+canonical items                        264
+recipes/processes                      154
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       6
 
-raw resources with production demand   77 / 85
+raw resources with production demand   80 / 91
 luxury raws with production demand      14 / 14
 routes                                  12
 NPC schedules                           15
 regional/shared packs                   21
-pack-owned records                     782
+pack-owned records                     799
 ```
+
+## Regional resilience rule
+
+Established settlements do not need identical local resource catalogs. Audit the **local region plus dependable trade partners** for staple food, structural stock, metal, bindings, fuel, medicine, preservation, and practical workstation access.
+
+Prefer ordinary substitutes over duplicated specialties:
+- local Willow/Thornwood/Stonepine charcoal can substitute for Crown Oak charcoal;
+- dry smoking can preserve fish when trade salt is unavailable, at lower yield;
+- common clay/stone/wood should exist when the established biome plainly implies it;
+- silver, gold, premium timber, pearls, specialty dyes, and similar premium materials may remain geographically distinct.
+
+Coppergrass remains a transit wilderness: the Forge-Mere route physically crosses it, but no staffed locality or scheduled boarding stop should be inferred until one is deliberately authored.
 
 ## Standing zone-authoring rule
 
