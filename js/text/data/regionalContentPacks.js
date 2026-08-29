@@ -625,7 +625,7 @@ export const EMBERWASH_PACK = createContentPack({
             name: 'Cinderwell Exchange',
             placeId: 'cinderwell-station',
             keeperNpcId: 'npc-cinderwell-tarin-hove',
-            inventoryIds: [
+            stockItemIds: [
                 'flask-of-water',
                 'item-emberwash-trail-cakes',
                 'item-emberwash-dried-cinder-pear',
