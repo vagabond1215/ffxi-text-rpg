@@ -13,13 +13,13 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Headwater Vale & Waymeet Approach** is the current Data 52 geography/content checkpoint, extending Timbercross upstream into the first grounded overland approach toward Waymeet while preserving route-gated world geography.
 
 ```text
-Product:       0.9.100.13
+Product:       0.9.100.14
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          52
+Data:          53
 Benchmark:     3
-Codename:      Headwater Vale & Waymeet Approach
+Codename:      Starfen Delta & Brackish Coast
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
