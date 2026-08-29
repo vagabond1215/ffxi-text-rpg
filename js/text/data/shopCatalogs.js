@@ -1,4 +1,4 @@
-export const SHOP_CATALOG_VERSION = 3;
+export const SHOP_CATALOG_VERSION = 4;
 
 export const SHOP_CATALOGS = Object.freeze({
     'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Southgate Arms', 'Practical arms for road wardens, travelers, and apprentices.', [
@@ -63,6 +63,15 @@ export const SHOP_CATALOGS = Object.freeze({
         item('marsh-rod', 'Marsh Fishing Rod', 108, ['equipment', 'tool', 'fishing', 'field']),
         item('field-knife', 'Field Knife', 76, ['equipment', 'tool', 'cutting', 'field']),
         item('prospector-pick', 'Prospector Pick', 104, ['equipment', 'tool', 'mining', 'field']),
+    ]),
+    'poi-cinderwell-exchange': shop('poi-cinderwell-exchange', 'Cinderwell Exchange', 'A fortified frontier counter buying ordinary Emberwash goods and stocking water, prepared provisions, salt, and route-repair supplies.', [
+        item('flask-of-water', 'Flask of Water', 10, ['consumable', 'travel', 'water']),
+        item('item-emberwash-trail-cakes', 'Emberpod Trail Cakes', 32, ['food', 'prepared', 'travel', 'emberwash']),
+        item('item-emberwash-dried-cinder-pear', 'Dried Cinder Pear Strips', 28, ['food', 'prepared', 'travel', 'emberwash']),
+        item('item-emberwash-caravan-salt', 'Emberwash Caravan Salt', 30, ['material', 'salt', 'preservation', 'emberwash']),
+        item('item-emberwash-dustwrap-repair-kit', 'Emberwash Dustwrap Repair Kit', 58, ['material', 'fieldcraft', 'repair', 'emberwash']),
+        item('item-emberwash-cistern-patch-compound', 'Cinderwell Cistern Patch Compound', 64, ['material', 'waterworks', 'repair', 'emberwash']),
+        item('field-knife', 'Field Knife', 80, ['equipment', 'tool', 'cutting', 'field']),
     ]),
     'poi-oldbough-exchange': shop('poi-oldbough-exchange', 'Oldbough Field Exchange', 'A small boundary-forest counter buying usable old-growth finds and stocking preserved trail food, field dressings, and repair goods.', [
         item('item-gloamwood-dried-raincaps', 'Dried Gloam Raincaps', 28, ['food','regional','travel','gloamwood']),
