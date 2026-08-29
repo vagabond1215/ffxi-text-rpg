@@ -48,15 +48,15 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Ironspine freeze Check #1368 and promoted exact-head Check #1381 both passed 753/753 tests. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Gloamwood implementation freeze Check #1504 and promoted Data 54 Check #1507 both passed 781/781 tests. |
 
-## Content infrastructure and regional packs — Data 53
+## Content infrastructure and regional packs — Data 54
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Twenty-five current packs; 927 current ownership records. |
+| Regional/shared pack ownership | integrated | Twenty-seven current packs; 992 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -65,6 +65,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Ironspine alpine geography/economy | integrated | Wagon-limited pass, walk/mount high trail, alpine ecology, hunted body resources, preservation, hide/fur work, remedies, and survey craft. |
 | Headwater Vale geography/economy | playable | Timbercross headwaters, wagon-limited warden lodge, upper trail, coldstream fishing, red-deer hunting/body recovery, alder/willow work, preservation, and bridge-repair production form the first overland Waymeet approach. |
 | Starfen Delta / Brackish Coast | playable | Great Mere outflow, lower delta levees, Tideglass pilot port, packet-boat service, tidal coast ecology, seafood/salt/shell/reed production, and explicit non-walkable Eastern Sea boundary. |
+| Gloamwood & Oldbough Refuge | playable | Old-growth barrier beyond West Elderwood, wagon-limited refuge, foot/mount deepwood trail, eight-species ecology, seven exact-provenance raws, and ten connected food/fieldcraft/timber/mineral outputs with no onward Lethari route. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
@@ -101,7 +102,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 31 current places/localities; reciprocal map/place and route-stop integrity is validated. |
+| Places/routes/maps | playable | 46 current places/localities; reciprocal map/place and route-stop integrity is validated. |
 | Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
@@ -139,10 +140,10 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 83 current sources with place/tool/capacity/provenance; Data 51 fills common-sense clay, willow/thornwood, Stonepine timber, and pass-stone omissions. |
-| Production | playable | 154 current processing/crafting/cooking/salvage definitions; regional charcoal alternatives and a lower-yield no-salt Great Mere smoking path prevent basic production dead ends. |
+| Gathering sources | playable | 103 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, and old-growth sources. |
+| Production | playable | 184 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
-| Luxury production depth | playable | All 12 current luxury raws now feed production, including Great Mere Cloudwater Pearl. |
+| Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
 | Redstone forge chain | playable | Existing iron/sunstone/Ridge Ibex inputs feed flux, tempered iron, rivets, work gear, and caravan hardware through existing forge/work authorities. |
 | Elderwood hunt-timber chain | playable | Barkboar hide recovery, Duskcap, amber resin and hardwood feed tanned hide, bindings, resin products, field gear and trail-repair stock through existing tannery/woodshop/work authorities. |
@@ -160,8 +161,8 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 22 runtime seed NPCs; census counts 23 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Fifteen current schedules derive availability from fictional time. |
+| NPC seed definitions | integrated | 37 runtime seed NPCs; census counts 38 named NPC definitions across canonical sources. |
+| NPC recurring schedules | playable | Twenty-one current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
@@ -175,16 +176,16 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 53 Starfen Delta checkpoint:
+Gameplay breadth at the Data 54 Gloamwood checkpoint:
 
 ```text
-places/localities       43 / mechanics 10
-named NPCs              35 / 50
-shop/service sites      29 / 20
-creatures               72 / 40
-resource sources        96 / 40
-canonical items        301 / 200
-recipes/processes      174 / 75
+places/localities       46 / mechanics 10
+named NPCs              38 / 50
+shop/service sites      31 / 20
+creatures               80 / 40
+resource sources       103 / 40
+canonical items        318 / 200
+recipes/processes      184 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -194,15 +195,15 @@ transport services       7 / 5
 Infrastructure coverage:
 
 ```text
-routes                                  17
+routes                                  19
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           19
-regional/shared packs                   25
-pack-owned records                     927
+NPC schedules                           21
+regional/shared packs                   27
+pack-owned records                     992
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/19/1
-runtime seed NPCs                       34
+  schedules/companions              41/44/21/1
+runtime seed NPCs                       37
 runtime seed enemies                    17
 ```
 
@@ -210,4 +211,4 @@ Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mec
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Starfen Delta & Brackish Coast is the current Data 53 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Gloamwood** is the next ranked world-edge candidate. None is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Gloamwood & Oldbough Refuge is the current Data 54 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Emberwash Badlands** is the next ranked world-edge candidate, followed by Lower Deepvein. None is auto-started.
