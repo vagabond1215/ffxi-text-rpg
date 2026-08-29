@@ -72,6 +72,18 @@ export function createSeedNpcs() {
             locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions'],
         }),
         createNpc({
+            id: 'npc-cinderwell-tarin-hove', name: 'Tarin Hove', title: 'Cinderwell Field Factor', faction: 'Brasshaven',
+            locationId: 'cinderwell-station', services: ['regional-goods', 'caravan-trade', 'resource-appraisal', 'provisions', 'water'],
+        }),
+        createNpc({
+            id: 'npc-cinderwell-merek-sorn', name: 'Merek Sorn', title: 'Emberwash Caravan Warden', faction: 'Brasshaven',
+            locationId: 'cinderwell-station', services: ['route-guidance', 'wash-crossings', 'water-notices', 'fieldcraft', 'wagon-turnaround'],
+        }),
+        createNpc({
+            id: 'npc-cinderwell-pella-aven', name: 'Pella Aven', title: 'Cinderwell Station Keeper', faction: 'Brasshaven',
+            locationId: 'cinderwell-station', services: ['lodging', 'food', 'cistern-care', 'stabling', 'field-repair', 'trail-provisions'],
+        }),
+        createNpc({
             id: 'npc-oldbough-mara-oren', name: 'Mara Oren', title: 'Oldbough Field Factor', faction: 'Thornwall',
             locationId: 'oldbough-refuge', services: ['regional-goods', 'forestry-trade', 'resource-appraisal', 'provisions'],
         }),
