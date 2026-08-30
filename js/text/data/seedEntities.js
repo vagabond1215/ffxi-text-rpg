@@ -84,6 +84,18 @@ export function createSeedNpcs() {
             locationId: 'cinderwell-station', services: ['lodging', 'food', 'cistern-care', 'stabling', 'field-repair', 'trail-provisions'],
         }),
         createNpc({
+            id: 'npc-lantern-sump-ressa-kell', name: 'Ressa Kell', title: 'Lower Deepvein Factor', faction: 'Brasshaven',
+            locationId: 'lantern-sump-station', services: ['regional-goods', 'delver-trade', 'resource-appraisal', 'provisions', 'lamp-supplies'],
+        }),
+        createNpc({
+            id: 'npc-lantern-sump-borin-vale', name: 'Borin Vale', title: 'Deepvein Survey Warden', faction: 'Brasshaven',
+            locationId: 'lantern-sump-station', services: ['route-guidance', 'cave-survey', 'gallery-conditions', 'fieldcraft', 'mine-safety'],
+        }),
+        createNpc({
+            id: 'npc-lantern-sump-hessa-rusk', name: 'Hessa Rusk', title: 'Lantern Sump Station Keeper', faction: 'Brasshaven',
+            locationId: 'lantern-sump-station', services: ['lodging', 'food', 'cistern-care', 'lampwork', 'field-repair', 'first-aid'],
+        }),
+        createNpc({
             id: 'npc-oldbough-mara-oren', name: 'Mara Oren', title: 'Oldbough Field Factor', faction: 'Thornwall',
             locationId: 'oldbough-refuge', services: ['regional-goods', 'forestry-trade', 'resource-appraisal', 'provisions'],
         }),

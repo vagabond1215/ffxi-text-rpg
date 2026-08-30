@@ -1,4 +1,4 @@
-export const SHOP_CATALOG_VERSION = 4;
+export const SHOP_CATALOG_VERSION = 5;
 
 export const SHOP_CATALOGS = Object.freeze({
     'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Southgate Arms', 'Practical arms for road wardens, travelers, and apprentices.', [
@@ -72,6 +72,17 @@ export const SHOP_CATALOGS = Object.freeze({
         item('item-emberwash-dustwrap-repair-kit', 'Emberwash Dustwrap Repair Kit', 58, ['material', 'fieldcraft', 'repair', 'emberwash']),
         item('item-emberwash-cistern-patch-compound', 'Cinderwell Cistern Patch Compound', 64, ['material', 'waterworks', 'repair', 'emberwash']),
         item('field-knife', 'Field Knife', 80, ['equipment', 'tool', 'cutting', 'field']),
+    ]),
+    'poi-lantern-sump-exchange': shop('poi-lantern-sump-exchange', 'Lantern Sump Exchange', 'A compact underground counter buying ordinary Lower Deepvein finds and stocking water, cooked cave provisions, salt, lampwork, repair stock, and practical delver tools.', [
+        item('flask-of-water', 'Flask of Water', 10, ['consumable', 'travel', 'water']),
+        item('item-lower-deepvein-cooked-lampcaps', 'Cooked Lower Deepvein Lampcaps', 32, ['food', 'prepared', 'subterranean', 'lower-deepvein']),
+        item('item-lower-deepvein-salt-baked-threadfin', 'Salt-Baked Threadfin Ration', 44, ['food', 'prepared', 'travel', 'lower-deepvein']),
+        item('item-lower-deepvein-boiled-sump-crab', 'Boiled Blind Sump Crab', 40, ['food', 'prepared', 'shellfish', 'lower-deepvein']),
+        item('item-lower-deepvein-refined-cave-salt', 'Refined Deepvein Cave Salt', 30, ['material', 'salt', 'preservation', 'lower-deepvein']),
+        item('item-lower-deepvein-reflector-lamp-kit', 'Deepvein Reflector Lamp Kit', 96, ['material', 'tool', 'lampwork', 'survey', 'lower-deepvein']),
+        item('item-lower-deepvein-gallery-seep-packing', 'Deepvein Gallery Seep Packing', 56, ['material', 'repair', 'minework', 'lower-deepvein']),
+        item('prospector-pick', 'Prospector Pick', 106, ['equipment', 'tool', 'mining', 'field']),
+        item('field-knife', 'Field Knife', 78, ['equipment', 'tool', 'cutting', 'field']),
     ]),
     'poi-oldbough-exchange': shop('poi-oldbough-exchange', 'Oldbough Field Exchange', 'A small boundary-forest counter buying usable old-growth finds and stocking preserved trail food, field dressings, and repair goods.', [
         item('item-gloamwood-dried-raincaps', 'Dried Gloam Raincaps', 28, ['food','regional','travel','gloamwood']),

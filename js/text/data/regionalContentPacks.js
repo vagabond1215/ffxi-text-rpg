@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 40;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 41;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -636,6 +636,77 @@ export const EMBERWASH_PACK = createContentPack({
     },
 });
 
+export const LOWER_DEEPVEIN_PACK = createContentPack({
+    id: 'pack-lower-deepvein-lantern-sump',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['lower-deepvein'], steward: 'brasshaven-lantern-sump' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-redstone-opening',
+        'pack-redstone-ecology-breadth',
+        'pack-material-foundations-common-components',
+        'pack-lower-deepvein-ecology',
+    ],
+    metadata: {
+        name: 'Lower Deepvein & Lantern Sump Station',
+        notes: 'Controlled first Deep World leg below Deepvein Mine with walk-only tunnel travel, a staffed subterranean delver station, cave-food and lampwork production, damp-gallery repair goods, and an explicit stop before farther deep roads or Korren settlements.',
+    },
+    records: {
+        places: [{ id: 'lantern-sump-station', catalogRef: true }],
+        routes: [
+            { id: 'route-lower-deepvein-haulage-decline', catalogRef: true },
+            { id: 'route-lower-deepvein-echoing-shelf', catalogRef: true },
+        ],
+        npcs: [
+            { id: 'npc-lantern-sump-ressa-kell', catalogRef: true },
+            { id: 'npc-lantern-sump-borin-vale', catalogRef: true },
+            { id: 'npc-lantern-sump-hessa-rusk', catalogRef: true },
+        ],
+        npcSchedules: [
+            { id: 'schedule-lantern-sump-ressa-kell', catalogRef: true },
+            { id: 'schedule-lantern-sump-borin-vale', catalogRef: true },
+        ],
+        items: [
+            { id: 'item-lower-deepvein-cooked-lampcaps', catalogRef: true },
+            { id: 'item-lower-deepvein-threadfin-fillet', catalogRef: true },
+            { id: 'item-lower-deepvein-salt-baked-threadfin', catalogRef: true },
+            { id: 'item-lower-deepvein-boiled-sump-crab', catalogRef: true },
+            { id: 'item-lower-deepvein-glowmoss-wick-cord', catalogRef: true },
+            { id: 'item-lower-deepvein-refined-cave-salt', catalogRef: true },
+            { id: 'item-lower-deepvein-polished-quartz', catalogRef: true },
+            { id: 'item-lower-deepvein-fired-lamp-cup', catalogRef: true },
+            { id: 'item-lower-deepvein-reflector-lamp-kit', catalogRef: true },
+            { id: 'item-lower-deepvein-gallery-seep-packing', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'cook-lower-deepvein-lampcaps', catalogRef: true },
+            { id: 'process-lower-deepvein-clean-threadfin', catalogRef: true },
+            { id: 'cook-lower-deepvein-salt-baked-threadfin', catalogRef: true },
+            { id: 'cook-lower-deepvein-blind-sump-crab', catalogRef: true },
+            { id: 'process-lower-deepvein-glowmoss-wick-cord', catalogRef: true },
+            { id: 'process-lower-deepvein-refine-cave-salt', catalogRef: true },
+            { id: 'process-lower-deepvein-polish-quartz', catalogRef: true },
+            { id: 'process-lower-deepvein-fire-lamp-cup', catalogRef: true },
+            { id: 'craft-lower-deepvein-reflector-lamp-kit', catalogRef: true },
+            { id: 'craft-lower-deepvein-gallery-seep-packing', catalogRef: true },
+        ],
+        shops: [{
+            id: 'shop-lantern-sump-exchange',
+            name: 'Lantern Sump Exchange',
+            placeId: 'lantern-sump-station',
+            keeperNpcId: 'npc-lantern-sump-ressa-kell',
+            stockItemIds: [
+                'item-lower-deepvein-cooked-lampcaps',
+                'item-lower-deepvein-salt-baked-threadfin',
+                'item-lower-deepvein-boiled-sump-crab',
+                'item-lower-deepvein-refined-cave-salt',
+                'item-lower-deepvein-reflector-lamp-kit',
+                'item-lower-deepvein-gallery-seep-packing',
+            ],
+        }],
+    },
+});
+
 export const GLOAMWOOD_PACK = createContentPack({
     id: 'pack-gloamwood-oldbough-refuge',
     dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1121,6 +1192,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     IRONSPINE_HIGHLANDS_PACK,
     HEADWATER_VALE_PACK,
     EMBERWASH_PACK,
+    LOWER_DEEPVEIN_PACK,
     GLOAMWOOD_PACK,
     STARFEN_DELTA_PACK,
     REDSTONE_PACK,
