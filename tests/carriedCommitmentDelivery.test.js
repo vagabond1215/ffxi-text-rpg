@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getProductionItem } from '../js/text/data/productionItems.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -24,7 +25,7 @@ const INGOT_ID = 'item-redstone-copper-ingot';
 
 function createAcceptedBrasshavenCommitment() {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
     return state;
 }
