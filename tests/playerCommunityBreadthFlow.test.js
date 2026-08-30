@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getNation } from '../js/text/data/nations.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -70,7 +71,7 @@ test('PX7 gives Mistmere a second persistent community loop without collapsing S
     assert.ok(state.npcs.some((npc) => npc.id === SOLI_NPC_ID), 'Reader Soli Venn should be a persistent NPC-backed contact');
     assert.equal(commitment(model(state)), null, 'the commitment should not appear before Soli is actually known');
 
-    assert.equal(performLocalityPoiAction(state, 'poi-waters-dagoza-beruza', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-waters-dagoza-beruza', 'talk').ok, true);
     const starterItemId = getNation('mistmere').startingEquipmentIds[0];
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, starterItemId), /Equipped/);
@@ -92,7 +93,7 @@ test('PX7 gives Mistmere a second persistent community loop without collapsing S
     let exploration = category(view, 'exploration');
     assert.equal(exploration.action?.intent, 'locality.move');
     assert.equal(exploration.action?.payload.destinationId, 'mistmere-reedport');
-    assert.equal(moveWithinLocality(state, exploration.action.payload.destinationId).ok, true);
+    assert.equal(moveToKnownLocality(state, exploration.action.payload.destinationId).ok, true);
 
     view = model(state);
     exploration = category(view, 'exploration');
@@ -136,7 +137,7 @@ test('PX7 gives Mistmere a second persistent community loop without collapsing S
     soliWork = commitment(view);
     assert.equal(soliWork.action?.intent, 'locality.move');
     assert.equal(soliWork.action?.payload.destinationId, 'mistmere-canal-ward');
-    assert.equal(moveWithinLocality(state, soliWork.action.payload.destinationId).ok, true);
+    assert.equal(moveToKnownLocality(state, soliWork.action.payload.destinationId).ok, true);
 
     view = model(state);
     soliWork = commitment(view);
