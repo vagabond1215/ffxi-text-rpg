@@ -64,7 +64,7 @@ test('Reedcrown gains same-place perch prey plus insect and waterfowl overlap', 
     }
 
     const grebe = getCanonicalSpecies('species-great-mere-crown-grebe');
-    assert.ok(grebe.behavior.linksWithFamilyIds.includes('family-lake-perch'));
+    assert.ok(grebe.behavior.preyFamilyIds.includes('family-lake-perch'));
 
     const perch = getCanonicalSpecies('species-great-mere-silver-perch');
     assert.equal(perch.familyId, 'family-lake-perch');

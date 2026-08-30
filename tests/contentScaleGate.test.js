@@ -55,7 +55,6 @@ test('content scale targets preserve repository planning lower bounds', () => {
 
 test('default content census exposes catalog breadth and Pack v2 ownership coverage separately', () => {
     const counts = collectContentScaleCounts();
-    console.log('WETLAND_ISLAND_MEASURED_CONTENT_SCALE', JSON.stringify(counts));
 
     for (const metric of CONTENT_SCALE_METRICS) {
         assert.ok(Number.isInteger(counts[metric]));
@@ -68,7 +67,7 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.equal(counts.supplemental.spellSchools, 4);
     assert.equal(counts.supplemental.capabilities, 44);
     assert.equal(counts.supplemental.npcSchedules, 27);
-    assert.equal(counts.supplemental.contentPacks, 37);
+    assert.equal(counts.supplemental.contentPacks, 38);
     assert.ok(counts.supplemental.ownedPackRecords >= 248);
     assert.equal(counts.supplemental.packOwnedByCollection.spellSchools, 4);
     assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 44);

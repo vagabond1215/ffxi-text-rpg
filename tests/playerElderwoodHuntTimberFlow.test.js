@@ -81,7 +81,7 @@ test('Elderwood Hunt-Timber is one Pack-v2-owned hunt, forestry, production, civ
     assert.ok(counts.recipes >= 23);
     assert.ok(counts.abilities >= 13);
     assert.ok(counts.quests >= 14);
-    assert.equal(counts.supplemental.contentPacks, 37);
+    assert.equal(counts.supplemental.contentPacks, 38);
     assert.ok(counts.supplemental.capabilities >= 16);
     assert.ok(counts.supplemental.npcSchedules >= 5);
     assert.ok(counts.supplemental.ownedPackRecords >= 171);
