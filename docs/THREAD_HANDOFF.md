@@ -7,109 +7,126 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Wetland / Island Distribution Repair is complete and promoted on `main` as Data 61.**
+**Cross-Biome Family Breadth is complete and promoted on `main` as Data 62.**
 
 Plan:
-- `docs/WETLAND_ISLAND_DISTRIBUTION_REPAIR_PLAN.md`;
-- plan commit `33575d6a8ae2aa202664d647558c66c91ecde025`.
+- `docs/CROSS_BIOME_FAMILY_BREADTH_PLAN.md`;
+- plan commit `b6b0c309c60357916550d92928f86d07847229f8`.
 
 Implementation:
-- initial candidate `c22e6cee6f1daad1a11131dbac07978381c4f8d4`;
-- measured guard synchronization / implementation freeze `48948292ea26a38d91d306d12998973c1ae35677`.
+- initial candidate `015389b05fbccc943a7d8c3e69dcfd5a42bfb8ef`;
+- measured guard synchronization / implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`.
 
 Implementation-freeze evidence:
-- Check **#1626 / run `33325861973`**;
+- Check **#1634 / run `33331659415`**;
 - Repository Audit PASS;
-- **817/817 tests PASS**;
+- **822/822 tests PASS**;
 - Census PASS;
 - Benchmark 3 PASS;
 - Benchmark Sample PASS.
 
 Promoted runtime/data:
-- `d861b1a6cdeca5a470fb13fa429a7329353b6b02`;
-- Product 0.9.100.22 / Data 61 / Game State 14 / Package 0.9.100.
+- `bc472b60374a048686b0ee6c877ba26c515aec35`;
+- Product 0.9.100.23 / Data 62 / Game State 14 / Package 0.9.100.
 
 Permanent authority synchronization:
-- `40af11ebdaac8d7d3bb1cb73655849b595fee1ef`;
-- PROJECT_PROFILE, README, roadmap, execution pipeline, system catalog, version roadmap, location-diversity audit, and repair plan updated for Data 61.
+- `f6dcfde4344002aedd49100e4d52b18484ab31bd`;
+- PROJECT_PROFILE, README, roadmap, execution pipeline, system catalog, version roadmap, location-diversity audit, and Cross-Biome plan updated for Data 62.
 
 This handoff is the final synchronization write. The exact head after it must have hosted Check and Pages green before closure.
 
-## Data 61 authored delta
+## Data 62 authored delta
 
-This is repair unit **4 of 5** from `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`.
+This is repair unit **5 of 5** from `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`.
 
-Authored additions:
-- **0 new ecology families**;
-- **0 new species**;
-- **8 new population placements**;
+Added:
+- **2 new ecology families**;
+- **7 new species**;
+- **7 new population placements**;
 - **0 new gathering sources**;
 - **0 new raw resources**;
 - **0 new transformations/outputs**;
-- **1 population-only Pack-v2 repair graph**.
+- **1 cross-region Pack-v2 repair graph**.
 
-### East Starfen
+### Ground Squirrel family
 
-New distribution:
-- Mirecrest Heron;
-- Reed Eel;
-- Reed Crab;
-- Great Mere Glasswing Dragonfly.
+New family:
+- `family-ground-squirrel`.
 
-Existing Bellfrog, Fen Duck, and established flora/fiber/wood recovery remain intact.
+Species:
+- Coppergrass Loess Ground Squirrel — Coppergrass Steppe;
+- Waymeet Cairn Ground Squirrel — Waymeet South Marches;
+- Crownfields Hedgebank Ground Squirrel — Crownfields.
 
-Non-node description now includes sedges, rushes, floating duckweed, reed litter, mud-bank herbs, and ordinary marsh flowers.
+The family is deliberately scoped to small open-ground burrowers and does not replace Rat, Marmot, or Hare taxonomy.
 
-### Reedcrown Isle
+Slatewater did not receive another burrowing mammal because Data 60 already added Brush Hare as its small-prey layer.
 
-New distribution:
-- Great Mere Silver Perch;
-- Great Mere Glasswing Dragonfly;
-- Starfen Fen Duck.
+### Finch family
 
-This gives Crown Grebe same-place **Lake Perch** prey-family overlap.
+New family:
+- `family-finch`.
 
-No new island fishery was created. Great Mere Westshore remains the authored Silver Perch catch source.
+Species:
+- Coppergrass Seed Finch — Coppergrass Steppe;
+- Crownfields Hedgerow Finch — Crownfields;
+- Elderwood Hazel Finch — East Elderwood;
+- Slatewater Thistle Finch — Slatewater Foothills.
 
-Non-node description now includes floating pondweed, low sedges, water-mint-like herbs, reed litter, and algae on basking stones.
+The family is deliberately scoped to small seed-eating passerines rather than acting as a generic “songbird” bucket.
 
-### Starfen Lower Delta
+## Behavior and recovery boundary
 
-New distribution:
-- Delta Saltflat Mud Crab.
+All seven new species:
+- are passive/wary;
+- have no encounter template;
+- have no authored body-resource, loot, hunting, or trapping source;
+- were not made hostile merely to manufacture drops.
 
-No new lower-delta crab trap was created. Brackish Coast remains the authored Saltflat Mud Crab recovery source.
+Ordinary seedgrass, hedges, thistles, coppice vegetation, and burrow evidence remain descriptive habitat rather than new inventory nodes.
 
-Non-node description now includes freshwater reed remnants, sedges, mud-bank herbs, floating algae, and salt-tolerant transition grasses.
+Existing predator-family link metadata was deliberately left unchanged. The new prey families improve ecological presence, but family-link normalization has no current player-facing mechanical requirement and would rewrite older pack-owned predator records without enough benefit.
 
-## Distribution vs recovery rule
+## Location-diversity sequence status
 
-Data 61 deliberately reinforces that **ecological presence does not automatically create a player recovery source**.
+The ordered five-part repair sequence is **complete**:
 
-A species may occur in more than one compatible place while only one or a subset of those places has authored fishing, trapping, hunting, or gathering authority.
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
+3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
+4. Wetland / Island Distribution Repair — **COMPLETE / Data 61**;
+5. Cross-Biome Family Breadth — **COMPLETE / Data 62**.
 
-Do not add duplicate recovery nodes merely to mirror population spread.
+Do **not** treat optional audit ideas as unfinished Data 62 work.
 
-## Data 61 census
+Post-sequence ecology opportunities requiring a fresh explicit selection:
+- broader Crownfields ordinary-wildlife spread using existing families;
+- Deepvein Mine / Sunken Archive secondary ecology/substrate cleanup;
+- shorebird/wader breadth if future coastal depth warrants it;
+- snake breadth only when tied to a concrete ecological/player/economic loop.
+
+The lower-river fish gap is already resolved through River Dace from Data 58.
+
+## Data 62 census
 
 ```text
 places/localities                        55
 named NPCs                               47
 shop/service sites                       37
-creature definitions                    116
+creature definitions                    123
 resource sources                        143
 canonical items                         408
 recipes/processes                       234
@@ -121,16 +138,15 @@ routes                                   25
 spell schools                             4
 capabilities/training definitions        44
 NPC schedules                            27
-regional/shared content packs            38
-pack-owned records                     1304
-Pack-v2 population records              129
+regional/shared content packs            39
+pack-owned records                     1320
 runtime seed NPCs                        46
 runtime seed enemies                     17
 raw resources with production demand 145/154
 luxury raws with production demand      14/14
 ```
 
-Definition/resource breadth is unchanged from Data 60; only population distribution and Pack-v2 ownership breadth increased.
+Creature breadth now clears the playable-alpha planning lower bound of 120.
 
 Mechanics-scale gate remains **NOT READY**:
 - companions 1/4;
@@ -144,52 +160,24 @@ Do not close those gaps with disconnected filler.
 
 Game State remains **14**.
 
-Data 61 adds only static authored population records and descriptive place text. It adds no serialized wetland state, island state, route state, recovery-right state, or player/world state family.
+Data 62 adds static families, species, populations, and descriptive habitat text only. It adds no durable serialized ecology, route, recovery, or player/world-state family.
 
-## Ecology repair sequence
+## Fresh decision boundary
 
-Completed:
-1. **Legacy Elderwood Ecology Repair — COMPLETE / Data 58**;
-2. **Dry Upland & Saltpan Ecology Repair — COMPLETE / Data 59**;
-3. **Headwater / Highland Transition Spread — COMPLETE / Data 60**;
-4. **Wetland / Island Distribution Repair — COMPLETE / Data 61**.
+The ecology repair sequence no longer owns the automatic next action.
 
-Next ranked, **not auto-started**:
-5. **Cross-biome Family Breadth**.
+Available independent queues:
+- **Packet E — Gate A integration/census audit**;
+- **Waymeet Inner Marches / outer crossroads approach**;
+- **Occupational Tool Conversion**;
+- optional post-sequence ecology work listed above.
 
-The audit's strongest remaining broad-family candidates are:
-- small burrowing rodent / vole / ground-squirrel family;
-- scoped passerine / small seed-eating songbird family;
-- optional shorebird/wader or snake only where a player/economic/ecological loop justifies them.
-
-The lower-river fish gap was already resolved in Data 58 through River Dace.
-
-## Final synchronization validation note
-
-The first fully synchronized Data 61 head, `e7c289c1e664091d08f4e5974a28638a0d9d2772`, passed Repository Audit but exposed two stale `describeVersion()` regression assertions in `tests/pipeline.test.js`:
-- Product regex still expected `0.9.100.21`;
-- codename regex still expected **Headwater / Highland Transition Repair**.
-
-Assertion-only repair:
-- `15a50ddee19010a63f786173f9602e41ff55b6cf`;
-- no runtime, ecology, ownership, census, persistence, or authored-content change.
-
-The exact head after this handoff is the final Data 61 continuity candidate and must have hosted Check + Pages green before closure.
-
-## Other queues remain separate
-
-Formal roadmap:
-- Packet E — Gate A integration/census audit.
-
-World edge:
+World-edge ranking remains:
 1. Waymeet Inner Marches / outer crossroads approach;
 2. Coppergrass extensions;
 3. Drowned Vaults.
 
-Material culture:
-- Occupational Tool Conversion.
-
-None is auto-started by completion of Data 61.
+None is auto-started.
 
 ## Restart order
 
@@ -197,11 +185,11 @@ None is auto-started by completion of Data 61.
 2. this file
 3. `PROJECT_PROFILE.yaml`
 4. `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
-5. `docs/WETLAND_ISLAND_DISTRIBUTION_REPAIR_PLAN.md`
+5. `docs/CROSS_BIOME_FAMILY_BREADTH_PLAN.md`
 6. `docs/EXECUTION_PIPELINE.md`
 7. `docs/ROADMAP.md`
 8. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-9. relevant ecology/Pack-v2/runtime/tests for the explicitly selected next unit
+9. relevant files for the explicitly selected next queue
 
 ## Final validation requirement
 
@@ -209,4 +197,4 @@ The exact head after this handoff must have:
 - hosted Check green;
 - Pages green.
 
-If final synchronization validation exposes only stale version/authority assertions, repair those narrowly, rewrite this handoff last, and rerun the exact head before closure.
+If final synchronization validation exposes only stale authority/version assertions, repair them narrowly, rewrite this handoff last again, and rerun the exact head before closure.
