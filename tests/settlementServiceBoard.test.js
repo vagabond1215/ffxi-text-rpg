@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
+import { learnLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
@@ -33,6 +33,11 @@ test('one settlement service board derives existing workshop and merchant breadt
         let board = createSettlementServiceBoard(state);
 
         assert.equal(board.available, true, `${proof.nationId} should be a settlement locality`);
+        assert.deepEqual(board.workshops, [], 'fresh arrival must not enumerate unknown workshops');
+        assert.deepEqual(board.trade.localShops, [], 'fresh arrival must not enumerate unknown merchants');
+
+        learnLocality(state);
+        board = createSettlementServiceBoard(state);
         const workshop = board.workshops.find((entry) => entry.poiId === proof.workshopPoiId);
         assert.ok(workshop, `${proof.nationId} should derive its authored workshop POI`);
         assert.ok(workshop.stationTags.includes(proof.stationTag));
