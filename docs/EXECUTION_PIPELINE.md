@@ -5,18 +5,18 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.16
+Product:       0.9.100.17
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          55
+Data:          56
 Benchmark:     3
-Codename:      Emberwash Badlands & Cinderwell Station
+Codename:      Lower Deepvein & Lantern Sump Station
 ```
 
 ## Current bounded-unit state
 
-**Emberwash Badlands & Cinderwell Station** is the latest runtime/data bounded unit on `main`. It establishes the northern arid frontier beyond South Redstone, keeps ordinary wagons at Cinderwell, and stops the runtime route graph before the farther true desert, southern strait, and Veyra sphere.
+**Lower Deepvein & Lantern Sump Station** is the latest runtime/data bounded unit on `main`. It extends Deepvein Mine into the first controlled Deep World frontier, establishes Lantern Sump as a safe operating node, and stops the runtime route graph at Echoing Shelf before farther deep roads or the Korren sphere.
 
 Latest bounded implementation:
 - population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
@@ -38,31 +38,34 @@ Latest bounded implementation:
 - Check #1547 / run `33279116948`: full gate green, 786/786 tests, Data 55 implementation census confirmed.
 - promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad`;
 - Check #1559 / run `33279480611`: full gate green, 786/786 tests, Data 55 census confirmed;
-- Pages #1692 green.
+- Pages #1692 green;
+- Lower Deepvein implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e`;
+- Check #1577 / run `33288699319`: full gate green, 791/791 tests, Data 56 implementation census confirmed;
+- Pages #1709 green.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
-## Data 55 metrics
+## Data 56 metrics
 
 ```text
-places/localities                       49
-named NPCs                              41
-shop/service sites                      33
-creatures                               88
-resource sources                       110
-canonical items                        335
-recipes/processes                      194
+places/localities                       52
+named NPCs                              44
+shop/service sites                      35
+creatures                               96
+resource sources                       117
+canonical items                        352
+recipes/processes                      204
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
 
-raw resources with production demand  110 / 121
+raw resources with production demand  117 / 128
 luxury raws with production demand      14 / 14
-routes                                  21
-NPC schedules                           23
-regional/shared packs                   29
-pack-owned records                    1057
+routes                                  23
+NPC schedules                           25
+regional/shared packs                   31
+pack-owned records                    1121
 ```
 
 ## Regional resilience rule
@@ -105,7 +108,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 41/50;
+- named NPCs: 44/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -124,7 +127,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station are complete through Data 55. Next ranked world-edge candidate: **Lower Deepvein**. It is queued, not auto-authorized.
+Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, and Lower Deepvein & Lantern Sump Station are complete through Data 56. Next ranked world-edge candidate: **Waymeet Marches / central plateau approaches**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -138,8 +141,8 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Lower Deepvein is now the next ranked Deep World approach candidate.
-- Waymeet Marches / central plateau approaches follow after that, then Coppergrass extensions.
+- Waymeet Marches / central plateau approaches are now the next ranked surface-corridor candidate.
+- Coppergrass extensions follow, then Drowned Vaults.
 
 Strong system/content candidates:
 - companion breadth;

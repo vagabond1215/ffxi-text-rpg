@@ -7,109 +7,93 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.16
+Product:       0.9.100.17
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          55
+Data:          56
 Benchmark:     3
-Codename:      Emberwash Badlands & Cinderwell Station
+Codename:      Lower Deepvein & Lantern Sump Station
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Emberwash Badlands & Cinderwell Station is complete and promoted on `main` as Data 55.**
+**Lower Deepvein & Lantern Sump Station is implemented on `main` as Data 56; final promotion synchronization is in progress.**
 
 Implementation freeze:
-- `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
-- Check **#1547 / run `33279116948`**;
-- Repository Audit, **786/786 tests**, Census, Benchmark 3, Benchmark Sample green.
-
-Promoted Data 55 checkpoint:
-- `6f850b4a63a152f17a55dec23224dff42c512cad`;
-- Check **#1559 / run `33279480611`**;
-- same full gate green;
-- Pages #1692 green.
+- `b0c0048903ee6952f3c4bc337732f894340f540e`;
+- Check **#1577 / run `33288699319`**;
+- Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
+- Pages #1709 green.
 
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
 
-## Data 55 — Emberwash Badlands & Cinderwell Station
+## Data 56 — Lower Deepvein & Lantern Sump Station
 
 Plan:
-- `docs/ZONE_PLAN_EMBERWASH_BADLANDS.md`.
+- `docs/ZONE_PLAN_LOWER_DEEPVEIN.md`.
 
 Permanent profile:
-- `docs/ZONE_PROFILE_EMBERWASH_BADLANDS.md`.
+- `docs/ZONE_PROFILE_LOWER_DEEPVEIN.md`.
 
 Geography:
-- Emberwash North Wash — danger 2 dry-upland/badland transition wilderness;
-- Cinderwell Station — danger 0 fortified caravan well and route station;
-- Emberwash Saltpan Verge — danger 3 salt-basin/desert-scrub edge;
-- Cinderwell Caravan Road — South Redstone -> North Wash -> Cinderwell, walk/mount/wagon/caravan;
-- Saltpan Foretrail — Cinderwell -> Saltpan Verge, walk/mount/caravan;
-- Cinderwell is the wagon limit;
-- no farther-desert, southern-strait, or Veyra onward route yet.
+- Deepvein Lower Decline — danger 3 mine-to-natural-cave transition;
+- Lantern Sump Station — danger 0 staffed Brasshaven delver station;
+- Lower Deepvein Echoing Shelf — danger 4 natural cavern shelf;
+- Lower Deepvein Haulage Decline — Deepvein Mine -> Lower Decline -> Lantern Sump, walk only;
+- Echoing Shelf Traverse — Lantern Sump -> Echoing Shelf, walk only;
+- no ordinary route continues toward farther deep roads, northern gate country, or Korren settlements.
 
 Ecology/resources:
 - 8 species/populations;
-- 4 reused arid/highland families + 4 new Emberwash families;
-- 7 exact-provenance forage/gather/mine sources/resources;
-- ordinary wildlife remains passive, wary, or naturally territorial rather than being forced hostile for loot.
+- 5 reused cave-capable families + 3 new Lower Deepvein families;
+- 7 exact-provenance forage/fish/trap/gather/mine sources/resources;
+- ordinary wildlife remains passive, wary, or naturally territorial rather than being forced hostile for loot;
+- existing Deepvein lead and silver sources are not duplicated.
 
 Production:
 - 10 transformations / 10 outputs;
-- ground emberpod meal and baked trail cakes;
-- dried cinder pear and desert sage;
-- cinderbrush cord;
-- refined caravan salt;
-- red ochre pigment;
-- gypsum plaster;
-- dustwrap repair kit using canonical Crownfields linen;
-- cistern patch compound;
+- cooked lampcaps, cleaned/cooked threadfin, boiled sump crab;
+- glowmoss wick cord, refined cave salt, polished quartz, fired lamp cup;
+- reflector lamp kit and gallery seep packing;
 - every new raw has production demand;
-- raw production utilization **110/121**;
+- raw production utilization **117/128**;
 - luxury utilization **14/14**.
 
-Food:
-- raw Emberpod requires milling/cooking before ordinary eating;
-- ripe Cinder Pear is direct-ready after peeling and despining;
-- trail cakes and dried pear are direct-ready;
-- language remains practical late-medieval/fantasy knowledge.
-
 People:
-- Tarin Hove — Cinderwell Field Factor;
-- Merek Sorn — Emberwash Caravan Warden;
-- Pella Aven — Cinderwell Station Keeper;
+- Ressa Kell — Lower Deepvein Factor;
+- Borin Vale — Deepvein Survey Warden;
+- Hessa Rusk — Lantern Sump Station Keeper;
 - 2 schedules;
-- exchange, warden desk, cistern workyard, shade hearth/bunks.
+- exchange, survey desk, lampworks, hearth/cistern/bunks.
 
 Persistence:
 - Game State remains 14;
-- no durable survival meter, weather state, Veyra-border state, or desert-access state family.
+- no oxygen/survival meter, ventilation state, repaired-lift state, mining-certification state, Korren-border state, or farther-deep-road state family.
 
-## Data 55 census
+## Data 56 census
 
 ```text
-places/localities                        49
-named NPCs                               41
-shop/service sites                       33
-creature definitions                     88
-resource sources                        110
-canonical items                         335
-recipes/processes                       194
+places/localities                        52
+named NPCs                               44
+shop/service sites                       35
+creature definitions                     96
+resource sources                        117
+canonical items                         352
+recipes/processes                       204
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
 transport services                        7
-routes                                   21
+routes                                   23
 spell schools                             4
 capabilities/training definitions        44
-NPC schedules                            23
-regional/shared content packs            29
-pack-owned records                     1057
-runtime seed NPCs                        40
+NPC schedules                            25
+regional/shared content packs            31
+pack-owned records                     1121
+runtime seed NPCs                        43
 runtime seed enemies                     17
 ```
 
@@ -117,7 +101,7 @@ Mechanics-scale gate remains **NOT READY**:
 - companions 1/4;
 - abilities 41/100;
 - quests 18/30;
-- named NPCs 41/50.
+- named NPCs 44/50.
 
 ## World geography state
 
@@ -127,15 +111,15 @@ Completed post-lock world-edge units:
 1. Headwater Vale — Data 52;
 2. Starfen Delta / Brackish Coast — Data 53;
 3. Gloamwood & Oldbough Refuge — Data 54;
-4. Emberwash Badlands & Cinderwell Station — Data 55.
+4. Emberwash Badlands & Cinderwell Station — Data 55;
+5. Lower Deepvein & Lantern Sump Station — Data 56.
 
 Next ranked geography:
-1. **Lower Deepvein**;
-2. Waymeet Marches / central plateau approaches;
-3. Coppergrass extensions;
-4. Drowned Vaults.
+1. **Waymeet Marches / central plateau approaches**;
+2. Coppergrass extensions;
+3. Drowned Vaults.
 
-No later unit is auto-authorized by ordering alone.
+The Central Continent surface-completion estimate remains roughly **55–65%** because Lower Deepvein is a vertical/subterranean pass and is deliberately excluded from the surface-region percentage.
 
 ## Other queued choices
 
@@ -157,8 +141,8 @@ High-value scale gaps:
 3. `PROJECT_PROFILE.yaml`
 4. `docs/EXECUTION_PIPELINE.md`
 5. `docs/WORLD_MACRO_TOPOLOGY.md`
-6. `docs/ZONE_PROFILE_EMBERWASH_BADLANDS.md`
-7. `docs/ZONE_PLAN_EMBERWASH_BADLANDS.md`
+6. `docs/ZONE_PROFILE_LOWER_DEEPVEIN.md`
+7. `docs/ZONE_PLAN_LOWER_DEEPVEIN.md`
 8. `docs/ITEM_CONSUMPTION_SAFETY.md`
 9. `docs/ROADMAP.md`
 10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`

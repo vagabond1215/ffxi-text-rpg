@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.16
+Product:       0.9.100.17
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          55
+Data:          56
 Benchmark:     3
-Codename:      Emberwash Badlands & Cinderwell Station
+Codename:      Lower Deepvein & Lantern Sump Station
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -29,7 +29,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 54 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Data | 56 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -775,6 +775,38 @@ Implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4` passed Check #1
 
 Promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad` passed Check #1559 / run `33279480611` with the same full gate. Pages #1692 also passed.
 
+### `0.9.100.17` — Lower Deepvein & Lantern Sump Station
+
+This revision establishes the first controlled Deep World frontier below the existing Deepvein Mine while deliberately stopping before farther deep roads, northern gate country, or the Korren sphere.
+
+```text
+Product       0.9.100.16 -> 0.9.100.17
+Package       0.9.100    -> 0.9.100
+Data          55         -> 56
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+#### Why Data 56
+
+Stable authored content expands with:
+
+- Deepvein Lower Decline, Lantern Sump Station, and Lower Deepvein Echoing Shelf;
+- `map-lower-deepvein`;
+- two walk-only subterranean routes totaling 8,000 yalms and explicitly stopping at Echoing Shelf;
+- eight cave species/populations, reusing five established families and adding three Lower Deepvein families;
+- seven exact-provenance forage/fish/trap/gather/mine sources and seven raw resources;
+- ten processing/crafting transformations producing ten outputs;
+- three persistent Lantern Sump staff and two schedules;
+- `pack-lower-deepvein-ecology` and `pack-lower-deepvein-lantern-sump`;
+- explicit practical preparation metadata for Lampcap, Threadfin Cavefish, and Blind Sump Crab.
+
+No farther deep-road or Korren route is authored. No generalized oxygen/survival meter, ventilation state, repaired-lift state, mining-certification state, or Korren-border authority is introduced.
+
+Implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e` passed Check #1577 / run `33288699319` with Repository Audit, **791/791 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #1709 also passed.
+
+
 Validated Data 55 implementation census:
 
 ```text
@@ -835,6 +867,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.14          no Game State change; Data 52 -> 53
 0.9.100.15          no Game State change; Data 53 -> 54
 0.9.100.16          no Game State change; Data 54 -> 55
+0.9.100.17          no Game State change; Data 55 -> 56
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -860,13 +893,13 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.14.0
+regionalContentPacks   0.15.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.7.0
+npcSchedules           0.8.0
 commitments            0.7.0
-productionCatalog      0.12.0
-productionItems        0.13.0
+productionCatalog      0.13.0
+productionItems        0.14.0
 ecologyRegistry        0.9.0
 resourceItemRegistry   0.10.0
 routeCatalog           0.7.0

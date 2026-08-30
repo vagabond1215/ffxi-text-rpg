@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.16
+Product:       0.9.100.17
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          55
+Data:          56
 Benchmark:     3
-Codename:      Emberwash Badlands & Cinderwell Station
+Codename:      Lower Deepvein & Lantern Sump Station
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -48,15 +48,15 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Emberwash implementation freeze Check #1547 passed 786/786 tests after the earlier Data 54 Gloamwood promotion. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — Data 55
+## Content infrastructure and regional packs — Data 56
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | One resolver bridge from pack ownership to existing canonical catalogs. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Twenty-seven current packs; 992 current ownership records. |
+| Regional/shared pack ownership | integrated | Thirty-one current packs; 1,121 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -67,6 +67,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Starfen Delta / Brackish Coast | playable | Great Mere outflow, lower delta levees, Tideglass pilot port, packet-boat service, tidal coast ecology, seafood/salt/shell/reed production, and explicit non-walkable Eastern Sea boundary. |
 | Gloamwood & Oldbough Refuge | playable | Old-growth barrier beyond West Elderwood, wagon-limited refuge, foot/mount deepwood trail, eight-species ecology, seven exact-provenance raws, and ten connected food/fieldcraft/timber/mineral outputs with no onward Lethari route. |
 | Emberwash Badlands & Cinderwell Station | playable | Northern arid frontier beyond South Redstone, wagon-limited caravan well, preparation-sensitive saltpan foretrail, eight-species ecology, seven exact-provenance raws, and ten connected food/cordage/salt/pigment/plaster/repair outputs with no farther-desert, strait, or Veyra route. |
+| Lower Deepvein & Lantern Sump Station | playable | First controlled Deep World frontier below Deepvein Mine with walk-only tunnel/cavern routes, safe delver station, eight-species cave ecology, seven exact-provenance raws, and ten connected food/lampwork/survey/repair outputs with no farther deep-road or Korren route. |
 | Scale-family validation | scaled | Abilities/capabilities/schedules/companions receive structural and reference checks. |
 | Generated scale fixture | scaled | 1,401 ownership records validate across one place + 200 each of seven major families. |
 | Legacy-leak boundary | integrated | Canonical packs reject legacy IDs absent explicit adapters. |
@@ -103,7 +104,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 49 current places/localities; reciprocal map/place and route-stop integrity is validated. |
+| Places/routes/maps | playable | 52 current places/localities; reciprocal map/place and route-stop integrity is validated. |
 | Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
@@ -177,16 +178,16 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 55 Emberwash checkpoint:
+Gameplay breadth at the Data 56 Lower Deepvein checkpoint:
 
 ```text
-places/localities       49 / mechanics 10
-named NPCs              41 / 50
-shop/service sites      33 / 20
-creatures               88 / 40
-resource sources       110 / 40
-canonical items        335 / 200
-recipes/processes      194 / 75
+places/localities       52 / mechanics 10
+named NPCs              44 / 50
+shop/service sites      35 / 20
+creatures               96 / 40
+resource sources       117 / 40
+canonical items        352 / 200
+recipes/processes      204 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -212,4 +213,4 @@ Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mec
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Emberwash Badlands & Cinderwell Station is the current Data 55 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Lower Deepvein** is the next ranked world-edge candidate, followed by Waymeet Marches / central plateau approaches. None is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Lower Deepvein & Lantern Sump Station is the current Data 56 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Waymeet Marches / central plateau approaches** is the next ranked world-edge candidate, followed by Coppergrass extensions and Drowned Vaults. None is auto-started.

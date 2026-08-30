@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.16
+Product:       0.9.100.17
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          55
+Data:          56
 Benchmark:     3
-Codename:      Emberwash Badlands & Cinderwell Station
+Codename:      Lower Deepvein & Lantern Sump Station
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -36,52 +36,48 @@ Headwater Vale & Waymeet Approach             COMPLETE / MAIN
 Starfen Delta & Brackish Coast                 COMPLETE / MAIN
 Gloamwood & Oldbough Refuge                    COMPLETE / MAIN
 Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
+Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Emberwash Badlands & Cinderwell Station
+### Lower Deepvein & Lantern Sump Station
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 55 / Product 0.9.100.16.**
+**Status: IMPLEMENTED ON `main`; Data 56 / Product 0.9.100.17 promotion synchronization in progress.**
 
 Purpose:
-- establish the northern arid frontier beyond South Redstone without collapsing directly into the Veyra sphere;
-- create a useful fortified caravan well rather than a city or southern gate capital;
-- make Cinderwell the wagon turnaround;
-- continue only by a preparation-sensitive walk/mount/caravan foretrail;
-- stop before the farther true desert, southern strait, and Veyra lands;
-- connect seven arid-frontier raws to ten practical production outputs.
+- extend Deepvein Mine into the first controlled Deep World frontier without collapsing directly into the Korren sphere;
+- create Lantern Sump as a useful subterranean delver station rather than a gate city;
+- use walk-only tunnel/cavern routes;
+- stop at Echoing Shelf before farther deep roads or northern gate country;
+- connect seven subterranean raws to ten practical food, lampwork, survey, and repair outputs.
 
-Data 55 authored Emberwash:
+Data 56 authored Lower Deepvein:
 - 3 places and 2 routes;
 - 3 persistent NPCs and 2 schedules;
 - 8 species/populations and 7 exact-provenance sources/raws;
 - 10 transformations producing 10 outputs;
 - 2 Pack-v2 ownership graphs;
-- practical Emberpod/Cinder Pear safety with fantasy-era presentation.
+- practical Lampcap/Threadfin/Sump Crab safety with fantasy-era presentation.
 
 Implementation freeze:
-- `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
-- Check #1547 / run `33279116948`: Repository Audit, **786/786 tests**, Census, Benchmark 3, Benchmark Sample green.
+- `b0c0048903ee6952f3c4bc337732f894340f540e`;
+- Check #1577 / run `33288699319`: Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
+- Pages #1709 green.
 
-Promoted Data 55:
-- `6f850b4a63a152f17a55dec23224dff42c512cad`;
-- Check #1559 / run `33279480611`: same full gate green;
-- Pages #1692 green.
-
-Game State remains 14; no durable survival, weather, border, desert-access, or wildlife-hunting-state family was introduced.
+Game State remains 14; no durable oxygen, ventilation, lift, certification, Korren-border, or farther-deep-road state family was introduced.
 
 ## Current content census
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 49 | 10 | reached |
-| Named NPCs | 41 | 50 | 9 short |
-| Shop/service sites | 33 | 20 | reached |
-| Creature definitions | 88 | 40 | reached |
-| Resource sources | 110 | 40 | reached |
-| Canonical items | 335 | 200 | reached |
-| Recipes/processes | 194 | 75 | reached |
+| Places/localities | 52 | 10 | reached |
+| Named NPCs | 44 | 50 | 6 short |
+| Shop/service sites | 35 | 20 | reached |
+| Creature definitions | 96 | 40 | reached |
+| Resource sources | 117 | 40 | reached |
+| Canonical items | 352 | 200 | reached |
+| Recipes/processes | 204 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -90,13 +86,13 @@ Game State remains 14; no durable survival, weather, border, desert-access, or w
 Supplemental:
 
 ```text
-routes                        21
+routes                        23
 spell schools                  4
 capabilities                  44
-NPC schedules                 23
-regional/shared packs         29
-pack-owned records          1057
-runtime seed NPCs             40
+NPC schedules                 25
+regional/shared packs         31
+pack-owned records          1121
+runtime seed NPCs             43
 runtime seed enemies          17
 ```
 
@@ -108,7 +104,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 55.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 56.
 
 ## Formal Phase 0.9 sequence
 
@@ -155,18 +151,18 @@ Post-lock world-edge status:
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
 - **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55.**
+- **Lower Deepvein & Lantern Sump Station — COMPLETE / Data 56.**
 
 Remaining ranking:
-1. Lower Deepvein;
-2. Waymeet Marches / central plateau approaches;
-3. Coppergrass extensions;
-4. Drowned Vaults.
+1. Waymeet Marches / central plateau approaches;
+2. Coppergrass extensions;
+3. Drowned Vaults.
 
 The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
 ### Central Continent completion budget
 
-Planning intent at Data 55:
+Planning intent established at Data 55 and retained through Data 56:
 
 - current surface-region maturity is approximately **55–65%** at the present authored granularity;
 - budget approximately **10–14 additional substantial surface-region passes** for a broadly complete Central Continent;
