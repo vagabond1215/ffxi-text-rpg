@@ -34,6 +34,11 @@ Promoted Data 56 checkpoint:
 - Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
 - Pages **#1712 / run `33288912192`** green.
 
+Continuity synchronization:
+- `PROJECT_PROFILE.yaml`, README, roadmap, execution pipeline, system catalog, version/release roadmap, macro topology, civilization geography, temporary edge notes, and the permanent Lower Deepvein profile are synchronized to Data 56;
+- Lower Deepvein is closed as the fifth post-lock world-edge unit;
+- Waymeet Marches / central plateau approaches is the next ranked world-edge candidate and is **not** auto-started.
+
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
 
 ## Data 56 — Lower Deepvein & Lantern Sump Station
