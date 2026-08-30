@@ -5,6 +5,7 @@ import {
     listTransportServices,
 } from '../data/routeCatalog.js';
 import { getPlace } from '../data/places.js';
+import { getKnownPoisForPlace } from './localKnowledgeEngine.js';
 import { getCarriedCargoUnits } from './carriedLoadEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
@@ -13,6 +14,11 @@ export const TRANSPORT_SERVICE_BOARD_VERSION = 2;
 
 export function createTransportServiceBoard(state, options = {}) {
     const fromPlaceId = options.placeId ?? state?.currentPlaceId ?? null;
+    if (state?.localKnowledge && options.ignoreLocalKnowledge !== true) {
+        const hasKnownTravelPoint = getKnownPoisForPlace(state, fromPlaceId)
+            .some((poi) => poi.actions?.includes('travel'));
+        if (!hasKnownTravelPoint) return emptyBoard(state, fromPlaceId);
+    }
     const nowWorldSeconds = ensureWorldTimeState(state).totalSeconds;
     const cargoUnits = getCarriedCargoUnits(state);
     const entries = [];
