@@ -20,6 +20,7 @@ import {
     learnPoiName,
     recordPoiExposure,
     recordPoiInteraction,
+    setCurrentLocalAnchor,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { recruitCompanion } from './partyEngine.js';
@@ -191,6 +192,7 @@ export function fastTravelToPoi(state, query) {
     const result = setPositionAndDiscover(state, currentPlaceId, poi.coordinate, { important: [`Returned to familiar POI ${poi.id}`] });
     if (!result.ok) return result.reason;
     state.activePoiId = poi.id;
+    setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: currentPlaceId });
     recordPoiExposure(state, poi, { points: 1 });
     return [`Went directly to ${getPlayerFacingPoiName(state, poi)}.`, describeCurrentPois(state)].join('\n\n');
 }
