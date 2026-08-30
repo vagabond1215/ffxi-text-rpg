@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
+import { learnLocality, moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getNation } from '../js/text/data/nations.js';
 import { getPlace } from '../js/text/data/places.js';
@@ -176,15 +176,20 @@ test('Journal renders actionable opportunity cards and advances from collection 
     assert.match(html, /Equip Field Knife/);
 });
 
-test('Craft view exposes settlement work, trade, and recovery as player-facing services', () => {
+test('Craft view keeps unknown settlement services hidden until the locality is learned', () => {
     const state = createNewGameState();
     const uiState = createUiState({ screen: 'game', activeView: 'craft' });
-    const html = renderGameScreen(createGameViewModel(state, uiState), uiState);
+    let html = renderGameScreen(createGameViewModel(state, uiState), uiState);
 
     assert.match(html, /Work, Trade &amp; Recover/i);
     assert.match(html, /Workshop work/i);
     assert.match(html, /Trade/i);
     assert.match(html, /Recovery/i);
+    assert.doesNotMatch(html, /data-service-action=/);
+    assert.match(html, /No merchant is available in this locality/i);
+
+    learnLocality(state);
+    html = renderGameScreen(createGameViewModel(state, uiState), uiState);
     assert.match(html, /data-service-action=/);
     assert.doesNotMatch(html, /data-command="production"/i);
     assert.doesNotMatch(html, /canonical timed work|not implemented yet/i);
