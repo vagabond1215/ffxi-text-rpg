@@ -492,6 +492,29 @@ The assignment creates no seventh direct timed-task owner, helper/offline clock,
 
 No social clock, household relationship engine, duplicate quest state, or reputation meter was created.
 
+## Planned player locality-knowledge authority
+
+`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` defines the pre-UI information boundary.
+
+Canonical world truth and player knowledge must remain separate:
+- canonical catalogs own actual places, routes, POIs, NPCs, schedules, shops, quests, and services;
+- player state will own only character-specific learned facts such as sighting, name/identity knowledge, familiarity, known connectors, and temporary directions.
+
+The current `discoveredPois` boolean plus one-interaction same-place fast travel is a transitional behavior and is **not** the intended final player-facing contract.
+
+Likewise, canonical NPC names in runtime projections may remain available to systems internally, but presentation must eventually pass through a player-knowledge projection before names are shown.
+
+The planned locality-knowledge state is expected to be durable because familiarity and temporary guidance affect future simulation after save/load. When implemented, reassess Game State instead of hiding the state change in UI code.
+
+Do not create:
+- a second route graph;
+- a city-only simulation clock;
+- duplicated POI/NPC definitions in player state;
+- serialized prose/button lists;
+- wall-clock availability.
+
+Town/locality movement may use abstract graph nodes and transition anchors while wilderness/dungeon places continue using coordinates/topologies where those are mechanically useful.
+
 # Persistence authority — Game State 14
 
 Raw current-schema validation runs before revival/normalization.
