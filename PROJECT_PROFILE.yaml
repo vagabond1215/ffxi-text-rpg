@@ -43,7 +43,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: wetland-island-distribution-repair-planned
+  current_normal_work: data-61-wetland-island-distribution-repair-promoted-continuity-sync
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -111,6 +111,11 @@ git:
   latest_headwater_highland_transition_implementation_check_sha: 13ba1f7b03ace684778e5c388450af8efc9183b8
   latest_headwater_highland_transition_implementation_check_result: success-812-of-812-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_headwater_highland_transition_promoted_runtime_sha: 9c3c4d8a0b9e910c3312653d8836f3bbe03309bb
+  latest_wetland_island_distribution_implementation_check: 33325861973
+  latest_wetland_island_distribution_implementation_check_number: 1626
+  latest_wetland_island_distribution_implementation_check_sha: 48948292ea26a38d91d306d12998973c1ae35677
+  latest_wetland_island_distribution_implementation_check_result: success-817-of-817-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_wetland_island_distribution_promoted_runtime_sha: d861b1a6cdeca5a470fb13fa429a7329353b6b02
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -119,10 +124,10 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: headwater-highland-transition-repair
-  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-60
-  latest_data_bounded_unit: headwater-highland-transition-repair
-  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-60
+  latest_bounded_unit: wetland-island-distribution-repair
+  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-61
+  latest_data_bounded_unit: wetland-island-distribution-repair
+  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-61
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: waymeet-inner-marches-outer-crossroads-approach
@@ -132,8 +137,8 @@ progression:
   southern_world_edge_candidate: emberwash-badlands-complete-data-55
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
-  next_ecology_repair_candidate: wetland-island-distribution-repair
-  next_ecology_repair_candidate_status: authorized-by-user-continue-active
+  next_ecology_repair_candidate: cross-biome-family-breadth
+  next_ecology_repair_candidate_status: ranked-after-wetland-island-not-auto-authorized
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   central_continent_surface_maturity_estimate: 60-to-70-percent
@@ -168,14 +173,15 @@ validation:
   legacy_elderwood_ecology_repair_guard: tests/playerLegacyElderwoodEcologyRepairFlow.test.js
   dry_upland_saltpan_ecology_repair_guard: tests/playerDryUplandSaltpanEcologyRepairFlow.test.js
   headwater_highland_transition_repair_guard: tests/playerHeadwaterHighlandTransitionRepairFlow.test.js
+  wetland_island_distribution_repair_guard: tests/playerWetlandIslandDistributionRepairFlow.test.js
 quality:
-  current_product_version: 0.9.100.21
+  current_product_version: 0.9.100.22
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 60
+  current_data_version: 61
   current_benchmark_version: 3
-  current_codename: Headwater / Highland Transition Repair
+  current_codename: Wetland / Island Distribution Repair
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -295,6 +301,23 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_61:
+    wetland_island_new_families_added: 0
+    wetland_island_new_species_added: 0
+    wetland_island_population_placements_added: 8
+    wetland_island_sources_added: 0
+    wetland_island_raw_resources_added: 0
+    wetland_island_transformations_added: 0
+    wetland_island_production_outputs_added: 0
+    east_starfen_wader_fish_crab_dragonfly_distribution_repaired: true
+    reedcrown_perch_dragonfly_waterfowl_overlap_repaired: true
+    reedcrown_grebe_same_place_perch_prey_overlap_repaired: true
+    lower_delta_mud_crab_distribution_repaired: true
+    ecological_presence_kept_distinct_from_player_recovery_sources: true
+    non_harvested_wetland_island_delta_flora_expanded_descriptively: true
+    canonical_raw_production_utilization: 145-of-154
+    luxury_raw_production_utilization: 14-of-14
+    persistence_family_added: false
   data_60:
     headwater_highland_new_species_added: 5
     headwater_highland_population_placements_added: 10
@@ -402,8 +425,8 @@ content_scale:
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 27
-    regional_shared_packs: 37
-    pack_owned_records: 1296
+    regional_shared_packs: 38
+    pack_owned_records: 1304
     runtime_seed_npcs: 46
     runtime_seed_enemies: 17
   mechanics_floors_reached:

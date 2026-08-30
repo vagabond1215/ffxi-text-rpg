@@ -1,8 +1,10 @@
 # Wetland / Island Distribution Repair Plan
 
-Status: **BOUNDED IMPLEMENTATION PLAN — AUTHORIZED.**
+Status: **COMPLETE / PROMOTED DATA 61.**
 
 Baseline: Product **0.9.100.21**, Data **60**, Game State **14**, Package **0.9.100**.
+
+Promoted result: Product **0.9.100.22**, Data **61**, Game State **14**, Package **0.9.100**.
 
 Authority:
 - `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
@@ -181,3 +183,47 @@ npm run benchmark:sample
 ```
 
 Deterministic breadth guards move only from measured hosted results.
+
+
+## 11. Implementation result
+
+Implemented authored delta:
+- new ecology families: **0**;
+- new species: **0**;
+- new population placements: **8**;
+- new gathering sources/raws: **0**;
+- new transformations/outputs: **0**;
+- new Pack-v2 repair graphs: **1**.
+
+The repair uses existing species exactly as planned:
+- East Starfen: Mirecrest Heron, Reed Eel, Reed Crab, Glasswing Dragonfly;
+- Reedcrown Isle: Silver Perch, Glasswing Dragonfly, Fen Duck;
+- Starfen Lower Delta: Saltflat Mud Crab.
+
+Recovery authority remains intentionally unchanged:
+- Silver Perch is newly present at Reedcrown, but the established Great Mere Westshore fishing source remains the catch authority;
+- Saltflat Mud Crab is newly present in the Lower Delta, but the Brackish Coast trap ground remains the recovery authority.
+
+Implementation freeze:
+- `48948292ea26a38d91d306d12998973c1ae35677`;
+- Check #1626 / run `33325861973`;
+- Repository Audit PASS;
+- **817/817 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+Promoted runtime/data SHA:
+- `d861b1a6cdeca5a470fb13fa429a7329353b6b02`.
+
+Measured Data 61 breadth:
+- 116 creatures;
+- 143 resource sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 38 regional/shared packs;
+- 1,304 pack-owned records;
+- 129 Pack-v2 population records;
+- 145/154 canonical raw resources with production demand.
+
+No later ecology repair is authorized by completion of this unit.

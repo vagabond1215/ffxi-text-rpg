@@ -603,3 +603,31 @@ Updated repair sequence:
 3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
 4. **Wetland / Island Distribution Repair — NEXT RANKED / NOT AUTO-STARTED**;
 5. Cross-biome family breadth.
+
+
+## Data 61 repair status
+
+Repair unit 4, **Wetland / Island Distribution Repair**, is complete and promoted as Data 61 / Product 0.9.100.22.
+
+Resolved:
+- East Starfen aquatic/wader/invertebrate/insect thinness through Mirecrest Heron, Reed Eel, Reed Crab, and Glasswing Dragonfly distribution;
+- Reedcrown Isle same-place Grebe prey overlap through Silver Perch plus Dragonfly and Fen Duck island overlap;
+- Starfen Lower Delta benthic/mud-bank thinness through Saltflat Mud Crab distribution.
+
+The repair deliberately added **no new family, species, gathering source, raw resource, or production loop**. Existing Westshore and Brackish Coast recovery sources remain authoritative even where their species now occur elsewhere.
+
+Measured post-repair breadth:
+- 116 creature definitions;
+- 143 sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 38 regional/shared packs;
+- 1,304 pack-owned records;
+- 145/154 raw resources with production demand.
+
+Updated repair sequence:
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
+3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
+4. Wetland / Island Distribution Repair — **COMPLETE / Data 61**;
+5. **Cross-biome Family Breadth — NEXT RANKED / NOT AUTO-STARTED**.

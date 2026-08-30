@@ -5,16 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.21
+Product:       0.9.100.22
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          60
+Data:          61
 Benchmark:     3
-Codename:      Headwater / Highland Transition Repair
-Compatibility: pre-release-current-schema
-Runtime:       Node >=24
-Phase:         0.9 / 0.9.100 in progress
+Codename:      Wetland / Island Distribution Repair
 ```
 
 ## Product version format
@@ -955,6 +952,38 @@ Measured Data 60 census: 55 places, 47 NPCs, 37 service sites, 116 creatures, 14
 
 The pass adds static catalog definitions and population/source instances only. It does not add a serialized transition-state, pollinator-state, alpine-prey-state, route-state, or player/world-state family.
 
+### `0.9.100.22` — Wetland / Island Distribution Repair
+
+This revision repairs freshwater-fen, lake-island, and lower-delta distribution using existing canonical species only.
+
+```text
+Product       0.9.100.21 -> 0.9.100.22
+Package       0.9.100    -> 0.9.100
+Data          60         -> 61
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable Data 61 additions:
+- eight new population placements;
+- zero new ecology families;
+- zero new species;
+- zero new gathering sources/resources/processes/production outputs;
+- one population-only cross-region Pack-v2 repair ownership graph;
+- East Starfen wader/fish/crab/dragonfly overlap;
+- Reedcrown Perch/Dragonfly/Fen Duck overlap and same-place Grebe prey-family overlap;
+- Lower Delta Saltflat Mud Crab presence;
+- expanded descriptive wetland/island/delta vegetation without inventory-node inflation.
+
+Implementation freeze `48948292ea26a38d91d306d12998973c1ae35677` passed Check #1626 / run `33325861973` with Repository Audit, **817/817 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `d861b1a6cdeca5a470fb13fa429a7329353b6b02`.
+
+Measured Data 61 census remains 55 places, 47 NPCs, 37 service sites, 116 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, and 25 routes. Pack ownership moves to **38 packs / 1,304 records / 129 population records**. Raw-resource utilization remains **145/154**; luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+The pass adds static authored population placements only. It does not introduce a serialized wetland-distribution state, island-state family, recovery-right state, route state, or other durable player/world fact.
+
 ## Persistence history
 
 Relevant late history:
@@ -990,6 +1019,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.19          no Game State change; Data 57 -> 58
 0.9.100.20          no Game State change; Data 58 -> 59
 0.9.100.21          no Game State change; Data 59 -> 60
+0.9.100.22          no Game State change; Data 60 -> 61
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1015,14 +1045,14 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.19.0
+regionalContentPacks   0.20.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
 commitments            0.7.0
 productionCatalog      0.17.0
 productionItems        0.18.0
-ecologyRegistry        0.14.0
+ecologyRegistry        0.15.0
 resourceItemRegistry   0.15.0
 routeCatalog           0.9.0
 headwaterEcology       0.1.0
@@ -1052,6 +1082,7 @@ dryUplandSaltpanRepairResourceItems       0.1.0
 dryUplandSaltpanRepairProductionCatalog   0.1.0
 dryUplandSaltpanRepairProductionItems     0.1.0
 headwaterHighlandTransitionRepairEcology             0.1.0
+wetlandIslandDistributionRepairEcology               0.1.0
 headwaterHighlandTransitionRepairResourceItems       0.1.0
 headwaterHighlandTransitionRepairProductionCatalog   0.1.0
 headwaterHighlandTransitionRepairProductionItems     0.1.0

@@ -5,14 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.21
+Product:       0.9.100.22
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          60
+Data:          61
 Benchmark:     3
-Codename:      Headwater / Highland Transition Repair
-Phase:         0.9 / 0.9.100 Content Scale Gate A
+Codename:      Wetland / Island Distribution Repair
 ```
 
 ## Completed foundation and major tranches
@@ -45,22 +44,19 @@ Headwater / Highland Transition Repair               COMPLETE / MAIN
 
 ## Latest bounded unit
 
-### Headwater / Highland Transition Repair
+### Wetland / Island Distribution Repair
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 60 / Product 0.9.100.21.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 61 / Product 0.9.100.22.**
 
-This distribution-quality tranche strengthens existing transition habitats without adding geography:
+This is a pure existing-species distribution pass:
+- East Starfen gains Mirecrest Heron, Reed Eel, Reed Crab, and Glasswing Dragonfly populations;
+- Reedcrown Isle gains Silver Perch, Glasswing Dragonfly, and Fen Duck populations;
+- Starfen Lower Delta gains Saltflat Mud Crab presence;
+- Reedcrown Crown Grebe now has same-place Lake Perch prey-family overlap.
 
-- Headwater Upper Vale gains Meadow Grouse, Meadow Bee, upper-tributary Coldstream Trout presence, one Bilberry recovery node, and non-node meadow/shrub layers;
-- Windscar Saddle gains South March Grey Grouse overlap without another flora node;
-- Slatewater Foothills gains Brush Hare and Thyme Bee presence while its existing serviceberry/thyme/pine/lichen recovery remains sufficient;
-- Ironspine gains Snow Hare, Sorrel Bee at both elevation bands, and High Meadow Snow Grouse overlap while existing stonepine/willow/sorrel/lichen resources remain sufficient.
+No new species, family, gathering source, raw resource, process, output, route, place, settlement, service, or durable state family was added. Wetland/island/delta vegetation descriptions were strengthened without inventory-node inflation.
 
-No new ecology family was added. One new exact-provenance raw feeds one Bilberry-Meadowsweet Preserve recipe/output.
-
-Existing Scree Lynx and Froststep Lynx prey-family metadata was deliberately left unchanged in this bounded repair so older pack-owned species records and their dependency authority were not rewritten merely to reflect the new hare populations.
-
-Implementation freeze `13ba1f7b03ace684778e5c388450af8efc9183b8` passed Check #1618 / run `33325161966` with **812/812 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9c3c4d8a0b9e910c3312653d8836f3bbe03309bb`.
+Implementation freeze `48948292ea26a38d91d306d12998973c1ae35677` passed Check #1626 / run `33325861973` with **817/817 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `d861b1a6cdeca5a470fb13fa429a7329353b6b02`.
 
 Game State remains 14.
 
@@ -85,8 +81,8 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         37
-pack-owned records          1296
+regional/shared packs         38
+pack-owned records          1304
 runtime seed NPCs             46
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -177,7 +173,7 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
-- Wetland / Island Distribution Repair is the next ranked ecology-quality packet after the Data 60 Headwater / Highland transition repair.
+- Cross-biome Family Breadth is the next ranked ecology-quality packet after the Data 61 Wetland / Island distribution repair.
 
 ## Durable constraints
 

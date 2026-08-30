@@ -18,15 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.21
+Product:       0.9.100.22
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          60
+Data:          61
 Benchmark:     3
-Codename:      Headwater / Highland Transition Repair
-Runtime:       Node >=24
-Phase:         0.9 / 0.9.100 in progress
+Codename:      Wetland / Island Distribution Repair
 ```
 
 ## Data 57 regional authority
@@ -43,6 +41,21 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
+
+## Data 61 ecology repair authority
+
+Wetland / Island Distribution Repair is a population-only distribution pass across existing Starfen, Great Mere, and Starfen Delta habitat.
+
+- East Starfen gains Mirecrest Heron, Reed Eel, Reed Crab, and Great Mere Glasswing Dragonfly populations.
+- Reedcrown Isle gains Great Mere Silver Perch, Glasswing Dragonfly, and Starfen Fen Duck populations.
+- Starfen Lower Delta gains Delta Saltflat Mud Crab presence.
+- Crown Grebe now has same-place Lake Perch prey overlap at Reedcrown.
+- No new family, species, gathering source, raw resource, process, production output, geography, or durable state family is introduced.
+- Population presence remains distinct from player-authorized recovery: Westshore remains the Silver Perch fishery and Brackish Coast remains the Saltflat Mud Crab trap ground.
+
+Implementation freeze Check #1626 / run `33325861973` passed **817/817 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted aggregate versions include `ecologyRegistry 0.15.0`, `regionalContentPacks 0.20.0`, and `places 0.11.4`. `wetlandIslandDistributionRepairEcology` begins at `0.1.0`.
 
 ## Data 60 ecology repair authority
 
@@ -237,7 +250,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 60 Headwater / Highland transition-repair checkpoint:
+Gameplay breadth at the Data 61 Wetland / Island distribution-repair checkpoint:
 
 ```text
 places/localities       55 / mechanics 10
@@ -253,12 +266,12 @@ companions               1 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    37
-pack-owned records     1296
+regional/shared packs    38
+pack-owned records     1304
 ```
 
-Mechanics-scale gate remains **NOT READY**. Ecology breadth remains biome- and loop-driven rather than a justification for disconnected count filler.
+Mechanics-scale gate remains **NOT READY**. Data 61 changes distribution/ownership breadth rather than definition/resource breadth.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Headwater / Highland Transition Repair is the current Data 60 bounded unit on `main`.** The next ranked ecology-quality unit is **Wetland / Island Distribution Repair**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Wetland / Island Distribution Repair is the current Data 61 bounded unit on `main`.** The next ranked ecology-quality unit is **Cross-biome Family Breadth**. Packet E, world-edge expansion, and material-culture work remain separate queues and none is auto-started.
