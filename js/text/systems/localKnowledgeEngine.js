@@ -113,6 +113,7 @@ export function referencePoi(state, poiOrId, options = {}) {
         placeId: poi.placeId,
         knowledgeState: KNOWLEDGE_STATES.REFERENCED,
         familiarityPoints: 0,
+        interactionCount: 0,
         learnedName: false,
         firstSeenAtWorldSeconds: now,
         lastSeenAtWorldSeconds: now,
@@ -142,6 +143,21 @@ export function learnPoiName(state, poiOrId) {
     const entry = referencePoi(state, poi, { learnedName: true });
     entry.learnedName = true;
     return entry;
+}
+
+export function recordPoiInteraction(state, poiOrId, options = {}) {
+    const poi = resolvePoi(poiOrId);
+    if (!poi) return null;
+    const entry = recordPoiExposure(state, poi, {
+        points: options.points ?? 1,
+        learnedName: options.learnedName !== false,
+    });
+    entry.interactionCount = (Number.isInteger(entry.interactionCount) && entry.interactionCount >= 0 ? entry.interactionCount : 0) + 1;
+    return entry;
+}
+
+export function hasInteractedWithPoi(state, poiId) {
+    return (getPoiKnowledge(state, poiId)?.interactionCount ?? 0) > 0;
 }
 
 export function recordConnectorExposure(state, connectionOrId, options = {}) {
@@ -365,6 +381,7 @@ export function validateLocalKnowledgeState(localKnowledge, options = {}) {
         if (!poi) issues.push(`${path} references unknown POI.`);
         issues.push(...validateKnowledgeEntry(entry, path, 'poiId', poiId));
         if (poi && entry?.placeId !== poi.placeId) issues.push(`${path}.placeId must match ${poi.placeId}.`);
+        if (!Number.isInteger(entry?.interactionCount) || entry.interactionCount < 0) issues.push(`${path}.interactionCount must be a non-negative integer.`);
         if (typeof entry?.learnedName !== 'boolean') issues.push(`${path}.learnedName must be boolean.`);
     }
 
