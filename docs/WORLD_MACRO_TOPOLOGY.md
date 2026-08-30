@@ -304,19 +304,19 @@ Completion doctrine:
 
 ## 12. Post-lock world-edge priority
 
-Four post-lock geography units are now realized:
+Five post-lock geography units are now realized:
 
 - **Headwater Vale — Data 52**: first grounded Timbercross-to-Waymeet corridor leg.
 - **Starfen Delta / Brackish Coast — Data 53**: Great Mere outflow, Tideglass Landing, first Eastern Sea coast, explicit open-sea boundary.
 - **Gloamwood & Oldbough Refuge — Data 54**: first western old-growth barrier, wagon-limited refuge, deepwood trail, and explicit stop before the western mountain crescent/Lethari realm.
 - **Emberwash Badlands & Cinderwell Station — Data 55**: northern arid frontier, wagon-limited caravan well, saltpan foretrail, and explicit stop before the farther true desert/southern strait/Veyra sphere.
+- **Lower Deepvein & Lantern Sump Station — Data 56**: first controlled Deep World frontier below Deepvein Mine, staffed subterranean delver station, walk-only Echoing Shelf traverse, and explicit stop before farther deep roads/Korren gate country.
 
 Remaining recommended world-edge order:
 
-1. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
-2. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
-3. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
-4. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
+1. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
+2. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
+3. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
 
 This ranking is a planning recommendation, not automatic authorization.
 
@@ -394,3 +394,17 @@ South Redstone Reach
 ```
 
 This preserves the same doctrine on the southern corridor. Reaching the Saltpan Verge does not manufacture a desert, strait, or Veyra route; those remain separate future bounded units.
+
+Lower Deepvein subsequently realized the first controlled Deep World frontier as **Product 0.9.100.17 / Data 56**:
+
+```text
+Deepvein Mine
+  -> Deepvein Lower Decline [walk-only haulage decline]
+  -> Lantern Sump Station
+  -> Lower Deepvein Echoing Shelf [walk-only traverse]
+  -> farther deep roads / northern gate country [not yet routed]
+  -> Korren trade/gate settlements [not yet authored]
+  -> Korren ancestral citadel [not yet authored]
+```
+
+This preserves vertical route authority: reaching Echoing Shelf does not manufacture adjacency to deeper Korren roads or settlements. Lower Deepvein is also excluded from the Central Continent surface-region completion percentage because it is a subterranean expansion.
