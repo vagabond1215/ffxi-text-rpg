@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -37,71 +37,60 @@ Starfen Delta & Brackish Coast                 COMPLETE / MAIN
 Gloamwood & Oldbough Refuge                    COMPLETE / MAIN
 Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
 Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
+Waymeet Marches & Cairnward Relay                  COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Lower Deepvein & Lantern Sump Station
+### Waymeet Marches & Cairnward Relay
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 56 / Product 0.9.100.17.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 57 / Product 0.9.100.18.**
 
-Purpose:
-- extend Deepvein Mine into the first controlled Deep World frontier without collapsing directly into the Korren sphere;
-- create Lantern Sump as a useful subterranean delver station rather than a gate city;
-- use walk-only tunnel/cavern routes;
-- stop at Echoing Shelf before farther deep roads or northern gate country;
-- connect seven subterranean raws to ten practical food, lampwork, survey, and repair outputs.
+Data 57 continues Headwater Upper Vale through Windscar Saddle to Cairnward Relay and Waymeet South Marches. Windscar is walk/mount/pack-caravan only; wagon operation begins at Cairnward on the plateau side. Cairnward is a small neutral logistics relay, not a settlement or city gate. The route graph stops in the South Marches before inner-march or Waymeet authority.
 
-Data 56 authored Lower Deepvein:
+Authored delta:
 - 3 places and 2 routes;
-- 3 persistent NPCs and 2 schedules;
+- 3 NPCs and 2 schedules;
 - 8 species/populations and 7 exact-provenance sources/raws;
-- 10 transformations producing 10 outputs;
+- 10 transformations and 10 outputs;
 - 2 Pack-v2 ownership graphs;
-- practical Lampcap/Threadfin/Sump Crab safety with fantasy-era presentation.
+- practical food-preparation metadata;
+- no manufactured hostile wildlife.
 
-Implementation freeze:
-- `b0c0048903ee6952f3c4bc337732f894340f540e`;
-- Check #1577 / run `33288699319`: Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
-- Pages #1709 green.
+Implementation freeze `3ef4830baf992e6f9ff973576d6be642e47dc3fa` passed Check #1592 / run `33293624219` with **797/797 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `bf2103355ac3fc79b69e0007c46f9d3f14552054`.
 
-Promoted Data 56:
-- `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
-- Check #1580 / run `33288912478`: same full gate green;
-- Pages #1712 / run `33288912192` green.
-
-Game State remains 14; no durable oxygen, ventilation, lift, certification, Korren-border, or farther-deep-road state family was introduced.
+Game State remains 14; no new durable serialized family was introduced.
 
 ## Current content census
 
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
-| Places/localities | 52 | 10 | reached |
-| Named NPCs | 44 | 50 | 6 short |
-| Shop/service sites | 35 | 20 | reached |
-| Creature definitions | 96 | 40 | reached |
-| Resource sources | 117 | 40 | reached |
-| Canonical items | 352 | 200 | reached |
-| Recipes/processes | 204 | 75 | reached |
+| Places/localities | 55 | 10 | reached |
+| Named NPCs | 47 | 50 | 3 short |
+| Shop/service sites | 37 | 20 | reached |
+| Creature definitions | 104 | 40 | reached |
+| Resource sources | 124 | 40 | reached |
+| Canonical items | 369 | 200 | reached |
+| Recipes/processes | 214 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
 | Transport services | 7 | 5 | reached |
 
-Supplemental:
-
 ```text
-routes                        23
+routes                        25
 spell schools                  4
 capabilities                  44
-NPC schedules                 25
-regional/shared packs         31
-pack-owned records          1121
-runtime seed NPCs             43
+NPC schedules                 27
+regional/shared packs         33
+pack-owned records          1183
+runtime seed NPCs             46
 runtime seed enemies          17
+raw-resource utilization   124/135
+luxury-raw utilization       14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap.
+Mechanics-scale gate remains **NOT READY**.
 
 ## Latest planning pass
 
@@ -109,7 +98,7 @@ Mechanics-scale gate remains **NOT READY**. Companions remain the largest relati
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 56.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 57.
 
 ## Formal Phase 0.9 sequence
 
@@ -157,9 +146,10 @@ Post-lock world-edge status:
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
 - **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55.**
 - **Lower Deepvein & Lantern Sump Station — COMPLETE / Data 56.**
+- **Waymeet Marches & Cairnward Relay — COMPLETE / Data 57.**
 
 Remaining ranking:
-1. Waymeet Marches / central plateau approaches;
+1. Waymeet Inner Marches / outer crossroads approach;
 2. Coppergrass extensions;
 3. Drowned Vaults.
 
@@ -167,11 +157,11 @@ The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN
 
 ### Central Continent completion budget
 
-Planning intent established at Data 55 and retained through Data 56:
+Planning intent established at Data 55 and updated after the Data 57 surface pass:
 
-- current surface-region maturity is approximately **55–65%** at the present authored granularity;
-- budget approximately **10–14 additional substantial surface-region passes** for a broadly complete Central Continent;
-- roughly **6–8** of those are enough to finish the minimum coherent continental skeleton; the remainder should add warranted route, ecology, economy, settlement, and civilization-approach density;
+- current surface-region maturity is approximately **60–70%** at the present authored granularity;
+- budget approximately **9–13 additional substantial surface-region passes** for a broadly complete Central Continent;
+- roughly **5–7** of those are enough to finish the minimum coherent continental skeleton; the remainder should add warranted route, ecology, economy, settlement, and civilization-approach density;
 - **Lower Deepvein and Drowned Vaults are not counted in the surface percentage** because they are vertical/subterranean expansions;
 - avoid subdividing wilderness for its own sake; after the Central Continent reaches a coherent skeleton, prefer outward expansion toward Veyra, Miri, Korren, and Pelagic realms.
 

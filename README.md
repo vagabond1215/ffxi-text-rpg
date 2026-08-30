@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Lower Deepvein & Lantern Sump Station** is the current Data 56 geography/content checkpoint, extending the existing Deepvein Mine into the first controlled Deep World frontier while explicitly stopping before farther deep roads and the Korren sphere.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Waymeet Marches & Cairnward Relay** is the current Data 57 geography/content checkpoint, continuing the grounded Timbercross -> Headwater -> central plateau corridor without collapsing the remaining journey into Waymeet.
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 56 adds Deepvein Lower Decline, Lantern Sump Station, and Lower Deepvein Echoing Shelf; two walk-only subterranean routes totaling 8,000 yalms; eight cave species/populations; seven exact-provenance forage/fish/trap/gather/mine sources; seven raw resources; and ten transformations/outputs across cave provisions, salt refining, lampwork, survey components, and damp-gallery repair. Lantern Sump is the safe operating node, Echoing Shelf is the authored hard stop, and no farther deep-road or Korren route is created. Game State remains 14.
+Data 57 adds Windscar Saddle, Cairnward Relay, and Waymeet South Marches; a walk/mount/caravan saddle road that excludes wagons; a wagon-capable plateau road beginning only beyond the saddle; eight passive, wary, or naturally territorial plateau populations; seven exact-provenance resources; and ten connected transformations/outputs. The route graph stops in the South Marches. Waymeet and the inner marches remain unrealized. Game State remains 14.
 
 ## Product direction
 
@@ -73,38 +73,33 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 56 implementation census:
+Validated Data 57 implementation census:
 
 ```text
-places/localities       52 / mechanics floor 10
-named NPCs              44 / 50
-shop/service sites      35 / 20
-creatures               96 / 40
-resource sources       117 / 40
-canonical items        352 / 200
-recipes/processes      204 / 75
+places/localities       55 / mechanics floor 10
+named NPCs              47 / 50
+shop/service sites      37 / 20
+creatures              104 / 40
+resource sources       124 / 40
+canonical items        369 / 200
+recipes/processes      214 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
 transport services       7 / 5
+routes                   25
+spell schools             4
+capabilities             44
+NPC schedules            27
+regional/shared packs    33
+pack-owned records     1183
+runtime seed NPCs        46
+runtime seed enemies     17
+raw-resource use      124/135
+luxury-raw use          14/14
 ```
 
-Infrastructure coverage:
-
-```text
-routes                               23
-spell schools                         4
-capabilities/training definitions    44
-NPC schedules                        25
-regional/shared content packs        31
-pack-owned records                  1121
-pack-owned abilities/capabilities/
-  schedules/companions            41/44/25/1
-runtime seed NPCs                    43
-runtime seed enemies                 17
-```
-
-The mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, canonical items, recipes/processes, and transport services meet their mechanics floors. Companions remain the largest relative gap, with abilities, NPC breadth, and quests materially short. Regional sufficiency should be improved with plausible substitutes and dependable trade—not duplicate specialty resources or disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities, NPC breadth, and quests are still materially short. Do not close those gaps with disconnected filler.
 
 ## Persistence model
 
@@ -131,4 +126,12 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Lower Deepvein & Lantern Sump Station is complete and promoted as Data 56 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Waymeet Marches / central plateau approaches** is the next ranked world-edge candidate, followed by Coppergrass extensions and Drowned Vaults. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+`0.9.100 Content Scale Gate A` remains open. **Waymeet Marches & Cairnward Relay is complete and promoted as Data 57 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate.
+
+Updated world-edge ranking:
+
+1. **Waymeet Inner Marches / outer crossroads approach** — another bounded overland leg; do not automatically author Waymeet metropolis.
+2. **Coppergrass extensions** — deepen the Forge–Mere east-west backbone without inventing habitation.
+3. **Drowned Vaults & Sunken Road** — valuable vertical/submerged expansion, but not part of the surface-completion percentage.
+
+Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.

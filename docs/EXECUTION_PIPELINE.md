@@ -5,70 +5,49 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 ```
 
 ## Current bounded-unit state
 
-**Lower Deepvein & Lantern Sump Station** is the latest runtime/data bounded unit on `main`. It extends Deepvein Mine into the first controlled Deep World frontier, establishes Lantern Sump as a safe operating node, and stops the runtime route graph at Echoing Shelf before farther deep roads or the Korren sphere.
+**Waymeet Marches & Cairnward Relay** is the latest runtime/data bounded unit on `main`. It continues the Headwater route through an exposed non-wagon saddle to Cairnward's pack-to-wagon transfer node and then to the first South March road, while leaving inner marches and Waymeet outside the graph.
 
-Latest bounded implementation:
-- population-backed hunting bridge merged through PR #400 at `e18990188935f52b66fe96cfa9d374ff845618ef`;
-- Ironspine implementation freeze `53323564ac724044ff06b1341c5466e73a34ab37`;
-- Check #1368 / run `33215878907`: full gate green, 753/753 tests;
-- promoted PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`;
-- exact promoted-head Check #1381 / run `33217086478`: full gate green;
-- Headwater implementation freeze `aa39347a0faa754690a194d926262256e92027f1`;
-- Check #1476 / run `33264692343`: full gate green, 770/770 tests, Data 52 pre-promotion census confirmed;
-- Starfen Delta implementation freeze `c515588c404c0f80a724d767b74535f1e39ae166`;
-- Check #1491 / run `33267789356`: full gate green, 776/776 tests;
-- promoted Data 53 head `8f968155d092431b0a3314d38f4d890b0c87f599`;
-- Check #1493 / run `33267935109`: full gate green, 776/776 tests, Data 53 census confirmed;
-- Gloamwood implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743`;
-- Check #1504 / run `33269167675`: full gate green, 781/781 tests;
-- promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8`;
-- Check #1507 / run `33269370813`: full gate green, 781/781 tests, Data 54 census confirmed;
-- Emberwash implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
-- Check #1547 / run `33279116948`: full gate green, 786/786 tests, Data 55 implementation census confirmed.
-- promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad`;
-- Check #1559 / run `33279480611`: full gate green, 786/786 tests, Data 55 census confirmed;
-- Pages #1692 green;
-- Lower Deepvein implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e`;
-- Check #1577 / run `33288699319`: full gate green, 791/791 tests, Data 56 implementation census confirmed;
-- Pages #1709 green;
-- promoted Data 56 head `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
-- Check #1580 / run `33288912478`: full gate green, 791/791 tests, Data 56 census confirmed;
-- Pages #1712 / run `33288912192` green.
+- Plan commit: `c0c2fcb6a1bec47849c3c2b41ec4c0a86fd93293`.
+- Implementation freeze: `3ef4830baf992e6f9ff973576d6be642e47dc3fa`.
+- Check #1592 / run `33293624219`: full gate green, **797/797 tests**.
+- Promoted runtime/data SHA: `bf2103355ac3fc79b69e0007c46f9d3f14552054`.
+- Product 0.9.100.18 / Data 57 / Game State 14 / Package 0.9.100.
 
-No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
+No later unit is auto-started. Normal low-risk work remains direct on `main`.
 
-## Data 56 metrics
+## Data 57 metrics
 
 ```text
-places/localities                       52
-named NPCs                              44
-shop/service sites                      35
-creatures                               96
-resource sources                       117
-canonical items                        352
-recipes/processes                      204
+places/localities                       55
+named NPCs                              47
+shop/service sites                      37
+creatures                              104
+resource sources                       124
+canonical items                        369
+recipes/processes                      214
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
-
-raw resources with production demand  117 / 128
+raw resources with production demand  124 / 135
 luxury raws with production demand      14 / 14
-routes                                  23
-NPC schedules                           25
-regional/shared packs                   31
-pack-owned records                    1121
+routes                                  25
+NPC schedules                           27
+regional/shared packs                   33
+pack-owned records                    1183
+runtime seed NPCs                       46
+runtime seed enemies                    17
 ```
 
 ## Regional resilience rule
@@ -111,7 +90,7 @@ Reached:
 Still short:
 - companions: 1/4;
 - abilities/techniques: 41/100;
-- named NPCs: 44/50;
+- named NPCs: 47/50;
 - quests/contracts: 18/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
@@ -130,7 +109,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, and Lower Deepvein & Lantern Sump Station are complete through Data 56. Next ranked world-edge candidate: **Waymeet Marches / central plateau approaches**. It is queued, not auto-authorized.
+Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, Lower Deepvein & Lantern Sump Station, and Waymeet Marches & Cairnward Relay are complete through Data 57. The route graph reaches Waymeet South Marches but not the inner marches or Waymeet. Next ranked world-edge candidate: **Waymeet Inner Marches / outer crossroads approach**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
@@ -144,7 +123,7 @@ Formal roadmap:
 - Packet E — Gate A integration/census audit.
 
 World-edge planning:
-- Waymeet Marches / central plateau approaches are now the next ranked surface-corridor candidate.
+- Waymeet Inner Marches / outer crossroads approach is now the next ranked surface-corridor candidate.
 - Coppergrass extensions follow, then Drowned Vaults.
 
 Strong system/content candidates:

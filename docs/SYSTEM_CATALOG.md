@@ -18,16 +18,31 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
+
+## Data 57 regional authority
+
+Waymeet Marches composes existing geography, route, ecology, resource, production, service, schedule, and Pack-v2 systems.
+
+- 3 places; 2 routes with a real wagon-limit transition at Cairnward;
+- 8 plateau populations; 7 exact-provenance raws; 10 processes/outputs;
+- 3 relay NPCs; 2 schedules; 4 service POIs;
+- `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
+- raw production utilization **124/135**;
+- Game State 14 unchanged.
+
+Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
+
+Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
 
 ## Core simulation, persistence, and tooling
 

@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -839,6 +839,29 @@ Raw-resource production utilization is **117/128**. Luxury utilization remains *
 
 Data 55 composes existing place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC-schedule, and Pack-v2 authorities. Preparation-sensitive travel remains authored through place/route hazards, services, and available stock rather than a new durable serialized state family.
 
+### `0.9.100.18` — Waymeet Marches & Cairnward Relay
+
+This revision continues the grounded overland Waymeet corridor without collapsing the remaining journey into the metropolis.
+
+```text
+Product       0.9.100.17 -> 0.9.100.18
+Package       0.9.100    -> 0.9.100
+Data          56         -> 57
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable authored Data 57 adds Windscar Saddle, Cairnward Relay, Waymeet South Marches, two route authorities, eight plateau populations, seven exact-provenance raws, ten transformations/outputs, three relay NPCs, two schedules, four service POIs, and two Pack-v2 ownership graphs. The saddle excludes wagons; wagon-capable travel begins at Cairnward. No route continues from the South Marches to the inner marches or Waymeet.
+
+Implementation freeze `3ef4830baf992e6f9ff973576d6be642e47dc3fa` passed Check #1592 / run `33293624219` with Repository Audit, **797/797 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `bf2103355ac3fc79b69e0007c46f9d3f14552054`.
+
+Validated Data 57 census: 55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 7 transport services, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records, 46 runtime seed NPCs, and 17 runtime seed enemies. Raw-resource production utilization is **124/135**; luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+No new durable serialized player/world-state family is introduced. Data 57 reuses place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC schedule, and Pack-v2 authorities.
+
 ## Persistence history
 
 Relevant late history:
@@ -870,6 +893,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.15          no Game State change; Data 53 -> 54
 0.9.100.16          no Game State change; Data 54 -> 55
 0.9.100.17          no Game State change; Data 55 -> 56
+0.9.100.18          no Game State change; Data 56 -> 57
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -895,16 +919,16 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.15.0
+regionalContentPacks   0.16.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
-npcSchedules           0.8.0
+npcSchedules           0.9.0
 commitments            0.7.0
-productionCatalog      0.13.0
-productionItems        0.14.0
-ecologyRegistry        0.10.0
-resourceItemRegistry   0.11.0
-routeCatalog           0.8.0
+productionCatalog      0.14.0
+productionItems        0.15.0
+ecologyRegistry        0.11.0
+resourceItemRegistry   0.12.0
+routeCatalog           0.9.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
 starfenDeltaEcology    0.1.0
@@ -919,11 +943,15 @@ lowerDeepveinEcology       0.1.0
 lowerDeepveinProductionCatalog 0.1.0
 lowerDeepveinProductionItems   0.1.0
 lowerDeepveinResourceItems     0.1.0
+waymeetMarchesEcology             0.1.0
+waymeetMarchesProductionCatalog   0.1.0
+waymeetMarchesProductionItems     0.1.0
+waymeetMarchesResourceItems       0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
 
-Lower Deepvein uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 56 registries.
+Waymeet Marches uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 57 registries.
 
 ## Validation baseline
 
@@ -941,7 +969,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 56 Lower Deepvein checkpoint supersedes Data 55: 52 places, 44 named NPCs, 35 service sites, 96 creatures, 117 sources, 352 items, 204 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 schedules, 31 packs, and 1121 pack-owned records.
+The current promoted Data 57 Waymeet Marches checkpoint supersedes Data 56: 55 places, 47 named NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 33 packs, and 1183 pack-owned records.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 
