@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getNation } from '../js/text/data/nations.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -72,7 +73,7 @@ test('PX8 gives Thornwall a third several-day community loop while Elderwood liv
     assert.ok(state.npcs.some((npc) => npc.id === SERA_NPC_ID), 'Sera Talwin should be a persistent NPC-backed Thornwall contact');
     assert.equal(commitment(model(state)), null, 'Sera’s commitment should not appear before the player has actually met her');
 
-    assert.equal(performLocalityPoiAction(state, 'poi-sandoria-s-alaune', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-sandoria-s-alaune', 'talk').ok, true);
     const starterItemId = getNation('thornwall').startingEquipmentIds[0];
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, starterItemId), /Equipped/);
