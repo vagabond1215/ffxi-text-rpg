@@ -156,7 +156,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeVersion(), /Game State: 14/);
     assert.match(describeVersion(), /Data: 60/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Headwater / Highland Transition Repair/);
+    assert.match(describeVersion(), /Codename: Headwater \/ Highland Transition Repair/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
