@@ -1,8 +1,10 @@
 # Cross-Biome Family Breadth Plan
 
-Status: **BOUNDED IMPLEMENTATION PLAN — AUTHORIZED.**
+Status: **COMPLETE / PROMOTED DATA 62.**
 
 Baseline: Product **0.9.100.22**, Data **61**, Game State **14**, Package **0.9.100**.
+
+Promoted result: Product **0.9.100.23**, Data **62**, Game State **14**, Package **0.9.100**.
 
 Authority:
 - `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
@@ -225,3 +227,56 @@ Do not auto-start:
 - material-culture work.
 
 Return to a fresh decision boundary after Data 62 validation.
+
+
+## 12. Implementation result
+
+Implemented authored delta:
+- new ecology families: **2**;
+- new species: **7**;
+- new population placements: **7**;
+- new gathering sources/raws: **0**;
+- new transformations/outputs: **0**;
+- new Pack-v2 repair graphs: **1**.
+
+Families:
+- `family-ground-squirrel`;
+- `family-finch`.
+
+Regional species/populations:
+- Coppergrass Loess Ground Squirrel;
+- Waymeet Cairn Ground Squirrel;
+- Crownfields Hedgebank Ground Squirrel;
+- Coppergrass Seed Finch;
+- Crownfields Hedgerow Finch;
+- Elderwood Hazel Finch;
+- Slatewater Thistle Finch.
+
+All seven species are passive/wary and have no encounter template. No body-resource, trapping, hunting, food, or production path was invented merely because the species exist.
+
+Existing predator family-link metadata remains unchanged. This is intentional: family-link normalization has no current player-facing requirement and would unnecessarily rewrite older pack-owned predator records.
+
+Implementation freeze:
+- `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`;
+- Check #1634 / run `33331659415`;
+- Repository Audit PASS;
+- **822/822 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+Promoted runtime/data SHA:
+- `bc472b60374a048686b0ee6c877ba26c515aec35`.
+
+Measured Data 62 breadth:
+- 123 creatures;
+- 143 resource sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 39 regional/shared packs;
+- 1,320 pack-owned records;
+- 145/154 canonical raw resources with production demand.
+
+The creature catalog now clears the playable-alpha planning lower bound of 120.
+
+This unit closes the five-part location flora/fauna diversity repair sequence. No subsequent ecology unit is authorized by completion of this plan.

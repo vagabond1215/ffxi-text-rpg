@@ -5,35 +5,35 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 ```
 
 ## Current bounded-unit state
 
-**Wetland / Island Distribution Repair** is the latest runtime/data bounded unit on `main`.
+**Cross-Biome Family Breadth** is the latest runtime/data bounded unit on `main`.
 
-- Plan commit: `33575d6a8ae2aa202664d647558c66c91ecde025`.
-- Implementation freeze: `48948292ea26a38d91d306d12998973c1ae35677`.
-- Check #1626 / run `33325861973`: full gate green, **817/817 tests**.
-- Promoted runtime/data SHA: `d861b1a6cdeca5a470fb13fa429a7329353b6b02`.
-- Product 0.9.100.22 / Data 61 / Game State 14 / Package 0.9.100.
-- Pure distribution pass: 8 populations, 0 species, 0 families, 0 sources, 0 resources, 0 processes.
+- Plan commit: `b6b0c309c60357916550d92928f86d07847229f8`.
+- Implementation freeze: `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`.
+- Check #1634 / run `33331659415`: full gate green, **822/822 tests**.
+- Promoted runtime/data SHA: `bc472b60374a048686b0ee6c877ba26c515aec35`.
+- Product 0.9.100.23 / Data 62 / Game State 14 / Package 0.9.100.
+- Authored delta: 2 families, 7 species, 7 populations, no resources/production/geography.
 
-The next ranked ecology repair is **Cross-biome Family Breadth**. It is queued, not auto-authorized.
+This completes the five-part location flora/fauna diversity repair sequence.
 
-## Data 61 metrics
+## Data 62 metrics
 
 ```text
 places/localities                       55
 named NPCs                              47
 shop/service sites                      37
-creatures                              116
+creatures                              123
 resource sources                       143
 canonical items                        408
 recipes/processes                      234
@@ -45,11 +45,13 @@ raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   38
-pack-owned records                    1304
+regional/shared packs                   39
+pack-owned records                    1320
 runtime seed NPCs                       46
 runtime seed enemies                    17
 ```
+
+Creature breadth now clears the playable-alpha planning lower bound of 120. This does not make the mechanics-scale gate ready.
 
 ## Regional resilience rule
 
@@ -120,10 +122,18 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-Data 61 closes the fourth location-diversity repair. Next ranked ecology-quality unit:
-1. **Cross-biome Family Breadth**.
+The ordered location flora/fauna diversity repair sequence is **complete through Data 62**.
 
-Legacy Elderwood, Dry Upland & Saltpan, Headwater / Highland, and Wetland / Island repairs are complete. The separate world-edge, material-culture, and formal Packet E queues remain unchanged. No next unit is auto-started.
+No additional ecology unit is auto-authorized. Fresh selection may choose among:
+- broader Crownfields ordinary-wildlife spread using existing families;
+- secondary dungeon ecology/substrate cleanup;
+- shorebird/wader breadth if coastal depth is selected;
+- snake breadth only with a concrete ecological/player loop;
+- formal Packet E;
+- Waymeet Inner Marches / outer crossroads world-edge work;
+- Occupational Tool Conversion.
+
+The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults.
 
 ## Validation
 

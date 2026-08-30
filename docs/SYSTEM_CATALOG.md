@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 ```
 
 ## Data 57 regional authority
@@ -41,6 +41,23 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
+
+## Data 62 ecology repair authority
+
+Cross-Biome Family Breadth closes the five-part location flora/fauna diversity repair sequence.
+
+- new families: **Ground Squirrel** and **Finch**;
+- new species/populations: 7 / 7;
+- Ground Squirrel spans Coppergrass Steppe, Waymeet South Marches, and Crownfields;
+- Finch spans Coppergrass, Crownfields, East Elderwood, and Slatewater Foothills;
+- no recovery source, body-resource, item, recipe, or production output was added;
+- all new species are passive/wary and have no encounter template;
+- predator-family link metadata remains unchanged pending actual mechanical need;
+- ordinary seedgrass, hedges, thistles, coppice understory, and burrow evidence remain descriptive rather than inventory-node filler.
+
+Implementation freeze Check #1634 / run `33331659415` passed **822/822 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted aggregate versions include `ecologyRegistry 0.16.0`, `regionalContentPacks 0.21.0`, and `places 0.11.5`. `crossBiomeFamilyBreadthEcology` begins at `0.1.0`.
 
 ## Data 61 ecology repair authority
 
@@ -122,7 +139,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — Data 60
+## Content infrastructure and regional packs — Data 62
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -250,13 +267,13 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 61 Wetland / Island distribution-repair checkpoint:
+Gameplay breadth at the Data 62 Cross-Biome Family Breadth checkpoint:
 
 ```text
 places/localities       55 / mechanics 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              116 / 40
+creatures              123 / 40
 resource sources       143 / 40
 canonical items        408 / 200
 recipes/processes      234 / 75
@@ -266,12 +283,14 @@ companions               1 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    38
-pack-owned records     1304
+regional/shared packs    39
+pack-owned records     1320
 ```
 
-Mechanics-scale gate remains **NOT READY**. Data 61 changes distribution/ownership breadth rather than definition/resource breadth.
+The creature catalog now clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because other required categories remain short.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Wetland / Island Distribution Repair is the current Data 61 bounded unit on `main`.** The next ranked ecology-quality unit is **Cross-biome Family Breadth**. Packet E, world-edge expansion, and material-culture work remain separate queues and none is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Cross-Biome Family Breadth is the current Data 62 bounded unit on `main`, and the ordered five-part location flora/fauna diversity repair sequence is complete.**
+
+No sixth ecology repair is automatically queued. Packet E, world-edge expansion, material-culture work, and optional post-sequence ecology targets require a fresh explicit selection.

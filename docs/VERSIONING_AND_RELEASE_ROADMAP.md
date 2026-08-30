@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 ```
 
 ## Product version format
@@ -984,6 +984,39 @@ Measured Data 61 census remains 55 places, 47 NPCs, 37 service sites, 116 creatu
 
 The pass adds static authored population placements only. It does not introduce a serialized wetland-distribution state, island-state family, recovery-right state, route state, or other durable player/world fact.
 
+### `0.9.100.23` — Cross-Biome Family Breadth
+
+This revision closes the ordered five-part location flora/fauna diversity repair sequence with two scoped missing small-fauna families.
+
+```text
+Product       0.9.100.22 -> 0.9.100.23
+Package       0.9.100    -> 0.9.100
+Data          61         -> 62
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable Data 62 additions:
+- Ground Squirrel family;
+- Finch family;
+- seven species and seven population placements;
+- one cross-region Pack-v2 family-breadth graph;
+- descriptive burrow/seed/hedgerow/coppice/foothill habitat evidence;
+- no resource, recovery, item, recipe, production, geography, or durable-state expansion.
+
+The Ground Squirrel family is deliberately scoped below Rat/Marmot/Hare breadth, and Finch is deliberately scoped to small seed-eating passerines rather than a generic “songbird” family.
+
+Implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528` passed Check #1634 / run `33331659415` with Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `bc472b60374a048686b0ee6c877ba26c515aec35`.
+
+Measured Data 62 census: 55 places, 47 NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 routes, 39 packs, and 1,320 pack-owned records. Raw-resource utilization remains **145/154**; luxury utilization remains **14/14**.
+
+Creature breadth now clears the playable-alpha planning lower bound of 120.
+
+#### Why Game State stays 14
+
+The pass adds static families, species, populations, and descriptive habitat text only. It introduces no new durable serialized family.
+
 ## Persistence history
 
 Relevant late history:
@@ -1020,6 +1053,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.20          no Game State change; Data 58 -> 59
 0.9.100.21          no Game State change; Data 59 -> 60
 0.9.100.22          no Game State change; Data 60 -> 61
+0.9.100.23          no Game State change; Data 61 -> 62
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1045,14 +1079,14 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.20.0
+regionalContentPacks   0.21.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
 commitments            0.7.0
 productionCatalog      0.17.0
 productionItems        0.18.0
-ecologyRegistry        0.15.0
+ecologyRegistry        0.16.0
 resourceItemRegistry   0.15.0
 routeCatalog           0.9.0
 headwaterEcology       0.1.0
@@ -1083,6 +1117,7 @@ dryUplandSaltpanRepairProductionCatalog   0.1.0
 dryUplandSaltpanRepairProductionItems     0.1.0
 headwaterHighlandTransitionRepairEcology             0.1.0
 wetlandIslandDistributionRepairEcology               0.1.0
+crossBiomeFamilyBreadthEcology                         0.1.0
 headwaterHighlandTransitionRepairResourceItems       0.1.0
 headwaterHighlandTransitionRepairProductionCatalog   0.1.0
 headwaterHighlandTransitionRepairProductionItems     0.1.0

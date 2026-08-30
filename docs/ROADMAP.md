@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 ```
 
 ## Completed foundation and major tranches
@@ -44,21 +44,26 @@ Headwater / Highland Transition Repair               COMPLETE / MAIN
 
 ## Latest bounded unit
 
-### Wetland / Island Distribution Repair
+### Cross-Biome Family Breadth
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 61 / Product 0.9.100.22.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 62 / Product 0.9.100.23.**
 
-This is a pure existing-species distribution pass:
-- East Starfen gains Mirecrest Heron, Reed Eel, Reed Crab, and Glasswing Dragonfly populations;
-- Reedcrown Isle gains Silver Perch, Glasswing Dragonfly, and Fen Duck populations;
-- Starfen Lower Delta gains Saltflat Mud Crab presence;
-- Reedcrown Crown Grebe now has same-place Lake Perch prey-family overlap.
+This final location-diversity repair adds two genuinely missing scoped families:
+- **Ground Squirrel** — Coppergrass Loess, Waymeet Cairn, and Crownfields Hedgebank variants;
+- **Finch** — Coppergrass Seed, Crownfields Hedgerow, Elderwood Hazel, and Slatewater Thistle variants.
 
-No new species, family, gathering source, raw resource, process, output, route, place, settlement, service, or durable state family was added. Wetland/island/delta vegetation descriptions were strengthened without inventory-node inflation.
+Authored delta:
+- 2 families;
+- 7 species;
+- 7 populations;
+- 0 gathering sources/resources/processes/outputs;
+- 1 Pack-v2 cross-region ownership graph.
 
-Implementation freeze `48948292ea26a38d91d306d12998973c1ae35677` passed Check #1626 / run `33325861973` with **817/817 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `d861b1a6cdeca5a470fb13fa429a7329353b6b02`.
+All seven species are passive/wary, have no encounter template, and are not turned hostile to manufacture loot. Existing predator-family link metadata was deliberately left unchanged because it has no current player-facing mechanical requirement.
 
-Game State remains 14.
+Implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528` passed Check #1634 / run `33331659415` with **822/822 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `bc472b60374a048686b0ee6c877ba26c515aec35`.
+
+The five-part location flora/fauna diversity repair sequence is now complete. Game State remains 14.
 
 ## Current content census
 
@@ -67,7 +72,7 @@ Game State remains 14.
 | Places/localities | 55 | 10 | reached |
 | Named NPCs | 47 | 50 | 3 short |
 | Shop/service sites | 37 | 20 | reached |
-| Creature definitions | 116 | 40 | reached |
+| Creature definitions | 123 | 40 | reached; playable-alpha lower bound 120 also reached |
 | Resource sources | 143 | 40 | reached |
 | Canonical items | 408 | 200 | reached |
 | Recipes/processes | 234 | 75 | reached |
@@ -81,8 +86,8 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         38
-pack-owned records          1304
+regional/shared packs         39
+pack-owned records          1320
 runtime seed NPCs             46
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -173,7 +178,7 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
-- Cross-biome Family Breadth is the next ranked ecology-quality packet after the Data 61 Wetland / Island distribution repair.
+- The five-part location flora/fauna diversity repair sequence is complete through Data 62; no sixth ecology packet is auto-authorized.
 
 ## Durable constraints
 

@@ -44,7 +44,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: cross-biome-family-breadth-planned
+  current_normal_work: data-62-cross-biome-family-breadth-promoted-continuity-sync
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -117,6 +117,11 @@ git:
   latest_wetland_island_distribution_implementation_check_sha: 48948292ea26a38d91d306d12998973c1ae35677
   latest_wetland_island_distribution_implementation_check_result: success-817-of-817-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_wetland_island_distribution_promoted_runtime_sha: d861b1a6cdeca5a470fb13fa429a7329353b6b02
+  latest_cross_biome_family_breadth_implementation_check: 33331659415
+  latest_cross_biome_family_breadth_implementation_check_number: 1634
+  latest_cross_biome_family_breadth_implementation_check_sha: c5e12b5d8f0b6ddf7a76f5df01316567b43d4528
+  latest_cross_biome_family_breadth_implementation_check_result: success-822-of-822-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_cross_biome_family_breadth_promoted_runtime_sha: bc472b60374a048686b0ee6c877ba26c515aec35
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -125,10 +130,10 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: wetland-island-distribution-repair
-  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-61
-  latest_data_bounded_unit: wetland-island-distribution-repair
-  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-61
+  latest_bounded_unit: cross-biome-family-breadth
+  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-62
+  latest_data_bounded_unit: cross-biome-family-breadth
+  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-62
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: waymeet-inner-marches-outer-crossroads-approach
@@ -138,8 +143,8 @@ progression:
   southern_world_edge_candidate: emberwash-badlands-complete-data-55
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
-  next_ecology_repair_candidate: cross-biome-family-breadth
-  next_ecology_repair_candidate_status: authorized-by-user-continue-active
+  next_ecology_repair_candidate: location-diversity-sequence-complete
+  next_ecology_repair_candidate_status: complete-awaiting-fresh-selection
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   central_continent_surface_maturity_estimate: 60-to-70-percent
@@ -175,14 +180,15 @@ validation:
   dry_upland_saltpan_ecology_repair_guard: tests/playerDryUplandSaltpanEcologyRepairFlow.test.js
   headwater_highland_transition_repair_guard: tests/playerHeadwaterHighlandTransitionRepairFlow.test.js
   wetland_island_distribution_repair_guard: tests/playerWetlandIslandDistributionRepairFlow.test.js
+  cross_biome_family_breadth_guard: tests/playerCrossBiomeFamilyBreadthFlow.test.js
 quality:
-  current_product_version: 0.9.100.22
+  current_product_version: 0.9.100.23
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 61
+  current_data_version: 62
   current_benchmark_version: 3
-  current_codename: Wetland / Island Distribution Repair
+  current_codename: Cross-Biome Family Breadth
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -302,6 +308,28 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_62:
+    cross_biome_new_families_added: 2
+    cross_biome_new_species_added: 7
+    cross_biome_population_placements_added: 7
+    cross_biome_sources_added: 0
+    cross_biome_raw_resources_added: 0
+    cross_biome_transformations_added: 0
+    cross_biome_production_outputs_added: 0
+    ground_squirrel_family_added: true
+    finch_family_added: true
+    coppergrass_small_burrower_and_seed_bird_gap_repaired: true
+    waymeet_small_burrower_gap_repaired: true
+    crownfields_wild_small_mammal_and_passerine_gap_reduced: true
+    east_elderwood_passerine_gap_repaired: true
+    slatewater_passerine_gap_repaired: true
+    passive_wildlife_not_made_hostile_for_loot: true
+    predator_family_links_left_unchanged_pending_mechanical_need: true
+    location_diversity_five_part_sequence_complete: true
+    playable_alpha_creature_floor_reached: true
+    canonical_raw_production_utilization: 145-of-154
+    luxury_raw_production_utilization: 14-of-14
+    persistence_family_added: false
   data_61:
     wetland_island_new_families_added: 0
     wetland_island_new_species_added: 0
@@ -414,7 +442,7 @@ content_scale:
     places_localities: 55
     named_npcs: 47
     shop_service_sites: 37
-    creature_definitions: 116
+    creature_definitions: 123
     resource_sources: 143
     canonical_items: 408
     recipes_processes: 234
@@ -426,8 +454,8 @@ content_scale:
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 27
-    regional_shared_packs: 38
-    pack_owned_records: 1304
+    regional_shared_packs: 39
+    pack_owned_records: 1320
     runtime_seed_npcs: 46
     runtime_seed_enemies: 17
   mechanics_floors_reached:

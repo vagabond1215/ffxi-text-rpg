@@ -631,3 +631,47 @@ Updated repair sequence:
 3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
 4. Wetland / Island Distribution Repair — **COMPLETE / Data 61**;
 5. **Cross-biome Family Breadth — NEXT RANKED / NOT AUTO-STARTED**.
+
+
+## Data 62 repair status
+
+Repair unit 5, **Cross-Biome Family Breadth**, is complete and promoted as Data 62 / Product 0.9.100.23.
+
+Resolved:
+- Coppergrass's missing small-burrowing prey guild through the new Ground Squirrel family;
+- Waymeet South Marches' smaller burrowing-prey niche through a Cairn Ground Squirrel variant;
+- Crownfields' lack of ordinary wild small mammals and farmland passerines through Hedgebank Ground Squirrel and Hedgerow Finch;
+- East Elderwood's missing small woodland-edge passerine through Hazel Finch;
+- Slatewater's missing small seed-eating bird guild through Thistle Finch;
+- open-steppe small seed-bird breadth through Coppergrass Seed Finch.
+
+The repair deliberately adds **no loot/recovery source**, makes none of the new small wildlife hostile, and does not rewrite existing predator-family metadata without a mechanical requirement.
+
+Measured post-repair breadth:
+- 123 creature definitions;
+- 143 sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 39 regional/shared packs;
+- 1,320 pack-owned records;
+- 145/154 raw resources with production demand.
+
+The creature catalog now clears the playable-alpha planning lower bound of 120.
+
+### Five-part repair sequence status
+
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
+3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
+4. Wetland / Island Distribution Repair — **COMPLETE / Data 61**;
+5. Cross-Biome Family Breadth — **COMPLETE / Data 62**.
+
+**The ordered location flora/fauna diversity repair sequence is complete.**
+
+Remaining ideas are post-sequence opportunities, not unfinished requirements:
+- broader Crownfields wild-fauna spread using existing families;
+- Deepvein Mine / Sunken Archive secondary ecology substrate;
+- shorebird/wader breadth if future coastal depth warrants it;
+- snake breadth only with a concrete ecological/player/economic function.
+
+A fresh audit or explicit selection should precede additional ecology expansion.

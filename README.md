@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Wetland / Island Distribution Repair** is the current Data 61 content-quality checkpoint.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Cross-Biome Family Breadth** is the current Data 62 content-quality checkpoint.
 
 ```text
-Product:       0.9.100.22
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          61
+Data:          62
 Benchmark:     3
-Codename:      Wetland / Island Distribution Repair
+Codename:      Cross-Biome Family Breadth
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 61 is a pure population-distribution repair. East Starfen gains Mirecrest Heron, Reed Eel, Reed Crab, and Glasswing Dragonfly overlap; Reedcrown Isle gains Silver Perch, Glasswing Dragonfly, and Fen Duck overlap; Starfen Lower Delta gains Saltflat Mud Crab presence. No new ecology family, species, source, raw resource, production output, route, place, or durable state family was added.
+Data 62 closes the five-part location flora/fauna diversity repair sequence. It adds two scoped missing families—Ground Squirrel and Finch—through seven regional species/populations across Coppergrass, Waymeet South Marches, Crownfields, East Elderwood, and Slatewater. No new recovery source, raw resource, production record, route, place, or durable state family was added.
 
 ## Product direction
 
@@ -73,13 +73,13 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 61 implementation census:
+Validated Data 62 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              116 / 40
+creatures              123 / 40
 resource sources       143 / 40
 canonical items        408 / 200
 recipes/processes      234 / 75
@@ -91,15 +91,15 @@ routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
-regional/shared packs    38
-pack-owned records     1304
+regional/shared packs    39
+pack-owned records     1320
 runtime seed NPCs        46
 runtime seed enemies     17
 raw-resource use      145/154
 luxury-raw use          14/14
 ```
 
-Population distribution expanded without changing creature-definition, source, item, recipe, or raw-utilization totals. The mechanics-scale gate remains **NOT READY**.
+Creature breadth now exceeds the playable-alpha planning lower bound of 120 through coherent biome families. The mechanics-scale gate remains **NOT READY** because companions, abilities, quests, and named NPCs are still below their mechanics floors.
 
 ## Persistence model
 
@@ -126,13 +126,15 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Wetland / Island Distribution Repair is complete and promoted as Data 61 on `main`.**
+`0.9.100 Content Scale Gate A` remains open. **The five-part location flora/fauna diversity repair sequence is complete through Data 62.**
 
-The flora/fauna audit repair sequence now stands at:
-1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
-2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
-3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
-4. Wetland / Island Distribution Repair — **COMPLETE / Data 61**;
-5. **Cross-biome Family Breadth — next ranked ecology repair, not auto-started**.
+Completed:
+1. Legacy Elderwood Ecology Repair — Data 58;
+2. Dry Upland & Saltpan Ecology Repair — Data 59;
+3. Headwater / Highland Transition Spread — Data 60;
+4. Wetland / Island Distribution Repair — Data 61;
+5. Cross-Biome Family Breadth — Data 62.
 
-The separate world-edge ranking and material-culture queue remain unchanged. Packet E remains the next formal roadmap gate. None is auto-started.
+There is **no automatically authorized sixth ecology repair**. Post-sequence ecology opportunities remain optional: Crownfields broader ordinary-wildlife spread, secondary dungeon substrate/ecology cleanup, a shorebird/wader family when coastal depth warrants it, and a snake family only when a concrete ecological/player loop justifies it.
+
+The separate formal Packet E, world-edge, and material-culture queues remain available and unstarted.
