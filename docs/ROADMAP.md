@@ -42,7 +42,7 @@ Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
 
 ### Emberwash Badlands & Cinderwell Station
 
-**Status: IMPLEMENTED ON `main`; promotion synchronization to Data 55 / Product 0.9.100.16 is in progress.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 55 / Product 0.9.100.16.**
 
 Purpose:
 - establish the northern arid frontier beyond South Redstone without collapsing directly into the Veyra sphere;
@@ -63,6 +63,11 @@ Data 55 authored Emberwash:
 Implementation freeze:
 - `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
 - Check #1547 / run `33279116948`: Repository Audit, **786/786 tests**, Census, Benchmark 3, Benchmark Sample green.
+
+Promoted Data 55:
+- `6f850b4a63a152f17a55dec23224dff42c512cad`;
+- Check #1559 / run `33279480611`: same full gate green;
+- Pages #1692 green.
 
 Game State remains 14; no durable survival, weather, border, desert-access, or wildlife-hunting-state family was introduced.
 
@@ -149,7 +154,7 @@ Post-lock world-edge status:
 - **Headwater Vale — COMPLETE / Data 52.**
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
-- **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55 implementation.**
+- **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55.**
 
 Remaining ranking:
 1. Lower Deepvein;
