@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { listQuestHooks } from '../js/text/data/questHooks.js';
 import { createNewGameState, DEFAULT_START_WORLD_TIME_SECONDS } from '../js/text/gameState.js';
@@ -8,7 +9,7 @@ import {
     createGuidedCreatorState,
     describeCreatorOpening,
 } from '../js/text/systems/characterCreationModel.js';
-import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
+
 import { createPlayerExperienceModel } from '../js/text/systems/playerExperienceEngine.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 
@@ -33,21 +34,22 @@ test('new characters begin at a believable morning hour and the opening names th
     }
 });
 
-test('each origin surfaces a lore-friendly first contact before generic locality actions', () => {
+test('each origin remembers the referred first contact but requires locality discovery before interaction', () => {
     for (const [nationId, guideName, regionName] of ORIGINS) {
         const state = createNewGameState({ nationId });
         const before = createPlayerExperienceModel(state);
         const view = createGameViewModel(state, { outputLines: [] });
 
         assert.equal(before.phase, 'orientation');
-        assert.equal(before.guide.name, guideName);
+        assert.equal(before.guide.name, guideName, 'the creator opening is a legitimate name reference');
         assert.equal(before.guide.met, false);
-        assert.equal(before.primaryAction.intent, 'locality.poi');
-        assert.equal(view.contextualActions[0].id, before.primaryAction.id);
-        assert.match(view.scene.description, new RegExp(guideName));
+        assert.equal(before.primaryAction, null, 'a referenced person is not automatically locatable');
+        assert.match(before.nextStep, new RegExp(guideName));
+        assert.equal(view.contextualActions[0].intent, 'locality.look');
+        assert.equal(view.contextualActions[1].intent, 'locality.explore');
+        assert.equal(view.contextualActions.some((action) => action.intent === 'locality.poi'), false);
 
-        const contact = performLocalityPoiAction(state, before.guide.poiId, 'talk');
-        assert.equal(contact.ok, true);
+        const contact = useKnownPoi(state, before.guide.poiId, 'talk');
         assert.match(contact.message, /Effort becomes mastery/i);
         assert.match(contact.message, new RegExp(regionName));
         assert.doesNotMatch(contact.message, /Dialogue scripting is not implemented/i);
