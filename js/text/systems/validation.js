@@ -65,7 +65,16 @@ export function validateGameState(state) {
     if (!isObject(state.localKnowledge)) issues.push('localKnowledge must be an object.');
     else issues.push(...validateLocalKnowledgeState(state.localKnowledge, { currentPlaceId: state.currentPlaceId }));
     if (Object.hasOwn(state, 'discoveredPois')) issues.push('discoveredPois is legacy state; current Game State uses localKnowledge.');
-    if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
+    if (!Object.hasOwn(state, 'activePoiId')) issues.push('activePoiId must be persisted as null or a POI id.');
+    else if (state.activePoiId !== null) {
+        const activePoi = typeof state.activePoiId === 'string' ? getPointOfInterest(state.activePoiId) : null;
+        if (!activePoi) issues.push('activePoiId must reference a canonical POI or be null.');
+        else if (activePoi.placeId !== state.currentPlaceId) issues.push('activePoiId must belong to currentPlaceId.');
+        if (activePoi && (state.localKnowledge?.currentAnchor?.type !== 'poi' || state.localKnowledge.currentAnchor.id !== activePoi.id)) {
+            issues.push('activePoiId must match the current local POI anchor.');
+        }
+    }
+        if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
 
     if (!isObject(state.projects)) {
         issues.push('projects must be an object.');
