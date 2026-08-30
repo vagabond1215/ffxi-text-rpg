@@ -1,5 +1,11 @@
 import { createContentPack } from './contentPackSchema.js';
 import {
+    listWetlandIslandDistributionRepairEcologyFamilies,
+    listWetlandIslandDistributionRepairGatheringSources,
+    listWetlandIslandDistributionRepairPopulations,
+    listWetlandIslandDistributionRepairSpecies,
+} from './wetlandIslandDistributionRepairEcology.js';
+import {
     listHeadwaterHighlandTransitionRepairGatheringSources,
     listHeadwaterHighlandTransitionRepairPopulations,
     listHeadwaterHighlandTransitionRepairSpecies,
@@ -145,6 +151,35 @@ export const ELDERWOOD_PACK = createContentPack({
 
 
 
+
+
+export const WETLAND_ISLAND_DISTRIBUTION_REPAIR_PACK = createContentPack({
+    id: 'pack-wetland-island-distribution-repair',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: {
+        scope: 'region',
+        regionIds: ['starfen', 'great-mere', 'starfen-delta'],
+        steward: 'mistmere-wetland-survey',
+    },
+    dependencies: [
+        'pack-starfen-opening',
+        'pack-starfen-ecology-breadth',
+        'pack-great-mere-freshwater-ecology',
+        'pack-starfen-delta-brackish-ecology',
+    ],
+    metadata: {
+        name: 'Wetland / Island Distribution Repair',
+        notes: 'Existing-species population spread across East Starfen, Reedcrown Isle, and Starfen Lower Delta; no new taxonomy, resource nodes, production, or geography.',
+    },
+    records: {
+        ecologyFamilies: listWetlandIslandDistributionRepairEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listWetlandIslandDistributionRepairSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listWetlandIslandDistributionRepairPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listWetlandIslandDistributionRepairGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [],
+        recipes: [],
+    },
+});
 
 export const HEADWATER_HIGHLAND_TRANSITION_REPAIR_PACK = createContentPack({
     id: 'pack-headwater-highland-transition-repair',
@@ -1345,6 +1380,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
     ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK,
+    WETLAND_ISLAND_DISTRIBUTION_REPAIR_PACK,
     HEADWATER_HIGHLAND_TRANSITION_REPAIR_PACK,
     REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK,
     EMBERWASH_SALTPAN_ECOLOGY_REPAIR_PACK,
