@@ -20,6 +20,7 @@ import {
     learnPoiName,
     recordPoiExposure,
     recordPoiInteraction,
+    requiresPoiEntryTransition,
     setCurrentLocalAnchor,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
@@ -191,10 +192,14 @@ export function fastTravelToPoi(state, query) {
 
     const result = setPositionAndDiscover(state, currentPlaceId, poi.coordinate, { important: [`Returned to familiar POI ${poi.id}`] });
     if (!result.ok) return result.reason;
-    state.activePoiId = poi.id;
+    const requiresEntry = requiresPoiEntryTransition(poi);
+    state.activePoiId = requiresEntry ? null : poi.id;
     setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: currentPlaceId });
     recordPoiExposure(state, poi, { points: 1 });
-    return [`Went directly to ${getPlayerFacingPoiName(state, poi)}.`, describeCurrentPois(state)].join('\n\n');
+    const arrival = requiresEntry
+        ? `Went directly to the entrance of ${getPlayerFacingPoiName(state, poi)}. Entering is still your choice.`
+        : `Went directly to ${getPlayerFacingPoiName(state, poi)}.`;
+    return [arrival, describeCurrentPois(state)].join('\n\n');
 }
 
 export function describeTravelExitOptions(state) {
