@@ -37,7 +37,6 @@ test('content pack index records expanded stable ownership without changing cano
     const index = buildContentPackIndex(REGIONAL_CONTENT_PACKS);
 
     assert.deepEqual(index.issues, []);
-    console.log('DRY_UPLAND_SALTPAN_MEASURED_PACK_INDEX', JSON.stringify({ packIds: index.packIds, recordCounts: index.recordCounts, ownerCount: index.ownerCount }));
     assert.deepEqual(index.packIds, [
         'pack-shared-foundation',
         'pack-elderwood-opening',
@@ -73,10 +72,12 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-starfen-delta-brackish-ecology',
         'pack-waymeet-marches-ecology',
         'pack-elderwood-legacy-ecology-repair',
+        'pack-redstone-dry-upland-ecology-repair',
+        'pack-emberwash-saltpan-ecology-repair',
     ]);
     assert.equal(index.recordCounts.places, 37);
-    assert.equal(index.recordCounts.items, 359);
-    assert.equal(index.recordCounts.recipes, 219);
+    assert.equal(index.recordCounts.items, 375);
+    assert.equal(index.recordCounts.recipes, 227);
     assert.equal(index.recordCounts.npcs, 43);
     assert.equal(index.recordCounts.npcSchedules, 27);
     assert.equal(index.recordCounts.spellSchools, 4);
