@@ -277,19 +277,19 @@ The preferred representation is an irregular envelope with approximate scale, no
 
 ## 11. Post-lock world-edge priority
 
-Three post-lock geography units are now realized:
+Four post-lock geography units are now realized:
 
 - **Headwater Vale — Data 52**: first grounded Timbercross-to-Waymeet corridor leg.
 - **Starfen Delta / Brackish Coast — Data 53**: Great Mere outflow, Tideglass Landing, first Eastern Sea coast, explicit open-sea boundary.
 - **Gloamwood & Oldbough Refuge — Data 54**: first western old-growth barrier, wagon-limited refuge, deepwood trail, and explicit stop before the western mountain crescent/Lethari realm.
+- **Emberwash Badlands & Cinderwell Station — Data 55**: northern arid frontier, wagon-limited caravan well, saltpan foretrail, and explicit stop before the farther true desert/southern strait/Veyra sphere.
 
 Remaining recommended world-edge order:
 
-1. **Emberwash Badlands** — establishes the northern arid frontier toward the southern strait without collapsing directly into Veyra territory.
-2. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
-3. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
-4. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
-5. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
+1. **Lower Deepvein** — begins the controlled Deep World approach toward the Korren sphere.
+2. **Waymeet Marches / central plateau approaches** — continues the overland route after Headwater Vale.
+3. **Coppergrass belt extensions** — broadens steppe geography once the larger drainage/climate context is stable.
+4. **Drowned Vaults** — remains a specialist submerged-expedition expansion rather than a macro-topology prerequisite.
 
 This ranking is a planning recommendation, not automatic authorization.
 
@@ -352,3 +352,18 @@ West Elderwood
 ```
 
 This again preserves route authority over envelope adjacency. Gloamwood Deep has no ordinary route westward; the western crescent, guarded pass, and Lethari settlements remain separate future bounded units.
+
+Emberwash subsequently realized the first southern arid-frontier barrier as **Product 0.9.100.16 / Data 55**:
+
+```text
+South Redstone Reach
+  -> Emberwash North Wash
+  -> Cinderwell Station [wagon limit]
+  -> Emberwash Saltpan Verge [walk/mount/caravan foretrail]
+  -> farther salt-basin / true-desert approaches [not yet routed]
+  -> southern strait port [not yet authored]
+  -> sea crossing [not yet authored]
+  -> Veyra northern port / heartland [not yet authored]
+```
+
+This preserves the same doctrine on the southern corridor. Reaching the Saltpan Verge does not manufacture a desert, strait, or Veyra route; those remain separate future bounded units.
