@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getEquipmentCatalogEntry } from '../js/text/data/equipmentCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -48,7 +49,7 @@ function category(view, categoryId) {
 }
 
 function reachRedstone(state) {
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, 'prospector-pick'), /Equipped/);
     const view = model(state);
