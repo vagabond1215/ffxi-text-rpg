@@ -14,9 +14,9 @@ import {
     performPoiAction,
     talkAtCurrentGrid,
 } from '../js/text/systems/poiEngine.js';
+import { recordPoiExposure } from '../js/text/systems/localKnowledgeEngine.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
 import { validateWorldData } from '../js/text/systems/validation.js';
-
 
 test('starter POIs are populated for major cities', () => {
     assert.ok(getPoisForPlace('thornwall-southgate').length >= 8);
@@ -38,24 +38,29 @@ test('world validation includes POI and catalog data', () => {
     assert.deepEqual(validateWorldData(), []);
 });
 
-test('describePlacePois lists canonical seeded POIs', () => {
+test('describePlacePois remains a canonical developer/debug listing', () => {
     assert.match(describePlacePois('brasshaven-market-ring'), /Dessa Rivet/);
 });
 
-test('talking at current grid discovers same-place fast-travel POI', () => {
+test('talking at a physically present POI learns its name but does not make it instantly familiar', () => {
     const state = createInitialState();
     const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
     setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
 
-    assert.match(talkAtCurrentGrid(state, 'Sella Thorn'), /Discovered: yes/);
+    assert.match(talkAtCurrentGrid(state, 'Sella Thorn'), /Sella Thorn/);
     assert.match(describeDiscoveredPois(state), /Sella Thorn/);
+    assert.equal(state.localKnowledge.pois[vendor.id].learnedName, true);
+    assert.notEqual(state.localKnowledge.pois[vendor.id].knowledgeState, 'familiar');
 
     setPositionAndDiscover(state, 'thornwall-southgate', { levelId: 'main', coord: 'H-8' });
-    assert.match(fastTravelToPoi(state, 'Sella Thorn'), /Fast traveled to Sella Thorn/);
+    assert.match(fastTravelToPoi(state, 'Sella Thorn'), /do not yet know the locality well enough/i);
+
+    recordPoiExposure(state, vendor, { points: 10 });
+    assert.match(fastTravelToPoi(state, 'Sella Thorn'), /Went directly to Sella Thorn/);
     assert.equal(state.position.coord, vendor.coordinate.coord);
 });
 
-test('POI actions render shop guild quest and companion interactions', () => {
+test('POI actions render shop guild quest and companion interactions after physical positioning', () => {
     const state = createInitialState();
     const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
     setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
@@ -81,7 +86,7 @@ test('POI actions render shop guild quest and companion interactions', () => {
     assert.doesNotMatch(companionOutput, /Trust/);
 });
 
-test('router exposes POI discovery fast travel catalog companion and exit actions', () => {
+test('router keeps legacy POI commands but direct-return command obeys familiarity', () => {
     const state = createInitialState();
     const vendor = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sella Thorn');
     setPositionAndDiscover(state, 'thornwall-southgate', vendor.coordinate);
@@ -91,12 +96,14 @@ test('router exposes POI discovery fast travel catalog companion and exit action
         reload: () => {},
     });
 
-    assert.match(router('here'), /Sella Thorn/);
+    assert.doesNotMatch(router('here'), /Sella Thorn/);
     assert.match(router('talk Sella Thorn'), /Sella Thorn/);
     assert.match(router('shop Sella Thorn'), /Bronze Sword/);
     assert.match(router('discovered'), /Sella Thorn/);
-    assert.match(router('fastpoi Sella Thorn'), /Fast traveled to Sella Thorn/);
-    assert.match(router('exits'), /Known exits/);
+    assert.match(router('fastpoi Sella Thorn'), /do not yet know the locality well enough/i);
+    recordPoiExposure(state, vendor, { points: 10 });
+    assert.match(router('fastpoi Sella Thorn'), /Went directly to Sella Thorn/);
+    assert.match(router('exits'), /Route connections/);
 
     const companion = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Rowan Greymark');
     setPositionAndDiscover(state, 'thornwall-southgate', companion.coordinate);
