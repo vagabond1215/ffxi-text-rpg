@@ -291,6 +291,6 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Cross-Biome Family Breadth is the current Data 62 bounded unit on `main`, and the ordered five-part location flora/fauna diversity repair sequence is complete.**
+Phase 0.9 remains open, while **`0.9.100 Content Scale Gate A` is complete after Packet E**. Cross-Biome Family Breadth remains the promoted Data 62 runtime/data checkpoint, and the ordered five-part location flora/fauna diversity repair sequence is complete.
 
-No sixth ecology repair is automatically queued. Packet E, world-edge expansion, material-culture work, and optional post-sequence ecology targets require a fresh explicit selection.
+Packet E's permanent integration/census evidence is `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started. World-edge expansion, Occupational Tool Conversion, and optional post-sequence ecology targets remain separate explicit-selection queues.
