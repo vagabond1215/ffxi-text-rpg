@@ -343,6 +343,12 @@ export function nextExplorationSequence(state) {
     return knowledge.explorationSequence;
 }
 
+export function requiresPoiEntryTransition(poiOrId) {
+    const poi = resolvePoi(poiOrId);
+    if (!poi) return false;
+    return ['shop', 'guild', 'storage'].includes(poi.type);
+}
+
 export function getPoiFamiliarityTier(poiOrId) {
     const poi = resolvePoi(poiOrId);
     if (!poi) return 2;
