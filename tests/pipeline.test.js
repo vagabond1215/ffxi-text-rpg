@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.100.21');
+    assert.equal(PRODUCT_VERSION, '0.9.100.22');
     assert.equal(PACKAGE_VERSION, '0.9.100');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 14);
-    assert.equal(VERSION.data, 60);
+    assert.equal(VERSION.data, 61);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Headwater / Highland Transition Repair');
+    assert.equal(VERSION.codename, 'Wetland / Island Distribution Repair');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -89,7 +89,7 @@ test('version manifest separates product package persistence data and scale-cont
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.9.100.21',
+            versionManifest: '0.9.100.22',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -113,7 +113,7 @@ test('version manifest separates product package persistence data and scale-cont
             npcSchedules: '0.9.0',
             contentCatalogRegistry: '0.3.0',
             contentPackSchema: '0.2.0',
-            regionalContentPacks: '0.19.0',
+            regionalContentPacks: '0.20.0',
             contentPackValidation: '0.3.0',
             contentScaleGate: '0.2.0',
             productionCatalog: '0.17.0',
@@ -154,13 +154,13 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeVersion(), /Package: 0\.9\.100/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
-    assert.match(describeVersion(), /Data: 60/);
+    assert.match(describeVersion(), /Data: 61/);
     assert.match(describeVersion(), /Benchmark: 3/);
     assert.match(describeVersion(), /Codename: Headwater \/ Highland Transition Repair/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.19\.0/);
+    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.20\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentScaleGate: 0\.2\.0/);
     assert.match(describeSystemVersions(), /productionCatalog: 0\.17\.0/);

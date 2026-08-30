@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.100.21';
+export const PRODUCT_VERSION = '0.9.100.22';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 14,
-    data: 60,
+    data: 61,
     benchmark: 3,
-    codename: 'Headwater / Highland Transition Repair',
+    codename: 'Wetland / Island Distribution Repair',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.21',
+    versionManifest: '0.9.100.22',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -76,7 +76,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
     regionalEcology: '0.2.0',
-    ecologyRegistry: '0.14.0',
+    ecologyRegistry: '0.15.0',
     greatMereEcology: '0.1.0',
     ironspineEcology: '0.1.0',
     headwaterEcology: '0.1.0',
@@ -88,6 +88,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     elderwoodRepairEcology: '0.1.0',
     dryUplandSaltpanRepairEcology: '0.1.0',
     headwaterHighlandTransitionRepairEcology: '0.1.0',
+    wetlandIslandDistributionRepairEcology: '0.1.0',
     ecologyState: '0.1.0',
     populations: '0.2.0',
     gatheringSources: '0.3.0',
@@ -117,7 +118,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     transportServiceBoard: '0.2.0',
     contentCatalogRegistry: '0.3.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.19.0',
+    regionalContentPacks: '0.20.0',
     contentPackValidation: '0.3.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
@@ -184,7 +185,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     skillProgression: '0.6.0',
     liveTick: '0.2.1',
     maps: '0.11.0',
-    places: '0.11.3',
+    places: '0.11.4',
     coordinates: '0.1.0',
     navigation: '0.1.1',
     placeAtlas: '0.6.0',
