@@ -1,4 +1,5 @@
 import { getNation } from './data/nations.js';
+import { getOriginExperienceContent } from './data/playerExperienceContent.js';
 import { getStartingDisciplineKit } from './data/startingDisciplineKits.js';
 import { createPlayerCharacter } from './entities/entityFactory.js';
 import { createSeedEnemies, createSeedNpcs } from './data/seedEntities.js';
@@ -12,7 +13,7 @@ import { createEcologyState } from './systems/ecologyEngine.js';
 import { addItemToContainer } from './systems/inventoryEngine.js';
 import { createPartyState } from './systems/partyEngine.js';
 import { describeCurrentPois } from './systems/poiEngine.js';
-import { createLocalKnowledgeState, getPlayerFacingNpcName } from './systems/localKnowledgeEngine.js';
+import { createLocalKnowledgeState, getPlayerFacingNpcName, referencePoi } from './systems/localKnowledgeEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
 import { createRelationshipState } from './systems/relationshipEngine.js';
 import { createResourceOpportunityState } from './systems/resourceOpportunityEngine.js';
@@ -51,7 +52,7 @@ export function createNewGameState(options = {}) {
     });
     if (options.includeStartingDisciplineKit === true) grantStartingDisciplineKit(player, mainJobId);
 
-    return {
+    const state = {
         version: VERSION.gameState,
         worldTime: createWorldTimeState({ totalSeconds: startWorldTimeSeconds }),
         simulation: createSimulationControlState({
@@ -83,6 +84,10 @@ export function createNewGameState(options = {}) {
         combatSequence: 0,
         activeBattle: null,
     };
+
+    const originExperience = getOriginExperienceContent(nation.id);
+    if (originExperience?.guidePoiId) referencePoi(state, originExperience.guidePoiId, { learnedName: true });
+    return state;
 }
 
 export function replaceState(target, nextState) {
