@@ -14,7 +14,7 @@ export const PLAYER_INFORMATION_VERSION = 1;
 
 const LOCALITY_ACTION_PRIORITY = Object.freeze(['shop', 'guild', 'quest', 'storage', 'companion', 'travel', 'talk']);
 const LOCALITY_ACTION_LABELS = Object.freeze({
-    shop: 'Browse',
+    shop: 'Shop',
     guild: 'Guild',
     quest: 'Commission',
     storage: 'Storage',
@@ -176,7 +176,8 @@ function createKnowledgeModel(state) {
         .map((place) => Object.freeze({ id: place.id, name: place.name, region: place.region ?? '', type: place.type ?? '' }));
 
     const discoveredPois = [];
-    for (const placeId of Object.keys(state.discoveredPois ?? {})) {
+    const learnedPlaceIds = [...new Set(Object.values(state.localKnowledge?.pois ?? {}).map((entry) => entry.placeId))];
+    for (const placeId of learnedPlaceIds) {
         const place = getPlace(placeId);
         for (const poi of getDiscoveredPoisForPlace(state, placeId)) {
             discoveredPois.push(Object.freeze({
@@ -204,18 +205,29 @@ function createLocalModel(state) {
 
     const points = listLocalityPoints(state, { limit: 100 }).map((poi) => {
         const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
+        const primaryAction = poi.present
+            ? Object.freeze({
+                id: `information:local-poi:${poi.id}:${action}`,
+                label: `${LOCALITY_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
+                intent: 'locality.poi',
+                payload: Object.freeze({ poiId: poi.id, action }),
+            })
+            : Object.freeze({
+                id: `information:local-poi-visit:${poi.id}`,
+                label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
+                intent: 'locality.poi.visit',
+                payload: Object.freeze({ poiId: poi.id }),
+            });
         return Object.freeze({
             id: poi.id,
             name: poi.name,
             type: poi.type,
             notes: poi.notes ?? '',
+            knowledgeState: poi.knowledgeState,
+            familiarityPoints: poi.familiarityPoints,
+            present: Boolean(poi.present),
             actions: Object.freeze([...(poi.actions ?? [])]),
-            action: Object.freeze({
-                id: `information:local-poi:${poi.id}:${action}`,
-                label: `${LOCALITY_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
-                intent: 'locality.poi',
-                payload: Object.freeze({ poiId: poi.id, action }),
-            }),
+            action: primaryAction,
         });
     });
 
@@ -224,9 +236,11 @@ function createLocalModel(state) {
         name: destination.name,
         region: destination.region ?? '',
         travelSeconds: destination.travelSeconds,
+        knowledgeState: destination.knowledgeState,
+        navigationState: destination.navigationState,
         action: Object.freeze({
             id: `information:locality:${destination.id}`,
-            label: `Go · ${destination.name}`,
+            label: `${destination.navigationState === 'familiar' ? 'Walk to' : 'Enter'} · ${destination.name}`,
             intent: 'locality.move',
             payload: Object.freeze({ destinationId: destination.id }),
         }),
