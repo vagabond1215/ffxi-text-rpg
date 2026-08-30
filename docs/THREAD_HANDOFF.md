@@ -15,30 +15,8 @@ Codename:      Cross-Biome Family Breadth
 Runtime:       Node >=24
 Phase:         0.9
 Track state:   0.9.100 Content Scale Gate A COMPLETE
-Next track:    0.9.200 Adventure Vertical Slices QUEUED
+Next formal:   0.9.200 Adventure Vertical Slices QUEUED
 ```
-
-## Current integration state
-
-**Packet E — Gate A Integration & Census Audit is complete. `0.9.100 Content Scale Gate A` passes and is closed.**
-
-Permanent audit:
-- `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
-
-Packet E implementation freeze:
-- `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
-- hosted Check **#1638 / run `33332932015`**;
-- job `99314664552`;
-- Repository Audit PASS;
-- **822/822 tests PASS**;
-- Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
-
-Packet E was promoted to `main` at the same SHA:
-- `81b2928611a297d765eaa64f7cedeadb5fd697ee`.
-
-Packet E is an audit/governance checkpoint only. It does not replace the latest runtime/data promotion.
 
 Latest promoted runtime/data remains:
 - Cross-Biome Family Breadth;
@@ -46,101 +24,94 @@ Latest promoted runtime/data remains:
 - promoted runtime/data SHA `bc472b60374a048686b0ee6c877ba26c515aec35`;
 - Product 0.9.100.23 / Data 62 / Game State 14 / Package 0.9.100.
 
-The ordered five-part location flora/fauna diversity repair sequence is complete:
-1. Legacy Elderwood Ecology Repair — Data 58;
-2. Dry Upland & Saltpan Ecology Repair — Data 59;
-3. Headwater / Highland Transition Spread — Data 60;
-4. Wetland / Island Distribution Repair — Data 61;
-5. Cross-Biome Family Breadth — Data 62.
+Packet E / Content Scale Gate A remains complete:
+- audit `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`;
+- implementation freeze/promoted audit SHA `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
+- Check #1638 / run `33332932015`: Repository Audit, **822/822 tests**, Census, Benchmark 3, Benchmark Sample PASS.
 
-Do **not** restart that sequence automatically.
+The five-part flora/fauna diversity repair sequence remains complete through Data 62. Do not restart it automatically.
 
-## Gate A closure result
+## Current completed planning unit
 
-Packet E evaluates both the numeric planning bands and the qualitative integration rules.
+**Player Information & Locality Discovery design authority is COMPLETE; implementation has NOT started.**
 
-**Gate A: PASS.**
+Permanent authority:
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
-Data 62 clears every Gate A planning band:
+The user-facing intent is now explicit:
 
-```text
-named NPCs                 47 / Gate A 30+
-shop/service sites         37 / Gate A 20+
-creature definitions      123 / Gate A 28+
-resource sources          143 / Gate A 28+
-canonical items           408 / Gate A 110+
-recipes/processes         234 / Gate A 40+
-abilities/techniques       41 / Gate A 40+
-quests/contracts           18 / Gate A 18+
-companions                  1 / author only when justified
-transport services          7 / Gate A 5 when topology justifies
-```
+- the UI must not expose all authored options merely because they exist;
+- canonical world truth and character knowledge are separate;
+- NPC canonical names are masked until learned through introduction, reference, credible visual identification, prior acquaintance, or other authored source;
+- knowing a name and recognizing the person on sight are separable;
+- POI/location knowledge is layered:
+  - Unknown;
+  - Referenced/Rumored;
+  - Sighted;
+  - Recognized;
+  - Familiar;
+- a sighted entrance/building/district never auto-transitions;
+- direct `Go to`-class local navigation is familiarity-gated;
+- settlement navigation may use an abstract learned locality graph rather than a literal city coordinate grid;
+- route/passages remain inter-place traversability authority;
+- `Look Around` is immediate local observation;
+- `Explore` advances fictional time and resolves context-weighted discovery/ambient events;
+- exploration RNG must use deterministic/injectable game conventions, not wall-clock randomness;
+- temporary directions create a save-persistent search bias rather than teleportation;
+- wandering/conditional merchants/events may remain ephemeral and non-fast-travelable even after encounter;
+- shops use reach -> Enter -> NPC interaction -> Shop -> stock-derived categories/Browse;
+- closed services respect schedules without erasing the known building;
+- specialty/hidden services may be gated by quest, relationship/reputation, referral, schedule, event/weather/harvest conditions, remote geography, limited stock, or hidden access;
+- theft/payment/ambush/reputation/discovery outcomes must call owning gameplay systems rather than exist only in prose;
+- greeting/dialogue prose should have personality-consistent variants while semantic outcomes remain explicit and testable.
 
-Qualitative Gate A evidence also passes:
-- Pack-v2 item source/sink or exemption validation;
-- connected resource/production/provenance use;
-- real capability learning/access/use/runtime coverage;
-- NPC schedules tied to canonical fictional world time;
-- reference-valid and runtime-exercised commitments;
-- NPC-backed persistent companion identity;
-- declared cross-pack dependencies and stable ownership;
-- legacy-ID leakage rejection;
-- separate generated 1,401-record scale fixture validation;
-- canonical census deduplication that excludes ownership refs and fixtures.
+Initial familiarity tuning defaults recorded in the authority:
+- Tier 1 major/high-traffic: 5 exposure points;
+- Tier 2 ordinary specialist/secondary: 7;
+- Tier 3 tucked-away/uncommon: 10;
+- Tier 4 obscure/secretive: 14.
 
-The later mechanics-scale gate remains **NOT READY**. Gate A closure is not mechanics-scale completion.
+These are data-driven defaults, not universal constants. Strong guidance, maps, being led, and purposeful use may accelerate familiarity so the loop does not become button grinding.
 
-## Data 62 census
+## Important current-runtime mismatch
 
-```text
-places/localities                        55
-named NPCs                               47
-shop/service sites                       37
-creature definitions                    123
-resource sources                        143
-canonical items                         408
-recipes/processes                       234
-abilities/techniques                     41
-quests/contracts                         18
-companions                                1
-transport services                        7
-routes                                   25
-spell schools                             4
-capabilities/training definitions        44
-NPC schedules                            27
-regional/shared content packs            39
-pack-owned records                     1320
-runtime seed NPCs                        46
-runtime seed enemies                     17
-raw resources with production demand 145/154
-luxury raws with production demand      14/14
-```
+Existing pieces are useful but too permissive for the intended player experience:
 
-Mechanics-floor gaps:
-- companions 1/4;
-- abilities/techniques 41/100;
-- quests/contracts 18/30;
-- named NPCs 47/50.
+- `atlas` already owns physical visit knowledge;
+- `discoveredPois` is currently binary;
+- POI interaction currently discovers the POI immediately;
+- same-place POI fast travel can follow that one discovery;
+- some current player-facing projections can expose canonical NPC names directly.
 
-Companions are the largest relative gap. Abilities are the largest absolute gap. Do not close either with disconnected filler.
+Do **not** polish broad UI on top of those semantics.
 
-Creature breadth has crossed the playable-alpha planning lower bound of 120.
+The current binary `discoveredPois` behavior is transitional.
+
+## Planned prerequisite before broad UI
+
+When player-facing UI/control implementation is explicitly selected, first implement the bounded **Local Knowledge & Familiarity Foundation**.
+
+Expected order:
+
+1. define durable locality/NPC knowledge state;
+2. mask player-facing NPC identity;
+3. split reference/sighting/recognition/familiarity;
+4. replace one-step POI direct navigation;
+5. add `Look Around` / `Explore` semantic actions;
+6. add explicit entry/exit transition gates;
+7. add familiarity-aware local navigation;
+8. add temporary directions/search bias;
+9. add contextual exploration event resolver;
+10. stage NPC-mediated shop interaction;
+11. then build/polish the broader UI.
+
+Player personality/dialogue disposition is a separate future bounded player-identity feature and may later feed dialogue presentation. It does not block core locality discovery.
 
 ## Persistence / version decision
 
-Packet E introduces no:
-- runtime behavior change;
-- canonical authored-data record;
-- serialized state family;
-- account/session contract;
-- timer/task/listener owner;
-- ecology state authority;
-- route state authority;
-- inventory authority;
-- supported-save migration;
-- benchmark contract change.
+This completed unit is **design/documentation only**.
 
-Therefore:
+No runtime or canonical authored-data change occurred.
 
 ```text
 Product:       0.9.100.23 unchanged
@@ -151,83 +122,90 @@ Data:          62 unchanged
 Benchmark:     3 unchanged
 ```
 
-No migration is warranted.
+However, implementation of Local Knowledge & Familiarity Foundation must deliberately reassess Game State.
+
+Reason:
+- familiarity affects future navigation;
+- learned NPC identity affects future presentation/social access;
+- known connectors affect available direct actions;
+- temporary directions/search bias affects future exploration probabilities;
+- these facts must survive save/load.
+
+Do not hide that durable contract change inside UI code or preserve obsolete `discoveredPois` semantics merely for pre-alpha save compatibility.
+
+## Authorities synchronized in this planning pass
+
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` — new permanent design authority;
+- `docs/DEVELOPMENT_DIRECTION.md`;
+- `docs/ARCHITECTURE.md`;
+- `docs/SYSTEM_CATALOG.md`;
+- `docs/QUALITY_GATES.md`;
+- `docs/EXECUTION_PIPELINE.md`;
+- `docs/ROADMAP.md`;
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`;
+- `PROJECT_PROFILE.yaml`;
+- `README.md`.
+
+Last pre-handoff authority commit:
+- `0fcf16192c9f60fd3c7717f1f1e677df955597fe`.
+
+**This file is the final repository-file write for the planning pass.**
 
 ## Standing rules preserved
 
 Continue to preserve:
 - route graph as inter-place traversability/distance/time authority;
 - touching map envelopes do not imply travel;
-- region ecology through existing family/species/population/source authorities;
-- passive/wary wildlife must not become hostile merely to manufacture drops;
-- distribution does not automatically create a recovery source;
-- exact source/place/action provenance for recoverable resources;
-- explicit food-consumption safety for food-capable raws/items;
-- intentional production/economic/use sinks or explicit exemptions;
-- Pack-v2 ownership/dependency validation without duplicating canonical catalogs;
-- generated scale fixtures excluded from canonical census;
-- deterministic census guards;
-- Game State 14 unless a genuinely new durable serialized state family is introduced.
-
-## Permanent authority synchronization
-
-Synchronized before this handoff:
-- `README.md`;
-- `PROJECT_PROFILE.yaml`;
-- `docs/EXECUTION_PIPELINE.md`;
-- `docs/ROADMAP.md`;
-- `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`;
-- `docs/SYSTEM_CATALOG.md`;
-- `docs/QUALITY_GATES.md`;
-- `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
-
-The last pre-handoff authority commit on the continuity-validation branch is:
-- `b1c9f0063ca64ca43a111726053bda54dfd15309`.
-
-**This file is the final repository-file write.** The exact commit produced by this handoff is the final continuity candidate. It must receive hosted Check and Pages green before closure and before being reported as the final authoritative head.
+- acquired map knowledge rather than omniscient maps;
+- ecology/provenance/food-safety/production-sink rules;
+- passive wildlife behavior;
+- Pack-v2 ownership/dependency rules;
+- deterministic simulation/testing conventions;
+- canonical fictional time;
+- no wall-clock canonical schedules;
+- no duplicate world/NPC/route database in player knowledge state;
+- no serialized presentation prose or button lists.
 
 ## Next decision boundary
 
-No next unit is auto-started.
+No implementation was auto-started.
 
-Formal roadmap ranking:
-1. **`0.9.200 Adventure Vertical Slice A`** — prefer a character-centered slice that naturally adds a justified recruitable companion, connected quests/contracts, and supporting NPC/service relationships while reusing existing geography where practical;
-2. **`0.9.300 Advanced Combat / Training`** — deepen ability/technique breadth through real learning, equipment, discipline, and encounter requirements;
-3. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion is the strongest already-planned bounded candidate;
-4. **`0.9.500 Quest / Social Depth`**;
-5. **`0.9.600 Playable-Alpha Scale Push`**.
+Formal roadmap remains:
+1. `0.9.200 Adventure Vertical Slice A`;
+2. `0.9.300 Advanced Combat / Training`;
+3. `0.9.400 Economy / Production Depth` / Occupational Tool Conversion;
+4. `0.9.500 Quest / Social Depth`;
+5. `0.9.600 Playable-Alpha Scale Push`.
 
-Separate world-edge ranking:
+Separate world-edge ranking remains:
 1. Waymeet Inner Marches / outer crossroads approach;
 2. Coppergrass extensions;
 3. Drowned Vaults.
 
-Optional ecology remains separate and requires fresh explicit selection:
-- broader Crownfields ordinary-wildlife spread using existing families;
-- secondary Deepvein Mine / Sunken Archive ecology/substrate cleanup;
-- shorebird/wader breadth if future coastal depth warrants it;
-- snake breadth only when tied to a concrete ecological/player/economic loop.
+**Before broad UI/player-control implementation, Local Knowledge & Familiarity Foundation is a mandatory prerequisite bounded unit.**
 
 ## Restart order
 
 1. `AGENTS.md`
 2. this file
 3. `PROJECT_PROFILE.yaml`
-4. `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`
-5. `docs/EXECUTION_PIPELINE.md`
-6. `docs/ROADMAP.md`
-7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-8. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`
-9. relevant permanent authority for the explicitly selected next unit
+4. `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`
+5. `docs/DEVELOPMENT_DIRECTION.md`
+6. `docs/ARCHITECTURE.md`
+7. `docs/EXECUTION_PIPELINE.md`
+8. `docs/ROADMAP.md`
+9. relevant runtime files only if implementing the prerequisite:
+   - `js/text/systems/atlasEngine.js`
+   - `js/text/systems/poiEngine.js`
+   - `js/text/gameState.js`
+   - `js/text/systems/validation.js`
+   - player-facing information/UI projection files
 
 ## Final validation requirement
 
-The exact final `main` head must have:
-- hosted Check green;
-- Pages green.
+Validate the exact final `main` head with hosted Check and Pages.
 
-Hosted Check must include:
+Hosted Check includes:
 
 ```bash
 npm run audit:repo
@@ -236,5 +214,3 @@ npm run census
 npm run benchmark
 npm run benchmark:sample
 ```
-
-If final continuity validation exposes only stale authority assertions, repair them narrowly, rewrite this handoff last again, and rerun the exact candidate before closure.
