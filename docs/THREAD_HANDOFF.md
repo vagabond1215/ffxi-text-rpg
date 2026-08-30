@@ -230,6 +230,17 @@ World-edge ranking remains:
 
 These are separate from the ecology-repair sequence and are not auto-started.
 
+## Final synchronization validation note
+
+The first fully synchronized Data 58 head, `7f445418aa69ff765cdb4753b9afc75b715c8e61`, passed Repository Audit but exposed one stale regression expectation in `tests/pipeline.test.js`: `describeVersion()` was still matched against Product 0.9.100.18.
+
+Repair:
+- `25dea3611bfbe03a4b14fe76233ea1df1cf9579b`;
+- assertion-only correction to Product 0.9.100.19;
+- no runtime, ecology, census, persistence, or content change.
+
+The exact head after this handoff is the final Data 58 continuity candidate and must have hosted Check + Pages green before closure.
+
 ## Other queued choices
 
 Formal roadmap:
