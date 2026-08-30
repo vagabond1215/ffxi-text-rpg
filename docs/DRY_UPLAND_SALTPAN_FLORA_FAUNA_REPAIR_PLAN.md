@@ -1,8 +1,10 @@
 # Dry Upland & Saltpan Flora & Fauna Repair Plan
 
-Status: **BOUNDED IMPLEMENTATION PLAN — AUTHORIZED.**
+Status: **COMPLETE / PROMOTED DATA 59.**
 
 Baseline: Product **0.9.100.19**, Data **58**, Game State **14**, Package **0.9.100**.
+
+Promoted result: Product **0.9.100.20**, Data **59**, Game State **14**, Package **0.9.100**.
 
 Authority:
 - `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
@@ -164,3 +166,34 @@ npm run benchmark:sample
 ```
 
 Deterministic census guards move only from measured hosted results.
+
+
+## 10. Implementation result
+
+Implemented as planned with one bounded production adjustment: **Ridge Yarrow Field Wash** replaced the planned salve because the current recipe substrate lacks an appropriate local fat/wax carrier and an external wash gives the herb a real medicinal/alchemical sink without inventing a supporting ingredient.
+
+Final authored delta:
+- 0 new ecology families;
+- 1 new species;
+- 3 new population placements;
+- 8 exact-provenance flora sources/raws;
+- 8 transformations;
+- 8 production outputs;
+- 2 Pack-v2 repair ownership graphs;
+- non-harvested dryland/saltpan flora layers added to place descriptions.
+
+Measured raw utilization improved to **144/153**. The increase is nine used raws rather than eight because Juniper-Millet Pot also activates demand for pre-existing Ridge Millet.
+
+Implementation freeze:
+- `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d`;
+- Check #1610 / run `33322534675`;
+- Repository Audit PASS;
+- **807/807 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+Promoted runtime/data SHA:
+- `4bc397beb5a0f987c462364599382419bf89cd43`.
+
+No later ecology repair is authorized by completion of this unit.

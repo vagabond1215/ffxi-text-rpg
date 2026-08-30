@@ -41,7 +41,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: dry-upland-saltpan-flora-fauna-repair-planned
+  current_normal_work: data-59-dry-upland-saltpan-ecology-repair-promoted-continuity-sync
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -99,6 +99,11 @@ git:
   latest_legacy_elderwood_ecology_implementation_check_sha: 3732f22a464a3cdd2d11409475730ea804dfa1a6
   latest_legacy_elderwood_ecology_implementation_check_result: success-802-of-802-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_legacy_elderwood_ecology_promoted_runtime_sha: 9988c34e985d28586624d64258955cecec55e5d5
+  latest_dry_upland_saltpan_implementation_check: 33322534675
+  latest_dry_upland_saltpan_implementation_check_number: 1610
+  latest_dry_upland_saltpan_implementation_check_sha: 786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d
+  latest_dry_upland_saltpan_implementation_check_result: success-807-of-807-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_dry_upland_saltpan_promoted_runtime_sha: 4bc397beb5a0f987c462364599382419bf89cd43
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -107,10 +112,10 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: legacy-elderwood-ecology-repair
-  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-58
-  latest_data_bounded_unit: legacy-elderwood-ecology-repair
-  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-58
+  latest_bounded_unit: dry-upland-and-saltpan-ecology-repair
+  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-59
+  latest_data_bounded_unit: dry-upland-and-saltpan-ecology-repair
+  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-59
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: waymeet-inner-marches-outer-crossroads-approach
@@ -120,8 +125,8 @@ progression:
   southern_world_edge_candidate: emberwash-badlands-complete-data-55
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
-  next_ecology_repair_candidate: dry-upland-and-saltpan-ecology-repair
-  next_ecology_repair_candidate_status: ranked-after-legacy-elderwood-not-auto-authorized
+  next_ecology_repair_candidate: headwater-highland-transition-spread
+  next_ecology_repair_candidate_status: ranked-after-dry-upland-saltpan-not-auto-authorized
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   central_continent_surface_maturity_estimate: 60-to-70-percent
@@ -154,14 +159,15 @@ validation:
   lower_deepvein_flow_guard: tests/playerLowerDeepveinFlow.test.js
   waymeet_marches_flow_guard: tests/playerWaymeetMarchesFlow.test.js
   legacy_elderwood_ecology_repair_guard: tests/playerLegacyElderwoodEcologyRepairFlow.test.js
+  dry_upland_saltpan_ecology_repair_guard: tests/playerDryUplandSaltpanEcologyRepairFlow.test.js
 quality:
-  current_product_version: 0.9.100.19
+  current_product_version: 0.9.100.20
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 58
+  current_data_version: 59
   current_benchmark_version: 3
-  current_codename: Legacy Elderwood Ecology Repair
+  current_codename: Dry Upland & Saltpan Ecology Repair
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -281,6 +287,23 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_59:
+    dry_upland_new_species_added: 1
+    dry_upland_population_placements_added: 3
+    dry_upland_saltpan_sources_added: 8
+    dry_upland_saltpan_raw_resources_added: 8
+    dry_upland_saltpan_transformations_added: 8
+    dry_upland_saltpan_production_outputs_added: 8
+    new_fauna_family_added: false
+    north_redstone_ridge_ibex_lizard_grouse_transition_spread: true
+    south_redstone_grass_herb_resin_layers_repaired: true
+    emberwash_saltpan_halophyte_food_fiber_decorative_layers_repaired: true
+    decorative_background_flora_kept_distinct_from_resource_nodes: true
+    existing_ridge_millet_production_demand_activated: true
+    canonical_raw_production_utilization: 144-of-153
+    explicit_food_consumption_metadata: true
+    period_appropriate_food_safety_presentation: true
+    persistence_family_added: false
   data_58:
     legacy_elderwood_new_species_added: 6
     legacy_elderwood_population_placements_added: 9
@@ -341,10 +364,10 @@ content_scale:
     places_localities: 55
     named_npcs: 47
     shop_service_sites: 37
-    creature_definitions: 110
-    resource_sources: 134
-    canonical_items: 390
-    recipes_processes: 225
+    creature_definitions: 111
+    resource_sources: 142
+    canonical_items: 406
+    recipes_processes: 233
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
@@ -353,8 +376,8 @@ content_scale:
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 27
-    regional_shared_packs: 34
-    pack_owned_records: 1241
+    regional_shared_packs: 36
+    pack_owned_records: 1277
     runtime_seed_npcs: 46
     runtime_seed_enemies: 17
   mechanics_floors_reached:

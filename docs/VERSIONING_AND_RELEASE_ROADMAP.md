@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.19
+Product:       0.9.100.20
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          58
+Data:          59
 Benchmark:     3
-Codename:      Legacy Elderwood Ecology Repair
+Codename:      Dry Upland & Saltpan Ecology Repair
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -892,6 +892,37 @@ Measured Data 58 census: 55 places, 47 NPCs, 37 service sites, 110 creatures, 13
 
 The pass adds static catalog definitions and instances of existing population/source authorities. It does not add a new serialized botanical state, ecology family state, fishing state, cellar state, route state, or player/world-state family.
 
+### `0.9.100.20` — Dry Upland & Saltpan Ecology Repair
+
+This revision repairs underrepresented dry-upland and saline flora plus one transition-fauna gap without adding geography.
+
+```text
+Product       0.9.100.19 -> 0.9.100.20
+Package       0.9.100    -> 0.9.100
+Data          58         -> 59
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable Data 59 additions:
+- one new Redstone Stone Grouse species in the existing Grouse family;
+- three North Redstone population placements using existing Ridge Ibex, Sunscale Lizard, and Grouse families;
+- eight exact-provenance flora sources/raws across South Redstone, North Redstone, and Emberwash Saltpan;
+- eight transformations and eight outputs;
+- two Pack-v2 repair ownership graphs;
+- explicit practical preparation metadata for Stone Thyme, Wind Juniper Berries, and Saltbrush Shoots;
+- descriptive non-harvested vegetation layers so dryland/saltpan diversity is not reduced to node count;
+- no new fauna family and no geography expansion.
+
+Implementation freeze `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d` passed Check #1610 / run `33322534675` with Repository Audit, **807/807 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `4bc397beb5a0f987c462364599382419bf89cd43`.
+
+Measured Data 59 census: 55 places, 47 NPCs, 37 service sites, 111 creatures, 142 sources, 406 items, 233 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 routes, 27 schedules, 36 packs, and 1,277 pack-owned records. Raw-resource production utilization is **144/153**; luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+The pass adds static catalog definitions and instances of existing population/source authorities. It does not add a serialized botanical state, saltpan state, transition-fauna state, route state, or player/world-state family.
+
 ## Persistence history
 
 Relevant late history:
@@ -925,6 +956,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.17          no Game State change; Data 55 -> 56
 0.9.100.18          no Game State change; Data 56 -> 57
 0.9.100.19          no Game State change; Data 57 -> 58
+0.9.100.20          no Game State change; Data 58 -> 59
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -950,15 +982,15 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.17.0
+regionalContentPacks   0.18.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
 commitments            0.7.0
-productionCatalog      0.15.0
-productionItems        0.16.0
-ecologyRegistry        0.12.0
-resourceItemRegistry   0.13.0
+productionCatalog      0.16.0
+productionItems        0.17.0
+ecologyRegistry        0.13.0
+resourceItemRegistry   0.14.0
 routeCatalog           0.9.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
@@ -982,6 +1014,10 @@ elderwoodRepairEcology             0.1.0
 elderwoodRepairResourceItems       0.1.0
 elderwoodRepairProductionCatalog   0.1.0
 elderwoodRepairProductionItems     0.1.0
+dryUplandSaltpanRepairEcology             0.1.0
+dryUplandSaltpanRepairResourceItems       0.1.0
+dryUplandSaltpanRepairProductionCatalog   0.1.0
+dryUplandSaltpanRepairProductionItems     0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -1004,7 +1040,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 58 Legacy Elderwood ecology-repair checkpoint supersedes Data 57: 55 places, 47 named NPCs, 37 service sites, 110 creatures, 134 sources, 390 items, 225 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 34 packs, and 1241 pack-owned records.
+The current promoted Data 59 Dry Upland & Saltpan ecology-repair checkpoint supersedes Data 58: 55 places, 47 named NPCs, 37 service sites, 111 creatures, 142 sources, 406 items, 233 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 36 packs, and 1277 pack-owned records.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 

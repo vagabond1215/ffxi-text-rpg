@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.19
+Product:       0.9.100.20
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          58
+Data:          59
 Benchmark:     3
-Codename:      Legacy Elderwood Ecology Repair
+Codename:      Dry Upland & Saltpan Ecology Repair
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -39,24 +39,24 @@ Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
 Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
 Waymeet Marches & Cairnward Relay                  COMPLETE / MAIN
 Legacy Elderwood Ecology Repair                     COMPLETE / MAIN
+Dry Upland & Saltpan Ecology Repair                  COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Legacy Elderwood Ecology Repair
+### Dry Upland & Saltpan Ecology Repair
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 58 / Product 0.9.100.19.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 59 / Product 0.9.100.20.**
 
-This content-quality tranche repairs three legacy locations without adding geography:
+This content-quality tranche repairs three existing wilderness locations without adding geography:
 
-- East Elderwood: Wood Sorrel, Wayleaf, Bluebell, Brush Hare, Crownwood Hart, Barkboar, and Moss Owl spread;
-- Timbercross Landing: river mint, willowherb, sedge, currants, Bronze Dace, River Teal, and Bank Frog;
-- Thornwall Old Gaol: Cellar Bat, Webspider, Cistern Moss, and shelf fungus;
-- Redfang Camp deliberately remains primarily an occupied raider site.
+- South Redstone: Sunbent Bunchgrass, Stone Thyme, and Drythorn Resin establish common grass/herb/woody-scrub layers around the existing rare Sun Crocus;
+- North Redstone: Wind Juniper and Ridge Yarrow improve botanical transition, while existing Ridge Ibex and Sunscale Lizard spread north and a new Redstone Stone Grouse reuses the established Grouse family;
+- Emberwash Saltpan Verge: Saltbrush Shoots, Saltgrass Fiber, and Panbloom add food, structural fiber, and decorative/dye halophyte layers without increasing its already coherent fauna count.
 
-One new broadly reusable **River Dace** family was justified. Existing Hare, Hart, Barkboar, Owl, Waterfowl, Frog, Bat, and Spider families were reused. Ten new recoverable raws feed eleven transformations/outputs across food, medicine/alchemy, dye/decorative work, fiber/matting, fish preparation, absorbent packing, tinder, repair, and trade.
+No new fauna family was added. Eight new recoverable raws feed eight transformations/outputs. The Juniper-Millet Pot also creates demand for existing Ridge Millet.
 
-Implementation freeze `3732f22a464a3cdd2d11409475730ea804dfa1a6` passed Check #1601 / run `33314083287` with **802/802 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9988c34e985d28586624d64258955cecec55e5d5`.
+Implementation freeze `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d` passed Check #1610 / run `33322534675` with **807/807 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `4bc397beb5a0f987c462364599382419bf89cd43`.
 
 Game State remains 14.
 
@@ -67,10 +67,10 @@ Game State remains 14.
 | Places/localities | 55 | 10 | reached |
 | Named NPCs | 47 | 50 | 3 short |
 | Shop/service sites | 37 | 20 | reached |
-| Creature definitions | 110 | 40 | reached |
-| Resource sources | 134 | 40 | reached |
-| Canonical items | 390 | 200 | reached |
-| Recipes/processes | 225 | 75 | reached |
+| Creature definitions | 111 | 40 | reached |
+| Resource sources | 142 | 40 | reached |
+| Canonical items | 406 | 200 | reached |
+| Recipes/processes | 233 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -81,11 +81,11 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         34
-pack-owned records          1241
+regional/shared packs         36
+pack-owned records          1277
 runtime seed NPCs             46
 runtime seed enemies          17
-raw-resource utilization   135/145
+raw-resource utilization   144/153
 luxury-raw utilization       14/14
 ```
 
@@ -97,7 +97,7 @@ Mechanics-scale gate remains **NOT READY**.
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 58.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 59.
 
 ## Formal Phase 0.9 sequence
 
@@ -173,7 +173,7 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
-- Dry Upland & Saltpan ecology/flora repair is the next ranked ecology-quality packet after the Data 58 Legacy Elderwood repair.
+- Headwater / Highland Transition Spread is the next ranked ecology-quality packet after the Data 59 Dry Upland & Saltpan repair.
 
 ## Durable constraints
 

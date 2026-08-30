@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.19
+Product:       0.9.100.20
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          58
+Data:          59
 Benchmark:     3
-Codename:      Legacy Elderwood Ecology Repair
+Codename:      Dry Upland & Saltpan Ecology Repair
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -43,6 +43,20 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
+
+## Data 59 ecology repair authority
+
+Dry Upland & Saltpan Ecology Repair strengthens existing dryland/saline ecology without adding geography or durable state.
+
+- South Redstone gains common grass/fiber, culinary/medicinal herb, and woody-resin shrub recovery.
+- North Redstone gains juniper/yarrow and existing-family Ibex/Lizard/Grouse transition spread.
+- Emberwash Saltpan gains edible, fiber, and decorative/dye halophyte recovery while retaining its existing fauna structure.
+- Eight new raws feed eight transformations; Juniper-Millet Pot also activates demand for existing Ridge Millet.
+- Decorative/background grasses, scrub, lichen, succulents, seedheads, and seasonal forbs remain descriptive where harvesting would add no real loop.
+
+Implementation freeze Check #1610 / run `33322534675` passed **807/807 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted aggregate versions include `productionCatalog 0.16.0`, `productionItems 0.17.0`, `ecologyRegistry 0.13.0`, `resourceItemRegistry 0.14.0`, `regionalContentPacks 0.18.0`, and `places 0.11.2`. Dry-upland/saltpan repair ecology/resource/production modules begin at `0.1.0`.
 
 ## Data 58 ecology repair authority
 
@@ -171,8 +185,8 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 134 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
-| Production | playable | 225 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
+| Gathering sources | playable | 142 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
+| Production | playable | 233 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
@@ -207,28 +221,28 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 58 Legacy Elderwood ecology-repair checkpoint:
+Gameplay breadth at the Data 59 Dry Upland & Saltpan ecology-repair checkpoint:
 
 ```text
 places/localities       55 / mechanics 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              110 / 40
-resource sources       134 / 40
-canonical items        390 / 200
-recipes/processes      225 / 75
+creatures              111 / 40
+resource sources       142 / 40
+canonical items        406 / 200
+recipes/processes      233 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    34
-pack-owned records     1241
+regional/shared packs    36
+pack-owned records     1277
 ```
 
-Mechanics-scale gate remains **NOT READY**. Ecology breadth is no longer a reason to add disconnected creature/resource filler.
+Mechanics-scale gate remains **NOT READY**. Ecology breadth is not a justification for disconnected count filler; future repair remains biome- and loop-driven.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Legacy Elderwood Ecology Repair is the current Data 58 bounded unit on `main`.** The next ranked ecology-quality unit is **Dry Upland & Saltpan Ecology Repair**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Dry Upland & Saltpan Ecology Repair is the current Data 59 bounded unit on `main`.** The next ranked ecology-quality unit is **Headwater / Highland Transition Spread**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.

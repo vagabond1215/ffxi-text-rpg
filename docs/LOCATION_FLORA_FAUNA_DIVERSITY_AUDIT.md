@@ -549,3 +549,29 @@ Updated repair sequence:
 3. Headwater / Highland Transition Spread;
 4. Wetland / Island Distribution Repair;
 5. Cross-biome family breadth.
+
+
+## Data 59 repair status
+
+Repair unit 2, **Dry Upland & Saltpan Ecology Repair**, is complete and promoted as Data 59 / Product 0.9.100.20.
+
+Resolved:
+- South Redstone's rare-flower-only botanical bias through common bunchgrass, herb, and woody-resin layers;
+- North Redstone's thin Ironspine-transition ecology through juniper/yarrow plus Ridge Ibex, Sunscale Lizard, and Grouse presence;
+- Emberwash Saltpan's missing living halophyte recovery through food, fiber, and decorative/dye plant layers.
+
+The repair deliberately added **no new fauna family** and no additional Saltpan or South Redstone animals merely for count. Non-economic dryland/salt-flat vegetation remains descriptive.
+
+Measured post-repair breadth:
+- 111 creature definitions;
+- 142 sources;
+- 406 canonical items;
+- 233 recipes/processes;
+- 144/153 raw resources with production demand.
+
+Updated repair sequence:
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
+3. **Headwater / Highland Transition Spread — NEXT RANKED / NOT AUTO-STARTED**;
+4. Wetland / Island Distribution Repair;
+5. Cross-biome family breadth.
