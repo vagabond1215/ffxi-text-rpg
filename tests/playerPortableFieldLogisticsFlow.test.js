@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { moveToKnownLocality } from './helpers/localKnowledgeTestSupport.js';
 
 import { EQUIPMENT_CATALOG } from '../js/text/data/equipmentCatalog.js';
 import { validateHomeInfrastructureCatalog } from '../js/text/data/homeInfrastructure.js';
@@ -71,14 +72,14 @@ function dispatchSatchelOpportunity(state, uiState) {
 }
 
 function moveToRivergate(state) {
-    assert.equal(moveWithinLocality(state, 'thornwall-crownward').ok, true);
-    assert.equal(moveWithinLocality(state, 'thornwall-rivergate').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-crownward').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-rivergate').ok, true);
     assert.equal(state.currentPlaceId, 'thornwall-rivergate');
 }
 
 function moveHome(state) {
-    assert.equal(moveWithinLocality(state, 'thornwall-crownward').ok, true);
-    assert.equal(moveWithinLocality(state, 'thornwall-southgate').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-crownward').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-southgate').ok, true);
     assert.equal(state.currentPlaceId, 'thornwall-southgate');
 }
 
