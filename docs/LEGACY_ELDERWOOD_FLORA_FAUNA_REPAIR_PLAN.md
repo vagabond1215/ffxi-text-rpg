@@ -1,8 +1,10 @@
 # Legacy Elderwood Flora & Fauna Repair Plan
 
-Status: **BOUNDED IMPLEMENTATION PLAN — AUTHORIZED.**
+Status: **COMPLETE / PROMOTED DATA 58.**
 
 Baseline: Product **0.9.100.18**, Data **57**, Game State **14**, Package **0.9.100**.
+
+Promoted result: Product **0.9.100.19**, Data **58**, Game State **14**, Package **0.9.100**.
 
 Authority:
 - `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
@@ -192,3 +194,34 @@ npm run benchmark:sample
 ```
 
 Deterministic census guards must move only from measured hosted results.
+
+
+## 9. Implementation result
+
+Implemented as planned with one bounded adjustment: East Elderwood uses a common **Crownwood Hart** species in the existing Hart family rather than spreading the rare Moon-Antler Hart itself.
+
+Final authored delta:
+- 1 new ecology family;
+- 6 new species;
+- 9 new population placements;
+- 10 exact-provenance sources/raws;
+- 11 transformations;
+- 11 production outputs;
+- 1 Pack-v2 ownership graph;
+- non-harvested flora layers added to place descriptions.
+
+Measured raw utilization improved to **135/145**.
+
+Implementation freeze:
+- `3732f22a464a3cdd2d11409475730ea804dfa1a6`;
+- Check #1601 / run `33314083287`;
+- Repository Audit PASS;
+- **802/802 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+Promoted runtime/data SHA:
+- `9988c34e985d28586624d64258955cecec55e5d5`.
+
+No later ecology repair is authorized by completion of this unit.

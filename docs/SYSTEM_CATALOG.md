@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -43,6 +43,20 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
+
+## Data 58 ecology repair authority
+
+Legacy Elderwood Ecology Repair strengthens existing location ecology without adding geography or a new durable state family.
+
+- East Elderwood gains understory food, medicine/alchemy, decorative flower/dye, and ordinary forest-fauna spread.
+- Timbercross gains a lower-river fish family plus waterfowl, amphibian, riparian food/herb/fiber vegetation, and exact fishing provenance.
+- Thornwall Old Gaol gains restrained bat/spider/moss/fungus substrate.
+- Ten new raws feed eleven production transformations; raw production utilization is **135/145**.
+- Decorative/background vegetation remains descriptive where harvesting would add no gameplay loop.
+
+Implementation freeze Check #1601 / run `33314083287` passed **802/802 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems 0.16.0`, `ecologyRegistry 0.12.0`, `resourceItemRegistry 0.13.0`, and `regionalContentPacks 0.17.0`. Elderwood repair ecology/resource/production modules begin at `0.1.0`.
 
 ## Core simulation, persistence, and tooling
 
@@ -157,8 +171,8 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 117 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
-| Production | playable | 204 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
+| Gathering sources | playable | 134 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
+| Production | playable | 225 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
@@ -193,39 +207,28 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 56 Lower Deepvein checkpoint:
+Gameplay breadth at the Data 58 Legacy Elderwood ecology-repair checkpoint:
 
 ```text
-places/localities       52 / mechanics 10
-named NPCs              44 / 50
-shop/service sites      35 / 20
-creatures               96 / 40
-resource sources       117 / 40
-canonical items        352 / 200
-recipes/processes      204 / 75
+places/localities       55 / mechanics 10
+named NPCs              47 / 50
+shop/service sites      37 / 20
+creatures              110 / 40
+resource sources       134 / 40
+canonical items        390 / 200
+recipes/processes      225 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
 transport services       7 / 5
+routes                   25
+NPC schedules            27
+regional/shared packs    34
+pack-owned records     1241
 ```
 
-Infrastructure coverage:
-
-```text
-routes                                  21
-spell schools                            4
-capability/training definitions         44
-NPC schedules                           23
-regional/shared packs                   29
-pack-owned records                    1057
-pack-owned abilities/capabilities/
-  schedules/companions              41/44/23/1
-runtime seed NPCs                       40
-runtime seed enemies                    17
-```
-
-Mechanics-scale gate remains **NOT READY**. Canonical items now exceed their mechanics floor through connected material-economy depth. Companions remain the largest relative gap; abilities, NPC breadth, and quests remain materially short. The census measures real canonical breadth; Pack refs and generated fixtures do not inflate it.
+Mechanics-scale gate remains **NOT READY**. Ecology breadth is no longer a reason to add disconnected creature/resource filler.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Lower Deepvein & Lantern Sump Station is the current Data 56 bounded unit on `main`.** Occupational Tool Conversion remains the next ranked material-culture packet; Packet E Gate A integration/census remains the next formal roadmap gate; **Waymeet Marches / central plateau approaches** is the next ranked world-edge candidate, followed by Coppergrass extensions and Drowned Vaults. None is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Legacy Elderwood Ecology Repair is the current Data 58 bounded unit on `main`.** The next ranked ecology-quality unit is **Dry Upland & Saltpan Ecology Repair**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.

@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -38,28 +38,27 @@ Gloamwood & Oldbough Refuge                    COMPLETE / MAIN
 Emberwash Badlands & Cinderwell Station         COMPLETE / MAIN
 Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
 Waymeet Marches & Cairnward Relay                  COMPLETE / MAIN
+Legacy Elderwood Ecology Repair                     COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Waymeet Marches & Cairnward Relay
+### Legacy Elderwood Ecology Repair
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 57 / Product 0.9.100.18.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 58 / Product 0.9.100.19.**
 
-Data 57 continues Headwater Upper Vale through Windscar Saddle to Cairnward Relay and Waymeet South Marches. Windscar is walk/mount/pack-caravan only; wagon operation begins at Cairnward on the plateau side. Cairnward is a small neutral logistics relay, not a settlement or city gate. The route graph stops in the South Marches before inner-march or Waymeet authority.
+This content-quality tranche repairs three legacy locations without adding geography:
 
-Authored delta:
-- 3 places and 2 routes;
-- 3 NPCs and 2 schedules;
-- 8 species/populations and 7 exact-provenance sources/raws;
-- 10 transformations and 10 outputs;
-- 2 Pack-v2 ownership graphs;
-- practical food-preparation metadata;
-- no manufactured hostile wildlife.
+- East Elderwood: Wood Sorrel, Wayleaf, Bluebell, Brush Hare, Crownwood Hart, Barkboar, and Moss Owl spread;
+- Timbercross Landing: river mint, willowherb, sedge, currants, Bronze Dace, River Teal, and Bank Frog;
+- Thornwall Old Gaol: Cellar Bat, Webspider, Cistern Moss, and shelf fungus;
+- Redfang Camp deliberately remains primarily an occupied raider site.
 
-Implementation freeze `3ef4830baf992e6f9ff973576d6be642e47dc3fa` passed Check #1592 / run `33293624219` with **797/797 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `bf2103355ac3fc79b69e0007c46f9d3f14552054`.
+One new broadly reusable **River Dace** family was justified. Existing Hare, Hart, Barkboar, Owl, Waterfowl, Frog, Bat, and Spider families were reused. Ten new recoverable raws feed eleven transformations/outputs across food, medicine/alchemy, dye/decorative work, fiber/matting, fish preparation, absorbent packing, tinder, repair, and trade.
 
-Game State remains 14; no new durable serialized family was introduced.
+Implementation freeze `3732f22a464a3cdd2d11409475730ea804dfa1a6` passed Check #1601 / run `33314083287` with **802/802 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9988c34e985d28586624d64258955cecec55e5d5`.
+
+Game State remains 14.
 
 ## Current content census
 
@@ -68,10 +67,10 @@ Game State remains 14; no new durable serialized family was introduced.
 | Places/localities | 55 | 10 | reached |
 | Named NPCs | 47 | 50 | 3 short |
 | Shop/service sites | 37 | 20 | reached |
-| Creature definitions | 104 | 40 | reached |
-| Resource sources | 124 | 40 | reached |
-| Canonical items | 369 | 200 | reached |
-| Recipes/processes | 214 | 75 | reached |
+| Creature definitions | 110 | 40 | reached |
+| Resource sources | 134 | 40 | reached |
+| Canonical items | 390 | 200 | reached |
+| Recipes/processes | 225 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -82,11 +81,11 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         33
-pack-owned records          1183
+regional/shared packs         34
+pack-owned records          1241
 runtime seed NPCs             46
 runtime seed enemies          17
-raw-resource utilization   124/135
+raw-resource utilization   135/145
 luxury-raw utilization       14/14
 ```
 
@@ -98,7 +97,7 @@ Mechanics-scale gate remains **NOT READY**.
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 57.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 58.
 
 ## Formal Phase 0.9 sequence
 
@@ -174,7 +173,7 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
-- sparse Old Gaol/Timbercross/dungeon resource coverage from the Data 45 audit.
+- Dry Upland & Saltpan ecology/flora repair is the next ranked ecology-quality packet after the Data 58 Legacy Elderwood repair.
 
 ## Durable constraints
 

@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Waymeet Marches & Cairnward Relay** is the current Data 57 geography/content checkpoint, continuing the grounded Timbercross -> Headwater -> central plateau corridor without collapsing the remaining journey into Waymeet.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Legacy Elderwood Ecology Repair** is the current Data 58 content-quality checkpoint.
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 57 adds Windscar Saddle, Cairnward Relay, and Waymeet South Marches; a walk/mount/caravan saddle road that excludes wagons; a wagon-capable plateau road beginning only beyond the saddle; eight passive, wary, or naturally territorial plateau populations; seven exact-provenance resources; and ten connected transformations/outputs. The route graph stops in the South Marches. Waymeet and the inner marches remain unrealized. Game State remains 14.
+Data 58 repairs under-spread ecology rather than adding geography. East Elderwood gains understory food/medicine/decorative flora and ordinary forest-fauna spread; Timbercross becomes a real riparian community with bank vegetation, frog, waterfowl, and lower-river dace; Thornwall Old Gaol gains restrained cellar/cistern ecology. Ten new exact-provenance raws feed eleven real transformations. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 57 implementation census:
+Validated Data 58 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              104 / 40
-resource sources       124 / 40
-canonical items        369 / 200
-recipes/processes      214 / 75
+creatures              110 / 40
+resource sources       134 / 40
+canonical items        390 / 200
+recipes/processes      225 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -91,15 +91,15 @@ routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
-regional/shared packs    33
-pack-owned records     1183
+regional/shared packs    34
+pack-owned records     1241
 runtime seed NPCs        46
 runtime seed enemies     17
-raw-resource use      124/135
+raw-resource use      135/145
 luxury-raw use          14/14
 ```
 
-The mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities, NPC breadth, and quests are still materially short. Do not close those gaps with disconnected filler.
+The mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities, NPC breadth, and quests are still materially short.
 
 ## Persistence model
 
@@ -122,16 +122,17 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 - commitments, relationships, recurring NPC availability, semantic Journal/information surfaces;
 - home storage, workshop capability, portable field logistics;
 - cultivation/stewardship, earned tending delegation, and home-linked community continuity;
-- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, Emberwash arid-frontier ecology/economy, Lower Deepvein cave-frontier ecology/economy, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
+- Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, Emberwash arid-frontier ecology/economy, Lower Deepvein cave-frontier ecology/economy, Legacy Elderwood riparian/understory/cellar ecology repair, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Waymeet Marches & Cairnward Relay is complete and promoted as Data 57 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate.
+`0.9.100 Content Scale Gate A` remains open. **Legacy Elderwood Ecology Repair is complete and promoted as Data 58 on `main`.**
 
-Updated world-edge ranking:
+The flora/fauna audit repair sequence now stands at:
+1. **Legacy Elderwood Ecology Repair — COMPLETE / Data 58**;
+2. **Dry Upland & Saltpan Ecology Repair — next ranked ecology repair, not auto-started**;
+3. Headwater / Highland Transition Spread;
+4. Wetland / Island Distribution Repair;
+5. Cross-biome family breadth.
 
-1. **Waymeet Inner Marches / outer crossroads approach** — another bounded overland leg; do not automatically author Waymeet metropolis.
-2. **Coppergrass extensions** — deepen the Forge–Mere east-west backbone without inventing habitation.
-3. **Drowned Vaults & Sunken Road** — valuable vertical/submerged expansion, but not part of the surface-completion percentage.
-
-Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults. Packet E remains the next formal roadmap gate. None is auto-started.

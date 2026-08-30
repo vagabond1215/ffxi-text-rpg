@@ -522,3 +522,30 @@ This audit changes documentation only.
 Any later species/population/source/resource additions would require a deliberate Data increment because they would add canonical authored content.
 
 No new durable serialized state family is indicated by this audit.
+
+
+## Data 58 repair status
+
+Repair unit 1, **Legacy Elderwood Ecology Repair**, is complete and promoted as Data 58 / Product 0.9.100.19.
+
+Resolved:
+- Timbercross Landing riparian flora, fish, waterfowl, and amphibian thinness;
+- East Elderwood understory/medicinal/decorative flora and ordinary forest-fauna spread;
+- Thornwall Old Gaol's zero-substrate ecology gap;
+- lower-river fish-family absence through the new River Dace family.
+
+The repair deliberately did not inflate Redfang Camp or add a generalized botanical-population state system.
+
+Measured post-repair breadth:
+- 110 creature definitions;
+- 134 sources;
+- 390 canonical items;
+- 225 recipes/processes;
+- 135/145 raw resources with production demand.
+
+Updated repair sequence:
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. **Dry Upland & Saltpan Ecology Repair — NEXT RANKED / NOT AUTO-STARTED**;
+3. Headwater / Highland Transition Spread;
+4. Wetland / Island Distribution Repair;
+5. Cross-biome family breadth.

@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -862,6 +862,36 @@ Validated Data 57 census: 55 places, 47 NPCs, 37 service sites, 104 creatures, 1
 
 No new durable serialized player/world-state family is introduced. Data 57 reuses place/map/route, ecology/population, gathering/resource recovery, inventory/provenance, production/work/workstation, commerce, NPC schedule, and Pack-v2 authorities.
 
+### `0.9.100.19` — Legacy Elderwood Ecology Repair
+
+This revision repairs under-spread flora/fauna in existing Elderwood locations rather than adding a new geographic region.
+
+```text
+Product       0.9.100.18 -> 0.9.100.19
+Package       0.9.100    -> 0.9.100
+Data          57         -> 58
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable Data 58 additions:
+- one new River Dace ecology family;
+- six new species definitions and nine population placements;
+- ten exact-provenance sources/raws across East Elderwood, Timbercross Landing, and Thornwall Old Gaol;
+- eleven transformations and eleven outputs;
+- explicit food-safety handling for raw/cleaned Bronze Dace and direct-ready forest/riparian forage;
+- descriptive non-harvested vegetation layers so botanical diversity is not reduced to resource-node count;
+- one Pack-v2 repair ownership graph.
+
+Implementation freeze `3732f22a464a3cdd2d11409475730ea804dfa1a6` passed Check #1601 / run `33314083287` with Repository Audit, **802/802 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9988c34e985d28586624d64258955cecec55e5d5`.
+
+Measured Data 58 census: 55 places, 47 NPCs, 37 service sites, 110 creatures, 134 sources, 390 items, 225 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 routes, 27 schedules, 34 packs, and 1,241 pack-owned records. Raw-resource production utilization is **135/145**; luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+The pass adds static catalog definitions and instances of existing population/source authorities. It does not add a new serialized botanical state, ecology family state, fishing state, cellar state, route state, or player/world-state family.
+
 ## Persistence history
 
 Relevant late history:
@@ -894,6 +924,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.16          no Game State change; Data 54 -> 55
 0.9.100.17          no Game State change; Data 55 -> 56
 0.9.100.18          no Game State change; Data 56 -> 57
+0.9.100.19          no Game State change; Data 57 -> 58
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -919,15 +950,15 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.16.0
+regionalContentPacks   0.17.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
 commitments            0.7.0
-productionCatalog      0.14.0
-productionItems        0.15.0
-ecologyRegistry        0.11.0
-resourceItemRegistry   0.12.0
+productionCatalog      0.15.0
+productionItems        0.16.0
+ecologyRegistry        0.12.0
+resourceItemRegistry   0.13.0
 routeCatalog           0.9.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
@@ -947,6 +978,10 @@ waymeetMarchesEcology             0.1.0
 waymeetMarchesProductionCatalog   0.1.0
 waymeetMarchesProductionItems     0.1.0
 waymeetMarchesResourceItems       0.1.0
+elderwoodRepairEcology             0.1.0
+elderwoodRepairResourceItems       0.1.0
+elderwoodRepairProductionCatalog   0.1.0
+elderwoodRepairProductionItems     0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -969,7 +1004,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 57 Waymeet Marches checkpoint supersedes Data 56: 55 places, 47 named NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 33 packs, and 1183 pack-owned records.
+The current promoted Data 58 Legacy Elderwood ecology-repair checkpoint supersedes Data 57: 55 places, 47 named NPCs, 37 service sites, 110 creatures, 134 sources, 390 items, 225 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 34 packs, and 1241 pack-owned records.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 

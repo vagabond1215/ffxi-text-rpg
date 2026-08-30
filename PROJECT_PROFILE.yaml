@@ -40,7 +40,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: legacy-elderwood-flora-fauna-repair-planned
+  current_normal_work: data-58-legacy-elderwood-ecology-repair-promoted-continuity-sync
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -93,6 +93,11 @@ git:
   latest_waymeet_marches_implementation_check_sha: 3ef4830baf992e6f9ff973576d6be642e47dc3fa
   latest_waymeet_marches_implementation_check_result: success-797-of-797-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_waymeet_marches_promoted_runtime_sha: bf2103355ac3fc79b69e0007c46f9d3f14552054
+  latest_legacy_elderwood_ecology_implementation_check: 33314083287
+  latest_legacy_elderwood_ecology_implementation_check_number: 1601
+  latest_legacy_elderwood_ecology_implementation_check_sha: 3732f22a464a3cdd2d11409475730ea804dfa1a6
+  latest_legacy_elderwood_ecology_implementation_check_result: success-802-of-802-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_legacy_elderwood_ecology_promoted_runtime_sha: 9988c34e985d28586624d64258955cecec55e5d5
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -101,10 +106,10 @@ progression:
   current_phase: 0.9
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
-  latest_bounded_unit: waymeet-marches-and-cairnward-relay
-  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-57
-  latest_data_bounded_unit: waymeet-marches-and-cairnward-relay
-  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-57
+  latest_bounded_unit: legacy-elderwood-ecology-repair
+  latest_bounded_unit_status: complete-on-main-promoted-runtime-data-58
+  latest_data_bounded_unit: legacy-elderwood-ecology-repair
+  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-58
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: waymeet-inner-marches-outer-crossroads-approach
@@ -114,6 +119,8 @@ progression:
   southern_world_edge_candidate: emberwash-badlands-complete-data-55
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
+  next_ecology_repair_candidate: dry-upland-and-saltpan-ecology-repair
+  next_ecology_repair_candidate_status: ranked-after-legacy-elderwood-not-auto-authorized
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   central_continent_surface_maturity_estimate: 60-to-70-percent
@@ -145,14 +152,15 @@ validation:
   emberwash_flow_guard: tests/playerEmberwashFlow.test.js
   lower_deepvein_flow_guard: tests/playerLowerDeepveinFlow.test.js
   waymeet_marches_flow_guard: tests/playerWaymeetMarchesFlow.test.js
+  legacy_elderwood_ecology_repair_guard: tests/playerLegacyElderwoodEcologyRepairFlow.test.js
 quality:
-  current_product_version: 0.9.100.18
+  current_product_version: 0.9.100.19
   current_package_version: 0.9.100
   current_account_save: 5
   current_game_state: 14
-  current_data_version: 57
+  current_data_version: 58
   current_benchmark_version: 3
-  current_codename: Waymeet Marches & Cairnward Relay
+  current_codename: Legacy Elderwood Ecology Repair
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -272,6 +280,22 @@ quality:
     explicit_food_consumption_metadata: true
     period_appropriate_food_safety_presentation: true
     persistence_family_added: false
+  data_58:
+    legacy_elderwood_new_species_added: 6
+    legacy_elderwood_population_placements_added: 9
+    legacy_elderwood_sources_added: 10
+    legacy_elderwood_raw_resources_added: 10
+    legacy_elderwood_transformations_added: 11
+    legacy_elderwood_production_outputs_added: 11
+    river_dace_new_family_added: true
+    existing_hare_hart_barkboar_owl_waterfowl_frog_bat_spider_families_reused: true
+    timbercross_riparian_ecology_repaired: true
+    east_elderwood_understory_and_fauna_spread_repaired: true
+    thornwall_old_gaol_ecology_substrate_repaired: true
+    decorative_background_flora_kept_distinct_from_resource_nodes: true
+    canonical_raw_production_utilization: 135-of-145
+    explicit_food_consumption_metadata: true
+    persistence_family_added: false
   data_57:
     waymeet_marches_places_added: 3
     waymeet_marches_routes_added: 2
@@ -316,10 +340,10 @@ content_scale:
     places_localities: 55
     named_npcs: 47
     shop_service_sites: 37
-    creature_definitions: 104
-    resource_sources: 124
-    canonical_items: 369
-    recipes_processes: 214
+    creature_definitions: 110
+    resource_sources: 134
+    canonical_items: 390
+    recipes_processes: 225
     abilities_techniques: 41
     quests_contracts: 18
     companions: 1
@@ -328,8 +352,8 @@ content_scale:
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 27
-    regional_shared_packs: 33
-    pack_owned_records: 1183
+    regional_shared_packs: 34
+    pack_owned_records: 1241
     runtime_seed_npcs: 46
     runtime_seed_enemies: 17
   mechanics_floors_reached:

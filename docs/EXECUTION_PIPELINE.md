@@ -5,47 +5,48 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 ```
 
 ## Current bounded-unit state
 
-**Waymeet Marches & Cairnward Relay** is the latest runtime/data bounded unit on `main`. It continues the Headwater route through an exposed non-wagon saddle to Cairnward's pack-to-wagon transfer node and then to the first South March road, while leaving inner marches and Waymeet outside the graph.
+**Legacy Elderwood Ecology Repair** is the latest runtime/data bounded unit on `main`.
 
-- Plan commit: `c0c2fcb6a1bec47849c3c2b41ec4c0a86fd93293`.
-- Implementation freeze: `3ef4830baf992e6f9ff973576d6be642e47dc3fa`.
-- Check #1592 / run `33293624219`: full gate green, **797/797 tests**.
-- Promoted runtime/data SHA: `bf2103355ac3fc79b69e0007c46f9d3f14552054`.
-- Product 0.9.100.18 / Data 57 / Game State 14 / Package 0.9.100.
+- Plan commit: `5e892825d47599b43be8cd227003a54a202885bd`.
+- Implementation freeze: `3732f22a464a3cdd2d11409475730ea804dfa1a6`.
+- Check #1601 / run `33314083287`: full gate green, **802/802 tests**.
+- Promoted runtime/data SHA: `9988c34e985d28586624d64258955cecec55e5d5`.
+- Product 0.9.100.19 / Data 58 / Game State 14 / Package 0.9.100.
+- No geography edge, route, NPC schedule, or durable serialized family was added.
 
-No later unit is auto-started. Normal low-risk work remains direct on `main`.
+The next ranked ecology repair is **Dry Upland & Saltpan Ecology Repair**. It is queued, not auto-authorized.
 
-## Data 57 metrics
+## Data 58 metrics
 
 ```text
 places/localities                       55
 named NPCs                              47
 shop/service sites                      37
-creatures                              104
-resource sources                       124
-canonical items                        369
-recipes/processes                      214
+creatures                              110
+resource sources                       134
+canonical items                        390
+recipes/processes                      225
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
-raw resources with production demand  124 / 135
+raw resources with production demand  135 / 145
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   33
-pack-owned records                    1183
+regional/shared packs                   34
+pack-owned records                    1241
 runtime seed NPCs                       46
 runtime seed enemies                    17
 ```
@@ -119,18 +120,13 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-Formal roadmap:
-- Packet E — Gate A integration/census audit.
+Data 58 closes the first location-diversity repair. Next ranked ecology-quality unit:
+1. **Dry Upland & Saltpan Ecology Repair**;
+2. Headwater / Highland Transition Spread;
+3. Wetland / Island Distribution Repair;
+4. Cross-biome family breadth.
 
-World-edge planning:
-- Waymeet Inner Marches / outer crossroads approach is now the next ranked surface-corridor candidate.
-- Coppergrass extensions follow, then Drowned Vaults.
-
-Strong system/content candidates:
-- companion breadth;
-- NPC/quest/ability density.
-
-No next unit is auto-started.
+The separate world-edge and material-culture rankings remain unchanged. No next unit is auto-started.
 
 ## Validation
 
