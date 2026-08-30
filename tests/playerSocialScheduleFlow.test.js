@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -53,7 +54,7 @@ test('0.8.500 makes Sera availability depend on canonical fictional time without
     assert.equal(status.windowSummary, '08:00–18:00');
     assert.equal(status.currentWindowEndSecond, 18 * SECONDS_PER_HOUR);
 
-    const morningTalk = performLocalityPoiAction(state, SERA_POI_ID, 'talk');
+    const morningTalk = useKnownPoi(state, SERA_POI_ID, 'talk');
     assert.equal(morningTalk.ok, true, morningTalk.message);
     assert.match(morningTalk.message, /Sera Talwin/i);
 
@@ -71,7 +72,7 @@ test('0.8.500 makes Sera availability depend on canonical fictional time without
     assert.equal(status.nextAvailableSecondOfDay, 8 * SECONDS_PER_HOUR);
 
     const positionBeforeBlockedTalk = { ...state.position };
-    const eveningTalk = performLocalityPoiAction(state, SERA_POI_ID, 'talk');
+    const eveningTalk = useKnownPoi(state, SERA_POI_ID, 'talk');
     assert.equal(eveningTalk.ok, false);
     assert.equal(eveningTalk.code, 'locality.poi-unavailable-now');
     assert.match(eveningTalk.message, /away from Southgate duties/i);
