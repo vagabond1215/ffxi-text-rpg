@@ -259,6 +259,17 @@ World-edge ranking remains:
 
 These are separate from the ecology-repair sequence and are not auto-started.
 
+## Final synchronization validation note
+
+The first fully synchronized Data 60 head, `be22f951f1ed6a91e29be65de86a422e0484597a`, passed Repository Audit but exposed one assertion-syntax defect in `tests/pipeline.test.js`: the `/` in the codename **Headwater / Highland Transition Repair** was not escaped inside a regular-expression literal.
+
+Repair:
+- `266a9e2fd57a535db97163a45017098175b6e035`;
+- assertion-only regex delimiter escape;
+- no runtime, ecology, census, persistence, or authored-content change.
+
+The exact head after this handoff is the final Data 60 continuity candidate and must have hosted Check + Pages green before closure.
+
 ## Other queued choices
 
 Formal roadmap:
