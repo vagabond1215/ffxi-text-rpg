@@ -26,7 +26,13 @@ import { performPlayerAttack, startEncounter } from '../systems/combatActionEngi
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
-import { moveWithinLocality, performLocalityPoiAction } from '../systems/localityEngine.js';
+import {
+    exploreLocality,
+    lookAroundLocality,
+    moveWithinLocality,
+    performLocalityPoiAction,
+    visitLocalityPoi,
+} from '../systems/localityEngine.js';
 import { claimOriginStarterKit } from '../systems/playerExperienceEngine.js';
 import { claimProductionOutputs, startProductionWork } from '../systems/productionEngine.js';
 import { startCharacterResourceRecovery } from '../systems/resourceRecoveryWorkAdapter.js';
@@ -42,7 +48,10 @@ import { dispatchUiIntent } from './uiIntentDispatcher.js';
 import { createUiState, setActiveView } from './uiState.js';
 
 const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
+    'locality.look',
+    'locality.explore',
     'locality.move',
+    'locality.poi.visit',
     'locality.poi',
     'playerExperience.claimStarterKit',
     'commitment.accept',
@@ -125,8 +134,17 @@ export function createDomApp({ host }) {
         } else if (intent === 'ui.search.clear') {
             uiState.informationQuery = '';
             result = { ok: true };
+        } else if (intent === 'locality.look') {
+            result = lookAroundLocality(state);
+            recordGameplayFeedback(result);
+        } else if (intent === 'locality.explore') {
+            result = exploreLocality(state);
+            recordGameplayFeedback(result);
         } else if (intent === 'locality.move') {
             result = moveWithinLocality(state, payload.destinationId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'locality.poi.visit') {
+            result = visitLocalityPoi(state, payload.poiId);
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
             result = performLocalityPoiAction(state, payload.poiId, payload.action);
