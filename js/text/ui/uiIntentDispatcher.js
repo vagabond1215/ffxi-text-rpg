@@ -43,7 +43,9 @@ import {
 } from '../systems/homeInfrastructureEngine.js';
 import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
 import {
+    enterLocalityPoi,
     exploreLocality,
+    leaveLocalityPoi,
     lookAroundLocality,
     moveWithinLocality,
     performLocalityPoiAction,
@@ -126,6 +128,8 @@ export function dispatchUiIntent(request = {}) {
         case 'locality.explore': return recordLocalityResult(context, exploreLocality(context.state));
         case 'locality.move': return recordLocalityResult(context, moveWithinLocality(context.state, context.payload.destinationId));
         case 'locality.poi.visit': return recordLocalityResult(context, visitLocalityPoi(context.state, context.payload.poiId));
+        case 'locality.poi.enter': return recordLocalityResult(context, enterLocalityPoi(context.state, context.payload.poiId));
+        case 'locality.poi.leave': return recordLocalityResult(context, leaveLocalityPoi(context.state));
         case 'locality.poi': return recordLocalityResult(context, performLocalityPoiAction(context.state, context.payload.poiId, context.payload.action));
         case 'navigation.move': return moveNavigation(context);
         case 'navigation.stop': return stopNavigation(context);
