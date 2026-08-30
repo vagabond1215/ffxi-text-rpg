@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { advanceActiveActivityToCompletion } from '../js/text/systems/activityAdvanceEngine.js';
@@ -35,7 +36,7 @@ test('Slatewater Waylodge turns nearby field work into trade, provisions, safe r
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
     assert.equal(state.currentPlaceId, 'slatewater-waylodge');
 
-    const exchange = performLocalityPoiAction(state, 'poi-slatewater-waylodge-exchange', 'shop');
+    const exchange = useKnownPoi(state, 'poi-slatewater-waylodge-exchange', 'shop');
     assert.equal(exchange.ok, true, exchange.display?.text ?? exchange.reason);
 
     let board = createSettlementServiceBoard(state);
@@ -69,7 +70,7 @@ test('Slatewater Waylodge turns nearby field work into trade, provisions, safe r
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
     assert.equal(state.player.resources.hp, createSettlementServiceBoard(state).recovery.maxHp);
 
-    const stableyard = performLocalityPoiAction(state, 'poi-slatewater-waylodge-stableyard', 'travel');
+    const stableyard = useKnownPoi(state, 'poi-slatewater-waylodge-stableyard', 'travel');
     assert.equal(stableyard.ok, true, stableyard.message ?? stableyard.reason);
     assert.match(stableyard.message ?? '', /Stableyard|stabling|pack animals/i);
 });
