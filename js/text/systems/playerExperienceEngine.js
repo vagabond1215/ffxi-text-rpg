@@ -22,7 +22,8 @@ export function createPlayerExperienceModel(state) {
     const guideKnowledge = getPoiKnowledge(state, content.guidePoiId);
     const guideSeen = Boolean(guideKnowledge && guideKnowledge.knowledgeState !== 'referenced');
     const guideMet = hasInteractedWithPoi(state, content.guidePoiId);
-    const guideLabel = guideSeen && guide ? getPlayerFacingPoiName(state, guide) : null;
+    const guideKnownName = guideKnowledge?.learnedName ? content.guideName : null;
+    const guideLabel = guideSeen && guide ? getPlayerFacingPoiName(state, guide) : guideKnownName;
     const inStartingLocality = state.currentPlaceId === content.startingPlaceId;
     const onExpedition = Boolean(currentPlace && (Number(currentPlace.dangerLevel ?? 0) > 0 || ['wilderness', 'dungeon'].includes(currentPlace.type)));
     const phase = !guideMet ? 'orientation' : onExpedition ? 'expedition' : 'foothold';
@@ -30,7 +31,9 @@ export function createPlayerExperienceModel(state) {
     const nextStep = !guideMet
         ? guideSeen
             ? `Approach ${guideLabel} in ${getPlace(content.startingPlaceId)?.name ?? 'your starting district'} and introduce yourself.`
-            : 'Look around or explore the locality. A useful first contact may be nearby, but you do not know everyone here yet.'
+            : guideKnownName
+                ? `You were told to ask for ${content.guideName}. Look around or explore until you can identify where to find them.`
+                : 'Look around or explore the locality. A useful first contact may be nearby, but you do not know everyone here yet.'
         : onExpedition
             ? 'You are beyond the safe wards now. Choose a purpose before pushing farther: train, recover something useful, learn the route, or return with a gain worth the risk.'
             : `Choose one small loop: prepare through ${content.localLead}, then use your known exits toward ${content.regionalHorizon} when you are ready. Return with experience, materials, knowledge, or stronger connections.`;
@@ -68,7 +71,7 @@ export function createPlayerExperienceModel(state) {
         progressionLaw: 'Effort → mastery → efficiency → capability → larger ambition.',
         guide: Object.freeze({
             poiId: content.guidePoiId,
-            name: guideMet ? content.guideName : guideLabel,
+            name: guideLabel,
             met: guideMet,
             startingPlaceId: content.startingPlaceId,
         }),
