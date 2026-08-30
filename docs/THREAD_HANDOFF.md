@@ -5,10 +5,10 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.23
+Product:       0.9.100.24
 Package:       0.9.100
 Account Save:  5
-Game State:    14
+Game State:    15
 Data:          62
 Benchmark:     3
 Codename:      Cross-Biome Family Breadth
