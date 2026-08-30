@@ -249,6 +249,17 @@ The prior Waymeet run synchronized the repository-audit-required release authori
 
 Repository runtime/data authority is Data 57. Before another Waymeet world-edge implementation, normalize those planning documents against current Data 57 evidence rather than assuming their older prose is current.
 
+## Audit validation note
+
+The first exact audit-head Check (#1596 / run `33311920739`) passed Repository Audit but exposed one stale Data 56-era regression assertion in `tests/pipeline.test.js`: `describeVersion()` was still expected to print Product 0.9.100.17 even though all primary manifest assertions already expected 0.9.100.18 / Data 57.
+
+Repair commit:
+- `93566e516d6ab6ed53ed4d89fcb08d235e611caf`;
+- changes only the stale expected Product string;
+- no runtime/data/ecology behavior changes.
+
+The exact final audit head after this handoff must pass the full hosted Check and Pages before the audit is treated as closed.
+
 ## Other queued choices
 
 Formal roadmap:
