@@ -385,6 +385,9 @@ function toNearbyRecord(poi) {
         name: poi.name,
         type: poi.type,
         notes: poi.notes,
+        knowledgeState: poi.knowledgeState ?? null,
+        familiarityPoints: poi.familiarityPoints ?? 0,
+        present: Boolean(poi.present),
         actions: Object.freeze([...(poi.actions ?? [])]),
         availability: poi.availability ? Object.freeze({ ...poi.availability }) : null,
     });
