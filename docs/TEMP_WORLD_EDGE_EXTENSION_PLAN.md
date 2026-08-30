@@ -2,7 +2,7 @@
 
 Status: **ACTIVE AS A TEMPORARY PLANNING REFERENCE AFTER THE MACRO-TOPOLOGY LOCK.**
 
-The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale, Starfen Delta / Brackish Coast, and Gloamwood & Oldbough Refuge have since been realized through Data 54. The historical numbered sections remain design notes rather than automatic authorization for later zones.
+The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station have since been realized through Data 55. The historical numbered sections remain design notes rather than automatic authorization for later zones.
 
 Purpose: preserve the current macro-geography, boundary-access rules, and prioritized zone-extension sequence so a new thread can resume from repository evidence without repeating the world-edge audit. This file may be deleted once its decisions have been absorbed into permanent regional/world-cartography documents.
 
@@ -50,14 +50,14 @@ Post-lock world-edge status:
 - **Headwater Vale — COMPLETE / Data 52.**
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
+- **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55.**
 
 Remaining recommended order:
 
-1. Emberwash Badlands;
-2. Lower Deepvein;
-3. Waymeet Marches / central plateau approaches;
-4. Coppergrass extensions;
-5. Drowned Vaults.
+1. Lower Deepvein;
+2. Waymeet Marches / central plateau approaches;
+3. Coppergrass extensions;
+4. Drowned Vaults.
 
 Key reasons:
 
@@ -130,7 +130,28 @@ Implemented directly on `main` with:
 
 Implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743` passed Check #1504 / run `33269167675` with **781/781 tests**. Promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8` passed Check #1507 / run `33269370813` with the same full gate.
 
-The next ranked world-edge candidate is **Emberwash Badlands**, followed by **Lower Deepvein**.
+At the Data 54 checkpoint, **Emberwash Badlands** was the next ranked world-edge candidate. It has since been implemented and promoted as Data 55; **Lower Deepvein** is now next.
+
+## Emberwash Badlands & Cinderwell Station implementation result
+
+Emberwash Badlands & Cinderwell Station is complete in Data 55 / Product 0.9.100.16.
+
+Implemented directly on `main` with:
+
+- Emberwash North Wash, Cinderwell Station, and Emberwash Saltpan Verge;
+- Cinderwell Caravan Road from South Redstone through North Wash to Cinderwell with walk/mount/wagon/caravan access;
+- Saltpan Foretrail from Cinderwell to the Saltpan Verge with walk/mount/caravan only;
+- Cinderwell as the explicit wagon limit;
+- no onward route into the farther true desert, southern strait, or Veyra sphere;
+- eight arid-frontier species/populations and seven exact-provenance sources/raws;
+- ten transformations producing ten outputs;
+- three Cinderwell staff, two schedules, exchange/warden/workyard/hearth services;
+- two Pack-v2 ownership graphs;
+- practical Emberpod/Cinder Pear safety treatment.
+
+Implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4` passed Check #1547 / run `33279116948` with **786/786 tests**. Promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad` passed Check #1559 / run `33279480611` with the same full gate. Pages #1692 also passed.
+
+The next ranked world-edge candidate is **Lower Deepvein**, followed by **Waymeet Marches / central plateau approaches**.
 
 ## Prioritized zone/biome extensions
 
@@ -287,9 +308,9 @@ Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Ch
 
 Measured Data 49 census: 37 places, 29 NPCs, 25 service sites, 58 creatures, 56 resource sources, 182 items, 94 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 6 transport services, 12 routes, 15 schedules, 20 packs, and 630 owned records.
 
-**No later numbered item is automatically authorized by completion of Item 4. Emberwash Badlands is now the next ranked geography candidate.**
+**At the Data 49 checkpoint, no later numbered item was automatically authorized by completion of Item 4. Emberwash Badlands was then a later ranked geography candidate and has since been completed as Data 55.**
 
-### 5. Emberwash Badlands
+### 5. Emberwash Badlands — IMPLEMENTED / VALIDATED
 
 Placement: south of South Redstone Reach.
 
