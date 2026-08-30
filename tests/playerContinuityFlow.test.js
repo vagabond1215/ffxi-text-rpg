@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { advanceActiveActivityToCompletion } from '../js/text/systems/activityAdvanceEngine.js';
@@ -43,7 +44,7 @@ function model(state) {
 
 test('PX4 turns the proven Brasshaven copper loop into persistent commitment and next-day social continuity', () => {
     let state = createNewGameState({ nationId: 'brasshaven' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, 'prospector-pick'), /Equipped/);
 
@@ -94,7 +95,7 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     view = model(state);
     work = livelihood(view);
     assert.equal(work.action.intent, 'locality.poi');
-    assert.equal(performLocalityPoiAction(state, work.action.payload.poiId, work.action.payload.action).ok, true);
+    assert.equal(useKnownPoi(state, work.action.payload.poiId, work.action.payload.action).ok, true);
 
     view = model(state);
     work = livelihood(view);
