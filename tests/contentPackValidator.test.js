@@ -49,6 +49,7 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-ironspine-highlands',
         'pack-headwater-vale',
         'pack-emberwash-cinderwell-station',
+        'pack-lower-deepvein-lantern-sump',
         'pack-gloamwood-oldbough-refuge',
         'pack-starfen-delta-tideglass',
         'pack-redstone-opening',
@@ -65,14 +66,15 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-ironspine-highlands-ecology',
         'pack-headwater-vale-ecology',
         'pack-emberwash-badlands-ecology',
+        'pack-lower-deepvein-ecology',
         'pack-gloamwood-oldgrowth-ecology',
         'pack-starfen-delta-brackish-ecology',
     ]);
-    assert.equal(index.recordCounts.places, 31);
-    assert.equal(index.recordCounts.items, 304);
-    assert.equal(index.recordCounts.recipes, 188);
-    assert.equal(index.recordCounts.npcs, 37);
-    assert.equal(index.recordCounts.npcSchedules, 23);
+    assert.equal(index.recordCounts.places, 34);
+    assert.equal(index.recordCounts.items, 321);
+    assert.equal(index.recordCounts.recipes, 198);
+    assert.equal(index.recordCounts.npcs, 40);
+    assert.equal(index.recordCounts.npcSchedules, 25);
     assert.equal(index.recordCounts.spellSchools, 4);
     assert.equal(index.recordCounts.capabilities, 44);
     assert.equal(index.recordCounts.abilities, 41);

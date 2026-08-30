@@ -66,13 +66,13 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.ok(counts.supplemental.routes > 0);
     assert.equal(counts.supplemental.spellSchools, 4);
     assert.equal(counts.supplemental.capabilities, 44);
-    assert.equal(counts.supplemental.npcSchedules, 23);
-    assert.equal(counts.supplemental.contentPacks, 29);
+    assert.equal(counts.supplemental.npcSchedules, 25);
+    assert.equal(counts.supplemental.contentPacks, 31);
     assert.ok(counts.supplemental.ownedPackRecords >= 248);
     assert.equal(counts.supplemental.packOwnedByCollection.spellSchools, 4);
     assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 44);
     assert.equal(counts.supplemental.packOwnedByCollection.abilities, 41);
-    assert.equal(counts.supplemental.packOwnedByCollection.npcSchedules, 23);
+    assert.equal(counts.supplemental.packOwnedByCollection.npcSchedules, 25);
     assert.equal(counts.supplemental.packOwnedByCollection.companions, 1);
     assert.ok(counts.supplemental.seedNpcs > 0);
     assert.ok(counts.supplemental.seedEnemies > 0);
