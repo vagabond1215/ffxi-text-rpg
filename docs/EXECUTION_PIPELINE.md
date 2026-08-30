@@ -41,7 +41,10 @@ Latest bounded implementation:
 - Pages #1692 green;
 - Lower Deepvein implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e`;
 - Check #1577 / run `33288699319`: full gate green, 791/791 tests, Data 56 implementation census confirmed;
-- Pages #1709 green.
+- Pages #1709 green;
+- promoted Data 56 head `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
+- Check #1580 / run `33288912478`: full gate green, 791/791 tests, Data 56 census confirmed;
+- Pages #1712 / run `33288912192` green.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
