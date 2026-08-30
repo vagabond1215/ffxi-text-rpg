@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.100.20
+Product:       0.9.100.21
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          59
+Data:          60
 Benchmark:     3
-Codename:      Dry Upland & Saltpan Ecology Repair
+Codename:      Headwater / Highland Transition Repair
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
@@ -40,23 +40,27 @@ Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
 Waymeet Marches & Cairnward Relay                  COMPLETE / MAIN
 Legacy Elderwood Ecology Repair                     COMPLETE / MAIN
 Dry Upland & Saltpan Ecology Repair                  COMPLETE / MAIN
+Headwater / Highland Transition Repair               COMPLETE / MAIN
 ```
 
 ## Latest bounded unit
 
-### Dry Upland & Saltpan Ecology Repair
+### Headwater / Highland Transition Repair
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 59 / Product 0.9.100.20.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 60 / Product 0.9.100.21.**
 
-This content-quality tranche repairs three existing wilderness locations without adding geography:
+This distribution-quality tranche strengthens existing transition habitats without adding geography:
 
-- South Redstone: Sunbent Bunchgrass, Stone Thyme, and Drythorn Resin establish common grass/herb/woody-scrub layers around the existing rare Sun Crocus;
-- North Redstone: Wind Juniper and Ridge Yarrow improve botanical transition, while existing Ridge Ibex and Sunscale Lizard spread north and a new Redstone Stone Grouse reuses the established Grouse family;
-- Emberwash Saltpan Verge: Saltbrush Shoots, Saltgrass Fiber, and Panbloom add food, structural fiber, and decorative/dye halophyte layers without increasing its already coherent fauna count.
+- Headwater Upper Vale gains Meadow Grouse, Meadow Bee, upper-tributary Coldstream Trout presence, one Bilberry recovery node, and non-node meadow/shrub layers;
+- Windscar Saddle gains South March Grey Grouse overlap without another flora node;
+- Slatewater Foothills gains Brush Hare and Thyme Bee presence while its existing serviceberry/thyme/pine/lichen recovery remains sufficient;
+- Ironspine gains Snow Hare, Sorrel Bee at both elevation bands, and High Meadow Snow Grouse overlap while existing stonepine/willow/sorrel/lichen resources remain sufficient.
 
-No new fauna family was added. Eight new recoverable raws feed eight transformations/outputs. The Juniper-Millet Pot also creates demand for existing Ridge Millet.
+No new ecology family was added. One new exact-provenance raw feeds one Bilberry-Meadowsweet Preserve recipe/output.
 
-Implementation freeze `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d` passed Check #1610 / run `33322534675` with **807/807 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `4bc397beb5a0f987c462364599382419bf89cd43`.
+Existing Scree Lynx and Froststep Lynx prey-family metadata was deliberately left unchanged in this bounded repair so older pack-owned species records and their dependency authority were not rewritten merely to reflect the new hare populations.
+
+Implementation freeze `13ba1f7b03ace684778e5c388450af8efc9183b8` passed Check #1618 / run `33325161966` with **812/812 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9c3c4d8a0b9e910c3312653d8836f3bbe03309bb`.
 
 Game State remains 14.
 
@@ -67,10 +71,10 @@ Game State remains 14.
 | Places/localities | 55 | 10 | reached |
 | Named NPCs | 47 | 50 | 3 short |
 | Shop/service sites | 37 | 20 | reached |
-| Creature definitions | 111 | 40 | reached |
-| Resource sources | 142 | 40 | reached |
-| Canonical items | 406 | 200 | reached |
-| Recipes/processes | 233 | 75 | reached |
+| Creature definitions | 116 | 40 | reached |
+| Resource sources | 143 | 40 | reached |
+| Canonical items | 408 | 200 | reached |
+| Recipes/processes | 234 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 18 | 30 | 12 short |
 | Companions | 1 | 4 | 3 short |
@@ -81,11 +85,11 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         36
-pack-owned records          1277
+regional/shared packs         37
+pack-owned records          1296
 runtime seed NPCs             46
 runtime seed enemies          17
-raw-resource utilization   144/153
+raw-resource utilization   145/154
 luxury-raw utilization       14/14
 ```
 
@@ -97,7 +101,7 @@ Mechanics-scale gate remains **NOT READY**.
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
 
-No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 59.
+No Product, Data, Game State, or Benchmark change accompanies this pass. The latest runtime/data checkpoint is Data 60.
 
 ## Formal Phase 0.9 sequence
 
@@ -173,7 +177,7 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 - NPC and quest network density;
 - ability/technique breadth;
 - deeper Crownfields agricultural processing/husbandry when justified;
-- Headwater / Highland Transition Spread is the next ranked ecology-quality packet after the Data 59 Dry Upland & Saltpan repair.
+- Wetland / Island Distribution Repair is the next ranked ecology-quality packet after the Data 60 Headwater / Highland transition repair.
 
 ## Durable constraints
 

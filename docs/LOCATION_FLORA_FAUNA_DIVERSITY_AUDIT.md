@@ -575,3 +575,31 @@ Updated repair sequence:
 3. **Headwater / Highland Transition Spread — NEXT RANKED / NOT AUTO-STARTED**;
 4. Wetland / Island Distribution Repair;
 5. Cross-biome family breadth.
+
+
+## Data 60 repair status
+
+Repair unit 3, **Headwater / Highland Transition Repair**, is complete and promoted as Data 60 / Product 0.9.100.21.
+
+Resolved:
+- Headwater Upper Vale's sparse faunal overlap through Meadow Grouse, Meadow Bee, and upper-tributary Coldstream Trout presence;
+- Upper Vale botanical thinness through one useful Bilberry recovery node plus fescue, sedge, flowering-groundcover, dwarf-willow, moss, and berry-mat description;
+- Windscar Saddle's missing Grouse overlap through the existing South March Grey Grouse;
+- Slatewater's large-vertebrate weighting through Brush Hare and Thyme Bee presence;
+- Ironspine's missing pollinator/small-prey/high-meadow-grouse distribution through Snow Hare, Sorrel Bee, and High Meadow Snow Grouse.
+
+The repair deliberately added **no new ecology family** and only one new gathering source. Existing Lynx prey-family metadata was left unchanged to avoid rewriting older pack-owned species records within a distribution-only tranche.
+
+Measured post-repair breadth:
+- 116 creature definitions;
+- 143 sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 145/154 raw resources with production demand.
+
+Updated repair sequence:
+1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
+2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
+3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
+4. **Wetland / Island Distribution Repair — NEXT RANKED / NOT AUTO-STARTED**;
+5. Cross-biome family breadth.

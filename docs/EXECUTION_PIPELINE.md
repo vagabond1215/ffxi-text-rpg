@@ -5,48 +5,48 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.100.20
+Product:       0.9.100.21
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          59
+Data:          60
 Benchmark:     3
-Codename:      Dry Upland & Saltpan Ecology Repair
+Codename:      Headwater / Highland Transition Repair
 ```
 
 ## Current bounded-unit state
 
-**Dry Upland & Saltpan Ecology Repair** is the latest runtime/data bounded unit on `main`.
+**Headwater / Highland Transition Repair** is the latest runtime/data bounded unit on `main`.
 
-- Plan commit: `97e3d5542d01583ee38e350c0882ef80b46010c6`.
-- Implementation freeze: `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d`.
-- Check #1610 / run `33322534675`: full gate green, **807/807 tests**.
-- Promoted runtime/data SHA: `4bc397beb5a0f987c462364599382419bf89cd43`.
-- Product 0.9.100.20 / Data 59 / Game State 14 / Package 0.9.100.
-- No place, route, settlement, NPC, service, or durable serialized family was added.
+- Plan commit: `1e9a035161f870ad224df65f5bef17af6277ad0e`.
+- Implementation freeze: `13ba1f7b03ace684778e5c388450af8efc9183b8`.
+- Check #1618 / run `33325161966`: full gate green, **812/812 tests**.
+- Promoted runtime/data SHA: `9c3c4d8a0b9e910c3312653d8836f3bbe03309bb`.
+- Product 0.9.100.21 / Data 60 / Game State 14 / Package 0.9.100.
+- No place, route, settlement, service, new ecology family, or durable serialized family was added.
 
-The next ranked ecology repair is **Headwater / Highland Transition Spread**. It is queued, not auto-authorized.
+The next ranked ecology repair is **Wetland / Island Distribution Repair**. It is queued, not auto-authorized.
 
-## Data 59 metrics
+## Data 60 metrics
 
 ```text
 places/localities                       55
 named NPCs                              47
 shop/service sites                      37
-creatures                              111
-resource sources                       142
-canonical items                        406
-recipes/processes                      233
+creatures                              116
+resource sources                       143
+canonical items                        408
+recipes/processes                      234
 abilities/techniques                    41
 quests/contracts                        18
 companions                               1
 transport services                       7
-raw resources with production demand  144 / 153
+raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   36
-pack-owned records                    1277
+regional/shared packs                   37
+pack-owned records                    1296
 runtime seed NPCs                       46
 runtime seed enemies                    17
 ```
@@ -120,12 +120,11 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-Data 59 closes the second location-diversity repair. Next ranked ecology-quality unit:
-1. **Headwater / Highland Transition Spread**;
-2. Wetland / Island Distribution Repair;
-3. Cross-biome family breadth.
+Data 60 closes the third location-diversity repair. Next ranked ecology-quality unit:
+1. **Wetland / Island Distribution Repair**;
+2. Cross-biome family breadth.
 
-Legacy Elderwood and Dry Upland & Saltpan repairs are complete. The separate world-edge and material-culture rankings remain unchanged. No next unit is auto-started.
+Legacy Elderwood, Dry Upland & Saltpan, and Headwater / Highland repairs are complete. The separate world-edge and material-culture rankings remain unchanged. No next unit is auto-started.
 
 ## Validation
 

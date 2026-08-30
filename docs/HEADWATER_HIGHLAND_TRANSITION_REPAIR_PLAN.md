@@ -1,8 +1,10 @@
 # Headwater / Highland Transition Repair Plan
 
-Status: **BOUNDED IMPLEMENTATION PLAN — AUTHORIZED.**
+Status: **COMPLETE / PROMOTED DATA 60.**
 
 Baseline: Product **0.9.100.20**, Data **59**, Game State **14**, Package **0.9.100**.
+
+Promoted result: Product **0.9.100.21**, Data **60**, Game State **14**, Package **0.9.100**.
 
 Authority:
 - `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
@@ -211,3 +213,51 @@ npm run benchmark:sample
 ```
 
 Deterministic breadth guards move only from measured hosted results.
+
+
+## 12. Implementation result
+
+Implemented authored delta:
+- new ecology families: **0**;
+- new species variants: **5**;
+- new population placements: **10**;
+- new gathering sources/raws: **1**;
+- new transformations/outputs: **1**;
+- new Pack-v2 repair graphs: **1**.
+
+The single new recovery loop is **Upper Vale Bilberries -> Bilberry-Meadowsweet Preserve**, using existing dried Headwater Meadowsweet. This keeps Upper Vale botanically richer without duplicating the Lower Vale's existing timber, willow, bark, and fish economy.
+
+### Deliberate predator-link omission
+
+The planning draft proposed adding Hare to Scree Lynx and Froststep Lynx `linksWithFamilyIds`. Implementation deliberately leaves those older species records unchanged.
+
+Reason:
+- the ecological defect was missing hare/small-prey **distribution**, which is now repaired;
+- those predator species are owned by existing regional packs;
+- rewriting their family-link metadata solely for this repair would broaden the change into older ownership/dependency authority without adding player-visible behavior;
+- cross-biome predator/prey metadata normalization is better handled as part of the later family-breadth pass if it becomes mechanically meaningful.
+
+This is an intentional bounded-scope decision, not a validation omission.
+
+Implementation freeze:
+- `13ba1f7b03ace684778e5c388450af8efc9183b8`;
+- Check #1618 / run `33325161966`;
+- Repository Audit PASS;
+- **812/812 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+Promoted runtime/data SHA:
+- `9c3c4d8a0b9e910c3312653d8836f3bbe03309bb`.
+
+Measured Data 60 breadth:
+- 116 creatures;
+- 143 resource sources;
+- 408 canonical items;
+- 234 recipes/processes;
+- 37 regional/shared packs;
+- 1,296 pack-owned records;
+- 145/154 canonical raw resources with production demand.
+
+No later ecology repair is authorized by completion of this unit.

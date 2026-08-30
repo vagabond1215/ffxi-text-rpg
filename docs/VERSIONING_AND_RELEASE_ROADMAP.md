@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.100.20
+Product:       0.9.100.21
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          59
+Data:          60
 Benchmark:     3
-Codename:      Dry Upland & Saltpan Ecology Repair
+Codename:      Headwater / Highland Transition Repair
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
@@ -923,6 +923,38 @@ Measured Data 59 census: 55 places, 47 NPCs, 37 service sites, 111 creatures, 14
 
 The pass adds static catalog definitions and instances of existing population/source authorities. It does not add a serialized botanical state, saltpan state, transition-fauna state, route state, or player/world-state family.
 
+### `0.9.100.21` — Headwater / Highland Transition Repair
+
+This revision repairs upper-valley, saddle, foothill, and alpine distribution gaps without adding geography.
+
+```text
+Product       0.9.100.20 -> 0.9.100.21
+Package       0.9.100    -> 0.9.100
+Data          59         -> 60
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Stable Data 60 additions:
+- five new regional species variants using established Grouse, Bee, and Hare families;
+- ten new population placements, including reused Coldstream Trout, South March Grey Grouse, Brush Hare, and Ironspine Snow Grouse species;
+- one Upper Vale Bilberry source/raw with exact provenance;
+- one cooked Bilberry-Meadowsweet Preserve transformation/output using existing dried Meadowsweet;
+- one cross-region Pack-v2 repair ownership graph;
+- expanded non-harvested meadow, foothill, and alpine vegetation descriptions;
+- no new ecology family and no geography expansion.
+
+Existing Scree Lynx and Froststep Lynx prey-family metadata was intentionally not rewritten in this bounded pass; the hare populations repair ecological prey distribution while preserving older pack ownership/dependency authority.
+
+Implementation freeze `13ba1f7b03ace684778e5c388450af8efc9183b8` passed Check #1618 / run `33325161966` with Repository Audit, **812/812 tests**, Census, Benchmark 3, and Benchmark Sample. Promoted runtime/data SHA: `9c3c4d8a0b9e910c3312653d8836f3bbe03309bb`.
+
+Measured Data 60 census: 55 places, 47 NPCs, 37 service sites, 116 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 routes, 27 schedules, 37 packs, and 1,296 pack-owned records. Raw-resource production utilization is **145/154**; luxury utilization remains **14/14**.
+
+#### Why Game State stays 14
+
+The pass adds static catalog definitions and population/source instances only. It does not add a serialized transition-state, pollinator-state, alpine-prey-state, route-state, or player/world-state family.
+
 ## Persistence history
 
 Relevant late history:
@@ -957,6 +989,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.18          no Game State change; Data 56 -> 57
 0.9.100.19          no Game State change; Data 57 -> 58
 0.9.100.20          no Game State change; Data 58 -> 59
+0.9.100.21          no Game State change; Data 59 -> 60
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -982,15 +1015,15 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.18.0
+regionalContentPacks   0.19.0
 contentPackValidation  0.3.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
 commitments            0.7.0
-productionCatalog      0.16.0
-productionItems        0.17.0
-ecologyRegistry        0.13.0
-resourceItemRegistry   0.14.0
+productionCatalog      0.17.0
+productionItems        0.18.0
+ecologyRegistry        0.14.0
+resourceItemRegistry   0.15.0
 routeCatalog           0.9.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
@@ -1018,6 +1051,10 @@ dryUplandSaltpanRepairEcology             0.1.0
 dryUplandSaltpanRepairResourceItems       0.1.0
 dryUplandSaltpanRepairProductionCatalog   0.1.0
 dryUplandSaltpanRepairProductionItems     0.1.0
+headwaterHighlandTransitionRepairEcology             0.1.0
+headwaterHighlandTransitionRepairResourceItems       0.1.0
+headwaterHighlandTransitionRepairProductionCatalog   0.1.0
+headwaterHighlandTransitionRepairProductionItems     0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
@@ -1040,7 +1077,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 59 Dry Upland & Saltpan ecology-repair checkpoint supersedes Data 58: 55 places, 47 named NPCs, 37 service sites, 111 creatures, 142 sources, 406 items, 233 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 36 packs, and 1277 pack-owned records.
+The current promoted Data 60 Headwater / Highland transition-repair checkpoint supersedes Data 59: 55 places, 47 named NPCs, 37 service sites, 116 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 37 packs, and 1296 pack-owned records.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 

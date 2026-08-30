@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Dry Upland & Saltpan Ecology Repair** is the current Data 59 content-quality checkpoint.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Headwater / Highland Transition Repair** is the current Data 60 content-quality checkpoint.
 
 ```text
-Product:       0.9.100.20
+Product:       0.9.100.21
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          59
+Data:          60
 Benchmark:     3
-Codename:      Dry Upland & Saltpan Ecology Repair
+Codename:      Headwater / Highland Transition Repair
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 59 repairs botanical and transition-fauna thinness without adding geography. South Redstone gains common grass, herb, and woody-resin layers; North Redstone gains juniper/yarrow plus Ibex, Lizard, and Grouse transition spread; Emberwash Saltpan gains food, fiber, and decorative/dye halophytes. Eight new exact-provenance raws feed eight transformations, and the new Juniper-Millet Pot also activates production demand for existing Ridge Millet. Game State remains 14.
+Data 60 repairs upper-valley, saddle, foothill, and alpine distribution without adding geography. Headwater Upper Vale gains Grouse, Bee, upper-tributary Trout presence, Bilberries, and richer descriptive meadow layers; Windscar gains Grey Grouse overlap; Slatewater gains Hare and pollinator presence; Ironspine gains Snow Hare, Sorrel Bee, and High Meadow Snow Grouse overlap. Five new species variants and ten population placements reuse existing Hare, Bee, Grouse, and Trout family/species authority. Game State remains 14.
 
 ## Product direction
 
@@ -73,16 +73,16 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 59 implementation census:
+Validated Data 60 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              111 / 40
-resource sources       142 / 40
-canonical items        406 / 200
-recipes/processes      233 / 75
+creatures              116 / 40
+resource sources       143 / 40
+canonical items        408 / 200
+recipes/processes      234 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
@@ -91,15 +91,15 @@ routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
-regional/shared packs    36
-pack-owned records     1277
+regional/shared packs    37
+pack-owned records     1296
 runtime seed NPCs        46
 runtime seed enemies     17
-raw-resource use      144/153
+raw-resource use      145/154
 luxury-raw use          14/14
 ```
 
-The mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities, NPC breadth, and quests are still materially short. Ecology/content repair should continue to follow habitat and connected-loop needs rather than count chasing.
+The mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities, NPC breadth, and quests remain materially short. Ecology repair remains habitat- and loop-driven rather than quota-driven.
 
 ## Persistence model
 
@@ -126,13 +126,13 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Dry Upland & Saltpan Ecology Repair is complete and promoted as Data 59 on `main`.**
+`0.9.100 Content Scale Gate A` remains open. **Headwater / Highland Transition Repair is complete and promoted as Data 60 on `main`.**
 
 The flora/fauna audit repair sequence now stands at:
 1. Legacy Elderwood Ecology Repair — **COMPLETE / Data 58**;
 2. Dry Upland & Saltpan Ecology Repair — **COMPLETE / Data 59**;
-3. **Headwater / Highland Transition Spread — next ranked ecology repair, not auto-started**;
-4. Wetland / Island Distribution Repair;
+3. Headwater / Highland Transition Spread — **COMPLETE / Data 60**;
+4. **Wetland / Island Distribution Repair — next ranked ecology repair, not auto-started**;
 5. Cross-biome family breadth.
 
 The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults. Packet E remains the next formal roadmap gate. None is auto-started.

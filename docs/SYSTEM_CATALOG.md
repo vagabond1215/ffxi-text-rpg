@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.20
+Product:       0.9.100.21
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          59
+Data:          60
 Benchmark:     3
-Codename:      Dry Upland & Saltpan Ecology Repair
+Codename:      Headwater / Highland Transition Repair
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 in progress
 ```
@@ -43,6 +43,22 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
+
+## Data 60 ecology repair authority
+
+Headwater / Highland Transition Repair strengthens distribution across existing upper-valley, saddle, foothill, and alpine habitats without adding geography or durable state.
+
+- Headwater Upper Vale gains Grouse, Bee, upper-tributary Trout presence, Bilberry recovery, and richer descriptive meadow/shrub layers.
+- Windscar gains existing South March Grey Grouse overlap.
+- Slatewater gains Brush Hare and Thyme Bee presence without new recovery nodes.
+- Ironspine gains Snow Hare, Sorrel Bee at Lower Pass and High Meadow, plus High Meadow Snow Grouse overlap.
+- Five new species variants and ten populations reuse established Hare, Bee, Grouse, and Trout authority; no new ecology family is introduced.
+- One new raw, Upper Vale Bilberries, feeds one Bilberry-Meadowsweet Preserve transformation using existing dried Meadowsweet.
+- Existing Lynx prey-family metadata remains unchanged so this bounded repair does not rewrite older pack-owned species records merely to mirror distribution changes.
+
+Implementation freeze Check #1618 / run `33325161966` passed **812/812 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Promoted aggregate versions include `productionCatalog 0.17.0`, `productionItems 0.18.0`, `ecologyRegistry 0.14.0`, `resourceItemRegistry 0.15.0`, `regionalContentPacks 0.19.0`, and `places 0.11.3`. Headwater/highland transition repair ecology/resource/production modules begin at `0.1.0`.
 
 ## Data 59 ecology repair authority
 
@@ -93,7 +109,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — Data 56
+## Content infrastructure and regional packs — Data 60
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -221,28 +237,28 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 59 Dry Upland & Saltpan ecology-repair checkpoint:
+Gameplay breadth at the Data 60 Headwater / Highland transition-repair checkpoint:
 
 ```text
 places/localities       55 / mechanics 10
 named NPCs              47 / 50
 shop/service sites      37 / 20
-creatures              111 / 40
-resource sources       142 / 40
-canonical items        406 / 200
-recipes/processes      233 / 75
+creatures              116 / 40
+resource sources       143 / 40
+canonical items        408 / 200
+recipes/processes      234 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    36
-pack-owned records     1277
+regional/shared packs    37
+pack-owned records     1296
 ```
 
-Mechanics-scale gate remains **NOT READY**. Ecology breadth is not a justification for disconnected count filler; future repair remains biome- and loop-driven.
+Mechanics-scale gate remains **NOT READY**. Ecology breadth remains biome- and loop-driven rather than a justification for disconnected count filler.
 
 ## Current decision boundary
 
-Phase 0.9 and `0.9.100` remain open. **Dry Upland & Saltpan Ecology Repair is the current Data 59 bounded unit on `main`.** The next ranked ecology-quality unit is **Headwater / Highland Transition Spread**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.
+Phase 0.9 and `0.9.100` remain open. **Headwater / Highland Transition Repair is the current Data 60 bounded unit on `main`.** The next ranked ecology-quality unit is **Wetland / Island Distribution Repair**. Packet E remains the next formal roadmap gate; world-edge and material-culture rankings remain separate and none is auto-started.
