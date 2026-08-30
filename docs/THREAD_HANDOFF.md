@@ -7,104 +7,96 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.17
+Product:       0.9.100.18
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          56
+Data:          57
 Benchmark:     3
-Codename:      Lower Deepvein & Lantern Sump Station
+Codename:      Waymeet Marches & Cairnward Relay
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Lower Deepvein & Lantern Sump Station is complete and promoted on `main` as Data 56.**
+**Waymeet Marches & Cairnward Relay is the latest promoted runtime/data bounded unit on `main`.**
 
-Implementation freeze:
-- `b0c0048903ee6952f3c4bc337732f894340f540e`;
-- Check **#1577 / run `33288699319`**;
-- Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
-- Pages #1709 green.
+Waymeet implementation freeze:
+- `3ef4830baf992e6f9ff973576d6be642e47dc3fa`;
+- Check **#1592 / run `33293624219`**;
+- Repository Audit, **797/797 tests**, Census, Benchmark 3, Benchmark Sample green.
 
-Promoted Data 56 checkpoint:
-- `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
-- Check **#1580 / run `33288912478`**;
-- Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
-- Pages **#1712 / run `33288912192`** green.
+Promoted runtime/data commit:
+- `bf2103355ac3fc79b69e0007c46f9d3f14552054`;
+- Product 0.9.100.18 / Data 57 / Game State 14 / Package 0.9.100.
 
-Continuity synchronization:
-- `PROJECT_PROFILE.yaml`, README, roadmap, execution pipeline, system catalog, version/release roadmap, macro topology, civilization geography, temporary edge notes, and the permanent Lower Deepvein profile are synchronized to Data 56;
-- Lower Deepvein is closed as the fifth post-lock world-edge unit;
-- Waymeet Marches / central plateau approaches is the next ranked world-edge candidate and is **not** auto-started.
+Release-authority synchronization commit:
+- `76aa98c56d2fbceee7ada4d0b4d694e92ad87eb2`;
+- README, PROJECT_PROFILE, ROADMAP, EXECUTION_PIPELINE, SYSTEM_CATALOG, and VERSIONING_AND_RELEASE_ROADMAP moved to Data 57;
+- hosted Check #1594 failed only because this handoff still carried the Data 56 version block;
+- Pages #1726 was green.
+
+The current ecology/location diversity audit is documentation-only and does not change Product/Data/Game State.
 
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
 
-## Data 56 — Lower Deepvein & Lantern Sump Station
+## Data 57 — Waymeet Marches & Cairnward Relay
 
 Plan:
-- `docs/ZONE_PLAN_LOWER_DEEPVEIN.md`.
+- `docs/ZONE_PLAN_WAYMEET_MARCHES.md`.
 
-Permanent profile:
-- `docs/ZONE_PROFILE_LOWER_DEEPVEIN.md`.
-
-Geography:
-- Deepvein Lower Decline — danger 3 mine-to-natural-cave transition;
-- Lantern Sump Station — danger 0 staffed Brasshaven delver station;
-- Lower Deepvein Echoing Shelf — danger 4 natural cavern shelf;
-- Lower Deepvein Haulage Decline — Deepvein Mine -> Lower Decline -> Lantern Sump, walk only;
-- Echoing Shelf Traverse — Lantern Sump -> Echoing Shelf, walk only;
-- no ordinary route continues toward farther deep roads, northern gate country, or Korren settlements.
+Bounded geography:
+- Windscar Saddle — exposed central-plateau saddle;
+- Cairnward Relay — sparse neutral pack-to-wagon logistics relay;
+- Waymeet South Marches — first open southern march country;
+- Headwater–Cairnward Pack Road — walk/mount/caravan, **no wagons**;
+- Cairnward South March Road — walk/mount/wagon/caravan;
+- no route continues from South Marches to inner Waymeet Marches or Waymeet metropolis.
 
 Ecology/resources:
-- 8 species/populations;
-- 5 reused cave-capable families + 3 new Lower Deepvein families;
-- 7 exact-provenance forage/fish/trap/gather/mine sources/resources;
-- ordinary wildlife remains passive, wary, or naturally territorial rather than being forced hostile for loot;
-- existing Deepvein lead and silver sources are not duplicated.
-
-Production:
+- 8 plateau species/populations;
+- 7 exact-provenance raw resources;
+- established Marmot, Grouse, Fox, Mountain Eagle, Bee, Owl, and Waterfowl families reused;
+- Moor Char is the only new family required by the bounded biome;
+- ordinary wildlife remains passive, wary, or naturally territorial;
 - 10 transformations / 10 outputs;
-- cooked lampcaps, cleaned/cooked threadfin, boiled sump crab;
-- glowmoss wick cord, refined cave salt, polished quartz, fired lamp cup;
-- reflector lamp kit and gallery seep packing;
 - every new raw has production demand;
-- raw production utilization **117/128**;
+- raw production utilization **124/135**;
 - luxury utilization **14/14**.
 
-People:
-- Ressa Kell — Lower Deepvein Factor;
-- Borin Vale — Deepvein Survey Warden;
-- Hessa Rusk — Lantern Sump Station Keeper;
+People/services:
+- Sella Ward — Cairnward Relay Factor;
+- Kellan Rusk — Plateau Route Warden;
+- Tam Berrow — Cairnward Cartwright;
 - 2 schedules;
-- exchange, survey desk, lampworks, hearth/cistern/bunks.
+- exchange, route desk, cart/repair shelter, common hearth/cistern/bunks.
 
 Persistence:
 - Game State remains 14;
-- no oxygen/survival meter, ventilation state, repaired-lift state, mining-certification state, Korren-border state, or farther-deep-road state family.
+- no wagon-transfer, route-condition, weather, permit, border, settlement, or macro-coordinate state family was added.
 
-## Data 56 census
+## Data 57 census
 
 ```text
-places/localities                        52
-named NPCs                               44
-shop/service sites                       35
-creature definitions                     96
-resource sources                        117
-canonical items                         352
-recipes/processes                       204
+places/localities                        55
+named NPCs                               47
+shop/service sites                       37
+creature definitions                    104
+resource sources                        124
+canonical items                         369
+recipes/processes                       214
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
 transport services                        7
-routes                                   23
+routes                                   25
 spell schools                             4
 capabilities/training definitions        44
-NPC schedules                            25
-regional/shared content packs            31
-pack-owned records                     1121
-runtime seed NPCs                        43
+NPC schedules                            27
+regional/shared content packs            33
+pack-owned records                     1183
+runtime seed NPCs                        46
 runtime seed enemies                     17
 ```
 
@@ -112,25 +104,150 @@ Mechanics-scale gate remains **NOT READY**:
 - companions 1/4;
 - abilities 41/100;
 - quests 18/30;
-- named NPCs 44/50.
+- named NPCs 47/50.
+
+## Location flora/fauna diversity audit
+
+Permanent audit:
+- `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`;
+- audit commit `329b0c0249f2b1ca2f55663614fee3e188c0efa1`;
+- documentation/planning only;
+- no version or persistence change.
+
+Audit scope:
+- all 55 places;
+- all 30 wilderness/dungeon-scale locations;
+- fauna family/species/population spread;
+- flora/fungal gathering-source coverage;
+- trophic overlap;
+- biome-transition continuity;
+- prior deferred ecology gaps.
+
+### Highest-confidence location gaps
+
+P0:
+1. **Emberwash Saltpan Verge** — place fiction explicitly names saltbrush but there are zero flora sources.
+2. **Thornwall Old Gaol** — only wilderness/dungeon-scale place with zero populations and zero sources.
+3. **Timbercross Landing** — river bend has Otter/Turtle but zero flora sources and no fish population/source.
+4. **Reedcrown Isle** — explicit reed-crown habitat but zero flora sources; Grebe prey is only regionally, not locally, represented.
+
+P1:
+- Headwater Upper Vale — too little meadow/tributary/saddle-transition spread;
+- North Redstone Reach — too little ridge/scrub fauna/flora spread below Ironspine;
+- East Elderwood — flora-rich but fauna-thin;
+- East Starfen — flora-rich fen but aquatic/wader guilds are thin;
+- Slatewater Foothills — headline large vertebrates are good, small prey/pollinators thin;
+- Crownfields — managed ecology lacks ordinary hedgerow/ditch wild fauna;
+- Ironspine — no pollinator/insect population;
+- Coppergrass — missing small burrowing prey base;
+- South Redstone — vegetation coverage is much thinner than fauna/mineral coverage.
+
+P2:
+- Deepvein Mine;
+- Sunken Archive;
+- Redfang Camp.
+
+These remain bounded secondary ecology/substrate gaps rather than broken references.
+
+### Recommended existing-family spread before new taxonomy
+
+Reuse first:
+- Hare;
+- Bee;
+- Grouse;
+- Waterfowl;
+- Frog;
+- Dragonfly;
+- Mire Heron;
+- Reed Eel;
+- Crab;
+- Ridge Ibex;
+- Lizard;
+- Bat;
+- Spider.
+
+### Best genuinely new family candidates
+
+1. **Ground-squirrel / vole / small burrowing rodent** — highest value across Coppergrass, Waymeet plateau, Crownfields margins, and selected foothill habitats.
+2. **Scoped small passerine** such as Finch/Lark/Thrush — fills forest, hedgerow, orchard, foothill, and grassland small-bird absence.
+3. **Lower-river fish** — gives Timbercross/lower western rivers a distinct niche instead of forcing cold-stream trout downstream.
+4. Shorebird/small wader — useful future delta/coast depth.
+5. Snake — optional broad ecological breadth, not a current coherence defect.
+
+### New-biome verdicts
+
+- Waymeet Marches: **good**; needs local overlap/refinement, not another family batch.
+- Emberwash: **good north wash; incomplete saltpan flora**.
+- Lower Deepvein: **strong cave-frontier diversity**.
+- Gloamwood: **strong old-growth diversity**.
+- Starfen Delta/Brackish Coast: **strong coast; moderately thin lower-delta spread**.
+
+## Recommended ecology repair order
+
+If explicitly authorized:
+
+1. Legacy Elderwood Ecology Repair
+   - Timbercross Landing;
+   - East Elderwood;
+   - Thornwall Old Gaol;
+   - Redfang Camp only where useful.
+2. Dry Upland & Saltpan Ecology Repair
+   - North/South Redstone vegetation;
+   - Emberwash Saltpan halophytes;
+   - transition-family spread.
+3. Headwater / Highland Transition Spread
+   - Headwater Upper Vale;
+   - Windscar Grouse overlap;
+   - Slatewater/Ironspine pollinators and small prey.
+4. Wetland / Island Distribution Repair
+   - East Starfen;
+   - Reedcrown Isle;
+   - Starfen Lower Delta.
+5. Cross-biome family breadth
+   - small burrowing rodent;
+   - scoped passerine;
+   - lower-river fish.
+
+Do not implement all five automatically as a single ecology megatranch.
 
 ## World geography state
 
-`docs/WORLD_MACRO_TOPOLOGY.md` remains authoritative.
+`docs/WORLD_MACRO_TOPOLOGY.md` remains the macro-topology authority.
 
-Completed post-lock world-edge units:
+Completed post-lock world-edge runtime/data units:
 1. Headwater Vale — Data 52;
 2. Starfen Delta / Brackish Coast — Data 53;
 3. Gloamwood & Oldbough Refuge — Data 54;
 4. Emberwash Badlands & Cinderwell Station — Data 55;
-5. Lower Deepvein & Lantern Sump Station — Data 56.
+5. Lower Deepvein & Lantern Sump Station — Data 56;
+6. Waymeet Marches & Cairnward Relay — Data 57.
 
-Next ranked geography:
-1. **Waymeet Marches / central plateau approaches**;
-2. Coppergrass extensions;
-3. Drowned Vaults.
+Current overland sequence:
 
-The Central Continent surface-completion estimate remains roughly **55–65%** because Lower Deepvein is a vertical/subterranean pass and is deliberately excluded from the surface-region percentage.
+```text
+Timbercross
+  -> Headwater Vale
+  -> Windscar Saddle
+  -> Cairnward Relay
+  -> Waymeet South Marches
+  -X-> inner marches / Waymeet
+```
+
+The next possible Waymeet continuation remains a separately bounded **inner-marches / outer-crossroads approach**, not automatic authorization for the metropolis.
+
+Existing ranked world-edge alternatives remain:
+- Coppergrass extensions;
+- Drowned Vaults.
+
+### Known continuity note
+
+The prior Waymeet run synchronized the repository-audit-required release authorities but did not finish all optional/planning continuity edits originally intended for:
+- `docs/WORLD_MACRO_TOPOLOGY.md`;
+- `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`;
+- `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`;
+- a permanent Waymeet regional profile.
+
+Repository runtime/data authority is Data 57. Before another Waymeet world-edge implementation, normalize those planning documents against current Data 57 evidence rather than assuming their older prose is current.
 
 ## Other queued choices
 
@@ -150,10 +267,10 @@ High-value scale gaps:
 1. `AGENTS.md`
 2. this file
 3. `PROJECT_PROFILE.yaml`
-4. `docs/EXECUTION_PIPELINE.md`
-5. `docs/WORLD_MACRO_TOPOLOGY.md`
-6. `docs/ZONE_PROFILE_LOWER_DEEPVEIN.md`
-7. `docs/ZONE_PLAN_LOWER_DEEPVEIN.md`
+4. `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
+5. `docs/EXECUTION_PIPELINE.md`
+6. `docs/WORLD_MACRO_TOPOLOGY.md`
+7. `docs/ZONE_PLAN_WAYMEET_MARCHES.md`
 8. `docs/ITEM_CONSUMPTION_SAFETY.md`
 9. `docs/ROADMAP.md`
 10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
