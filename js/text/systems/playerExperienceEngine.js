@@ -5,6 +5,11 @@ import { getPointOfInterest } from '../data/pointsOfInterest.js';
 import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { addItemToContainer, findItemInContainer } from './inventoryEngine.js';
+import {
+    getPlayerFacingPoiName,
+    getPoiKnowledge,
+    hasInteractedWithPoi,
+} from './localKnowledgeEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 
 export const PLAYER_EXPERIENCE_VERSION = 2;
@@ -14,25 +19,38 @@ export function createPlayerExperienceModel(state) {
     const content = getOriginExperienceForState(state);
     const guide = getPointOfInterest(content.guidePoiId);
     const currentPlace = getPlace(state.currentPlaceId);
-    const guideMet = hasDiscoveredPoi(state, content.guidePoiId);
+    const guideKnowledge = getPoiKnowledge(state, content.guidePoiId);
+    const guideSeen = Boolean(guideKnowledge && guideKnowledge.knowledgeState !== 'referenced');
+    const guideMet = hasInteractedWithPoi(state, content.guidePoiId);
+    const guideLabel = guideSeen && guide ? getPlayerFacingPoiName(state, guide) : null;
     const inStartingLocality = state.currentPlaceId === content.startingPlaceId;
     const onExpedition = Boolean(currentPlace && (Number(currentPlace.dangerLevel ?? 0) > 0 || ['wilderness', 'dungeon'].includes(currentPlace.type)));
     const phase = !guideMet ? 'orientation' : onExpedition ? 'expedition' : 'foothold';
 
     const nextStep = !guideMet
-        ? `Meet ${content.guideName} in ${getPlace(content.startingPlaceId)?.name ?? 'your starting district'}. This contact can point out a few practical ways to begin.`
+        ? guideSeen
+            ? `Approach ${guideLabel} in ${getPlace(content.startingPlaceId)?.name ?? 'your starting district'} and introduce yourself.`
+            : 'Look around or explore the locality. A useful first contact may be nearby, but you do not know everyone here yet.'
         : onExpedition
             ? 'You are beyond the safe wards now. Choose a purpose before pushing farther: train, recover something useful, learn the route, or return with a gain worth the risk.'
             : `Choose one small loop: prepare through ${content.localLead}, then use your known exits toward ${content.regionalHorizon} when you are ready. Return with experience, materials, knowledge, or stronger connections.`;
 
-    const primaryAction = !guideMet && inStartingLocality && guide
-        ? Object.freeze({
-            id: `context:origin-guide:${guide.id}`,
-            label: `Meet · ${guide.name}`,
-            intent: 'locality.poi',
-            payload: Object.freeze({ poiId: guide.id, action: 'talk' }),
-            kind: 'social',
-        })
+    const primaryAction = !guideMet && guideSeen && inStartingLocality && guide
+        ? state.activePoiId === guide.id
+            ? Object.freeze({
+                id: `context:origin-guide-talk:${guide.id}`,
+                label: `Greet · ${guideLabel}`,
+                intent: 'locality.poi',
+                payload: Object.freeze({ poiId: guide.id, action: 'talk' }),
+                kind: 'social',
+            })
+            : Object.freeze({
+                id: `context:origin-guide-approach:${guide.id}`,
+                label: `Approach · ${guideLabel}`,
+                intent: 'locality.poi.visit',
+                payload: Object.freeze({ poiId: guide.id }),
+                kind: 'social',
+            })
         : null;
 
     return Object.freeze({
@@ -41,14 +59,16 @@ export function createPlayerExperienceModel(state) {
         title: phase === 'orientation' ? 'Find your footing' : phase === 'expedition' ? 'Make the trip count' : 'Build your footing',
         nextStep,
         scenePrompt: phase === 'orientation'
-            ? `As a newcomer, your clearest next step is to meet ${content.guideName}.`
+            ? guideSeen
+                ? `A potentially useful local contact is now within reach; approaching them is still your choice.`
+                : 'You are new here. Observe the immediate surroundings or spend some time exploring before assuming you know the district.'
             : phase === 'expedition'
                 ? 'Repeated effort here should leave you better prepared, more capable, or more knowledgeable than when you arrived.'
                 : `You know enough of the area to choose your own first loop: prepare, practice, work, or explore toward ${content.regionalHorizon}.`,
         progressionLaw: 'Effort → mastery → efficiency → capability → larger ambition.',
         guide: Object.freeze({
             poiId: content.guidePoiId,
-            name: content.guideName,
+            name: guideMet ? content.guideName : guideLabel,
             met: guideMet,
             startingPlaceId: content.startingPlaceId,
         }),
@@ -74,13 +94,13 @@ export function claimOriginStarterKit(state) {
         });
     }
     const content = getOriginExperienceForState(state);
-    if (!hasDiscoveredPoi(state, content.guidePoiId)) {
+    if (!hasInteractedWithPoi(state, content.guidePoiId)) {
         return actionFailure({
             action: 'playerExperience.claimStarterKit',
             code: 'player-experience.guide-required',
             outcome: 'blocked',
             data: { guidePoiId: content.guidePoiId },
-            display: { text: `Meet ${content.guideName} before collecting the newcomer field kit.` },
+            display: { text: 'Meet and speak with your local orientation contact before collecting the newcomer field kit.' },
         });
     }
     if (state.currentPlaceId !== content.startingPlaceId) {
@@ -168,10 +188,6 @@ export function describeOriginGuideDialogue(state, poiOrId) {
         `“Pick one useful thing today: practice safely, take work you can finish, or learn the road toward ${content.regionalHorizon}. Come back with skill, material, knowledge, or a useful connection.”`,
         `“When ${content.firstRegionalDestination} stops feeling like the edge of your world, choose a farther horizon.”`,
     ].filter(Boolean).join('\n');
-}
-
-function hasDiscoveredPoi(state, poiId) {
-    return Object.values(state?.discoveredPois ?? {}).some((ids) => Array.isArray(ids) && ids.includes(poiId));
 }
 
 function isEquipped(player, itemId) {
