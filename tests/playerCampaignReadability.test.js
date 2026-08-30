@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getServiceJourney, getTransportService } from '../js/text/data/routeCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -50,7 +51,7 @@ function fareFor(serviceId, fromPlaceId, toPlaceId) {
 }
 
 function finishPx4ThroughFollowUp(state) {
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, 'prospector-pick'), /Equipped/);
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
@@ -76,7 +77,7 @@ function finishPx4ThroughFollowUp(state) {
     view = model(state);
     work = category(view, 'livelihood');
     assert.equal(work.action?.intent, 'locality.poi');
-    assert.equal(performLocalityPoiAction(state, work.action.payload.poiId, work.action.payload.action).ok, true);
+    assert.equal(useKnownPoi(state, work.action.payload.poiId, work.action.payload.action).ok, true);
 
     view = model(state);
     work = category(view, 'livelihood');
@@ -94,7 +95,7 @@ function finishPx4ThroughFollowUp(state) {
 
 test('PX5 groups and ranks only acquired opportunities without persisting a campaign-readability registry', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
 
     // The broader view model is allowed to lazily normalize existing canonical authorities.
     // Once that established normalization has occurred, the PX5 readability projection itself
@@ -144,7 +145,7 @@ test('PX5 turns Varric follow-up into an honest semantic Brasshaven to Starfen r
         && ['active', 'ready', 'available'].includes(candidate.status));
     assert.ok(competing.length >= 1, 'the Starfen horizon must remain one option among other known goals');
 
-    assert.equal(moveWithinLocality(state, 'brasshaven-iron-quay').ok, true);
+    assert.equal(moveToKnownLocality(state, 'brasshaven-iron-quay').ok, true);
     view = model(state);
     campaign = entry(view, CAMPAIGN_ID);
 
