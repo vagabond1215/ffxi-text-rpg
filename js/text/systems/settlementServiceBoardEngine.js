@@ -1,6 +1,7 @@
 import { getProductionInputItem, listProductionDefinitions } from '../data/productionCatalog.js';
 import { getProductionItem } from '../data/productionItems.js';
 import { getPoisForPlace } from '../data/pointsOfInterest.js';
+import { getKnownPoisForPlace, getPlayerFacingPoiName } from './localKnowledgeEngine.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { createCampaignRecoveryModel } from './campaignRecoveryEngine.js';
 import { calculateSellValue, canSellItem } from './itemBehaviorEngine.js';
@@ -21,7 +22,9 @@ export function createSettlementServiceBoard(state) {
     if (!state?.player || !isSettlementLocality(placeId)) return emptyBoard(placeId);
 
     const actions = [];
-    const localPois = getPoisForPlace(placeId);
+    const localPois = state
+        ? getKnownPoisForPlace(state, placeId).map((poi) => ({ ...poi, name: getPlayerFacingPoiName(state, poi) }))
+        : getPoisForPlace(placeId);
     const workshopPois = localPois
         .map((poi) => ({ poi, stationTags: getWorkstationTagsForPoi(poi) }))
         .filter((entry) => entry.stationTags.length > 0);
