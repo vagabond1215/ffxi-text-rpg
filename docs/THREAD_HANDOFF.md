@@ -164,6 +164,18 @@ The audit's strongest remaining broad-family candidates are:
 
 The lower-river fish gap was already resolved in Data 58 through River Dace.
 
+## Final synchronization validation note
+
+The first fully synchronized Data 61 head, `e7c289c1e664091d08f4e5974a28638a0d9d2772`, passed Repository Audit but exposed two stale `describeVersion()` regression assertions in `tests/pipeline.test.js`:
+- Product regex still expected `0.9.100.21`;
+- codename regex still expected **Headwater / Highland Transition Repair**.
+
+Assertion-only repair:
+- `15a50ddee19010a63f786173f9602e41ff55b6cf`;
+- no runtime, ecology, ownership, census, persistence, or authored-content change.
+
+The exact head after this handoff is the final Data 61 continuity candidate and must have hosted Check + Pages green before closure.
+
 ## Other queues remain separate
 
 Formal roadmap:
