@@ -98,9 +98,8 @@ test('combined production catalog consumes at least three quarters of current ca
             .filter((itemId) => rawIds.has(itemId)),
     );
 
-    console.log('HEADWATER_HIGHLAND_MEASURED_RAW_UTILIZATION', JSON.stringify({ raw: rawIds.size, used: usedRawIds.size }));
-    assert.equal(rawIds.size, 153);
-    assert.equal(usedRawIds.size, 144);
+    assert.equal(rawIds.size, 154);
+    assert.equal(usedRawIds.size, 145);
     assert.ok(usedRawIds.size / rawIds.size >= 0.75);
 });
 

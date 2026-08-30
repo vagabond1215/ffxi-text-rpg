@@ -79,7 +79,7 @@ test('Starfen Marshcraft remains a regional production and community tranche whi
     assert.ok(counts.recipes >= 29);
     assert.ok(counts.abilities >= 41);
     assert.ok(counts.quests >= 18);
-    assert.equal(counts.supplemental.contentPacks, 36);
+    assert.equal(counts.supplemental.contentPacks, 37);
     assert.ok(counts.supplemental.capabilities >= 44);
     assert.ok(counts.supplemental.npcSchedules >= 7);
     assert.ok(counts.supplemental.ownedPackRecords >= 248);
