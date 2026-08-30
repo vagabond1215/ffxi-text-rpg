@@ -17,9 +17,9 @@ function clone(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
-test('Game State 14 requires durable cultivation and delegation authority before runtime normalization', () => {
+test('Game State 15 requires durable cultivation and delegation authority before runtime normalization', () => {
     const state = createNewGameState({ nationId: 'thornwall' });
-    assert.equal(VERSION.gameState, 14);
+    assert.equal(VERSION.gameState, 15);
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
     assert.equal(state.cultivation.version, 2);
     assert.equal(state.cultivation.plot.delegation.version, 1);
