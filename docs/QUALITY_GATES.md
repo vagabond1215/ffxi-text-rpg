@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.12
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          51
+Data:          62
 Benchmark:     3
-Codename:      Regional Resource & Trade Resilience
+Codename:      Cross-Biome Family Breadth
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -60,7 +60,7 @@ Current mode remains strict pre-alpha current-schema-only.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Data 51 adds **no persistence or lifecycle owner**. The resilience pass adds authored gathering resources, substitute production routes, and POI workstation tags using existing ecology, inventory/provenance, work/proficiency, workstation, production, route, and Pack-v2 authorities. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Packet E adds **no persistence or lifecycle owner**. It audits the promoted Data 62 graph and introduces no runtime/data behavior or serialized state family. Game State remains 14; no migration is warranted. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
 ## Content Pack v2 gate
 
@@ -187,33 +187,35 @@ Implementation-freeze Check #1368 / run `33215878907` passed Repository Audit, *
 ## Current content progression
 
 ```text
-places/localities       37 / mechanics 10
-named NPCs              29 / 50
-shop/service sites      25 / 20
-creatures               58 / 40
-resource sources        83 / 40
-canonical items        264 / 200
-recipes/processes      154 / 75
+places/localities       55 / mechanics 10
+named NPCs              47 / 50
+shop/service sites      37 / 20
+creatures              123 / 40
+resource sources       143 / 40
+canonical items        408 / 200
+recipes/processes      234 / 75
 abilities/techniques    41 / 100
 quests/contracts        18 / 30
 companions               1 / 4
-transport services       6 / 5
+transport services       7 / 5
 ```
 
 Infrastructure coverage:
 
 ```text
-routes                                  12
+routes                                  25
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           15
-regional/shared packs                   21
-pack-owned records                     799
+NPC schedules                           27
+regional/shared packs                   39
+pack-owned records                    1320
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/15/1
+  schedules/companions              41/44/27/1
 ```
 
-The mechanics-scale gate remains NOT READY. Recipes/processes are now 154/75 and canonical items 264/200; companions remain the largest relative gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+`0.9.100 Content Scale Gate A` is **COMPLETE** through Packet E. Permanent evidence: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`; implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`; Check #1638 / run `33332932015` passed Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+The later mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities remain the largest absolute gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
 
 ## Regional distribution gate
 
@@ -241,4 +243,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Ironspine Highlands is complete through PR #402 at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`. Implementation-freeze Check #1368 / run `33215878907` and promoted exact-head Check #1381 / run `33217086478` both passed with 753/753 tests and the full hosted gate.
+Packet E closes `0.9.100 Content Scale Gate A` with no version change. The next formal track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started; world-edge, material-culture, and optional ecology queues remain independently selectable.
