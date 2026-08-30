@@ -13,10 +13,10 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E.** Cross-Biome Family Breadth remains the promoted Data 62 runtime/data checkpoint; the next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
 
 ```text
-Product:       0.9.100.23
+Product:       0.9.100.24
 Package:       0.9.100
 Account Save:  5
-Game State:    14
+Game State:    15
 Data:          62
 Benchmark:     3
 Codename:      Cross-Biome Family Breadth
