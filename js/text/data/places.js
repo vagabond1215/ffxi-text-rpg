@@ -432,7 +432,7 @@ export const PLACES = Object.freeze({
         nation: null,
         mapId: 'map-emberwash-badlands',
         dangerLevel: 3,
-        description: 'A harsh salt-basin edge of pale crust, saltbrush, saltgrass tufts, low succulent mats, panbloom, crust lichen, dry seed stalks, windblown dust, broken badland spires, and long exposed stretches where water and shade matter. No ordinary route continues south from here toward the farther true desert, southern strait, or Veyra lands.'
+        description: 'A harsh salt-basin edge of pale crust, saltbrush, saltgrass tufts, low succulent mats, panbloom, crust lichen, dry seed stalks, windblown dust, broken badland spires, and long exposed stretches where water and shade matter. No ordinary route continues south from here toward the farther true desert, southern strait, or Veyra lands.',
         services: [],
         coordinateSystem: grid(8, 8, { x: 4, y: 7 }),
         spawnRules: [],
