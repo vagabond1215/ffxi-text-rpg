@@ -150,13 +150,13 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.100\.21/);
+    assert.match(describeVersion(), /Product: 0\.9\.100\.22/);
     assert.match(describeVersion(), /Package: 0\.9\.100/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
     assert.match(describeVersion(), /Data: 61/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Headwater \/ Highland Transition Repair/);
+    assert.match(describeVersion(), /Codename: Wetland \/ Island Distribution Repair/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
