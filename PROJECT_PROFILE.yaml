@@ -33,13 +33,14 @@ authority:
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   ecology_location_diversity_audit: docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md
+  legacy_elderwood_ecology_repair_plan: docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: location-flora-fauna-diversity-audit-complete-awaiting-follow-up-decision
+  current_normal_work: legacy-elderwood-flora-fauna-repair-planned
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
