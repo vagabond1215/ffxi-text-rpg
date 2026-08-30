@@ -20,6 +20,7 @@ import {
     recordConnectorExposure,
     recordPlaceExposure,
     recordPoiExposure,
+    recordPoiInteraction,
     setCurrentLocalAnchor,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
@@ -318,7 +319,7 @@ export function performLocalityPoiAction(state, poiId, action = 'talk') {
         });
     }
 
-    recordPoiExposure(state, poi, { points: 1, learnedName: true });
+    recordPoiInteraction(state, poi, { points: 1, learnedName: true });
     learnPoiName(state, poi);
     if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
 
