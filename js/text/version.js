@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.9.100.23';
+export const PRODUCT_VERSION = '0.9.100.24';
 export const PACKAGE_VERSION = '0.9.100';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 14,
+    gameState: 15,
     data: 62,
     benchmark: 3,
-    codename: 'Cross-Biome Family Breadth',
+    codename: 'Local Knowledge & Familiarity',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.23',
+    versionManifest: '0.9.100.24',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -132,13 +132,13 @@ export const SYSTEM_VERSIONS = Object.freeze({
     domRoot: '0.1.0',
     domOnboarding: '0.1.0',
     gameViewModels: '0.17.0',
-    playerInformation: '0.2.0',
+    playerInformation: '0.3.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
     playerContinuity: '0.5.0',
     playerCampaignReadability: '0.2.0',
     playerDangerRecovery: '0.2.0',
-    localityNavigation: '0.2.0',
+    localityNavigation: '0.3.0',
     canvasUi: '0.8.0',
     uiIntents: '0.12.0',
     slashCommands: '0.5.0',
@@ -190,7 +190,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     coordinates: '0.1.0',
     navigation: '0.1.1',
     placeAtlas: '0.6.0',
-    discoveryPersistence: '0.1.0',
+    localKnowledge: '0.1.0',
+    discoveryPersistence: '0.2.0',
     gridMovement: '0.4.0',
     hudControls: '0.4.0',
     aggro: '0.3.4',
