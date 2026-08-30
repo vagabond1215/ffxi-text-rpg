@@ -150,7 +150,7 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.100\.19/);
+    assert.match(describeVersion(), /Product: 0\.9\.100\.20/);
     assert.match(describeVersion(), /Package: 0\.9\.100/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 14/);
