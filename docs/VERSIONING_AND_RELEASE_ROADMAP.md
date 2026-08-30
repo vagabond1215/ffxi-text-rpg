@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 14 | serialized character/world runtime contract |
-| Data | 56 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Data | 62 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1017,6 +1017,27 @@ Creature breadth now clears the playable-alpha planning lower bound of 120.
 
 The pass adds static families, species, populations, and descriptive habitat text only. It introduces no new durable serialized family.
 
+### Packet E — Gate A Integration & Census Audit
+
+Packet E closes `0.9.100 Content Scale Gate A` as an audit/integration milestone without opening a new runtime revision.
+
+```text
+Product       0.9.100.23 -> 0.9.100.23
+Package       0.9.100    -> 0.9.100
+Data          62         -> 62
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Permanent evidence: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
+
+Implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee` passed Check #1638 / run `33332932015` with Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Gate A passes because Data 62 clears the Packet E planning bands and the qualitative Pack-v2/integration requirements. The later mechanics-scale gate remains not ready at 47/50 named NPCs, 41/100 abilities, 18/30 quests, and 1/4 companions.
+
+No new durable serialized family, canonical authored-data record, or runtime behavior was introduced, so no version or migration change is warranted.
+
 ## Persistence history
 
 Relevant late history:
@@ -1143,7 +1164,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 60 Headwater / Highland transition-repair checkpoint supersedes Data 59: 55 places, 47 named NPCs, 37 service sites, 116 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 37 packs, and 1296 pack-owned records.
+The current promoted Data 62 Cross-Biome Family Breadth checkpoint is 55 places, 47 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 39 packs, and 1,320 pack-owned records.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 
@@ -1152,13 +1173,13 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 ## Phase progression
 
 ```text
-0.9.100 Content Scale Gate A                  IN PROGRESS
+0.9.100 Content Scale Gate A                  COMPLETE
   Packet A Content Pack Scale Contract v2     COMPLETE / MERGED
   Packet B Redstone Forge-Road                COMPLETE / MERGED
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
-  Packet E Gate A integration/census          QUEUED / NOT STARTED
-0.9.200 Adventure vertical slices             QUEUED
+  Packet E Gate A integration/census          COMPLETE
+0.9.200 Adventure vertical slices             QUEUED / NEXT FORMAL TRACK
 0.9.300 Advanced combat/training              QUEUED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
