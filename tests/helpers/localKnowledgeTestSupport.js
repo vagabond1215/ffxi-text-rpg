@@ -6,11 +6,13 @@ import {
     FAMILIARITY_THRESHOLDS,
     getPoiFamiliarityThreshold,
     identifyNpc,
+    requiresPoiEntryTransition,
     recordConnectorExposure,
     recordPoiExposure,
     setCurrentLocalAnchor,
 } from '../../js/text/systems/localKnowledgeEngine.js';
 import {
+    enterLocalityPoi,
     moveWithinLocality,
     performLocalityPoiAction,
     visitLocalityPoi,
@@ -41,6 +43,10 @@ export function reachPoi(state, poiOrId, options = {}) {
 
 export function useKnownPoi(state, poiOrId, action = 'talk', options = {}) {
     const poi = reachPoi(state, poiOrId, options);
+    if (requiresPoiEntryTransition(poi)) {
+        const entered = enterLocalityPoi(state, poi.id);
+        assert.equal(entered.ok, true, entered.reason ?? entered.message);
+    }
     const result = performLocalityPoiAction(state, poi.id, action);
     assert.equal(result.ok, true, result.reason ?? result.message);
     return result;
