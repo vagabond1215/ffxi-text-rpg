@@ -20,12 +20,18 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-**Emberwash Badlands & Cinderwell Station is implemented on `main` and being synchronized as Data 55.**
+**Emberwash Badlands & Cinderwell Station is complete and promoted on `main` as Data 55.**
 
 Implementation freeze:
 - `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
 - Check **#1547 / run `33279116948`**;
 - Repository Audit, **786/786 tests**, Census, Benchmark 3, Benchmark Sample green.
+
+Promoted Data 55 checkpoint:
+- `6f850b4a63a152f17a55dec23224dff42c512cad`;
+- Check **#1559 / run `33279480611`**;
+- same full gate green;
+- Pages #1692 green.
 
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
 
@@ -33,6 +39,9 @@ Normal low-risk work continues directly on `main`. Use a branch only when rollba
 
 Plan:
 - `docs/ZONE_PLAN_EMBERWASH_BADLANDS.md`.
+
+Permanent profile:
+- `docs/ZONE_PROFILE_EMBERWASH_BADLANDS.md`.
 
 Geography:
 - Emberwash North Wash — danger 2 dry-upland/badland transition wilderness;
@@ -148,8 +157,9 @@ High-value scale gaps:
 3. `PROJECT_PROFILE.yaml`
 4. `docs/EXECUTION_PIPELINE.md`
 5. `docs/WORLD_MACRO_TOPOLOGY.md`
-6. `docs/ZONE_PLAN_EMBERWASH_BADLANDS.md`
-7. `docs/ITEM_CONSUMPTION_SAFETY.md`
-8. `docs/ROADMAP.md`
-9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-10. relevant runtime/data/tests for the explicitly selected next unit
+6. `docs/ZONE_PROFILE_EMBERWASH_BADLANDS.md`
+7. `docs/ZONE_PLAN_EMBERWASH_BADLANDS.md`
+8. `docs/ITEM_CONSUMPTION_SAFETY.md`
+9. `docs/ROADMAP.md`
+10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+11. relevant runtime/data/tests for the explicitly selected next unit
