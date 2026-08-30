@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { learnLocality, reachPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
@@ -27,17 +28,28 @@ test('semantic game view model presents safe settlement locality status and cont
     assert.equal(model.navigation.mode, 'locality');
     assert.equal(model.map, null);
     assert.deepEqual(model.movement, []);
-    assert.ok(model.navigation.destinations.some((entry) => entry.id === 'thornwall-crownward'));
+    assert.deepEqual(model.navigation.destinations, [], 'fresh locality arrival must not enumerate adjacent districts');
     assert.deepEqual(model.scene.recent, ['A road bell sounds.', 'Attributes:', 'STR 12']);
     assert.equal(model.scene.recent.some((line) => line.startsWith('> ')), false);
 });
 
-test('settlement context actions prioritize named destinations and local interactions over command catalogs', () => {
+test('settlement context actions progressively disclose learned destinations and current interactions', () => {
     const state = createNewGameState({ name: 'Lark' });
-    const model = createGameViewModel(state, createUiState({ screen: 'game' }));
+    let model = createGameViewModel(state, createUiState({ screen: 'game' }));
 
     assert.ok(model.contextualActions.length <= 6);
+    assert.equal(model.contextualActions[0].intent, 'locality.look');
+    assert.equal(model.contextualActions[1].intent, 'locality.explore');
+    assert.equal(model.contextualActions.some((action) => action.intent === 'locality.move'), false);
+    assert.equal(model.contextualActions.some((action) => action.intent === 'locality.poi'), false);
+
+    learnLocality(state);
+    model = createGameViewModel(state, createUiState({ screen: 'game' }));
     assert.ok(model.contextualActions.some((action) => action.intent === 'locality.move'));
+    assert.ok(model.contextualActions.some((action) => action.intent === 'locality.poi.visit'));
+
+    reachPoi(state, 'poi-sandoria-s-ashene');
+    model = createGameViewModel(state, createUiState({ screen: 'game' }));
     assert.ok(model.contextualActions.some((action) => action.intent === 'locality.poi'));
     assert.equal(model.contextualActions.some((action) => action.label === 'Character'), false);
     assert.equal(model.contextualActions.some((action) => action.label === 'Validate'), false);
