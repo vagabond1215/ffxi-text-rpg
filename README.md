@@ -131,4 +131,4 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Emberwash Badlands & Cinderwell Station is complete as the Data 55 implementation on `main`; promotion synchronization is in progress.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Lower Deepvein** is the next ranked world-edge candidate, followed by Waymeet Marches / central plateau approaches. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+`0.9.100 Content Scale Gate A` remains open. **Emberwash Badlands & Cinderwell Station is complete and promoted as Data 55 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Lower Deepvein** is the next ranked world-edge candidate, followed by Waymeet Marches / central plateau approaches. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
