@@ -19,6 +19,7 @@ import {
     identifyNpc,
     learnPoiName,
     recordPoiExposure,
+    recordPoiInteraction,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { recruitCompanion } from './partyEngine.js';
@@ -81,7 +82,7 @@ export function talkAtCurrentGrid(state, query = '') {
 
     if (!poi) return `No matching point of interest here for: ${query}`;
 
-    recordPoiExposure(state, poi, { points: 1, learnedName: true });
+    recordPoiInteraction(state, poi, { points: 1, learnedName: true });
     learnPoiName(state, poi);
     const availability = getPoiScheduleStatus(state, poi);
     if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
@@ -108,8 +109,7 @@ export function performPoiAction(state, action, query = '') {
     if (!poi) return `No matching point of interest here for: ${query}`;
     if (!poi.actions.includes(canonicalAction)) return `${getPlayerFacingPoiName(state, poi)} does not support action: ${canonicalAction}. Available: ${poi.actions.join(', ')}`;
 
-    recordPoiExposure(state, poi, { points: 1, learnedName: true });
-    learnPoiName(state, poi);
+    recordPoiInteraction(state, poi, { points: 1, learnedName: true });
     const availability = getPoiScheduleStatus(state, poi);
     if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
     return describePoiInteraction(state, poi, canonicalAction);
