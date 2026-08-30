@@ -37,6 +37,7 @@ test('content pack index records expanded stable ownership without changing cano
     const index = buildContentPackIndex(REGIONAL_CONTENT_PACKS);
 
     assert.deepEqual(index.issues, []);
+    console.log('DRY_UPLAND_SALTPAN_MEASURED_PACK_INDEX', JSON.stringify({ packIds: index.packIds, recordCounts: index.recordCounts, ownerCount: index.ownerCount }));
     assert.deepEqual(index.packIds, [
         'pack-shared-foundation',
         'pack-elderwood-opening',

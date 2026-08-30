@@ -387,7 +387,7 @@ export const PLACES = Object.freeze({
         nation: 'Brasshaven',
         mapId: 'map-redstone-reach',
         dangerLevel: 1,
-        description: 'Dry upland south of Brasshaven cut by quarry roads, exposed stone, ore-bearing ridges, and caravan tracks.',
+        description: 'Dry upland south of Brasshaven cut by quarry roads, exposed stone, ore-bearing ridges, and caravan tracks. Sunbent bunchgrass, drythorn scrub, stone thyme, crust lichen, brittle seedheads, and sparse seasonal forbs occupy pockets of soil between scree and worked cuts rather than leaving the upland botanically bare.',
         services: [],
         coordinateSystem: grid(8, 8, { x: 4, y: 4 }),
         spawnRules: [
@@ -432,7 +432,7 @@ export const PLACES = Object.freeze({
         nation: null,
         mapId: 'map-emberwash-badlands',
         dangerLevel: 3,
-        description: 'A harsh salt-basin edge of pale crust, saltbrush, dry channels, windblown dust, broken badland spires, and long exposed stretches where water and shade matter. No ordinary route continues south from here toward the farther true desert, southern strait, or Veyra lands.',
+        description: 'A harsh salt-basin edge of pale crust, saltbrush, saltgrass tufts, low succulent mats, panbloom, crust lichen, dry seed stalks, windblown dust, broken badland spires, and long exposed stretches where water and shade matter. No ordinary route continues south from here toward the farther true desert, southern strait, or Veyra lands.'
         services: [],
         coordinateSystem: grid(8, 8, { x: 4, y: 7 }),
         spawnRules: [],
@@ -446,7 +446,7 @@ export const PLACES = Object.freeze({
         nation: 'Brasshaven',
         mapId: 'map-redstone-reach',
         dangerLevel: 1,
-        description: 'Wind-scoured ridges and mine roads north of Brasshaven where exposed geology makes both prospecting and ambush common.',
+        description: 'Wind-scoured ridges and mine roads north of Brasshaven where exposed geology makes both prospecting and ambush common. Ridge millet stands among wind juniper, yarrow, dry bunchgrass, dwarf scrub, and crust lichen on sheltered benches below the colder Ironspine ascent.',
         services: [],
         coordinateSystem: grid(8, 8, { x: 4, y: 4 }),
         spawnRules: [

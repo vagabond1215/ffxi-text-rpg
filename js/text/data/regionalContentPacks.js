@@ -1,5 +1,13 @@
 import { createContentPack } from './contentPackSchema.js';
 import {
+    listDryUplandSaltpanRepairGatheringSources,
+    listDryUplandSaltpanRepairPopulations,
+    listDryUplandSaltpanRepairSpecies,
+} from './dryUplandSaltpanRepairEcology.js';
+import { listDryUplandSaltpanRepairResourceItems } from './dryUplandSaltpanRepairResourceItems.js';
+import { listDryUplandSaltpanRepairProcessDefinitions } from './dryUplandSaltpanRepairProductionCatalog.js';
+import { listDryUplandSaltpanRepairProductionItems } from './dryUplandSaltpanRepairProductionItems.js';
+import {
     listElderwoodRepairEcologyFamilies,
     listElderwoodRepairGatheringSources,
     listElderwoodRepairPopulations,
@@ -127,6 +135,55 @@ export const ELDERWOOD_PACK = createContentPack({
     },
 });
 
+
+
+export const REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK = createContentPack({
+    id: 'pack-redstone-dry-upland-ecology-repair',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['redstone-reach'], steward: 'brasshaven-upland-wardens' },
+    dependencies: ['pack-redstone-opening', 'pack-redstone-ecology-breadth', 'pack-slatewater-foothills-ecology'],
+    metadata: {
+        name: 'Redstone Dry-Upland Ecology Repair',
+        notes: 'South and North Redstone botanical repair plus existing-family Ironspine-transition fauna spread; no new fauna family.',
+    },
+    records: {
+        species: listDryUplandSaltpanRepairSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listDryUplandSaltpanRepairPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listDryUplandSaltpanRepairGatheringSources()
+            .filter((entry) => entry.placeId === 'south-redstone-reach' || entry.placeId === 'north-redstone-reach')
+            .map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [
+            ...listDryUplandSaltpanRepairResourceItems().filter((entry) => entry.tags.includes('redstone')),
+            ...listDryUplandSaltpanRepairProductionItems().filter((entry) => entry.tags.includes('redstone')),
+        ].map((entry) => ({ id: entry.id, catalogRef: true })),
+        recipes: listDryUplandSaltpanRepairProcessDefinitions()
+            .filter((entry) => entry.id.includes('redstone'))
+            .map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
+export const EMBERWASH_SALTPAN_ECOLOGY_REPAIR_PACK = createContentPack({
+    id: 'pack-emberwash-saltpan-ecology-repair',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['emberwash-badlands'], steward: 'cinderwell-route-wardens' },
+    dependencies: ['pack-emberwash-badlands-ecology'],
+    metadata: {
+        name: 'Emberwash Saltpan Ecology Repair',
+        notes: 'Saltpan Verge halophyte food, fiber, and decorative/dye recovery with connected production demand and no route or fauna inflation.',
+    },
+    records: {
+        gatheringSources: listDryUplandSaltpanRepairGatheringSources()
+            .filter((entry) => entry.placeId === 'emberwash-saltpan-verge')
+            .map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [
+            ...listDryUplandSaltpanRepairResourceItems().filter((entry) => entry.tags.includes('emberwash')),
+            ...listDryUplandSaltpanRepairProductionItems().filter((entry) => entry.tags.includes('emberwash')),
+        ].map((entry) => ({ id: entry.id, catalogRef: true })),
+        recipes: listDryUplandSaltpanRepairProcessDefinitions()
+            .filter((entry) => entry.id.includes('emberwash'))
+            .map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
 
 export const ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK = createContentPack({
     id: 'pack-elderwood-legacy-ecology-repair',
@@ -1246,6 +1303,8 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
     ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK,
+    REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK,
+    EMBERWASH_SALTPAN_ECOLOGY_REPAIR_PACK,
 ]);
 
 export function listRegionalContentPacks() { return [...REGIONAL_CONTENT_PACKS]; }

@@ -98,6 +98,7 @@ test('combined production catalog consumes at least three quarters of current ca
             .filter((itemId) => rawIds.has(itemId)),
     );
 
+    console.log('DRY_UPLAND_SALTPAN_MEASURED_RAW_UTILIZATION', JSON.stringify({ raw: rawIds.size, used: usedRawIds.size }));
     assert.equal(rawIds.size, 145);
     assert.equal(usedRawIds.size, 135);
     assert.ok(usedRawIds.size / rawIds.size >= 0.75);

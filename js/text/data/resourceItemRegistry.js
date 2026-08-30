@@ -2,6 +2,7 @@ import { validateItemConsumption } from './itemSchema.js';
 import { getPlace } from './places.js';
 import { validateItemResourceMetadata } from './resourceProvenance.js';
 import { getEmberwashResourceItem, listEmberwashResourceItems } from './emberwashResourceItems.js';
+import { getDryUplandSaltpanRepairResourceItem, listDryUplandSaltpanRepairResourceItems } from './dryUplandSaltpanRepairResourceItems.js';
 import { getElderwoodRepairResourceItem, listElderwoodRepairResourceItems } from './elderwoodRepairResourceItems.js';
 import { getGreatMereResourceItem, listGreatMereResourceItems } from './greatMereResourceItems.js';
 import { getGloamwoodResourceItem, listGloamwoodResourceItems } from './gloamwoodResourceItems.js';
@@ -18,11 +19,11 @@ import { getRegionalResourceItem, listRegionalResourceItems } from './regionalRe
 export const RESOURCE_ITEM_REGISTRY_VERSION = 12;
 
 export function getCanonicalResourceItem(itemId) {
-    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getElderwoodRepairResourceItem(itemId) ?? getHuntingResourceItem(itemId) ?? getEmberwashResourceItem(itemId) ?? getLowerDeepveinResourceItem(itemId) ?? getGreatMereResourceItem(itemId) ?? getIronspineResourceItem(itemId) ?? getHeadwaterResourceItem(itemId) ?? getStarfenDeltaResourceItem(itemId) ?? getGloamwoodResourceItem(itemId) ?? getWaymeetMarchesResourceItem(itemId) ?? getMaterialFoundationResourceItem(itemId);
+    return getResourceItem(itemId) ?? getRegionalResourceItem(itemId) ?? getDryUplandSaltpanRepairResourceItem(itemId) ?? getElderwoodRepairResourceItem(itemId) ?? getHuntingResourceItem(itemId) ?? getEmberwashResourceItem(itemId) ?? getLowerDeepveinResourceItem(itemId) ?? getGreatMereResourceItem(itemId) ?? getIronspineResourceItem(itemId) ?? getHeadwaterResourceItem(itemId) ?? getStarfenDeltaResourceItem(itemId) ?? getGloamwoodResourceItem(itemId) ?? getWaymeetMarchesResourceItem(itemId) ?? getMaterialFoundationResourceItem(itemId);
 }
 
 export function listCanonicalResourceItems() {
-    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listElderwoodRepairResourceItems(), ...listHuntingResourceItems(), ...listEmberwashResourceItems(), ...listLowerDeepveinResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listStarfenDeltaResourceItems(), ...listGloamwoodResourceItems(), ...listWaymeetMarchesResourceItems(), ...listMaterialFoundationResourceItems()];
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listDryUplandSaltpanRepairResourceItems(), ...listElderwoodRepairResourceItems(), ...listHuntingResourceItems(), ...listEmberwashResourceItems(), ...listLowerDeepveinResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listStarfenDeltaResourceItems(), ...listGloamwoodResourceItems(), ...listWaymeetMarchesResourceItems(), ...listMaterialFoundationResourceItems()];
     const ids = new Set();
     return items.filter((item) => {
         if (ids.has(item.id)) return false;
@@ -34,7 +35,7 @@ export function listCanonicalResourceItems() {
 export function validateResourceItemRegistry() {
     const issues = [];
     const ids = new Set();
-    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listElderwoodRepairResourceItems(), ...listHuntingResourceItems(), ...listEmberwashResourceItems(), ...listLowerDeepveinResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listStarfenDeltaResourceItems(), ...listGloamwoodResourceItems(), ...listWaymeetMarchesResourceItems(), ...listMaterialFoundationResourceItems()];
+    const items = [...listResourceItems(), ...listRegionalResourceItems(), ...listDryUplandSaltpanRepairResourceItems(), ...listElderwoodRepairResourceItems(), ...listHuntingResourceItems(), ...listEmberwashResourceItems(), ...listLowerDeepveinResourceItems(), ...listGreatMereResourceItems(), ...listIronspineResourceItems(), ...listHeadwaterResourceItems(), ...listStarfenDeltaResourceItems(), ...listGloamwoodResourceItems(), ...listWaymeetMarchesResourceItems(), ...listMaterialFoundationResourceItems()];
     for (const item of items) {
         if (ids.has(item.id)) issues.push(`Duplicate canonical resource item ${item.id}.`);
         ids.add(item.id);
