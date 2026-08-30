@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 8;
+export const ROUTE_CATALOG_VERSION = 9;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -96,6 +96,40 @@ const ROUTE_DEFINITIONS = Object.freeze({
         bidirectional: true,
         knowledge: { mapId: 'map-emberwash-badlands', discoveryTag: 'route.emberwash-saltpan-foretrail' },
         cargo: { encumbranceMultiplier: 1.3 },
+    }),
+    'route-lower-deepvein-haulage-decline': route({
+        id: 'route-lower-deepvein-haulage-decline',
+        name: 'Lower Deepvein Haulage Decline',
+        type: 'track',
+        allowedModes: ['walk'],
+        stops: [
+            stop('stop-deepvein-mine-lower-decline', 'deepvein-mine', { x: 3, y: 0 }),
+            stop('stop-lower-deepvein-decline-haulage', 'deepvein-lower-decline', { x: 4, y: 7 }),
+            stop('stop-lantern-sump-haulage', 'lantern-sump-station', { x: 3, y: 5 }),
+        ],
+        segments: [
+            segment('stop-deepvein-mine-lower-decline', 'stop-lower-deepvein-decline-haulage', 1800, 2500, ['darkness', 'steep-grade', 'slick-stone', 'timbered-gallery']),
+            segment('stop-lower-deepvein-decline-haulage', 'stop-lantern-sump-haulage', 1500, 2000, ['darkness', 'seep-crossing', 'loose-rock', 'narrow-gallery']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-lower-deepvein', discoveryTag: 'route.lower-deepvein-haulage-decline' },
+        cargo: { encumbranceMultiplier: 1.5 },
+    }),
+    'route-lower-deepvein-echoing-shelf': route({
+        id: 'route-lower-deepvein-echoing-shelf',
+        name: 'Echoing Shelf Traverse',
+        type: 'track',
+        allowedModes: ['walk'],
+        stops: [
+            stop('stop-lantern-sump-echoing-shelf', 'lantern-sump-station', { x: 3, y: 0 }),
+            stop('stop-lower-deepvein-echoing-shelf', 'lower-deepvein-echoing-shelf', { x: 4, y: 7 }),
+        ],
+        segments: [
+            segment('stop-lantern-sump-echoing-shelf', 'stop-lower-deepvein-echoing-shelf', 2700, 3500, ['darkness', 'narrow-ledge', 'black-water-pools', 'low-ceiling', 'broken-gallery', 'loose-stone']),
+        ],
+        bidirectional: true,
+        knowledge: { mapId: 'map-lower-deepvein', discoveryTag: 'route.lower-deepvein-echoing-shelf' },
+        cargo: { encumbranceMultiplier: 1.6 },
     }),
     'route-mistmere-west-starfen-causeway': route({
         id: 'route-mistmere-west-starfen-causeway',

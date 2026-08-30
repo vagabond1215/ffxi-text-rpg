@@ -105,6 +105,14 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['deepvein-mine'],
         notes: 'Mine survey covering the currently accessible Deepvein galleries.',
     }),
+    mapLowerDeepvein: map({
+        id: 'map-lower-deepvein',
+        name: 'Survey of Lower Deepvein',
+        nation: 'Brasshaven',
+        region: 'Lower Deepvein',
+        placeIds: ['deepvein-lower-decline', 'lantern-sump-station', 'lower-deepvein-echoing-shelf'],
+        notes: 'A delvers’ survey of the maintained decline below Deepvein Mine, Lantern Sump Station, and the marked foot traverse to Echoing Shelf. Darkness, seep water, broken galleries, and cavern ledges are route hazards; no farther deep-road or Korren route is implied.',
+    }),
     mapMistmere: map({
         id: 'map-mistmere',
         name: 'Map of Mistmere',
