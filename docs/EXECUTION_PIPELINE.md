@@ -31,6 +31,32 @@ Codename:      Cross-Biome Family Breadth
 
 The five-part location flora/fauna diversity repair sequence remains complete and is not reopened by Packet E.
 
+## Pre-UI player-information contract
+
+The player-facing locality/discovery intent is now permanent authority in `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+
+Design status:
+- **COMPLETE / documentation only**;
+- no Product, Package, Data, Game State, Account Save, or Benchmark change;
+- implementation has **not** started.
+
+Required semantics before broad UI/player-control work:
+- canonical world truth must be filtered through character knowledge;
+- NPC names remain masked until learned by introduction/reference/credible identification;
+- POI knowledge is layered rather than binary: Unknown -> Referenced/Rumored -> Sighted -> Recognized -> Familiar;
+- direct same-locality navigation is earned through familiarity, not a single encounter;
+- sighting an entrance never auto-transitions;
+- settlement navigation may use an abstract locality graph rather than a literal city coordinate grid;
+- `Look Around` is immediate local observation;
+- `Explore` is fictional-time, context-weighted discovery/event resolution;
+- temporary directions create save-persistent search bias rather than teleportation;
+- shops are entered and then engaged through staged NPC-mediated interaction before stock/categories are exposed;
+- wandering/conditional merchants and events may remain exploration-only after static landmarks are known.
+
+The current `discoveredPois` one-step discovery/fast-travel behavior is transitional and must not be treated as the final UI contract.
+
+A future implementation of durable locality knowledge/familiarity is expected to require a deliberate Game State reassessment because familiarity and temporary guidance affect future simulation across save/load.
+
 ## Data 62 metrics
 
 ```text
@@ -128,7 +154,9 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 `0.9.100 Content Scale Gate A` is **COMPLETE through Packet E**. The ordered location flora/fauna diversity repair sequence is also complete through Data 62.
 
-Formal roadmap priority:
+The locality-discovery design contract is also complete. **Do not begin broad player-facing UI work on top of the current binary `discoveredPois` behavior.** When UI/player-control implementation is explicitly selected, the prerequisite bounded unit is **Local Knowledge & Familiarity Foundation**.
+
+Formal roadmap priority remains:
 1. **`0.9.200 Adventure Vertical Slice A`** — prefer a character-centered slice that naturally grows companion, quest, NPC, and service connectivity while reusing existing geography where practical;
 2. **`0.9.300 Advanced Combat / Training`** — deepen ability/technique breadth through real learning and use requirements;
 3. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion is the strongest already-planned bounded candidate;
