@@ -7,52 +7,54 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.23
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          49
+Data:          62
 Benchmark:     3
-Phase:         0.9 / 0.9.100 in progress
-Codename:      Ironspine Highlands & Population Hunting
+Phase:         0.9 / 0.9.100 complete; 0.9.200 queued
+Codename:      Cross-Biome Family Breadth
 ```
 
-The strategic risk remains authored-content breadth and throughput. Packets A–C are merged. Packet D is merged. Subsequent explicit work orders expanded ecology breadth, added Coppergrass Steppe, and added Slatewater Foothills/Waylodge, further exercising Pack v2 geography/ecology/service scale without introducing parallel authorities.
+`0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
 
 ## Current census
 
-Validated Ironspine Data 49 merged checkpoint:
+Validated Data 62 checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
-| Places/localities | 37 | 10 | ready |
-| Named NPCs | 29 | 50 | 21 |
-| Shop/service sites | 25 | 20 | ready |
-| Creature definitions | 58 | 40 | ready |
-| Resource sources | 56 | 40 | ready |
-| Canonical items | 182 | 200 | 18 |
-| Recipes/processes | 94 | 75 | ready |
+| Places/localities | 55 | 10 | ready |
+| Named NPCs | 47 | 50 | 3 |
+| Shop/service sites | 37 | 20 | ready |
+| Creature definitions | 123 | 40 | ready |
+| Resource sources | 143 | 40 | ready |
+| Canonical items | 408 | 200 | ready |
+| Recipes/processes | 234 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 18 | 30 | 12 |
 | Recruitable companions | 1 | 4 | 3 |
-| Transport services | 6 | 5 | ready |
+| Transport services | 7 | 5 | ready |
 
 Infrastructure coverage:
 
 ```text
-routes                                  12
+routes                                  25
 spell schools                            4
 capability/training definitions         44
-NPC schedules                           15
-regional/shared packs                   20
-pack-owned records                     630
+NPC schedules                           27
+regional/shared packs                   39
+pack-owned records                    1320
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/15/1
-runtime seed NPCs                       28
-runtime seed enemies                    16
+  schedules/companions              41/44/27/1
+runtime seed NPCs                       46
+runtime seed enemies                    17
+raw resources with production demand 145/154
+luxury raws with production demand      14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**. Places, shop/service sites, creatures, resource sources, and transport services now meet their mechanics floors; companions remain the largest relative gap.
+Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities are the largest absolute gap. These are roadmap signals, not permission to create filler.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -352,51 +354,47 @@ Permanent profile: `docs/ZONE_PROFILE_IRONSPINE_HIGHLANDS.md`.
 
 ## Packet E — Gate A integration and census audit
 
-**Status: QUEUED.**
+**Status: COMPLETE ON `main`; GATE A PASS.**
 
-After the regional tranches:
+Permanent audit:
+- `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`;
+- implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
+- Check #1638 / run `33332932015`: Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample all green.
 
-```text
-npm run audit:repo
-npm test
-npm run census
-npm run benchmark
-npm run benchmark:sample
-```
+No runtime or canonical authored-data mutation was needed. Product 0.9.100.23, Data 62, Game State 14, Account Save 5, Package 0.9.100, and Benchmark 3 remain unchanged.
 
-Run `npm run hardening` only if a tranche changes lifecycle-sensitive runtime ownership or the integration gate explicitly requires it.
-
-### Gate A planning bands
+### Gate A planning bands at closure
 
 These are progression bands, never permission to create filler:
 
-| Category | Current | Gate A planning band |
-| --- | ---: | ---: |
-| Named NPCs | 26 | 30+ |
-| Shop/service sites | 23 | 20+ |
-| Creature definitions | 52 | 28+ |
-| Resource sources | 50 | 28+ |
-| Canonical items | 158 | 110+ |
-| Recipes/processes | 81 | 40+ |
-| Abilities/techniques | 41 | 40+ |
-| Quests/contracts | 18 | 18+ |
-| Recruitable companions | 1 | 4 only when authored characters justify them |
-| Transport services | 6 | 5 only when topology justifies them |
+| Category | Data 62 | Gate A planning band | Result |
+| --- | ---: | ---: | --- |
+| Named NPCs | 47 | 30+ | pass |
+| Shop/service sites | 37 | 20+ | pass |
+| Creature definitions | 123 | 28+ | pass |
+| Resource sources | 143 | 28+ | pass |
+| Canonical items | 408 | 110+ | pass |
+| Recipes/processes | 234 | 40+ | pass |
+| Abilities/techniques | 41 | 40+ | pass |
+| Quests/contracts | 18 | 18+ | pass |
+| Recruitable companions | 1 | 4 only when authored characters justify them | pass by intentional-authoring rule |
+| Transport services | 7 | 5 only when topology justifies them | pass |
 
-### Qualitative Gate A requirements
+### Qualitative Gate A result
 
-Gate A fails regardless of count if the graph is weak. Require:
+**PASS.** The permanent audit records evidence for:
+- intentional item sources/sinks or explicit exemptions;
+- connected resource use and production depth;
+- real capability learning/access/use/runtime coverage;
+- canonical fictional-time schedules/services;
+- reference-valid, reachable commitments;
+- NPC-backed companion identity;
+- declared cross-pack dependencies and stable ownership;
+- legacy-ID rejection;
+- generated 1,401-record fixture validation separate from canonical census;
+- census deduplication that excludes ownership refs/fixtures from gameplay breadth.
 
-- intentional item sources and sinks or explicit exemptions;
-- resources participating in multiple decisions where practical;
-- abilities with real learning/access/use requirements and runtime coverage;
-- schedules/services tied to canonical fictional time/location authority;
-- reachable quests/contracts with valid references;
-- NPC-backed persistent companions rather than combat vending machines;
-- declared cross-pack dependencies;
-- no legacy identifier leakage;
-- generated scale fixtures and real packs both validating;
-- census gains coming from playable connected canonical records rather than fixtures or ownership refs.
+The later mechanics-scale gate remains **NOT READY** and is deliberately not conflated with Gate A.
 
 # Relative planning envelope
 
@@ -406,13 +404,13 @@ Gate A fails regardless of count if the graph is weak. Require:
 | Weeks 3–5 equivalent | Redstone Forge-Road | COMPLETE |
 | Weeks 6–8 equivalent | Elderwood Hunt-Timber | COMPLETE / MERGED |
 | Weeks 9–11 equivalent | Universal Magic & Starfen Marshcraft | COMPLETE / MERGED |
-| Week 12 equivalent | Gate A integration/census | QUEUED |
+| Week 12 equivalent | Gate A integration/census | COMPLETE |
 
 These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.200` deeper adventure vertical slices, `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale remain ordered future tracks. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` is complete. `0.9.200` Adventure Vertical Slices is the next formal queued track, followed by `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
