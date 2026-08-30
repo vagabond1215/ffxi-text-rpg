@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
@@ -15,7 +16,7 @@ function render(state, activeView) {
 
 test('ordinary player views keep implementation rationale out of visible prose', () => {
     const state = createNewGameState({ nationId: 'brasshaven', name: 'Ari' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
 
     for (const view of ['journal', 'spellbook', 'codex', 'craft']) {
         const html = render(state, view);
@@ -25,7 +26,7 @@ test('ordinary player views keep implementation rationale out of visible prose',
 
 test('Journal is decision-first while deeper requirements remain available on demand', () => {
     const state = createNewGameState({ nationId: 'brasshaven', name: 'Ari' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
 
     const html = render(state, 'journal');
     assert.match(html, /Suggested next/);
