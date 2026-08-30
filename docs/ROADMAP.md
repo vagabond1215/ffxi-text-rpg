@@ -98,6 +98,28 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest planning pass
 
+### Player Information & Locality Discovery
+
+**Status: COMPLETE ON `main`; documentation/planning only.**
+
+Permanent authority:
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+
+This pass defines the player-information boundary that must exist before broad UI/player-control implementation:
+- the interface cannot expose raw canonical world truth;
+- NPC names require introduction/reference/credible identification;
+- POI knowledge is layered through sighting/recognition/familiarity;
+- direct local navigation is familiarity-gated;
+- entrance discovery does not auto-transition;
+- `Look Around` and `Explore` are distinct semantic actions;
+- contextual exploration remains useful through temporary merchants, directions, risk, and ambient events;
+- shops use staged reach -> enter -> NPC interaction -> category/browse flow;
+- town navigation may remain an abstract learned locality graph.
+
+The current binary `discoveredPois`/one-interaction fast-travel behavior is transitional. The prerequisite implementation unit before broad UI work is **Local Knowledge & Familiarity Foundation**, not yet started.
+
+No Product, Data, Game State, Account Save, Package, or Benchmark change accompanies this planning pass. Game State must be reassessed when durable familiarity/temporary guidance is implemented.
+
 ### Macro-World Topology Lock
 
 **Status: COMPLETE ON `main`; documentation/planning only.**
