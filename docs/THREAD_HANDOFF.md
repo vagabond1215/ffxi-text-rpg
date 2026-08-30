@@ -7,149 +7,152 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.19
+Product:       0.9.100.20
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          58
+Data:          59
 Benchmark:     3
-Codename:      Legacy Elderwood Ecology Repair
+Codename:      Dry Upland & Saltpan Ecology Repair
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Legacy Elderwood Ecology Repair is complete and promoted on `main` as Data 58.**
+**Dry Upland & Saltpan Ecology Repair is complete and promoted on `main` as Data 59.**
 
 Plan:
-- `docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md`;
-- plan commit `5e892825d47599b43be8cd227003a54a202885bd`.
+- `docs/DRY_UPLAND_SALTPAN_FLORA_FAUNA_REPAIR_PLAN.md`;
+- plan commit `97e3d5542d01583ee38e350c0882ef80b46010c6`.
 
-Implementation freeze:
-- `3732f22a464a3cdd2d11409475730ea804dfa1a6`;
-- Check **#1601 / run `33314083287`**;
-- Repository Audit, **802/802 tests**, Census, Benchmark 3, Benchmark Sample green.
+Implementation history:
+- initial implementation `5955df251c1626808decda2547e11c9cddef1ff9`;
+- one syntax-only Saltpan-description comma repair `1f33f9b00a4c6e8e92aa1997c5f797ded9777fb1`;
+- measured guard synchronization / implementation freeze `786d9afd7c7aeced567dc5f91cd5c56cc6e9c77d`.
+
+Implementation-freeze evidence:
+- Check **#1610 / run `33322534675`**;
+- Repository Audit PASS;
+- **807/807 tests PASS**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
 
 Promoted runtime/data:
-- `9988c34e985d28586624d64258955cecec55e5d5`;
-- Product 0.9.100.19 / Data 58 / Game State 14 / Package 0.9.100.
+- `4bc397beb5a0f987c462364599382419bf89cd43`;
+- Product 0.9.100.20 / Data 59 / Game State 14 / Package 0.9.100.
 
 Continuity synchronization:
-- `2c6deec49fb0c87f0c29b481596afb03c28fbb13`;
-- PROJECT_PROFILE, README, roadmap, execution pipeline, system catalog, version roadmap, diversity audit, and bounded repair plan synchronized to Data 58.
+- `0d88ebde51796613965a0ceb71e4b4a5ab6b2c84`;
+- PROJECT_PROFILE, README, roadmap, execution pipeline, system catalog, version roadmap, diversity audit, and bounded repair plan synchronized to Data 59.
 
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds ordinary GitHub history/revert.
 
-## Data 58 — Legacy Elderwood Ecology Repair
+## Data 59 — Dry Upland & Saltpan Ecology Repair
 
-This is repair unit **1 of 5** from `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`.
+This is repair unit **2 of 5** from `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`.
 
-### East Elderwood
+### South Redstone Reach
 
 New recoverable flora:
-- Wood Sorrel Bank — edible understory herb;
-- Wayleaf Patch — medicinal/alchemical herb;
-- Bluebell Glade — decorative/aromatic/dye flower.
+- **Sunbent Bunchgrass** — common grass/fiber/thatch layer;
+- **Stone Thyme** — edible/aromatic/medicinal herb;
+- **Drythorn Resin** — woody-scrub/alchemical/repair material.
 
-Fauna spread:
-- Brush Hare;
-- Crownwood Hart in the existing Hart family;
-- Elderwood Barkboar;
-- Moss Owl.
+Existing fauna was already adequate:
+- Ridge Ibex;
+- Glass-Shell Crawler;
+- Sunscale Lizard;
+- Ironclaw Scorpion.
 
-Existing tree/nut/fruit layers remain; the place description now also carries bracken, moss, leaf litter, grasses, and other non-node vegetation so “flora diversity” is not synonymous with inventory-node count.
+The place description also carries crust lichen, brittle seedheads, sparse seasonal forbs, and ordinary dry scrub so the biome is not represented only by resource nodes.
 
-### Timbercross Landing
+### North Redstone Reach
 
-New riparian flora/resources:
-- River Mint;
-- Willowherb;
-- Sedge Fiber;
-- River Currants.
+New recoverable flora:
+- **Wind Juniper Berries** — culinary/aromatic woody shrub;
+- **Ridge Yarrow** — medicinal/alchemical flowering herb.
 
-New fauna:
-- Timbercross Bronze Dace;
-- River Teal;
-- Bank Frog.
+Transition-fauna spread:
+- Redstone Ridge Ibex using the existing species/family;
+- Sunscale Lizard using the existing species/family;
+- **Redstone Stone Grouse**, one new species using the existing Grouse family.
 
-The one justified new family is **River Dace**, representing a navigable lower-river fish niche distinct from cold-stream trout and Great Mere lake fish.
+No new fauna family was required.
 
-The place description also carries alder/willow, rush/sedge margins, nettles, bank grass, damp moss, gravel runs, and backwater vegetation.
+The place description now also carries dry bunchgrass, dwarf scrub, crust lichen, and sheltered transition vegetation below the colder Ironspine ascent.
 
-### Thornwall Old Gaol
+### Emberwash Saltpan Verge
 
-New restrained cellar/cistern substrate:
-- Thornwall Cellar Bat;
-- Gaol Webspider;
-- Cistern Moss;
-- Gaol Shelf Fungus.
+New recoverable halophytes:
+- **Saltbrush Shoots** — edible salt-tolerant shrub;
+- **Saltgrass Fiber** — structural grass/fiber for matting and shade;
+- **Panbloom Petals** — decorative/dye/aromatic flowering halophyte.
 
-The repair deliberately does not turn Old Gaol into a second Deepvein cave biome.
+Existing Saltpan fauna remains:
+- Redtail Scorpion;
+- Saltwind Vulture;
+- Dust Hare;
+- Saltbrush Tortoise.
 
-### Redfang Camp
+No fauna was added merely to increase counts.
 
-No broad ecology expansion was added. It remains primarily an occupied fortified raider site; census inflation was not considered sufficient justification.
+The place description also carries low succulent mats, crust lichen, dry seed stalks, and ordinary saline vegetation beyond the gatherable plants.
 
-## Flora diversity policy established by Data 58
+## Botanical diversity policy
 
-For future biome audits, evaluate flora as a guild/layer mix:
+The Data 58 botanical standard remains authoritative and Data 59 confirms it across dry/arid biomes.
 
-1. canopy/woody structure;
-2. shrubs/understory;
-3. herbaceous/ground layer;
-4. wet-margin/aquatic vegetation where appropriate;
-5. fungi/moss/lichen/decomposer substrate where appropriate;
-6. edible forage;
-7. medicinal/alchemical/aromatic plants;
-8. fiber/binder/timber/dye/material plants;
-9. decorative or visually distinctive flora;
-10. ordinary non-harvested background vegetation.
+Flora quality is assessed through habitat structure and functional roles, including where appropriate:
+1. woody/shrub structure;
+2. grasses/sedges/structural vegetation;
+3. herbaceous/forb ground layer;
+4. fungi/moss/lichen/crust substrate;
+5. edible forage;
+6. medicinal/alchemical/aromatic plants;
+7. fiber/binder/resin/timber/dye/material plants;
+8. decorative or visually distinctive flora;
+9. ordinary non-harvested background vegetation.
 
-Do **not** require every location to have one gatherable node in every category.
+Do **not** require every biome to expose every plant as a resource node.
 
-Decorative/background plants should stay descriptive when harvesting them does not support a real player loop. Every new recoverable raw still requires:
-- exact provenance;
-- a deliberate sink;
-- practical food-safety metadata if food-capable;
-- processing/production demand where appropriate.
+Decorative/background plants remain descriptive when harvesting would not create a meaningful loop. Every new recoverable raw still requires exact provenance, a deliberate sink, and practical food-safety metadata where applicable.
 
-Do not introduce a new durable botanical-population state family merely to make plants symmetric with fauna.
+## Data 59 production
 
-## Data 58 production
+Eight new exact-provenance raws feed eight transformations/outputs:
 
-Ten new exact-provenance raws feed eleven transformations/outputs:
+- Sunbent Bunchgrass -> **Bunchgrass Thatch Mat**;
+- Stone Thyme -> **Stone-Thyme Infusion**;
+- Drythorn Resin -> **Drythorn Resin Sealant**;
+- Wind Juniper Berries + existing Ridge Millet -> **Juniper-Millet Pot**;
+- Ridge Yarrow -> **Ridge Yarrow Field Wash**;
+- Saltbrush Shoots -> **Saltbrush Pot Greens**;
+- Saltgrass Fiber -> **Saltgrass Shade Mat**;
+- Panbloom Petals -> **Panbloom Dye Bath**.
 
-- Sorrel-Crabapple Relish;
-- Wayleaf Field Wash;
-- Bluebell Dye Bath;
-- River-Mint Tea;
-- Willowherb Poultice;
-- Landing Sedge Mat;
-- River Currant Compote;
-- Cleaned Bronze Dace;
-- Minted Bronze Dace Pot;
-- Clean Cistern Moss Packing;
-- Dried Gaol Fungus Tinder.
+The plan originally named a Ridge Yarrow Salve. Implementation uses **Ridge Yarrow Field Wash** because the current local recipe graph has no appropriate fat/wax carrier and the wash provides a real medicine/alchemy sink without inventing a support ingredient.
 
 Food safety:
-- clean Wood Sorrel, River Mint, and ripe River Currants are direct-ready;
-- raw Bronze Dace requires cleaning and cooking/smoking;
-- cleaned Bronze Dace remains raw until cooked;
-- shelf fungus and cistern moss are not food.
+- clean Stone Thyme may be used directly in small culinary quantities;
+- Wind Juniper Berries are process-required culinary spice: crush and cook;
+- Saltbrush Shoots are process-required: rinse and blanch/cook before eating;
+- Stone-Thyme Infusion, Juniper-Millet Pot, and Saltbrush Pot Greens are direct-ready prepared foods;
+- Ridge Yarrow Field Wash is non-food.
 
-Raw-resource production utilization is now **135/145**.
+Raw-resource production utilization is now **144/153**. The gain is nine used raws despite eight new raws because Juniper-Millet Pot also activates demand for previously underused existing Ridge Millet.
 
-## Data 58 census
+## Data 59 census
 
 ```text
 places/localities                        55
 named NPCs                               47
 shop/service sites                       37
-creature definitions                    110
-resource sources                        134
-canonical items                         390
-recipes/processes                       225
+creature definitions                    111
+resource sources                        142
+canonical items                         406
+recipes/processes                       233
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
@@ -158,11 +161,11 @@ routes                                   25
 spell schools                             4
 capabilities/training definitions        44
 NPC schedules                            27
-regional/shared content packs            34
-pack-owned records                     1241
+regional/shared content packs            36
+pack-owned records                     1277
 runtime seed NPCs                        46
 runtime seed enemies                     17
-raw resources with production demand 135/145
+raw resources with production demand 144/153
 luxury raws with production demand      14/14
 ```
 
@@ -172,45 +175,46 @@ Mechanics-scale gate remains **NOT READY**:
 - quests 18/30;
 - named NPCs 47/50.
 
+Do not address those gaps with disconnected filler.
+
 ## Persistence decision
 
 Game State remains **14**.
 
-Data 58 adds static authored catalog definitions and instances of existing ecology population/source authority. It adds no new durable serialized family for:
-- botanical populations;
-- river fishing state;
-- cellar ecology;
-- location vegetation;
+Data 59 adds static catalog definitions and instances of existing ecology population/source authority. It adds no new durable serialized family for:
+- flora populations;
+- saltpan vegetation;
+- transition fauna;
 - route/world geography;
 - player state.
 
 ## Ecology repair ranking
 
 Completed:
-1. **Legacy Elderwood Ecology Repair — COMPLETE / Data 58.**
+1. **Legacy Elderwood Ecology Repair — COMPLETE / Data 58**;
+2. **Dry Upland & Saltpan Ecology Repair — COMPLETE / Data 59**.
 
 Next ranked, **not auto-started**:
-2. **Dry Upland & Saltpan Ecology Repair**
-   - North/South Redstone vegetation;
-   - Emberwash Saltpan halophytes;
-   - existing-family transition spread.
+3. **Headwater / Highland Transition Spread**
+   - Headwater Upper Vale;
+   - Windscar Grouse overlap;
+   - Slatewater/Ironspine pollinators and small prey where habitat supports them.
 
 Then:
-3. Headwater / Highland Transition Spread;
 4. Wetland / Island Distribution Repair;
 5. Cross-biome family breadth.
 
-Potential later new-family candidates remain:
+Potential later broadly reusable new-family candidates remain:
 - ground-squirrel / vole / small burrowing rodent;
 - scoped small passerine;
 - shorebird/wader where coastal depth warrants it;
 - snake only as optional ecological breadth.
 
-The lower-river fish gap was resolved in Data 58 through River Dace.
+The lower-river fish gap was already resolved in Data 58 through River Dace. Data 59 required no new fauna family.
 
 ## World geography state
 
-Data 58 does not change route or macro-topology authority.
+Data 59 does not change route or macro-topology authority.
 
 Current overland Waymeet sequence remains:
 
@@ -229,17 +233,6 @@ World-edge ranking remains:
 3. Drowned Vaults.
 
 These are separate from the ecology-repair sequence and are not auto-started.
-
-## Final synchronization validation note
-
-The first fully synchronized Data 58 head, `7f445418aa69ff765cdb4753b9afc75b715c8e61`, passed Repository Audit but exposed one stale regression expectation in `tests/pipeline.test.js`: `describeVersion()` was still matched against Product 0.9.100.18.
-
-Repair:
-- `25dea3611bfbe03a4b14fe76233ea1df1cf9579b`;
-- assertion-only correction to Product 0.9.100.19;
-- no runtime, ecology, census, persistence, or content change.
-
-The exact head after this handoff is the final Data 58 continuity candidate and must have hosted Check + Pages green before closure.
 
 ## Other queued choices
 
@@ -260,9 +253,10 @@ High-value scale gaps:
 2. this file
 3. `PROJECT_PROFILE.yaml`
 4. `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
-5. `docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md`
-6. `docs/EXECUTION_PIPELINE.md`
-7. `docs/ITEM_CONSUMPTION_SAFETY.md`
-8. `docs/ROADMAP.md`
-9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-10. relevant ecology/resource/production/runtime/tests for the explicitly selected next unit
+5. `docs/DRY_UPLAND_SALTPAN_FLORA_FAUNA_REPAIR_PLAN.md`
+6. `docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md`
+7. `docs/EXECUTION_PIPELINE.md`
+8. `docs/ITEM_CONSUMPTION_SAFETY.md`
+9. `docs/ROADMAP.md`
+10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+11. relevant ecology/resource/production/runtime/tests for the explicitly selected next unit
