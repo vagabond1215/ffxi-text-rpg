@@ -212,12 +212,19 @@ function createLocalModel(state) {
                 intent: 'locality.poi',
                 payload: Object.freeze({ poiId: poi.id, action }),
             })
-            : Object.freeze({
-                id: `information:local-poi-visit:${poi.id}`,
-                label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
-                intent: 'locality.poi.visit',
-                payload: Object.freeze({ poiId: poi.id }),
-            });
+            : poi.atEntrance && poi.requiresEntry
+                ? Object.freeze({
+                    id: `information:local-poi-enter:${poi.id}`,
+                    label: `Enter · ${poi.name}`,
+                    intent: 'locality.poi.enter',
+                    payload: Object.freeze({ poiId: poi.id }),
+                })
+                : Object.freeze({
+                    id: `information:local-poi-visit:${poi.id}`,
+                    label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
+                    intent: 'locality.poi.visit',
+                    payload: Object.freeze({ poiId: poi.id }),
+                });
         return Object.freeze({
             id: poi.id,
             name: poi.name,
@@ -226,6 +233,8 @@ function createLocalModel(state) {
             knowledgeState: poi.knowledgeState,
             familiarityPoints: poi.familiarityPoints,
             present: Boolean(poi.present),
+            atEntrance: Boolean(poi.atEntrance),
+            requiresEntry: Boolean(poi.requiresEntry),
             actions: Object.freeze([...(poi.actions ?? [])]),
             action: primaryAction,
         });
