@@ -7,85 +7,149 @@ Repository evidence beats conversation memory.
 ## Current contract
 
 ```text
-Product:       0.9.100.18
+Product:       0.9.100.19
 Package:       0.9.100
 Account Save:  5
 Game State:    14
-Data:          57
+Data:          58
 Benchmark:     3
-Codename:      Waymeet Marches & Cairnward Relay
+Codename:      Legacy Elderwood Ecology Repair
 Runtime:       Node >=24
 Phase:         0.9 / 0.9.100 Content Scale Gate A
 ```
 
 ## Current integration state
 
-**Waymeet Marches & Cairnward Relay is the latest promoted runtime/data bounded unit on `main`.**
-
-Waymeet implementation freeze:
-- `3ef4830baf992e6f9ff973576d6be642e47dc3fa`;
-- Check **#1592 / run `33293624219`**;
-- Repository Audit, **797/797 tests**, Census, Benchmark 3, Benchmark Sample green.
-
-Promoted runtime/data commit:
-- `bf2103355ac3fc79b69e0007c46f9d3f14552054`;
-- Product 0.9.100.18 / Data 57 / Game State 14 / Package 0.9.100.
-
-Release-authority synchronization commit:
-- `76aa98c56d2fbceee7ada4d0b4d694e92ad87eb2`;
-- README, PROJECT_PROFILE, ROADMAP, EXECUTION_PIPELINE, SYSTEM_CATALOG, and VERSIONING_AND_RELEASE_ROADMAP moved to Data 57;
-- hosted Check #1594 failed only because this handoff still carried the Data 56 version block;
-- Pages #1726 was green.
-
-The current ecology/location diversity audit is documentation-only and does not change Product/Data/Game State.
-
-Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
-
-## Data 57 — Waymeet Marches & Cairnward Relay
+**Legacy Elderwood Ecology Repair is complete and promoted on `main` as Data 58.**
 
 Plan:
-- `docs/ZONE_PLAN_WAYMEET_MARCHES.md`.
+- `docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md`;
+- plan commit `5e892825d47599b43be8cd227003a54a202885bd`.
 
-Bounded geography:
-- Windscar Saddle — exposed central-plateau saddle;
-- Cairnward Relay — sparse neutral pack-to-wagon logistics relay;
-- Waymeet South Marches — first open southern march country;
-- Headwater–Cairnward Pack Road — walk/mount/caravan, **no wagons**;
-- Cairnward South March Road — walk/mount/wagon/caravan;
-- no route continues from South Marches to inner Waymeet Marches or Waymeet metropolis.
+Implementation freeze:
+- `3732f22a464a3cdd2d11409475730ea804dfa1a6`;
+- Check **#1601 / run `33314083287`**;
+- Repository Audit, **802/802 tests**, Census, Benchmark 3, Benchmark Sample green.
 
-Ecology/resources:
-- 8 plateau species/populations;
-- 7 exact-provenance raw resources;
-- established Marmot, Grouse, Fox, Mountain Eagle, Bee, Owl, and Waterfowl families reused;
-- Moor Char is the only new family required by the bounded biome;
-- ordinary wildlife remains passive, wary, or naturally territorial;
-- 10 transformations / 10 outputs;
-- every new raw has production demand;
-- raw production utilization **124/135**;
-- luxury utilization **14/14**.
+Promoted runtime/data:
+- `9988c34e985d28586624d64258955cecec55e5d5`;
+- Product 0.9.100.19 / Data 58 / Game State 14 / Package 0.9.100.
 
-People/services:
-- Sella Ward — Cairnward Relay Factor;
-- Kellan Rusk — Plateau Route Warden;
-- Tam Berrow — Cairnward Cartwright;
-- 2 schedules;
-- exchange, route desk, cart/repair shelter, common hearth/cistern/bunks.
+Continuity synchronization:
+- `2c6deec49fb0c87f0c29b481596afb03c28fbb13`;
+- PROJECT_PROFILE, README, roadmap, execution pipeline, system catalog, version roadmap, diversity audit, and bounded repair plan synchronized to Data 58.
 
-Persistence:
-- Game State remains 14;
-- no wagon-transfer, route-condition, weather, permit, border, settlement, or macro-coordinate state family was added.
+Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds ordinary GitHub history/revert.
 
-## Data 57 census
+## Data 58 — Legacy Elderwood Ecology Repair
+
+This is repair unit **1 of 5** from `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`.
+
+### East Elderwood
+
+New recoverable flora:
+- Wood Sorrel Bank — edible understory herb;
+- Wayleaf Patch — medicinal/alchemical herb;
+- Bluebell Glade — decorative/aromatic/dye flower.
+
+Fauna spread:
+- Brush Hare;
+- Crownwood Hart in the existing Hart family;
+- Elderwood Barkboar;
+- Moss Owl.
+
+Existing tree/nut/fruit layers remain; the place description now also carries bracken, moss, leaf litter, grasses, and other non-node vegetation so “flora diversity” is not synonymous with inventory-node count.
+
+### Timbercross Landing
+
+New riparian flora/resources:
+- River Mint;
+- Willowherb;
+- Sedge Fiber;
+- River Currants.
+
+New fauna:
+- Timbercross Bronze Dace;
+- River Teal;
+- Bank Frog.
+
+The one justified new family is **River Dace**, representing a navigable lower-river fish niche distinct from cold-stream trout and Great Mere lake fish.
+
+The place description also carries alder/willow, rush/sedge margins, nettles, bank grass, damp moss, gravel runs, and backwater vegetation.
+
+### Thornwall Old Gaol
+
+New restrained cellar/cistern substrate:
+- Thornwall Cellar Bat;
+- Gaol Webspider;
+- Cistern Moss;
+- Gaol Shelf Fungus.
+
+The repair deliberately does not turn Old Gaol into a second Deepvein cave biome.
+
+### Redfang Camp
+
+No broad ecology expansion was added. It remains primarily an occupied fortified raider site; census inflation was not considered sufficient justification.
+
+## Flora diversity policy established by Data 58
+
+For future biome audits, evaluate flora as a guild/layer mix:
+
+1. canopy/woody structure;
+2. shrubs/understory;
+3. herbaceous/ground layer;
+4. wet-margin/aquatic vegetation where appropriate;
+5. fungi/moss/lichen/decomposer substrate where appropriate;
+6. edible forage;
+7. medicinal/alchemical/aromatic plants;
+8. fiber/binder/timber/dye/material plants;
+9. decorative or visually distinctive flora;
+10. ordinary non-harvested background vegetation.
+
+Do **not** require every location to have one gatherable node in every category.
+
+Decorative/background plants should stay descriptive when harvesting them does not support a real player loop. Every new recoverable raw still requires:
+- exact provenance;
+- a deliberate sink;
+- practical food-safety metadata if food-capable;
+- processing/production demand where appropriate.
+
+Do not introduce a new durable botanical-population state family merely to make plants symmetric with fauna.
+
+## Data 58 production
+
+Ten new exact-provenance raws feed eleven transformations/outputs:
+
+- Sorrel-Crabapple Relish;
+- Wayleaf Field Wash;
+- Bluebell Dye Bath;
+- River-Mint Tea;
+- Willowherb Poultice;
+- Landing Sedge Mat;
+- River Currant Compote;
+- Cleaned Bronze Dace;
+- Minted Bronze Dace Pot;
+- Clean Cistern Moss Packing;
+- Dried Gaol Fungus Tinder.
+
+Food safety:
+- clean Wood Sorrel, River Mint, and ripe River Currants are direct-ready;
+- raw Bronze Dace requires cleaning and cooking/smoking;
+- cleaned Bronze Dace remains raw until cooked;
+- shelf fungus and cistern moss are not food.
+
+Raw-resource production utilization is now **135/145**.
+
+## Data 58 census
 
 ```text
 places/localities                        55
 named NPCs                               47
 shop/service sites                       37
-creature definitions                    104
-resource sources                        124
-canonical items                         369
-recipes/processes                       214
+creature definitions                    110
+resource sources                        134
+canonical items                         390
+recipes/processes                       225
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
@@ -94,10 +158,12 @@ routes                                   25
 spell schools                             4
 capabilities/training definitions        44
 NPC schedules                            27
-regional/shared content packs            33
-pack-owned records                     1183
+regional/shared content packs            34
+pack-owned records                     1241
 runtime seed NPCs                        46
 runtime seed enemies                     17
+raw resources with production demand 135/145
+luxury raws with production demand      14/14
 ```
 
 Mechanics-scale gate remains **NOT READY**:
@@ -106,123 +172,47 @@ Mechanics-scale gate remains **NOT READY**:
 - quests 18/30;
 - named NPCs 47/50.
 
-## Location flora/fauna diversity audit
+## Persistence decision
 
-Permanent audit:
-- `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`;
-- audit commit `329b0c0249f2b1ca2f55663614fee3e188c0efa1`;
-- documentation/planning only;
-- no version or persistence change.
+Game State remains **14**.
 
-Audit scope:
-- all 55 places;
-- all 30 wilderness/dungeon-scale locations;
-- fauna family/species/population spread;
-- flora/fungal gathering-source coverage;
-- trophic overlap;
-- biome-transition continuity;
-- prior deferred ecology gaps.
+Data 58 adds static authored catalog definitions and instances of existing ecology population/source authority. It adds no new durable serialized family for:
+- botanical populations;
+- river fishing state;
+- cellar ecology;
+- location vegetation;
+- route/world geography;
+- player state.
 
-### Highest-confidence location gaps
+## Ecology repair ranking
 
-P0:
-1. **Emberwash Saltpan Verge** — place fiction explicitly names saltbrush but there are zero flora sources.
-2. **Thornwall Old Gaol** — only wilderness/dungeon-scale place with zero populations and zero sources.
-3. **Timbercross Landing** — river bend has Otter/Turtle but zero flora sources and no fish population/source.
-4. **Reedcrown Isle** — explicit reed-crown habitat but zero flora sources; Grebe prey is only regionally, not locally, represented.
+Completed:
+1. **Legacy Elderwood Ecology Repair — COMPLETE / Data 58.**
 
-P1:
-- Headwater Upper Vale — too little meadow/tributary/saddle-transition spread;
-- North Redstone Reach — too little ridge/scrub fauna/flora spread below Ironspine;
-- East Elderwood — flora-rich but fauna-thin;
-- East Starfen — flora-rich fen but aquatic/wader guilds are thin;
-- Slatewater Foothills — headline large vertebrates are good, small prey/pollinators thin;
-- Crownfields — managed ecology lacks ordinary hedgerow/ditch wild fauna;
-- Ironspine — no pollinator/insect population;
-- Coppergrass — missing small burrowing prey base;
-- South Redstone — vegetation coverage is much thinner than fauna/mineral coverage.
-
-P2:
-- Deepvein Mine;
-- Sunken Archive;
-- Redfang Camp.
-
-These remain bounded secondary ecology/substrate gaps rather than broken references.
-
-### Recommended existing-family spread before new taxonomy
-
-Reuse first:
-- Hare;
-- Bee;
-- Grouse;
-- Waterfowl;
-- Frog;
-- Dragonfly;
-- Mire Heron;
-- Reed Eel;
-- Crab;
-- Ridge Ibex;
-- Lizard;
-- Bat;
-- Spider.
-
-### Best genuinely new family candidates
-
-1. **Ground-squirrel / vole / small burrowing rodent** — highest value across Coppergrass, Waymeet plateau, Crownfields margins, and selected foothill habitats.
-2. **Scoped small passerine** such as Finch/Lark/Thrush — fills forest, hedgerow, orchard, foothill, and grassland small-bird absence.
-3. **Lower-river fish** — gives Timbercross/lower western rivers a distinct niche instead of forcing cold-stream trout downstream.
-4. Shorebird/small wader — useful future delta/coast depth.
-5. Snake — optional broad ecological breadth, not a current coherence defect.
-
-### New-biome verdicts
-
-- Waymeet Marches: **good**; needs local overlap/refinement, not another family batch.
-- Emberwash: **good north wash; incomplete saltpan flora**.
-- Lower Deepvein: **strong cave-frontier diversity**.
-- Gloamwood: **strong old-growth diversity**.
-- Starfen Delta/Brackish Coast: **strong coast; moderately thin lower-delta spread**.
-
-## Recommended ecology repair order
-
-If explicitly authorized:
-
-1. Legacy Elderwood Ecology Repair
-   - Timbercross Landing;
-   - East Elderwood;
-   - Thornwall Old Gaol;
-   - Redfang Camp only where useful.
-2. Dry Upland & Saltpan Ecology Repair
+Next ranked, **not auto-started**:
+2. **Dry Upland & Saltpan Ecology Repair**
    - North/South Redstone vegetation;
    - Emberwash Saltpan halophytes;
-   - transition-family spread.
-3. Headwater / Highland Transition Spread
-   - Headwater Upper Vale;
-   - Windscar Grouse overlap;
-   - Slatewater/Ironspine pollinators and small prey.
-4. Wetland / Island Distribution Repair
-   - East Starfen;
-   - Reedcrown Isle;
-   - Starfen Lower Delta.
-5. Cross-biome family breadth
-   - small burrowing rodent;
-   - scoped passerine;
-   - lower-river fish.
+   - existing-family transition spread.
 
-Do not implement all five automatically as a single ecology megatranch.
+Then:
+3. Headwater / Highland Transition Spread;
+4. Wetland / Island Distribution Repair;
+5. Cross-biome family breadth.
+
+Potential later new-family candidates remain:
+- ground-squirrel / vole / small burrowing rodent;
+- scoped small passerine;
+- shorebird/wader where coastal depth warrants it;
+- snake only as optional ecological breadth.
+
+The lower-river fish gap was resolved in Data 58 through River Dace.
 
 ## World geography state
 
-`docs/WORLD_MACRO_TOPOLOGY.md` remains the macro-topology authority.
+Data 58 does not change route or macro-topology authority.
 
-Completed post-lock world-edge runtime/data units:
-1. Headwater Vale — Data 52;
-2. Starfen Delta / Brackish Coast — Data 53;
-3. Gloamwood & Oldbough Refuge — Data 54;
-4. Emberwash Badlands & Cinderwell Station — Data 55;
-5. Lower Deepvein & Lantern Sump Station — Data 56;
-6. Waymeet Marches & Cairnward Relay — Data 57.
-
-Current overland sequence:
+Current overland Waymeet sequence remains:
 
 ```text
 Timbercross
@@ -233,32 +223,12 @@ Timbercross
   -X-> inner marches / Waymeet
 ```
 
-The next possible Waymeet continuation remains a separately bounded **inner-marches / outer-crossroads approach**, not automatic authorization for the metropolis.
+World-edge ranking remains:
+1. Waymeet Inner Marches / outer crossroads approach;
+2. Coppergrass extensions;
+3. Drowned Vaults.
 
-Existing ranked world-edge alternatives remain:
-- Coppergrass extensions;
-- Drowned Vaults.
-
-### Known continuity note
-
-The prior Waymeet run synchronized the repository-audit-required release authorities but did not finish all optional/planning continuity edits originally intended for:
-- `docs/WORLD_MACRO_TOPOLOGY.md`;
-- `docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md`;
-- `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`;
-- a permanent Waymeet regional profile.
-
-Repository runtime/data authority is Data 57. Before another Waymeet world-edge implementation, normalize those planning documents against current Data 57 evidence rather than assuming their older prose is current.
-
-## Audit validation note
-
-The first exact audit-head Check (#1596 / run `33311920739`) passed Repository Audit but exposed one stale Data 56-era regression assertion in `tests/pipeline.test.js`: `describeVersion()` was still expected to print Product 0.9.100.17 even though all primary manifest assertions already expected 0.9.100.18 / Data 57.
-
-Repair commit:
-- `93566e516d6ab6ed53ed4d89fcb08d235e611caf`;
-- changes only the stale expected Product string;
-- no runtime/data/ecology behavior changes.
-
-The exact final audit head after this handoff must pass the full hosted Check and Pages before the audit is treated as closed.
+These are separate from the ecology-repair sequence and are not auto-started.
 
 ## Other queued choices
 
@@ -279,10 +249,9 @@ High-value scale gaps:
 2. this file
 3. `PROJECT_PROFILE.yaml`
 4. `docs/LOCATION_FLORA_FAUNA_DIVERSITY_AUDIT.md`
-5. `docs/EXECUTION_PIPELINE.md`
-6. `docs/WORLD_MACRO_TOPOLOGY.md`
-7. `docs/ZONE_PLAN_WAYMEET_MARCHES.md`
-8. `docs/ITEM_CONSUMPTION_SAFETY.md`
-9. `docs/ROADMAP.md`
-10. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
-11. relevant runtime/data/tests for the explicitly selected next unit
+5. `docs/LEGACY_ELDERWOOD_FLORA_FAUNA_REPAIR_PLAN.md`
+6. `docs/EXECUTION_PIPELINE.md`
+7. `docs/ITEM_CONSUMPTION_SAFETY.md`
+8. `docs/ROADMAP.md`
+9. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+10. relevant ecology/resource/production/runtime/tests for the explicitly selected next unit
