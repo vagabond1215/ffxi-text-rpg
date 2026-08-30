@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getEquipmentCatalogEntry } from '../js/text/data/equipmentCatalog.js';
 import { getProductionDefinition, validateProductionCatalog } from '../js/text/data/productionCatalog.js';
@@ -167,7 +168,7 @@ test('completed production persists pending outputs when storage is full and cla
 test('locality POI tags provide workstation context without exposing a separate facility database', () => {
     const state = createNewGameState({ nationId: 'mistmere' });
     assert.equal(state.currentPlaceId, 'mistmere-canal-ward');
-    const focused = performLocalityPoiAction(state, 'poi-waters-chomo-jinjahl', 'guild');
+    const focused = useKnownPoi(state, 'poi-waters-chomo-jinjahl', 'guild');
     assert.equal(focused.ok, true);
     assert.ok(collectAvailableWorkstationTags(state).includes('kitchen'));
 });
