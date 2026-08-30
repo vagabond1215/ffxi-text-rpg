@@ -146,6 +146,47 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
+        const activePoint = points.find((poi) => poi.present) ?? null;
+        if (activePoint) {
+            const actions = [
+                Object.freeze({
+                    id: `context:locality-poi:${activePoint.id}:talk`,
+                    label: `Greet · ${activePoint.name}`,
+                    intent: 'locality.poi',
+                    payload: Object.freeze({ poiId: activePoint.id, action: 'talk' }),
+                    kind: 'social',
+                }),
+            ];
+            const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && activePoint.actions.includes(candidate));
+            if (serviceAction && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
+                actions.push(Object.freeze({
+                    id: `context:locality-poi:${activePoint.id}:${serviceAction}`,
+                    label: `${POI_ACTION_LABELS[serviceAction] ?? 'Use'} · ${activePoint.name}`,
+                    intent: 'locality.poi',
+                    payload: Object.freeze({ poiId: activePoint.id, action: serviceAction }),
+                    kind: serviceAction,
+                }));
+            }
+            actions.push(directAction('context:locality-poi-leave', 'Leave', 'locality.poi.leave', {}, 'travel'));
+            actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
+            return dedupeActions(actions).slice(0, 6);
+        }
+
+        const entrancePoint = points.find((poi) => poi.atEntrance && poi.requiresEntry) ?? null;
+        if (entrancePoint) {
+            return [
+                Object.freeze({
+                    id: `context:locality-poi-enter:${entrancePoint.id}`,
+                    label: `Enter · ${entrancePoint.name}`,
+                    intent: 'locality.poi.enter',
+                    payload: Object.freeze({ poiId: entrancePoint.id }),
+                    kind: 'travel',
+                }),
+                directAction('context:locality-explore', 'Continue Exploring', 'locality.explore', {}, 'exploration'),
+                directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'),
+            ];
+        }
+
         const actions = [
             directAction('context:locality-look', 'Look Around', 'locality.look', {}, 'exploration'),
             directAction('context:locality-explore', 'Explore', 'locality.explore', {}, 'exploration'),
@@ -162,25 +203,13 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
         for (const poi of points) {
             if (actions.length >= 5) break;
-            if (poi.present) {
-                if (poi.availability?.scheduled && !poi.availability.available) continue;
-                const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
-                actions.push(Object.freeze({
-                    id: `context:locality-poi:${poi.id}:${action}`,
-                    label: `${POI_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
-                    intent: 'locality.poi',
-                    payload: Object.freeze({ poiId: poi.id, action }),
-                    kind: action === 'talk' ? 'social' : action,
-                }));
-            } else {
-                actions.push(Object.freeze({
-                    id: `context:locality-poi-visit:${poi.id}`,
-                    label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
-                    intent: 'locality.poi.visit',
-                    payload: Object.freeze({ poiId: poi.id }),
-                    kind: 'exploration',
-                }));
-            }
+            actions.push(Object.freeze({
+                id: `context:locality-poi-visit:${poi.id}`,
+                label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
+                intent: 'locality.poi.visit',
+                payload: Object.freeze({ poiId: poi.id }),
+                kind: 'exploration',
+            }));
         }
         actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
         return dedupeActions(actions).slice(0, 6);
@@ -388,6 +417,8 @@ function toNearbyRecord(poi) {
         knowledgeState: poi.knowledgeState ?? null,
         familiarityPoints: poi.familiarityPoints ?? 0,
         present: Boolean(poi.present),
+        atEntrance: Boolean(poi.atEntrance),
+        requiresEntry: Boolean(poi.requiresEntry),
         actions: Object.freeze([...(poi.actions ?? [])]),
         availability: poi.availability ? Object.freeze({ ...poi.availability }) : null,
     });
