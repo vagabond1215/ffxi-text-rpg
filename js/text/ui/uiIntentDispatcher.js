@@ -43,6 +43,13 @@ import {
 } from '../systems/homeInfrastructureEngine.js';
 import { moveInDirection, stopTravel } from '../systems/navigationEngine.js';
 import {
+    exploreLocality,
+    lookAroundLocality,
+    moveWithinLocality,
+    performLocalityPoiAction,
+    visitLocalityPoi,
+} from '../systems/localityEngine.js';
+import {
     joinCompanion,
     leaveCompanion,
     recruitCompanion,
@@ -115,6 +122,11 @@ export function dispatchUiIntent(request = {}) {
         case 'creator.cancel': return cancelCreator(context);
         case 'creator.confirm': return confirmCreator(context);
         case 'creator.begin': return beginCreatedCharacter(context);
+        case 'locality.look': return recordLocalityResult(context, lookAroundLocality(context.state));
+        case 'locality.explore': return recordLocalityResult(context, exploreLocality(context.state));
+        case 'locality.move': return recordLocalityResult(context, moveWithinLocality(context.state, context.payload.destinationId));
+        case 'locality.poi.visit': return recordLocalityResult(context, visitLocalityPoi(context.state, context.payload.poiId));
+        case 'locality.poi': return recordLocalityResult(context, performLocalityPoiAction(context.state, context.payload.poiId, context.payload.action));
         case 'navigation.move': return moveNavigation(context);
         case 'navigation.stop': return stopNavigation(context);
         case 'navigation.toggleAutoRun': return toggleAutoRun(context);
@@ -405,6 +417,14 @@ function activateCanonicalAbility(context) {
     appendOutput(context.uiState, message);
     appendOutput(context.uiState, '');
     return ok(context, { abilityResult: result, message });
+}
+
+function recordLocalityResult(context, result) {
+    const message = result.message ?? result.reason ?? 'Locality updated.';
+    setActiveFeedback(context.uiState, message);
+    appendOutput(context.uiState, message);
+    appendOutput(context.uiState, '');
+    return ok(context, { localityResult: result, message });
 }
 
 function recordCommitmentResult(context, result) {
