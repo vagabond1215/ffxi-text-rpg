@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { advanceActiveActivityToCompletion } from '../js/text/systems/activityAdvanceEngine.js';
@@ -25,7 +26,7 @@ function inventoryQuantity(state, itemId) {
 test('Brasshaven first regional loop leaves and returns with persistent material and mastery gains', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
 
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, 'prospector-pick'), /Equipped/);
 
@@ -72,7 +73,7 @@ test('Brasshaven first regional loop leaves and returns with persistent material
     assert.equal(step.status, 'ready');
     assert.equal(step.action.intent, 'locality.poi');
     assert.equal(step.action.payload.poiId, 'poi-bastok-markets-reinberta');
-    assert.equal(performLocalityPoiAction(state, step.action.payload.poiId, step.action.payload.action).ok, true);
+    assert.equal(useKnownPoi(state, step.action.payload.poiId, step.action.payload.action).ok, true);
 
     step = livelihood(state);
     assert.equal(step.status, 'ready');
