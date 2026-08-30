@@ -13,7 +13,7 @@ import { createUiState } from '../js/text/ui/uiState.js';
 function learnSera(state) {
     const sera = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sera Talwin');
     assert.ok(sera);
-    recordPoiExposure(state, sera, { points: 7, learnedName: true });
+    recordPoiExposure(state, sera, { points: 14, learnedName: true });
     return sera;
 }
 
