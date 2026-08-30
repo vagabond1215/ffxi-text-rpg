@@ -193,10 +193,12 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
-| Places/routes/maps | playable | 52 current places/localities; reciprocal map/place and route-stop integrity is validated. |
-| Safe-locality navigation | playable | Named destinations where fine topology is not the decision. |
+| Places/routes/maps | playable | 55 current places/localities; reciprocal map/place and route-stop integrity is validated. |
+| Safe-locality navigation | playable | Named destinations where fine topology is not the decision; current one-step POI discovery/direct navigation is transitional before locality familiarity work. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
+| Player locality knowledge/familiarity | planned | Layered Unknown/Referenced/Sighted/Recognized/Familiar knowledge, learned connectors, and save-persistent temporary directions; canonical world truth remains separate. |
+| Contextual Look Around / Explore resolver | planned | Fictional-time, locality-aware, deterministic/injectable weighted discovery and ambient-event resolution. |
 | Direct travel | playable | Route authority + fictional time. |
 | Scheduled transport | playable | Deterministic departures/fares/cargo limits. |
 
@@ -252,16 +254,19 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 40 runtime seed NPCs; census counts 41 named NPC definitions across canonical sources. |
+| NPC seed definitions | integrated | 46 runtime seed NPCs; census counts 47 named NPC definitions across canonical sources. |
 | NPC recurring schedules | playable | Twenty-three current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
+| Player-facing NPC identity disclosure | planned | Canonical names remain internal until introduction/reference/credible visual identification links identity for the character. |
+| Contextual greeting/dialogue presentation | planned | Semantic actions with NPC/player-personality-aware prose variants; presentation RNG must not silently mutate gameplay state. |
 | Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
 | Redstone Forge-Road commitments | playable | Three provenance-qualified Brasshaven orders consume real forged output. |
 | Elderwood Hunt-Timber commitments | playable | Three provenance-qualified Thornwall orders consume real Elderwood production output. |
 | Starfen Marshcraft commitments | playable | Four Mistmere contracts consume real wetland production output; Starfen Current Reading is regional field knowledge, not magic. |
 | Relationships | playable | Persistent NPC-specific continuity. |
-| Journal/information projection | playable | Decision-first guidance over canonical state. |
+| Journal/information projection | playable | Decision-first guidance over canonical state; future locality/NPC rendering must consume player knowledge rather than raw canonical lists. |
+| Staged NPC-mediated shop interaction | planned | Reach/enter first, then greet/shop/ask/leave, then stock-derived categories/browse; no omniscient same-district stock listing. |
 | Broad branching narrative | seeded | Contract breadth is growing but remains below mechanics-scale target. |
 | Romance/deep social life | planned | Requires broader authored people/goals/boundaries first. |
 
