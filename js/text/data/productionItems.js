@@ -1,5 +1,6 @@
 import { ITEM_KINDS, normalizeItem, validateItemConsumption } from './itemSchema.js';
 import { getEmberwashProductionItem, listEmberwashProductionItems } from './emberwashProductionItems.js';
+import { getElderwoodRepairProductionItem, listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { getIngredientLuxuryProductionItem, listIngredientLuxuryProductionItems } from './ingredientLuxuryProductionItems.js';
 import { getGreatMereProductionItem, listGreatMereProductionItems } from './greatMereProductionItems.js';
 import { getGloamwoodProductionItem, listGloamwoodProductionItems } from './gloamwoodProductionItems.js';
@@ -41,8 +42,8 @@ const PRODUCTION_ITEM_DEFINITIONS = Object.freeze({
     'item-starfen-marsh-survey-kit': productionItem({ id: 'item-starfen-marsh-survey-kit', name: 'Starfen Marsh Survey Kit', kind: ITEM_KINDS.MATERIAL, tags: ['survey', 'fieldcraft', 'water', 'research', 'starfen'], valueGil: 68, sourceId: 'craft-starfen-marsh-survey-kit', action: 'craft', sinks: ['contract', 'trade'] }),
 });
 
-export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getEmberwashProductionItem(key) ?? getLowerDeepveinProductionItem(key) ?? getIngredientLuxuryProductionItem(key) ?? getGreatMereProductionItem(key) ?? getIronspineProductionItem(key) ?? getHeadwaterProductionItem(key) ?? getStarfenDeltaProductionItem(key) ?? getGloamwoodProductionItem(key) ?? getWaymeetMarchesProductionItem(key) ?? getMaterialFoundationProductionItem(key); }
-export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listEmberwashProductionItems(), ...listLowerDeepveinProductionItems(), ...listIngredientLuxuryProductionItems(), ...listGreatMereProductionItems(), ...listIronspineProductionItems(), ...listHeadwaterProductionItems(), ...listStarfenDeltaProductionItems(), ...listGloamwoodProductionItems(), ...listWaymeetMarchesProductionItems(), ...listMaterialFoundationProductionItems()]; }
+export function getProductionItem(itemId) { const key = String(itemId ?? '').trim(); const definition = PRODUCTION_ITEM_DEFINITIONS[key] ?? null; return definition ? normalizeItem(definition) : getElderwoodRepairProductionItem(key) ?? getEmberwashProductionItem(key) ?? getLowerDeepveinProductionItem(key) ?? getIngredientLuxuryProductionItem(key) ?? getGreatMereProductionItem(key) ?? getIronspineProductionItem(key) ?? getHeadwaterProductionItem(key) ?? getStarfenDeltaProductionItem(key) ?? getGloamwoodProductionItem(key) ?? getWaymeetMarchesProductionItem(key) ?? getMaterialFoundationProductionItem(key); }
+export function listProductionItems() { return [...Object.values(PRODUCTION_ITEM_DEFINITIONS).map((definition) => normalizeItem(definition)), ...listElderwoodRepairProductionItems(), ...listEmberwashProductionItems(), ...listLowerDeepveinProductionItems(), ...listIngredientLuxuryProductionItems(), ...listGreatMereProductionItems(), ...listIronspineProductionItems(), ...listHeadwaterProductionItems(), ...listStarfenDeltaProductionItems(), ...listGloamwoodProductionItems(), ...listWaymeetMarchesProductionItems(), ...listMaterialFoundationProductionItems()]; }
 
 export function validateProductionItemCatalog() {
     const issues = [];

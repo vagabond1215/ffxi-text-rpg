@@ -1,4 +1,13 @@
 import { createContentPack } from './contentPackSchema.js';
+import {
+    listElderwoodRepairEcologyFamilies,
+    listElderwoodRepairGatheringSources,
+    listElderwoodRepairPopulations,
+    listElderwoodRepairSpecies,
+} from './elderwoodRepairEcology.js';
+import { listElderwoodRepairResourceItems } from './elderwoodRepairResourceItems.js';
+import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProductionCatalog.js';
+import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
 export const REGIONAL_CONTENT_PACK_DATA_VERSION = 42;
@@ -115,6 +124,29 @@ export const ELDERWOOD_PACK = createContentPack({
         ],
         relationships: [{ id: 'relationship-elderwood-waywarden', npcId: 'npc-elderwood-waywarden', dimensions: ['trust', 'respect'], unlockQuestIds: ['quest-elderwood-road-repair'] }],
         companions: [{ id: 'companion-mara-venn', catalogRef: true }],
+    },
+});
+
+
+export const ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK = createContentPack({
+    id: 'pack-elderwood-legacy-ecology-repair',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['elderwood'], steward: 'thornwall-river-wardens' },
+    dependencies: ['pack-elderwood-opening', 'pack-elderwood-ecology-breadth'],
+    metadata: {
+        name: 'Legacy Elderwood Flora & Fauna Repair',
+        notes: 'East Elderwood, Timbercross, and Old Gaol ecology repair with existing-family spread, one lower-river fish family, ten exact-provenance raws, and connected production sinks.',
+    },
+    records: {
+        ecologyFamilies: listElderwoodRepairEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listElderwoodRepairSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listElderwoodRepairPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listElderwoodRepairGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [
+            ...listElderwoodRepairResourceItems(),
+            ...listElderwoodRepairProductionItems(),
+        ].map((entry) => ({ id: entry.id, catalogRef: true })),
+        recipes: listElderwoodRepairProcessDefinitions().map((entry) => ({ id: entry.id, catalogRef: true })),
     },
 });
 
@@ -1213,6 +1245,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     STARFEN_PACK,
     STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
+    ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK,
 ]);
 
 export function listRegionalContentPacks() { return [...REGIONAL_CONTENT_PACKS]; }

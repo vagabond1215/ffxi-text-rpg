@@ -1,6 +1,7 @@
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { getProductionItem } from './productionItems.js';
 import { getEmberwashProcessDefinition, listEmberwashProcessDefinitions } from './emberwashProductionCatalog.js';
+import { getElderwoodRepairProcessDefinition, listElderwoodRepairProcessDefinitions } from './elderwoodRepairProductionCatalog.js';
 import { getIngredientLuxuryProcessDefinition, listIngredientLuxuryProcessDefinitions } from './ingredientLuxuryProductionCatalog.js';
 import { getGreatMereProcessDefinition, listGreatMereProcessDefinitions } from './greatMereProductionCatalog.js';
 import { getGloamwoodProcessDefinition, listGloamwoodProcessDefinitions } from './gloamwoodProductionCatalog.js';
@@ -44,8 +45,8 @@ const PRODUCTION_DEFINITIONS = Object.freeze({
     'craft-starfen-marsh-survey-kit': processDefinition({ id: 'craft-starfen-marsh-survey-kit', name: 'Assemble Starfen Marsh Survey Kit', kind: 'crafting', durationSeconds: 300, proficiencyId: 'crafting', minProficiency: 3, proficiencyGain: 3, requiredStationTags: ['workshop'], inputs: [{ itemId: 'item-starfen-waterproof-wrap', quantity: 1 }, { itemId: 'item-starfen-reed-cord', quantity: 1 }, { itemId: 'item-starfen-heron-feather', quantity: 1 }], outputs: [{ itemId: 'item-starfen-marsh-survey-kit', quantity: 1 }] }),
 });
 
-export function getProductionDefinition(processId) { const key = String(processId ?? '').trim(); return PRODUCTION_DEFINITIONS[key] ?? getEmberwashProcessDefinition(key) ?? getLowerDeepveinProcessDefinition(key) ?? getIngredientLuxuryProcessDefinition(key) ?? getGreatMereProcessDefinition(key) ?? getIronspineProcessDefinition(key) ?? getHeadwaterProcessDefinition(key) ?? getStarfenDeltaProcessDefinition(key) ?? getGloamwoodProcessDefinition(key) ?? getWaymeetMarchesProcessDefinition(key) ?? getMaterialFoundationProcessDefinition(key); }
-export function listProductionDefinitions() { return [...Object.values(PRODUCTION_DEFINITIONS), ...listEmberwashProcessDefinitions(), ...listLowerDeepveinProcessDefinitions(), ...listIngredientLuxuryProcessDefinitions(), ...listGreatMereProcessDefinitions(), ...listIronspineProcessDefinitions(), ...listHeadwaterProcessDefinitions(), ...listStarfenDeltaProcessDefinitions(), ...listGloamwoodProcessDefinitions(), ...listWaymeetMarchesProcessDefinitions(), ...listMaterialFoundationProcessDefinitions()]; }
+export function getProductionDefinition(processId) { const key = String(processId ?? '').trim(); return PRODUCTION_DEFINITIONS[key] ?? getElderwoodRepairProcessDefinition(key) ?? getEmberwashProcessDefinition(key) ?? getLowerDeepveinProcessDefinition(key) ?? getIngredientLuxuryProcessDefinition(key) ?? getGreatMereProcessDefinition(key) ?? getIronspineProcessDefinition(key) ?? getHeadwaterProcessDefinition(key) ?? getStarfenDeltaProcessDefinition(key) ?? getGloamwoodProcessDefinition(key) ?? getWaymeetMarchesProcessDefinition(key) ?? getMaterialFoundationProcessDefinition(key); }
+export function listProductionDefinitions() { return [...Object.values(PRODUCTION_DEFINITIONS), ...listElderwoodRepairProcessDefinitions(), ...listEmberwashProcessDefinitions(), ...listLowerDeepveinProcessDefinitions(), ...listIngredientLuxuryProcessDefinitions(), ...listGreatMereProcessDefinitions(), ...listIronspineProcessDefinitions(), ...listHeadwaterProcessDefinitions(), ...listStarfenDeltaProcessDefinitions(), ...listGloamwoodProcessDefinitions(), ...listWaymeetMarchesProcessDefinitions(), ...listMaterialFoundationProcessDefinitions()]; }
 export function getProductionInputItem(itemId) { return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId); }
 
 export function validateProductionCatalog() {
