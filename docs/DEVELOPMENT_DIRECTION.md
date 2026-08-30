@@ -148,6 +148,24 @@ A character may:
 
 Map knowledge should improve navigation, planning, route confidence, and transport decisions without requiring graphical terrain rendering.
 
+### Localities must be learned, not enumerated
+
+Player-facing locality information follows `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+
+Entering a town, district, port, wilderness area, or other place must not automatically expose every authored POI, NPC, exit, shop, service, or interaction. The character learns the world through observation, exploration, directions, introductions, signage/iconography, maps, repeated purposeful visits, and contextual events.
+
+Important consequences:
+- seeing an entrance is not the same as entering it;
+- sighting a POI is not the same as knowing how to reliably return to it;
+- canonical NPC names are not automatically player-facing;
+- direct same-locality navigation is earned through familiarity rather than one binary discovery;
+- temporary directions should bias exploration rather than teleport the character;
+- wandering/conditional merchants and events can remain exploration-only even after static landmarks are familiar;
+- town navigation may use an abstract learned locality graph instead of a literal city coordinate grid;
+- player-facing controls should progressively disclose only actions supported by current context and learned knowledge.
+
+`Look Around` should represent immediate observation. `Explore` should represent fictional-time local movement plus context-weighted discovery/event resolution. Transition verbs such as **Enter**, **Go to**, **Walk to**, **Board**, **Ride**, and **Travel** should reflect the actual boundary or movement mode rather than one universal fast-travel command.
+
 ## Resource provenance is gameplay
 
 Rewards should normally have a physical, economic, or social explanation.
