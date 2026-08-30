@@ -41,6 +41,11 @@ export const MAP_DEFINITIONS = Object.freeze({
         placeIds: ['headwater-lower-vale', 'headwater-warden-lodge', 'headwater-upper-vale'],
         notes: 'River-warden survey of the young western drainage above Timbercross: maintained lower road and bridge crossings, the warden lodge at the wagon limit, and a marked upper trail toward meadow and plateau country. Side ridges and unbridged channels are barriers rather than automatic map edges.',
     }),
+    mapWaymeetMarches: map({
+        id: 'map-waymeet-marches', name: 'Cairnward Survey of the Waymeet South Marches', nation: null, region: 'Waymeet Marches',
+        placeIds: ['windscar-saddle', 'cairnward-relay', 'waymeet-south-marches'],
+        notes: 'A plateau-route survey continuing north from Headwater Vale through the exposed Windscar Saddle to Cairnward Relay and the first wagon-capable South March road. The survey stops before the inner marches and Waymeet; nearby envelopes do not imply an unrecorded road.',
+    }),
     mapCrownfields: map({
         id: 'map-crownfields',
         name: 'Map of the Crownfields',

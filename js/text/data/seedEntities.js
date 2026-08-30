@@ -119,6 +119,9 @@ export function createSeedNpcs() {
             id: 'npc-headwater-bessa-reed', name: 'Bessa Reed', title: 'Headwater Lodge Keeper', faction: 'Thornwall',
             locationId: 'headwater-warden-lodge', services: ['lodging', 'food', 'smokehouse', 'animal-shelter', 'trail-provisions'],
         }),
+        createNpc({id:'npc-cairnward-sella-ward',name:'Sella Ward',title:'Cairnward Relay Factor',locationId:'cairnward-relay',services:['regional-goods','transshipment','resource-appraisal','provisions','caravan']}),
+        createNpc({id:'npc-cairnward-kellan-rusk',name:'Kellan Rusk',title:'Plateau Route Warden',locationId:'cairnward-relay',services:['route-guidance','saddle-conditions','road-notices','wagon-transfer','fieldcraft']}),
+        createNpc({id:'npc-cairnward-tam-berrow',name:'Tam Berrow',title:'Cairnward Cartwright',locationId:'cairnward-relay',services:['lodging','food','cart-repair','wheelwork','animal-shelter','trail-provisions']}),
         createNpc({
             id: 'npc-tideglass-lessa-venn', name: 'Lessa Venn', title: 'Tideglass Delta Factor', faction: 'Mistmere',
             locationId: 'tideglass-landing', services: ['regional-goods', 'fishery-trade', 'shellfish-appraisal', 'salt-trade', 'provisions'],

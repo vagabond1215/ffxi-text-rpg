@@ -1,7 +1,7 @@
 import { createContentPack } from './contentPackSchema.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 41;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 42;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -563,6 +563,18 @@ export const HEADWATER_VALE_PACK = createContentPack({
             ],
         }],
     },
+});
+
+export const WAYMEET_MARCHES_PACK=createContentPack({
+ id:'pack-waymeet-marches-cairnward',dataVersion:REGIONAL_CONTENT_PACK_DATA_VERSION,ownership:{scope:'region',regionIds:['waymeet-marches'],steward:'cairnward-route-wardens'},
+ dependencies:['pack-shared-foundation','pack-headwater-vale','pack-material-foundations-common-components','pack-waymeet-marches-ecology'],
+ metadata:{name:'Waymeet Marches & Cairnward Relay',notes:'Central-plateau overland continuation with a non-wagon saddle crossing, pack-to-wagon logistics break at Cairnward, wagon-capable South March road, connected travel food and roadwork production, and an explicit stop before inner marches or Waymeet.'},
+ records:{places:[{id:'cairnward-relay',catalogRef:true}],routes:[{id:'route-headwater-cairnward-pack-road',catalogRef:true},{id:'route-cairnward-south-march-road',catalogRef:true}],
+ npcs:[{id:'npc-cairnward-sella-ward',catalogRef:true},{id:'npc-cairnward-kellan-rusk',catalogRef:true},{id:'npc-cairnward-tam-berrow',catalogRef:true}],
+ npcSchedules:[{id:'schedule-cairnward-sella-ward',catalogRef:true},{id:'schedule-cairnward-kellan-rusk',catalogRef:true}],
+ items:['item-waymeet-cleaned-moor-char','item-waymeet-myrtle-roasted-char','item-waymeet-dried-whortleberry-ration','item-waymeet-dried-heather','item-waymeet-preserving-bundle','item-waymeet-sedge-pack-mat','item-waymeet-road-fascine-bundle','item-waymeet-dried-peat-fuel','item-waymeet-dressed-roadstone','item-waymeet-wheel-rut-repair-kit'].map(id=>({id,catalogRef:true})),
+ recipes:['process-waymeet-clean-moor-char','cook-waymeet-myrtle-roasted-char','process-waymeet-dry-whortleberries','process-waymeet-dry-heather','craft-waymeet-preserving-bundle','craft-waymeet-sedge-pack-mat','craft-waymeet-road-fascine','process-waymeet-dry-peat-fuel','process-waymeet-dress-roadstone','craft-waymeet-wheel-rut-repair-kit'].map(id=>({id,catalogRef:true})),
+ shops:[{id:'shop-cairnward-exchange',name:'Cairnward Relay Exchange',placeId:'cairnward-relay',keeperNpcId:'npc-cairnward-sella-ward',stockItemIds:['item-waymeet-myrtle-roasted-char','item-waymeet-dried-whortleberry-ration','item-waymeet-sedge-pack-mat','item-waymeet-dried-peat-fuel','item-waymeet-wheel-rut-repair-kit']}]}
 });
 
 export const EMBERWASH_PACK = createContentPack({
@@ -1191,6 +1203,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
     HEADWATER_VALE_PACK,
+    WAYMEET_MARCHES_PACK,
     EMBERWASH_PACK,
     LOWER_DEEPVEIN_PACK,
     GLOAMWOOD_PACK,

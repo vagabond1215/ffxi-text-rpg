@@ -1,4 +1,4 @@
-export const SHOP_CATALOG_VERSION = 5;
+export const SHOP_CATALOG_VERSION = 6;
 
 export const SHOP_CATALOGS = Object.freeze({
     'poi-sandoria-s-ashene': shop('poi-sandoria-s-ashene', 'Southgate Arms', 'Practical arms for road wardens, travelers, and apprentices.', [
@@ -102,6 +102,12 @@ export const SHOP_CATALOGS = Object.freeze({
         item('marsh-rod', 'Marsh Fishing Rod', 104, ['equipment', 'tool', 'fishing', 'field']),
         item('field-knife', 'Field Knife', 74, ['equipment', 'tool', 'cutting', 'field']),
         item('woodsman-hatchet', 'Woodsman Hatchet', 94, ['equipment', 'tool', 'woodcutting', 'field']),
+    ]),
+    'poi-cairnward-exchange': shop('poi-cairnward-exchange','Cairnward Relay Exchange','A neutral plateau transfer counter buying ordinary march goods and stocking prepared food, water, field tools, packing supplies, fuel, and road-repair stock.',[
+        item('travel-ration','Travel Ration',22,['food','travel']),item('flask-of-water','Flask of Water',9,['consumable','travel']),item('simple-bandage','Simple Bandage',22,['consumable','healing']),
+        item('item-waymeet-myrtle-roasted-char','Bog-Myrtle Roasted Moor Char',48,['food','prepared','regional']),item('item-waymeet-dried-whortleberry-ration','Dried Windscar Whortleberries',31,['food','prepared','travel']),
+        item('item-waymeet-sedge-pack-mat','Plateau Sedge Pack Mat',48,['material','packing','regional']),item('item-waymeet-dried-peat-fuel','Dried South March Peat Fuel',27,['material','fuel','regional']),
+        item('item-waymeet-wheel-rut-repair-kit','Cairnward Wheel-Rut Repair Kit',118,['material','roadwork','repair']),item('field-knife','Field Knife',76,['equipment','tool','cutting','field']),item('digging-spade','Digging Spade',86,['equipment','tool','digging','field']),item('prospector-pick','Prospector Pick',104,['equipment','tool','mining','field']),
     ]),
     'poi-ironspine-survey-exchange': shop('poi-ironspine-survey-exchange', 'Ironspine Survey Exchange', 'A high-pass counter buying ordinary sellable mountain finds and stocking durable provisions, warm road gear, cutting tools, and mining equipment.', [
         item('travel-ration', 'Travel Ration', 22, ['food', 'travel']),

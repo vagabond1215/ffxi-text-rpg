@@ -1,4 +1,4 @@
-export const NPC_SCHEDULE_DATA_VERSION = 2;
+export const NPC_SCHEDULE_DATA_VERSION = 3;
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
@@ -174,6 +174,8 @@ const DAILY_SCHEDULES = [
         windows: [window(7, 0, 18, 0, 'Posting bridge, flood, trail, and wildlife conditions')],
         unavailableText: 'Torin is away from the lodge desk walking bridges, fords, and the upper trail.',
     }),
+    schedule({id:'schedule-cairnward-sella-ward',npcId:'npc-cairnward-sella-ward',poiId:'poi-cairnward-exchange',placeId:'cairnward-relay',label:'Cairnward relay exchange hours',windows:[window(6,0,17,0,'Weighing pack loads, plateau goods, and road stores')],unavailableText:'Sella has closed the exchange counter and is checking transfer lots, feed stock, or incoming road crews.'}),
+    schedule({id:'schedule-cairnward-kellan-rusk',npcId:'npc-cairnward-kellan-rusk',poiId:'poi-cairnward-route-desk',placeId:'cairnward-relay',label:'Cairnward plateau route desk',windows:[window(7,0,18,0,'Posting saddle, burn-crossing, and wagon-road conditions')],unavailableText:'Kellan is away from the route desk checking saddle markers, burn crossings, or the raised South March road.'}),
     schedule({
         id: 'schedule-ironspine-vara-kell',
         npcId: 'npc-ironspine-vara-kell',

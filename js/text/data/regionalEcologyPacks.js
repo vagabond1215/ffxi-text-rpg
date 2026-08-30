@@ -57,7 +57,10 @@ import {
 } from './starfenDeltaEcology.js';
 import { listStarfenDeltaResourceItems } from './starfenDeltaResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 37;
+import { listWaymeetMarchesEcologyFamilies,listWaymeetMarchesGatheringSources,listWaymeetMarchesPopulations,listWaymeetMarchesSpecies } from './waymeetMarchesEcology.js';
+import { listWaymeetMarchesResourceItems } from './waymeetMarchesResourceItems.js';
+
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 38;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -367,7 +370,14 @@ export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, EMBERWASH_ECOLOGY_PACK, LOWER_DEEPVEIN_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
+export const WAYMEET_MARCHES_ECOLOGY_PACK=createContentPack({
+ id:'pack-waymeet-marches-ecology',dataVersion:REGIONAL_ECOLOGY_PACK_DATA_VERSION,ownership:{scope:'region',regionIds:['waymeet-marches'],steward:'cairnward-route-wardens'},
+ dependencies:['pack-headwater-vale-ecology','pack-elderwood-ecology-breadth','pack-redstone-ecology-breadth','pack-slatewater-foothills-ecology','pack-starfen-ecology-breadth'],
+ metadata:{name:'Waymeet Marches Plateau Ecology',notes:'Cool central-plateau ecology with eight passive, wary, or naturally territorial populations, one new cold-burn fish family, seven exact-provenance sources, and reused established families without manufactured hostile encounters.'},
+ records:{places:[{id:'windscar-saddle',catalogRef:true},{id:'waymeet-south-marches',catalogRef:true}],ecologyFamilies:listWaymeetMarchesEcologyFamilies().map(e=>({id:e.id,catalogRef:true})),species:listWaymeetMarchesSpecies().map(e=>({id:e.id,catalogRef:true})),populations:listWaymeetMarchesPopulations().map(e=>({id:e.id,catalogRef:true})),gatheringSources:listWaymeetMarchesGatheringSources().map(e=>({id:e.id,catalogRef:true})),items:listWaymeetMarchesResourceItems().map(e=>({id:e.id,catalogRef:true}))}
+});
+
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, EMBERWASH_ECOLOGY_PACK, LOWER_DEEPVEIN_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK, WAYMEET_MARCHES_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));

@@ -171,6 +171,21 @@ export const PLACES = Object.freeze({
         spawnRules: [],
         restrictions: [],
     }),
+    windscarSaddle: place({
+        id: 'windscar-saddle', name: 'Windscar Saddle', type: 'wilderness', region: 'Waymeet Marches', nation: null, mapId: 'map-waymeet-marches', dangerLevel: 3,
+        description: 'An exposed central-plateau saddle above Headwater Vale, where heather slopes, short sedge, shallow tarns, wind-thrown stone, and steep ravines squeeze ordinary travel onto marked switchbacks. The crossing supports walkers, riders, and pack traffic; wagons cannot negotiate the grade or narrow ravine bridges.',
+        services: [], coordinateSystem: grid(9, 8, { x: 4, y: 7 }), spawnRules: [], restrictions: [],
+    }),
+    cairnwardRelay: place({
+        id: 'cairnward-relay', name: 'Cairnward Relay', type: 'travelHub', region: 'Waymeet Marches', nation: null, mapId: 'map-waymeet-marches', dangerLevel: 0,
+        description: 'A compact neutral plateau relay at the logistics break beyond Windscar Saddle. Pack loads are weighed and transferred to carts, road crews shelter beside a cistern and common hearth, and a covered cart shed handles wheels, harness, and road-repair stock. It is a service station, not a village, city gate, or Waymeet suburb.',
+        services: ['shops', 'guilds', 'travel'], coordinateSystem: grid(6, 6, { x: 3, y: 3 }), spawnRules: [], restrictions: [],
+    }),
+    waymeetSouthMarches: place({
+        id: 'waymeet-south-marches', name: 'Waymeet South Marches', type: 'wilderness', region: 'Waymeet Marches', nation: null, mapId: 'map-waymeet-marches', dangerLevel: 2,
+        description: 'Cool open plateau country beyond Cairnward: grass rises, heather banks, peat-dark hollows, shallow burns, old boundary cairns, and a raised maintained road broad enough for carts and wagons. The road ends at the authored northern survey limit; no map edge or envelope proximity creates a route into Waymeet.',
+        services: [], coordinateSystem: grid(10, 8, { x: 5, y: 7 }), spawnRules: [], restrictions: [],
+    }),
     thornwallOldGaol: place({
         id: 'thornwall-old-gaol',
         name: 'Thornwall Old Gaol',

@@ -2,7 +2,7 @@ import { isNavigableCoordinate, isTopologyPlace } from './coordinates.js';
 import { getMap } from './maps.js';
 import { getPlace, isCoordinateInsidePlace } from './places.js';
 
-export const ROUTE_CATALOG_VERSION = 9;
+export const ROUTE_CATALOG_VERSION = 10;
 export const ROUTE_TYPES = Object.freeze(['road', 'track', 'causeway', 'caravanRoad', 'waterway']);
 export const ROUTE_TRAVEL_MODES = Object.freeze(['walk', 'caravan', 'coach', 'wagon', 'ferry', 'mount']);
 
@@ -232,6 +232,18 @@ const ROUTE_DEFINITIONS = Object.freeze({
         bidirectional: true,
         knowledge: { mapId: 'map-headwater-vale', discoveryTag: 'route.headwater-upper-trail' },
         cargo: { encumbranceMultiplier: 1.35 },
+    }),
+    'route-headwater-cairnward-pack-road': route({
+        id:'route-headwater-cairnward-pack-road', name:'Headwater–Cairnward Pack Road', type:'track', allowedModes:['walk','mount','caravan'],
+        stops:[stop('stop-headwater-upper-vale-cairnward','headwater-upper-vale',{x:4,y:0}),stop('stop-windscar-saddle-pack-road','windscar-saddle',{x:4,y:7}),stop('stop-cairnward-relay-pack-road','cairnward-relay',{x:3,y:5})],
+        segments:[segment('stop-headwater-upper-vale-cairnward','stop-windscar-saddle-pack-road',3600,7000,['steep-switchbacks','exposed-crosswind','loose-stone','ravine-crossing','plateau-fog']),segment('stop-windscar-saddle-pack-road','stop-cairnward-relay-pack-road',4200,8000,['exposed-crosswind','winter-icing','shallow-tarn-runoff','loose-stone','ravine-crossing'])],
+        bidirectional:true, knowledge:{mapId:'map-waymeet-marches',discoveryTag:'route.headwater-cairnward-pack-road'}, cargo:{encumbranceMultiplier:1.45},
+    }),
+    'route-cairnward-south-march-road': route({
+        id:'route-cairnward-south-march-road', name:'Cairnward South March Road', type:'road', allowedModes:['walk','mount','wagon','caravan'],
+        stops:[stop('stop-cairnward-relay-march-road','cairnward-relay',{x:3,y:0}),stop('stop-waymeet-south-marches-road','waymeet-south-marches',{x:5,y:7})],
+        segments:[segment('stop-cairnward-relay-march-road','stop-waymeet-south-marches-road',7200,18000,['plateau-crosswind','boggy-verge','shallow-burn-crossing','wheel-rut-mud','plateau-rain','exposed-road'])],
+        bidirectional:true, knowledge:{mapId:'map-waymeet-marches',discoveryTag:'route.cairnward-south-march-road'}, cargo:{encumbranceMultiplier:1.3},
     }),
     'route-forge-mere-caravan-road': route({
         id: 'route-forge-mere-caravan-road',
