@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
+import { learnLocality, moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -62,6 +62,7 @@ test('PX9 exposes canonical scheduled transport as an ordinary semantic Thornwal
     assert.equal(moveToKnownLocality(state, 'thornwall-crownward').ok, true);
     assert.equal(moveToKnownLocality(state, 'thornwall-rivergate').ok, true);
     assert.equal(state.currentPlaceId, 'thornwall-rivergate');
+    learnLocality(state);
 
     state.player.wallet.gil = 0;
     let board = createTransportServiceBoard(state);
@@ -138,6 +139,7 @@ test('PX9 exposes canonical scheduled transport as an ordinary semantic Thornwal
     state = loadCharacter('Road Circuit Auditor');
     assert.ok(state);
     assert.equal(state.currentPlaceId, 'mistmere-reedport');
+    learnLocality(state);
     board = createTransportServiceBoard(state);
     assert.ok(board.entries.some((entry) => entry.serviceId === FORGE_MERE && entry.destinationPlaceId === 'brasshaven-iron-quay'));
     assert.ok(board.entries.some((entry) => entry.serviceId === 'service-mistmere-west-ferry' && entry.destinationPlaceId === 'west-starfen'));
