@@ -1,11 +1,12 @@
 import { coordinateKey, isNavigableCoordinate, isTopologyPlace } from '../data/coordinates.js';
 import { getPlace, isCoordinateInsidePlace } from '../data/places.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
+import { validateLocalKnowledgeState } from './localKnowledgeEngine.js';
 
 export function validatePersistedDiscoveryState(state) {
     return [
         ...validateAtlasState(state?.atlas),
-        ...validatePoiDiscoveryState(state?.discoveredPois),
+        ...validateLocalKnowledgeState(state?.localKnowledge, { currentPlaceId: state?.currentPlaceId }),
     ];
 }
 
