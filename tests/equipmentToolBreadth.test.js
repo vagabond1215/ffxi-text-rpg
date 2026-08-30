@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import {
     EQUIPMENT_CATALOG_VERSION,
@@ -88,7 +89,7 @@ test('equipped Prospector Pick satisfies gathering source tool requirement autom
 test('settlement shops stock original tools as real equipment purchases', () => {
     const state = createNewGameState();
     state.player.wallet.gil = 200;
-    const focused = performLocalityPoiAction(state, 'poi-sandoria-s-ashene', 'shop');
+    const focused = useKnownPoi(state, 'poi-sandoria-s-ashene', 'shop');
     assert.equal(focused.ok, true);
 
     const result = buyFromCurrentShop(state, 'Field Knife');
