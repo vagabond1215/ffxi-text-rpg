@@ -12,6 +12,7 @@ import {
 } from '../../js/text/systems/localKnowledgeEngine.js';
 import {
     moveWithinLocality,
+    performLocalityPoiAction,
     visitLocalityPoi,
 } from '../../js/text/systems/localityEngine.js';
 import { getPoiScheduleStatus } from '../../js/text/systems/npcScheduleEngine.js';
@@ -36,6 +37,13 @@ export function reachPoi(state, poiOrId, options = {}) {
     const result = visitLocalityPoi(state, poi.id);
     assert.equal(result.ok, true, result.reason ?? result.message);
     return poi;
+}
+
+export function useKnownPoi(state, poiOrId, action = 'talk', options = {}) {
+    const poi = reachPoi(state, poiOrId, options);
+    const result = performLocalityPoiAction(state, poi.id, action);
+    assert.equal(result.ok, true, result.reason ?? result.message);
+    return result;
 }
 
 export function learnLocality(state, options = {}) {
