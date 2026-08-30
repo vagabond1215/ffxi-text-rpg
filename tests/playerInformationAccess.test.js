@@ -1,14 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { getPoisForPlace } from '../js/text/data/pointsOfInterest.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { grantCapability } from '../js/text/systems/capabilityEngine.js';
+import { recordPoiExposure } from '../js/text/systems/localKnowledgeEngine.js';
 import { createPlayerInformationModel } from '../js/text/systems/playerInformationEngine.js';
 import { renderGameScreen } from '../js/text/ui/domRenderer.js';
 import { createGameViewModel } from '../js/text/ui/gameViewModel.js';
 import { createUiState } from '../js/text/ui/uiState.js';
 
-test('0.7.300 information model exposes only carried, learned, visited, acquired, and currently actionable knowledge', () => {
+function learnSera(state) {
+    const sera = getPoisForPlace('thornwall-southgate').find((poi) => poi.name === 'Sera Talwin');
+    assert.ok(sera);
+    recordPoiExposure(state, sera, { points: 7, learnedName: true });
+    return sera;
+}
+
+test('information model exposes acquired knowledge without enumerating the fresh locality', () => {
     const state = createNewGameState({ name: 'Lark' });
     grantCapability(state.player, 'practical-ore-survey');
 
@@ -23,10 +32,17 @@ test('0.7.300 information model exposes only carried, learned, visited, acquired
     assert.equal(information.knowledge.maps.some((entry) => entry.id === 'map-starfen'), false);
     assert.ok(information.knowledge.places.some((entry) => entry.name === 'Thornwall Southgate'));
     assert.equal(information.knowledge.places.some((entry) => entry.name === 'West Starfen'), false);
-    assert.ok(information.local.points.some((entry) => entry.name === 'Sera Talwin'));
+    assert.deepEqual(information.local.points, []);
+    assert.deepEqual(information.local.destinations, []);
 
+    const hiddenLocalSearch = createPlayerInformationModel(state, { query: 'Sera' }).search;
+    assert.deepEqual(hiddenLocalSearch.results, []);
+
+    learnSera(state);
+    const learnedInformation = createPlayerInformationModel(state);
+    assert.ok(learnedInformation.local.points.some((entry) => entry.name === 'Sera Talwin'));
     const localSearch = createPlayerInformationModel(state, { query: 'Sera' }).search;
-    assert.ok(localSearch.results.some((entry) => entry.name === 'Sera Talwin' && entry.action?.intent === 'locality.poi'));
+    assert.ok(localSearch.results.some((entry) => entry.name === 'Sera Talwin' && entry.action?.intent === 'locality.poi.visit'));
 
     const capabilitySearch = createPlayerInformationModel(state, { query: 'Ore Survey' }).search;
     assert.ok(capabilitySearch.results.some((entry) => entry.name === 'Ore Survey' && entry.action?.intent === 'ui.view.open'));
@@ -35,9 +51,18 @@ test('0.7.300 information model exposes only carried, learned, visited, acquired
     assert.deepEqual(hiddenSearch.results, []);
 });
 
-test('0.7.300 core information views render structured semantic surfaces instead of command vocabulary', () => {
+test('core information views keep locality names hidden until learned', () => {
     const state = createNewGameState({ name: 'Lark' });
     grantCapability(state.player, 'practical-ore-survey');
+
+    const freshCodex = renderGameScreen(
+        createGameViewModel(state, createUiState({ screen: 'game', activeView: 'codex', informationQuery: 'Sera' })),
+        createUiState({ screen: 'game', activeView: 'codex', informationQuery: 'Sera' }),
+        { displayName: 'Local Player' },
+    );
+    assert.doesNotMatch(freshCodex, /Sera Talwin/);
+
+    learnSera(state);
 
     for (const activeView of ['character', 'spellbook', 'codex', 'world']) {
         const uiState = createUiState({ screen: 'game', activeView, informationQuery: activeView === 'codex' ? 'Sera' : '' });
@@ -61,12 +86,13 @@ test('0.7.300 core information views render structured semantic surfaces instead
         if (activeView === 'world') {
             assert.match(html, /Nearby districts/);
             assert.match(html, /Local places &amp; people/);
+            assert.match(html, /Sera Talwin/);
             assert.match(html, /data-information-action=/);
         }
     }
 });
 
-test('0.7.300 game view carries the transient semantic query without adding gameplay state', () => {
+test('game view carries the transient semantic query without adding gameplay state', () => {
     const state = createNewGameState({ name: 'Lark' });
     const uiState = createUiState({ screen: 'game', activeView: 'codex', informationQuery: 'Southgate' });
     const model = createGameViewModel(state, uiState);
