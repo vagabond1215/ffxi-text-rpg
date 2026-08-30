@@ -62,6 +62,25 @@ Current mode remains strict pre-alpha current-schema-only.
 
 Packet E adds **no persistence or lifecycle owner**. It audits the promoted Data 62 graph and introduces no runtime/data behavior or serialized state family. Game State remains 14; no migration is warranted. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
 
+## Player-information / locality-discovery gate
+
+Before broad player-facing locality UI is considered coherent, verify against `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`:
+
+1. player-facing models do not enumerate raw canonical POIs/NPCs/routes merely because they exist;
+2. unknown NPC identities render authored descriptors rather than canonical names;
+3. references, sightings, recognition, and familiarity are distinct enough to prevent one-contact direct navigation;
+4. finding an entrance does not cross it without an explicit player action;
+5. direct `Go to`-class locality movement requires learned familiarity and respects the current parent district/locality;
+6. `Look Around` and `Explore` have different scope/time semantics;
+7. contextual exploration randomness is deterministic/injectable and based on canonical fictional context rather than wall-clock randomness;
+8. temporary directions/search bias survive save/load for their authored lifetime;
+9. ephemeral merchants/events do not become permanent static fast-travel destinations merely because they were encountered once;
+10. shop stock/categories are exposed only after the character reaches and engages the service;
+11. narrative theft, payment, ambush, reputation, or discovery consequences use the owning gameplay systems rather than prose-only mutation;
+12. town maps, if rendered, show learned locality nodes/connectors rather than an omniscient complete layout.
+
+The current binary `discoveredPois` behavior is transitional and is not sufficient evidence for this gate.
+
 ## Content Pack v2 gate
 
 Before high-volume canonical content enters a family, verify it has:
