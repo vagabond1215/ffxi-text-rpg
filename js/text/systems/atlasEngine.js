@@ -95,6 +95,10 @@ export function setPositionAndDiscover(state, placeId, coordinate, details = {})
         return { ok: false, reason: `That destination is not navigable in ${place.name}.` };
     }
 
+    if (details.preserveLocalContext !== true) {
+        state.activePoiId = null;
+        if (state.localKnowledge) state.localKnowledge.currentAnchor = null;
+    }
     state.currentPlaceId = place.id;
     state.location = place.name;
     state.position = normalizePositionForPlace(place, coordinate, coordinate?.facing);
