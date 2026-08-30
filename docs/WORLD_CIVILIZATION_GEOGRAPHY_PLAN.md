@@ -20,7 +20,7 @@ Locked decisions now include:
 - Korren placed beyond/under Ironspine through controlled surface/deep gates;
 - the 3-8-major-leg / 12-30+ hour ancestral-capital separation doctrine retained.
 
-The macro planning hold is therefore lifted **as a geography blocker**, but no edge zone is auto-started. Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station are now realized through Data 55. The next ranked world-edge candidate is **Lower Deepvein**.
+The macro planning hold is therefore lifted **as a geography blocker**, but no edge zone is auto-started. Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, and Lower Deepvein & Lantern Sump Station are now realized through Data 56. The next ranked world-edge candidate is **Waymeet Marches / central plateau approaches**.
 
 
 ## 1. Core design decision
@@ -453,13 +453,13 @@ Completed:
 1. Headwater Vale — Data 52;
 2. Starfen Delta / Brackish Coast — Data 53;
 3. Gloamwood & Oldbough Refuge — Data 54;
-4. Emberwash Badlands & Cinderwell Station — Data 55.
+4. Emberwash Badlands & Cinderwell Station — Data 55;
+5. Lower Deepvein & Lantern Sump Station — Data 56.
 
 Remaining:
-1. Lower Deepvein;
-2. Waymeet Marches / central plateau approaches;
-3. Coppergrass belt extensions;
-4. Drowned Vaults.
+1. Waymeet Marches / central plateau approaches;
+2. Coppergrass belt extensions;
+3. Drowned Vaults.
 
 The existing authored regions should be preserved unless later detailed cartography exposes a direct contradiction. The goal remains to place them into a larger coherent world, not redraw them gratuitously.
 
