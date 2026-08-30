@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { validateCommitmentCatalog } from '../js/text/data/commitments.js';
 import { getProductionItem } from '../js/text/data/productionItems.js';
@@ -82,7 +83,7 @@ test('current-state validation owns commitment and relationship continuity contr
 
 test('commitment acceptance persists independently of Journal guidance', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
 
     const accepted = acceptCommitment(state, COMMITMENT_ID);
     assert.equal(accepted.ok, true, accepted.display?.text ?? accepted.reason);
@@ -99,7 +100,7 @@ test('commitment acceptance persists independently of Journal guidance', () => {
 
 test('provenance-qualified delivery resolves exactly once and changes a named NPC relationship', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
 
     const ingot = getProductionItem('item-redstone-copper-ingot');
@@ -136,7 +137,7 @@ test('provenance-qualified delivery resolves exactly once and changes a named NP
 
 test('inventory and commitment delivery preserve provenance when same-id material stacks have different histories', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
 
     const ingot = getProductionItem('item-redstone-copper-ingot');
@@ -161,7 +162,7 @@ test('inventory and commitment delivery preserve provenance when same-id materia
 
 test('resolved commitment surfaces in day review and the same NPC has changed follow-up on a later fictional day', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
     acceptCommitment(state, COMMITMENT_ID);
     addItemToContainer(state.player.inventoryState, 'inventory', getProductionItem('item-redstone-copper-ingot'));
     assert.equal(resolveCommitment(state, COMMITMENT_ID).ok, true);
@@ -197,7 +198,7 @@ test('PX4 continuity survives the real account save/load path without duplicate 
     installStorage();
     assert.equal(createAccountWithPassword('PX4 Save Audit', 'pwd', { persistentLogin: true }).ok, true);
     const state = createNewGameState({ nationId: 'brasshaven', name: 'Copper Auditor' });
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
     assert.equal(acceptCommitment(state, COMMITMENT_ID).ok, true);
     assert.equal(addItemToContainer(state.player.inventoryState, 'inventory', getProductionItem('item-redstone-copper-ingot')).ok, true);
     assert.equal(resolveCommitment(state, COMMITMENT_ID).ok, true);
@@ -232,7 +233,7 @@ test('PX4 continuity survives the real account save/load path without duplicate 
 
 test('commitment state validation rejects inconsistent reward and follow-up bookkeeping', () => {
     const state = createNewGameState({ nationId: 'brasshaven' });
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
     acceptCommitment(state, COMMITMENT_ID);
     const active = getCommitmentRecord(state, COMMITMENT_ID);
     active.rewardClaimed = true;
@@ -251,7 +252,7 @@ test('missing additive continuity registries reconstruct lazily without changing
     const version = state.version;
     delete state.commitments;
     delete state.relationships;
-    performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk');
+    useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk');
 
     const accepted = acceptCommitment(state, COMMITMENT_ID);
     assert.equal(accepted.ok, true);
