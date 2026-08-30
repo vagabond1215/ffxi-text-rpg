@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { advanceActiveActivityToCompletion } from '../js/text/systems/activityAdvanceEngine.js';
@@ -35,7 +36,7 @@ test('Crownfields turns managed field production into Grange trade, provisions, 
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
     assert.equal(state.currentPlaceId, 'crownfields-grange');
 
-    const exchange = performLocalityPoiAction(state, 'poi-crownfields-grange-exchange', 'shop');
+    const exchange = useKnownPoi(state, 'poi-crownfields-grange-exchange', 'shop');
     assert.equal(exchange.ok, true, exchange.message ?? exchange.reason);
 
     let board = createSettlementServiceBoard(state);
@@ -69,7 +70,7 @@ test('Crownfields turns managed field production into Grange trade, provisions, 
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
     assert.equal(state.player.resources.hp, createSettlementServiceBoard(state).recovery.maxHp);
 
-    const wagonYard = performLocalityPoiAction(state, 'poi-crownfields-grange-wagon-yard', 'travel');
+    const wagonYard = useKnownPoi(state, 'poi-crownfields-grange-wagon-yard', 'travel');
     assert.equal(wagonYard.ok, true, wagonYard.message ?? wagonYard.reason);
     assert.match(wagonYard.message ?? '', /wagon|stabling|produce/i);
 });
