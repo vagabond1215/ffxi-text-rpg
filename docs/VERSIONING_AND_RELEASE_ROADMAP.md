@@ -773,6 +773,8 @@ No route leaves Emberwash Saltpan Verge toward the farther true desert, southern
 
 Implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4` passed Check #1547 / run `33279116948` with Repository Audit, **786/786 tests**, Census, Benchmark 3, and Benchmark Sample.
 
+Promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad` passed Check #1559 / run `33279480611` with the same full gate. Pages #1692 also passed.
+
 Validated Data 55 implementation census:
 
 ```text
@@ -900,9 +902,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 55 Emberwash implementation supersedes Data 54: 49 places, 41 named NPCs, 33 service sites, 88 creatures, 110 sources, 335 items, 194 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 23 schedules, 29 packs, and 1057 pack-owned records.
+The current promoted Data 55 Emberwash checkpoint supersedes Data 54: 49 places, 41 named NPCs, 33 service sites, 88 creatures, 110 sources, 335 items, 194 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 23 schedules, 29 packs, and 1057 pack-owned records.
 
-Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**.
+Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
