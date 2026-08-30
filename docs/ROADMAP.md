@@ -164,6 +164,18 @@ Remaining ranking:
 
 The temporary detailed edge notes remain in `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`.
 
+### Central Continent completion budget
+
+Planning intent at Data 55:
+
+- current surface-region maturity is approximately **55–65%** at the present authored granularity;
+- budget approximately **10–14 additional substantial surface-region passes** for a broadly complete Central Continent;
+- roughly **6–8** of those are enough to finish the minimum coherent continental skeleton; the remainder should add warranted route, ecology, economy, settlement, and civilization-approach density;
+- **Lower Deepvein and Drowned Vaults are not counted in the surface percentage** because they are vertical/subterranean expansions;
+- avoid subdividing wilderness for its own sake; after the Central Continent reaches a coherent skeleton, prefer outward expansion toward Veyra, Miri, Korren, and Pelagic realms.
+
+The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_TOPOLOGY.md`.
+
 ## High-value system/content gaps
 
 - companion breadth;

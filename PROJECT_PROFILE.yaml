@@ -94,6 +94,11 @@ progression:
   ecology_system_candidate_status: complete-merged-pr-400
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
+  central_continent_surface_maturity_estimate: 55-to-65-percent
+  central_continent_remaining_surface_pass_budget: 10-to-14-substantial-region-passes
+  central_continent_minimum_skeleton_pass_budget: 6-to-8-substantial-region-passes
+  central_continent_surface_budget_excludes: lower-deepvein-and-drowned-vaults-vertical-subterranean-expansions
+  central_continent_completion_bias: route-ecology-economy-barrier-and-civilization-approach-density-not-tessellation
   next_material_culture_candidate: occupational-tool-conversion
   next_material_culture_candidate_status: queued-not-auto-authorized
 validation:

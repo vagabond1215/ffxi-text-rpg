@@ -275,7 +275,34 @@ They must not:
 
 The preferred representation is an irregular envelope with approximate scale, not a tile count.
 
-## 11. Post-lock world-edge priority
+## 11. Central Continent population-completion intent
+
+At the Data 55 checkpoint, the Central Continent is estimated at roughly **55–65% regionally populated** at the current authored granularity. This is a planning estimate, not a runtime metric and not a promise to tessellate the continent into equal-sized zones.
+
+The remaining surface-continent work should be budgeted as approximately **10–14 substantial region-sized population passes**, with **6–8 passes** sufficient to complete a minimum coherent continental skeleton and the remainder used to add the ecological, economic, settlement, and route density needed for the landmass to feel substantially complete.
+
+Expected surface-pass budget:
+
+| Corridor / envelope | Estimated substantial passes | Intent |
+| --- | ---: | --- |
+| Waymeet corridor | 2–3 | central plateau/saddle, Waymeet Marches, and Waymeet/metropolitan approach as warranted |
+| Western / Lethari approach | 2–3 | western mountain crescent, guarded pass/gate country, and first fertile-valley approach |
+| Northern / Ironspine continuation | 1–2 | upper massif and northern gate country before the route becomes principally Deep World |
+| Coppergrass belt | 2 | Windcut Tablelands and Longgrass Prairie so Coppergrass reads as a belt rather than one isolated zone |
+| Southern Central Continent | 1–2 | farther salt-basin/true-desert approach and the southern strait-port region before leaving the continent |
+| Western / southwestern lowlands | 1–2 | lower Crownfields drainage and western/southwestern river/coast approach |
+| Connective geography | 1–2 | only where completed corridors expose a real route, drainage, ecological, or settlement gap |
+
+This budget deliberately **excludes Lower Deepvein and Drowned Vaults from the surface-continent percentage**, because they are vertical/subterranean expansions. They remain valid world-edge work and contribute to overall world completeness, but they should not be counted as filling additional surface acreage.
+
+Completion doctrine:
+
+- do not inflate the continent by creating a zone for every physical patch of terrain;
+- prioritize travel corridors, ecological transitions, drainage, economic nodes, barriers, and civilization approaches;
+- large wilderness envelopes may remain sparsely represented where no additional gameplay leg is needed;
+- once the Central Continent reaches a coherent minimum skeleton, expansion pressure should shift outward toward the Southern Landmass/Veyra, Eastern Archipelago/Miri, and deeper Korren/Pelagic worlds rather than indefinitely subdividing the starting continent.
+
+## 12. Post-lock world-edge priority
 
 Four post-lock geography units are now realized:
 
@@ -293,7 +320,7 @@ Remaining recommended world-edge order:
 
 This ranking is a planning recommendation, not automatic authorization.
 
-## 12. Version and persistence decision for the topology-lock pass
+## 13. Version and persistence decision for the topology-lock pass
 
 The topology-lock pass itself changed planning/documentation authority only.
 
@@ -308,7 +335,7 @@ At the time of that lock:
 
 That pass introduced no runtime state family, place, route, map, item, ecology record, or save contract.
 
-## 13. Subsequent realization status
+## 14. Subsequent realization status
 
 Headwater Vale subsequently realized the first Waymeet-corridor leg as **Product 0.9.100.13 / Data 52** while keeping **Game State 14**.
 
