@@ -195,10 +195,10 @@ validation:
   wetland_island_distribution_repair_guard: tests/playerWetlandIslandDistributionRepairFlow.test.js
   cross_biome_family_breadth_guard: tests/playerCrossBiomeFamilyBreadthFlow.test.js
 quality:
-  current_product_version: 0.9.100.23
+  current_product_version: 0.9.100.24
   current_package_version: 0.9.100
   current_account_save: 5
-  current_game_state: 14
+  current_game_state: 15
   current_data_version: 62
   current_benchmark_version: 3
   current_codename: Cross-Biome Family Breadth
