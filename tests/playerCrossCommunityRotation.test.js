@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -58,8 +59,8 @@ test('PX9 exposes canonical scheduled transport as an ordinary semantic Thornwal
     let state = createNewGameState({ nationId: 'thornwall', name: 'Road Circuit Auditor' });
     setEndOfDayPause(state, false);
 
-    assert.equal(moveWithinLocality(state, 'thornwall-crownward').ok, true);
-    assert.equal(moveWithinLocality(state, 'thornwall-rivergate').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-crownward').ok, true);
+    assert.equal(moveToKnownLocality(state, 'thornwall-rivergate').ok, true);
     assert.equal(state.currentPlaceId, 'thornwall-rivergate');
 
     state.player.wallet.gil = 0;
@@ -115,7 +116,7 @@ test('PX9 exposes canonical scheduled transport as an ordinary semantic Thornwal
     assert.equal(state.currentPlaceId, 'brasshaven-iron-quay');
     assert.equal(state.player.wallet.gil, firstWallet - 60);
 
-    const transit = performLocalityPoiAction(state, 'poi-port-bastok-travel-counter', 'travel');
+    const transit = useKnownPoi(state, 'poi-port-bastok-travel-counter', 'travel');
     assert.equal(transit.ok, true);
     assert.match(transit.message, /Scheduled departures from Brasshaven Iron Quay/);
     assert.match(transit.message, /Forge-Mere Caravan to Mistmere Reedport: 52 gil/);
