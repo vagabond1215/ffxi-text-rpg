@@ -36,6 +36,9 @@ Latest bounded implementation:
 - Check #1507 / run `33269370813`: full gate green, 781/781 tests, Data 54 census confirmed;
 - Emberwash implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4`;
 - Check #1547 / run `33279116948`: full gate green, 786/786 tests, Data 55 implementation census confirmed.
+- promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad`;
+- Check #1559 / run `33279480611`: full gate green, 786/786 tests, Data 55 census confirmed;
+- Pages #1692 green.
 
 No later unit is auto-started. Normal low-risk work should proceed directly on `main`; use a branch only when a change has material rollback/blast-radius risk beyond an ordinary GitHub revert.
 
@@ -121,7 +124,7 @@ Locked model:
 - Waymeet is approached overland through Headwater Vale and additional plateau/march country;
 - Emberwash is the northern arid frontier, not a direct Veyra adjacency.
 
-Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station are complete through the Data 55 implementation. Next ranked world-edge candidate: **Lower Deepvein**. It is queued, not auto-authorized.
+Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station are complete through Data 55. Next ranked world-edge candidate: **Lower Deepvein**. It is queued, not auto-authorized.
 
 ## Next bounded material-culture candidate
 
