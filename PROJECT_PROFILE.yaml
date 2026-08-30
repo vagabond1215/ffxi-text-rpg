@@ -37,13 +37,14 @@ authority:
   dry_upland_saltpan_ecology_repair_plan: docs/DRY_UPLAND_SALTPAN_FLORA_FAUNA_REPAIR_PLAN.md
   headwater_highland_transition_repair_plan: docs/HEADWATER_HIGHLAND_TRANSITION_REPAIR_PLAN.md
   wetland_island_distribution_repair_plan: docs/WETLAND_ISLAND_DISTRIBUTION_REPAIR_PLAN.md
+  cross_biome_family_breadth_plan: docs/CROSS_BIOME_FAMILY_BREADTH_PLAN.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: data-61-wetland-island-distribution-repair-promoted-continuity-sync
+  current_normal_work: cross-biome-family-breadth-planned
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -138,7 +139,7 @@ progression:
   ecology_system_candidate: population-backed-hunting
   ecology_system_candidate_status: complete-merged-pr-400
   next_ecology_repair_candidate: cross-biome-family-breadth
-  next_ecology_repair_candidate_status: ranked-after-wetland-island-not-auto-authorized
+  next_ecology_repair_candidate_status: authorized-by-user-continue-active
   macro_world_planning: world-civilization-geography
   macro_world_planning_status: topology-locked-bounded-edge-authoring-permitted-by-explicit-work-order
   central_continent_surface_maturity_estimate: 60-to-70-percent
