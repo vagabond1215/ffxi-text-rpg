@@ -1,5 +1,13 @@
 import { createContentPack } from './contentPackSchema.js';
 import {
+    listHeadwaterHighlandTransitionRepairGatheringSources,
+    listHeadwaterHighlandTransitionRepairPopulations,
+    listHeadwaterHighlandTransitionRepairSpecies,
+} from './headwaterHighlandTransitionRepairEcology.js';
+import { listHeadwaterHighlandTransitionRepairResourceItems } from './headwaterHighlandTransitionRepairResourceItems.js';
+import { listHeadwaterHighlandTransitionRepairProcessDefinitions } from './headwaterHighlandTransitionRepairProductionCatalog.js';
+import { listHeadwaterHighlandTransitionRepairProductionItems } from './headwaterHighlandTransitionRepairProductionItems.js';
+import {
     listDryUplandSaltpanRepairGatheringSources,
     listDryUplandSaltpanRepairPopulations,
     listDryUplandSaltpanRepairSpecies,
@@ -136,6 +144,40 @@ export const ELDERWOOD_PACK = createContentPack({
 });
 
 
+
+
+export const HEADWATER_HIGHLAND_TRANSITION_REPAIR_PACK = createContentPack({
+    id: 'pack-headwater-highland-transition-repair',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: {
+        scope: 'region',
+        regionIds: ['headwater-vale', 'waymeet-marches', 'slatewater-foothills', 'ironspine-highlands'],
+        steward: 'cross-range-ecology-wardens',
+    },
+    dependencies: [
+        'pack-elderwood-opening',
+        'pack-elderwood-ecology-breadth',
+        'pack-slatewater-foothills-ecology',
+        'pack-headwater-vale-ecology',
+        'pack-headwater-vale',
+        'pack-waymeet-marches-ecology',
+        'pack-ironspine-highlands-ecology',
+    ],
+    metadata: {
+        name: 'Headwater / Highland Transition Repair',
+        notes: 'Cross-region family-spread repair for upper-valley, saddle, foothill, and alpine pollinator/small-prey overlap plus one connected Upper Vale berry loop; no new ecology family or geography.',
+    },
+    records: {
+        species: listHeadwaterHighlandTransitionRepairSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listHeadwaterHighlandTransitionRepairPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listHeadwaterHighlandTransitionRepairGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [
+            ...listHeadwaterHighlandTransitionRepairResourceItems(),
+            ...listHeadwaterHighlandTransitionRepairProductionItems(),
+        ].map((entry) => ({ id: entry.id, catalogRef: true })),
+        recipes: listHeadwaterHighlandTransitionRepairProcessDefinitions().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
 
 export const REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK = createContentPack({
     id: 'pack-redstone-dry-upland-ecology-repair',
@@ -1303,6 +1345,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
     ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK,
+    HEADWATER_HIGHLAND_TRANSITION_REPAIR_PACK,
     REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK,
     EMBERWASH_SALTPAN_ECOLOGY_REPAIR_PACK,
 ]);
