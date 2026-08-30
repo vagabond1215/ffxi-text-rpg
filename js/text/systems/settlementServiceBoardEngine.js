@@ -41,8 +41,8 @@ export function createSettlementServiceBoard(state) {
         const action = createAction(
             `settlement:workshop:${poi.id}`,
             `Visit · ${poi.name}`,
-            'locality.poi',
-            { poiId: poi.id, action: poi.actions.includes('guild') ? 'guild' : 'talk' },
+            'locality.poi.visit',
+            { poiId: poi.id },
             'work',
         );
         actions.push(action);
@@ -71,8 +71,8 @@ export function createSettlementServiceBoard(state) {
             const action = current ? null : createAction(
                 `settlement:shop:${poi.id}`,
                 `Visit · ${poi.name}`,
-                'locality.poi',
-                { poiId: poi.id, action: 'shop' },
+                'locality.poi.visit',
+                { poiId: poi.id },
                 'trade',
             );
             if (action) actions.push(action);
@@ -170,8 +170,8 @@ function createProductionEntry(state, definition, workshopPois, currentStationTa
         action = createAction(
             `settlement:production:workshop:${definition.id}:${target.id}`,
             `Go to · ${target.name}`,
-            'locality.poi',
-            { poiId: target.id, action: target.actions.includes('guild') ? 'guild' : 'talk' },
+            'locality.poi.visit',
+            { poiId: target.id },
             'work',
         );
     }
