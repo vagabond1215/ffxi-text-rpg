@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. `0.9.100 Content Scale Gate A` is in progress. **Cross-Biome Family Breadth** is the current Data 62 content-quality checkpoint.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E.** Cross-Biome Family Breadth remains the promoted Data 62 runtime/data checkpoint; the next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
 
 ```text
 Product:       0.9.100.23
@@ -126,7 +126,9 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **The five-part location flora/fauna diversity repair sequence is complete through Data 62.**
+**`0.9.100 Content Scale Gate A` is complete.** Packet E passed the integration/census audit on Data 62 without changing Product, Data, Game State, Account Save, Package, or Benchmark contracts. Permanent evidence: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
+
+The five-part location flora/fauna diversity repair sequence is complete through Data 62.
 
 Completed:
 1. Legacy Elderwood Ecology Repair — Data 58;
@@ -137,4 +139,4 @@ Completed:
 
 There is **no automatically authorized sixth ecology repair**. Post-sequence ecology opportunities remain optional: Crownfields broader ordinary-wildlife spread, secondary dungeon substrate/ecology cleanup, a shorebird/wader family when coastal depth warrants it, and a snake family only when a concrete ecological/player loop justifies it.
 
-The separate formal Packet E, world-edge, and material-culture queues remain available and unstarted.
+Packet E is complete. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`; world-edge expansion, Occupational Tool Conversion, and optional post-sequence ecology work remain separate queues requiring explicit selection.
