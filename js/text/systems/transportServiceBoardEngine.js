@@ -74,6 +74,18 @@ export function describeTransportServiceBoard(state, options = {}) {
     ].join('\n');
 }
 
+function emptyBoard(state, placeId) {
+    return Object.freeze({
+        version: TRANSPORT_SERVICE_BOARD_VERSION,
+        placeId,
+        placeName: getPlace(placeId)?.name ?? placeId ?? 'Unknown place',
+        nowWorldSeconds: state?.worldTime?.totalSeconds ?? 0,
+        cargoUnits: state ? getCarriedCargoUnits(state) : 0,
+        cargoUnitModel: 'occupied-carried-slots',
+        entries: Object.freeze([]),
+    });
+}
+
 function createQuote(state, service, journey, context) {
     const departure = boardableDeparture(service, context.nowWorldSeconds);
     const fareAmount = service.fare.baseAmount + service.fare.perSegmentAmount * journey.segmentCount;
