@@ -48,6 +48,7 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-great-mere-merewatch',
         'pack-ironspine-highlands',
         'pack-headwater-vale',
+        'pack-waymeet-marches-cairnward',
         'pack-emberwash-cinderwell-station',
         'pack-lower-deepvein-lantern-sump',
         'pack-gloamwood-oldbough-refuge',
@@ -69,7 +70,9 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-lower-deepvein-ecology',
         'pack-gloamwood-oldgrowth-ecology',
         'pack-starfen-delta-brackish-ecology',
+        'pack-waymeet-marches-ecology',
     ]);
+    console.log('WAYMEET_MEASURED_PACK_RECORD_COUNTS', JSON.stringify(index.recordCounts));
     assert.equal(index.recordCounts.places, 34);
     assert.equal(index.recordCounts.items, 321);
     assert.equal(index.recordCounts.recipes, 198);

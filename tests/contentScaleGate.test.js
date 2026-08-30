@@ -66,7 +66,8 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.ok(counts.supplemental.routes > 0);
     assert.equal(counts.supplemental.spellSchools, 4);
     assert.equal(counts.supplemental.capabilities, 44);
-    assert.equal(counts.supplemental.npcSchedules, 25);
+    console.log('WAYMEET_MEASURED_CONTENT_SCALE', JSON.stringify(counts));
+    assert.equal(counts.supplemental.npcSchedules, 27);
     assert.equal(counts.supplemental.contentPacks, 31);
     assert.ok(counts.supplemental.ownedPackRecords >= 248);
     assert.equal(counts.supplemental.packOwnedByCollection.spellSchools, 4);
