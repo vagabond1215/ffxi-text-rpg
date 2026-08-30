@@ -48,7 +48,7 @@ Phase:         0.9 / 0.9.100 in progress
 | Content-scale census v2 | integrated | Runs in Check; target shortfalls are informational. |
 | Benchmark harness | integrated | Benchmark 3 + repeatable sample. |
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
-| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
+| Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
 ## Content infrastructure and regional packs — Data 56
 
@@ -142,8 +142,8 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 110 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
-| Production | playable | 194 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
+| Gathering sources | playable | 117 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
+| Production | playable | 204 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
