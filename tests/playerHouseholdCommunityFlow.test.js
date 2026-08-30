@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { validateCommitmentCatalog } from '../js/text/data/commitments.js';
 import { getResourceItem } from '../js/text/data/resourceItems.js';
@@ -164,7 +165,7 @@ test('0.8.900 adds three scheduled home-community relationships driven by cultiv
         const schedule = getNpcScheduleStatus(state, fixture.contactNpcId);
         assert.equal(schedule.scheduled, true);
         advanceIntoContactWindow(state, fixture.contactNpcId);
-        assert.equal(performLocalityPoiAction(state, fixture.poiId, 'talk').ok, true);
+        assert.equal(useKnownPoi(state, fixture.poiId, 'talk').ok, true);
 
         let entry = commitmentEntry(state, fixture.commitmentId);
         assert.ok(entry);
