@@ -15,6 +15,13 @@ import {
 } from './emberwashEcology.js';
 import { listEmberwashResourceItems } from './emberwashResourceItems.js';
 import {
+    listLowerDeepveinEcologyFamilies,
+    listLowerDeepveinGatheringSources,
+    listLowerDeepveinPopulations,
+    listLowerDeepveinSpecies,
+} from './lowerDeepveinEcology.js';
+import { listLowerDeepveinResourceItems } from './lowerDeepveinResourceItems.js';
+import {
     listGloamwoodEcologyFamilies,
     listGloamwoodGatheringSources,
     listGloamwoodPopulations,
@@ -50,7 +57,7 @@ import {
 } from './starfenDeltaEcology.js';
 import { listStarfenDeltaResourceItems } from './starfenDeltaResourceItems.js';
 
-export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 36;
+export const REGIONAL_ECOLOGY_PACK_DATA_VERSION = 37;
 
 export const ELDERWOOD_ECOLOGY_PACK = regionalPack({
     id: 'pack-elderwood-ecology-breadth', regionId: 'elderwood', steward: 'thornwall-west', dependencies: ['pack-elderwood-opening'],
@@ -293,6 +300,29 @@ export const EMBERWASH_ECOLOGY_PACK = createContentPack({
     },
 });
 
+
+export const LOWER_DEEPVEIN_ECOLOGY_PACK = createContentPack({
+    id: 'pack-lower-deepvein-ecology',
+    dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
+    ownership: { scope: 'region', regionIds: ['lower-deepvein'], steward: 'brasshaven-lantern-sump' },
+    dependencies: ['pack-shared-foundation', 'pack-redstone-opening', 'pack-redstone-ecology-breadth', 'pack-starfen-ecology-breadth', 'pack-elderwood-ecology-breadth'],
+    metadata: {
+        name: 'Lower Deepvein Ecology',
+        notes: 'First Deep World frontier ecology with eight passive or naturally territorial cave species, seven exact-provenance sources, reused regional cave families through explicit dependencies, and no manufactured hostile encounter templates.',
+    },
+    records: {
+        places: [
+            { id: 'deepvein-lower-decline', catalogRef: true },
+            { id: 'lower-deepvein-echoing-shelf', catalogRef: true },
+        ],
+        ecologyFamilies: listLowerDeepveinEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listLowerDeepveinSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listLowerDeepveinPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listLowerDeepveinGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: listLowerDeepveinResourceItems().map((entry) => ({ id: entry.id, catalogRef: true })),
+    },
+});
+
 export const GLOAMWOOD_ECOLOGY_PACK = createContentPack({
     id: 'pack-gloamwood-oldgrowth-ecology',
     dataVersion: REGIONAL_ECOLOGY_PACK_DATA_VERSION,
@@ -337,7 +367,7 @@ export const STARFEN_DELTA_ECOLOGY_PACK = createContentPack({
     },
 });
 
-export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, EMBERWASH_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
+export const REGIONAL_ECOLOGY_PACKS = Object.freeze([ELDERWOOD_ECOLOGY_PACK, REDSTONE_ECOLOGY_PACK, STARFEN_ECOLOGY_PACK, COPPERGRASS_ECOLOGY_PACK, CROWNFIELDS_ECOLOGY_PACK, SLATEWATER_ECOLOGY_PACK, GREAT_MERE_ECOLOGY_PACK, IRONSPINE_ECOLOGY_PACK, HEADWATER_VALE_ECOLOGY_PACK, EMBERWASH_ECOLOGY_PACK, LOWER_DEEPVEIN_ECOLOGY_PACK, GLOAMWOOD_ECOLOGY_PACK, STARFEN_DELTA_ECOLOGY_PACK]);
 
 function regionalPack({ id, regionId, steward, dependencies, placeId, ownsPlace, ownedFamilyIds = null, speciesIds, populationIds, sourceIds, itemIds }) {
     const species = listRegionalSpecies().filter((entry) => speciesIds.includes(entry.id));
