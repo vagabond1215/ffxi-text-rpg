@@ -2,7 +2,7 @@
 
 Status: **ACTIVE AS A TEMPORARY PLANNING REFERENCE AFTER THE MACRO-TOPOLOGY LOCK.**
 
-The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, and Emberwash Badlands & Cinderwell Station have since been realized through Data 55. The historical numbered sections remain design notes rather than automatic authorization for later zones.
+The macro-world planning blocker is resolved by `docs/WORLD_MACRO_TOPOLOGY.md`. Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, and Lower Deepvein & Lantern Sump Station have since been realized through Data 56. The historical numbered sections remain design notes rather than automatic authorization for later zones.
 
 Purpose: preserve the current macro-geography, boundary-access rules, and prioritized zone-extension sequence so a new thread can resume from repository evidence without repeating the world-edge audit. This file may be deleted once its decisions have been absorbed into permanent regional/world-cartography documents.
 
@@ -51,13 +51,13 @@ Post-lock world-edge status:
 - **Starfen Delta / Brackish Coast — COMPLETE / Data 53.**
 - **Gloamwood & Oldbough Refuge — COMPLETE / Data 54.**
 - **Emberwash Badlands & Cinderwell Station — COMPLETE / Data 55.**
+- **Lower Deepvein & Lantern Sump Station — COMPLETE / Data 56.**
 
 Remaining recommended order:
 
-1. Lower Deepvein;
-2. Waymeet Marches / central plateau approaches;
-3. Coppergrass extensions;
-4. Drowned Vaults.
+1. Waymeet Marches / central plateau approaches;
+2. Coppergrass extensions;
+3. Drowned Vaults.
 
 Key reasons:
 
@@ -65,7 +65,7 @@ Key reasons:
 - the Great Mere outflow is now explicitly east-draining, so the brackish delta/coast has a valid hydrological placement;
 - Gloamwood is the first western barrier toward the Lethari heartland;
 - Emberwash remains important but is now explicitly only the northern arid frontier before the southern strait/Veyra sphere;
-- Lower Deepvein is a Deep World approach rather than a shortcut directly to the Korren capital.
+- Lower Deepvein now realizes the first controlled Deep World frontier and still stops before farther deep roads or Korren settlements.
 
 No remaining candidate is auto-authorized.
 
@@ -151,7 +151,28 @@ Implemented directly on `main` with:
 
 Implementation freeze `2e8d8a519dcc916f91a120fb66337fe16753f6a4` passed Check #1547 / run `33279116948` with **786/786 tests**. Promoted Data 55 head `6f850b4a63a152f17a55dec23224dff42c512cad` passed Check #1559 / run `33279480611` with the same full gate. Pages #1692 also passed.
 
-The next ranked world-edge candidate is **Lower Deepvein**, followed by **Waymeet Marches / central plateau approaches**.
+Lower Deepvein was the next ranked world-edge candidate after Data 55 and has since been implemented and promoted as Data 56.
+
+## Lower Deepvein & Lantern Sump Station implementation result
+
+Lower Deepvein & Lantern Sump Station is complete in Data 56 / Product 0.9.100.17.
+
+Implemented directly on `main` with:
+
+- Deepvein Lower Decline, Lantern Sump Station, and Lower Deepvein Echoing Shelf;
+- walk-only Lower Deepvein Haulage Decline from Deepvein Mine through the Lower Decline to Lantern Sump;
+- walk-only Echoing Shelf Traverse;
+- no onward route into farther deep roads, northern gate country, or Korren settlements;
+- eight cave species/populations and seven exact-provenance sources/raws;
+- ten transformations producing ten outputs;
+- three Lantern Sump staff, two schedules, exchange/survey/lampworks/hearth services;
+- two Pack-v2 ownership graphs;
+- practical Lampcap/Threadfin/Sump Crab safety treatment;
+- explicit non-duplication of existing Deepvein lead and silver deposits.
+
+Implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e` passed Check #1577 / run `33288699319` with **791/791 tests**. Promoted Data 56 head `7e162e26eb00b3249eef9ca26cd1a3100ea04f43` passed Check #1580 / run `33288912478` with the same full gate. Pages #1712 also passed.
+
+The next ranked world-edge candidate is **Waymeet Marches / central plateau approaches**, followed by **Coppergrass extensions** and **Drowned Vaults**.
 
 ## Prioritized zone/biome extensions
 
@@ -344,15 +365,15 @@ Access:
 
 Habitation: lumber/fish camps, charcoal burners, river wardens, small village or guild lodge.
 
-### 8. Lower Deepvein
+### 8. Lower Deepvein — IMPLEMENTED / VALIDATED
 
 Placement: below/beyond Deepvein Mine.
 
 Biome: deep subterranean cave/mining ecosystem.
 
-Access: subterranean only through shaft/tunnel/lift; no surface-edge walking.
+Access: subterranean only through the authored walk-only haulage decline and cavern traverse; no surface-edge walking.
 
-Potential gates: repaired lift, cleared collapse, ventilation, mining certification, quest state.
+Implemented boundary: Lantern Sump is the safe operating node and Echoing Shelf is the hard stop. Repaired-lift, ventilation, certification, quest-gate, farther-deep-road, and Korren-border state families were deliberately not introduced.
 
 Ecology/resources: blind crustaceans/fish, cave insects, fungi, guano, salts, crystals, rare ores.
 
