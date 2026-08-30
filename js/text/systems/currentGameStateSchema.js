@@ -1,3 +1,4 @@
+import { getPointOfInterest } from '../data/pointsOfInterest.js';
 import { VERSION } from '../version.js';
 import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
@@ -80,7 +81,16 @@ export function validateCurrentGameStateStructure(state, options = {}) {
     if (isObject(state.position) && typeof state.currentPlaceId === 'string' && typeof state.location === 'string') {
         issues.push(...validatePersistedCurrentLocation(state));
     }
-    if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
+    if (!Object.hasOwn(state, 'activePoiId')) issues.push('activePoiId must be persisted as null or a POI id.');
+    else if (state.activePoiId !== null && (typeof state.activePoiId !== 'string' || !state.activePoiId.trim())) issues.push('activePoiId must be null or a non-empty POI id.');
+    else if (typeof state.activePoiId === 'string') {
+        const activePoi = getPointOfInterest(state.activePoiId);
+        if (!activePoi) issues.push('activePoiId must reference a canonical POI.');
+        else if (activePoi.placeId !== state.currentPlaceId) issues.push('activePoiId must belong to currentPlaceId.');
+        const anchor = state.localKnowledge?.currentAnchor;
+        if (!anchor || anchor.type !== 'poi' || anchor.id !== state.activePoiId) issues.push('activePoiId must match the current local POI anchor.');
+    }
+        if (state.travel !== null && !isObject(state.travel)) issues.push('travel must be persisted as null or an object.');
     if (isObject(state.travel)) issues.push(...validateCurrentActiveTravel(state));
     issues.push(...validateCurrentTaskOwnerLinks(state));
     issues.push(...validatePersistedCombatIdentity(state));
