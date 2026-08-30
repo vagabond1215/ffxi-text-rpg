@@ -130,7 +130,7 @@ Implemented directly on `main` with:
 
 Implementation freeze `83cfa4de61e315fb54689a5d7d2899d2ade41743` passed Check #1504 / run `33269167675` with **781/781 tests**. Promoted Data 54 head `2de11cd73302751e9a83088d77c2de42df3313e8` passed Check #1507 / run `33269370813` with the same full gate.
 
-At the Data 54 checkpoint, **Emberwash Badlands** was the next ranked world-edge candidate. It has since been implemented and promoted as Data 55; **Lower Deepvein** is now next.
+At the Data 54 checkpoint, **Emberwash Badlands** was the next ranked world-edge candidate. It was subsequently implemented and promoted as Data 55, after which **Lower Deepvein** became the next ranked candidate; Lower Deepvein has since been implemented and promoted as Data 56.
 
 ## Emberwash Badlands & Cinderwell Station implementation result
 
