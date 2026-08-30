@@ -1189,6 +1189,25 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 0.9.900 RC soak/performance/release hardening DEFERRED
 ```
 
+## Player-information/locality discovery planning decision
+
+`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` is the pre-UI design authority for learned locality knowledge, NPC identity disclosure, familiarity-gated navigation, contextual exploration, and staged NPC-mediated shop interaction.
+
+This planning pass changes no runtime or canonical authored data:
+
+```text
+Product       0.9.100.23 -> 0.9.100.23
+Package       0.9.100    -> 0.9.100
+Data          62         -> 62
+Game State    14         -> 14
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Implementation has not started. The current `discoveredPois` binary discovery/one-interaction same-place fast-travel behavior is transitional.
+
+When Local Knowledge & Familiarity Foundation is implemented, Game State must be reassessed: save-persistent familiarity, learned identity linkage, known connectors, and temporary guidance/search bias are durable gameplay facts rather than UI-only presentation.
+
 ## Governance and release discipline
 
 Normal low-risk Phase 0.9 work proceeds directly on `main`. Use a feature branch/PR only when rollback or blast-radius risk materially exceeds what ordinary GitHub history/revert can safely contain. Required validation evidence still applies before a bounded checkpoint is treated as complete.
