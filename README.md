@@ -131,4 +131,4 @@ The player-facing UI is a **world interface**, not a permanent command console. 
 
 ## Current decision boundary
 
-`0.9.100 Content Scale Gate A` remains open. **Lower Deepvein & Lantern Sump Station is implemented as Data 56 on `main` and is in promotion synchronization.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Waymeet Marches / central plateau approaches** is the next ranked world-edge candidate, followed by Coppergrass extensions and Drowned Vaults. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.
+`0.9.100 Content Scale Gate A` remains open. **Lower Deepvein & Lantern Sump Station is complete and promoted as Data 56 on `main`.** Packet E — Gate A integration/census audit remains the next formal roadmap gate. **Waymeet Marches / central plateau approaches** is the next ranked world-edge candidate, followed by Coppergrass extensions and Drowned Vaults. Occupational Tool Conversion remains the next ranked material-culture packet. None is auto-started.

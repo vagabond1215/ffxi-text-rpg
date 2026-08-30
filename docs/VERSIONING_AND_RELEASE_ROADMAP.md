@@ -806,32 +806,34 @@ No farther deep-road or Korren route is authored. No generalized oxygen/survival
 
 Implementation freeze `b0c0048903ee6952f3c4bc337732f894340f540e` passed Check #1577 / run `33288699319` with Repository Audit, **791/791 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #1709 also passed.
 
+Promoted Data 56 head `7e162e26eb00b3249eef9ca26cd1a3100ea04f43` passed Check #1580 / run `33288912478` with the same full gate. Pages #1712 / run `33288912192` also passed.
 
-Validated Data 55 implementation census:
+
+Validated Data 56 census:
 
 ```text
-places/localities                        49
-named NPCs                               41
-shop/service sites                       33
-creature definitions                     88
-resource sources                        110
-canonical items                         335
-recipes/processes                       194
+places/localities                        52
+named NPCs                               44
+shop/service sites                       35
+creature definitions                     96
+resource sources                        117
+canonical items                         352
+recipes/processes                       204
 abilities/techniques                     41
 quests/contracts                         18
 companions                                1
 transport services                        7
-routes                                   21
+routes                                   23
 spell schools                             4
 capabilities                             44
-NPC schedules                            23
-regional/shared packs                    29
-pack-owned records                     1057
-runtime seed NPCs                        40
+NPC schedules                            25
+regional/shared packs                    31
+pack-owned records                     1121
+runtime seed NPCs                        43
 runtime seed enemies                     17
 ```
 
-Raw-resource production utilization is **110/121**. Luxury utilization remains **14/14**.
+Raw-resource production utilization is **117/128**. Luxury utilization remains **14/14**.
 
 #### Why Game State stays 14
 
@@ -900,9 +902,9 @@ npcSchedules           0.8.0
 commitments            0.7.0
 productionCatalog      0.13.0
 productionItems        0.14.0
-ecologyRegistry        0.9.0
-resourceItemRegistry   0.10.0
-routeCatalog           0.7.0
+ecologyRegistry        0.10.0
+resourceItemRegistry   0.11.0
+routeCatalog           0.8.0
 headwaterEcology       0.1.0
 headwaterProduction    0.1.0
 starfenDeltaEcology    0.1.0
@@ -913,11 +915,15 @@ gloamwoodResourceItems  0.1.0
 emberwashEcology         0.1.0
 emberwashProduction      0.1.0
 emberwashResourceItems   0.1.0
+lowerDeepveinEcology       0.1.0
+lowerDeepveinProductionCatalog 0.1.0
+lowerDeepveinProductionItems   0.1.0
+lowerDeepveinResourceItems     0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
 ```
 
-Emberwash uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 55 registries.
+Lower Deepvein uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 56 registries.
 
 ## Validation baseline
 
@@ -935,9 +941,9 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 55 Emberwash checkpoint supersedes Data 54: 49 places, 41 named NPCs, 33 service sites, 88 creatures, 110 sources, 335 items, 194 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 23 schedules, 29 packs, and 1057 pack-owned records.
+The current promoted Data 56 Lower Deepvein checkpoint supersedes Data 55: 52 places, 44 named NPCs, 35 service sites, 96 creatures, 117 sources, 352 items, 204 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 25 schedules, 31 packs, and 1121 pack-owned records.
 
-Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**.
+Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 

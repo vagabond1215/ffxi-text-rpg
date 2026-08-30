@@ -36,7 +36,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: lower-deepvein-data-56-promotion-synchronization
+  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -45,10 +45,10 @@ git:
   latest_product_post_merge_check: push-run-not-enumerable-by-current-github-connector
   latest_product_post_merge_check_number: not-visible
   latest_product_post_merge_check_result: promoted-head-green-753-of-753-post-merge-changes-docs-and-profile-only-audit-contract-verified
-  latest_main_data_check: 33224347338
-  latest_main_data_check_number: 1427
-  latest_main_data_check_sha: 3ae5ef94b011e52975b1c57d7e17e50a486f2f75
-  latest_main_data_check_result: success-759-of-759-tests-repository-audit-census-benchmark-and-sample
+  latest_main_data_check: 33288912478
+  latest_main_data_check_number: 1580
+  latest_main_data_check_sha: 7e162e26eb00b3249eef9ca26cd1a3100ea04f43
+  latest_main_data_check_result: success-791-of-791-tests-repository-audit-census-benchmark-and-sample-promoted-head
   latest_main_data_51_check: 33226362127
   latest_main_data_51_check_number: 1454
   latest_main_data_51_check_sha: d047bf03d7fb17af928ce9aae0838db25a2969e7
@@ -73,6 +73,13 @@ git:
   latest_main_data_55_check_number: 1559
   latest_main_data_55_check_sha: 6f850b4a63a152f17a55dec23224dff42c512cad
   latest_main_data_55_check_result: success-786-of-786-tests-repository-audit-census-benchmark-and-sample-promoted-head
+  latest_main_data_56_check: 33288912478
+  latest_main_data_56_check_number: 1580
+  latest_main_data_56_check_sha: 7e162e26eb00b3249eef9ca26cd1a3100ea04f43
+  latest_main_data_56_check_result: success-791-of-791-tests-repository-audit-census-benchmark-and-sample-promoted-head
+  latest_main_data_56_pages: 33288912192
+  latest_main_data_56_pages_number: 1712
+  latest_main_data_56_pages_result: success
   latest_lower_deepvein_implementation_check: 33288699319
   latest_lower_deepvein_implementation_check_number: 1577
   latest_lower_deepvein_implementation_check_sha: b0c0048903ee6952f3c4bc337732f894340f540e
@@ -86,9 +93,9 @@ progression:
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   latest_bounded_unit: lower-deepvein-and-lantern-sump-station
-  latest_bounded_unit_status: implemented-on-main-data-56-promotion-sync-in-progress
+  latest_bounded_unit_status: complete-on-main-promoted-green-check-1580
   latest_data_bounded_unit: lower-deepvein-and-lantern-sump-station
-  latest_data_bounded_unit_status: implemented-on-main-data-56-promotion-sync-in-progress
+  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1580
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: waymeet-marches-central-plateau-approaches

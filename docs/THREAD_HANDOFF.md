@@ -20,13 +20,19 @@ Phase:         0.9 / 0.9.100 Content Scale Gate A
 
 ## Current integration state
 
-**Lower Deepvein & Lantern Sump Station is implemented on `main` as Data 56; final promotion synchronization is in progress.**
+**Lower Deepvein & Lantern Sump Station is complete and promoted on `main` as Data 56.**
 
 Implementation freeze:
 - `b0c0048903ee6952f3c4bc337732f894340f540e`;
 - Check **#1577 / run `33288699319`**;
 - Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
 - Pages #1709 green.
+
+Promoted Data 56 checkpoint:
+- `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
+- Check **#1580 / run `33288912478`**;
+- Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
+- Pages **#1712 / run `33288912192`** green.
 
 Normal low-risk work continues directly on `main`. Use a branch only when rollback/blast-radius risk materially exceeds what ordinary GitHub revert/history can safely contain.
 

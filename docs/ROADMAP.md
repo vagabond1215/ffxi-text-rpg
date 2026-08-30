@@ -43,7 +43,7 @@ Lower Deepvein & Lantern Sump Station             COMPLETE / MAIN
 
 ### Lower Deepvein & Lantern Sump Station
 
-**Status: IMPLEMENTED ON `main`; Data 56 / Product 0.9.100.17 promotion synchronization in progress.**
+**Status: IMPLEMENTED ON `main`; promoted as Data 56 / Product 0.9.100.17.**
 
 Purpose:
 - extend Deepvein Mine into the first controlled Deep World frontier without collapsing directly into the Korren sphere;
@@ -64,6 +64,11 @@ Implementation freeze:
 - `b0c0048903ee6952f3c4bc337732f894340f540e`;
 - Check #1577 / run `33288699319`: Repository Audit, **791/791 tests**, Census, Benchmark 3, Benchmark Sample green;
 - Pages #1709 green.
+
+Promoted Data 56:
+- `7e162e26eb00b3249eef9ca26cd1a3100ea04f43`;
+- Check #1580 / run `33288912478`: same full gate green;
+- Pages #1712 / run `33288912192` green.
 
 Game State remains 14; no durable oxygen, ventilation, lift, certification, Korren-border, or farther-deep-road state family was introduced.
 
