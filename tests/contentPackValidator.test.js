@@ -72,12 +72,11 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-starfen-delta-brackish-ecology',
         'pack-waymeet-marches-ecology',
     ]);
-    console.log('WAYMEET_MEASURED_PACK_RECORD_COUNTS', JSON.stringify(index.recordCounts));
-    assert.equal(index.recordCounts.places, 34);
-    assert.equal(index.recordCounts.items, 321);
-    assert.equal(index.recordCounts.recipes, 198);
-    assert.equal(index.recordCounts.npcs, 40);
-    assert.equal(index.recordCounts.npcSchedules, 25);
+    assert.equal(index.recordCounts.places, 37);
+    assert.equal(index.recordCounts.items, 338);
+    assert.equal(index.recordCounts.recipes, 208);
+    assert.equal(index.recordCounts.npcs, 43);
+    assert.equal(index.recordCounts.npcSchedules, 27);
     assert.equal(index.recordCounts.spellSchools, 4);
     assert.equal(index.recordCounts.capabilities, 44);
     assert.equal(index.recordCounts.abilities, 41);
