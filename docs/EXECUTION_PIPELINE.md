@@ -16,16 +16,20 @@ Codename:      Cross-Biome Family Breadth
 
 ## Current bounded-unit state
 
-**Cross-Biome Family Breadth** is the latest runtime/data bounded unit on `main`.
+**Packet E — Gate A Integration & Census Audit** is the latest bounded repository unit on `main`.
 
-- Plan commit: `b6b0c309c60357916550d92928f86d07847229f8`.
-- Implementation freeze: `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`.
-- Check #1634 / run `33331659415`: full gate green, **822/822 tests**.
-- Promoted runtime/data SHA: `bc472b60374a048686b0ee6c877ba26c515aec35`.
+- Permanent audit: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
+- Audit implementation freeze: `81b2928611a297d765eaa64f7cedeadb5fd697ee`.
+- Check #1638 / run `33332932015`: Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample green.
+- Gate A result: **PASS / COMPLETE**.
+- No Product, Package, Data, Game State, Account Save, or Benchmark change.
+
+**Cross-Biome Family Breadth** remains the latest runtime/data bounded unit:
+- implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`;
+- promoted runtime/data SHA `bc472b60374a048686b0ee6c877ba26c515aec35`;
 - Product 0.9.100.23 / Data 62 / Game State 14 / Package 0.9.100.
-- Authored delta: 2 families, 7 species, 7 populations, no resources/production/geography.
 
-This completes the five-part location flora/fauna diversity repair sequence.
+The five-part location flora/fauna diversity repair sequence remains complete and is not reopened by Packet E.
 
 ## Data 62 metrics
 
@@ -122,18 +126,20 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-The ordered location flora/fauna diversity repair sequence is **complete through Data 62**.
+`0.9.100 Content Scale Gate A` is **COMPLETE through Packet E**. The ordered location flora/fauna diversity repair sequence is also complete through Data 62.
 
-No additional ecology unit is auto-authorized. Fresh selection may choose among:
-- broader Crownfields ordinary-wildlife spread using existing families;
-- secondary dungeon ecology/substrate cleanup;
-- shorebird/wader breadth if coastal depth is selected;
-- snake breadth only with a concrete ecological/player loop;
-- formal Packet E;
-- Waymeet Inner Marches / outer crossroads world-edge work;
-- Occupational Tool Conversion.
+Formal roadmap priority:
+1. **`0.9.200 Adventure Vertical Slice A`** — prefer a character-centered slice that naturally grows companion, quest, NPC, and service connectivity while reusing existing geography where practical;
+2. **`0.9.300 Advanced Combat / Training`** — deepen ability/technique breadth through real learning and use requirements;
+3. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion is the strongest already-planned bounded candidate;
+4. **`0.9.500 Quest / Social Depth`**;
+5. **`0.9.600 Playable-Alpha Scale Push`**.
+
+None is auto-started.
 
 The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults.
+
+Optional ecology remains separate: broader Crownfields ordinary-wildlife spread, secondary dungeon ecology/substrate cleanup, shorebird/wader breadth, or snake breadth require fresh explicit selection and concrete loop justification.
 
 ## Validation
 
