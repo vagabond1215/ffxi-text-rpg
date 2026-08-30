@@ -31,7 +31,7 @@ import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEng
 import { createMinimapModel } from './minimapModel.js';
 
 const POI_ACTION_LABELS = Object.freeze({
-    shop: 'Browse',
+    shop: 'Shop',
     guild: 'Guild',
     quest: 'Commission',
     storage: 'Storage',
@@ -146,30 +146,14 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
     if (getNavigationMode(state) === 'locality') {
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
-        const guidanceAction = createPlayerExperienceModel(state)?.primaryAction ?? null;
-        const opportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
-            state,
-            decorateCultivationOpportunityModel(
-                state,
-                decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
-            ),
-        );
-        const recommendedOpportunity = opportunityModel.entries.find((entry) => entry.id === opportunityModel.recommendedOpportunityId);
-        const recommendedAction = recommendedOpportunity?.action
-            ? Object.freeze({ ...recommendedOpportunity.action, kind: recommendedOpportunity.category })
-            : null;
-        const board = transportDesk ?? createTransportServiceBoard(state);
-        const transportActions = board.entries.map(transportBoardAction);
         const actions = [
-            ...(guidanceAction ? [guidanceAction] : []),
-            ...(recommendedAction ? [recommendedAction] : []),
-            ...transportActions,
-            ...recruitActions,
+            directAction('context:locality-look', 'Look Around', 'locality.look', {}, 'exploration'),
+            directAction('context:locality-explore', 'Explore', 'locality.explore', {}, 'exploration'),
             ...listLocalityDestinations(state)
                 .slice(0, 3)
                 .map((destination) => Object.freeze({
                     id: `context:locality:${destination.id}`,
-                    label: `Go · ${destination.name}`,
+                    label: `${destination.navigationState === 'familiar' ? 'Walk to' : 'Enter'} · ${destination.name}`,
                     intent: 'locality.move',
                     payload: Object.freeze({ destinationId: destination.id }),
                     kind: 'travel',
@@ -178,17 +162,27 @@ export function createContextualActions(state, nearby = null, opportunities = nu
 
         for (const poi of points) {
             if (actions.length >= 5) break;
-            if (poi.availability?.scheduled && !poi.availability.available) continue;
-            const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
-            actions.push(Object.freeze({
-                id: `context:locality-poi:${poi.id}:${action}`,
-                label: `${POI_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
-                intent: 'locality.poi',
-                payload: Object.freeze({ poiId: poi.id, action }),
-                kind: action === 'talk' ? 'social' : action,
-            }));
+            if (poi.present) {
+                if (poi.availability?.scheduled && !poi.availability.available) continue;
+                const action = LOCALITY_ACTION_PRIORITY.find((candidate) => poi.actions.includes(candidate)) ?? 'talk';
+                actions.push(Object.freeze({
+                    id: `context:locality-poi:${poi.id}:${action}`,
+                    label: `${POI_ACTION_LABELS[action] ?? 'Use'} · ${poi.name}`,
+                    intent: 'locality.poi',
+                    payload: Object.freeze({ poiId: poi.id, action }),
+                    kind: action === 'talk' ? 'social' : action,
+                }));
+            } else {
+                actions.push(Object.freeze({
+                    id: `context:locality-poi-visit:${poi.id}`,
+                    label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
+                    intent: 'locality.poi.visit',
+                    payload: Object.freeze({ poiId: poi.id }),
+                    kind: 'exploration',
+                }));
+            }
         }
-        actions.push(directAction('context:locality-list', 'All Local Places', 'ui.view.open', { view: 'world' }, 'utility'));
+        actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
         return dedupeActions(actions).slice(0, 6);
     }
 
