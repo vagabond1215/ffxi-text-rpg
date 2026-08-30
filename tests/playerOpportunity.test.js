@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { moveToKnownLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getNation } from '../js/text/data/nations.js';
 import { getPlace } from '../js/text/data/places.js';
@@ -21,7 +22,7 @@ const ORIGINS = Object.freeze([
 ]);
 
 function meetGuide(state, guidePoiId) {
-    const result = performLocalityPoiAction(state, guidePoiId, 'talk');
+    const result = useKnownPoi(state, guidePoiId, 'talk');
     assert.equal(result.ok, true);
 }
 
@@ -46,7 +47,7 @@ function reachFirstRegion(state, origin, category = 'livelihood') {
         assert.equal(entry.status, 'ready', `${origin.nationId} should expose its named departure locality`);
         assert.equal(entry.action?.intent, 'locality.move');
         assert.equal(entry.action?.payload.destinationId, origin.departureId);
-        const moved = moveWithinLocality(state, origin.departureId);
+        const moved = moveToKnownLocality(state, origin.departureId);
         assert.equal(moved.ok, true, moved.message);
         assert.equal(state.currentPlaceId, origin.departureId);
         entry = opportunity(createPlayerOpportunityModel(state), category);
