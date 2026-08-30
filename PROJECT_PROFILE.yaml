@@ -25,6 +25,7 @@ authority:
   gloamwood_profile: docs/ZONE_PROFILE_GLOAMWOOD.md
   gloamwood_plan: docs/ZONE_PLAN_GLOAMWOOD.md
   emberwash_plan: docs/ZONE_PLAN_EMBERWASH_BADLANDS.md
+  emberwash_profile: docs/ZONE_PROFILE_EMBERWASH_BADLANDS.md
   ingredient_luxury_processing: docs/REGIONAL_INGREDIENT_LUXURY_PROCESSING.md
   ecology_geography_audit: docs/ECOLOGY_GEOGRAPHY_INTEGRITY_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
@@ -33,7 +34,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: data-55-promotion-synchronization-on-main
+  current_normal_work: awaiting-next-explicit-bounded-unit-on-main
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -66,6 +67,10 @@ git:
   latest_emberwash_implementation_check_number: 1547
   latest_emberwash_implementation_check_sha: 2e8d8a519dcc916f91a120fb66337fe16753f6a4
   latest_emberwash_implementation_check_result: success-786-of-786-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_main_data_55_check: 33279480611
+  latest_main_data_55_check_number: 1559
+  latest_main_data_55_check_sha: 6f850b4a63a152f17a55dec23224dff42c512cad
+  latest_main_data_55_check_result: success-786-of-786-tests-repository-audit-census-benchmark-and-sample-promoted-head
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -75,9 +80,9 @@ progression:
   current_track: 0.9.100-content-scale-gate-a
   current_track_status: in-progress
   latest_bounded_unit: emberwash-badlands-and-cinderwell-station
-  latest_bounded_unit_status: complete-on-main-implementation-green-check-1547-promotion-in-progress
+  latest_bounded_unit_status: complete-on-main-promoted-green-check-1559
   latest_data_bounded_unit: emberwash-badlands-and-cinderwell-station
-  latest_data_bounded_unit_status: promotion-in-progress-after-green-implementation-freeze
+  latest_data_bounded_unit_status: complete-on-main-promoted-green-check-1559
   next_roadmap_gate: gate-a-integration-census-audit
   next_roadmap_gate_status: queued-not-auto-authorized
   next_world_edge_candidate: lower-deepvein
