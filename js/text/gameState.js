@@ -73,6 +73,7 @@ export function createNewGameState(options = {}) {
         position: startCoordinate,
         atlas: createAtlasState(startPlace.id, startCoordinate, { worldTimeSeconds: startWorldTimeSeconds }),
         localKnowledge: createLocalKnowledgeState(startPlace.id, { worldTimeSeconds: startWorldTimeSeconds }),
+        activePoiId: null,
         travel: null,
         player,
         npcs: createSeedNpcs(),
