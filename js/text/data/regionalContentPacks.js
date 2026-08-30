@@ -1,5 +1,11 @@
 import { createContentPack } from './contentPackSchema.js';
 import {
+    listCrossBiomeFamilyBreadthEcologyFamilies,
+    listCrossBiomeFamilyBreadthGatheringSources,
+    listCrossBiomeFamilyBreadthPopulations,
+    listCrossBiomeFamilyBreadthSpecies,
+} from './crossBiomeFamilyBreadthEcology.js';
+import {
     listWetlandIslandDistributionRepairEcologyFamilies,
     listWetlandIslandDistributionRepairGatheringSources,
     listWetlandIslandDistributionRepairPopulations,
@@ -152,6 +158,35 @@ export const ELDERWOOD_PACK = createContentPack({
 
 
 
+
+export const CROSS_BIOME_FAMILY_BREADTH_PACK = createContentPack({
+    id: 'pack-cross-biome-family-breadth',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: {
+        scope: 'region',
+        regionIds: ['coppergrass-steppe', 'waymeet-marches', 'crownfields', 'elderwood', 'slatewater-foothills'],
+        steward: 'cross-biome-ecology-survey',
+    },
+    dependencies: [
+        'pack-coppergrass-steppe-ecology',
+        'pack-waymeet-marches-ecology',
+        'pack-crownfields-agricultural-ecology',
+        'pack-elderwood-ecology-breadth',
+        'pack-slatewater-foothills-ecology',
+    ],
+    metadata: {
+        name: 'Cross-Biome Family Breadth',
+        notes: 'Two scoped missing small-fauna families: Ground Squirrel across open terrestrial margins and Finch across seed-rich steppe, farmland, woodland edge, and foothill habitats. No recovery, production, geography, or durable-state expansion.',
+    },
+    records: {
+        ecologyFamilies: listCrossBiomeFamilyBreadthEcologyFamilies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        species: listCrossBiomeFamilyBreadthSpecies().map((entry) => ({ id: entry.id, catalogRef: true })),
+        populations: listCrossBiomeFamilyBreadthPopulations().map((entry) => ({ id: entry.id, catalogRef: true })),
+        gatheringSources: listCrossBiomeFamilyBreadthGatheringSources().map((entry) => ({ id: entry.id, catalogRef: true })),
+        items: [],
+        recipes: [],
+    },
+});
 
 export const WETLAND_ISLAND_DISTRIBUTION_REPAIR_PACK = createContentPack({
     id: 'pack-wetland-island-distribution-repair',
@@ -1380,6 +1415,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     STARFEN_MARSHCRAFT_PACK,
     ...REGIONAL_ECOLOGY_PACKS,
     ELDERWOOD_LEGACY_ECOLOGY_REPAIR_PACK,
+    CROSS_BIOME_FAMILY_BREADTH_PACK,
     WETLAND_ISLAND_DISTRIBUTION_REPAIR_PACK,
     HEADWATER_HIGHLAND_TRANSITION_REPAIR_PACK,
     REDSTONE_DRY_UPLAND_ECOLOGY_REPAIR_PACK,

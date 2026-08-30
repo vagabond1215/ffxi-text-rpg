@@ -55,6 +55,7 @@ test('content scale targets preserve repository planning lower bounds', () => {
 
 test('default content census exposes catalog breadth and Pack v2 ownership coverage separately', () => {
     const counts = collectContentScaleCounts();
+    console.log('CROSS_BIOME_MEASURED_CONTENT_SCALE', JSON.stringify(counts));
 
     for (const metric of CONTENT_SCALE_METRICS) {
         assert.ok(Number.isInteger(counts[metric]));
