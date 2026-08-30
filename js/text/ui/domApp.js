@@ -27,7 +27,9 @@ import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import {
+    enterLocalityPoi,
     exploreLocality,
+    leaveLocalityPoi,
     lookAroundLocality,
     moveWithinLocality,
     performLocalityPoiAction,
@@ -52,6 +54,8 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'locality.explore',
     'locality.move',
     'locality.poi.visit',
+    'locality.poi.enter',
+    'locality.poi.leave',
     'locality.poi',
     'playerExperience.claimStarterKit',
     'commitment.accept',
@@ -145,6 +149,12 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi.visit') {
             result = visitLocalityPoi(state, payload.poiId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'locality.poi.enter') {
+            result = enterLocalityPoi(state, payload.poiId);
+            recordGameplayFeedback(result);
+        } else if (intent === 'locality.poi.leave') {
+            result = leaveLocalityPoi(state);
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
             result = performLocalityPoiAction(state, payload.poiId, payload.action);
