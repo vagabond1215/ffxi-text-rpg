@@ -11,7 +11,8 @@ import { createCultivationState } from './systems/cultivationEngine.js';
 import { createEcologyState } from './systems/ecologyEngine.js';
 import { addItemToContainer } from './systems/inventoryEngine.js';
 import { createPartyState } from './systems/partyEngine.js';
-import { describeCurrentPois, createPoiDiscoveryState } from './systems/poiEngine.js';
+import { describeCurrentPois } from './systems/poiEngine.js';
+import { createLocalKnowledgeState, getPlayerFacingNpcName } from './systems/localKnowledgeEngine.js';
 import { createProjectState } from './systems/projectEngine.js';
 import { createRelationshipState } from './systems/relationshipEngine.js';
 import { createResourceOpportunityState } from './systems/resourceOpportunityEngine.js';
@@ -70,7 +71,7 @@ export function createNewGameState(options = {}) {
         location: startPlace.name,
         position: startCoordinate,
         atlas: createAtlasState(startPlace.id, startCoordinate, { worldTimeSeconds: startWorldTimeSeconds }),
-        discoveredPois: createPoiDiscoveryState(),
+        localKnowledge: createLocalKnowledgeState(startPlace.id, { worldTimeSeconds: startWorldTimeSeconds }),
         travel: null,
         player,
         npcs: createSeedNpcs(),
@@ -94,7 +95,7 @@ export function describeLocation(state) {
     const currentPlaceId = state.currentPlaceId ?? 'thornwall-southgate';
     const npcsHere = (state.npcs ?? [])
         .filter((npc) => npc.identity.locationId === currentPlaceId)
-        .map((npc) => `- ${npc.identity.name}${npc.identity.title ? `, ${npc.identity.title}` : ''}`);
+        .map((npc) => `- ${getPlayerFacingNpcName(state, npc)}`);
 
     return [
         describePlace(currentPlaceId),
