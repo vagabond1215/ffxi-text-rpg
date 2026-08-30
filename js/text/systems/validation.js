@@ -28,6 +28,7 @@ import { validateCultivationState } from './cultivationEngine.js';
 import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
 import { getContainerCapacity } from './inventoryEngine.js';
 import { validateProjectState } from './projectEngine.js';
+import { validateLocalKnowledgeState } from './localKnowledgeEngine.js';
 import { validateRelationshipState } from './relationshipEngine.js';
 import { validateWorldTimeState } from './worldTimeEngine.js';
 
@@ -61,7 +62,9 @@ export function validateGameState(state) {
         issues.push(`position ${describeCoordinate(state.position)} is not navigable in ${place.name}.`);
     }
     if (!isObject(state.atlas)) issues.push('atlas must be an object.');
-    if (!isObject(state.discoveredPois)) issues.push('discoveredPois must be an object.');
+    if (!isObject(state.localKnowledge)) issues.push('localKnowledge must be an object.');
+    else issues.push(...validateLocalKnowledgeState(state.localKnowledge, { currentPlaceId: state.currentPlaceId }));
+    if (Object.hasOwn(state, 'discoveredPois')) issues.push('discoveredPois is legacy state; current Game State uses localKnowledge.');
     if (state.travel !== null && state.travel !== undefined && !isObject(state.travel)) issues.push('travel must be null or an object.');
 
     if (!isObject(state.projects)) {
