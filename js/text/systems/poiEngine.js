@@ -11,6 +11,15 @@ import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
+import {
+    KNOWLEDGE_STATES,
+    canDirectlyNavigateToPoi,
+    getPlayerFacingPoiName,
+    getPoiKnowledge,
+    identifyNpc,
+    learnPoiName,
+    recordPoiExposure,
+} from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { recruitCompanion } from './partyEngine.js';
 import { describeOriginGuideDialogue } from './playerExperienceEngine.js';
@@ -21,21 +30,16 @@ export function createPoiDiscoveryState() {
 }
 
 export function discoverPoi(state, poi) {
-    state.discoveredPois ??= createPoiDiscoveryState();
-    state.discoveredPois[poi.placeId] ??= [];
-    if (!state.discoveredPois[poi.placeId].includes(poi.id)) {
-        state.discoveredPois[poi.placeId].push(poi.id);
-    }
-    return state.discoveredPois[poi.placeId];
+    return recordPoiExposure(state, poi, { points: 1 });
 }
 
 export function hasDiscoveredPoi(state, poiId) {
-    return Object.values(state.discoveredPois ?? {}).some((ids) => ids.includes(poiId));
+    const knowledge = getPoiKnowledge(state, poiId);
+    return Boolean(knowledge && knowledge.knowledgeState !== KNOWLEDGE_STATES.REFERENCED);
 }
 
 export function getDiscoveredPoisForPlace(state, placeId = state.currentPlaceId) {
-    const discoveredIds = new Set(state.discoveredPois?.[placeId] ?? []);
-    return getPoisForPlace(placeId).filter((poi) => discoveredIds.has(poi.id));
+    return getPoisForPlace(placeId).filter((poi) => hasDiscoveredPoi(state, poi.id));
 }
 
 export function describePoiSummary() {
@@ -54,13 +58,15 @@ export function describePlacePois(placeId) {
 
 export function describeCurrentPois(state) {
     const pois = getContextualPois(state);
-    if (!pois.length) return 'No known points of interest are immediately here.';
+    if (!pois.length) return 'No notable point of interest is immediately here.';
     return [
-        'Points of interest here:',
+        'What stands out here:',
         ...pois.map((poi) => {
             const availability = getPoiScheduleStatus(state, poi);
-            const scheduleText = availability.scheduled ? ` | ${describeNpcScheduleStatus(availability)}` : '';
-            return `- ${poi.name} [${poi.type}] - ${poi.notes} | actions: ${poi.actions.join(', ')}${scheduleText}`;
+            const scheduleText = availability.scheduled
+                ? ` | ${availability.available ? 'available now' : 'not available now'}`
+                : '';
+            return `- ${getPlayerFacingPoiName(state, poi)} [${poi.type}] - ${poi.notes}${scheduleText}`;
         }),
     ].join('\n');
 }
@@ -75,7 +81,10 @@ export function talkAtCurrentGrid(state, query = '') {
 
     if (!poi) return `No matching point of interest here for: ${query}`;
 
-    discoverPoi(state, poi);
+    recordPoiExposure(state, poi, { points: 1, learnedName: true });
+    learnPoiName(state, poi);
+    const availability = getPoiScheduleStatus(state, poi);
+    if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
     return describePoiInteraction(state, poi, 'talk');
 }
 
@@ -97,15 +106,22 @@ export function performPoiAction(state, action, query = '') {
         : pois.find((candidate) => candidate.actions.includes(canonicalAction)) ?? pois[0];
 
     if (!poi) return `No matching point of interest here for: ${query}`;
-    if (!poi.actions.includes(canonicalAction)) return `${poi.name} does not support action: ${canonicalAction}. Available: ${poi.actions.join(', ')}`;
+    if (!poi.actions.includes(canonicalAction)) return `${getPlayerFacingPoiName(state, poi)} does not support action: ${canonicalAction}. Available: ${poi.actions.join(', ')}`;
 
-    discoverPoi(state, poi);
+    recordPoiExposure(state, poi, { points: 1, learnedName: true });
+    learnPoiName(state, poi);
+    const availability = getPoiScheduleStatus(state, poi);
+    if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
     return describePoiInteraction(state, poi, canonicalAction);
 }
 
 export function describePoiInteraction(state, poi, action) {
     const availability = getPoiScheduleStatus(state, poi);
-    if (availability.scheduled && !availability.available) return describeNpcScheduleStatus(availability);
+    if (availability.scheduled && !availability.available) {
+        return availability.currentWindowLabel
+            ? `That service is not available right now. Its current schedule is ${availability.currentWindowLabel}.`
+            : 'That service is not available right now.';
+    }
 
     const canonicalAction = canonicalizePoiAction(action);
     if (canonicalAction === 'talk') {
@@ -113,16 +129,14 @@ export function describePoiInteraction(state, poi, action) {
         if (guideDialogue) return guideDialogue;
     }
 
-    const discovered = hasDiscoveredPoi(state, poi.id);
+    const knowledge = getPoiKnowledge(state, poi.id);
     const lines = [
-        `${poi.name}`,
+        `${getPlayerFacingPoiName(state, poi)}`,
         `Type: ${poi.type}`,
         `Action: ${canonicalAction}`,
         poi.notes,
-        discovered ? 'Discovered: yes. You can fast-travel to this POI while in the same place.' : 'Discovered: no.',
+        `Local knowledge: ${knowledge?.knowledgeState ?? KNOWLEDGE_STATES.SIGHTED}.`,
     ];
-
-    if (availability.scheduled) lines.push(describeNpcScheduleStatus(availability));
 
     switch (canonicalAction) {
         case 'shop':
@@ -141,10 +155,10 @@ export function describePoiInteraction(state, poi, action) {
             lines.push('Storage behavior is not implemented yet.');
             break;
         case 'companion':
-            lines.push('This legacy contact is not itself companion authority. Persistent recruitment is resolved through the party system.');
+            lines.push('This contact is not itself companion authority. Persistent recruitment is resolved through the party system.');
             break;
         default:
-            lines.push('They acknowledge you. Dialogue scripting is not implemented yet.');
+            lines.push('They acknowledge you.');
     }
 
     return lines.join('\n');
@@ -153,24 +167,32 @@ export function describePoiInteraction(state, poi, action) {
 export function describeDiscoveredPois(state, placeId = state.currentPlaceId) {
     const place = getPlace(placeId);
     const pois = getDiscoveredPoisForPlace(state, placeId);
-    if (!pois.length) return `No discovered POIs in ${place?.name ?? placeId}. Talk to NPCs or interact with POIs to unlock same-place POI fast travel.`;
+    if (!pois.length) return `No learned local points are recorded in ${place?.name ?? placeId} yet.`;
 
     return [
-        `Discovered POIs in ${place?.name ?? placeId}:`,
-        ...pois.map((poi) => `- ${poi.name} [${poi.type}] actions: ${poi.actions.join(', ')}`),
+        `Learned points in ${place?.name ?? placeId}:`,
+        ...pois.map((poi) => {
+            const knowledge = getPoiKnowledge(state, poi.id);
+            return `- ${getPlayerFacingPoiName(state, poi)} [${poi.type}] — ${knowledge?.knowledgeState ?? KNOWLEDGE_STATES.SIGHTED}`;
+        }),
     ].join('\n');
 }
 
 export function fastTravelToPoi(state, query) {
-    if (!query) return 'Fast travel to which discovered POI? Try `discovered`.';
+    if (!query) return 'Go directly to which familiar local point? Try `discovered`.';
     const currentPlaceId = state.currentPlaceId;
     const candidates = getDiscoveredPoisForPlace(state, currentPlaceId);
     const poi = candidates.find((candidate) => normalize(candidate.name).includes(normalize(query)) || normalize(candidate.id).includes(normalize(query)));
-    if (!poi) return `No discovered POI named "${query}" in this place. Try \`discovered\`.`;
+    if (!poi) return `No learned local point named "${query}" is recorded here.`;
+    if (!canDirectlyNavigateToPoi(state, poi.id)) {
+        return `You recognize ${getPlayerFacingPoiName(state, poi)}, but do not yet know the locality well enough to go there directly.`;
+    }
 
-    const result = setPositionAndDiscover(state, currentPlaceId, poi.coordinate, { important: [`Fast traveled to ${poi.name}`] });
+    const result = setPositionAndDiscover(state, currentPlaceId, poi.coordinate, { important: [`Returned to familiar POI ${poi.id}`] });
     if (!result.ok) return result.reason;
-    return [`Fast traveled to ${poi.name}.`, describeCurrentPois(state)].join('\n\n');
+    state.activePoiId = poi.id;
+    recordPoiExposure(state, poi, { points: 1 });
+    return [`Went directly to ${getPlayerFacingPoiName(state, poi)}.`, describeCurrentPois(state)].join('\n\n');
 }
 
 export function describeTravelExitOptions(state) {
@@ -180,7 +202,7 @@ export function describeTravelExitOptions(state) {
     if (!connections.length) return `No known exits from ${place.name}.`;
 
     return [
-        `Known exits from ${place.name}:`,
+        `Route connections from ${place.name}:`,
         ...connections.map((connection) => {
             const destination = getPlace(connection.to);
             const requirementText = connection.restrictions.length
