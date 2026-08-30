@@ -21,6 +21,7 @@ import {
     recordPlaceExposure,
     recordPoiExposure,
     recordPoiInteraction,
+    requiresPoiEntryTransition,
     setCurrentLocalAnchor,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
@@ -199,6 +200,7 @@ export function visitLocalityPoi(state, poiId) {
     if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
     if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
     if (!isSettlementLocality(state?.currentPlaceId)) return fail('locality.poi-unavailable', 'Locality actions are only available in safe settlement areas.');
+    if (state.activePoiId) return fail('locality.inside-poi', 'Leave the place you are currently inside before going somewhere else.');
 
     const poi = getPointOfInterest(poiId);
     if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
@@ -215,7 +217,8 @@ export function visitLocalityPoi(state, poiId) {
     if (!positioned.ok) return fail('locality.poi-position-failed', positioned.reason);
 
     const knowledge = recordPoiExposure(state, poi, { points: 1 });
-    state.activePoiId = poi.id;
+    const requiresEntry = requiresPoiEntryTransition(poi);
+    state.activePoiId = requiresEntry ? null : poi.id;
     setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: state.currentPlaceId });
 
     const label = getPlayerFacingPoiName(state, poi);
@@ -223,19 +226,82 @@ export function visitLocalityPoi(state, poiId) {
         placeId: state.currentPlaceId,
         poiId: poi.id,
         knowledgeState: knowledge.knowledgeState,
+        requiresEntry,
     }, { source: 'localityEngine' });
 
-    return ok('locality.poi-reached', `You make your way to ${label}. You decide whether to enter, greet someone, ask for service, or move on.`, {
+    return ok('locality.poi-reached',
+        requiresEntry
+            ? `You make your way to ${label}. The entrance is before you; entering is still your choice.`
+            : `You approach ${label}. You can greet them, ask for service, or move on.`,
+        {
+            poiId: poi.id,
+            knowledgeState: knowledge.knowledgeState,
+            requiresEntry,
+            eventId: event.id,
+        });
+}
+
+export function enterLocalityPoi(state, poiId) {
+    if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot enter a local venue while in battle.');
+    if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
+    if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
+    if (!isSettlementLocality(state?.currentPlaceId)) return fail('locality.poi-unavailable', 'Locality actions are only available in safe settlement areas.');
+
+    const poi = getPointOfInterest(poiId);
+    if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
+    if (!requiresPoiEntryTransition(poi)) {
+        if (getCurrentLocalAnchor(state)?.type === 'poi' && getCurrentLocalAnchor(state)?.id === poi.id) {
+            state.activePoiId = poi.id;
+            return ok('locality.poi-entered', `You are already close enough to interact with ${getPlayerFacingPoiName(state, poi)}.`, { poiId: poi.id });
+        }
+        return fail('locality.poi-no-entry', 'That local point does not have a separate interior entrance.');
+    }
+    const anchor = getCurrentLocalAnchor(state);
+    if (!anchor || anchor.type !== 'poi' || anchor.id !== poi.id || anchor.placeId !== state.currentPlaceId) {
+        return fail('locality.poi-entrance-not-reached', 'Reach the entrance before trying to go inside.');
+    }
+    if (state.activePoiId === poi.id) return ok('locality.poi-already-entered', `You are already inside ${getPlayerFacingPoiName(state, poi)}.`, { poiId: poi.id });
+
+    const availability = getPoiScheduleStatus(state, poi);
+    if (poi.type === 'shop' && availability.scheduled && !availability.available) {
+        return fail('locality.poi-closed', 'The shop is closed right now.', {
+            poiId: poi.id,
+            nextAvailableAtWorldSeconds: availability.nextAvailableAtWorldSeconds,
+        });
+    }
+
+    state.activePoiId = poi.id;
+    const knowledge = recordPoiExposure(state, poi, { points: 1 });
+    const event = emitSemanticEvent(state, 'locality.poi-entered', {
+        placeId: state.currentPlaceId,
+        poiId: poi.id,
+        knowledgeState: knowledge.knowledgeState,
+    }, { source: 'localityEngine' });
+    return ok('locality.poi-entered', `You enter ${getPlayerFacingPoiName(state, poi)}.`, {
         poiId: poi.id,
         knowledgeState: knowledge.knowledgeState,
         eventId: event.id,
     });
 }
 
+export function leaveLocalityPoi(state) {
+    const poi = state?.activePoiId ? getPointOfInterest(state.activePoiId) : null;
+    if (!poi) return fail('locality.poi-not-entered', 'You are not currently inside or engaged with a local point of interest.');
+    const poiId = poi.id;
+    state.activePoiId = null;
+    setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: state.currentPlaceId });
+    const event = emitSemanticEvent(state, 'locality.poi-left', {
+        placeId: state.currentPlaceId,
+        poiId,
+    }, { source: 'localityEngine' });
+    return ok('locality.poi-left', `You step away from ${getPlayerFacingPoiName(state, poi)}.`, { poiId, eventId: event.id });
+}
+
 export function moveWithinLocality(state, destinationId) {
     if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot cross the settlement while in battle.');
     if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
     if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
+    if (state.activePoiId) return fail('locality.inside-poi', 'Leave the current venue before walking to another district.');
     const current = getPlace(state?.currentPlaceId);
     if (!isSettlementLocality(current)) return fail('locality.not-locality', 'Named locality movement is only available in safe settlement areas.');
 
@@ -417,6 +483,7 @@ function validateLocalityExplorationAction(state) {
     if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot explore the settlement while in battle.');
     if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
     if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
+    if (state.activePoiId) return fail('locality.inside-poi', 'Leave the current venue before exploring the surrounding locality.');
     const current = getPlace(state?.currentPlaceId);
     if (!isSettlementLocality(current)) return fail('locality.not-locality', 'Look Around and locality exploration are available in safe settlement areas.');
     return null;
@@ -492,6 +559,8 @@ function decoratePoiAvailability(state, poi) {
         familiarityPoints: knowledge?.familiarityPoints ?? 0,
         learnedName: Boolean(knowledge?.learnedName),
         present: state.activePoiId === poi.id,
+        atEntrance: getCurrentLocalAnchor(state)?.type === 'poi' && getCurrentLocalAnchor(state)?.id === poi.id && state.activePoiId !== poi.id,
+        requiresEntry: requiresPoiEntryTransition(poi),
         availability,
     });
 }
