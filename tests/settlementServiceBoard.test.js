@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
@@ -38,7 +39,7 @@ test('one settlement service board derives existing workshop and merchant breadt
         assert.ok(board.production.some((entry) => entry.id === proof.processId), `${proof.nationId} should derive production from that station type`);
         assert.ok(board.trade.localShops.length > 0, `${proof.nationId} should derive its existing local merchants`);
 
-        const moved = performLocalityPoiAction(state, proof.workshopPoiId, 'talk');
+        const moved = useKnownPoi(state, proof.workshopPoiId, 'talk');
         assert.equal(moved.ok, true, moved.message);
         board = createSettlementServiceBoard(state);
         assert.ok(board.currentStationTags.includes(proof.stationTag));
