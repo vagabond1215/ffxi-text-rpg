@@ -1,18 +1,38 @@
 import { getConnectionsFrom, getPlace } from '../data/places.js';
-import { getPointOfInterest, getPoisForPlace } from '../data/pointsOfInterest.js';
+import { getPointOfInterest, getPoisAtGrid, getPoisForPlace } from '../data/pointsOfInterest.js';
 import { setPositionAndDiscover } from './atlasEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { isSettlementLocality } from './localityClassificationEngine.js';
+import {
+    KNOWLEDGE_STATES,
+    canDirectlyNavigateToPoi,
+    canTraverseKnownConnection,
+    clearCurrentLocalAnchor,
+    getConnectorKnowledge,
+    getCurrentLocalAnchor,
+    getGuidanceWeightBonus,
+    getKnownPoisForPlace,
+    getPlayerFacingPoiName,
+    getPoiKnowledge,
+    identifyNpc,
+    learnPoiName,
+    nextExplorationSequence,
+    recordConnectorExposure,
+    recordPlaceExposure,
+    recordPoiExposure,
+    setCurrentLocalAnchor,
+} from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { syncActivePartyLocation } from './partyEngine.js';
-import { discoverPoi, performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
+import { performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
 export { SETTLEMENT_LOCALITY_TYPES, isSettlementLocality } from './localityClassificationEngine.js';
 
-export const LOCALITY_NAVIGATION_VERSION = 2;
+export const LOCALITY_NAVIGATION_VERSION = 3;
+export const DEFAULT_LOCALITY_EXPLORE_SECONDS = 120;
 
 export function getNavigationMode(state) {
     if (state?.activeBattle?.phase === 'active') return 'combat';
@@ -23,26 +43,192 @@ export function getNavigationMode(state) {
 export function listLocalityDestinations(state) {
     const current = getPlace(state?.currentPlaceId);
     if (!isSettlementLocality(current)) return [];
-    return getConnectionsFrom(current.id)
-        .filter((connection) => connection.mode === 'walk' && !connection.flags?.externalPlaceholder)
-        .map((connection) => ({ connection, destination: getPlace(connection.to) }))
-        .filter(({ destination }) => isSettlementLocality(destination) && destination.nation === current.nation)
-        .map(({ connection, destination }) => Object.freeze({
-            id: destination.id,
-            name: destination.name,
-            type: destination.type,
-            travelSeconds: Math.max(0, Number(connection.travelSeconds) || 0),
-            connectionId: connection.id,
-        }));
+    const anchor = getCurrentLocalAnchor(state);
+
+    return listCanonicalLocalityConnections(current)
+        .filter(({ connection }) => {
+            const knowledge = getConnectorKnowledge(state, connection.id);
+            if (knowledge?.knowledgeState === KNOWLEDGE_STATES.FAMILIAR) return true;
+            return anchor?.type === 'connection' && anchor.id === connection.id && anchor.placeId === current.id;
+        })
+        .map(({ connection, destination }) => {
+            const knowledge = getConnectorKnowledge(state, connection.id);
+            const familiar = knowledge?.knowledgeState === KNOWLEDGE_STATES.FAMILIAR;
+            return Object.freeze({
+                id: destination.id,
+                name: destination.name,
+                type: destination.type,
+                travelSeconds: Math.max(0, Number(connection.travelSeconds) || 0),
+                connectionId: connection.id,
+                knowledgeState: knowledge?.knowledgeState ?? KNOWLEDGE_STATES.SIGHTED,
+                familiarityPoints: knowledge?.familiarityPoints ?? 0,
+                navigationState: familiar ? 'familiar' : 'sighted',
+            });
+        });
 }
 
 export function listLocalityPoints(state, options = {}) {
     if (!isSettlementLocality(state?.currentPlaceId)) return [];
     const limit = Math.max(1, Number(options.limit) || 8);
-    return getPoisForPlace(state.currentPlaceId)
-        .filter((poi) => !['routeExit'].includes(poi.type))
+    return getKnownPoisForPlace(state, state.currentPlaceId)
         .slice(0, limit)
         .map((poi) => decoratePoiAvailability(state, poi));
+}
+
+export function lookAroundLocality(state) {
+    const blocker = validateLocalityExplorationAction(state);
+    if (blocker) return blocker;
+
+    const current = getPlace(state.currentPlaceId);
+    const contextual = getPoisAtGrid(current.id, state.position)
+        .filter((poi) => !hasSightedPoi(state, poi.id));
+    const otherPois = getPoisForPlace(current.id)
+        .filter((poi) => !hasSightedPoi(state, poi.id))
+        .filter((poi) => !contextual.some((candidate) => candidate.id === poi.id))
+        .sort((a, b) => visibilityRank(a) - visibilityRank(b) || a.id.localeCompare(b.id));
+    const connection = listCanonicalLocalityConnections(current)
+        .find(({ connection: candidate }) => !hasSightedConnection(state, candidate.id));
+
+    const poi = contextual[0] ?? otherPois[0] ?? null;
+    if (poi) {
+        const before = getPoiKnowledge(state, poi.id)?.knowledgeState ?? KNOWLEDGE_STATES.UNKNOWN;
+        const knowledge = recordPoiExposure(state, poi, { points: 1 });
+        state.activePoiId = null;
+        setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: current.id });
+        const label = getPlayerFacingPoiName(state, poi);
+        const event = emitSemanticEvent(state, 'locality.observed', {
+            placeId: current.id,
+            targetType: 'poi',
+            targetId: poi.id,
+            beforeKnowledgeState: before,
+            afterKnowledgeState: knowledge.knowledgeState,
+        }, { source: 'localityEngine' });
+        return ok('locality.observed', `You take in the immediate surroundings and notice ${label}. You have not entered or approached it yet.`, {
+            targetType: 'poi',
+            targetId: poi.id,
+            knowledgeState: knowledge.knowledgeState,
+            eventId: event.id,
+        });
+    }
+
+    if (connection) {
+        return revealConnection(state, current, connection.connection, connection.destination, 'look');
+    }
+
+    clearCurrentLocalAnchor(state);
+    state.activePoiId = null;
+    return ok('locality.observed', 'You take in the immediate surroundings. Nothing newly identifiable stands out from what you already know.', {
+        targetType: null,
+        targetId: null,
+    });
+}
+
+export function exploreLocality(state, options = {}) {
+    const blocker = validateLocalityExplorationAction(state);
+    if (blocker) return blocker;
+
+    const current = getPlace(state.currentPlaceId);
+    const seconds = Math.max(1, Math.floor(Number(options.durationSeconds) || DEFAULT_LOCALITY_EXPLORE_SECONDS));
+    const beforeWorldSeconds = ensureWorldTimeState(state).totalSeconds;
+    const advance = advanceSimulationUntilInterrupt(state, seconds, {
+        worldTimeOptions: { source: 'localityEngine' },
+    });
+    if (advance.data?.interrupted) {
+        return fail('locality.explore-interrupted', `Your exploration is interrupted after ${advance.data.secondsAdvanced}s.`, {
+            interrupt: advance.data.interrupt,
+            secondsAdvanced: advance.data.secondsAdvanced,
+        });
+    }
+
+    const sequence = nextExplorationSequence(state);
+    const candidates = createExplorationCandidates(state, current);
+    const chosen = chooseWeighted(candidates, resolveExplorationRoll(state, sequence, options.rng));
+
+    state.activePoiId = null;
+    if (!chosen || chosen.kind === 'ambient') {
+        clearCurrentLocalAnchor(state);
+        const event = emitSemanticEvent(state, 'locality.explored', {
+            placeId: current.id,
+            outcome: 'ambient',
+            secondsAdvanced: seconds,
+            beforeWorldSeconds,
+            afterWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+        }, { source: 'localityEngine' });
+        return ok('locality.explored', 'You spend time working through the local streets and foot traffic, but nothing new resolves into a reliable landmark or entrance this time.', {
+            outcome: 'ambient',
+            secondsAdvanced: seconds,
+            eventId: event.id,
+        });
+    }
+
+    if (chosen.kind === 'poi') {
+        const poi = chosen.poi;
+        const before = getPoiKnowledge(state, poi.id)?.knowledgeState ?? KNOWLEDGE_STATES.UNKNOWN;
+        const knowledge = recordPoiExposure(state, poi, { points: 1 });
+        setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: current.id });
+        const label = getPlayerFacingPoiName(state, poi);
+        const event = emitSemanticEvent(state, 'locality.explored', {
+            placeId: current.id,
+            outcome: 'poi',
+            targetId: poi.id,
+            beforeKnowledgeState: before,
+            afterKnowledgeState: knowledge.knowledgeState,
+            secondsAdvanced: seconds,
+            beforeWorldSeconds,
+            afterWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+        }, { source: 'localityEngine' });
+        return ok('locality.explored', describePoiExplorationResult(label, before, knowledge.knowledgeState), {
+            outcome: 'poi',
+            targetId: poi.id,
+            knowledgeState: knowledge.knowledgeState,
+            familiarityPoints: knowledge.familiarityPoints,
+            secondsAdvanced: seconds,
+            eventId: event.id,
+        });
+    }
+
+    return revealConnection(state, current, chosen.connection, chosen.destination, 'explore', {
+        secondsAdvanced: seconds,
+        beforeWorldSeconds,
+    });
+}
+
+export function visitLocalityPoi(state, poiId) {
+    if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot cross the settlement while in battle.');
+    if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
+    if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
+    if (!isSettlementLocality(state?.currentPlaceId)) return fail('locality.poi-unavailable', 'Locality actions are only available in safe settlement areas.');
+
+    const poi = getPointOfInterest(poiId);
+    if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
+
+    const anchor = getCurrentLocalAnchor(state);
+    const currentlySighted = anchor?.type === 'poi' && anchor.id === poi.id && anchor.placeId === state.currentPlaceId;
+    if (!currentlySighted && !canDirectlyNavigateToPoi(state, poi.id)) {
+        return fail('locality.poi-not-locatable', 'You know of that place, but not well enough to reliably find your way back to it.');
+    }
+
+    const positioned = setPositionAndDiscover(state, state.currentPlaceId, poi.coordinate, {
+        important: [`Reached local point ${poi.id}`],
+    });
+    if (!positioned.ok) return fail('locality.poi-position-failed', positioned.reason);
+
+    const knowledge = recordPoiExposure(state, poi, { points: 1 });
+    state.activePoiId = poi.id;
+    setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: state.currentPlaceId });
+
+    const label = getPlayerFacingPoiName(state, poi);
+    const event = emitSemanticEvent(state, 'locality.poi-reached', {
+        placeId: state.currentPlaceId,
+        poiId: poi.id,
+        knowledgeState: knowledge.knowledgeState,
+    }, { source: 'localityEngine' });
+
+    return ok('locality.poi-reached', `You make your way to ${label}. You decide whether to enter, greet someone, ask for service, or move on.`, {
+        poiId: poi.id,
+        knowledgeState: knowledge.knowledgeState,
+        eventId: event.id,
+    });
 }
 
 export function moveWithinLocality(state, destinationId) {
@@ -52,40 +238,64 @@ export function moveWithinLocality(state, destinationId) {
     const current = getPlace(state?.currentPlaceId);
     if (!isSettlementLocality(current)) return fail('locality.not-locality', 'Named locality movement is only available in safe settlement areas.');
 
-    const destination = listLocalityDestinations(state).find((entry) => entry.id === getPlace(destinationId)?.id);
-    if (!destination) return fail('locality.not-connected', `That locality is not directly reachable from ${current.name}.`);
+    const canonical = listCanonicalLocalityConnections(current)
+        .find(({ destination }) => destination.id === getPlace(destinationId)?.id);
+    if (!canonical) return fail('locality.not-connected', `That locality is not directly reachable from ${current.name}.`);
+    if (!canTraverseKnownConnection(state, canonical.connection.id)) {
+        return fail('locality.connection-unknown', 'You do not yet know a reliable way to that adjacent locality.');
+    }
 
     const beforeWorldSeconds = ensureWorldTimeState(state).totalSeconds;
-    const advance = advanceSimulationUntilInterrupt(state, destination.travelSeconds, {
+    const advance = advanceSimulationUntilInterrupt(state, canonical.connection.travelSeconds, {
         worldTimeOptions: { source: 'localityEngine' },
     });
     if (advance.data?.interrupted) {
         return fail(
             'locality.interrupted',
-            `Your crossing toward ${destination.name} is interrupted after ${advance.data.secondsAdvanced}s.`,
+            `Your crossing toward ${canonical.destination.name} is interrupted after ${advance.data.secondsAdvanced}s.`,
             { interrupt: advance.data.interrupt, secondsAdvanced: advance.data.secondsAdvanced },
         );
     }
 
-    const place = getPlace(destination.id);
-    const positioned = setPositionAndDiscover(state, place.id, place.coordinateSystem.start, {
-        important: [`Entered ${place.name} by locality travel`],
+    const positioned = setPositionAndDiscover(state, canonical.destination.id, canonical.destination.coordinateSystem.start, {
+        important: [`Entered ${canonical.destination.name} by known locality connection`],
     });
     if (!positioned.ok) return fail('locality.position-failed', positioned.reason);
-    syncActivePartyLocation(state, place.id);
+    syncActivePartyLocation(state, canonical.destination.id);
     state.activePoiId = null;
+
+    const connectorKnowledge = recordConnectorExposure(state, canonical.connection, {
+        points: 2,
+        learnedDestinationName: true,
+    });
+    recordPlaceExposure(state, canonical.destination.id, { points: 1, learnedName: true });
+
+    const reverse = listCanonicalLocalityConnections(canonical.destination)
+        .find(({ destination }) => destination.id === current.id);
+    if (reverse) {
+        recordConnectorExposure(state, reverse.connection, { points: 1, learnedDestinationName: true });
+        setCurrentLocalAnchor(state, {
+            type: 'connection',
+            id: reverse.connection.id,
+            placeId: canonical.destination.id,
+        });
+    } else {
+        clearCurrentLocalAnchor(state);
+    }
 
     const event = emitSemanticEvent(state, 'locality.changed', {
         fromPlaceId: current.id,
-        toPlaceId: place.id,
-        travelSeconds: destination.travelSeconds,
+        toPlaceId: canonical.destination.id,
+        connectionId: canonical.connection.id,
+        connectorKnowledgeState: connectorKnowledge.knowledgeState,
+        travelSeconds: canonical.connection.travelSeconds,
         beforeWorldSeconds,
         afterWorldSeconds: ensureWorldTimeState(state).totalSeconds,
     }, { source: 'localityEngine' });
 
-    return ok('locality.changed', `Walked to ${place.name} (${destination.travelSeconds}s).`, {
-        placeId: place.id,
-        travelSeconds: destination.travelSeconds,
+    return ok('locality.changed', `Walked to ${canonical.destination.name} (${canonical.connection.travelSeconds}s).`, {
+        placeId: canonical.destination.id,
+        travelSeconds: canonical.connection.travelSeconds,
         eventId: event.id,
     });
 }
@@ -95,22 +305,22 @@ export function performLocalityPoiAction(state, poiId, action = 'talk') {
     if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
     const poi = getPointOfInterest(poiId);
     if (!poi || poi.placeId !== state.currentPlaceId) return fail('locality.poi-missing', 'That point of interest is not in this locality.');
+    if (state.activePoiId !== poi.id) {
+        return fail('locality.poi-not-present', 'You need to reach or enter that place before using its services or speaking with someone there.');
+    }
 
     const availability = getPoiScheduleStatus(state, poi);
     if (availability.scheduled && !availability.available) {
-        return fail('locality.poi-unavailable-now', describeNpcScheduleStatus(availability), {
+        return fail('locality.poi-unavailable-now', describeUnavailablePoi(availability), {
             poiId: poi.id,
             scheduleId: availability.scheduleId,
             nextAvailableAtWorldSeconds: availability.nextAvailableAtWorldSeconds,
         });
     }
 
-    const positioned = setPositionAndDiscover(state, state.currentPlaceId, poi.coordinate, {
-        important: [`Visited ${poi.name}`],
-    });
-    if (!positioned.ok) return fail('locality.poi-position-failed', positioned.reason);
-    discoverPoi(state, poi);
-    state.activePoiId = poi.id;
+    recordPoiExposure(state, poi, { points: 1, learnedName: true });
+    learnPoiName(state, poi);
+    if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
 
     const canonicalAction = String(action ?? 'talk').trim().toLowerCase();
     const message = canonicalAction === 'talk'
@@ -131,21 +341,165 @@ export function describeLocality(state) {
     const destinations = listLocalityDestinations(state);
     const points = listLocalityPoints(state, { limit: 20 });
     return [
-        `${place.name} — safe locality`,
-        destinations.length ? `Connected localities: ${destinations.map((entry) => entry.name).join(', ')}` : 'Connected localities: none',
-        points.length ? `Local points: ${points.map((poi) => poi.name).join(', ')}` : 'Local points: none',
-        'Browsing is free; locality crossings consume authored fictional time and remain interruptible.',
+        `${place.name} — learned locality`,
+        destinations.length ? `Known adjacent ways: ${destinations.map((entry) => entry.name).join(', ')}` : 'Known adjacent ways: none yet',
+        points.length ? `Locatable places: ${points.map((poi) => poi.name).join(', ')}` : 'Locatable places: none yet',
+        'Look Around reveals the immediate surroundings. Explore spends fictional time learning the locality.',
     ].join('\n');
+}
+
+function createExplorationCandidates(state, current) {
+    const candidates = [];
+    for (const poi of getPoisForPlace(current.id)) {
+        const knowledge = getPoiKnowledge(state, poi.id);
+        if (knowledge?.knowledgeState === KNOWLEDGE_STATES.FAMILIAR) continue;
+        const stateWeight = knowledge?.knowledgeState === KNOWLEDGE_STATES.REFERENCED ? 8
+            : knowledge?.knowledgeState === KNOWLEDGE_STATES.SIGHTED ? 6
+                : knowledge?.knowledgeState === KNOWLEDGE_STATES.RECOGNIZED ? 4
+                    : 5;
+        const guidance = getGuidanceWeightBonus(state, 'poi', poi.id);
+        candidates.push({ kind: 'poi', poi, weight: Math.max(1, stateWeight + guidance - visibilityRank(poi) + 1) });
+    }
+    for (const { connection, destination } of listCanonicalLocalityConnections(current)) {
+        const knowledge = getConnectorKnowledge(state, connection.id);
+        if (knowledge?.knowledgeState === KNOWLEDGE_STATES.FAMILIAR) continue;
+        const stateWeight = knowledge?.knowledgeState === KNOWLEDGE_STATES.REFERENCED ? 8
+            : knowledge?.knowledgeState === KNOWLEDGE_STATES.SIGHTED ? 6
+                : knowledge?.knowledgeState === KNOWLEDGE_STATES.RECOGNIZED ? 4
+                    : 6;
+        const guidance = getGuidanceWeightBonus(state, 'connection', connection.id);
+        candidates.push({ kind: 'connection', connection, destination, weight: stateWeight + guidance });
+    }
+    candidates.push({ kind: 'ambient', weight: 2 });
+    return candidates;
+}
+
+function revealConnection(state, current, connection, destination, source, details = {}) {
+    const before = getConnectorKnowledge(state, connection.id)?.knowledgeState ?? KNOWLEDGE_STATES.UNKNOWN;
+    const knowledge = recordConnectorExposure(state, connection, {
+        points: 1,
+        learnedDestinationName: true,
+    });
+    state.activePoiId = null;
+    setCurrentLocalAnchor(state, { type: 'connection', id: connection.id, placeId: current.id });
+    const event = emitSemanticEvent(state, source === 'explore' ? 'locality.explored' : 'locality.observed', {
+        placeId: current.id,
+        outcome: 'connection',
+        targetId: connection.id,
+        destinationPlaceId: destination.id,
+        beforeKnowledgeState: before,
+        afterKnowledgeState: knowledge.knowledgeState,
+        ...details,
+        afterWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+    }, { source: 'localityEngine' });
+    return ok(source === 'explore' ? 'locality.explored' : 'locality.observed',
+        `You come upon a clear way into ${destination.name}. The entrance is before you; crossing it is still your choice.`,
+        {
+            outcome: 'connection',
+            targetId: connection.id,
+            destinationId: destination.id,
+            knowledgeState: knowledge.knowledgeState,
+            familiarityPoints: knowledge.familiarityPoints,
+            eventId: event.id,
+            ...details,
+        });
+}
+
+function listCanonicalLocalityConnections(current) {
+    return getConnectionsFrom(current.id)
+        .filter((connection) => connection.mode === 'walk' && !connection.flags?.externalPlaceholder)
+        .map((connection) => ({ connection, destination: getPlace(connection.to) }))
+        .filter(({ destination }) => isSettlementLocality(destination) && destination.nation === current.nation);
+}
+
+function validateLocalityExplorationAction(state) {
+    if (state?.activeBattle?.phase === 'active') return fail('locality.in-combat', 'You cannot explore the settlement while in battle.');
+    if (state?.travel?.active) return fail('locality.travel-active', 'Finish or stop the current journey first.');
+    if (isCharacterHandsOnBusy(state)) return fail('locality.work-active', describeBlockingHandsOnTask(state));
+    const current = getPlace(state?.currentPlaceId);
+    if (!isSettlementLocality(current)) return fail('locality.not-locality', 'Look Around and locality exploration are available in safe settlement areas.');
+    return null;
+}
+
+function hasSightedPoi(state, poiId) {
+    const knowledge = getPoiKnowledge(state, poiId);
+    return knowledge && knowledge.knowledgeState !== KNOWLEDGE_STATES.REFERENCED;
+}
+
+function hasSightedConnection(state, connectionId) {
+    const knowledge = getConnectorKnowledge(state, connectionId);
+    return knowledge && knowledge.knowledgeState !== KNOWLEDGE_STATES.REFERENCED;
+}
+
+function visibilityRank(poi) {
+    if (['routeExit', 'travel', 'travelMarker', 'landmark'].includes(poi.type)) return 1;
+    if (['shop', 'vendor', 'guild'].includes(poi.type)) return 2;
+    return 3;
+}
+
+function resolveExplorationRoll(state, sequence, rng) {
+    if (typeof rng === 'function') return normalizeRoll(rng());
+    const input = `${state.currentPlaceId}|${ensureWorldTimeState(state).totalSeconds}|${sequence}`;
+    let hash = 2166136261;
+    for (let index = 0; index < input.length; index += 1) {
+        hash ^= input.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0) / 4294967296;
+}
+
+function chooseWeighted(candidates, roll) {
+    const total = candidates.reduce((sum, entry) => sum + Math.max(0, Number(entry.weight) || 0), 0);
+    if (total <= 0) return null;
+    let cursor = normalizeRoll(roll) * total;
+    for (const entry of candidates) {
+        cursor -= Math.max(0, Number(entry.weight) || 0);
+        if (cursor < 0) return entry;
+    }
+    return candidates[candidates.length - 1] ?? null;
+}
+
+function normalizeRoll(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return 0;
+    return Math.max(0, Math.min(0.999999999, number));
+}
+
+function describePoiExplorationResult(label, before, after) {
+    if (after === KNOWLEDGE_STATES.FAMILIAR) {
+        return `You work through the streets until ${label} falls into place against routes and landmarks you now remember reliably. You can find it directly from this locality in the future.`;
+    }
+    if (before === KNOWLEDGE_STATES.UNKNOWN || before === KNOWLEDGE_STATES.REFERENCED) {
+        return `You work your way through the locality and come upon ${label}. It is before you now; you still choose whether to approach or enter.`;
+    }
+    return `Your wandering brings you back to ${label}. The surrounding turns and landmarks are becoming easier to recognize.`;
 }
 
 function decoratePoiAvailability(state, poi) {
     const availability = getPoiScheduleStatus(state, poi);
-    if (!availability.scheduled) return poi;
+    const knowledge = getPoiKnowledge(state, poi.id);
+    const name = getPlayerFacingPoiName(state, poi);
+    const notes = availability.scheduled
+        ? `${poi.notes} · ${availability.available ? 'Available now.' : 'Not available right now.'}`
+        : poi.notes;
     return Object.freeze({
         ...poi,
-        notes: `${poi.notes} · ${describeNpcScheduleStatus(availability)}`,
+        name,
+        notes,
+        canonicalName: poi.name,
+        knowledgeState: knowledge?.knowledgeState ?? KNOWLEDGE_STATES.SIGHTED,
+        familiarityPoints: knowledge?.familiarityPoints ?? 0,
+        learnedName: Boolean(knowledge?.learnedName),
+        present: state.activePoiId === poi.id,
         availability,
     });
+}
+
+function describeUnavailablePoi(status) {
+    if (!status?.scheduled) return 'That service is not available right now.';
+    return status.currentWindowLabel
+        ? `That service is not available right now. Its current schedule is ${status.currentWindowLabel}.`
+        : 'That service is not available right now.';
 }
 
 function ok(code, message, data = {}) { return { ok: true, code, message, data }; }
