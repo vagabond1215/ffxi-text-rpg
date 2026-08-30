@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { moveToKnownLocality } from './helpers/localKnowledgeTestSupport.js';
+import { learnLocality, moveToKnownLocality } from './helpers/localKnowledgeTestSupport.js';
 
 import { EQUIPMENT_CATALOG } from '../js/text/data/equipmentCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
@@ -40,6 +40,7 @@ function moveToRivergate(state) {
     assert.equal(moveToKnownLocality(state, 'thornwall-crownward').ok, true);
     assert.equal(moveToKnownLocality(state, 'thornwall-rivergate').ok, true);
     assert.equal(state.currentPlaceId, 'thornwall-rivergate');
+    learnLocality(state);
 }
 
 function moveHome(state) {
