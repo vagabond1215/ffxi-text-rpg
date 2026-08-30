@@ -111,6 +111,8 @@ Game State 14 still owns the same durable player/world facts. Important non-seri
 
 The player-facing UI is a **world interface**, not a permanent command console. Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual gameplay actions use semantic intents into domain systems; command routing remains an optional adapter/regression surface.
 
+Before broad UI work, locality/player information follows `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`: unknown POIs/NPC identities stay hidden, places progress through learned familiarity before direct navigation, sighted entrances require explicit transition actions, and `Look Around` / `Explore` reveal the world contextually rather than enumerating canonical content.
+
 ## Systems already playable / proven
 
 - deterministic fictional time, simulation control, timed tasks, interrupts, and day review;
