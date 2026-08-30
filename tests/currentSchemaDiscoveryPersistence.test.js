@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { getPoisForPlace } from '../js/text/data/pointsOfInterest.js';
 import { createInitialState, DEFAULT_START_WORLD_TIME_SECONDS } from '../js/text/gameState.js';
 import {
     createAccountWithPassword,
@@ -10,7 +11,12 @@ import {
     saveGame,
 } from '../js/text/save.js';
 import { setPositionAndDiscover } from '../js/text/systems/atlasEngine.js';
-import { talkAtCurrentGrid } from '../js/text/systems/poiEngine.js';
+import {
+    addTemporaryGuidance,
+    identifyNpc,
+    recordPoiExposure,
+} from '../js/text/systems/localKnowledgeEngine.js';
+import { getPoiScheduleStatus } from '../js/text/systems/npcScheduleEngine.js';
 import { validateCurrentGameStateStructure } from '../js/text/systems/currentGameStateSchema.js';
 import { VERSION } from '../js/text/version.js';
 
@@ -31,53 +37,64 @@ function firstVisit(state) {
     return entry.visited[key];
 }
 
-test('current discovery uses canonical fictional time and validates acquired POI knowledge', () => {
+test('Game State 15 persists atlas time plus layered locality and NPC knowledge', () => {
     const state = createInitialState();
     assert.equal(state.version, VERSION.gameState);
-    assert.equal(VERSION.gameState, 14);
+    assert.equal(VERSION.gameState, 15);
     assert.equal(firstVisit(state).visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS);
     assert.equal(Object.hasOwn(firstVisit(state), 'visitedAt'), false);
+    assert.equal(Object.hasOwn(state, 'discoveredPois'), false);
+    assert.equal(state.localKnowledge.version, 1);
 
     state.worldTime.totalSeconds += 321;
     assert.equal(setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' }).ok, true);
     assert.equal(state.atlas['thornwall-southgate'].visited['F-10'].visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS + 321);
 
-    talkAtCurrentGrid(state);
-    const discovered = Object.values(state.discoveredPois).flat();
-    assert.ok(discovered.length > 0, 'starting locality interaction should acquire at least one POI');
+    const poi = getPoisForPlace('thornwall-southgate')[0];
+    recordPoiExposure(state, poi, { points: 2, learnedName: true });
+    const schedule = getPoiScheduleStatus(state, poi);
+    if (schedule.npcId) identifyNpc(state, schedule.npcId);
+    addTemporaryGuidance(state, { targetType: 'poi', targetId: poi.id, sourceId: 'test-guide', searchWeightBonus: 4 });
+
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
 });
 
-test('current schema rejects legacy wall-clock atlas visits and malformed POI discovery', () => {
-    const legacyVisit = createInitialState();
-    const visit = firstVisit(legacyVisit);
-    delete visit.visitedAtWorldSeconds;
-    visit.visitedAt = '2026-08-18T00:00:00.000Z';
-    const legacyIssues = validateCurrentGameStateStructure(legacyVisit);
-    assert.ok(legacyIssues.some((issue) => issue.includes('visitedAtWorldSeconds')));
-    assert.ok(legacyIssues.some((issue) => issue.includes('wall-clock')));
+test('current schema rejects legacy discoveredPois and malformed local knowledge references', () => {
+    const legacy = createInitialState();
+    legacy.discoveredPois = {};
+    assert.ok(validateCurrentGameStateStructure(legacy).some((issue) => issue.includes('discoveredPois is legacy state')));
 
-    const wrongPoiPlace = createInitialState();
-    talkAtCurrentGrid(wrongPoiPlace);
-    const sourcePlaceId = Object.keys(wrongPoiPlace.discoveredPois)[0];
-    const poiId = wrongPoiPlace.discoveredPois[sourcePlaceId][0];
-    wrongPoiPlace.discoveredPois = { 'west-elderwood': [poiId, poiId] };
-    const poiIssues = validateCurrentGameStateStructure(wrongPoiPlace);
-    assert.ok(poiIssues.some((issue) => issue.includes('belongs to')));
-    assert.ok(poiIssues.some((issue) => issue.includes('duplicates')));
+    const malformed = createInitialState();
+    malformed.localKnowledge.pois['poi-missing'] = {
+        poiId: 'poi-missing',
+        placeId: malformed.currentPlaceId,
+        knowledgeState: 'sighted',
+        familiarityPoints: 1,
+        learnedName: false,
+        firstSeenAtWorldSeconds: 0,
+        lastSeenAtWorldSeconds: 0,
+    };
+    assert.ok(validateCurrentGameStateStructure(malformed).some((issue) => issue.includes('unknown POI')));
 });
 
-test('canonical discovery state survives real current save and load unchanged', () => {
+test('local knowledge and temporary guidance survive real current save and load unchanged', () => {
     installStorage();
-    assert.equal(createAccountWithPassword('Discovery Account', 'pwd', { persistentLogin: true }).ok, true);
+    assert.equal(createAccountWithPassword('Knowledge Account', 'pwd', { persistentLogin: true }).ok, true);
 
     const state = createInitialState();
     state.player.identity.name = 'Wayfinder';
     state.worldTime.totalSeconds += 777;
-    assert.equal(setPositionAndDiscover(state, 'thornwall-southgate', { coord: 'F-10' }).ok, true);
-    talkAtCurrentGrid(state);
+    const poi = getPoisForPlace(state.currentPlaceId)[0];
+    recordPoiExposure(state, poi, { points: 3, learnedName: true });
+    addTemporaryGuidance(state, {
+        targetType: 'poi',
+        targetId: poi.id,
+        sourceId: 'guard-patrol',
+        searchWeightBonus: 5,
+        expiresAtWorldSeconds: state.worldTime.totalSeconds + 3600,
+    });
     const expectedAtlas = structuredClone(state.atlas);
-    const expectedPois = structuredClone(state.discoveredPois);
+    const expectedKnowledge = structuredClone(state.localKnowledge);
 
     assert.equal(saveGame(state), true);
     const loaded = loadCharacter('Wayfinder');
@@ -85,33 +102,27 @@ test('canonical discovery state survives real current save and load unchanged', 
     assert.ok(loaded);
     assert.equal(loaded.version, VERSION.gameState);
     assert.deepEqual(loaded.atlas, expectedAtlas);
-    assert.deepEqual(loaded.discoveredPois, expectedPois);
+    assert.deepEqual(loaded.localKnowledge, expectedKnowledge);
 });
 
-test('load rejects a current save carrying legacy wall-clock discovery without rewriting it', () => {
+test('load rejects a current save carrying malformed local knowledge without rewriting it', () => {
     installStorage();
-    assert.equal(createAccountWithPassword('Legacy Discovery Account', 'pwd', { persistentLogin: true }).ok, true);
+    assert.equal(createAccountWithPassword('Malformed Knowledge Account', 'pwd', { persistentLogin: true }).ok, true);
 
     const state = createInitialState();
-    state.player.identity.name = 'Oldclock';
+    state.player.identity.name = 'Badknowledge';
     assert.equal(saveGame(state), true);
 
     const key = 'hearthHorizonAccounts';
     const registry = decodePayload(globalThis.localStorage.getItem(key));
     const record = registry.accounts[0].characters[0];
     const malformed = decodePayload(record.encodedState);
-    const atlasEntry = malformed.atlas[malformed.currentPlaceId];
-    const visitKey = Object.keys(atlasEntry.visited)[0];
-    const visit = atlasEntry.visited[visitKey];
-    delete visit.visitedAtWorldSeconds;
-    visit.visitedAt = '2026-08-18T00:00:00.000Z';
+    malformed.localKnowledge.currentAnchor = { type: 'poi', id: 'poi-missing', placeId: malformed.currentPlaceId };
     record.encodedState = encodePayload(malformed);
     globalThis.localStorage.setItem(key, encodePayload(registry));
 
-    assert.equal(loadCharacter('Oldclock'), null);
+    assert.equal(loadCharacter('Badknowledge'), null);
     const unchangedRegistry = decodePayload(globalThis.localStorage.getItem(key));
     const unchanged = decodePayload(unchangedRegistry.accounts[0].characters[0].encodedState);
-    const unchangedVisit = unchanged.atlas[unchanged.currentPlaceId].visited[visitKey];
-    assert.equal(unchangedVisit.visitedAt, '2026-08-18T00:00:00.000Z');
-    assert.equal(Object.hasOwn(unchangedVisit, 'visitedAtWorldSeconds'), false);
+    assert.equal(unchanged.localKnowledge.currentAnchor.id, 'poi-missing');
 });
