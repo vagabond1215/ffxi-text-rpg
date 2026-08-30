@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -45,7 +46,7 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(createAccountWithPassword('Settlement Economy Audit', 'pwd', { persistentLogin: true }).ok, true);
 
     let state = createNewGameState({ nationId: 'brasshaven', name: 'Market Circuit Auditor' });
-    assert.equal(performLocalityPoiAction(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, 'prospector-pick'), /Equipped/);
 
@@ -71,7 +72,7 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     assert.equal(smelt.tradeDeltaGil, 4);
     assert.equal(smelt.durationSeconds, 300);
 
-    assert.equal(performLocalityPoiAction(state, smelt.action.payload.poiId, smelt.action.payload.action).ok, true);
+    assert.equal(useKnownPoi(state, smelt.action.payload.poiId, smelt.action.payload.action).ok, true);
     board = createSettlementServiceBoard(state);
     smelt = processEntry(state);
     assert.equal(smelt.status, 'ready');
