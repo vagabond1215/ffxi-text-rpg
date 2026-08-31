@@ -549,7 +549,11 @@ function decoratePoiAvailability(state, poi) {
     const knowledge = getPoiKnowledge(state, poi.id);
     const name = getPlayerFacingPoiName(state, poi);
     const notes = availability.scheduled
-        ? `${poi.notes} · ${availability.available ? 'Available now' : 'Not available right now'} · ${availability.windowSummary ?? availability.currentWindowLabel ?? 'schedule varies'}.`
+        ? availability.available
+            ? `${poi.notes} · Available now · ${availability.windowSummary ?? availability.currentWindowLabel ?? 'schedule varies'}.`
+            : availability.npcId
+                ? `${poi.notes} · ${describeNpcScheduleStatus(availability)}`
+                : `${poi.notes} · Not available right now · ${availability.windowSummary ?? availability.currentWindowLabel ?? 'schedule varies'}.`
         : poi.notes;
     return Object.freeze({
         ...poi,
