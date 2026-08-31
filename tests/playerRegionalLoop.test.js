@@ -71,7 +71,7 @@ test('Brasshaven first regional loop leaves and returns with persistent material
 
     step = livelihood(state);
     assert.equal(step.status, 'ready');
-    assert.equal(step.action.intent, 'locality.poi');
+    assert.equal(step.action.intent, 'locality.poi.visit');
     assert.equal(step.action.payload.poiId, 'poi-bastok-markets-reinberta');
     assert.equal(useKnownPoi(state, step.action.payload.poiId, step.action.payload.action).ok, true);
 
