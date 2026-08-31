@@ -315,7 +315,7 @@ function createRegionalLoopLivelihood({ state, origin, destination, source, star
                 requirement('Reach a forge', false),
             ],
             blockers: productionCheck.blockers,
-            action: action('visit-loop-forge', `Visit · ${workstation.name}`, 'locality.poi', { poiId: workstation.id, action: 'guild' }),
+            action: action('visit-loop-forge', `Go to · ${workstation.name}`, 'locality.poi.visit', { poiId: workstation.id }),
         });
     }
 
