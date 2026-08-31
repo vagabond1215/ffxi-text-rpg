@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
+import { learnLocality, useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
@@ -58,6 +58,7 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
 
     assert.equal(startTravel(state, 'brasshaven-market-ring').ok, true);
     assert.equal(advanceActiveActivityToCompletion(state).ok, true);
+    learnLocality(state);
 
     let board = createSettlementServiceBoard(state);
     assert.equal(board.available, true);
@@ -65,14 +66,14 @@ test('0.7.200 settlement loop turns regional material into a semantic work-or-tr
     let smelt = processEntry(state);
     assert.ok(smelt);
     assert.equal(smelt.status, 'needsWorkshop');
-    assert.equal(smelt.action.intent, 'locality.poi');
+    assert.equal(smelt.action.intent, 'locality.poi.visit');
     assert.equal(smelt.action.payload.poiId, 'poi-bastok-markets-reinberta');
     assert.equal(smelt.inputSellGil, 10);
     assert.equal(smelt.outputSellGil, 14);
     assert.equal(smelt.tradeDeltaGil, 4);
     assert.equal(smelt.durationSeconds, 300);
 
-    assert.equal(useKnownPoi(state, smelt.action.payload.poiId, smelt.action.payload.action).ok, true);
+    assert.equal(useKnownPoi(state, smelt.action.payload.poiId, 'guild').ok, true);
     board = createSettlementServiceBoard(state);
     smelt = processEntry(state);
     assert.equal(smelt.status, 'ready');
