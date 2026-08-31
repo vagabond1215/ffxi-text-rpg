@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.9.100.24';
-export const PACKAGE_VERSION = '0.9.100';
+export const PRODUCT_VERSION = '0.9.200.1';
+export const PACKAGE_VERSION = '0.9.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 15,
-    data: 62,
+    data: 63,
     benchmark: 3,
-    codename: 'Local Knowledge & Familiarity',
+    codename: 'Slatewater Road Scout',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.100.24',
+    versionManifest: '0.9.200.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -27,7 +27,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     cultivation: '0.2.0',
-    commitments: '0.7.0',
+    commitments: '0.8.0',
     relationships: '0.1.0',
     npcSchedules: '0.9.0',
     npcWorldProjection: '0.1.1',
@@ -119,8 +119,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     transportServiceBoard: '0.2.0',
     contentCatalogRegistry: '0.3.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.21.0',
-    contentPackValidation: '0.3.0',
+    regionalContentPacks: '0.22.0',
+    contentPackValidation: '0.4.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
     simulationSubstrateGate: '0.1.0',
@@ -135,7 +135,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerInformation: '0.3.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
-    playerContinuity: '0.5.0',
+    playerContinuity: '0.6.0',
     playerCampaignReadability: '0.2.0',
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.3.0',
@@ -146,7 +146,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.46.0',
+    validation: '0.47.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',
@@ -167,8 +167,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilityCatalog: '0.4.0',
     abilityEngine: '0.3.0',
     enemyAbilityCatalog: '0.1.0',
-    companionCatalog: '0.2.0',
-    party: '0.3.0',
+    companionCatalog: '0.3.0',
+    party: '0.4.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
