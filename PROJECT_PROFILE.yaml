@@ -40,13 +40,14 @@ authority:
   cross_biome_family_breadth_plan: docs/CROSS_BIOME_FAMILY_BREADTH_PLAN.md
   gate_a_integration_census_audit: docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md
   player_information_locality_discovery: docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md
+  adventure_vertical_slice_a: docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: decision-boundary-after-local-knowledge-and-familiarity-foundation
+  current_normal_work: decision-boundary-after-adventure-vertical-slice-a
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -134,6 +135,11 @@ git:
   latest_local_knowledge_implementation_check_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
   latest_local_knowledge_implementation_check_result: success-823-of-823-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_local_knowledge_runtime_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
+  latest_adventure_slice_a_implementation_check: 33361131795
+  latest_adventure_slice_a_implementation_check_number: 1815
+  latest_adventure_slice_a_implementation_check_sha: 63cbd31edb149c9cf10af0a83bcf6f667abe17b8
+  latest_adventure_slice_a_implementation_check_result: success-826-of-826-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_adventure_slice_a_runtime_sha: 63cbd31edb149c9cf10af0a83bcf6f667abe17b8
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -141,15 +147,15 @@ git:
 progression:
   current_phase: 0.9
   current_track: 0.9.200-adventure-vertical-slices
-  current_track_status: active-adventure-vertical-slice-a
+  current_track_status: active-slice-a-complete-slice-b-unselected
   completed_track: 0.9.100-content-scale-gate-a
   completed_track_status: complete-through-packet-e
-  latest_bounded_unit: local-knowledge-and-familiarity-foundation
-  latest_bounded_unit_status: complete-on-main-product-0.9.100.24-game-state-15-data-62-unchanged
-  latest_data_bounded_unit: cross-biome-family-breadth
-  latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-62
-  next_roadmap_gate: adventure-vertical-slice-a
-  next_roadmap_gate_status: queued-not-auto-authorized
+  latest_bounded_unit: adventure-vertical-slice-a-slatewater-road-scout
+  latest_bounded_unit_status: complete-on-main-product-0.9.200.1-game-state-15-data-63
+  latest_data_bounded_unit: adventure-vertical-slice-a-slatewater-road-scout
+  latest_data_bounded_unit_status: complete-on-main-implementation-freeze-data-63
+  next_roadmap_gate: adventure-vertical-slice-b
+  next_roadmap_gate_status: queued-unselected-not-auto-authorized
   pre_ui_discovery_contract: player-information-and-locality-discovery
   pre_ui_discovery_contract_status: foundation-implemented-complete
   pre_ui_discovery_implementation_candidate: local-knowledge-and-familiarity-foundation
@@ -202,6 +208,7 @@ validation:
   local_knowledge_navigation_guard: tests/localityNavigation.test.js
   local_knowledge_persistence_guard: tests/currentSchemaDiscoveryPersistence.test.js
   local_knowledge_information_guard: tests/playerInformationAccess.test.js
+  adventure_slice_a_guard: tests/playerSlatewaterRoadScoutFlow.test.js
 quality:
   current_product_version: 0.9.200.1
   current_package_version: 0.9.200
@@ -223,6 +230,24 @@ quality:
     legacy_discovered_pois_current_authority: false
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
+  adventure_vertical_slice_a:
+    implementation_status: complete
+    implementation_freeze_sha: 63cbd31edb149c9cf10af0a83bcf6f667abe17b8
+    implementation_check_run: 33361131795
+    implementation_check_number: 1815
+    tests: 826-of-826
+    data_version_changed: 62-to-63
+    game_state_changed: false
+    new_persistent_npc: npc-slatewater-sable-renn
+    commitments_added: 2
+    companion_added: companion-sable-renn
+    new_place_added: false
+    new_route_added: false
+    new_schedule_added: false
+    persistence_family_added: false
+    supported_save_migration_added: false
+    relationship_carries_into_companion: true
+    mobile_giver_followup_location_aware: true
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -474,23 +499,23 @@ content_scale:
   mechanics_gate: not-ready
   current:
     places_localities: 55
-    named_npcs: 47
+    named_npcs: 48
     shop_service_sites: 37
     creature_definitions: 123
     resource_sources: 143
     canonical_items: 408
     recipes_processes: 234
     abilities_techniques: 41
-    quests_contracts: 18
-    companions: 1
+    quests_contracts: 20
+    companions: 2
     transport_services: 7
     routes: 25
     spell_schools: 4
     capability_training_definitions: 44
     npc_schedules: 27
     regional_shared_packs: 39
-    pack_owned_records: 1320
-    runtime_seed_npcs: 46
+    pack_owned_records: 1325
+    runtime_seed_npcs: 47
     runtime_seed_enemies: 17
   mechanics_floors_reached:
     - places
@@ -500,7 +525,7 @@ content_scale:
     - canonical_items
     - recipes_processes
     - transport_services
-  largest_relative_gap: companions
+  largest_relative_gap: abilities-techniques
 constraints:
   - new zones require plausible flora fauna resources drops or catches and connected processing
   - food-capable items require explicit direct-vs-processing-required consumption metadata
