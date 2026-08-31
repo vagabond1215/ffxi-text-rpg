@@ -7,7 +7,11 @@ import { getProductionDefinition } from '../data/productionCatalog.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { findItemInContainer } from './inventoryEngine.js';
 import { isSettlementLocality, listLocalityDestinations } from './localityEngine.js';
-import { hasDiscoveredPoi } from './poiEngine.js';
+import {
+    getPoiKnowledge,
+    hasInteractedWithPoi,
+    requiresPoiEntryTransition,
+} from './localKnowledgeEngine.js';
 import { createPlayerExperienceModel, getOriginExperienceForState } from './playerExperienceEngine.js';
 import { checkProductionRequirements } from './productionEngine.js';
 import { findTravelRoute } from './travelEngine.js';
@@ -36,7 +40,8 @@ export function createPlayerOpportunityModel(state) {
     const destinationVisited = Boolean(state.atlas?.[destination?.id]);
     const inDestination = state.currentPlaceId === destination?.id;
     const inStart = state.currentPlaceId === origin.startingPlaceId;
-    const serviceDiscovered = service ? hasDiscoveredPoi(state, service.id) : false;
+    const serviceKnowledge = service ? getPoiKnowledge(state, service.id) : null;
+    const serviceInteracted = service ? hasInteractedWithPoi(state, service.id) : false;
 
     if (!experience.guide.met) {
         const entry = freezeOpportunity({
@@ -57,7 +62,7 @@ export function createPlayerOpportunityModel(state) {
     const livelihood = createLivelihoodOpportunity({ state, origin, destination, source, starterItem, starterEquipped, inDestination });
     const training = createTrainingOpportunity({ state, origin, destination, inDestination });
     const exploration = createExplorationOpportunity({ state, origin, destination, destinationVisited, inDestination });
-    const serviceOpportunity = createServiceOpportunity({ state, origin, service, serviceDiscovered, inStart });
+    const serviceOpportunity = createServiceOpportunity({ state, origin, service, serviceKnowledge, serviceInteracted, inStart });
     const entries = [preparation, livelihood, training, exploration, serviceOpportunity].filter(Boolean);
     const recommended = entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.READY)
         ?? entries.find((entry) => entry.status === OPPORTUNITY_STATUSES.ACTIVE)
@@ -389,14 +394,47 @@ function createExplorationOpportunity({ state, origin, destination, destinationV
     });
 }
 
-function createServiceOpportunity({ state, origin, service, serviceDiscovered, inStart }) {
+function createServiceOpportunity({ state, origin, service, serviceKnowledge, serviceInteracted, inStart }) {
     if (!service) return null;
-    let status = serviceDiscovered ? OPPORTUNITY_STATUSES.COMPLETE : OPPORTUNITY_STATUSES.AVAILABLE;
+
+    if (serviceInteracted) {
+        return freezeOpportunity({
+            id: `service-${origin.nationId}`,
+            category: 'service',
+            title: `${service.name} is a known local supplier`,
+            summary: `You have already spoken with ${service.name} and know what kind of practical help this contact can provide.`,
+            reason: 'Useful local contacts become preparation options through actual discovery and interaction rather than omniscient settlement listings.',
+            progress: 'Return when you need supplies, trade, or another practical reason to use the contact.',
+            status: OPPORTUNITY_STATUSES.COMPLETE,
+            requirements: [requirement(`Meet ${service.name}`, true)],
+            action: null,
+        });
+    }
+
+    let status = OPPORTUNITY_STATUSES.AVAILABLE;
     let nextAction = null;
-    if (inStart) {
-        status = serviceDiscovered ? OPPORTUNITY_STATUSES.AVAILABLE : OPPORTUNITY_STATUSES.READY;
-        nextAction = action('visit-local-service', `Browse with ${service.name}`, 'locality.poi', { poiId: service.id, action: 'shop' });
-    } else {
+    let summary = 'You do not yet know a specific local supplier well enough to act on this lead.';
+
+    if (inStart && serviceKnowledge) {
+        const anchor = state.localKnowledge?.currentAnchor;
+        const atService = state.activePoiId === service.id;
+        const atEntrance = anchor?.type === 'poi' && anchor.id === service.id && anchor.placeId === state.currentPlaceId && !atService;
+
+        status = OPPORTUNITY_STATUSES.READY;
+        if (atService) {
+            summary = `You are with ${service.name}. Ask about available supplies when you are ready.`;
+            nextAction = action('use-local-service', `Shop with ${service.name}`, 'locality.poi', { poiId: service.id, action: 'shop' });
+        } else if (atEntrance && requiresPoiEntryTransition(service)) {
+            summary = `You have reached ${service.name}'s service location. Enter before trying to use the service.`;
+            nextAction = action('enter-local-service', `Enter · ${service.name}`, 'locality.poi.enter', { poiId: service.id });
+        } else if (serviceKnowledge.knowledgeState === 'referenced') {
+            summary = `You were referred to ${service.name}, but you still need to find the contact in ${getPlace(origin.startingPlaceId)?.name ?? origin.nationName}.`;
+            nextAction = action('find-local-service', `Look for ${service.name}`, 'locality.explore', { targetPoiId: service.id });
+        } else {
+            summary = `You can recognize ${service.name}'s local service, but reaching it is still a separate choice.`;
+            nextAction = action('visit-local-service', `Go to · ${service.name}`, 'locality.poi.visit', { poiId: service.id });
+        }
+    } else if (!inStart && serviceKnowledge) {
         const step = createTransitionStep(state, origin.startingPlaceId, {
             id: 'return-for-service',
             label: `Return to ${getPlace(origin.startingPlaceId)?.name ?? origin.nationName}`,
@@ -404,17 +442,23 @@ function createServiceOpportunity({ state, origin, service, serviceDiscovered, i
         if (step.action) {
             nextAction = step.action;
             status = step.status;
+            summary = `Your referral to ${service.name} remains useful when you return to ${getPlace(origin.startingPlaceId)?.name ?? origin.nationName}.`;
         }
     }
+
     return freezeOpportunity({
         id: `service-${origin.nationId}`,
         category: 'service',
-        title: `Learn what ${service.name} can supply`,
-        summary: `${service.name} is a local contact who can help you understand what equipment or supplies are available here.`,
-        reason: 'Shops, guilds, and useful people turn material capability into preparation and give regional resources economic context.',
-        progress: 'Better local knowledge and a clearer sense of what preparation could expand your options.',
+        title: serviceKnowledge ? `Find ${service.name}` : 'Learn a useful local service',
+        summary,
+        reason: 'Shops, guilds, and useful people become actionable through referrals, sighting, navigation, and interaction—not because the canonical catalog contains them.',
+        progress: 'Better local knowledge and a real contact can expand preparation, trade, and equipment options.',
         status,
-        requirements: [requirement(`Be in ${getPlace(origin.startingPlaceId)?.name ?? origin.startingPlaceId}`, inStart)],
+        requirements: [
+            requirement(`Be in ${getPlace(origin.startingPlaceId)?.name ?? origin.startingPlaceId}`, inStart),
+            requirement('Have a referral or direct sighting', Boolean(serviceKnowledge)),
+            requirement(`Meet ${service.name}`, serviceInteracted),
+        ],
         action: nextAction,
     });
 }
