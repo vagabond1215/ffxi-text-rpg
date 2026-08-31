@@ -91,9 +91,9 @@ test('PX7 gives Mistmere a second persistent community loop without collapsing S
 
     view = model(state);
     let exploration = category(view, 'exploration');
-    assert.equal(exploration.action?.intent, 'locality.move');
-    assert.equal(exploration.action?.payload.destinationId, 'mistmere-reedport');
-    assert.equal(moveToKnownLocality(state, exploration.action.payload.destinationId).ok, true);
+    assert.equal(exploration.action?.intent, 'locality.explore');
+    assert.equal(exploration.action?.payload.targetPlaceId, 'mistmere-reedport');
+    assert.equal(moveToKnownLocality(state, exploration.action.payload.targetPlaceId).ok, true);
 
     view = model(state);
     exploration = category(view, 'exploration');
