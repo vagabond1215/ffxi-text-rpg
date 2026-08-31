@@ -94,7 +94,7 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
 
     view = model(state);
     work = livelihood(view);
-    assert.equal(work.action.intent, 'locality.poi');
+    assert.equal(work.action.intent, 'locality.poi.visit');
     assert.equal(useKnownPoi(state, work.action.payload.poiId, work.action.payload.action).ok, true);
 
     view = model(state);
@@ -114,7 +114,12 @@ test('PX4 turns the proven Brasshaven copper loop into persistent commitment and
     assert.equal(contract.status, 'ready');
     assert.equal(contract.action.intent, 'commitment.resolve');
     assert.equal(view.opportunities.recommendedOpportunityId, contract.id);
-    assert.equal(view.contextualActions[0].intent, 'commitment.resolve');
+    assert.ok(view.contextualActions.some((action) => action.intent === 'locality.poi.leave'), 'the player must explicitly leave the workshop before changing local context');
+
+    assert.equal(useKnownPoi(state, 'poi-bastok-markets-rabid-wolf', 'talk').ok, true);
+    view = model(state);
+    contract = commitment(view);
+    assert.equal(contract.action.intent, 'commitment.resolve');
 
     const gilBefore = state.player.wallet.gil;
     const resolved = resolveCommitment(state, COMMITMENT_ID);
