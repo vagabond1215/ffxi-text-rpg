@@ -1,6 +1,45 @@
-export const COMPANION_CATALOG_VERSION = 2;
+import { getCommitmentDefinition } from './commitments.js';
+
+export const COMPANION_CATALOG_VERSION = 3;
 
 const COMPANIONS = Object.freeze({
+    'companion-sable-renn': companion({
+        id: 'companion-sable-renn',
+        npcId: 'npc-slatewater-sable-renn',
+        name: 'Sable Renn',
+        title: 'Slatewater Road Scout',
+        description: 'A neutral foothill scout who reads washouts, animal sign, loose slate, and caravan wear as one connected road problem rather than separate errands.',
+        homePlaceId: 'slatewater-waylodge',
+        recruitment: {
+            placeIds: ['slatewater-waylodge'],
+            requiredFlags: [],
+            requiredCommitmentIds: [
+                'commitment-slatewater-resin-waymarks',
+                'commitment-slatewater-lichen-fogmarks',
+            ],
+        },
+        level: 4,
+        baseAttributes: { str: 1, dex: 2, vit: 1, agi: 3, mnd: 1, chr: 1 },
+        skills: { sword: 7, dagger: 11, evasion: 11, parrying: 6 },
+        tactics: { role: 'scout', policy: 'basic-attack-v1', defaultApproachId: 'read-the-road' },
+        fieldApproaches: [
+            {
+                id: 'read-the-road',
+                name: 'Read the Road',
+                summary: 'Sable stays mobile and alert, favoring avoidance and clean angles over force.',
+                quote: '“Watch the shoulders of the road. Trouble tells on itself there first.”',
+                attributeModifiers: { agi: 2, str: -1 },
+            },
+            {
+                id: 'cut-the-gap',
+                name: 'Cut the Gap',
+                summary: 'Sable commits hard when an opening appears, trading some caution for a sharper attack.',
+                quote: '“There. Before it closes.”',
+                attributeModifiers: { dex: 2, vit: -1 },
+            },
+        ],
+        relationshipDimensions: ['trust', 'respect', 'familiarity'],
+    }),
     'companion-mara-venn': companion({
         id: 'companion-mara-venn',
         npcId: 'npc-elderwood-waywarden',
@@ -77,6 +116,10 @@ export function validateCompanionCatalog() {
         if (!Number.isInteger(entry.level) || entry.level < 1) issues.push(`${entry.id}.level must be positive.`);
         if (!Array.isArray(entry.recruitment.placeIds) || !entry.recruitment.placeIds.length) issues.push(`${entry.id} requires recruitment places.`);
         if (!Array.isArray(entry.recruitment.requiredFlags)) issues.push(`${entry.id}.recruitment.requiredFlags must be an array.`);
+        if (!Array.isArray(entry.recruitment.requiredCommitmentIds)) issues.push(`${entry.id}.recruitment.requiredCommitmentIds must be an array.`);
+        for (const commitmentId of entry.recruitment.requiredCommitmentIds ?? []) {
+            if (!stableId(commitmentId) || !getCommitmentDefinition(commitmentId)) issues.push(`${entry.id} references unknown recruitment commitment ${commitmentId}.`);
+        }
         if (!Array.isArray(entry.relationshipDimensions) || !entry.relationshipDimensions.length) issues.push(`${entry.id} requires relationship dimensions.`);
         if (!entry.tactics?.policy) issues.push(`${entry.id} requires a tactics policy.`);
         if (!stableId(entry.tactics?.defaultApproachId)) issues.push(`${entry.id} requires a default field approach.`);
@@ -109,6 +152,7 @@ function companion(definition) {
         recruitment: {
             placeIds: [...(definition.recruitment?.placeIds ?? [])],
             requiredFlags: [...(definition.recruitment?.requiredFlags ?? [])],
+            requiredCommitmentIds: [...(definition.recruitment?.requiredCommitmentIds ?? [])],
         },
         level: definition.level,
         baseAttributes: { ...(definition.baseAttributes ?? {}) },
