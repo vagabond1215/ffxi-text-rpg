@@ -6,6 +6,40 @@ It exists to prevent the player-facing interface from becoming an omniscient dat
 
 Repository/world truth and player knowledge are separate authorities.
 
+## Implementation status
+
+**Local Knowledge & Familiarity Foundation: COMPLETE ON `main`.**
+
+Current runtime contract:
+- Product `0.9.100.24`;
+- Game State `15`;
+- Data `62` unchanged;
+- implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
+- Check #1770 / run `33355620265`: Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample green.
+
+Implemented foundation:
+- durable `localKnowledge` with place, POI, NPC, connector, guidance, and interaction facts;
+- Unknown / Referenced / Sighted / Recognized / Familiar locality semantics;
+- canonical-data references rather than duplicated POI/NPC definitions;
+- NPC name/reference/identity linkage separation;
+- familiarity-gated direct locality navigation;
+- explicit sight/approach/enter/interact/leave transitions;
+- immediate `Look Around` versus fictional-time deterministic/injectable `Explore`;
+- save-persistent temporary guidance/search bias, including real origin-guide referrals;
+- commitment disclosure requiring actual prior contact rather than mere sighting;
+- knowledge-gated settlement services and scheduled transport;
+- strict Game State 15 validation with legacy `discoveredPois` rejected as current authority.
+
+Still follow-on, not part of this foundation closure:
+- broad ambient/risk event catalogs such as pickpockets, scams, patrols, performers, arrests, or street incidents;
+- wandering/seasonal merchant generation;
+- a generalized guard/help direction dialogue catalog beyond the proven guide-referral mechanism;
+- personality-varied greetings and deeper contextual conversation;
+- staged stock-category conversation/browse depth beyond current shop engagement;
+- any richer learned-locality graphical map presentation.
+
+Sections below remain design authority for both the implemented foundation and these future extensions. Statements using “future” or “should” may therefore describe either already-proven semantics or intentionally deferred enrichment.
+
 ## Core rule
 
 **The world may know an entity exists. The player interface may expose it only to the extent that the character has actually perceived, learned, or been told about it.**
@@ -35,7 +69,7 @@ Canonical catalogs remain authoritative for:
 - commitments/relationships;
 - ecology and encounters.
 
-A future durable **local knowledge/familiarity authority** should own the character's learned projection of those records.
+Durable **local knowledge/familiarity authority** now owns the character's learned projection of those records.
 
 The UI must render from that learned projection rather than directly from canonical catalogs.
 
@@ -51,9 +85,9 @@ Current runtime has:
 
 That one-step `discovered -> fast travel` rule is too permissive for the intended game.
 
-Future implementation should replace binary POI discovery with layered knowledge/familiarity. During pre-alpha, prefer a clean current schema rather than preserving obsolete discovery semantics merely for save compatibility.
+Game State 15 replaces binary POI discovery with layered knowledge/familiarity. During pre-alpha, the implementation uses a clean current schema rather than preserving obsolete discovery semantics merely for save compatibility.
 
-The exact schema/version change is deferred until implementation. Because knowledge/familiarity and temporary guidance must survive save/load, implementation is expected to introduce or materially change durable Game State authority.
+The schema decision is now resolved: Product 0.9.100.24 uses Game State 15 because knowledge/familiarity and temporary guidance survive save/load; Data remains 62 because canonical authored content did not change.
 
 ## Place/locality knowledge states
 
