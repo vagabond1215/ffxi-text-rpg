@@ -7,34 +7,34 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.24
-Package:       0.9.100
+Product:       0.9.200.1
+Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          62
+Data:          63
 Benchmark:     3
-Phase:         0.9 / 0.9.100 complete; 0.9.200 queued
-Codename:      Local Knowledge & Familiarity
+Phase:         0.9 / 0.9.200 Adventure Vertical Slices active; Slice A complete
+Codename:      Slatewater Road Scout
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
 
 ## Current census
 
-Validated Data 62 checkpoint:
+Validated Data 63 checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
 | Places/localities | 55 | 10 | ready |
-| Named NPCs | 47 | 50 | 3 |
+| Named NPCs | 48 | 50 | 2 |
 | Shop/service sites | 37 | 20 | ready |
 | Creature definitions | 123 | 40 | ready |
 | Resource sources | 143 | 40 | ready |
 | Canonical items | 408 | 200 | ready |
 | Recipes/processes | 234 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
-| Quests/contracts | 18 | 30 | 12 |
-| Recruitable companions | 1 | 4 | 3 |
+| Quests/contracts | 20 | 30 | 10 |
+| Recruitable companions | 2 | 4 | 2 |
 | Transport services | 7 | 5 | ready |
 
 Infrastructure coverage:
@@ -45,16 +45,16 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
 regional/shared packs                   39
-pack-owned records                    1320
+pack-owned records                    1325
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/27/1
-runtime seed NPCs                       46
+  schedules/companions              41/44/27/2
+runtime seed NPCs                       47
 runtime seed enemies                    17
 raw resources with production demand 145/154
 luxury raws with production demand      14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities are the largest absolute gap. These are roadmap signals, not permission to create filler.
+Mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap; companions improved to 2/4. These are roadmap signals, not permission to create filler.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -409,6 +409,52 @@ These are progression bands, never permission to create filler:
 
 The later mechanics-scale gate remains **NOT READY** and is deliberately not conflated with Gate A.
 
+# `0.9.200` — Adventure Vertical Slices
+
+**Track status: ACTIVE. Slice A is COMPLETE; Slice B is unselected and not auto-started.**
+
+## Slice A — Slatewater Road Scout
+
+Permanent record:
+- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
+- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
+
+Slice A deliberately reuses Slatewater Waylodge and Slatewater Foothills rather than expanding geography. It composes:
+- a persistent NPC-backed road scout;
+- player-knowledge-gated contact;
+- two provenance-qualified chained commitments;
+- ordinary foraging work proficiency as the bridge between contracts;
+- persistent relationship rewards;
+- commitment-gated companion recruitment;
+- NPC relationship -> companion relationship continuity;
+- active-companion route travel and backing-NPC projection;
+- save/load through existing Game State 15 authorities.
+
+Version result:
+```text
+Product       0.9.100.24 -> 0.9.200.1
+Package       0.9.100    -> 0.9.200
+Data          62         -> 63
+Game State    15         -> 15
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Data 63 movement:
+- named NPCs 47 -> 48;
+- quests/contracts 18 -> 20;
+- recruitable companions 1 -> 2;
+- pack-owned records 1,320 -> 1,325.
+
+No new place, route, item, recipe, ability, NPC schedule, state family, clock, timed-task owner, or supported-save migration was introduced.
+
+### Slice B selection rule
+
+Do not pre-author Slice B merely to satisfy counts. Select its anchor from current geography by asking which existing place can produce the strongest connected character/adventure loop across companion, quest, NPC, service, field/combat, and relationship authorities.
+
+The next Slice B anchor is intentionally **UNSELECTED**. Returning to the user at this boundary is required before implementation.
+
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -423,7 +469,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` is complete and the Local Knowledge & Familiarity prerequisite is also complete. `0.9.200` Adventure Vertical Slices is the next formal queued track, followed by `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is now active; Slice A is complete and Slice B is deliberately unselected/not auto-started. After deliberate closure of 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
