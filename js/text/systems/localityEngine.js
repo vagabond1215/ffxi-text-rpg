@@ -142,6 +142,7 @@ export function exploreLocality(state, options = {}) {
         });
     }
 
+    recordPlaceExposure(state, current.id, { points: 1, learnedName: true });
     const sequence = nextExplorationSequence(state);
     const candidates = createExplorationCandidates(state, current);
     const chosen = chooseWeighted(candidates, resolveExplorationRoll(state, sequence, options.rng));
@@ -548,7 +549,7 @@ function decoratePoiAvailability(state, poi) {
     const knowledge = getPoiKnowledge(state, poi.id);
     const name = getPlayerFacingPoiName(state, poi);
     const notes = availability.scheduled
-        ? `${poi.notes} · ${availability.available ? 'Available now.' : 'Not available right now.'}`
+        ? `${poi.notes} · ${availability.available ? 'Available now' : 'Not available right now'} · ${availability.windowSummary ?? availability.currentWindowLabel ?? 'schedule varies'}.`
         : poi.notes;
     return Object.freeze({
         ...poi,
