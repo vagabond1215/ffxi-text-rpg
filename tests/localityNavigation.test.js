@@ -37,7 +37,7 @@ test('fresh settlement arrival hides canonical locality options behind Look Arou
     assert.equal(model.contextualActions.some((entry) => entry.intent === 'locality.move'), false);
 });
 
-test('Look Around sights one immediate target without automatically entering or exposing its canonical name', () => {
+test('Look Around sights one immediate target without automatically entering or inventing new identity knowledge', () => {
     const state = createNewGameState();
     const result = lookAroundLocality(state);
 
@@ -48,7 +48,8 @@ test('Look Around sights one immediate target without automatically entering or 
     assert.equal(points.length, 1);
     assert.equal(points[0].knowledgeState, 'sighted');
     assert.equal(points[0].present, false);
-    assert.notEqual(points[0].name, points[0].canonicalName);
+    assert.equal(points[0].name, points[0].canonicalName, 'Sera was already named by the origin referral');
+    assert.equal(state.localKnowledge.pois[points[0].id].interactionCount, 0, 'sighting a referred contact is not the same as meeting them');
 });
 
 test('Explore advances fictional time and uses injectable RNG for deterministic locality discovery', () => {
