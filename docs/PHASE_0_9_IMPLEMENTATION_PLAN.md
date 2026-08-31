@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.100.23
+Product:       0.9.100.24
 Package:       0.9.100
 Account Save:  5
-Game State:    14
+Game State:    15
 Data:          62
 Benchmark:     3
 Phase:         0.9 / 0.9.100 complete; 0.9.200 queued
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -363,6 +363,19 @@ Permanent audit:
 
 No runtime or canonical authored-data mutation was needed. Product 0.9.100.23, Data 62, Game State 14, Account Save 5, Package 0.9.100, and Benchmark 3 remain unchanged.
 
+### Post-Gate-A prerequisite — Local Knowledge & Familiarity Foundation
+
+**Status: COMPLETE ON `main`.**
+
+This bounded prerequisite was implemented before any broader locality/UI expansion:
+- Product 0.9.100.24;
+- Game State 15;
+- Data 62 unchanged;
+- implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
+- Check #1770 / run `33355620265`: Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample green.
+
+It adds durable layered locality knowledge, NPC identity linkage, connector familiarity, temporary guidance, staged POI presence/interaction, and deterministic fictional-time local exploration. It introduces no canonical content records, no second route graph, no second clock, no timer/listener owner, and no supported-save migration.
+
 ### Gate A planning bands at closure
 
 These are progression bands, never permission to create filler:
@@ -410,7 +423,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` is complete. `0.9.200` Adventure Vertical Slices is the next formal queued track, followed by `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` is complete and the Local Knowledge & Familiarity prerequisite is also complete. `0.9.200` Adventure Vertical Slices is the next formal queued track, followed by `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
