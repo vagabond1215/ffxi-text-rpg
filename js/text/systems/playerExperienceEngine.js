@@ -6,9 +6,11 @@ import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { addItemToContainer, findItemInContainer } from './inventoryEngine.js';
 import {
+    addTemporaryGuidance,
     getPlayerFacingPoiName,
     getPoiKnowledge,
     hasInteractedWithPoi,
+    referencePoi,
 } from './localKnowledgeEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 
@@ -172,6 +174,27 @@ export function isOriginGuidePoi(state, poiOrId) {
     return Boolean(poiId && getOriginExperienceForState(state).guidePoiId === poiId);
 }
 
+export function applyOriginGuideReferral(state, poiOrId) {
+    if (!isOriginGuidePoi(state, poiOrId)) return null;
+    const content = getOriginExperienceForState(state);
+    const service = getPointOfInterest(content.servicePoiId);
+    if (!service) return null;
+
+    const before = getPoiKnowledge(state, service.id);
+    const knowledge = referencePoi(state, service, { learnedName: true });
+    const hasGuidance = (state.localKnowledge?.guidance ?? []).some((entry) => entry.targetType === 'poi' && entry.targetId === service.id);
+    if (!before && !hasGuidance) {
+        addTemporaryGuidance(state, {
+            targetType: 'poi',
+            targetId: service.id,
+            sourceId: content.guidePoiId,
+            searchWeightBonus: 5,
+            expiresOnRest: true,
+        });
+    }
+    return Object.freeze({ poiId: service.id, name: service.name, knowledgeState: knowledge?.knowledgeState ?? 'referenced' });
+}
+
 export function describeOriginGuideDialogue(state, poiOrId) {
     if (!isOriginGuidePoi(state, poiOrId)) return null;
     const content = getOriginExperienceForState(state);
@@ -185,6 +208,7 @@ export function describeOriginGuideDialogue(state, poiOrId) {
         '',
         `“Learn ${place?.name ?? 'this district'} first. ${capitalize(content.localLead)} can help you prepare before you gamble time or blood outside the safe wards.”`,
         starterItem ? `They point out the newcomer desk where you can collect a ${starterItem.name} for your first field work.` : null,
+        content.serviceName ? `“For practical supplies, ask for ${content.serviceName}. I can point you in the right direction, but you will still have to learn the streets.”` : null,
         '',
         '“Effort becomes mastery. Mastery makes familiar work easier, and that gives you room for larger ambitions.”',
         '',
