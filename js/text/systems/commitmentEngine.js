@@ -55,6 +55,16 @@ export function acceptCommitment(state, commitmentId) {
             display: { text: existing.status === COMMITMENT_STATUSES.RESOLVED ? `${definition.name} is already resolved.` : `${definition.name} is already active.` },
         });
     }
+    const prerequisiteCheck = checkCommitmentPrerequisites(state, definition);
+    if (!prerequisiteCheck.ok) {
+        return actionFailure({
+            action: 'commitment.accept',
+            code: 'commitment.prerequisites-unmet',
+            outcome: 'blocked',
+            data: { commitmentId: definition.id, missingCommitmentIds: prerequisiteCheck.missingCommitmentIds },
+            display: { text: prerequisiteCheck.reason },
+        });
+    }
     const placeCheck = checkGiverContext(state, definition);
     if (!placeCheck.ok) return placeCheck;
 
@@ -84,6 +94,24 @@ export function acceptCommitment(state, commitmentId) {
         data: { commitmentId: definition.id, eventId: event.id, record },
         display: { text: `${definition.name}\n${definition.offerText}\nObjective: ${definition.objective}` },
     });
+}
+
+export function checkCommitmentPrerequisites(state, commitmentOrId) {
+    const definition = typeof commitmentOrId === 'object'
+        ? commitmentOrId
+        : getCommitmentDefinition(commitmentOrId);
+    if (!definition) {
+        return { ok: false, missingCommitmentIds: [], reason: `Unknown commitment: ${String(commitmentOrId ?? '')}` };
+    }
+    const missingCommitmentIds = (definition.prerequisiteCommitmentIds ?? [])
+        .filter((prerequisiteId) => getCommitmentRecord(state, prerequisiteId)?.status !== COMMITMENT_STATUSES.RESOLVED);
+    return {
+        ok: missingCommitmentIds.length === 0,
+        missingCommitmentIds,
+        reason: missingCommitmentIds.length
+            ? `Finish prerequisite work first: ${missingCommitmentIds.join(', ')}.`
+            : '',
+    };
 }
 
 export function checkCommitmentRequirements(state, commitmentId) {
