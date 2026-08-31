@@ -521,6 +521,53 @@ It deliberately does **not** create:
 Town/locality movement may use abstract graph nodes and transition anchors while wilderness/dungeon places continue using coordinates/topologies where those are mechanically useful. Richer ambient events, wandering merchants, personality dialogue, and deeper shop browsing remain follow-on systems.
 
 
+# Adventure Vertical Slice A composition
+
+Product 0.9.200.1 / Data 63 adds the Slatewater Road Scout vertical slice without adding a new runtime authority.
+
+```text
+existing Slatewater Waylodge + Foothills
+        |
+        v
+localKnowledge / staged POI interaction
+        |
+        v
+persistent Sable Renn NPC
+        |
+        v
+commitment prerequisites + provenance-qualified field work
+        |
+        +----------------------+
+        |                      |
+        v                      v
+work proficiency         NPC relationship
+        |                      |
+        +----------+-----------+
+                   |
+                   v
+          commitment-gated party recruitment
+                   |
+                   v
+         persistent companion + backing-NPC projection
+                   |
+                   v
+             canonical route travel
+```
+
+Ownership remains split by existing domain authority:
+- commitment catalog/engine owns prerequisite metadata and accepted/resolved records;
+- ecology/gathering/work proficiency owns actual Slatewater field recovery and skill growth;
+- relationship state owns Sable's NPC trust/respect/familiarity before recruitment;
+- party state owns the recruited companion, active membership, tactics, and companion-side relationship;
+- recruitment seeds companion relationship dimensions from the backing NPC relationship instead of creating a second trust store;
+- NPC world projection follows party location while Sable is active;
+- player continuity checks projected giver location before exposing old-place follow-up actions;
+- Pack v2 owns placement/dependency metadata, not duplicate definitions.
+
+Sable deliberately has no fixed Waylodge NPC schedule because fixed civic availability would conflict with mobile companion projection after recruitment.
+
+This slice adds no new Game State family, direct timed-task owner, simulation clock, route graph, or supported-save migration.
+
 # Persistence authority — Game State 15
 
 Raw current-schema validation runs before revival/normalization.
@@ -536,7 +583,7 @@ resource opportunities / ecology
 cultivation plot/crop/delegation authority
 party / ability runtime
 semantic events
-atlas / POI discovery
+atlas / localKnowledge / active POI context
 player identity / progression / skills / capabilities
 inventory / mutable resources / wallet / equipment / statuses
 world flags
@@ -636,4 +683,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 62; the current runtime/persistence baseline is Product 0.9.100.24 / Game State 15. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 63; the current runtime/persistence baseline is Product 0.9.200.1 / Game State 15. Adventure Vertical Slice A is complete; `0.9.200 Adventure Vertical Slices` remains active with Slice B deliberately unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
