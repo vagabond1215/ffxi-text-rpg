@@ -25,7 +25,7 @@ import {
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
 import { recruitCompanion } from './partyEngine.js';
-import { describeOriginGuideDialogue } from './playerExperienceEngine.js';
+import { applyOriginGuideReferral, describeOriginGuideDialogue } from './playerExperienceEngine.js';
 import { describeTransportServiceBoard } from './transportServiceBoardEngine.js';
 
 export function createPoiDiscoveryState() {
@@ -88,6 +88,7 @@ export function talkAtCurrentGrid(state, query = '') {
     learnPoiName(state, poi);
     const availability = getPoiScheduleStatus(state, poi);
     if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
+    applyOriginGuideReferral(state, poi);
     return describePoiInteraction(state, poi, 'talk');
 }
 
