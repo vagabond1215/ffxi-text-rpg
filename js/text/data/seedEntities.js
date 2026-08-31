@@ -147,6 +147,12 @@ export function createSeedNpcs() {
             locationId: 'slatewater-waylodge', services: ['stabling', 'mount-care', 'pack-animal-care', 'caravan-boarding'],
         }),
         createNpc({
+            id: 'npc-slatewater-sable-renn', name: 'Sable Renn', title: 'Slatewater Road Scout',
+            locationId: 'slatewater-waylodge',
+            services: ['route-guidance', 'field-scouting', 'commissions', 'companion-recruitment'],
+            questIds: ['commitment-slatewater-resin-waymarks', 'commitment-slatewater-lichen-fogmarks'],
+        }),
+        createNpc({
             id: 'npc-brasshaven-civic-warden', name: 'Brasshaven Civic Warden', title: 'Gate Warden', faction: 'Brasshaven',
             locationId: 'brasshaven-market-ring', services: ['realmSeal', 'regionalRewards'],
         }),
