@@ -140,7 +140,11 @@ test('Slatewater Road Scout slice chains field trust into earned companion recru
     const recruited = performLocalityPoiAction(state, SCOUT_POI_ID, 'companion');
     assert.equal(recruited.ok, true, recruited.message ?? recruited.reason);
     assert.match(recruited.message, /falls into step beside you/i);
-    assert.ok(getRecruitedCompanion(state, SCOUT_COMPANION_ID));
+    const recruitedScout = getRecruitedCompanion(state, SCOUT_COMPANION_ID);
+    assert.ok(recruitedScout);
+    assert.equal(recruitedScout.relationship.trust, 3, 'the two trust rewards carry into the companion relationship');
+    assert.equal(recruitedScout.relationship.respect, 1);
+    assert.equal(recruitedScout.relationship.familiarity, 1);
     assert.equal(listActiveCompanions(state).some((entry) => entry.id === SCOUT_COMPANION_ID), true);
 
     travelAndFinish(state, 'slatewater-foothills');
