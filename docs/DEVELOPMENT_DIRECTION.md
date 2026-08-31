@@ -152,6 +152,8 @@ Map knowledge should improve navigation, planning, route confidence, and transpo
 
 Player-facing locality information follows `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
+The **Local Knowledge & Familiarity Foundation is implemented** at Product 0.9.100.24 / Game State 15 / Data 62. The rules below are current runtime constraints; richer ambient events, wandering merchants, personality dialogue, and deeper shop-category conversation remain follow-on work rather than prerequisites to the foundation.
+
 Entering a town, district, port, wilderness area, or other place must not automatically expose every authored POI, NPC, exit, shop, service, or interaction. The character learns the world through observation, exploration, directions, introductions, signage/iconography, maps, repeated purposeful visits, and contextual events.
 
 Important consequences:
