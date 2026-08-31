@@ -26,12 +26,12 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 15 | serialized character/world runtime contract |
-| Data | 62 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Data | 63 | canonical authored-data, geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
 
-## `0.9.100` history and current decision
+## `0.9.100` history and `0.9.200` current decision
 
 ### `0.9.100.1` — Content Pack Scale Contract v2
 
@@ -1067,6 +1067,42 @@ No supported-save migration is added. The project remains pre-alpha current-sche
 
 The foundation adds no new simulation clock, direct timed-task owner, listener/background owner, inventory authority, or route graph.
 
+### `0.9.200.1` — Adventure Vertical Slice A: Slatewater Road Scout
+
+This revision opens the `0.9.200 Adventure Vertical Slices` track with a character-centered slice built entirely on existing Slatewater geography and current gameplay authorities.
+
+```text
+Product       0.9.100.24 -> 0.9.200.1
+Package       0.9.100    -> 0.9.200
+Data          62         -> 63
+Game State    15         -> 15
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Permanent record: `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`.
+
+Implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8` passed Check #1815 / run `33361131795` with Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Data advances because Slice A adds canonical authored IDs/ownership for:
+- Sable Renn as a persistent NPC;
+- the Slatewater road-scout locality contact;
+- `Resin for the Mile Posts`;
+- chained `Silver for the Fog Marks`;
+- `companion-sable-renn`;
+- Pack-v2 relationship/ownership metadata.
+
+Game State stays 15 because all durable consequences already belong to existing authorities:
+- commitment records own accepted/resolved contract state;
+- NPC relationships own trust/respect/familiarity;
+- party state owns recruitment, active membership, tactics, and companion relationship;
+- local knowledge owns character-specific discovery/interaction facts;
+- backing-NPC projection derives mobile NPC location from party authority.
+
+Slice A also generalizes two existing runtime seams without adding a persistence family: commitment prerequisites are enforced canonically at acceptance/recruitment, and a recruited companion inherits the backing NPC's earned relationship dimensions rather than resetting them.
+
+No supported-save migration, second route graph, second clock, new timed-task owner, or parallel social/quest/party store is introduced.
+
 ## Persistence history
 
 Relevant late history:
@@ -1106,6 +1142,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.22          no Game State change; Data 60 -> 61
 0.9.100.23          no Game State change; Data 61 -> 62
 0.9.100.24          Game State 14 -> 15; Data remains 62
+0.9.200.1           no Game State change; Data 62 -> 63
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1131,11 +1168,11 @@ Key current system/catalog versions include:
 ```text
 contentCatalogRegistry 0.3.0
 contentPackSchema      0.2.0
-regionalContentPacks   0.21.0
-contentPackValidation  0.3.0
+regionalContentPacks   0.22.0
+contentPackValidation  0.4.0
 contentScaleGate       0.2.0
 npcSchedules           0.9.0
-commitments            0.7.0
+commitments            0.8.0
 productionCatalog      0.17.0
 productionItems        0.18.0
 ecologyRegistry        0.16.0
@@ -1175,6 +1212,10 @@ headwaterHighlandTransitionRepairProductionCatalog   0.1.0
 headwaterHighlandTransitionRepairProductionItems     0.1.0
 capabilities           0.5.0
 abilityCatalog         0.4.0
+companionCatalog        0.3.0
+party                   0.4.0
+playerContinuity        0.6.0
+localityNavigation      0.3.1
 ```
 
 Waymeet Marches uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 57 registries.
@@ -1195,7 +1236,7 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current promoted Data 62 Cross-Biome Family Breadth checkpoint is 55 places, 47 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 18 quests/contracts, 1 companion, 7 transport services, 27 schedules, 39 packs, and 1,320 pack-owned records.
+The current Data 63 Slatewater Road Scout checkpoint is 55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 20 quests/contracts, 2 companions, 7 transport services, 27 schedules, 39 packs, and 1,325 pack-owned records. Runtime seed NPCs are 47. Implementation freeze: `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`; Check #1815 / run `33361131795` passed the full gate with 826/826 tests.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 
@@ -1210,7 +1251,7 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             QUEUED / NEXT FORMAL TRACK
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A COMPLETE; SLICE B UNSELECTED
 0.9.300 Advanced combat/training              QUEUED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
@@ -1237,7 +1278,7 @@ Benchmark     3          -> 3
 
 Current `localKnowledge` replaces binary `discoveredPois` as durable authority. The new state survives save/load because familiarity, identity linkage, connector knowledge, interaction history, and temporary guidance affect future player-facing and simulation decisions.
 
-The exact implementation freeze is `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, 823/823 tests, Census, Benchmark 3, and Benchmark Sample.
+The exact foundation implementation freeze is `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, 823/823 tests, Census, Benchmark 3, and Benchmark Sample. The subsequent current runtime/data checkpoint is Product 0.9.200.1 / Data 63; Game State remains 15.
 
 Richer ambient locality events, wandering merchants, generalized guard directions, personality-varied dialogue, and deeper shop-category conversation remain future bounded work rather than part of this persistence transition.
 
