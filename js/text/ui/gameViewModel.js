@@ -211,6 +211,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     payload: Object.freeze({ destinationId: destination.id }),
                     kind: 'travel',
                 })),
+            ...((transportDesk?.entries ?? []).slice(0, 2).map(transportBoardAction)),
         ];
 
         for (const poi of points) {
