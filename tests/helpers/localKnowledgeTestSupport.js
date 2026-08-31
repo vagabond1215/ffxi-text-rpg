@@ -8,11 +8,13 @@ import {
     identifyNpc,
     requiresPoiEntryTransition,
     recordConnectorExposure,
+    recordPlaceExposure,
     recordPoiExposure,
     setCurrentLocalAnchor,
 } from '../../js/text/systems/localKnowledgeEngine.js';
 import {
     enterLocalityPoi,
+    leaveLocalityPoi,
     moveWithinLocality,
     performLocalityPoiAction,
     visitLocalityPoi,
@@ -34,6 +36,10 @@ export function makePoiFamiliar(state, poiOrId, options = {}) {
 }
 
 export function reachPoi(state, poiOrId, options = {}) {
+    if (state.activePoiId) {
+        const left = leaveLocalityPoi(state);
+        assert.equal(left.ok, true, left.reason ?? left.message);
+    }
     const poi = makePoiFamiliar(state, poiOrId, options);
     setCurrentLocalAnchor(state, { type: 'poi', id: poi.id, placeId: state.currentPlaceId });
     const result = visitLocalityPoi(state, poi.id);
@@ -53,6 +59,7 @@ export function useKnownPoi(state, poiOrId, action = 'talk', options = {}) {
 }
 
 export function learnLocality(state, options = {}) {
+    recordPlaceExposure(state, state.currentPlaceId, { points: FAMILIARITY_THRESHOLDS[1], learnedName: true });
     for (const poi of getPoisForPlace(state.currentPlaceId)) {
         makePoiFamiliar(state, poi, { identifyNpc: options.identifyNpcs !== false });
     }
@@ -77,6 +84,10 @@ export function learnConnectionTo(state, destinationId, options = {}) {
 }
 
 export function moveToKnownLocality(state, destinationId, options = {}) {
+    if (state.activePoiId) {
+        const left = leaveLocalityPoi(state);
+        assert.equal(left.ok, true, left.reason ?? left.message);
+    }
     const connection = learnConnectionTo(state, destinationId, options);
     setCurrentLocalAnchor(state, { type: 'connection', id: connection.id, placeId: state.currentPlaceId });
     const result = moveWithinLocality(state, destinationId);
