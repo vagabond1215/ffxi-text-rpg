@@ -1,5 +1,6 @@
 import { getFurniture } from '../data/homeFurnishings.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
+import { requiresPoiEntryTransition } from './localKnowledgeEngine.js';
 
 export const WORKSTATION_ENGINE_VERSION = 3;
 export const WORKSTATION_TAGS = Object.freeze(['forge', 'kitchen', 'woodshop', 'tannery', 'workshop']);
@@ -54,6 +55,7 @@ export function collectHomeWorkstationTags(state) {
 export function collectAvailableWorkstationTags(state, explicitTags = []) {
     const tags = new Set((explicitTags ?? []).map(String));
     for (const poi of getContextualPois(state)) {
+        if (requiresPoiEntryTransition(poi) && state?.activePoiId !== poi.id) continue;
         for (const stationTag of getWorkstationTagsForPoi(poi)) tags.add(stationTag);
     }
     for (const stationTag of collectHomeWorkstationTags(state)) tags.add(stationTag);
