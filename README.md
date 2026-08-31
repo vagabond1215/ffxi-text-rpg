@@ -13,13 +13,13 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E, and the Local Knowledge & Familiarity Foundation prerequisite is complete.** Data 62 remains the canonical authored-content checkpoint; Product 0.9.100.24 / Game State 15 is the current runtime/persistence checkpoint. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
 
 ```text
-Product:       0.9.100.24
-Package:       0.9.100
+Product:       0.9.200.1
+Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          62
+Data:          63
 Benchmark:     3
-Codename:      Local Knowledge & Familiarity
+Codename:      Slatewater Road Scout
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
