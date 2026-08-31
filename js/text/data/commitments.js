@@ -6,7 +6,7 @@ import { getProductionItem } from './productionItems.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { STARFEN_MARSHCRAFT_COMMITMENT_DATA } from './starfenMarshcraftCommitments.js';
 
-export const COMMITMENT_CATALOG_VERSION = 6;
+export const COMMITMENT_CATALOG_VERSION = 7;
 
 const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
     'plot-home-sweetroot-bed': Object.freeze({ itemId: 'item-elderwood-sweetroot', domain: 'cultivation' }),
@@ -30,6 +30,39 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         description: 'Reader Soli Venn wants two fresh Marrowleaf samples gathered in West Starfen so the Canal Ward can compare this season’s growth with the civic readers’ older field notes.', objective: 'Gather two Marrowleaf in West Starfen and bring them back to Reader Soli Venn in the Canal Ward.',
         requiredItems: [{ itemId: 'item-starfen-marrowleaf', quantity: 2, provenanceSourceId: 'source-west-starfen-marrowleaf-bed' }], fieldSourceId: 'source-west-starfen-marrowleaf-bed', returnViaPlaceId: 'mistmere-reedport', reward: { gil: 24, relationship: { familiarity: 1, respect: 1 } }, followUpDelayDays: 1,
         offerText: 'Soli asks for two fresh Marrowleaf samples from West Starfen. The Ward has old notes and dried specimens, but current growth tells them more about the marsh than a copied ledger does.', resolvedText: 'Soli compares the leaves against the Ward notes, marks where you gathered them, and credits the work. Your name is written beside a useful observation rather than beside another newcomer instruction.', followUpText: 'When you return on a later day, Soli remembers the Marrowleaf without reopening the old notes. They point out that the same reed country supports useful gathering and troublesome rootlings: knowing Starfen means learning when to work the marsh and when to make the ground safer first.',
+    }),
+    'commitment-slatewater-resin-waymarks': commitment({
+        id: 'commitment-slatewater-resin-waymarks',
+        name: 'Resin for the Mile Posts',
+        giverNpcId: 'npc-slatewater-sable-renn',
+        offerPoiId: 'poi-slatewater-road-scout',
+        offerPlaceId: 'slatewater-waylodge',
+        description: 'Slatewater road scout Sable Renn needs fresh Pitch Pine Resin from the foothills to reseal exposed mile-post caps before the next wet spell.',
+        objective: 'Forage two Pitch Pine Resin bundles in Slatewater Foothills and bring them back to Sable Renn at the Waylodge.',
+        requiredItems: [{ itemId: 'item-slatewater-pitch-pine-resin', quantity: 2, provenanceSourceId: 'source-slatewater-pitch-pine-stand' }],
+        fieldSourceId: 'source-slatewater-pitch-pine-stand',
+        reward: { gil: 30, relationship: { familiarity: 1, trust: 1 } },
+        followUpDelayDays: 1,
+        offerText: 'Sable taps two weather-split mile-post caps beside the lodge wall. “Bring me resin you took from the foothill pines yourself. I want to know whether you can leave this road, find what the road actually needs, and come back without turning a supply problem into somebody else’s rescue.”',
+        resolvedText: 'Sable smells the resin, checks the fresh scoring where it was cut, and seals one cracked cap while you stand there. “Good. You brought the right thing from the right ground.” The work is ordinary, but Sable has started judging you as a field partner rather than another traveler.',
+        followUpText: 'On a later day Sable points toward the mist-facing ravines. “Resin keeps rain out. It does not help when fog erases the next marker. There is another job if you still want to learn how this road stays readable.”',
+    }),
+    'commitment-slatewater-lichen-fogmarks': commitment({
+        id: 'commitment-slatewater-lichen-fogmarks',
+        name: 'Silver for the Fog Marks',
+        giverNpcId: 'npc-slatewater-sable-renn',
+        offerPoiId: 'poi-slatewater-road-scout',
+        offerPlaceId: 'slatewater-waylodge',
+        description: 'After the mile-post repair, Sable needs Silver Lichen gathered from Slatewater’s shaded cliff faces for reflective trail-marking pigment used on fog-side route stones.',
+        objective: 'Forage one Silver Lichen sample from a Slatewater cliff face and return it to Sable Renn.',
+        requiredItems: [{ itemId: 'item-slatewater-silver-lichen', quantity: 1, provenanceSourceId: 'source-slatewater-silver-lichen-face' }],
+        fieldSourceId: 'source-slatewater-silver-lichen-face',
+        prerequisiteCommitmentIds: ['commitment-slatewater-resin-waymarks'],
+        reward: { gil: 46, relationship: { respect: 1, trust: 2 } },
+        followUpDelayDays: 1,
+        offerText: 'Sable only offers the second job after the resin work is credited. “The fog side is less forgiving. Silver lichen grows where the stone stays damp and footing turns mean. Bring one clean sample from the face itself. If you know when to stop reaching and start finding another line, I can use you on the road.”',
+        resolvedText: 'Sable turns the pale lichen toward the hearthlight and checks the stone dust caught at its base. “That came off the face, not an exchange shelf.” A small smile follows. “You have done enough proving. If you want another pair of eyes on the road, ask me.”',
+        followUpText: 'When you speak again, Sable no longer frames the foothills as a test. The conversation shifts to shared routes, field approaches, and which risks are worth taking when two travelers have to come home together.',
     }),
     'commitment-thornwall-hearth-sweetroot-share': commitment({
         id: 'commitment-thornwall-hearth-sweetroot-share', name: 'A Root for the Morning Pot', giverNpcId: 'npc-thornwall-mira-fen', offerPoiId: 'poi-sandoria-s-aveline', offerPlaceId: 'thornwall-southgate', description: 'Mira Fen wants one Sweetroot grown at a Southgate lodging for the neighborhood breakfast pot, where a home-grown root means more than another anonymous bundle from the road.', objective: 'Bring Mira Fen one Elderwood Sweetroot harvested from your own home cultivation bed.', requiredItems: [{ itemId: 'item-elderwood-sweetroot', quantity: 1, provenanceSourceId: 'plot-home-sweetroot-bed' }], reward: { gil: 18, relationship: { familiarity: 1, obligation: 1 } }, followUpDelayDays: 2,
@@ -112,11 +145,42 @@ export function validateCommitmentCatalog() {
         }
         if (definition.fieldSourceId) { const source = getCanonicalGatheringSource(definition.fieldSourceId); if (!source) issues.push(`${definition.id} references unknown field source ${definition.fieldSourceId}.`); else if (!definition.requiredItems.some((requirement) => requirement.itemId === source.outputItemId)) issues.push(`${definition.id} field source ${definition.fieldSourceId} does not produce a required item.`); }
         if (definition.returnViaPlaceId && !getPlace(definition.returnViaPlaceId)) issues.push(`${definition.id} references unknown return-via place ${definition.returnViaPlaceId}.`);
+        if (!Array.isArray(definition.prerequisiteCommitmentIds)) issues.push(`${definition.id}.prerequisiteCommitmentIds must be an array.`);
+        for (const prerequisiteId of definition.prerequisiteCommitmentIds ?? []) {
+            if (prerequisiteId === definition.id) issues.push(`${definition.id} cannot require itself.`);
+            else if (!getCommitmentDefinition(prerequisiteId)) issues.push(`${definition.id} references unknown prerequisite commitment ${prerequisiteId}.`);
+        }
         if (!nonNegativeInteger(definition.reward.gil)) issues.push(`${definition.id} reward.gil must be a non-negative integer.`);
         for (const [dimension, delta] of Object.entries(definition.reward.relationship)) { if (!['familiarity', 'respect', 'trust', 'obligation'].includes(dimension)) issues.push(`${definition.id} uses unknown relationship dimension ${dimension}.`); if (!Number.isInteger(delta)) issues.push(`${definition.id} relationship delta ${dimension} must be an integer.`); }
         if (definition.reward.capabilityId && !getCapability(definition.reward.capabilityId)) issues.push(`${definition.id} reward references unknown capability ${definition.reward.capabilityId}.`);
         if (!positiveInteger(definition.followUpDelayDays)) issues.push(`${definition.id} followUpDelayDays must be positive.`);
     }
+    issues.push(...validateCommitmentPrerequisiteCycles());
+    return issues;
+}
+
+function validateCommitmentPrerequisiteCycles() {
+    const issues = [];
+    const definitions = new Map(listCommitmentDefinitions().map((entry) => [entry.id, entry]));
+    const visited = new Set();
+    const active = new Set();
+
+    const visit = (id, path = []) => {
+        if (active.has(id)) {
+            issues.push(`commitment prerequisites contain a cycle: ${[...path, id].join(' -> ')}.`);
+            return;
+        }
+        if (visited.has(id)) return;
+        visited.add(id);
+        active.add(id);
+        const definition = definitions.get(id);
+        for (const prerequisiteId of definition?.prerequisiteCommitmentIds ?? []) {
+            if (definitions.has(prerequisiteId)) visit(prerequisiteId, [...path, id]);
+        }
+        active.delete(id);
+    };
+
+    for (const id of definitions.keys()) visit(id);
     return issues;
 }
 
@@ -125,6 +189,7 @@ function commitment(definition) {
         ...definition,
         fieldSourceId: definition.fieldSourceId ?? null,
         returnViaPlaceId: definition.returnViaPlaceId ?? null,
+        prerequisiteCommitmentIds: Object.freeze([...(definition.prerequisiteCommitmentIds ?? [])]),
         requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))),
         reward: Object.freeze({
             ...definition.reward,
