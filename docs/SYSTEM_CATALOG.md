@@ -24,7 +24,7 @@ Account Save:  5
 Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 ## Data 57 regional authority
@@ -36,7 +36,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Game State 14 unchanged.
+- Game State 15 is current; Data 62 remains the authored-content version.
 
 Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
 
@@ -129,7 +129,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Persistent projects | playable | Materials + labor + exactly-once completion. |
 | Semantic events | integrated | Persisted typed observation history. |
 | ActionResult | integrated | Canonical structured result contract. |
-| Current-schema persistence | playable | Account Save 5 / Game State 14. |
+| Current-schema persistence | playable | Account Save 5 / Game State 15; strict pre-alpha current-schema-only. |
 | Raw current-state gate | integrated | Required authority validates before normalization. |
 | NPC/enemy projections | integrated | Rebuilt from canonical authority; not serialized authority. |
 | Command presentation log | integrated | Session-only. |
@@ -194,11 +194,11 @@ spellSchools / capabilities / abilities / companions
 | --- | --- | --- |
 | Original-world identity | integrated | Hearth & Horizon canon is authoritative. |
 | Places/routes/maps | playable | 55 current places/localities; reciprocal map/place and route-stop integrity is validated. |
-| Safe-locality navigation | playable | Named destinations where fine topology is not the decision; current one-step POI discovery/direct navigation is transitional before locality familiarity work. |
+| Safe-locality navigation | playable | Abstract locality movement is filtered through learned connectors/familiarity; unknown adjacency is not enumerated and sighted boundaries require explicit transition. |
 | Wilderness exploration | playable | Discovery-relative movement/minimap. |
 | Acquired map knowledge | playable | Presentation reveals acquired knowledge only. |
-| Player locality knowledge/familiarity | planned | Layered Unknown/Referenced/Sighted/Recognized/Familiar knowledge, learned connectors, and save-persistent temporary directions; canonical world truth remains separate. |
-| Contextual Look Around / Explore resolver | planned | Fictional-time, locality-aware, deterministic/injectable weighted discovery and ambient-event resolution. |
+| Player locality knowledge/familiarity | playable | Game State 15 persists layered Unknown/Referenced/Sighted/Recognized/Familiar knowledge, POI interactions, NPC identity linkage, learned connectors, and temporary guidance without duplicating canonical definitions. |
+| Contextual Look Around / Explore resolver | playable foundation | Look Around performs immediate observation; Explore advances fictional time and deterministically/injectably resolves weighted POI/connector/ambient discovery. Richer ambient-risk event catalogs remain follow-on. |
 | Direct travel | playable | Route authority + fictional time. |
 | Scheduled transport | playable | Deterministic departures/fares/cargo limits. |
 
@@ -296,6 +296,6 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open, while **`0.9.100 Content Scale Gate A` is complete after Packet E**. Cross-Biome Family Breadth remains the promoted Data 62 runtime/data checkpoint, and the ordered five-part location flora/fauna diversity repair sequence is complete.
+Phase 0.9 remains open. **`0.9.100 Content Scale Gate A` is complete after Packet E, and Local Knowledge & Familiarity Foundation is complete at Product 0.9.100.24 / Game State 15.** Cross-Biome Family Breadth remains the canonical Data 62 authored-content checkpoint, and the ordered five-part location flora/fauna diversity repair sequence is complete.
 
-Packet E's permanent integration/census evidence is `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started. World-edge expansion, Occupational Tool Conversion, and optional post-sequence ecology targets remain separate explicit-selection queues.
+Foundation implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0` passed Check #1770 / run `33355620265` with 823/823 tests plus census/Benchmark 3/sample. Packet E evidence remains `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional post-sequence ecology targets remain separate explicit-selection queues.
