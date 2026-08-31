@@ -1,11 +1,11 @@
 import { getCanonicalGatheringSource } from '../data/ecologyRegistry.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
-import { getPlace } from '../data/places.js';
+import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getProductionDefinition } from '../data/productionCatalog.js';
 import { getServiceJourney, getTransportService } from '../data/routeCatalog.js';
 import { getCommitmentRecord } from './commitmentEngine.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
-import { listLocalityDestinations } from './localityEngine.js';
+import { isSettlementLocality, listLocalityDestinations } from './localityEngine.js';
 import { getOriginExperienceForState } from './playerExperienceEngine.js';
 import { checkProductionRequirements } from './productionEngine.js';
 import { findTravelRoute } from './travelEngine.js';
@@ -236,33 +236,44 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
         return createLongRoadStep(state, proof.brasshavenHubId, proof.mistmereHubId, knowledgeSource);
     }
 
-    const localToBrasshavenHub = listLocalityDestinations(state).find((entry) => entry.id === proof.brasshavenHubId);
-    if (localToBrasshavenHub) {
+    const brasshavenLocalStep = createKnowledgeSafeLocalStep(state, proof.brasshavenHubId, {
+        moveId: 'go-brasshaven-iron-quay',
+        exploreId: 'explore-for-brasshaven-iron-quay',
+    });
+    if (brasshavenLocalStep) {
+        const hubName = getPlace(proof.brasshavenHubId)?.name ?? 'Brasshaven Iron Quay';
         return opportunity({
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · take the long road east',
-            summary: `${localToBrasshavenHub.name} is the local travel hub you know. Go there before choosing the long-distance leg.`,
-            reason: 'The Journal exposes the next locally knowable transition, not every hidden stop in the route graph.',
+            summary: brasshavenLocalStep.intent === 'locality.move'
+                ? `${hubName} is the local travel hub you know. Go there before choosing the long-distance leg.`
+                : `You know ${hubName} is the travel hub you need, but you still need to work out the local way there.`,
+            reason: 'The Journal exposes only a learned local route or the need to explore for it; it does not fall through to omniscient long-range travel.',
             progress: 'Reach the Iron Quay, then look for the long-distance connection toward Mistmere and Starfen.',
             status: 'ready',
-            requirements: [requirement(`Reach ${localToBrasshavenHub.name}`, false)],
+            requirements: [requirement(`Reach ${hubName}`, false)],
             regionLabel: 'Starfen',
             groupKind: 'region',
             linkedAmbition: proof.ambitionName,
             knowledgeSource,
-            action: action('go-brasshaven-iron-quay', `Go · ${localToBrasshavenHub.name}`, 'locality.move', { destinationId: proof.brasshavenHubId }),
+            action: brasshavenLocalStep,
         });
     }
 
-    const localToMistmereHub = listLocalityDestinations(state).find((entry) => entry.id === proof.mistmereHubId);
-    if (localToMistmereHub) {
+    const mistmereLocalStep = createKnowledgeSafeLocalStep(state, proof.mistmereHubId, {
+        moveId: 'go-mistmere-reedport',
+        exploreId: 'explore-for-mistmere-reedport',
+    });
+    if (mistmereLocalStep) {
         return opportunity({
             id: 'campaign-copper-trail-clasp',
             category: 'ambition',
             title: 'Starfen · reach Mistmere Reedport',
-            summary: 'Reedport is the local travel hub you know for continuing toward Starfen.',
-            reason: 'Named locality knowledge can guide the player toward a regional route without exposing authored coordinates.',
+            summary: mistmereLocalStep.intent === 'locality.move'
+                ? 'Reedport is the local travel hub you know for continuing toward Starfen.'
+                : 'You know Reedport is the local travel hub you need, but its local approach is not yet familiar.',
+            reason: 'Named locality knowledge can guide the player toward a regional route without exposing authored coordinates or pretending an unknown connector is learned.',
             progress: 'Reach Reedport, then choose a route into Starfen.',
             status: 'ready',
             requirements: [requirement('Reach Mistmere Reedport', false)],
@@ -270,7 +281,7 @@ function createStarfenFiberStep(state, { proof, source, knowledgeSource, starfen
             groupKind: 'region',
             linkedAmbition: proof.ambitionName,
             knowledgeSource,
-            action: action('go-mistmere-reedport', 'Go · Mistmere Reedport', 'locality.move', { destinationId: proof.mistmereHubId }),
+            action: mistmereLocalStep,
         });
     }
 
@@ -390,6 +401,20 @@ function createReturnToForgeStep(state, proof) {
         blockers: routeToMarket.ok ? [] : [routeToMarket.reason ?? 'No current return route to Brasshaven.'],
         action: routeToMarket.ok ? action('return-to-brasshaven-market', 'Travel · Brasshaven Market Ring', 'travel.start', { destinationId: proof.brasshavenForgePlaceId }) : null,
     };
+}
+
+function createKnowledgeSafeLocalStep(state, targetPlaceId, ids = {}) {
+    const known = listLocalityDestinations(state).find((entry) => entry.id === targetPlaceId);
+    if (known) {
+        return action(ids.moveId ?? `go-${targetPlaceId}`, `Go · ${known.name}`, 'locality.move', { destinationId: targetPlaceId });
+    }
+    const current = getPlace(state.currentPlaceId);
+    const target = getPlace(targetPlaceId);
+    const directlyAdjacent = isSettlementLocality(current)
+        && isSettlementLocality(target)
+        && getConnectionsFrom(state.currentPlaceId).some((connection) => connection.to === targetPlaceId && connection.mode === 'walk' && !connection.flags?.externalPlaceholder);
+    if (!directlyAdjacent) return null;
+    return action(ids.exploreId ?? `explore-for-${targetPlaceId}`, `Explore for the way to ${target?.name ?? targetPlaceId}`, 'locality.explore', { targetPlaceId });
 }
 
 function createLongRoadStep(state, fromPlaceId, toPlaceId, knowledgeSource) {
