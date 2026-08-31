@@ -141,7 +141,7 @@ git:
 progression:
   current_phase: 0.9
   current_track: 0.9.200-adventure-vertical-slices
-  current_track_status: queued-not-started
+  current_track_status: active-adventure-vertical-slice-a
   completed_track: 0.9.100-content-scale-gate-a
   completed_track_status: complete-through-packet-e
   latest_bounded_unit: local-knowledge-and-familiarity-foundation
@@ -203,13 +203,13 @@ validation:
   local_knowledge_persistence_guard: tests/currentSchemaDiscoveryPersistence.test.js
   local_knowledge_information_guard: tests/playerInformationAccess.test.js
 quality:
-  current_product_version: 0.9.100.24
-  current_package_version: 0.9.100
+  current_product_version: 0.9.200.1
+  current_package_version: 0.9.200
   current_account_save: 5
   current_game_state: 15
-  current_data_version: 62
+  current_data_version: 63
   current_benchmark_version: 3
-  current_codename: Local Knowledge & Familiarity
+  current_codename: Slatewater Road Scout
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
