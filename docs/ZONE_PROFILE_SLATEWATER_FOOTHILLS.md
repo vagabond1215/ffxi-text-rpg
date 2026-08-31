@@ -158,6 +158,17 @@ Provides:
 
 The current implementation represents these as canonical place/POI/NPC/travel services. It does **not** create a second mount-condition authority ahead of the planned mount system.
 
+**Sable Renn — Slatewater Road Scout**
+
+A persistent mobile road scout who:
+- evaluates route damage, animal sign, loose slate, and caravan wear as one connected field problem;
+- offers the chained `Resin for the Mile Posts` and `Silver for the Fog Marks` contracts;
+- becomes recruitable only after both field proofs are resolved;
+- carries earned NPC trust/respect/familiarity into companion relationship state;
+- has no fixed daily Waylodge schedule after recruitment because the backing NPC follows companion travel.
+
+Permanent slice record: `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`.
+
 **Hearth and Bunkroom**
 
 Provides the fiction for:
@@ -270,6 +281,20 @@ Likely surrounding sites:
 
 The Waylodge is the social concentration point precisely because the surrounding landscape is too rugged and dispersed to justify dense settlement.
 
+## Adventure Vertical Slice A
+
+**IMPLEMENTED / Data 63 / Product 0.9.200.1.**
+
+The road-scout slice deliberately reuses the existing Waylodge/foothills loop:
+1. meet Sable at the Waylodge;
+2. gather provenance-qualified Pitch Pine Resin;
+3. gain enough real foraging proficiency to reach the Silver Lichen source;
+4. resolve the chained second field contract;
+5. recruit Sable through the existing party authority;
+6. keep Sable's backing NPC synchronized with canonical route travel.
+
+This adds character/quest/companion depth without adding a second town, duplicate road graph, or quest-only progression meter.
+
 ## Future extensions
 
 High-value follow-ons within Slatewater include:
@@ -277,7 +302,7 @@ High-value follow-ons within Slatewater include:
 2. hunting recovery for selected fauna with hides/meat/feathers;
 3. local food and resin processing;
 4. blue-slate masonry/fine craft;
-5. lodge contracts for trail clearing, surveying, animal incidents, and caravan supply;
+5. additional lodge contracts for trail clearing, animal incidents, and caravan supply after the implemented road-scout trust arc;
 6. field-guild reputation or notices using existing social/commitment authorities;
 7. foot-only side passes and cliff topology;
 8. eventual mount/pack-animal condition integration when the canonical mount system is implemented.
