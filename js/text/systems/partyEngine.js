@@ -10,6 +10,7 @@ import { getCommitmentRecord } from './commitmentEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { isSettlementLocality } from './localityClassificationEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { getNpcRelationship } from './relationshipEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
@@ -108,7 +109,7 @@ export function recruitCompanion(state, companionQuery, options = {}) {
     const party = ensurePartyState(state);
     if (party.companions[definition.id]) return blocked('party.already-recruited', { companionId: definition.id }, `${definition.name} is already one of your traveling companions.`);
 
-    const companion = createPersistentCompanion(definition, state.currentPlaceId, ensureWorldTimeState(state).totalSeconds);
+    const companion = createPersistentCompanion(state, definition, state.currentPlaceId, ensureWorldTimeState(state).totalSeconds);
     party.companions[companion.id] = companion;
     let active = false;
     if (options.join !== false && party.activeCompanionIds.length < party.capacity) {
@@ -317,8 +318,12 @@ export function listRecruitableCompanions(state) {
     });
 }
 
-function createPersistentCompanion(definition, locationId, joinedAtWorldSeconds) {
-    const relationship = Object.fromEntries(definition.relationshipDimensions.map((dimension) => [dimension, 0]));
+function createPersistentCompanion(state, definition, locationId, joinedAtWorldSeconds) {
+    const npcRelationship = getNpcRelationship(state, definition.npcId);
+    const relationship = Object.fromEntries(definition.relationshipDimensions.map((dimension) => [
+        dimension,
+        Number.isInteger(npcRelationship?.dimensions?.[dimension]) ? npcRelationship.dimensions[dimension] : 0,
+    ]));
     const entity = {
         id: definition.id,
         npcId: definition.npcId,
