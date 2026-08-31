@@ -145,10 +145,22 @@ export function createContextualActions(state, nearby = null, opportunities = nu
         }));
 
     if (getNavigationMode(state) === 'locality') {
+        const localityOpportunityModel = opportunities ?? decoratePlayerSocialScheduleModel(
+            state,
+            decorateCultivationOpportunityModel(
+                state,
+                decorateHomeInfrastructureOpportunityModel(state, decoratePlayerOpportunityModel(state, createPlayerOpportunityModel(state))),
+            ),
+        );
+        const activeRecommended = localityOpportunityModel.entries.find((entry) => entry.id === localityOpportunityModel.recommendedOpportunityId
+            && entry.status === 'active'
+            && entry.action);
         const points = nearby ?? listLocalityPoints(state, { limit: 8 }).map(toNearbyRecord);
         const activePoint = points.find((poi) => poi.present) ?? null;
         if (activePoint) {
-            const actions = [
+            const actions = [];
+            if (activeRecommended) actions.push(Object.freeze({ ...activeRecommended.action, kind: activeRecommended.category }));
+            actions.push(
                 Object.freeze({
                     id: `context:locality-poi:${activePoint.id}:talk`,
                     label: `Greet · ${activePoint.name}`,
@@ -156,7 +168,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     payload: Object.freeze({ poiId: activePoint.id, action: 'talk' }),
                     kind: 'social',
                 }),
-            ];
+            );
             const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && activePoint.actions.includes(candidate));
             if (serviceAction && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
                 actions.push(Object.freeze({
