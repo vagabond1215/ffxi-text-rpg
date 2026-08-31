@@ -202,6 +202,15 @@ export function createContextualActions(state, nearby = null, opportunities = nu
             ];
         }
 
+        const denseTransportEntries = transportDesk?.entries ?? [];
+        if (denseTransportEntries.length >= 3) {
+            return dedupeActions([
+                directAction('context:locality-look', 'Look Around', 'locality.look', {}, 'exploration'),
+                directAction('context:locality-explore', 'Explore', 'locality.explore', {}, 'exploration'),
+                ...denseTransportEntries.slice(0, 4).map(transportBoardAction),
+            ]).slice(0, 6);
+        }
+
         const actions = [
             directAction('context:locality-look', 'Look Around', 'locality.look', {}, 'exploration'),
             directAction('context:locality-explore', 'Explore', 'locality.explore', {}, 'exploration'),
