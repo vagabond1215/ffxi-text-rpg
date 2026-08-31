@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E, and the Local Knowledge & Familiarity Foundation prerequisite is complete.** Data 62 remains the canonical authored-content checkpoint; Product 0.9.100.24 / Game State 15 is the current runtime/persistence checkpoint. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is now active, and Slice A — Slatewater Road Scout — is complete.** The current canonical/runtime checkpoint is Data 63 / Product 0.9.200.1 / Game State 15. Slice A reuses Slatewater Waylodge and the foothills to add a persistent road scout, two chained field contracts, and earned companion recruitment without adding a new zone or state family.
 
 ```text
 Product:       0.9.200.1
@@ -24,7 +24,7 @@ Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 62 closes the five-part location flora/fauna diversity repair sequence. It adds two scoped missing families—Ground Squirrel and Finch—through seven regional species/populations across Coppergrass, Waymeet South Marches, Crownfields, East Elderwood, and Slatewater. No new recovery source, raw resource, production record, route, place, or durable state family was added.
+Data 62 closes the five-part location flora/fauna diversity repair sequence. Data 63 opens Adventure Vertical Slices with **Sable Renn**, the Slatewater Road Scout: one new persistent NPC/POI, two provenance-bound chained commitments, one earned recruitable companion, and Pack-v2 relationship/ownership metadata. No new place, route, resource, recipe, ability, schedule, or durable state family was added.
 
 ## Product direction
 
@@ -73,27 +73,27 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 62 implementation census:
+Validated Data 63 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
-named NPCs              47 / 50
+named NPCs              48 / 50
 shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        408 / 200
 recipes/processes      234 / 75
 abilities/techniques    41 / 100
-quests/contracts        18 / 30
-companions               1 / 4
+quests/contracts        20 / 30
+companions               2 / 4
 transport services       7 / 5
 routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
 regional/shared packs    39
-pack-owned records     1320
-runtime seed NPCs        46
+pack-owned records     1325
+runtime seed NPCs        47
 runtime seed enemies     17
 raw-resource use      145/154
 luxury-raw use          14/14
@@ -128,17 +128,32 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**`0.9.100 Content Scale Gate A` is complete, and Local Knowledge & Familiarity Foundation is complete.** Packet E remains the Data 62 scale/integration closure; the locality foundation advances Product to 0.9.100.24 and Game State to 15 without changing Data, Package, Account Save, or Benchmark. Foundation implementation freeze: `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample.
+**Adventure Vertical Slice A — Slatewater Road Scout is COMPLETE.**
 
-The five-part location flora/fauna diversity repair sequence is complete through Data 62.
+Permanent record:
+- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
+- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample all green.
 
-Completed:
-1. Legacy Elderwood Ecology Repair — Data 58;
-2. Dry Upland & Saltpan Ecology Repair — Data 59;
-3. Headwater / Highland Transition Spread — Data 60;
-4. Wetland / Island Distribution Repair — Data 61;
-5. Cross-Biome Family Breadth — Data 62.
+Slice A adds:
+- Sable Renn, persistent Slatewater road scout;
+- `Resin for the Mile Posts`;
+- chained `Silver for the Fog Marks`;
+- earned `companion-sable-renn` recruitment after both contracts;
+- trust/respect/familiarity continuity from NPC relationship into recruited companion state;
+- mobile quest-giver follow-up that respects backing-NPC location.
 
-There is **no automatically authorized sixth ecology repair**. Post-sequence ecology opportunities remain optional: Crownfields broader ordinary-wildlife spread, secondary dungeon substrate/ecology cleanup, a shorebird/wader family when coastal depth warrants it, and a snake family only when a concrete ecological/player loop justifies it.
+Current mechanics-scale gaps are now:
+- abilities/techniques 41/100;
+- companions 2/4;
+- quests/contracts 20/30;
+- named NPCs 48/50.
 
-The locality foundation is complete and broad follow-on locality event/dialogue/UI polish was not auto-started. The next formal roadmap track remains `0.9.200 Adventure Vertical Slices`; world-edge expansion, Occupational Tool Conversion, optional post-sequence ecology work, and richer locality-event/UI work remain separate queues requiring explicit selection.
+The mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap.
+
+The five-part ecology repair sequence remains complete through Data 62 and is not reopened by Data 63.
+
+`0.9.200 Adventure Vertical Slices` remains the active formal track. **Adventure Vertical Slice B is not auto-started**; its anchor should be selected from existing geography based on connected character/quest/companion/service value. `0.9.300 Advanced Combat / Training` follows after the 0.9.200 track is deliberately closed.
+
+World-edge expansion, Occupational Tool Conversion, optional ecology work, and richer locality-event/UI work remain separate queues requiring explicit selection.
+
