@@ -36,9 +36,9 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Game State 15 is current; Data 62 remains the authored-content version.
+- Game State 15 is current; Data 63 is the authored-content version after Adventure Vertical Slice A.
 
-Measured current breadth: **55 places, 47 NPCs, 37 service sites, 104 creatures, 124 sources, 369 items, 214 recipes, 25 routes, 27 schedules, 33 packs, 1,183 pack-owned records**.
+Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 25 routes, 27 schedules, 39 packs, and 1,325 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
 
@@ -139,7 +139,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — Data 62
+## Content infrastructure and regional packs — current through Data 63
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -254,12 +254,12 @@ spellSchools / capabilities / abilities / companions
 
 | System | Status | Notes |
 | --- | --- | --- |
-| NPC seed definitions | integrated | 46 runtime seed NPCs; census counts 47 named NPC definitions across canonical sources. |
+| NPC seed definitions | integrated | 47 runtime seed NPCs; census counts 48 named NPC definitions across canonical sources. |
 | NPC recurring schedules | playable | Twenty-three current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Player-facing NPC identity disclosure | planned | Canonical names remain internal until introduction/reference/credible visual identification links identity for the character. |
 | Contextual greeting/dialogue presentation | planned | Semantic actions with NPC/player-personality-aware prose variants; presentation RNG must not silently mutate gameplay state. |
-| Commitments | playable | 18 current persistent contracts with accept/resolve/follow-up/reward state. |
+| Commitments | playable | 20 current persistent contracts. Data 63 adds two chained Slatewater field contracts with canonical prerequisite enforcement, provenance requirements, and ordinary accept/resolve/follow-up/reward state. |
 | Commitment capability reward seam | integrated | Optional qualified character capability instruction exists; Starfen regional contracts deliberately do not gate universal spells. |
 | Redstone Forge-Road commitments | playable | Three provenance-qualified Brasshaven orders consume real forged output. |
 | Elderwood Hunt-Timber commitments | playable | Three provenance-qualified Thornwall orders consume real Elderwood production output. |
@@ -272,30 +272,42 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Gameplay breadth at the Data 62 Cross-Biome Family Breadth checkpoint:
+Current gameplay breadth at the Data 63 Slatewater Road Scout checkpoint:
 
 ```text
 places/localities       55 / mechanics 10
-named NPCs              47 / 50
+named NPCs              48 / 50
 shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        408 / 200
 recipes/processes      234 / 75
 abilities/techniques    41 / 100
-quests/contracts        18 / 30
-companions               1 / 4
+quests/contracts        20 / 30
+companions               2 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
 regional/shared packs    39
-pack-owned records     1320
+pack-owned records     1325
 ```
 
 The creature catalog now clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because other required categories remain short.
 
 ## Current decision boundary
 
-Phase 0.9 remains open. **`0.9.100 Content Scale Gate A` is complete after Packet E, and Local Knowledge & Familiarity Foundation is complete at Product 0.9.100.24 / Game State 15.** Cross-Biome Family Breadth remains the canonical Data 62 authored-content checkpoint, and the ordered five-part location flora/fauna diversity repair sequence is complete.
+Phase 0.9 remains open. **Adventure Vertical Slice A — Slatewater Road Scout is complete at Product 0.9.200.1 / Data 63 / Game State 15.**
 
-Foundation implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0` passed Check #1770 / run `33355620265` with 823/823 tests plus census/Benchmark 3/sample. Packet E evidence remains `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional post-sequence ecology targets remain separate explicit-selection queues.
+Permanent evidence:
+- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
+- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
+
+Slice A raises the current mechanics counts to 48 named NPCs, 20 quests/contracts, and 2 companions without adding a place, route, recipe family, ability family, schedule family, or new Game State authority. Companion recruitment can now depend on resolved canonical commitments; recruited companion relationship dimensions inherit the backing NPC relationship; mobile companion-backed quest givers are not projected as static follow-up markers when away.
+
+The mechanics-scale gate remains **NOT READY**. Abilities/techniques at 41/100 are now the largest relative and absolute listed gap; companions are 2/4, quests/contracts 20/30, and named NPCs 48/50.
+
+`0.9.200 Adventure Vertical Slices` remains ACTIVE. Adventure Vertical Slice B is the next in-track bounded candidate, but its regional/character anchor is intentionally unselected and it is not auto-started. After deliberate closure of the 0.9.200 track, `0.9.300 Advanced Combat / Training` is next.
+
+Packet E evidence remains `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`; the five-part ecology repair sequence remains complete through Data 62 and is not reopened. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain separate explicit-selection queues.
+
