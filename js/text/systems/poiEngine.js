@@ -120,9 +120,12 @@ export function performPoiAction(state, action, query = '') {
 export function describePoiInteraction(state, poi, action) {
     const availability = getPoiScheduleStatus(state, poi);
     if (availability.scheduled && !availability.available) {
+        if (availability.npcId) return describeNpcScheduleStatus(availability);
         return availability.currentWindowLabel
             ? `That service is not available right now. Its current schedule is ${availability.currentWindowLabel}.`
-            : 'That service is not available right now.';
+            : availability.windowSummary
+                ? `That service is not available right now. Its schedule is ${availability.windowSummary}.`
+                : 'That service is not available right now.';
     }
 
     const canonicalAction = canonicalizePoiAction(action);
