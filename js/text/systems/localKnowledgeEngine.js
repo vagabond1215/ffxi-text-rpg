@@ -37,8 +37,8 @@ export function createLocalKnowledgeState(startPlaceId, options = {}) {
     if (getPlace(startPlaceId)) {
         state.places[startPlaceId] = {
             placeId: startPlaceId,
-            knowledgeState: KNOWLEDGE_STATES.FAMILIAR,
-            familiarityPoints: FAMILIARITY_THRESHOLDS[1],
+            knowledgeState: KNOWLEDGE_STATES.SIGHTED,
+            familiarityPoints: 1,
             learnedName: true,
             firstSeenAtWorldSeconds: worldTimeSeconds,
             lastSeenAtWorldSeconds: worldTimeSeconds,
