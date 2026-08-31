@@ -14,89 +14,131 @@ Benchmark:     3
 Codename:      Local Knowledge & Familiarity
 Runtime:       Node >=24
 Phase:         0.9
-Gate A:        COMPLETE through Packet E
-Latest unit:   Local Knowledge & Familiarity Foundation COMPLETE
-Next formal:   0.9.200 Adventure Vertical Slice A QUEUED / NOT AUTO-STARTED
+Track state:   0.9.100 Content Scale Gate A COMPLETE
+Prerequisite:  Local Knowledge & Familiarity Foundation COMPLETE
+Next formal:   0.9.200 Adventure Vertical Slices QUEUED
 ```
 
-## Latest bounded unit — Local Knowledge & Familiarity Foundation
+## Latest bounded units
 
-**COMPLETE on `main`.**
+### Local Knowledge & Familiarity Foundation — COMPLETE
+
+This is the latest runtime/persistence bounded unit.
+
+- Product: `0.9.100.24`
+- Game State: `15`
+- Data: `62` unchanged
+- Package: `0.9.100`
+- Account Save: `5`
+- Benchmark: `3`
+- implementation freeze: `da168ddff6cc9e3611c9b8c06165b117081ea5c0`
+- hosted Check: #1770 / run `33355620265`
+- result: Repository Audit, **823/823 tests**, Content Census, Benchmark 3, Benchmark Sample all green
+
+The implementation freeze was deliberately established before permanent-authority synchronization.
+
+No canonical authored place, route, POI, NPC, ecology, resource, item, process, quest, companion, or Pack-v2 ownership record was added. Therefore Data remains 62.
+
+Game State advances 14 -> 15 because the character now owns durable gameplay facts that cannot be reconstructed safely from canonical world catalogs:
+- layered place/POI knowledge and familiarity;
+- learned POI names;
+- NPC name/reference/identity linkage;
+- known connector familiarity;
+- POI interaction history;
+- save-persistent temporary guidance/search bias;
+- current locality anchor;
+- current active POI/interior context.
+
+No supported-save migration was added. Pre-alpha persistence remains strict current-schema-only; legacy Game State 14 saves are not silently coerced into Game State 15.
+
+No new simulation clock, timer owner, listener/background owner, route graph, inventory authority, or duplicate canonical world database was introduced.
+
+### Packet E / Content Scale Gate A — COMPLETE
+
+Permanent audit:
+- `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`
+- implementation freeze/promoted audit SHA: `81b2928611a297d765eaa64f7cedeadb5fd697ee`
+- Check #1638 / run `33332932015`
+- result: Repository Audit, 822/822 tests, Census, Benchmark 3, Benchmark Sample green
+
+Gate A remains PASS / COMPLETE.
+
+### Latest canonical authored-data unit — Data 62
+
+Cross-Biome Family Breadth remains the latest canonical authored-data bounded unit:
+- implementation freeze: `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`
+- promoted Data 62 SHA: `bc472b60374a048686b0ee6c877ba26c515aec35`
+- Product at that authored-data promotion: 0.9.100.23
+- Game State at that authored-data promotion: 14
+
+The five-part location flora/fauna diversity repair sequence is complete:
+1. Legacy Elderwood Ecology Repair — Data 58
+2. Dry Upland & Saltpan Ecology Repair — Data 59
+3. Headwater / Highland Transition Spread — Data 60
+4. Wetland / Island Distribution Repair — Data 61
+5. Cross-Biome Family Breadth — Data 62
+
+Do not restart that sequence automatically.
+
+## Local Knowledge & Familiarity Foundation semantics
+
+Permanent design authority:
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`
+
+Implemented foundation:
+- canonical world truth and character knowledge are separate authorities;
+- POI/place knowledge uses Unknown -> Referenced -> Sighted -> Recognized -> Familiar semantics;
+- sighting does not imply meeting, interaction, direct navigation, or commitment disclosure;
+- knowing an NPC name by reference does not automatically imply identity recognition;
+- direct same-locality movement requires learned familiarity or a currently sighted boundary/anchor;
+- unknown adjacent settlement connectors are not bypassed by long-range travel actions;
+- route graph remains inter-place traversability/time/distance authority;
+- `Look Around` is immediate observation;
+- `Explore` advances fictional time and uses deterministic/injectable weighted discovery;
+- temporary guidance survives save/load for its authored lifetime and biases exploration rather than teleporting;
+- origin guides now create real supplier referrals as Referenced knowledge plus temporary guidance;
+- commitment disclosure requires actual prior interaction with the giver, not mere sighting;
+- POI/service use is staged through approach -> enter where required -> interact -> leave;
+- indoor workstations require actual entry rather than same-place coordinates;
+- public scheduled transport is exposed only through learned travel points or Familiar public transport hubs;
+- dense transport hubs prioritize real departure choices without inventing staffed stops;
+- Forge-Mere still physically crosses Coppergrass without making Coppergrass a staffed/scheduled boarding locality;
+- legacy `discoveredPois` is invalid as current authority under Game State 15;
+- current `localKnowledge` is serialized authority.
+
+Foundation intentionally does not claim the entire future design vision. Still-deferred follow-on locality work includes:
+- broad ambient/risk event catalogs;
+- wandering/seasonal merchant generation;
+- generalized guard/help direction dialogue catalogs;
+- personality-varied greetings and deeper contextual conversation;
+- deeper staged stock-category/Browse interaction;
+- richer learned-locality graphical map presentation.
+
+Do not auto-start those merely because the foundation is complete.
+
+## Validation evidence
 
 Implementation freeze:
-- `da168ddff6cc9e3611c9b8c06165b117081ea5c0`.
+- SHA `da168ddff6cc9e3611c9b8c06165b117081ea5c0`
+- Check #1770 / run `33355620265`
+- **823/823 tests**
+- Repository Audit PASS
+- Content Census PASS
+- Benchmark 3 PASS
+- Benchmark Sample PASS
 
-Hosted implementation validation:
-- Check #1770;
-- run `33355620265`;
-- exact implementation-freeze SHA;
-- Repository Audit PASS;
-- **823/823 tests PASS**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
+Pre-handoff synchronized-authority head:
+- `71ee257cfcae93ef872386f8ab0dab090a23c060`
+- Check #1781 / run `33355858375`
+- Repository Audit, tests, Census, Benchmark, Benchmark Sample all green
 
-The final semantic audit before freeze also closed two subtle authority leaks:
-- a merely sighted commitment giver does not disclose their commitment until actual interaction;
-- an origin guide can create a real Referenced supplier lead plus temporary search guidance, but the referred service is not directly navigable until learned.
-
-## Version / persistence decision
-
-The foundation intentionally changes runtime persistence without changing canonical authored content:
-
-```text
-Product       0.9.100.23 -> 0.9.100.24
-Package       0.9.100    -> 0.9.100
-Account Save  5          -> 5
-Game State    14         -> 15
-Data          62         -> 62
-Benchmark     3          -> 3
-```
-
-Why Game State changes:
-- layered place/POI knowledge affects future navigation;
-- learned names and NPC identity linkage affect future presentation/social access;
-- connector familiarity affects available local movement;
-- POI interaction history affects commitment/service disclosure;
-- temporary guidance/search bias changes future exploration probability;
-- current local POI/interior context must survive save/load coherently.
-
-Why Data does not change:
-- no canonical place/locality;
-- no canonical route or transport service;
-- no canonical POI/NPC/schedule;
-- no ecology/resource/item/process;
-- no commitment/quest definition;
-- no Pack-v2 ownership record
-was added or changed as authored-content scope for this unit.
-
-No supported-save migration was added. The project remains strict pre-alpha current-schema-only. Game State 14 saves are not silently coerced into Game State 15.
-
-No new simulation clock, direct timed-task owner, timer, listener, background worker, inventory authority, or duplicate route/world database was introduced.
-
-## Canonical Data 62 continuity
-
-The latest canonical authored-data bounded unit remains **Cross-Biome Family Breadth**:
-- implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`;
-- promoted Data 62 SHA `bc472b60374a048686b0ee6c877ba26c515aec35`.
-
-Packet E / Content Scale Gate A remains complete:
-- permanent audit `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`;
-- audit implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
-- Check #1638 / run `33332932015`;
-- Gate A result **PASS / COMPLETE**.
-
-The five-part flora/fauna diversity repair sequence remains complete through Data 62 and must not be restarted automatically.
-
-## Current census
-
-Validated on the Local Knowledge & Familiarity implementation freeze:
+Validated census remains:
 
 ```text
 places/localities       55
 named NPCs              47
 shop/service sites      37
-creature definitions   123
+creatures              123
 resource sources       143
 canonical items        408
 recipes/processes      234
@@ -116,234 +158,105 @@ raw-resource use      145/154
 luxury-raw use          14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**:
-- companions 1/4 — largest relative gap;
-- abilities/techniques 41/100 — largest absolute gap;
-- quests/contracts 18/30;
-- named NPCs 47/50.
+Mechanics-scale gate remains NOT READY:
+- companions: 1/4
+- abilities/techniques: 41/100
+- quests/contracts: 18/30
+- named NPCs: 47/50
 
-Do not manufacture filler merely to satisfy those later mechanics floors.
+Largest relative gap remains companions.
+Largest absolute listed gap remains abilities/techniques.
 
-## Implemented locality-knowledge authority
+## Permanent authorities synchronized
 
-Permanent design authority:
-- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+Current continuity was synchronized across:
+- `README.md`
+- `PROJECT_PROFILE.yaml`
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`
+- `docs/DEVELOPMENT_DIRECTION.md`
+- `docs/ARCHITECTURE.md`
+- `docs/SYSTEM_CATALOG.md`
+- `docs/QUALITY_GATES.md`
+- `docs/EXECUTION_PIPELINE.md`
+- `docs/ROADMAP.md`
+- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+- `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`
 
-Game State 15 now persists `localKnowledge` as character-specific knowledge references rather than duplicate canonical records.
+Those authorities distinguish:
+- current runtime/persistence checkpoint: Product 0.9.100.24 / Game State 15;
+- current canonical authored-data checkpoint: Data 62 / Cross-Biome Family Breadth.
 
-Implemented knowledge layers:
-1. Unknown;
-2. Referenced;
-3. Sighted;
-4. Recognized;
-5. Familiar.
-
-Current tuning defaults:
-- Tier 1 Familiar threshold: 5;
-- Tier 2: 7;
-- Tier 3: 10;
-- Tier 4: 14.
-
-These remain defaults rather than a mandate to grind repeated clicks.
-
-### Place / POI / connector behavior
-
-- Fresh starting locality is Sighted, not automatically Familiar.
-- A reference can teach a name without teaching a route.
-- Sighted targets can be acted on only while currently before them.
-- Direct same-locality `Go to` behavior requires Familiar knowledge.
-- Known adjacent settlement connectors support `Walk to`/boundary movement.
-- Directly adjacent but unknown settlement links must not fall through to omniscient long-range travel; Journal/campaign/commitment guidance may direct the player to Explore for the local way.
-- Canonical routes remain actual inter-place traversability authority.
-- Touching map/place envelopes still do not imply travel.
-
-### Look Around / Explore
-
-`Look Around`:
-- immediate/local observation;
-- no fictional-time exploration cost;
-- reveals one contextually obvious target instead of enumerating the locality;
-- never auto-enters or auto-crosses the target.
-
-`Explore`:
-- advances fictional time;
-- uses deterministic/injectable weighted resolution;
-- can reveal/reinforce POIs and local connectors;
-- increases locality familiarity;
-- consumes temporary guidance as weighted search bias rather than teleportation;
-- may resolve ambient/no-new-target outcomes.
-
-Broader street-event variety remains future work.
-
-### NPC identity / referrals / commitments
-
-NPC knowledge keeps separate concepts for:
-- appearance known;
-- referenced name known;
-- identity linked;
-- contact familiarity.
-
-Knowing a name by referral does not automatically mean the character can identify or locate that person.
-
-Origin orientation contact:
-- begins as a legitimate name reference from character creation;
-- must still be found and actually interacted with;
-- real talk can refer the player to one practical supplier;
-- that referral creates Referenced POI knowledge and save-persistent temporary guidance;
-- it does not create direct navigation.
-
-Commitment disclosure:
-- requires actual prior interaction with the giver;
-- sighting the giver alone is insufficient.
-
-### Staged POI interaction
-
-Current semantic sequence:
-
-```text
-discover/sight
--> approach / go to
--> enter when venue type requires it
--> greet / shop / guild / quest / travel / other service
--> leave
-```
-
-Important details:
-- buildings such as shops/guilds/storage require explicit entry;
-- person/stall-like POIs do not receive fake interiors merely to satisfy the state machine;
-- `activePoiId` is persisted and validated against current place/local anchor;
-- real position changes clear stale local interaction context;
-- indoor workstation access requires actual entry;
-- service boards route visits through the staged POI transition rather than direct interaction.
-
-### Services / schedules / transport
-
-- Settlement shops/workshops are filtered through learned POIs.
-- Shop stock is not exposed merely because the canonical shop exists in the district.
-- NPC availability uses canonical fictional-time schedule authority.
-- Schedule status is shared by UI and legacy command paths.
-- Public scheduled transport is exposed only through a known travel point or Familiar transport hub.
-- Dense familiar transport hubs may devote the contextual action budget to their actual scheduled departure board.
-- Coppergrass remains transit wilderness: Forge-Mere physically crosses it, but no staffed/scheduled Coppergrass boarding stop is implied.
-
-## Deferred locality work
-
-The foundation is complete; these are **not** auto-started:
-- broader ambient/risk street-event catalog;
-- wandering/seasonal merchants;
-- generalized guard/help direction encounters beyond the proven guide-referral mechanism;
-- personality-varied greetings/dialogue;
-- deeper NPC-mediated shop stock-category/browse conversation;
-- richer learned-locality graphical map presentation;
-- broad UI polish built on top of these semantics.
-
-Select these only through a fresh bounded work order.
-
-## Authorities synchronized
-
-Before this handoff, the following current authorities were synchronized:
-- `README.md`;
-- `PROJECT_PROFILE.yaml`;
-- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`;
-- `docs/DEVELOPMENT_DIRECTION.md`;
-- `docs/ARCHITECTURE.md`;
-- `docs/SYSTEM_CATALOG.md`;
-- `docs/QUALITY_GATES.md`;
-- `docs/EXECUTION_PIPELINE.md`;
-- `docs/ROADMAP.md`;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`;
-- `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
-
-Last pre-handoff authority commit:
-- `1408aec55d2b740d5e34ab59ad0dd5a8c44fe7ee`.
-
-Pre-handoff hosted validation:
-- Check #1782 / run `33355940369`;
-- Repository Audit, 823/823 tests, Census, Benchmark 3, Benchmark Sample all green.
-
-**This file is the final repository-file write for the Local Knowledge & Familiarity Foundation continuity pass.**
+This file is the **last repository-file write** for the bounded unit.
 
 ## Standing rules preserved
 
 Continue to preserve:
 - route graph as inter-place traversability/distance/time/hazard/mode authority;
-- touching map envelopes do not imply travel;
-- acquired map/locality knowledge instead of omniscient presentation;
-- ecology distribution does not automatically create recovery sources;
-- passive/wary wildlife remains non-hostile unless behavior justifies otherwise;
-- exact source/place/action provenance for recoverables;
-- explicit food safety for food-capable items;
+- touching geographic/map envelopes do not imply traversability;
+- acquired map/locality knowledge rather than omniscient maps;
+- ecology distribution does not automatically imply recovery-source availability;
+- passive/wary wildlife remains non-hostile unless behavior is ecologically/gameplay justified;
+- exact provenance source/place/action for recoverables;
+- explicit food-safety metadata for food-capable items;
 - intentional production/economic/use sinks or explicit exemptions;
-- Pack-v2 ownership/dependency metadata is not a duplicate gameplay database;
-- generated scale fixtures remain excluded from canonical census;
-- deterministic census and deterministic/injectable simulation conventions;
-- canonical fictional time, never wall-clock canonical schedules;
-- Game State 15 unless another genuinely new durable player/world fact requires change;
+- Pack-v2 ownership/dependency metadata only; do not create a second gameplay database;
+- generated scale fixtures are excluded from canonical census;
+- deterministic simulation, exploration RNG, and census behavior;
+- canonical fictional time; no wall-clock canonical schedule authority;
+- Game State 15 unless another genuinely new durable serialized state family requires change;
 - no hard benchmark timing thresholds;
-- Benchmark remains version 3;
-- normal low-risk work may proceed directly on `main`;
-- any future handoff remains the final repository-file write before final validation.
+- Benchmark version remains 3 unless workload/comparability contract changes;
+- normal low-risk work may proceed directly on `main`; validation-only branches/PRs remain acceptable only when exact hosted Check surfacing requires them;
+- `docs/THREAD_HANDOFF.md` must remain the final repository-file write before final exact-head validation.
 
 ## Next decision boundary
 
-No next packet is auto-started.
+Local Knowledge & Familiarity Foundation is complete. No broader locality-event/dialogue/UI work was auto-started.
 
-Formal roadmap ranking:
+Formal roadmap priority remains:
 1. **`0.9.200 Adventure Vertical Slice A`**
    - prefer a character-centered slice;
-   - naturally add a justified recruitable companion where character authorship supports it;
+   - naturally add a justified recruitable companion where fiction supports it;
    - add connected quests/contracts and NPC/service relationships;
-   - reuse existing geography where practical rather than expanding the map for counts.
+   - reuse existing geography where practical instead of expanding the world merely for counts.
 2. **`0.9.300 Advanced Combat / Training`**
-   - deepen ability/technique breadth through real learning/equipment/discipline/encounter requirements.
+   - deepen ability/technique breadth through real learning, equipment, discipline, and encounter requirements.
 3. **`0.9.400 Economy / Production Depth`**
    - Occupational Tool Conversion remains the strongest already-planned bounded candidate.
-4. **`0.9.500 Quest / Social Depth`**.
-5. **`0.9.600 Playable-Alpha Scale Push`**.
+4. **`0.9.500 Quest / Social Depth`**
+5. **`0.9.600 Playable-Alpha Scale Push`**
 
-Separate world-edge ranking:
-1. Waymeet Inner Marches / outer crossroads approach;
-2. Coppergrass extensions;
-3. Drowned Vaults.
+None is auto-started.
 
-Separate optional ecology queue still requires fresh selection:
-- broader Crownfields ordinary-wildlife spread using existing families;
+Separate world-edge ranking remains:
+1. Waymeet Inner Marches / outer crossroads approach
+2. Coppergrass extensions
+3. Drowned Vaults
+
+Optional ecology remains separate and requires fresh explicit selection:
+- broader Crownfields ordinary-wildlife spread;
 - secondary Deepvein Mine / Sunken Archive ecology/substrate cleanup;
 - shorebird/wader breadth if coastal depth warrants it;
 - snake breadth only with a concrete ecological/player/economic loop.
 
-Richer locality events/dialogue/UI work is also a separate optional queue. The Local Knowledge & Familiarity Foundation does not auto-authorize it.
+Richer locality-event/UI work is also a separate explicit-selection queue.
 
 ## Restart order
 
-1. `AGENTS.md`;
-2. this file;
-3. `PROJECT_PROFILE.yaml`;
-4. `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`;
-5. `docs/EXECUTION_PIPELINE.md`;
-6. `docs/ROADMAP.md`;
-7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`;
-8. relevant runtime files only for the newly selected bounded unit.
-
-For locality-foundation maintenance, primary runtime authorities are:
-- `js/text/systems/localKnowledgeEngine.js`;
-- `js/text/systems/localityEngine.js`;
-- `js/text/systems/playerInformationEngine.js`;
-- `js/text/systems/playerOpportunityEngine.js`;
-- `js/text/systems/playerContinuityEngine.js`;
-- `js/text/systems/playerExperienceEngine.js`;
-- `js/text/systems/poiEngine.js`;
-- `js/text/systems/currentGameStateSchema.js`;
-- `js/text/systems/validation.js`;
-- `js/text/ui/gameViewModel.js`;
-- `js/text/ui/domApp.js`;
-- `js/text/ui/uiIntentDispatcher.js`.
+1. `AGENTS.md`
+2. this file
+3. `PROJECT_PROFILE.yaml`
+4. `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`
+5. `docs/EXECUTION_PIPELINE.md`
+6. `docs/ROADMAP.md`
+7. `docs/VERSIONING_AND_RELEASE_ROADMAP.md`
+8. relevant runtime files only for the selected next bounded unit
 
 ## Final validation requirement
 
 Validate the exact final `main` head with hosted Check and Pages.
 
-Hosted Check includes:
+Hosted Check must include:
 
 ```bash
 npm run audit:repo
@@ -353,4 +266,4 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-After final exact-head validation, stop at the decision boundary above.
+Do not make any repository-file mutation after this handoff write before final validation.
