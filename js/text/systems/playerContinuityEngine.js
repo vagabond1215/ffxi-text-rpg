@@ -1,6 +1,6 @@
 import { getCanonicalGatheringSource } from '../data/ecologyRegistry.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
-import { getPlace } from '../data/places.js';
+import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getProductionItem } from '../data/productionItems.js';
 import { getCanonicalResourceItem } from '../data/resourceItemRegistry.js';
 import { listCommitmentDefinitions } from '../data/commitments.js';
@@ -11,7 +11,7 @@ import {
 } from './commitmentEngine.js';
 import { getLatestDaySummary } from './dayCycleEngine.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
-import { listLocalityDestinations } from './localityEngine.js';
+import { isSettlementLocality, listLocalityDestinations } from './localityEngine.js';
 import { decorateCampaignReadabilityModel } from './playerCampaignReadabilityEngine.js';
 import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
@@ -217,7 +217,18 @@ function createReturnStep(state, definition) {
             action: action(`return-local-${definition.id}`, `Go · ${directLocal.name}`, 'locality.move', { destinationId: directLocal.id }),
         };
     }
-    const directTravel = findTravelRoute(state, definition.offerPlaceId);
+    const current = getPlace(state.currentPlaceId);
+    const directlyAdjacentLocality = isSettlementLocality(current)
+        && isSettlementLocality(offerPlace)
+        && getConnectionsFrom(state.currentPlaceId).some((connection) => connection.to === definition.offerPlaceId && connection.mode === 'walk' && !connection.flags?.externalPlaceholder);
+    if (directlyAdjacentLocality) {
+        return {
+            summary: `Explore the locality until you can reliably find the way to ${offerPlace?.name ?? definition.offerPlaceId}.`,
+            action: action(`return-explore-${definition.id}`, `Explore for the way to ${offerPlace?.name ?? definition.offerPlaceId}`, 'locality.explore', { targetPlaceId: definition.offerPlaceId }),
+        };
+    }
+
+        const directTravel = findTravelRoute(state, definition.offerPlaceId);
     if (directTravel.ok) {
         return {
             summary: `Travel back to ${offerPlace?.name ?? definition.offerPlaceId}.`,
