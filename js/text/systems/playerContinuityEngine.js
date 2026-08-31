@@ -14,7 +14,7 @@ import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { isSettlementLocality, listLocalityDestinations } from './localityEngine.js';
 import { decorateCampaignReadabilityModel } from './playerCampaignReadabilityEngine.js';
 import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.js';
-import { hasDiscoveredPoi } from './poiEngine.js';
+import { hasInteractedWithPoi } from './localKnowledgeEngine.js';
 import { findTravelRoute } from './travelEngine.js';
 
 export const PLAYER_CONTINUITY_VERSION = 5;
@@ -56,7 +56,7 @@ export function decoratePlayerOpportunityModel(state, baseModel) {
 
 export function createCommitmentOpportunities(state) {
     return Object.freeze(listCommitmentDefinitions()
-        .filter((definition) => getCommitmentRecord(state, definition.id) || hasDiscoveredPoi(state, definition.offerPoiId))
+        .filter((definition) => getCommitmentRecord(state, definition.id) || hasInteractedWithPoi(state, definition.offerPoiId))
         .map((definition) => createCommitmentOpportunity(state, definition))
         .filter(Boolean));
 }
@@ -65,7 +65,7 @@ export function createCommitmentOpportunity(state, definitionOrId = null) {
     const definition = typeof definitionOrId === 'object'
         ? definitionOrId
         : listCommitmentDefinitions().find((entry) => entry.id === definitionOrId)
-            ?? listCommitmentDefinitions().find((entry) => getCommitmentRecord(state, entry.id) || hasDiscoveredPoi(state, entry.offerPoiId))
+            ?? listCommitmentDefinitions().find((entry) => getCommitmentRecord(state, entry.id) || hasInteractedWithPoi(state, entry.offerPoiId))
             ?? null;
     if (!definition) return null;
     const record = getCommitmentRecord(state, definition.id);
