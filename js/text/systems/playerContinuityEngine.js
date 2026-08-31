@@ -118,22 +118,30 @@ export function createCommitmentOpportunity(state, definitionOrId = null) {
 
     const followUpReady = isCommitmentFollowUpAvailable(state, definition.id);
     const inPlace = state.currentPlaceId === definition.offerPlaceId;
+    const giverPresent = Boolean((state.npcs ?? []).find((npc) => npc.id === definition.giverNpcId
+        && npc.identity?.locationId === definition.offerPlaceId));
+    const canSpeakNow = followUpReady && inPlace && giverPresent;
     return opportunity({
         id: `commitment-${definition.id}`,
         category: 'commitment',
         title: followUpReady ? `${giverName} remembers the work` : `${definition.name} · credited`,
         summary: followUpReady
-            ? `A new day has begun since the work was credited. ${giverName} may have something different to say now.`
+            ? giverPresent
+                ? `A new day has begun since the work was credited. ${giverName} may have something different to say now.`
+                : `${giverName} is not currently at ${offerPlaceName}; persistent travel can move a recruited giver away from the old meeting place.`
             : 'The work has been delivered and credited. Give it some time before expecting another conversation to grow from it.',
-        reason: 'Time and relationships persist after resolution; continuity is not an immediate reward-dialogue reset.',
-        progress: followUpReady ? definition.followUpText : `Return to ${giverName} on a later day.`,
-        status: followUpReady && inPlace ? 'ready' : 'available',
+        reason: 'Time, location, and relationships persist after resolution; continuity does not teleport a mobile giver back to an old quest marker.',
+        progress: followUpReady
+            ? giverPresent ? definition.followUpText : `Meet ${giverName} again when your paths bring them back to ${offerPlaceName}.`
+            : `Return to ${giverName} on a later day.`,
+        status: canSpeakNow ? 'ready' : 'available',
         requirements: [
             requirement(`${definition.name} complete`, true),
             requirement('A new day has begun', followUpReady),
             requirement(`Return to ${offerPlaceName}`, inPlace),
+            requirement(`${giverName} is present`, giverPresent),
         ],
-        action: followUpReady && inPlace
+        action: canSpeakNow
             ? action(`follow-up-${definition.id}`, `Speak again · ${giverName}`, 'commitment.followUp', { commitmentId: definition.id })
             : null,
         regionLabel: offerPlace?.region ?? null,
