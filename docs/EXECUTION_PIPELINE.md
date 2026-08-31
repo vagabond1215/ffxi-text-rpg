@@ -11,51 +11,53 @@ Account Save:  5
 Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 ## Current bounded-unit state
 
-**Packet E — Gate A Integration & Census Audit** is the latest bounded repository unit on `main`.
+**Local Knowledge & Familiarity Foundation** is the latest bounded runtime/persistence unit on `main`.
 
-- Permanent audit: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
-- Audit implementation freeze: `81b2928611a297d765eaa64f7cedeadb5fd697ee`.
-- Check #1638 / run `33332932015`: Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample green.
-- Gate A result: **PASS / COMPLETE**.
-- No Product, Package, Data, Game State, Account Save, or Benchmark change.
+- Product 0.9.100.24 / Game State 15 / Data 62 / Package 0.9.100 / Account Save 5 / Benchmark 3.
+- Implementation freeze: `da168ddff6cc9e3611c9b8c06165b117081ea5c0`.
+- Check #1770 / run `33355620265`: Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample green.
+- Data remains 62: no canonical authored place, route, ecology, resource, item, recipe, NPC, quest, or pack record was added.
+- No supported-save migration was added; pre-alpha persistence remains strict current-schema-only.
 
-**Cross-Biome Family Breadth** remains the latest runtime/data bounded unit:
+**Packet E — Gate A Integration & Census Audit** remains the latest completed scale/audit unit:
+- permanent audit `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`;
+- implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
+- Check #1638 / run `33332932015`: Repository Audit, 822/822 tests, Census, Benchmark 3, and Benchmark Sample green;
+- Gate A result **PASS / COMPLETE**.
+
+**Cross-Biome Family Breadth** remains the latest canonical authored-data bounded unit:
 - implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`;
-- promoted runtime/data SHA `bc472b60374a048686b0ee6c877ba26c515aec35`;
-- Product 0.9.100.23 / Data 62 / Game State 14 / Package 0.9.100.
+- promoted Data 62 SHA `bc472b60374a048686b0ee6c877ba26c515aec35`;
+- canonical authored Data version remains 62.
 
-The five-part location flora/fauna diversity repair sequence remains complete and is not reopened by Packet E.
+The five-part location flora/fauna diversity repair sequence remains complete and is not reopened.
 
-## Pre-UI player-information contract
+## Local Knowledge & Familiarity Foundation
 
-The player-facing locality/discovery intent is now permanent authority in `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+Permanent design authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
-Design status:
-- **COMPLETE / documentation only**;
-- no Product, Package, Data, Game State, Account Save, or Benchmark change;
-- implementation has **not** started.
+Foundation status: **IMPLEMENTED / COMPLETE**.
 
-Required semantics before broad UI/player-control work:
-- canonical world truth must be filtered through character knowledge;
-- NPC names remain masked until learned by introduction/reference/credible identification;
-- POI knowledge is layered rather than binary: Unknown -> Referenced/Rumored -> Sighted -> Recognized -> Familiar;
-- direct same-locality navigation is earned through familiarity, not a single encounter;
+Implemented semantics:
+- canonical world truth is filtered through durable character knowledge;
+- POI/place knowledge uses Unknown -> Referenced -> Sighted -> Recognized -> Familiar states;
+- NPC appearance/name reference/identity linkage remain distinct;
+- direct same-locality navigation requires familiarity or a currently sighted anchor;
 - sighting an entrance never auto-transitions;
-- settlement navigation may use an abstract locality graph rather than a literal city coordinate grid;
-- `Look Around` is immediate local observation;
-- `Explore` is fictional-time, context-weighted discovery/event resolution;
-- temporary directions create save-persistent search bias rather than teleportation;
-- shops are entered and then engaged through staged NPC-mediated interaction before stock/categories are exposed;
-- wandering/conditional merchants and events may remain exploration-only after static landmarks are known.
+- `Look Around` is immediate observation while `Explore` advances fictional time and uses deterministic/injectable weighted discovery;
+- save-persistent temporary guidance biases exploration rather than teleporting;
+- origin-guide referrals create real Referenced knowledge plus temporary search guidance;
+- commitments require actual prior contact with the giver rather than mere sighting;
+- buildings/services use staged approach -> enter -> interact -> leave behavior;
+- public scheduled transport is exposed only through learned travel points or Familiar transport hubs;
+- `discoveredPois` is legacy-invalid under Game State 15; `localKnowledge` is current authority.
 
-The current `discoveredPois` one-step discovery/fast-travel behavior is transitional and must not be treated as the final UI contract.
-
-A future implementation of durable locality knowledge/familiarity is expected to require a deliberate Game State reassessment because familiarity and temporary guidance affect future simulation across save/load.
+Broader ambient-event variety, wandering merchants, guard-direction catalogs, personality-varied dialogue, deeper shop category conversation, and any broader UI polish remain follow-on work and were not auto-started.
 
 ## Data 62 metrics
 
@@ -152,9 +154,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-`0.9.100 Content Scale Gate A` is **COMPLETE through Packet E**. The ordered location flora/fauna diversity repair sequence is also complete through Data 62.
-
-The locality-discovery design contract is also complete. **Do not begin broad player-facing UI work on top of the current binary `discoveredPois` behavior.** When UI/player-control implementation is explicitly selected, the prerequisite bounded unit is **Local Knowledge & Familiarity Foundation**.
+`0.9.100 Content Scale Gate A` is **COMPLETE through Packet E**. The ordered location flora/fauna diversity repair sequence is complete through Data 62. **Local Knowledge & Familiarity Foundation is also COMPLETE** at Product 0.9.100.24 / Game State 15.
 
 Formal roadmap priority remains:
 1. **`0.9.200 Adventure Vertical Slice A`** — prefer a character-centered slice that naturally grows companion, quest, NPC, and service connectivity while reusing existing geography where practical;
@@ -163,7 +163,7 @@ Formal roadmap priority remains:
 4. **`0.9.500 Quest / Social Depth`**;
 5. **`0.9.600 Playable-Alpha Scale Push`**.
 
-None is auto-started.
+None is auto-started. Richer locality events/dialogue/UI work is a separate optional queue, not an automatic continuation of the foundation.
 
 The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults.
 
