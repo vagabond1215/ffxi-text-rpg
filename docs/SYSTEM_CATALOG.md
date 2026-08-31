@@ -221,7 +221,7 @@ spellSchools / capabilities / abilities / companions
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
 | Companion pack ownership | integrated | Current companion catalog resolves through Pack v2 without copy authority. |
-| Companion breadth | seeded | Census still counts one recruitable companion. |
+| Companion breadth | seeded | Census now counts two recruitable companions after the Slatewater Road Scout slice. |
 
 ## Economy, ecology, production, and life systems
 
@@ -233,8 +233,8 @@ spellSchools / capabilities / abilities / companions
 | Resource provenance | playable | Physical/economic/social/exceptional origins. |
 | Resource opportunities/recovery | playable | Defeat/world opportunities become materials through real recovery work. |
 | Ecology/species/populations | playable | Deterministic habitat/population hooks now include managed agricultural livestock/pest/pollinator niches. |
-| Gathering sources | playable | 142 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
-| Production | playable | 233 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
+| Gathering sources | playable | 143 current sources with place/tool/capacity/provenance; later regional tranches include fishing, hunting-backed recovery, logging, forage, mineral, wetland, alpine, coastal, old-growth, and arid-frontier sources. |
+| Production | playable | 234 current processing/crafting/cooking/salvage definitions; regional substitutes and connected preservation/fieldcraft/material chains prevent basic production dead ends without duplicating specialty resources everywhere. |
 | Ingredient/component chaining | playable | Food/textile/luxury intermediates now extend into standardized alloys, sheet/wire, hardware, tool blanks, planks/beams/handles, cordage grades, canvas/net webbing, industrial binders/abrasives, and glass batch. |
 | Luxury production depth | playable | All 14 current luxury raws feed production demand. |
 | Freshwater processing safety | playable | Raw fish/shellfish remain preparation-required; Bitterflag is explicitly toxic raw and has a detoxification chain; prepared outputs become direct-safe food with provenance. |
@@ -255,7 +255,7 @@ spellSchools / capabilities / abilities / companions
 | System | Status | Notes |
 | --- | --- | --- |
 | NPC seed definitions | integrated | 47 runtime seed NPCs; census counts 48 named NPC definitions across canonical sources. |
-| NPC recurring schedules | playable | Twenty-three current schedules derive availability from fictional time. |
+| NPC recurring schedules | playable | Twenty-seven current schedules derive availability from fictional time. |
 | NPC schedule validation | integrated | Stable schedule lookup + structural validation. |
 | Player-facing NPC identity disclosure | planned | Canonical names remain internal until introduction/reference/credible visual identification links identity for the character. |
 | Contextual greeting/dialogue presentation | planned | Semantic actions with NPC/player-personality-aware prose variants; presentation RNG must not silently mutate gameplay state. |
