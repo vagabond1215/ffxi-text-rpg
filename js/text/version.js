@@ -138,7 +138,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerContinuity: '0.6.0',
     playerCampaignReadability: '0.2.0',
     playerDangerRecovery: '0.2.0',
-    localityNavigation: '0.3.0',
+    localityNavigation: '0.3.1',
     canvasUi: '0.8.0',
     uiIntents: '0.12.0',
     slashCommands: '0.5.0',
