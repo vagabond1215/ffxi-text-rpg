@@ -193,7 +193,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /dayCyclePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /workProficiencies: 0\.2\.0/);
     assert.match(describeSystemVersions(), /placeAtlas: 0\.6\.0/);
-    assert.match(describeSystemVersions(), /discoveryPersistence: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /discoveryPersistence: 0\.2\.0/);
     assert.match(describeSystemVersions(), /poiDiscovery: 0\.4\.0/);
     assert.doesNotMatch(describeSystemVersions(), /saveMigrations:/);
 });
