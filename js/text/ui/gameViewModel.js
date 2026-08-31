@@ -169,7 +169,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     kind: 'social',
                 }),
             );
-            const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && activePoint.actions.includes(candidate));
+            if (activePoint.actions.includes('travel')) {
+                actions.push(...((transportDesk?.entries ?? []).slice(0, 2).map(transportBoardAction)));
+            }
+            const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && candidate !== 'travel' && activePoint.actions.includes(candidate));
             if (serviceAction && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
                 actions.push(Object.freeze({
                     id: `context:locality-poi:${activePoint.id}:${serviceAction}`,
@@ -203,7 +206,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
             directAction('context:locality-look', 'Look Around', 'locality.look', {}, 'exploration'),
             directAction('context:locality-explore', 'Explore', 'locality.explore', {}, 'exploration'),
             ...listLocalityDestinations(state)
-                .slice(0, 3)
+                .slice(0, 1)
                 .map((destination) => Object.freeze({
                     id: `context:locality:${destination.id}`,
                     label: `${destination.navigationState === 'familiar' ? 'Walk to' : 'Enter'} · ${destination.name}`,
@@ -211,19 +214,19 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     payload: Object.freeze({ destinationId: destination.id }),
                     kind: 'travel',
                 })),
-            ...((transportDesk?.entries ?? []).slice(0, 2).map(transportBoardAction)),
         ];
 
-        for (const poi of points) {
-            if (actions.length >= 5) break;
+        const firstKnownPoi = points[0] ?? null;
+        if (firstKnownPoi) {
             actions.push(Object.freeze({
-                id: `context:locality-poi-visit:${poi.id}`,
-                label: `${poi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${poi.name}`,
+                id: `context:locality-poi-visit:${firstKnownPoi.id}`,
+                label: `${firstKnownPoi.knowledgeState === 'familiar' ? 'Go to' : 'Approach'} · ${firstKnownPoi.name}`,
                 intent: 'locality.poi.visit',
-                payload: Object.freeze({ poiId: poi.id }),
+                payload: Object.freeze({ poiId: firstKnownPoi.id }),
                 kind: 'exploration',
             }));
         }
+        actions.push(...((transportDesk?.entries ?? []).slice(0, 2).map(transportBoardAction)));
         actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
         return dedupeActions(actions).slice(0, 6);
     }
