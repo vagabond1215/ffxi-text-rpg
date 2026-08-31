@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E.** Cross-Biome Family Breadth remains the promoted Data 62 runtime/data checkpoint; the next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.100 Content Scale Gate A` is complete after Packet E, and the Local Knowledge & Familiarity Foundation prerequisite is complete.** Data 62 remains the canonical authored-content checkpoint; Product 0.9.100.24 / Game State 15 is the current runtime/persistence checkpoint. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started.
 
 ```text
 Product:       0.9.100.24
@@ -19,7 +19,7 @@ Account Save:  5
 Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -105,13 +105,13 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 14 still owns the same durable player/world facts. Important non-serialized runtime state includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 15 adds durable `localKnowledge` plus nullable `activePoiId` context for learned places/POIs/connectors, NPC identity linkage, familiarity, temporary guidance, interaction history, and staged locality presence. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
 The player-facing UI is a **world interface**, not a permanent command console. Primary information navigation includes Scene, Character, Spellbook, Journal, Codex, Craft, and World. Contextual gameplay actions use semantic intents into domain systems; command routing remains an optional adapter/regression surface.
 
-Before broad UI work, locality/player information follows `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`: unknown POIs/NPC identities stay hidden, places progress through learned familiarity before direct navigation, sighted entrances require explicit transition actions, and `Look Around` / `Explore` reveal the world contextually rather than enumerating canonical content.
+Locality/player information now implements the foundation in `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`: unknown POIs/NPC identities stay hidden, references/sightings are distinct from familiarity and interaction, sighted entrances require explicit transitions, `Look Around` and fictional-time `Explore` reveal the world contextually, guide referrals create temporary search bias, and shops/services use staged approach/enter/interact/leave semantics.
 
 ## Systems already playable / proven
 
@@ -128,7 +128,7 @@ Before broad UI work, locality/player information follows `docs/PLAYER_INFORMATI
 
 ## Current decision boundary
 
-**`0.9.100 Content Scale Gate A` is complete.** Packet E passed the integration/census audit on Data 62 without changing Product, Data, Game State, Account Save, Package, or Benchmark contracts. Permanent evidence: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`.
+**`0.9.100 Content Scale Gate A` is complete, and Local Knowledge & Familiarity Foundation is complete.** Packet E remains the Data 62 scale/integration closure; the locality foundation advances Product to 0.9.100.24 and Game State to 15 without changing Data, Package, Account Save, or Benchmark. Foundation implementation freeze: `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample.
 
 The five-part location flora/fauna diversity repair sequence is complete through Data 62.
 
@@ -141,4 +141,4 @@ Completed:
 
 There is **no automatically authorized sixth ecology repair**. Post-sequence ecology opportunities remain optional: Crownfields broader ordinary-wildlife spread, secondary dungeon substrate/ecology cleanup, a shorebird/wader family when coastal depth warrants it, and a snake family only when a concrete ecological/player loop justifies it.
 
-Packet E is complete. The next formal roadmap track is `0.9.200 Adventure Vertical Slices`; world-edge expansion, Occupational Tool Conversion, and optional post-sequence ecology work remain separate queues requiring explicit selection.
+The locality foundation is complete and broad follow-on locality event/dialogue/UI polish was not auto-started. The next formal roadmap track remains `0.9.200 Adventure Vertical Slices`; world-edge expansion, Occupational Tool Conversion, optional post-sequence ecology work, and richer locality-event/UI work remain separate queues requiring explicit selection.
