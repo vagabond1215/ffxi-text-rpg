@@ -6,6 +6,7 @@ import {
     listCompanionFieldApproaches,
 } from '../data/companions.js';
 import { createNpc } from '../entities/entityFactory.js';
+import { getCommitmentRecord } from './commitmentEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { isSettlementLocality } from './localityClassificationEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
@@ -74,6 +75,15 @@ export function canRecruitCompanion(state, companionQuery) {
     const missingFlags = definition.recruitment.requiredFlags.filter((flagId) => !state.flags?.[flagId]);
     if (missingFlags.length) {
         return blocked('party.relationship-requirement', { companionId: definition.id, missingFlags }, `${definition.name} is not yet willing to travel with you.`);
+    }
+    const missingCommitmentIds = (definition.recruitment.requiredCommitmentIds ?? [])
+        .filter((commitmentId) => getCommitmentRecord(state, commitmentId)?.status !== 'resolved');
+    if (missingCommitmentIds.length) {
+        return blocked(
+            'party.commitment-requirement',
+            { companionId: definition.id, missingCommitmentIds },
+            `${definition.name} is not yet willing to travel with you; finish the field work that establishes trust first.`,
+        );
     }
     const npc = ensureBackingNpcRecord(state, definition);
     if (npc.identity.locationId !== state.currentPlaceId) {
