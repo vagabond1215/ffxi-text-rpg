@@ -5,7 +5,7 @@ import {
     listTransportServices,
 } from '../data/routeCatalog.js';
 import { getPlace } from '../data/places.js';
-import { getKnownPoisForPlace } from './localKnowledgeEngine.js';
+import { getKnownPoisForPlace, getPlaceKnowledge, KNOWLEDGE_STATES } from './localKnowledgeEngine.js';
 import { getCarriedCargoUnits } from './carriedLoadEngine.js';
 import { describeBlockingHandsOnTask, isCharacterHandsOnBusy } from './characterActivityEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
@@ -17,7 +17,8 @@ export function createTransportServiceBoard(state, options = {}) {
     if (state?.localKnowledge && options.ignoreLocalKnowledge !== true) {
         const hasKnownTravelPoint = getKnownPoisForPlace(state, fromPlaceId)
             .some((poi) => poi.actions?.includes('travel'));
-        if (!hasKnownTravelPoint) return emptyBoard(state, fromPlaceId);
+        const placeFamiliar = getPlaceKnowledge(state, fromPlaceId)?.knowledgeState === KNOWLEDGE_STATES.FAMILIAR;
+        if (!hasKnownTravelPoint && !placeFamiliar) return emptyBoard(state, fromPlaceId);
     }
     const nowWorldSeconds = ensureWorldTimeState(state).totalSeconds;
     const cargoUnits = getCarriedCargoUnits(state);
