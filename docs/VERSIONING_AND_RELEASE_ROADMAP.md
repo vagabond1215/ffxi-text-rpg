@@ -11,7 +11,7 @@ Account Save:  5
 Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 ## Product version format
@@ -25,7 +25,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 14 | serialized character/world runtime contract |
+| Game State | 15 | serialized character/world runtime contract |
 | Data | 62 | canonical authored-data, geography/ecology/resource/production stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
@@ -1038,6 +1038,35 @@ Gate A passes because Data 62 clears the Packet E planning bands and the qualita
 
 No new durable serialized family, canonical authored-data record, or runtime behavior was introduced, so no version or migration change is warranted.
 
+### `0.9.100.24` — Local Knowledge & Familiarity Foundation
+
+This bounded prerequisite implements the player-information/locality-discovery foundation before broader UI or adventure-slice work.
+
+```text
+Product       0.9.100.23 -> 0.9.100.24
+Package       0.9.100    -> 0.9.100
+Data          62         -> 62
+Game State    14         -> 15
+Account Save  5          -> 5
+Benchmark     3          -> 3
+```
+
+Implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0` passed Check #1770 / run `33355620265` with Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+Game State advances because the character now owns durable gameplay facts that cannot be reconstructed from canonical catalogs alone:
+- layered place/POI knowledge and familiarity;
+- learned names and NPC identity linkage;
+- known connector familiarity;
+- POI interaction history;
+- temporary guidance/search bias that changes future exploration probability;
+- current local POI/interior context.
+
+Data stays 62 because no canonical authored place, route, POI, NPC, ecology, resource, item, process, quest, or Pack-v2 ownership record changed.
+
+No supported-save migration is added. The project remains pre-alpha current-schema-only, so Game State 14 saves are not silently coerced into Game State 15.
+
+The foundation adds no new simulation clock, direct timed-task owner, listener/background owner, inventory authority, or route graph.
+
 ## Persistence history
 
 Relevant late history:
@@ -1051,6 +1080,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 11 -> 12            top-level command log becomes transient
 12 -> 13            durable cultivation authority
 13 -> 14            durable paid cultivation delegation appointment
+14 -> 15            durable locality knowledge/familiarity and active local POI context
 0.8.900.1           no Game State change
 0.9.100.1           no Game State change; Data 39 -> 40
 0.9.100.2           no Game State change; Data 40 -> 41
@@ -1075,6 +1105,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.21          no Game State change; Data 59 -> 60
 0.9.100.22          no Game State change; Data 60 -> 61
 0.9.100.23          no Game State change; Data 61 -> 62
+0.9.100.24          Game State 14 -> 15; Data remains 62
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1189,24 +1220,26 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
 0.9.900 RC soak/performance/release hardening DEFERRED
 ```
 
-## Player-information/locality discovery planning decision
+## Player-information/locality discovery implementation decision
 
-`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` is the pre-UI design authority for learned locality knowledge, NPC identity disclosure, familiarity-gated navigation, contextual exploration, and staged NPC-mediated shop interaction.
+`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` remains the design authority for learned locality knowledge, NPC identity disclosure, familiarity-gated navigation, contextual exploration, and staged NPC-mediated interaction.
 
-This planning pass changes no runtime or canonical authored data:
+**Local Knowledge & Familiarity Foundation is implemented and complete.**
 
 ```text
-Product       0.9.100.23 -> 0.9.100.23
+Product       0.9.100.23 -> 0.9.100.24
 Package       0.9.100    -> 0.9.100
 Data          62         -> 62
-Game State    14         -> 14
+Game State    14         -> 15
 Account Save  5          -> 5
 Benchmark     3          -> 3
 ```
 
-Implementation has not started. The current `discoveredPois` binary discovery/one-interaction same-place fast-travel behavior is transitional.
+Current `localKnowledge` replaces binary `discoveredPois` as durable authority. The new state survives save/load because familiarity, identity linkage, connector knowledge, interaction history, and temporary guidance affect future player-facing and simulation decisions.
 
-When Local Knowledge & Familiarity Foundation is implemented, Game State must be reassessed: save-persistent familiarity, learned identity linkage, known connectors, and temporary guidance/search bias are durable gameplay facts rather than UI-only presentation.
+The exact implementation freeze is `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, 823/823 tests, Census, Benchmark 3, and Benchmark Sample.
+
+Richer ambient locality events, wandering merchants, generalized guard directions, personality-varied dialogue, and deeper shop-category conversation remain future bounded work rather than part of this persistence transition.
 
 ## Governance and release discipline
 
