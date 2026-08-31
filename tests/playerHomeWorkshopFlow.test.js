@@ -180,7 +180,7 @@ test('0.8.200 turns a home improvement into a real reusable woodshop capability 
     );
     assert.match(html, /Work, Trade &amp; Recover/);
     assert.match(html, /Seal Elderwood Hardwood Board/);
-    assert.match(html, /data-service-action=/);
+    assert.doesNotMatch(html, /data-service-action=/, 'spent home-workshop inputs should not manufacture unrelated town service actions before those services are learned');
     assert.doesNotMatch(html, /homeInfrastructureId|project\.labor|mogHouse|workstationEngine/i);
 
     assert.deepEqual(validateHomeInfrastructureState(state), []);
