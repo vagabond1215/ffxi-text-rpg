@@ -45,8 +45,8 @@ function reachFirstRegion(state, origin, category = 'livelihood') {
     let entry = opportunity(createPlayerOpportunityModel(state), category);
     if (state.currentPlaceId !== origin.departureId) {
         assert.equal(entry.status, 'ready', `${origin.nationId} should expose its named departure locality`);
-        assert.equal(entry.action?.intent, 'locality.move');
-        assert.equal(entry.action?.payload.destinationId, origin.departureId);
+        assert.equal(entry.action?.intent, 'locality.explore');
+        assert.equal(entry.action?.payload.targetPlaceId, origin.departureId);
         const moved = moveToKnownLocality(state, origin.departureId);
         assert.equal(moved.ok, true, moved.message);
         assert.equal(state.currentPlaceId, origin.departureId);
@@ -123,8 +123,8 @@ test('equipping the origin tool opens an honest livelihood route through named l
             assert.equal(livelihood.action.intent, 'travel.start');
             assert.equal(livelihood.action.payload.destinationId, origin.destinationId);
         } else {
-            assert.equal(livelihood.action.intent, 'locality.move');
-            assert.equal(livelihood.action.payload.destinationId, origin.departureId);
+            assert.equal(livelihood.action.intent, 'locality.explore');
+            assert.equal(livelihood.action.payload.targetPlaceId, origin.departureId);
         }
 
         reachFirstRegion(state, origin, 'livelihood');
