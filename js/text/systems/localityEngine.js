@@ -568,9 +568,12 @@ function decoratePoiAvailability(state, poi) {
 
 function describeUnavailablePoi(status) {
     if (!status?.scheduled) return 'That service is not available right now.';
+    if (status.npcId) return describeNpcScheduleStatus(status);
     return status.currentWindowLabel
         ? `That service is not available right now. Its current schedule is ${status.currentWindowLabel}.`
-        : 'That service is not available right now.';
+        : status.windowSummary
+            ? `That service is not available right now. Its schedule is ${status.windowSummary}.`
+            : 'That service is not available right now.';
 }
 
 function ok(code, message, data = {}) { return { ok: true, code, message, data }; }
