@@ -25,7 +25,7 @@ import {
     setCurrentLocalAnchor,
 } from './localKnowledgeEngine.js';
 import { describeNpcScheduleStatus, getPoiScheduleStatus } from './npcScheduleEngine.js';
-import { syncActivePartyLocation } from './partyEngine.js';
+import { recruitCompanion, syncActivePartyLocation } from './partyEngine.js';
 import { performPoiAction, talkAtCurrentGrid } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { advanceSimulationUntilInterrupt } from './simulationInterruptEngine.js';
@@ -391,6 +391,28 @@ export function performLocalityPoiAction(state, poiId, action = 'talk') {
     if (availability.npcId) identifyNpc(state, availability.npcId, { points: 1 });
 
     const canonicalAction = String(action ?? 'talk').trim().toLowerCase();
+    if (canonicalAction === 'companion') {
+        const recruitment = recruitCompanion(state, poi.name);
+        if (!recruitment.ok) {
+            return fail(
+                recruitment.code ?? 'locality.companion-unavailable',
+                recruitment.display?.text ?? recruitment.reason ?? 'That person is not yet willing to travel with you.',
+                { poiId: poi.id, action: canonicalAction, companionResult: recruitment.data ?? null },
+            );
+        }
+        const event = emitSemanticEvent(state, 'locality.poi-used', {
+            placeId: state.currentPlaceId,
+            poiId: poi.id,
+            action: canonicalAction,
+        }, { source: 'localityEngine' });
+        return ok('locality.poi-used', recruitment.display?.text ?? `${poi.name} agrees to travel with you.`, {
+            poiId: poi.id,
+            action: canonicalAction,
+            companionResult: recruitment.data ?? null,
+            eventId: event.id,
+        });
+    }
+
     const message = canonicalAction === 'talk'
         ? talkAtCurrentGrid(state, poi.name)
         : performPoiAction(state, canonicalAction, poi.name);
