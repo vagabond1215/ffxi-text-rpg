@@ -170,7 +170,7 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                 }),
             );
             if (activePoint.actions.includes('travel')) {
-                actions.push(...((transportDesk?.entries ?? []).slice(0, 2).map(transportBoardAction)));
+                actions.push(...((transportDesk?.entries ?? []).slice(0, 4).map(transportBoardAction)));
             }
             const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && candidate !== 'travel' && activePoint.actions.includes(candidate));
             if (serviceAction && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
