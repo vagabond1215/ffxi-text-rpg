@@ -70,15 +70,15 @@ The five-part location flora/fauna diversity repair sequence is now complete. Ga
 | Category | Current | Mechanics floor | Status |
 | --- | ---: | ---: | --- |
 | Places/localities | 55 | 10 | reached |
-| Named NPCs | 47 | 50 | 3 short |
+| Named NPCs | 48 | 50 | 2 short |
 | Shop/service sites | 37 | 20 | reached |
 | Creature definitions | 123 | 40 | reached; playable-alpha lower bound 120 also reached |
 | Resource sources | 143 | 40 | reached |
 | Canonical items | 408 | 200 | reached |
 | Recipes/processes | 234 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
-| Quests/contracts | 18 | 30 | 12 short |
-| Companions | 1 | 4 | 3 short |
+| Quests/contracts | 20 | 30 | 10 short |
+| Companions | 2 | 4 | 2 short |
 | Transport services | 7 | 5 | reached |
 
 ```text
@@ -87,7 +87,7 @@ spell schools                  4
 capabilities                  44
 NPC schedules                 27
 regional/shared packs         39
-pack-owned records          1320
+pack-owned records          1325
 runtime seed NPCs             46
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -143,6 +143,35 @@ Packet E confirms that the Data 62 graph clears every Gate A planning band and t
 
 `0.9.100 Content Scale Gate A` is therefore **COMPLETE**. The next formal roadmap track is **`0.9.200 Adventure Vertical Slices`**, queued and not auto-started.
 
+## 0.9.200 Adventure Vertical Slice A — Slatewater Road Scout
+
+**Status: COMPLETE ON `main`.**
+
+Permanent evidence:
+- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
+- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
+
+Version decision:
+- Product 0.9.100.24 -> 0.9.200.1;
+- Package 0.9.100 -> 0.9.200;
+- Data 62 -> 63;
+- Game State remains 15;
+- Account Save remains 5;
+- Benchmark remains 3.
+
+Slice A is character-centered and reuses existing Slatewater geography. Sable Renn's two-contract trust arc composes field gathering/provenance, work proficiency, persistent relationships, chained commitment visibility, locality interaction, party recruitment, route travel, NPC projection, and save-compatible existing Game State families.
+
+Census movement:
+- NPCs 47 -> 48;
+- quests/contracts 18 -> 20;
+- companions 1 -> 2;
+- pack-owned records 1,320 -> 1,325.
+
+The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
+
+**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is the next bounded in-track candidate, but its anchor is not preselected and it is not auto-started.
+
 ## Macro-world topology
 
 **TOPOLOGY LOCK COMPLETE / NO VERSION CHANGE.**
@@ -193,10 +222,10 @@ The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_T
 
 ## High-value system/content gaps
 
-- companion breadth;
+- companion breadth improved to 2/4 through Slice A;
 - production/recipe breadth already exceeds the mechanics floor; future recipes should deepen utility rather than chase count;
-- NPC and quest network density;
-- ability/technique breadth;
+- NPC and quest network density improved to 48/50 and 20/30 through Slice A;
+- ability/technique breadth is now the largest relative mechanics gap at 41/100;
 - deeper Crownfields agricultural processing/husbandry when justified;
 - The five-part location flora/fauna diversity repair sequence is complete through Data 62; no sixth ecology packet is auto-authorized.
 
