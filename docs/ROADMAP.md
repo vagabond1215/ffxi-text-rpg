@@ -11,7 +11,7 @@ Account Save:  5
 Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 ## Completed foundation and major tranches
@@ -98,27 +98,27 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest planning pass
 
-### Player Information & Locality Discovery
+### Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
-**Status: COMPLETE ON `main`; documentation/planning only.**
+**Status: FOUNDATION COMPLETE ON `main`.**
 
 Permanent authority:
 - `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
-This pass defines the player-information boundary that must exist before broad UI/player-control implementation:
-- the interface cannot expose raw canonical world truth;
-- NPC names require introduction/reference/credible identification;
-- POI knowledge is layered through sighting/recognition/familiarity;
-- direct local navigation is familiarity-gated;
-- entrance discovery does not auto-transition;
-- `Look Around` and `Explore` are distinct semantic actions;
-- contextual exploration remains useful through temporary merchants, directions, risk, and ambient events;
-- shops use staged reach -> enter -> NPC interaction -> category/browse flow;
-- town navigation may remain an abstract learned locality graph.
+Runtime/persistence closure:
+- Product `0.9.100.24`;
+- Game State `15`;
+- Data `62` unchanged;
+- implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
+- Check #1770 / run `33355620265`: Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample green.
 
-The current binary `discoveredPois`/one-interaction fast-travel behavior is transitional. The prerequisite implementation unit before broad UI work is **Local Knowledge & Familiarity Foundation**, not yet started.
+The foundation replaces binary `discoveredPois` with durable layered locality knowledge, learned connectors, NPC identity linkage, familiarity-gated direct navigation, deterministic fictional-time Look Around/Explore, temporary save-persistent guidance, real guide referrals, staged approach/enter/interact/leave transitions, and knowledge-gated service/transport presentation.
 
-No Product, Data, Game State, Account Save, Package, or Benchmark change accompanies this planning pass. Game State must be reassessed when durable familiarity/temporary guidance is implemented.
+Data stays 62 because this unit introduces no canonical authored world/content records. Game State advances 14 -> 15 because `localKnowledge`, temporary guidance, interaction history, and current local POI context are durable gameplay facts.
+
+The broader design document still contains follow-on possibilities—ambient/risk events, wandering merchants, richer guard directions, personality dialogue variation, and deeper NPC-mediated shop browsing. Those are **not** part of this foundation closure and are not auto-started.
+
+The next formal roadmap track remains **`0.9.200 Adventure Vertical Slices`**, queued and not auto-started.
 
 ### Macro-World Topology Lock
 
