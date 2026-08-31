@@ -18,7 +18,7 @@ import { decoratePlayerDangerRecoveryModel } from './playerDangerRecoveryEngine.
 import { hasInteractedWithPoi } from './localKnowledgeEngine.js';
 import { findTravelRoute } from './travelEngine.js';
 
-export const PLAYER_CONTINUITY_VERSION = 5;
+export const PLAYER_CONTINUITY_VERSION = 6;
 
 export function decoratePlayerOpportunityModel(state, baseModel) {
     if (!baseModel) return baseModel;
