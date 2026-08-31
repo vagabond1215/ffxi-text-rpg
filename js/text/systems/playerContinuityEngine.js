@@ -5,6 +5,7 @@ import { getProductionItem } from '../data/productionItems.js';
 import { getCanonicalResourceItem } from '../data/resourceItemRegistry.js';
 import { listCommitmentDefinitions } from '../data/commitments.js';
 import {
+    checkCommitmentPrerequisites,
     checkCommitmentRequirements,
     getCommitmentRecord,
     isCommitmentFollowUpAvailable,
@@ -56,7 +57,11 @@ export function decoratePlayerOpportunityModel(state, baseModel) {
 
 export function createCommitmentOpportunities(state) {
     return Object.freeze(listCommitmentDefinitions()
-        .filter((definition) => getCommitmentRecord(state, definition.id) || hasInteractedWithPoi(state, definition.offerPoiId))
+        .filter((definition) => {
+            const record = getCommitmentRecord(state, definition.id);
+            if (record) return true;
+            return hasInteractedWithPoi(state, definition.offerPoiId) && checkCommitmentPrerequisites(state, definition).ok;
+        })
         .map((definition) => createCommitmentOpportunity(state, definition))
         .filter(Boolean));
 }
@@ -69,6 +74,7 @@ export function createCommitmentOpportunity(state, definitionOrId = null) {
             ?? null;
     if (!definition) return null;
     const record = getCommitmentRecord(state, definition.id);
+    if (!record && !checkCommitmentPrerequisites(state, definition).ok) return null;
     const giver = getPointOfInterest(definition.offerPoiId);
     const offerPlace = getPlace(definition.offerPlaceId);
     const giverName = giver?.name ?? definition.giverNpcId;
