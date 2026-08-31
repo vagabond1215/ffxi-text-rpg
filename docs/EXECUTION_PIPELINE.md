@@ -16,69 +16,44 @@ Codename:      Slatewater Road Scout
 
 ## Current bounded-unit state
 
-**Local Knowledge & Familiarity Foundation** is the latest bounded runtime/persistence unit on `main`.
+**Adventure Vertical Slice A — Slatewater Road Scout** is the latest bounded unit on `main`.
 
-- Product 0.9.100.24 / Game State 15 / Data 62 / Package 0.9.100 / Account Save 5 / Benchmark 3.
-- Implementation freeze: `da168ddff6cc9e3611c9b8c06165b117081ea5c0`.
-- Check #1770 / run `33355620265`: Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample green.
-- Data remains 62: no canonical authored place, route, ecology, resource, item, recipe, NPC, quest, or pack record was added.
-- No supported-save migration was added; pre-alpha persistence remains strict current-schema-only.
+- permanent record `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
+- Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63 / Account Save 5 / Benchmark 3;
+- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
 
-**Packet E — Gate A Integration & Census Audit** remains the latest completed scale/audit unit:
-- permanent audit `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`;
-- implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`;
-- Check #1638 / run `33332932015`: Repository Audit, 822/822 tests, Census, Benchmark 3, and Benchmark Sample green;
-- Gate A result **PASS / COMPLETE**.
+Slice A reuses Slatewater Waylodge + Slatewater Foothills. It adds one persistent NPC, two chained provenance-qualified field contracts, one recruitable companion, and Pack-v2 relationship/ownership metadata.
 
-**Cross-Biome Family Breadth** remains the latest canonical authored-data bounded unit:
-- implementation freeze `c5e12b5d8f0b6ddf7a76f5df01316567b43d4528`;
-- promoted Data 62 SHA `bc472b60374a048686b0ee6c877ba26c515aec35`;
-- canonical authored Data version remains 62.
+Game State stays 15: commitments, relationships, party state, local knowledge, and backing-NPC projection already own every durable consequence.
 
-The five-part location flora/fauna diversity repair sequence remains complete and is not reopened.
+The previous Local Knowledge & Familiarity Foundation remains complete:
+- implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
+- Check #1770 / run `33355620265`;
+- 823/823 tests plus full hosted gate.
 
-## Local Knowledge & Familiarity Foundation
+Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-Permanent design authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
-
-Foundation status: **IMPLEMENTED / COMPLETE**.
-
-Implemented semantics:
-- canonical world truth is filtered through durable character knowledge;
-- POI/place knowledge uses Unknown -> Referenced -> Sighted -> Recognized -> Familiar states;
-- NPC appearance/name reference/identity linkage remain distinct;
-- direct same-locality navigation requires familiarity or a currently sighted anchor;
-- sighting an entrance never auto-transitions;
-- `Look Around` is immediate observation while `Explore` advances fictional time and uses deterministic/injectable weighted discovery;
-- save-persistent temporary guidance biases exploration rather than teleporting;
-- origin-guide referrals create real Referenced knowledge plus temporary search guidance;
-- commitments require actual prior contact with the giver rather than mere sighting;
-- buildings/services use staged approach -> enter -> interact -> leave behavior;
-- public scheduled transport is exposed only through learned travel points or Familiar transport hubs;
-- `discoveredPois` is legacy-invalid under Game State 15; `localKnowledge` is current authority.
-
-Broader ambient-event variety, wandering merchants, guard-direction catalogs, personality-varied dialogue, deeper shop category conversation, and any broader UI polish remain follow-on work and were not auto-started.
-
-## Data 62 metrics
+## Data 63 metrics
 
 ```text
 places/localities                       55
-named NPCs                              47
+named NPCs                              48
 shop/service sites                      37
 creatures                              123
 resource sources                       143
 canonical items                        408
 recipes/processes                      234
 abilities/techniques                    41
-quests/contracts                        18
-companions                               1
+quests/contracts                        20
+companions                               2
 transport services                       7
 raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
 regional/shared packs                   39
-pack-owned records                    1320
+pack-owned records                    1325
 runtime seed NPCs                       46
 runtime seed enemies                    17
 ```
@@ -123,10 +98,10 @@ Reached:
 - transport services.
 
 Still short:
-- companions: 1/4;
+- companions: 2/4;
 - abilities/techniques: 41/100;
-- named NPCs: 47/50;
-- quests/contracts: 18/30;
+- named NPCs: 48/50;
+- quests/contracts: 20/30;
 
 Do not close these gaps with disconnected filler. Canonical items now exceed their mechanics floor through connected material stocks/components.
 
@@ -154,20 +129,22 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next decision boundary
 
-`0.9.100 Content Scale Gate A` is **COMPLETE through Packet E**. The ordered location flora/fauna diversity repair sequence is complete through Data 62. **Local Knowledge & Familiarity Foundation is also COMPLETE** at Product 0.9.100.24 / Game State 15.
+Adventure Vertical Slice A is **COMPLETE** at Data 63 / Product 0.9.200.1.
 
-Formal roadmap priority remains:
-1. **`0.9.200 Adventure Vertical Slice A`** — prefer a character-centered slice that naturally grows companion, quest, NPC, and service connectivity while reusing existing geography where practical;
-2. **`0.9.300 Advanced Combat / Training`** — deepen ability/technique breadth through real learning and use requirements;
-3. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion is the strongest already-planned bounded candidate;
-4. **`0.9.500 Quest / Social Depth`**;
-5. **`0.9.600 Playable-Alpha Scale Push`**.
+`0.9.200 Adventure Vertical Slices` remains the active formal track. The next bounded candidate is **Adventure Vertical Slice B**, queued but not auto-authorized. Its specific regional/character anchor should be selected by inspecting existing geography for the strongest connected companion/quest/NPC/service opportunity rather than precommitting to another zone.
 
-None is auto-started. Richer locality events/dialogue/UI work is a separate optional queue, not an automatic continuation of the foundation.
+After deliberate closure of 0.9.200, formal roadmap priority remains:
+1. **`0.9.300 Advanced Combat / Training`**;
+2. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion remains the strongest prepared candidate;
+3. **`0.9.500 Quest / Social Depth`**;
+4. **`0.9.600 Playable-Alpha Scale Push`**.
 
-The separate world-edge ranking remains Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, then Drowned Vaults.
+Separate queues remain independently selectable:
+- world edge: Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, Drowned Vaults;
+- richer locality events/dialogue/UI;
+- optional post-sequence ecology.
 
-Optional ecology remains separate: broader Crownfields ordinary-wildlife spread, secondary dungeon ecology/substrate cleanup, shorebird/wader breadth, or snake breadth require fresh explicit selection and concrete loop justification.
+None is auto-started.
 
 ## Validation
 
