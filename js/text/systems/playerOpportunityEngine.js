@@ -2,11 +2,11 @@ import { getCanonicalGatheringSource } from '../data/ecologyRegistry.js';
 import { getEquipmentCatalogEntry } from '../data/equipmentCatalog.js';
 import { getNation } from '../data/nations.js';
 import { getPointOfInterest } from '../data/pointsOfInterest.js';
-import { getPlace } from '../data/places.js';
+import { getConnectionsFrom, getPlace } from '../data/places.js';
 import { getProductionDefinition } from '../data/productionCatalog.js';
 import { checkGatheringWorkRequirements } from './gatheringWorkEngine.js';
 import { findItemInContainer } from './inventoryEngine.js';
-import { listLocalityDestinations } from './localityEngine.js';
+import { isSettlementLocality, listLocalityDestinations } from './localityEngine.js';
 import { hasDiscoveredPoi } from './poiEngine.js';
 import { createPlayerExperienceModel, getOriginExperienceForState } from './playerExperienceEngine.js';
 import { checkProductionRequirements } from './productionEngine.js';
@@ -460,6 +460,22 @@ function createTransitionStep(state, targetPlaceId, options = {}) {
             action: action(options.id ?? `go-${targetPlaceId}`, options.label ?? `Go to ${target?.name ?? targetPlaceId}`, 'locality.move', { destinationId: targetPlaceId }),
         };
     }
+    const current = getPlace(state.currentPlaceId);
+    const directlyAdjacentLocality = isSettlementLocality(current)
+        && isSettlementLocality(target)
+        && getConnectionsFrom(state.currentPlaceId).some((connection) => connection.to === targetPlaceId && connection.mode === 'walk' && !connection.flags?.externalPlaceholder);
+    if (directlyAdjacentLocality) {
+        return {
+            status: OPPORTUNITY_STATUSES.READY,
+            action: action(
+                options.id ?? `explore-for-${targetPlaceId}`,
+                options.label ?? `Explore for the way to ${target?.name ?? targetPlaceId}`,
+                'locality.explore',
+                { targetPlaceId },
+            ),
+        };
+    }
+
     const route = findTravelRoute(state, targetPlaceId);
     if (route.ok) {
         return {
