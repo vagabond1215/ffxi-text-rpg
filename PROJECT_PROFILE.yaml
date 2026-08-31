@@ -46,7 +46,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: player-information-locality-discovery-design-authority
+  current_normal_work: local-knowledge-and-familiarity-foundation-complete-continuity-sync
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -129,6 +129,11 @@ git:
   latest_gate_a_audit_implementation_check_sha: 81b2928611a297d765eaa64f7cedeadb5fd697ee
   latest_gate_a_audit_implementation_check_result: success-822-of-822-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_gate_a_audit_promoted_sha: 81b2928611a297d765eaa64f7cedeadb5fd697ee
+  latest_local_knowledge_implementation_check: 33355620265
+  latest_local_knowledge_implementation_check_number: 1770
+  latest_local_knowledge_implementation_check_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
+  latest_local_knowledge_implementation_check_result: success-823-of-823-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_local_knowledge_runtime_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
   latest_main_planning_check: 33237680841
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
@@ -139,16 +144,16 @@ progression:
   current_track_status: queued-not-started
   completed_track: 0.9.100-content-scale-gate-a
   completed_track_status: complete-through-packet-e
-  latest_bounded_unit: gate-a-integration-census-audit
-  latest_bounded_unit_status: complete-on-main-no-runtime-data-version-change
+  latest_bounded_unit: local-knowledge-and-familiarity-foundation
+  latest_bounded_unit_status: complete-on-main-product-0.9.100.24-game-state-15-data-62-unchanged
   latest_data_bounded_unit: cross-biome-family-breadth
   latest_data_bounded_unit_status: complete-on-main-promoted-runtime-data-62
   next_roadmap_gate: adventure-vertical-slice-a
   next_roadmap_gate_status: queued-not-auto-authorized
   pre_ui_discovery_contract: player-information-and-locality-discovery
-  pre_ui_discovery_contract_status: design-complete-implementation-not-started
+  pre_ui_discovery_contract_status: foundation-implemented-complete
   pre_ui_discovery_implementation_candidate: local-knowledge-and-familiarity-foundation
-  pre_ui_discovery_implementation_candidate_status: required-before-broad-player-facing-ui-not-auto-started
+  pre_ui_discovery_implementation_candidate_status: complete-on-main-broader-locality-ui-events-not-auto-started
   next_world_edge_candidate: waymeet-inner-marches-outer-crossroads-approach
   next_world_edge_candidate_status: ranked-after-waymeet-south-marches-not-auto-authorized
   second_world_edge_candidate: coppergrass-extensions
@@ -194,6 +199,9 @@ validation:
   headwater_highland_transition_repair_guard: tests/playerHeadwaterHighlandTransitionRepairFlow.test.js
   wetland_island_distribution_repair_guard: tests/playerWetlandIslandDistributionRepairFlow.test.js
   cross_biome_family_breadth_guard: tests/playerCrossBiomeFamilyBreadthFlow.test.js
+  local_knowledge_navigation_guard: tests/localityNavigation.test.js
+  local_knowledge_persistence_guard: tests/currentSchemaDiscoveryPersistence.test.js
+  local_knowledge_information_guard: tests/playerInformationAccess.test.js
 quality:
   current_product_version: 0.9.100.24
   current_package_version: 0.9.100
@@ -201,7 +209,20 @@ quality:
   current_game_state: 15
   current_data_version: 62
   current_benchmark_version: 3
-  current_codename: Cross-Biome Family Breadth
+  current_codename: Local Knowledge & Familiarity
+  local_knowledge_foundation:
+    implementation_status: complete
+    implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
+    implementation_check_run: 33355620265
+    implementation_check_number: 1770
+    tests: 823-of-823
+    data_version_changed: false
+    game_state_changed: 14-to-15
+    supported_save_migration_added: false
+    timer_listener_background_owner_added: false
+    legacy_discovered_pois_current_authority: false
+    guide_referral_temporary_guidance: true
+    staged_poi_interaction: true
   deterministic_simulation: preserve
   save_compatibility: current-schema-only-pre-alpha
   content_scale_is_release_progress_not_ci_pass_fail: true
@@ -486,7 +507,7 @@ constraints:
   - world-facing food safety should use practical late-medieval fantasy knowledge rather than modern microbiology language
   - raw toxic or irritant foods require explicit hazards and plausible preparation instructions
   - do not add disconnected filler merely to satisfy content targets
-  - keep Game State 14 unless a new durable player/world fact actually requires change
+  - keep Game State 15 unless another new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
   - portable replaceable cross-profession components should be canonical items when independently traded repaired replaced or reused
