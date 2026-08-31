@@ -18,7 +18,7 @@ import {
 } from '../js/text/systems/dayCycleEngine.js';
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
 import { startGatheringWork } from '../js/text/systems/gatheringWorkEngine.js';
-import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
+import { lookAroundLocality, performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
 import { claimOriginStarterKit } from '../js/text/systems/playerExperienceEngine.js';
 import { getNpcRelationship } from '../js/text/systems/relationshipEngine.js';
 import { setEndOfDayPause } from '../js/text/systems/simulationControlEngine.js';
@@ -73,7 +73,12 @@ test('PX8 gives Thornwall a third several-day community loop while Elderwood liv
     assert.ok(state.npcs.some((npc) => npc.id === SERA_NPC_ID), 'Sera Talwin should be a persistent NPC-backed Thornwall contact');
     assert.equal(commitment(model(state)), null, 'Sera’s commitment should not appear before the player has actually met her');
 
+    assert.equal(lookAroundLocality(state).ok, true);
+    assert.equal(commitment(model(state)), null, 'sighting Sera still must not disclose her commitment before conversation');
+
     assert.equal(useKnownPoi(state, 'poi-sandoria-s-alaune', 'talk').ok, true);
+    assert.equal(state.localKnowledge.pois['poi-sandoria-s-corua']?.knowledgeState, 'referenced', 'Sera should refer the player to Nessa without making Nessa directly locatable');
+    assert.ok(state.localKnowledge.guidance.some((entry) => entry.targetId === 'poi-sandoria-s-corua'), 'the referral should create temporary search guidance');
     const starterItemId = getNation('thornwall').startingEquipmentIds[0];
     assert.equal(claimOriginStarterKit(state).ok, true);
     assert.match(equipItem(state, starterItemId), /Equipped/);
