@@ -326,6 +326,8 @@ function validateCommitmentQuestRecord(pack, commitment, context, issues, label)
     requireRef(pack, 'places', commitment.offerPlaceId, label, context, issues);
     if (commitment.returnViaPlaceId) requireRef(pack, 'places', commitment.returnViaPlaceId, `${label} return`, context, issues);
     if (commitment.fieldSourceId) requireRef(pack, 'gatheringSources', commitment.fieldSourceId, `${label} field source`, context, issues);
+    if (!Array.isArray(commitment.prerequisiteCommitmentIds)) issues.push(`${label}.prerequisiteCommitmentIds must be an array.`);
+    for (const prerequisiteId of commitment.prerequisiteCommitmentIds ?? []) requireRef(pack, 'quests', prerequisiteId, `${label} prerequisite`, context, issues);
     if (!Array.isArray(commitment.requiredItems) || commitment.requiredItems.length === 0) issues.push(`${label} requires delivered items.`);
     for (const requirement of commitment.requiredItems ?? []) {
         requireRef(pack, 'items', requirement.itemId, `${label} requirement`, context, issues);
@@ -446,6 +448,8 @@ function validateCompanionRecord(pack, record, context, issues, label) {
     if (!Array.isArray(record.recruitment?.placeIds) || record.recruitment.placeIds.length === 0) issues.push(`${label} requires recruitment places.`);
     for (const placeId of record.recruitment?.placeIds ?? []) requireRef(pack, 'places', placeId, `${label} recruitment`, context, issues);
     if (!Array.isArray(record.recruitment?.requiredFlags)) issues.push(`${label}.recruitment.requiredFlags must be an array.`);
+    if (!Array.isArray(record.recruitment?.requiredCommitmentIds)) issues.push(`${label}.recruitment.requiredCommitmentIds must be an array.`);
+    for (const commitmentId of record.recruitment?.requiredCommitmentIds ?? []) requireRef(pack, 'quests', commitmentId, `${label} recruitment`, context, issues);
     if (!Array.isArray(record.relationshipDimensions) || record.relationshipDimensions.length === 0) issues.push(`${label} requires relationship dimensions.`);
     if (!record.tactics?.policy) issues.push(`${label} requires a tactics policy.`);
     if (!stableId(record.tactics?.defaultApproachId)) issues.push(`${label} requires a default field approach.`);
