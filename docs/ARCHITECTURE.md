@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.10
+Product:       0.9.100.24
 Package:       0.9.100
 Account Save:  5
-Game State:    14
-Data:          49
+Game State:    15
+Data:          62
 Benchmark:     3
-Codename:      Ironspine Highlands & Population Hunting
-Phase:         0.9 / Content Scale Gate A
+Codename:      Local Knowledge & Familiarity
+Phase:         0.9 / Gate A complete; 0.9.200 queued
 ```
 
-Data 49 extends the world into the Ironspine Highlands and composes persistent ecology populations with deliberate hunting encounters. The zone reuses existing geography, battle, ecology, resource recovery, inventory/provenance, production/workstation, shops, schedules, and Pack-v2 authorities; Game State remains 14 because no new durable state family is introduced.
+Data 62 remains the canonical authored-content checkpoint. Product 0.9.100.24 adds the Local Knowledge & Familiarity Foundation: Game State 15 persists character-specific locality knowledge, temporary guidance, NPC identity linkage, connector familiarity, POI interaction history, and active local POI context while canonical world definitions remain in their existing catalogs.
 
 ## Core authority rules
 
@@ -492,30 +492,36 @@ The assignment creates no seventh direct timed-task owner, helper/offline clock,
 
 No social clock, household relationship engine, duplicate quest state, or reputation meter was created.
 
-## Planned player locality-knowledge authority
+## Player locality-knowledge authority
 
-`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` defines the pre-UI information boundary.
+`docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md` defines the player-information boundary. The foundation is implemented in Game State 15.
 
-Canonical world truth and player knowledge must remain separate:
+Canonical world truth and player knowledge remain separate:
 - canonical catalogs own actual places, routes, POIs, NPCs, schedules, shops, quests, and services;
-- player state will own only character-specific learned facts such as sighting, name/identity knowledge, familiarity, known connectors, and temporary directions.
+- persisted `state.localKnowledge` owns only character-specific references: place/POI knowledge states, learned names, NPC identity linkage, connector familiarity, interaction counts, temporary guidance, and the current locality anchor;
+- nullable `state.activePoiId` records current local POI/interior engagement and must agree with the current place/anchor;
+- legacy `discoveredPois` is rejected by the current Game State schema.
 
-The current `discoveredPois` boolean plus one-interaction same-place fast travel is a transitional behavior and is **not** the intended final player-facing contract.
+The foundation implements:
+- Unknown -> Referenced -> Sighted -> Recognized -> Familiar states;
+- explicit approach/enter/interact/leave staging;
+- familiarity-gated direct navigation;
+- deterministic/injectable fictional-time locality exploration;
+- save-persistent guidance/search bias;
+- knowledge-gated shops/services/transport and commitment disclosure after real contact.
 
-Likewise, canonical NPC names in runtime projections may remain available to systems internally, but presentation must eventually pass through a player-knowledge projection before names are shown.
-
-The planned locality-knowledge state is expected to be durable because familiarity and temporary guidance affect future simulation after save/load. When implemented, reassess Game State instead of hiding the state change in UI code.
-
-Do not create:
+It deliberately does **not** create:
 - a second route graph;
 - a city-only simulation clock;
 - duplicated POI/NPC definitions in player state;
 - serialized prose/button lists;
-- wall-clock availability.
+- wall-clock availability;
+- a new timer/listener/background lifecycle owner.
 
-Town/locality movement may use abstract graph nodes and transition anchors while wilderness/dungeon places continue using coordinates/topologies where those are mechanically useful.
+Town/locality movement may use abstract graph nodes and transition anchors while wilderness/dungeon places continue using coordinates/topologies where those are mechanically useful. Richer ambient events, wandering merchants, personality dialogue, and deeper shop browsing remain follow-on systems.
 
-# Persistence authority — Game State 14
+
+# Persistence authority — Game State 15
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -594,6 +600,7 @@ Redstone and Elderwood production both reuse `workTaskEngine`; neither adds a di
 - Game State 12 — command presentation history removed from serialization.
 - Game State 13 — required cultivation plot/crop authority introduced.
 - Game State 14 — required paid cultivation delegation appointment state introduced.
+- Game State 15 — durable locality knowledge/familiarity, temporary guidance, NPC identity linkage, connector knowledge, POI interaction history, and active local POI context.
 
 ## Validation checkpoints
 
@@ -629,4 +636,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current Data 49 baseline includes population-backed hunting and Ironspine Highlands; current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 62; the current runtime/persistence baseline is Product 0.9.100.24 / Game State 15. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, and `docs/ROADMAP.md`.
