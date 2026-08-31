@@ -89,6 +89,7 @@ const POI_SEEDS = [
 
     poi('poi-slatewater-waylodge-exchange', 'slatewater-waylodge', 'Eira Voss', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'slatewater', 'fieldGoods'], 'Waylodge factor buying field finds and selling provisions, tools, and road gear'),
     poi('poi-slatewater-waylodge-trailguild', 'slatewater-waylodge', 'Toren Marr', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'guildMaster', 'gathering', 'hunting', 'trade'], 'Foothill guild steward for gathering, hunting, route conditions, and field exchange'),
+    poi('poi-slatewater-road-scout', 'slatewater-waylodge', 'Sable Renn', POI_TYPES.COMPANION, 'F-6', ['roadScout', 'routeGuidance', 'fieldcraft', 'slatewater'], 'Neutral foothill scout who tests potential road partners through practical field work before agreeing to share the road'),
     poi('poi-slatewater-waylodge-stableyard', 'slatewater-waylodge', 'Bram Pell', POI_TYPES.TRAVEL, 'H-8', ['travel', 'stabling', 'mountCare', 'packAnimals'], 'Stableyard with water, feed, sheltered pens, tack checks, and caravan boarding for mounts and pack animals'),
     poi('poi-slatewater-waylodge-hearth', 'slatewater-waylodge', 'Slatewater Hearth and Bunkroom', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'cooking', 'craftSupport'], 'Common hearth, hot meals, drying racks, a shared repair bench, and simple bunks for road crews and field workers'),
 
