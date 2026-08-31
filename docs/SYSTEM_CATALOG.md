@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.100.24
-Package:       0.9.100
+Product:       0.9.200.1
+Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          62
+Data:          63
 Benchmark:     3
-Codename:      Local Knowledge & Familiarity
+Codename:      Slatewater Road Scout
 ```
 
 ## Data 57 regional authority
