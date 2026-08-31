@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 42;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 43;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -492,7 +492,7 @@ export const SLATEWATER_WAYLODGE_PACK = createContentPack({
     id: 'pack-slatewater-waylodge', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
     ownership: { scope: 'region', regionIds: ['slatewater-foothills'], steward: 'slatewater-field-guild' },
     dependencies: ['pack-shared-foundation', 'pack-elderwood-opening', 'pack-redstone-opening', 'pack-slatewater-foothills-ecology'],
-    metadata: { name: 'Slatewater Waylodge Pack', notes: 'Neutral Crown-Forge road lodge connecting foothill gathering and hunting country to safe recovery, trade exchange, guild information, stabling, and local caravan service.' },
+    metadata: { name: 'Slatewater Waylodge & Road Scout Pack', notes: 'Neutral Crown-Forge road lodge connecting foothill fieldwork to safe recovery, trade, guild information, stabling, caravan service, a chained road-scout trust arc, and earned companion recruitment.' },
     records: {
         places: [{ id: 'slatewater-waylodge', catalogRef: true }],
         transportServices: [{ id: 'service-slatewater-foothill-caravan', catalogRef: true }],
@@ -500,7 +500,21 @@ export const SLATEWATER_WAYLODGE_PACK = createContentPack({
             { id: 'npc-slatewater-eira-voss', catalogRef: true },
             { id: 'npc-slatewater-toren-marr', catalogRef: true },
             { id: 'npc-slatewater-bram-pell', catalogRef: true },
+            { id: 'npc-slatewater-sable-renn', catalogRef: true },
         ],
+        quests: [
+            { id: 'commitment-slatewater-resin-waymarks', catalogRef: true },
+            { id: 'commitment-slatewater-lichen-fogmarks', catalogRef: true },
+        ],
+        companions: [
+            { id: 'companion-sable-renn', catalogRef: true },
+        ],
+        relationships: [{
+            id: 'relationship-slatewater-sable-renn',
+            npcId: 'npc-slatewater-sable-renn',
+            dimensions: ['trust', 'respect', 'familiarity'],
+            unlockQuestIds: ['commitment-slatewater-resin-waymarks', 'commitment-slatewater-lichen-fogmarks'],
+        }],
         npcSchedules: [
             { id: 'schedule-slatewater-eira-voss', catalogRef: true },
             { id: 'schedule-slatewater-toren-marr', catalogRef: true },
