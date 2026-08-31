@@ -81,6 +81,27 @@ Before broad player-facing locality UI is considered coherent, verify against `d
 
 **Foundation gate result: PASS.** Implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample. Game State 15 rejects legacy `discoveredPois` as current authority and validates durable `localKnowledge` instead. Richer ambient-event/dialogue/shop-category behavior remains follow-on and is not required to claim this foundation gate.
 
+## Adventure Vertical Slice A gate
+
+Adventure Vertical Slice A is coherent only when the character-centered loop composes existing authorities rather than adding disconnected records.
+
+For **Slatewater Road Scout**, verify:
+
+1. the slice reuses existing Slatewater Waylodge/foothills geography and canonical routes rather than adding a zone for count;
+2. the recruitable character is backed by a persistent canonical NPC;
+3. prerequisite commitments are canonical metadata and are enforced both in presentation and `acceptCommitment`;
+4. merely reaching or sighting the giver does not expose/resolve the trust arc without real interaction;
+5. requested field goods require the intended provenance source;
+6. ordinary work progression materially connects the first contract to the second rather than using a bespoke quest-only meter;
+7. recruitment itself rechecks resolved prerequisite commitments and returns a real blocked result before trust is earned;
+8. NPC relationship dimensions carry into companion relationship state at recruitment instead of resetting;
+9. the backing NPC follows active companion travel through the existing party projection;
+10. a mobile companion-backed giver is not exposed as a static follow-up marker at an old locality when physically elsewhere;
+11. Pack-v2 owns/references the NPC, quests, companion, and relationship metadata without duplicating canonical catalogs;
+12. no new Game State family, simulation clock, task owner, route graph, or supported-save migration is introduced without a separate decision.
+
+**Gate result: PASS.** Implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`; Check #1815 / run `33361131795` passed Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample.
+
 ## Content Pack v2 gate
 
 Before high-volume canonical content enters a family, verify it has:
@@ -207,15 +228,15 @@ Implementation-freeze Check #1368 / run `33215878907` passed Repository Audit, *
 
 ```text
 places/localities       55 / mechanics 10
-named NPCs              47 / 50
+named NPCs              48 / 50
 shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        408 / 200
 recipes/processes      234 / 75
 abilities/techniques    41 / 100
-quests/contracts        18 / 30
-companions               1 / 4
+quests/contracts        20 / 30
+companions               2 / 4
 transport services       7 / 5
 ```
 
@@ -227,14 +248,14 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
 regional/shared packs                   39
-pack-owned records                    1320
+pack-owned records                    1325
 pack-owned abilities/capabilities/
   schedules/companions              41/44/27/1
 ```
 
 `0.9.100 Content Scale Gate A` is **COMPLETE** through Packet E. Permanent evidence: `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`; implementation freeze `81b2928611a297d765eaa64f7cedeadb5fd697ee`; Check #1638 / run `33332932015` passed Repository Audit, **822/822 tests**, Census, Benchmark 3, and Benchmark Sample.
 
-The later mechanics-scale gate remains **NOT READY**. Companions remain the largest relative gap; abilities remain the largest absolute gap. Content-scale targets remain progression indicators, not ordinary Check thresholds.
+The later mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap; companions improved to 2/4. Content-scale targets remain progression indicators, not ordinary Check thresholds.
 
 ## Regional distribution gate
 
@@ -262,4 +283,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A` with no version change. The next formal track is `0.9.200 Adventure Vertical Slices`, queued and not auto-started; world-edge, material-culture, and optional ecology queues remain independently selectable.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is now ACTIVE and Slice A is complete; Slice B is the next in-track candidate but its anchor is unselected and it is not auto-started. World-edge, material-culture, richer locality/UI, and optional ecology queues remain independently selectable.
