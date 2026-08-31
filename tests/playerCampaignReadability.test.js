@@ -76,7 +76,7 @@ function finishPx4ThroughFollowUp(state) {
 
     view = model(state);
     work = category(view, 'livelihood');
-    assert.equal(work.action?.intent, 'locality.poi');
+    assert.equal(work.action?.intent, 'locality.poi.visit');
     assert.equal(useKnownPoi(state, work.action.payload.poiId, work.action.payload.action).ok, true);
 
     view = model(state);
@@ -137,8 +137,8 @@ test('PX5 turns Varric follow-up into an honest semantic Brasshaven to Starfen r
     assert.equal(campaign.regionLabel, 'Starfen');
     assert.equal(campaign.linkedAmbition, 'Copper Trail Clasp');
     assert.equal(campaign.knowledgeSource, 'Marshal Varric Stone follow-up');
-    assert.equal(campaign.action?.intent, 'locality.move');
-    assert.equal(campaign.action?.payload.destinationId, 'brasshaven-iron-quay');
+    assert.equal(campaign.action?.intent, 'locality.explore');
+    assert.equal(campaign.action?.payload.targetPlaceId, 'brasshaven-iron-quay');
     assert.doesNotMatch(`${campaign.title} ${campaign.summary} ${campaign.progress}`, /Tall Reedbed|source-west-starfen-reedbed/i);
 
     const competing = view.opportunities.entries.filter((candidate) => candidate.id !== CAMPAIGN_ID
