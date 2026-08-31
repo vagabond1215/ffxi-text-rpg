@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.23
+Product:       0.9.100.24
 Package:       0.9.100
 Account Save:  5
-Game State:    14
+Game State:    15
 Data:          62
 Benchmark:     3
-Codename:      Cross-Biome Family Breadth
+Codename:      Local Knowledge & Familiarity
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -53,14 +53,14 @@ The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540
 Current mode remains strict pre-alpha current-schema-only.
 
 - Account Save remains 5 unless account/session shape changes.
-- Game State remains 14 unless a genuinely new durable player/world fact changes the serialized contract.
+- Game State is 15; change it again only when another genuinely new durable player/world fact changes the serialized contract.
 - Data changes do not automatically imply Game State changes.
 - Required persisted authority validates before runtime normalization/revival.
 - Active owner/task links remain coherent until owner reconciliation.
 - Direct timed-task creation remains limited to audited domain owners.
 - No blind global pruning, wall-clock canonical simulation, or duplicate state authority.
 
-Packet E adds **no persistence or lifecycle owner**. It audits the promoted Data 62 graph and introduces no runtime/data behavior or serialized state family. Game State remains 14; no migration is warranted. `npm run hardening` remains reserved for lifecycle-sensitive packets and phase/release gates.
+Packet E added no persistence owner and historically kept Game State 14. Local Knowledge & Familiarity Foundation intentionally advances Game State 14 -> 15 because locality familiarity, temporary guidance, NPC identity linkage, interaction history, and active local POI context must survive save/load. It adds no timer/listener/background owner and no supported-save migration; strict pre-alpha current-schema-only loading remains the policy.
 
 ## Player-information / locality-discovery gate
 
@@ -79,7 +79,7 @@ Before broad player-facing locality UI is considered coherent, verify against `d
 11. narrative theft, payment, ambush, reputation, or discovery consequences use the owning gameplay systems rather than prose-only mutation;
 12. town maps, if rendered, show learned locality nodes/connectors rather than an omniscient complete layout.
 
-The current binary `discoveredPois` behavior is transitional and is not sufficient evidence for this gate.
+**Foundation gate result: PASS.** Implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`; Check #1770 / run `33355620265` passed Repository Audit, **823/823 tests**, Census, Benchmark 3, and Benchmark Sample. Game State 15 rejects legacy `discoveredPois` as current authority and validates durable `localKnowledge` instead. Richer ambient-event/dialogue/shop-category behavior remains follow-on and is not required to claim this foundation gate.
 
 ## Content Pack v2 gate
 
