@@ -88,6 +88,10 @@ test('Slatewater Road Scout slice chains field trust into earned companion recru
     const greeting = performLocalityPoiAction(state, SCOUT_POI_ID, 'talk');
     assert.equal(greeting.ok, true, greeting.message ?? greeting.reason);
 
+    const earlyRecruitment = performLocalityPoiAction(state, SCOUT_POI_ID, 'companion');
+    assert.equal(earlyRecruitment.ok, false, 'the companion action itself must preserve the trust-gate failure');
+    assert.equal(earlyRecruitment.code, 'party.commitment-requirement');
+
     let opportunities = createCommitmentOpportunities(state);
     assert.ok(opportunities.some((entry) => entry.id === `commitment-${FIRST_COMMITMENT_ID}`));
     assert.equal(opportunities.some((entry) => entry.id === `commitment-${SECOND_COMMITMENT_ID}`), false, 'second road test stays hidden before the first is resolved');
@@ -151,6 +155,11 @@ test('Slatewater Road Scout slice chains field trust into earned companion recru
     const activeScout = listActiveCompanions(state).find((entry) => entry.id === SCOUT_COMPANION_ID);
     assert.equal(activeScout.locationId, 'slatewater-foothills', 'the recruited scout follows canonical route travel');
     assert.equal(state.npcs.find((npc) => npc.id === 'npc-slatewater-sable-renn').identity.locationId, 'slatewater-foothills');
+
+    const resolvedOpportunity = createCommitmentOpportunities(state)
+        .find((entry) => entry.id === `commitment-${SECOND_COMMITMENT_ID}`);
+    assert.ok(resolvedOpportunity);
+    assert.equal(resolvedOpportunity.action, null, 'a mobile recruited giver is not represented as an actionable static quest marker');
 
     assert.deepEqual(validateGameState(state), []);
 });
