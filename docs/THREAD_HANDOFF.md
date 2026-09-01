@@ -25,9 +25,19 @@ Next packet:   B2 Enemy Attention Foundation — QUEUED / NOT STARTED
 Permanent record:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
 
-Behavioral implementation freeze:
-- `20b7351a61f56203975e101ef04fd7311e110d9b`;
+Permanent design authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+
+Slice B plan:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+### Behavioral implementation freeze
+
+`20b7351a61f56203975e101ef04fd7311e110d9b`
+
+Hosted evidence:
 - Check #1860 / run `33457301272`;
+- job `99699909419`;
 - Repository Audit PASS;
 - **832/832 tests**;
 - Content Census PASS;
@@ -35,16 +45,135 @@ Behavioral implementation freeze:
 - Benchmark Sample PASS;
 - Pages #1990 / run `33457300712` PASS.
 
-B1 adds `combatResolutionEngine.js` and representative shared resolution for:
-- basic melee physical accuracy/defense;
-- Ember Dart magic accuracy/magic defense/fire resistance;
-- Ridge Breaker defense penetration/critical eligibility;
-- Rivet Guard explicit physical resolution;
-- Fracture Sigil deterministic land/resist;
-- explicit canonical ability recovery distinct from activation/cooldown;
-- action commitment that prevents overlapping basic/legacy actions during timed canonical activation.
+This freeze deliberately retained the prior Product/Data labels so runtime behavior could be validated before version/continuity synchronization.
 
-No new ability record was added; abilities/techniques remain 41.
+### Promoted synchronized-authority checkpoint
+
+`6c78dac5d0b296753ac9a7f28f39b9980e5e4085`
+
+Hosted evidence:
+- Check #1877 / run `33457770272`;
+- job `99702030085`;
+- Repository Audit PASS;
+- **832/832 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2007 / run `33457765562` PASS.
+
+A later profile-only evidence write occurred before this final handoff. This handoff is the final repository-file mutation for B1. Do not mutate repository files after it before exact-head final validation.
+
+## What B1 implements
+
+New runtime authority:
+- `js/text/systems/combatResolutionEngine.js`.
+
+It is a **stateless combat-resolution authority**, not a second combat engine.
+
+It provides a shared representative vocabulary for:
+- physical / magical / hybrid channels;
+- delivery type;
+- damage type;
+- element and element source;
+- physical, magic, or automatic accuracy;
+- physical defense, magic defense, magic evasion, or no-resistance models;
+- defense penetration;
+- critical eligibility/modifiers;
+- deterministic target-status land/resist.
+
+It consumes:
+- existing combatant combat profiles;
+- existing active-battle deterministic RNG.
+
+It does not own:
+- combatants;
+- battle lifecycle;
+- fictional time;
+- ability tasks;
+- status storage;
+- cooldown storage;
+- persistence.
+
+## Representative B1 migrations
+
+### Basic melee
+
+Basic melee now uses the shared physical accuracy/defense contract and records structured resolution evidence in existing combat-action `data`.
+
+Basic attack cadence is still the existing fixed player/companion recovery. Weapon-driven `weaponDelay` cadence remains B4 work.
+
+### Ember Dart
+
+Now explicitly resolves as:
+- projectile delivery;
+- magical channel;
+- fire element;
+- magic accuracy;
+- magic-defense resolution;
+- 2-second action recovery.
+
+Fire resistance materially changes damage.
+
+### Ridge Breaker
+
+Now explicitly resolves as:
+- melee physical impact;
+- physical accuracy/defense;
+- 25% defense penetration;
+- critical eligibility;
+- +5 critical-rate modifier;
+- +50 critical bonus percentage;
+- 4-second action recovery.
+
+This makes the **Breaker** name materially more honest without yet creating a full guard/stability subsystem.
+
+### Rivet Guard
+
+Its attack now has:
+- explicit melee physical/slashing resolution;
+- physical accuracy/defense;
+- 3-second recovery.
+
+Its existing defensive self-status remains.
+
+### Fracture Sigil
+
+Now has:
+- magical sigil delivery;
+- magic accuracy;
+- +5 accuracy modifier;
+- magic-evasion resistance;
+- deterministic land/resist;
+- 2-second recovery.
+
+It is no longer an unconditional target debuff.
+
+## Canonical action timing
+
+Canonical abilities now distinguish:
+- activation/startup duration;
+- post-resolution action recovery;
+- cooldown.
+
+Combat readiness enforces canonical recovery.
+
+A timed canonical activation also blocks overlapping:
+- basic attack;
+- transitional arbitrary-string Weapon Skill;
+- transitional legacy cast path.
+
+The activation must resolve or be interrupted first.
+
+## Legacy combat boundary
+
+`performWeaponSkill(state, skillName)` and legacy `castSpell` remain compatibility/regression surfaces.
+
+B1 adds no new advanced-combat semantics to those paths.
+
+Canonical spells/techniques should continue migrating through:
+- ability catalog;
+- ability engine;
+- shared combat action/resolution contract.
 
 ## Version / persistence decision
 
@@ -57,96 +186,168 @@ Account Save  5         -> 5
 Benchmark     3         -> 3
 ```
 
-Data advances because existing canonical ability records gain authored recovery/resolution metadata.
+### Why Data 64
 
-Game State remains 15:
-- active battle combat contract remains version 2;
-- ability runtime remains version 1;
-- no new required serialized state family;
-- structured resolution lives inside existing combat action `data`;
+Existing canonical ability records gained authored:
+- `recoverySeconds`;
+- structured resolution metadata.
+
+No new ability record was added.
+
+### Why Game State remains 15
+
+B1 introduces no new **required** serialized state family.
+
+Still true:
+- `activeBattle.contract.version = 2`;
+- ability runtime version = 1;
+- resolution details are nested in already-existing flexible combat-action `data`;
 - no supported-save migration;
-- no new timer/task owner;
-- no second combat clock or battle store.
+- no new timed-task owner;
+- no second clock;
+- no second battle store.
 
-## Current mechanics-scale census
+## Current system versions changed by B1
 
 ```text
-places/localities       55
-named NPCs              48
-shop/service sites      37
-creatures              123
-resource sources       143
-canonical items        408
-recipes/processes      234
-abilities/techniques    41
-quests/contracts        20
-companions               2
-transport services       7
-routes                   25
-NPC schedules            27
-regional/shared packs    39
-pack-owned records     1325
-runtime seed NPCs        47
-runtime seed enemies     17
+abilityCatalog     0.5.0
+abilityEngine      0.4.0
+battleEngine       0.9.0
+combatTurns        0.3.2
+combatActions      0.9.0
+combatResolution   0.1.0
 ```
 
-Mechanics-scale remains NOT READY:
+## Current census
+
+Data 64 changes mechanics semantics, not breadth.
+
+```text
+places/localities                       55
+named NPCs                              48
+shop/service sites                      37
+creatures                              123
+resource sources                       143
+canonical items                        408
+recipes/processes                      234
+abilities/techniques                    41
+quests/contracts                        20
+companions                               2
+transport services                       7
+raw resources with production demand  145 / 154
+luxury raws with production demand      14 / 14
+routes                                  25
+NPC schedules                           27
+regional/shared packs                   39
+pack-owned records                    1325
+runtime seed NPCs                       47
+runtime seed enemies                    17
+```
+
+Mechanics-scale remains **NOT READY**:
 - abilities/techniques 41/100;
 - quests/contracts 20/30;
 - companions 2/4;
 - named NPCs 48/50.
 
-Do not close these gaps with disconnected/mechanically duplicate filler.
+Do not author disconnected or mechanically duplicate records merely to close census gaps.
 
 ## Next bounded unit — B2 only
 
 **Packet B2 — Enemy Attention Foundation** is queued and **NOT STARTED**.
 
-A future explicit `continue` should begin B2 only.
+A future explicit `continue` should start B2 only.
 
-B2 design target:
-- absolute Enmity per hostile/credible actor;
-- normalized Focus;
-- nonlinear target-selection weighting;
-- sticky current Aggro;
-- explicit Fixation/Priority;
-- deterministic 3-actor proof;
-- baseline race/faction/species antagonism without hard-scripted universal targeting;
+### B2 design contract
+
+Implement on the existing active-battle authority:
+
+```text
+absolute Enmity
+    -> normalized Focus
+    -> nonlinear target-selection weight
+    -> sticky Aggro
+    -> optional Fixation / Priority
+```
+
+Required properties:
+- every credible party actor can have hostile-specific Enmity;
+- baseline race/faction/species antagonism may contribute;
+- action effects can change Enmity;
+- decay/floors are authored/tunable;
+- Focus is normalized relative attention;
+- **Focus is not literal attack probability**;
+- target reassessment applies nonlinear concentration;
+- current target is sticky;
+- retargeting happens on meaningful triggers, not every tick;
 - no universal minimum target probability;
-- retarget only on meaningful reassessment triggers.
+- Fixation/Priority can override ordinary switching while preserving underlying Enmity.
 
-Because active battle persists, B2 must make an explicit Game State decision if attention tables/current target/fixation become required durable outcome-affecting state.
+Representative proof should include three credible actors:
+- one actor with elevated baseline hostility;
+- a lower-Focus shield/tank actor landing a high-Enmity bash/stun-style action;
+- one action materially changing Focus without necessarily stealing Aggro immediately;
+- repeated tank actions eventually transferring Aggro;
+- a low-Focus third actor becoming strongly de-weighted but not artificially forced to a fixed minimum.
 
-Do not start B3/B4/B5 automatically.
+### B2 persistence decision
 
-## Later Slice B packets
+Active battle persists through save/load.
 
-- B3 — timed combat loadout transitions and armor-pressure locking;
-- B4 — weapon-delay cadence, first-class ranged attacks, minimal configurable kata;
-- B5 — playable Brasshaven / Redstone combat-training proof.
+If B2 attention tables, selected Aggro target, Fixation, decay deadlines, or other fields affect future resumable outcomes, they must be treated as real durable active-battle authority and receive an explicit Game State/schema decision.
 
-After B5, deliberately close 0.9.200 and open 0.9.300 Advanced Combat / Training.
+Do not reconstruct meaningful attention state from battle prose.
+
+## Later Slice B packets — not started
+
+### B3
+Timed combat loadout transitions:
+- directional stow/draw/ready;
+- quick weapon-set vs full loadout;
+- cooldown preservation;
+- interruption/disable rules;
+- armor swap blocked under meaningful hostile pressure/pursuit/fixation.
+
+### B4
+Weapon cadence / ranged / minimal kata:
+- one `weaponDelay` conversion/readiness authority;
+- first-class ranged attack using ranged stats/skills/ammunition;
+- minimal representative configurable weapon kata.
+
+### B5
+Playable Brasshaven / Redstone combat-training proof integrating B1–B4.
+
+After B5, deliberately close `0.9.200` and open `0.9.300 Advanced Combat / Training`.
 
 ## Preserved interrupted/resumable circles
 
-Combat work does not erase earlier queues.
+B1 completion does **not** cancel previous queues.
 
 ### Locality enrichment — DEFERRED / RESUMABLE
+
+Foundation complete; still preserved:
 - ambient/risk events;
 - wandering/seasonal merchants;
-- generalized directions/help;
+- generalized direction/help dialogue;
 - richer contextual dialogue;
-- staged shop browse/category depth;
+- staged shop category/browse depth;
 - learned-locality graphical presentation.
 
-Authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+Authority:
+- `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
 ### Occupational Tool Conversion — PRESERVED / QUEUED
-Still strongest prepared `0.9.400 Economy / Production Depth` candidate.
 
-Authority: `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+Still the strongest prepared `0.9.400 Economy / Production Depth` candidate.
 
-### World-edge continuation — PAUSED / RESUMABLE
+Resume from the existing Packet A conversion list and `requiredToolTags` intent rather than restarting its audit.
+
+Authority:
+- `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+
+### World edge — PAUSED / RESUMABLE
+
+Ranking remains:
 1. Waymeet Inner Marches / outer crossroads approach;
 2. Coppergrass extensions;
 3. Drowned Vaults.
@@ -155,31 +356,60 @@ Authorities:
 - `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`;
 - `docs/WORLD_MACRO_TOPOLOGY.md`.
 
+Combat Slice B deliberately reuses existing geography.
+
 ### Ecology
-The five-part flora/fauna repair sequence is COMPLETE, not interrupted. Do not restart automatically.
 
-## Standing combat architecture rules
+The five-part flora/fauna diversity repair sequence is **COMPLETE**, not interrupted.
 
-- one canonical fictional-time authority;
+Do not restart automatically. Any further ecology work requires a fresh bounded work order.
+
+## Standing architecture/governance rules
+
+Preserve:
+- one canonical fictional world clock;
+- one domain authority per state family;
 - active battle owns encounter state;
+- combat resolution owns formulas/results, not battle lifecycle;
 - ability engine owns canonical ability activation/cooldowns;
-- combat resolution is stateless formula/resolution authority, not a second battle engine;
+- status engine owns status application/storage;
 - action history stores structured evidence; prose is not authority;
-- Focus is not direct target probability;
-- cooldowns belong to canonical abilities, never loadout slots;
-- legacy arbitrary-string Weapon Skill / cast paths are transitional compatibility surfaces and receive no new advanced-combat semantics;
-- no mass ability authoring before the execution contract supports meaningful differentiation.
+- route graph owns inter-place travel;
+- Pack v2 owns placement/dependencies, not duplicate definitions;
+- current-schema-only pre-alpha persistence;
+- no hard benchmark timing thresholds;
+- no census filler;
+- Game State changes only for genuine durable serialized contract changes;
+- Data and Game State advance independently;
+- exact implementation freeze before continuity sync;
+- `docs/THREAD_HANDOFF.md` final repository-file write.
 
 ## Restart order for B2
 
-1. `AGENTS.md`;
-2. this handoff;
-3. `PROJECT_PROFILE.yaml`;
-4. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
-5. `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
-6. `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`;
-7. `docs/EXECUTION_PIPELINE.md`;
-8. `docs/ROADMAP.md`;
-9. active battle/combat-turn/persistence files relevant to attention.
+1. `AGENTS.md`
+2. this handoff
+3. `PROJECT_PROFILE.yaml`
+4. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
+5. `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`
+6. `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`
+7. `docs/EXECUTION_PIPELINE.md`
+8. `docs/ROADMAP.md`
+9. `docs/ARCHITECTURE.md`
+10. `js/text/systems/combatTurnEngine.js`
+11. `js/text/systems/battleEngine.js`
+12. `js/text/systems/activeBattlePersistence.js`
+13. companion/party combat integration and current-schema active-battle tests.
 
-This is an interim synchronized handoff for promoted-contract validation. The final handoff must be the final repository-file mutation after a green synchronized Check/Pages run.
+Do not restart broad combat research before inspecting these current authorities.
+
+## Final validation contract
+
+This handoff is the final repository-file mutation for B1.
+
+After this write:
+- perform **no repository-file mutations**;
+- validate the exact resulting `main` SHA with hosted Check;
+- confirm Repository Audit, 832/832 tests, Census, Benchmark 3, Benchmark Sample;
+- confirm Pages succeeds on the same exact SHA.
+
+The final SHA and final Check/Pages run IDs are external validation evidence and must not be inserted by another repository write.
