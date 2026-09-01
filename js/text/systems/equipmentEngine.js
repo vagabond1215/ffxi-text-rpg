@@ -19,6 +19,7 @@ const DEFAULT_EQUIP_SEARCH_CONTAINERS = Object.freeze(['inventory', 'wardrobe1',
 
 export function equipItem(state, itemQuery, options = {}) {
     if (!itemQuery) return 'Equip what?';
+    if (state.activeBattle?.phase === 'active' && options.allowActiveBattleImmediate !== true) return 'Active-combat equipment changes require a timed loadout transition.';
     const inventoryState = state.player?.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';
 
@@ -58,7 +59,8 @@ export function equipItem(state, itemQuery, options = {}) {
     ].join('\n');
 }
 
-export function unequipItem(state, slot, destinationContainerId = 'inventory') {
+export function unequipItem(state, slot, destinationContainerId = 'inventory', options = {}) {
+    if (state.activeBattle?.phase === 'active' && options.allowActiveBattleImmediate !== true) return 'Active-combat equipment changes require a timed loadout transition.';
     const inventoryState = state.player?.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';
     if (!slot) return 'Unequip which slot?';
@@ -216,7 +218,7 @@ function describeItemInspection(item, sourceLabel = 'unknown') {
     return lines.join('\n');
 }
 
-function findEquippableItem(state, itemQuery, fromContainerId = null) {
+export function findEquippableItem(state, itemQuery, fromContainerId = null) {
     const inventoryState = state.player?.inventoryState;
     const containerIds = fromContainerId ? [fromContainerId] : DEFAULT_EQUIP_SEARCH_CONTAINERS;
 
