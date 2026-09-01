@@ -8,26 +8,26 @@ import {
 
 const STARTER_SOURCE = 'Hearth & Horizon early equipment contract; values are original provisional balance for systems testing.';
 
-export const EQUIPMENT_CATALOG_VERSION = 3;
+export const EQUIPMENT_CATALOG_VERSION = 4;
 
 export const EQUIPMENT_CATALOG = Object.freeze({
     'bronze-sword': equipment('bronze-sword', 'Bronze Sword', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'sword', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'sword', weaponDelay: 236, requirements: requirement(),
+        weaponCategory: 'sword', weaponDelay: 236, handling: handling(1, 2, 1), requirements: requirement(),
         tags: ['weapon', 'sword', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 3, accuracy: 1 } },
-        fieldNotes: withDelayNotes('Provisional starter sword delay.'),
+        fieldNotes: withHandlingNotes(withDelayNotes('Provisional starter sword delay.'), 'One-handed sword draw and stow timing for B3 combat-loadout proof.'),
     }),
     'bronze-axe': equipment('bronze-axe', 'Bronze Axe', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'axe', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'axe', weaponDelay: 288, requirements: requirement(),
+        weaponCategory: 'axe', weaponDelay: 288, handling: handling(2, 2, 1), requirements: requirement(),
         tags: ['weapon', 'axe', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 4 } },
-        fieldNotes: withDelayNotes('Provisional starter axe delay.'),
+        fieldNotes: withHandlingNotes(withDelayNotes('Provisional starter axe delay.'), 'Heavier one-handed axe handling for directional B3 timing.'),
     }),
     'bronze-dagger': equipment('bronze-dagger', 'Bronze Dagger', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'dagger', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'dagger', weaponDelay: 190, requirements: requirement(),
+        weaponCategory: 'dagger', weaponDelay: 190, handling: handling(1, 1, 1), requirements: requirement(),
         tags: ['weapon', 'dagger', 'starter'], flags: ['equipmentOnly'], modifiers: { derived: { attack: 2, accuracy: 2 } },
-        fieldNotes: withDelayNotes('Provisional starter dagger delay.'),
+        fieldNotes: withHandlingNotes(withDelayNotes('Provisional starter dagger delay.'), 'Compact dagger handling for fast B3 weapon-set changes.'),
     }),
     'bronze-pick': equipment('bronze-pick', 'Bronze Pick', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'axe', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
@@ -37,10 +37,10 @@ export const EQUIPMENT_CATALOG = Object.freeze({
     }),
     'ash-staff': equipment('ash-staff', 'Ash Staff', {
         family: 'weapon', archetype: 'twoHandedWeapon', subtype: 'staff', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
-        weaponCategory: 'staff', weaponDelay: 366, requirements: requirement(),
+        weaponCategory: 'staff', weaponDelay: 366, handling: handling(2, 3, 2, true), requirements: requirement(),
         tags: ['weapon', 'staff', 'starter', 'caster'], flags: ['equipmentOnly', 'twoHanded'],
         modifiers: { resources: { mp: 3 }, derived: { attack: 2, magicAccuracy: 1 } },
-        fieldNotes: withDelayNotes('Provisional two-handed staff delay.'),
+        fieldNotes: withHandlingNotes(withDelayNotes('Provisional two-handed staff delay.'), 'Two-handed staff handling is deliberately slower and cumbersome for B3 timing proof.'),
     }),
     'maple-wand': equipment('maple-wand', 'Maple Wand', {
         family: 'weapon', archetype: 'oneHandedWeapon', subtype: 'club', equipmentSlot: 'mainHand', allowedSlots: ['mainHand'],
@@ -71,8 +71,8 @@ export const EQUIPMENT_CATALOG = Object.freeze({
 
     'iron-buckler': equipment('iron-buckler', 'Iron Buckler', {
         family: 'shield', archetype: 'shield', subtype: 'buckler', equipmentSlot: 'offHand', allowedSlots: ['offHand'],
-        requirements: requirement(), tags: ['equipment', 'shield', 'offhand', 'martial'], flags: ['equipmentOnly'],
-        modifiers: { derived: { defense: 3, shieldBlock: 2 } }, fieldNotes: originalFieldNotes('A compact shield usable by any character who can carry the loadout.'),
+        requirements: requirement(), tags: ['equipment', 'shield', 'offhand', 'martial'], flags: ['equipmentOnly'], handling: handling(1, 2, 1),
+        modifiers: { derived: { defense: 3, shieldBlock: 2 } }, fieldNotes: withHandlingNotes(originalFieldNotes('A compact shield usable by any character who can carry the loadout.'), 'Compact shield handling for B3 off-hand transition proof.'),
     }),
     'road-cloak': equipment('road-cloak', 'Road Cloak', {
         family: 'armor', archetype: 'travelGear', subtype: 'cloak', equipmentSlot: 'back', allowedSlots: ['back'],
@@ -96,8 +96,8 @@ export const EQUIPMENT_CATALOG = Object.freeze({
     }),
     'leather-vest': equipment('leather-vest', 'Leather Vest', {
         family: 'armor', archetype: 'lightArmor', subtype: 'vest', equipmentSlot: 'body', allowedSlots: ['body'],
-        requirements: requirement(), tags: ['equipment', 'armor', 'body', 'light'], flags: ['equipmentOnly'],
-        modifiers: { resources: { hp: 2 }, derived: { defense: 4 } }, fieldNotes: originalFieldNotes('General light armor without discipline restrictions.'),
+        requirements: requirement(), tags: ['equipment', 'armor', 'body', 'light'], flags: ['equipmentOnly'], handling: handling(2, 4, 1),
+        modifiers: { resources: { hp: 2 }, derived: { defense: 4 } }, fieldNotes: withHandlingNotes(originalFieldNotes('General light armor without discipline restrictions.'), 'Full-body light armor requires a slower B3 equipment transition than a weapon swap.'),
     }),
     'traveler-gloves': equipment('traveler-gloves', 'Traveler Gloves', {
         family: 'armor', archetype: 'travelGear', subtype: 'gloves', equipmentSlot: 'hands', allowedSlots: ['hands'],
@@ -154,6 +154,7 @@ export function enrichEquipmentItem(item) {
         allowedSlots,
         weaponCategory: runtimeItem.weaponCategory ?? entry.weaponCategory,
         weaponDelay: runtimeItem.weaponDelay ?? entry.weaponDelay,
+        handling: runtimeItem.handling ?? entry.handling,
         requirements,
         flags,
         modifiers,
@@ -174,7 +175,7 @@ export function listEquipmentCatalogEntries() {
 function bronzeArmor(id, name, slot, tags, modifiers) {
     return equipment(id, name, {
         family: 'armor', archetype: 'starterArmor', subtype: slot, equipmentSlot: slot, allowedSlots: [slot],
-        requirements: requirement(), tags, flags: ['equipmentOnly'], modifiers, fieldNotes: baseFieldNotes(),
+        requirements: requirement(), tags, flags: ['equipmentOnly'], handling: handling(3, 4, 1, true), modifiers, fieldNotes: withHandlingNotes(baseFieldNotes(), 'Bronze starter armor uses deliberately cumbersome full-equipment timing for B3 proof.'),
     });
 }
 
@@ -244,6 +245,21 @@ function requirement(overrides = {}) {
 
 function withDelayNotes(weaponDelayNotes) {
     return { ...baseFieldNotes(), weaponDelay: { confidence: CONFIDENCE_LABELS.PLACEHOLDER, source: STARTER_SOURCE, notes: weaponDelayNotes } };
+}
+
+function handling(stowSeconds, drawSeconds, readySeconds, cumbersome = false) {
+    return { stowSeconds, drawSeconds, readySeconds, cumbersome };
+}
+
+function withHandlingNotes(fieldNotes, notes) {
+    return {
+        ...fieldNotes,
+        handling: {
+            confidence: CONFIDENCE_LABELS.INTENTIONAL_SIMPLIFICATION,
+            source: STARTER_SOURCE,
+            notes,
+        },
+    };
 }
 
 function baseFieldNotes() {
