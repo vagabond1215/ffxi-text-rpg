@@ -38,6 +38,8 @@ Still follow-on, not part of this foundation closure:
 - staged stock-category conversation/browse depth beyond current shop engagement;
 - any richer learned-locality graphical map presentation.
 
+Combat 2.0 / Adventure Slice B selection does not close these enrichment items. They remain a **deferred/resumable locality circle** and should not be re-audited from zero when later selected.
+
 Sections below remain design authority for both the implemented foundation and these future extensions. Statements using “future” or “should” may therefore describe either already-proven semantics or intentionally deferred enrichment.
 
 ## Core rule
