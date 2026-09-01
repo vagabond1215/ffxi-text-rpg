@@ -216,7 +216,7 @@ spellSchools / capabilities / abilities / companions
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable foundation / B1-B4 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, and minimal persisted dagger/sword kata now share canonical battle/time/equipment/persistence authorities. B5 playable proof remains. |
+| Combat 2.0 | playable / 0.9.300 P1 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, and persisted kata now share canonical authorities. B5 playable proof is complete; 0.9.300 P1 broadens automatic kata to dagger/sword/axe/staff/club under Game State 19. Character affinity substitutions remain queued. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |

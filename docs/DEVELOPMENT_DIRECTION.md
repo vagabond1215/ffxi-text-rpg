@@ -543,7 +543,7 @@ Current systems that should not be mistaken for final commitments include:
 - legacy FFXI world/place/race/job/currency terminology;
 - `mainJobId` and job-switch assumptions;
 - current sparse job skill-cap tables;
-- partial Combat 2.0 / ability behavior: B1 provides representative unified physical/magical/elemental/status resolution, B2 provides durable Enmity/Focus/Aggro/Fixation attention, B3 provides timed atomic combat loadout transitions, B4 provides equipment-derived cadence/ranged/minimal kata, and B5 proves those contracts in a playable Brasshaven/Redstone training loop; engagement geometry, affinity substitutions, broad weapon-family kata, and broader catalog migration remain transitional/future;
+- partial Combat 2.0 / ability behavior: B1-B5 provide the playable unified combat/training foundation, and 0.9.300 Packet 1 broadens automatic kata across dagger/sword/axe/staff/club; engagement geometry, character affinity substitutions, unsupported weapon-family kata, aura/stance/reaction families, and broader catalog migration remain transitional/future;
 - automatic battle loot behavior that predates provenance/body-processing design;
 - wall-clock tick scheduling as distinct from canonical simulation time;
 - small starter item/shop/monster catalogs;

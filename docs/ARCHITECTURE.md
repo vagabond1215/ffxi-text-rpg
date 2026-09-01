@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
-Phase:         0.9 / 0.9.200 COMPLETE; Slice A + B1-B5 complete; 0.9.300 queued/not started
+Codename:      Current Melee Kata Breadth
+Phase:         0.9 / 0.9.300 ACTIVE; Packet 1 complete; Packet 2 queued/not started
 ```
 
-Data 67 is the current authored/mechanics-data checkpoint. Product 0.9.200.6 closes the Adventure Vertical Slices with an existing-world Brasshaven/Redstone combat-training service and integrated B1–B4 proof. Game State remains 18; Data 67 adds Varric/POI training metadata, while the Game State 18 equipment validator now correctly accepts partially consumed stackable ammunition.
+Data 68 is the current authored/mechanics-data checkpoint. Product 0.9.300.1 extends the existing weapon-kata authority to axe, staff, and club without adding a second combat subsystem. Game State 19 persists weapon-kata configuration version 2 across the five currently equipped melee families; the encounter-local kata record shape remains version 1.
 
 ## Core authority rules
 
@@ -680,7 +680,7 @@ Equipment transitions use canonical combat/world time. Armor-swap legality depen
 
 B2 defines the attention persistence boundary as Game State 16. B3 advances to Game State 17 for active loadout transitions. B4 advances to Game State 18 because player kata configuration and the encounter-local next-sequence cursor change resumable combat outcomes. B5 keeps Game State 18 because training reuses capability/event authority and its ammo-persistence fix corrects the existing B4 contract; Data advances to 67 for authored training-service metadata.
 
-# Persistence authority — Game State 18
+# Persistence authority — Game State 19
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -740,6 +740,16 @@ Product 0.9.200.6 / Game State 18 / Data 67 adds `trainingServiceEngine.js` as a
 The B5 vertical proof reuses the canonical Brasshaven -> South Redstone route, existing Redstone encounters, party attention, combat loadout, weapon cadence/kata, ranged ammo, canonical abilities, and skill progression. Hard-disable pressure release is proven through the already-recognized B3 disable boundary; no LOS/pursuit state is synthesized.
 
 Equipped ammunition remains physical equipment authority. Game State 18 validation permits a positive stack in the canonical `ammo` slot while all ordinary equipment slots retain quantity-1/non-stackable invariants.
+
+### 0.9.300 Packet 1 current melee kata breadth
+
+Product 0.9.300.1 / Game State 19 / Data 68 keeps `weaponKataEngine.js` as the only kata runtime/configuration owner and `weaponKataCatalog.js` as authored move/family authority.
+
+The required player configuration advances to version 2 because `player.progression.weaponKata.selections` now includes axe, staff, and club in addition to dagger/sword. This changes durable current-schema state and requires Game State 19.
+
+`activeBattle.weaponKata` keeps record version 1: family, next slot, last move, action count, reset count, and reset reason are unchanged. The catalog simply broadens the valid family references. B3 loadout resets automatically rebind to the newly supported family.
+
+Packet 1 adds no new task owner, combat clock, ability/capability record, equipment record, affinity state, or action-family subsystem.
 
 ## Runtime projections and transient state
 
@@ -825,4 +835,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 67; the current runtime/persistence baseline is Product 0.9.200.6 / Game State 18. Adventure Vertical Slice A and Combat Packets B1-B5 are complete; `0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is queued/not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 68; the current runtime/persistence baseline is Product 0.9.300.1 / Game State 19. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packet 1 complete and Packet 2 Character Affinity & Kata Substitution Foundation queued/not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.

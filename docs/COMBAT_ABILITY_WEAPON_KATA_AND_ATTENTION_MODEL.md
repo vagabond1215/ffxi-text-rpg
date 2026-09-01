@@ -4,18 +4,19 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.6 / Game State 18 / Data 67. Packets B1-B5 implement representative unified resolution, hostile attention, timed combat loadout transitions, weapon-derived cadence, first-class ranged attacks, minimal persisted dagger/sword kata, and a playable Brasshaven/Redstone training integration proof; affinity substitutions, broader sequence families, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.1 / Game State 19 / Data 68. Packets B1-B5 establish the playable foundation, and 0.9.300 Packet 1 broadens persisted automatic kata across every currently equipped canonical melee family: dagger, sword, axe, staff, and club. Character affinity, elemental substitutions, unsupported weapon families, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 — Unified Resolution + Enemy Attention + Loadout + Cadence/Ranged/Kata + Playable Training Proof: COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packet 1 — Current Melee Kata Breadth — is COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
 - `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`;
 - `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`;
 - `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
-- `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
+- `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -59,9 +60,16 @@ Implemented by B5:
 - current-schema acceptance for partially consumed equipped ammo stacks;
 - distinct same-POI semantic training actions in the world interface.
 
+Implemented by 0.9.300 Packet 1:
+- automatic axe, staff, and club kata families under the existing weapon-kata owner;
+- five-family current equipped melee coverage across dagger/sword/axe/staff/club;
+- version-2 durable player kata configuration and Game State 19 persistence;
+- unchanged encounter-local kata record shape/version 1.
+
 Still deferred:
+- character affinity authority and affinity-driven kata substitutions;
+- unsupported weapon-family kata where canonical equipment/runtime support does not yet exist;
 - full geometry/aura/stance/zone/channel/reaction breadth;
-- affinity substitutions and broad weapon-family kata;
 - generalized LOS/pursuit/disengagement and ranged line-of-fire models.
 
 ## Core combat law
@@ -197,7 +205,7 @@ The following are still incomplete or transitional:
 - critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
 - target geometry is effectively self/enemy/context rather than line/cone/ring/zone/chain/aura;
 - aura/stance/channel/zone actions are not first-class;
-- minimal dagger/sword weapon kata/auto-sequence configuration is implemented; broad weapon-family breadth and affinity substitutions remain deferred;
+- dagger/sword/axe/staff/club weapon kata/auto-sequence configuration is implemented for every currently equipped canonical melee family; character affinity substitutions and unsupported weapon families remain deferred;
 - timed combat loadout transitions and attention/enmity are implemented through B2-B3; named loadout presets, partial stowed/not-ready physical state, and LOS/pursuit-based pressure release remain deferred.
 
 Do not mass-author abilities to the 100-ability mechanics floor on top of these limitations.

@@ -473,6 +473,18 @@ Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is **COMPLETE** at
 
 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is **COMPLETE** at Product 0.9.200.6 / Data 67 / Game State 18; permanent record `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`; behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed. `0.9.200 Adventure Vertical Slices` is now deliberately closed.
 
+# `0.9.300` — Advanced Combat / Training
+
+**Track status: ACTIVE. Packet 1 complete; Packet 2 queued/not started.**
+
+Packet 1 — Current Melee Kata Breadth:
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
+- behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`;
+- Check #1947 / run `33474558525`: 860/860 tests plus full gate green;
+- Pages #2077 / run `33474558121` green;
+- Product 0.9.300.1 / Package 0.9.300 / Game State 19 / Data 68.
+
+Packet 2 — Character Affinity & Kata Substitution Foundation is queued/not started. The current runtime has no canonical character-affinity state, so the packet must establish the smallest durable affinity authority before proving representative elemental kata substitutions. Aura/stance/zone/channel/reaction and LOS/pursuit remain outside that packet unless separately authorized.
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -487,7 +499,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is queued/not started and requires a fresh bounded selection; later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 — Current Melee Kata Breadth — is complete at Product 0.9.300.1 / Game State 19 / Data 68, and Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 

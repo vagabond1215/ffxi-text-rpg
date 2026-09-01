@@ -140,6 +140,18 @@ Before later packets close:
 - B4 **PASS**: one weapon-delay conversion authority, equipment-derived player/companion cadence, first-class ranged attack/ammo consumption, proficiency-gated persisted dagger/sword kata, manual reset interaction, and B3 loadout-reset consumption are proven by `tests/weaponCombatB4.test.js`; behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed 852/852 tests and the full gate.
 - B5 **PASS**: real Varric instruction through capability authority, canonical Brasshaven->Redstone travel, melee cadence/kata, first-class ranged ammo, Ember Dart elemental resolution, party attention, weapon-set transition, armor-pressure blocking, hard-disable pressure release, and ordinary skill gain are proven by `tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js`; behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed 855/855 tests and the full gate. Game State remains 18; Data advances to 67.
 
+### 0.9.300 Packet 1 gate — Current Melee Kata Breadth
+
+PASS only when:
+- the existing kata owner remains singular;
+- axe/staff/club join dagger/sword without a new combat clock or task owner;
+- every new family has distinct authored attack/recovery behavior rather than copied numbers;
+- proficiency still gates 1/2/3 automatic slots;
+- B3 weapon-set reset can rebind to a newly supported family;
+- player kata configuration survives real current-schema save/load;
+- Game State/Data/Product decisions are explicit.
+
+**Gate result: PASS.** Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`; Check #1947 / run `33474558525`; **860/860 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2077 / run `33474558121` PASS. Game State advances 18 -> 19 and Data 67 -> 68.
 
 ## Content Pack v2 gate
 
@@ -322,4 +334,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is COMPLETE: Slice A and Packets B1-B5 are complete. `0.9.300 Advanced Combat / Training` is queued/not started and requires a fresh bounded selection. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE: Packet 1 — Current Melee Kata Breadth — is COMPLETE; Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
