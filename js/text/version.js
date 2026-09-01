@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.9.200.6';
-export const PACKAGE_VERSION = '0.9.200';
+export const PRODUCT_VERSION = '0.9.300.1';
+export const PACKAGE_VERSION = '0.9.300';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 18,
-    data: 67,
+    gameState: 19,
+    data: 68,
     benchmark: 3,
-    codename: 'Brasshaven Redstone Combat Training',
+    codename: 'Current Melee Kata Breadth',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.200.6',
+    versionManifest: '0.9.300.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -146,7 +146,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.51.0',
+    validation: '0.52.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.2.0',
@@ -157,7 +157,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerIdentityPersistence: '0.2.0',
     locationPersistence: '0.1.0',
     combatIdentityPersistence: '0.3.0',
-    playerEntity: '0.9.0',
+    playerEntity: '0.10.0',
     characterCreation: '0.6.0',
     characterCreationContent: '0.2.0',
     characterNames: '0.1.0',
@@ -182,11 +182,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     combatAttention: '0.1.0',
     combatLoadout: '0.2.0',
     weaponCadence: '0.1.0',
-    weaponKataCatalog: '0.1.0',
-    weaponKata: '0.1.0',
-    combatActions: '0.11.0',
+    weaponKataCatalog: '0.2.0',
+    weaponKata: '0.2.0',
+    combatActions: '0.12.0',
     battleRewards: '0.6.0',
-    progression: '0.6.0',
+    progression: '0.7.0',
     expTables: '0.5.2',
     disciplineSwitching: '0.6.0',
     skillProgression: '0.7.0',
