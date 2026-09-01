@@ -6,7 +6,7 @@ import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTur
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
 import { validateBattleWeaponKataState } from './weaponKataEngine.js';
 
-export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 3;
+export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 4;
 const BATTLE_PHASES = Object.freeze(['active', 'victory', 'defeat']);
 const COMBATANT_TYPES = Object.freeze(['player', 'companion', 'enemy']);
 
