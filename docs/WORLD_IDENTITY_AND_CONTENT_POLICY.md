@@ -211,6 +211,20 @@ Before large-scale data generation, validation must be able to detect at minimum
 - relationship/companion records referencing nonexistent NPCs;
 - legacy identifiers leaking into canonical packs without an explicit adapter.
 
+## Combat ability originality and naming
+
+External RPGs may be studied for mechanical patterns, progression structures, timing models, and usability lessons. Their player-facing ability names, proper nouns, fictional schools, classes, monsters, items, and lore are not canonical content sources.
+
+Hearth & Horizon combat names should:
+- be original to this setting;
+- describe visible force/form/motion/result clearly enough to be learnable;
+- avoid opaque invented terminology when ordinary world language communicates the action better;
+- avoid bland numbered renames when progression can remain a rank/mastery change;
+- reserve a new name for a materially different form, delivery, geometry, timing, or tactical purpose.
+
+Permanent combat naming/mechanics authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+
 ## Scale policy
 
 Content volume is a first-class engineering requirement. Engine milestones must ship with enough real interconnected content to expose scaling problems.
