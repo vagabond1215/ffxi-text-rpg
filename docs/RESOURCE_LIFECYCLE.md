@@ -85,6 +85,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 
 0.9.300 Packet 2 adds no direct timed-task owner. Character affinity is synchronous durable progression under `player.progression.affinities`; affinity-gated kata substitutions reuse the existing kata, cadence, action, and combat-resolution paths. Game State 20 changes character progression persistence, not lifecycle ownership.
 
+0.9.300 Packet 3 adds no direct timed-task owner and no persistence family. It changes canonical ability definitions only: novice elemental spells reuse existing ability activation tasks, combat action recovery, and `combatResolutionEngine`. Game State remains 20; Data 70 changes authored resolution/recovery metadata, not lifecycle ownership.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
