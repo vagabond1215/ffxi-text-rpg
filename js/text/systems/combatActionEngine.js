@@ -52,6 +52,8 @@ export function performPlayerAttack(state, targetQuery = null) {
     if (!isActiveBattle(battle)) return 'You are not in battle.';
 
     const player = getPlayerCombatant(battle);
+    const activationBlock = describeActiveAbilityCommitment(state);
+    if (activationBlock) return activationBlock;
     const target = getTargetCombatant(battle, targetQuery);
     if (!player || !target) return 'No valid target.';
     const recovery = describeRecovery(state, player.id);
@@ -81,6 +83,8 @@ export function performWeaponSkill(state, skillName = 'Weapon Skill', targetQuer
     if (!isActiveBattle(battle)) return 'You are not in battle.';
 
     const player = getPlayerCombatant(battle);
+    const activationBlock = describeActiveAbilityCommitment(state);
+    if (activationBlock) return activationBlock;
     const target = getTargetCombatant(battle, targetQuery);
     if (!player || !target) return 'No valid target.';
     const recovery = describeRecovery(state, player.id);
@@ -120,6 +124,8 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
 
     const player = getPlayerCombatant(battle);
     if (!player) return 'No player combatant.';
+    const activationBlock = describeActiveAbilityCommitment(state);
+    if (activationBlock) return activationBlock;
     const recovery = describeRecovery(state, player.id);
     if (recovery) return recovery;
 
@@ -204,6 +210,12 @@ function syncRootSkillStateIntoBattle(state, battle) {
     player.progression ??= {};
     player.progression.skills = { ...(state.player.progression?.skills ?? {}) };
     return player.progression.skills;
+}
+
+function describeActiveAbilityCommitment(state) {
+    const active = state?.abilities?.active;
+    if (!active) return null;
+    return `You are already activating ${active.abilityId}; finish or interrupt it before another combat action.`;
 }
 
 function describeRecovery(state, actorId) {
