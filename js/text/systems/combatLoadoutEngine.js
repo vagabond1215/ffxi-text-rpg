@@ -14,6 +14,7 @@ import {
 } from './equipmentEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
+import { isHardDisabledByStatus } from './statusEngine.js';
 import {
     cancelTimedTask,
     findTimedTask,
@@ -31,8 +32,6 @@ export const COMBAT_LOADOUT_TASK_CHANNEL = 'combat:loadout';
 export const DEFAULT_ARMOR_PRESSURE_FOCUS_THRESHOLD = 0.15;
 
 const WEAPON_SLOTS = Object.freeze(['mainHand', 'offHand', 'ranged', 'ammo']);
-const HARD_DISABLE_FLAGS = Object.freeze(['hardDisabled', 'stunned', 'asleep', 'cannotAct', 'incapacitated']);
-
 export function startCombatEquipTransition(state, itemQuery, options = {}) {
     const battle = activeBattle(state);
     if (!battle) return fail('combat.loadout.not-active', 'Combat loadout transitions require an active battle.');
@@ -87,7 +86,7 @@ export function reconcileCombatLoadoutTransition(state) {
     if (!transition) return null;
 
     if (battle.phase !== 'active') return cancelCombatLoadoutTransition(state, 'battle ended');
-    if (isCombatActorHardDisabled(getBattlePlayer(battle))) {
+    if (isCombatActorHardDisabled(getBattlePlayer(battle), ensureWorldTimeState(state).totalSeconds)) {
         return cancelCombatLoadoutTransition(state, 'hard disabled');
     }
 
@@ -175,7 +174,7 @@ export function cancelCombatLoadoutTransition(state, reason = 'interrupted') {
 export function interruptCombatLoadoutIfHardDisabled(state) {
     const transition = state?.activeBattle?.loadoutTransition;
     if (!transition) return null;
-    return isCombatActorHardDisabled(getBattlePlayer(state.activeBattle))
+    return isCombatActorHardDisabled(getBattlePlayer(state.activeBattle), ensureWorldTimeState(state).totalSeconds)
         ? cancelCombatLoadoutTransition(state, 'hard disabled')
         : null;
 }
@@ -191,9 +190,9 @@ export function describeCombatLoadoutBlock(state) {
     return `You are changing equipment for ${Math.max(0, transition.completesAtWorldSeconds - now)}s more.`;
 }
 
-export function isCombatActorHardDisabled(actor) {
+export function isCombatActorHardDisabled(actor, nowWorldSeconds = 0) {
     if (!actor || actor.battle?.defeated || Number(actor.resources?.hp) <= 0) return true;
-    return (actor.statuses ?? []).some((status) => HARD_DISABLE_FLAGS.some((flag) => status?.flags?.[flag] === true));
+    return isHardDisabledByStatus(actor, nowWorldSeconds);
 }
 
 export function getArmorPressureReport(state, actorId = state?.player?.id, options = {}) {
@@ -206,7 +205,7 @@ export function getArmorPressureReport(state, actorId = state?.player?.id, optio
     const hostiles = [];
 
     for (const enemy of battle.combatants.filter((entry) => entry.type === 'enemy' && !entry.battle?.defeated && Number(entry.resources?.hp) > 0)) {
-        if (isCombatActorHardDisabled(enemy)) continue;
+        if (isCombatActorHardDisabled(enemy, nowWorldSeconds)) continue;
         const snapshot = getEnemyAttentionSnapshot(battle, enemy.id, { nowWorldSeconds });
         const actor = snapshot?.entries?.find((entry) => entry.actorId === actorId) ?? null;
         const reasons = [];
@@ -336,7 +335,7 @@ function validateTransitionStart(state, battle) {
     if (state.abilities?.active) return fail('combat.loadout.ability-active', 'Finish or interrupt the active ability before changing combat equipment.');
     const actor = getBattlePlayer(battle);
     if (!actor) return fail('combat.loadout.no-player', 'No player combatant is available.');
-    if (isCombatActorHardDisabled(actor)) return fail('combat.loadout.disabled', 'You cannot change combat equipment while hard-disabled.');
+    if (isCombatActorHardDisabled(actor, ensureWorldTimeState(state).totalSeconds)) return fail('combat.loadout.disabled', 'You cannot change combat equipment while hard-disabled.');
     if (!isCombatantReady(state, actor.id)) return fail('combat.loadout.recovery', 'You must finish current combat recovery before changing equipment.');
     return { ok: true };
 }
