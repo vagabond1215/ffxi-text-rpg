@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Codename:      Slatewater Road Scout
+Codename:      Unified Combat Resolution
 ```
 
 ## Completed foundation and major tranches
@@ -220,29 +220,43 @@ Planning intent established at Data 55 and updated after the Data 57 surface pas
 
 The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_TOPOLOGY.md`.
 
-## Advanced combat design selection
+## Advanced combat implementation
 
-Permanent authority:
+Permanent design authority:
 - `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-Implementation plan:
-- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Permanent B1 implementation record:
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
 
-The current 41-ability catalog is not treated as a simple authoring shortage. The audit found foundational execution gaps: fixed basic-attack recovery, no first-class player ranged action, tag-only elements, incomplete accuracy/defense/resistance use for canonical abilities, no weapon-kata configuration, no combat loadout transition authority, and no party enmity/focus model.
+**Packet B1 — Unified Combat Resolution is COMPLETE at Product 0.9.200.2 / Data 64 / Game State 15.**
 
-Therefore the next work is contract-first:
-1. **B1 Unified Combat Resolution Contract** — selected immediate implementation unit;
-2. B2 enemy attention (Enmity -> Focus -> Aggro -> Fixation);
-3. B3 timed combat loadout transitions and armor-pressure locking;
-4. B4 weapon-driven cadence, first-class ranged attack, and minimal kata proof;
-5. B5 playable Brasshaven/Redstone Slice B proof;
-6. then close 0.9.200 and open 0.9.300 for breadth across weapon families, affinities, auras, stances, zones, channels, reactions, and meaningful ability expansion.
+Behavioral implementation freeze:
+- `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`;
+- **832/832 tests** plus Repository Audit, Census, Benchmark 3, and sample green.
 
-Interrupted queues remain preserved rather than replaced:
-- Occupational Tool Conversion remains the strongest prepared 0.9.400 economy packet;
-- Waymeet Inner Marches remains the first ranked world-edge candidate;
-- richer locality ambient/dialogue/shop-browse work remains deferred after the completed locality foundation;
-- the five-part ecology repair sequence remains complete and should not be restarted automatically.
+B1 proves:
+- shared representative physical/magical/hybrid resolution;
+- actual physical/magic accuracy and defense/resistance;
+- elemental resistance for Ember Dart;
+- defense penetration/critical eligibility for Ridge Breaker;
+- resistible Fracture Sigil;
+- explicit canonical recovery separate from activation/cooldown;
+- action-commitment blocking during timed canonical activation.
+
+The ability census remains 41/100 because B1 changes mechanics/contracts rather than manufacturing breadth.
+
+**Next bounded unit: B2 — Enemy Attention Foundation, queued/not started.**
+B2 should add Enmity -> Focus -> nonlinear target-selection weighting -> sticky Aggro -> Fixation/Priority on the existing battle authority, with an explicit persistence decision.
+
+Later B3/B4/B5 remain separately bounded.
+
+Interrupted/resumable queues remain preserved:
+- Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
+- Waymeet Inner Marches remains first ranked world-edge candidate;
+- locality enrichment remains deferred/resumable;
+- ecology repair sequence remains complete and is not auto-reopened.
+
 
 ## High-value system/content gaps
 
