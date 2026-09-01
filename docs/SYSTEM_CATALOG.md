@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 ```
 
 ## Data 57 regional authority
@@ -212,11 +212,11 @@ spellSchools / capabilities / abilities / companions
 | Elemental Form | playable | Universal fire/earth/wind/water/lightning/ice/light/dark attack families; no region ownership. |
 | Vital Weave / Ward Lore | playable | Universal healing and defensive/support spell families. |
 | Veilscript | playable | Original seal-magic tradition using the existing `ninjutsu` skill for debuff/guard sigils. |
-| Ability/spell engine | playable / Thunder Cage control foundation implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, and one bounded resistible hard-disable control spell work. Novice elemental attacks plus Thunder Cage use shared resolution; Tempest Ring geometry, Umbral Well fields, and wider action-family migration remain follow-on. |
+| Ability/spell engine | playable / Tempest Ring geometry foundation implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, bounded control, and one real target-centered ring geometry work. Tempest Ring expands one authored target effect across deterministic radius-selected recipients; Umbral Well fields and wider geometry/action-family migration remain follow-on. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P4 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, ranged attacks, kata, affinity substitutions, novice elemental resolution, and bounded hard-disable control share canonical authorities. P4 centralizes hard-disable flags in status authority and makes Thunder Cage suppress enemy action until expiry without a new clock/state family. |
+| Combat 2.0 | playable / 0.9.300 P5 complete | Unified resolution, hostile attention, loadout transitions, equipment-derived cadence, ranged attacks, kata, affinity substitutions, elemental resolution/control, and one bounded radial geometry share canonical authorities. P5 adds stateless derived formation and per-recipient area-action attention without mutable combat-position state. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.4 / Data 71 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–4 complete.
+Phase 0.9 remains open at Product 0.9.300.5 / Data 72 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–5 complete.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -315,5 +315,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packets 1–4 are COMPLETE.** Packet 4 implements Thunder Cage control without area geometry: separate damage/control resistance, shared hard-disable status semantics, and expiry-aware enemy readiness. Tempest Ring and Umbral Well semantics remain deferred. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packets 1–5 are COMPLETE.** Packet 5 implements target-centered ring geometry for Tempest Ring through deterministic encounter-relative formation, per-target wind resolution, and per-recipient attention without persisting mutable positions. Umbral Well field semantics and broader geometry/movement remain deferred. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 
