@@ -4,7 +4,31 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime remains Product 0.9.200.1 / Game State 15 / Data 63 until a later bounded implementation changes those contracts.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.2 / Game State 15 / Data 64. Packet B1 implements the representative unified-resolution subset; attention, loadouts, ranged cadence, kata, affinity substitutions, and richer action families remain future work.
+
+## Implementation status
+
+**Packet B1 — Unified Combat Resolution: COMPLETE.**
+
+Permanent record:
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
+
+Implemented subset:
+- shared representative physical/magical/hybrid resolution vocabulary;
+- physical and magic accuracy paths;
+- physical defense, magic defense, and magic-evasion resistance models;
+- executable elemental resistance for Ember Dart;
+- explicit defense penetration/critical eligibility for Ridge Breaker;
+- resistible Fracture Sigil;
+- explicit canonical ability recovery distinct from activation/cooldown;
+- structured resolution evidence in combat action history.
+
+Still deferred:
+- B2 Enmity/Focus/Aggro/Fixation;
+- B3 timed combat loadout transitions/armor pressure;
+- B4 weapon-delay cadence, first-class ranged attacks, configurable kata;
+- B5 playable combat-training integration;
+- full geometry/aura/stance/zone/channel/reaction breadth.
 
 ## Core combat law
 
@@ -130,13 +154,13 @@ The current combat substrate already provides:
 - status duration on canonical world time.
 
 The following are still incomplete or transitional:
-- basic attacks use a fixed player/companion recovery rather than weapon-driven cadence;
+- basic attacks still use fixed player/companion recovery rather than weapon-driven cadence; B1 only routes their resolution through the shared physical contract;
 - the legacy arbitrary-string Weapon Skill path is transitional;
 - there is no first-class player ranged-attack action;
-- elemental tags do not yet drive damage/resistance calculation;
-- canonical ability damage largely bypasses ordinary hit/defense/resistance resolution;
-- statuses from canonical abilities do not yet use a complete accuracy/resistance model;
-- critical derived stats are not fully integrated into basic/canonical ability resolution;
+- elemental resolution is proven for representative migrated abilities, but the wider catalog still needs explicit structured element metadata;
+- representative migrated canonical ability damage now uses shared hit/defense/resistance resolution; the wider catalog still contains pre-B1 effect definitions;
+- Fracture Sigil proves deterministic status accuracy/resistance; the wider status catalog still needs explicit migration where target resistance is appropriate;
+- critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
 - target geometry is effectively self/enemy/context rather than line/cone/ring/zone/chain/aura;
 - aura/stance/channel/zone actions are not first-class;
 - weapon kata/auto-sequence configuration is not implemented;
