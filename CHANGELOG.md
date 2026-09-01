@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.300.6 — Umbral Well Field Foundation
+
+- Added `combatFieldEngine` as the canonical battle-local persistent-field authority with versioned `activeBattle.fields` state, stable field IDs, fictional-time pulse deadlines, persisted center points, authored radius/caps, and compact cast-time source-offense snapshots.
+- Converted the existing Umbral Well adept spell from generic single-target damage into explicit Dark magical impact plus a 12-second persistent Well that pulses at +4/+8/+12 seconds with radius 2 and a four-target cap.
+- Snapshotted source INT, magic accuracy, and magic attack when a field is created while reading each recipient's current magic evasion, magic defense, and Dark resistance on every pulse.
+- Extended `combatGeometryEngine` with deterministic point-radius recipient selection over the existing Packet-5 derived encounter formation; no mutable combatant positions or player-selected ground-target system were introduced.
+- Extended combat simulation with `combat.field-pulse` interrupts at priority 910, ahead of ordinary enemy readiness at the same timestamp, while keeping canonical world time as the only combat/simulation clock and adding no timed-task owner.
+- Recorded one structured `fieldPulse` combat action per pulse and corrected area-action attention so explicit per-recipient actions never fall back to the primary target when only one secondary recipient actually lands.
+- Added strict current-schema validation for durable field state and proved real save/load continuity, exact 4/8/12-second pulse timing, source snapshot stability, live defender resistance, deterministic radius/cap behavior, battle-end cleanup, and malformed-state rejection.
+- Kept executable ability count at 41 and did not add movement, knockback, LOS/line-of-fire, pursuit/search/disengagement, moving/friendly fields, generic zone scripting, or broad adept migration.
+- Advanced Product 0.9.300.5 -> 0.9.300.6, Game State 20 -> 21, and Data 72 -> 73; Package remains 0.9.300.
+- Check #2066 reached 878/884 tests because of legacy effect-shape churn plus a Dark-Magic fixture mismatch; Check #2068 reached 883/884 with only a non-cloneable test RNG remaining. Behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` then passed Repository Audit, 884/884 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #2069 / run `33554921560` and Pages #2199 / run `33554920945`.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.5 — Tempest Ring Geometry Foundation
 
 - Added `combatGeometryEngine` as a stateless encounter-relative geometry projection/query authority, deriving deterministic ally/enemy formation coordinates from existing combatant side/order rather than storing mutable battle positions.
