@@ -29,7 +29,7 @@ import {
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 test('Packet 4 gives Thunder Cage explicit lightning damage and separate resistible control', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 9);
+    assert.equal(ABILITY_CATALOG_VERSION, 10);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
