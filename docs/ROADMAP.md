@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.6
+Product:       0.9.300.7
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          73
+Data:          74
 Benchmark:     3
-Codename:      Umbral Well Field Foundation
+Codename:      Radiant Arc Propagation Foundation
 ```
 
 ## Completed foundation and major tranches
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–6 are COMPLETE.** Packet 6 establishes persistent combat-field state at Product 0.9.300.6 / Data 73 / Game State 21: Umbral Well deals explicit Dark impact damage, then persists for three fictional-time pulses using a cast-time source snapshot and live per-recipient defense/resistance. Behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` passed Check #2069 with 884/884 tests and the full gate; Pages #2199 passed. No subsequent 0.9.300 packet is selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–7 are COMPLETE.** Packet 7 establishes synchronous target-to-target propagation at Product 0.9.300.7 / Data 74 / Game State 21: Radiant Arc walks from the selected enemy to the nearest eligible unhit enemy within two formation units, caps at three recipients, independently resolves Light resistance, and records per-jump geometry/attention evidence without durable state. Behavioral/data freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec` passed Check #2106 with 889/889 tests and the full gate; Pages #2236 passed. No subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
