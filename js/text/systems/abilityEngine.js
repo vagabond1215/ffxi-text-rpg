@@ -5,6 +5,7 @@ import { canUseCapability, knowsCapability } from './capabilityEngine.js';
 import { appendBattleLog } from './battleEngine.js';
 import { finalizeCombatState, getCombatantReadyAt, isCombatantReady, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
 import { resolveCombatDamage, resolveCombatStatus } from './combatResolutionEngine.js';
+import { describeCombatLoadoutBlock, isCombatLoadoutTransitionActive } from './combatLoadoutEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { applyStatus } from './statusEngine.js';
@@ -56,6 +57,9 @@ export function canActivateAbility(state, abilityQuery, options = {}) {
     if (!state?.player) return failure('ability.no-player', { abilityId: ability.id }, 'No player is available to use abilities.');
 
     const runtime = ensureAbilityRuntimeState(state);
+    if (isCombatLoadoutTransitionActive(state)) {
+        return failure('ability.loadout-transition', { abilityId: ability.id }, describeCombatLoadoutBlock(state));
+    }
     if (runtime.active) {
         return failure('ability.already-activating', { abilityId: ability.id, active: snapshotActivation(runtime.active) }, 'Another ability is already being activated.');
     }
