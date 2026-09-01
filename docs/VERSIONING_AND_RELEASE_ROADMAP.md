@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
-| Data | 69 | canonical authored-data, including two affinity-gated kata substitutions plus existing kata/combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 70 | canonical authored-data, including structured resolution/recovery metadata for all eight novice Elemental Form attacks plus existing affinity/kata/combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1370,6 +1370,23 @@ Game State 20 adds required `player.progression.affinities` rank state for fire/
 Data 69 adds Rimepoint Thrust and Cinder-Braced Drive as representative affinity-gated authored substitutions. The existing basic-melee path passes their structured element metadata into the unified combat resolver; no separate elemental-kata resolver or task owner is added.
 
 Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Check #1956 / run `33477009897` with 867/867 tests and the full gate; Pages #2086 / run `33477008886` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`.
+## `0.9.300.3` — Advanced Combat Packet 3: Novice Elemental Resolution Breadth
+
+```text
+Product       0.9.300.2 -> 0.9.300.3
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 20
+Data          69        -> 70
+Benchmark     3         -> 3
+```
+
+Data 70 migrates Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike to explicit magical resolution metadata with their canonical elements and 2-second post-action recovery. All eight keep their existing IDs, capabilities, activation, MP cost, cooldown, potency, and scaling; the executable ability count remains 41.
+
+Game State stays 20 because no durable state shape changes. The ability catalog definition version advances 6 -> 7, while the ability runtime state is unchanged. Adept spells whose names imply ring/cage/well or other richer semantics remain intentionally unmigrated.
+
+Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Check #1981 / run `33515422352` with 870/870 tests and the full gate; Pages #2111 / run `33515422056` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`.
+
 ## Phase progression
 
 ```text
@@ -1380,7 +1397,7 @@ Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Check #1956 
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–2 COMPLETE; NEXT PACKET UNSELECTED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–3 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
