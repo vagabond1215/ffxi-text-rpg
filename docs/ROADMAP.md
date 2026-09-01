@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.2
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
+Codename:      Character Affinity & Kata Substitution
 ```
 
 ## Completed foundation and major tranches
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is COMPLETE at Product 0.9.300.1 / Data 68 / Game State 19. Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started.**
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is COMPLETE at Product 0.9.300.1 / Data 68 / Game State 19. Packet 2 — Character Affinity & Kata Substitution Foundation — is COMPLETE at Product 0.9.300.2 / Data 69 / Game State 20.** Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Check #1956 with 867/867 tests and the full gate; Pages #2086 passed. Character affinity is now continuous-character progression, and two representative kata substitutions execute through existing resolution. No subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
