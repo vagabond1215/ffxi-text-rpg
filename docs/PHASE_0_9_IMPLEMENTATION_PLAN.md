@@ -475,7 +475,7 @@ Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is **COMPLETE
 
 # `0.9.300` — Advanced Combat / Training
 
-**Track status: ACTIVE. Packet 1 complete; Packet 2 queued/not started.**
+**Track status: ACTIVE. Packets 1–2 complete; next advanced-combat packet unselected.**
 
 Packet 1 — Current Melee Kata Breadth:
 - permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
@@ -484,7 +484,7 @@ Packet 1 — Current Melee Kata Breadth:
 - Pages #2077 / run `33474558121` green;
 - Product 0.9.300.1 / Package 0.9.300 / Game State 19 / Data 68.
 
-Packet 2 — Character Affinity & Kata Substitution Foundation is queued/not started. The current runtime has no canonical character-affinity state, so the packet must establish the smallest durable affinity authority before proving representative elemental kata substitutions. Aura/stance/zone/channel/reaction and LOS/pursuit remain outside that packet unless separately authorized.
+Packet 2 — Character Affinity & Kata Substitution Foundation is **COMPLETE** at Product 0.9.300.2 / Game State 20 / Data 69. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`; behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`; Check #1956 / run `33477009897` passed 867/867 tests plus the full gate; Pages #2086 passed. Affinity is character-owned ranked progression and two representative substitutions use the existing kata/resolution authorities. No later 0.9.300 packet is auto-selected.
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -499,7 +499,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 — Current Melee Kata Breadth — is complete at Product 0.9.300.1 / Game State 19 / Data 68, and Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 — Current Melee Kata Breadth — is complete at Product 0.9.300.1 / Game State 19 / Data 68, and Packet 2 — Character Affinity & Kata Substitution Foundation — is complete at Product 0.9.300.2 / Game State 20 / Data 69. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
