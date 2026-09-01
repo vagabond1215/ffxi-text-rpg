@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.300.4 — Thunder Cage Control Foundation
+
+- Converted the existing Thunder Cage adept spell from generic single-target damage into explicit lightning magical damage plus a separately resistible six-second containment status.
+- Added `cannotAct` / `caged` status evidence while keeping damage and control independent, so a target may take lightning damage while resisting containment.
+- Centralized the existing hard-disable flag vocabulary in `statusEngine` instead of leaving duplicate control semantics inside combat loadout code.
+- Updated enemy action selection and fictional-time readiness interrupts to suppress hard-disabled enemies and resume them at the latest active disable expiry without a second timer, task owner, or control scheduler.
+- Preserved existing B3 armor-pressure behavior through the shared hard-disable status authority.
+- Kept Thunder Cage single-target; no area geometry, zone state, general crowd-control taxonomy, new ability/capability, or persistence family was added. Executable ability count remains 41.
+- Advanced Product 0.9.300.3 -> 0.9.300.4 and Data 70 -> 71; Game State remains 20 and Package remains 0.9.300.
+- The first hosted Packet 4 run exposed only a detached resistance-fixture issue; the repaired source-status proof required no runtime change. Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Repository Audit, 875/875 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #2006 / run `33518317562` and Pages #2136 / run `33518315622`.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.3 — Novice Elemental Resolution Breadth
 
 - Migrated the eight existing novice Elemental Form attacks—Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike—to explicit unified combat-resolution metadata.
