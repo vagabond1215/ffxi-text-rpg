@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–6 are complete.** The current canonical/runtime checkpoint is Data 73 / Product 0.9.300.6 / Game State 21. Packet 6 gives Umbral Well honest persistent-field behavior: its completed cast creates battle-local durable field state with three fictional-time Dark pulses, a cast-time source snapshot, pulse-time defender resistance, and explicit save/load continuity.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–7 are complete.** The current canonical/runtime checkpoint is Data 74 / Product 0.9.300.7 / Game State 21. Packet 7 gives Radiant Arc honest target-to-target propagation: the selected enemy anchors a deterministic three-recipient Light arc that jumps to the nearest eligible unhit target within two formation units, resolves each recipient independently, and uses existing per-recipient attention without durable propagation state.
 
 ```text
-Product:       0.9.300.6
+Product:       0.9.300.7
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          73
+Data:          74
 Benchmark:     3
-Codename:      Umbral Well Field Foundation
+Codename:      Radiant Arc Propagation Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 73 implementation census:
+Validated Data 74 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
