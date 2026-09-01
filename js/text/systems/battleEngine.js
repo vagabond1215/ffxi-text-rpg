@@ -1,4 +1,5 @@
 import { createBattleAttentionState } from './combatAttentionEngine.js';
+import { createCombatFieldState } from './combatFieldEngine.js';
 import { resolveCombatDamage } from './combatResolutionEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { createBattleWeaponKataState } from './weaponKataEngine.js';
@@ -22,6 +23,7 @@ export function createBattleState({ id = null, player, allies = [], enemies = []
         rng,
         combatants,
         enmity: createBattleAttentionState(combatants),
+        fields: createCombatFieldState(),
         loadoutTransition: null,
         weaponKata: createBattleWeaponKataState(),
         skillchain: null,
