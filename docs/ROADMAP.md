@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 ```
 
 ## Completed foundation and major tranches
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is COMPLETE at Product 0.9.300.1 / Data 68 / Game State 19. Packet 2 — Character Affinity & Kata Substitution Foundation — is COMPLETE at Product 0.9.300.2 / Data 69 / Game State 20.** Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Check #1956 with 867/867 tests and the full gate; Pages #2086 passed. Character affinity is now continuous-character progression, and two representative kata substitutions execute through existing resolution. No subsequent 0.9.300 packet is selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are COMPLETE.** Packet 3 closes the novice Elemental Form resolution gap at Product 0.9.300.3 / Data 70 / Game State 20: eight existing single-target elemental attacks now use magic accuracy, magic defense, elemental resistance, and explicit recovery through the B1 resolver. Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Check #1981 with 870/870 tests and the full gate; Pages #2111 passed. Adept geometry-signaling spells remain intentionally deferred; no subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
