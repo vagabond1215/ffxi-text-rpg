@@ -568,6 +568,56 @@ Sable deliberately has no fixed Waylodge NPC schedule because fixed civic availa
 
 This slice adds no new Game State family, direct timed-task owner, simulation clock, route graph, or supported-save migration.
 
+# Advanced combat authority direction
+
+Permanent design authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
+
+Selected implementation plan:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`
+
+The existing Combat 2.0 substrate remains authoritative for:
+- canonical fictional-time combat readiness;
+- structured combat action history;
+- active battle persistence;
+- deterministic enemy-ready interrupts;
+- timed ability activation/interruption;
+- root-player / battle-player synchronization.
+
+Future work must extend this substrate rather than create a second combat clock or parallel battle store.
+
+Target authority flow:
+
+```text
+capability + proficiency + equipment + affinity
+                    |
+                    v
+          executable action definition
+                    |
+                    v
+       unified combat resolution contract
+        /        |          |          \
+ physical    magical     status      geometry
+        \        |          |          /
+                    v
+             combat action record
+                    |
+          +---------+----------+
+          |                    |
+          v                    v
+ weapon/kata readiness    enemy attention
+                         enmity -> focus
+                         -> aggro/fixation
+```
+
+Prepared loadouts and kata selections are player configuration, not separate character identities. Canonical ability cooldowns remain keyed to the ability/shared cooldown family rather than loadout slots.
+
+Attention state belongs to the active hostile encounter. If it affects resumable battle outcomes across save/load, it must be persisted with `activeBattle` rather than reconstructed from narrative logs.
+
+Equipment transitions use canonical combat/world time. Armor-swap legality depends on actual hostile pressure, pursuit, reachability, disable state, focus, aggro, and fixation—not merely whether the player is the current selected target.
+
+The exact future Game State version is deferred until the implementation packet defines the durable serialized shape.
+
 # Persistence authority — Game State 15
 
 Raw current-schema validation runs before revival/normalization.
