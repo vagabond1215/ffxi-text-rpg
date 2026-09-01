@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -167,6 +167,21 @@ PASS only when:
 - Product/Game State/Data decisions are explicit.
 
 **Gate result: PASS.** Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`; Check #1956 / run `33477009897`; **867/867 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2086 / run `33477008886` PASS. Game State advances 19 -> 20 and Data 68 -> 69; kata configuration remains version 2 and battle kata state remains version 1.
+
+### 0.9.300 Packet 3 gate — Novice Elemental Resolution Breadth
+
+PASS only when:
+- exactly the eight existing novice Elemental Form attacks are migrated;
+- no ability/capability count inflation occurs;
+- every migrated attack carries its correct canonical element, magic accuracy, magic-defense resistance, and explicit recovery;
+- target elemental resistance changes structured resolution evidence and damage;
+- existing activation, costs, cooldowns, potency, scaling, IDs, and capability links remain stable;
+- light keeps MND scaling while the other seven preserve their existing stat choices;
+- adept ring/cage/well names remain unmigrated rather than receiving misleading single-target placeholder semantics;
+- no state family, geometry authority, combat clock, or task owner is introduced;
+- Product/Data/Game State decisions are explicit.
+
+**Gate result: PASS.** Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397`; Check #1981 / run `33515422352`; **870/870 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2111 / run `33515422056` PASS. Game State remains 20; Data advances 69 -> 70; executable ability count remains 41.
 
 ## Content Pack v2 gate
 
