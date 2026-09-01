@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.6
+Product:       0.9.300.7
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          73
+Data:          74
 Benchmark:     3
-Codename:      Umbral Well Field Foundation
+Codename:      Radiant Arc Propagation Foundation
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
-| Data | 73 | canonical authored-data, including Umbral Well persistent-field/Dark resolution/recovery metadata plus Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 74 | canonical authored-data, including Radiant Arc propagation/Light resolution/recovery metadata plus Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1444,6 +1444,27 @@ Behavioral/data implementation freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3`
 
 Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`.
 
+## `0.9.300.7` — Advanced Combat Packet 7: Radiant Arc Propagation Foundation
+
+```text
+Product       0.9.300.6 -> 0.9.300.7
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          73        -> 74
+Benchmark     3         -> 3
+```
+
+Data 74 changes the existing Radiant Arc definition from generic adept single-target damage into explicit Light magical resolution plus synchronous target-to-target `arc` geometry. The primary target is recipient 1; each later recipient is the nearest living unhit opponent within two derived formation units of the previous recipient. Encounter order breaks distance ties, the action caps at three total recipients, and no damage falloff is introduced in this foundation packet.
+
+`combatGeometryEngine` adds deterministic arc propagation evidence: primary target, jump range, target cap, repeat-target policy, ordering law, and per-recipient jump/origin/distance/position. The existing geometric target-expansion path in `abilityEngine` applies Radiant Arc independently to all selected recipients, and existing explicit per-recipient attention records hostility only for landed effects.
+
+No future propagation deadline or state survives the completed action. Game State therefore remains 21; no save migration, timer/task owner, movement state, LOS, or pathfinding state is added.
+
+Behavioral/data implementation freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec` passed Check #2106 / run `33569913910` with **889/889 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample. Pages #2236 / run `33569912530` passed. Validation-only PR #405 also passed Check #2107 and was closed without merge after evidence collection.
+
+Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`.
+
 ## Phase progression
 
 ```text
@@ -1454,7 +1475,7 @@ Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–6 COMPLETE; NEXT PACKET UNSELECTED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–7 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
