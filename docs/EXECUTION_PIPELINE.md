@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 ```
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 4 — Thunder Cage Control Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
+**0.9.300 Packet 5 — Tempest Ring Geometry Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`;
-- Product 0.9.300.4 / Package 0.9.300 / Game State 20 / Data 71 / Account Save 5 / Benchmark 3;
-- behavioral/data implementation freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642`;
-- Check #2006 / run `33518317562`: Repository Audit, **875/875 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2136 / run `33518315622`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`;
+- Product 0.9.300.5 / Package 0.9.300 / Game State 20 / Data 72 / Account Save 5 / Benchmark 3;
+- behavioral/data implementation freeze `29d6da27e48850aa96307553b4c124f2598c8caa`;
+- Check #2034 / run `33544018110`: Repository Audit, **879/879 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2164 / run `33544018073`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 71 metrics
+## Data 72 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are complete.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are complete.
 
 ### Latest completed unit — Packet B2
 
@@ -212,6 +212,14 @@ Game State remains 20. Data advances 69 -> 70 for eight changed canonical abilit
 Thunder Cage now carries explicit lightning magical damage plus a separately resistible six-second containment status using the existing status and combat-resolution authorities. The shared hard-disable flag vocabulary moved from loadout-local logic into `statusEngine`; enemy action selection/readiness consumes that shared status fact and defers ready interrupts until the final active disable expires.
 
 Game State remains 20 because generic status flags and expiry timestamps already persist under the current schema. Data advances 70 -> 71 for the changed Thunder Cage canonical definition. Ability count remains 41. Tempest Ring geometry, Umbral Well field behavior, general crowd-control taxonomy, and broad adept migration remain deferred. No subsequent 0.9.300 packet is selected.
+
+### Latest completed unit — 0.9.300 Packet 5
+
+**Tempest Ring Geometry Foundation — COMPLETE.**
+
+`combatGeometryEngine` now provides deterministic encounter-relative formation projection plus target-centered ring queries. Tempest Ring uses radius 2 / maximum 4 targets; each selected enemy independently resolves wind magic accuracy, magic defense, and elemental resistance. Geometry evidence is stored on the ordinary ability result/event/action, and `combatAttentionEngine` applies area-action enmity to each enemy actually affected rather than assigning the primary target's total to every hostile.
+
+No mutable battle-position state is added. Formation is derived from already-persisted combatant side/order, so cloned/current-schema battle state reproduces the same geometry without a Game State bump. Game State remains 20; Data advances 71 -> 72 for the changed Tempest Ring authored contract. Ability count remains 41. Movement, LOS, pursuit/disengagement, other geometry kinds, ground targeting, and Umbral Well fields remain deferred. No subsequent 0.9.300 packet is selected.
 
 ## Preserved interrupted/resumable queues
 
