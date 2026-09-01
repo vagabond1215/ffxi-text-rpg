@@ -5,33 +5,35 @@ Repository evidence beats conversation memory.
 ## Current runtime contract
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Account Save:  5
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
-Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Codename:      Brasshaven Redstone Combat Training
 Runtime:       Node >=24
 Phase:         0.9
-Track:         0.9.200 Adventure Vertical Slices ACTIVE
+0.9.100:       COMPLETE
+0.9.200:       COMPLETE — Adventure Vertical Slices
 Slice A:       COMPLETE
 Slice B B1:    COMPLETE
 Slice B B2:    COMPLETE
 Slice B B3:    COMPLETE
 Slice B B4:    COMPLETE
-Next packet:   B5 Playable Brasshaven / Redstone Combat-Training Proof — QUEUED / NOT STARTED
+Slice B B5:    COMPLETE
+Next track:    0.9.300 Advanced Combat / Training — QUEUED / NOT STARTED
 ```
 
-## Latest bounded unit — Combat 2.0 Packet B4
+## Latest bounded unit — Combat 2.0 Packet B5
 
 Permanent record:
-- `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
+- `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
 
 Permanent design authority:
 - `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-Slice B plan:
+Completed Slice B plan:
 - `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
 
 Adjacent/stale combat audit:
@@ -39,42 +41,38 @@ Adjacent/stale combat audit:
 
 ### Behavioral implementation freeze
 
-`0c3ef0a2720850d362cea06dffdbfd452f5a0c19`
+`764faae437f3bc58d4d55a7e46dc4921a4a85c05`
 
 Hosted evidence:
-- Check #1925 / run `33470044213`;
-- job `99737773726`;
+- Check #1939 / run `33472621389`;
+- job `99745292387`;
 - Repository Audit PASS;
-- **852/852 tests**;
+- **855/855 tests**;
 - Content Census PASS;
 - Benchmark 3 PASS;
 - Benchmark Sample PASS;
-- Pages #2055 / run `33470043871` PASS.
+- Pages #2069 / run `33472620984` PASS.
 
-This freeze intentionally predates Product/Game State/Data promotion.
+This freeze intentionally predates Product/Data promotion and authority synchronization.
 
-### Promoted synchronized checkpoint before final handoff
+### Promoted synchronized-authority checkpoint before handoff
 
-`7e262d65d220134d083db38990d195b2ab30e0e4`
+`34f637927036ac1807646cbd49e6e74cf0b2ddb4`
 
-Hosted evidence:
-- Check #1931 / run `33470629567`;
-- job `99739495176`;
-- Repository Audit PASS;
-- **852/852 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS;
-- Pages #2061 / run `33470629178` PASS.
+At this checkpoint:
+- Product 0.9.200.6 / Data 67 promotion is complete;
+- Game State remains 18;
+- all current B5 release/design/architecture/lifecycle authorities are synchronized;
+- `0.9.200 Adventure Vertical Slices` is marked COMPLETE;
+- `0.9.300 Advanced Combat / Training` is queued/not started;
+- Check #1943 / run `33473029839` confirms the Repository Audit's only failure is this handoff still advertising Product 0.9.200.5;
+- no 0.9.300 implementation has started.
 
-Product/Game State/Data promotion and all current B4 authorities are synchronized at this checkpoint.
+This handoff write is therefore the intended final repository mutation for B5.
 
-The first attempted final handoff head `589ab419d887546b388004438efd7002d842fda1` exposed one test-only synchronization error: a later group of `describeSystemVersions()` assertions still expected B3 component versions even though the promoted manifest was correct. Commit `7e262d65d220134d083db38990d195b2ab30e0e4` updates those stale assertions and adds checks for the new weapon cadence/kata system versions. It changes no B4 runtime behavior.
+## B4 foundation retained
 
-No B5 implementation has started.
-
-This handoff write is therefore the intended final repository mutation for B4.
-
+The detailed B4 cadence/ranged/kata record below is retained because B5 directly integrates and regression-proves it.
 ## What B4 implements
 
 ### One weapon cadence authority
@@ -251,6 +249,36 @@ The bump is independent and covers authored mechanics definitions:
 - Rounded Sling Stones;
 - dagger/sword kata families and moves.
 
+## B5 integrated proof and corrections
+
+B5 reuses Marshal Varric Stone and his existing Brasshaven Market Ring POI as a bounded Forge-Road training contact. `trainingServiceEngine.js` owns only trainer/POI context and delegates actual learning to `capabilityEngine`; it adds no training progression registry, clock, task owner, commitment, or automatic relationship reward.
+
+Player-facing training adds `training`, `train <technique>`, and semantic Learn/Review actions for the existing Ridge Breaker and Rivet Guard capabilities.
+
+The focused guard `tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js` proves:
+- canonical Brasshaven -> South Redstone travel;
+- B1 Rivet Guard, Ridge Breaker, and Ember Dart resolution;
+- B2 player + companion attention/Aggro state;
+- B3 timed weapon transition and armor-pressure blocking;
+- pressure release through the already-recognized explicit hard-disable boundary, not invented LOS/pursuit state;
+- B4 sword cadence/kata, first-class sling ammunition, and weapon-sequence reset;
+- ordinary character-owned sword skill gain.
+
+B5 also surfaced and fixed two integration defects:
+1. partially consumed equipped ammo was valid runtime state but rejected by the older quantity-1 equipment validator; Game State 18 now permits a valid positive stack specifically in the canonical `ammo` slot while ordinary equipment retains strict non-stackable quantity-1 invariants;
+2. locality action deduplication could collapse distinct actions at one POI or distinct capability-training actions; active-POI visibility and semantic deduplication keys now preserve those choices.
+
+Version decision:
+```text
+Product       0.9.200.5 -> 0.9.200.6
+Package       0.9.200   -> 0.9.200
+Account Save  5         -> 5
+Game State    18        -> 18
+Data          66        -> 67
+Benchmark     3         -> 3
+```
+
+Game State stays 18 because B5 adds no required durable state family. Data 67 records the authored Varric/POI combat-training metadata. No supported migration is added.
 ## Task/resource ownership
 
 B4 adds **no direct timed-task owner**.
@@ -266,11 +294,13 @@ The current seven direct task owners remain:
 
 Weapon cadence is stateless. Kata config/cursor persists directly in player/active-battle state. Ranged shots are synchronous combat actions whose ammo mutation goes through equipment authority.
 
+B5 also adds no direct timed-task owner. Training is synchronous context around capability progression and semantic events; the ammo-persistence repair changes validation of physical equipment state, not task lifecycle.
+
 The stale architecture list that omitted B3's combat-loadout owner was corrected during B4 synchronization.
 
 ## Adjacent/stale boundaries carried forward
 
-Do not build B5 on stale placeholders:
+Do not build 0.9.300 on stale placeholders:
 - `battle.targetId`;
 - `battle.actionDelay`;
 - `battle.recasts`;
@@ -283,9 +313,9 @@ Do not add new behavior to noncanonical legacy surfaces:
 
 Exploration spawn detection `aggroEngine` remains separate from active-battle Aggro/Enmity.
 
-## Explicitly deferred after B4
+## Explicitly deferred after B5
 
-Do not silently absorb these into B5 unless required by the playable proof and explicitly bounded:
+Do not silently treat these as implemented or absorb them into the first 0.9.300 packet without a fresh bounded decision:
 
 1. full LOS/reachability/pursuit/search/disengagement simulation;
 2. named prepared combat-loadout presets;
@@ -298,32 +328,28 @@ Do not silently absorb these into B5 unless required by the playable proof and e
 
 The B3 audit remains the authority for why these are not implied existing systems.
 
-## Next bounded unit — B5 only
+## `0.9.200 Adventure Vertical Slices` closure
 
-**Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof** is queued and **NOT STARTED**.
+The track is deliberately **COMPLETE**:
+- Slice A — Slatewater Road Scout;
+- B1 — Unified Combat Resolution;
+- B2 — Enemy Attention Foundation;
+- B3 — Combat Loadout Transitions;
+- B4 — Weapon Cadence, Ranged Action, and Minimal Kata;
+- B5 — Brasshaven / Redstone Combat-Training Proof.
 
-A future explicit `continue` should start B5 only.
+Do not reopen these packets without a fresh bounded order identifying a concrete defect or extension.
 
-B5's purpose is integration proof, not another generic combat foundation. It should use existing Brasshaven/Redstone geography and compose B1–B4 into a coherent playable training/combat loop.
+## Next track — do not auto-start
 
-Required proof should cover, where fiction and existing content support it:
-- real existing training/service/social contact rather than a gratuitous new NPC;
-- melee action through weapon cadence/kata;
-- first-class ranged action and ammunition;
-- at least one representative elemental/canonical ability;
-- party attention;
-- weapon-set transition;
-- armor-pressure blocking;
-- skill/proficiency progression;
-- a defensible pressure-break/disengagement proof only if a real required state model is deliberately added.
+**`0.9.300 Advanced Combat / Training` — QUEUED / NOT STARTED.**
 
-B5 must not automatically implement every deferred combat mechanic merely because the design document describes a larger future model.
+A future explicit `continue` may select the first bounded 0.9.300 packet. It must not treat the entire permanent advanced-combat design as one implementation order.
 
-When B5 is green, deliberately decide whether `0.9.200 Adventure Vertical Slices` closes and `0.9.300 Advanced Combat / Training` opens. Do not assume that track transition before B5 validation.
-
+Candidate domains include broader weapon-family kata, affinity substitutions, differentiated manual melee/ranged techniques, aura/stance/zone/channel/reaction mechanics, enemy technique/attention personality breadth, and differentiated ability expansion. None is pre-authorized as the first packet.
 ## Preserved interrupted/resumable circles
 
-B4 completion does **not** cancel earlier queues.
+B5 completion does **not** cancel earlier queues.
 
 - **Locality enrichment — deferred/resumable:** ambient/risk events, wandering/seasonal merchants, generalized directions/help dialogue, richer contextual dialogue, staged shop category/browse depth, learned-locality graphical presentation. Authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 - **Occupational Tool Conversion — preserved/queued:** strongest prepared `0.9.400 Economy / Production Depth` candidate. Authority: `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
@@ -342,6 +368,7 @@ Preserve:
 - weapon cadence owns delay conversion only;
 - weapon kata owns configuration/cursor semantics only;
 - equipment/inventory remain physical item authorities;
+- training service owns context only and delegates learning to capability progression;
 - ability engine owns canonical activation/cooldowns;
 - action history stores structured evidence; prose is not authority;
 - current-schema-only pre-alpha persistence;
@@ -351,35 +378,28 @@ Preserve:
 - exact behavioral implementation freeze before promotion/synchronization;
 - `docs/THREAD_HANDOFF.md` is the final repository-file write for the packet.
 
-## Restart order for B5
+## Restart order for a future 0.9.300 continuation
 
 1. `AGENTS.md`
 2. this handoff
 3. `PROJECT_PROFILE.yaml`
 4. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
-5. `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`
+5. `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`
 6. `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`
-7. `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`
+7. `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md` for completed proof context only
 8. `docs/EXECUTION_PIPELINE.md`
 9. `docs/ROADMAP.md`
 10. `docs/ARCHITECTURE.md`
-11. existing Brasshaven/Redstone contacts/services/commitments/POIs
-12. `js/text/systems/combatActionEngine.js`
-13. `js/text/systems/combatTurnEngine.js`
-14. `js/text/systems/combatAttentionEngine.js`
-15. `js/text/systems/combatLoadoutEngine.js`
-16. `js/text/systems/weaponCadenceEngine.js`
-17. `js/text/systems/weaponKataEngine.js`
-18. current-schema persistence and focused vertical-slice tests
-
+11. inspect current advanced-combat runtime/data and the stale/nonexistent boundaries above
+12. select **one bounded 0.9.300 packet** with explicit non-goals before implementation
 ## Final validation contract
 
-This handoff is the final repository-file mutation for B4.
+This handoff is the final repository-file mutation for B5 and the closing write for `0.9.200 Adventure Vertical Slices`.
 
 After this write:
 - perform **no repository-file mutations**;
 - validate the exact resulting `main` SHA with hosted Check;
-- confirm Repository Audit, **852/852 tests**, Census, Benchmark 3, and Benchmark Sample;
+- confirm Repository Audit, **855/855 tests**, Census, Benchmark 3, and Benchmark Sample;
 - confirm Pages succeeds on the same exact SHA;
 - confirm `main` remains on that exact SHA after validation.
 
