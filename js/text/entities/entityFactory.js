@@ -4,6 +4,7 @@ import { getJob } from '../data/jobs.js';
 import { getExpToNextLevel } from '../data/expTables.js';
 import { createDefaultWeaponKataConfiguration } from '../data/weaponKataCatalog.js';
 import { ensureCapabilityState } from '../systems/capabilityEngine.js';
+import { createCharacterAffinityState, ensureCharacterAffinityState } from '../systems/characterAffinityEngine.js';
 import { createInventoryState } from '../systems/inventoryEngine.js';
 import { ensureProgressionState } from '../systems/progressionEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
@@ -56,6 +57,7 @@ export function createPlayerCharacter(options = {}) {
     };
 
     ensureProgressionState(entity);
+    ensureCharacterAffinityState(entity);
     ensureCapabilityState(entity);
     entity.combat = calculateCombatProfile(entity);
     entity.resources = {
@@ -154,9 +156,11 @@ export function createProgression(overrides = {}) {
         limitBreaks: [],
         merits: {},
         jobPoints: {},
+        affinities: createCharacterAffinityState(),
         weaponKata: createDefaultWeaponKataConfiguration(),
         ...overrides,
         skills: overrides.skills ?? {},
+        affinities: overrides.affinities ?? createCharacterAffinityState(),
         weaponKata: overrides.weaponKata ?? createDefaultWeaponKataConfiguration(),
     };
 }

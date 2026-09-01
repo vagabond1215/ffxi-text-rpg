@@ -9,6 +9,7 @@ import {
     validateWeaponKataConfiguration,
 } from '../data/weaponKataCatalog.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
+import { getCharacterAffinityRank } from './characterAffinityEngine.js';
 import { getLearnedSkill } from './skillProgressionEngine.js';
 
 export const BATTLE_WEAPON_KATA_STATE_VERSION = 1;
@@ -109,6 +110,10 @@ export function configureWeaponKataSelection(state, familyId, slotNumber, moveId
     const move = getWeaponKataMove(moveId);
     const learned = getLearnedSkill(player, family.skillId);
     if (learned < move.requiredSkill) return fail('combat.kata.proficiency', `${move.name} requires ${family.skillId} proficiency ${move.requiredSkill}; learned ${learned}.`);
+    if (!meetsAffinityRequirement(player, move)) {
+        const requirement = move.requiredAffinity;
+        return fail('combat.kata.affinity', `${move.name} requires ${requirement.element} affinity rank ${requirement.rank}; earned ${getCharacterAffinityRank(player, requirement.element)}.`);
+    }
     const unlocked = getUnlockedWeaponKataSlotCount(player, family.id);
     if (slot.slot > unlocked) return fail('combat.kata.slot-locked', `${family.id} kata slot ${slot.slot} unlocks with more ${family.skillId} proficiency.`);
 
@@ -135,7 +140,8 @@ export function describeWeaponKata(player, requestedFamily = null) {
         for (const slot of family.slots) {
             const moveId = config.selections[family.id][String(slot.slot)];
             const move = getWeaponKataMove(moveId);
-            lines.push(`  ${slot.slot}. ${move?.name ?? moveId}${slot.slot > unlocked ? ' [locked]' : ''}`);
+            const affinity = move?.requiredAffinity ? `; requires ${move.requiredAffinity.element} affinity ${move.requiredAffinity.rank}` : '';
+            lines.push(`  ${slot.slot}. ${move?.name ?? moveId}${slot.slot > unlocked ? ' [locked]' : ''}${affinity}`);
         }
         for (const moveId of family.manualMoveIds) {
             const move = getWeaponKataMove(moveId);
@@ -176,8 +182,13 @@ function getSelectedAutomaticMove(player, family, slotNumber) {
     const selectedId = config.selections?.[family.id]?.[String(slot.slot)];
     const selected = getWeaponKataMove(selectedId);
     const learned = getLearnedSkill(player, family.skillId);
-    if (selected && selected.kind === 'automatic' && selected.family === family.id && selected.slot === slot.slot && learned >= selected.requiredSkill) return selected;
+    if (selected && selected.kind === 'automatic' && selected.family === family.id && selected.slot === slot.slot && learned >= selected.requiredSkill && meetsAffinityRequirement(player, selected)) return selected;
     return getWeaponKataMove(slot.defaultMoveId);
+}
+
+function meetsAffinityRequirement(player, move) {
+    if (!move?.requiredAffinity) return true;
+    return getCharacterAffinityRank(player, move.requiredAffinity.element) >= move.requiredAffinity.rank;
 }
 
 function ensureBattleWeaponKataState(battle) {

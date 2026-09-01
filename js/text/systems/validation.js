@@ -24,6 +24,7 @@ import {
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { VERSION } from '../version.js';
 import { validateWeaponKataConfiguration, validateWeaponKataCatalog } from '../data/weaponKataCatalog.js';
+import { validateCharacterAffinityState } from './characterAffinityEngine.js';
 import { validateTrainingServiceDefinitions } from './trainingServiceEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateCultivationState } from './cultivationEngine.js';
@@ -286,6 +287,7 @@ function validateProgression(progression) {
         return issues;
     }
 
+    issues.push(...validateCharacterAffinityState(progression.affinities));
     issues.push(...validateWeaponKataConfiguration(progression.weaponKata).map((issue) => `weaponKata.${issue}`));
 
     for (const [skillId, value] of Object.entries(progression.skills)) {

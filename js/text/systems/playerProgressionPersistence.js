@@ -2,6 +2,7 @@ import { getExpToNextLevel } from '../data/expTables.js';
 import { JOB_DEFINITIONS } from '../data/jobs.js';
 import { SKILL_KEYS } from '../data/systemConstants.js';
 import { validateWeaponKataConfiguration } from '../data/weaponKataCatalog.js';
+import { validateCharacterAffinityState } from './characterAffinityEngine.js';
 import { CHARACTER_PROGRESSION_STATE_VERSION } from './progressionEngine.js';
 
 export function validatePersistedPlayerProgression(player) {
@@ -23,6 +24,7 @@ export function validatePersistedPlayerProgression(player) {
     validateJobProgression(progression, jobs.jobLevels, unlockedJobs, mainJobId, jobs.level, levelCap, issues);
     validateCharacterProgression(progression.character, progression.jobProgression, jobs.level, issues);
     validateSkillState(progression.skills, issues);
+    issues.push(...validateCharacterAffinityState(progression.affinities).map((issue) => `progression.${issue}`));
     issues.push(...validateWeaponKataConfiguration(progression.weaponKata).map((issue) => `progression.${issue}`));
 
     return issues;

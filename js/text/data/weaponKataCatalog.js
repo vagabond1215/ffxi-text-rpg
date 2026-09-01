@@ -1,8 +1,11 @@
-export const WEAPON_KATA_CATALOG_VERSION = 2;
+import { ELEMENT_KEYS } from './systemConstants.js';
+
+export const WEAPON_KATA_CATALOG_VERSION = 3;
 export const WEAPON_KATA_CONFIGURATION_VERSION = 2;
 
 const B4_KATA_SOURCE = 'Hearth & Horizon Combat 2.0 B4 representative kata proof.';
 const P1_KATA_SOURCE = 'Hearth & Horizon 0.9.300 Packet 1 current melee kata breadth.';
+const P2_KATA_SOURCE = 'Hearth & Horizon 0.9.300 Packet 2 character affinity substitution foundation.';
 
 export const WEAPON_KATA_SLOT_THRESHOLDS = Object.freeze([0, 2, 4]);
 
@@ -12,6 +15,11 @@ const MOVES = {
     }),
     'dagger-careful-thrust': move('dagger-careful-thrust', 'Careful Thrust', 'dagger', 1, 'automatic', 2, {
         stat: 'dex', coefficient: 0.42, accuracyModifier: 10, recoveryMultiplier: 1,
+    }),
+    'dagger-rimepoint-thrust': move('dagger-rimepoint-thrust', 'Rimepoint Thrust', 'dagger', 1, 'automatic', 2, {
+        stat: 'dex', coefficient: 0.38, accuracyModifier: 6, recoveryMultiplier: 1.05,
+        element: 'ice', elementSource: 'characterAffinity', channel: 'hybrid', damageType: 'piercing-ice', resistanceModel: 'physicalDefense',
+        requiredAffinity: { element: 'ice', rank: 1 }, source: P2_KATA_SOURCE,
     }),
     'dagger-cross-cut': move('dagger-cross-cut', 'Cross Cut', 'dagger', 2, 'automatic', 2, {
         stat: 'dex', coefficient: 0.58, accuracyModifier: 0, recoveryMultiplier: 1,
@@ -49,6 +57,11 @@ const MOVES = {
     'staff-braced-drive': move('staff-braced-drive', 'Braced Drive', 'staff', 3, 'automatic', 4, {
         stat: 'str', coefficient: 0.7, accuracyModifier: -1, defensePenetration: 0.06, recoveryMultiplier: 1.15, source: P1_KATA_SOURCE,
     }),
+    'staff-cinder-braced-drive': move('staff-cinder-braced-drive', 'Cinder-Braced Drive', 'staff', 3, 'automatic', 4, {
+        stat: 'str', coefficient: 0.58, accuracyModifier: 0, defensePenetration: 0.03, recoveryMultiplier: 1.12,
+        element: 'fire', elementSource: 'characterAffinity', channel: 'hybrid', damageType: 'blunt-fire', resistanceModel: 'physicalDefense',
+        requiredAffinity: { element: 'fire', rank: 1 }, source: P2_KATA_SOURCE,
+    }),
     'club-short-strike': move('club-short-strike', 'Short Strike', 'club', 1, 'automatic', 0, {
         stat: 'str', coefficient: 0.46, accuracyModifier: 4, recoveryMultiplier: 0.95, source: P1_KATA_SOURCE,
     }),
@@ -67,7 +80,7 @@ export const WEAPON_KATA_FAMILIES = deepFreeze({
         id: 'dagger',
         skillId: 'dagger',
         slots: [
-            { slot: 1, defaultMoveId: 'dagger-quick-thrust', optionMoveIds: ['dagger-quick-thrust', 'dagger-careful-thrust'] },
+            { slot: 1, defaultMoveId: 'dagger-quick-thrust', optionMoveIds: ['dagger-quick-thrust', 'dagger-careful-thrust', 'dagger-rimepoint-thrust'] },
             { slot: 2, defaultMoveId: 'dagger-cross-cut', optionMoveIds: ['dagger-cross-cut'] },
             { slot: 3, defaultMoveId: 'dagger-driving-thrust', optionMoveIds: ['dagger-driving-thrust'] },
         ],
@@ -99,7 +112,7 @@ export const WEAPON_KATA_FAMILIES = deepFreeze({
         slots: [
             { slot: 1, defaultMoveId: 'staff-measured-thrust', optionMoveIds: ['staff-measured-thrust'] },
             { slot: 2, defaultMoveId: 'staff-turning-sweep', optionMoveIds: ['staff-turning-sweep'] },
-            { slot: 3, defaultMoveId: 'staff-braced-drive', optionMoveIds: ['staff-braced-drive'] },
+            { slot: 3, defaultMoveId: 'staff-braced-drive', optionMoveIds: ['staff-braced-drive', 'staff-cinder-braced-drive'] },
         ],
         manualMoveIds: [],
     },
@@ -175,6 +188,14 @@ export function validateWeaponKataCatalog() {
             if (!entry || entry.family !== family.id || entry.kind !== 'manual') issues.push(`${family.id} manual move ${moveId} is invalid.`);
         }
     }
+    for (const entry of Object.values(WEAPON_KATA_MOVES)) {
+        if (entry.requiredAffinity) {
+            if (!ELEMENT_KEYS.includes(entry.requiredAffinity.element)) issues.push(`${entry.id} has invalid affinity element ${entry.requiredAffinity.element}.`);
+            if (!Number.isInteger(entry.requiredAffinity.rank) || entry.requiredAffinity.rank < 1) issues.push(`${entry.id} affinity rank must be a positive integer.`);
+            if (entry.attack.element !== entry.requiredAffinity.element) issues.push(`${entry.id} affinity element must match its attack element.`);
+        }
+        if (entry.attack.element !== null && !ELEMENT_KEYS.includes(entry.attack.element)) issues.push(`${entry.id} has invalid attack element ${entry.attack.element}.`);
+    }
     return issues;
 }
 
@@ -186,18 +207,24 @@ function move(id, name, family, slot, kind, requiredSkill, attack) {
         slot,
         kind,
         requiredSkill,
+        requiredAffinity: attack.requiredAffinity ? { element: attack.requiredAffinity.element, rank: attack.requiredAffinity.rank } : null,
         attack: {
             stat: attack.stat,
             coefficient: attack.coefficient,
             accuracyModifier: attack.accuracyModifier,
             defensePenetration: attack.defensePenetration ?? 0,
+            channel: attack.channel ?? 'physical',
+            damageType: attack.damageType ?? 'physical',
+            element: attack.element ?? null,
+            elementSource: attack.element ? (attack.elementSource ?? 'weaponKata') : null,
+            resistanceModel: attack.resistanceModel ?? 'physicalDefense',
         },
         recoveryMultiplier: attack.recoveryMultiplier ?? 1,
         sequenceEffect: attack.sequenceEffect ?? 'advance',
         fieldNotes: {
             confidence: 'intentionalSimplification',
             source: attack.source ?? B4_KATA_SOURCE,
-            notes: 'Original provisional physical sequence move; values are mechanics proof, not final balance.',
+            notes: attack.element ? 'Original provisional affinity substitution; values are mechanics proof, not final balance.' : 'Original provisional physical sequence move; values are mechanics proof, not final balance.',
         },
     };
 }
