@@ -32,9 +32,9 @@ function storedCharacterState() {
     return { registry, record, state: decodePayload(record.encodedState) };
 }
 
-test('Game State 19 raw payload does not require runtime presentation projections', () => {
+test('current Game State raw payload does not require runtime presentation projections', () => {
     const state = createInitialState();
-    assert.equal(VERSION.gameState, 19);
+    assert.equal(VERSION.gameState, 20);
     delete state.npcs;
     delete state.enemies;
     delete state.log;
