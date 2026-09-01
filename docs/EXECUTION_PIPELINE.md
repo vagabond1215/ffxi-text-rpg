@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.2
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
+Codename:      Character Affinity & Kata Substitution
 ```
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 1 — Current Melee Kata Breadth** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` is ACTIVE.
+**0.9.300 Packet 2 — Character Affinity & Kata Substitution Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
-- Product 0.9.300.1 / Package 0.9.300 / Game State 19 / Data 68 / Account Save 5 / Benchmark 3;
-- behavioral implementation freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`;
-- Check #1947 / run `33474558525`: Repository Audit, **860/860 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2077 / run `33474558121`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`;
+- Product 0.9.300.2 / Package 0.9.300 / Game State 20 / Data 69 / Account Save 5 / Benchmark 3;
+- behavioral implementation freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`;
+- Check #1956 / run `33477009897`: Repository Audit, **867/867 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2086 / run `33477008886`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 68 metrics
+## Data 69 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is complete.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–2 are complete.
 
 ### Latest completed unit — Packet B2
 
@@ -186,11 +186,13 @@ B5 adds a stateless Varric training-service adapter delegating to capability pro
 
 **0.9.300 Advanced Combat / Training — QUEUED / NOT STARTED.** A future explicit continuation must select its first bounded packet; B5 does not auto-start it.
 
-### Next bounded unit — 0.9.300 Packet 2
+### Latest completed unit — 0.9.300 Packet 2
 
-**Character Affinity & Kata Substitution Foundation — QUEUED / NOT STARTED.**
+**Character Affinity & Kata Substitution Foundation — COMPLETE.**
 
-The current runtime has no canonical character-affinity state. Packet 2 must first define the smallest durable affinity authority needed for earned elemental kata substitutions, then prove one or two representative substitutions through the existing weapon-kata/combat-resolution contracts. It must not simultaneously add aura/stance/zone/channel/reaction families or a broad elemental move catalog.
+`player.progression.affinities` now owns versioned ranks for the eight canonical elements independently of active discipline, spell knowledge, equipment, and battle-local state. Dagger Rimepoint Thrust and staff Cinder-Braced Drive are authored kata options requiring both weapon proficiency and earned affinity. The existing melee path passes their element metadata into `combatResolutionEngine`; physical defaults remain valid and ineligible configured substitutions fall back safely.
+
+Game State advances 19 -> 20 for the new required affinity authority. Data advances 68 -> 69 for the two authored substitutions. Weapon-kata configuration remains version 2 and encounter-local kata state remains version 1. No subsequent 0.9.300 packet is selected; the next combat unit requires a fresh bounded choice.
 
 ## Preserved interrupted/resumable queues
 
