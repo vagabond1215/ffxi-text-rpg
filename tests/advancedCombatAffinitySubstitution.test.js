@@ -111,8 +111,9 @@ test('staff fire substitution proves the same affinity authority on a second wea
     gainCharacterAffinity(state.player, 'fire', 1);
     assert.equal(configureWeaponKataSelection(state, 'staff', 3, 'staff-cinder-braced-drive').ok, true);
 
-    const { player, enemy } = begin(state);
-    enemy.combat.resistances.fire = 25;
+    const target = state.enemies.find((entry) => entry.identity?.name === 'Training Dummy');
+    target.statuses.push({ modifiers: { resistances: { fire: 25 } } });
+    const { player } = begin(state);
     performPlayerAttack(state);
     setCombatantReadyAt(state, player.id, state.worldTime.totalSeconds);
     performPlayerAttack(state);
