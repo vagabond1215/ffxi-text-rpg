@@ -411,7 +411,7 @@ The later mechanics-scale gate remains **NOT READY** and is deliberately not con
 
 # `0.9.200` — Adventure Vertical Slices
 
-**Track status: ACTIVE. Slice A is COMPLETE; Slice B is unselected and not auto-started.**
+**Track status: ACTIVE. Slice A is COMPLETE; Slice B is SELECTED / PLANNED as the Brasshaven / Redstone combat-training bridge and is not yet implemented.**
 
 ## Slice A — Slatewater Road Scout
 
@@ -449,11 +449,17 @@ Data 63 movement:
 
 No new place, route, item, recipe, ability, NPC schedule, state family, clock, timed-task owner, or supported-save migration was introduced.
 
-### Slice B selection rule
+### Slice B — Brasshaven / Redstone Combat-Training Bridge
 
-Do not pre-author Slice B merely to satisfy counts. Select its anchor from current geography by asking which existing place can produce the strongest connected character/adventure loop across companion, quest, NPC, service, field/combat, and relationship authorities.
+Permanent design authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-The next Slice B anchor is intentionally **UNSELECTED**. Returning to the user at this boundary is required before implementation.
+Implementation sequencing:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+The anchor is now selected because existing Brasshaven/Redstone content already owns executable martial techniques, starter weapons, enemies, commitments, services, and a regional gameplay loop. No new zone is required merely to exercise advanced combat.
+
+The immediate next bounded unit is **Packet B1 — Unified Combat Resolution Contract**. B1 is contract-first and must not mass-author abilities. Later separately bounded packets add attention/enmity, loadout transitions, weapon cadence/ranged attacks/minimal kata, and the final playable Slice B proof.
 
 # Relative planning envelope
 
@@ -469,7 +475,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is now active; Slice A is complete and Slice B is deliberately unselected/not auto-started. After deliberate closure of 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A is complete and Slice B is now selected as the Brasshaven / Redstone combat-training bridge. Packet B1 — Unified Combat Resolution Contract — is the immediate next implementation. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
