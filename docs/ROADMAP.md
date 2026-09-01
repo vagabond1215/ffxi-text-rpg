@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.3
+Product:       0.9.300.4
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          70
+Data:          71
 Benchmark:     3
-Codename:      Novice Elemental Resolution Breadth
+Codename:      Thunder Cage Control Foundation
 ```
 
 ## Completed foundation and major tranches
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are COMPLETE.** Packet 3 closes the novice Elemental Form resolution gap at Product 0.9.300.3 / Data 70 / Game State 20: eight existing single-target elemental attacks now use magic accuracy, magic defense, elemental resistance, and explicit recovery through the B1 resolver. Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Check #1981 with 870/870 tests and the full gate; Pages #2111 passed. Adept geometry-signaling spells remain intentionally deferred; no subsequent 0.9.300 packet is selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are COMPLETE.** Packet 4 makes Thunder Cage a genuine control spell at Product 0.9.300.4 / Data 71 / Game State 20: lightning damage and containment resolve independently, `cannotAct` suppresses enemy actions, and readiness resumes at status expiry through the existing fictional-time interrupt system. Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Check #2006 with 875/875 tests and the full gate; Pages #2136 passed. No subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
