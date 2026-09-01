@@ -61,7 +61,7 @@ Current direct runtime task owners remain exactly:
 
 The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-## Game State 19 task integrity
+## Game State 20 task integrity
 
 The current-schema boundary validates:
 
@@ -82,6 +82,8 @@ B4 adds no direct timed-task owner. Weapon cadence is stateless; kata configurat
 B5 also adds no direct timed-task owner. Combat training is synchronous context around capability learning and semantic events. The B5 ammo-persistence repair changes validation of the physical `ammo` equipment slot, not task ownership or lifecycle.
 
 0.9.300 Packet 1 also adds no direct timed-task owner. Axe/staff/club kata are authored configuration/execution data under the existing weapon-kata owner; Game State 19 changes durable configuration breadth, not task lifecycle.
+
+0.9.300 Packet 2 adds no direct timed-task owner. Character affinity is synchronous durable progression under `player.progression.affinities`; affinity-gated kata substitutions reuse the existing kata, cadence, action, and combat-resolution paths. Game State 20 changes character progression persistence, not lifecycle ownership.
 
 ## Cultivation lifecycle
 
