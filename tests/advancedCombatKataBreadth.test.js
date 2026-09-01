@@ -9,6 +9,7 @@ import {
     validateWeaponKataConfiguration,
 } from '../js/text/data/weaponKataCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
+import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
 import { performPlayerAttack, startEncounter } from '../js/text/systems/combatActionEngine.js';
 import { getCombatantReadyAt, setCombatantReadyAt } from '../js/text/systems/combatTurnEngine.js';
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
@@ -25,6 +26,21 @@ test('0.9.300 P1 kata catalog covers every currently equipped canonical melee fa
     assert.deepEqual(validateWeaponKataConfiguration(config), []);
 });
 
+test('version-2 kata configuration survives real current-schema save and load', () => {
+    globalThis.localStorage = new MemoryStorage();
+    assert.equal(createAccountWithPassword('Kata Breadth Account', 'pwd', { persistentLogin: true }).ok, true);
+    const state = createNewGameState({ mainJobId: 'vanguard' });
+    state.player.identity.name = 'Kata Breadth';
+    assert.equal(state.player.progression.weaponKata.version, 2);
+    assert.equal(state.player.progression.weaponKata.selections.axe['3'], 'axe-driving-cleave');
+    assert.equal(state.player.progression.weaponKata.selections.staff['1'], 'staff-measured-thrust');
+    assert.equal(state.player.progression.weaponKata.selections.club['2'], 'club-returning-blow');
+    assert.equal(saveGame(state), true);
+    const loaded = loadCharacter('Kata Breadth');
+    assert.ok(loaded);
+    assert.deepEqual(loaded.player.progression.weaponKata, state.player.progression.weaponKata);
+    assert.deepEqual(validateCurrentGameStateStructure(loaded), []);
+});
 test('axe kata expresses committed cadence and increasing defense penetration', () => {
     const state = createNewGameState({ mainJobId: 'vanguard' });
     equip(state, 'bronze-axe');
@@ -118,4 +134,10 @@ function playerAttacks(state) {
 
 function lastPlayerAttack(state) {
     return playerAttacks(state).at(-1);
+}
+class MemoryStorage {
+    constructor() { this.values = new Map(); }
+    getItem(key) { return this.values.has(key) ? this.values.get(key) : null; }
+    setItem(key, value) { this.values.set(key, String(value)); }
+    removeItem(key) { this.values.delete(key); }
 }
