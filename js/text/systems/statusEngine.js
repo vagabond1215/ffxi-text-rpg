@@ -6,6 +6,8 @@ import {
     STATUS_CATEGORIES,
 } from '../data/systemConstants.js';
 
+export const HARD_DISABLE_STATUS_FLAGS = Object.freeze(['hardDisabled', 'stunned', 'asleep', 'cannotAct', 'incapacitated']);
+
 export function createStatusEffect(options = {}) {
     const appliedAtWorldSeconds = normalizeWorldSecond(options.appliedAtWorldSeconds);
     const durationSeconds = normalizeDuration(options.durationSeconds);
@@ -67,6 +69,25 @@ export function applyStatus(entity, status, options = {}) {
 export function removeStatus(entity, statusId) {
     entity.statuses = (entity.statuses ?? []).filter((status) => status.id !== statusId);
     return entity;
+}
+
+export function getHardDisableUntilWorldSeconds(entity, nowWorldSeconds = 0) {
+    const now = normalizeWorldSecond(nowWorldSeconds) ?? 0;
+    let latestExpiry = null;
+
+    for (const status of entity?.statuses ?? []) {
+        if (!HARD_DISABLE_STATUS_FLAGS.some((flag) => status?.flags?.[flag] === true)) continue;
+        const expiresAt = normalizeWorldSecond(status.expiresAtWorldSeconds);
+        if (expiresAt !== null && expiresAt <= now) continue;
+        if (expiresAt === null) return Infinity;
+        latestExpiry = latestExpiry === null ? expiresAt : Math.max(latestExpiry, expiresAt);
+    }
+
+    return latestExpiry;
+}
+
+export function isHardDisabledByStatus(entity, nowWorldSeconds = 0) {
+    return getHardDisableUntilWorldSeconds(entity, nowWorldSeconds) !== null;
 }
 
 export function reconcileStatusesAtWorldTime(entity, nowWorldSeconds) {
