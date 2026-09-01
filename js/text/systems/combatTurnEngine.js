@@ -6,7 +6,7 @@ import { refreshPlayerDerivedState } from './playerDerivedState.js';
 import { resolveBattleRewards } from './rewardEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
-import { reconcileStatusesAtWorldTime } from './statusEngine.js';
+import { getHardDisableUntilWorldSeconds, isHardDisabledByStatus, reconcileStatusesAtWorldTime } from './statusEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 import { getMeleeCadenceProfile } from './weaponCadenceEngine.js';
 
@@ -150,6 +150,7 @@ export function recordCombatAction(state, definition = {}) {
 
 export function selectEnemyAction(battle, enemy, options = {}) {
     if (!battle || battle.phase !== 'active' || !enemy || enemy.battle?.defeated) return null;
+    if (isHardDisabledByStatus(enemy, options.nowWorldSeconds ?? 0)) return null;
     const targetId = selectEnemyAttentionTarget(battle, enemy.id, options);
     const target = targetId ? getCombatant(battle, targetId) : null;
     if (!target) return null;
@@ -192,7 +193,10 @@ export function provideCombatInterrupts({ state, nowWorldSeconds, horizonWorldSe
     return battle.combatants
         .filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0)
         .map((enemy) => {
-            const readyAt = Math.max(nowWorldSeconds, Number(timeline.readyAtByActorId[enemy.id]) || nowWorldSeconds);
+            let readyAt = Math.max(nowWorldSeconds, Number(timeline.readyAtByActorId[enemy.id]) || nowWorldSeconds);
+            const disabledUntil = getHardDisableUntilWorldSeconds(enemy, nowWorldSeconds);
+            if (disabledUntil === Infinity) return null;
+            if (Number.isInteger(disabledUntil)) readyAt = Math.max(readyAt, disabledUntil);
             if (readyAt > horizonWorldSeconds) return null;
             return {
                 id: `combat-ready:${enemy.id}:${readyAt}`,
@@ -211,13 +215,16 @@ export function resolveEnemyReadyAction(state, enemyId, options = {}) {
     if (!battle || battle.phase !== 'active') return { ok: false, code: 'combat.not-active', action: null };
     const enemy = getCombatant(battle, enemyId);
     if (!enemy || getCombatantSide(enemy) !== COMBAT_SIDES.ENEMY || enemy.battle?.defeated) return { ok: false, code: 'combat.enemy-unavailable', action: null };
+    const nowWorldSeconds = ensureWorldTimeState(state).totalSeconds;
+    const disabledUntilWorldSeconds = getHardDisableUntilWorldSeconds(enemy, nowWorldSeconds);
+    if (disabledUntilWorldSeconds !== null) return { ok: false, code: 'combat.enemy-disabled', action: null, disabledUntilWorldSeconds };
     if (!options.force && !isCombatantReady(state, enemy.id)) {
         return { ok: false, code: 'combat.enemy-recovering', action: null, readyAtWorldSeconds: getCombatantReadyAt(state, enemy.id) };
     }
 
     const selection = selectEnemyAction(battle, enemy, {
         reassess: true,
-        nowWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+        nowWorldSeconds,
         rng: options.rng,
     });
     if (!selection) return { ok: false, code: 'combat.no-action', action: null };
@@ -291,12 +298,13 @@ export function resolveEnemyResponse(state, options = {}) {
     }
 
     const resolvedActions = [];
-    const enemies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
+    const nowWorldSeconds = ensureWorldTimeState(state).totalSeconds;
+    const enemies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0 && !isHardDisabledByStatus(combatant, nowWorldSeconds));
 
     for (const enemy of enemies) {
         const selection = selectEnemyAction(battle, enemy, {
             reassess: true,
-            nowWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+            nowWorldSeconds,
             rng: options.rng,
         });
         if (!selection) continue;
