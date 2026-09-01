@@ -7,6 +7,7 @@ import {
     findItemInContainer,
     isContainerAccessible,
 } from './inventoryEngine.js';
+import { calculateCombatProfile } from './statEngine.js';
 import {
     describeCharges,
     describeEnchantments,
@@ -82,6 +83,31 @@ export function unequipItem(state, slot, destinationContainerId = 'inventory', o
         `Unequipped ${item.name ?? item.id} from ${slot}.`,
         `Stored in ${destinationDefinition.label}.`,
     ].join('\n');
+}
+
+export function consumeEquippedItemQuantity(state, slot, quantity = 1, options = {}) {
+    if (!EQUIPMENT_SLOTS.includes(slot)) return { ok: false, reason: `Unknown equipment slot: ${slot}` };
+    if (state.activeBattle?.phase === 'active' && options.allowActiveBattleImmediate !== true) {
+        return { ok: false, reason: 'Active-combat equipment quantity changes require an explicit combat action owner.' };
+    }
+    const item = state.player?.equipment?.[slot];
+    if (!item) return { ok: false, reason: `Nothing is equipped in ${slot}.` };
+    const amount = Math.max(1, Math.floor(Number(quantity) || 1));
+    const available = Math.max(1, Math.floor(Number(item.quantity) || 1));
+    if (amount > available) return { ok: false, reason: `Only ${available} ${item.name ?? item.id} available in ${slot}.`, available };
+
+    const remaining = available - amount;
+    if (remaining > 0) state.player.equipment[slot] = { ...item, quantity: remaining };
+    else state.player.equipment[slot] = null;
+
+    const battlePlayer = state.activeBattle?.combatants?.find((entry) => entry.type === 'player');
+    if (battlePlayer && options.allowActiveBattleImmediate === true) {
+        battlePlayer.equipment = { ...(battlePlayer.equipment ?? {}), [slot]: state.player.equipment[slot] ? structuredClone(state.player.equipment[slot]) : null };
+        battlePlayer.combat = calculateCombatProfile(battlePlayer);
+    }
+    state.player.combat = calculateCombatProfile(state.player);
+
+    return { ok: true, itemId: item.id, quantity: amount, remaining, depleted: remaining === 0 };
 }
 
 export function describeEquippableSources(state) {

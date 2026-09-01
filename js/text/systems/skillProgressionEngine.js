@@ -19,6 +19,7 @@ const MAIN_HAND_SKILL_BY_WEAPON_CATEGORY = Object.freeze({
 });
 
 const RANGED_SKILL_BY_WEAPON_CATEGORY = Object.freeze({
+    sling: 'throwing',
     bow: 'archery',
     archery: 'archery',
     gun: 'marksmanship',

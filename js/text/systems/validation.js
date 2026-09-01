@@ -23,6 +23,7 @@ import {
 } from '../data/systemConstants.js';
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { VERSION } from '../version.js';
+import { validateWeaponKataConfiguration, validateWeaponKataCatalog } from '../data/weaponKataCatalog.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateCultivationState } from './cultivationEngine.js';
 import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
@@ -225,6 +226,7 @@ export function validateWorldData() {
     }
 
     issues.push(...validateCommitmentCatalog().map((issue) => `commitments: ${issue}`));
+    issues.push(...validateWeaponKataCatalog().map((issue) => `weaponKataCatalog: ${issue}`));
     issues.push(...validateHomeInfrastructureCatalog().map((issue) => `homeInfrastructure: ${issue}`));
 
     for (const entry of listEquipmentCatalogEntries()) {
@@ -281,6 +283,8 @@ function validateProgression(progression) {
         issues.push('skills must be an object.');
         return issues;
     }
+
+    issues.push(...validateWeaponKataConfiguration(progression.weaponKata).map((issue) => `weaponKata.${issue}`));
 
     for (const [skillId, value] of Object.entries(progression.skills)) {
         if (isObject(value) && JOB_DEFINITIONS[skillId]) {

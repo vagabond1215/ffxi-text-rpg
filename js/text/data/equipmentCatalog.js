@@ -8,7 +8,7 @@ import {
 
 const STARTER_SOURCE = 'Hearth & Horizon early equipment contract; values are original provisional balance for systems testing.';
 
-export const EQUIPMENT_CATALOG_VERSION = 4;
+export const EQUIPMENT_CATALOG_VERSION = 5;
 
 export const EQUIPMENT_CATALOG = Object.freeze({
     'bronze-sword': equipment('bronze-sword', 'Bronze Sword', {
@@ -48,6 +48,20 @@ export const EQUIPMENT_CATALOG = Object.freeze({
         tags: ['weapon', 'club', 'starter', 'caster'], flags: ['equipmentOnly'],
         modifiers: { attributes: { int: 1, mnd: 1 }, resources: { mp: 4 }, derived: { magicAccuracy: 1 } },
         fieldNotes: withDelayNotes('Provisional starter wand delay.'),
+    }),
+    'braided-sling': equipment('braided-sling', 'Braided Sling', {
+        family: 'weapon', archetype: 'rangedWeapon', subtype: 'sling', equipmentSlot: 'ranged', allowedSlots: ['ranged'],
+        weaponCategory: 'sling', weaponDelay: 240, handling: handling(1, 2, 1), requirements: requirement(),
+        tags: ['weapon', 'ranged', 'sling'], flags: ['equipmentOnly', 'rangedWeapon'],
+        modifiers: { derived: { rangedAttack: 3, rangedAccuracy: 2 } },
+        fieldNotes: withHandlingNotes(withDelayNotes('Provisional sling cadence for B4 ranged-action proof.'), 'Compact sling handling for B4 ranged loadout transitions.'),
+    }),
+    'rounded-sling-stones': equipment('rounded-sling-stones', 'Rounded Sling Stones', {
+        family: 'ammunition', archetype: 'slingAmmo', subtype: 'stone', equipmentSlot: 'ammo', allowedSlots: ['ammo'],
+        weaponCategory: 'sling', quantity: 12, stackable: true, maxStack: 99, handling: handling(1, 1, 0), requirements: requirement(),
+        tags: ['equipment', 'ammo', 'sling-stone'], flags: ['equipmentOnly', 'ammo'],
+        modifiers: { derived: { rangedAttack: 1 } },
+        fieldNotes: withHandlingNotes(originalFieldNotes('Rounded field stones selected for consistent sling use; each quantity point is one shot.'), 'Small ammunition bundle handling for B4 ranged loadout proof.'),
     }),
 
     'field-knife': fieldTool('field-knife', 'Field Knife', 'knife', ['cutting', 'dagger'], {

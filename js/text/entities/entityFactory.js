@@ -2,6 +2,7 @@ import { ENTITY_TYPES, CURRENCY_KEYS, EQUIPMENT_SLOTS, createZeroBlock } from '.
 import { getRace } from '../data/races.js';
 import { getJob } from '../data/jobs.js';
 import { getExpToNextLevel } from '../data/expTables.js';
+import { createDefaultWeaponKataConfiguration } from '../data/weaponKataCatalog.js';
 import { ensureCapabilityState } from '../systems/capabilityEngine.js';
 import { createInventoryState } from '../systems/inventoryEngine.js';
 import { ensureProgressionState } from '../systems/progressionEngine.js';
@@ -153,8 +154,10 @@ export function createProgression(overrides = {}) {
         limitBreaks: [],
         merits: {},
         jobPoints: {},
+        weaponKata: createDefaultWeaponKataConfiguration(),
         ...overrides,
         skills: overrides.skills ?? {},
+        weaponKata: overrides.weaponKata ?? createDefaultWeaponKataConfiguration(),
     };
 }
 

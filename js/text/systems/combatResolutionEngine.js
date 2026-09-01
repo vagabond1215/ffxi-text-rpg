@@ -4,7 +4,7 @@ import { rollPercent } from './rng.js';
 export const COMBAT_RESOLUTION_VERSION = 1;
 export const COMBAT_DELIVERIES = Object.freeze(['melee', 'projectile', 'spell', 'sigil', 'contact']);
 export const COMBAT_CHANNELS = Object.freeze(['physical', 'magical', 'hybrid']);
-export const COMBAT_ACCURACY_MODELS = Object.freeze(['physical', 'magic', 'automatic']);
+export const COMBAT_ACCURACY_MODELS = Object.freeze(['physical', 'ranged', 'magic', 'automatic']);
 export const COMBAT_RESISTANCE_MODELS = Object.freeze(['physicalDefense', 'magicDefense', 'magicEvasion', 'none']);
 
 export function normalizeCombatResolution(definition = {}) {
@@ -55,7 +55,8 @@ export function resolveCombatDamage(attacker, defender, effect = {}, options = {
 
     let multiplier = 1;
     if (spec.resistanceModel === 'physicalDefense') {
-        const attack = Math.max(1, number(attacker?.combat?.derived?.attack));
+        const attackStat = spec.accuracyModel === 'ranged' ? 'rangedAttack' : 'attack';
+        const attack = Math.max(1, number(attacker?.combat?.derived?.[attackStat]));
         multiplier *= attack / Math.max(1, defense.effective);
     } else if (spec.resistanceModel === 'magicDefense') {
         const magicAttack = number(attacker?.combat?.derived?.magicAttack);
@@ -126,7 +127,7 @@ function resolveAccuracy(attacker, defender, spec, rng) {
         return Object.freeze({ model: 'automatic', chance: 100, roll: null, hit: true });
     }
 
-    const attackStat = spec.accuracyModel === 'magic' ? 'magicAccuracy' : 'accuracy';
+    const attackStat = spec.accuracyModel === 'magic' ? 'magicAccuracy' : spec.accuracyModel === 'ranged' ? 'rangedAccuracy' : 'accuracy';
     const defenseStat = spec.accuracyModel === 'magic' ? 'magicEvasion' : 'evasion';
     const attackerValue = number(attacker?.combat?.derived?.[attackStat]);
     const defenderValue = number(defender?.combat?.derived?.[defenseStat]);

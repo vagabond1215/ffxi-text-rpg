@@ -4,6 +4,7 @@ import { validatePersistedCombatLoadoutTransition } from './combatLoadoutEngine.
 import { validatePersistedBattleDerivedCaches } from './battleDerivedCachePersistence.js';
 import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTurnEngine.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
+import { validateBattleWeaponKataState } from './weaponKataEngine.js';
 
 export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 3;
 const BATTLE_PHASES = Object.freeze(['active', 'victory', 'defeat']);
@@ -21,6 +22,7 @@ export function validatePersistedActiveBattle(battle) {
     }
     issues.push(...prefix(validateBattleAttentionState(battle), 'activeBattle.'));
     issues.push(...prefix(validatePersistedCombatLoadoutTransition(battle), 'activeBattle.'));
+    issues.push(...prefix(validateBattleWeaponKataState(battle), 'activeBattle.'));
     if (!Array.isArray(battle.log)) issues.push('activeBattle.log must be an array.');
     else {
         if (battle.log.length > 100) issues.push('activeBattle.log must contain at most 100 entries.');
