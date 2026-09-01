@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.200.3');
+    assert.equal(PRODUCT_VERSION, '0.9.200.4');
     assert.equal(PACKAGE_VERSION, '0.9.200');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
-    assert.equal(VERSION.gameState, 16);
-    assert.equal(VERSION.data, 64);
+    assert.equal(VERSION.gameState, 17);
+    assert.equal(VERSION.data, 65);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Enemy Attention Foundation');
+    assert.equal(VERSION.codename, 'Combat Loadout Transitions');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -84,6 +84,7 @@ test('version manifest separates product package persistence data and scale-cont
             combatActions: SYSTEM_VERSIONS.combatActions,
             combatResolution: SYSTEM_VERSIONS.combatResolution,
             combatAttention: SYSTEM_VERSIONS.combatAttention,
+            combatLoadout: SYSTEM_VERSIONS.combatLoadout,
             saveEncoding: SYSTEM_VERSIONS.saveEncoding,
             placeAtlas: SYSTEM_VERSIONS.placeAtlas,
             localKnowledge: SYSTEM_VERSIONS.localKnowledge,
@@ -92,7 +93,7 @@ test('version manifest separates product package persistence data and scale-cont
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
         },
         {
-            versionManifest: '0.9.200.3',
+            versionManifest: '0.9.200.4',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -105,11 +106,11 @@ test('version manifest separates product package persistence data and scale-cont
             dayCycle: '0.2.0',
             dayCyclePersistence: '0.1.0',
             resourceOpportunities: '0.2.0',
-            abilityEngine: '0.4.0',
+            abilityEngine: '0.5.0',
             transport: '0.4.1',
             liveTick: '0.2.1',
             domRoot: '0.1.0',
-            commandShell: '0.5.1',
+            commandShell: '0.5.2',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
             commitments: '0.8.0',
@@ -126,8 +127,8 @@ test('version manifest separates product package persistence data and scale-cont
             carriedInventory: '0.1.0',
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
-            inventoryTransfers: '0.7.0',
-            validation: '0.48.0',
+            inventoryTransfers: '0.8.0',
+            validation: '0.49.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.2',
             npcWorldProjection: '0.1.1',
@@ -135,17 +136,18 @@ test('version manifest separates product package persistence data and scale-cont
             presentationLog: '0.1.0',
             playerEquipmentPersistence: '0.1.0',
             playerStatusPersistence: '0.1.0',
-            activeBattlePersistence: '0.3.0',
+            activeBattlePersistence: '0.4.0',
             battleDerivedCachePersistence: '0.1.0',
             playerPersistenceHarness: '0.1.0',
             playerIdentityPersistence: '0.2.0',
             locationPersistence: '0.1.0',
-            combatIdentityPersistence: '0.2.0',
+            combatIdentityPersistence: '0.3.0',
             statusEngine: '0.3.0',
             combatTurns: '0.4.0',
-            combatActions: '0.9.0',
+            combatActions: '0.10.0',
             combatResolution: '0.1.0',
             combatAttention: '0.1.0',
+            combatLoadout: '0.1.0',
             saveEncoding: '0.9.0',
             placeAtlas: '0.6.0',
             localKnowledge: '0.1.0',
@@ -156,13 +158,13 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.200\.3/);
+    assert.match(describeVersion(), /Product: 0\.9\.200\.4/);
     assert.match(describeVersion(), /Package: 0\.9\.200/);
     assert.match(describeVersion(), /Account Save: 5/);
-    assert.match(describeVersion(), /Game State: 16/);
-    assert.match(describeVersion(), /Data: 64/);
+    assert.match(describeVersion(), /Game State: 17/);
+    assert.match(describeVersion(), /Data: 65/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Enemy Attention Foundation/);
+    assert.match(describeVersion(), /Codename: Combat Loadout Transitions/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
@@ -174,15 +176,15 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.5\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.48\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.49\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
     assert.match(describeSystemVersions(), /enemyEncounterProjection: 0\.1\.0/);
     assert.match(describeSystemVersions(), /presentationLog: 0\.1\.0/);
     assert.match(describeSystemVersions(), /locationPersistence: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /combatIdentityPersistence: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /activeBattlePersistence: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /combatIdentityPersistence: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /activeBattlePersistence: 0\.4\.0/);
     assert.match(describeSystemVersions(), /battleDerivedCachePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerStatusPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerEquipmentPersistence: 0\.1\.0/);
@@ -190,9 +192,10 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /playerPersistenceHarness: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerIdentityPersistence: 0\.2\.0/);
     assert.match(describeSystemVersions(), /combatTurns: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /combatActions: 0\.9\.0/);
+    assert.match(describeSystemVersions(), /combatActions: 0\.10\.0/);
     assert.match(describeSystemVersions(), /combatResolution: 0\.1\.0/);
     assert.match(describeSystemVersions(), /combatAttention: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /combatLoadout: 0\.1\.0/);
     assert.match(describeSystemVersions(), /walletPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /statusEngine: 0\.3\.0/);
     assert.match(describeSystemVersions(), /saveEncoding: 0\.9\.0/);
