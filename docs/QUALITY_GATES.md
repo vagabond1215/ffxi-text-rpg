@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Codename:      Slatewater Road Scout
+Codename:      Unified Combat Resolution
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -102,33 +102,44 @@ For **Slatewater Road Scout**, verify:
 
 **Gate result: PASS.** Implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`; Check #1815 / run `33361131795` passed Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample.
 
-## Advanced combat design / Slice B gate
+## Advanced combat / Slice B gate
 
 Authority:
 - `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
-- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`;
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
 
-Before declaring a Combat 2.0 packet coherent, verify:
+### Packet B1 — Unified Combat Resolution
 
-1. no second combat/world clock is introduced;
-2. active-battle state remains the encounter authority;
-3. ability names remain mechanically honest and original-world;
-4. element is structured resolution metadata when it affects outcomes, not only a tag;
-5. physical/magical/status resolution uses explicit accuracy and defense/resistance contracts;
-6. startup/active/recovery/cooldown/linger concepts are not silently collapsed when they produce different behavior;
-7. canonical ability cooldowns cannot be reset by changing loadouts;
-8. weapon/equipment delay is consumed through one conversion/readiness authority rather than duplicated formulas;
-9. attention distinguishes absolute Enmity, normalized Focus, sticky Aggro, and exceptional Fixation;
-10. Focus share is not used directly as per-attack target probability;
-11. nonlinear target weighting is deterministic/injectable and tested with multiple party actors;
-12. armor swaps remain blocked while meaningful hostile pressure/pursuit/fixation persists;
-13. equipment transitions use canonical fictional time and are interruptible where authored;
-14. kata selections and affinity substitutions remain character configuration/progression rather than a duplicate class identity;
-15. ranged attacks use first-class ranged stats/skills/ammunition rather than masquerading as melee;
-16. new ability count is not accepted as progress when the records are mechanically duplicate;
-17. any new durable loadout/kata/attention/transition state receives an explicit Game State version decision.
+Verify:
+1. no second combat/world clock;
+2. active battle remains encounter authority;
+3. representative basic/canonical actions use one structured resolution vocabulary;
+4. element is executable resistance metadata where migrated;
+5. physical/magic/status accuracy and defense/resistance are deterministic;
+6. activation, action recovery, and cooldown remain distinct;
+7. timed canonical activation blocks overlapping basic/legacy combat actions;
+8. structured resolution evidence is persisted only inside already-permitted action data;
+9. no new required state family or unsupported save migration is introduced;
+10. ability breadth is not inflated merely to satisfy mechanics counts.
 
-Packet B1 must satisfy only the B1-relevant subset and leave later packet fields explicit rather than faking them.
+**B1 gate result: PASS.**
+- behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`;
+- **832/832 tests**;
+- Repository Audit, Census, Benchmark 3, Benchmark Sample PASS;
+- Pages #1990 / run `33457300712` PASS.
+
+Data advances 63 -> 64 because canonical ability definitions gain recovery/resolution metadata. Game State stays 15 because no new required serialized state shape was added.
+
+### Remaining Slice B gate
+
+Before later packets close:
+- B2 must distinguish Enmity, Focus, sticky Aggro, and Fixation; Focus is not literal target probability.
+- B3 loadout transitions must use canonical time and armor-pressure legality.
+- B4 must establish one weapon-delay conversion authority and first-class ranged actions before kata breadth.
+- B5 must prove these contracts in the playable Brasshaven/Redstone slice.
+
 
 ## Content Pack v2 gate
 
@@ -311,4 +322,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A is complete and Slice B is selected/planned as the Brasshaven / Redstone combat-training bridge. Packet B1 — Unified Combat Resolution Contract — is the immediate next bounded implementation and must not silently launch later B packets. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packet B1 are complete. Packet B2 — Enemy Attention Foundation — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
