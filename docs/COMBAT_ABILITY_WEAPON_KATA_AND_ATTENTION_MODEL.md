@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.2 / Game State 20 / Data 69. Packets B1-B5 establish the playable foundation, 0.9.300 Packet 1 broadens persisted automatic kata across every currently equipped canonical melee family, and Packet 2 adds character-owned affinity with two representative elemental substitutions. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.3 / Game State 20 / Data 70. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, and Packet 3 migrates all eight novice Elemental Form attacks to the unified magic/element resolution contract. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–2 are COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–3 are COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -17,7 +17,8 @@ Permanent records:
 - `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
 - `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -74,6 +75,12 @@ Implemented by 0.9.300 Packet 2:
 - Rimepoint Thrust (Ice dagger) and Cinder-Braced Drive (Fire staff) representative substitutions;
 - existing melee resolution widened to pass structured element metadata into the unified resolver;
 - Game State 20 / Data 69 with kata configuration version 2 and battle kata version 1 unchanged.
+
+Implemented by 0.9.300 Packet 3:
+- structured magical resolution for Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike;
+- correct canonical element, magic accuracy, magic-defense resistance, and explicit 2-second recovery for each novice attack;
+- unchanged ability count and unchanged Game State 20;
+- explicit non-migration of Tempest Ring, Thunder Cage, Umbral Well, and other adept names whose semantics may require geometry/control/field mechanics.
 
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
