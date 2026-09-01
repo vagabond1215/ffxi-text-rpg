@@ -759,6 +759,12 @@ Product 0.9.300.2 / Game State 20 / Data 69 adds `player.progression.affinities`
 
 Kata configuration remains version 2 because selections are still move IDs. Encounter-local kata state remains version 1 because no cursor field changed. Packet 2 adds no timed-task owner or combat clock.
 
+### 0.9.300 Packet 3 novice elemental resolution breadth
+
+Product 0.9.300.3 / Game State 20 / Data 70 changes authored ability definitions, not state ownership. The eight novice Elemental Form attacks now declare structured magical resolution and explicit recovery inside the existing `abilityCatalog`; `abilityEngine` continues to execute them and `combatResolutionEngine` continues to own hit, magic-defense, and elemental-resistance math.
+
+No persistence family, combat clock, task owner, target-geometry authority, or new ability record is added. The ability runtime state shape is unchanged. Adept names whose semantics imply rings, cages, wells, or other richer action forms remain unmigrated until a separate bounded packet selects the required mechanics.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -843,4 +849,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 68; the current runtime/persistence baseline is Product 0.9.300.1 / Game State 19. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packet 1 complete and Packet 2 Character Affinity & Kata Substitution Foundation queued/not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 70; the current runtime/persistence baseline is Product 0.9.300.3 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–3 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
