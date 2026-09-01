@@ -90,7 +90,7 @@ test('Umbral Well creation persists center, deadlines, and cast-time source snap
     const state = createNewGameState({ mainJobId: 'elementalist' });
     state.player.identity.name = 'Wellkeeper';
     grantCapability(state.player, 'spell-umbral-well');
-    setLearnedSkill(state.player, 'elementalMagic', 3);
+    setLearnedSkill(state.player, 'darkMagic', 3);
     state.player.resources.mp = 100;
     startEncounter(state, 'Training Dummy', { rng: () => 0 });
     battlePlayer(state).resources.mp = 100;
@@ -241,7 +241,7 @@ test('current-schema field validation rejects corrupt durable records and battle
 function createUmbralState(options = {}) {
     const state = createNewGameState({ mainJobId: 'elementalist' });
     grantCapability(state.player, 'spell-umbral-well');
-    setLearnedSkill(state.player, 'elementalMagic', 3);
+    setLearnedSkill(state.player, 'darkMagic', 3);
     state.player.resources.mp = 100;
     state.player.resources.hp = 9999;
 
