@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.6 / Game State 21 / Data 73. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to unified magic/element resolution, Packet 4 gives Thunder Cage an executable resistible control semantic, Packet 5 gives Tempest Ring honest target-centered radial geometry, and Packet 6 gives Umbral Well durable persistent-field semantics. Unsupported weapon families, weapon resonance, broader geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.7 / Game State 21 / Data 74. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to unified magic/element resolution, Packet 4 gives Thunder Cage an executable resistible control semantic, Packet 5 gives Tempest Ring honest target-centered radial geometry, Packet 6 gives Umbral Well durable persistent-field semantics, and Packet 7 gives Radiant Arc synchronous target-to-target propagation. Unsupported weapon families, weapon resonance, broader geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–6 are COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–7 are COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -21,7 +21,8 @@ Permanent records:
 - `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -112,10 +113,21 @@ Implemented by 0.9.300 Packet 6:
 - explicit per-recipient area attention even when only one secondary recipient actually receives an applied effect;
 - no direct timed-task owner, second combat clock, mutable combat positions, player ground targeting, LOS, pursuit, or generic zone scripting.
 
+Implemented by 0.9.300 Packet 7:
+- `arc` geometry under the existing stateless `combatGeometryEngine`;
+- primary-target-first synchronous propagation across at most three living opponents;
+- each later jump sourced from the previous recipient and limited to two derived formation units;
+- deterministic nearest-distance selection with encounter-order then stable-ID tie breaking;
+- no repeated recipients;
+- independent Light magic-accuracy, magic-defense, and elemental-resistance resolution for every recipient;
+- structured result/event/action evidence carrying jump number, previous recipient, distance, and derived position;
+- existing explicit per-recipient attention applied only where effects actually land;
+- no propagation timer, future deadline, mutable position, LOS, pathfinding, new clock, or persistence family.
+
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
 - unsupported weapon-family kata where canonical equipment/runtime support does not yet exist;
-- cone/line/arc/chain/player-ground geometry; generic/moving/friendly zone breadth; mutable combat movement/engagement geometry; and full aura/stance/channel/reaction breadth;
+- cone/line/chain/player-ground geometry; broader propagation families beyond the bounded Radiant Arc proof; generic/moving/friendly zone breadth; mutable combat movement/engagement geometry; and full aura/stance/channel/reaction breadth;
 - generalized LOS/pursuit/disengagement and ranged line-of-fire models.
 
 ## Core combat law
@@ -249,7 +261,7 @@ The following are still incomplete or transitional:
 - representative migrated canonical ability damage now uses shared hit/defense/resistance resolution; the wider catalog still contains pre-B1 effect definitions;
 - Fracture Sigil proves deterministic status accuracy/resistance; the wider status catalog still needs explicit migration where target resistance is appropriate;
 - critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
-- target-centered ring geometry plus one persisted point-radius Well field are implemented; line/cone/arc/chain/player-ground geometry, mutable positioning, and generalized zone authoring remain deferred;
+- target-centered ring geometry, one persisted point-radius Well field, and one synchronous target-to-target arc propagation are implemented; line/cone/chain/player-ground geometry, broader propagation families, mutable positioning, and generalized zone authoring remain deferred;
 - one persistent field action is first-class enough for Umbral Well; aura/stance/channel/reaction and generalized zone families remain incomplete;
 - dagger/sword/axe/staff/club weapon kata/auto-sequence configuration is implemented for every currently equipped canonical melee family; character affinity substitutions and unsupported weapon families remain deferred;
 - timed combat loadout transitions and attention/enmity are implemented through B2-B3; named loadout presets, partial stowed/not-ready physical state, and LOS/pursuit-based pressure release remain deferred.
