@@ -3,7 +3,8 @@ import { getPlace } from '../data/places.js';
 import { actionFailure, actionSuccess, describeActionResult } from './actionResult.js';
 import { canUseCapability, knowsCapability } from './capabilityEngine.js';
 import { appendBattleLog } from './battleEngine.js';
-import { finalizeCombatState, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
+import { finalizeCombatState, getCombatantReadyAt, isCombatantReady, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
+import { resolveCombatDamage, resolveCombatStatus } from './combatResolutionEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { applyStatus } from './statusEngine.js';
@@ -75,6 +76,14 @@ export function canActivateAbility(state, abilityQuery, options = {}) {
     }
 
     const caster = getPlayerActor(state, contextType);
+    if (contextType === 'combat' && caster?.id && !isCombatantReady(state, caster.id)) {
+        const readyAtWorldSeconds = getCombatantReadyAt(state, caster.id);
+        return failure('ability.action-recovery', {
+            abilityId: ability.id,
+            readyAtWorldSeconds,
+            remainingSeconds: Math.max(1, readyAtWorldSeconds - now),
+        }, `${ability.name} cannot be used while you are recovering for ${Math.max(1, readyAtWorldSeconds - now)}s.`);
+    }
     const capabilityResult = canUseCapability(state.player, ability.capabilityId, {
         type: contextType,
         resources: caster?.resources ?? state.player.resources,
@@ -264,7 +273,7 @@ export function describeAbilities(state) {
         ...entries.map((entry) => {
             const school = entry.school ? ` · ${entry.school.name}` : '';
             const stateText = entry.available ? 'ready' : entry.known ? entry.reason : 'not learned';
-            return `- ${entry.ability.name} [${entry.ability.kind}${school}] ${stateText}; cost=${formatCosts(entry.ability.costs)}, activation=${entry.ability.activation.durationSeconds}s, cooldown=${entry.ability.cooldownSeconds}s`;
+            return `- ${entry.ability.name} [${entry.ability.kind}${school}] ${stateText}; cost=${formatCosts(entry.ability.costs)}, activation=${entry.ability.activation.durationSeconds}s, recovery=${entry.ability.recoverySeconds}s, cooldown=${entry.ability.cooldownSeconds}s`;
         }),
     ].join('\n');
 }
@@ -327,7 +336,8 @@ function resolveActivation(state, activation, ability, startEventId = null) {
             targetId: target?.id ?? actor?.id ?? null,
             kind: 'ability',
             sourceId: ability.id,
-            outcome: 'resolved',
+            outcome: effectResults.some((entry) => entry.type === 'damage' && entry.applied === false || entry.type === 'status' && entry.applied === false) && !effectResults.some((entry) => entry.applied === true) ? 'resisted' : 'resolved',
+            recoverySeconds: ability.recoverySeconds,
             data: {
                 abilityId: ability.id,
                 capabilityId: ability.capabilityId,
@@ -367,6 +377,33 @@ function applyAbilityEffect(state, ability, activation, effect, actor, target) {
 
     if (effect.type === 'damage') {
         if (!recipient?.resources) return { type: 'damage', applied: false, reason: 'missing-target' };
+        if (effect.resolution) {
+            const resolution = resolveCombatDamage(actor, recipient, effect, { rng: state.activeBattle?.rng ?? Math.random });
+            if (!resolution.hit) {
+                if (state.activeBattle) appendBattleLog(state.activeBattle, `${recipient.identity?.name ?? 'The target'} avoids ${ability.name}.`);
+                return {
+                    type: 'damage',
+                    applied: false,
+                    reason: 'miss',
+                    recipientId: recipient.id ?? null,
+                    amount: 0,
+                    resolution,
+                };
+            }
+            const before = Math.max(0, Number(recipient.resources.hp) || 0);
+            recipient.resources.hp = Math.max(0, before - resolution.damage);
+            if (recipient.resources.hp <= 0 && recipient.battle) recipient.battle.defeated = true;
+            if (state.activeBattle) appendBattleLog(state.activeBattle, `${ability.name} deals ${resolution.damage} damage to ${recipient.identity?.name ?? 'the target'}${resolution.critical ? ' (critical)' : ''}.`);
+            return {
+                type: 'damage',
+                applied: true,
+                recipientId: recipient.id ?? null,
+                amount: resolution.damage,
+                before,
+                after: recipient.resources.hp,
+                resolution,
+            };
+        }
         const amount = Math.max(0, Math.floor(effect.base + scaleValue * effect.coefficient));
         const before = Math.max(0, Number(recipient.resources.hp) || 0);
         recipient.resources.hp = Math.max(0, before - amount);
@@ -389,9 +426,25 @@ function applyAbilityEffect(state, ability, activation, effect, actor, target) {
 
     if (effect.type === 'status') {
         if (!recipient) return { type: 'status', applied: false, reason: 'missing-target' };
-        applyStatus(recipient, { ...effect.status, sourceId: ability.id });
+        let resolution = null;
+        if (effect.resolution && effect.recipient === 'target') {
+            resolution = resolveCombatStatus(actor, recipient, effect.resolution, { rng: state.activeBattle?.rng ?? Math.random });
+            if (!resolution.landed) {
+                if (state.activeBattle) appendBattleLog(state.activeBattle, `${recipient.identity?.name ?? 'The target'} resists ${effect.status.name}.`);
+                return {
+                    type: 'status',
+                    applied: false,
+                    reason: 'resisted',
+                    recipientId: recipient.id ?? null,
+                    statusId: effect.status.id,
+                    durationSeconds: effect.status.durationSeconds,
+                    resolution,
+                };
+            }
+        }
+        applyStatus(recipient, { ...effect.status, sourceId: ability.id }, { nowWorldSeconds: ensureWorldTimeState(state).totalSeconds });
         if (state.activeBattle) appendBattleLog(state.activeBattle, `${recipient.identity?.name ?? 'The target'} gains ${effect.status.name}.`);
-        return { type: 'status', applied: true, recipientId: recipient.id ?? null, statusId: effect.status.id, durationSeconds: effect.status.durationSeconds };
+        return { type: 'status', applied: true, recipientId: recipient.id ?? null, statusId: effect.status.id, durationSeconds: effect.status.durationSeconds, resolution };
     }
 
     if (effect.type === 'context' && effect.operation === 'survey-current-place') {
@@ -421,6 +474,11 @@ function canActivateAbilityForList(state, ability, contextType) {
     const readyAt = Number(runtime.cooldowns[ability.id]) || 0;
     if (readyAt > now) return { ok: false, code: 'cooldown', reason: `Recovering ${readyAt - now}s.`, cooldownRemainingSeconds: readyAt - now };
     const actor = getPlayerActor(state, contextType);
+    if (contextType === 'combat' && actor?.id && !isCombatantReady(state, actor.id)) {
+        const now = ensureWorldTimeState(state).totalSeconds;
+        const readyAt = getCombatantReadyAt(state, actor.id);
+        return { ok: false, code: 'action-recovery', reason: `Recovering ${Math.max(1, readyAt - now)}s.`, cooldownRemainingSeconds: 0 };
+    }
     const capability = canUseCapability(state.player, ability.capabilityId, { type: contextType, resources: actor?.resources ?? state.player.resources });
     if (!capability.ok) return { ok: false, code: capability.code, reason: capability.reason, cooldownRemainingSeconds: 0 };
     for (const [resourceId, amount] of Object.entries(ability.costs)) {
