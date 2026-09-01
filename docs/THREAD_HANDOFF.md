@@ -2,7 +2,9 @@
 
 Repository evidence beats conversation memory.
 
-## Current contract
+## Current runtime contract
+
+No runtime/data/persistence version changed during the combat-design/planning pass.
 
 ```text
 Product:       0.9.200.1
@@ -16,86 +18,27 @@ Runtime:       Node >=24
 Phase:         0.9
 Track:         0.9.200 Adventure Vertical Slices ACTIVE
 Slice A:       COMPLETE
-Slice B:       UNSELECTED / NOT AUTO-STARTED
+Slice B:       SELECTED / PLANNED / NOT STARTED
+Next packet:   B1 Unified Combat Resolution Contract
 ```
 
-## Latest bounded unit — Adventure Vertical Slice A
+## Latest implemented bounded unit
 
-**Slatewater Road Scout is COMPLETE on `main`.**
+Adventure Vertical Slice A — **Slatewater Road Scout** remains the latest runtime/data implementation.
 
-Permanent implementation record:
-- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`
+Permanent record:
+- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`.
 
-Implementation/runtime freeze:
-- `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`
-- Check #1815 / run `33361131795`
-- Repository Audit PASS
-- **826/826 tests**
-- Content Census PASS
-- Benchmark 3 PASS
-- Benchmark Sample PASS
+Implementation freeze:
+- `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
+- Check #1815 / run `33361131795`;
+- Repository Audit PASS;
+- **826/826 tests**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
 
-Pre-handoff synchronized-authority head:
-- `7a23ff95ca77ed806b235a05b6b8890098b82e5f`
-- Check #1827 / run `33367045849`: success
-- Pages #1957 / run `33367045182`: success
-
-This handoff file is the final repository-file mutation for the session. The resulting handoff commit SHA is therefore the final `main` SHA and must be reported/validated externally after this write; do not perform another repository-file write merely to insert that self-referential SHA.
-
-## What Slice A implemented
-
-Slice A deliberately reuses **Slatewater Waylodge + Slatewater Foothills** rather than adding a new zone.
-
-New canonical content:
-- `npc-slatewater-sable-renn` — Sable Renn, Slatewater Road Scout;
-- `poi-slatewater-road-scout`;
-- `commitment-slatewater-resin-waymarks` — Resin for the Mile Posts;
-- `commitment-slatewater-lichen-fogmarks` — Silver for the Fog Marks;
-- `companion-sable-renn`;
-- Pack-v2 relationship/ownership metadata.
-
-The trust arc is connected rather than decorative:
-1. player must actually interact with Sable before the first commitment is projected;
-2. first contract requires two provenance-qualified Pitch Pine Resin from `source-slatewater-pitch-pine-stand`;
-3. that real gathering raises fresh-character foraging proficiency from 0 to 2;
-4. second contract remains hidden/unacceptable until the first is resolved;
-5. Silver Lichen comes from `source-slatewater-silver-lichen-face`, which requires foraging proficiency 2;
-6. both contracts must resolve before recruitment;
-7. recruitment itself rechecks the commitment gate.
-
-General integration fixes made with the slice:
-- canonical commitment prerequisites are enforced at acceptance;
-- continuity projection hides chained commitments until prerequisites resolve;
-- locality companion action preserves real party success/failure rather than returning false narrative success;
-- recruited companion relationship dimensions inherit the backing NPC's earned relationship values rather than resetting to zero;
-- active companion route travel keeps the backing NPC location synchronized;
-- resolved commitment follow-up checks the giver's projected location, so a mobile recruited giver is not exposed as a static old-place quest marker.
-
-Sable intentionally has **no fixed Waylodge NPC schedule** after becoming recruitable. Party/NPC projection remains the single mobile-location authority.
-
-## Persistence/version decision
-
-```text
-Product       0.9.100.24 -> 0.9.200.1
-Package       0.9.100    -> 0.9.200
-Data          62         -> 63
-Game State    15         -> 15
-Account Save  5          -> 5
-Benchmark     3          -> 3
-```
-
-Data advances because canonical NPC/POI/commitment/companion/Pack ownership records were added.
-
-Game State stays 15 because all durable consequences already belong to:
-- commitments;
-- relationships;
-- party;
-- localKnowledge / active POI context;
-- existing backing-NPC projection.
-
-No supported-save migration, new clock, route graph, timed-task owner, quest store, relationship store, party store, or other persistence family was added.
-
-## Current Data 63 census
+Data 63 census remains:
 
 ```text
 places/localities       55
@@ -110,118 +53,351 @@ quests/contracts        20
 companions               2
 transport services       7
 routes                   25
-spell schools             4
-capabilities             44
 NPC schedules            27
 regional/shared packs    39
 pack-owned records     1325
 runtime seed NPCs        47
 runtime seed enemies     17
-raw-resource use      145/154
-luxury-raw use          14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**:
+Mechanics-scale remains NOT READY:
 - abilities/techniques 41/100;
 - companions 2/4;
 - quests/contracts 20/30;
 - named NPCs 48/50.
 
-Abilities/techniques are now the largest relative and absolute listed mechanics gap.
+Abilities/techniques remain the largest relative and absolute listed gap.
 
-## Permanent authorities synchronized
+## Combat design authority added
 
-Current authority set includes:
-- `README.md`;
-- `PROJECT_PROFILE.yaml`;
-- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
-- `docs/ZONE_PROFILE_SLATEWATER_FOOTHILLS.md`;
-- `docs/ARCHITECTURE.md`;
-- `docs/EXECUTION_PIPELINE.md`;
-- `docs/ROADMAP.md`;
-- `docs/SYSTEM_CATALOG.md`;
-- `docs/QUALITY_GATES.md`;
-- `docs/VERSIONING_AND_RELEASE_ROADMAP.md`;
-- `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`;
-- this handoff.
+Permanent design authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-The previous player-information authority remains:
+This authority records the user-selected combat direction.
+
+### Naming
+
+Ability/technique names should be original Hearth & Horizon names that are:
+- concise;
+- lore-friendly;
+- descriptive of force/form/motion/result;
+- mechanically honest.
+
+Words such as Ring, Chain, Cage, Well, Rain, Breaker, Volley, Ward, Sigil, etc. should imply real executable behavior rather than decoration.
+
+Do not create new names for pure numeric rank increases when rank/mastery can preserve the same action identity.
+
+### Unified action metadata
+
+Future spells, melee/ranged techniques, hybrid actions, auras, stances, zones, channels, reactions, and practical combat actions should share a structured execution vocabulary covering where relevant:
+- startup/buildup;
+- active/channel timing;
+- recovery;
+- cooldown;
+- linger;
+- delivery;
+- geometry/range/targets;
+- physical/magical/hybrid channel;
+- weapon and attribute scaling;
+- element/element source;
+- accuracy;
+- defense/resistance;
+- critical behavior;
+- status accuracy/resistance;
+- penetration/sunder/stagger/interrupt;
+- enmity contribution.
+
+### Weapon kata / auto sequences
+
+Ordinary weapon attacks should evolve into weapon-specific automatic sequences on canonical combat time.
+
+Weapon proficiency can:
+- unlock additional sequence stages;
+- unlock selectable moves within stages;
+- improve existing moves;
+- unlock affinity-dependent substitutions.
+
+Defaults should generally remain physical. Elemental variants are selectable mutations/tradeoffs rather than automatic free bonus damage.
+
+A skilled weapon user should visibly fight differently from a novice even while allowing automatic attacks to run.
+
+### Elemental weapon actions
+
+Distinguish:
+- element supplied by an explicitly enchanted weapon;
+- weapon affinity/resonance requiring the wielder's matching affinity;
+- character-affinity substitutions within a weapon sequence;
+- generic imbuement actions versus specialist elemental techniques.
+
+Do not globally assign one mandatory element to every weapon family.
+
+### Loadouts
+
+Prepared combat loadouts may include:
+- equipment;
+- weapon set;
+- ammunition;
+- configured kata;
+- selected manual techniques;
+- stance/aura preset;
+- affinity substitutions.
+
+Combat swapping is timed and interruptible:
+- outgoing stow time and incoming draw/ready time both matter;
+- compact weapons are faster than cumbersome bows/greatswords/mauls where authored;
+- direction matters;
+- attacks/weapon abilities have post-swap readiness;
+- canonical ability cooldowns never reset because a loadout changes.
+
+### Armor pressure rule
+
+Equipped armor cannot be swapped while the character remains under meaningful active hostile pressure from a hostile that can pursue or threaten them.
+
+It is not enough that another party member is currently selected as the enemy target.
+
+Armor becomes swappable only after actual pressure is broken, for example:
+- sufficient disable/unreachability;
+- LOS/reachability loss that progresses to qualifying temporary disengagement rather than mere pursuit;
+- genuine attention transfer to allies plus the original character falling below the pressure threshold;
+- ordinary combat disengagement.
+
+Fixation on the character blocks armor swaps.
+
+### Enemy attention vocabulary
+
+Do not overload one `aggro` number.
+
+- **Enmity** — absolute accumulated hostility/attention pressure.
+- **Focus** — normalized relative attention share.
+- **Aggro** — sticky current target/engagement.
+- **Fixation/Priority** — exceptional targeting override.
+
+Focus share is **not literal attack probability**.
+
+On an actual target reassessment, focus is transformed nonlinearly, conceptually:
+
+```text
+selectionWeight_i = focus_i ^ concentrationExponent
+```
+
+then modified by reachability, perception, tactics, current-target stickiness, and special priorities.
+
+Example: `40 / 40 / 20` focus might become roughly `47 / 47 / 6` at exponent 3 rather than a literal 20% chance for the low-focus actor.
+
+No universal minimum targeting chance is required.
+
+Do not reroll targets every tick. Retargeting occurs only at meaningful reassessment triggers.
+
+Race/faction/species antagonism may affect baseline enmity, decay, focus floors, or priority rather than hard-scripting every target.
+
+## Current combat runtime audit
+
+Current executable catalog:
+```text
+33 spells
+ 5 martial techniques
+ 3 utilities
+41 total executable abilities
+44 capability/training definitions
+```
+
+Known current runtime seams:
+- basic player/companion attacks still use fixed recovery rather than `weaponDelay` cadence;
+- `performWeaponSkill(state, skillName)` remains transitional arbitrary-string behavior;
+- no first-class player ranged attack authority;
+- elemental ability tags do not yet drive resistance/damage;
+- canonical ability damage does not yet share complete ordinary accuracy/defense/resistance resolution;
+- canonical status effects do not yet have complete status accuracy/resistance;
+- critical derived stats are not fully integrated into the representative action resolver;
+- target geometry is still effectively self/enemy/context;
+- aura/stance/zone/channel/reaction families are not first-class;
+- configurable weapon kata is not implemented;
+- timed combat loadout transitions are not implemented;
+- party Enmity/Focus/Aggro/Fixation is not implemented.
+
+Do **not** close the 41/100 ability gap by mass-authoring mechanically duplicate abilities on top of these seams.
+
+## Adventure Vertical Slice B selected
+
+Permanent implementation plan:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+Slice B is now selected as a **Brasshaven / Redstone combat-training bridge**, using existing geography/content where possible:
+- Brasshaven Market Ring;
+- South Redstone Reach;
+- existing Redstone techniques such as Ridge Breaker and Rivet Guard;
+- existing starter equipment and current Redstone/training encounter substrate.
+
+Do not add a new region merely to prove combat.
+
+Do not add a new trainer/arena/POI unless the implementation audit shows that existing service/contact fiction cannot honestly own the training interaction.
+
+## Immediate next bounded implementation — B1 only
+
+A future user message **`continue`** should start:
+
+### Packet B1 — Unified Combat Resolution Contract
+
+B1 is contract-first, content-second.
+
+Required initial audit:
+- `js/text/systems/battleEngine.js`;
+- `js/text/systems/combatTurnEngine.js`;
+- `js/text/systems/combatActionEngine.js`;
+- `js/text/systems/combatSimulationEngine.js`;
+- `js/text/systems/abilityEngine.js`;
+- `js/text/data/abilities.js`;
+- `js/text/data/capabilities.js`;
+- `js/text/data/systemConstants.js`;
+- `js/text/systems/statEngine.js`;
+- `js/text/systems/skillProgressionEngine.js`;
+- `js/text/data/equipmentCatalog.js`;
+- active-battle / ability persistence validation and tests.
+
+B1 should introduce a normalized resolution vocabulary capable of representing at minimum:
+- delivery;
+- physical/magical/hybrid channel;
+- damage type;
+- element / element source;
+- weapon/attribute coefficients;
+- accuracy model/modifier;
+- defense/resistance model;
+- critical eligibility/modifier;
+- status payload and accuracy/resistance;
+- explicit action recovery;
+- enmity metadata placeholder for later B2.
+
+Representative B1 proof:
+- one ordinary melee basic attack;
+- Ridge Breaker;
+- Rivet Guard;
+- one direct elemental spell such as Ember Dart or Cinder Bolt;
+- one status spell such as Fracture Sigil.
+
+B1 should begin making the names mechanically honest:
+- Ridge Breaker gets real guard/stability/defense interaction when the minimal contract exists;
+- elemental damage consults actual element/resistance data;
+- status application has a deterministic accuracy/resistance path;
+- canonical recovery is distinct from startup/cast time and cooldown.
+
+Do not implement full kata, loadout swapping, attention, aura geometry, or broad ability expansion in B1.
+
+The arbitrary-string legacy Weapon Skill path should receive no new feature growth; supported canonical techniques should move through the canonical ability/action contract.
+
+## Later Slice B packets — not auto-started
+
+After separate stable handoffs:
+
+1. **B2 — Enemy Attention Foundation**
+   - Enmity;
+   - normalized Focus;
+   - nonlinear target weighting;
+   - sticky Aggro;
+   - Fixation;
+   - deterministic 3-actor proof including baseline antagonism and a Shield Bash-style attention swing.
+
+2. **B3 — Combat Loadout Transition Foundation**
+   - timed directional stow/draw/ready;
+   - quick weapon-set vs full equipment transition;
+   - cooldown preservation;
+   - disable/interruption rules;
+   - armor swap blocked under meaningful pressure/pursuit/fixation.
+
+3. **B4 — Weapon Cadence / Ranged / Minimal Kata**
+   - weapon-delay-derived attack readiness through one conversion authority;
+   - first-class ranged action using ranged skill/stats/ammunition;
+   - minimal configurable kata proof with only representative weapon families.
+
+4. **B5 — Playable Brasshaven / Redstone Combat-Training Proof**
+   - integrates the proven B1-B4 contracts in a real vertical slice.
+
+After B5, deliberately close `0.9.200` and open `0.9.300 Advanced Combat / Training` for broad weapon-family, affinity, aura, stance, zone, channel, reaction, enemy-AI, and meaningful ability-catalog expansion.
+
+## Preserved interrupted/resumable circles
+
+The combat selection does **not** cancel previous work.
+
+### Locality enrichment — DEFERRED / RESUMABLE
+
+The Local Knowledge & Familiarity Foundation is complete.
+
+Still preserved:
+- ambient/risk event catalogs;
+- wandering/seasonal merchants;
+- generalized direction/help dialogue;
+- richer contextual dialogue;
+- staged shop category/browse depth;
+- learned-locality graphical presentation.
+
+Authority:
 - `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 
-## Standing rules that still apply
+### Occupational Tool Conversion — PRESERVED / QUEUED
 
-- route graph owns inter-place traversability, distance, time, hazards, and modes;
-- touching map envelopes do not imply travel;
-- player-facing world information must respect `localKnowledge`, not enumerate canonical truth;
-- sighting does not imply interaction, identity recognition, direct navigation, commitment disclosure, or entry;
-- canonical fictional time only; no wall-clock gameplay scheduling;
-- Pack v2 is ownership/dependency overlay, not a duplicate canonical database;
-- resource provenance and source/sink rules remain mandatory;
-- passive wildlife remains non-hostile unless mechanics/ecology justify hostility;
-- content-scale targets are progression signals, not permission for filler;
-- no hard benchmark timing thresholds;
-- Game State changes only for genuine durable serialized contract changes;
-- normal low-risk work remains direct to `main`;
-- pre-alpha persistence remains current-schema-only unless compatibility is explicitly selected.
+Still the strongest prepared `0.9.400 Economy / Production Depth` candidate.
 
-## Closed work — do not redo automatically
+Resume from the existing Packet A conversion list and `requiredToolTags` design rather than repeating the audit.
 
-Do **not** restart:
-- the five-part flora/fauna diversity repair sequence; it is complete through Data 62;
-- Content Scale Gate A; Packet E is PASS / COMPLETE;
-- Local Knowledge & Familiarity Foundation; it is complete at Game State 15;
-- Adventure Vertical Slice A; it is complete at Data 63 / Product 0.9.200.1.
+Authority:
+- `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
-Richer locality events/dialogue/shop browsing remain separate future work, not unfinished Slice A work.
+### World-edge continuation — PAUSED / RESUMABLE
 
-## Next bounded decision
+Ranking remains:
+1. Waymeet Inner Marches / outer crossroads approach;
+2. Coppergrass extensions;
+3. Drowned Vaults.
 
-`0.9.200 Adventure Vertical Slices` remains the active formal track.
+Authorities:
+- `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`;
+- `docs/WORLD_MACRO_TOPOLOGY.md`.
 
-The immediate in-track candidate is **Adventure Vertical Slice B**, but its regional/character anchor is intentionally **UNSELECTED** and must not be auto-started from a preconceived location.
+Combat Slice B intentionally reuses existing geography and does not supersede this queue.
 
-If the user explicitly says `continue` from this boundary, first inspect current existing geography/people/services and select the strongest bounded Slice B candidate by connected value across:
-- character/NPC depth;
-- companion breadth where justified;
-- quests/contracts;
-- relationship continuity;
-- service/field/combat integration;
-- existing route/geography reuse.
+### Ecology
 
-Prefer existing geography over another new zone unless the slice genuinely requires a new place.
+The five-part flora/fauna diversity repair sequence is **COMPLETE**, not interrupted.
 
-After deliberate closure of the 0.9.200 track, formal roadmap priority is:
-1. `0.9.300 Advanced Combat / Training`;
-2. `0.9.400 Economy / Production Depth` — Occupational Tool Conversion remains the strongest prepared candidate;
-3. `0.9.500 Quest / Social Depth`;
-4. `0.9.600 Playable-Alpha Scale Push`.
+Do not restart automatically. Any additional ecology work requires fresh selection.
 
-Separate queues requiring explicit selection:
-- Waymeet Inner Marches / outer crossroads approach;
-- Coppergrass extensions;
-- Drowned Vaults;
-- richer locality events/dialogue/UI;
-- optional post-sequence ecology work.
+## Planning-pass validation
+
+This design/planning pass changed documentation/profile only.
+
+Pre-handoff synchronized authority head:
+- `2d6667be48bcd3223b4cc2a608cbdf5d7e1bb089`.
+
+Hosted validation:
+- Check #1846 / run `33455798979` — SUCCESS;
+- Repository Audit PASS;
+- **826/826 tests**;
+- Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #1976 / run `33455798113` — build/deploy/report SUCCESS.
+
+This handoff file is the final repository-file mutation for the planning pass. The resulting handoff commit SHA is the final `main` SHA and must be validated externally after this write. Do not modify repository files merely to insert that self-referential SHA.
 
 ## Restart read order
 
-For the next development thread, read:
+For B1:
 1. `AGENTS.md`;
 2. this handoff;
 3. `PROJECT_PROFILE.yaml`;
-4. `docs/EXECUTION_PIPELINE.md`;
-5. `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
-6. `docs/ROADMAP.md`;
-7. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`;
+4. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
+5. `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`;
+6. `docs/EXECUTION_PIPELINE.md`;
+7. `docs/ROADMAP.md`;
 8. `docs/ARCHITECTURE.md`;
-9. relevant existing regional profiles only after selecting the Slice B candidate.
+9. B1 runtime files listed above.
 
-If Slice B is selected, inspect the actual current canonical NPC/commitment/companion/service/route catalogs before authoring. Do not infer missing content from old handoff counts.
+Do not restart broad combat research before inspecting the current runtime and these authorities.
 
-## Validation contract
+## Final validation contract
 
-Final exact-head validation must observe:
+After this handoff write, perform no repository-file mutations.
 
+Validate the exact final handoff SHA with:
 ```text
 npm run audit:repo
 npm test
@@ -230,6 +406,4 @@ npm run benchmark
 npm run benchmark:sample
 ```
 
-Also confirm Pages succeeds on the exact final handoff SHA.
-
-No repository-file writes are permitted after this handoff during the current session.
+and confirm Pages succeeds on the exact same SHA.
