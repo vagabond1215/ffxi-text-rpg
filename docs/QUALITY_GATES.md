@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.5
+Product:       0.9.300.6
 Package:       0.9.300
 Account Save:  5
-Game State:    20
-Data:          72
+Game State:    21
+Data:          73
 Benchmark:     3
-Codename:      Tempest Ring Geometry Foundation
+Codename:      Umbral Well Field Foundation
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -218,6 +218,28 @@ PASS only when:
 - Product/Data/Game State decisions are explicit.
 
 **Gate result: PASS.** The first full focused run, Check #2033, passed 878/879 tests; its only failure was an invalid manually constructed test battle sequence/ID fixture, not runtime geometry. After fixture-only repair, behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` passed Check #2034 / run `33544018110` with **879/879 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2164 / run `33544018073` PASS. Game State remains 20; Data advances 71 -> 72.
+
+### 0.9.300 Packet 6 gate — Umbral Well Field Foundation
+
+PASS only when:
+- Umbral Well preserves stable identity, activation, MP cost, cooldown, direct-impact potency/scaling, and the executable ability count;
+- direct impact uses explicit Dark magic accuracy, magic defense, and elemental resistance;
+- ability resolution creates one durable field with deterministic center, lifetime, cadence, and cast-time source snapshot;
+- `activeBattle.fields` validates strictly under current schema and malformed records are rejected rather than reconstructed;
+- real current save/load preserves an in-progress Well, its next-pulse deadline, and source snapshot;
+- field pulses occur exactly at +4/+8/+12 canonical world seconds and the field is removed after the final scheduled pulse;
+- field pulse interrupts precede ordinary enemy readiness at the same timestamp;
+- point-radius recipient selection and maximum-target capping are deterministic;
+- every pulse recipient independently resolves magic accuracy, magic defense, and Dark resistance;
+- later source combat/loadout changes do not alter the field's persisted offense snapshot;
+- later defender Dark-resistance changes do affect subsequent pulses;
+- each pulse records one structured `fieldPulse` combat action;
+- area-action attention applies only to recipients with applied effects, including the case where only one secondary target lands;
+- battle end clears outstanding fields;
+- no direct timed-task owner, second clock, mutable combat coordinates, movement, LOS/pursuit, or general player ground-target system is introduced;
+- Product/Game State/Data decisions are explicit.
+
+**Gate result: PASS.** Check #2066 reached 878/884 tests; two failures were legacy effect-shape churn from `field: undefined` and four focused fixtures used Elemental Magic instead of Umbral Well's canonical Dark Magic requirement. Check #2068 then reached 883/884; its only failure was a test-only `structuredClone` of an injected RNG function. After fixture-only repair, behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` passed Check #2069 / run `33554921560` with **884/884 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2199 / run `33554920945` PASS. Game State advances 20 -> 21; Data advances 72 -> 73.
 
 ## Content Pack v2 gate
 
