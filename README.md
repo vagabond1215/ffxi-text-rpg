@@ -13,13 +13,13 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are complete.** The current canonical/runtime checkpoint is Data 72 / Product 0.9.300.5 / Game State 20. Packet 5 gives Tempest Ring honest target-centered radial behavior through deterministic encounter-relative formation geometry, independent per-target wind resolution, and per-recipient hostile attention without adding mutable combat-position state.
 
 ```text
-Product:       0.9.300.5
+Product:       0.9.300.6
 Package:       0.9.300
 Account Save:  5
-Game State:    20
-Data:          72
+Game State:    21
+Data:          73
 Benchmark:     3
-Codename:      Tempest Ring Geometry Foundation
+Codename:      Umbral Well Field Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
