@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 ```
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 2 — Character Affinity & Kata Substitution Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
+**0.9.300 Packet 3 — Novice Elemental Resolution Breadth** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`;
-- Product 0.9.300.2 / Package 0.9.300 / Game State 20 / Data 69 / Account Save 5 / Benchmark 3;
-- behavioral implementation freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`;
-- Check #1956 / run `33477009897`: Repository Audit, **867/867 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2086 / run `33477008886`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`;
+- Product 0.9.300.3 / Package 0.9.300 / Game State 20 / Data 70 / Account Save 5 / Benchmark 3;
+- behavioral/data implementation freeze `32f0ee268525f096f40421414af180e90a724397`;
+- Check #1981 / run `33515422352`: Repository Audit, **870/870 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2111 / run `33515422056`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 69 metrics
+## Data 70 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–2 are complete.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are complete.
 
 ### Latest completed unit — Packet B2
 
@@ -193,6 +193,17 @@ B5 adds a stateless Varric training-service adapter delegating to capability pro
 `player.progression.affinities` now owns versioned ranks for the eight canonical elements independently of active discipline, spell knowledge, equipment, and battle-local state. Dagger Rimepoint Thrust and staff Cinder-Braced Drive are authored kata options requiring both weapon proficiency and earned affinity. The existing melee path passes their element metadata into `combatResolutionEngine`; physical defaults remain valid and ineligible configured substitutions fall back safely.
 
 Game State advances 19 -> 20 for the new required affinity authority. Data advances 68 -> 69 for the two authored substitutions. Weapon-kata configuration remains version 2 and encounter-local kata state remains version 1. No subsequent 0.9.300 packet is selected; the next combat unit requires a fresh bounded choice.
+
+
+### Latest completed unit — 0.9.300 Packet 3
+
+**Novice Elemental Resolution Breadth — COMPLETE.**
+
+The eight existing novice Elemental Form attacks now use explicit magical resolution metadata: canonical element, magic accuracy, magic-defense resistance, element-source evidence, and 2-second post-action recovery. The ability catalog remains at 41 executable abilities; no capabilities, geometry, state family, or task owner were added.
+
+The adept elemental tranche remains deliberately outside Packet 3. Tempest Ring, Thunder Cage, and Umbral Well still have no structured resolution metadata because their names imply mechanics that may require geometry, control, or persistent-field semantics rather than a cosmetic single-target migration.
+
+Game State remains 20. Data advances 69 -> 70 for eight changed canonical ability definitions. No subsequent 0.9.300 packet is auto-selected.
 
 ## Preserved interrupted/resumable queues
 
