@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.300.5 — Tempest Ring Geometry Foundation
+
+- Added `combatGeometryEngine` as a stateless encounter-relative geometry projection/query authority, deriving deterministic ally/enemy formation coordinates from existing combatant side/order rather than storing mutable battle positions.
+- Converted the existing Tempest Ring adept spell from generic single-target damage into a target-centered ring with radius 2, maximum 4 targets, explicit wind magical resolution, and three-second post-action recovery.
+- Updated `abilityEngine` so geometric target effects resolve independently for every selected recipient and record structured geometry evidence on the ordinary ability result, semantic event, and combat action.
+- Updated `combatAttentionEngine` so multi-recipient actions add enmity to each enemy actually affected based on that enemy's applied effects; enemies outside Tempest Ring receive no area-spell damage enmity.
+- Proved deterministic radius exclusion, maximum-target capping, independent target wind resistance, per-recipient attention, and current-schema clone/save-load stability without `activeBattle.geometry` or another persistence family.
+- Kept executable ability count at 41 and did not add movement, LOS/line-of-fire, pursuit/search/disengagement, ground targeting, zones, cone/line/arc/chain geometry, or broad AoE migration.
+- Advanced Product 0.9.300.4 -> 0.9.300.5 and Data 71 -> 72; Game State remains 20 and Package remains 0.9.300.
+- The first full focused run, Check #2033, passed 878/879 tests; its sole failure was an invalid manually constructed test battle sequence/ID fixture. Fixing that fixture required no runtime change. Behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` passed Repository Audit, 879/879 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #2034 / run `33544018110` and Pages #2164 / run `33544018073`.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.4 — Thunder Cage Control Foundation
 
 - Converted the existing Thunder Cage adept spell from generic single-target damage into explicit lightning magical damage plus a separately resistible six-second containment status.
