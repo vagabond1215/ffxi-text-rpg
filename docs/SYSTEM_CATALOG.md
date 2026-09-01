@@ -212,11 +212,11 @@ spellSchools / capabilities / abilities / companions
 | Elemental Form | playable | Universal fire/earth/wind/water/lightning/ice/light/dark attack families; no region ownership. |
 | Vital Weave / Ward Lore | playable | Universal healing and defensive/support spell families. |
 | Veilscript | playable | Original seal-magic tradition using the existing `ninjutsu` skill for debuff/guard sigils. |
-| Ability/spell engine | playable / Tempest Ring geometry foundation implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, bounded control, and one real target-centered ring geometry work. Tempest Ring expands one authored target effect across deterministic radius-selected recipients; Umbral Well fields and wider geometry/action-family migration remain follow-on. |
+| Ability/spell engine | playable / Umbral Well field foundation implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, bounded control/ring geometry, and one durable persistent field work. Umbral Well creates battle-local field state after its Dark impact; pulse scheduling and resolution reuse canonical combat/world-time authorities. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P5 complete | Unified resolution, hostile attention, loadout transitions, equipment-derived cadence, ranged attacks, kata, affinity substitutions, elemental resolution/control, and one bounded radial geometry share canonical authorities. P5 adds stateless derived formation and per-recipient area-action attention without mutable combat-position state. |
+| Combat 2.0 | playable / 0.9.300 P6 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, and persistent field pulses share canonical authorities. P6 adds durable `activeBattle.fields`, field interrupts, cast-time source snapshots, live defender resistance, and explicit per-recipient area attention without adding a second task/clock or mutable combat positioning. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.5 / Data 72 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–5 complete.
+Phase 0.9 remains open at Product 0.9.300.6 / Data 73 / Game State 21. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–6 complete.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -315,5 +315,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packets 1–5 are COMPLETE.** Packet 5 implements target-centered ring geometry for Tempest Ring through deterministic encounter-relative formation, per-target wind resolution, and per-recipient attention without persisting mutable positions. Umbral Well field semantics and broader geometry/movement remain deferred. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packets 1–6 are COMPLETE.** Packet 6 implements durable Umbral Well field semantics: a persisted center/source snapshot and three world-time pulses with independent recipient resolution and attention. Broader zone scripting, mutable movement/engagement geometry, LOS/pursuit, and remaining adept semantic migrations remain deferred. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 
