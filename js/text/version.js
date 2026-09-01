@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.200.1';
+export const PRODUCT_VERSION = '0.9.200.2';
 export const PACKAGE_VERSION = '0.9.200';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 15,
-    data: 63,
+    data: 64,
     benchmark: 3,
-    codename: 'Slatewater Road Scout',
+    codename: 'Unified Combat Resolution',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.200.1',
+    versionManifest: '0.9.200.2',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -164,8 +164,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     startingDisciplineKits: '0.1.0',
     characterStats: '0.1.0',
     capabilities: '0.5.0',
-    abilityCatalog: '0.4.0',
-    abilityEngine: '0.3.0',
+    abilityCatalog: '0.5.0',
+    abilityEngine: '0.4.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.3.0',
     party: '0.4.0',
@@ -175,10 +175,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     enemyEntity: '0.4.0',
     statEngine: '0.5.0',
     statusEngine: '0.3.0',
-    battleEngine: '0.8.0',
-    combatTurns: '0.3.1',
+    battleEngine: '0.9.0',
+    combatTurns: '0.3.2',
     combatSimulation: '0.1.0',
-    combatActions: '0.8.1',
+    combatResolution: '0.1.0',
+    combatActions: '0.9.0',
     battleRewards: '0.6.0',
     progression: '0.6.0',
     expTables: '0.5.2',
