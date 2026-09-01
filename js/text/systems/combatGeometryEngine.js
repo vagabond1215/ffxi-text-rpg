@@ -89,6 +89,51 @@ export function resolveCombatGeometryTargets(battle, definition = {}) {
     });
 }
 
+export function resolveCombatPointRadiusTargets(battle, definition = {}) {
+    const actor = findCombatant(battle, definition.actorId);
+    const center = definition.centerPosition;
+    if (!actor || !center || !Number.isFinite(Number(center.x)) || !Number.isFinite(Number(center.y))) return emptyResolution('radius');
+
+    const actorSide = actor.battle?.side ?? (actor.type === 'enemy' ? 'enemy' : 'ally');
+    const radius = Math.max(0, Number(definition.radius) || 0);
+    const maximumTargets = Math.max(1, Math.floor(Number(definition.maximumTargets) || 1));
+    const encounterOrder = new Map((battle?.combatants ?? []).map((entry, index) => [entry.id, index]));
+
+    const rows = (battle?.combatants ?? [])
+        .filter((entry) => {
+            const side = entry.battle?.side ?? (entry.type === 'enemy' ? 'enemy' : 'ally');
+            return side !== actorSide && !entry.battle?.defeated && Number(entry.resources?.hp) > 0;
+        })
+        .map((entry) => {
+            const position = getCombatFormationPosition(battle, entry.id);
+            const distance = position ? euclideanDistance(center, position) : Infinity;
+            return { entry, position, distance, order: encounterOrder.get(entry.id) ?? Number.MAX_SAFE_INTEGER };
+        })
+        .filter((row) => row.distance <= radius)
+        .sort((left, right) => left.distance - right.distance || left.order - right.order || left.entry.id.localeCompare(right.entry.id))
+        .slice(0, maximumTargets);
+
+    const evidence = Object.freeze({
+        version: COMBAT_GEOMETRY_VERSION,
+        kind: 'radius',
+        center: 'point',
+        centerId: null,
+        centerPosition: Object.freeze({ x: Number(center.x), y: Number(center.y) }),
+        radius,
+        maximumTargets,
+        recipients: Object.freeze(rows.map((row) => Object.freeze({
+            id: row.entry.id,
+            distance: row.distance,
+            position: Object.freeze({ ...row.position }),
+        }))),
+    });
+
+    return Object.freeze({
+        targets: Object.freeze(rows.map((row) => row.entry)),
+        evidence,
+    });
+}
+
 function enemyFormationPosition(index) {
     if (index < ENEMY_FORMATION.length) return ENEMY_FORMATION[index];
     const offset = index - ENEMY_FORMATION.length;
