@@ -801,6 +801,16 @@ Game State advances 20 -> 21 because these outstanding future pulse facts cannot
 
 This packet does not add mutable combatant coordinates, player-selected ground locations, movement, knockback, LOS/reachability, pursuit/search/disengagement, moving zones, friendly fields, or generic zone scripting.
 
+### 0.9.300 Packet 7 Radiant Arc propagation foundation
+
+Product 0.9.300.7 / Game State 21 / Data 74 adds no new durable state family. `abilities.js` owns the authored `arc` contract and `combatGeometryEngine.js` remains the stateless spatial query authority.
+
+Radiant Arc begins at the explicitly selected enemy. `combatGeometryEngine` then chooses each later recipient from the previous recipient's derived encounter position, selecting the nearest living opposing combatant within the authored two-unit jump range, excluding already-visited recipients, and using encounter order then stable ID for deterministic ties. The query stops after three total recipients or when no eligible next jump exists.
+
+`abilityEngine` needs no Packet-7-specific execution owner: its existing geometric target-expansion path applies the authored Light damage effect independently to every selected recipient. `combatResolutionEngine` remains hit/damage/resistance authority and `combatAttentionEngine` consumes the existing explicit per-recipient area-action evidence.
+
+No propagation record, timer, interrupt, mutable combat coordinate, LOS/reachability state, pathfinding state, pursuit state, or save field is added. Propagation is fully resolved inside the completed action, so Game State remains 21. A later delayed chain, moving projectile, or path/LOS-aware propagation model would require a fresh bounded ownership decision rather than extending this synchronous proof implicitly.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -885,4 +895,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 73; the current runtime/persistence baseline is Product 0.9.300.6 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–6 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 74; the current runtime/persistence baseline is Product 0.9.300.7 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–7 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
