@@ -4,91 +4,143 @@ Repository evidence beats conversation memory.
 
 ## Current runtime contract
 
-```text
-Product:       0.9.300.4
-Package:       0.9.300
-Account Save:  5
-Game State:    20
-Data:          71
-Benchmark:     3
-Codename:      Thunder Cage Control Foundation
-Runtime:       Node >=24
-Phase:         0.9
-0.9.100:       COMPLETE
-0.9.200:       COMPLETE — Adventure Vertical Slices
-0.9.300:       ACTIVE — Advanced Combat / Training
-Packet 1:      COMPLETE — Current Melee Kata Breadth
-Packet 2:      COMPLETE — Character Affinity & Kata Substitution Foundation
-Packet 3:      COMPLETE — Novice Elemental Resolution Breadth
-Packet 4:      COMPLETE — Thunder Cage Control Foundation
-Next packet:   UNSELECTED — requires fresh bounded work order
-```
+Product: 0.9.300.5
+Package: 0.9.300
+Account Save: 5
+Game State: 20
+Data: 72
+Benchmark: 3
+Codename: Tempest Ring Geometry Foundation
+Runtime: Node >=24
+Phase: 0.9
+0.9.100: COMPLETE
+0.9.200: COMPLETE — Adventure Vertical Slices
+0.9.300: ACTIVE — Advanced Combat / Training
+Packet 1: COMPLETE — Current Melee Kata Breadth
+Packet 2: COMPLETE — Character Affinity & Kata Substitution Foundation
+Packet 3: COMPLETE — Novice Elemental Resolution Breadth
+Packet 4: COMPLETE — Thunder Cage Control Foundation
+Packet 5: COMPLETE — Tempest Ring Geometry Foundation
+Next packet: UNSELECTED — requires fresh bounded work order
 
-## Latest bounded unit — 0.9.300 Packet 4
+## Latest bounded unit — 0.9.300 Packet 5
 
 Permanent record:
-- `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`.
+- docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md
 
 Permanent combat design authority:
-- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+- docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md
 
 Previous packet:
-- `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`.
+- docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md
 
 Adjacent/stale combat audit:
-- `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
+- docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
 
 ### Behavioral/data implementation freeze
 
-`f2b5ca9e1936e9ef7f334de16a9fd83908323642`
+29d6da27e48850aa96307553b4c124f2598c8caa
 
 Hosted evidence:
-- Check #2006 / run `33518317562`;
-- Repository Audit PASS;
-- **875/875 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS;
-- Pages #2136 / run `33518315622` PASS.
+- Check #2034 / run 33544018110
+- Repository Audit PASS
+- 879/879 tests
+- Content Census PASS
+- Benchmark 3 PASS
+- Benchmark Sample PASS
+- Pages #2164 / run 33544018073 PASS
 
 This freeze intentionally predates Product/Data promotion and authority synchronization.
 
 ### Promoted authority checkpoint before this handoff
 
-`9d60d84333c640bac2e7770eaabbc6ff213acbfe`
+13bec5c847f5b0fe2d1ef5cb1b7b663ef017b5ca
 
 At this checkpoint:
-- Product 0.9.300.4 / Package 0.9.300 / Game State 20 / Data 71 promotion is complete;
-- runtime and system-version guards are synchronized;
-- README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, Phase 0.9 plan, development direction, quality gates, resource lifecycle, changelog, and Packet 4 record are synchronized;
-- Packet 4 is complete;
-- no subsequent advanced-combat packet has been selected or implemented.
+- Product 0.9.300.5 / Package 0.9.300 / Game State 20 / Data 72 promotion is complete.
+- Runtime/system-version guards are synchronized.
+- README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, Phase 0.9 plan, development direction, quality gates, resource lifecycle, changelog, and Packet 5 record are synchronized.
+- Packet 5 is complete.
+- No subsequent advanced-combat packet has been selected or implemented.
 
-This handoff write is intended to be the final repository-file mutation for Packet 4.
+This handoff write is intended to be the final repository-file mutation for Packet 5.
 
-## Why Packet 4 was selected
+## Why Packet 5 was selected
 
-Packet 3 migrated the eight novice Elemental Form attacks but deliberately did not flatten adept names whose semantics imply richer behavior.
+Packet 4 closed the Thunder Cage control gap and left Tempest Ring as the strongest next semantic mismatch.
 
-Thunder Cage was the smallest honest next semantic family:
-- it already existed as a canonical learned/executable adept spell;
-- its name implies containment/control, not merely higher damage;
-- generic persisted statuses already had flags and expiry;
-- B3 already recognized a narrow hard-disable vocabulary for loadout/armor pressure;
-- enemy combat action paths did not yet honor that disable fact.
+The permanent naming law says Ring / Nova / Bloom / Burst imply radial or expanding behavior and explicitly states that a Ring should have radial behavior.
 
-Packet 4 therefore closes one real semantic gap and one adjacent action-policy gap without opening general geometry or a broad crowd-control subsystem.
+The runtime had no target-distance contract. Treating Tempest Ring as an alias for all enemies would therefore still have been cosmetic AoE rather than real radial behavior.
 
-## What Packet 4 implements
+Packet 5 introduces the smallest honest geometry substrate capable of expressing Tempest Ring:
+- deterministic encounter-relative formation projection;
+- target-centered radial selection;
+- bounded maximum targets;
+- independent per-recipient resolution;
+- per-recipient hostile attention.
 
-### Thunder Cage authored contract
+It deliberately does not add combat movement, LOS, pursuit, disengagement, ground targeting, zones, or a tactical grid.
 
-Thunder Cage keeps:
-- ability ID `ability-thunder-cage`;
-- capability ID `spell-thunder-cage`;
+## Geometry authority
+
+js/text/systems/combatGeometryEngine.js is the canonical bounded geometry projection/query authority.
+
+COMBAT_GEOMETRY_VERSION = 1.
+Currently supported geometry kind: ring.
+
+It owns:
+- deterministic encounter-relative formation projection;
+- ring-distance calculation;
+- candidate filtering;
+- deterministic recipient ordering/capping;
+- structured geometry evidence.
+
+It does not own:
+- mutable combat position;
+- movement;
+- pathfinding;
+- LOS/reachability;
+- pursuit/search/disengagement;
+- zones;
+- ground locations.
+
+### Derived formation, not durable position
+
+Packet 5 does not persist combat positions.
+
+Current formation is derived from facts that already persist:
+- combatant side;
+- combatant array order.
+
+Representative ally slots begin at:
+- player/ally 0: x 0, y 0
+- ally 1: x -1, y 1
+- ally 2: x -1, y -1
+- ally 3: x -2, y 0
+
+Representative enemy slots begin at:
+- enemy 0: x 3, y 0
+- enemy 1: x 4, y 1
+- enemy 2: x 4, y -1
+- enemy 3: x 5, y 0
+- enemy 4: x 3, y 2
+- enemy 5: x 5, y 2
+
+Additional slots are deterministically projected as needed.
+
+This is intentionally provisional and non-mutable. It gives the current encounter enough spatial relationship to distinguish inside a ring from outside a ring without pretending the game has tactical movement.
+
+If a future packet introduces movement, knockback, repositioning, LOS, pursuit, or player-controlled positioning, it must make a fresh state-ownership and Game State decision.
+
+## Tempest Ring authored contract
+
+Tempest Ring preserves:
+- ability ID ability-tempest-ring;
+- capability ID spell-tempest-ring;
 - Elemental Form school;
-- adept/lightning identity;
-- single-target enemy targeting;
+- adept / wind identity;
+- enemy primary target;
 - 6-second interruptible activation;
 - 20 MP cost;
 - 18-second cooldown;
@@ -97,237 +149,193 @@ Thunder Cage keeps:
 - coefficient 1.75.
 
 It gains:
-- `recoverySeconds: 3`;
-- explicit lightning magical damage resolution;
-- a separate resistible containment status.
+- recoverySeconds 3;
+- target geometry kind ring;
+- center target;
+- radius 2;
+- maximumTargets 4;
+- explicit magical spell delivery;
+- wind element / ability source;
+- magic accuracy;
+- magic-defense resistance;
+- non-critical default.
 
-The ability catalog version advances:
-```text
-ABILITY_CATALOG_VERSION 7 -> 8
-```
+ABILITY_CATALOG_VERSION advances 8 -> 9.
 
-Executable ability count remains **41**.
+Executable ability count remains 41.
 
-### Damage resolution
+## Ring selection semantics
 
-Thunder Cage damage uses:
-- delivery: `spell`;
-- channel: `magical`;
-- damage type: `spell`;
-- element: `lightning`;
-- element source: `ability`;
-- accuracy model: `magic`;
-- resistance model: `magicDefense`;
-- critical eligible: false.
+For an authored target-centered ring:
 
-Damage therefore uses the existing B1 magic-accuracy, magic-defense, and elemental-resistance path.
+1. The explicitly selected enemy is the center.
+2. Only living opposing-side combatants are eligible.
+3. Euclidean distance is measured from the derived center position.
+4. Candidates beyond the authored radius are excluded.
+5. The primary target is ordered first.
+6. Remaining candidates are ordered by distance, then stable encounter order.
+7. Selection stops at maximumTargets.
 
-### Containment resolution
+For Tempest Ring, radius is 2 formation units and maximumTargets is 4.
 
-Thunder Cage containment is a second effect, not an automatic consequence of damage.
+The ring does not hit allies.
 
-Control resolution uses:
-- delivery: `spell`;
-- channel: `magical`;
-- element: `lightning`;
-- element source: `ability`;
-- accuracy model: `magic`;
-- resistance model: `magicEvasion`.
+Geometry evidence includes:
+- geometry version/kind;
+- center kind;
+- center combatant ID;
+- derived center position;
+- radius;
+- maximum targets;
+- selected recipient IDs;
+- each recipient distance;
+- each recipient derived position.
 
-Because the B1 magic-evasion path already includes elemental resistance in its accuracy calculation, lightning resistance contributes to resisting containment.
+## Ability execution integration
 
-A target may therefore:
-- take Thunder Cage damage;
-- resist Thunder Cage containment.
+abilityEngine.js remains ability activation/effect sequencing authority.
 
-That distinction is deliberate and tested.
+Packet 5 adds one bounded target-expansion step:
 
-### Status record
+authored ability geometry
+-> combatGeometryEngine selects recipients
+-> existing target effect is applied independently per selected recipient
+-> combatResolutionEngine resolves each recipient independently
 
-Landed containment applies:
+Only target-recipient effects are expanded.
 
-```text
-id:              status-thunder-cage
-name:            Thunder Cage
-category:        debuff
-duration:        6 seconds
-stack group:     elemental-control-cage
-stack rule:      replace
-flags:
-  cannotAct:     true
-  caged:         true
-```
+Every Tempest Ring recipient independently receives:
+- a magic-accuracy roll;
+- magic-defense calculation;
+- wind-resistance calculation;
+- damage;
+- hit/miss outcome;
+- structured resolution evidence.
 
-No cage geometry, persistent zone object, or separate control-state record exists.
+One target's resistance does not alter another target's result.
 
-## Shared hard-disable status authority
+The original selected enemy remains the combat action primary targetId. Full geometric recipients are explicit in:
+- ActionResult data.geometry;
+- ability.resolved semantic-event geometry;
+- combat action data.geometry;
+- each effect recipientId.
 
-Before Packet 4, the recognized hard-disable flag list was local to `combatLoadoutEngine.js`.
+No second combat action record per target is created.
 
-Packet 4 moves the shared vocabulary to `statusEngine.js`:
+## Multi-recipient hostile attention
 
-```text
-hardDisabled
-stunned
-asleep
-cannotAct
-incapacitated
-```
+Before Packet 5, B2 attention assumed one action's aggregate enmity belonged to its primary enemy target.
 
-New status helpers derive:
-- whether an entity is presently hard-disabled by status;
-- the latest finite expiry of active hard-disable statuses;
-- `Infinity` when any active hard-disable status has no finite expiry;
-- null when no active hard-disable status remains.
+combatAttentionEngine.js now preserves the existing single-recipient path and adds a bounded multi-recipient path when one action contains applied effects on more than one distinct enemy.
 
-Expired statuses do not continue to suppress action merely because their records have not yet been physically removed.
+For a multi-recipient action:
+- each enemy enmity is derived from effects actually applied to that enemy;
+- secondary Tempest Ring targets actually struck gain hostility toward the caster;
+- each target enmity reflects its own resolved damage/effects;
+- enemies outside geometry/cap receive no Tempest Ring damage enmity.
 
-`combatLoadoutEngine.js` remains the owner of loadout legality and still owns defeat/HP checks, but it consumes status hard-disable semantics from `statusEngine` instead of defining a second flag list.
+No new attention store or target-selection owner is introduced.
 
-## Enemy action/control integration
-
-`combatTurnEngine.js` now consumes the same status authority.
-
-### Action selection
-
-A status-hard-disabled enemy cannot select an action.
-
-### Immediate enemy response
-
-The existing immediate response path skips disabled enemies, so Thunder Cage does not apply successfully and then allow the caged target to retaliate in the same resolution sequence.
-
-### Ready action resolution
-
-A forced or ordinary ready action against an actively disabled enemy returns:
-
-```text
-combat.enemy-disabled
-```
-
-with the active disable expiry evidence.
-
-### Fictional-time readiness
-
-Packet 4 does not create a cage timer.
-
-The existing combat-ready interrupt is adjusted:
-
-```text
-existing enemy readyAt
-        |
-        + active finite hard disable?
-        |      -> effective interrupt = max(readyAt, latest disable expiry)
-        |
-        + active indefinite hard disable?
-        |      -> no ready interrupt until status removal
-        |
-        + no active hard disable?
-               -> ordinary readyAt
-```
-
-At the finite expiry boundary:
-1. canonical world time reaches the existing interrupt;
-2. normal status reconciliation removes the expired cage;
-3. the already-ready enemy may act normally;
-4. ordinary enemy recovery is then recorded.
-
-This prevents:
-- acting through containment;
-- a second control clock;
-- zero-time repeated enemy-ready interrupts;
-- artificial readiness reset when the disable ends.
-
-## Focused Packet 4 guard
+## Focused Packet 5 guard
 
 Primary guard:
-- `tests/advancedCombatThunderCageControl.test.js`.
+- tests/advancedCombatTempestRingGeometry.test.js
 
 It proves:
-- ability catalog version 8;
-- executable ability count remains 41;
-- Thunder Cage stable contract is preserved except intended recovery/resolution/control metadata;
-- lightning damage resolution;
-- damage/control independence;
-- separately resisted containment;
-- lightning resistance evidence and reduced damage;
-- six-second `cannotAct` status;
-- shared hard-disable recognition;
-- `combat.enemy-disabled` forced-action rejection;
-- five seconds of cage hold without enemy action;
-- action resumes at exactly the sixth-second expiry boundary;
-- existing combat readiness recovery continues after resumed action;
-- B3 armor-pressure logic consumes the shared hard-disable status fact.
+- ABILITY_CATALOG_VERSION equals 9;
+- ability count remains 41;
+- Tempest Ring stable identity/cost/timing/potency/scaling;
+- exact ring geometry contract;
+- deterministic player/enemy formation coordinates;
+- radius inclusion/exclusion;
+- authored four-target cap;
+- independent magic resolution for every selected enemy;
+- target-specific wind resistance and damage;
+- structured geometry evidence;
+- per-recipient hostile attention;
+- excluded enemies receive no Tempest Ring attention;
+- no activeBattle.geometry field exists;
+- valid current-schema cloned battle state reproduces identical geometry.
 
-The pre-existing B3/B5 hard-disable tests also remain green after the shared-authority refactor.
+Packet 3 and Packet 4 focused guards were changed only to recognize that Tempest Ring is now deliberately selected and that the ability catalog version advanced to 9.
 
-## First hosted-run fixture repair
+## Hosted validation history
 
-The first Packet 4 hosted run:
-- Check #2005 / run `33518195679`;
-- 874/875 tests passed;
-- one focused resistance proof failed.
+### First full focused run
 
-The failure was a **test fixture issue**, not a runtime-control defect.
+Check #2033 / run 33543929815:
+- Repository Audit PASS
+- 878/879 tests
+- one focused Packet 5 proof failed
 
-The failing proof applied lightning resistance only to the detached active-battle enemy after encounter creation. Normal combat/profile refresh correctly rebuilt derived resistance from the canonical projected source, so the ad hoc cache mutation disappeared.
+The failure was a test-fixture coherence defect, not runtime geometry.
 
-The repaired proof applies the resistance status to the source Training Dummy before encounter creation. Encounter projection then carries the canonical status into the battle combatant and recalculation preserves the intended resistance.
+The manually constructed six-enemy battle used combatSequence 0 and a noncanonical battle ID. Current-schema validation correctly requires a positive combat sequence and matching battle-000001 identity for a persisted active battle.
 
-No runtime implementation change was required for that repair.
+The fixture alone was repaired:
+- state.combatSequence = 1
+- battle ID = battle-000001
+
+No production geometry, target expansion, resolution, attention, or persistence code changed for this repair.
+
+### Behavioral/data implementation freeze
+
+29d6da27e48850aa96307553b4c124f2598c8caa
+
+Check #2034 / run 33544018110:
+- Repository Audit PASS
+- 879/879 tests
+- Content Census PASS
+- Benchmark 3 PASS
+- Benchmark Sample PASS
+
+Pages #2164 / run 33544018073: PASS.
 
 ## Version decisions
 
-```text
-Product       0.9.300.3 -> 0.9.300.4
-Package       0.9.300   -> 0.9.300
-Account Save  5         -> 5
-Game State    20        -> 20
-Data          70        -> 71
-Benchmark     3         -> 3
-```
+Product 0.9.300.4 -> 0.9.300.5
+Package 0.9.300 -> 0.9.300
+Account Save 5 -> 5
+Game State 20 -> 20
+Data 71 -> 72
+Benchmark 3 -> 3
 
-System-version promotions:
-- ability catalog: 0.6.0 -> 0.7.0;
-- status engine: 0.3.0 -> 0.4.0;
-- combat turns: 0.5.0 -> 0.6.0.
+System versions:
+- ability catalog: 0.7.0 -> 0.8.0;
+- ability engine: 0.5.0 -> 0.6.0;
+- combat geometry: new -> 0.1.0;
+- combat attention: 0.1.0 -> 0.2.0.
 
 ### Why Game State remains 20
 
-Packet 4 introduces no new required durable field.
+There is no mutable or required persisted geometry field.
 
-Generic statuses already persist:
-- IDs;
-- flags;
-- applied/expiry world seconds;
-- duration/remaining seconds;
-- stack semantics;
-- modifiers.
-
-The combat timeline already persists actor readiness.
-
-Thunder Cage therefore composes existing serialized authorities rather than creating a new one.
+The existing active battle already persists combatant identity/type/side and array order. Packet 5 derives formation from side/order, and current-schema cloning reproduces the same positions and ring recipients.
 
 No supported-save migration is added.
 
-### Why Data advances to 71
+A later mutable positioning model must revisit this decision.
 
-The existing canonical Thunder Cage authored definition gains:
-- structured lightning damage resolution;
-- structured resistible control resolution;
-- canonical status definition;
+### Why Data advances to 72
+
+The canonical Tempest Ring definition gains:
+- target geometry;
+- wind resolution metadata;
 - explicit recovery metadata.
 
-No new ability/capability record is added.
+No new ability/capability/content record is added.
 
 ## Existing authorities preserved
 
-- `abilities.js` owns authored ability/effect contracts.
-- `capabilities.js` owns learned capability requirements.
-- `abilityEngine.js` owns activation, resource costs, cooldowns, status application, and ability-result sequencing.
-- `statusEngine.js` owns generic status records and shared hard-disable flag interpretation.
-- `combatResolutionEngine.js` owns damage, hit, magic-defense, magic-evasion, and elemental-resistance formulas.
-- `combatTurnEngine.js` owns combat readiness/action history and consumes status disable facts.
-- `combatLoadoutEngine.js` owns timed equipment-transition legality and consumes shared disable facts.
+- abilities.js owns authored ability/effect/target contracts.
+- capabilities.js owns learning/use requirements.
+- abilityEngine.js owns activation, costs, cooldown, recovery, and effect sequencing.
+- combatGeometryEngine.js owns derived encounter geometry projection/query.
+- combatResolutionEngine.js owns hit/damage/defense/element formulas.
+- combatAttentionEngine.js owns hostile attention and consumes per-recipient effect evidence.
+- combatTurnEngine.js owns readiness/action history.
+- statusEngine.js owns generic status/hard-disable interpretation.
+- combatLoadoutEngine.js owns equipment-transition legality.
 - active battle remains encounter authority.
 - canonical fictional world time remains the only simulation/combat clock.
 
@@ -335,64 +343,83 @@ No new direct timed-task owner was introduced.
 
 ## Explicitly deferred / still nonexistent
 
-Packet 4 does **not** make the following real:
-1. Tempest Ring area/ring geometry;
-2. Umbral Well persistent field/zone behavior;
-3. area-of-effect Thunder Cage;
-4. generic ring/cone/line/chain/zone targeting;
-5. general crowd-control categories, diminishing returns, immunity tiers, break-on-damage, or control resistance families;
-6. player/companion hard-disable action-policy expansion beyond existing consumers;
-7. aura/stance/channel/reaction action families;
-8. LOS/reachability/pursuit/search/disengagement;
-9. weapon resonance or generic imbuement;
-10. universal passive block/parry/guard/counter/interruption;
-11. broad adept Elemental Form migration;
-12. broad martial/Veilscript migration;
-13. new abilities or mechanics-census filler.
+Packet 5 does not make the following real:
+1. mutable combat coordinates;
+2. player-controlled combat movement;
+3. knockback/pull/reposition actions;
+4. weapon minimum/maximum range;
+5. LOS / line-of-fire / cover;
+6. reachability / pursuit / search / disengagement;
+7. line geometry;
+8. cone geometry;
+9. arc geometry;
+10. chain propagation;
+11. ground/location targeting;
+12. generic radius/zone targeting outside selected authored contracts;
+13. Umbral Well persistent field behavior;
+14. aura/stance/channel/reaction action families;
+15. broad adept Elemental Form migration;
+16. broad martial/Veilscript migration;
+17. new abilities or mechanics-census filler.
 
-Do not infer those systems from Thunder Cage's bounded control implementation.
+Do not infer those systems from Tempest Ring's derived ring selection.
 
 ## Stale/noncanonical combat surfaces remain non-authoritative
 
 Do not build future advanced combat on:
-- `battle.targetId`;
-- `battle.actionDelay`;
-- `battle.recasts`;
-- `battle.casting`;
-- root `js/ui.js` timer combat;
-- root `js/encounter.js`;
-- root `data/weaponskills.js`;
+- battle.targetId;
+- battle.actionDelay;
+- battle.recasts;
+- battle.casting;
+- root js/ui.js timer combat;
+- root js/encounter.js;
+- root data/weaponskills.js;
 - legacy FFXI job/ability/affinity terminology.
 
-Exploration spawn detection `aggroEngine` remains separate from active-battle Enmity/Aggro.
+Exploration spawn detection aggroEngine remains separate from active-battle Enmity/Aggro.
 
 ## Next advanced-combat decision boundary
 
-**No Packet 5 is selected.**
+No Packet 6 is selected.
 
-A future explicit advanced-combat continuation must select exactly one bounded family.
+The strongest semantic continuation if advanced combat remains the priority is Umbral Well Field Foundation.
 
-Current strongest candidates:
+Reason:
+- Well is still mechanically dishonest as generic single-target damage;
+- the permanent naming law says a Well should linger;
+- Packet 5 proves radial selection, but a persistent field is a distinct action family and must not be smuggled into ring geometry.
 
-1. **Tempest Ring Geometry Foundation** — introduce the smallest honest multi-target/ring targeting contract and prove it on one existing ability without opening all geometry/action families.
-2. **Umbral Well Field Foundation** — one persistent combat-field semantic using canonical world time, only if field ownership/lifecycle is selected before implementation.
-3. **Bounded martial resolution migration** — choose one coherent existing technique tranche whose names fit current single-target mechanics.
-4. **Engagement geometry / LOS / pursuit / disengagement** — larger architecture packet; do not combine with spell geometry automatically.
-5. **Weapon resonance / imbuement** — compose character affinity/equipment with existing resolution without hard-coding weapon families to elements.
-6. **Passive defense/reaction semantics** — only by explicit selection.
+A bounded Umbral Well packet would first need explicit decisions for:
+- field owner and state location;
+- center/recipient semantics;
+- lifetime;
+- pulse/continuous behavior;
+- world-time reconciliation;
+- stacking/replacement;
+- source defeat/disable behavior;
+- save/load persistence;
+- Game State version impact.
+
+It is not selected or implemented by Packet 5.
+
+Other separately bounded candidates:
+- one coherent martial-technique resolution migration tranche;
+- engagement geometry / LOS / pursuit / disengagement;
+- weapon resonance / imbuement;
+- passive defense/reaction semantics;
+- another geometry family only when a canonical ability genuinely requires it.
 
 Do not combine these automatically.
 
-The 41/100 ability count remains progression evidence, not permission to add duplicate actions.
+The 41/100 ability count remains progression evidence, not permission to add duplicates.
 
 ## Preserved interrupted/resumable queues
 
-Packet 4 does not cancel earlier queues:
-
-- **Occupational Tool Conversion — preserved/queued:** strongest prepared `0.9.400 Economy / Production Depth` candidate. Authority: `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
-- **World edge — paused/resumable:** Waymeet Inner Marches / outer crossroads first, then Coppergrass extensions, then Drowned Vaults.
-- **Locality enrichment — deferred/resumable:** ambient/risk events, wandering/seasonal merchants, directions/help dialogue, richer contextual dialogue, shop category/browse depth, learned-locality graphical presentation.
-- **Ecology:** five-part flora/fauna diversity repair sequence remains COMPLETE.
+Packet 5 does not cancel earlier queues:
+- Occupational Tool Conversion remains the strongest prepared 0.9.400 Economy / Production Depth candidate. Authority: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md.
+- World edge remains paused/resumable: Waymeet Inner Marches / outer crossroads first, then Coppergrass extensions, then Drowned Vaults.
+- Locality enrichment remains deferred/resumable: ambient/risk events, wandering/seasonal merchants, directions/help dialogue, richer contextual dialogue, shop category/browse depth, learned-locality graphical presentation.
+- Ecology five-part flora/fauna diversity repair sequence remains COMPLETE.
 
 ## Standing governance rules
 
@@ -401,31 +428,32 @@ Preserve:
 - one domain authority per state family;
 - character-owned progression survives discipline switching;
 - active battle owns encounter state;
-- ability definitions own authored action contracts;
-- ability engine owns activation/cost/cooldown/recovery/status sequencing;
-- status engine owns generic status and shared hard-disable interpretation;
+- ability definitions own authored target/effect contracts;
+- ability engine owns activation/cost/cooldown/recovery/effect sequencing;
+- combat geometry owns derived spatial projection/query only;
+- derived formation must not be mistaken for mutable combat movement;
 - combat resolution owns hit/damage/resistance formulas;
-- combat turns own readiness/action history and consume status facts;
-- combat loadout owns equipment-transition legality and consumes status facts;
-- action history stores structured evidence;
+- combat attention owns Enmity/Focus/Aggro/Fixation and consumes action evidence;
+- combat turns own readiness/action history;
+- status engine owns generic status/hard-disable interpretation;
 - no cosmetic action-name semantics presented as implemented mechanics;
 - current-schema-only pre-alpha persistence;
 - Data and Game State advance independently;
 - no hard benchmark timing thresholds;
 - no census filler;
 - exact behavioral/data freeze before promotion/synchronization;
-- `docs/THREAD_HANDOFF.md` is the final repository-file write for a closed packet.
+- docs/THREAD_HANDOFF.md is the final repository-file write for a closed packet.
 
-## Restart order after Packet 4
+## Restart order after Packet 5
 
-1. `AGENTS.md`
+1. AGENTS.md
 2. this handoff
-3. `PROJECT_PROFILE.yaml`
-4. `docs/EXECUTION_PIPELINE.md`
-5. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
-6. `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`
-7. `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`
-8. `docs/ROADMAP.md`
+3. PROJECT_PROFILE.yaml
+4. docs/EXECUTION_PIPELINE.md
+5. docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md
+6. docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md
+7. docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
+8. docs/ROADMAP.md
 9. inspect current runtime only for the freshly selected bounded domain
 10. select exactly one next advanced-combat packet before implementation
 
@@ -433,13 +461,13 @@ Do not redo the closed broad combat-adjacency audit unless repository evidence m
 
 ## Final validation contract
 
-This handoff is the intended final repository-file mutation for 0.9.300 Packet 4.
+This handoff is the intended final repository-file mutation for 0.9.300 Packet 5.
 
 After this write:
-- perform **no repository-file mutations** unless exact-head validation exposes a real failure;
-- validate the exact resulting `main` SHA with hosted Check;
-- confirm Repository Audit, **875/875 tests**, Census, Benchmark 3, and Benchmark Sample;
+- perform no repository-file mutations unless exact-head validation exposes a real failure;
+- validate the exact resulting main SHA with hosted Check;
+- confirm Repository Audit, 879/879 tests, Census, Benchmark 3, and Benchmark Sample;
 - confirm Pages succeeds on the same exact SHA;
-- confirm `main` remains on that exact SHA after validation.
+- confirm main remains on that exact SHA after validation.
 
 If exact-head validation exposes a stale assertion or synchronization defect, repair it, then rewrite this handoff last again before the final validation pass.
