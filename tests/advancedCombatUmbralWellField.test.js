@@ -224,6 +224,7 @@ test('current-schema field validation rejects corrupt durable records and battle
     const state = createUmbralState({ enemyCount: 2, rng: () => 0 });
     resolveUmbralWell(state);
     assert.deepEqual(validateBattleFieldState(state.activeBattle), []);
+    state.activeBattle.rng = null;
 
     const missingSnapshot = structuredClone(state.activeBattle);
     delete missingSnapshot.fields.records[0].sourceSnapshot;
