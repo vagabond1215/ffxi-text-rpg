@@ -170,7 +170,7 @@ Census movement:
 
 The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
 
-**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is the next bounded in-track candidate, but its anchor is not preselected and it is not auto-started.
+**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is now **SELECTED / PLANNED, NOT STARTED** as a Brasshaven / Redstone combat-training bridge. Its permanent plan is `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`; the immediate next bounded runtime unit is Packet B1 — Unified Combat Resolution Contract.
 
 ## Macro-world topology
 
@@ -219,6 +219,30 @@ Planning intent established at Data 55 and updated after the Data 57 surface pas
 - avoid subdividing wilderness for its own sake; after the Central Continent reaches a coherent skeleton, prefer outward expansion toward Veyra, Miri, Korren, and Pelagic realms.
 
 The detailed corridor budget and completion doctrine live in `docs/WORLD_MACRO_TOPOLOGY.md`.
+
+## Advanced combat design selection
+
+Permanent authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+
+Implementation plan:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+The current 41-ability catalog is not treated as a simple authoring shortage. The audit found foundational execution gaps: fixed basic-attack recovery, no first-class player ranged action, tag-only elements, incomplete accuracy/defense/resistance use for canonical abilities, no weapon-kata configuration, no combat loadout transition authority, and no party enmity/focus model.
+
+Therefore the next work is contract-first:
+1. **B1 Unified Combat Resolution Contract** — selected immediate implementation unit;
+2. B2 enemy attention (Enmity -> Focus -> Aggro -> Fixation);
+3. B3 timed combat loadout transitions and armor-pressure locking;
+4. B4 weapon-driven cadence, first-class ranged attack, and minimal kata proof;
+5. B5 playable Brasshaven/Redstone Slice B proof;
+6. then close 0.9.200 and open 0.9.300 for breadth across weapon families, affinities, auras, stances, zones, channels, reactions, and meaningful ability expansion.
+
+Interrupted queues remain preserved rather than replaced:
+- Occupational Tool Conversion remains the strongest prepared 0.9.400 economy packet;
+- Waymeet Inner Marches remains the first ranked world-edge candidate;
+- richer locality ambient/dialogue/shop-browse work remains deferred after the completed locality foundation;
+- the five-part ecology repair sequence remains complete and should not be restarted automatically.
 
 ## High-value system/content gaps
 
