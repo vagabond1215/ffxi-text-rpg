@@ -1,12 +1,13 @@
 import { COMBAT_SIDES } from './battleEngine.js';
 import { validateBattleAttentionState } from './combatAttentionEngine.js';
+import { validateBattleFieldState } from './combatFieldEngine.js';
 import { validatePersistedCombatLoadoutTransition } from './combatLoadoutEngine.js';
 import { validatePersistedBattleDerivedCaches } from './battleDerivedCachePersistence.js';
 import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTurnEngine.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
 import { validateBattleWeaponKataState } from './weaponKataEngine.js';
 
-export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 4;
+export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 5;
 const BATTLE_PHASES = Object.freeze(['active', 'victory', 'defeat']);
 const COMBATANT_TYPES = Object.freeze(['player', 'companion', 'enemy']);
 
@@ -21,6 +22,7 @@ export function validatePersistedActiveBattle(battle) {
         return [...issues, ...prefix(validateCombatContract(battle), 'activeBattle.')];
     }
     issues.push(...prefix(validateBattleAttentionState(battle), 'activeBattle.'));
+    issues.push(...prefix(validateBattleFieldState(battle), 'activeBattle.'));
     issues.push(...prefix(validatePersistedCombatLoadoutTransition(battle), 'activeBattle.'));
     issues.push(...prefix(validateBattleWeaponKataState(battle), 'activeBattle.'));
     if (!Array.isArray(battle.log)) issues.push('activeBattle.log must be an array.');
