@@ -210,8 +210,9 @@ function createTempestState(options = {}) {
         return enemy;
     });
 
+    state.combatSequence = 1;
     state.activeBattle = createBattleState({
-        id: 'battle-tempest-ring-proof',
+        id: 'battle-000001',
         player: state.player,
         enemies,
         rng: options.rng ?? null,
