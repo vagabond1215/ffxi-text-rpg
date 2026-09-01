@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
-Codename:      Enemy Attention Foundation
+Codename:      Combat Loadout Transitions
 ```
 
 ## Product version format
@@ -1268,7 +1268,7 @@ Data advances because existing canonical ability records gain authored resolutio
 
 Game State remains 15: combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence uses the existing action-data envelope rather than a new required state family.
 
-B2 Enemy Attention is complete at Game State 16; B3 Combat Loadout Transition Foundation is next and not started.
+B2 Enemy Attention and B3 Combat Loadout Transition Foundation are complete through Game State 17 / Data 65; B4 Weapon Cadence, Ranged Action, and Minimal Kata is next and not started.
 
 
 ## `0.9.200.3` — Combat 2.0 Packet B2: Enemy Attention Foundation
@@ -1290,7 +1290,22 @@ Data remains 64 because B2 adds no canonical authored ability, item, NPC, enemy,
 
 No supported-save migration is added. The project remains pre-alpha current-schema-only, so Game State 15 saves are not silently coerced into Game State 16.
 
-B3 Combat Loadout Transition Foundation is next and not started.
+B3 Combat Loadout Transition Foundation is complete; B4 Weapon Cadence, Ranged Action, and Minimal Kata is next and not started.
+
+## `0.9.200.4` — Combat 2.0 Packet B3: Combat Loadout Transitions
+
+```text
+Product       0.9.200.3 -> 0.9.200.4
+Package       0.9.200   -> 0.9.200
+Account Save  5         -> 5
+Game State    16        -> 17
+Data          64        -> 65
+Benchmark     3         -> 3
+```
+
+Game State 17 persists active loadout-transition ownership and timed-task linkage because pending equipment changes affect resumable combat outcomes. Data 65 adds representative authored directional equipment-handling metadata. No supported-save migration is added.
+
+Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 / run `33462594046` with 844/844 tests and the full gate; Pages #2038 / run `33462592986` passed. Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
 
 ## Phase progression
 
@@ -1301,7 +1316,7 @@ B3 Combat Loadout Transition Foundation is next and not started.
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B2 COMPLETE; B3 QUEUED / NOT STARTED
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B3 COMPLETE; B4 QUEUED / NOT STARTED
 0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED

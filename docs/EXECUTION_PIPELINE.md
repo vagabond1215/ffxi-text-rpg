@@ -5,21 +5,21 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
-Codename:      Enemy Attention Foundation
+Codename:      Combat Loadout Transitions
 ```
 
 ## Current bounded-unit state
 
-**Combat 2.0 Packet B2 — Enemy Attention Foundation** is the latest bounded unit on `main`.
+**Combat 2.0 Packet B3 — Combat Loadout Transition Foundation** is the latest bounded unit on `main`.
 
 - permanent record `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
-- Product 0.9.200.3 / Package 0.9.200 / Game State 16 / Data 64 / Account Save 5 / Benchmark 3;
+- Product 0.9.200.4 / Package 0.9.200 / Game State 17 / Data 65 / Account Save 5 / Benchmark 3;
 - behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
 - Check #1860 / run `33457301272`: Repository Audit, **832/832 tests**, Census, Benchmark 3, and Benchmark Sample green;
 - Pages #1990 / run `33457300712`: green.
@@ -150,17 +150,21 @@ B2 implements:
 
 Focus is not literal attack probability. There is no universal minimum target probability.
 
-### Next bounded unit — Packet B3
+### Latest completed unit — Packet B3
 
-**Combat Loadout Transition Foundation — QUEUED / ENTRY AUDIT COMPLETE.**
+**Combat Loadout Transition Foundation — COMPLETE.**
 
-Fresh authority: `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
+Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
 
-The audit identifies one live B3 defect: direct equipment commands can mutate root equipment during active combat while the encounter combatant remains a snapshot. B3 must close that split through a canonical timed loadout owner. It also records exploration detection/combat Aggro separation, stale battle placeholders, legacy timer-combat boundaries, and genuinely nonexistent LOS/pursuit/kata systems so they are not accidentally reused.
+Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 / run `33462594046` with Repository Audit, **844/844 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #2038 / run `33462592986` passed.
 
-B3 should add timed directional stow/draw/ready transitions, distinguish prepared quick weapon-set swaps from full loadout changes, preserve canonical ability cooldowns, and block armor swaps under meaningful Aggro/Focus/Fixation pressure. Pursuit/LOS remains conservative until a real engagement model exists.
+B3 adds `combatLoadoutEngine.js` as the seventh direct timed-task owner, persists `activeBattle.loadoutTransition`, closes direct active-combat equipment mutation, preserves canonical cooldowns, synchronizes root/battle equipment on completion, and enforces B2 Aggro/Focus/Fixation armor pressure. Game State advances 16 -> 17; Data advances 64 -> 65 for authored handling metadata.
 
-Later B4 weapon cadence/ranged/minimal kata and B5 playable Brasshaven/Redstone proof remain separately bounded.
+### Next bounded unit — Packet B4
+
+**Weapon Cadence, Ranged Action, and Minimal Kata — QUEUED / NOT STARTED.**
+
+Do not silently absorb deferred LOS/pursuit, defense-reaction, named-loadout-preset, or recovered-technique migration decisions. B5 remains separately bounded.
 
 
 ## Preserved interrupted/resumable queues

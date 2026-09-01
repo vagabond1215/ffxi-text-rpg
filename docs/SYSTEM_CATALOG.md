@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
-Codename:      Enemy Attention Foundation
+Codename:      Combat Loadout Transitions
 ```
 
 ## Data 57 regional authority
@@ -215,8 +215,8 @@ spellSchools / capabilities / abilities / companions
 | Ability/spell engine | playable / B1 resolution subset implemented | Learned abilities, activation, costs, cooldowns, interruption, and explicit recovery work. Representative damage/status actions now use the shared combat-resolution contract; wider geometry/aura/zone/channel and catalog migration remain follow-on. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
-| Equipment/tool context | playable foundation | Gear/tools constrain and enhance real capability. Timed combat loadout transitions, directional stow/draw handling, canonical cooldown preservation, and hostile-pressure armor locks are planned. |
-| Combat 2.0 | playable foundation / B1-B2 complete | Deterministic readiness/action/resource resolution now includes `combatResolutionEngine` plus durable enemy attention through `combatAttentionEngine`: Enmity, Focus, nonlinear weighting, sticky Aggro, Fixation, and decay/floors. B3 loadouts, B4 cadence/ranged/kata, and B5 playable proof remain. |
+| Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
+| Combat 2.0 | playable foundation / B1-B3 complete | Unified resolution, durable hostile attention, and timed combat loadout transitions now share canonical battle/time/persistence authority. B4 cadence/ranged/minimal kata and B5 playable proof remain. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.200.3 / Data 64 / Game State 16.
+Phase 0.9 remains open at Product 0.9.200.4 / Data 65 / Game State 17.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -309,5 +309,7 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B2 — Enemy Attention Foundation is COMPLETE.** The active battle now owns durable hostile-specific attention state; `combatAttentionEngine` is stateless calculation/selection authority. Game State advances 15 -> 16; Data remains 64.
 
-**B3 — Combat Loadout Transition Foundation** is next, queued/not started. Later B4/B5 remain separate. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**B3 — Combat Loadout Transition Foundation is COMPLETE.** `combatLoadoutEngine` is the seventh current direct timed-task owner and `activeBattle.loadoutTransition` is required current-schema authority. Game State advances 16 -> 17; Data advances 64 -> 65 for authored equipment handling.
+
+**B4 — Weapon Cadence, Ranged Action, and Minimal Kata** is next, queued/not started. B5 remains separate. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 

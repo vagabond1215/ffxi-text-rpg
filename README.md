@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packets B1-B2 are complete.** The current canonical/runtime checkpoint is Data 64 / Product 0.9.200.3 / Game State 16. B2 adds durable enemy attention without adding authored content records.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packets B1-B3 are complete.** The current canonical/runtime checkpoint is Data 65 / Product 0.9.200.4 / Game State 17. B3 adds timed combat loadout transitions and representative authored equipment-handling data.
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
-Codename:      Enemy Attention Foundation
+Codename:      Combat Loadout Transitions
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 64 implementation census:
+Validated Data 65 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -105,7 +105,7 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 16 retains the Game State 15 locality-knowledge contract and additionally requires durable active-battle enemy-attention state: hostile-specific Enmity entries, sticky Aggro, Fixation, attention policy, and fictional-time decay anchors. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 17 retains the Game State 16 attention contract and additionally requires durable active-battle loadout transitions with timed-task ownership, operation/slot/item plan, timing/recovery boundaries, and root/battle equipment coherence. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
@@ -151,12 +151,9 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B2 — Enemy Attention Foundation is COMPLETE.** It establishes durable hostile-specific Enmity -> normalized Focus -> nonlinear selection weighting -> sticky Aggro -> Fixation/Priority on the existing active-battle authority. Focus is not literal attack probability, and target reassessment is event-driven rather than a per-tick reroll.
 
-**Next bounded Slice B unit: B3 — Combat Loadout Transition Foundation.** It is queued, not started.
+**Combat 2.0 Packet B3 — Combat Loadout Transition Foundation is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`. Active-combat equipment changes now use canonical fictional time, directional handling, atomic completion/cancellation, cooldown preservation, root/battle equipment coherence, and B2-driven armor-pressure legality.
 
-Later B3/B4/B5 sequencing remains:
-- timed loadout transitions and armor-pressure locking;
-- weapon-delay cadence, first-class ranged attack, minimal configurable kata;
-- playable Brasshaven/Redstone combat-training proof.
+**Next bounded Slice B unit: B4 — Weapon Cadence, Ranged Action, and Minimal Kata.** It is queued, not started. B5 remains the playable Brasshaven/Redstone combat-training proof.
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;
