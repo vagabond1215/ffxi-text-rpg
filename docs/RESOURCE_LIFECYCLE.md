@@ -87,6 +87,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 
 0.9.300 Packet 3 adds no direct timed-task owner and no persistence family. It changes canonical ability definitions only: novice elemental spells reuse existing ability activation tasks, combat action recovery, and `combatResolutionEngine`. Game State remains 20; Data 70 changes authored resolution/recovery metadata, not lifecycle ownership.
 
+0.9.300 Packet 4 adds no direct timed-task owner or control scheduler. Thunder Cage uses the existing ability activation task and generic persisted status expiry. `combatTurnEngine` defers an already-owned enemy readiness interrupt to the active hard-disable expiry; it does not create a separate cage timer/task. Game State remains 20; Data 71 changes authored Thunder Cage semantics and shared status/readiness behavior.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
