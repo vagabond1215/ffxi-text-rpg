@@ -311,4 +311,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is now ACTIVE and Slice A is complete; Slice B is the next in-track candidate but its anchor is unselected and it is not auto-started. World-edge, material-culture, richer locality/UI, and optional ecology queues remain independently selectable.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A is complete and Slice B is selected/planned as the Brasshaven / Redstone combat-training bridge. Packet B1 — Unified Combat Resolution Contract — is the immediate next bounded implementation and must not silently launch later B packets. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
