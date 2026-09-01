@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Account Save:  5
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
-Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Codename:      Brasshaven Redstone Combat Training
 ```
 
 ## Completed foundation and major tranches
@@ -253,7 +253,9 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is COMPLETE at Product 0.9.200.5 / Data 66 / Game State 18.** Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 with 852/852 tests and the full gate; Pages #2055 passed.
 
-**Next bounded unit: B5 — Playable Brasshaven / Redstone Combat-Training Proof, queued/not started.**
+**Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
+
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is queued/not started and requires a fresh bounded selection.**
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;

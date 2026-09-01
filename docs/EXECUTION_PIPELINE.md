@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Account Save:  5
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
-Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Codename:      Brasshaven Redstone Combat Training
 ```
 
 ## Current bounded-unit state
 
-**Combat 2.0 Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata** is the latest bounded unit on `main`.
+**Combat 2.0 Packet B5 — Brasshaven / Redstone Combat-Training Proof** is the latest bounded unit on `main`; `0.9.200 Adventure Vertical Slices` is COMPLETE.
 
-- permanent record `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
-- Product 0.9.200.5 / Package 0.9.200 / Game State 18 / Data 66 / Account Save 5 / Benchmark 3;
-- behavioral implementation freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19`;
-- Check #1925 / run `33470044213`: Repository Audit, **852/852 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2055 / run `33470043871`: green.
+- permanent record `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
+- Product 0.9.200.6 / Package 0.9.200 / Game State 18 / Data 67 / Account Save 5 / Benchmark 3;
+- behavioral implementation freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05`;
+- Check #1939 / run `33472621389`: Repository Audit, **855/855 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2069 / run `33472620984`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 66 metrics
+## Data 67 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-Adventure Vertical Slice B remains the active formal track.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is the next roadmap track and remains QUEUED / NOT STARTED.
 
 ### Latest completed unit — Packet B2
 
@@ -172,11 +172,19 @@ B4 centralizes weapon-delay conversion, routes player and companion basic attack
 
 Game State advances 17 -> 18 because kata configuration/cursor state changes resumable combat outcomes. Data advances 65 -> 66 because B4 adds authored sling/ammunition and kata definitions.
 
-### Next bounded unit — Packet B5
+### Latest completed unit — Packet B5
 
-**Playable Brasshaven / Redstone Combat-Training Proof — QUEUED / NOT STARTED.**
+**Playable Brasshaven / Redstone Combat-Training Proof — COMPLETE.**
 
-B5 should prove B1–B4 in one coherent playable training/combat loop. It must not silently expand into LOS/pursuit geometry, universal passive defense reactions, named prepared loadout presets, broad legacy-technique migration, or an unrelated new combat subsystem.
+Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
+
+Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 / run `33472621389` with Repository Audit, **855/855 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #2069 / run `33472620984` passed.
+
+B5 adds a stateless Varric training-service adapter delegating to capability progression, proves B1–B4 together in South Redstone, fixes partially consumed ammo persistence under Game State 18, and fixes same-POI contextual-action deduplication. Game State stays 18; Data advances 66 -> 67 for authored Varric/POI training metadata.
+
+### Next track
+
+**0.9.300 Advanced Combat / Training — QUEUED / NOT STARTED.** A future explicit continuation must select its first bounded packet; B5 does not auto-start it.
 
 ## Preserved interrupted/resumable queues
 

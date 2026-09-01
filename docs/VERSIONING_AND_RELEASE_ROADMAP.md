@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Account Save:  5
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
-Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Codename:      Brasshaven Redstone Combat Training
 ```
 
 ## Product version format
@@ -25,8 +25,8 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 16 | serialized character/world runtime contract |
-| Data | 64 | canonical authored-data, including representative ability resolution/recovery metadata plus geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Game State | 18 | serialized character/world runtime contract, including active-battle attention/loadout/kata state and stack-valid equipped ammunition |
+| Data | 67 | canonical authored-data, including combat training service metadata plus ability/equipment/geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1321,6 +1321,22 @@ Benchmark     3         -> 3
 Game State 18 persists player kata selections and the encounter-local sequence cursor because those values change the next resumable combat action. Active-battle persistence component version advances 3 -> 4. Data 66 adds authored Braided Sling, Rounded Sling Stones, and representative dagger/sword kata definitions. No supported-save migration is added.
 
 Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 / run `33470044213` with 852/852 tests and the full gate; Pages #2055 / run `33470043871` passed. Permanent record: `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
+## `0.9.200.6` — Combat 2.0 Packet B5: Brasshaven / Redstone Combat-Training Proof
+
+```text
+Product       0.9.200.5 -> 0.9.200.6
+Package       0.9.200   -> 0.9.200
+Account Save  5         -> 5
+Game State    18        -> 18
+Data          66        -> 67
+Benchmark     3         -> 3
+```
+
+Game State stays 18 because B5 adds no durable state family. Technique instruction reuses capability progression and semantic events; the partial-ammo validator repair makes the existing Game State 18 contract accept the stackable ammo shape introduced by B4. Data 67 records Varric/POI combat-training service metadata. No supported-save migration is added.
+
+Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 / run `33472621389` with 855/855 tests and the full gate; Pages #2069 / run `33472620984` passed. Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
+
+`0.9.200 Adventure Vertical Slices` closes at this checkpoint. `0.9.300 Advanced Combat / Training` is queued/not started.
 ## Phase progression
 
 ```text
@@ -1330,8 +1346,8 @@ Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B4 COMPLETE; B5 QUEUED / NOT STARTED
-0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
+0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
+0.9.300 Advanced combat/training              QUEUED / NOT STARTED; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
