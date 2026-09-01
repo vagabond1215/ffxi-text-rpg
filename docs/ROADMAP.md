@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 ```
 
 ## Completed foundation and major tranches
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are COMPLETE.** Packet 4 makes Thunder Cage a genuine control spell at Product 0.9.300.4 / Data 71 / Game State 20: lightning damage and containment resolve independently, `cannotAct` suppresses enemy actions, and readiness resumes at status expiry through the existing fictional-time interrupt system. Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Check #2006 with 875/875 tests and the full gate; Pages #2136 passed. No subsequent 0.9.300 packet is selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are COMPLETE.** Packet 5 establishes the first honest radial target geometry at Product 0.9.300.5 / Data 72 / Game State 20: Tempest Ring selects living enemies within a target-centered radius using deterministic encounter-relative formation, caps recipients at four, resolves each enemy independently, and applies attention only to enemies actually struck. Behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` passed Check #2034 with 879/879 tests and the full gate; Pages #2164 passed. No subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
