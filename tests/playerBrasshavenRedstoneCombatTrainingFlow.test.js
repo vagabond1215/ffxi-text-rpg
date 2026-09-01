@@ -130,7 +130,7 @@ test('B5 Brasshaven Redstone combat-training proof composes B1 through B4 withou
     assert.equal(emberAdvance.abilityResult?.code, 'ability.resolved');
     assert.equal(emberAdvance.abilityResult.data.effects[0].resolution.element.element, 'fire');
 
-    // B3 weapon-set transition is legal under pressure and resets the B4 sequence to the axe family (unsupported kata family -> null).
+    // B3 weapon-set transition is legal under pressure; later 0.9.300 kata breadth rebinds the reset sequence to the now-supported axe family.
     setCombatantReadyAt(state, enemy.id, state.worldTime.totalSeconds + 100000);
     advanceCombatSimulation(state, 2);
     const weaponSwap = startCombatEquipTransition(state, 'bronze-axe');
@@ -138,7 +138,8 @@ test('B5 Brasshaven Redstone combat-training proof composes B1 through B4 withou
     const weaponAdvance = advanceCombatSimulation(state, weaponSwap.data.transition.durationSeconds);
     assert.equal(weaponAdvance.loadoutResult?.ok, true, weaponAdvance.message);
     assert.equal(state.player.equipment.mainHand.id, 'bronze-axe');
-    assert.equal(state.activeBattle.weaponKata.byActorId[player.id].family, null);
+    assert.equal(state.activeBattle.weaponKata.byActorId[player.id].family, 'axe');
+    assert.equal(state.activeBattle.weaponKata.byActorId[player.id].nextSlot, 1);
 
     const weaponRecovery = Math.max(0, getCombatantReadyAt(state, player.id) - state.worldTime.totalSeconds);
     if (weaponRecovery) advanceCombatSimulation(state, weaponRecovery);
