@@ -568,6 +568,39 @@ Sable deliberately has no fixed Waylodge NPC schedule because fixed civic availa
 
 This slice adds no new Game State family, direct timed-task owner, simulation clock, route graph, or supported-save migration.
 
+# Combat Packet B1 implementation
+
+Product 0.9.200.2 / Data 64 introduces `combatResolutionEngine.js` as a stateless resolution authority beneath the existing battle/ability systems.
+
+```text
+existing combatant profiles + battle RNG
+               |
+               v
+      combatResolutionEngine
+       /       |        \
+ physical    magic     status
+       \       |        /
+               v
+ existing battle mutation/action record
+```
+
+The resolver owns formulas/structured resolution only. It does not own:
+- combatants;
+- active battle lifecycle;
+- fictional time;
+- ability tasks;
+- statuses;
+- cooldown storage;
+- persistence.
+
+Basic attack and representative canonical abilities call it, then existing battle/ability owners apply HP/status consequences and record structured evidence.
+
+B1 keeps `activeBattle.contract.version = 2` and ability runtime version 1. No new required persisted field exists; resolution details are nested in the existing action `data` envelope. Therefore Game State remains 15.
+
+Timed canonical activation is treated as an action commitment: basic attack and transitional legacy combat actions cannot overlap it.
+
+Behavioral freeze: `20b7351a61f56203975e101ef04fd7311e110d9b`, Check #1860 / run `33457301272`, **832/832 tests**.
+
 # Advanced combat authority direction
 
 Permanent design authority:
@@ -733,4 +766,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 63; the current runtime/persistence baseline is Product 0.9.200.1 / Game State 15. Adventure Vertical Slice A is complete; `0.9.200 Adventure Vertical Slices` remains active with Slice B selected/planned as the Brasshaven / Redstone combat-training bridge. The immediate next runtime boundary is Packet B1 — Unified Combat Resolution Contract. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 64; the current runtime/persistence baseline is Product 0.9.200.2 / Game State 15. Adventure Vertical Slice A and Combat Packet B1 are complete; `0.9.200 Adventure Vertical Slices` remains active with B2 Enemy Attention next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
