@@ -1,4 +1,4 @@
-import { rollPercent } from './rng.js';
+import { resolveCombatDamage } from './combatResolutionEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 
 export const COMBAT_SIDES = Object.freeze({ ALLY: 'ally', ENEMY: 'enemy' });
@@ -59,6 +59,7 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
             hit: false,
             damage: 0,
             defeatedTarget: false,
+            resolution: null,
         };
     }
     if (attacker.battle.defeated || defender.battle.defeated) {
@@ -70,6 +71,7 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
             hit: false,
             damage: 0,
             defeatedTarget: Boolean(defender.battle.defeated),
+            resolution: null,
         };
     }
     if (getCombatantSide(attacker) === getCombatantSide(defender)) {
@@ -81,13 +83,25 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
             hit: false,
             damage: 0,
             defeatedTarget: false,
+            resolution: null,
         };
     }
 
-    const rng = options.rng ?? battle.rng ?? Math.random;
-    const hitChance = calculateHitChance(attacker, defender);
-    const roll = rollPercent(rng);
-    if (roll > hitChance) {
+    const resolution = resolveCombatDamage(attacker, defender, {
+        stat: 'str',
+        base: Math.max(1, Number(attacker.combat?.level) || 1),
+        coefficient: 0.5,
+        resolution: {
+            delivery: 'melee',
+            channel: 'physical',
+            damageType: 'physical',
+            accuracyModel: 'physical',
+            resistanceModel: 'physicalDefense',
+            criticalEligible: false,
+        },
+    }, { rng: options.rng ?? battle.rng ?? Math.random });
+
+    if (!resolution.hit) {
         appendBattleLog(battle, `${attacker.identity.name} misses ${defender.identity.name}.`);
         return {
             ok: true,
@@ -96,13 +110,14 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
             defenderId,
             hit: false,
             damage: 0,
-            hitChance,
-            roll,
+            hitChance: resolution.accuracy.chance,
+            roll: resolution.accuracy.roll,
             defeatedTarget: false,
+            resolution,
         };
     }
 
-    const damage = calculatePhysicalDamage(attacker, defender, { rng });
+    const damage = resolution.damage;
     const hpBefore = defender.resources.hp;
     defender.resources.hp = Math.max(0, defender.resources.hp - damage);
     attacker.resources.tp = Math.min(attacker.combat.resources.maxTp, attacker.resources.tp + 100);
@@ -127,9 +142,10 @@ export function resolveBasicAttack(battle, attackerId, defenderId, options = {})
         damage,
         hpBefore,
         hpAfter: defender.resources.hp,
-        hitChance,
-        roll,
+        hitChance: resolution.accuracy.chance,
+        roll: resolution.accuracy.roll,
         defeatedTarget,
+        resolution,
     };
 }
 
