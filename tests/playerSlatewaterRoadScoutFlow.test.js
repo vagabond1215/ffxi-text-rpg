@@ -183,7 +183,7 @@ test('Slatewater Road Scout records are canonical Pack-v2 content and move the m
     assert.equal(counts.supplemental.ownedPackRecords, 1325);
 });
 
-test('resolved Slatewater trust and recruited scout persist through the unchanged Game State 15 families', () => {
+test('resolved Slatewater trust and recruited scout persist through the current Game State 16 families', () => {
     installStorage();
     assert.equal(createAccountWithPassword('Slatewater Scout Save', 'pwd', { persistentLogin: true }).ok, true);
 
@@ -222,7 +222,7 @@ test('resolved Slatewater trust and recruited scout persist through the unchange
     assert.equal(saveGame(state), true);
     const loaded = loadCharacter('Road Scout Saver');
     assert.ok(loaded);
-    assert.equal(loaded.version, 15);
+    assert.equal(loaded.version, 16);
     assert.equal(getCommitmentRecord(loaded, FIRST_COMMITMENT_ID).status, 'resolved');
     assert.equal(getCommitmentRecord(loaded, SECOND_COMMITMENT_ID).status, 'resolved');
     assert.ok(getRecruitedCompanion(loaded, SCOUT_COMPANION_ID));

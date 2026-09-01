@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.9.200.2';
+export const PRODUCT_VERSION = '0.9.200.3';
 export const PACKAGE_VERSION = '0.9.200';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
-    gameState: 15,
+    gameState: 16,
     data: 64,
     benchmark: 3,
-    codename: 'Unified Combat Resolution',
+    codename: 'Enemy Attention Foundation',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.200.2',
+    versionManifest: '0.9.200.3',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -146,12 +146,12 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.47.0',
+    validation: '0.48.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.1.0',
     playerStatusPersistence: '0.1.0',
-    activeBattlePersistence: '0.2.0',
+    activeBattlePersistence: '0.3.0',
     battleDerivedCachePersistence: '0.1.0',
     playerPersistenceHarness: '0.1.0',
     playerIdentityPersistence: '0.2.0',
@@ -175,10 +175,11 @@ export const SYSTEM_VERSIONS = Object.freeze({
     enemyEntity: '0.4.0',
     statEngine: '0.5.0',
     statusEngine: '0.3.0',
-    battleEngine: '0.9.0',
-    combatTurns: '0.3.2',
+    battleEngine: '0.10.0',
+    combatTurns: '0.4.0',
     combatSimulation: '0.1.0',
     combatResolution: '0.1.0',
+    combatAttention: '0.1.0',
     combatActions: '0.9.0',
     battleRewards: '0.6.0',
     progression: '0.6.0',

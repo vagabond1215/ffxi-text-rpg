@@ -4,7 +4,7 @@ import { validatePersistedBattleDerivedCaches } from './battleDerivedCachePersis
 import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTurnEngine.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
 
-export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 1;
+export const ACTIVE_BATTLE_PERSISTENCE_VERSION = 2;
 const BATTLE_PHASES = Object.freeze(['active', 'victory', 'defeat']);
 const COMBATANT_TYPES = Object.freeze(['player', 'companion', 'enemy']);
 
