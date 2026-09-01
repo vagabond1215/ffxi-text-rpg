@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.2
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Character Affinity & Kata Substitution
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -53,7 +53,7 @@ The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540
 Current mode remains strict pre-alpha current-schema-only.
 
 - Account Save remains 5 unless account/session shape changes.
-- Game State is 16; change it again only when another genuinely new durable player/world fact changes the serialized contract.
+- Game State is 20; change it again only when another genuinely new durable player/world fact changes the serialized contract.
 - Data changes do not automatically imply Game State changes.
 - Required persisted authority validates before runtime normalization/revival.
 - Active owner/task links remain coherent until owner reconciliation.
@@ -152,6 +152,21 @@ PASS only when:
 - Game State/Data/Product decisions are explicit.
 
 **Gate result: PASS.** Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`; Check #1947 / run `33474558525`; **860/860 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2077 / run `33474558121` PASS. Game State advances 18 -> 19 and Data 67 -> 68.
+
+### 0.9.300 Packet 2 gate — Character Affinity & Kata Substitution
+
+PASS only when:
+- affinity is one versioned character-owned authority over canonical element IDs;
+- active discipline, known spells, equipment, and battle-local state do not duplicate affinity ownership;
+- kata substitutions require both proficiency and earned affinity;
+- physical defaults remain valid and ineligible configured substitutions fall back safely;
+- at least two representative weapon-family substitutions use the existing kata and combat-resolution authorities;
+- target elemental resistance appears in structured action evidence;
+- affinity plus configured substitution survive current-schema save/load;
+- no new combat clock or timed-task owner is introduced;
+- Product/Game State/Data decisions are explicit.
+
+**Gate result: PASS.** Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`; Check #1956 / run `33477009897`; **867/867 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2086 / run `33477008886` PASS. Game State advances 19 -> 20 and Data 68 -> 69; kata configuration remains version 2 and battle kata state remains version 1.
 
 ## Content Pack v2 gate
 
