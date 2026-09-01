@@ -5,27 +5,28 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Codename:      Slatewater Road Scout
+Codename:      Unified Combat Resolution
 ```
 
 ## Current bounded-unit state
 
-**Adventure Vertical Slice A — Slatewater Road Scout** is the latest bounded unit on `main`.
+**Combat 2.0 Packet B1 — Unified Combat Resolution** is the latest bounded unit on `main`.
 
-- permanent record `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
-- Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63 / Account Save 5 / Benchmark 3;
-- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
-- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
+- permanent record `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
+- Product 0.9.200.2 / Package 0.9.200 / Game State 15 / Data 64 / Account Save 5 / Benchmark 3;
+- behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`: Repository Audit, **832/832 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #1990 / run `33457300712`: green.
 
-Slice A reuses Slatewater Waylodge + Slatewater Foothills. It adds one persistent NPC, two chained provenance-qualified field contracts, one recruitable companion, and Pack-v2 relationship/ownership metadata.
+B1 adds one shared combat-resolution engine and representative authored resolution/recovery metadata without adding an ability record, state family, clock, route, NPC, or task owner.
 
-Game State stays 15: commitments, relationships, party state, local knowledge, and backing-NPC projection already own every durable consequence.
+Game State stays 15 because the combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence lives inside existing flexible combat-action data.
 
 The previous Local Knowledge & Familiarity Foundation remains complete:
 - implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
@@ -34,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 63 metrics
+## Data 64 metrics
 
 ```text
 places/localities                       55
@@ -129,43 +130,26 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-Adventure Vertical Slice A is complete at Data 63 / Product 0.9.200.1.
+Adventure Vertical Slice B remains the active formal track.
 
-Adventure Vertical Slice B is now **SELECTED / PLANNED, NOT STARTED** as a **Brasshaven / Redstone combat-training bridge**.
+### Next bounded unit — Packet B2
 
-Design authority:
-- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+**Enemy Attention Foundation — QUEUED / NOT STARTED.**
 
-Implementation plan:
-- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+B1 is complete and frozen. B2 may extend the existing active-battle authority with:
+- absolute Enmity per hostile/credible actor;
+- normalized Focus;
+- nonlinear target-selection weighting;
+- sticky current Aggro;
+- explicit Fixation/Priority;
+- deterministic 3-actor proof including baseline antagonism and a high-enmity shield/stun action.
 
-### Immediate next bounded unit — Packet B1
+Focus must not be used directly as literal attack probability. Target reassessment must occur on meaningful triggers, not every tick. No universal minimum target probability is required.
 
-**Unified Combat Resolution Contract.**
+B2 must make an explicit Game State decision if new attention state affects resumable battle outcomes and therefore becomes required durable active-battle authority.
 
-B1 must extend the existing Combat 2.0/ability substrate rather than start a parallel combat engine.
+Later Slice B packets remain B3 loadout transitions, B4 weapon cadence/ranged/minimal kata, and B5 playable Brasshaven/Redstone proof. None is started by B1 completion.
 
-Required first-pass outcomes:
-- one structured physical/magical/hybrid resolution vocabulary;
-- explicit element metadata that actually participates in resistance resolution;
-- canonical accuracy/defense/resistance paths for representative abilities;
-- status accuracy/resistance rather than unconditional landing;
-- explicit action recovery distinct from startup/cast duration and cooldown;
-- representative migration of basic melee, Ridge Breaker, Rivet Guard, one direct elemental spell, and one status spell;
-- no high-volume ability authoring yet;
-- no kata/loadout/attention implementation until B1 is frozen.
-
-A `continue` from this handoff should start **B1 only**.
-
-### Subsequent selected Slice B packets
-
-After separate stable handoffs:
-1. B2 — Enemy Attention Foundation: Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro -> Fixation.
-2. B3 — timed weapon/full-loadout transitions; armor swap locked while meaningful hostile pressure remains.
-3. B4 — weapon-delay cadence, first-class ranged attack, minimal configurable kata.
-4. B5 — playable Brasshaven/Redstone combat-training vertical proof.
-
-After B5, deliberately close `0.9.200` and open `0.9.300 Advanced Combat / Training` for broad weapon/affinity/ability depth.
 
 ## Preserved interrupted/resumable queues
 
