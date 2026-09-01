@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.300.5
+Product:       0.9.300.6
 Package:       0.9.300
 Account Save:  5
-Game State:    20
-Data:          72
+Game State:    21
+Data:          73
 Benchmark:     3
-Codename:      Tempest Ring Geometry Foundation
+Codename:      Umbral Well Field Foundation
 ```
 
 ## Data 57 regional authority
