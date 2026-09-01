@@ -1,14 +1,14 @@
 # Combat 2.0 / Adventure Vertical Slice B Implementation Plan
 
-Status: **NEXT IMPLEMENTATION PLAN SELECTED / NOT STARTED.**
+Status: **ACTIVE PLAN / B1 COMPLETE / B2 NEXT AND NOT STARTED.**
 
 Current runtime remains:
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
 ```
 
@@ -51,7 +51,17 @@ Do not add dozens of abilities to raise the census until:
 
 ## Packet B1 — Unified combat resolution contract
 
-**This is the immediate next implementation unit.**
+**COMPLETE.**
+
+Permanent record:
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
+
+Behavioral implementation freeze:
+- `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`;
+- **832/832 tests** plus full hosted gate green.
+
+B1 promoted Product 0.9.200.1 -> 0.9.200.2 and Data 63 -> 64. Game State remains 15.
 
 Bounded goal:
 
@@ -144,7 +154,9 @@ Then run the full repository gate.
 
 ## Packet B2 — Enemy attention foundation
 
-After B1 is frozen, implement:
+**NEXT BOUNDED UNIT / QUEUED / NOT STARTED.**
+
+Implement:
 
 ```text
 absolute enmity
@@ -363,6 +375,6 @@ Do not reopen it automatically. Optional ecology follow-ons require a fresh boun
 
 Each B packet is a separate bounded implementation unit.
 
-A `continue` after this planning pass should start **B1 only**.
+A later explicit continuation after B1 closure should start **B2 only**.
 
 Do not automatically proceed B1 -> B2 -> B3 -> B4 -> B5 without returning to the user at each stable handoff unless the user explicitly authorizes a broader sequence.
