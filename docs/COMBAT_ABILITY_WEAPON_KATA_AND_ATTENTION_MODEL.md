@@ -4,17 +4,18 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.5 / Game State 18 / Data 66. Packets B1-B4 implement representative unified resolution, hostile attention, timed combat loadout transitions, weapon-derived cadence, first-class ranged attacks, and minimal persisted dagger/sword kata; affinity substitutions, broader sequence families, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.6 / Game State 18 / Data 67. Packets B1-B5 implement representative unified resolution, hostile attention, timed combat loadout transitions, weapon-derived cadence, first-class ranged attacks, minimal persisted dagger/sword kata, and a playable Brasshaven/Redstone training integration proof; affinity substitutions, broader sequence families, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B4 — Unified Resolution + Enemy Attention + Loadout + Cadence/Ranged/Kata: COMPLETE.**
+**Packets B1-B5 — Unified Resolution + Enemy Attention + Loadout + Cadence/Ranged/Kata + Playable Training Proof: COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
 - `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`;
 - `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`;
-- `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
+- `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
+- `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -50,9 +51,18 @@ Implemented by B4:
 - proficiency-gated slots/options and one manual sequence-reset technique;
 - B3 weapon-set reset intent consumed by the kata owner.
 
+Implemented by B5:
+- existing Marshal Varric Stone as the player-facing Redstone technique instructor;
+- stateless training-service context delegating to capability progression;
+- one playable Brasshaven -> South Redstone proof composing B1–B4;
+- explicit hard-disable pressure-release proof without inventing LOS/pursuit;
+- current-schema acceptance for partially consumed equipped ammo stacks;
+- distinct same-POI semantic training actions in the world interface.
+
 Still deferred:
-- B5 playable combat-training integration;
-- full geometry/aura/stance/zone/channel/reaction breadth.
+- full geometry/aura/stance/zone/channel/reaction breadth;
+- affinity substitutions and broad weapon-family kata;
+- generalized LOS/pursuit/disengagement and ranged line-of-fire models.
 
 ## Core combat law
 

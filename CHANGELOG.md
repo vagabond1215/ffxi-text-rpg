@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.200.6 — Brasshaven Redstone Combat Training
+
+- Added Marshal Varric Stone's bounded Forge-Road training service at the existing Brasshaven Market Ring contact, delegating technique learning to the existing capability authority.
+- Added player-facing Training / Learn actions and command adapters without a new training state family, clock, or timed-task owner.
+- Added the playable B5 Brasshaven -> South Redstone integration proof across B1 unified resolution, B2 party attention, B3 loadout/armor pressure, and B4 cadence/kata/ranged ammunition.
+- Fixed current-schema persistence for partially consumed stackable ammunition in the canonical ammo equipment slot while retaining strict non-stackable invariants for ordinary equipment.
+- Fixed locality action presentation so an active POI remains visible and distinct same-POI/capability actions are not incorrectly deduplicated.
+- Advanced Data 66 -> 67 for authored Varric/POI training metadata; Game State remains 18 and no supported-save migration was added.
+- Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed 855/855 tests plus the full hosted gate and Pages.
+- Closed `0.9.200 Adventure Vertical Slices`; `0.9.300 Advanced Combat / Training` remains queued/not started.
+
 ## 0.9.200.5 — Weapon Cadence, Ranged Action, and Minimal Kata
 
 - Added one weapon-delay conversion authority and routed player/companion basic-attack recovery through equipped weapon cadence.

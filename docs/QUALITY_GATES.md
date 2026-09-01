@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Account Save:  5
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
-Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Codename:      Brasshaven Redstone Combat Training
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -138,7 +138,7 @@ Before later packets close:
 - B2 **passes** only when Enmity, normalized Focus, nonlinear weighting, sticky Aggro, Fixation, decay/floors, action-driven changes, and active-battle persistence are all proven. Behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests and the full gate.
 - B3 loadout transitions **PASS**: canonical fictional time, one direct task owner, directional handling, atomic equipment reconciliation, cooldown preservation, root/battle coherence, and B2-driven armor-pressure legality are proven by `tests/combatLoadoutEngine.test.js`; behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed 844/844 tests and the full gate.
 - B4 **PASS**: one weapon-delay conversion authority, equipment-derived player/companion cadence, first-class ranged attack/ammo consumption, proficiency-gated persisted dagger/sword kata, manual reset interaction, and B3 loadout-reset consumption are proven by `tests/weaponCombatB4.test.js`; behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed 852/852 tests and the full gate.
-- B5 must prove these contracts in the playable Brasshaven/Redstone slice.
+- B5 **PASS**: real Varric instruction through capability authority, canonical Brasshaven->Redstone travel, melee cadence/kata, first-class ranged ammo, Ember Dart elemental resolution, party attention, weapon-set transition, armor-pressure blocking, hard-disable pressure release, and ordinary skill gain are proven by `tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js`; behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed 855/855 tests and the full gate. Game State remains 18; Data advances to 67.
 
 
 ## Content Pack v2 gate
@@ -322,4 +322,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packets B1-B4 are complete. Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is COMPLETE: Slice A and Packets B1-B5 are complete. `0.9.300 Advanced Combat / Training` is queued/not started and requires a fresh bounded selection. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.

@@ -1,14 +1,14 @@
 # Combat 2.0 / Adventure Vertical Slice B Implementation Plan
 
-Status: **ACTIVE PLAN / B1-B4 COMPLETE / B5 NEXT AND NOT STARTED.**
+Status: **COMPLETE PLAN / B1-B5 COMPLETE / 0.9.200 CLOSED.**
 
 Current runtime remains:
 
 ```text
-Product:       0.9.200.5
+Product:       0.9.200.6
 Package:       0.9.200
 Game State:    18
-Data:          66
+Data:          67
 Benchmark:     3
 ```
 
@@ -284,7 +284,13 @@ Elemental affinity substitutions are designed now but may remain B5/`0.9.300` if
 
 ## Packet B5 — Slice B playable combat-training proof
 
-**QUEUED / NOT STARTED.** Start only after an explicit continuation from the closed B4 handoff.
+**COMPLETE — Product 0.9.200.6 / Game State 18 / Data 67.**
+
+Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
+
+Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 / run `33472621389` with 855/855 tests plus the full hosted gate; Pages #2069 passed.
+
+B5 uses Marshal Varric Stone as the existing-world training contact, delegates learning to capability authority, proves B1–B4 together in South Redstone, and closes the partial-ammo current-schema defect exposed by the integrated ranged proof.
 
 Use existing Brasshaven / Redstone geography.
 
@@ -305,7 +311,9 @@ Do not require a new region.
 
 When this vertical proof is green, `0.9.200 Adventure Vertical Slices` can be deliberately closed.
 
-## Then open `0.9.300 Advanced Combat / Training`
+## Next track — `0.9.300 Advanced Combat / Training`
+
+**QUEUED / NOT STARTED.** Closing B5 does not auto-start this track. A future explicit continuation must select its first bounded packet.
 
 The full `0.9.300` track should broaden proven Slice B contracts rather than invent them from scratch.
 

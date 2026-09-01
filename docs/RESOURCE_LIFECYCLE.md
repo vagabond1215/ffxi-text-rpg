@@ -79,6 +79,8 @@ An active owner may reference an active task or a task that has just completed a
 
 B4 adds no direct timed-task owner. Weapon cadence is stateless; kata configuration/cursor state persists directly under player progression/active battle; ranged shots are ordinary combat actions that mutate equipped ammunition synchronously through equipment authority.
 
+B5 also adds no direct timed-task owner. Combat training is synchronous context around capability learning and semantic events. The B5 ammo-persistence repair changes validation of the physical `ammo` equipment slot, not task ownership or lifecycle.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.

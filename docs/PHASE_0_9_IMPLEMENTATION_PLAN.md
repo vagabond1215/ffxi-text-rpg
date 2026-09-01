@@ -411,7 +411,7 @@ The later mechanics-scale gate remains **NOT READY** and is deliberately not con
 
 # `0.9.200` — Adventure Vertical Slices
 
-**Track status: ACTIVE. Slice A is COMPLETE; Slice B is IN PROGRESS with Packets B1-B4 COMPLETE and Packet B5 queued/not started.**
+**Track status: COMPLETE. Slice A and Slice B Packets B1-B5 are COMPLETE. `0.9.300 Advanced Combat / Training` is queued/not started.**
 
 ## Slice A — Slatewater Road Scout
 
@@ -469,7 +469,9 @@ Packet B2 — Enemy Attention Foundation is **COMPLETE** at Product 0.9.200.3 / 
 
 Packet B3 — Combat Loadout Transition Foundation is **COMPLETE** at Product 0.9.200.4 / Data 65 / Game State 17; permanent record `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`; behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 with 844/844 tests and the full gate; Pages #2038 passed.
 
-Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is **COMPLETE** at Product 0.9.200.5 / Data 66 / Game State 18; permanent record `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`; behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 with 852/852 tests and the full gate; Pages #2055 passed. The next bounded unit is **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof**, queued/not started.
+Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is **COMPLETE** at Product 0.9.200.5 / Data 66 / Game State 18; permanent record `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`; behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 with 852/852 tests and the full gate; Pages #2055 passed.
+
+Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is **COMPLETE** at Product 0.9.200.6 / Data 67 / Game State 18; permanent record `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`; behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed. `0.9.200 Adventure Vertical Slices` is now deliberately closed.
 
 # Relative planning envelope
 
@@ -485,7 +487,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A and Slice B Packets B1-B4 are complete. Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof — is next and not started. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is queued/not started and requires a fresh bounded selection; later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
