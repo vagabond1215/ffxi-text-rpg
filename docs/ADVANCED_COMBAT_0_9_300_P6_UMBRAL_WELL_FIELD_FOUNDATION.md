@@ -1,6 +1,6 @@
 # Advanced Combat 0.9.300 Packet 6 — Umbral Well Field Foundation
 
-Status: **SELECTED / IMPLEMENTATION STARTED.**
+Status: **COMPLETE / PRODUCT 0.9.300.6 / GAME STATE 21 / DATA 73.**
 
 Entry baseline:
 ```text
@@ -221,6 +221,260 @@ Not part of Packet 6:
 - broad adept spell migration;
 - new abilities or mechanics-census filler.
 
+## Implementation result
+
+### Durable field authority
+
+Packet 6 adds `js/text/systems/combatFieldEngine.js` with:
+
+```text
+COMBAT_FIELD_STATE_VERSION = 1
+COMBAT_FIELD_INTERRUPT_PRIORITY = 910
+```
+
+Every new active battle now owns:
+
+```text
+activeBattle.fields:
+  version
+  sequence
+  records[]
+```
+
+A field record persists:
+- stable `combat-field-NNNNNN` identity;
+- source actor and source ability;
+- center-target provenance;
+- persisted center-point snapshot;
+- creation and expiration world seconds;
+- pulse cadence and next-pulse deadline;
+- completed pulse sequence;
+- authored radius / maximum-target contract;
+- cast-time source snapshot for scaling stat/value, magic accuracy, and magic attack.
+
+`ACTIVE_BATTLE_PERSISTENCE_VERSION` advances 4 -> 5.
+
+Current-schema validation rejects:
+- malformed/duplicate field IDs;
+- unknown source/center combatants;
+- invalid center coordinates;
+- source abilities without a canonical field effect;
+- invalid lifetime/cadence/pulse deadlines;
+- invalid geometry/caps;
+- missing/non-finite source snapshot values;
+- durable values that disagree with the canonical authored field definition.
+
+Fields are not lazily reconstructed by persistence validation.
+
+### Umbral Well authored contract
+
+`ABILITY_CATALOG_VERSION` advances 9 -> 10.
+
+Umbral Well preserves:
+- `ability-umbral-well`;
+- `spell-umbral-well`;
+- Elemental Form / adept / Dark identity;
+- enemy primary targeting;
+- six-second interruptible activation;
+- 20 MP cost;
+- 18-second cooldown;
+- INT scaling;
+- direct impact base 16 / coefficient 1.75.
+
+It gains:
+- `recoverySeconds: 3`;
+- explicit Dark magical direct-impact resolution;
+- a second `field` effect;
+- 12-second field lifetime;
+- 4-second pulse cadence;
+- radius 2 / maximum 4 pulse recipients;
+- pulse damage base 4 / INT coefficient 0.45;
+- explicit Dark magical pulse resolution.
+
+Executable ability count remains 41.
+
+The ability-effect catalog now recognizes `field` as a structured effect family. Field definitions are validated for combat context, target ownership, whole-number pulse cadence, radius/cap, nested damage scaling, and resolution metadata.
+
+### Source snapshot and live defender law
+
+At field creation:
+- target encounter-relative position is copied into the durable field center;
+- source INT is copied into `sourceSnapshot.scalingValue`;
+- source magic accuracy is copied;
+- source magic attack is copied.
+
+At each pulse:
+- current living opposing combatants are queried against the persisted point;
+- the source offense snapshot is used unchanged;
+- each defender's current magic evasion, magic defense, and Dark resistance are read.
+
+Focused proof mutates the source combat profile after field creation and confirms pulse inputs remain the stored values. It then applies Dark resistance to the defender between pulses and confirms later damage/evidence changes.
+
+### Point-radius geometry
+
+`combatGeometryEngine` adds `resolveCombatPointRadiusTargets`.
+
+This query:
+- accepts a persisted center point rather than a target combatant;
+- derives current combatant positions through the existing Packet-5 formation authority;
+- selects living opponents within radius;
+- sorts by distance then encounter order;
+- caps recipients;
+- returns structured point-radius evidence.
+
+This does not create mutable combat coordinates or a player ground-target interface.
+
+### Fictional-time pulse scheduling
+
+`combatFieldEngine.provideCombatFieldInterrupts` emits `combat.field-pulse` candidates.
+
+Field pulse priority is 910. Existing ordinary combat readiness priority is 900, so a due field consequence resolves before an enemy ready action at the same world second.
+
+`combatSimulationEngine` resolves a pulse by:
+1. invoking the field owner at the canonical current world second;
+2. resolving every selected target independently;
+3. recording one `fieldPulse` combat action with field/geometry/effect evidence;
+4. updating battle phase;
+5. finalizing normal combat state.
+
+After each pulse the durable record advances `pulseSequence` and `nextPulseAtWorldSeconds`. After the +12-second pulse, the next deadline lies beyond the authored expiry and the field record is removed.
+
+No timed-task record, interval, wall-clock timer, or second combat scheduler is created.
+
+### Per-recipient area attention correction
+
+Packet 5 introduced per-recipient attention when multiple enemy recipients had applied effects. Packet 6 closes the remaining edge case: an area action may have exactly one applied effect and that effect may belong to a secondary recipient.
+
+Area actions now explicitly carry:
+
+```text
+attention.mode = per-recipient
+```
+
+For explicit per-recipient actions:
+- only enemy IDs with actually applied effects receive attention;
+- each amount derives from that recipient's own effects;
+- the action never falls back to assigning aggregate area enmity to the primary/center target merely because only one recipient landed.
+
+Tempest Ring emits this explicit mode as well, preserving its intended semantics under miss/resist combinations.
+
+### Battle-end lifecycle
+
+`finalizeCombatState` reconciles fields.
+
+When battle phase is no longer active:
+- outstanding field records are cleared;
+- no future field interrupt is emitted;
+- no detached scheduler or task survives the encounter.
+
+The field is battle-local state, not a world-place hazard.
+
+### Focused guard
+
+Primary guard:
+- `tests/advancedCombatUmbralWellField.test.js`.
+
+It proves:
+- ability catalog version 10;
+- executable ability count 41;
+- exact Umbral Well direct-impact and field definition;
+- durable field creation and center/deadline/source snapshot evidence;
+- real current-schema save/load continuity;
+- strict malformed-field validation;
+- exact +4/+8/+12-second pulses and final expiry;
+- field pulse interrupt priority;
+- deterministic radius/cap;
+- independent recipient magic/Dark resolution;
+- cast-time source snapshot stability;
+- pulse-time live defender Dark resistance;
+- one structured `fieldPulse` action per pulse;
+- explicit per-recipient attention when only one secondary target lands;
+- no attention for missed/excluded enemies;
+- battle-end field cleanup.
+
+### Hosted validation history
+
+Check #2066 / run `33554554852`:
+- Repository Audit PASS;
+- **878/884 tests**;
+- two Packet-4/5 authored-shape guards failed because the ability normalizer materialized `field: undefined` on every non-field effect;
+- four Packet-6 runtime proofs failed before activation because the fixtures trained `elementalMagic` while canonical Umbral Well requires `darkMagic >= 3`.
+
+Repairs:
+- field normalization now conditionally materializes the `field` key only for actual field effects;
+- Packet-6 fixtures use canonical Dark Magic rank 3.
+
+Check #2068 / run `33554792449`:
+- Repository Audit PASS;
+- **883/884 tests**;
+- all production field behavior passed;
+- the remaining failure was a test-only `structuredClone` of the injected battle RNG function.
+
+Final repair:
+- the corruption-validation fixture clears the non-persisted RNG function before cloning;
+- no production runtime or field-state behavior changed.
+
+### Behavioral/data implementation freeze
+
+`6e4ab807c943fc94f398b86b33dba6637f215ad3`
+
+Hosted evidence:
+- Check #2069 / run `33554921560`;
+- Repository Audit PASS;
+- **884/884 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2199 / run `33554920945` PASS.
+
+### Promotion result
+
+```text
+Product       0.9.300.5 -> 0.9.300.6
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 21
+Data          72        -> 73
+Benchmark     3         -> 3
+```
+
+System versions advance:
+- version manifest: 0.9.300.5 -> 0.9.300.6;
+- active-battle persistence: 0.5.0 -> 0.6.0;
+- ability catalog: 0.8.0 -> 0.9.0;
+- ability engine: 0.6.0 -> 0.7.0;
+- battle engine: 0.13.0 -> 0.14.0;
+- combat turns: 0.6.0 -> 0.7.0;
+- combat simulation: 0.2.0 -> 0.3.0;
+- combat geometry: 0.1.0 -> 0.2.0;
+- combat fields: new 0.1.0;
+- combat attention: 0.2.0 -> 0.3.0.
+
+Game State 21 is required because outstanding field deadlines, center point, pulse progress, and source snapshot change future resumable combat outcomes.
+
+Data 73 records the changed canonical Umbral Well impact/recovery/field contract.
+
+No supported-save migration is added.
+
+## Next decision boundary
+
+Packet 6 does not authorize another adept migration automatically.
+
+No Packet 7 is selected.
+
+If advanced combat remains the immediate priority, the strongest semantic candidate is **Radiant Arc Propagation Foundation** because `Arc` still promises arcing/propagating behavior that the current single-target placeholder does not express. That candidate would require an explicit propagation/recipient-selection contract and must not be silently treated as Tempest Ring geometry.
+
+Other separately bounded candidates remain:
+- Rimefall falling/repeated-area semantics;
+- Flare Bloom radial/expanding semantics;
+- Fault Rush movement/impact semantics;
+- one coherent martial-technique migration tranche;
+- engagement geometry / LOS / pursuit / disengagement;
+- weapon resonance / imbuement;
+- passive defense/reaction semantics.
+
+Do not combine these automatically.
+
 ## Closure discipline
 
-Freeze the exact behavioral/data implementation SHA before Product/Game-State/Data promotion and repository authority synchronization. `docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet.
+`docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet, followed only by exact-head hosted validation.
