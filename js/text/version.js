@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.300.4';
+export const PRODUCT_VERSION = '0.9.300.5';
 export const PACKAGE_VERSION = '0.9.300';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 20,
-    data: 71,
+    data: 72,
     benchmark: 3,
-    codename: 'Thunder Cage Control Foundation',
+    codename: 'Tempest Ring Geometry Foundation',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.300.4',
+    versionManifest: '0.9.300.5',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -164,8 +164,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     startingDisciplineKits: '0.1.0',
     characterStats: '0.1.0',
     capabilities: '0.5.0',
-    abilityCatalog: '0.7.0',
-    abilityEngine: '0.5.0',
+    abilityCatalog: '0.8.0',
+    abilityEngine: '0.6.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.3.0',
     party: '0.4.0',
@@ -179,7 +179,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     combatTurns: '0.6.0',
     combatSimulation: '0.2.0',
     combatResolution: '0.2.0',
-    combatAttention: '0.1.0',
+    combatGeometry: '0.1.0',
+    combatAttention: '0.2.0',
     combatLoadout: '0.2.0',
     weaponCadence: '0.1.0',
     weaponKataCatalog: '0.3.0',
