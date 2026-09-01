@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.3
+Product:       0.9.300.4
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          70
+Data:          71
 Benchmark:     3
-Codename:      Novice Elemental Resolution Breadth
+Codename:      Thunder Cage Control Foundation
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -182,6 +182,24 @@ PASS only when:
 - Product/Data/Game State decisions are explicit.
 
 **Gate result: PASS.** Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397`; Check #1981 / run `33515422352`; **870/870 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2111 / run `33515422056` PASS. Game State remains 20; Data advances 69 -> 70; executable ability count remains 41.
+
+### 0.9.300 Packet 4 gate — Thunder Cage Control Foundation
+
+PASS only when:
+- Thunder Cage keeps its existing identity, capability, activation, MP cost, cooldown, potency, and scaling;
+- lightning damage uses the unified magic-defense/elemental-resistance path;
+- containment is a separate resistible status effect rather than an unconditional side effect of damage;
+- landed containment creates a finite generic status with `cannotAct` evidence;
+- the hard-disable flag vocabulary has one status-authority definition rather than loadout-local duplication;
+- hard-disabled enemies cannot act through immediate response or ready-action paths;
+- combat-ready interrupts defer finite disables to expiry and do not zero-time loop;
+- normal enemy readiness resumes after expiry;
+- existing B3 armor-pressure behavior still recognizes the shared disable fact;
+- no geometry, zone state, control scheduler, new clock, or new persistence family is introduced;
+- ability count remains 41;
+- Product/Data/Game State decisions are explicit.
+
+**Gate result: PASS.** Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642`; Check #2006 / run `33518317562`; **875/875 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2136 / run `33518315622` PASS. Game State remains 20; Data advances 70 -> 71.
 
 ## Content Pack v2 gate
 
