@@ -1,10 +1,11 @@
 import { getCapability } from './capabilities.js';
 import { ELEMENT_KEYS } from './systemConstants.js';
 
-export const ABILITY_CATALOG_VERSION = 8;
+export const ABILITY_CATALOG_VERSION = 9;
 export const ABILITY_KINDS = Object.freeze(['spell', 'technique', 'utility']);
 export const ABILITY_CONTEXTS = Object.freeze(['combat', 'exploration']);
 export const ABILITY_TARGET_KINDS = Object.freeze(['self', 'enemy', 'context']);
+export const ABILITY_GEOMETRY_KINDS = Object.freeze(['ring']);
 export const ABILITY_EFFECT_TYPES = Object.freeze(['damage', 'heal', 'status', 'context']);
 export const ABILITY_RESOURCE_KEYS = Object.freeze(['hp', 'mp', 'tp']);
 export const ABILITY_SCALING_STATS = Object.freeze(['str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr']);
@@ -71,7 +72,7 @@ const ABILITIES = Object.freeze({
     'ability-gloam-spike': ability({ id: 'ability-gloam-spike', name: 'Gloam Spike', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-gloam-spike', tags: ['magic', 'offensive', 'dark', 'novice'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 4, interruptible: true }, recoverySeconds: 2, cooldownSeconds: 9, costs: { mp: 9 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 7, coefficient: 1.25, resolution: { delivery: 'projectile', channel: 'magical', damageType: 'spell', element: 'dark', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } }] }),
     'ability-flare-bloom': ability({ id: 'ability-flare-bloom', name: 'Flare Bloom', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-flare-bloom', tags: ['magic', 'offensive', 'fire', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
     'ability-fault-rush': ability({ id: 'ability-fault-rush', name: 'Fault Rush', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-fault-rush', tags: ['magic', 'offensive', 'earth', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
-    'ability-tempest-ring': ability({ id: 'ability-tempest-ring', name: 'Tempest Ring', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-tempest-ring', tags: ['magic', 'offensive', 'wind', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
+    'ability-tempest-ring': ability({ id: 'ability-tempest-ring', name: 'Tempest Ring', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-tempest-ring', tags: ['magic', 'offensive', 'wind', 'adept', 'area'], contexts: ['combat'], target: { kind: 'enemy', geometry: { kind: 'ring', center: 'target', radius: 2, maximumTargets: 4 } }, activation: { durationSeconds: 6, interruptible: true }, recoverySeconds: 3, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75, resolution: { delivery: 'spell', channel: 'magical', damageType: 'spell', element: 'wind', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } }] }),
     'ability-riptide-lance': ability({ id: 'ability-riptide-lance', name: 'Riptide Lance', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-riptide-lance', tags: ['magic', 'offensive', 'water', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
     'ability-thunder-cage': ability({ id: 'ability-thunder-cage', name: 'Thunder Cage', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-thunder-cage', tags: ['magic', 'offensive', 'lightning', 'adept', 'control'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, recoverySeconds: 3, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75, resolution: { delivery: 'spell', channel: 'magical', damageType: 'spell', element: 'lightning', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } }, { type: 'status', recipient: 'target', resolution: { delivery: 'spell', channel: 'magical', element: 'lightning', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicEvasion' }, status: { id: 'status-thunder-cage', name: 'Thunder Cage', category: 'debuff', durationSeconds: 6, stackGroup: 'elemental-control-cage', stackRule: 'replace', modifiers: {}, flags: { cannotAct: true, caged: true } } }] }),
     'ability-rimefall': ability({ id: 'ability-rimefall', name: 'Rimefall', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-rimefall', tags: ['magic', 'offensive', 'ice', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
@@ -118,6 +119,7 @@ export function validateAbilityCatalog() {
         if (!Array.isArray(entry.contexts) || !entry.contexts.length) issues.push(`${entry.id} contexts must be a non-empty array.`);
         for (const context of entry.contexts ?? []) if (!ABILITY_CONTEXTS.includes(context)) issues.push(`${entry.id} references unknown context ${context}.`);
         if (!ABILITY_TARGET_KINDS.includes(entry.target?.kind)) issues.push(`${entry.id} has invalid target kind ${entry.target?.kind}.`);
+        validateTargetGeometry(entry, issues);
         if (!nonNegativeInteger(entry.activation?.durationSeconds)) issues.push(`${entry.id} activation duration must be a non-negative integer.`);
         if (typeof entry.activation?.interruptible !== 'boolean') issues.push(`${entry.id} activation interruptible must be boolean.`);
         if (!nonNegativeInteger(entry.recoverySeconds)) issues.push(`${entry.id} recoverySeconds must be a non-negative integer.`);
@@ -127,6 +129,22 @@ export function validateAbilityCatalog() {
         for (const [index, effect] of (entry.effects ?? []).entries()) validateEffect(entry, effect, index, issues);
     }
     return issues;
+}
+
+function validateTargetGeometry(abilityDefinition, issues) {
+    const geometry = abilityDefinition.target?.geometry;
+    if (geometry === undefined) return;
+    if (!geometry || typeof geometry !== 'object' || Array.isArray(geometry)) {
+        issues.push(`${abilityDefinition.id}.target.geometry must be an object.`);
+        return;
+    }
+    if (abilityDefinition.target.kind !== 'enemy') issues.push(`${abilityDefinition.id}.target.geometry currently requires enemy targeting.`);
+    if (!ABILITY_GEOMETRY_KINDS.includes(geometry.kind)) issues.push(`${abilityDefinition.id}.target.geometry.kind is invalid: ${geometry.kind}.`);
+    if (geometry.kind === 'ring') {
+        if (geometry.center !== 'target') issues.push(`${abilityDefinition.id}.target.geometry.center must be target for ring geometry.`);
+        if (!Number.isFinite(Number(geometry.radius)) || Number(geometry.radius) <= 0) issues.push(`${abilityDefinition.id}.target.geometry.radius must be positive.`);
+        if (!positiveInteger(geometry.maximumTargets)) issues.push(`${abilityDefinition.id}.target.geometry.maximumTargets must be a positive integer.`);
+    }
 }
 
 function validateEffect(abilityDefinition, effect, index, issues) {
@@ -152,7 +170,7 @@ function validateResolution(resolution, prefix, issues) {
     if (resolution.criticalEligible !== undefined && typeof resolution.criticalEligible !== 'boolean') issues.push(`${prefix}.resolution.criticalEligible must be boolean.`);
 }
 function school(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), tradition: String(definition.tradition), tags: [...(definition.tags ?? [])] }); }
-function ability(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), kind: definition.kind, schoolId: definition.schoolId ? String(definition.schoolId) : null, capabilityId: String(definition.capabilityId), tags: [...(definition.tags ?? [])], contexts: [...(definition.contexts ?? [])], target: { ...(definition.target ?? {}) }, activation: { durationSeconds: Math.max(0, Math.floor(Number(definition.activation?.durationSeconds) || 0)), interruptible: definition.activation?.interruptible === true }, recoverySeconds: Math.max(0, Math.floor(Number(definition.recoverySeconds) || 0)), cooldownSeconds: Math.max(0, Math.floor(Number(definition.cooldownSeconds) || 0)), costs: { ...(definition.costs ?? {}) }, effects: (definition.effects ?? []).map((effect) => ({ ...effect, resolution: effect.resolution ? { ...effect.resolution } : undefined, status: effect.status ? { ...effect.status, modifiers: { ...(effect.status.modifiers ?? {}) }, flags: { ...(effect.status.flags ?? {}) } } : undefined })) }); }
+function ability(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), kind: definition.kind, schoolId: definition.schoolId ? String(definition.schoolId) : null, capabilityId: String(definition.capabilityId), tags: [...(definition.tags ?? [])], contexts: [...(definition.contexts ?? [])], target: { ...(definition.target ?? {}), geometry: definition.target?.geometry ? { ...definition.target.geometry } : undefined }, activation: { durationSeconds: Math.max(0, Math.floor(Number(definition.activation?.durationSeconds) || 0)), interruptible: definition.activation?.interruptible === true }, recoverySeconds: Math.max(0, Math.floor(Number(definition.recoverySeconds) || 0)), cooldownSeconds: Math.max(0, Math.floor(Number(definition.cooldownSeconds) || 0)), costs: { ...(definition.costs ?? {}) }, effects: (definition.effects ?? []).map((effect) => ({ ...effect, resolution: effect.resolution ? { ...effect.resolution } : undefined, status: effect.status ? { ...effect.status, modifiers: { ...(effect.status.modifiers ?? {}) }, flags: { ...(effect.status.flags ?? {}) } } : undefined })) }); }
 function normalize(value) { return String(value ?? '').trim().toLowerCase().replace(/\s+/g, '-'); }
 function stableId(value, prefix) { return typeof value === 'string' && value.startsWith(prefix) && /^[a-z][a-z0-9-]*$/.test(value); }
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
