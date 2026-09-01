@@ -350,7 +350,7 @@ Design direction:
 - individual weapons may supply an element or resonate with one, but weapon-family identity is not a universal hard-coded element;
 - manual techniques such as bashes, cleaves, feints, backstabs, volleys, and reactions sit above the automatic sequence;
 - spells, techniques, ranged attacks, auras, stances, zones, channels, and reactions should share one structured action-resolution vocabulary.
-- Packet 3 now brings all eight novice Elemental Form attacks onto that structured resolution vocabulary; adept names whose wording implies rings, cages, wells, or other richer forms remain intentionally deferred until those mechanics can be represented honestly.
+- Packet 3 now brings all eight novice Elemental Form attacks onto that structured resolution vocabulary. Packet 4 then makes Thunder Cage the first bounded adept control semantic: damage and containment resolve independently, and shared status authority suppresses enemy action until expiry. Tempest Ring geometry, Umbral Well field behavior, and broader action families remain deferred until they can be represented honestly.
 
 Ability names should describe visible form/motion/element/result honestly. A name that implies a ring, chain, cage, well, rain, breaker, or similar behavior should eventually execute that behavior rather than remain decorative terminology.
 
