@@ -170,7 +170,7 @@ Census movement:
 
 The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
 
-**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is now **SELECTED / PLANNED, NOT STARTED** as a Brasshaven / Redstone combat-training bridge. Its permanent plan is `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`; the immediate next bounded runtime unit is Packet B1 — Unified Combat Resolution Contract.
+**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packet B1 is complete at Product 0.9.200.2 / Data 64; Packet B2 — Enemy Attention Foundation — is the next bounded unit and is queued/not started.
 
 ## Macro-world topology
 
