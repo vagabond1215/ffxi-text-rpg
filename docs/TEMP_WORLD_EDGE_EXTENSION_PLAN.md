@@ -37,6 +37,17 @@ Boundary types should be selected from the fiction:
 
 Physical impossibility, legal restriction, and environmental danger should remain distinct concepts.
 
+## Continuity note after combat-plan selection
+
+World-edge work remains **PAUSED / RESUMABLE**, not canceled.
+
+Current ranking remains:
+1. Waymeet Inner Marches / outer crossroads approach;
+2. Coppergrass extensions;
+3. Drowned Vaults.
+
+Adventure Slice B / Combat 2.0 deliberately reuses existing Brasshaven/Redstone geography so combat work does not manufacture a new region merely to obtain encounters. Resume this world-edge sequence only through a separate bounded work order.
+
 ## Macro topology lock completed
 
 The prior edge-by-edge sequence was paused until continents, seas, mountain chains, drainage, homeland envelopes, and barriers were established.
