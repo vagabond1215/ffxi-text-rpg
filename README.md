@@ -10,21 +10,21 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is now active, and Slice A — Slatewater Road Scout — is complete.** The current canonical/runtime checkpoint is Data 63 / Product 0.9.200.1 / Game State 15. Slice A reuses Slatewater Waylodge and the foothills to add a persistent road scout, two chained field contracts, and earned companion recruitment without adding a new zone or state family.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packet B1 are complete.** The current canonical/runtime checkpoint is Data 64 / Product 0.9.200.2 / Game State 15. B1 establishes unified representative combat resolution without adding a new state family.
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Codename:      Slatewater Road Scout
+Codename:      Unified Combat Resolution
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
 
-Data 62 closes the five-part location flora/fauna diversity repair sequence. Data 63 opens Adventure Vertical Slices with **Sable Renn**, the Slatewater Road Scout: one new persistent NPC/POI, two provenance-bound chained commitments, one earned recruitable companion, and Pack-v2 relationship/ownership metadata. No new place, route, resource, recipe, ability, schedule, or durable state family was added.
+Data 62 closes the five-part location flora/fauna diversity repair sequence. Data 63 opens Adventure Vertical Slices with **Sable Renn**, the Slatewater Road Scout. Data 64 completes Combat 2.0 Packet B1 by adding authored recovery/resolution metadata to representative existing abilities and a shared combat-resolution engine; no new ability record, place, route, NPC, companion, or durable state family was added.
 
 ## Product direction
 
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 63 implementation census:
+Validated Data 64 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -128,25 +128,18 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**Adventure Vertical Slice A — Slatewater Road Scout is COMPLETE.**
+**Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
-Current runtime remains Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63.
+Permanent implementation record:
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
 
-Permanent advanced-combat design is now recorded:
-- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+Behavioral implementation freeze:
+- `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`;
+- **832/832 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #1990 / run `33457300712` green.
 
-Adventure Vertical Slice B is **SELECTED / PLANNED, NOT STARTED** as a **Brasshaven / Redstone combat-training bridge**:
-- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
-
-The immediate next bounded implementation is **Packet B1 — Unified Combat Resolution Contract**. B1 will make representative basic melee, martial technique, elemental spell, and status actions share an explicit accuracy/defense/resistance/element/recovery contract before additional ability breadth is authored.
-
-Later separately bounded Slice B work will cover:
-- enemy attention: Enmity -> Focus -> nonlinear target weighting -> sticky Aggro -> Fixation;
-- timed combat loadout transitions and armor swap locks under meaningful hostile pressure;
-- weapon-delay attack cadence;
-- first-class ranged attacks;
-- minimal configurable weapon kata;
-- a playable Brasshaven/Redstone proof.
+B1 gives representative basic melee, Ember Dart, Ridge Breaker, Rivet Guard, and Fracture Sigil a shared structured accuracy/defense/resistance/element/recovery vocabulary. Fracture Sigil can now be resisted, Ember Dart uses fire resistance, Ridge Breaker has explicit defense penetration/critical eligibility, and canonical post-action recovery is distinct from activation and cooldown.
 
 Current mechanics-scale gaps remain:
 - abilities/techniques 41/100;
@@ -154,13 +147,18 @@ Current mechanics-scale gaps remain:
 - quests/contracts 20/30;
 - named NPCs 48/50.
 
-The ability gap is not permission to create mechanically duplicate filler.
+Do not fill the ability gap with mechanically duplicate records.
 
-Preserved resumable queues:
-- Occupational Tool Conversion remains the strongest prepared 0.9.400 economy packet;
-- Waymeet Inner Marches / outer crossroads approach remains the first ranked world-edge candidate;
-- richer locality ambient/dialogue/shop-browse/map work remains deferred after the completed knowledge foundation;
-- the five-part ecology repair sequence is complete and is not restarted automatically.
+**Next bounded Slice B unit: B2 — Enemy Attention Foundation.** It is queued, not started. B2 will establish Enmity -> Focus -> nonlinear target-selection weighting -> sticky Aggro -> Fixation/Priority on the existing combat authority.
 
-A future `continue` should start **Slice B Packet B1 only**.
+Later B3/B4/B5 remain:
+- timed loadout transitions and armor-pressure locking;
+- weapon-delay cadence, first-class ranged attack, minimal configurable kata;
+- playable Brasshaven/Redstone combat-training proof.
+
+Preserved resumable queues remain unchanged:
+- Occupational Tool Conversion for 0.9.400;
+- Waymeet Inner Marches / outer crossroads world-edge continuation;
+- richer locality ambient/dialogue/shop-browse/map work;
+- optional ecology only by fresh selection; the five-part repair sequence itself is complete.
 
