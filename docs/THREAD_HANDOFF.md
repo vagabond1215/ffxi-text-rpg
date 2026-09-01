@@ -55,12 +55,13 @@ Hosted evidence:
 
 This freeze intentionally predates Product/Game-State/Data promotion and authority synchronization.
 
-### Promoted authority checkpoint before this handoff
+### Promoted authority/checkpoint before this final handoff
 
-`d25ea1e7a20974bb212e39dac8860e6d78b27ca6`
+`3c4f2b703acbaa72091ac2375ff1ad9bd3973d71`
 
 At this checkpoint:
 - Product 0.9.300.6 / Package 0.9.300 / Game State 21 / Data 73 promotion is complete;
+- the five literal current-schema Game State guards exposed by the first exact-head post-promotion run are synchronized to 21;
 - runtime/system-version guards are synchronized;
 - README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, Phase 0.9 plan, development direction, quality gates, resource lifecycle, changelog, and Packet 6 record are synchronized;
 - Packet 6 is complete;
@@ -579,6 +580,31 @@ Preserve:
 10. select exactly one next advanced-combat packet before implementation
 
 Do not redo the closed broad combat-adjacency audit unless repository evidence materially diverges.
+
+## Final-handoff schema-guard repair
+
+The first post-promotion handoff head was `c3172b89c7293cf6199f04045e05827f8f61f414`.
+
+Exact-head Check #2092 / run `33555870148`:
+- Repository Audit PASS;
+- test step failed before Census/Benchmark;
+- exactly five tests failed;
+- every failure was a literal `VERSION.gameState === 20` assertion in a test explicitly named as a **current Game State** guard.
+
+Affected guards:
+- `tests/currentSchemaCultivation.test.js`;
+- `tests/currentSchemaDiscoveryPersistence.test.js`;
+- `tests/currentSchemaEnemyEncounterProjection.test.js`;
+- `tests/currentSchemaNpcWorldProjection.test.js`;
+- `tests/currentSchemaPresentationLog.test.js`.
+
+Each assertion now expects Game State 21.
+
+No production runtime, data, field state, save encoding, persistence validator, ability behavior, combat timing, or authority document changed for this repair.
+
+The repair checkpoint before this final handoff is `3c4f2b703acbaa72091ac2375ff1ad9bd3973d71`.
+
+This handoff rewrite is again the intended final repository-file mutation.
 
 ## Final validation contract
 
