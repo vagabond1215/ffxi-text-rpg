@@ -1,5 +1,5 @@
 export const COMBAT_GEOMETRY_VERSION = 1;
-export const COMBAT_GEOMETRY_KINDS = Object.freeze(['ring']);
+export const COMBAT_GEOMETRY_KINDS = Object.freeze(['ring', 'arc']);
 
 const ENEMY_FORMATION = Object.freeze([
     Object.freeze({ x: 3, y: 0 }),
@@ -35,6 +35,7 @@ export function getCombatFormationPosition(battle, actorId) {
 
 export function resolveCombatGeometryTargets(battle, definition = {}) {
     const geometry = definition.geometry ?? {};
+    if (geometry.kind === 'arc') return resolveArcTargets(battle, definition);
     if (geometry.kind !== 'ring') return emptyResolution(geometry.kind ?? null);
 
     const actor = findCombatant(battle, definition.actorId);
@@ -80,6 +81,92 @@ export function resolveCombatGeometryTargets(battle, definition = {}) {
             id: row.entry.id,
             distance: row.distance,
             position: Object.freeze({ ...row.position }),
+        }))),
+    });
+
+    return Object.freeze({
+        targets: Object.freeze(rows.map((row) => row.entry)),
+        evidence,
+    });
+}
+
+function resolveArcTargets(battle, definition = {}) {
+    const geometry = definition.geometry ?? {};
+    const actor = findCombatant(battle, definition.actorId);
+    const primaryTarget = findCombatant(battle, definition.primaryTargetId);
+    if (!actor || !primaryTarget) return emptyResolution('arc');
+
+    const actorSide = actor.battle?.side ?? (actor.type === 'enemy' ? 'enemy' : 'ally');
+    const primarySide = primaryTarget.battle?.side ?? (primaryTarget.type === 'enemy' ? 'enemy' : 'ally');
+    if (primarySide === actorSide || primaryTarget.battle?.defeated || Number(primaryTarget.resources?.hp) <= 0) return emptyResolution('arc');
+
+    const jumpRange = Math.max(0, Number(geometry.jumpRange) || 0);
+    const maximumTargets = Math.max(1, Math.floor(Number(geometry.maximumTargets) || 1));
+    const encounterOrder = new Map((battle?.combatants ?? []).map((entry, index) => [entry.id, index]));
+    const visited = new Set([primaryTarget.id]);
+    const rows = [{
+        entry: primaryTarget,
+        position: getCombatFormationPosition(battle, primaryTarget.id),
+        jump: 1,
+        fromId: null,
+        distance: 0,
+    }];
+
+    let current = primaryTarget;
+    while (rows.length < maximumTargets) {
+        const origin = getCombatFormationPosition(battle, current.id);
+        if (!origin) break;
+
+        const candidates = (battle?.combatants ?? [])
+            .filter((entry) => {
+                const side = entry.battle?.side ?? (entry.type === 'enemy' ? 'enemy' : 'ally');
+                return side !== actorSide
+                    && !visited.has(entry.id)
+                    && !entry.battle?.defeated
+                    && Number(entry.resources?.hp) > 0;
+            })
+            .map((entry) => {
+                const position = getCombatFormationPosition(battle, entry.id);
+                const distance = position ? euclideanDistance(origin, position) : Infinity;
+                return {
+                    entry,
+                    position,
+                    distance,
+                    order: encounterOrder.get(entry.id) ?? Number.MAX_SAFE_INTEGER,
+                };
+            })
+            .filter((row) => row.distance <= jumpRange)
+            .sort((left, right) => left.distance - right.distance || left.order - right.order || left.entry.id.localeCompare(right.entry.id));
+
+        const next = candidates[0];
+        if (!next) break;
+        visited.add(next.entry.id);
+        rows.push({
+            entry: next.entry,
+            position: next.position,
+            jump: rows.length + 1,
+            fromId: current.id,
+            distance: next.distance,
+        });
+        current = next.entry;
+    }
+
+    const primaryPosition = getCombatFormationPosition(battle, primaryTarget.id);
+    const evidence = Object.freeze({
+        version: COMBAT_GEOMETRY_VERSION,
+        kind: 'arc',
+        primaryTargetId: primaryTarget.id,
+        primaryPosition: primaryPosition ? Object.freeze({ ...primaryPosition }) : null,
+        jumpRange,
+        maximumTargets,
+        repeatTargets: false,
+        ordering: 'nearest-then-encounter-order',
+        recipients: Object.freeze(rows.map((row) => Object.freeze({
+            id: row.entry.id,
+            jump: row.jump,
+            fromId: row.fromId,
+            distance: row.distance,
+            position: row.position ? Object.freeze({ ...row.position }) : null,
         }))),
     });
 
