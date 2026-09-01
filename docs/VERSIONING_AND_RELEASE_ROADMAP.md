@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
-| Data | 71 | canonical authored-data, including Thunder Cage lightning damage/control/recovery metadata plus novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 72 | canonical authored-data, including Tempest Ring target-centered ring geometry/wind resolution/recovery metadata plus Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1404,6 +1404,23 @@ The shared hard-disable flag vocabulary is centralized in `statusEngine` and con
 
 Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Check #2006 / run `33518317562` with 875/875 tests and the full gate; Pages #2136 / run `33518315622` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`.
 
+## `0.9.300.5` — Advanced Combat Packet 5: Tempest Ring Geometry Foundation
+
+```text
+Product       0.9.300.4 -> 0.9.300.5
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 20
+Data          71        -> 72
+Benchmark     3         -> 3
+```
+
+Data 72 changes the existing Tempest Ring definition from generic adept damage into an explicit target-centered ring with radius 2, maximum 4 targets, wind magical resolution, and three-second post-action recovery. The executable ability count remains 41.
+
+`combatGeometryEngine` version 1 derives deterministic encounter-relative positions from existing combatant side/order and performs ring selection; no mutable position state is stored. `abilityEngine` expands geometric target effects per selected recipient, and `combatAttentionEngine` now applies multi-recipient action enmity only to enemies actually affected. Game State remains 20 because the current persisted combatant order is sufficient to reproduce the same formation and no new required durable field exists.
+
+The first full focused run after geometry authoring, Check #2033, passed 878/879 tests; its only failure was a manually constructed test battle whose `combatSequence` and battle ID violated existing current-schema coherence. Fixing that fixture required no runtime change. Behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` then passed Check #2034 / run `33544018110` with 879/879 tests and the full gate; Pages #2164 / run `33544018073` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`.
+
 ## Phase progression
 
 ```text
@@ -1414,7 +1431,7 @@ Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Check #
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–4 COMPLETE; NEXT PACKET UNSELECTED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–5 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
