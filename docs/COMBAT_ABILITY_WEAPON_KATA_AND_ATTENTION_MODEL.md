@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.4 / Game State 20 / Data 71. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to the unified magic/element resolution contract, and Packet 4 gives Thunder Cage an executable resistible control semantic. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.5 / Game State 20 / Data 72. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to unified magic/element resolution, Packet 4 gives Thunder Cage an executable resistible control semantic, and Packet 5 gives Tempest Ring honest target-centered radial geometry. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–4 are COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–5 are COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -19,7 +19,8 @@ Permanent records:
 - `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -91,10 +92,18 @@ Implemented by 0.9.300 Packet 4:
 - enemy response/readiness suppression while hard-disabled, with ready interrupts deferred to the latest active disable expiry;
 - no target geometry, zone state, new clock, or new persistence family.
 
+Implemented by 0.9.300 Packet 5:
+- stateless `combatGeometryEngine` version 1 deriving encounter-relative formation from existing combatant side/order;
+- Tempest Ring target-centered `ring` geometry with radius 2 and maximum 4 recipients;
+- independent per-recipient wind magic accuracy, magic-defense, and elemental-resistance resolution;
+- ordinary ability result/event/action evidence carrying center, radius, cap, selected recipient IDs, distances, and derived positions;
+- multi-recipient hostile attention applied only to enemies with effects that actually landed;
+- no mutable combat-position state, movement, LOS, pursuit, ground targeting, zone state, new clock, or new persistence family.
+
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
 - unsupported weapon-family kata where canonical equipment/runtime support does not yet exist;
-- Tempest Ring geometry, Umbral Well field behavior, and full geometry/aura/stance/zone/channel/reaction breadth;
+- Umbral Well field behavior; cone/line/arc/chain/ground geometry; mutable combat movement/engagement geometry; and full aura/stance/zone/channel/reaction breadth;
 - generalized LOS/pursuit/disengagement and ranged line-of-fire models.
 
 ## Core combat law
@@ -228,7 +237,7 @@ The following are still incomplete or transitional:
 - representative migrated canonical ability damage now uses shared hit/defense/resistance resolution; the wider catalog still contains pre-B1 effect definitions;
 - Fracture Sigil proves deterministic status accuracy/resistance; the wider status catalog still needs explicit migration where target resistance is appropriate;
 - critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
-- target geometry is effectively self/enemy/context rather than line/cone/ring/zone/chain/aura;
+- one target-centered ring geometry is implemented through derived encounter formation; line/cone/arc/chain/ground/zone/aura geometry and mutable positioning remain deferred;
 - aura/stance/channel/zone actions are not first-class;
 - dagger/sword/axe/staff/club weapon kata/auto-sequence configuration is implemented for every currently equipped canonical melee family; character affinity substitutions and unsupported weapon families remain deferred;
 - timed combat loadout transitions and attention/enmity are implemented through B2-B3; named loadout presets, partial stowed/not-ready physical state, and LOS/pursuit-based pressure release remain deferred.
