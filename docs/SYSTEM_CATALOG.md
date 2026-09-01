@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 ```
 
 ## Data 57 regional authority
@@ -212,11 +212,11 @@ spellSchools / capabilities / abilities / companions
 | Elemental Form | playable | Universal fire/earth/wind/water/lightning/ice/light/dark attack families; no region ownership. |
 | Vital Weave / Ward Lore | playable | Universal healing and defensive/support spell families. |
 | Veilscript | playable | Original seal-magic tradition using the existing `ninjutsu` skill for debuff/guard sigils. |
-| Ability/spell engine | playable / B1 resolution subset implemented | Learned abilities, activation, costs, cooldowns, interruption, and explicit recovery work. Representative damage/status actions now use the shared combat-resolution contract; wider geometry/aura/zone/channel and catalog migration remain follow-on. |
+| Ability/spell engine | playable / novice elemental resolution breadth implemented | Learned abilities, activation, costs, cooldowns, interruption, and explicit recovery work. B1 representative actions plus all eight novice Elemental Form attacks now use shared structured resolution; adept geometry-signaling spells and wider aura/zone/channel catalog migration remain follow-on. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P2 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, persisted kata, and character-owned affinity substitutions share canonical authorities. P2 adds ranked affinity plus representative Ice dagger and Fire staff substitutions under Game State 20 without a new clock/task owner. |
+| Combat 2.0 | playable / 0.9.300 P3 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, persisted kata, character-owned affinity substitutions, and novice elemental spell resolution share canonical authorities. P3 changes authored ability data only; Game State remains 20. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.2 / Data 69 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–2 complete.
+Phase 0.9 remains open at Product 0.9.300.3 / Data 70 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–3 complete.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -315,5 +315,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packet 1 — Current Melee Kata Breadth is COMPLETE. Packet 2 — Character Affinity & Kata Substitution Foundation is COMPLETE.** The existing kata owner still covers dagger, sword, axe, staff, and club; Game State 20 adds character-owned affinity ranks while kata configuration remains version 2. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packets 1–3 are COMPLETE.** Packet 3 migrates the eight novice Elemental Form attacks to structured magic/element resolution without changing ability count or durable state. Adept ring/cage/well semantics remain deferred rather than flattened. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 
