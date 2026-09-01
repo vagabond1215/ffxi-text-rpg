@@ -24,6 +24,7 @@ import {
 } from '../systems/commitmentEngine.js';
 import { performPlayerAttack, startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
+import { startCombatEquipTransition, startCombatUnequipTransition } from '../systems/combatLoadoutEngine.js';
 import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
 import {
@@ -172,15 +173,23 @@ export function createDomApp({ host }) {
             result = performCommitmentFollowUp(state, payload.commitmentId);
             recordGameplayFeedback(result);
         } else if (intent === 'equipment.equip') {
-            const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
-            const equipped = Object.values(state.player?.equipment ?? {}).some((item) => item && (item.templateId === payload.itemId || item.id === payload.itemId));
-            result = { ok: equipped, message };
+            if (state.activeBattle?.phase === 'active') {
+                result = startCombatEquipTransition(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
+            } else {
+                const message = equipItem(state, payload.itemId, { slot: payload.slot, fromContainerId: payload.fromContainerId });
+                const equipped = Object.values(state.player?.equipment ?? {}).some((item) => item && (item.templateId === payload.itemId || item.id === payload.itemId));
+                result = { ok: equipped, message };
+            }
             recordGameplayFeedback(result);
         } else if (intent === 'equipment.unequip') {
-            const itemBefore = state.player?.equipment?.[payload.slot] ?? null;
-            const message = unequipItem(state, payload.slot, payload.destinationContainerId ?? 'inventory');
-            const unequipped = Boolean(itemBefore) && !state.player?.equipment?.[payload.slot];
-            result = { ok: unequipped, message };
+            if (state.activeBattle?.phase === 'active') {
+                result = startCombatUnequipTransition(state, payload.slot, payload.destinationContainerId ?? 'inventory');
+            } else {
+                const itemBefore = state.player?.equipment?.[payload.slot] ?? null;
+                const message = unequipItem(state, payload.slot, payload.destinationContainerId ?? 'inventory');
+                const unequipped = Boolean(itemBefore) && !state.player?.equipment?.[payload.slot];
+                result = { ok: unequipped, message };
+            }
             recordGameplayFeedback(result);
         } else if (intent === 'travel.start') {
             result = startTravel(state, payload.destinationId);
