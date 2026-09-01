@@ -358,6 +358,15 @@ export function validateEquipmentCatalogEntry(entry) {
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined && (!Number.isInteger(entry.weaponDelay) || entry.weaponDelay < 0)) {
         issues.push('weaponDelay must be a non-negative integer when present.');
     }
+    if (entry.handling !== null && entry.handling !== undefined) {
+        if (!isObject(entry.handling)) issues.push('handling must be null or an object.');
+        else {
+            validateNonNegativeInteger(entry.handling.stowSeconds, 'handling.stowSeconds', issues);
+            validateNonNegativeInteger(entry.handling.drawSeconds, 'handling.drawSeconds', issues);
+            validateNonNegativeInteger(entry.handling.readySeconds, 'handling.readySeconds', issues);
+            if (typeof entry.handling.cumbersome !== 'boolean') issues.push('handling.cumbersome must be boolean.');
+        }
+    }
 
     issues.push(...validateRequirements(entry.requirements).map((issue) => `requirements.${issue}`));
     issues.push(...validateModifierBlock(entry.modifiers, 'modifiers'));
@@ -524,6 +533,7 @@ function validateRequiredFieldMetadata(entry) {
     if (!isObject(entry.fieldNotes)) return ['fieldNotes must be an object.'];
     const requiredFields = ['requirements', 'modifiers'];
     if (entry.weaponDelay !== null && entry.weaponDelay !== undefined) requiredFields.push('weaponDelay');
+    if (entry.handling !== null && entry.handling !== undefined) requiredFields.push('handling');
     for (const field of requiredFields) {
         issues.push(...validateMetadata(entry.fieldNotes?.[field], `fieldNotes.${field}`));
     }
