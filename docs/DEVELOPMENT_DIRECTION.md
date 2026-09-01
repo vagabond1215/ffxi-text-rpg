@@ -335,6 +335,40 @@ Balance comes from equipment slots, action economy, resources, encumbrance, prep
 
 Advanced training can still require mentors, guild standing, certification, quests, reputation, prerequisite proficiencies, facilities, or difficult accomplishments.
 
+## Combat mastery, action language, and attention
+
+Permanent advanced-combat authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+
+Combat progression should visibly change **how** a character fights, not only increase damage numbers.
+
+Design direction:
+- ordinary melee/ranged attacks evolve into weapon-specific automatic sequences on the canonical combat timeline;
+- weapon proficiency unlocks additional sequence stages and selectable slot techniques;
+- physical defaults remain viable;
+- elemental affinity can unlock substitutions/mutations without forcing every weapon attack to become elemental;
+- individual weapons may supply an element or resonate with one, but weapon-family identity is not a universal hard-coded element;
+- manual techniques such as bashes, cleaves, feints, backstabs, volleys, and reactions sit above the automatic sequence;
+- spells, techniques, ranged attacks, auras, stances, zones, channels, and reactions should share one structured action-resolution vocabulary.
+
+Ability names should describe visible form/motion/element/result honestly. A name that implies a ring, chain, cage, well, rain, breaker, or similar behavior should eventually execute that behavior rather than remain decorative terminology.
+
+Prepared combat loadouts may package equipment, weapon sequence configuration, techniques, stance/aura choices, and affinity substitutions. Switching loadouts in combat is a timed, interruptible action:
+- compact weapons handle faster than cumbersome weapons;
+- directional stow/draw time matters;
+- cooldowns belong to canonical abilities and never reset because a loadout changed;
+- armor cannot be swapped while the character remains under meaningful active hostile pressure.
+
+Enemy attention uses distinct concepts:
+- **enmity** = absolute accumulated hostility/pressure;
+- **focus** = normalized relative attention;
+- **aggro** = sticky current target;
+- **fixation/priority** = exceptional targeting override.
+
+Focus share is not literal attack probability. Retargeting should use nonlinear focus concentration plus reachability/perception/tactical/current-target modifiers, and should occur only at meaningful reassessment points rather than every tick.
+
+Race/faction/species antagonism may influence baseline hostility, decay, focus floors, or priority without reducing all behavior to a hard scripted target.
+
 ## Origins and starting circumstances
 
 Character creation should center on **where this person begins in life**, not merely a starting combat class.
@@ -509,7 +543,7 @@ Current systems that should not be mistaken for final commitments include:
 - legacy FFXI world/place/race/job/currency terminology;
 - `mainJobId` and job-switch assumptions;
 - current sparse job skill-cap tables;
-- placeholder combat magic/weapon-skill behavior;
+- partial Combat 2.0 / ability behavior that still lacks unified physical/magical/elemental resolution, weapon-driven kata cadence, first-class ranged attacks, combat loadout transitions, and party attention/enmity;
 - automatic battle loot behavior that predates provenance/body-processing design;
 - wall-clock tick scheduling as distinct from canonical simulation time;
 - small starter item/shop/monster catalogs;
