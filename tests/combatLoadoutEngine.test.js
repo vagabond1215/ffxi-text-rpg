@@ -86,7 +86,7 @@ test('weapon-set transition is atomic blocks actions and preserves cooldowns', (
     assert.equal(player.equipment.mainHand.id, 'bronze-sword');
     assert.deepEqual(player.combat, state.player.combat);
     assert.equal(state.abilities.cooldowns['ability-ember-dart'], 12345);
-    assert.equal(getCombatantReadyAt(state, player.id), 4);
+    assert.equal(getCombatantReadyAt(state, player.id) - state.worldTime.totalSeconds, 1);
     assert.equal(listTimedTasks(state).length, 0);
     assert.ok(state.activeBattle.contract.actions.some((action) => action.kind === 'loadoutTransition' && action.data.resetWeaponSequence === true));
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
@@ -129,7 +129,7 @@ test('armor pressure uses focus as pressure not literal target probability', () 
     assert.equal(allowed.data.transition.kind, 'fullEquipment');
 
     interruptCombatLoadoutIfHardDisabled(state);
-    state.activeBattle.loadoutTransition && assert.fail('transition should still be active without a player disable');
+    assert.ok(state.activeBattle.loadoutTransition, 'transition should remain active without a player disable');
 
     // reset with a fresh fixture to prove fixation independently
     const fixed = threeActorBattle();
