@@ -100,19 +100,9 @@ test('Thunder Cage lightning resistance changes damage evidence and damage amoun
     battleEnemy(normal).resources.hp = 999;
     const normalResult = resolveThunderCage(normal);
 
-    const resisted = createCageState(createSequenceRng([0, 0]));
+    const resisted = createCageState(createSequenceRng([0, 0]), { lightningResistance: 50 });
     const enemy = battleEnemy(resisted);
     enemy.resources.hp = 999;
-    applyStatus(enemy, {
-        id: 'status-test-lightning-resistance',
-        name: 'Lightning Resistance',
-        category: 'buff',
-        durationSeconds: 30,
-        stackGroup: 'test-lightning-resistance',
-        stackRule: 'replace',
-        modifiers: { resistances: { lightning: 50 } },
-        flags: {},
-    }, { nowWorldSeconds: resisted.worldTime.totalSeconds });
     const resistedResult = resolveThunderCage(resisted);
 
     const normalDamage = normalResult.data.effects[0];
@@ -173,11 +163,25 @@ test('Thunder Cage shared hard-disable semantics remove immediate armor pressure
     assert.equal(getArmorPressureReport(state, player.id).blocked, false);
 });
 
-function createCageState(rng) {
+function createCageState(rng, options = {}) {
     const state = createNewGameState({ mainJobId: 'elementalist' });
     grantCapability(state.player, 'spell-thunder-cage');
     setLearnedSkill(state.player, 'elementalMagic', 3);
     state.player.resources.mp = 100;
+    if (options.lightningResistance) {
+        const sourceEnemy = state.enemies.find((entry) => entry.identity?.name === 'Training Dummy');
+        assert.ok(sourceEnemy);
+        applyStatus(sourceEnemy, {
+            id: 'status-test-lightning-resistance',
+            name: 'Lightning Resistance',
+            category: 'buff',
+            durationSeconds: 30,
+            stackGroup: 'test-lightning-resistance',
+            stackRule: 'replace',
+            modifiers: { resistances: { lightning: options.lightningResistance } },
+            flags: {},
+        }, { nowWorldSeconds: state.worldTime.totalSeconds });
+    }
     startEncounter(state, 'Training Dummy', { rng });
     battlePlayer(state).resources.mp = 100;
     setCombatantReadyAt(state, battleEnemy(state).id, state.worldTime.totalSeconds + 100000);
