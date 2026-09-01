@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are complete.** The current canonical/runtime checkpoint is Data 70 / Product 0.9.300.3 / Game State 20. Packet 3 migrates the eight existing novice Elemental Form attacks into the unified magic-accuracy, magic-defense, elemental-resistance, and explicit-recovery contract without adding abilities or geometry.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are complete.** The current canonical/runtime checkpoint is Data 71 / Product 0.9.300.4 / Game State 20. Packet 4 makes Thunder Cage an honest resistible lightning-control spell and centralizes the existing hard-disable flag vocabulary in status authority so disabled enemies cannot act until the effect expires.
 
 ```text
-Product:       0.9.300.3
+Product:       0.9.300.4
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          70
+Data:          71
 Benchmark:     3
-Codename:      Novice Elemental Resolution Breadth
+Codename:      Thunder Cage Control Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 70 implementation census:
+Validated Data 71 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -157,7 +157,7 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`. Marshal Varric Stone now exposes bounded Forge-Road instruction through the existing capability authority, and the integrated South Redstone proof exercises B1–B4 together.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are COMPLETE.** Packet 3 migrates Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike to the B1 unified resolution contract while preserving the 41-ability count. Adept names such as Tempest Ring, Thunder Cage, and Umbral Well remain deliberately unmigrated until their implied geometry/control/field semantics are selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are COMPLETE.** Packet 4 gives Thunder Cage independently resistible lightning damage/control, a six-second `cannotAct` status, and expiry-aware enemy readiness using the existing world clock/status system. Tempest Ring and Umbral Well remain deliberately unmigrated; no general geometry or zone system was added.
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;
