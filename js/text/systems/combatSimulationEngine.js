@@ -4,6 +4,7 @@ import {
     provideAbilityInterrupts,
     reconcileAbilityActivation,
 } from './abilityEngine.js';
+import { COMBAT_LOADOUT_TASK_KIND, interruptCombatLoadoutIfHardDisabled, reconcileCombatLoadoutTransition } from './combatLoadoutEngine.js';
 import {
     finalizeCombatState,
     provideCombatInterrupts,
@@ -28,6 +29,7 @@ export function advanceCombatSimulation(state, requestedSeconds) {
     let enemyResult = null;
     let abilityResult = null;
     let abilityInterrupt = null;
+    let loadoutResult = null;
     const interrupt = result.data?.interrupt ?? null;
 
     if (interrupt?.type === 'combat.enemy-ready') {
@@ -36,6 +38,9 @@ export function advanceCombatSimulation(state, requestedSeconds) {
         if (enemyResult?.resolution?.hit && active?.interruptible && state.activeBattle?.phase === 'active') {
             abilityInterrupt = interruptActiveAbility(state, `hit by ${enemyResult.action?.sourceId ?? 'enemy action'}`);
         }
+        loadoutResult = interruptCombatLoadoutIfHardDisabled(state);
+    } else if (interrupt?.type === 'task.completed' && interrupt.data?.kind === COMBAT_LOADOUT_TASK_KIND) {
+        loadoutResult = reconcileCombatLoadoutTransition(state);
     } else if (interrupt?.type === 'ability.activation-complete' || interrupt?.type === 'task.completed') {
         abilityResult = reconcileAbilityActivation(state);
     } else if (!result.data?.interrupted) {
@@ -48,6 +53,7 @@ export function advanceCombatSimulation(state, requestedSeconds) {
     if (enemyResult?.action) lines.push(`Enemy action: ${enemyResult.action.kind}${enemyResult.action.sourceId ? ` (${enemyResult.action.sourceId})` : ''}.`);
     if (abilityInterrupt?.message) lines.push(abilityInterrupt.message);
     if (abilityResult?.message) lines.push(abilityResult.message);
+    if (loadoutResult?.display?.text || loadoutResult?.message) lines.push(loadoutResult.display?.text ?? loadoutResult.message);
 
     return {
         ok: true,
@@ -58,6 +64,7 @@ export function advanceCombatSimulation(state, requestedSeconds) {
         enemyResult,
         abilityResult,
         abilityInterrupt,
+        loadoutResult,
         message: lines.join('\n'),
     };
 }
