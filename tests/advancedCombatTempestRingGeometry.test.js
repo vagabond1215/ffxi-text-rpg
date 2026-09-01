@@ -26,7 +26,7 @@ import { applyStatus } from '../js/text/systems/statusEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 test('Packet 5 gives Tempest Ring structured target-centered ring geometry and wind resolution', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 9);
+    assert.equal(ABILITY_CATALOG_VERSION, 10);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
