@@ -32,7 +32,7 @@ const NOVICE_ELEMENTAL = Object.freeze([
 ]);
 
 test('Packet 3 migrates exactly the eight novice Elemental Form attacks without adding abilities', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 9);
+    assert.equal(ABILITY_CATALOG_VERSION, 10);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
@@ -93,8 +93,8 @@ test('each novice elemental spell uses its target elemental resistance through s
     }
 });
 
-test('Packet 3 leaves geometry-signaling adept elemental names unmigrated unless a later bounded packet selects them', () => {
-    for (const id of ['ability-umbral-well']) {
+test('Packet 3 leaves still-unselected adept elemental names unmigrated unless later bounded packets select them', () => {
+    for (const id of ['ability-flare-bloom', 'ability-fault-rush', 'ability-rimefall', 'ability-radiant-arc']) {
         const ability = getAbility(id);
         assert.ok(ability);
         assert.equal(ability.effects[0].resolution, undefined);
