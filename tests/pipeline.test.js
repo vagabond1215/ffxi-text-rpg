@@ -174,7 +174,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.5\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.47\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.48\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
