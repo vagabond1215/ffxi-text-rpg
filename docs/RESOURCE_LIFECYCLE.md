@@ -93,6 +93,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 
 0.9.300 Packet 6 also adds no direct timed-task owner. `combatFieldEngine` owns durable `activeBattle.fields` records directly; their fictional-time pulse deadlines are exposed as combat interrupt candidates and reconciled through `combatSimulationEngine`. The existing Umbral Well ability activation task ends when the cast resolves and does not remain as the field's scheduler. Game State 21 changes active-battle persistence because outstanding field center/source-snapshot/pulse state changes future resumable outcomes; Data 73 changes the authored Umbral Well impact/field contract. The direct timed-task-owner set therefore remains unchanged.
 
+0.9.300 Packet 7 adds no direct timed-task owner and no durable propagation resource. Radiant Arc uses the ordinary ability activation task only until cast completion; its complete target-to-target recipient chain is then selected and resolved synchronously through `combatGeometryEngine`, `abilityEngine`, `combatResolutionEngine`, and `combatAttentionEngine`. No propagation deadline, interrupt provider, timer, field record, or background owner survives the action. Game State remains 21; Data 74 changes the authored Radiant Arc target/resolution/recovery contract. The direct timed-task-owner set remains unchanged.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
