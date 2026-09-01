@@ -21,6 +21,7 @@ export function createBattleState({ id = null, player, allies = [], enemies = []
         rng,
         combatants,
         enmity: createBattleAttentionState(combatants),
+        loadoutTransition: null,
         skillchain: null,
         magicBurstWindow: null,
         log: ['Battle begins.'],
