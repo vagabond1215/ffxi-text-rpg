@@ -1,12 +1,12 @@
 import { getCapability } from './capabilities.js';
 import { ELEMENT_KEYS } from './systemConstants.js';
 
-export const ABILITY_CATALOG_VERSION = 9;
+export const ABILITY_CATALOG_VERSION = 10;
 export const ABILITY_KINDS = Object.freeze(['spell', 'technique', 'utility']);
 export const ABILITY_CONTEXTS = Object.freeze(['combat', 'exploration']);
 export const ABILITY_TARGET_KINDS = Object.freeze(['self', 'enemy', 'context']);
 export const ABILITY_GEOMETRY_KINDS = Object.freeze(['ring']);
-export const ABILITY_EFFECT_TYPES = Object.freeze(['damage', 'heal', 'status', 'context']);
+export const ABILITY_EFFECT_TYPES = Object.freeze(['damage', 'heal', 'status', 'field', 'context']);
 export const ABILITY_RESOURCE_KEYS = Object.freeze(['hp', 'mp', 'tp']);
 export const ABILITY_SCALING_STATS = Object.freeze(['str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr']);
 
@@ -77,7 +77,7 @@ const ABILITIES = Object.freeze({
     'ability-thunder-cage': ability({ id: 'ability-thunder-cage', name: 'Thunder Cage', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-thunder-cage', tags: ['magic', 'offensive', 'lightning', 'adept', 'control'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, recoverySeconds: 3, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75, resolution: { delivery: 'spell', channel: 'magical', damageType: 'spell', element: 'lightning', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } }, { type: 'status', recipient: 'target', resolution: { delivery: 'spell', channel: 'magical', element: 'lightning', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicEvasion' }, status: { id: 'status-thunder-cage', name: 'Thunder Cage', category: 'debuff', durationSeconds: 6, stackGroup: 'elemental-control-cage', stackRule: 'replace', modifiers: {}, flags: { cannotAct: true, caged: true } } }] }),
     'ability-rimefall': ability({ id: 'ability-rimefall', name: 'Rimefall', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-rimefall', tags: ['magic', 'offensive', 'ice', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
     'ability-radiant-arc': ability({ id: 'ability-radiant-arc', name: 'Radiant Arc', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-radiant-arc', tags: ['magic', 'offensive', 'light', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'mnd', base: 16, coefficient: 1.75 }] }),
-    'ability-umbral-well': ability({ id: 'ability-umbral-well', name: 'Umbral Well', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-umbral-well', tags: ['magic', 'offensive', 'dark', 'adept'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75 }] }),
+    'ability-umbral-well': ability({ id: 'ability-umbral-well', name: 'Umbral Well', kind: 'spell', schoolId: 'school-elemental-form', capabilityId: 'spell-umbral-well', tags: ['magic', 'offensive', 'dark', 'adept', 'field', 'area'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 6, interruptible: true }, recoverySeconds: 3, cooldownSeconds: 18, costs: { mp: 20 }, effects: [{ type: 'damage', recipient: 'target', stat: 'int', base: 16, coefficient: 1.75, resolution: { delivery: 'spell', channel: 'magical', damageType: 'spell', element: 'dark', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } }, { type: 'field', recipient: 'target', field: { durationSeconds: 12, pulseSeconds: 4, geometry: { kind: 'radius', radius: 2, maximumTargets: 4 }, effect: { type: 'damage', stat: 'int', base: 4, coefficient: 0.45, resolution: { delivery: 'spell', channel: 'magical', damageType: 'spell', element: 'dark', elementSource: 'ability', accuracyModel: 'magic', resistanceModel: 'magicDefense', criticalEligible: false } } } }] }),
     'ability-renewing-pulse': ability({ id: 'ability-renewing-pulse', name: 'Renewing Pulse', kind: 'spell', schoolId: 'school-vital-weave', capabilityId: 'spell-renewing-pulse', tags: ['magic', 'restorative', 'adept'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 5, interruptible: true }, cooldownSeconds: 16, costs: { mp: 16 }, effects: [{ type: 'heal', recipient: 'self', stat: 'mnd', base: 18, coefficient: 2.2 }] }),
     'ability-steady-heart': ability({ id: 'ability-steady-heart', name: 'Steady Heart', kind: 'spell', schoolId: 'school-ward-lore', capabilityId: 'spell-steady-heart', tags: ['magic', 'support', 'focus'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 4, interruptible: true }, cooldownSeconds: 22, costs: { mp: 12 }, effects: [{ type: 'status', recipient: 'self', status: { id: 'status-steady-heart', name: 'Steady Heart', category: 'buff', durationSeconds: 45, stackGroup: 'magic-focus', stackRule: 'replace', modifiers: {"attack":4,"accuracy":3}, flags: {"focused":true} } }] }),
     'ability-spellguard': ability({ id: 'ability-spellguard', name: 'Spellguard', kind: 'spell', schoolId: 'school-ward-lore', capabilityId: 'spell-spellguard', tags: ['magic', 'support', 'magic-defense'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 4, interruptible: true }, cooldownSeconds: 24, costs: { mp: 13 }, effects: [{ type: 'status', recipient: 'self', status: { id: 'status-spellguard', name: 'Spellguard', category: 'buff', durationSeconds: 45, stackGroup: 'magic-defense', stackRule: 'replace', modifiers: {"magicDefense":5,"magicEvasion":3}, flags: {"spellguard":true} } }] }),
@@ -154,8 +154,41 @@ function validateEffect(abilityDefinition, effect, index, issues) {
     if (!['self', 'target', 'context'].includes(effect.recipient)) issues.push(`${prefix} has invalid recipient ${effect.recipient}.`);
     if (effect.type === 'damage' || effect.type === 'heal') { if (!ABILITY_SCALING_STATS.includes(effect.stat)) issues.push(`${prefix} has invalid scaling stat ${effect.stat}.`); if (!nonNegativeNumber(effect.base)) issues.push(`${prefix} base must be non-negative.`); if (!nonNegativeNumber(effect.coefficient)) issues.push(`${prefix} coefficient must be non-negative.`); }
     if (effect.type === 'status') { const status = effect.status; if (!status || typeof status !== 'object' || Array.isArray(status)) issues.push(`${prefix}.status must be an object.`); else { if (!stableId(status.id, 'status-')) issues.push(`${prefix}.status.id is invalid.`); if (!positiveInteger(status.durationSeconds)) issues.push(`${prefix}.status.durationSeconds must be positive.`); if (!status.stackGroup) issues.push(`${prefix}.status.stackGroup is required.`); if (!['replace', 'ignore', 'stack'].includes(status.stackRule)) issues.push(`${prefix}.status.stackRule is invalid.`); } }
+    if (effect.type === 'field') validateFieldDefinition(abilityDefinition, effect, prefix, issues);
     if (effect.resolution !== undefined) validateResolution(effect.resolution, prefix, issues);
     if (effect.type === 'context' && !effect.operation) issues.push(`${prefix}.operation is required.`);
+}
+
+function validateFieldDefinition(abilityDefinition, effect, prefix, issues) {
+    const field = effect.field;
+    if (effect.recipient !== 'target') issues.push(`${prefix} field recipient must be target.`);
+    if (!abilityDefinition.contexts.includes('combat')) issues.push(`${prefix} field effects require combat context.`);
+    if (!field || typeof field !== 'object' || Array.isArray(field)) {
+        issues.push(`${prefix}.field must be an object.`);
+        return;
+    }
+    if (!positiveInteger(field.durationSeconds)) issues.push(`${prefix}.field.durationSeconds must be positive.`);
+    if (!positiveInteger(field.pulseSeconds)) issues.push(`${prefix}.field.pulseSeconds must be positive.`);
+    if (positiveInteger(field.durationSeconds) && positiveInteger(field.pulseSeconds)) {
+        if (field.pulseSeconds > field.durationSeconds) issues.push(`${prefix}.field.pulseSeconds must not exceed durationSeconds.`);
+        if (field.durationSeconds % field.pulseSeconds !== 0) issues.push(`${prefix}.field duration must contain a whole number of pulses.`);
+    }
+    if (!field.geometry || typeof field.geometry !== 'object' || Array.isArray(field.geometry)) issues.push(`${prefix}.field.geometry must be an object.`);
+    else {
+        if (field.geometry.kind !== 'radius') issues.push(`${prefix}.field.geometry.kind must be radius.`);
+        if (!Number.isFinite(Number(field.geometry.radius)) || Number(field.geometry.radius) <= 0) issues.push(`${prefix}.field.geometry.radius must be positive.`);
+        if (!positiveInteger(field.geometry.maximumTargets)) issues.push(`${prefix}.field.geometry.maximumTargets must be a positive integer.`);
+    }
+    const pulse = field.effect;
+    if (!pulse || typeof pulse !== 'object' || Array.isArray(pulse)) {
+        issues.push(`${prefix}.field.effect must be an object.`);
+        return;
+    }
+    if (pulse.type !== 'damage') issues.push(`${prefix}.field.effect.type must be damage.`);
+    if (!ABILITY_SCALING_STATS.includes(pulse.stat)) issues.push(`${prefix}.field.effect.stat is invalid.`);
+    if (!nonNegativeNumber(pulse.base)) issues.push(`${prefix}.field.effect.base must be non-negative.`);
+    if (!nonNegativeNumber(pulse.coefficient)) issues.push(`${prefix}.field.effect.coefficient must be non-negative.`);
+    validateResolution(pulse.resolution, `${prefix}.field.effect`, issues);
 }
 
 function validateResolution(resolution, prefix, issues) {
@@ -170,7 +203,7 @@ function validateResolution(resolution, prefix, issues) {
     if (resolution.criticalEligible !== undefined && typeof resolution.criticalEligible !== 'boolean') issues.push(`${prefix}.resolution.criticalEligible must be boolean.`);
 }
 function school(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), tradition: String(definition.tradition), tags: [...(definition.tags ?? [])] }); }
-function ability(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), kind: definition.kind, schoolId: definition.schoolId ? String(definition.schoolId) : null, capabilityId: String(definition.capabilityId), tags: [...(definition.tags ?? [])], contexts: [...(definition.contexts ?? [])], target: { ...(definition.target ?? {}), ...(definition.target?.geometry ? { geometry: { ...definition.target.geometry } } : {}) }, activation: { durationSeconds: Math.max(0, Math.floor(Number(definition.activation?.durationSeconds) || 0)), interruptible: definition.activation?.interruptible === true }, recoverySeconds: Math.max(0, Math.floor(Number(definition.recoverySeconds) || 0)), cooldownSeconds: Math.max(0, Math.floor(Number(definition.cooldownSeconds) || 0)), costs: { ...(definition.costs ?? {}) }, effects: (definition.effects ?? []).map((effect) => ({ ...effect, resolution: effect.resolution ? { ...effect.resolution } : undefined, status: effect.status ? { ...effect.status, modifiers: { ...(effect.status.modifiers ?? {}) }, flags: { ...(effect.status.flags ?? {}) } } : undefined })) }); }
+function ability(definition) { return deepFreeze({ id: String(definition.id), name: String(definition.name), kind: definition.kind, schoolId: definition.schoolId ? String(definition.schoolId) : null, capabilityId: String(definition.capabilityId), tags: [...(definition.tags ?? [])], contexts: [...(definition.contexts ?? [])], target: { ...(definition.target ?? {}), ...(definition.target?.geometry ? { geometry: { ...definition.target.geometry } } : {}) }, activation: { durationSeconds: Math.max(0, Math.floor(Number(definition.activation?.durationSeconds) || 0)), interruptible: definition.activation?.interruptible === true }, recoverySeconds: Math.max(0, Math.floor(Number(definition.recoverySeconds) || 0)), cooldownSeconds: Math.max(0, Math.floor(Number(definition.cooldownSeconds) || 0)), costs: { ...(definition.costs ?? {}) }, effects: (definition.effects ?? []).map((effect) => ({ ...effect, resolution: effect.resolution ? { ...effect.resolution } : undefined, status: effect.status ? { ...effect.status, modifiers: { ...(effect.status.modifiers ?? {}) }, flags: { ...(effect.status.flags ?? {}) } } : undefined, field: effect.field ? { ...effect.field, geometry: { ...(effect.field.geometry ?? {}) }, effect: { ...(effect.field.effect ?? {}), resolution: effect.field.effect?.resolution ? { ...effect.field.effect.resolution } : undefined } } : undefined })) }); }
 function normalize(value) { return String(value ?? '').trim().toLowerCase().replace(/\s+/g, '-'); }
 function stableId(value, prefix) { return typeof value === 'string' && value.startsWith(prefix) && /^[a-z][a-z0-9-]*$/.test(value); }
 function positiveInteger(value) { return Number.isInteger(value) && value > 0; }
