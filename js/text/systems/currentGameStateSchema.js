@@ -4,6 +4,7 @@ import { validateAbilityRuntimeState } from './abilityEngine.js';
 import { validatePersistedActiveBattle } from './activeBattlePersistence.js';
 import { validateCapabilityState } from './capabilityEngine.js';
 import { validatePersistedCombatIdentity } from './combatIdentityPersistence.js';
+import { COMBAT_LOADOUT_TASK_CHANNEL, COMBAT_LOADOUT_TASK_KIND } from './combatLoadoutEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateCultivationState } from './cultivationEngine.js';
 import { validatePersistedDayCycle } from './dayCyclePersistence.js';
@@ -158,6 +159,8 @@ function validateCurrentTaskOwnerLinks(state) {
     }
     const activation = state.abilities?.active;
     if (isObject(activation)) issues.push(...validateOwnerTask(state, { path: `ability ${activation.abilityId}`, taskId: activation.taskId, kind: 'ability.activation', channel: 'ability', data: { abilityId: activation.abilityId } }));
+    const loadout = state.activeBattle?.loadoutTransition;
+    if (isObject(loadout)) issues.push(...validateOwnerTask(state, { path: `combat loadout ${loadout.actorId}`, taskId: loadout.taskId, kind: COMBAT_LOADOUT_TASK_KIND, channel: COMBAT_LOADOUT_TASK_CHANNEL, data: { battleId: state.activeBattle.id, actorId: loadout.actorId } }));
     for (const opportunity of state.resourceOpportunities?.records ?? []) {
         for (const action of opportunity?.actions ?? []) {
             if (action?.status !== 'active') continue;
