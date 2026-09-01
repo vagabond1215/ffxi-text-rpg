@@ -35,7 +35,7 @@ function storedCharacterState() {
 
 test('current Game State raw payload does not require derived enemy encounter projection', () => {
     const state = createInitialState();
-    assert.equal(VERSION.gameState, 20);
+    assert.equal(VERSION.gameState, 21);
     delete state.enemies;
     delete state.log;
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
