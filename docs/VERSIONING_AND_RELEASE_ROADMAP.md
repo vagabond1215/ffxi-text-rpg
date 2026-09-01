@@ -1242,6 +1242,18 @@ Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Dat
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
+## Combat planning decision — no version change
+
+The advanced-combat design audit and Slice B implementation planning add **no runtime/data/persistence version change**.
+
+Permanent authorities:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+Current runtime remains Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63.
+
+The next implementation is intended to advance Product within 0.9.200 only when Packet B1 actually lands. Data changes only for authored canonical records. Game State changes only if the implemented durable combat configuration/active-battle contract genuinely changes serialization.
+
 ## Phase progression
 
 ```text
@@ -1251,8 +1263,8 @@ No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A COMPLETE; SLICE B UNSELECTED
-0.9.300 Advanced combat/training              QUEUED
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A COMPLETE; SLICE B COMBAT BRIDGE SELECTED / NOT STARTED
+0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
