@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
 ```
 
 ## Product version format
@@ -1268,7 +1268,7 @@ Data advances because existing canonical ability records gain authored resolutio
 
 Game State remains 15: combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence uses the existing action-data envelope rather than a new required state family.
 
-B2 Enemy Attention and B3 Combat Loadout Transition Foundation are complete through Game State 17 / Data 65; B4 Weapon Cadence, Ranged Action, and Minimal Kata is next and not started.
+B2 Enemy Attention, B3 Combat Loadout Transitions, and B4 Weapon Cadence/Ranged/Minimal Kata are complete through Game State 18 / Data 66; B5 Playable Brasshaven / Redstone Combat-Training Proof is next and not started.
 
 
 ## `0.9.200.3` — Combat 2.0 Packet B2: Enemy Attention Foundation
@@ -1290,7 +1290,7 @@ Data remains 64 because B2 adds no canonical authored ability, item, NPC, enemy,
 
 No supported-save migration is added. The project remains pre-alpha current-schema-only, so Game State 15 saves are not silently coerced into Game State 16.
 
-B3 Combat Loadout Transition Foundation is complete; B4 Weapon Cadence, Ranged Action, and Minimal Kata is next and not started.
+B3 Combat Loadout Transition Foundation and B4 Weapon Cadence, Ranged Action, and Minimal Kata are complete; B5 playable proof is next and not started.
 
 ## `0.9.200.4` — Combat 2.0 Packet B3: Combat Loadout Transitions
 
@@ -1307,6 +1307,20 @@ Game State 17 persists active loadout-transition ownership and timed-task linkag
 
 Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 / run `33462594046` with 844/844 tests and the full gate; Pages #2038 / run `33462592986` passed. Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
 
+## `0.9.200.5` — Combat 2.0 Packet B4: Weapon Cadence, Ranged Action, and Minimal Kata
+
+```text
+Product       0.9.200.4 -> 0.9.200.5
+Package       0.9.200   -> 0.9.200
+Account Save  5         -> 5
+Game State    17        -> 18
+Data          65        -> 66
+Benchmark     3         -> 3
+```
+
+Game State 18 persists player kata selections and the encounter-local sequence cursor because those values change the next resumable combat action. Active-battle persistence component version advances 3 -> 4. Data 66 adds authored Braided Sling, Rounded Sling Stones, and representative dagger/sword kata definitions. No supported-save migration is added.
+
+Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 / run `33470044213` with 852/852 tests and the full gate; Pages #2055 / run `33470043871` passed. Permanent record: `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
 ## Phase progression
 
 ```text
@@ -1316,7 +1330,7 @@ Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B3 COMPLETE; B4 QUEUED / NOT STARTED
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B4 COMPLETE; B5 QUEUED / NOT STARTED
 0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED

@@ -66,6 +66,7 @@ authority:
   combat_b1_record: docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md
   combat_b2_record: docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md
   combat_b3_record: docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md
+  combat_b4_record: docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -73,7 +74,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: combat-slice-b-packet-b4-weapon-cadence-ranged-minimal-kata-queued-not-started
+  current_normal_work: combat-slice-b-packet-b5-playable-brasshaven-redstone-proof-queued-not-started
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -191,28 +192,33 @@ git:
   latest_combat_b2_pages: 33459746331
   latest_combat_b2_pages_number: 2011
   latest_combat_b2_pages_result: success
+  latest_combat_b4_implementation_check: 33470044213
+  latest_combat_b4_implementation_check_number: 1925
+  latest_combat_b4_implementation_check_sha: 0c3ef0a2720850d362cea06dffdbfd452f5a0c19
+  latest_combat_b4_implementation_check_result: success-852-of-852-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_combat_b4_pages: 33470043871
+  latest_combat_b4_pages_number: 2055
+  latest_combat_b4_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.200-adventure-vertical-slices
-  current_track_status: active-slice-a-complete-slice-b-b1-b2-b3-complete-b4-queued
+  current_track_status: active-slice-a-complete-slice-b-b1-b2-b3-b4-complete-b5-queued
   completed_track: 0.9.100-content-scale-gate-a
   completed_track_status: complete-through-packet-e
-  latest_bounded_unit: combat-b2-enemy-attention-foundation
-  latest_bounded_unit_status: complete-on-main-product-0.9.200.4-game-state-17-data-65
-  latest_data_bounded_unit: combat-b1-unified-combat-resolution
-  latest_data_bounded_unit_status: complete-on-main-behavioral-freeze-data-64
-  next_roadmap_gate: adventure-vertical-slice-b-packet-b4-weapon-cadence-ranged-minimal-kata
+  latest_bounded_unit: combat-b4-weapon-cadence-ranged-minimal-kata
+  latest_bounded_unit_status: complete-on-main-product-0.9.200.5-game-state-18-data-66
+  latest_data_bounded_unit: combat-b4-weapon-cadence-ranged-minimal-kata
+  latest_data_bounded_unit_status: complete-on-main-data-66
+  next_roadmap_gate: adventure-vertical-slice-b-packet-b5-playable-brasshaven-redstone-proof
   next_roadmap_gate_status: queued-not-started-requires-next-explicit-continue
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-b2-subsets-implemented
+  combat_design_contract_status: permanent-authority-b1-b2-b3-b4-subsets-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
-  combat_slice_b_status: active-b1-b2-b3-complete-b4-queued
-  combat_next_packet: b4-weapon-cadence-ranged-action-minimal-kata
-  combat_next_packet_scope: weapon-delay-cadence-first-class-ranged-action-minimal-configurable-kata-no-b5-playable-proof
+  combat_slice_b_status: active-b1-b2-b3-b4-complete-b5-queued
+  combat_next_packet: b5-playable-brasshaven-redstone-proof
+  combat_next_packet_scope: prove-b1-through-b4-in-playable-brasshaven-redstone-training-loop-no-new-generic-combat-subsystem
   combat_adjacency_audit_status: complete-b3-entry-authority
   combat_following_packets:
-    - b3-combat-loadout-transitions-and-armor-pressure-lock
-    - b4-weapon-cadence-ranged-action-minimal-kata
     - b5-playable-brasshaven-redstone-proof
   pre_ui_discovery_contract: player-information-and-locality-discovery
   pre_ui_discovery_contract_status: foundation-implemented-complete
@@ -273,14 +279,16 @@ validation:
   adventure_slice_a_guard: tests/playerSlatewaterRoadScoutFlow.test.js
   combat_b1_guard: tests/combatResolutionEngine.test.js
   combat_b2_guard: tests/combatAttentionEngine.test.js
+  combat_b3_guard: tests/combatLoadoutEngine.test.js
+  combat_b4_guard: tests/weaponCombatB4.test.js
 quality:
-  current_product_version: 0.9.200.4
+  current_product_version: 0.9.200.5
   current_package_version: 0.9.200
   current_account_save: 5
-  current_game_state: 17
-  current_data_version: 65
+  current_game_state: 18
+  current_data_version: 66
   current_benchmark_version: 3
-  current_codename: Combat Loadout Transitions
+  current_codename: Weapon Cadence, Ranged Action, and Minimal Kata
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -304,9 +312,9 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: weapon-delay-cadence-ranged-action-minimal-kata
-    weapon_kata_planned: true
-    first_class_ranged_planned: true
+    immediate_runtime_gap: playable-brasshaven-redstone-combat-training-proof
+    weapon_kata_implemented: true
+    first_class_ranged_implemented: true
     affinity_substitutions_planned: true
     timed_loadout_swaps_implemented: true
     armor_pressure_lock_planned: true

@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
 ```
 
 ## Current bounded-unit state
 
-**Combat 2.0 Packet B3 — Combat Loadout Transition Foundation** is the latest bounded unit on `main`.
+**Combat 2.0 Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata** is the latest bounded unit on `main`.
 
-- permanent record `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
-- Product 0.9.200.4 / Package 0.9.200 / Game State 17 / Data 65 / Account Save 5 / Benchmark 3;
-- behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
-- Check #1860 / run `33457301272`: Repository Audit, **832/832 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #1990 / run `33457300712`: green.
+- permanent record `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
+- Product 0.9.200.5 / Package 0.9.200 / Game State 18 / Data 66 / Account Save 5 / Benchmark 3;
+- behavioral implementation freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19`;
+- Check #1925 / run `33470044213`: Repository Audit, **852/852 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2055 / run `33470043871`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 64 metrics
+## Data 66 metrics
 
 ```text
 places/localities                       55
@@ -160,12 +160,23 @@ Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 
 
 B3 adds `combatLoadoutEngine.js` as the seventh direct timed-task owner, persists `activeBattle.loadoutTransition`, closes direct active-combat equipment mutation, preserves canonical cooldowns, synchronizes root/battle equipment on completion, and enforces B2 Aggro/Focus/Fixation armor pressure. Game State advances 16 -> 17; Data advances 64 -> 65 for authored handling metadata.
 
-### Next bounded unit — Packet B4
+### Latest completed unit — Packet B4
 
-**Weapon Cadence, Ranged Action, and Minimal Kata — QUEUED / NOT STARTED.**
+**Weapon Cadence, Ranged Action, and Minimal Kata — COMPLETE.**
 
-Do not silently absorb deferred LOS/pursuit, defense-reaction, named-loadout-preset, or recovered-technique migration decisions. B5 remains separately bounded.
+Permanent record: `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
 
+Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 / run `33470044213` with Repository Audit, **852/852 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #2055 / run `33470043871` passed.
+
+B4 centralizes weapon-delay conversion, routes player and companion basic attacks through equipment-derived cadence, adds a first-class ranged action using ranged stats and equipped ammunition, and persists minimal dagger/sword kata configuration plus encounter cursor state. B3 weapon-set reset intent is now consumed by the kata owner.
+
+Game State advances 17 -> 18 because kata configuration/cursor state changes resumable combat outcomes. Data advances 65 -> 66 because B4 adds authored sling/ammunition and kata definitions.
+
+### Next bounded unit — Packet B5
+
+**Playable Brasshaven / Redstone Combat-Training Proof — QUEUED / NOT STARTED.**
+
+B5 should prove B1–B4 in one coherent playable training/combat loop. It must not silently expand into LOS/pursuit geometry, universal passive defense reactions, named prepared loadout presets, broad legacy-technique migration, or an unrelated new combat subsystem.
 
 ## Preserved interrupted/resumable queues
 

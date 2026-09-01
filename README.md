@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packets B1-B3 are complete.** The current canonical/runtime checkpoint is Data 65 / Product 0.9.200.4 / Game State 17. B3 adds timed combat loadout transitions and representative authored equipment-handling data.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packets B1-B4 are complete.** The current canonical/runtime checkpoint is Data 66 / Product 0.9.200.5 / Game State 18. B4 adds equipment-derived attack cadence, first-class ranged attacks, and persisted minimal weapon kata.
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 65 implementation census:
+Validated Data 66 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -105,7 +105,7 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 17 retains the Game State 16 attention contract and additionally requires durable active-battle loadout transitions with timed-task ownership, operation/slot/item plan, timing/recovery boundaries, and root/battle equipment coherence. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 18 retains the Game State 17 loadout contract and additionally requires durable player weapon-kata configuration plus encounter-local kata cursor/reset state so resumed combat preserves the same next sequence choice. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
@@ -153,7 +153,9 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B3 — Combat Loadout Transition Foundation is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`. Active-combat equipment changes now use canonical fictional time, directional handling, atomic completion/cancellation, cooldown preservation, root/battle equipment coherence, and B2-driven armor-pressure legality.
 
-**Next bounded Slice B unit: B4 — Weapon Cadence, Ranged Action, and Minimal Kata.** It is queued, not started. B5 remains the playable Brasshaven/Redstone combat-training proof.
+**Combat 2.0 Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`. Basic player/companion cadence is equipment-derived, ranged attacks are first-class and consume equipped ammunition, and dagger/sword kata configuration/cursors persist through current-schema combat state.
+
+**Next bounded Slice B unit: B5 — Playable Brasshaven / Redstone Combat-Training Proof.** It is queued, not started.
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;

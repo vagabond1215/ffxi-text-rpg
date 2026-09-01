@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
 ```
 
 ## Completed foundation and major tranches
@@ -170,7 +170,7 @@ Census movement:
 
 The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
 
-**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packets B1-B3 are complete; B3 closes at Product 0.9.200.4 / Data 65 / Game State 17. Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata — is next and queued/not started.
+**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packets B1-B4 are complete; B4 closes at Product 0.9.200.5 / Data 66 / Game State 18. Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof — is next and queued/not started.
 
 ## Macro-world topology
 
@@ -251,7 +251,9 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B3 — Combat Loadout Transition Foundation is COMPLETE at Product 0.9.200.4 / Data 65 / Game State 17.** Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 with 844/844 tests and the full gate; Pages #2038 passed.
 
-**Next bounded unit: B4 — Weapon Cadence, Ranged Action, and Minimal Kata, queued/not started.** B5 remains separately bounded.
+**Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata is COMPLETE at Product 0.9.200.5 / Data 66 / Game State 18.** Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 with 852/852 tests and the full gate; Pages #2055 passed.
+
+**Next bounded unit: B5 — Playable Brasshaven / Redstone Combat-Training Proof, queued/not started.**
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
