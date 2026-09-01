@@ -62,7 +62,7 @@ test('timed offensive magic spends once, resolves at canonical world time, start
     grantCapability(state.player, 'spell-ember-dart');
     setLearnedSkill(state.player, 'elementalMagic', 1);
     state.player.resources.mp = 100;
-    startEncounter(state, 'Brush Hare');
+    startEncounter(state, 'Brush Hare', { rng: () => 0 });
     const enemy = getBattleEnemy(state);
     enemy.resources.hp = 999;
 
