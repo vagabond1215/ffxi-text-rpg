@@ -70,6 +70,7 @@ authority:
   combat_b5_record: docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md
   advanced_combat_p1_melee_kata_breadth: docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md
   advanced_combat_p2_character_affinity_kata_substitution: docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md
+  advanced_combat_p3_novice_elemental_resolution_breadth: docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -77,7 +78,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: advanced-combat-post-packet-2-reassessment-unselected
+  current_normal_work: advanced-combat-post-packet-3-reassessment-unselected
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -223,24 +224,31 @@ git:
   latest_advanced_combat_p2_pages: 33477008886
   latest_advanced_combat_p2_pages_number: 2086
   latest_advanced_combat_p2_pages_result: success
+  latest_advanced_combat_p3_implementation_check: 33515422352
+  latest_advanced_combat_p3_implementation_check_number: 1981
+  latest_advanced_combat_p3_implementation_check_sha: 32f0ee268525f096f40421414af180e90a724397
+  latest_advanced_combat_p3_implementation_check_result: success-870-of-870-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_advanced_combat_p3_pages: 33515422056
+  latest_advanced_combat_p3_pages_number: 2111
+  latest_advanced_combat_p3_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.300-advanced-combat-training
-  current_track_status: active-packets-1-and-2-complete-next-packet-unselected
+  current_track_status: active-packets-1-through-3-complete-next-packet-unselected
   completed_track: 0.9.200-adventure-vertical-slices
   completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: advanced-combat-p2-character-affinity-kata-substitution
-  latest_bounded_unit_status: complete-on-main-product-0.9.300.2-game-state-20-data-69
-  latest_data_bounded_unit: advanced-combat-p2-character-affinity-kata-substitution
-  latest_data_bounded_unit_status: complete-on-main-data-69
-  next_roadmap_gate: advanced-combat-post-p2-reassessment
+  latest_bounded_unit: advanced-combat-p3-novice-elemental-resolution-breadth
+  latest_bounded_unit_status: complete-on-main-product-0.9.300.3-game-state-20-data-70
+  latest_data_bounded_unit: advanced-combat-p3-novice-elemental-resolution-breadth
+  latest_data_bounded_unit_status: complete-on-main-data-70
+  next_roadmap_gate: advanced-combat-post-p3-reassessment
   next_roadmap_gate_status: unselected-awaiting-explicit-work-order
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-implemented
+  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
   combat_slice_b_status: complete-b1-through-b5
-  combat_next_packet: unselected-after-advanced-combat-p2
-  combat_next_packet_scope: requires-fresh-bounded-selection-do-not-auto-start-aura-stance-geometry-or-broad-catalog-migration
+  combat_next_packet: unselected-after-advanced-combat-p3
+  combat_next_packet_scope: requires-fresh-bounded-selection-do-not-auto-start-adept-geometry-aura-stance-or-broad-catalog-migration
   combat_adjacency_audit_status: complete-b3-entry-authority
   combat_following_packets: []
   pre_ui_discovery_contract: player-information-and-locality-discovery
@@ -307,14 +315,15 @@ validation:
   combat_b5_guard: tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js
   advanced_combat_p1_guard: tests/advancedCombatKataBreadth.test.js
   advanced_combat_p2_guard: tests/advancedCombatAffinitySubstitution.test.js
+  advanced_combat_p3_guard: tests/advancedCombatNoviceElementalResolution.test.js
 quality:
-  current_product_version: 0.9.300.2
+  current_product_version: 0.9.300.3
   current_package_version: 0.9.300
   current_account_save: 5
   current_game_state: 20
-  current_data_version: 69
+  current_data_version: 70
   current_benchmark_version: 3
-  current_codename: Character Affinity & Kata Substitution
+  current_codename: Novice Elemental Resolution Breadth
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -329,7 +338,7 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority-through-0.9.300-p2-affinity-substitution-implemented
+    status: permanent-design-authority-through-0.9.300-p3-novice-elemental-resolution-implemented
     runtime_changed: true
     data_changed: 63-to-64
     game_state_changed: true
@@ -338,12 +347,15 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: post-p2-advanced-combat-next-packet-unselected
+    immediate_runtime_gap: adept-elemental-semantics-and-broader-action-contract-debt-require-fresh-selection
     weapon_kata_implemented: true
     first_class_ranged_implemented: true
     affinity_substitutions_planned: false
     character_affinity_implemented: true
     affinity_substitutions_implemented: true
+    novice_elemental_resolution_implemented: true
+    novice_elemental_resolution_count: 8
+    adept_geometry_signaling_elemental_spells_migrated: false
     current_melee_kata_families: 5
     current_melee_kata_breadth_complete: true
     timed_loadout_swaps_implemented: true
@@ -675,7 +687,7 @@ constraints:
   - world-facing food safety should use practical late-medieval fantasy knowledge rather than modern microbiology language
   - raw toxic or irritant foods require explicit hazards and plausible preparation instructions
   - do not add disconnected filler merely to satisfy content targets
-  - keep Game State 16 unless another new durable player/world fact actually requires change
+  - keep Game State 20 unless another new durable player/world fact actually requires change
   - do not create duplicate domain authorities
   - managed livestock products require an intentional husbandry source model rather than fake flora provenance
   - portable replaceable cross-profession components should be canonical items when independently traded repaired replaced or reused
