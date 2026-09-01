@@ -174,9 +174,6 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     kind: 'social',
                 }),
             );
-            if (activePoint.actions.includes('travel')) {
-                actions.push(...((transportDesk?.entries ?? []).slice(0, 4).map(transportBoardAction)));
-            }
             const serviceAction = LOCALITY_ACTION_PRIORITY.find((candidate) => candidate !== 'talk' && candidate !== 'travel' && activePoint.actions.includes(candidate));
             if (serviceAction && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
                 actions.push(Object.freeze({
@@ -197,6 +194,9 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                         'training',
                     ));
                 }
+            }
+            if (activePoint.actions.includes('travel')) {
+                actions.push(...((transportDesk?.entries ?? []).slice(0, 4).map(transportBoardAction)));
             }
             actions.push(directAction('context:locality-poi-leave', 'Leave', 'locality.poi.leave', {}, 'travel'));
             actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
