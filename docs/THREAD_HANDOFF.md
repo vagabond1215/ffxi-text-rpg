@@ -57,10 +57,26 @@ At this checkpoint:
 - README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, quality gates, Phase 0.9 plan, development direction, lifecycle record, changelog, and Packet 1 record are synchronized;
 - `0.9.300 Advanced Combat / Training` is active with Packet 1 complete;
 - Packet 2 is queued/not started;
-- Check #1950 / run `33474852387` confirms the Repository Audit's only failures are this handoff still advertising the prior Product/Game State contract;
+- Check #1950 / run `33474852387` confirmed the Repository Audit's only failures were the then-stale handoff version lines;
 - no Packet 2 implementation has started.
 
-This handoff write is therefore the intended final repository mutation for Packet 1.
+### Final synchronization repair before this handoff rewrite
+
+`d683ada3deb07901bb189111564f0a5564667fde`
+
+The first exact-final-head run exposed one test-only stale assertion in `tests/playerSlatewaterRoadScoutFlow.test.js`: an older Slice A persistence guard hard-coded Game State `18`. The test now reads `VERSION.gameState` and its title no longer embeds a stale schema number. No Packet 1 runtime behavior changed.
+
+Hosted repair-head evidence:
+- Check #1952 / run `33475039939`;
+- job `99752419036`;
+- Repository Audit PASS;
+- **860/860 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2082 / run `33475039317` PASS.
+
+This handoff rewrite is therefore the intended final repository mutation for Packet 1.
 
 ## What Packet 1 implements
 
