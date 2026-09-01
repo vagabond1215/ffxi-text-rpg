@@ -145,6 +145,8 @@ test('B5 Brasshaven Redstone combat-training proof composes B1 through B4 withou
     const ridge = activateAbility(state, 'Ridge Breaker');
     assert.equal(ridge.ok, true, ridge.display?.text);
     assert.equal(ridge.data.effects[0].resolution.defense.penetration, 0.25);
+    const ridgeRecovery = Math.max(0, getCombatantReadyAt(state, player.id) - state.worldTime.totalSeconds);
+    if (ridgeRecovery) advanceCombatSimulation(state, ridgeRecovery);
 
     // Full armor change is blocked while this hostile still carries player pressure.
     const blockedPressure = getArmorPressureReport(state, player.id);

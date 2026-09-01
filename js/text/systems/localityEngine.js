@@ -72,7 +72,9 @@ export function listLocalityDestinations(state) {
 export function listLocalityPoints(state, options = {}) {
     if (!isSettlementLocality(state?.currentPlaceId)) return [];
     const limit = Math.max(1, Number(options.limit) || 8);
+    const activePoiId = state.activePoiId ?? null;
     return getKnownPoisForPlace(state, state.currentPlaceId)
+        .sort((left, right) => Number(right.id === activePoiId) - Number(left.id === activePoiId))
         .slice(0, limit)
         .map((poi) => decoratePoiAvailability(state, poi));
 }
