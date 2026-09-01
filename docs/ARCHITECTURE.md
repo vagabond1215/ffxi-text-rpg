@@ -765,6 +765,14 @@ Product 0.9.300.3 / Game State 20 / Data 70 changes authored ability definitions
 
 No persistence family, combat clock, task owner, target-geometry authority, or new ability record is added. The ability runtime state shape is unchanged. Adept names whose semantics imply rings, cages, wells, or other richer action forms remain unmigrated until a separate bounded packet selects the required mechanics.
 
+### 0.9.300 Packet 4 Thunder Cage control foundation
+
+Product 0.9.300.4 / Game State 20 / Data 71 adds no new durable state family. `statusEngine` now owns the shared hard-disable flag vocabulary and exposes active-disable timing derived from existing status expiry fields. `combatLoadoutEngine` consumes that status fact rather than owning its own flag list.
+
+`combatTurnEngine` consumes the same status authority for enemy action selection and readiness interrupts. A ready enemy under a finite hard disable is not given a second timer; its existing combat-ready interrupt is deferred to the latest active disable expiry. An indefinite hard disable emits no ready interrupt until the status is removed. `combatSimulationEngine` remains the existing fictional-time coordinator.
+
+Thunder Cage stays a single-target canonical ability. `abilityEngine` applies its ordinary damage/status effects, `combatResolutionEngine` resolves damage and control resistance, and generic persisted statuses already carry `cannotAct` plus expiry. No geometry/zone/control state family is introduced.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -849,4 +857,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 70; the current runtime/persistence baseline is Product 0.9.300.3 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–3 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 71; the current runtime/persistence baseline is Product 0.9.300.4 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–4 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
