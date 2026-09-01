@@ -16,13 +16,13 @@ Codename:      Umbral Well Field Foundation
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 5 — Tempest Ring Geometry Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
+**0.9.300 Packet 6 — Umbral Well Field Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`;
-- Product 0.9.300.5 / Package 0.9.300 / Game State 20 / Data 72 / Account Save 5 / Benchmark 3;
-- behavioral/data implementation freeze `29d6da27e48850aa96307553b4c124f2598c8caa`;
-- Check #2034 / run `33544018110`: Repository Audit, **879/879 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2164 / run `33544018073`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`;
+- Product 0.9.300.6 / Package 0.9.300 / Game State 21 / Data 73 / Account Save 5 / Benchmark 3;
+- behavioral/data implementation freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3`;
+- Check #2069 / run `33554921560`: Repository Audit, **884/884 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2199 / run `33554920945`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 72 metrics
+## Data 73 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are complete.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–6 are complete.
 
 ### Latest completed unit — Packet B2
 
@@ -220,6 +220,16 @@ Game State remains 20 because generic status flags and expiry timestamps already
 `combatGeometryEngine` now provides deterministic encounter-relative formation projection plus target-centered ring queries. Tempest Ring uses radius 2 / maximum 4 targets; each selected enemy independently resolves wind magic accuracy, magic defense, and elemental resistance. Geometry evidence is stored on the ordinary ability result/event/action, and `combatAttentionEngine` applies area-action enmity to each enemy actually affected rather than assigning the primary target's total to every hostile.
 
 No mutable battle-position state is added. Formation is derived from already-persisted combatant side/order, so cloned/current-schema battle state reproduces the same geometry without a Game State bump. Game State remains 20; Data advances 71 -> 72 for the changed Tempest Ring authored contract. Ability count remains 41. Movement, LOS, pursuit/disengagement, other geometry kinds, ground targeting, and Umbral Well fields remain deferred. No subsequent 0.9.300 packet is selected.
+
+### Latest completed unit — 0.9.300 Packet 6
+
+**Umbral Well Field Foundation — COMPLETE.**
+
+`combatFieldEngine` now owns versioned battle-local `activeBattle.fields` state. Umbral Well resolves an explicit Dark magical impact, then creates a 12-second field centered on the target's encounter-relative position with pulses at +4/+8/+12 seconds, radius 2, and a four-target cap. Field source INT/magic accuracy/magic attack are snapshotted at creation while each pulse reads current defender magic evasion, magic defense, and Dark resistance.
+
+Field pulses are canonical combat interrupts with priority above ordinary enemy readiness at the same world second. Each pulse records one structured `fieldPulse` combat action and applies hostile attention only to recipients whose effects actually landed. No timed-task owner, second combat clock, mutable combatant positions, player ground targeting, LOS, or pursuit state is introduced.
+
+Game State advances 20 -> 21 because outstanding fields contain required future pulse deadlines and cast-time source snapshots that change resumable combat outcomes. Data advances 72 -> 73 for Umbral Well's changed authored contract. Ability count remains 41. No subsequent 0.9.300 packet is selected.
 
 ## Preserved interrupted/resumable queues
 
