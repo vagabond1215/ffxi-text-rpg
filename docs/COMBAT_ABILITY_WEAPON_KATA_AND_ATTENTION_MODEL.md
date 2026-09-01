@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.1 / Game State 19 / Data 68. Packets B1-B5 establish the playable foundation, and 0.9.300 Packet 1 broadens persisted automatic kata across every currently equipped canonical melee family: dagger, sword, axe, staff, and club. Character affinity, elemental substitutions, unsupported weapon families, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.2 / Game State 20 / Data 69. Packets B1-B5 establish the playable foundation, 0.9.300 Packet 1 broadens persisted automatic kata across every currently equipped canonical melee family, and Packet 2 adds character-owned affinity with two representative elemental substitutions. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packet 1 — Current Melee Kata Breadth — is COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–2 are COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -16,7 +16,8 @@ Permanent records:
 - `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`;
 - `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`;
 - `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -66,8 +67,16 @@ Implemented by 0.9.300 Packet 1:
 - version-2 durable player kata configuration and Game State 19 persistence;
 - unchanged encounter-local kata record shape/version 1.
 
+Implemented by 0.9.300 Packet 2:
+- versioned character-owned affinity ranks for all eight canonical elements;
+- affinity independent of active discipline and spell knowledge;
+- affinity-aware kata option eligibility with safe physical fallback;
+- Rimepoint Thrust (Ice dagger) and Cinder-Braced Drive (Fire staff) representative substitutions;
+- existing melee resolution widened to pass structured element metadata into the unified resolver;
+- Game State 20 / Data 69 with kata configuration version 2 and battle kata version 1 unchanged.
+
 Still deferred:
-- character affinity authority and affinity-driven kata substitutions;
+- weapon resonance / enchanted-weapon element behavior and generic imbuement;
 - unsupported weapon-family kata where canonical equipment/runtime support does not yet exist;
 - full geometry/aura/stance/zone/channel/reaction breadth;
 - generalized LOS/pursuit/disengagement and ranged line-of-fire models.
