@@ -152,7 +152,8 @@ export function applyCombatActionAttention(battle, action, options = {}) {
     if (!battle || !action || !isCredibleActor(battle, action.actorId)) return [];
 
     const multiRecipients = appliedEnemyEffectRecipientIds(battle, action);
-    if (multiRecipients.length > 1) {
+    const perRecipient = action.data?.attention?.mode === 'per-recipient';
+    if (perRecipient || multiRecipients.length > 1) {
         return multiRecipients.map((enemyId) => {
             const amount = deriveCombatActionEnmityForRecipient(action, enemyId);
             if (!(amount > 0)) return null;
