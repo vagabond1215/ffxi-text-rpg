@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.2
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
+Codename:      Character Affinity & Kata Substitution
 ```
 
 ## Product version format
@@ -25,8 +25,8 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 19 | serialized character/world runtime contract, including weapon-kata configuration version 2 across current equipped melee families plus existing active-battle attention/loadout/kata state |
-| Data | 68 | canonical authored-data, including expanded axe/staff/club kata definitions plus existing combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
+| Data | 69 | canonical authored-data, including two affinity-gated kata substitutions plus existing kata/combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1353,6 +1353,23 @@ Weapon-kata configuration advances to version 2 and now requires durable selecti
 Data 68 adds original axe/staff/club automatic kata definitions without adding equipment, abilities, capabilities, NPCs, or filler content. No supported-save migration is added.
 
 Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef` passed Check #1947 / run `33474558525` with 860/860 tests and the full gate; Pages #2077 / run `33474558121` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
+
+## `0.9.300.2` — Advanced Combat Packet 2: Character Affinity & Kata Substitution
+
+```text
+Product       0.9.300.1 -> 0.9.300.2
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    19        -> 20
+Data          68        -> 69
+Benchmark     3         -> 3
+```
+
+Game State 20 adds required `player.progression.affinities` rank state for fire/ice/wind/earth/lightning/water/light/dark. Affinity belongs to the continuous character and is not inferred from active discipline or known spells. Kata configuration stays version 2 and battle kata state stays version 1 because substitutions remain ordinary selected move IDs.
+
+Data 69 adds Rimepoint Thrust and Cinder-Braced Drive as representative affinity-gated authored substitutions. The existing basic-melee path passes their structured element metadata into the unified combat resolver; no separate elemental-kata resolver or task owner is added.
+
+Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Check #1956 / run `33477009897` with 867/867 tests and the full gate; Pages #2086 / run `33477008886` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`.
 ## Phase progression
 
 ```text
@@ -1363,7 +1380,7 @@ Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef` passed Check #1947 
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKET 1 COMPLETE; PACKET 2 QUEUED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–2 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
