@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.100.24
-Package:       0.9.100
+Product:       0.9.200.1
+Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          62
+Data:          63
 Benchmark:     3
-Codename:      Local Knowledge & Familiarity
+Codename:      Slatewater Road Scout
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -101,6 +101,34 @@ For **Slatewater Road Scout**, verify:
 12. no new Game State family, simulation clock, task owner, route graph, or supported-save migration is introduced without a separate decision.
 
 **Gate result: PASS.** Implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`; Check #1815 / run `33361131795` passed Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample.
+
+## Advanced combat design / Slice B gate
+
+Authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+Before declaring a Combat 2.0 packet coherent, verify:
+
+1. no second combat/world clock is introduced;
+2. active-battle state remains the encounter authority;
+3. ability names remain mechanically honest and original-world;
+4. element is structured resolution metadata when it affects outcomes, not only a tag;
+5. physical/magical/status resolution uses explicit accuracy and defense/resistance contracts;
+6. startup/active/recovery/cooldown/linger concepts are not silently collapsed when they produce different behavior;
+7. canonical ability cooldowns cannot be reset by changing loadouts;
+8. weapon/equipment delay is consumed through one conversion/readiness authority rather than duplicated formulas;
+9. attention distinguishes absolute Enmity, normalized Focus, sticky Aggro, and exceptional Fixation;
+10. Focus share is not used directly as per-attack target probability;
+11. nonlinear target weighting is deterministic/injectable and tested with multiple party actors;
+12. armor swaps remain blocked while meaningful hostile pressure/pursuit/fixation persists;
+13. equipment transitions use canonical fictional time and are interruptible where authored;
+14. kata selections and affinity substitutions remain character configuration/progression rather than a duplicate class identity;
+15. ranged attacks use first-class ranged stats/skills/ammunition rather than masquerading as melee;
+16. new ability count is not accepted as progress when the records are mechanically duplicate;
+17. any new durable loadout/kata/attention/transition state receives an explicit Game State version decision.
+
+Packet B1 must satisfy only the B1-relevant subset and leave later packet fields explicit rather than faking them.
 
 ## Content Pack v2 gate
 
