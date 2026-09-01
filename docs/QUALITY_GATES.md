@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -200,6 +200,24 @@ PASS only when:
 - Product/Data/Game State decisions are explicit.
 
 **Gate result: PASS.** Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642`; Check #2006 / run `33518317562`; **875/875 tests**; Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2136 / run `33518315622` PASS. Game State remains 20; Data advances 70 -> 71.
+
+### 0.9.300 Packet 5 gate — Tempest Ring Geometry Foundation
+
+PASS only when:
+- Tempest Ring preserves its stable identity, capability, activation, MP cost, cooldown, potency, and scaling;
+- the authored target contract carries explicit ring geometry rather than relying on name/tag convention;
+- encounter-relative formation projection is deterministic from existing combatant side/order;
+- target-centered radius filtering excludes enemies outside the ring and maximum-target capping is deterministic;
+- every selected recipient independently resolves magic accuracy, magic defense, and wind resistance;
+- one recipient's resistance does not alter another recipient's damage;
+- action/event evidence records ring center, center position, radius, maximum targets, recipient IDs, distances, and derived positions;
+- secondary enemies actually affected receive their own hostile attention and excluded enemies do not;
+- current-schema cloned battle state reproduces identical geometry without persisted geometry state;
+- executable ability count remains 41;
+- no movement, LOS, line-of-fire, pursuit/search/disengagement, ground targeting, zones, or broad AoE migration is introduced;
+- Product/Data/Game State decisions are explicit.
+
+**Gate result: PASS.** The first full focused run, Check #2033, passed 878/879 tests; its only failure was an invalid manually constructed test battle sequence/ID fixture, not runtime geometry. After fixture-only repair, behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` passed Check #2034 / run `33544018110` with **879/879 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2164 / run `33544018073` PASS. Game State remains 20; Data advances 71 -> 72.
 
 ## Content Pack v2 gate
 
