@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.300.6');
+    assert.equal(PRODUCT_VERSION, '0.9.300.7');
     assert.equal(PACKAGE_VERSION, '0.9.300');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 21);
-    assert.equal(VERSION.data, 73);
+    assert.equal(VERSION.data, 74);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Umbral Well Field Foundation');
+    assert.equal(VERSION.codename, 'Radiant Arc Propagation Foundation');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -101,7 +101,7 @@ test('version manifest separates product package persistence data and scale-cont
             characterAffinity: SYSTEM_VERSIONS.characterAffinity,
         },
         {
-            versionManifest: '0.9.300.6',
+            versionManifest: '0.9.300.7',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -131,7 +131,7 @@ test('version manifest separates product package persistence data and scale-cont
             productionCatalog: '0.17.0',
             productionItems: '0.18.0',
             capabilities: '0.5.0',
-            abilityCatalog: '0.9.0',
+            abilityCatalog: '0.10.0',
             carriedInventory: '0.1.0',
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
@@ -156,7 +156,7 @@ test('version manifest separates product package persistence data and scale-cont
             combatSimulation: '0.3.0',
             combatActions: '0.12.0',
             combatResolution: '0.2.0',
-            combatGeometry: '0.2.0',
+            combatGeometry: '0.3.0',
             combatFields: '0.1.0',
             combatAttention: '0.3.0',
             combatLoadout: '0.2.0',
@@ -174,13 +174,13 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.300\.6/);
+    assert.match(describeVersion(), /Product: 0\.9\.300\.7/);
     assert.match(describeVersion(), /Package: 0\.9\.300/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 21/);
-    assert.match(describeVersion(), /Data: 73/);
+    assert.match(describeVersion(), /Data: 74/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Umbral Well Field Foundation/);
+    assert.match(describeVersion(), /Codename: Radiant Arc Propagation Foundation/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
@@ -190,7 +190,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /productionCatalog: 0\.17\.0/);
     assert.match(describeSystemVersions(), /productionItems: 0\.18\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /abilityCatalog: 0\.9\.0/);
+    assert.match(describeSystemVersions(), /abilityCatalog: 0\.10\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
     assert.match(describeSystemVersions(), /validation: 0\.53\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
@@ -213,7 +213,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /abilityEngine: 0\.7\.0/);
     assert.match(describeSystemVersions(), /combatActions: 0\.12\.0/);
     assert.match(describeSystemVersions(), /combatResolution: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /combatGeometry: 0\.2\.0/);
+    assert.match(describeSystemVersions(), /combatGeometry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /combatFields: 0\.1\.0/);
     assert.match(describeSystemVersions(), /combatAttention: 0\.3\.0/);
     assert.match(describeSystemVersions(), /combatLoadout: 0\.2\.0/);
