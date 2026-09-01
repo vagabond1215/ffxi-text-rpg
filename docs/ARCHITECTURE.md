@@ -680,7 +680,7 @@ Equipment transitions use canonical combat/world time. Armor-swap legality depen
 
 B2 defines the attention persistence boundary as Game State 16. B3 advances to Game State 17 for active loadout transitions. B4 advances to Game State 18 because player kata configuration and the encounter-local next-sequence cursor change resumable combat outcomes. B5 keeps Game State 18 because training reuses capability/event authority and its ammo-persistence fix corrects the existing B4 contract; Data advances to 67 for authored training-service metadata.
 
-# Persistence authority — Game State 20
+# Persistence authority — Game State 21
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -781,6 +781,26 @@ Product 0.9.300.5 / Game State 20 / Data 72 adds `combatGeometryEngine.js` as a 
 
 No `activeBattle.geometry`, mutable coordinate, movement state, LOS/reachability state, pursuit/search/disengagement state, ground target, or geometry timer/task is added. Because combatant order already persists and no movement can change formation, current-schema cloning/save-load reproduces the same derived ring selection. A later packet that introduces mutable positioning, knockback, movement, or engagement geometry must make a fresh persistence/version decision rather than treating this derived projection as mutable state.
 
+### 0.9.300 Packet 6 Umbral Well persistent-field foundation
+
+Product 0.9.300.6 / Game State 21 / Data 73 adds `combatFieldEngine.js` as the canonical **battle-local persistent field authority**. Unlike Packet 5's derived formation, fields have future consequences after the creating ability has resolved and therefore must persist under `activeBattle.fields`.
+
+Current field state is version 1:
+- monotonic field sequence;
+- field records with source actor/ability identity;
+- selected center-target provenance plus persisted center point;
+- creation, expiry, cadence, next-pulse, and pulse-sequence boundaries on canonical world time;
+- radius/maximum-target geometry;
+- compact cast-time source snapshot for the authored pulse formula.
+
+Umbral Well uses a cast-time source snapshot for INT, magic accuracy, and magic attack. At pulse time, current recipients are selected against the persisted point through `combatGeometryEngine` and each defender's current magic evasion, magic defense, and Dark resistance are read. This lets defensive changes affect later pulses without allowing later source loadout changes to retroactively alter an already-created field.
+
+`combatSimulationEngine` consumes field pulse interrupt candidates. No timed-task record is created: `activeBattle.fields` itself is the durable owner and canonical world time is the only scheduler. One pulse produces one ordinary structured `fieldPulse` combat action. `combatAttentionEngine` consumes explicit per-recipient mode so only enemies with applied pulse effects gain pulse enmity.
+
+Game State advances 20 -> 21 because these outstanding future pulse facts cannot be reconstructed safely from completed ability-action prose/history. No migration is added under the current pre-alpha current-schema-only policy.
+
+This packet does not add mutable combatant coordinates, player-selected ground locations, movement, knockback, LOS/reachability, pursuit/search/disengagement, moving zones, friendly fields, or generic zone scripting.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -865,4 +885,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 72; the current runtime/persistence baseline is Product 0.9.300.5 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–5 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 73; the current runtime/persistence baseline is Product 0.9.300.6 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–6 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
