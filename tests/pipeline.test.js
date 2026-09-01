@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.300.4');
+    assert.equal(PRODUCT_VERSION, '0.9.300.5');
     assert.equal(PACKAGE_VERSION, '0.9.300');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 20);
-    assert.equal(VERSION.data, 71);
+    assert.equal(VERSION.data, 72);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Thunder Cage Control Foundation');
+    assert.equal(VERSION.codename, 'Tempest Ring Geometry Foundation');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -83,6 +83,7 @@ test('version manifest separates product package persistence data and scale-cont
             combatTurns: SYSTEM_VERSIONS.combatTurns,
             combatActions: SYSTEM_VERSIONS.combatActions,
             combatResolution: SYSTEM_VERSIONS.combatResolution,
+            combatGeometry: SYSTEM_VERSIONS.combatGeometry,
             combatAttention: SYSTEM_VERSIONS.combatAttention,
             combatLoadout: SYSTEM_VERSIONS.combatLoadout,
             saveEncoding: SYSTEM_VERSIONS.saveEncoding,
@@ -97,7 +98,7 @@ test('version manifest separates product package persistence data and scale-cont
             characterAffinity: SYSTEM_VERSIONS.characterAffinity,
         },
         {
-            versionManifest: '0.9.300.4',
+            versionManifest: '0.9.300.5',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -110,7 +111,7 @@ test('version manifest separates product package persistence data and scale-cont
             dayCycle: '0.2.0',
             dayCyclePersistence: '0.1.0',
             resourceOpportunities: '0.2.0',
-            abilityEngine: '0.5.0',
+            abilityEngine: '0.6.0',
             transport: '0.4.1',
             liveTick: '0.2.1',
             domRoot: '0.1.0',
@@ -127,7 +128,7 @@ test('version manifest separates product package persistence data and scale-cont
             productionCatalog: '0.17.0',
             productionItems: '0.18.0',
             capabilities: '0.5.0',
-            abilityCatalog: '0.7.0',
+            abilityCatalog: '0.8.0',
             carriedInventory: '0.1.0',
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
@@ -150,7 +151,8 @@ test('version manifest separates product package persistence data and scale-cont
             combatTurns: '0.6.0',
             combatActions: '0.12.0',
             combatResolution: '0.2.0',
-            combatAttention: '0.1.0',
+            combatGeometry: '0.1.0',
+            combatAttention: '0.2.0',
             combatLoadout: '0.2.0',
             saveEncoding: '0.9.0',
             placeAtlas: '0.6.0',
@@ -166,13 +168,13 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.300\.4/);
+    assert.match(describeVersion(), /Product: 0\.9\.300\.5/);
     assert.match(describeVersion(), /Package: 0\.9\.300/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 20/);
-    assert.match(describeVersion(), /Data: 71/);
+    assert.match(describeVersion(), /Data: 72/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Thunder Cage Control Foundation/);
+    assert.match(describeVersion(), /Codename: Tempest Ring Geometry Foundation/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
@@ -182,7 +184,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /productionCatalog: 0\.17\.0/);
     assert.match(describeSystemVersions(), /productionItems: 0\.18\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /abilityCatalog: 0\.7\.0/);
+    assert.match(describeSystemVersions(), /abilityCatalog: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
     assert.match(describeSystemVersions(), /validation: 0\.53\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
@@ -200,9 +202,11 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /playerPersistenceHarness: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerIdentityPersistence: 0\.2\.0/);
     assert.match(describeSystemVersions(), /combatTurns: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /abilityEngine: 0\.6\.0/);
     assert.match(describeSystemVersions(), /combatActions: 0\.12\.0/);
     assert.match(describeSystemVersions(), /combatResolution: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /combatAttention: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /combatGeometry: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /combatAttention: 0\.2\.0/);
     assert.match(describeSystemVersions(), /combatLoadout: 0\.2\.0/);
     assert.match(describeSystemVersions(), /weaponCadence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /weaponKataCatalog: 0\.3\.0/);
