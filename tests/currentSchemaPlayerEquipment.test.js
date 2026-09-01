@@ -35,6 +35,28 @@ test('current schema accepts a non-empty canonical equipped loadout', () => {
     assert.deepEqual(validateCurrentGameStateStructure(state), []);
 });
 
+test('current schema accepts stackable ammunition in the canonical ammo slot', () => {
+    const state = createInitialState();
+    addItemToContainer(state.player.inventoryState, 'inventory', {
+        id: 'rounded-sling-stones',
+        name: 'Rounded Sling Stones',
+        kind: 'equipment',
+        family: 'ammunition',
+        equipmentSlot: 'ammo',
+        allowedSlots: ['ammo'],
+        weaponCategory: 'sling',
+        quantity: 7,
+        stackable: true,
+        maxStack: 99,
+        tags: ['equipment', 'ammo', 'sling-stone'],
+        flags: ['equipmentOnly', 'ammo'],
+    });
+    assert.match(equipItem(state, 'Rounded Sling Stones'), /Equipped Rounded Sling Stones to ammo/);
+    assert.equal(state.player.equipment.ammo.quantity, 7);
+    assert.equal(state.player.equipment.ammo.stackable, true);
+    assert.deepEqual(validateCurrentGameStateStructure(state), []);
+});
+
 test('current schema rejects missing unknown malformed and slot-incompatible equipment', () => {
     const missingSlot = createInitialState();
     delete missingSlot.player.equipment.head;

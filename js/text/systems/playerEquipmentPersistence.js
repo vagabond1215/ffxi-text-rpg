@@ -42,9 +42,19 @@ function validateEquippedItem(item, slot) {
     if (typeof item.id !== 'string' || !item.id.trim()) issues.push('id must be a non-empty string.');
     if (typeof item.name !== 'string' || !item.name.trim()) issues.push('name must be a non-empty string.');
     if (item.kind !== ITEM_KINDS.EQUIPMENT) issues.push('kind must be equipment.');
-    if (!Number.isInteger(item.quantity) || item.quantity !== 1) issues.push('quantity must be exactly 1.');
-    if (item.stackable !== false) issues.push('stackable must be false.');
-    if (item.maxStack !== 1) issues.push('maxStack must be 1.');
+    if (slot === 'ammo') {
+        if (!Number.isInteger(item.quantity) || item.quantity < 1) issues.push('quantity must be a positive integer.');
+        if (typeof item.stackable !== 'boolean') issues.push('stackable must be boolean.');
+        if (!Number.isInteger(item.maxStack) || item.maxStack < 1) issues.push('maxStack must be a positive integer.');
+        if (item.stackable === true && Number.isInteger(item.maxStack) && item.maxStack < 2) issues.push('maxStack must exceed 1 when stackable is true.');
+        if (item.stackable === false && item.maxStack !== 1) issues.push('maxStack must be 1 when stackable is false.');
+        if (item.stackable === false && item.quantity !== 1) issues.push('quantity must be exactly 1 when stackable is false.');
+        if (Number.isInteger(item.quantity) && Number.isInteger(item.maxStack) && item.quantity > item.maxStack) issues.push('quantity cannot exceed maxStack.');
+    } else {
+        if (!Number.isInteger(item.quantity) || item.quantity !== 1) issues.push('quantity must be exactly 1.');
+        if (item.stackable !== false) issues.push('stackable must be false.');
+        if (item.maxStack !== 1) issues.push('maxStack must be 1.');
+    }
     if (!Array.isArray(item.allowedSlots)) issues.push('allowedSlots must be an array.');
 
     const enriched = safeEnrich(item);

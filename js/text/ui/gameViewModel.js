@@ -513,7 +513,10 @@ function dedupeActions(actions) {
         const transportKey = action.payload?.serviceId && action.payload?.destinationPlaceId
             ? `${action.payload.serviceId}:${action.payload.destinationPlaceId}`
             : null;
-        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? action.payload?.poiId ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? action.payload?.view ?? transportKey ?? action.id}`;
+        const poiActionKey = action.payload?.poiId
+            ? `poi:${action.payload.poiId}:${action.payload?.action ?? 'default'}`
+            : null;
+        const key = `${action.intent}:${action.payload?.command ?? action.payload?.abilityId ?? action.payload?.companionId ?? action.payload?.commitmentId ?? action.payload?.destinationId ?? poiActionKey ?? action.payload?.itemId ?? action.payload?.sourceId ?? action.payload?.enemyId ?? action.payload?.opportunityId ?? action.payload?.view ?? transportKey ?? action.id}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;

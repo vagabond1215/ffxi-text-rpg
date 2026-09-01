@@ -152,6 +152,7 @@ test('first-class ranged attack uses ranged stats consumes equipped ammo and rec
     assert.equal(state.player.equipment.ammo.quantity, before - 1);
     assert.equal(player.equipment.ammo.quantity, before - 1);
     assert.equal(getCombatantReadyAt(state, player.id), now + 4);
+    assert.deepEqual(validateCurrentGameStateStructure(state), []);
 });
 
 test('ranged attack clears depleted equipped ammo coherently', () => {
