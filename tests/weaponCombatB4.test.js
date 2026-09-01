@@ -10,6 +10,7 @@ import {
     startEncounter,
 } from '../js/text/systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../js/text/systems/combatSimulationEngine.js';
+import { startCombatEquipTransition } from '../js/text/systems/combatLoadoutEngine.js';
 import { getCombatantReadyAt, setCombatantReadyAt } from '../js/text/systems/combatTurnEngine.js';
 import { equipItem } from '../js/text/systems/equipmentEngine.js';
 import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
@@ -180,7 +181,6 @@ test('B3 weapon loadout completion consumes resetWeaponSequence intent', () => {
     assert.equal(state.activeBattle.weaponKata.byActorId[player.id].nextSlot, 2);
     setCombatantReadyAt(state, player.id, state.worldTime.totalSeconds);
 
-    const { startCombatEquipTransition } = await import('../js/text/systems/combatLoadoutEngine.js');
     const started = startCombatEquipTransition(state, 'bronze-sword');
     assert.equal(started.ok, true, started.display.text);
     const advanced = advanceCombatSimulation(state, started.data.transition.durationSeconds);
