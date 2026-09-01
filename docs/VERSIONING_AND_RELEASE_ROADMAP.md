@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.3
+Product:       0.9.300.4
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          70
+Data:          71
 Benchmark:     3
-Codename:      Novice Elemental Resolution Breadth
+Codename:      Thunder Cage Control Foundation
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
-| Data | 70 | canonical authored-data, including structured resolution/recovery metadata for all eight novice Elemental Form attacks plus existing affinity/kata/combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 71 | canonical authored-data, including Thunder Cage lightning damage/control/recovery metadata plus novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1387,6 +1387,23 @@ Game State stays 20 because no durable state shape changes. The ability catalog 
 
 Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Check #1981 / run `33515422352` with 870/870 tests and the full gate; Pages #2111 / run `33515422056` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`.
 
+## `0.9.300.4` — Advanced Combat Packet 4: Thunder Cage Control Foundation
+
+```text
+Product       0.9.300.3 -> 0.9.300.4
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 20
+Data          70        -> 71
+Benchmark     3         -> 3
+```
+
+Data 71 changes the existing Thunder Cage definition from generic adept damage into explicit lightning magical damage plus a separately resistible six-second `cannotAct` control status and three-second post-action recovery. The ability count remains 41.
+
+The shared hard-disable flag vocabulary is centralized in `statusEngine` and consumed by both combat-loadout pressure and enemy action timing. A ready disabled enemy is deferred to the latest active hard-disable expiry; indefinite disables schedule no ready interrupt until removed. Game State remains 20 because status flags/expiry are already part of the generic persisted status contract and no new required field exists.
+
+Behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642` passed Check #2006 / run `33518317562` with 875/875 tests and the full gate; Pages #2136 / run `33518315622` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`.
+
 ## Phase progression
 
 ```text
@@ -1397,7 +1414,7 @@ Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Check #
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–3 COMPLETE; NEXT PACKET UNSELECTED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–4 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
