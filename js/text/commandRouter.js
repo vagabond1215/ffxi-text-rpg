@@ -29,6 +29,7 @@ import {
     startEncounter,
 } from './systems/combatActionEngine.js';
 import { createCreatorSession, handleCreatorInput, listStartingJobs, renderCreatorPrompt } from './systems/characterCreator.js';
+import { startCombatEquipTransition, startCombatUnequipTransition } from './systems/combatLoadoutEngine.js';
 import { describePopulationEncounterOptions, startPopulationEncounter } from './systems/populationEncounterEngine.js';
 import { describeEquippableSources, equipItem, inspectItem, unequipItem } from './systems/equipmentEngine.js';
 import {
@@ -281,6 +282,7 @@ function describeEquipCommand(state, args) {
     const itemQuery = args.slice(0, splitIndex).join(' ');
     const slot = toIndex >= 0 ? args[toIndex + 1] : null;
     const fromContainerId = fromIndex >= 0 ? args[fromIndex + 1] : null;
+    if (state.activeBattle?.phase === 'active') return describeActionResult(startCombatEquipTransition(state, itemQuery, { slot, fromContainerId }));
     return equipItem(state, itemQuery, { slot, fromContainerId });
 }
 
@@ -288,6 +290,7 @@ function describeUnequipCommand(state, args) {
     const toIndex = args.findIndex((arg) => String(arg).toLowerCase() === 'to');
     const slot = args[0];
     const destinationContainerId = toIndex >= 0 ? args[toIndex + 1] : 'inventory';
+    if (state.activeBattle?.phase === 'active') return describeActionResult(startCombatUnequipTransition(state, slot, destinationContainerId));
     return unequipItem(state, slot, destinationContainerId);
 }
 
