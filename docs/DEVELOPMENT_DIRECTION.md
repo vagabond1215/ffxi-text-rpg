@@ -346,7 +346,7 @@ Design direction:
 - ordinary melee/ranged attacks evolve into weapon-specific automatic sequences on the canonical combat timeline;
 - weapon proficiency unlocks additional sequence stages and selectable slot techniques;
 - physical defaults remain viable;
-- elemental affinity can unlock substitutions/mutations without forcing every weapon attack to become elemental;
+- elemental affinity can unlock substitutions/mutations without forcing every weapon attack to become elemental; the Packet 2 foundation now persists ranked character-owned affinities and proves two such substitutions;
 - individual weapons may supply an element or resonate with one, but weapon-family identity is not a universal hard-coded element;
 - manual techniques such as bashes, cleaves, feints, backstabs, volleys, and reactions sit above the automatic sequence;
 - spells, techniques, ranged attacks, auras, stances, zones, channels, and reactions should share one structured action-resolution vocabulary.
