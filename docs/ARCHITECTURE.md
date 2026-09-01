@@ -680,7 +680,7 @@ Equipment transitions use canonical combat/world time. Armor-swap legality depen
 
 B2 defines the attention persistence boundary as Game State 16. B3 advances to Game State 17 for active loadout transitions. B4 advances to Game State 18 because player kata configuration and the encounter-local next-sequence cursor change resumable combat outcomes. B5 keeps Game State 18 because training reuses capability/event authority and its ammo-persistence fix corrects the existing B4 contract; Data advances to 67 for authored training-service metadata.
 
-# Persistence authority — Game State 19
+# Persistence authority — Game State 20
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -696,7 +696,7 @@ cultivation plot/crop/delegation authority
 party / ability runtime
 semantic events
 atlas / localKnowledge / active POI context
-player identity / progression / skills / capabilities / weapon-kata configuration
+player identity / progression / skills / capabilities / character affinities / weapon-kata configuration
 inventory / mutable resources / wallet / equipment / statuses
 world flags
 current location/position coherence
@@ -750,6 +750,14 @@ The required player configuration advances to version 2 because `player.progress
 `activeBattle.weaponKata` keeps record version 1: family, next slot, last move, action count, reset count, and reset reason are unchanged. The catalog simply broadens the valid family references. B3 loadout resets automatically rebind to the newly supported family.
 
 Packet 1 adds no new task owner, combat clock, ability/capability record, equipment record, affinity state, or action-family subsystem.
+
+### 0.9.300 Packet 2 character affinity and kata substitution authority
+
+Product 0.9.300.2 / Game State 20 / Data 69 adds `player.progression.affinities` as the character-owned durable elemental-affinity authority. `characterAffinityEngine.js` creates, reads, changes, and validates ranked affinity state; discipline/job selection, spell knowledge, equipment, and active battle do not duplicate that authority.
+
+`weaponKataCatalog.js` remains authored substitution authority and `weaponKataEngine.js` remains configuration/eligibility/cursor authority. Affinity requirements are conjunctive with weapon proficiency. `battleEngine` passes authored element/channel/resistance metadata into the existing `combatResolutionEngine`; it does not own a second elemental resolver.
+
+Kata configuration remains version 2 because selections are still move IDs. Encounter-local kata state remains version 1 because no cursor field changed. Packet 2 adds no timed-task owner or combat clock.
 
 ## Runtime projections and transient state
 
