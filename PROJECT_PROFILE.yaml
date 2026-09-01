@@ -74,6 +74,7 @@ authority:
   advanced_combat_p4_thunder_cage_control_foundation: docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md
   advanced_combat_p5_tempest_ring_geometry_foundation: docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md
   advanced_combat_p6_umbral_well_field_foundation: docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md
+  advanced_combat_p7_radiant_arc_propagation_foundation: docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -81,7 +82,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: advanced-combat-post-packet-6-reassessment-unselected
+  current_normal_work: advanced-combat-post-packet-7-reassessment-unselected
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -255,24 +256,35 @@ git:
   latest_advanced_combat_p6_pages: 33554920945
   latest_advanced_combat_p6_pages_number: 2199
   latest_advanced_combat_p6_pages_result: success
+  latest_advanced_combat_p7_implementation_check: 33569913910
+  latest_advanced_combat_p7_implementation_check_number: 2106
+  latest_advanced_combat_p7_implementation_check_sha: 65f10a96d4e479b758981f3798efbfc1ddf059ec
+  latest_advanced_combat_p7_implementation_check_result: success-889-of-889-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_advanced_combat_p7_pages: 33569912530
+  latest_advanced_combat_p7_pages_number: 2236
+  latest_advanced_combat_p7_pages_result: success
+  latest_advanced_combat_p7_validation_pr: 405
+  latest_advanced_combat_p7_validation_pr_check: 33570292266
+  latest_advanced_combat_p7_validation_pr_check_number: 2107
+  latest_advanced_combat_p7_validation_pr_status: closed-without-merge-after-success
 progression:
   current_phase: 0.9
   current_track: 0.9.300-advanced-combat-training
-  current_track_status: active-packets-1-through-6-complete-next-packet-unselected
+  current_track_status: active-packets-1-through-7-complete-next-packet-unselected
   completed_track: 0.9.200-adventure-vertical-slices
   completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: advanced-combat-p6-umbral-well-field-foundation
-  latest_bounded_unit_status: complete-on-main-product-0.9.300.6-game-state-21-data-73
-  latest_data_bounded_unit: advanced-combat-p6-umbral-well-field-foundation
-  latest_data_bounded_unit_status: complete-on-main-data-73
-  next_roadmap_gate: advanced-combat-post-p6-reassessment
+  latest_bounded_unit: advanced-combat-p7-radiant-arc-propagation-foundation
+  latest_bounded_unit_status: complete-on-main-product-0.9.300.7-game-state-21-data-74
+  latest_data_bounded_unit: advanced-combat-p7-radiant-arc-propagation-foundation
+  latest_data_bounded_unit_status: complete-on-main-data-74
+  next_roadmap_gate: advanced-combat-post-p7-reassessment
   next_roadmap_gate_status: unselected-awaiting-explicit-work-order
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-implemented
+  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
   combat_slice_b_status: complete-b1-through-b5
-  combat_next_packet: unselected-after-advanced-combat-p6
-  combat_next_packet_scope: requires-fresh-bounded-selection-do-not-auto-start-radiant-arc-propagation-engagement-geometry-or-broad-adept-migration
+  combat_next_packet: unselected-after-advanced-combat-p7
+  combat_next_packet_scope: requires-fresh-bounded-selection-do-not-auto-start-rimefall-flare-bloom-fault-rush-engagement-geometry-or-broad-adept-migration
   combat_adjacency_audit_status: complete-b3-entry-authority
   combat_following_packets: []
   pre_ui_discovery_contract: player-information-and-locality-discovery
@@ -343,14 +355,15 @@ validation:
   advanced_combat_p4_guard: tests/advancedCombatThunderCageControl.test.js
   advanced_combat_p5_guard: tests/advancedCombatTempestRingGeometry.test.js
   advanced_combat_p6_guard: tests/advancedCombatUmbralWellField.test.js
+  advanced_combat_p7_guard: tests/advancedCombatRadiantArcPropagation.test.js
 quality:
-  current_product_version: 0.9.300.6
+  current_product_version: 0.9.300.7
   current_package_version: 0.9.300
   current_account_save: 5
   current_game_state: 21
-  current_data_version: 73
+  current_data_version: 74
   current_benchmark_version: 3
-  current_codename: Umbral Well Field Foundation
+  current_codename: Radiant Arc Propagation Foundation
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -365,7 +378,7 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority-through-0.9.300-p5-tempest-ring-geometry-implemented
+    status: permanent-design-authority-through-0.9.300-p7-radiant-arc-propagation-implemented
     runtime_changed: true
     data_changed: 63-to-64
     game_state_changed: true
@@ -374,7 +387,7 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: post-p5-advanced-combat-next-semantic-family-unselected
+    immediate_runtime_gap: post-p7-advanced-combat-next-semantic-family-unselected
     weapon_kata_implemented: true
     first_class_ranged_implemented: true
     affinity_substitutions_planned: false
@@ -394,6 +407,9 @@ quality:
     combat_field_state_persisted: true
     combat_field_source_snapshot_implemented: true
     combat_field_pulse_interrupts_implemented: true
+    radiant_arc_propagation_implemented: true
+    synchronous_arc_geometry_implemented: true
+    propagation_persisted_state_added: false
     current_melee_kata_families: 5
     current_melee_kata_breadth_complete: true
     timed_loadout_swaps_implemented: true
