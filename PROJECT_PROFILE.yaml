@@ -65,6 +65,7 @@ authority:
   combat_slice_b_plan: docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md
   combat_b1_record: docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md
   combat_b2_record: docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md
+  combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
@@ -207,6 +208,7 @@ progression:
   combat_slice_b_status: active-b1-b2-complete-b3-queued
   combat_next_packet: b3-combat-loadout-transition-foundation
   combat_next_packet_scope: timed-stow-draw-ready-quick-weapon-set-vs-full-loadout-armor-pressure-lock-no-ranged-or-kata
+  combat_adjacency_audit_status: complete-b3-entry-authority
   combat_following_packets:
     - b3-combat-loadout-transitions-and-armor-pressure-lock
     - b4-weapon-cadence-ranged-action-minimal-kata

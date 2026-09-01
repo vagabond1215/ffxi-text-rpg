@@ -152,9 +152,13 @@ Focus is not literal attack probability. There is no universal minimum target pr
 
 ### Next bounded unit — Packet B3
 
-**Combat Loadout Transition Foundation — QUEUED / NOT STARTED.**
+**Combat Loadout Transition Foundation — QUEUED / ENTRY AUDIT COMPLETE.**
 
-B3 should add timed directional stow/draw/ready transitions, distinguish prepared quick weapon-set swaps from full loadout changes, preserve canonical ability cooldowns, and block armor swaps under meaningful Aggro/Focus/Fixation/pursuit pressure.
+Fresh authority: `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
+
+The audit identifies one live B3 defect: direct equipment commands can mutate root equipment during active combat while the encounter combatant remains a snapshot. B3 must close that split through a canonical timed loadout owner. It also records exploration detection/combat Aggro separation, stale battle placeholders, legacy timer-combat boundaries, and genuinely nonexistent LOS/pursuit/kata systems so they are not accidentally reused.
+
+B3 should add timed directional stow/draw/ready transitions, distinguish prepared quick weapon-set swaps from full loadout changes, preserve canonical ability cooldowns, and block armor swaps under meaningful Aggro/Focus/Fixation pressure. Pursuit/LOS remains conservative until a real engagement model exists.
 
 Later B4 weapon cadence/ranged/minimal kata and B5 playable Brasshaven/Redstone proof remain separately bounded.
 

@@ -195,6 +195,11 @@ The exact exponent/threshold values are tuning data and should use deterministic
 
 ## Packet B3 — Combat loadout transition foundation
 
+Fresh adjacency/debt audit authority:
+- `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
+
+That audit is complete and must be read before B3 edits. It separates exploration detection from combat Aggro, marks legacy timer combat and dead battle placeholders as non-authoritative, records nonexistent LOS/pursuit/kata surfaces, and closes the live in-combat equipment split as a B3 requirement.
+
 After attention exists, implement timed equipment transitions.
 
 Distinguish:
