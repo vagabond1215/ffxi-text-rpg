@@ -475,7 +475,7 @@ Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is **COMPLETE
 
 # `0.9.300` — Advanced Combat / Training
 
-**Track status: ACTIVE. Packets 1–3 complete; next advanced-combat packet unselected.**
+**Track status: ACTIVE. Packets 1–4 complete; next advanced-combat packet unselected.**
 
 Packet 1 — Current Melee Kata Breadth:
 - permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
@@ -487,6 +487,8 @@ Packet 1 — Current Melee Kata Breadth:
 Packet 2 — Character Affinity & Kata Substitution Foundation is **COMPLETE** at Product 0.9.300.2 / Game State 20 / Data 69. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`; behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a`; Check #1956 / run `33477009897` passed 867/867 tests plus the full gate; Pages #2086 passed. Affinity is character-owned ranked progression and two representative substitutions use the existing kata/resolution authorities. No later 0.9.300 packet is auto-selected.
 
 Packet 3 — Novice Elemental Resolution Breadth is **COMPLETE** at Product 0.9.300.3 / Game State 20 / Data 70. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`; behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397`; Check #1981 / run `33515422352` passed 870/870 tests plus the full gate; Pages #2111 passed. Eight existing novice Elemental Form attacks now use the unified resolution/recovery vocabulary; ability count and durable state are unchanged.
+
+Packet 4 — Thunder Cage Control Foundation is **COMPLETE** at Product 0.9.300.4 / Game State 20 / Data 71. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`; behavioral/data freeze `f2b5ca9e1936e9ef7f334de16a9fd83908323642`; Check #2006 / run `33518317562` passed 875/875 tests plus the full gate; Pages #2136 passed. Thunder Cage now has independent lightning damage/control resolution, and shared hard-disable status semantics suppress enemy action until expiry without a new state family.
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -501,7 +503,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 is complete at Product 0.9.300.1 / Data 68 / Game State 19, Packet 2 is complete at Product 0.9.300.2 / Data 69 / Game State 20, and Packet 3 — Novice Elemental Resolution Breadth — is complete at Product 0.9.300.3 / Data 70 / Game State 20. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 is complete at Product 0.9.300.1 / Data 68 / Game State 19, Packet 2 is complete at Product 0.9.300.2 / Data 69 / Game State 20, Packet 3 is complete at Product 0.9.300.3 / Data 70 / Game State 20, and Packet 4 — Thunder Cage Control Foundation — is complete at Product 0.9.300.4 / Data 71 / Game State 20. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
