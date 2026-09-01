@@ -171,6 +171,12 @@ Lime, bark/tannin, fleshing knives, scrapers, hides, leather, rawhide, thongs, l
 ### Apothecaries, healers, chandlers, soapmakers
 Mortars/pestles, balances/weights, sieves, jars/bottles, stoppers, bandages, splints, retorts/alembics where appropriate, tallow/oils, beeswax, wicks, molds, wood ash/lye, soap stock.
 
+## Continuity note after combat-plan selection
+
+Packet A — Occupational Tool Conversion remains **PRESERVED / QUEUED** as the strongest prepared `0.9.400 Economy / Production Depth` candidate.
+
+The selection of Combat 2.0 / Adventure Slice B does not cancel or supersede this material-culture circle. Do not restart its audit from scratch when 0.9.400 begins; resume from the conversion list and `requiredToolTags` activation intent below.
+
 ## Future bounded packets
 
 ### Packet A — Occupational tool conversion
