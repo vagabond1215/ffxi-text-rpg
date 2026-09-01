@@ -217,7 +217,8 @@ spellSchools / capabilities / abilities / companions
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
 | Combat 2.0 | playable / 0.9.300 P6 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, and persistent field pulses share canonical authorities. P6 adds durable `activeBattle.fields`, field interrupts, cast-time source snapshots, live defender resistance, and explicit per-recipient area attention without adding a second task/clock or mutable combat positioning. |
-| Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
+| Combat field engine | playable / P6 foundation | Versioned battle-local fields persist center/source snapshots and fictional-time pulse deadlines. Current authored proof is Umbral Well only; general zones, moving/friendly fields, and player ground targets are deferred. |
+| Active-battle persistence | integrated / Game State 21 | Encounter authority survives save/load, including required active field state; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
 | Companion pack ownership | integrated | Current companion catalog resolves through Pack v2 without copy authority. |
