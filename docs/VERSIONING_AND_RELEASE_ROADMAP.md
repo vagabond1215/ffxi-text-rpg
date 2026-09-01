@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Codename:      Slatewater Road Scout
+Codename:      Unified Combat Resolution
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 15 | serialized character/world runtime contract |
-| Data | 63 | canonical authored-data, geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Data | 64 | canonical authored-data, including representative ability resolution/recovery metadata plus geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1143,6 +1143,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.23          no Game State change; Data 61 -> 62
 0.9.100.24          Game State 14 -> 15; Data remains 62
 0.9.200.1           no Game State change; Data 62 -> 63
+0.9.200.2           no Game State change; Data 63 -> 64
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1211,11 +1212,16 @@ headwaterHighlandTransitionRepairResourceItems       0.1.0
 headwaterHighlandTransitionRepairProductionCatalog   0.1.0
 headwaterHighlandTransitionRepairProductionItems     0.1.0
 capabilities           0.5.0
-abilityCatalog         0.4.0
+abilityCatalog         0.5.0
 companionCatalog        0.3.0
 party                   0.4.0
 playerContinuity        0.6.0
 localityNavigation      0.3.1
+combatResolution        0.1.0
+abilityEngine           0.4.0
+battleEngine            0.9.0
+combatTurns             0.3.2
+combatActions           0.9.0
 ```
 
 Waymeet Marches uses the existing schedule/travel/ecology/resource/production behavior and durable-state contract; catalog/system versions advance only to reflect the expanded canonical Data 57 registries.
@@ -1236,23 +1242,33 @@ Census is continuously executable but mechanics-scale target shortfalls remain p
 
 Ironspine implementation-freeze Check #1368 / run `33215878907` passed with **753/753 tests**, Content Census, Benchmark 3, and Benchmark Sample on head `53323564ac724044ff06b1341c5466e73a34ab37`. Promoted exact-head Check #1381 / run `33217086478` passed the same full gate, and PR #402 merged at `a410eb18e6f8df2f58b965ab9697f8ae813b1c4d`.
 
-The current Data 63 Slatewater Road Scout checkpoint is 55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 20 quests/contracts, 2 companions, 7 transport services, 27 schedules, 39 packs, and 1,325 pack-owned records. Runtime seed NPCs are 47. Implementation freeze: `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`; Check #1815 / run `33361131795` passed the full gate with 826/826 tests.
+The current Data 64 Unified Combat Resolution checkpoint retains 55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 41 abilities, 20 quests/contracts, 2 companions, 7 transport services, 27 schedules, 39 packs, and 1,325 pack-owned records. Runtime seed NPCs are 47. B1 behavioral freeze `20b7351a61f56203975e101ef04fd7311e110d9b`; Check #1860 / run `33457301272` passed the full gate with 832/832 tests.
 
 Gloamwood implementation freeze Check #1504 / run `33269167675` and promoted Data 54 Check #1507 / run `33269370813` both passed the full gate with **781/781 tests**. Emberwash implementation freeze Check #1547 / run `33279116948` passed the full gate with **786/786 tests**. Promoted Data 55 Check #1559 / run `33279480611` passed the same full gate with **786/786 tests**. Lower Deepvein implementation freeze Check #1577 / run `33288699319` and promoted Data 56 Check #1580 / run `33288912478` both passed the full gate with **791/791 tests**.
 
 No hard timing thresholds are accepted. Benchmark 3 remains comparative evidence.
 
-## Combat planning decision — no version change
+## `0.9.200.2` — Combat 2.0 Packet B1: Unified Combat Resolution
 
-The advanced-combat design audit and Slice B implementation planning add **no runtime/data/persistence version change**.
+```text
+Product       0.9.200.1 -> 0.9.200.2
+Package       0.9.200   -> 0.9.200
+Data          63        -> 64
+Game State    15        -> 15
+Account Save  5         -> 5
+Benchmark     3         -> 3
+```
 
-Permanent authorities:
-- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`;
-- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Permanent record: `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
 
-Current runtime remains Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63.
+Behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b` passed Check #1860 / run `33457301272` with Repository Audit, **832/832 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #1990 / run `33457300712` passed.
 
-The next implementation is intended to advance Product within 0.9.200 only when Packet B1 actually lands. Data changes only for authored canonical records. Game State changes only if the implemented durable combat configuration/active-battle contract genuinely changes serialization.
+Data advances because existing canonical ability records gain authored resolution/recovery semantics. No ability-count breadth is added.
+
+Game State remains 15: combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence uses the existing action-data envelope rather than a new required state family.
+
+B2 Enemy Attention is next and not started.
+
 
 ## Phase progression
 
@@ -1263,7 +1279,7 @@ The next implementation is intended to advance Product within 0.9.200 only when 
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A COMPLETE; SLICE B COMBAT BRIDGE SELECTED / NOT STARTED
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1 COMPLETE; B2 QUEUED / NOT STARTED
 0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
