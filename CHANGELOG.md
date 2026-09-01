@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.200.4 — Combat Loadout Transitions
+
+- Added `combatLoadoutEngine` as the canonical active-combat equipment transition owner using fictional-time tasks and exactly-once reconciliation.
+- Added directional stow/draw/ready handling metadata for representative equipment and distinguished weapon-set from full-equipment transitions.
+- Blocked direct in-combat equipment mutation, attacks, legacy combat actions, and canonical ability activation during a transition while preserving ability cooldown timestamps.
+- Added B2 Aggro/Focus/Fixation armor-pressure legality, conservative handling for nonexistent LOS/pursuit state, hard-disable cancellation, and root/battle equipment coherence validation.
+- Advanced Game State 16 -> 17 and Data 64 -> 65 independently. Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed 844/844 tests plus the full hosted gate and Pages.
+
 ## 0.9.200.3 — Enemy Attention Foundation
 
 - Added durable active-battle enemy attention with hostile-specific Enmity, normalized Focus, nonlinear target-selection weighting, sticky Aggro, Fixation/Priority, and fictional-time decay/floors.

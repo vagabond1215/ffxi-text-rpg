@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
 Phase:         0.9 / 0.9.200 Adventure Vertical Slices active; Slice A + B1 complete
-Codename:      Enemy Attention Foundation
+Codename:      Combat Loadout Transitions
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -411,7 +411,7 @@ The later mechanics-scale gate remains **NOT READY** and is deliberately not con
 
 # `0.9.200` — Adventure Vertical Slices
 
-**Track status: ACTIVE. Slice A is COMPLETE; Slice B is IN PROGRESS with Packets B1-B2 COMPLETE and Packet B3 queued/not started.**
+**Track status: ACTIVE. Slice A is COMPLETE; Slice B is IN PROGRESS with Packets B1-B3 COMPLETE and Packet B4 queued/not started.**
 
 ## Slice A — Slatewater Road Scout
 
@@ -465,7 +465,9 @@ Packet B1 — Unified Combat Resolution Contract is **COMPLETE**.
 - Check #1860 / run `33457301272`: **832/832 tests** plus full gate green;
 - Product 0.9.200.2 / Data 64 / Game State 15.
 
-Packet B2 — Enemy Attention Foundation is **COMPLETE** at Product 0.9.200.3 / Data 64 / Game State 16; behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests. The next bounded unit is **Packet B3 — Combat Loadout Transition Foundation**, queued/not started. Later B4/B5 add weapon cadence/ranged/minimal kata and the final playable Slice B proof.
+Packet B2 — Enemy Attention Foundation is **COMPLETE** at Product 0.9.200.3 / Data 64 / Game State 16; behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests.
+
+Packet B3 — Combat Loadout Transition Foundation is **COMPLETE** at Product 0.9.200.4 / Data 65 / Game State 17; permanent record `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`; behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 with 844/844 tests and the full gate; Pages #2038 passed. The next bounded unit is **Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata**, queued/not started. B5 remains the final playable Slice B proof.
 
 # Relative planning envelope
 
@@ -481,7 +483,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A and Slice B Packets B1-B2 are complete. Packet B3 — Combat Loadout Transition Foundation — is next and not started. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A and Slice B Packets B1-B3 are complete. Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata — is next and not started. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 

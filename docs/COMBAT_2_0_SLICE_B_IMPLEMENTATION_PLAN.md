@@ -1,14 +1,14 @@
 # Combat 2.0 / Adventure Vertical Slice B Implementation Plan
 
-Status: **ACTIVE PLAN / B1-B2 COMPLETE / B3 NEXT AND NOT STARTED.**
+Status: **ACTIVE PLAN / B1-B3 COMPLETE / B4 NEXT AND NOT STARTED.**
 
 Current runtime remains:
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
 ```
 
@@ -195,6 +195,12 @@ The exact exponent/threshold values are tuning data and should use deterministic
 
 ## Packet B3 — Combat loadout transition foundation
 
+**COMPLETE — Product 0.9.200.4 / Game State 17 / Data 65.**
+
+Permanent record: `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
+
+Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 with 844/844 tests plus the full hosted gate; Pages #2038 passed.
+
 Fresh adjacency/debt audit authority:
 - `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
 
@@ -234,7 +240,7 @@ Armor becomes swappable only after actual pressure is broken or the hostile is s
 
 ## Packet B4 — Weapon cadence, ranged action, and minimal kata
 
-Only after B1-B3 are stable.
+B1-B3 are stable. Start this packet only on the next explicit continuation.
 
 ### Weapon cadence
 
@@ -386,6 +392,6 @@ Do not reopen it automatically. Optional ecology follow-ons require a fresh boun
 
 Each B packet is a separate bounded implementation unit.
 
-A later explicit continuation after B2 closure should start **B3 only**.
+A later explicit continuation after B3 closure should start **B4 only**.
 
-Do not automatically proceed B2 -> B3 -> B4 -> B5 without returning to the user at each stable handoff unless the user explicitly authorizes a broader sequence.
+Do not automatically proceed B3 -> B4 -> B5 without returning to the user at each stable handoff unless the user explicitly authorizes a broader sequence.

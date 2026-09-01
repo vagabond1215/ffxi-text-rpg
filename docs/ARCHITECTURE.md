@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.200.3
+Product:       0.9.200.4
 Package:       0.9.200
 Account Save:  5
-Game State:    16
-Data:          64
+Game State:    17
+Data:          65
 Benchmark:     3
-Codename:      Enemy Attention Foundation
-Phase:         0.9 / 0.9.200 active; Slice A + B1-B2 complete; B3 queued
+Codename:      Combat Loadout Transitions
+Phase:         0.9 / 0.9.200 active; Slice A + B1-B3 complete; B4 queued
 ```
 
-Data 64 remains the current authored/mechanics-data checkpoint. Product 0.9.200.3 adds the Enemy Attention Foundation: Game State 16 retains locality knowledge and now also persists outcome-affecting active-battle attention while canonical definitions remain in their existing catalogs.
+Data 65 is the current authored/mechanics-data checkpoint. Product 0.9.200.4 adds Combat Loadout Transitions: Game State 17 retains durable attention and now also persists outcome-affecting active-battle loadout transition ownership; representative canonical equipment definitions gain directional handling metadata.
 
 ## Core authority rules
 
@@ -678,7 +678,7 @@ Attention state belongs to the active hostile encounter. If it affects resumable
 
 Equipment transitions use canonical combat/world time. Armor-swap legality depends on actual hostile pressure, pursuit, reachability, disable state, focus, aggro, and fixation—not merely whether the player is the current selected target.
 
-B2 defines the attention persistence boundary as Game State 16. Later B3/B4 packets must decide independently whether their new durable state requires another schema boundary.
+B2 defines the attention persistence boundary as Game State 16. B3 independently advances to Game State 17 because an active timed loadout transition changes resumable combat outcomes; Data advances to 65 for authored equipment handling. B4 must make its own persistence/data decision.
 
 # Persistence authority — Game State 16
 
@@ -714,6 +714,16 @@ state.dayCycle
 ```
 
 No automatic Game State migrations are added under the current pre-alpha exact-schema policy.
+
+### B3 combat loadout transition authority
+
+Product 0.9.200.4 / Game State 17 / Data 65 adds `combatLoadoutEngine.js` as a direct timed-task owner beneath existing active-battle, equipment, inventory, combat-timeline, and world-time authorities.
+
+`activeBattle.loadoutTransition` is the durable owner record. Generic timed tasks carry timing, equipment/inventory retain physical-item authority, and the loadout owner performs exactly-once reconciliation plus terminal release. Direct active-battle equipment mutation is blocked outside this owner.
+
+B3 transitions are atomic: old equipment remains effective until successful completion. Completion synchronizes root and battle-player equipment, recomputes the battle combat profile, records structured evidence, uses canonical combat recovery, and releases the terminal task. Cancellation does not mutate equipment.
+
+Armor-pressure legality reads B2 attention rather than inventing a second threat model. LOS/reachability/pursuit remains nonexistent and cannot be used as an implicit pressure-release flag.
 
 ## Runtime projections and transient state
 
@@ -796,4 +806,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 64; the current runtime/persistence baseline is Product 0.9.200.3 / Game State 16. Adventure Vertical Slice A and Combat Packets B1-B2 are complete; `0.9.200 Adventure Vertical Slices` remains active with B3 Combat Loadout Transition Foundation next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 65; the current runtime/persistence baseline is Product 0.9.200.4 / Game State 17. Adventure Vertical Slice A and Combat Packets B1-B3 are complete; `0.9.200 Adventure Vertical Slices` remains active with B4 Weapon Cadence, Ranged Action, and Minimal Kata next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.

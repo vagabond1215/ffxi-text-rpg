@@ -4,15 +4,16 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.3 / Game State 16 / Data 64. Packets B1-B2 implement the representative unified-resolution and enemy-attention subsets; loadouts, ranged cadence, kata, affinity substitutions, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.4 / Game State 17 / Data 65. Packets B1-B3 implement representative unified resolution, hostile attention, and timed combat loadout transitions; weapon-driven cadence, first-class ranged actions, kata, affinity substitutions, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B2 — Unified Resolution + Enemy Attention: COMPLETE.**
+**Packets B1-B3 — Unified Resolution + Enemy Attention + Combat Loadout Transitions: COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
-- `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`.
+- `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`;
+- `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -32,8 +33,15 @@ Implemented by B2:
 - Fixation/Priority preserving underlying Enmity;
 - baseline/transient/floor/fictional-time decay state persisted with active battle.
 
+Implemented by B3:
+- canonical fictional-time combat loadout transition tasks;
+- directional stow/draw/ready handling for representative equipment;
+- quick weapon-set versus full-equipment classification;
+- B2 Aggro/Focus/Fixation armor-pressure legality;
+- atomic completion/cancellation and root/battle equipment coherence;
+- canonical cooldown preservation and structured future weapon-sequence reset intent.
+
 Still deferred:
-- B3 timed combat loadout transitions/armor pressure;
 - B4 weapon-delay cadence, first-class ranged attacks, configurable kata;
 - B5 playable combat-training integration;
 - full geometry/aura/stance/zone/channel/reaction breadth.
@@ -172,7 +180,7 @@ The following are still incomplete or transitional:
 - target geometry is effectively self/enemy/context rather than line/cone/ring/zone/chain/aura;
 - aura/stance/channel/zone actions are not first-class;
 - weapon kata/auto-sequence configuration is not implemented;
-- combat loadout transitions and attention/enmity are not implemented.
+- timed combat loadout transitions and attention/enmity are implemented through B2-B3; named loadout presets, partial stowed/not-ready physical state, and LOS/pursuit-based pressure release remain deferred.
 
 Do not mass-author abilities to the 100-ability mechanics floor on top of these limitations.
 
