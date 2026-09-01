@@ -773,6 +773,14 @@ Product 0.9.300.4 / Game State 20 / Data 71 adds no new durable state family. `s
 
 Thunder Cage stays a single-target canonical ability. `abilityEngine` applies its ordinary damage/status effects, `combatResolutionEngine` resolves damage and control resistance, and generic persisted statuses already carry `cannotAct` plus expiry. No geometry/zone/control state family is introduced.
 
+### 0.9.300 Packet 5 Tempest Ring geometry foundation
+
+Product 0.9.300.5 / Game State 20 / Data 72 adds `combatGeometryEngine.js` as a **stateless geometry projection/query authority**, not a new persisted battle-position family. It derives encounter-relative formation coordinates deterministically from the existing persisted combatant side/order and supports one bounded target-centered ring query with radius and maximum-target limits.
+
+`abilities.js` owns the authored geometry contract. `abilityEngine` asks `combatGeometryEngine` for recipients and applies the existing effect/resolution path independently to each selected target. `combatResolutionEngine` remains formula authority. `combatAttentionEngine` consumes the ordinary per-recipient effect evidence to add hostile attention to each enemy actually affected.
+
+No `activeBattle.geometry`, mutable coordinate, movement state, LOS/reachability state, pursuit/search/disengagement state, ground target, or geometry timer/task is added. Because combatant order already persists and no movement can change formation, current-schema cloning/save-load reproduces the same derived ring selection. A later packet that introduces mutable positioning, knockback, movement, or engagement geometry must make a fresh persistence/version decision rather than treating this derived projection as mutable state.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -857,4 +865,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 71; the current runtime/persistence baseline is Product 0.9.300.4 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–4 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 72; the current runtime/persistence baseline is Product 0.9.300.5 / Game State 20. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–5 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
