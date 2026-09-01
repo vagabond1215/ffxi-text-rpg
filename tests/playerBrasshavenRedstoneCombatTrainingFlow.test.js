@@ -47,7 +47,7 @@ test('B5 Varric training service is player-facing and preserves capability learn
     assert.equal(learned.code, 'training.capability-learned');
     assert.equal(knowsCapability(state.player, 'technique-rivet-guard'), true);
     assert.equal(state.player.progression.capabilities.known['technique-rivet-guard'].source, 'instruction');
-    assert.ok(state.events.some((event) => event.type === 'training.capability-learned' && event.data.capabilityId === 'technique-rivet-guard'));
+    assert.ok(state.events.records.some((event) => event.type === 'training.capability-learned' && event.data.capabilityId === 'technique-rivet-guard'));
 });
 
 test('B5 Brasshaven Redstone combat-training proof composes B1 through B4 without new combat authority', () => {
