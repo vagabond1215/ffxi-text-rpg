@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
-| Data | 72 | canonical authored-data, including Tempest Ring target-centered ring geometry/wind resolution/recovery metadata plus Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 73 | canonical authored-data, including Umbral Well persistent-field/Dark resolution/recovery metadata plus Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1421,6 +1421,29 @@ Data 72 changes the existing Tempest Ring definition from generic adept damage i
 
 The first full focused run after geometry authoring, Check #2033, passed 878/879 tests; its only failure was a manually constructed test battle whose `combatSequence` and battle ID violated existing current-schema coherence. Fixing that fixture required no runtime change. Behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` then passed Check #2034 / run `33544018110` with 879/879 tests and the full gate; Pages #2164 / run `33544018073` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`.
 
+## `0.9.300.6` — Advanced Combat Packet 6: Umbral Well Field Foundation
+
+```text
+Product       0.9.300.5 -> 0.9.300.6
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 21
+Data          72        -> 73
+Benchmark     3         -> 3
+```
+
+Data 73 changes the existing Umbral Well definition from generic adept single-target damage into explicit Dark magical impact plus a persistent field effect. The field lasts 12 fictional seconds, pulses at +4/+8/+12 seconds, uses radius 2 / maximum 4 recipients, and keeps the executable ability count at 41.
+
+Game State 21 adds required `activeBattle.fields` state. Each field persists a stable field id, source actor/ability, center target and point, creation/expiry/pulse deadlines, pulse sequence, authored geometry, and a compact cast-time source-offense snapshot. This state changes future resumable combat outcomes and cannot be reconstructed safely from the completed cast action alone.
+
+`combatFieldEngine` version 1 owns field lifecycle and pulse resolution. `combatGeometryEngine` adds point-radius recipient queries; `combatSimulationEngine` schedules field pulses as combat interrupts on the canonical world clock; `combatAttentionEngine` uses explicit per-recipient mode for area actions even when only one secondary effect lands. No direct timed-task owner, second clock, mutable combat position, player-selected ground target, LOS, or pursuit state is added.
+
+The first full Packet 6 run, Check #2066, reached 878/884 tests: two failures were non-field legacy shape churn from an unnecessary `field: undefined`, while four focused tests used Elemental Magic instead of Umbral Well's canonical Dark Magic requirement. After those integration repairs, Check #2068 reached 883/884; the sole remaining failure was a test-only attempt to `structuredClone` an injected RNG function. The clone fixture alone was corrected.
+
+Behavioral/data implementation freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` passed Check #2069 / run `33554921560` with **884/884 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample. Pages #2199 / run `33554920945` passed.
+
+Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`.
+
 ## Phase progression
 
 ```text
@@ -1431,7 +1454,7 @@ The first full focused run after geometry authoring, Check #2033, passed 878/879
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–5 COMPLETE; NEXT PACKET UNSELECTED
+0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–6 COMPLETE; NEXT PACKET UNSELECTED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
