@@ -154,6 +154,13 @@ git:
   latest_combat_b1_pages: 33457300712
   latest_combat_b1_pages_number: 1990
   latest_combat_b1_pages_result: success
+  latest_combat_b1_promoted_sync_check: 33457770272
+  latest_combat_b1_promoted_sync_check_number: 1877
+  latest_combat_b1_promoted_sync_check_sha: 6c78dac5d0b296753ac9a7f28f39b9980e5e4085
+  latest_combat_b1_promoted_sync_check_result: success-832-of-832-tests-repository-audit-census-benchmark-and-sample
+  latest_combat_b1_promoted_sync_pages: 33457765562
+  latest_combat_b1_promoted_sync_pages_number: 2007
+  latest_combat_b1_promoted_sync_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.200-adventure-vertical-slices
