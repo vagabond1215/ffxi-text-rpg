@@ -37,10 +37,10 @@ function firstVisit(state) {
     return entry.visited[key];
 }
 
-test('Game State 19 persists atlas time plus layered locality and NPC knowledge', () => {
+test('current Game State persists atlas time plus layered locality and NPC knowledge', () => {
     const state = createInitialState();
     assert.equal(state.version, VERSION.gameState);
-    assert.equal(VERSION.gameState, 19);
+    assert.equal(VERSION.gameState, 20);
     assert.equal(firstVisit(state).visitedAtWorldSeconds, DEFAULT_START_WORLD_TIME_SECONDS);
     assert.equal(Object.hasOwn(firstVisit(state), 'visitedAt'), false);
     assert.equal(Object.hasOwn(state, 'discoveredPois'), false);
