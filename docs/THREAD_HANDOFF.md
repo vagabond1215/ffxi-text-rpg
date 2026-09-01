@@ -5,263 +5,297 @@ Repository evidence beats conversation memory.
 ## Current runtime contract
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.2
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
+Codename:      Character Affinity & Kata Substitution
 Runtime:       Node >=24
 Phase:         0.9
 0.9.100:       COMPLETE
 0.9.200:       COMPLETE — Adventure Vertical Slices
 0.9.300:       ACTIVE — Advanced Combat / Training
 Packet 1:      COMPLETE — Current Melee Kata Breadth
-Packet 2:      Character Affinity & Kata Substitution Foundation — QUEUED / NOT STARTED
+Packet 2:      COMPLETE — Character Affinity & Kata Substitution Foundation
+Next packet:   UNSELECTED — requires fresh bounded work order
 ```
 
-## Latest bounded unit — 0.9.300 Packet 1
+## Latest bounded unit — 0.9.300 Packet 2
 
 Permanent record:
-- `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`.
 
 Permanent combat design authority:
 - `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
+
+Previous packet:
+- `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
 
 Adjacent/stale combat audit:
 - `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`.
 
 ### Behavioral implementation freeze
 
-`ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`
+`cbbec82e7d908c32dcb849e13f59461c83b6637a`
 
 Hosted evidence:
-- Check #1947 / run `33474558525`;
-- job `99751006436`;
+- Check #1956 / run `33477009897`;
 - Repository Audit PASS;
-- **860/860 tests**;
+- **867/867 tests**;
 - Content Census PASS;
 - Benchmark 3 PASS;
 - Benchmark Sample PASS;
-- Pages #2077 / run `33474558121` PASS.
+- Pages #2086 / run `33477008886` PASS.
 
 This freeze intentionally predates Product/Game State/Data promotion and authority synchronization.
 
-### Promoted synchronized-authority checkpoint before final handoff
+### Promoted authority checkpoint before this handoff
 
-`9e2718527099e2a8167f9d94081d448cdf63def3`
+`e81412fe51c244ddc093d5417c6dc82e7f8eb4c2`
 
 At this checkpoint:
-- Product 0.9.300.1 / Package 0.9.300 / Game State 19 / Data 68 promotion is complete;
-- README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, quality gates, Phase 0.9 plan, development direction, lifecycle record, changelog, and Packet 1 record are synchronized;
-- `0.9.300 Advanced Combat / Training` is active with Packet 1 complete;
-- Packet 2 is queued/not started;
-- Check #1950 / run `33474852387` confirmed the Repository Audit's only failures were the then-stale handoff version lines;
-- no Packet 2 implementation has started.
+- Product 0.9.300.2 / Package 0.9.300 / Game State 20 / Data 69 promotion is complete;
+- runtime version guards and stale current-Game-State test titles/assertions are synchronized;
+- README, execution pipeline, roadmap, system catalog, version roadmap, project profile, combat design, architecture, Phase 0.9 plan, development direction, quality gates, resource lifecycle, changelog, and Packet 2 record are synchronized;
+- Packet 2 is complete;
+- no subsequent advanced-combat packet has been selected or implemented.
 
-### Final synchronization repair before this handoff rewrite
+This handoff write is intended to be the final repository-file mutation for Packet 2.
 
-`d683ada3deb07901bb189111564f0a5564667fde`
+## What Packet 2 implements
 
-The first exact-final-head run exposed one test-only stale assertion in `tests/playerSlatewaterRoadScoutFlow.test.js`: an older Slice A persistence guard hard-coded Game State `18`. The test now reads `VERSION.gameState` and its title no longer embeds a stale schema number. No Packet 1 runtime behavior changed.
+### Character affinity authority
 
-Hosted repair-head evidence:
-- Check #1952 / run `33475039939`;
-- job `99752419036`;
-- Repository Audit PASS;
-- **860/860 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS;
-- Pages #2082 / run `33475039317` PASS.
+`js/text/systems/characterAffinityEngine.js` now owns:
 
-This handoff rewrite is therefore the intended final repository mutation for Packet 1.
-
-## What Packet 1 implements
-
-Packet 1 broadens the already-proven B4 weapon-kata authority to every **currently equipped canonical melee weapon category** with real equipment and skill support.
-
-Current automatic kata families:
-- dagger;
-- sword;
-- axe;
-- staff;
-- club.
-
-New authored sequences:
-- **axe:** Set Hew -> Hooking Chop -> Driving Cleave;
-- **staff:** Measured Thrust -> Turning Sweep -> Braced Drive;
-- **club:** Short Strike -> Returning Blow -> Braced Strike.
-
-The new families are not numeric copies:
-- axe emphasizes heavier commitment, increasing defense penetration, and slower recovery;
-- staff emphasizes accurate early control and a braced penetrating finish;
-- club emphasizes compact accuracy with a modest committed finish.
-
-All use the existing structured attack-profile vocabulary:
-- scaling stat;
-- coefficient;
-- accuracy modifier;
-- defense penetration;
-- recovery multiplier.
-
-No new combat-resolution formula, task owner, battle clock, or action-family subsystem was added.
-
-## Existing authority preserved
-
-`weaponKataCatalog.js` remains authored kata data authority.
-
-`weaponKataEngine.js` remains the single runtime/configuration owner.
-
-`weaponCadenceEngine.js` still owns only weapon-delay -> fictional-time recovery conversion.
-
-`combatResolutionEngine.js` still owns hit/defense/damage math.
-
-`combatLoadoutEngine.js` still owns timed equipment transitions and sequence-reset intent.
-
-Equipment/inventory remain physical item authorities.
-
-## Proficiency and sequence behavior
-
-The B4 proficiency law remains unchanged:
 ```text
-learned proficiency 0 -> slot 1
-learned proficiency 2 -> slots 1-2
-learned proficiency 4 -> slots 1-3
+player.progression.affinities
 ```
 
-Packet 1 proves the same 1/2/3-slot progression on axe rather than inventing a separate advanced-track rule.
+State version: 1.
 
-B3/B4 loadout resets now automatically rebind to axe/staff/club when those supported families are equipped.
+Canonical element keys:
+- fire;
+- ice;
+- wind;
+- earth;
+- lightning;
+- water;
+- light;
+- dark.
 
-The historical B5 South Redstone integration guard was updated accordingly: its Bronze Axe swap now rebinds the encounter sequence to `axe` instead of the former unsupported/null family.
+Each affinity is a small non-negative integer rank. Rank 0 means no earned affinity.
 
-## Persistence decision
+The foundation exposes create/ensure/read/set/gain/validate operations. It does not create a separate affinity XP economy, timer, task owner, or battle-local affinity store.
+
+Affinity is character-owned. It is not inferred from:
+- active discipline/job;
+- known elemental spells;
+- elemental-magic proficiency;
+- equipment;
+- active battle.
+
+Changing active discipline does not erase or transform earned affinity.
+
+### Kata substitutions
+
+The existing `weaponKataCatalog.js` remains authored kata data authority.
+
+The existing `weaponKataEngine.js` remains configuration/eligibility/cursor authority.
+
+Packet 2 adds exactly two representative affinity substitutions:
+
+- **Rimepoint Thrust** — dagger slot 1, Ice, requires dagger proficiency 2 + Ice affinity rank 1;
+- **Cinder-Braced Drive** — staff slot 3, Fire, requires staff proficiency 4 + Fire affinity rank 1.
+
+Both remain ordinary selected move IDs in the existing configuration shape.
+
+Eligibility is conjunctive:
 
 ```text
-Product       0.9.200.6 -> 0.9.300.1
-Package       0.9.200   -> 0.9.300
+weapon proficiency requirement
+AND
+character affinity requirement
+```
+
+Physical defaults remain valid without affinity.
+
+If a configured elemental substitution later becomes affinity-ineligible, runtime selection falls back to that slot's physical default instead of creating invalid encounter state.
+
+### Combat-resolution integration
+
+No elemental-kata resolver was created.
+
+`battleEngine.resolveBasicAttack()` was widened only enough to pass authored:
+- channel;
+- damage type;
+- element;
+- element source;
+- resistance model;
+
+from the kata attack profile into the existing `combatResolutionEngine`.
+
+The representative substitutions therefore use the same physical-defense and elemental-resistance evidence path already established by B1.
+
+## Persistence and version decisions
+
+```text
+Product       0.9.300.1 -> 0.9.300.2
+Package       0.9.300   -> 0.9.300
 Account Save  5         -> 5
-Game State    18        -> 19
-Data          67        -> 68
+Game State    19        -> 20
+Data          68        -> 69
 Benchmark     3         -> 3
 ```
 
-### Why Game State 19
+### Why Game State 20
 
-`WEAPON_KATA_CONFIGURATION_VERSION` advances 1 -> 2.
+`player.progression.affinities` is a new required durable character fact that affects future combat configuration and outcomes.
 
-`player.progression.weaponKata.selections` now requires durable selections for axe, staff, and club in addition to dagger/sword. A current-schema save therefore has a materially different required progression contract.
+Current-schema persistence validation requires the versioned affinity object and every canonical element rank.
 
-A real current-schema save/load round trip is covered by `tests/advancedCombatKataBreadth.test.js`.
+No supported-save migration is added under the current pre-alpha policy.
 
-No supported migration is added under the current pre-alpha policy.
+### Why Data 69
 
-### Why active-battle kata version stays 1
+Canonical authored kata data adds:
+- Rimepoint Thrust;
+- Cinder-Braced Drive.
 
-`activeBattle.weaponKata.byActorId` keeps the same fields:
+No equipment, NPC, POI, route, item, quest, companion, spell, capability, or filler record was added for count.
+
+### Why kata configuration stays version 2
+
+The serialized shape remains:
+
+```text
+version
+selections[familyId][slot] = moveId
+```
+
+Affinity substitutions are additional allowed move IDs, not a new configuration field.
+
+`WEAPON_KATA_CONFIGURATION_VERSION` therefore remains 2.
+
+### Why active-battle kata stays version 1
+
+`activeBattle.weaponKata.byActorId` still stores:
 - family;
 - next slot;
-- last move;
+- last move ID;
 - action count;
 - reset count;
 - last reset reason.
 
-Only the valid family catalog broadens. No new encounter-local field is required, so `BATTLE_WEAPON_KATA_STATE_VERSION` remains 1.
+No encounter-local affinity or substitution field was needed.
 
-### Why Data 68
+`BATTLE_WEAPON_KATA_STATE_VERSION` remains 1.
 
-Canonical authored kata data gains the new axe/staff/club families and move definitions.
-
-No new equipment, NPC, POI, route, item, recipe, capability, or executable ability was added merely for count.
-
-## Focused validation
+## Focused Packet 2 guard
 
 Primary guard:
-- `tests/advancedCombatKataBreadth.test.js`.
+- `tests/advancedCombatAffinitySubstitution.test.js`.
 
 It proves:
-- catalog/configuration validation;
-- five-family default configuration;
-- axe sequence cadence and increasing penetration;
-- staff/club equipment-family binding;
-- proficiency-gated 1/2/3 slot behavior;
-- current-schema save/load of configuration version 2.
+- valid default affinity state;
+- affinity independence from active discipline;
+- invalid element/rank rejection;
+- affinity + weapon-proficiency conjunctive eligibility;
+- Rimepoint Thrust execution through existing resolution;
+- elemental resistance in structured action evidence;
+- safe fallback to physical default when affinity is removed;
+- Cinder-Braced Drive as a second-family proof;
+- current-schema affinity + configured-substitution save/load.
 
-Existing B4/B5 guards remain active and passed in the behavioral freeze.
+The first hosted implementation run found one test-fixture issue: the staff resistance proof mutated a battle combat-profile cache directly, and normal combat refresh correctly discarded that mutation. The repaired proof places resistance in source status modifiers before encounter creation, so recalculation preserves the canonical resistance input. Runtime behavior did not need a repair.
+
+## Existing authorities preserved
+
+- `characterAffinityEngine.js` owns durable character affinity only.
+- `weaponKataCatalog.js` owns authored kata moves/options.
+- `weaponKataEngine.js` owns kata configuration, eligibility, and cursor semantics.
+- `weaponCadenceEngine.js` owns weapon-delay -> fictional-time recovery conversion only.
+- `combatResolutionEngine.js` owns hit/defense/damage/elemental-resistance math.
+- `combatLoadoutEngine.js` owns timed equipment transitions.
+- equipment/inventory remain physical item authorities.
+- capability engine remains learned-capability authority.
+- active battle remains encounter authority.
+- canonical world time remains the only combat/simulation time authority.
+
+No new direct timed-task owner was introduced.
 
 ## Explicitly deferred / still nonexistent
 
-Packet 1 does **not** make the following systems real:
-1. canonical character elemental-affinity state;
-2. affinity-driven kata substitutions;
-3. weapon resonance / enchanted weapon element behavior;
-4. aura, stance, zone, channel, or reaction first-class action families;
-5. LOS/reachability/pursuit/search/disengagement simulation;
+Packet 2 does **not** make the following systems real:
+1. weapon resonance or enchanted-weapon supplied elements;
+2. generic temporary elemental imbuements;
+3. aura, stance, zone, channel, or reaction first-class action families;
+4. LOS/reachability/pursuit/search/disengagement simulation;
+5. generalized ranged line-of-fire geometry;
 6. universal passive block/parry/guard/counter/interruption rolls;
 7. named prepared loadout presets;
-8. broad recovered `/techniques` migration;
-9. kata for great axe, polearm, great sword, katana, hand-to-hand, archery, marksmanship, or other unsupported families without current canonical equipment/runtime support;
-10. generalized ranged line-of-fire geometry.
+8. partial stowed/not-ready equipment state;
+9. kata for unsupported great axe, polearm, great sword, katana, hand-to-hand, archery, marksmanship, or other families without current canonical runtime support;
+10. broad recovered `/techniques` migration;
+11. broad affinity-substitution catalog expansion;
+12. mechanics-census filler.
 
 Do not infer these from the permanent design document.
 
 ## Stale/noncanonical combat surfaces remain non-authoritative
 
-Do not build Packet 2 on:
+Do not build future advanced combat on:
 - `battle.targetId`;
 - `battle.actionDelay`;
 - `battle.recasts`;
 - `battle.casting`;
 - root `js/ui.js` timer combat;
 - root `js/encounter.js`;
-- root `data/weaponskills.js`.
+- root `data/weaponskills.js`;
+- legacy FFXI job/affinity terminology.
 
 Exploration spawn detection `aggroEngine` remains separate from active-battle Enmity/Aggro.
 
-## Next bounded unit — do not auto-start beyond it
+## Next advanced-combat decision boundary
 
-**0.9.300 Packet 2 — Character Affinity & Kata Substitution Foundation — QUEUED / NOT STARTED.**
+**No Packet 3 is selected.**
 
-The current runtime has no canonical character-affinity state. A future explicit `continue` should start Packet 2 by defining the **smallest durable character affinity authority** needed for earned elemental kata substitutions, then prove a deliberately small number of substitutions through the existing kata and combat-resolution contracts.
+A future explicit combat continuation should first reassess current combat debt and choose one bounded unit. Candidate domains include, but are not automatically authorized:
+- action-contract/catalog migration for names whose mechanics remain flatter than their semantics;
+- weapon resonance/imbuement;
+- engagement geometry / LOS / pursuit / disengagement;
+- aura/stance/zone/channel/reaction action families;
+- passive defense/reaction semantics;
+- unsupported weapon-family support where canonical equipment/content justifies it.
 
-Packet 2 must not simultaneously implement:
-- aura/stance/zone/channel/reaction families;
-- LOS/pursuit/disengagement;
-- a broad elemental move catalog;
-- every weapon family;
-- passive defense reaction systems.
+Do not combine these into one packet.
 
-Expected first design questions for Packet 2:
-- what constitutes character affinity and how it is earned/owned;
-- whether affinity is scalar, ranked, or thresholded;
-- how kata substitution eligibility reads affinity without duplicating capability/magic progression;
-- which one or two existing weapon families provide the representative proof;
-- whether the new durable affinity shape requires Game State 20.
+The mechanics-scale ability gap remains a planning signal, not permission to mass-author mechanically duplicate actions.
 
-Do not predeclare the answer from legacy job/element data.
+## Preserved interrupted/resumable queues
 
-## Preserved interrupted/resumable circles
+Packet 2 does not cancel earlier queues:
 
-Packet 1 does not cancel earlier queues:
-- **Locality enrichment — deferred/resumable:** ambient/risk events, wandering/seasonal merchants, generalized directions/help dialogue, richer contextual dialogue, staged shop category/browse depth, learned-locality graphical presentation. Authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
 - **Occupational Tool Conversion — preserved/queued:** strongest prepared `0.9.400 Economy / Production Depth` candidate. Authority: `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge — paused/resumable:** Waymeet Inner Marches / outer crossroads first, then Coppergrass extensions, then Drowned Vaults. Authorities: `docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md`, `docs/WORLD_MACRO_TOPOLOGY.md`.
-- **Ecology:** the five-part flora/fauna diversity repair sequence is COMPLETE. Do not restart without a fresh bounded work order.
+- **Locality enrichment — deferred/resumable:** ambient/risk events, wandering/seasonal merchants, generalized directions/help dialogue, richer contextual dialogue, staged shop category/browse depth, learned-locality graphical presentation. Authority: `docs/PLAYER_INFORMATION_AND_LOCALITY_DISCOVERY.md`.
+- **Ecology:** five-part flora/fauna diversity repair sequence remains COMPLETE. Do not restart without a fresh bounded work order.
 
 ## Standing governance rules
 
 Preserve:
 - one canonical fictional world clock;
 - one domain authority per state family;
+- character-owned progression survives discipline switching;
 - active battle owns encounter/attention/loadout/kata encounter state;
-- player progression owns durable kata configuration;
+- player progression owns durable affinity and kata configuration;
 - combat resolution owns hit/damage/resistance formulas;
 - combat attention owns attention calculation/selection;
 - combat loadout owns timed equipment transition/reconciliation;
 - weapon cadence owns delay conversion only;
-- weapon kata owns configuration/cursor semantics only;
+- weapon kata owns configuration/eligibility/cursor semantics only;
 - equipment/inventory remain physical item authorities;
 - ability engine owns canonical activation/cooldowns;
 - action history stores structured evidence; prose is not authority;
@@ -270,32 +304,33 @@ Preserve:
 - no hard benchmark timing thresholds;
 - no census filler;
 - exact behavioral implementation freeze before promotion/synchronization;
-- `docs/THREAD_HANDOFF.md` is the final repository-file write for the packet.
+- `docs/THREAD_HANDOFF.md` is the final repository-file write for a closed packet.
 
-## Restart order for Packet 2
+## Restart order after Packet 2
 
 1. `AGENTS.md`
 2. this handoff
 3. `PROJECT_PROFILE.yaml`
-4. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
-5. `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`
-6. `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`
-7. `docs/EXECUTION_PIPELINE.md`
+4. `docs/EXECUTION_PIPELINE.md`
+5. `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`
+6. `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`
+7. `docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md`
 8. `docs/ROADMAP.md`
 9. `docs/ARCHITECTURE.md`
-10. inspect current character progression/capability/magic data for any real affinity-like authority
-11. inspect `weaponKataCatalog.js`, `weaponKataEngine.js`, and `combatResolutionEngine.js`
-12. define one bounded Packet 2 affinity/substitution contract before implementation
+10. inspect current runtime/code only for the newly selected bounded domain
+11. if continuing advanced combat, select exactly one next packet before implementation
+
+Do not redo the closed broad combat-adjacency audit unless repository evidence materially diverges.
 
 ## Final validation contract
 
-This handoff is the final repository-file mutation for 0.9.300 Packet 1.
+This handoff is the intended final repository-file mutation for 0.9.300 Packet 2.
 
 After this write:
-- perform **no repository-file mutations**;
+- perform **no repository-file mutations** unless exact-head validation exposes a real failure;
 - validate the exact resulting `main` SHA with hosted Check;
-- confirm Repository Audit, **860/860 tests**, Census, Benchmark 3, and Benchmark Sample;
+- confirm Repository Audit, **867/867 tests**, Census, Benchmark 3, and Benchmark Sample;
 - confirm Pages succeeds on the same exact SHA;
 - confirm `main` remains on that exact SHA after validation.
 
-The final SHA and final Check/Pages run IDs are external validation evidence and must not be inserted by another repository write.
+If exact-head validation exposes a stale assertion or synchronization defect, repair it, then rewrite this handoff last again before the final validation pass.
