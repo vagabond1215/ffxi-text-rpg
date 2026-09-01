@@ -49,9 +49,19 @@ This freeze intentionally predates Product/Game State promotion.
 
 ### Promoted synchronized-authority checkpoint
 
-**PENDING exact-head hosted validation after this synchronization write.**
+`72ecbeec0fb9519dac781b76c1c20a4d73bec6d1`
 
-This is an interim synchronized handoff. After a green promoted Check/Pages run, refresh this file once with that external evidence and make that refresh the final repository-file mutation for B2.
+Hosted evidence:
+- Check #1884 / run `33460313633`;
+- job `99708891784`;
+- Repository Audit PASS;
+- **837/837 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2014 / run `33460312671` PASS.
+
+The promoted synchronization required one test-only follow-up after `e1a65752d1d6693966b2b132eecc99bbd079798f`: a stale pipeline assertion still expected validation system version 0.47.0 after the manifest advanced it to 0.48.0. Commit `72ecbeec0fb9519dac781b76c1c20a4d73bec6d1` corrects that expectation and changes no B2 runtime behavior.
 
 ## What B2 implements
 
@@ -140,11 +150,14 @@ Preserve:
 12. `js/text/systems/combatAttentionEngine.js`
 13. current-schema persistence and combat tests
 
-## Promoted validation contract
+## Final validation contract
 
-After this synchronization write:
+This handoff is the final repository-file mutation for B2.
+
+After this write:
+- perform **no repository-file mutations**;
 - validate the exact resulting `main` SHA with hosted Check;
-- confirm Repository Audit, 837/837 tests, Census, Benchmark 3, Benchmark Sample;
-- confirm Pages succeeds on the same exact SHA;
-- then update this handoff once with the promoted SHA/run IDs;
-- perform no repository-file mutations after that final handoff before exact-head final validation.
+- confirm Repository Audit, **837/837 tests**, Census, Benchmark 3, and Benchmark Sample;
+- confirm Pages succeeds on the same exact SHA.
+
+The final SHA and final Check/Pages run IDs are external validation evidence and must not be inserted by another repository write.
