@@ -4,14 +4,14 @@ Repository evidence beats conversation memory.
 
 ## Current runtime contract
 
-Product: 0.9.300.5
-Package: 0.9.300
-Account Save: 5
-Game State: 20
-Data: 72
-Benchmark: 3
-Codename: Tempest Ring Geometry Foundation
-Runtime: Node >=24
+Product:       0.9.300.5
+Package:       0.9.300
+Account Save:  5
+Game State:    20
+Data:          72
+Benchmark:     3
+Codename:      Tempest Ring Geometry Foundation
+Runtime:       Node >=24
 Phase: 0.9
 0.9.100: COMPLETE
 0.9.200: COMPLETE — Adventure Vertical Slices
@@ -458,6 +458,12 @@ Preserve:
 10. select exactly one next advanced-combat packet before implementation
 
 Do not redo the closed broad combat-adjacency audit unless repository evidence materially diverges.
+
+## Final-handoff audit repair
+
+The first final handoff write was commit 43ad952cc6155a1895dae0796cfa3f28dd71fae2. Exact-head Check #2051 / run 33544913066 stopped at Repository Audit before tests because this handoff used compact baseline labels instead of the repository-audit-required aligned contract strings for Product and Game State.
+
+No runtime, data, version, or authority document defect was exposed. This rewrite changes only docs/THREAD_HANDOFF.md, restores the required baseline formatting, and is again the intended final repository-file mutation.
 
 ## Final validation contract
 
