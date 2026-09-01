@@ -150,6 +150,17 @@ export function selectEnemyAttentionTarget(battle, enemyId, options = {}) {
 
 export function applyCombatActionAttention(battle, action, options = {}) {
     if (!battle || !action || !isCredibleActor(battle, action.actorId)) return [];
+
+    const multiRecipients = appliedEnemyEffectRecipientIds(battle, action);
+    if (multiRecipients.length > 1) {
+        return multiRecipients.map((enemyId) => {
+            const amount = deriveCombatActionEnmityForRecipient(action, enemyId);
+            if (!(amount > 0)) return null;
+            const entry = addEnmity(battle, enemyId, action.actorId, amount, options);
+            return entry ? { enemyId, actorId: action.actorId, amount, effectiveEnmity: entry.effectiveEnmity } : null;
+        }).filter(Boolean);
+    }
+
     const amount = deriveCombatActionEnmity(action);
     if (!(amount > 0)) return [];
     const target = findCombatant(battle, action.targetId);
@@ -160,6 +171,18 @@ export function applyCombatActionAttention(battle, action, options = {}) {
         const entry = addEnmity(battle, enemy.id, action.actorId, amount, options);
         return entry ? { enemyId: enemy.id, actorId: action.actorId, amount, effectiveEnmity: entry.effectiveEnmity } : null;
     }).filter(Boolean);
+}
+
+export function deriveCombatActionEnmityForRecipient(action, recipientId) {
+    const data = action?.data ?? {};
+    let amount = action?.targetId === recipientId ? nonNegativeNumber(data.attention?.enmityBonus) : 0;
+    for (const effect of data.effects ?? []) {
+        if (effect?.applied !== true || effect.recipientId !== recipientId) continue;
+        if (effect.type === 'damage') amount += nonNegativeNumber(effect.amount);
+        else if (effect.type === 'heal') amount += nonNegativeNumber(effect.amount) * 0.5;
+        else if (effect.type === 'status') amount += 8;
+    }
+    return amount;
 }
 
 export function deriveCombatActionEnmity(action) {
@@ -293,6 +316,17 @@ function weightedPick(rows, rng) {
         if (roll <= cursor) return row;
     }
     return rows.at(-1) ?? null;
+}
+
+function appliedEnemyEffectRecipientIds(battle, action) {
+    const ids = [];
+    for (const effect of action?.data?.effects ?? []) {
+        if (effect?.applied !== true || !effect.recipientId) continue;
+        const recipient = findCombatant(battle, effect.recipientId);
+        if (!recipient || !isEnemy(recipient) || ids.includes(recipient.id)) continue;
+        ids.push(recipient.id);
+    }
+    return ids;
 }
 
 function livingCredibleActors(battle) { return (battle?.combatants ?? []).filter((combatant) => isCredibleCombatant(combatant) && !combatant.battle?.defeated && Number(combatant.resources?.hp) > 0); }
