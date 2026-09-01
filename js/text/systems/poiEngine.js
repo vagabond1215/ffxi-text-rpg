@@ -7,6 +7,7 @@ import {
 } from '../data/pointsOfInterest.js';
 import { findCompanionDefinition } from '../data/companions.js';
 import { describeGuildServiceForPoi } from '../data/guildServices.js';
+import { describeTrainingServiceAtPoi } from './trainingServiceEngine.js';
 import { describeQuestHookForPoi } from '../data/questHooks.js';
 import { describeShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getConnectionsFrom, getPlace } from '../data/places.js';
@@ -153,6 +154,9 @@ export function describePoiInteraction(state, poi, action) {
             break;
         case 'quest':
             lines.push('', describeQuestHookForPoi(poi));
+            break;
+        case 'training':
+            lines.push('', describeTrainingServiceAtPoi(state, poi.id));
             break;
         case 'travel':
             lines.push('', describeTransportServiceBoard(state));

@@ -158,7 +158,7 @@ export function createSeedNpcs() {
         }),
         createNpc({
             id: 'npc-brasshaven-marshal-varric-stone', name: 'Marshal Varric Stone', title: 'Civic Marshal', faction: 'Brasshaven',
-            locationId: 'brasshaven-market-ring', services: ['orientation', 'commissions', 'civic'],
+            locationId: 'brasshaven-market-ring', services: ['orientation', 'commissions', 'civic', 'combat-training'],
             questIds: ['commitment-brasshaven-copper-return'],
         }),
         createNpc({

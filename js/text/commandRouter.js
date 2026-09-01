@@ -59,6 +59,7 @@ import {
 import { describeJobProgression, switchMainJob } from './systems/progressionEngine.js';
 import { moveInDirection, stopTravel } from './systems/navigationEngine.js';
 import { describeSkillProgression } from './systems/skillProgressionEngine.js';
+import { describeTrainingServiceAtPoi, trainCapabilityAtPoi } from './systems/trainingServiceEngine.js';
 import { configureWeaponKataSelection, describeWeaponKata } from './systems/weaponKataEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
@@ -122,6 +123,8 @@ const HELP_TEXT = [
     '  equipment            Show equipped gear slots and wardrobe containers.',
     '  spells               Show learned canonical spells and active abilities.',
     '  abilities            Show learned canonical spells, techniques, and utility abilities.',
+    '  training             Show combat instruction available at the current trainer.',
+    '  train <technique>    Learn an eligible technique from the current trainer.',
     '  invoke <ability>     Activate a canonical learned ability through the ability engine.',
     '  techniques           Show recovered weapon-technique source data.',
     '  disciplineabilities  Show bounded recovered discipline abilities and traits.',
@@ -248,6 +251,8 @@ export function createCommandRouter(state, services = {}) {
             case 'attack': return performPlayerAttack(state, parsed.args[0]);
             case 'ranged': return performPlayerRangedAttack(state, parsed.args[0]);
             case 'kata': return describeKataCommand(state, parsed.args);
+            case 'training': return describeTrainingServiceAtPoi(state, state.activePoiId);
+            case 'train': return describeActionResult(trainCapabilityAtPoi(state, parsed.args.join(' '), state.activePoiId));
             case 'technique': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
             case 'cast': return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
             case 'npcs': return describeNpcs(state);

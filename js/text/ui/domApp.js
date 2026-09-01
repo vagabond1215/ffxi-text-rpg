@@ -27,6 +27,7 @@ import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { startCombatEquipTransition, startCombatUnequipTransition } from '../systems/combatLoadoutEngine.js';
 import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
 import { startGatheringWork } from '../systems/gatheringWorkEngine.js';
+import { trainCapabilityAtPoi } from '../systems/trainingServiceEngine.js';
 import {
     enterLocalityPoi,
     exploreLocality,
@@ -58,6 +59,7 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'locality.poi.enter',
     'locality.poi.leave',
     'locality.poi',
+    'training.learn',
     'playerExperience.claimStarterKit',
     'commitment.accept',
     'commitment.resolve',
@@ -160,6 +162,8 @@ export function createDomApp({ host }) {
             recordGameplayFeedback(result);
         } else if (intent === 'locality.poi') {
             result = performLocalityPoiAction(state, payload.poiId, payload.action);
+        } else if (intent === 'training.learn') {
+            result = trainCapabilityAtPoi(state, payload.capabilityId, payload.poiId);
             recordGameplayFeedback(result);
         } else if (intent === 'playerExperience.claimStarterKit') {
             result = claimOriginStarterKit(state);

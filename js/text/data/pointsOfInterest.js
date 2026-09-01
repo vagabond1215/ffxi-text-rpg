@@ -93,7 +93,10 @@ const POI_SEEDS = [
     poi('poi-slatewater-waylodge-stableyard', 'slatewater-waylodge', 'Bram Pell', POI_TYPES.TRAVEL, 'H-8', ['travel', 'stabling', 'mountCare', 'packAnimals'], 'Stableyard with water, feed, sheltered pens, tack checks, and caravan boarding for mounts and pack animals'),
     poi('poi-slatewater-waylodge-hearth', 'slatewater-waylodge', 'Slatewater Hearth and Bunkroom', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'cooking', 'craftSupport'], 'Common hearth, hot meals, drying racks, a shared repair bench, and simple bunks for road crews and field workers'),
 
-    poi('poi-bastok-markets-rabid-wolf', 'brasshaven-market-ring', 'Marshal Varric Stone', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'realm'], 'Market Ring gate marshal'),
+    poi('poi-bastok-markets-rabid-wolf', 'brasshaven-market-ring', 'Marshal Varric Stone', POI_TYPES.TRAVEL, 'E-11', ['gateGuard', 'realm', 'combatTraining'], 'Market Ring gate marshal and Forge-Road combat drill instructor', {
+        trainingNpcId: 'npc-brasshaven-marshal-varric-stone',
+        trainingCapabilityIds: ['technique-ridge-breaker', 'technique-rivet-guard'],
+    }),
     poi('poi-bastok-markets-brunhilde', 'brasshaven-market-ring', 'Dessa Rivet', POI_TYPES.VENDOR, 'F-10', ['armor', 'shop'], 'Armor vendor'),
     poi('poi-bastok-markets-ciqala', 'brasshaven-market-ring', 'Tessa Rook', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapons merchant'),
     poi('poi-bastok-markets-peritrage', 'brasshaven-market-ring', 'Joren Flint', POI_TYPES.VENDOR, 'F-10', ['weapons', 'shop'], 'Weapon vendor'),
@@ -199,8 +202,8 @@ export function createZoneConnectionPois() {
     })));
 }
 
-function poi(id, placeId, name, type, sourcePosition, tags, notes) {
-    return { id, placeId, name, type, sourcePosition, tags, notes };
+function poi(id, placeId, name, type, sourcePosition, tags, notes, extras = {}) {
+    return { id, placeId, name, type, sourcePosition, tags, notes, ...extras };
 }
 
 function describePoiLine(poi) {
@@ -215,6 +218,7 @@ function inferActions(poi) {
     if ([POI_TYPES.TRAVEL, POI_TYPES.TRAVEL_MARKER, POI_TYPES.ROUTE_EXIT].includes(poi.type)) actions.add('travel');
     if (poi.type === POI_TYPES.STORAGE) actions.add('storage');
     if (poi.type === POI_TYPES.COMPANION) actions.add('companion');
+    if ((poi.tags ?? []).includes('combatTraining') && (poi.trainingCapabilityIds ?? []).length) actions.add('training');
     return Array.from(actions);
 }
 

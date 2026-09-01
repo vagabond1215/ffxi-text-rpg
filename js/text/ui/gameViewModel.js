@@ -25,6 +25,7 @@ import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine
 import { decoratePlayerSocialScheduleModel } from '../systems/playerSocialScheduleEngine.js';
 import { createSettlementServiceBoard } from '../systems/settlementServiceBoardEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
+import { listTrainingOptionsAtPoi } from '../systems/trainingServiceEngine.js';
 import { validateRangedLoadout } from '../systems/weaponCadenceEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { createTransportServiceBoard } from '../systems/transportServiceBoardEngine.js';
@@ -34,6 +35,7 @@ import { createMinimapModel } from './minimapModel.js';
 const POI_ACTION_LABELS = Object.freeze({
     shop: 'Shop',
     guild: 'Guild',
+    training: 'Training',
     quest: 'Commission',
     storage: 'Storage',
     companion: 'Companion',
@@ -41,7 +43,7 @@ const POI_ACTION_LABELS = Object.freeze({
     talk: 'Talk',
 });
 
-const LOCALITY_ACTION_PRIORITY = Object.freeze(['shop', 'guild', 'quest', 'storage', 'companion', 'travel', 'talk']);
+const LOCALITY_ACTION_PRIORITY = Object.freeze(['shop', 'guild', 'training', 'quest', 'storage', 'companion', 'travel', 'talk']);
 
 export function createGameViewModel(state, uiState = {}) {
     if (!state?.player) throw new Error('Game view model requires player state.');
@@ -184,6 +186,17 @@ export function createContextualActions(state, nearby = null, opportunities = nu
                     payload: Object.freeze({ poiId: activePoint.id, action: serviceAction }),
                     kind: serviceAction,
                 }));
+            }
+            if (activePoint.actions.includes('training') && (!activePoint.availability?.scheduled || activePoint.availability.available)) {
+                for (const option of listTrainingOptionsAtPoi(state, activePoint.id).filter((entry) => !entry.known).slice(0, 2)) {
+                    actions.push(directAction(
+                        `context:training:${activePoint.id}:${option.capabilityId}`,
+                        `${option.eligible ? 'Learn' : 'Review'} · ${option.name}`,
+                        'training.learn',
+                        { poiId: activePoint.id, capabilityId: option.capabilityId },
+                        'training',
+                    ));
+                }
             }
             actions.push(directAction('context:locality-poi-leave', 'Leave', 'locality.poi.leave', {}, 'travel'));
             actions.push(directAction('context:locality-list', 'Known Places', 'ui.view.open', { view: 'world' }, 'utility'));
