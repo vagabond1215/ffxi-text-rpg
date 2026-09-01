@@ -53,15 +53,25 @@ Hosted evidence:
 
 This freeze intentionally predates Product/Game State/Data promotion.
 
-### Promoted synchronized-authority checkpoint before handoff
+### Promoted synchronized checkpoint before final handoff
 
-`5bb4fd91db8cb017629beb20af573171702c5f92`
+`7e262d65d220134d083db38990d195b2ab30e0e4`
 
-At this checkpoint:
-- Product/Game State/Data promotion is complete;
-- release authorities, design, architecture, lifecycle, roadmap, profile, and changelog are synchronized;
-- Check #1929 confirms the **only Repository Audit failure** is that this handoff still advertised Product 0.9.200.4 / Game State 17;
-- no B5 implementation has started.
+Hosted evidence:
+- Check #1931 / run `33470629567`;
+- job `99739495176`;
+- Repository Audit PASS;
+- **852/852 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2061 / run `33470629178` PASS.
+
+Product/Game State/Data promotion and all current B4 authorities are synchronized at this checkpoint.
+
+The first attempted final handoff head `589ab419d887546b388004438efd7002d842fda1` exposed one test-only synchronization error: a later group of `describeSystemVersions()` assertions still expected B3 component versions even though the promoted manifest was correct. Commit `7e262d65d220134d083db38990d195b2ab30e0e4` updates those stale assertions and adds checks for the new weapon cadence/kata system versions. It changes no B4 runtime behavior.
+
+No B5 implementation has started.
 
 This handoff write is therefore the intended final repository mutation for B4.
 
