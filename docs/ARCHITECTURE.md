@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
-Phase:         0.9 / 0.9.200 active; Slice A + B1-B3 complete; B4 queued
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
+Phase:         0.9 / 0.9.200 active; Slice A + B1-B4 complete; B5 queued
 ```
 
-Data 65 is the current authored/mechanics-data checkpoint. Product 0.9.200.4 adds Combat Loadout Transitions: Game State 17 retains durable attention and now also persists outcome-affecting active-battle loadout transition ownership; representative canonical equipment definitions gain directional handling metadata.
+Data 66 is the current authored/mechanics-data checkpoint. Product 0.9.200.5 adds weapon-derived cadence, first-class ranged attacks, and minimal weapon kata: Game State 18 persists player kata configuration plus encounter-local sequence state, while Data 66 adds sling/ammunition and representative dagger/sword kata definitions.
 
 ## Core authority rules
 
@@ -678,9 +678,9 @@ Attention state belongs to the active hostile encounter. If it affects resumable
 
 Equipment transitions use canonical combat/world time. Armor-swap legality depends on actual hostile pressure, pursuit, reachability, disable state, focus, aggro, and fixation—not merely whether the player is the current selected target.
 
-B2 defines the attention persistence boundary as Game State 16. B3 independently advances to Game State 17 because an active timed loadout transition changes resumable combat outcomes; Data advances to 65 for authored equipment handling. B4 must make its own persistence/data decision.
+B2 defines the attention persistence boundary as Game State 16. B3 advances to Game State 17 for active loadout transitions. B4 independently advances to Game State 18 because player kata configuration and the encounter-local next-sequence cursor change resumable combat outcomes; Data advances to 66 for authored sling/ammunition and kata definitions.
 
-# Persistence authority — Game State 16
+# Persistence authority — Game State 18
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -696,12 +696,12 @@ cultivation plot/crop/delegation authority
 party / ability runtime
 semantic events
 atlas / localKnowledge / active POI context
-player identity / progression / skills / capabilities
+player identity / progression / skills / capabilities / weapon-kata configuration
 inventory / mutable resources / wallet / equipment / statuses
 world flags
 current location/position coherence
 combat identity sequence
-active battle state and deterministic caches when present
+active battle state, weapon-kata cursor, and deterministic caches when present
 active battle player / root-player live-authority coherence
 ```
 
@@ -724,6 +724,14 @@ Product 0.9.200.4 / Game State 17 / Data 65 adds `combatLoadoutEngine.js` as a d
 B3 transitions are atomic: old equipment remains effective until successful completion. Completion synchronizes root and battle-player equipment, recomputes the battle combat profile, records structured evidence, uses canonical combat recovery, and releases the terminal task. Cancellation does not mutate equipment.
 
 Armor-pressure legality reads B2 attention rather than inventing a second threat model. LOS/reachability/pursuit remains nonexistent and cannot be used as an implicit pressure-release flag.
+
+### B4 cadence, ranged, and kata authority
+
+Product 0.9.200.5 / Game State 18 / Data 66 adds `weaponCadenceEngine.js` as the one conversion authority from equipment `weaponDelay` to fictional-time readiness and `weaponKataEngine.js` as the owner of configured selections plus encounter-local sequence semantics.
+
+Player and companion basic attacks read equipment cadence; enemy actions keep their separate enemy-action recovery contract because enemies do not currently share player equipment definitions. `combatResolutionEngine` owns ranged hit/defense math, while equipment authority owns ranged weapon/ammunition state. Ranged shots consume the equipped ammo stack through `equipmentEngine` and do not create a second inventory/quiver.
+
+`player.progression.weaponKata` owns durable selection configuration. `activeBattle.weaponKata` owns the encounter cursor. B3 loadout completion emits and now consumes sequence-reset intent through the kata owner.
 
 ## Runtime projections and transient state
 
@@ -751,6 +759,7 @@ Direct production task creators remain exactly:
 ```text
 abilityEngine.js
 campaignRecoveryEngine.js
+combatLoadoutEngine.js
 projectEngine.js
 resourceOpportunityEngine.js
 transportEngine.js
@@ -771,6 +780,8 @@ Redstone and Elderwood production both reuse `workTaskEngine`; neither adds a di
 - Game State 14 — required paid cultivation delegation appointment state introduced.
 - Game State 15 — durable locality knowledge/familiarity, temporary guidance, NPC identity linkage, connector knowledge, POI interaction history, and active local POI context.
 - Game State 16 — required active-battle enemy attention: Enmity entries, Aggro, Fixation/Priority, tuning policy, and fictional-time decay anchors.
+- Game State 17 — required active combat-loadout transition ownership, timing, reconciliation, and task linkage.
+- Game State 18 — required player weapon-kata selections and active-battle sequence cursor/reset state.
 
 ## Validation checkpoints
 
@@ -806,4 +817,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 65; the current runtime/persistence baseline is Product 0.9.200.4 / Game State 17. Adventure Vertical Slice A and Combat Packets B1-B3 are complete; `0.9.200 Adventure Vertical Slices` remains active with B4 Weapon Cadence, Ranged Action, and Minimal Kata next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 66; the current runtime/persistence baseline is Product 0.9.200.5 / Game State 18. Adventure Vertical Slice A and Combat Packets B1-B4 are complete; `0.9.200 Adventure Vertical Slices` remains active with B5 Playable Brasshaven / Redstone Combat-Training Proof next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.

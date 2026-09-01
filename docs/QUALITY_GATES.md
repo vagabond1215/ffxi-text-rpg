@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
-Codename:      Combat Loadout Transitions
+Codename:      Weapon Cadence, Ranged Action, and Minimal Kata
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -137,7 +137,7 @@ Data advances 63 -> 64 because canonical ability definitions gain recovery/resol
 Before later packets close:
 - B2 **passes** only when Enmity, normalized Focus, nonlinear weighting, sticky Aggro, Fixation, decay/floors, action-driven changes, and active-battle persistence are all proven. Behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests and the full gate.
 - B3 loadout transitions **PASS**: canonical fictional time, one direct task owner, directional handling, atomic equipment reconciliation, cooldown preservation, root/battle coherence, and B2-driven armor-pressure legality are proven by `tests/combatLoadoutEngine.test.js`; behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed 844/844 tests and the full gate.
-- B4 must establish one weapon-delay conversion authority and first-class ranged actions before kata breadth.
+- B4 **PASS**: one weapon-delay conversion authority, equipment-derived player/companion cadence, first-class ranged attack/ammo consumption, proficiency-gated persisted dagger/sword kata, manual reset interaction, and B3 loadout-reset consumption are proven by `tests/weaponCombatB4.test.js`; behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed 852/852 tests and the full gate.
 - B5 must prove these contracts in the playable Brasshaven/Redstone slice.
 
 
@@ -322,4 +322,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packets B1-B3 are complete. Packet B4 — Weapon Cadence, Ranged Action, and Minimal Kata — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packets B1-B4 are complete. Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.

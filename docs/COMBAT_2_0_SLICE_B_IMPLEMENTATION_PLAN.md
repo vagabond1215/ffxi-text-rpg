@@ -1,14 +1,14 @@
 # Combat 2.0 / Adventure Vertical Slice B Implementation Plan
 
-Status: **ACTIVE PLAN / B1-B3 COMPLETE / B4 NEXT AND NOT STARTED.**
+Status: **ACTIVE PLAN / B1-B4 COMPLETE / B5 NEXT AND NOT STARTED.**
 
 Current runtime remains:
 
 ```text
-Product:       0.9.200.4
+Product:       0.9.200.5
 Package:       0.9.200
-Game State:    17
-Data:          65
+Game State:    18
+Data:          66
 Benchmark:     3
 ```
 
@@ -240,7 +240,11 @@ Armor becomes swappable only after actual pressure is broken or the hostile is s
 
 ## Packet B4 — Weapon cadence, ranged action, and minimal kata
 
-B1-B3 are stable. Start this packet only on the next explicit continuation.
+**COMPLETE — Product 0.9.200.5 / Game State 18 / Data 66.**
+
+Permanent record: `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
+
+Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed Check #1925 / run `33470044213` with 852/852 tests plus the full hosted gate; Pages #2055 passed.
 
 ### Weapon cadence
 
@@ -279,6 +283,8 @@ Required concepts:
 Elemental affinity substitutions are designed now but may remain B5/`0.9.300` if implementing them in B4 would over-expand the bounded unit.
 
 ## Packet B5 — Slice B playable combat-training proof
+
+**QUEUED / NOT STARTED.** Start only after an explicit continuation from the closed B4 handoff.
 
 Use existing Brasshaven / Redstone geography.
 

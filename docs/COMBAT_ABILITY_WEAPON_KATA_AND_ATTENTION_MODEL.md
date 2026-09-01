@@ -4,16 +4,17 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.4 / Game State 17 / Data 65. Packets B1-B3 implement representative unified resolution, hostile attention, and timed combat loadout transitions; weapon-driven cadence, first-class ranged actions, kata, affinity substitutions, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.5 / Game State 18 / Data 66. Packets B1-B4 implement representative unified resolution, hostile attention, timed combat loadout transitions, weapon-derived cadence, first-class ranged attacks, and minimal persisted dagger/sword kata; affinity substitutions, broader sequence families, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B3 — Unified Resolution + Enemy Attention + Combat Loadout Transitions: COMPLETE.**
+**Packets B1-B4 — Unified Resolution + Enemy Attention + Loadout + Cadence/Ranged/Kata: COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
 - `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`;
-- `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`.
+- `docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md`;
+- `docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -41,8 +42,15 @@ Implemented by B3:
 - atomic completion/cancellation and root/battle equipment coherence;
 - canonical cooldown preservation and structured future weapon-sequence reset intent.
 
+Implemented by B4:
+- one weapon-delay -> fictional-time cadence authority;
+- equipment-derived player/companion basic-attack readiness;
+- first-class ranged attack using ranged attack/accuracy and equipped ammo;
+- persisted dagger/sword kata configuration plus encounter-local cursor;
+- proficiency-gated slots/options and one manual sequence-reset technique;
+- B3 weapon-set reset intent consumed by the kata owner.
+
 Still deferred:
-- B4 weapon-delay cadence, first-class ranged attacks, configurable kata;
 - B5 playable combat-training integration;
 - full geometry/aura/stance/zone/channel/reaction breadth.
 
@@ -170,16 +178,16 @@ The current combat substrate already provides:
 - status duration on canonical world time.
 
 The following are still incomplete or transitional:
-- basic attacks still use fixed player/companion recovery rather than weapon-driven cadence; B1 only routes their resolution through the shared physical contract;
+- player and companion basic attacks now use the B4 weapon cadence authority; enemy action recovery remains enemy-owned because seeded enemies do not use the player equipment model;
 - the legacy arbitrary-string Weapon Skill path is transitional;
-- there is no first-class player ranged-attack action;
+- a first-class player ranged-attack action now exists for equipped ranged weapon/ammunition;
 - elemental resolution is proven for representative migrated abilities, but the wider catalog still needs explicit structured element metadata;
 - representative migrated canonical ability damage now uses shared hit/defense/resistance resolution; the wider catalog still contains pre-B1 effect definitions;
 - Fracture Sigil proves deterministic status accuracy/resistance; the wider status catalog still needs explicit migration where target resistance is appropriate;
 - critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
 - target geometry is effectively self/enemy/context rather than line/cone/ring/zone/chain/aura;
 - aura/stance/channel/zone actions are not first-class;
-- weapon kata/auto-sequence configuration is not implemented;
+- minimal dagger/sword weapon kata/auto-sequence configuration is implemented; broad weapon-family breadth and affinity substitutions remain deferred;
 - timed combat loadout transitions and attention/enmity are implemented through B2-B3; named loadout presets, partial stowed/not-ready physical state, and LOS/pursuit-based pressure release remain deferred.
 
 Do not mass-author abilities to the 100-ability mechanics floor on top of these limitations.

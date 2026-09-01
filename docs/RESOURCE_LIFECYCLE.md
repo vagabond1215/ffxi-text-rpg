@@ -61,7 +61,7 @@ Current direct runtime task owners remain exactly:
 
 The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-## Game State 17 task integrity
+## Game State 18 task integrity
 
 The current-schema boundary validates:
 
@@ -76,6 +76,8 @@ The current-schema boundary validates:
 - cultivation delegation appointment state is internally coherent but **does not reference a timed task**, because delegated tending is timestamp-derived under cultivation authority.
 
 An active owner may reference an active task or a task that has just completed and awaits owner reconciliation. Malformed current saves are rejected rather than reconstructed.
+
+B4 adds no direct timed-task owner. Weapon cadence is stateless; kata configuration/cursor state persists directly under player progression/active battle; ranged shots are ordinary combat actions that mutate equipped ammunition synchronously through equipment authority.
 
 ## Cultivation lifecycle
 

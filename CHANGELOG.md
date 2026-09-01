@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.200.5 — Weapon Cadence, Ranged Action, and Minimal Kata
+
+- Added one weapon-delay conversion authority and routed player/companion basic-attack recovery through equipped weapon cadence.
+- Added first-class ranged attacks using ranged attack/accuracy, equipped ranged weapon/ammunition, structured action evidence, and exactly one ammo unit per attempted shot.
+- Added original Braided Sling and Rounded Sling Stones as the minimum ranged proof.
+- Added persisted proficiency-gated dagger/sword kata configuration, encounter-local sequence cursors, a configurable dagger opening, and Recenter Cut manual reset interaction.
+- Consumed B3 weapon-set sequence-reset intent after successful loadout transitions.
+- Advanced Game State 17 -> 18 and Data 65 -> 66 independently; no supported-save migration was added.
+- Behavioral freeze `0c3ef0a2720850d362cea06dffdbfd452f5a0c19` passed 852/852 tests plus the full hosted gate and Pages.
+
 ## 0.9.200.4 — Combat Loadout Transitions
 
 - Added `combatLoadoutEngine` as the canonical active-combat equipment transition owner using fictional-time tasks and exactly-once reconciliation.
