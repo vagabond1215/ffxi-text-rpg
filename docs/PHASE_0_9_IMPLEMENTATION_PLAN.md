@@ -7,21 +7,21 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.200.1
+Product:       0.9.200.2
 Package:       0.9.200
 Account Save:  5
 Game State:    15
-Data:          63
+Data:          64
 Benchmark:     3
-Phase:         0.9 / 0.9.200 Adventure Vertical Slices active; Slice A complete
-Codename:      Slatewater Road Scout
+Phase:         0.9 / 0.9.200 Adventure Vertical Slices active; Slice A + B1 complete
+Codename:      Unified Combat Resolution
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
 
 ## Current census
 
-Validated Data 63 checkpoint:
+Validated Data 64 checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -411,7 +411,7 @@ The later mechanics-scale gate remains **NOT READY** and is deliberately not con
 
 # `0.9.200` — Adventure Vertical Slices
 
-**Track status: ACTIVE. Slice A is COMPLETE; Slice B is SELECTED / PLANNED as the Brasshaven / Redstone combat-training bridge and is not yet implemented.**
+**Track status: ACTIVE. Slice A is COMPLETE; Slice B is IN PROGRESS with Packet B1 COMPLETE and Packet B2 queued/not started.**
 
 ## Slice A — Slatewater Road Scout
 
@@ -459,7 +459,13 @@ Implementation sequencing:
 
 The anchor is now selected because existing Brasshaven/Redstone content already owns executable martial techniques, starter weapons, enemies, commitments, services, and a regional gameplay loop. No new zone is required merely to exercise advanced combat.
 
-The immediate next bounded unit is **Packet B1 — Unified Combat Resolution Contract**. B1 is contract-first and must not mass-author abilities. Later separately bounded packets add attention/enmity, loadout transitions, weapon cadence/ranged attacks/minimal kata, and the final playable Slice B proof.
+Packet B1 — Unified Combat Resolution Contract is **COMPLETE**.
+- permanent record `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
+- behavioral freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
+- Check #1860 / run `33457301272`: **832/832 tests** plus full gate green;
+- Product 0.9.200.2 / Data 64 / Game State 15.
+
+The next bounded unit is **Packet B2 — Enemy Attention Foundation**, queued/not started. Later B3/B4/B5 add loadout transitions, weapon cadence/ranged/minimal kata, and the final playable Slice B proof.
 
 # Relative planning envelope
 
@@ -475,7 +481,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A is complete and Slice B is now selected as the Brasshaven / Redstone combat-training bridge. Packet B1 — Unified Combat Resolution Contract — is the immediate next implementation. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is active; Slice A and Slice B Packet B1 are complete. Packet B2 — Enemy Attention Foundation — is next and not started. After the bounded Slice B sequence closes 0.9.200, the roadmap continues with `0.9.300` advanced combat/training, `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
