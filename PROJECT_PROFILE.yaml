@@ -69,6 +69,7 @@ authority:
   combat_b4_record: docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md
   combat_b5_record: docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md
   advanced_combat_p1_melee_kata_breadth: docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md
+  advanced_combat_p2_character_affinity_kata_substitution: docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -76,7 +77,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: advanced-combat-packet-2-character-affinity-kata-substitution-queued-not-started
+  current_normal_work: advanced-combat-post-packet-2-reassessment-unselected
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -215,27 +216,33 @@ git:
   latest_advanced_combat_p1_pages: 33474558121
   latest_advanced_combat_p1_pages_number: 2077
   latest_advanced_combat_p1_pages_result: success
+  latest_advanced_combat_p2_implementation_check: 33477009897
+  latest_advanced_combat_p2_implementation_check_number: 1956
+  latest_advanced_combat_p2_implementation_check_sha: cbbec82e7d908c32dcb849e13f59461c83b6637a
+  latest_advanced_combat_p2_implementation_check_result: success-867-of-867-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_advanced_combat_p2_pages: 33477008886
+  latest_advanced_combat_p2_pages_number: 2086
+  latest_advanced_combat_p2_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.300-advanced-combat-training
-  current_track_status: active-packet-1-complete-packet-2-queued
+  current_track_status: active-packets-1-and-2-complete-next-packet-unselected
   completed_track: 0.9.200-adventure-vertical-slices
   completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: advanced-combat-p1-current-melee-kata-breadth
-  latest_bounded_unit_status: complete-on-main-product-0.9.300.1-game-state-19-data-68
-  latest_data_bounded_unit: advanced-combat-p1-current-melee-kata-breadth
-  latest_data_bounded_unit_status: complete-on-main-data-68
-  next_roadmap_gate: advanced-combat-packet-2-character-affinity-kata-substitution
-  next_roadmap_gate_status: queued-not-started
+  latest_bounded_unit: advanced-combat-p2-character-affinity-kata-substitution
+  latest_bounded_unit_status: complete-on-main-product-0.9.300.2-game-state-20-data-69
+  latest_data_bounded_unit: advanced-combat-p2-character-affinity-kata-substitution
+  latest_data_bounded_unit_status: complete-on-main-data-69
+  next_roadmap_gate: advanced-combat-post-p2-reassessment
+  next_roadmap_gate_status: unselected-awaiting-explicit-work-order
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-kata-breadth-implemented
+  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
   combat_slice_b_status: complete-b1-through-b5
-  combat_next_packet: advanced-combat-p2-character-affinity-kata-substitution
-  combat_next_packet_scope: define-minimal-character-affinity-authority-and-prove-bounded-elemental-kata-substitutions-no-aura-stance-or-geometry-expansion
+  combat_next_packet: unselected-after-advanced-combat-p2
+  combat_next_packet_scope: requires-fresh-bounded-selection-do-not-auto-start-aura-stance-geometry-or-broad-catalog-migration
   combat_adjacency_audit_status: complete-b3-entry-authority
-  combat_following_packets:
-    - advanced-combat-p2-character-affinity-kata-substitution
+  combat_following_packets: []
   pre_ui_discovery_contract: player-information-and-locality-discovery
   pre_ui_discovery_contract_status: foundation-implemented-complete
   pre_ui_discovery_implementation_candidate: local-knowledge-and-familiarity-foundation
@@ -299,14 +306,15 @@ validation:
   combat_b4_guard: tests/weaponCombatB4.test.js
   combat_b5_guard: tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js
   advanced_combat_p1_guard: tests/advancedCombatKataBreadth.test.js
+  advanced_combat_p2_guard: tests/advancedCombatAffinitySubstitution.test.js
 quality:
-  current_product_version: 0.9.300.1
+  current_product_version: 0.9.300.2
   current_package_version: 0.9.300
   current_account_save: 5
-  current_game_state: 19
-  current_data_version: 68
+  current_game_state: 20
+  current_data_version: 69
   current_benchmark_version: 3
-  current_codename: Current Melee Kata Breadth
+  current_codename: Character Affinity & Kata Substitution
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -321,7 +329,7 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority-through-0.9.300-p1-kata-breadth-implemented
+    status: permanent-design-authority-through-0.9.300-p2-affinity-substitution-implemented
     runtime_changed: true
     data_changed: 63-to-64
     game_state_changed: true
@@ -330,10 +338,12 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: character-affinity-authority-for-bounded-kata-substitutions
+    immediate_runtime_gap: post-p2-advanced-combat-next-packet-unselected
     weapon_kata_implemented: true
     first_class_ranged_implemented: true
-    affinity_substitutions_planned: true
+    affinity_substitutions_planned: false
+    character_affinity_implemented: true
+    affinity_substitutions_implemented: true
     current_melee_kata_families: 5
     current_melee_kata_breadth_complete: true
     timed_loadout_swaps_implemented: true
