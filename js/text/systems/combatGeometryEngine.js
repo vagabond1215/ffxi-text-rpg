@@ -6,8 +6,8 @@ const ENEMY_FORMATION = Object.freeze([
     Object.freeze({ x: 4, y: 1 }),
     Object.freeze({ x: 4, y: -1 }),
     Object.freeze({ x: 5, y: 0 }),
+    Object.freeze({ x: 3, y: 2 }),
     Object.freeze({ x: 5, y: 2 }),
-    Object.freeze({ x: 5, y: -2 }),
 ]);
 
 const ALLY_FORMATION = Object.freeze([
