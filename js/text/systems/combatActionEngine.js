@@ -67,7 +67,7 @@ export function performPlayerAttack(state, targetQuery = null) {
         sourceId: 'basic-attack',
         outcome: resolution.outcome,
         recoverySeconds: PLAYER_ACTION_RECOVERY_SECONDS,
-        data: { hit: resolution.hit, damage: resolution.damage, defeatedTarget: resolution.defeatedTarget },
+        data: { hit: resolution.hit, damage: resolution.damage, defeatedTarget: resolution.defeatedTarget, resolution: resolution.resolution ?? null },
     });
 
     appendSkillGainLog(state, battle, { actionType: 'basicAttack' });
