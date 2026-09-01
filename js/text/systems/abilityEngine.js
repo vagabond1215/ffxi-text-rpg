@@ -5,7 +5,8 @@ import { canUseCapability, knowsCapability } from './capabilityEngine.js';
 import { appendBattleLog } from './battleEngine.js';
 import { finalizeCombatState, getCombatantReadyAt, isCombatantReady, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
 import { resolveCombatDamage, resolveCombatStatus } from './combatResolutionEngine.js';
-import { resolveCombatGeometryTargets } from './combatGeometryEngine.js';
+import { createCombatField } from './combatFieldEngine.js';
+import { getCombatFormationPosition, resolveCombatGeometryTargets } from './combatGeometryEngine.js';
 import { describeCombatLoadoutBlock, isCombatLoadoutTransitionActive } from './combatLoadoutEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
@@ -359,6 +360,7 @@ function resolveActivation(state, activation, ability, startEventId = null) {
                 abilityId: ability.id,
                 capabilityId: ability.capabilityId,
                 geometry: targeting.geometry,
+                ...(targeting.geometry ? { attention: { mode: 'per-recipient' } } : {}),
                 effects: effectResults.map((entry) => ({ ...entry })),
             },
         });
@@ -479,6 +481,37 @@ function applyAbilityEffect(state, ability, activation, effect, actor, target) {
         applyStatus(recipient, { ...effect.status, sourceId: ability.id }, { nowWorldSeconds: ensureWorldTimeState(state).totalSeconds });
         if (state.activeBattle) appendBattleLog(state.activeBattle, `${recipient.identity?.name ?? 'The target'} gains ${effect.status.name}.`);
         return { type: 'status', applied: true, recipientId: recipient.id ?? null, statusId: effect.status.id, durationSeconds: effect.status.durationSeconds, resolution };
+    }
+
+    if (effect.type === 'field') {
+        if (!state.activeBattle || activation.contextType !== 'combat' || !recipient?.id || !actor?.id || !effect.field) {
+            return { type: 'field', applied: false, reason: 'missing-field-context' };
+        }
+        const centerPosition = getCombatFormationPosition(state.activeBattle, recipient.id);
+        const created = createCombatField(state.activeBattle, {
+            sourceActorId: actor.id,
+            sourceAbilityId: ability.id,
+            centerTargetId: recipient.id,
+            centerPosition,
+            fieldDefinition: effect.field,
+            fieldName: ability.name,
+            nowWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+        });
+        if (!created.ok) return { type: 'field', applied: false, reason: created.code };
+        return {
+            type: 'field',
+            applied: true,
+            fieldId: created.field.id,
+            sourceActorId: created.field.sourceActorId,
+            centerTargetId: created.field.centerTargetId,
+            centerPosition: { ...created.field.centerPosition },
+            createdAtWorldSeconds: created.field.createdAtWorldSeconds,
+            expiresAtWorldSeconds: created.field.expiresAtWorldSeconds,
+            pulseSeconds: created.field.pulseSeconds,
+            nextPulseAtWorldSeconds: created.field.nextPulseAtWorldSeconds,
+            geometry: { ...created.field.geometry },
+            sourceSnapshot: { ...created.field.sourceSnapshot },
+        };
     }
 
     if (effect.type === 'context' && effect.operation === 'survey-current-place') {
@@ -626,6 +659,7 @@ function describeResolution(ability, effects) {
         if (effect.type === 'damage') return `${effect.amount} damage`;
         if (effect.type === 'heal') return `${effect.amount} HP restored`;
         if (effect.type === 'status') return effect.statusId;
+        if (effect.type === 'field') return `field ${effect.fieldId} established`;
         if (effect.type === 'context') return `${effect.placeName ?? effect.placeId} surveyed`;
         return effect.type;
     });
