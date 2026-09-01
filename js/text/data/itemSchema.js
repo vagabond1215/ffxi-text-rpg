@@ -44,7 +44,7 @@ export const ITEM_FLAGS = Object.freeze([
 export const ITEM_CONSUMPTION_MODES = Object.freeze(['direct', 'processRequired', 'nonFood']);
 export const ITEM_CONSUMPTION_HAZARDS = Object.freeze(['none', 'pathogenRisk', 'rawToxic', 'rawIrritant']);
 
-export const ITEM_SCHEMA_VERSION = 4;
+export const ITEM_SCHEMA_VERSION = 5;
 
 export function normalizeItem(rawItem = {}) {
     const kind = rawItem.kind ?? ITEM_KINDS.MISC;
@@ -79,6 +79,7 @@ export function normalizeItem(rawItem = {}) {
         allowedSlots,
         weaponCategory: rawItem.weaponCategory ?? null,
         weaponDelay: normalizeNullableInteger(rawItem.weaponDelay),
+        handling: normalizeEquipmentHandling(rawItem.handling),
         requirements: normalizeRequirements(rawItem.requirements),
         flags: normalizeItemFlags(rawItem.flags),
         modifiers,
@@ -92,6 +93,16 @@ export function normalizeItem(rawItem = {}) {
     };
 }
 
+
+export function normalizeEquipmentHandling(rawHandling = null) {
+    if (!rawHandling || typeof rawHandling !== 'object' || Array.isArray(rawHandling)) return null;
+    return {
+        stowSeconds: Math.max(0, Math.floor(Number(rawHandling.stowSeconds) || 0)),
+        drawSeconds: Math.max(0, Math.floor(Number(rawHandling.drawSeconds) || 0)),
+        readySeconds: Math.max(0, Math.floor(Number(rawHandling.readySeconds) || 0)),
+        cumbersome: rawHandling.cumbersome === true,
+    };
+}
 
 export function normalizeItemConsumption(rawConsumption = null) {
     const explicit = Boolean(rawConsumption && typeof rawConsumption === 'object' && !Array.isArray(rawConsumption));
