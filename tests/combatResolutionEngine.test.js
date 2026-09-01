@@ -7,7 +7,7 @@ import { createNewGameState } from '../js/text/gameState.js';
 import { activateAbility, canActivateAbility, reconcileAbilityActivation } from '../js/text/systems/abilityEngine.js';
 import { resolveBasicAttack } from '../js/text/systems/battleEngine.js';
 import { grantCapability } from '../js/text/systems/capabilityEngine.js';
-import { startEncounter } from '../js/text/systems/combatActionEngine.js';
+import { performPlayerAttack, startEncounter } from '../js/text/systems/combatActionEngine.js';
 import {
     getCombatantReadyAt,
     reconcileCombatStatuses,
@@ -83,6 +83,16 @@ test('basic melee uses the shared physical accuracy and defense contract', () =>
     assert.equal(baselineResult.resolution.accuracy.model, 'physical');
     assert.ok(defendedResult.resolution.defense.effective > baselineResult.resolution.defense.effective);
     assert.ok(defendedResult.damage < baselineResult.damage);
+});
+
+test('timed canonical activation blocks overlapping basic combat actions', () => {
+    const state = createEmberState();
+    const started = activateAbility(state, 'Ember Dart');
+    assert.equal(started.code, 'ability.started');
+
+    const blocked = performPlayerAttack(state);
+    assert.match(blocked, /already activating ability-ember-dart/i);
+    assert.equal(state.activeBattle.contract.actions.filter((action) => action.actorType === 'player').length, 0);
 });
 
 test('Ember Dart uses magic accuracy, magic defense, and fire resistance', () => {
