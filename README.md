@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are complete.** The current canonical/runtime checkpoint is Data 71 / Product 0.9.300.4 / Game State 20. Packet 4 makes Thunder Cage an honest resistible lightning-control spell and centralizes the existing hard-disable flag vocabulary in status authority so disabled enemies cannot act until the effect expires.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are complete.** The current canonical/runtime checkpoint is Data 72 / Product 0.9.300.5 / Game State 20. Packet 5 gives Tempest Ring honest target-centered radial behavior through deterministic encounter-relative formation geometry, independent per-target wind resolution, and per-recipient hostile attention without adding mutable combat-position state.
 
 ```text
-Product:       0.9.300.4
+Product:       0.9.300.5
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          71
+Data:          72
 Benchmark:     3
-Codename:      Thunder Cage Control Foundation
+Codename:      Tempest Ring Geometry Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 71 implementation census:
+Validated Data 72 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -157,7 +157,7 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`. Marshal Varric Stone now exposes bounded Forge-Road instruction through the existing capability authority, and the integrated South Redstone proof exercises B1–B4 together.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–4 are COMPLETE.** Packet 4 gives Thunder Cage independently resistible lightning damage/control, a six-second `cannotAct` status, and expiry-aware enemy readiness using the existing world clock/status system. Tempest Ring and Umbral Well remain deliberately unmigrated; no general geometry or zone system was added.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are COMPLETE.** Packet 5 gives Tempest Ring a real target-centered ring contract with radius 2 and a four-target cap. Formation coordinates are deterministic encounter projections rather than mutable state; each selected enemy resolves wind resistance independently and receives only its own applied-effect enmity. Umbral Well fields, movement, LOS, pursuit, and wider geometry remain deferred.
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;
