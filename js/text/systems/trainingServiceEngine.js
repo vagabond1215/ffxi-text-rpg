@@ -1,11 +1,34 @@
 import { getCapability } from '../data/capabilities.js';
-import { getPointOfInterest } from '../data/pointsOfInterest.js';
+import { getPointOfInterest, listPointsOfInterest } from '../data/pointsOfInterest.js';
+import { createSeedNpcs } from '../data/seedEntities.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { evaluateLearningRequirements, learnCapability, knowsCapability } from './capabilityEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
 export const TRAINING_SERVICE_VERSION = 1;
+
+export function validateTrainingServiceDefinitions() {
+    const issues = [];
+    const npcIds = new Set(createSeedNpcs().map((npc) => npc.id));
+    for (const poi of listPointsOfInterest().filter((entry) => (entry.trainingCapabilityIds ?? []).length || entry.trainingNpcId)) {
+        if (!(poi.tags ?? []).includes('combatTraining')) issues.push(`${poi.id} training service must carry combatTraining tag.`);
+        if (!(poi.actions ?? []).includes('training')) issues.push(`${poi.id} training service must expose training action.`);
+        if (typeof poi.trainingNpcId !== 'string' || !poi.trainingNpcId.trim()) issues.push(`${poi.id}.trainingNpcId must be a non-empty string.`);
+        else if (!npcIds.has(poi.trainingNpcId)) issues.push(`${poi.id}.trainingNpcId references unknown NPC ${poi.trainingNpcId}.`);
+        if (!Array.isArray(poi.trainingCapabilityIds) || !poi.trainingCapabilityIds.length) {
+            issues.push(`${poi.id}.trainingCapabilityIds must be a non-empty array.`);
+            continue;
+        }
+        if (new Set(poi.trainingCapabilityIds).size !== poi.trainingCapabilityIds.length) issues.push(`${poi.id}.trainingCapabilityIds contains duplicates.`);
+        for (const capabilityId of poi.trainingCapabilityIds) {
+            const capability = getCapability(capabilityId);
+            if (!capability) issues.push(`${poi.id} references unknown training capability ${capabilityId}.`);
+            else if (capability.type !== 'technique') issues.push(`${poi.id} combat training capability ${capabilityId} must be a technique.`);
+        }
+    }
+    return issues;
+}
 
 export function listTrainingOptionsAtPoi(state, poiId = state?.activePoiId) {
     const poi = getPointOfInterest(poiId);

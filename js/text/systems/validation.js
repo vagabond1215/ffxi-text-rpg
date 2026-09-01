@@ -24,6 +24,7 @@ import {
 import { listSkillRankEntries, SKILL_RANK_CAP_RULES } from '../data/skillCaps.js';
 import { VERSION } from '../version.js';
 import { validateWeaponKataConfiguration, validateWeaponKataCatalog } from '../data/weaponKataCatalog.js';
+import { validateTrainingServiceDefinitions } from './trainingServiceEngine.js';
 import { validateCommitmentState } from './commitmentEngine.js';
 import { validateCultivationState } from './cultivationEngine.js';
 import { validateHomeInfrastructureState } from './homeInfrastructureEngine.js';
@@ -227,6 +228,7 @@ export function validateWorldData() {
 
     issues.push(...validateCommitmentCatalog().map((issue) => `commitments: ${issue}`));
     issues.push(...validateWeaponKataCatalog().map((issue) => `weaponKataCatalog: ${issue}`));
+    issues.push(...validateTrainingServiceDefinitions().map((issue) => `trainingServices: ${issue}`));
     issues.push(...validateHomeInfrastructureCatalog().map((issue) => `homeInfrastructure: ${issue}`));
 
     for (const entry of listEquipmentCatalogEntries()) {
