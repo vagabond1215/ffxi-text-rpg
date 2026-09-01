@@ -34,9 +34,9 @@ const ORIGINAL_UNRESTRICTED_IDS = [
     'leather-trousers',
 ];
 
-test('equipment catalog v4 provides representative weapon armor accessory and field-tool breadth', () => {
+test('equipment catalog v5 provides representative weapon armor accessory ranged and field-tool breadth', () => {
     const entries = listEquipmentCatalogEntries();
-    assert.equal(EQUIPMENT_CATALOG_VERSION, 4);
+    assert.equal(EQUIPMENT_CATALOG_VERSION, 5);
     assert.ok(entries.length >= 24);
     assert.ok(entries.some((entry) => entry.family === 'weapon'));
     assert.ok(entries.some((entry) => entry.family === 'armor'));

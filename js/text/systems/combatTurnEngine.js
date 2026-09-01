@@ -8,6 +8,7 @@ import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { reconcileStatusesAtWorldTime } from './statusEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
+import { getMeleeCadenceProfile } from './weaponCadenceEngine.js';
 
 export const COMBAT_CONTRACT_VERSION = 2;
 export const COMBAT_ACTION_HISTORY_LIMIT = 100;
@@ -254,6 +255,7 @@ export function resolveCompanionResponse(state, options = {}) {
         if (!isCombatantReady(state, companion.id)) continue;
         const selection = selectCompanionAction(battle, companion);
         if (!selection) continue;
+        const cadence = getMeleeCadenceProfile(companion);
         const resolution = resolveBasicAttack(battle, selection.actorId, selection.targetId, { rng: options.rng });
         const action = recordCombatAction(state, {
             battle,
@@ -263,13 +265,14 @@ export function resolveCompanionResponse(state, options = {}) {
             kind: selection.kind,
             sourceId: selection.policy,
             outcome: resolution.outcome,
-            recoverySeconds: COMPANION_ACTION_RECOVERY_SECONDS,
+            recoverySeconds: cadence.recoverySeconds,
             data: {
                 hit: resolution.hit,
                 damage: resolution.damage,
                 defeatedTarget: resolution.defeatedTarget,
                 resolution: resolution.resolution ?? null,
                 policy: selection.policy,
+                cadence,
                 triggerActionId: options.triggerActionId ?? null,
             },
         });

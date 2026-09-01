@@ -23,6 +23,7 @@ import {
     TIMED_TASK_STATUSES,
 } from './timedTaskEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
+import { resetWeaponKataSequence } from './weaponKataEngine.js';
 
 export const COMBAT_LOADOUT_TRANSITION_VERSION = 1;
 export const COMBAT_LOADOUT_TASK_KIND = 'combat.loadout-transition';
@@ -108,6 +109,9 @@ export function reconcileCombatLoadoutTransition(state) {
     }
 
     syncBattlePlayerEquipment(state);
+    const weaponSequence = transition.resetWeaponSequence
+        ? resetWeaponKataSequence(state, transition.actorId, { reason: `loadout:${transition.plan.slot}` })
+        : null;
     const action = recordCombatAction(state, {
         battle,
         actorId: transition.actorId,
@@ -124,6 +128,7 @@ export function reconcileCombatLoadoutTransition(state) {
             transitionKind: transition.kind,
             durationSeconds: transition.durationSeconds,
             resetWeaponSequence: transition.resetWeaponSequence,
+            weaponSequence: weaponSequence ? { family: weaponSequence.family, nextSlot: weaponSequence.nextSlot, resetCount: weaponSequence.resetCount, lastResetReason: weaponSequence.lastResetReason } : null,
         },
     });
     const event = emitSemanticEvent(state, 'combat.loadout.completed', {

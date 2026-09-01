@@ -25,6 +25,7 @@ import { createPlayerOpportunityModel } from '../systems/playerOpportunityEngine
 import { decoratePlayerSocialScheduleModel } from '../systems/playerSocialScheduleEngine.js';
 import { createSettlementServiceBoard } from '../systems/settlementServiceBoardEngine.js';
 import { calculateCombatProfile } from '../systems/statEngine.js';
+import { validateRangedLoadout } from '../systems/weaponCadenceEngine.js';
 import { getTimedTaskProgress, listTimedTasks } from '../systems/timedTaskEngine.js';
 import { createTransportServiceBoard } from '../systems/transportServiceBoardEngine.js';
 import { describeWorldTime, ensureWorldTimeState } from '../systems/worldTimeEngine.js';
@@ -118,8 +119,10 @@ export function createContextualActions(state, nearby = null, opportunities = nu
             .filter((entry) => entry.known && entry.available && entry.ability.contexts.includes('combat'))
             .slice(0, 2)
             .map((entry) => abilityAction(entry));
+        const ranged = validateRangedLoadout(state.player);
         return [
             directAction('context:attack', 'Attack', 'combat.attack', {}, 'combat'),
+            ...(ranged.ok ? [directAction('context:ranged', 'Ranged', 'combat.ranged', {}, 'combat')] : []),
             ...readyAbilities,
             directAction('context:combat-wait', 'Wait · 3s', 'combat.wait', { seconds: 3 }, 'combat'),
             directAction('context:items', 'Items', 'ui.view.open', { view: 'character' }, 'utility'),

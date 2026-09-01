@@ -24,7 +24,9 @@ import {
     castSpell,
     describeBattle,
     isActiveBattle,
+    performManualWeaponKataTechnique,
     performPlayerAttack,
+    performPlayerRangedAttack,
     performWeaponSkill,
     startEncounter,
 } from './systems/combatActionEngine.js';
@@ -57,6 +59,7 @@ import {
 import { describeJobProgression, switchMainJob } from './systems/progressionEngine.js';
 import { moveInDirection, stopTravel } from './systems/navigationEngine.js';
 import { describeSkillProgression } from './systems/skillProgressionEngine.js';
+import { configureWeaponKataSelection, describeWeaponKata } from './systems/weaponKataEngine.js';
 import { buyFromCurrentShop, sellToCurrentShop } from './systems/shopEngine.js';
 import {
     describeHpMpGradeComparisons,
@@ -127,7 +130,11 @@ const HELP_TEXT = [
     '  wildlife             Show trackable local wildlife populations.',
     '  hunt <wildlife>       Deliberately locate a passive/wary/territorial population encounter.',
     '  battle               Show the active battle state.',
-    '  attack [target]      Perform a basic attack in battle.',
+    '  attack [target]      Perform a weapon-cadenced basic attack in battle.',
+    '  ranged [target]      Perform a first-class ranged attack with equipped weapon/ammo.',
+    '  kata [family]        Show configured proficiency-gated weapon kata slots.',
+    '  kata set <family> <slot> <move>  Configure an unlocked kata slot outside combat.',
+    '  kata use <move> [target]          Use a manual kata technique in combat.',
     '  technique <name>     Use the current TP-gated combat technique adapter.',
     '  cast <spell>         Use a learned spell in combat.',
     '  npcs                 List loaded NPCs.',
@@ -239,6 +246,8 @@ export function createCommandRouter(state, services = {}) {
             case 'track': return describeActionResult(startPopulationEncounter(state, parsed.args.join(' ')));
             case 'battle': return describeBattle(state.activeBattle);
             case 'attack': return performPlayerAttack(state, parsed.args[0]);
+            case 'ranged': return performPlayerRangedAttack(state, parsed.args[0]);
+            case 'kata': return describeKataCommand(state, parsed.args);
             case 'technique': return performWeaponSkill(state, parsed.args.join(' ') || 'Weapon Technique');
             case 'cast': return castSpell(state, parsed.args[0] ?? 'Cure', parsed.args[1]);
             case 'npcs': return describeNpcs(state);
@@ -463,4 +472,19 @@ function describeLog(state, limitArg = '20') {
     if (!state.log.length) return 'No command history yet.';
     const limit = Math.max(1, Math.min(100, Number.parseInt(limitArg, 10) || 20));
     return state.log.slice(-limit).map((item) => `${item.at} ${item.entry}`).join('\n');
+}
+
+
+function describeKataCommand(state, args = []) {
+    const [mode, first, second, third] = args;
+    if (!mode) return describeWeaponKata(state.player);
+    if (String(mode).toLowerCase() === 'set') {
+        if (!first || !second || !third) return 'Usage: kata set <family> <slot> <move>';
+        return describeActionResult(configureWeaponKataSelection(state, first, second, third));
+    }
+    if (String(mode).toLowerCase() === 'use') {
+        if (!first) return 'Usage: kata use <move> [target]';
+        return performManualWeaponKataTechnique(state, first, second);
+    }
+    return describeWeaponKata(state.player, mode);
 }

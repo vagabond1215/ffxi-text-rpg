@@ -22,7 +22,7 @@ import {
     performCommitmentFollowUp,
     resolveCommitment,
 } from '../systems/commitmentEngine.js';
-import { performPlayerAttack, startEncounter } from '../systems/combatActionEngine.js';
+import { performPlayerAttack, performPlayerRangedAttack, startEncounter } from '../systems/combatActionEngine.js';
 import { advanceCombatSimulation } from '../systems/combatSimulationEngine.js';
 import { startCombatEquipTransition, startCombatUnequipTransition } from '../systems/combatLoadoutEngine.js';
 import { equipItem, unequipItem } from '../systems/equipmentEngine.js';
@@ -74,6 +74,7 @@ const DIRECT_GAMEPLAY_INTENTS = Object.freeze([
     'activity.advanceToCompletion',
     'combat.encounter',
     'combat.attack',
+    'combat.ranged',
     'combat.wait',
     'resource.recovery.start',
     'recovery.start',
@@ -230,6 +231,11 @@ export function createDomApp({ host }) {
         } else if (intent === 'combat.attack') {
             const message = performPlayerAttack(state, payload.targetId);
             const ok = !/not in battle|still recovering|not yet ready/i.test(String(message));
+            result = { ok, message };
+            recordGameplayFeedback(result);
+        } else if (intent === 'combat.ranged') {
+            const message = performPlayerRangedAttack(state, payload.targetId);
+            const ok = !/not in battle|recovering|equip a ranged weapon|ammunition|no usable ranged/i.test(String(message));
             result = { ok, message };
             recordGameplayFeedback(result);
         } else if (intent === 'combat.wait') {

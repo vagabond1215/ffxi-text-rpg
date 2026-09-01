@@ -3,6 +3,7 @@ import {
     createBattleState,
     getCombatant,
     resolveBasicAttack,
+    resolveRangedAttack,
     updateBattlePhase,
 } from './battleEngine.js';
 import {
@@ -16,6 +17,9 @@ import {
     resolvePartyAndEnemyResponses,
 } from './combatTurnEngine.js';
 import { getActiveCompanionCombatEntities } from './partyEngine.js';
+import { consumeEquippedItemQuantity } from './equipmentEngine.js';
+import { getMeleeCadenceProfile, getRangedCadenceProfile, scaleWeaponRecoverySeconds, validateRangedLoadout } from './weaponCadenceEngine.js';
+import { applyManualWeaponKataSequenceEffect, commitAutomaticWeaponKataAttack, getManualWeaponKataMove, prepareAutomaticWeaponKataAttack } from './weaponKataEngine.js';
 import { describeCombatLoadoutBlock, isCombatLoadoutTransitionActive } from './combatLoadoutEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 import { describeSkillGainResult, resolveSkillGainForAction } from './skillProgressionEngine.js';
@@ -61,20 +65,143 @@ export function performPlayerAttack(state, targetQuery = null) {
     const recovery = describeRecovery(state, player.id);
     if (recovery) return recovery;
 
-    const resolution = resolveBasicAttack(battle, player.id, target.id);
+    const cadence = getMeleeCadenceProfile(player);
+    const kata = prepareAutomaticWeaponKataAttack(state, player);
+    const recoverySeconds = kata.active
+        ? scaleWeaponRecoverySeconds(cadence.recoverySeconds, kata.move.recoveryMultiplier)
+        : cadence.recoverySeconds;
+    const resolution = resolveBasicAttack(battle, player.id, target.id, kata.active ? {
+        attackProfile: kata.move.attack,
+        actionName: kata.move.name,
+    } : {});
+    const sequence = kata.active ? commitAutomaticWeaponKataAttack(state, player.id, kata) : null;
     const action = recordCombatAction(state, {
         battle,
         actorId: player.id,
         actorType: 'player',
         targetId: target.id,
         kind: 'basicAttack',
-        sourceId: 'basic-attack',
+        sourceId: kata.active ? kata.move.id : 'basic-attack',
         outcome: resolution.outcome,
-        recoverySeconds: PLAYER_ACTION_RECOVERY_SECONDS,
-        data: { hit: resolution.hit, damage: resolution.damage, defeatedTarget: resolution.defeatedTarget, resolution: resolution.resolution ?? null },
+        recoverySeconds,
+        data: {
+            hit: resolution.hit,
+            damage: resolution.damage,
+            defeatedTarget: resolution.defeatedTarget,
+            resolution: resolution.resolution ?? null,
+            cadence,
+            kata: kata.active ? {
+                family: kata.familyId,
+                slot: kata.slot,
+                moveId: kata.move.id,
+                moveName: kata.move.name,
+                unlockedSlots: kata.unlockedSlots,
+                nextSlot: sequence?.nextSlot ?? kata.nextSlotAfter,
+            } : null,
+        },
     });
 
     appendSkillGainLog(state, battle, { actionType: 'basicAttack' });
+    if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
+    else finalizeCombatState(state);
+    return describeBattleTurn(battle);
+}
+
+export function performPlayerRangedAttack(state, targetQuery = null) {
+    const battle = state.activeBattle;
+    if (!isActiveBattle(battle)) return 'You are not in battle.';
+
+    const player = getPlayerCombatant(battle);
+    if (isCombatLoadoutTransitionActive(state)) return describeCombatLoadoutBlock(state);
+    const activationBlock = describeActiveAbilityCommitment(state);
+    if (activationBlock) return activationBlock;
+    const target = getTargetCombatant(battle, targetQuery);
+    if (!player || !target) return 'No valid target.';
+    const recovery = describeRecovery(state, player.id);
+    if (recovery) return recovery;
+
+    const loadout = validateRangedLoadout(player);
+    if (!loadout.ok) return loadout.reason;
+    const cadence = getRangedCadenceProfile(player);
+    if (!cadence) return 'No usable ranged cadence is available.';
+
+    const resolution = resolveRangedAttack(battle, player.id, target.id);
+    const consumed = consumeEquippedItemQuantity(state, 'ammo', 1, { allowActiveBattleImmediate: true });
+    if (!consumed.ok) return consumed.reason;
+
+    const action = recordCombatAction(state, {
+        battle,
+        actorId: player.id,
+        actorType: 'player',
+        targetId: target.id,
+        kind: 'rangedAttack',
+        sourceId: loadout.weapon.id,
+        outcome: resolution.outcome,
+        recoverySeconds: cadence.recoverySeconds,
+        data: {
+            hit: resolution.hit,
+            damage: resolution.damage,
+            defeatedTarget: resolution.defeatedTarget,
+            resolution: resolution.resolution ?? null,
+            rangedWeaponId: loadout.weapon.id,
+            ammoItemId: loadout.ammo.id,
+            ammoConsumed: 1,
+            ammoRemaining: consumed.remaining,
+            cadence,
+        },
+    });
+
+    appendSkillGainLog(state, battle, { actionType: 'rangedAttack' });
+    if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
+    else finalizeCombatState(state);
+    return describeBattleTurn(battle);
+}
+
+export function performManualWeaponKataTechnique(state, moveId, targetQuery = null) {
+    const battle = state.activeBattle;
+    if (!isActiveBattle(battle)) return 'You are not in battle.';
+
+    const player = getPlayerCombatant(battle);
+    if (isCombatLoadoutTransitionActive(state)) return describeCombatLoadoutBlock(state);
+    const activationBlock = describeActiveAbilityCommitment(state);
+    if (activationBlock) return activationBlock;
+    const target = getTargetCombatant(battle, targetQuery);
+    if (!player || !target) return 'No valid target.';
+    const recovery = describeRecovery(state, player.id);
+    if (recovery) return recovery;
+
+    const manual = getManualWeaponKataMove(state.player, moveId);
+    if (!manual.ok) return manual.reason;
+    const cadence = getMeleeCadenceProfile(player);
+    const recoverySeconds = scaleWeaponRecoverySeconds(cadence.recoverySeconds, manual.move.recoveryMultiplier);
+    const resolution = resolveBasicAttack(battle, player.id, target.id, {
+        attackProfile: manual.move.attack,
+        actionName: manual.move.name,
+    });
+    const sequence = applyManualWeaponKataSequenceEffect(state, player.id, manual.move);
+    const action = recordCombatAction(state, {
+        battle,
+        actorId: player.id,
+        actorType: 'player',
+        targetId: target.id,
+        kind: 'weaponKataTechnique',
+        sourceId: manual.move.id,
+        outcome: resolution.outcome,
+        recoverySeconds,
+        data: {
+            hit: resolution.hit,
+            damage: resolution.damage,
+            defeatedTarget: resolution.defeatedTarget,
+            resolution: resolution.resolution ?? null,
+            manual: true,
+            family: manual.family.id,
+            sequenceEffect: manual.move.sequenceEffect,
+            sequence: sequence ? { nextSlot: sequence.nextSlot, resetCount: sequence.resetCount, lastResetReason: sequence.lastResetReason } : null,
+            cadence,
+        },
+    });
+
+    appendSkillGainLog(state, battle, { actionType: 'basicAttack', skillId: manual.family.skillId });
     if (battle.phase === 'active') resolvePartyAndEnemyResponses(state, { triggerActionId: action?.id ?? null });
     else finalizeCombatState(state);
     return describeBattleTurn(battle);
