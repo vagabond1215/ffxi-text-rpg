@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.300.3 — Novice Elemental Resolution Breadth
+
+- Migrated the eight existing novice Elemental Form attacks—Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike—to explicit unified combat-resolution metadata.
+- Each migrated spell now uses its canonical element, magic accuracy, magic-defense resistance, `elementSource: ability`, and 2-second post-action recovery while retaining existing activation, MP cost, cooldown, potency, scaling, capability, and stable IDs.
+- Preserved Sunlance MND scaling and the existing INT scaling of the other seven novice attacks.
+- Kept executable ability count at 41; no new ability/capability, state family, combat clock, task owner, or target-geometry system was added.
+- Deliberately left Tempest Ring, Thunder Cage, Umbral Well, and the rest of the adept elemental tranche unmigrated because their names imply richer geometry/control/field semantics than single-target damage metadata can honestly provide.
+- Advanced Product 0.9.300.2 -> 0.9.300.3 and Data 69 -> 70; Game State remains 20 and Package remains 0.9.300.
+- Behavioral/data freeze `32f0ee268525f096f40421414af180e90a724397` passed Repository Audit, 870/870 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #1981 / run `33515422352` and Pages #2111 / run `33515422056`.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.2 — Character Affinity & Kata Substitution
 
 - Added versioned character-owned elemental affinity ranks under `player.progression.affinities` for the eight canonical elements, independent of active discipline and spell knowledge.
