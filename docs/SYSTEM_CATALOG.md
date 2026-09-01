@@ -212,11 +212,11 @@ spellSchools / capabilities / abilities / companions
 | Elemental Form | playable | Universal fire/earth/wind/water/lightning/ice/light/dark attack families; no region ownership. |
 | Vital Weave / Ward Lore | playable | Universal healing and defensive/support spell families. |
 | Veilscript | playable | Original seal-magic tradition using the existing `ninjutsu` skill for debuff/guard sigils. |
-| Ability/spell engine | playable | Learned abilities, timing, costs, cooldowns, interruption, damage/heal/status effects. |
+| Ability/spell engine | playable foundation / advanced contract planned | Learned abilities, timing, costs, cooldowns, interruption, damage/heal/status effects work, but unified physical/magical/elemental resolution, richer geometry, status resistance, action recovery, aura/zone/channel families, and mechanically honest naming are selected follow-on work. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
-| Equipment/tool context | playable | Gear/tools constrain and enhance real capability. |
-| Combat 2.0 | playable | Deterministic readiness/action/resource model. |
+| Equipment/tool context | playable foundation | Gear/tools constrain and enhance real capability. Timed combat loadout transitions, directional stow/draw handling, canonical cooldown preservation, and hostile-pressure armor locks are planned. |
+| Combat 2.0 | playable foundation / Slice B expansion selected | Deterministic readiness/action/resource model and persistent action timeline exist. Next B1 unifies resolution; later Slice B packets add enmity/focus/aggro/fixation, timed loadout swaps, weapon-driven cadence, ranged actions, and minimal configurable kata. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,18 +296,31 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open. **Adventure Vertical Slice A — Slatewater Road Scout is complete at Product 0.9.200.1 / Data 63 / Game State 15.**
+Phase 0.9 remains open at Product 0.9.200.1 / Data 63 / Game State 15.
 
-Permanent evidence:
-- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
-- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
-- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample green.
+Adventure Vertical Slice A — Slatewater Road Scout remains complete.
 
-Slice A raises the current mechanics counts to 48 named NPCs, 20 quests/contracts, and 2 companions without adding a place, route, recipe family, ability family, schedule family, or new Game State authority. Companion recruitment can now depend on resolved canonical commitments; recruited companion relationship dimensions inherit the backing NPC relationship; mobile companion-backed quest givers are not projected as static follow-up markers when away.
+Advanced-combat design is now permanent:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-The mechanics-scale gate remains **NOT READY**. Abilities/techniques at 41/100 are now the largest relative and absolute listed gap; companions are 2/4, quests/contracts 20/30, and named NPCs 48/50.
+Adventure Vertical Slice B is **SELECTED / PLANNED, NOT STARTED** as a Brasshaven / Redstone combat-training bridge:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
 
-`0.9.200 Adventure Vertical Slices` remains ACTIVE. Adventure Vertical Slice B is the next in-track bounded candidate, but its regional/character anchor is intentionally unselected and it is not auto-started. After deliberate closure of the 0.9.200 track, `0.9.300 Advanced Combat / Training` is next.
+The immediate next bounded implementation is **Packet B1 — Unified Combat Resolution Contract**. It should migrate only representative basic/melee/magic/status actions through a structured resolution contract and must not mass-author abilities.
 
-Packet E evidence remains `docs/GATE_A_INTEGRATION_CENSUS_AUDIT.md`; the five-part ecology repair sequence remains complete through Data 62 and is not reopened. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain separate explicit-selection queues.
+Later separately bounded Slice B packets cover:
+- B2 enemy attention: Enmity -> Focus -> nonlinear target weighting -> sticky Aggro -> Fixation;
+- B3 timed combat loadout transitions and armor-pressure locking;
+- B4 weapon-driven cadence, first-class ranged attacks, and minimal kata;
+- B5 playable Brasshaven/Redstone proof.
+
+After B5, close 0.9.200 deliberately and open 0.9.300 for broad weapon/affinity/ability depth.
+
+Mechanics-scale remains NOT READY at 41/100 abilities, 2/4 companions, 20/30 quests/contracts, and 48/50 named NPCs. Ability breadth must not be filled with mechanically duplicate records.
+
+Preserved resumable queues:
+- Occupational Tool Conversion for 0.9.400;
+- Waymeet Inner Marches / outer crossroads world-edge continuation;
+- richer locality ambient/dialogue/shop-browse/map presentation;
+- optional ecology only by fresh selection; the five-part repair sequence itself is complete.
 
