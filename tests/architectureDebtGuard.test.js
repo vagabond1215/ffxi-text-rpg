@@ -59,6 +59,7 @@ test('direct timed-task creation stays limited to audited domain owners with rel
     const expectedOwners = [
         'js/text/systems/abilityEngine.js',
         'js/text/systems/campaignRecoveryEngine.js',
+        'js/text/systems/combatLoadoutEngine.js',
         'js/text/systems/projectEngine.js',
         'js/text/systems/resourceOpportunityEngine.js',
         'js/text/systems/transportEngine.js',
