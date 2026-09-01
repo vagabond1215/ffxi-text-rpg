@@ -51,6 +51,7 @@ Current direct runtime task owners remain exactly:
 
 - `abilityEngine.js`;
 - `campaignRecoveryEngine.js`;
+- `combatLoadoutEngine.js`;
 - `projectEngine.js`;
 - `resourceOpportunityEngine.js`;
 - `transportEngine.js`;
@@ -60,7 +61,7 @@ Current direct runtime task owners remain exactly:
 
 The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-## Game State 14 task integrity
+## Game State 17 task integrity
 
 The current-schema boundary validates:
 
@@ -69,6 +70,7 @@ The current-schema boundary validates:
 - active project -> `project.labor` task;
 - active work -> matching `work.<kind>` task;
 - active ability -> `ability.activation` task;
+- active combat loadout transition -> matching `combat.loadout-transition` task with battle/actor ownership;
 - active resource recovery -> matching `resource.recovery` task;
 - active manual cultivation labor -> `state.cultivation.plot.activeWorkId` references the persisted active work record for that plot/action;
 - cultivation delegation appointment state is internally coherent but **does not reference a timed task**, because delegated tending is timestamp-derived under cultivation authority.
@@ -77,7 +79,7 @@ An active owner may reference an active task or a task that has just completed a
 
 ## Cultivation lifecycle
 
-Cultivation deliberately **does not add a seventh direct timed-task owner**.
+Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
 
 ### Crop growth lifecycle
 
@@ -154,6 +156,26 @@ NPC recurring availability also derives from canonical fictional time. Schedule 
 
 Household/community commitments use existing durable commitment and relationship records. Follow-up availability derives from recorded resolution day + authored delay. They do not create retained callbacks or a separate social clock.
 
+## Combat loadout lifecycle
+
+B3 adds one explicit direct timed-task owner:
+
+```text
+activeBattle.loadoutTransition
+  -> combatLoadoutEngine starts one combat.loadout-transition task
+  -> canonical world time reaches completion or combat hard-disable cancels
+  -> owner applies no partial equipment mutation before successful completion
+  -> owner synchronizes root/battle equipment + combat profile exactly once
+  -> structured action/event evidence is durable
+  -> owner releases terminal task
+```
+
+The active transition survives save/load through `activeBattle` plus its owner-task link. Generic inventory transfers and direct equipment mutation are blocked while the transition is active, so the pending source/destination plan cannot silently drift underneath the owner.
+
+Cancellation records its durable event before task release and leaves the old equipment mechanically equipped. Successful completion applies the equipment mutation once, then uses existing combat recovery rather than a second loadout clock.
+
+Repeated B3 lifecycle evidence is guarded by `tests/combatLoadoutEngine.test.js` and the direct-owner set remains executable in `tests/architectureDebtGuard.test.js`.
+
 ## Generic terminal history policy
 
 There is still **no production generic/unowned timed-task producer**. Therefore no generic age/count pruning policy is justified. Future code that needs a new direct task owner must first define:
@@ -174,6 +196,7 @@ For lifecycle-sensitive changes, inspect:
 - start -> pause/resume -> finish an activity;
 - task becomes terminal -> owner reconciles -> owner releases;
 - save -> load -> continue before and after reconciliation;
+- combat loadout start -> save/load -> completion/cancel -> equipment authority remains coherent -> terminal task released;
 - cultivation growth timestamps persist -> world time advances -> readiness derives once;
 - paid delegation persists -> completion boundary passes -> no duplicate charge/consequence;
 - harvest -> repeat harvest attempt -> no duplicate output;
