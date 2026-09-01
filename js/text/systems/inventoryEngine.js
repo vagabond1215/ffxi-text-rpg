@@ -150,6 +150,7 @@ export function removeItemQuantityFromContainer(inventoryState, containerId, ite
 }
 
 export function transferItemBetweenContainers(state, itemQuery, fromContainerId = 'inventory', toContainerId = 'inventory', context = {}) {
+    if (state.activeBattle?.phase === 'active' && state.activeBattle.loadoutTransition) return 'Inventory transfers are blocked while a combat loadout transition is active.';
     const inventoryState = state.player?.inventoryState ?? state.inventoryState;
     if (!inventoryState) return 'No inventory container state found.';
     if (fromContainerId === toContainerId) return 'Source and destination containers must be different.';
