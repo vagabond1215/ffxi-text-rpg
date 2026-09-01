@@ -5,6 +5,7 @@ import { EQUIPMENT_CATALOG } from '../js/text/data/equipmentCatalog.js';
 import { createNewGameState } from '../js/text/gameState.js';
 import { createAccountWithPassword, loadCharacter, saveGame } from '../js/text/save.js';
 import { createBattleState } from '../js/text/systems/battleEngine.js';
+import { canActivateAbility } from '../js/text/systems/abilityEngine.js';
 import { addEnmity, setAggroTarget, setFixation } from '../js/text/systems/combatAttentionEngine.js';
 import {
     getArmorPressureReport,
@@ -78,6 +79,10 @@ test('weapon-set transition is atomic blocks actions and preserves cooldowns', (
     assert.equal(player.equipment.mainHand.id, 'bronze-dagger');
 
     assert.match(performPlayerAttack(state), /changing equipment/);
+    const blockedAbility = canActivateAbility(state, 'ability-ember-dart');
+    assert.equal(blockedAbility.ok, false);
+    assert.equal(blockedAbility.code, 'ability.loadout-transition');
+    assert.equal(state.abilities.cooldowns['ability-ember-dart'], 12345);
 
     const advanced = advanceCombatSimulation(state, 3);
     assert.equal(advanced.loadoutResult?.ok, true, advanced.message);
