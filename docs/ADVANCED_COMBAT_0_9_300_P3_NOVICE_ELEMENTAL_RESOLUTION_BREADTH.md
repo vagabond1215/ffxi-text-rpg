@@ -1,6 +1,6 @@
 # Advanced Combat 0.9.300 Packet 3 — Novice Elemental Resolution Breadth
 
-Status: **SELECTED / IMPLEMENTATION STARTED.**
+Status: **COMPLETE / PRODUCT 0.9.300.3 / GAME STATE 20 / DATA 70.**
 
 Entry baseline:
 ```text
@@ -110,6 +110,54 @@ Not part of Packet 3:
 - Veilscript breadth migration;
 - new abilities or census filler.
 
+## Implementation result
+
+`ABILITY_CATALOG_VERSION` advances 6 -> 7. The eight selected novice Elemental Form definitions now each carry explicit magical resolution metadata and `recoverySeconds: 2` while preserving all pre-existing activation/cost/cooldown/potency/scaling and capability links.
+
+Deliveries remain bounded to direct single-target semantics:
+- projectile: Cinder Bolt, Stone Shards, Tide Needle, Rime Splinters, Sunlance, Gloam Spike;
+- spell/contact-form delivery metadata: Gale Cutter and Storm Jolt.
+
+Every definition uses:
+- `channel: magical`;
+- the canonical tagged element;
+- `elementSource: ability`;
+- `accuracyModel: magic`;
+- `resistanceModel: magicDefense`;
+- `criticalEligible: false`.
+
+The focused guard is `tests/advancedCombatNoviceElementalResolution.test.js`. It proves all eight definitions, all eight resistance paths, explicit recovery, unchanged ability count, preserved Sunlance MND scaling, and deliberate non-migration of Tempest Ring / Thunder Cage / Umbral Well.
+
+### Behavioral/data implementation freeze
+
+`32f0ee268525f096f40421414af180e90a724397`
+
+Hosted evidence:
+- Check #1981 / run `33515422352`;
+- Repository Audit PASS;
+- **870/870 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2111 / run `33515422056` PASS.
+
+### Promotion result
+
+```text
+Product       0.9.300.2 -> 0.9.300.3
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    20        -> 20
+Data          69        -> 70
+Benchmark     3         -> 3
+```
+
+Game State remains 20 because no durable state shape changed. Data 70 records the changed authored ability definitions. No supported-save migration is added.
+
+## Next decision boundary
+
+Packet 3 intentionally does not migrate the adept elemental tranche. A future advanced-combat continuation must freshly select whether the next bounded unit addresses one specific semantic family (for example Thunder Cage control, Tempest Ring geometry, or Umbral Well field behavior), a separate martial/action-contract tranche, engagement geometry, weapon resonance, or another explicit debt domain. Do not combine them automatically.
+
 ## Closure discipline
 
-Freeze the exact behavioral/data implementation SHA before Product/Data promotion and repository authority synchronization. `docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet.
+`docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet, followed only by exact-head hosted validation.
