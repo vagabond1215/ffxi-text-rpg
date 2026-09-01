@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.300.3';
+export const PRODUCT_VERSION = '0.9.300.4';
 export const PACKAGE_VERSION = '0.9.300';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 20,
-    data: 70,
+    data: 71,
     benchmark: 3,
-    codename: 'Novice Elemental Resolution Breadth',
+    codename: 'Thunder Cage Control Foundation',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.300.3',
+    versionManifest: '0.9.300.4',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -164,7 +164,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     startingDisciplineKits: '0.1.0',
     characterStats: '0.1.0',
     capabilities: '0.5.0',
-    abilityCatalog: '0.6.0',
+    abilityCatalog: '0.7.0',
     abilityEngine: '0.5.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.3.0',
@@ -174,9 +174,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     npcEntity: '0.2.0',
     enemyEntity: '0.4.0',
     statEngine: '0.5.0',
-    statusEngine: '0.3.0',
+    statusEngine: '0.4.0',
     battleEngine: '0.13.0',
-    combatTurns: '0.5.0',
+    combatTurns: '0.6.0',
     combatSimulation: '0.2.0',
     combatResolution: '0.2.0',
     combatAttention: '0.1.0',
