@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.300.7 — Radiant Arc Propagation Foundation
+
+- Added `arc` to the bounded combat-geometry vocabulary and implemented synchronous target-to-target propagation: the selected enemy is recipient 1, each later jump originates from the previous recipient, candidates must lie within two derived formation units, already-hit targets are excluded, and nearest distance with encounter-order/stable-ID tie breaking determines the next recipient.
+- Converted the existing Radiant Arc adept spell from generic single-target damage into explicit Light magical resolution with three-second post-action recovery and a three-recipient propagation cap while preserving its stable identity, 6-second activation, 20 MP cost, 18-second cooldown, MND scaling, base 16, and coefficient 1.75.
+- Reused the existing geometric target-expansion and per-recipient attention paths so every Arc recipient independently resolves magic accuracy, magic defense, and Light resistance and only enemies with applied effects gain action enmity.
+- Added structured propagation evidence to ability results, semantic events, and combat actions: primary target, jump range, cap, repeat policy, ordering law, and per-recipient jump/origin/distance/derived position.
+- Proved Arc can reach a third enemy outside the primary target's own two-unit radius, stops early when no jump exists, never repeats a target, honors deterministic tie/order rules, and does not misassign attention when the primary target misses but later recipients land.
+- Kept executable ability count at 41 and added no propagation timer, field state, movement, LOS/line-of-fire, pursuit/search/disengagement, pathfinding, or persistence family.
+- Advanced Product 0.9.300.6 -> 0.9.300.7 and Data 73 -> 74; Game State remains 21 and Package remains 0.9.300.
+- Behavioral/data freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec` passed Repository Audit, 889/889 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #2106 / run `33569913910` and Pages #2236 / run `33569912530`. Validation-only PR #405 independently passed Check #2107 and was closed without merge.
+- The first post-promotion Check #2109 failed Repository Audit before tests because eight authority surfaces still intentionally held the pre-sync 0.9.300.6/Data 73 baseline; authority synchronization followed with no runtime repair.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.6 — Umbral Well Field Foundation
 
 - Added `combatFieldEngine` as the canonical battle-local persistent-field authority with versioned `activeBattle.fields` state, stable field IDs, fictional-time pulse deadlines, persisted center points, authored radius/caps, and compact cast-time source-offense snapshots.
