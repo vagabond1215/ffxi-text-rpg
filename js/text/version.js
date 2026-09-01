@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.200.1';
+export const PRODUCT_VERSION = '0.9.200.2';
 export const PACKAGE_VERSION = '0.9.200';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 15,
-    data: 63,
+    data: 64,
     benchmark: 3,
-    codename: 'Slatewater Road Scout',
+    codename: 'Unified Combat Resolution',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.200.1',
+    versionManifest: '0.9.200.2',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
