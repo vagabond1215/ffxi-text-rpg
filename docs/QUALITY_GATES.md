@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.6
+Product:       0.9.300.7
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          73
+Data:          74
 Benchmark:     3
-Codename:      Umbral Well Field Foundation
+Codename:      Radiant Arc Propagation Foundation
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -240,6 +240,27 @@ PASS only when:
 - Product/Game State/Data decisions are explicit.
 
 **Gate result: PASS.** Check #2066 reached 878/884 tests; two failures were legacy effect-shape churn from `field: undefined` and four focused fixtures used Elemental Magic instead of Umbral Well's canonical Dark Magic requirement. Check #2068 then reached 883/884; its only failure was a test-only `structuredClone` of an injected RNG function. After fixture-only repair, behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` passed Check #2069 / run `33554921560` with **884/884 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2199 / run `33554920945` PASS. Game State advances 20 -> 21; Data advances 72 -> 73.
+
+### 0.9.300 Packet 7 gate — Radiant Arc Propagation Foundation
+
+PASS only when:
+- Radiant Arc preserves stable identity, capability, activation, MP cost, cooldown, MND scaling, base potency, coefficient, and executable ability count;
+- the authored target contract carries explicit `arc` geometry rather than relying on name/tag convention;
+- the explicitly selected enemy is always recipient 1;
+- each later recipient is selected from the previous recipient rather than from the original center;
+- eligible jumps are bounded by the authored two-unit range;
+- nearest distance wins and encounter order/stable ID resolve ties deterministically;
+- already-hit recipients cannot repeat;
+- the three-target cap is enforced and propagation stops early when no jump exists;
+- at least one proof reaches a later recipient outside the primary target's original jump radius, proving Arc is not a Ring alias;
+- every recipient independently resolves magic accuracy, magic defense, and Light resistance;
+- one recipient's resistance does not alter another recipient's damage;
+- result/event/action evidence records propagation order, jump origin, distance, and derived position;
+- explicit per-recipient attention excludes missed and unselected enemies;
+- no propagation state, timer, interrupt, mutable combat position, movement, LOS, pursuit, pathfinding, or save migration is introduced;
+- Product/Data/Game State decisions are explicit.
+
+**Gate result: PASS.** Behavioral/data freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec` passed Check #2106 / run `33569913910` with **889/889 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2236 / run `33569912530` PASS. Validation-only PR #405 independently passed Check #2107 and was closed without merge. Game State remains 21; Data advances 73 -> 74.
 
 ## Content Pack v2 gate
 
