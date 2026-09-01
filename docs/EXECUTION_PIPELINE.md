@@ -54,7 +54,7 @@ routes                                  25
 NPC schedules                           27
 regional/shared packs                   39
 pack-owned records                    1325
-runtime seed NPCs                       46
+runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
 
@@ -127,24 +127,57 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 - This is queued but not auto-authorized.
 - See `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
-## Next decision boundary
+## Next selected implementation
 
-Adventure Vertical Slice A is **COMPLETE** at Data 63 / Product 0.9.200.1.
+Adventure Vertical Slice A is complete at Data 63 / Product 0.9.200.1.
 
-`0.9.200 Adventure Vertical Slices` remains the active formal track. The next bounded candidate is **Adventure Vertical Slice B**, queued but not auto-authorized. Its specific regional/character anchor should be selected by inspecting existing geography for the strongest connected companion/quest/NPC/service opportunity rather than precommitting to another zone.
+Adventure Vertical Slice B is now **SELECTED / PLANNED, NOT STARTED** as a **Brasshaven / Redstone combat-training bridge**.
 
-After deliberate closure of 0.9.200, formal roadmap priority remains:
-1. **`0.9.300 Advanced Combat / Training`**;
-2. **`0.9.400 Economy / Production Depth`** — Occupational Tool Conversion remains the strongest prepared candidate;
-3. **`0.9.500 Quest / Social Depth`**;
-4. **`0.9.600 Playable-Alpha Scale Push`**.
+Design authority:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-Separate queues remain independently selectable:
-- world edge: Waymeet Inner Marches / outer crossroads approach, Coppergrass extensions, Drowned Vaults;
-- richer locality events/dialogue/UI;
-- optional post-sequence ecology.
+Implementation plan:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
 
-None is auto-started.
+### Immediate next bounded unit — Packet B1
+
+**Unified Combat Resolution Contract.**
+
+B1 must extend the existing Combat 2.0/ability substrate rather than start a parallel combat engine.
+
+Required first-pass outcomes:
+- one structured physical/magical/hybrid resolution vocabulary;
+- explicit element metadata that actually participates in resistance resolution;
+- canonical accuracy/defense/resistance paths for representative abilities;
+- status accuracy/resistance rather than unconditional landing;
+- explicit action recovery distinct from startup/cast duration and cooldown;
+- representative migration of basic melee, Ridge Breaker, Rivet Guard, one direct elemental spell, and one status spell;
+- no high-volume ability authoring yet;
+- no kata/loadout/attention implementation until B1 is frozen.
+
+A `continue` from this handoff should start **B1 only**.
+
+### Subsequent selected Slice B packets
+
+After separate stable handoffs:
+1. B2 — Enemy Attention Foundation: Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro -> Fixation.
+2. B3 — timed weapon/full-loadout transitions; armor swap locked while meaningful hostile pressure remains.
+3. B4 — weapon-delay cadence, first-class ranged attack, minimal configurable kata.
+4. B5 — playable Brasshaven/Redstone combat-training vertical proof.
+
+After B5, deliberately close `0.9.200` and open `0.9.300 Advanced Combat / Training` for broad weapon/affinity/ability depth.
+
+## Preserved interrupted/resumable queues
+
+Combat selection does not erase earlier circles:
+
+- **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
+- **Occupational Tool Conversion:** still the strongest prepared `0.9.400` economy/production packet; authority `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
+- **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
+
+These are resumable queues, not canceled work. None should be silently folded into B1.
+
 
 ## Validation
 
