@@ -31,6 +31,9 @@ export function validatePersistedCombatIdentity(state) {
     if (!plainEqual(battlePlayer.statuses, rootPlayer.statuses)) {
         issues.push('activeBattle active player statuses must match root player statuses.');
     }
+    if (!plainEqual(battlePlayer.equipment, rootPlayer.equipment)) {
+        issues.push('activeBattle active player equipment must match root player equipment.');
+    }
 
     const rootSnapshot = clonePlain(rootPlayer);
     delete rootSnapshot.combat;
