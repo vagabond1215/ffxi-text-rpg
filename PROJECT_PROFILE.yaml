@@ -43,13 +43,14 @@ authority:
   adventure_vertical_slice_a: docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md
   advanced_combat_design: docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md
   combat_slice_b_plan: docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md
+  combat_b1_record: docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: combat-slice-b-packet-b1-unified-resolution-selected-not-started
+  current_normal_work: combat-slice-b-packet-b2-enemy-attention-queued-not-started
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -146,26 +147,32 @@ git:
   latest_main_planning_check_number: 1464
   latest_main_planning_check_sha: 999de2ca82ba410bfbb866a7f95786ca0991b3b3
   latest_main_planning_check_result: success-764-of-764-tests-repository-audit-census-benchmark-and-sample
+  latest_combat_b1_implementation_check: 33457301272
+  latest_combat_b1_implementation_check_number: 1860
+  latest_combat_b1_implementation_check_sha: 20b7351a61f56203975e101ef04fd7311e110d9b
+  latest_combat_b1_implementation_check_result: success-832-of-832-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_combat_b1_pages: 33457300712
+  latest_combat_b1_pages_number: 1990
+  latest_combat_b1_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.200-adventure-vertical-slices
-  current_track_status: active-slice-a-complete-slice-b-combat-bridge-selected
+  current_track_status: active-slice-a-complete-slice-b-b1-complete-b2-queued
   completed_track: 0.9.100-content-scale-gate-a
   completed_track_status: complete-through-packet-e
-  latest_bounded_unit: adventure-vertical-slice-a-slatewater-road-scout
-  latest_bounded_unit_status: complete-on-main-product-0.9.200.1-game-state-15-data-63
-  latest_data_bounded_unit: adventure-vertical-slice-a-slatewater-road-scout
-  latest_data_bounded_unit_status: complete-on-main-implementation-freeze-data-63
-  next_roadmap_gate: adventure-vertical-slice-b-packet-b1-unified-combat-resolution
-  next_roadmap_gate_status: selected-not-started-authorized-only-by-next-explicit-continue
+  latest_bounded_unit: combat-b1-unified-combat-resolution
+  latest_bounded_unit_status: complete-on-main-product-0.9.200.2-game-state-15-data-64
+  latest_data_bounded_unit: combat-b1-unified-combat-resolution
+  latest_data_bounded_unit_status: complete-on-main-behavioral-freeze-data-64
+  next_roadmap_gate: adventure-vertical-slice-b-packet-b2-enemy-attention
+  next_roadmap_gate_status: queued-not-started-requires-next-explicit-continue
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-planning-only-no-version-change
+  combat_design_contract_status: permanent-authority-b1-subset-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
-  combat_slice_b_status: selected-planned-not-started
-  combat_next_packet: b1-unified-combat-resolution-contract
-  combat_next_packet_scope: representative-basic-melee-magic-status-resolution-no-mass-authoring
+  combat_slice_b_status: active-b1-complete-b2-queued
+  combat_next_packet: b2-enemy-attention-foundation
+  combat_next_packet_scope: enmity-focus-nonlinear-selection-sticky-aggro-fixation-no-loadout-or-kata
   combat_following_packets:
-    - b2-enemy-attention-enmity-focus-aggro-fixation
     - b3-combat-loadout-transitions-and-armor-pressure-lock
     - b4-weapon-cadence-ranged-action-minimal-kata
     - b5-playable-brasshaven-redstone-proof
@@ -226,14 +233,15 @@ validation:
   local_knowledge_persistence_guard: tests/currentSchemaDiscoveryPersistence.test.js
   local_knowledge_information_guard: tests/playerInformationAccess.test.js
   adventure_slice_a_guard: tests/playerSlatewaterRoadScoutFlow.test.js
+  combat_b1_guard: tests/combatResolutionEngine.test.js
 quality:
-  current_product_version: 0.9.200.1
+  current_product_version: 0.9.200.2
   current_package_version: 0.9.200
   current_account_save: 5
   current_game_state: 15
-  current_data_version: 63
+  current_data_version: 64
   current_benchmark_version: 3
-  current_codename: Slatewater Road Scout
+  current_codename: Unified Combat Resolution
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -248,16 +256,16 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority
-    runtime_changed: false
-    data_changed: false
+    status: permanent-design-authority-b1-subset-implemented
+    runtime_changed: true
+    data_changed: 63-to-64
     game_state_changed: false
     current_executable_abilities: 41
     spells: 33
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: unified-combat-resolution
+    immediate_runtime_gap: enemy-attention-enmity-focus-aggro-fixation
     weapon_kata_planned: true
     first_class_ranged_planned: true
     affinity_substitutions_planned: true
@@ -266,6 +274,24 @@ quality:
     attention_model: enmity-focus-aggro-fixation
     focus_is_direct_target_probability: false
     nonlinear_focus_weighting_planned: true
+  combat_b1_unified_resolution:
+    implementation_status: complete
+    implementation_freeze_sha: 20b7351a61f56203975e101ef04fd7311e110d9b
+    implementation_check_run: 33457301272
+    implementation_check_number: 1860
+    tests: 832-of-832
+    product_version: 0.9.200.2
+    data_version_changed: 63-to-64
+    game_state_changed: false
+    ability_count_changed: false
+    combat_resolution_engine_added: true
+    basic_attack_shared_resolution: true
+    ember_dart_elemental_resistance: true
+    ridge_breaker_penetration_and_crit: true
+    fracture_sigil_resistible: true
+    canonical_recovery_distinct: true
+    supported_save_migration_added: false
+    new_persistence_family_added: false
   adventure_vertical_slice_a:
     implementation_status: complete
     implementation_freeze_sha: 63cbd31edb149c9cf10af0a83bcf6f667abe17b8
