@@ -61,7 +61,7 @@ Current direct runtime task owners remain exactly:
 
 The release point belongs to the domain that owns the durable consequence. A terminal task is released only after the owner has copied every required outcome and recorded the exactly-once transition.
 
-## Game State 20 task integrity
+## Game State 21 task integrity
 
 The current-schema boundary validates:
 
@@ -90,6 +90,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 0.9.300 Packet 4 adds no direct timed-task owner or control scheduler. Thunder Cage uses the existing ability activation task and generic persisted status expiry. `combatTurnEngine` defers an already-owned enemy readiness interrupt to the active hard-disable expiry; it does not create a separate cage timer/task. Game State remains 20; Data 71 changes authored Thunder Cage semantics and shared status/readiness behavior.
 
 0.9.300 Packet 5 adds no direct timed-task owner, geometry timer, or mutable battle-position resource. `combatGeometryEngine` is stateless: it derives encounter-relative formation from the already-owned combatant array and answers ring queries synchronously. Tempest Ring reuses the existing ability activation task and combat-resolution/action paths. Game State remains 20; Data 72 changes authored Tempest Ring geometry/resolution/recovery metadata, not lifecycle ownership.
+
+0.9.300 Packet 6 also adds no direct timed-task owner. `combatFieldEngine` owns durable `activeBattle.fields` records directly; their fictional-time pulse deadlines are exposed as combat interrupt candidates and reconciled through `combatSimulationEngine`. The existing Umbral Well ability activation task ends when the cast resolves and does not remain as the field's scheduler. Game State 21 changes active-battle persistence because outstanding field center/source-snapshot/pulse state changes future resumable outcomes; Data 73 changes the authored Umbral Well impact/field contract. The direct timed-task-owner set therefore remains unchanged.
 
 ## Cultivation lifecycle
 
