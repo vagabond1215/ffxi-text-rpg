@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.300.2 — Character Affinity & Kata Substitution
+
+- Added versioned character-owned elemental affinity ranks under `player.progression.affinities` for the eight canonical elements, independent of active discipline and spell knowledge.
+- Added explicit affinity gain/set/read/validation operations without introducing a separate affinity XP economy, clock, or task owner.
+- Added Rimepoint Thrust (Ice dagger) and Cinder-Braced Drive (Fire staff) as two authored affinity-gated kata substitutions requiring both weapon proficiency and earned affinity.
+- Kept physical kata defaults viable and made runtime selection fall back safely when a configured substitution is no longer affinity-eligible.
+- Widened the existing melee attack profile only enough to pass structured element/channel/resistance metadata into `combatResolutionEngine`; no duplicate elemental-kata resolver was added.
+- Advanced Game State 19 -> 20 for required durable affinity state and Data 68 -> 69 for authored substitution definitions. Kata configuration remains version 2; battle kata state remains version 1; Package remains 0.9.300.
+- Behavioral freeze `cbbec82e7d908c32dcb849e13f59461c83b6637a` passed Repository Audit, 867/867 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #1956 / run `33477009897` and Pages #2086 / run `33477008886`.
+- No subsequent 0.9.300 packet is selected automatically.
+
 ## 0.9.300.1 — Current Melee Kata Breadth
 
 - Opened `0.9.300 Advanced Combat / Training` with a bounded extension of the already-proven weapon-kata authority.
