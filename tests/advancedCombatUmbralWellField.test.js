@@ -44,7 +44,7 @@ class MemoryStorage {
 }
 
 test('Packet 6 gives Umbral Well explicit Dark impact plus a bounded persistent field contract', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 10);
+    assert.equal(ABILITY_CATALOG_VERSION, 11);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
