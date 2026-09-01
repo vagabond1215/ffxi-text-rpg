@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–5 are COMPLETE.** Packet 5 establishes the first honest radial target geometry at Product 0.9.300.5 / Data 72 / Game State 20: Tempest Ring selects living enemies within a target-centered radius using deterministic encounter-relative formation, caps recipients at four, resolves each enemy independently, and applies attention only to enemies actually struck. Behavioral/data freeze `29d6da27e48850aa96307553b4c124f2598c8caa` passed Check #2034 with 879/879 tests and the full gate; Pages #2164 passed. No subsequent 0.9.300 packet is selected.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–6 are COMPLETE.** Packet 6 establishes persistent combat-field state at Product 0.9.300.6 / Data 73 / Game State 21: Umbral Well deals explicit Dark impact damage, then persists for three fictional-time pulses using a cast-time source snapshot and live per-recipient defense/resistance. Behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3` passed Check #2069 with 884/884 tests and the full gate; Pages #2199 passed. No subsequent 0.9.300 packet is selected.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
