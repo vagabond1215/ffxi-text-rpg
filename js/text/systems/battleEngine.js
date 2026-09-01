@@ -1,3 +1,4 @@
+import { createBattleAttentionState } from './combatAttentionEngine.js';
 import { resolveCombatDamage } from './combatResolutionEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 
@@ -7,18 +8,19 @@ export function createBattleState({ id = null, player, allies = [], enemies = []
     if (!player) throw new Error('createBattleState requires a player entity.');
     if (!enemies.length) throw new Error('createBattleState requires at least one enemy.');
 
+    const combatants = [
+        refreshCombatant(player, COMBAT_SIDES.ALLY),
+        ...allies.map((ally) => refreshCombatant(ally, COMBAT_SIDES.ALLY)),
+        ...enemies.map((enemy) => refreshCombatant(enemy, COMBAT_SIDES.ENEMY)),
+    ];
     return {
         id: id ?? `battle-${Date.now()}`,
         round: 1,
         phase: 'active',
         rngSeed,
         rng,
-        combatants: [
-            refreshCombatant(player, COMBAT_SIDES.ALLY),
-            ...allies.map((ally) => refreshCombatant(ally, COMBAT_SIDES.ALLY)),
-            ...enemies.map((enemy) => refreshCombatant(enemy, COMBAT_SIDES.ENEMY)),
-        ],
-        enmity: {},
+        combatants,
+        enmity: createBattleAttentionState(combatants),
         skillchain: null,
         magicBurstWindow: null,
         log: ['Battle begins.'],

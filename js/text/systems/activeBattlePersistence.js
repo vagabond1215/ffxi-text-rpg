@@ -1,4 +1,5 @@
 import { COMBAT_SIDES } from './battleEngine.js';
+import { validateBattleAttentionState } from './combatAttentionEngine.js';
 import { validatePersistedBattleDerivedCaches } from './battleDerivedCachePersistence.js';
 import { COMBAT_ACTION_HISTORY_LIMIT, validateCombatContract } from './combatTurnEngine.js';
 import { validatePersistedPlayerStatuses } from './playerStatusPersistence.js';
@@ -17,7 +18,7 @@ export function validatePersistedActiveBattle(battle) {
         issues.push('activeBattle.combatants must contain at least two combatants.');
         return [...issues, ...prefix(validateCombatContract(battle), 'activeBattle.')];
     }
-    if (!isObject(battle.enmity)) issues.push('activeBattle.enmity must be an object.');
+    issues.push(...prefix(validateBattleAttentionState(battle), 'activeBattle.'));
     if (!Array.isArray(battle.log)) issues.push('activeBattle.log must be an array.');
     else {
         if (battle.log.length > 100) issues.push('activeBattle.log must contain at most 100 entries.');

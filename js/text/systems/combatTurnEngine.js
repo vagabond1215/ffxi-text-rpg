@@ -1,4 +1,5 @@
 import { getEnemyAbility } from '../data/enemyAbilities.js';
+import { applyCombatActionAttention, selectEnemyAttentionTarget } from './combatAttentionEngine.js';
 import { appendBattleLog, COMBAT_SIDES, getCombatant, getCombatantSide, resolveBasicAttack, updateBattlePhase } from './battleEngine.js';
 import { syncCompanionsFromBattle } from './partyEngine.js';
 import { refreshPlayerDerivedState } from './playerDerivedState.js';
@@ -119,6 +120,13 @@ export function recordCombatAction(state, definition = {}) {
     if (state && definition.actorId && definition.recoverySeconds !== undefined) {
         setCombatantRecovery(state, definition.actorId, definition.recoverySeconds);
     }
+    const attentionChanges = applyCombatActionAttention(battle, record, { nowWorldSeconds: atWorldSeconds ?? 0 });
+    if (attentionChanges.length) {
+        record.data.attention = {
+            ...(record.data.attention ?? {}),
+            applied: attentionChanges.map((entry) => ({ ...entry })),
+        };
+    }
 
     if (state) {
         emitSemanticEvent(state, 'combat.action.resolved', {
@@ -139,10 +147,10 @@ export function recordCombatAction(state, definition = {}) {
     return record;
 }
 
-export function selectEnemyAction(battle, enemy) {
+export function selectEnemyAction(battle, enemy, options = {}) {
     if (!battle || battle.phase !== 'active' || !enemy || enemy.battle?.defeated) return null;
-    const livingAllies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ALLY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
-    const target = livingAllies.find((combatant) => combatant.type === 'player') ?? livingAllies[0] ?? null;
+    const targetId = selectEnemyAttentionTarget(battle, enemy.id, options);
+    const target = targetId ? getCombatant(battle, targetId) : null;
     if (!target) return null;
 
     const ability = (enemy.combatAbilityIds ?? []).map(getEnemyAbility).find(Boolean) ?? null;
@@ -206,7 +214,11 @@ export function resolveEnemyReadyAction(state, enemyId, options = {}) {
         return { ok: false, code: 'combat.enemy-recovering', action: null, readyAtWorldSeconds: getCombatantReadyAt(state, enemy.id) };
     }
 
-    const selection = selectEnemyAction(battle, enemy);
+    const selection = selectEnemyAction(battle, enemy, {
+        reassess: true,
+        nowWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+        rng: options.rng,
+    });
     if (!selection) return { ok: false, code: 'combat.no-action', action: null };
     const resolution = resolveEnemySelection(battle, selection, options);
     const action = recordCombatAction(state, {
@@ -279,7 +291,11 @@ export function resolveEnemyResponse(state, options = {}) {
     const enemies = battle.combatants.filter((combatant) => getCombatantSide(combatant) === COMBAT_SIDES.ENEMY && !combatant.battle?.defeated && combatant.resources?.hp > 0);
 
     for (const enemy of enemies) {
-        const selection = selectEnemyAction(battle, enemy);
+        const selection = selectEnemyAction(battle, enemy, {
+            reassess: true,
+            nowWorldSeconds: ensureWorldTimeState(state).totalSeconds,
+            rng: options.rng,
+        });
         if (!selection) continue;
         const resolution = resolveEnemySelection(battle, selection, options);
         const action = recordCombatAction(state, {
