@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.2
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    20
+Data:          69
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
+Codename:      Character Affinity & Kata Substitution
 ```
 
 ## Data 57 regional authority
@@ -216,7 +216,7 @@ spellSchools / capabilities / abilities / companions
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P1 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, and persisted kata now share canonical authorities. B5 playable proof is complete; 0.9.300 P1 broadens automatic kata to dagger/sword/axe/staff/club under Game State 19. Character affinity substitutions remain queued. |
+| Combat 2.0 | playable / 0.9.300 P2 complete | Unified resolution, hostile attention, timed loadout transitions, equipment-derived cadence, first-class ranged attacks, persisted kata, and character-owned affinity substitutions share canonical authorities. P2 adds ranked affinity plus representative Ice dagger and Fire staff substitutions under Game State 20 without a new clock/task owner. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.1 / Data 68 / Game State 19. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packet 1 complete.
+Phase 0.9 remains open at Product 0.9.300.2 / Data 69 / Game State 20. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–2 complete.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -315,5 +315,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packet 1 — Current Melee Kata Breadth is COMPLETE.** The existing kata owner now covers dagger, sword, axe, staff, and club; Game State 19 persists configuration version 2. **Packet 2 — Character Affinity & Kata Substitution Foundation is QUEUED / NOT STARTED.** World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packet 1 — Current Melee Kata Breadth is COMPLETE. Packet 2 — Character Affinity & Kata Substitution Foundation is COMPLETE.** The existing kata owner still covers dagger, sword, axe, staff, and club; Game State 20 adds character-owned affinity ranks while kata configuration remains version 2. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 
