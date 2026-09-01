@@ -2,7 +2,7 @@ import { EQUIPMENT_SLOTS } from '../data/systemConstants.js';
 import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
 import { ITEM_KINDS, hasItemFlag } from '../data/itemSchema.js';
 
-export const PLAYER_EQUIPMENT_PERSISTENCE_VERSION = 1;
+export const PLAYER_EQUIPMENT_PERSISTENCE_VERSION = 2;
 
 export function validatePersistedPlayerEquipment(equipment) {
     const issues = [];

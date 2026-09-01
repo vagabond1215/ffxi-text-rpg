@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.200.5');
+    assert.equal(PRODUCT_VERSION, '0.9.200.6');
     assert.equal(PACKAGE_VERSION, '0.9.200');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 18);
-    assert.equal(VERSION.data, 66);
+    assert.equal(VERSION.data, 67);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Weapon Cadence, Ranged Action, and Minimal Kata');
+    assert.equal(VERSION.codename, 'Brasshaven Redstone Combat Training');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -91,9 +91,10 @@ test('version manifest separates product package persistence data and scale-cont
             discoveryPersistence: SYSTEM_VERSIONS.discoveryPersistence,
             poiDiscovery: SYSTEM_VERSIONS.poiDiscovery,
             gameViewModels: SYSTEM_VERSIONS.gameViewModels,
+            trainingServices: SYSTEM_VERSIONS.trainingServices,
         },
         {
-            versionManifest: '0.9.200.5',
+            versionManifest: '0.9.200.6',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -110,7 +111,7 @@ test('version manifest separates product package persistence data and scale-cont
             transport: '0.4.1',
             liveTick: '0.2.1',
             domRoot: '0.1.0',
-            commandShell: '0.5.3',
+            commandShell: '0.5.4',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
             commitments: '0.8.0',
@@ -128,13 +129,13 @@ test('version manifest separates product package persistence data and scale-cont
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
             inventoryTransfers: '0.8.0',
-            validation: '0.50.0',
+            validation: '0.51.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.2',
             npcWorldProjection: '0.1.1',
             enemyEncounterProjection: '0.1.0',
             presentationLog: '0.1.0',
-            playerEquipmentPersistence: '0.1.0',
+            playerEquipmentPersistence: '0.2.0',
             playerStatusPersistence: '0.1.0',
             activeBattlePersistence: '0.5.0',
             battleDerivedCachePersistence: '0.1.0',
@@ -153,18 +154,19 @@ test('version manifest separates product package persistence data and scale-cont
             localKnowledge: '0.1.0',
             discoveryPersistence: '0.2.0',
             poiDiscovery: '0.4.0',
-            gameViewModels: '0.18.0',
+            gameViewModels: '0.19.0',
+            trainingServices: '0.1.0',
         },
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.200\.5/);
+    assert.match(describeVersion(), /Product: 0\.9\.200\.6/);
     assert.match(describeVersion(), /Package: 0\.9\.200/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 18/);
-    assert.match(describeVersion(), /Data: 66/);
+    assert.match(describeVersion(), /Data: 67/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Weapon Cadence, Ranged Action, and Minimal Kata/);
+    assert.match(describeVersion(), /Codename: Brasshaven Redstone Combat Training/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
@@ -176,7 +178,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.5\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.50\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.51\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
@@ -187,7 +189,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /activeBattlePersistence: 0\.5\.0/);
     assert.match(describeSystemVersions(), /battleDerivedCachePersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerStatusPersistence: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /playerEquipmentPersistence: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /playerEquipmentPersistence: 0\.2\.0/);
     assert.match(describeSystemVersions(), /playerDerivedState: 0\.1\.2/);
     assert.match(describeSystemVersions(), /playerPersistenceHarness: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerIdentityPersistence: 0\.2\.0/);
@@ -199,6 +201,9 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /weaponCadence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /weaponKataCatalog: 0\.1\.0/);
     assert.match(describeSystemVersions(), /weaponKata: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /trainingServices: 0\.1\.0/);
+    assert.match(describeSystemVersions(), /localityNavigation: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /pois: 0\.4\.5/);
     assert.match(describeSystemVersions(), /walletPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /statusEngine: 0\.3\.0/);
     assert.match(describeSystemVersions(), /saveEncoding: 0\.9\.0/);
