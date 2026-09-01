@@ -16,6 +16,7 @@ import {
     resolvePartyAndEnemyResponses,
 } from './combatTurnEngine.js';
 import { getActiveCompanionCombatEntities } from './partyEngine.js';
+import { describeCombatLoadoutBlock, isCombatLoadoutTransitionActive } from './combatLoadoutEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 import { describeSkillGainResult, resolveSkillGainForAction } from './skillProgressionEngine.js';
 
@@ -52,6 +53,7 @@ export function performPlayerAttack(state, targetQuery = null) {
     if (!isActiveBattle(battle)) return 'You are not in battle.';
 
     const player = getPlayerCombatant(battle);
+    if (isCombatLoadoutTransitionActive(state)) return describeCombatLoadoutBlock(state);
     const activationBlock = describeActiveAbilityCommitment(state);
     if (activationBlock) return activationBlock;
     const target = getTargetCombatant(battle, targetQuery);
@@ -83,6 +85,7 @@ export function performWeaponSkill(state, skillName = 'Weapon Skill', targetQuer
     if (!isActiveBattle(battle)) return 'You are not in battle.';
 
     const player = getPlayerCombatant(battle);
+    if (isCombatLoadoutTransitionActive(state)) return describeCombatLoadoutBlock(state);
     const activationBlock = describeActiveAbilityCommitment(state);
     if (activationBlock) return activationBlock;
     const target = getTargetCombatant(battle, targetQuery);
@@ -124,6 +127,7 @@ export function castSpell(state, spellName = 'Cure', targetQuery = null) {
 
     const player = getPlayerCombatant(battle);
     if (!player) return 'No player combatant.';
+    if (isCombatLoadoutTransitionActive(state)) return describeCombatLoadoutBlock(state);
     const activationBlock = describeActiveAbilityCommitment(state);
     if (activationBlock) return activationBlock;
     const recovery = describeRecovery(state, player.id);
