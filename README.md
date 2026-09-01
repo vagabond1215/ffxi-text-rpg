@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–2 are complete.** The current canonical/runtime checkpoint is Data 69 / Product 0.9.300.2 / Game State 20. Packet 2 adds character-owned elemental affinity ranks and bounded dagger/staff kata substitutions without a second combat resolver or task owner.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are complete.** The current canonical/runtime checkpoint is Data 70 / Product 0.9.300.3 / Game State 20. Packet 3 migrates the eight existing novice Elemental Form attacks into the unified magic-accuracy, magic-defense, elemental-resistance, and explicit-recovery contract without adding abilities or geometry.
 
 ```text
-Product:       0.9.300.2
+Product:       0.9.300.3
 Package:       0.9.300
 Account Save:  5
 Game State:    20
-Data:          69
+Data:          70
 Benchmark:     3
-Codename:      Character Affinity & Kata Substitution
+Codename:      Novice Elemental Resolution Breadth
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 69 implementation census:
+Validated Data 70 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -157,7 +157,7 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`. Marshal Varric Stone now exposes bounded Forge-Road instruction through the existing capability authority, and the integrated South Redstone proof exercises B1–B4 together.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — and Packet 2 — Character Affinity & Kata Substitution Foundation — are COMPLETE.** Packet 2 persists eight character-owned affinity ranks, keeps physical kata defaults viable, and proves Ice dagger plus Fire staff substitutions through the existing resolution contract. No subsequent 0.9.300 packet is selected yet.
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–3 are COMPLETE.** Packet 3 migrates Cinder Bolt, Stone Shards, Gale Cutter, Tide Needle, Storm Jolt, Rime Splinters, Sunlance, and Gloam Spike to the B1 unified resolution contract while preserving the 41-ability count. Adept names such as Tempest Ring, Thunder Cage, and Umbral Well remain deliberately unmigrated until their implied geometry/control/field semantics are selected.
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;
