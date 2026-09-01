@@ -1,6 +1,6 @@
 # Advanced Combat 0.9.300 Packet 2 — Character Affinity & Kata Substitution Foundation
 
-Status: **SELECTED / IMPLEMENTATION STARTED.**
+Status: **COMPLETE / PRODUCT 0.9.300.2 / GAME STATE 20 / DATA 69.**
 
 Entry baseline:
 ```text
@@ -133,6 +133,46 @@ Packet 2 does **not** implement:
 - broad recovered `/techniques` migration;
 - mechanics-census filler.
 
+## Implementation result
+
+`characterAffinityEngine.js` now owns versioned rank state for fire/ice/wind/earth/lightning/water/light/dark under `player.progression.affinities`. New characters receive the current state, persistence validation requires it, and affinity remains unchanged when the active discipline changes.
+
+The kata catalog adds exactly two substitutions:
+- `dagger-rimepoint-thrust` / **Rimepoint Thrust** — Ice, slot 1, dagger skill 2 + Ice affinity 1;
+- `staff-cinder-braced-drive` / **Cinder-Braced Drive** — Fire, slot 3, staff skill 4 + Fire affinity 1.
+
+Both remain ordinary move IDs inside kata configuration version 2. `weaponKataEngine` enforces proficiency plus affinity during configuration and runtime selection. If affinity later falls below the threshold, the slot falls back to its physical default. `battleEngine` passes the authored element/channel/resistance fields into the existing combat resolver.
+
+### Behavioral implementation freeze
+
+`cbbec82e7d908c32dcb849e13f59461c83b6637a`
+
+Hosted evidence:
+- Check #1956 / run `33477009897`;
+- Repository Audit PASS;
+- **867/867 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2086 / run `33477008886` PASS.
+
+### Promotion result
+
+```text
+Product       0.9.300.1 -> 0.9.300.2
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    19        -> 20
+Data          68        -> 69
+Benchmark     3         -> 3
+```
+
+Game State 20 is required for the new durable affinity authority. Data 69 records the two authored substitution definitions. No supported-save migration is added. Kata configuration remains version 2 and battle kata state remains version 1.
+
+## Next decision boundary
+
+Packet 2 does not auto-select another advanced-combat packet. Aura/stance/zone/channel/reaction families, geometry/LOS/pursuit, weapon resonance/imbuement, passive defense reactions, unsupported weapon families, broad technique migration, and broad ability catalog expansion all remain deferred until a fresh bounded work order chooses among them.
+
 ## Closure discipline
 
-Freeze the exact behavioral implementation SHA before Product/Game State/Data promotion and authority synchronization. `docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet, followed only by hosted validation of that exact final head.
+`docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet, followed only by hosted validation of that exact final head.
