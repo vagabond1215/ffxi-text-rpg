@@ -4,14 +4,15 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.2 / Game State 15 / Data 64. Packet B1 implements the representative unified-resolution subset; attention, loadouts, ranged cadence, kata, affinity substitutions, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.200.3 / Game State 16 / Data 64. Packets B1-B2 implement the representative unified-resolution and enemy-attention subsets; loadouts, ranged cadence, kata, affinity substitutions, and richer action families remain future work.
 
 ## Implementation status
 
-**Packet B1 — Unified Combat Resolution: COMPLETE.**
+**Packets B1-B2 — Unified Resolution + Enemy Attention: COMPLETE.**
 
-Permanent record:
-- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`.
+Permanent records:
+- `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
+- `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -23,8 +24,15 @@ Implemented subset:
 - explicit canonical ability recovery distinct from activation/cooldown;
 - structured resolution evidence in combat action history.
 
+Implemented by B2:
+- hostile-specific absolute Enmity;
+- normalized Focus distinct from literal target probability;
+- nonlinear target-selection concentration;
+- sticky Aggro with meaningful reassessment;
+- Fixation/Priority preserving underlying Enmity;
+- baseline/transient/floor/fictional-time decay state persisted with active battle.
+
 Still deferred:
-- B2 Enmity/Focus/Aggro/Fixation;
 - B3 timed combat loadout transitions/armor pressure;
 - B4 weapon-delay cadence, first-class ranged attacks, configurable kata;
 - B5 playable combat-training integration;

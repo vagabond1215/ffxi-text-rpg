@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packet B1 are complete.** The current canonical/runtime checkpoint is Data 64 / Product 0.9.200.2 / Game State 15. B1 establishes unified representative combat resolution without adding a new state family.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is active; Slice A and Combat Packets B1-B2 are complete.** The current canonical/runtime checkpoint is Data 64 / Product 0.9.200.3 / Game State 16. B2 adds durable enemy attention without adding authored content records.
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -105,7 +105,7 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 15 adds durable `localKnowledge` plus nullable `activePoiId` context for learned places/POIs/connectors, NPC identity linkage, familiarity, temporary guidance, interaction history, and staged locality presence. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 16 retains the Game State 15 locality-knowledge contract and additionally requires durable active-battle enemy-attention state: hostile-specific Enmity entries, sticky Aggro, Fixation, attention policy, and fictional-time decay anchors. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
@@ -149,9 +149,11 @@ Current mechanics-scale gaps remain:
 
 Do not fill the ability gap with mechanically duplicate records.
 
-**Next bounded Slice B unit: B2 — Enemy Attention Foundation.** It is queued, not started. B2 will establish Enmity -> Focus -> nonlinear target-selection weighting -> sticky Aggro -> Fixation/Priority on the existing combat authority.
+**Combat 2.0 Packet B2 — Enemy Attention Foundation is COMPLETE.** It establishes durable hostile-specific Enmity -> normalized Focus -> nonlinear selection weighting -> sticky Aggro -> Fixation/Priority on the existing active-battle authority. Focus is not literal attack probability, and target reassessment is event-driven rather than a per-tick reroll.
 
-Later B3/B4/B5 remain:
+**Next bounded Slice B unit: B3 — Combat Loadout Transition Foundation.** It is queued, not started.
+
+Later B3/B4/B5 sequencing remains:
 - timed loadout transitions and armor-pressure locking;
 - weapon-delay cadence, first-class ranged attack, minimal configurable kata;
 - playable Brasshaven/Redstone combat-training proof.

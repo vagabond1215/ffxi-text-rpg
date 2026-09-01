@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.100.24
-Package:       0.9.100
+Product:       0.9.200.3
+Package:       0.9.200
 Account Save:  5
-Game State:    15
-Data:          62
+Game State:    16
+Data:          64
 Benchmark:     3
-Codename:      Local Knowledge & Familiarity
-Phase:         0.9 / Gate A complete; 0.9.200 queued
+Codename:      Enemy Attention Foundation
+Phase:         0.9 / 0.9.200 active; Slice A + B1-B2 complete; B3 queued
 ```
 
-Data 62 remains the canonical authored-content checkpoint. Product 0.9.100.24 adds the Local Knowledge & Familiarity Foundation: Game State 15 persists character-specific locality knowledge, temporary guidance, NPC identity linkage, connector familiarity, POI interaction history, and active local POI context while canonical world definitions remain in their existing catalogs.
+Data 64 remains the current authored/mechanics-data checkpoint. Product 0.9.200.3 adds the Enemy Attention Foundation: Game State 16 retains locality knowledge and now also persists outcome-affecting active-battle attention while canonical definitions remain in their existing catalogs.
 
 ## Core authority rules
 
@@ -601,6 +601,35 @@ Timed canonical activation is treated as an action commitment: basic attack and 
 
 Behavioral freeze: `20b7351a61f56203975e101ef04fd7311e110d9b`, Check #1860 / run `33457301272`, **832/832 tests**.
 
+
+# Combat Packet B2 implementation
+
+Product 0.9.200.3 / Game State 16 / Data 64 introduces `combatAttentionEngine.js` as a stateless attention calculation/selection authority beneath the existing active-battle owner.
+
+```text
+combat action evidence
+        |
+        v
+absolute Enmity per hostile/credible actor
+        |
+        v
+normalized Focus
+        |
+        v
+nonlinear selection weight
+        |
+        v
+sticky Aggro ---- Fixation/Priority override
+```
+
+Durable authority remains `activeBattle.enmity`, not the helper engine. Each hostile record owns actor-linked baseline/transient Enmity, floors, fictional-time decay anchors, sticky Aggro, optional Fixation, and tuning policy. `recordCombatAction()` feeds the same Enmity seam for representative damage/healing/status/control pressure.
+
+Focus is explicitly not literal attack probability. The default concentration exponent, switch ratio, and current-target weight multiplier are initial tuning data, not genre laws.
+
+Because attention changes future target choices after save/load, Game State advances 15 -> 16. No supported-save migration is added under the pre-alpha current-schema-only policy. Data remains 64 because no authored content records changed.
+
+Behavioral freeze: `92e6d1623470fbc923ef9beebe148829418b7080`; Check #1881 / run `33459747237`, **837/837 tests**, full gate green; Pages #2011 / run `33459746331` green.
+
 # Advanced combat authority direction
 
 Permanent design authority:
@@ -617,7 +646,7 @@ The existing Combat 2.0 substrate remains authoritative for:
 - timed ability activation/interruption;
 - root-player / battle-player synchronization.
 
-Future work must extend this substrate rather than create a second combat clock or parallel battle store.
+B1-B2 extend this substrate without creating a second combat clock or parallel battle store. Future packets must preserve that boundary.
 
 Target authority flow:
 
@@ -649,9 +678,9 @@ Attention state belongs to the active hostile encounter. If it affects resumable
 
 Equipment transitions use canonical combat/world time. Armor-swap legality depends on actual hostile pressure, pursuit, reachability, disable state, focus, aggro, and fixation—not merely whether the player is the current selected target.
 
-The exact future Game State version is deferred until the implementation packet defines the durable serialized shape.
+B2 defines the attention persistence boundary as Game State 16. Later B3/B4 packets must decide independently whether their new durable state requires another schema boundary.
 
-# Persistence authority — Game State 15
+# Persistence authority — Game State 16
 
 Raw current-schema validation runs before revival/normalization.
 
@@ -731,6 +760,7 @@ Redstone and Elderwood production both reuse `workTaskEngine`; neither adds a di
 - Game State 13 — required cultivation plot/crop authority introduced.
 - Game State 14 — required paid cultivation delegation appointment state introduced.
 - Game State 15 — durable locality knowledge/familiarity, temporary guidance, NPC identity linkage, connector knowledge, POI interaction history, and active local POI context.
+- Game State 16 — required active-battle enemy attention: Enmity entries, Aggro, Fixation/Priority, tuning policy, and fictional-time decay anchors.
 
 ## Validation checkpoints
 
@@ -766,4 +796,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 64; the current runtime/persistence baseline is Product 0.9.200.2 / Game State 15. Adventure Vertical Slice A and Combat Packet B1 are complete; `0.9.200 Adventure Vertical Slices` remains active with B2 Enemy Attention next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 64; the current runtime/persistence baseline is Product 0.9.200.3 / Game State 16. Adventure Vertical Slice A and Combat Packets B1-B2 are complete; `0.9.200 Adventure Vertical Slices` remains active with B3 Combat Loadout Transition Foundation next and not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.

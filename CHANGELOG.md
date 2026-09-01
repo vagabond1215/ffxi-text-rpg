@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.200.3 — Enemy Attention Foundation
+
+- Added durable active-battle enemy attention with hostile-specific Enmity, normalized Focus, nonlinear target-selection weighting, sticky Aggro, Fixation/Priority, and fictional-time decay/floors.
+- Routed representative combat-action pressure into the shared attention contract without creating a second battle authority.
+- Advanced Game State 15 -> 16 because attention affects resumable battle outcomes; Data remains 64 and no supported-save migration is added.
+- Added deterministic three-actor, stickiness, fixation, decay/floor, and persistence-link coverage; behavioral freeze passed 837/837 tests plus the full hosted gate.
+
+
 All notable reset-branch changes are tracked here.
 
 ## Unreleased

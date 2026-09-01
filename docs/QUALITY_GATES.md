@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -53,7 +53,7 @@ The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540
 Current mode remains strict pre-alpha current-schema-only.
 
 - Account Save remains 5 unless account/session shape changes.
-- Game State is 15; change it again only when another genuinely new durable player/world fact changes the serialized contract.
+- Game State is 16; change it again only when another genuinely new durable player/world fact changes the serialized contract.
 - Data changes do not automatically imply Game State changes.
 - Required persisted authority validates before runtime normalization/revival.
 - Active owner/task links remain coherent until owner reconciliation.
@@ -135,7 +135,7 @@ Data advances 63 -> 64 because canonical ability definitions gain recovery/resol
 ### Remaining Slice B gate
 
 Before later packets close:
-- B2 must distinguish Enmity, Focus, sticky Aggro, and Fixation; Focus is not literal target probability.
+- B2 **passes** only when Enmity, normalized Focus, nonlinear weighting, sticky Aggro, Fixation, decay/floors, action-driven changes, and active-battle persistence are all proven. Behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests and the full gate.
 - B3 loadout transitions must use canonical time and armor-pressure legality.
 - B4 must establish one weapon-delay conversion authority and first-class ranged actions before kata breadth.
 - B5 must prove these contracts in the playable Brasshaven/Redstone slice.
@@ -322,4 +322,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packet B1 are complete. Packet B2 — Enemy Attention Foundation — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is ACTIVE: Slice A and Packets B1-B2 are complete. Packet B3 — Combat Loadout Transition Foundation — is the next bounded unit and is not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.

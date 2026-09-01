@@ -1,13 +1,13 @@
 # Combat 2.0 / Adventure Vertical Slice B Implementation Plan
 
-Status: **ACTIVE PLAN / B1 COMPLETE / B2 NEXT AND NOT STARTED.**
+Status: **ACTIVE PLAN / B1-B2 COMPLETE / B3 NEXT AND NOT STARTED.**
 
 Current runtime remains:
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
 ```
@@ -154,7 +154,13 @@ Then run the full repository gate.
 
 ## Packet B2 — Enemy attention foundation
 
-**NEXT BOUNDED UNIT / QUEUED / NOT STARTED.**
+**COMPLETE — Product 0.9.200.3 / Game State 16 / Data 64.**
+
+Behavioral freeze: `92e6d1623470fbc923ef9beebe148829418b7080`; Check #1881 / run `33459747237`, **837/837 tests**, full gate green; Pages #2011 / run `33459746331` green.
+
+Permanent record: `docs/COMBAT_2_0_B2_ENEMY_ATTENTION.md`.
+
+Implemented through stateless `combatAttentionEngine.js` plus durable `activeBattle.enmity`.
 
 Implement:
 
@@ -321,7 +327,7 @@ During implementation:
 - Game State advances if configured kata/loadouts or active-battle attention/transition state introduce a new durable serialized contract;
 - Benchmark remains 3 unless workload/comparability changes.
 
-Because active battle is already persistent, B2/B3/B4 must explicitly decide whether attention tables, equipment transitions, and kata selections are durable enough to require the next Game State schema. Do not reconstruct them from unrelated fields after load if they affect future outcomes.
+B2 made that decision: attention tables, Aggro, Fixation, policy, and decay anchors are required durable authority, so Game State advances 15 -> 16. B3/B4 must make the same explicit decision for equipment transitions and kata selections rather than reconstructing outcome-affecting state after load.
 
 ## Interrupted/resumable circles — preserve, do not erase
 
@@ -375,6 +381,6 @@ Do not reopen it automatically. Optional ecology follow-ons require a fresh boun
 
 Each B packet is a separate bounded implementation unit.
 
-A later explicit continuation after B1 closure should start **B2 only**.
+A later explicit continuation after B2 closure should start **B3 only**.
 
-Do not automatically proceed B1 -> B2 -> B3 -> B4 -> B5 without returning to the user at each stable handoff unless the user explicitly authorizes a broader sequence.
+Do not automatically proceed B2 -> B3 -> B4 -> B5 without returning to the user at each stable handoff unless the user explicitly authorizes a broader sequence.

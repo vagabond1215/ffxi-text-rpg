@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 ```
 
 ## Completed foundation and major tranches
@@ -170,7 +170,7 @@ Census movement:
 
 The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
 
-**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packet B1 is complete at Product 0.9.200.2 / Data 64; Packet B2 — Enemy Attention Foundation — is the next bounded unit and is queued/not started.
+**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packets B1 and B2 are complete; B2 closes at Product 0.9.200.3 / Data 64 / Game State 16. Packet B3 — Combat Loadout Transition Foundation — is next and queued/not started.
 
 ## Macro-world topology
 
@@ -246,10 +246,11 @@ B1 proves:
 
 The ability census remains 41/100 because B1 changes mechanics/contracts rather than manufacturing breadth.
 
-**Next bounded unit: B2 — Enemy Attention Foundation, queued/not started.**
-B2 should add Enmity -> Focus -> nonlinear target-selection weighting -> sticky Aggro -> Fixation/Priority on the existing battle authority, with an explicit persistence decision.
+**Packet B2 — Enemy Attention Foundation is COMPLETE at Product 0.9.200.3 / Data 64 / Game State 16.**
+It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro -> Fixation/Priority on the existing battle authority. Behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 with 837/837 tests and the full gate.
 
-Later B3/B4/B5 remain separately bounded.
+**Next bounded unit: B3 — Combat Loadout Transition Foundation, queued/not started.**
+Later B4/B5 remain separately bounded.
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;

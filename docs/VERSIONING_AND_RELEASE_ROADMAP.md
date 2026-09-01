@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 ```
 
 ## Product version format
@@ -25,7 +25,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 15 | serialized character/world runtime contract |
+| Game State | 16 | serialized character/world runtime contract |
 | Data | 64 | canonical authored-data, including representative ability resolution/recovery metadata plus geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
 | Benchmark | 3 | workload/measurement comparability contract |
 
@@ -1144,6 +1144,7 @@ Game State 6 -> 7   canonical atlas fictional-time visits
 0.9.100.24          Game State 14 -> 15; Data remains 62
 0.9.200.1           no Game State change; Data 62 -> 63
 0.9.200.2           no Game State change; Data 63 -> 64
+0.9.200.3           Game State 15 -> 16; Data remains 64
 ```
 
 Current pre-alpha policy remains current-schema-only; unsupported legacy saves are rejected rather than automatically migrated.
@@ -1267,8 +1268,29 @@ Data advances because existing canonical ability records gain authored resolutio
 
 Game State remains 15: combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence uses the existing action-data envelope rather than a new required state family.
 
-B2 Enemy Attention is next and not started.
+B2 Enemy Attention is complete at Game State 16; B3 Combat Loadout Transition Foundation is next and not started.
 
+
+## `0.9.200.3` — Combat 2.0 Packet B2: Enemy Attention Foundation
+
+```text
+Product       0.9.200.2 -> 0.9.200.3
+Package       0.9.200   -> 0.9.200
+Account Save  5         -> 5
+Game State    15        -> 16
+Data          64        -> 64
+Benchmark     3         -> 3
+```
+
+Behavioral implementation freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 / run `33459747237` with Repository Audit, **837/837 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #2011 / run `33459746331` passed.
+
+Game State advances because active battle now contains required outcome-affecting attention authority: hostile-specific Enmity entries, baseline/transient/floor/decay values, sticky Aggro, Fixation/Priority, and target-selection policy. These facts change future resumable combat behavior and are not reconstructed from encounter prose.
+
+Data remains 64 because B2 adds no canonical authored ability, item, NPC, enemy, quest, route, or content-pack record.
+
+No supported-save migration is added. The project remains pre-alpha current-schema-only, so Game State 15 saves are not silently coerced into Game State 16.
+
+B3 Combat Loadout Transition Foundation is next and not started.
 
 ## Phase progression
 
@@ -1279,7 +1301,7 @@ B2 Enemy Attention is next and not started.
   Packet C Elderwood Hunt-Timber              COMPLETE / MERGED
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
-0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1 COMPLETE; B2 QUEUED / NOT STARTED
+0.9.200 Adventure vertical slices             ACTIVE / SLICE A + B1-B2 COMPLETE; B3 QUEUED / NOT STARTED
 0.9.300 Advanced combat/training              QUEUED AFTER SLICE B PROOF; DESIGN AUTHORITY LOCKED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED

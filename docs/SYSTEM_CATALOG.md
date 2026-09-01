@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 ```
 
 ## Data 57 regional authority
@@ -36,7 +36,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Game State 15 is current; Data 63 is the authored-content version after Adventure Vertical Slice A.
+- Game State 16 is current; Data 64 remains the authored/mechanics-data version from B1. B2 changes durable runtime authority without changing authored content records.
 
 Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 408 items, 234 recipes/processes, 25 routes, 27 schedules, 39 packs, and 1,325 pack-owned records**.
 
@@ -129,7 +129,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Persistent projects | playable | Materials + labor + exactly-once completion. |
 | Semantic events | integrated | Persisted typed observation history. |
 | ActionResult | integrated | Canonical structured result contract. |
-| Current-schema persistence | playable | Account Save 5 / Game State 15; strict pre-alpha current-schema-only. |
+| Current-schema persistence | playable | Account Save 5 / Game State 16; strict pre-alpha current-schema-only. Active battle attention is required durable state when a battle is present. |
 | Raw current-state gate | integrated | Required authority validates before normalization. |
 | NPC/enemy projections | integrated | Rebuilt from canonical authority; not serialized authority. |
 | Command presentation log | integrated | Session-only. |
@@ -216,7 +216,7 @@ spellSchools / capabilities / abilities / companions
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable foundation | Gear/tools constrain and enhance real capability. Timed combat loadout transitions, directional stow/draw handling, canonical cooldown preservation, and hostile-pressure armor locks are planned. |
-| Combat 2.0 | playable foundation / B1 complete | Deterministic readiness/action/resource model and persistent timeline now share representative physical/magical/elemental/status resolution through `combatResolutionEngine`. B2 attention, B3 loadouts, B4 cadence/ranged/kata, and B5 playable proof remain. |
+| Combat 2.0 | playable foundation / B1-B2 complete | Deterministic readiness/action/resource resolution now includes `combatResolutionEngine` plus durable enemy attention through `combatAttentionEngine`: Enmity, Focus, nonlinear weighting, sticky Aggro, Fixation, and decay/floors. B3 loadouts, B4 cadence/ranged/kata, and B5 playable proof remain. |
 | Active-battle persistence | integrated | Encounter authority survives save/load; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
 | Persistent companions | playable | NPC-backed recruitment/travel/combat continuity. |
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.200.2 / Data 64 / Game State 15.
+Phase 0.9 remains open at Product 0.9.200.3 / Data 64 / Game State 16.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -307,7 +307,7 @@ Behavioral freeze `20b7351a61f56203975e101ef04fd7311e110d9b` passed Check #1860 
 
 The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 20/30 quests/contracts, and 48/50 named NPCs. B1 deliberately adds no filler ability records.
 
-**B2 — Enemy Attention Foundation** is the next bounded Slice B unit, queued/not started. It must build Enmity/Focus/Aggro/Fixation on the existing active-battle authority and make a deliberate persistence/version decision.
+**B2 — Enemy Attention Foundation is COMPLETE.** The active battle now owns durable hostile-specific attention state; `combatAttentionEngine` is stateless calculation/selection authority. Game State advances 15 -> 16; Data remains 64.
 
-Later B3/B4/B5 remain separate. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**B3 — Combat Loadout Transition Foundation** is next, queued/not started. Later B4/B5 remain separate. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 

@@ -5,28 +5,28 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.2
+Product:       0.9.200.3
 Package:       0.9.200
 Account Save:  5
-Game State:    15
+Game State:    16
 Data:          64
 Benchmark:     3
-Codename:      Unified Combat Resolution
+Codename:      Enemy Attention Foundation
 ```
 
 ## Current bounded-unit state
 
-**Combat 2.0 Packet B1 — Unified Combat Resolution** is the latest bounded unit on `main`.
+**Combat 2.0 Packet B2 — Enemy Attention Foundation** is the latest bounded unit on `main`.
 
 - permanent record `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
-- Product 0.9.200.2 / Package 0.9.200 / Game State 15 / Data 64 / Account Save 5 / Benchmark 3;
+- Product 0.9.200.3 / Package 0.9.200 / Game State 16 / Data 64 / Account Save 5 / Benchmark 3;
 - behavioral implementation freeze `20b7351a61f56203975e101ef04fd7311e110d9b`;
 - Check #1860 / run `33457301272`: Repository Audit, **832/832 tests**, Census, Benchmark 3, and Benchmark Sample green;
 - Pages #1990 / run `33457300712`: green.
 
-B1 adds one shared combat-resolution engine and representative authored resolution/recovery metadata without adding an ability record, state family, clock, route, NPC, or task owner.
+B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
-Game State stays 15 because the combat contract remains version 2, ability runtime remains version 1, and structured resolution evidence lives inside existing flexible combat-action data.
+Game State advances 15 -> 16 because those fields change future resumable target selection and therefore cannot be reconstructed safely from prose or canonical catalogs. Data stays 64 because no authored content records changed.
 
 The previous Local Knowledge & Familiarity Foundation remains complete:
 - implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
@@ -132,23 +132,31 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 Adventure Vertical Slice B remains the active formal track.
 
-### Next bounded unit — Packet B2
+### Latest completed unit — Packet B2
 
-**Enemy Attention Foundation — QUEUED / NOT STARTED.**
+**Enemy Attention Foundation — COMPLETE.**
 
-B1 is complete and frozen. B2 may extend the existing active-battle authority with:
-- absolute Enmity per hostile/credible actor;
+Behavioral freeze `92e6d1623470fbc923ef9beebe148829418b7080` passed Check #1881 / run `33459747237` with Repository Audit, **837/837 tests**, Census, Benchmark 3, and Benchmark Sample. Pages #2011 / run `33459746331` passed.
+
+B2 implements:
+- absolute hostile-specific Enmity entries for every credible ally;
+- baseline, transient, floor, and fictional-time decay semantics;
 - normalized Focus;
-- nonlinear target-selection weighting;
-- sticky current Aggro;
-- explicit Fixation/Priority;
-- deterministic 3-actor proof including baseline antagonism and a high-enmity shield/stun action.
+- nonlinear concentration weighting;
+- sticky Aggro with thresholded reassessment;
+- explicit Fixation/Priority preserving underlying Enmity;
+- common combat-action Enmity input;
+- required active-battle persistence validation.
 
-Focus must not be used directly as literal attack probability. Target reassessment must occur on meaningful triggers, not every tick. No universal minimum target probability is required.
+Focus is not literal attack probability. There is no universal minimum target probability.
 
-B2 must make an explicit Game State decision if new attention state affects resumable battle outcomes and therefore becomes required durable active-battle authority.
+### Next bounded unit — Packet B3
 
-Later Slice B packets remain B3 loadout transitions, B4 weapon cadence/ranged/minimal kata, and B5 playable Brasshaven/Redstone proof. None is started by B1 completion.
+**Combat Loadout Transition Foundation — QUEUED / NOT STARTED.**
+
+B3 should add timed directional stow/draw/ready transitions, distinguish prepared quick weapon-set swaps from full loadout changes, preserve canonical ability cooldowns, and block armor swaps under meaningful Aggro/Focus/Fixation/pursuit pressure.
+
+Later B4 weapon cadence/ranged/minimal kata and B5 playable Brasshaven/Redstone proof remain separately bounded.
 
 
 ## Preserved interrupted/resumable queues
