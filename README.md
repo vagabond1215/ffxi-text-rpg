@@ -130,30 +130,37 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 **Adventure Vertical Slice A — Slatewater Road Scout is COMPLETE.**
 
-Permanent record:
-- `docs/ADVENTURE_VERTICAL_SLICE_A_SLATEWATER_ROAD_SCOUT.md`;
-- implementation freeze `63cbd31edb149c9cf10af0a83bcf6f667abe17b8`;
-- Check #1815 / run `33361131795`: Repository Audit, **826/826 tests**, Census, Benchmark 3, and Benchmark Sample all green.
+Current runtime remains Product 0.9.200.1 / Package 0.9.200 / Game State 15 / Data 63.
 
-Slice A adds:
-- Sable Renn, persistent Slatewater road scout;
-- `Resin for the Mile Posts`;
-- chained `Silver for the Fog Marks`;
-- earned `companion-sable-renn` recruitment after both contracts;
-- trust/respect/familiarity continuity from NPC relationship into recruited companion state;
-- mobile quest-giver follow-up that respects backing-NPC location.
+Permanent advanced-combat design is now recorded:
+- `docs/COMBAT_ABILITY_WEAPON_KATA_AND_ATTENTION_MODEL.md`.
 
-Current mechanics-scale gaps are now:
+Adventure Vertical Slice B is **SELECTED / PLANNED, NOT STARTED** as a **Brasshaven / Redstone combat-training bridge**:
+- `docs/COMBAT_2_0_SLICE_B_IMPLEMENTATION_PLAN.md`.
+
+The immediate next bounded implementation is **Packet B1 — Unified Combat Resolution Contract**. B1 will make representative basic melee, martial technique, elemental spell, and status actions share an explicit accuracy/defense/resistance/element/recovery contract before additional ability breadth is authored.
+
+Later separately bounded Slice B work will cover:
+- enemy attention: Enmity -> Focus -> nonlinear target weighting -> sticky Aggro -> Fixation;
+- timed combat loadout transitions and armor swap locks under meaningful hostile pressure;
+- weapon-delay attack cadence;
+- first-class ranged attacks;
+- minimal configurable weapon kata;
+- a playable Brasshaven/Redstone proof.
+
+Current mechanics-scale gaps remain:
 - abilities/techniques 41/100;
 - companions 2/4;
 - quests/contracts 20/30;
 - named NPCs 48/50.
 
-The mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap.
+The ability gap is not permission to create mechanically duplicate filler.
 
-The five-part ecology repair sequence remains complete through Data 62 and is not reopened by Data 63.
+Preserved resumable queues:
+- Occupational Tool Conversion remains the strongest prepared 0.9.400 economy packet;
+- Waymeet Inner Marches / outer crossroads approach remains the first ranked world-edge candidate;
+- richer locality ambient/dialogue/shop-browse/map work remains deferred after the completed knowledge foundation;
+- the five-part ecology repair sequence is complete and is not restarted automatically.
 
-`0.9.200 Adventure Vertical Slices` remains the active formal track. **Adventure Vertical Slice B is not auto-started**; its anchor should be selected from existing geography based on connected character/quest/companion/service value. `0.9.300 Advanced Combat / Training` follows after the 0.9.200 track is deliberately closed.
-
-World-edge expansion, Occupational Tool Conversion, optional ecology work, and richer locality-event/UI work remain separate queues requiring explicit selection.
+A future `continue` should start **Slice B Packet B1 only**.
 
