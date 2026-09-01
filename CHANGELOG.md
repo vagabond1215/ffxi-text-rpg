@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.300.1 — Current Melee Kata Breadth
+
+- Opened `0.9.300 Advanced Combat / Training` with a bounded extension of the already-proven weapon-kata authority.
+- Added original automatic kata families for axe, staff, and club, bringing current equipped melee kata coverage to dagger, sword, axe, staff, and club.
+- Gave the new families distinct accuracy, penetration, coefficient, and recovery profiles without adding ability/capability filler or new equipment.
+- Advanced weapon-kata configuration version 1 -> 2 and Game State 18 -> 19 because player progression now requires durable selections for the additional families; encounter-local kata record shape remains version 1.
+- Advanced Data 67 -> 68 for authored kata definitions and Package 0.9.200 -> 0.9.300; no supported-save migration was added.
+- Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef` passed 860/860 tests plus the full hosted gate and Pages.
+- Packet 2 — Character Affinity & Kata Substitution Foundation — remains queued/not started.
+
 ## 0.9.200.6 — Brasshaven Redstone Combat Training
 
 - Added Marshal Varric Stone's bounded Forge-Road training service at the existing Brasshaven Market Ring contact, delegating technique learning to the existing capability authority.

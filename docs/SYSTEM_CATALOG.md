@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Current Melee Kata Breadth
 ```
 
 ## Data 57 regional authority
@@ -296,7 +296,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.200.6 / Data 67 / Game State 18. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is queued/not started.
+Phase 0.9 remains open at Product 0.9.300.1 / Data 68 / Game State 19. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packet 1 complete.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -315,5 +315,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**Next track: `0.9.300 Advanced Combat / Training` — QUEUED / NOT STARTED.** World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packet 1 — Current Melee Kata Breadth is COMPLETE.** The existing kata owner now covers dagger, sword, axe, staff, and club; Game State 19 persists configuration version 2. **Packet 2 — Character Affinity & Kata Substitution Foundation is QUEUED / NOT STARTED.** World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 

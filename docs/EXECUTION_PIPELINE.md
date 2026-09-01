@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Current Melee Kata Breadth
 ```
 
 ## Current bounded-unit state
 
-**Combat 2.0 Packet B5 — Brasshaven / Redstone Combat-Training Proof** is the latest bounded unit on `main`; `0.9.200 Adventure Vertical Slices` is COMPLETE.
+**0.9.300 Packet 1 — Current Melee Kata Breadth** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` is ACTIVE.
 
-- permanent record `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
-- Product 0.9.200.6 / Package 0.9.200 / Game State 18 / Data 67 / Account Save 5 / Benchmark 3;
-- behavioral implementation freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05`;
-- Check #1939 / run `33472621389`: Repository Audit, **855/855 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2069 / run `33472620984`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
+- Product 0.9.300.1 / Package 0.9.300 / Game State 19 / Data 68 / Account Save 5 / Benchmark 3;
+- behavioral implementation freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`;
+- Check #1947 / run `33474558525`: Repository Audit, **860/860 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2077 / run `33474558121`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 67 metrics
+## Data 68 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is the next roadmap track and remains QUEUED / NOT STARTED.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is complete.
 
 ### Latest completed unit — Packet B2
 
@@ -185,6 +185,12 @@ B5 adds a stateless Varric training-service adapter delegating to capability pro
 ### Next track
 
 **0.9.300 Advanced Combat / Training — QUEUED / NOT STARTED.** A future explicit continuation must select its first bounded packet; B5 does not auto-start it.
+
+### Next bounded unit — 0.9.300 Packet 2
+
+**Character Affinity & Kata Substitution Foundation — QUEUED / NOT STARTED.**
+
+The current runtime has no canonical character-affinity state. Packet 2 must first define the smallest durable affinity authority needed for earned elemental kata substitutions, then prove one or two representative substitutions through the existing weapon-kata/combat-resolution contracts. It must not simultaneously add aura/stance/zone/channel/reaction families or a broad elemental move catalog.
 
 ## Preserved interrupted/resumable queues
 

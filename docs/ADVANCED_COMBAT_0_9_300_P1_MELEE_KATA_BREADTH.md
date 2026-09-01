@@ -1,6 +1,6 @@
 # Advanced Combat 0.9.300 Packet 1 — Current Melee Kata Breadth
 
-Status: **SELECTED / IMPLEMENTATION STARTING.**
+Status: **COMPLETE / PRODUCT 0.9.300.1 / GAME STATE 19 / DATA 68.**
 
 Entry baseline:
 ```text
@@ -72,6 +72,48 @@ Game State is expected to advance because `player.progression.weaponKata` will r
 Data is expected to advance because the canonical authored kata catalog gains new move/family definitions.
 
 Battle kata record shape is expected to stay version 1 unless implementation requires a structural field change; widening the valid family references alone should not invent a new battle-state shape.
+
+## Implementation result
+
+The existing `weaponKataCatalog` and `weaponKataEngine` remain the only kata data/runtime authorities. Packet 1 adds three original automatic families:
+- axe: Set Hew -> Hooking Chop -> Driving Cleave, with increasing defense penetration and slower committed recovery;
+- staff: Measured Thrust -> Turning Sweep -> Braced Drive, with accuracy-biased early motions and a braced penetrating finish;
+- club: Short Strike -> Returning Blow -> Braced Strike, with compact accuracy and a modest penetrating finish.
+
+No new manual technique, ability/capability record, equipment item, task owner, combat clock, or battle-state field is added.
+
+`WEAPON_KATA_CONFIGURATION_VERSION` advances 1 -> 2. `BATTLE_WEAPON_KATA_STATE_VERSION` remains 1.
+
+### Behavioral implementation freeze
+
+`ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef`
+
+Hosted evidence:
+- Check #1947 / run `33474558525`;
+- job `99751006436`;
+- Repository Audit PASS;
+- **860/860 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2077 / run `33474558121` PASS.
+
+### Promotion result
+
+```text
+Product       0.9.200.6 -> 0.9.300.1
+Package       0.9.200   -> 0.9.300
+Account Save  5         -> 5
+Game State    18        -> 19
+Data          67        -> 68
+Benchmark     3         -> 3
+```
+
+Game State 19 is required because player kata configuration version 2 adds required durable selections for axe/staff/club. Data 68 records the new authored move/family definitions. No supported migration is added.
+
+### Next packet
+
+**0.9.300 Packet 2 — Character Affinity & Kata Substitution Foundation — QUEUED / NOT STARTED.** The current runtime has no canonical character-affinity authority, so Packet 2 must establish the smallest durable affinity state before authoring representative elemental substitutions. It must not simultaneously add aura/stance/zone/channel/reaction or LOS/pursuit systems.
 
 ## Validation target
 

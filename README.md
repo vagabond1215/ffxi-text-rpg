@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE: Slice A and Combat Packets B1-B5 are complete. `0.9.300 Advanced Combat / Training` is queued and not started.** The current canonical/runtime checkpoint is Data 67 / Product 0.9.200.6 / Game State 18. B5 proves the Brasshaven / Redstone training-to-combat loop across the B1–B4 authorities without adding a new combat state family.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is complete.** The current canonical/runtime checkpoint is Data 68 / Product 0.9.300.1 / Game State 19. Packet 1 broadens the existing kata authority from dagger/sword to every currently equipped canonical melee family: dagger, sword, axe, staff, and club.
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Current Melee Kata Breadth
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 67 implementation census:
+Validated Data 68 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -105,7 +105,7 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 18 retains the B4 weapon-kata/loadout contract. B5 adds no new state family; it corrects the existing equipment validator so partially consumed stackable ammunition in the canonical ammo slot is valid current-schema state. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 19 requires weapon-kata configuration version 2 with durable selections for dagger, sword, axe, staff, and club. The encounter-local kata record shape remains version 1; the new Game State version is driven by the expanded required player configuration, not a second battle authority. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
@@ -157,7 +157,7 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`. Marshal Varric Stone now exposes bounded Forge-Road instruction through the existing capability authority, and the integrated South Redstone proof exercises B1–B4 together.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. Next track: `0.9.300 Advanced Combat / Training` — QUEUED / NOT STARTED.**
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is COMPLETE. Packet 2 — Character Affinity & Kata Substitution Foundation — is QUEUED / NOT STARTED.**
 
 Preserved resumable queues remain unchanged:
 - Occupational Tool Conversion for 0.9.400;

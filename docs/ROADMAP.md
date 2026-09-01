@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Current Melee Kata Breadth
 ```
 
 ## Completed foundation and major tranches
@@ -170,7 +170,7 @@ Census movement:
 
 The mechanics-scale gate remains NOT READY. Abilities/techniques are now the largest relative gap.
 
-**0.9.200 remains ACTIVE.** Adventure Vertical Slice B is in progress as the Brasshaven / Redstone combat-training bridge. Packets B1-B4 are complete; B4 closes at Product 0.9.200.5 / Data 66 / Game State 18. Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof — is next and queued/not started.
+**0.9.200 Adventure Vertical Slices is COMPLETE.** Slice A and Combat Packets B1-B5 are closed; current work is in `0.9.300 Advanced Combat / Training`.
 
 ## Macro-world topology
 
@@ -255,7 +255,7 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is queued/not started and requires a fresh bounded selection.**
+**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packet 1 — Current Melee Kata Breadth — is COMPLETE at Product 0.9.300.1 / Data 68 / Game State 19. Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started.**
 
 Interrupted/resumable queues remain preserved:
 - Occupational Tool Conversion remains strongest prepared 0.9.400 packet;

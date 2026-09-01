@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.200.6
-Package:       0.9.200
+Product:       0.9.300.1
+Package:       0.9.300
 Account Save:  5
-Game State:    18
-Data:          67
+Game State:    19
+Data:          68
 Benchmark:     3
-Codename:      Brasshaven Redstone Combat Training
+Codename:      Current Melee Kata Breadth
 ```
 
 ## Product version format
@@ -25,8 +25,8 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 18 | serialized character/world runtime contract, including active-battle attention/loadout/kata state and stack-valid equipped ammunition |
-| Data | 67 | canonical authored-data, including combat training service metadata plus ability/equipment/geography/ecology/resource/production/social/companion stable IDs, item safety, route/service topology, pack ownership and validation contract |
+| Game State | 19 | serialized character/world runtime contract, including weapon-kata configuration version 2 across current equipped melee families plus existing active-battle attention/loadout/kata state |
+| Data | 68 | canonical authored-data, including expanded axe/staff/club kata definitions plus existing combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1337,6 +1337,22 @@ Game State stays 18 because B5 adds no durable state family. Technique instructi
 Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 / run `33472621389` with 855/855 tests and the full gate; Pages #2069 / run `33472620984` passed. Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`.
 
 `0.9.200 Adventure Vertical Slices` closes at this checkpoint. `0.9.300 Advanced Combat / Training` is queued/not started.
+## `0.9.300.1` — Advanced Combat Packet 1: Current Melee Kata Breadth
+
+```text
+Product       0.9.200.6 -> 0.9.300.1
+Package       0.9.200   -> 0.9.300
+Account Save  5         -> 5
+Game State    18        -> 19
+Data          67        -> 68
+Benchmark     3         -> 3
+```
+
+Weapon-kata configuration advances to version 2 and now requires durable selections for every currently equipped canonical melee family: dagger, sword, axe, staff, and club. Game State therefore advances to 19. The encounter-local kata record shape remains version 1 because its fields are unchanged; the valid family catalog simply broadens.
+
+Data 68 adds original axe/staff/club automatic kata definitions without adding equipment, abilities, capabilities, NPCs, or filler content. No supported-save migration is added.
+
+Behavioral freeze `ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef` passed Check #1947 / run `33474558525` with 860/860 tests and the full gate; Pages #2077 / run `33474558121` passed. Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`.
 ## Phase progression
 
 ```text
@@ -1347,7 +1363,7 @@ Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              QUEUED / NOT STARTED; DESIGN AUTHORITY LOCKED
+0.9.300 Advanced combat/training              ACTIVE / PACKET 1 COMPLETE; PACKET 2 QUEUED
 0.9.400 Economy/production depth              QUEUED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED

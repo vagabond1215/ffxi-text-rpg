@@ -68,6 +68,7 @@ authority:
   combat_b3_record: docs/COMBAT_2_0_B3_LOADOUT_TRANSITIONS.md
   combat_b4_record: docs/COMBAT_2_0_B4_WEAPON_CADENCE_RANGED_KATA.md
   combat_b5_record: docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md
+  advanced_combat_p1_melee_kata_breadth: docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -75,7 +76,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: phase-0.9.300-advanced-combat-training-queued-not-started
+  current_normal_work: advanced-combat-packet-2-character-affinity-kata-substitution-queued-not-started
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -207,26 +208,34 @@ git:
   latest_combat_b5_pages: 33472620984
   latest_combat_b5_pages_number: 2069
   latest_combat_b5_pages_result: success
+  latest_advanced_combat_p1_implementation_check: 33474558525
+  latest_advanced_combat_p1_implementation_check_number: 1947
+  latest_advanced_combat_p1_implementation_check_sha: ccd8d5ba6cc02928c0b93755b42c4f1f6aca0aef
+  latest_advanced_combat_p1_implementation_check_result: success-860-of-860-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_advanced_combat_p1_pages: 33474558121
+  latest_advanced_combat_p1_pages_number: 2077
+  latest_advanced_combat_p1_pages_result: success
 progression:
   current_phase: 0.9
-  current_track: 0.9.200-adventure-vertical-slices
-  current_track_status: complete-slice-a-and-slice-b-b1-through-b5
+  current_track: 0.9.300-advanced-combat-training
+  current_track_status: active-packet-1-complete-packet-2-queued
   completed_track: 0.9.200-adventure-vertical-slices
   completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: combat-b5-brasshaven-redstone-training-proof
-  latest_bounded_unit_status: complete-on-main-product-0.9.200.6-game-state-18-data-67
-  latest_data_bounded_unit: combat-b5-brasshaven-redstone-training-proof
-  latest_data_bounded_unit_status: complete-on-main-data-67
-  next_roadmap_gate: 0.9.300-advanced-combat-training-first-bounded-packet
-  next_roadmap_gate_status: queued-not-started-requires-fresh-bounded-selection
+  latest_bounded_unit: advanced-combat-p1-current-melee-kata-breadth
+  latest_bounded_unit_status: complete-on-main-product-0.9.300.1-game-state-19-data-68
+  latest_data_bounded_unit: advanced-combat-p1-current-melee-kata-breadth
+  latest_data_bounded_unit_status: complete-on-main-data-68
+  next_roadmap_gate: advanced-combat-packet-2-character-affinity-kata-substitution
+  next_roadmap_gate_status: queued-not-started
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-through-b5-vertical-proof-implemented
+  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-kata-breadth-implemented
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
   combat_slice_b_status: complete-b1-through-b5
-  combat_next_packet: none-slice-b-complete
-  combat_next_packet_scope: none-select-first-0.9.300-packet-before-implementation
+  combat_next_packet: advanced-combat-p2-character-affinity-kata-substitution
+  combat_next_packet_scope: define-minimal-character-affinity-authority-and-prove-bounded-elemental-kata-substitutions-no-aura-stance-or-geometry-expansion
   combat_adjacency_audit_status: complete-b3-entry-authority
-  combat_following_packets: []
+  combat_following_packets:
+    - advanced-combat-p2-character-affinity-kata-substitution
   pre_ui_discovery_contract: player-information-and-locality-discovery
   pre_ui_discovery_contract_status: foundation-implemented-complete
   pre_ui_discovery_implementation_candidate: local-knowledge-and-familiarity-foundation
@@ -289,14 +298,15 @@ validation:
   combat_b3_guard: tests/combatLoadoutEngine.test.js
   combat_b4_guard: tests/weaponCombatB4.test.js
   combat_b5_guard: tests/playerBrasshavenRedstoneCombatTrainingFlow.test.js
+  advanced_combat_p1_guard: tests/advancedCombatKataBreadth.test.js
 quality:
-  current_product_version: 0.9.200.6
-  current_package_version: 0.9.200
+  current_product_version: 0.9.300.1
+  current_package_version: 0.9.300
   current_account_save: 5
-  current_game_state: 18
-  current_data_version: 67
+  current_game_state: 19
+  current_data_version: 68
   current_benchmark_version: 3
-  current_codename: Brasshaven Redstone Combat Training
+  current_codename: Current Melee Kata Breadth
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
@@ -311,7 +321,7 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority-b1-through-b5-vertical-proof-implemented
+    status: permanent-design-authority-through-0.9.300-p1-kata-breadth-implemented
     runtime_changed: true
     data_changed: 63-to-64
     game_state_changed: true
@@ -320,10 +330,12 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: select-first-bounded-0.9.300-advanced-combat-training-packet
+    immediate_runtime_gap: character-affinity-authority-for-bounded-kata-substitutions
     weapon_kata_implemented: true
     first_class_ranged_implemented: true
     affinity_substitutions_planned: true
+    current_melee_kata_families: 5
+    current_melee_kata_breadth_complete: true
     timed_loadout_swaps_implemented: true
     armor_pressure_lock_implemented: true
     attention_model: enmity-focus-aggro-fixation
