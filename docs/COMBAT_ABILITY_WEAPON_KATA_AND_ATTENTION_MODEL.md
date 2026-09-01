@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.3 / Game State 20 / Data 70. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, and Packet 3 migrates all eight novice Elemental Form attacks to the unified magic/element resolution contract. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.4 / Game State 20 / Data 71. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to the unified magic/element resolution contract, and Packet 4 gives Thunder Cage an executable resistible control semantic. Unsupported weapon families, weapon resonance, geometry, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–3 are COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–4 are COMPLETE.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -18,7 +18,8 @@ Permanent records:
 - `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P2_CHARACTER_AFFINITY_KATA_SUBSTITUTION.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P3_NOVICE_ELEMENTAL_RESOLUTION_BREADTH.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -82,10 +83,18 @@ Implemented by 0.9.300 Packet 3:
 - unchanged ability count and unchanged Game State 20;
 - explicit non-migration of Tempest Ring, Thunder Cage, Umbral Well, and other adept names whose semantics may require geometry/control/field mechanics.
 
+Implemented by 0.9.300 Packet 4:
+- Thunder Cage lightning damage routed through the unified magic-defense/elemental-resistance path;
+- separately resistible containment through magic accuracy / magic evasion with lightning resistance contributing to control resistance;
+- six-second `cannotAct` hard-disable status using the existing generic status record;
+- shared hard-disable flag recognition centralized in status authority and reused by combat-loadout pressure;
+- enemy response/readiness suppression while hard-disabled, with ready interrupts deferred to the latest active disable expiry;
+- no target geometry, zone state, new clock, or new persistence family.
+
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
 - unsupported weapon-family kata where canonical equipment/runtime support does not yet exist;
-- full geometry/aura/stance/zone/channel/reaction breadth;
+- Tempest Ring geometry, Umbral Well field behavior, and full geometry/aura/stance/zone/channel/reaction breadth;
 - generalized LOS/pursuit/disengagement and ranged line-of-fire models.
 
 ## Core combat law
