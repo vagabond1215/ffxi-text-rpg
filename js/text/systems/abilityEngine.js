@@ -5,6 +5,7 @@ import { canUseCapability, knowsCapability } from './capabilityEngine.js';
 import { appendBattleLog } from './battleEngine.js';
 import { finalizeCombatState, getCombatantReadyAt, isCombatantReady, recordCombatAction, resolveEnemyResponse } from './combatTurnEngine.js';
 import { resolveCombatDamage, resolveCombatStatus } from './combatResolutionEngine.js';
+import { resolveCombatGeometryTargets } from './combatGeometryEngine.js';
 import { describeCombatLoadoutBlock, isCombatLoadoutTransitionActive } from './combatLoadoutEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
@@ -311,9 +312,20 @@ function resolveActivation(state, activation, ability, startEventId = null) {
     const effectResults = [];
     const actor = getPlayerActor(state, activation.contextType);
     const target = getStoredTarget(state, activation.target);
+    const targeting = resolveAbilityTargeting(state, ability, actor, target);
 
     for (const effect of ability.effects) {
-        effectResults.push(applyAbilityEffect(state, ability, activation, effect, actor, target));
+        if (effect.recipient === 'target' && ability.target?.geometry) {
+            if (!targeting.targets.length) {
+                effectResults.push(applyAbilityEffect(state, ability, activation, effect, actor, null));
+            } else {
+                for (const recipient of targeting.targets) {
+                    effectResults.push(applyAbilityEffect(state, ability, activation, effect, actor, recipient));
+                }
+            }
+        } else {
+            effectResults.push(applyAbilityEffect(state, ability, activation, effect, actor, target));
+        }
     }
 
     if (activation.contextType === 'combat') {
@@ -328,6 +340,7 @@ function resolveActivation(state, activation, ability, startEventId = null) {
     const event = emitSemanticEvent(state, 'ability.resolved', {
         ...activationEventData(activation),
         cooldownReadyAtWorldSeconds,
+        geometry: targeting.geometry,
         effects: effectResults.map((entry) => ({ ...entry })),
     }, { source: 'abilityEngine' });
 
@@ -345,6 +358,7 @@ function resolveActivation(state, activation, ability, startEventId = null) {
             data: {
                 abilityId: ability.id,
                 capabilityId: ability.capabilityId,
+                geometry: targeting.geometry,
                 effects: effectResults.map((entry) => ({ ...entry })),
             },
         });
@@ -363,6 +377,7 @@ function resolveActivation(state, activation, ability, startEventId = null) {
             abilityId: ability.id,
             capabilityId: ability.capabilityId,
             activation: snapshotActivation(activation),
+            geometry: targeting.geometry,
             effects: effectResults,
             startEventId,
             eventId: event.id,
@@ -372,6 +387,21 @@ function resolveActivation(state, activation, ability, startEventId = null) {
         },
         display: { text: describeResolution(ability, effectResults) },
     });
+}
+
+function resolveAbilityTargeting(state, ability, actor, target) {
+    if (!ability.target?.geometry || !state.activeBattle || !actor?.id || !target?.id) {
+        return { targets: target ? [target] : [], geometry: null };
+    }
+    const resolved = resolveCombatGeometryTargets(state.activeBattle, {
+        actorId: actor.id,
+        primaryTargetId: target.id,
+        geometry: ability.target.geometry,
+    });
+    return {
+        targets: [...resolved.targets],
+        geometry: resolved.evidence,
+    };
 }
 
 function applyAbilityEffect(state, ability, activation, effect, actor, target) {
@@ -586,6 +616,12 @@ function snapshotActivation(active) {
 }
 
 function describeResolution(ability, effects) {
+    const damageEffects = effects.filter((effect) => effect.type === 'damage');
+    if (damageEffects.length > 1) {
+        const hits = damageEffects.filter((effect) => effect.applied);
+        const totalDamage = hits.reduce((sum, effect) => sum + (Number(effect.amount) || 0), 0);
+        return `${ability.name} resolves across ${damageEffects.length} targets: ${hits.length} hit, ${totalDamage} total damage.`;
+    }
     const parts = effects.filter((effect) => effect.applied).map((effect) => {
         if (effect.type === 'damage') return `${effect.amount} damage`;
         if (effect.type === 'heal') return `${effect.amount} HP restored`;
