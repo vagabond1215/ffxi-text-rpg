@@ -1,5 +1,6 @@
 import { getEnemyAbility } from '../data/enemyAbilities.js';
 import { applyCombatActionAttention, selectEnemyAttentionTarget } from './combatAttentionEngine.js';
+import { reconcileCombatFields } from './combatFieldEngine.js';
 import { appendBattleLog, COMBAT_SIDES, getCombatant, getCombatantSide, resolveBasicAttack, updateBattlePhase } from './battleEngine.js';
 import { syncCompanionsFromBattle } from './partyEngine.js';
 import { refreshPlayerDerivedState } from './playerDerivedState.js';
@@ -372,6 +373,7 @@ export function finalizeCombatState(state) {
     if (!battle) return null;
     ensureCombatContract(battle, { nowWorldSeconds: ensureWorldTimeState(state).totalSeconds, combatants: battle.combatants });
     reconcileCombatStatuses(state);
+    reconcileCombatFields(battle);
     syncPlayerFromCombat(state);
     syncCompanionsFromBattle(state, battle);
 
