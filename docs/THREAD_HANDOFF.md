@@ -30,27 +30,16 @@ Game State remains 21. A6 adds no new durable gameplay fact or persistence famil
 
 ## Repository / promotion state
 
-Pre-A6 main checkpoint:
-- `fe27e872a701f6228e8c95a1fd92957d1c2e4a82`.
+A6 is merged to `main` and `0.9.400 Economy / Production Depth` is closed.
 
-A6 branch:
-- `phase-0.9.400-a6-workshop-tool-authority-audit`.
+- merged main SHA: `02e4ce046f12d1de9e121e70018437cecf7d11c4`;
+- PR #412: MERGED;
+- exact synchronized PR head: `84a695a31393a4837642fb7e53a8c03059d037c3`;
+- final pre-merge Check #2311 / run `33678556421`: Repository Audit, **930/930 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
+- implementation freeze Check #2297 / run `33677766982`: full gate PASS.
 
-Promotion PR:
-- PR #412 — Close 0.9.400 A6 workshop tool authority audit.
-
-A6 behavioral implementation freeze:
-- `4583b405e85dd91266c05c30b9ae3cfb05a00f14`.
-
-Hosted implementation evidence:
-- Check #2297 / run `33677766982`;
-- Repository Audit PASS;
-- **930/930 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
-
-This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #412.
+The older A6 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future `0.9.500 Q0` continuation should start from current `main`.
 
 ## Validated Data 80 census
 
@@ -302,12 +291,14 @@ Do not restart the broad economy/material-culture audit or advanced-combat audit
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for A6 closure.
+This post-merge handoff correction is the intended final repository-file mutation for A6 closure.
+
+A6 promotion evidence is complete:
+- behavioral freeze Check #2297 / run `33677766982`: full gate PASS;
+- exact synchronized PR-head Check #2311 / run `33678556421`: **930/930 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
+- PR #412 merged to `main` at `02e4ce046f12d1de9e121e70018437cecf7d11c4`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **930/930 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #412 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave 0.9.500 Q0 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave `0.9.500 Q0` unstarted;
+- start future work from current `main`, not the old A6 branch.
