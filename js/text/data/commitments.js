@@ -59,6 +59,7 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         requiredItems: [{ itemId: 'item-slatewater-silver-lichen', quantity: 1, provenanceSourceId: 'source-slatewater-silver-lichen-face' }],
         fieldSourceId: 'source-slatewater-silver-lichen-face',
         prerequisiteCommitmentIds: ['commitment-slatewater-resin-waymarks'],
+        relationshipRequirements: [{ npcId: 'npc-slatewater-sable-renn', minimums: { trust: 1 } }],
         reward: { gil: 46, relationship: { respect: 1, trust: 2 } },
         followUpDelayDays: 1,
         offerText: 'Sable only offers the second job after the resin work is credited. “The fog side is less forgiving. Silver lichen grows where the stone stays damp and footing turns mean. Bring one clean sample from the face itself. If you know when to stop reaching and start finding another line, I can use you on the road.”',
