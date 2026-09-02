@@ -45,8 +45,8 @@ resource sources                       143
 canonical items                        410
 recipes/processes                      254
 abilities/techniques                    41
-quests/contracts                        20
-companions                               2
+quests/contracts                        23
+companions                               3
 transport services                       7
 raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
