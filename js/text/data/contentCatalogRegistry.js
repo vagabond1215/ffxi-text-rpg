@@ -42,7 +42,7 @@ import {
 import { validateShopCatalogs } from './shopCatalogs.js';
 import { createSeedNpcs } from './seedEntities.js';
 
-export const CONTENT_CATALOG_REGISTRY_VERSION = 1;
+export const CONTENT_CATALOG_REGISTRY_VERSION = 2;
 
 const SEED_NPC_INDEX = new Map(createSeedNpcs().map((entry) => [entry.id, entry]));
 
