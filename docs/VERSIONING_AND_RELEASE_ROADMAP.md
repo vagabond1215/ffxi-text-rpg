@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.400.5
+Product:       0.9.400.6
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          79
+Data:          80
 Benchmark:     3
-Codename:      Remaining Bronze Starter Set Conversion Proof
+Codename:      Basic Leather Garment Conversion Proof
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 21 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, active-battle attention/loadout/kata state, and required outstanding combat-field state |
-| Data | 79 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 80 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1660,6 +1660,41 @@ Permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
 A5 Basic Leather Garment Conversion is the next candidate / not started.
 
+## `0.9.400.6` — Basic Leather Garment Conversion Proof
+
+This revision closes the explicit basic-leather-garment existing-ID conversion debt.
+
+```text
+Product       0.9.400.5 -> 0.9.400.6
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          79        -> 80
+Benchmark     3         -> 3
+```
+
+A5 adds:
+- `basicLeatherGarmentProductionCatalog` with two process definitions;
+- canonical production paths for existing Leather Vest and Leather Trousers IDs;
+- `pack-basic-leather-garments` owning two existing item refs plus two recipe refs;
+- dependency on the established Elderwood hunt/timber tanning chain;
+- A1 Field Knife `cutting` bindings for both tannery recipes;
+- canonical light-armor stat and current-schema save/load proof.
+
+Data advances because two process definitions and one shared Pack-v2 ownership tranche are new authored canonical content. Canonical item count remains unchanged.
+
+Validated implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Census result:
+- canonical items 410 unchanged;
+- recipes/processes 254;
+- regional/shared packs 43;
+- pack-owned records 1,365.
+
+Permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+
+Conversion-first existing-ID work is exhausted for the explicit Packet-A tool backlog. A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+
 ## Phase progression
 
 ```text
@@ -1671,7 +1706,7 @@ A5 Basic Leather Garment Conversion is the next candidate / not started.
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              ACTIVE / A0-A4 COMPLETE; A5 LEATHER GARMENTS CANDIDATE NEXT
+0.9.400 Economy/production depth              ACTIVE / A0-A5 COMPLETE; A6 WORKSHOP TOOL AUTHORITY AUDIT NEXT
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
