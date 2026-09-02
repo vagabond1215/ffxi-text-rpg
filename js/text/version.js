@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.500.1';
+export const PRODUCT_VERSION = '0.9.500.2';
 export const PACKAGE_VERSION = '0.9.500';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 21,
-    data: 81,
+    data: 82,
     benchmark: 3,
-    codename: 'Social Relationship Eligibility Foundation',
+    codename: 'Ironspine Warden Trust Circuit',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.500.1',
+    versionManifest: '0.9.500.2',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -27,7 +27,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     cultivation: '0.2.0',
-    commitments: '0.9.0',
+    commitments: '0.10.0',
     relationships: '0.2.0',
     socialRequirements: '0.1.0',
     socialRequirementEngine: '0.1.0',
@@ -128,7 +128,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     contentCatalogRegistry: '0.4.0',
     canonicalItemRegistry: '0.1.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.27.0',
+    regionalContentPacks: '0.28.0',
     contentPackValidation: '0.4.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
@@ -147,7 +147,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerContinuity: '0.7.0',
     playerCampaignReadability: '0.2.0',
     playerDangerRecovery: '0.2.0',
-    localityNavigation: '0.4.0',
+    localityNavigation: '0.5.0',
     canvasUi: '0.8.0',
     uiIntents: '0.13.0',
     slashCommands: '0.5.0',
@@ -176,8 +176,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilityCatalog: '0.11.0',
     abilityEngine: '0.7.0',
     enemyAbilityCatalog: '0.1.0',
-    companionCatalog: '0.3.0',
-    party: '0.5.0',
+    companionCatalog: '0.4.0',
+    party: '0.6.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
@@ -214,7 +214,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     hudControls: '0.4.0',
     aggro: '0.3.4',
     travel: '0.5.1',
-    pois: '0.4.5',
+    pois: '0.4.6',
     poiDiscovery: '0.4.0',
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
@@ -244,7 +244,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilities: '0.1.0',
     loot: '0.7.0',
     leveling: '0.6.0',
-    companions: '0.3.0',
+    companions: '0.4.0',
     crafting: '0.2.0',
     mounts: 'planned',
 });
