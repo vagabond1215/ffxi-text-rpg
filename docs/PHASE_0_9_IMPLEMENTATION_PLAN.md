@@ -44,8 +44,8 @@ routes                                  25
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
-regional/shared packs                   39
-pack-owned records                    1325
+regional/shared packs                   40
+pack-owned records                    1337
 pack-owned abilities/capabilities/
   schedules/companions              41/44/27/2
 runtime seed NPCs                       47
