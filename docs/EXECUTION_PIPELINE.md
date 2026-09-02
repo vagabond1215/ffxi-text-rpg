@@ -128,7 +128,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 and A1 are complete and **A2 Broader Starter Equipment & Occupational Tool Conversion is the next bounded implementation**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A2 are complete and **A3 Caster / Offhand Starter Conversion is the next candidate**.
 
 ### Historical completed unit — Packet B2
 
@@ -266,7 +266,7 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next bounded implementation:** `0.9.400 A2 — Broader Starter Equipment & Occupational Tool Conversion`, selected / not started.
+**Current next candidate:** `0.9.400 A3 — Caster / Offhand Starter Conversion`, not started.
 
 ## Preserved interrupted/resumable queues
 
