@@ -82,8 +82,8 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-emberwash-saltpan-ecology-repair',
     ]);
     assert.equal(index.recordCounts.places, 37);
-    assert.equal(index.recordCounts.items, 390);
-    assert.equal(index.recordCounts.recipes, 241);
+    assert.equal(index.recordCounts.items, 395);
+    assert.equal(index.recordCounts.recipes, 246);
     assert.equal(index.recordCounts.npcs, 44);
     assert.equal(index.recordCounts.npcSchedules, 27);
     assert.equal(index.recordCounts.spellSchools, 4);
