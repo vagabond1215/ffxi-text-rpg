@@ -1,3 +1,4 @@
+import { validateProductionRequirementAuthority } from './productionRequirementAuthority.js';
 import { getCanonicalItem } from './canonicalItemRegistry.js';
 import { getEmberwashProcessDefinition, listEmberwashProcessDefinitions } from './emberwashProductionCatalog.js';
 import { getDryUplandSaltpanRepairProcessDefinition, listDryUplandSaltpanRepairProcessDefinitions } from './dryUplandSaltpanRepairProductionCatalog.js';
@@ -75,6 +76,7 @@ export function validateProductionCatalog() {
         for (const input of definition.inputs ?? []) { if (!getProductionInputItem(input.itemId)) issues.push(`${definition.id} input references unknown item ${input.itemId}.`); if (!positiveInteger(input.quantity)) issues.push(`${definition.id} input ${input.itemId} has invalid quantity.`); }
         for (const output of definition.outputs ?? []) { if (!getProductionOutputItem(output.itemId)) issues.push(`${definition.id} output references unknown canonical item ${output.itemId}.`); if (!positiveInteger(output.quantity)) issues.push(`${definition.id} output ${output.itemId} has invalid quantity.`); }
     }
+    issues.push(...validateProductionRequirementAuthority(listProductionDefinitions()));
     return issues;
 }
 

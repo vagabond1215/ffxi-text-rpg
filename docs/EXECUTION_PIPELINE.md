@@ -5,33 +5,35 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A5 — Basic Leather Garment Conversion Proof is COMPLETE.**
+**0.9.400 A6 — Shared Workshop Tool Authority Audit is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`;
-- implementation freeze: `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847`;
-- Check #2277 / run `33675272069`: Repository Audit, **926/926 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.6 / Package 0.9.400 / Data 80 / Game State 21;
-- two new canonical production definitions target existing `leather-vest` and `leather-trousers`;
-- no new canonical item identity and no duplicate production-item definition;
-- one shared `pack-basic-leather-garments` owns two existing item refs and two recipe refs;
-- pack depends on the canonical Elderwood hunt/timber tanning supply chain;
-- A1 Field Knife / `cutting` binds into both garment recipes;
-- crafted garments preserve canonical light-armor stat behavior and current-schema provenance.
+- permanent record: `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`;
+- implementation freeze: `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
+- Check #2297 / run `33677766982`: Repository Audit, **930/930 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.7 / Package 0.9.400 / Data 80 / Game State 21;
+- no authored item/recipe/pack or durable-state change;
+- recognized station tags are centralized;
+- current required portable-tool tags are exactly `cutting` and `woodcutting`;
+- canonical providers are Field Knife / Reed Sickle and Woodsman Hatchet;
+- production validation now rejects unknown station tags and unsupported tool requirements;
+- ordinary workshop implements remain station-owned context until a real portable-tool use case exists.
 
-**Next candidate: 0.9.400 A6 — Shared Workshop Tool Authority Audit, not started.**
+**`0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.**
 
-A6 must first distinguish portable tools, workstation fixtures, consumable components, and station capability. Repository inspection found no established canonical equipment IDs for ordinary smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools. Do not bulk-author them before the authority boundary is frozen.
+**Next candidate: 0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection, not started.**
+
+Q0 should audit commitments, relationships, companions, NPC schedules, locality knowledge, and dialogue/presentation boundaries before authoring. It should select a coherent multi-NPC social slice that improves persistent consequence and companion/quest depth rather than filling census bands mechanically.
 
 ## Data 80 metrics
 
@@ -128,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A5 are complete and **A6 Shared Workshop Tool Authority Audit is the next candidate**.
+`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. **0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate**.
 
 ### Historical completed unit — Packet B2
 
@@ -266,14 +268,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next candidate:** `0.9.400 A6 — Shared Workshop Tool Authority Audit`, not started.
+**Current next candidate:** `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection`, not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0-A5 are complete through Basic Leather Garment Conversion Proof; conversion-first existing-ID work is exhausted. A6 Shared Workshop Tool Authority Audit is next / not started. Authorities: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Economy / Production Depth:** A0-A6 are complete. A6 closes station/tool requirement authority without authoring unsupported workshop tools. Remaining workshop-tool concepts are deferred. Authorities: `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 

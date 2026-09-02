@@ -1,9 +1,10 @@
+import { WORKSTATION_TAGS } from '../data/productionRequirementAuthority.js';
 import { getFurniture } from '../data/homeFurnishings.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
 import { requiresPoiEntryTransition } from './localKnowledgeEngine.js';
 
 export const WORKSTATION_ENGINE_VERSION = 3;
-export const WORKSTATION_TAGS = Object.freeze(['forge', 'kitchen', 'woodshop', 'tannery', 'workshop']);
+export { WORKSTATION_TAGS };
 
 const POI_TAG_TO_STATIONS = Object.freeze({
     blacksmithing: ['forge', 'workshop'],

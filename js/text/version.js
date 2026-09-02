@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.400.6';
+export const PRODUCT_VERSION = '0.9.400.7';
 export const PACKAGE_VERSION = '0.9.400';
 
 export const VERSION = Object.freeze({
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 21,
     data: 80,
     benchmark: 3,
-    codename: 'Basic Leather Garment Conversion Proof',
+    codename: 'Workshop Tool Authority Audit',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.400.6',
+    versionManifest: '0.9.400.7',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -43,8 +43,9 @@ export const SYSTEM_VERSIONS = Object.freeze({
     campaignRecovery: '0.3.0',
     workTasks: '0.2.0',
     workProficiencies: '0.2.0',
-    workstations: '0.3.1',
-    productionCatalog: '0.22.0',
+    workstations: '0.4.0',
+    productionRequirementAuthority: '0.1.0',
+    productionCatalog: '0.23.0',
     productionItems: '0.18.0',
     ingredientLuxuryProductionCatalog: '0.1.0',
     ingredientLuxuryProductionItems: '0.1.0',
