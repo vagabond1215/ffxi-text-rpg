@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Codename:      Workshop Tool Authority Audit
+Codename:      Social Relationship Eligibility Foundation
 ```
 
 ## 0.9.400 production/item authority
@@ -128,6 +128,23 @@ Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2
 
 `0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.
 
+### Q0 — Social Relationship Eligibility Foundation — COMPLETE
+
+Q0 opens `0.9.500 Quest / Social Depth` with one shared relationship-eligibility contract:
+- `socialRequirements` owns relationship requirement shape and canonical dimension validation;
+- `socialRequirementEngine` evaluates existing NPC-specific familiarity/respect/trust/obligation state without durable ownership;
+- commitment acceptance composes resolved commitment prerequisites with relationship thresholds;
+- player-continuity commitment opportunity projection uses the same eligibility authority;
+- companion recruitment composes flags, resolved commitments, relationship requirements, place, and NPC presence;
+- Sable Renn's second field test now requires trust 1;
+- Sable companion recruitment now requires trust 3 / respect 1 plus both existing commitments.
+
+Q0 advances Product 0.9.400.7 -> 0.9.500.1, Package 0.9.400 -> 0.9.500, and Data 80 -> 81 while Game State remains 21.
+
+Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2315 / run `33685651230` with **934/934 tests** and the full gate.
+
+Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
+
 ## Data 57 regional authority
 
 Waymeet Marches composes existing geography, route, ecology, resource, production, service, schedule, and Pack-v2 systems.
@@ -137,7 +154,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 80; this section retains the Data 57 regional composition evidence only.
+- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 81; this section retains the Data 57 regional composition evidence only.
 
 Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 254 recipes/processes, 25 routes, 27 schedules, 43 packs, and 1,365 pack-owned records**.
 
@@ -240,7 +257,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — current through Data 80
+## Content infrastructure and regional packs — current through Data 81
 
 | System | Status | Notes |
 | --- | --- | --- |
@@ -377,7 +394,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Current gameplay breadth at Data 80:
+Current gameplay breadth at Data 81:
 
 ```text
 places/localities       55 / mechanics 10
@@ -401,16 +418,18 @@ The creature catalog clears the playable-alpha planning lower bound of 120. Mech
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.400.7 / Data 80 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are complete.
+Phase 0.9 remains open at Product 0.9.500.1 / Data 81 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are complete. `0.9.500 Quest / Social Depth` is active.
 
-A6 permanent record:
-- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
+Q0 permanent record:
+- `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
 
-Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests** and the full gate.
+Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2315 / run `33685651230` with **934/934 tests** and the full gate.
 
-**0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection is the next candidate / not started.**
+**Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.**
 
-Q0 should audit current commitment, relationship, companion, schedule, locality-knowledge, and dialogue/presentation boundaries before selecting a coherent multi-NPC social slice. Current mechanics-floor gaps remain quests/contracts 20/30, companions 2/4, and named NPCs 48/50; these are signals, not authorization for filler.
+Q1 should reuse Vara Kell, Dain Rove, Mara Fell and existing Ironspine survey/field/lodging outputs. Preferred bounded target is three connected commitments plus Dain as one earned companion, with no new named NPCs or geography.
+
+The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 20/30 quests/contracts, and 48/50 named NPCs. Q1 is intended to improve social depth organically, not to fill all floors.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -429,5 +448,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. `0.9.400 Economy / Production Depth` is also complete after A0-A6; `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the selected next candidate. World-edge, richer locality-event/UI work, optional ecology, and remaining material-culture packets remain separate explicit-selection queues.
+**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. `0.9.400 Economy / Production Depth` is complete after A0-A6. `0.9.500 Quest / Social Depth` is active: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected next. World-edge, richer locality-event/UI work, optional ecology, and remaining material-culture packets remain separate explicit-selection queues.
 
