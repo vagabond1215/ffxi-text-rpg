@@ -76,6 +76,7 @@ authority:
   advanced_combat_p6_umbral_well_field_foundation: docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md
   advanced_combat_p7_radiant_arc_propagation_foundation: docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md
   advanced_combat_p8_martial_structured_resolution_breadth: docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md
+  advanced_combat_0_9_300_maturity_reassessment: docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
@@ -83,7 +84,7 @@ authority:
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: advanced-combat-0.9.300-maturity-reassessment-unselected
+  current_normal_work: economy-production-0.9.400-packet-a-occupational-tool-conversion-selected-not-started
   latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   latest_product_pull_request: 402
   latest_product_pr_check: 33217086478
@@ -277,22 +278,24 @@ git:
   latest_advanced_combat_p8_pages_result: success
 progression:
   current_phase: 0.9
-  current_track: 0.9.300-advanced-combat-training
-  current_track_status: active-packets-1-through-8-complete-maturity-reassessment-next
-  completed_track: 0.9.200-adventure-vertical-slices
-  completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: advanced-combat-p8-martial-structured-resolution-breadth
-  latest_bounded_unit_status: complete-on-main-product-0.9.300.8-game-state-21-data-75
+  current_track: 0.9.400-economy-production-depth
+  current_track_status: next-packet-a-occupational-tool-conversion-selected-not-started
+  completed_track: 0.9.300-advanced-combat-training
+  completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
+  previous_completed_track: 0.9.200-adventure-vertical-slices
+  previous_completed_track_status: complete-slice-a-and-combat-b1-through-b5
+  latest_bounded_unit: advanced-combat-0.9.300-maturity-reassessment
+  latest_bounded_unit_status: decision-complete-close-0.9.300-no-runtime-version-change-product-0.9.300.8-game-state-21-data-75
   latest_data_bounded_unit: advanced-combat-p8-martial-structured-resolution-breadth
   latest_data_bounded_unit_status: complete-on-main-data-75
-  next_roadmap_gate: advanced-combat-0.9.300-maturity-reassessment
-  next_roadmap_gate_status: unselected-awaiting-explicit-work-order
+  next_roadmap_gate: economy-production-0.9.400-packet-a-occupational-tool-conversion
+  next_roadmap_gate_status: selected-not-started
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
-  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented
+  combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
   combat_slice_b_status: complete-b1-through-b5
-  combat_next_packet: unselected-after-advanced-combat-p8-maturity-reassessment-required
-  combat_next_packet_scope: perform-0.9.300-maturity-reassessment-before-any-packet-9-selection-likely-switch-to-0.9.400-occupational-tool-conversion
+  combat_next_packet: none-0.9.300-closed
+  combat_next_packet_scope: remaining-combat-depth-deferred-requires-fresh-selection-no-packet-9
   combat_adjacency_audit_status: complete-b3-entry-authority
   combat_following_packets: []
   pre_ui_discovery_contract: player-information-and-locality-discovery
@@ -316,9 +319,9 @@ progression:
   central_continent_surface_budget_excludes: lower-deepvein-and-drowned-vaults-vertical-subterranean-expansions
   central_continent_completion_bias: route-ecology-economy-barrier-and-civilization-approach-density-not-tessellation
   next_material_culture_candidate: occupational-tool-conversion
-  next_material_culture_candidate_status: queued-not-auto-authorized
+  next_material_culture_candidate_status: selected-as-next-bounded-implementation-not-started
   locality_enrichment_status: deferred-resumable-foundation-complete
-  occupational_tool_conversion_status: preserved-resumable-target-0.9.400
+  occupational_tool_conversion_status: selected-next-0.9.400-packet-a-not-started
   world_edge_queue_status: preserved-resumable-waymeet-inner-marches-first
   ecology_repair_sequence_status: complete-not-interrupted-do-not-restart
 validation:
@@ -387,7 +390,7 @@ quality:
     guide_referral_temporary_guidance: true
     staged_poi_interaction: true
   advanced_combat_design:
-    status: permanent-design-authority-through-0.9.300-p8-martial-structured-resolution-implemented
+    status: permanent-design-authority-through-0.9.300-maturity-closure
     runtime_changed: true
     data_changed: 63-to-64
     game_state_changed: true
@@ -396,7 +399,7 @@ quality:
     techniques: 5
     utilities: 3
     capability_definitions: 44
-    immediate_runtime_gap: post-p8-0.9.300-maturity-reassessment-before-more-combat
+    immediate_runtime_gap: none-blocking-0.9.300-closed-remaining-combat-depth-deferred
     weapon_kata_implemented: true
     first_class_ranged_implemented: true
     affinity_substitutions_planned: false
@@ -421,6 +424,9 @@ quality:
     propagation_persisted_state_added: false
     martial_structured_resolution_breadth_implemented: true
     all_current_executable_martial_techniques_structured: true
+    advanced_combat_maturity_reassessment_complete: true
+    advanced_combat_track_closed: true
+    combat_packet_9_selected: false
     current_melee_kata_families: 5
     current_melee_kata_breadth_complete: true
     timed_loadout_swaps_implemented: true
