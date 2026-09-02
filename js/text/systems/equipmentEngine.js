@@ -8,6 +8,7 @@ import {
     isContainerAccessible,
 } from './inventoryEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
+import { describeActiveWorkToolBinding } from './workToolBindingEngine.js';
 import {
     describeCharges,
     describeEnchantments,
@@ -26,6 +27,8 @@ export function equipItem(state, itemQuery, options = {}) {
 
     const source = findEquippableItem(state, itemQuery, options.fromContainerId);
     if (!source.ok) return source.reason;
+    const sourceWorkLock = describeActiveWorkToolBinding(state, source.item.id, { sourceType: 'inventory', sourceId: source.containerId });
+    if (sourceWorkLock) return sourceWorkLock;
 
     const item = enrichEquipmentItem(source.item);
     if ((item.kind ?? 'misc') !== ITEM_KINDS.EQUIPMENT) return `${item.name ?? item.id} is not equipment.`;
@@ -37,6 +40,10 @@ export function equipItem(state, itemQuery, options = {}) {
     if (!eligibility.ok) return eligibility.reason;
 
     const currentItem = state.player.equipment[slot] ?? null;
+    if (currentItem) {
+        const currentWorkLock = describeActiveWorkToolBinding(state, currentItem.id, { sourceType: 'equipment', sourceId: slot });
+        if (currentWorkLock) return currentWorkLock;
+    }
     const returnContainerId = options.returnContainerId ?? source.containerId;
     const returnDefinition = getContainerDefinition(returnContainerId);
     if (currentItem && !returnDefinition) return `Unknown return container: ${returnContainerId}`;
@@ -69,6 +76,8 @@ export function unequipItem(state, slot, destinationContainerId = 'inventory', o
 
     const item = state.player.equipment[slot];
     if (!item) return `Nothing is equipped in ${slot}.`;
+    const workLock = describeActiveWorkToolBinding(state, item.id, { sourceType: 'equipment', sourceId: slot });
+    if (workLock) return workLock;
 
     const destinationDefinition = getContainerDefinition(destinationContainerId);
     if (!destinationDefinition) return `Unknown destination container: ${destinationContainerId}`;
