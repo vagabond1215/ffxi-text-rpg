@@ -16,13 +16,15 @@ Codename:      Martial Structured Resolution Breadth
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 8 — Martial Structured Resolution Breadth** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE pending an explicit maturity reassessment.
+**0.9.300 Advanced Combat / Training maturity reassessment — COMPLETE.** The track closes at the existing Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 checkpoint; the reassessment is decision-only and changes no runtime/data version.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`;
-- Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 / Account Save 5 / Benchmark 3;
-- behavioral/data implementation freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`;
+- decision record `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`;
+- Packet 8 permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`;
+- Packet 8 behavioral/data implementation freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`;
 - Check #2132 / run `33575392561`: Repository Audit, **895/895 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2261 / run `33575391923`: green.
+- Pages #2261 / run `33575391923`: green;
+- no Packet 9 selected;
+- next bounded implementation: `0.9.400 Packet A — Occupational Tool Conversion`, selected / not started.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -122,15 +124,15 @@ Locked model:
 
 Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emberwash Badlands & Cinderwell Station, Lower Deepvein & Lantern Sump Station, and Waymeet Marches & Cairnward Relay are complete through Data 57. The route graph reaches Waymeet South Marches but not the inner marches or Waymeet. Next ranked world-edge candidate: **Waymeet Inner Marches / outer crossroads approach**. It is queued, not auto-authorized.
 
-## Next bounded material-culture candidate
+## Next selected material-culture implementation
 
-- Occupational Tool Conversion: turn existing shop/equipment-only tools and starter metal/leather goods into real production outputs, then add shared smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools.
-- This is queued but not auto-authorized.
-- See `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **0.9.400 Packet A — Occupational Tool Conversion** is selected as the next bounded implementation but is not started in the maturity-reassessment checkpoint.
+- Convert existing shop/equipment-only tools and starter metal/leather goods into real production outputs, then add shared smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools.
+- Resume from `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`; do not restart the material-culture audit.
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–8 are complete; the next bounded unit is a maturity reassessment, not an automatically selected Packet 9.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. The maturity reassessment found no alpha-loop combat blocker and selected `0.9.400 Packet A — Occupational Tool Conversion` as the next bounded implementation. It is not started in this decision checkpoint.
 
 ### Latest completed unit — Packet B2
 
@@ -251,14 +253,31 @@ Target evasion can now make these attacks miss and target physical defense chang
 
 With Ridge Breaker and Rivet Guard already migrated by B1, all five currently executable martial techniques now use structured damage resolution where applicable. Game State remains 21; Data advances 74 -> 75 for the three changed ability definitions. Ability count remains 41.
 
-**Next bounded unit:** explicit `0.9.300` maturity reassessment. Do not auto-select Packet 9.
+**Maturity result:** `0.9.300` closes with no Packet 9. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, and richer spell semantics are deferred depth rather than current alpha-loop blockers.
+
+### Latest completed decision unit — 0.9.300 maturity reassessment
+
+**COMPLETE — CLOSE ADVANCED COMBAT / TRAINING.**
+
+The reassessment confirms that B1-B5 plus Packets 1-8 provide a coherent current combat/training loop. Victory rewards and defeated-body resource opportunities exist; defeat recovery exists; all five current executable martial techniques are structured; elemental/control/ring/field/arc proofs are present. The remaining combat backlog is tactical depth, semantic breadth, or inert schema cleanup.
+
+Not blockers:
+- inert `battle.targetId` / `actionDelay` / `recasts` / `casting` placeholders;
+- mutable engagement geometry, LOS, pursuit, search, disengagement, and explicit flee/retreat;
+- passive block/parry/guard/counter/reaction execution;
+- Flare Bloom / Rimefall / Fault Rush richer semantics;
+- weapon resonance, unsupported-family breadth, and census growth.
+
+No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
+
+**Next bounded implementation:** `0.9.400 Packet A — Occupational Tool Conversion`, selected / not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** still the strongest prepared `0.9.400` economy/production packet; authority `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** selected as the next bounded `0.9.400` implementation; not started. Authority `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 
