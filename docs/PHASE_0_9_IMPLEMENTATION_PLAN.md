@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.400.5
+Product:       0.9.400.6
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          79
+Data:          80
 Benchmark:     3
-Phase:         0.9 / 0.9.400 active; A0-A4 complete; A5 leather garments candidate next
-Codename:      Remaining Bronze Starter Set Conversion Proof
+Phase:         0.9 / 0.9.400 active; A0-A5 complete; A6 workshop tool authority audit next
+Codename:      Basic Leather Garment Conversion Proof
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -31,7 +31,7 @@ Validated Data 75 checkpoint:
 | Creature definitions | 123 | 40 | ready |
 | Resource sources | 143 | 40 | ready |
 | Canonical items | 410 | 200 | ready |
-| Recipes/processes | 252 | 75 | ready |
+| Recipes/processes | 254 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 20 | 30 | 10 |
 | Recruitable companions | 2 | 4 | 2 |
@@ -44,8 +44,8 @@ routes                                  25
 spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
-regional/shared packs                   42
-pack-owned records                    1361
+regional/shared packs                   43
+pack-owned records                    1365
 pack-owned abilities/capabilities/
   schedules/companions              41/44/27/2
 runtime seed NPCs                       47
@@ -536,27 +536,37 @@ Permanent record:
 Permanent record:
 - `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
-Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+## A5 — Basic Leather Garment Conversion Proof
+
+**Status: COMPLETE.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+
+Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
 Version result:
 ```text
-Product       0.9.400.4 -> 0.9.400.5
+Product       0.9.400.5 -> 0.9.400.6
 Package       0.9.400   -> 0.9.400
-Data          78        -> 79
+Data          79        -> 80
 Game State    21        -> 21
 ```
 
-A4 adds five canonical production definitions for existing Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens IDs. It extends the existing bronze starter Pack-v2 ownership tranche instead of creating a second bronze pack; preserves Bronze Pick as combat-only; and proves weapon cadence, armor stats, A1 cutting-tool bindings, and current-schema save/load preservation.
+A5 adds two canonical production definitions for existing Leather Vest and Leather Trousers, consumes the established Elderwood tanning chain, binds A1 Field Knife cutting, and proves normal armor stats/current-schema persistence.
 
-## A5 — Basic Leather Garment Conversion
+## A6 — Shared Workshop Tool Authority Audit
 
 **Status: NEXT CANDIDATE / NOT STARTED.**
 
-Initial candidate scope:
-- Leather Vest;
-- Leather Trousers.
+This is an authority/design pass, not automatic content authoring. No established canonical workshop-tool equipment IDs remain for conversion-first work.
 
-Audit established leather inputs and tool/station requirements before authoring. Do not absorb Traveler Gloves/Boots or broad profession tools without a fresh bounded decision.
+Audit:
+- portable equipment tool versus workstation fixture/capability;
+- meaningful tool tags and production bindings;
+- smallest useful smithing/woodworking proof cluster if new identities are justified;
+- material-foundation inputs and shared Pack-v2 ownership;
+- persistence impact, expected to remain none unless a genuinely new durable fact is required.
 
 # Relative planning envelope
 
