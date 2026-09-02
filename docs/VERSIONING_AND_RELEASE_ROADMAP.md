@@ -25,13 +25,13 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | Version | Current | Purpose |
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
-| Game State | 20 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, and existing active-battle attention/loadout/kata state |
+| Game State | 21 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, active-battle attention/loadout/kata state, and required outstanding combat-field state |
 | Data | 75 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
 
-## `0.9.100` history and `0.9.200` current decision
+## Phase 0.9 version history and track decisions
 
 ### `0.9.100.1` — Content Pack Scale Contract v2
 
