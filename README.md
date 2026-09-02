@@ -157,10 +157,10 @@ Do not fill the ability gap with mechanically duplicate records.
 
 **Combat 2.0 Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Permanent record: `docs/COMBAT_2_0_B5_BRASSHAVEN_REDSTONE_TRAINING_PROOF.md`. Marshal Varric Stone now exposes bounded Forge-Road instruction through the existing capability authority, and the integrated South Redstone proof exercises B1–B4 together.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–6 are COMPLETE.** Packet 6 gives Umbral Well a real persistent field: direct Dark impact plus a 12-second target-position Well that pulses at 4/8/12 seconds, persists under `activeBattle.fields`, snapshots source offense at creation, and reads current defender resistance per pulse. Movement, LOS/pursuit, broad zone scripting, and wider adept migration remain deferred.
+**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- Occupational Tool Conversion for 0.9.400;
+- Occupational Tool Conversion is selected as the next bounded 0.9.400 implementation and is not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.
