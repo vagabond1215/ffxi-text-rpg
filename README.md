@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0-A3 are complete through Caster / Offhand Starter Conversion Proof; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.** The current canonical/runtime checkpoint is Data 78 / Product 0.9.400.4 / Game State 21.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0-A4 are complete through Remaining Bronze Starter Set Conversion Proof; A5 Basic Leather Garment Conversion is the next candidate / not started.** The current canonical/runtime checkpoint is Data 79 / Product 0.9.400.5 / Game State 21.
 
 ```text
-Product:       0.9.400.4
+Product:       0.9.400.5
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          78
+Data:          79
 Benchmark:     3
-Codename:      Caster / Offhand Starter Conversion Proof
+Codename:      Remaining Bronze Starter Set Conversion Proof
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 78 implementation census:
+Validated Data 79 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -82,7 +82,7 @@ shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        410 / 200
-recipes/processes      247 / 75
+recipes/processes      252 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
 companions               2 / 4
@@ -92,7 +92,7 @@ spell schools             4
 capabilities             44
 NPC schedules            27
 regional/shared packs    42
-pack-owned records     1351
+pack-owned records     1361
 runtime seed NPCs        47
 runtime seed enemies     17
 raw-resource use      145/154
@@ -128,22 +128,23 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**0.9.400 A3 — Caster / Offhand Starter Conversion Proof is COMPLETE. A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.**
+**0.9.400 A4 — Remaining Bronze Starter Set Conversion Proof is COMPLETE. A5 Basic Leather Garment Conversion is the next candidate / not started.**
 
 Permanent records:
 - `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`;
 - `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`;
 - `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`;
-- `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`.
+- `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`;
+- `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
-A3 implementation freeze:
-- `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`;
-- Check #2240 / run `33671247638`;
-- **916/916 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
+A4 implementation freeze:
+- `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd`;
+- Check #2259 / run `33672932856`;
+- **921/921 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
 
-A3 converts the existing Ash Staff, Maple Wand, Iron Buckler, and Brass Ring into canonical production outputs using existing wood, binding, brass, and Redstone iron/rivet supply chains. A1 Field Knife cutting binds into both wood-equipment recipes. Crafted Ash Staff proves real two-handed/offhand exclusion; crafted Maple Wand permits the crafted Iron Buckler; the crafted Brass Ring contributes through normal accessory stats; all identities/provenance persist through current-schema save/load. Data advances to 78; Game State remains 21.
+A4 converts Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens into canonical production outputs using the established A2 bronze/wood/textile/hardware graph. It deliberately extends the existing `pack-starter-bronze-martial-equipment` rather than creating another bronze pack. Bronze Pick remains a combat weapon without mining capability; A1 Field Knife cutting binds into both armor recipes; crafted weapons/armor retain cadence/stat behavior and persist with provenance. Data advances to 79; Game State remains 21.
 
-Next candidate: finish the remaining established bronze starter set—Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens—without expanding into leather garments or broad profession-tool authoring.
+Next candidate: convert the existing Leather Vest and Leather Trousers as a compact leather-garment proof before opening broad shared profession-tool authoring.
 
 ## Historical combat decision record
 
@@ -179,7 +180,7 @@ Do not fill the ability gap with mechanically duplicate records.
 **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion is the next candidate and is not started;
+- A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate and is not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.

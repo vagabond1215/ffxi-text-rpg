@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 46;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 47;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1449,18 +1449,28 @@ export const STARTER_BRONZE_MARTIAL_PACK = createContentPack({
     ],
     metadata: {
         name: 'Starter Bronze Martial Equipment',
-        notes: 'Shared replacement-manufacture ownership for the established Bronze Sword, Bronze Cap, and Bronze Harness. Existing equipment IDs remain physical behavior authority; this pack owns their shared production placement and three recipes.',
+        notes: 'Shared replacement-manufacture ownership for the complete established bronze starter set. Existing equipment IDs remain physical behavior authority; this pack owns shared production placement for eight bronze equipment identities and eight recipes.',
     },
     records: {
         items: [
             { id: 'bronze-sword', catalogRef: true },
             { id: 'bronze-cap', catalogRef: true },
             { id: 'bronze-harness', catalogRef: true },
+            { id: 'bronze-axe', catalogRef: true },
+            { id: 'bronze-dagger', catalogRef: true },
+            { id: 'bronze-pick', catalogRef: true },
+            { id: 'bronze-subligar', catalogRef: true },
+            { id: 'bronze-mittens', catalogRef: true },
         ],
         recipes: [
             { id: 'craft-bronze-sword', catalogRef: true },
             { id: 'craft-bronze-cap', catalogRef: true },
             { id: 'craft-bronze-harness', catalogRef: true },
+            { id: 'craft-bronze-axe', catalogRef: true },
+            { id: 'craft-bronze-dagger', catalogRef: true },
+            { id: 'craft-bronze-pick', catalogRef: true },
+            { id: 'craft-bronze-subligar', catalogRef: true },
+            { id: 'craft-bronze-mittens', catalogRef: true },
         ],
     },
 });

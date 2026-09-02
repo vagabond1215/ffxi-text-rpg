@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.400.4
+Product:       0.9.400.5
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          78
+Data:          79
 Benchmark:     3
-Codename:      Caster / Offhand Starter Conversion Proof
+Codename:      Remaining Bronze Starter Set Conversion Proof
 ```
 
 ## Completed foundation and major tranches
@@ -75,7 +75,7 @@ The five-part location flora/fauna diversity repair sequence is now complete. Ga
 | Creature definitions | 123 | 40 | reached; playable-alpha lower bound 120 also reached |
 | Resource sources | 143 | 40 | reached |
 | Canonical items | 410 | 200 | reached |
-| Recipes/processes | 247 | 75 | reached |
+| Recipes/processes | 252 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 20 | 30 | 10 short |
 | Companions | 2 | 4 | 2 short |
@@ -87,7 +87,7 @@ spell schools                  4
 capabilities                  44
 NPC schedules                 27
 regional/shared packs         42
-pack-owned records          1351
+pack-owned records          1361
 runtime seed NPCs             47
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -98,20 +98,20 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest implementation pass
 
-### 0.9.400 A3 — Caster / Offhand Starter Conversion Proof
+### 0.9.400 A4 — Remaining Bronze Starter Set Conversion Proof
 
-**Status: COMPLETE / Product 0.9.400.4 / Package 0.9.400 / Data 78 / Game State 21.**
+**Status: COMPLETE / Product 0.9.400.5 / Package 0.9.400 / Data 79 / Game State 21.**
 
 Permanent record:
-- `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`.
+- `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
-Implementation freeze `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d` passed Check #2240 / run `33671247638` with **916/916 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
-A3 adds four canonical production definitions but no new item identities. Ash Staff, Maple Wand, Iron Buckler, and Brass Ring now have real production paths using established Elderwood/Silvermaple, common component, brass, and Redstone forged-iron supply chains. A1 Field Knife cutting binds into both wood-equipment recipes. Crafted staff/wand prove two-handed/offhand loadout rules and cadence; crafted buckler/ring prove normal defense/accessory stat integration; current-schema save/load preserves crafted identities and provenance.
+A4 adds five canonical production definitions but no new item identities and no new Pack-v2 pack. Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens now have real production paths using the established A2 material graph. The existing `pack-starter-bronze-martial-equipment` is extended to own all eight bronze starter item refs and eight recipes. Bronze Pick remains a combat weapon without mining capability; crafted weapons preserve canonical cadence; crafted armor preserves stat behavior and provenance.
 
-Validated census moves recipes/processes 243 -> 247, regional/shared packs 41 -> 42, and pack-owned records 1,343 -> 1,351 while canonical items remain 410.
+Validated census moves recipes/processes 247 -> 252 and pack-owned records 1,351 -> 1,361 while canonical items remain 410 and regional/shared packs remain 42.
 
-**Next candidate: 0.9.400 A4 — Remaining Bronze Starter Set Conversion, not started.**
+**Next candidate: 0.9.400 A5 — Basic Leather Garment Conversion, not started.**
 
 ### Historical planning pass — Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
@@ -270,10 +270,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0-A3 conversion proofs are now complete through Caster / Offhand Starter Conversion. The next candidate is **0.9.400 A4 — Remaining Bronze Starter Set Conversion**; see `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0-A4 conversion proofs are now complete through the full established bronze starter set. The next candidate is **0.9.400 A5 — Basic Leather Garment Conversion**; see `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- 0.9.400 A0-A3 are complete; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started;
+- 0.9.400 A0-A4 are complete; A5 Basic Leather Garment Conversion is the next candidate / not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.

@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.4
+Product:       0.9.400.5
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          78
+Data:          79
 Benchmark:     3
-Codename:      Caster / Offhand Starter Conversion Proof
-Phase:         0.9 / 0.9.400 ACTIVE; A0-A3 complete; A4 remaining bronze candidate next
+Codename:      Remaining Bronze Starter Set Conversion Proof
+Phase:         0.9 / 0.9.400 ACTIVE; A0-A4 complete; A5 leather garments candidate next
 ```
 
-Data 78 is the current authored/mechanics-data checkpoint. Product 0.9.400.4 closes A3 Caster / Offhand Starter Conversion Proof; Game State 21 remains unchanged. A3 adds four canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.
+Data 79 is the current authored/mechanics-data checkpoint. Product 0.9.400.5 closes A4 Remaining Bronze Starter Set Conversion Proof; Game State 21 remains unchanged. A4 adds five canonical production definitions and extends the existing bronze Pack-v2 ownership tranche by ten records, but adds no item identity, no new pack, and no durable state family. A5 Basic Leather Garment Conversion is the next candidate / not started.
 
 ## 0.9.400 production/item authority
 
@@ -140,6 +140,36 @@ existing Ash Staff / Maple Wand / Iron Buckler / Brass Ring IDs
 `pack-starter-caster-offhand-equipment` owns shared placement of four existing item refs and four new recipe refs. It depends on the material-foundation pack and Redstone Forge-Road instead of creating generic duplicate iron inputs.
 
 A3 requires no persistence-family change.
+
+### A4 remaining bronze starter conversion proof
+
+A4 completes the existing bronze starter family without fragmenting Pack-v2 ownership:
+
+```text
+A2 bronze ingot / bronze sheet
+Ash Handle Blank / Hemp Twine / Hemp Canvas
+shared ferrule / buckle-ring hardware
+A1 Field Knife cutting binding
+        |
+        v
+remainingBronzeStarterProductionCatalog
+        |
+        v
+existing Bronze Axe / Dagger / Pick / Subligar / Mittens IDs
+        |
+        +--> existing pack-starter-bronze-martial-equipment
+        +--> equipmentCatalog behavior
+        +--> weaponCadenceEngine
+        +--> statEngine combat profile
+        +--> production provenance
+        +--> current-schema persistence
+```
+
+A4 extends `pack-starter-bronze-martial-equipment` from three to eight item refs and three to eight recipe refs. A second bronze Pack-v2 pack would be duplicate ownership structure and is intentionally not created.
+
+Bronze Pick remains an axe-family combat weapon and does not acquire field-tool/mining capability. Field mining remains owned by Prospector Pick.
+
+A4 requires no persistence-family change.
 
 ## Core authority rules
 
@@ -1029,4 +1059,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 78; the current runtime/persistence baseline is Product 0.9.400.4 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A3 Caster / Offhand Starter Conversion Proof; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 79; the current runtime/persistence baseline is Product 0.9.400.5 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A4 Remaining Bronze Starter Set Conversion Proof; A5 Basic Leather Garment Conversion is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.

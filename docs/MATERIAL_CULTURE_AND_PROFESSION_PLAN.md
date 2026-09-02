@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0-A3 conversion proofs complete through Caster / Offhand Starter Conversion; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0-A4 conversion proofs complete through the established bronze starter set; A5 Basic Leather Garment Conversion is the next candidate / not started.**
 
 ## Purpose
 
@@ -183,7 +183,9 @@ A2 — Bronze Martial Conversion Proof is **COMPLETE** at Product 0.9.400.3 / Da
 
 A3 — Caster / Offhand Starter Conversion Proof is **COMPLETE** at Product 0.9.400.4 / Data 78 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`. It converts Ash Staff, Maple Wand, Iron Buckler, and Brass Ring using existing wood/common-component/brass/Redstone supply chains and proves real loadout/cadence/stat/persistence behavior.
 
-A4 — Remaining Bronze Starter Set Conversion is the **NEXT CANDIDATE / NOT STARTED**. Keep it bounded to Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens. Selection does not authorize leather garments, broad profession tools, or Packets B-F.
+A4 — Remaining Bronze Starter Set Conversion Proof is **COMPLETE** at Product 0.9.400.5 / Data 79 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`. It converts Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens, extends the existing bronze ownership pack, preserves Bronze Pick as combat-only, and proves cadence/stat/persistence behavior.
+
+A5 — Basic Leather Garment Conversion is the **NEXT CANDIDATE / NOT STARTED**. Begin with existing Leather Vest and Leather Trousers only. Selection does not authorize Traveler Gloves/Boots, broad profession tools, or Packets B-F.
 
 ## Future bounded packets
 
@@ -229,20 +231,27 @@ Converted:
 
 A3 uses Elderwood Ash Timber, Silvermaple Fine Board, Hemp Twine/Cord, Hide Glue, Brass Sheet/Ingot, Tempered Redstone Iron Bar, and Redstone Rivet Set. Ash Staff and Maple Wand require `cutting`, proving the A1 Field Knife binding in another production family. Crafted staff/wand/buckler/ring exercise real two-handed/offhand, cadence, stat, and save/load behavior.
 
-#### A4 — Remaining bronze starter set conversion — NEXT CANDIDATE / NOT STARTED
+#### A4 — Remaining bronze starter set conversion proof — COMPLETE
 
-Candidate existing IDs:
+Converted:
 - Bronze Axe;
 - Bronze Dagger;
 - Bronze Pick;
 - Bronze Subligar;
 - Bronze Mittens.
 
-Bronze Pick remains a combat weapon identity; do not turn it into the field-mining tool already owned by Prospector Pick.
+A4 reuses the A2 bronze ingot/sheet, Ash Handle Blank, Hemp Twine/Canvas, and shared hardware graph. The existing `pack-starter-bronze-martial-equipment` is extended rather than duplicating bronze ownership. Bronze Pick remains a combat weapon identity; field mining remains owned by Prospector Pick.
 
-#### Remaining Packet-A conversion backlog — DEFERRED AFTER A4 SELECTION
+#### A5 — Basic leather garment conversion — NEXT CANDIDATE / NOT STARTED
 
-- basic leather garments;
+Initial existing IDs:
+- Leather Vest;
+- Leather Trousers.
+
+Audit established tanned-hide, binding, thread/cord, and cutting/stitching capability before authoring. Do not automatically include Traveler Gloves or Traveler Boots.
+
+#### Remaining Packet-A conversion backlog — DEFERRED AFTER A5 SELECTION
+
 - shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
 Existing `requiredToolTags` are mechanically enforced and A1 proves them with crafted equipment. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.

@@ -5,36 +5,36 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.4
+Product:       0.9.400.5
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          78
+Data:          79
 Benchmark:     3
-Codename:      Caster / Offhand Starter Conversion Proof
+Codename:      Remaining Bronze Starter Set Conversion Proof
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A3 — Caster / Offhand Starter Conversion Proof is COMPLETE.**
+**0.9.400 A4 — Remaining Bronze Starter Set Conversion Proof is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`;
-- implementation freeze: `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`;
-- Check #2240 / run `33671247638`: Repository Audit, **916/916 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.4 / Package 0.9.400 / Data 78 / Game State 21;
-- four new canonical production definitions target existing `ash-staff`, `maple-wand`, `iron-buckler`, and `brass-ring` equipment IDs;
+- permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`;
+- implementation freeze: `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd`;
+- Check #2259 / run `33672932856`: Repository Audit, **921/921 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.5 / Package 0.9.400 / Data 79 / Game State 21;
+- five new canonical production definitions target existing `bronze-axe`, `bronze-dagger`, `bronze-pick`, `bronze-subligar`, and `bronze-mittens` equipment IDs;
 - no new canonical item identity and no duplicate production-item definition;
-- one shared `pack-starter-caster-offhand-equipment` owns four item refs and four recipe refs;
-- A1 Field Knife / `cutting` binds into Ash Staff and Maple Wand production;
-- crafted Ash Staff proves two-handed/offhand exclusion while crafted Maple Wand permits the crafted Iron Buckler;
-- crafted Brass Ring contributes through normal accessory/stat authority;
-- crafted identities/provenance survive real current-schema account save/load.
+- the existing `pack-starter-bronze-martial-equipment` is extended instead of adding a second bronze pack;
+- A1 Field Knife / `cutting` binds into both A4 armor recipes;
+- Bronze Pick remains a combat weapon identity without `mining`;
+- crafted weapons preserve distinct cadence and crafted armor preserves normal stat/provenance behavior;
+- current-schema save/load preserves A4 crafted identities/provenance.
 
-**Next candidate: 0.9.400 A4 — Remaining Bronze Starter Set Conversion, not started.**
+**Next candidate: 0.9.400 A5 — Basic Leather Garment Conversion, not started.**
 
-A4 should remain bounded to Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens. Preserve Bronze Pick as a combat-weapon identity, not a field-mining tool, and reuse the established A2 bronze material graph.
+A5 should begin with existing Leather Vest and Leather Trousers only. Audit established tanned-hide/binding/thread inputs and their Pack-v2 dependencies before authoring; do not silently absorb Traveler Gloves/Boots or open broad profession-tool authoring in the same unit.
 
-## Data 78 metrics
+## Data 79 metrics
 
 ```text
 places/localities                       55
@@ -43,7 +43,7 @@ shop/service sites                      37
 creatures                              123
 resource sources                       143
 canonical items                        410
-recipes/processes                      247
+recipes/processes                      252
 abilities/techniques                    41
 quests/contracts                        20
 companions                               2
@@ -53,7 +53,7 @@ luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
 regional/shared packs                   42
-pack-owned records                    1351
+pack-owned records                    1361
 runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
@@ -129,7 +129,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A3 are complete and **A4 Remaining Bronze Starter Set Conversion is the next candidate**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A4 are complete and **A5 Basic Leather Garment Conversion is the next candidate**.
 
 ### Historical completed unit — Packet B2
 
@@ -267,14 +267,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next candidate:** `0.9.400 A4 — Remaining Bronze Starter Set Conversion`, not started.
+**Current next candidate:** `0.9.400 A5 — Basic Leather Garment Conversion`, not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 
