@@ -173,7 +173,7 @@ Mortars/pestles, balances/weights, sieves, jars/bottles, stoppers, bandages, spl
 
 ## 0.9.400 selection status
 
-Packet A — Occupational Tool Conversion is **ACTIVE** for `0.9.400 Economy / Production Depth`.
+Packet A — Occupational Tool Conversion / Requirement Authority is **COMPLETE** for `0.9.400 Economy / Production Depth` after A0-A6.
 
 A0 — Production & Item Authority Hardening is complete at Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21. Permanent authority: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
