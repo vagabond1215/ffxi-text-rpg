@@ -181,7 +181,7 @@ test('Slatewater Road Scout records are canonical Pack-v2 content and move the m
     assert.equal(counts.quests, 20);
     assert.equal(counts.companions, 2);
     assert.equal(counts.supplemental.seedNpcs, 47);
-    assert.equal(counts.supplemental.ownedPackRecords, 1361);
+    assert.equal(counts.supplemental.ownedPackRecords, 1365);
 });
 
 test('resolved Slatewater trust and recruited scout persist through the current Game State families', () => {

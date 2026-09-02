@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.400.5
+Product:       0.9.400.6
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          79
+Data:          80
 Benchmark:     3
-Codename:      Remaining Bronze Starter Set Conversion Proof
+Codename:      Basic Leather Garment Conversion Proof
 ```
 
 ## 0.9.400 production/item authority
@@ -96,6 +96,22 @@ A4 advances Data 78 -> 79, recipes/processes 247 -> 252, and pack-owned records 
 
 Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests** and the full gate.
 
+### A5 — Basic Leather Garment Conversion Proof — COMPLETE
+
+A5 closes the explicit basic-leather-garment conversion debt:
+- `basicLeatherGarmentProductionCatalog` owns two process definitions only;
+- outputs are existing `leather-vest` and `leather-trousers` equipment IDs;
+- recipes consume the canonical Elderwood tanned-hide/hide-binding supply chain;
+- `pack-basic-leather-garments` owns two existing item refs plus two recipe refs and depends on `pack-elderwood-hunt-timber`;
+- both recipes use existing `crafting` proficiency at `tannery` and require physical `cutting`;
+- A1 Field Knife bindings, canonical light-armor stats, and current-schema save/load provenance are proven.
+
+A5 advances Data 79 -> 80, recipes/processes 252 -> 254, packs 42 -> 43, and pack-owned records 1,361 -> 1,365. Canonical items remain 410 and Game State remains 21.
+
+Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests** and the full gate.
+
+Post-A5 inspection found no established canonical workshop-tool equipment IDs beyond the six field tools. The next unit must therefore resolve new tool authority before authoring.
+
 ## Data 57 regional authority
 
 Waymeet Marches composes existing geography, route, ecology, resource, production, service, schedule, and Pack-v2 systems.
@@ -105,9 +121,9 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 79; this section retains the Data 57 regional composition evidence only.
+- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 80; this section retains the Data 57 regional composition evidence only.
 
-Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 252 recipes/processes, 25 routes, 27 schedules, 42 packs, and 1,361 pack-owned records**.
+Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 254 recipes/processes, 25 routes, 27 schedules, 43 packs, and 1,365 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
 
@@ -208,13 +224,13 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — current through Data 79
+## Content infrastructure and regional packs — current through Data 80
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | Pack ownership resolves through existing canonical catalogs; item references now share `canonicalItemRegistry` across resource/production/equipment authorities. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Forty-two current packs; 1,361 current ownership records. |
+| Regional/shared pack ownership | integrated | Forty-three current packs; 1,365 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -345,7 +361,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Current gameplay breadth at Data 79:
+Current gameplay breadth at Data 80:
 
 ```text
 places/localities       55 / mechanics 10
@@ -354,29 +370,29 @@ shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        410 / 200
-recipes/processes      252 / 75
+recipes/processes      254 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
 companions               2 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    42
-pack-owned records     1361
+regional/shared packs    43
+pack-owned records     1365
 ```
 
 The creature catalog clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because abilities, quests, companions, and named NPCs remain below their mechanics floors.
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.400.5 / Data 79 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active through A4 Remaining Bronze Starter Set Conversion Proof.
+Phase 0.9 remains open at Product 0.9.400.6 / Data 80 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active through A5 Basic Leather Garment Conversion Proof.
 
-A4 permanent record:
-- `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
+A5 permanent record:
+- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
 
-Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests** and the full gate.
+Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests** and the full gate.
 
-**A5 Basic Leather Garment Conversion is the next candidate / not started.**
+**A6 Shared Workshop Tool Authority Audit is the next candidate / not started.**
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 

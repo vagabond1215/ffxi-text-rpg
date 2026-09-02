@@ -85,16 +85,17 @@ authority:
   economy_0_9_400_a2_bronze_martial_conversion: docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md
   economy_0_9_400_a3_caster_offhand_conversion: docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md
   economy_0_9_400_a4_remaining_bronze_conversion: docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md
+  economy_0_9_400_a5_basic_leather_garments: docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: economy-production-0.9.400-a5-basic-leather-garment-conversion-candidate-not-started
-  latest_product_checkpoint_sha: d371ff9f54a2b28dbda2d533a17f00de9aaa70fd
-  latest_product_checkpoint_pull_request: 410
-  latest_product_checkpoint_check: 33672932856
-  latest_product_checkpoint_check_number: 2259
-  latest_product_checkpoint_check_result: success-921-of-921-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  current_normal_work: economy-production-0.9.400-a6-shared-workshop-tool-authority-audit-candidate-not-started
+  latest_product_checkpoint_sha: ff238f7aef29f2229cd35f2d77ea9ba0b8faa847
+  latest_product_checkpoint_pull_request: 411
+  latest_product_checkpoint_check: 33675272069
+  latest_product_checkpoint_check_number: 2277
+  latest_product_checkpoint_check_result: success-926-of-926-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   previous_product_pull_request: 402
   previous_product_pr_check: 33217086478
@@ -314,19 +315,24 @@ git:
   latest_economy_a4_implementation_check_sha: d371ff9f54a2b28dbda2d533a17f00de9aaa70fd
   latest_economy_a4_implementation_check_result: success-921-of-921-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_economy_a4_pull_request: 410
+  latest_economy_a5_implementation_check: 33675272069
+  latest_economy_a5_implementation_check_number: 2277
+  latest_economy_a5_implementation_check_sha: ff238f7aef29f2229cd35f2d77ea9ba0b8faa847
+  latest_economy_a5_implementation_check_result: success-926-of-926-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_economy_a5_pull_request: 411
 progression:
   current_phase: 0.9
   current_track: 0.9.400-economy-production-depth
-  current_track_status: active-a0-a1-a2-a3-a4-complete-a5-basic-leather-garment-conversion-candidate-not-started
+  current_track_status: active-a0-a1-a2-a3-a4-a5-complete-a6-shared-workshop-tool-authority-audit-candidate-not-started
   completed_track: 0.9.300-advanced-combat-training
   completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
   previous_completed_track: 0.9.200-adventure-vertical-slices
   previous_completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: economy-production-0.9.400-a4-remaining-bronze-starter-set-conversion-proof
-  latest_bounded_unit_status: complete-product-0.9.400.5-package-0.9.400-game-state-21-data-79-implementation-freeze-d371ff9f54a2b28dbda2d533a17f00de9aaa70fd-check-2259-921-of-921
-  latest_data_bounded_unit: economy-production-0.9.400-a4-remaining-bronze-starter-set-conversion-proof
-  latest_data_bounded_unit_status: complete-data-79-product-0.9.400.5
-  next_roadmap_gate: economy-production-0.9.400-a5-basic-leather-garment-conversion
+  latest_bounded_unit: economy-production-0.9.400-a5-basic-leather-garment-conversion-proof
+  latest_bounded_unit_status: complete-product-0.9.400.6-package-0.9.400-game-state-21-data-80-implementation-freeze-ff238f7aef29f2229cd35f2d77ea9ba0b8faa847-check-2277-926-of-926
+  latest_data_bounded_unit: economy-production-0.9.400-a5-basic-leather-garment-conversion-proof
+  latest_data_bounded_unit_status: complete-data-80-product-0.9.400.6
+  next_roadmap_gate: economy-production-0.9.400-a6-shared-workshop-tool-authority-audit
   next_roadmap_gate_status: candidate-not-started
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
   combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
@@ -356,10 +362,10 @@ progression:
   central_continent_minimum_skeleton_pass_budget: 5-to-7-substantial-region-passes
   central_continent_surface_budget_excludes: lower-deepvein-and-drowned-vaults-vertical-subterranean-expansions
   central_continent_completion_bias: route-ecology-economy-barrier-and-civilization-approach-density-not-tessellation
-  next_material_culture_candidate: basic-leather-garment-conversion
-  next_material_culture_candidate_status: a0-a1-a2-a3-a4-complete-a5-candidate-not-started
+  next_material_culture_candidate: shared-workshop-tool-authority-audit
+  next_material_culture_candidate_status: a0-a1-a2-a3-a4-a5-complete-a6-candidate-not-started
   locality_enrichment_status: deferred-resumable-foundation-complete
-  occupational_tool_conversion_status: active-a0-a1-a2-a3-a4-complete-a5-candidate-not-started
+  occupational_tool_conversion_status: conversion-first-existing-id-work-complete-a6-new-tool-authority-audit-candidate-not-started
   world_edge_queue_status: preserved-resumable-waymeet-inner-marches-first
   ecology_repair_sequence_status: complete-not-interrupted-do-not-restart
 validation:
@@ -412,14 +418,15 @@ validation:
   starter_bronze_martial_conversion_guard: tests/starterBronzeMartialConversion.test.js
   starter_caster_offhand_conversion_guard: tests/starterCasterOffhandConversion.test.js
   remaining_bronze_starter_conversion_guard: tests/remainingBronzeStarterConversion.test.js
+  basic_leather_garment_conversion_guard: tests/basicLeatherGarmentConversion.test.js
 quality:
-  current_product_version: 0.9.400.5
+  current_product_version: 0.9.400.6
   current_package_version: 0.9.400
   current_account_save: 5
   current_game_state: 21
-  current_data_version: 79
+  current_data_version: 80
   current_benchmark_version: 3
-  current_codename: Remaining Bronze Starter Set Conversion Proof
+  current_codename: Basic Leather Garment Conversion Proof
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0

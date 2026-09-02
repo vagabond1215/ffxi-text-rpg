@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.400.5
+Product:       0.9.400.6
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          79
+Data:          80
 Benchmark:     3
-Codename:      Remaining Bronze Starter Set Conversion Proof
+Codename:      Basic Leather Garment Conversion Proof
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 21 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, active-battle attention/loadout/kata state, and required outstanding combat-field state |
-| Data | 79 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 80 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1496,7 +1496,7 @@ No version axis advances for the reassessment itself.
 
 Deferred combat depth includes mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement and explicit flee/retreat, passive block/parry/guard/counter/reaction execution, inert combatant-placeholder cleanup, weapon resonance/imbuement, unsupported-family breadth, and remaining richer spell-name semantics.
 
-No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening`, A1 Existing Field-Tool Conversion Proof, and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
+No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening`, A1 Existing Field-Tool Conversion Proof, and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
 
@@ -1530,7 +1530,7 @@ Behavioral implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` pass
 
 Permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
-A1 Existing Field-Tool Conversion Proof and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
+A1 Existing Field-Tool Conversion Proof and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 ## `0.9.400.2` — Existing Field-Tool Conversion Proof
 
@@ -1565,7 +1565,7 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
 
-A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
+A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 ## `0.9.400.3` — Bronze Martial Conversion Proof
 
@@ -1588,7 +1588,7 @@ Census: 410 canonical items unchanged, 243 recipes/processes, 41 regional/shared
 
 Permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
 
-A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
+A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 ## `0.9.400.4` — Caster / Offhand Starter Conversion Proof
 
@@ -1622,7 +1622,7 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`.
 
-A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
+A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 ## `0.9.400.5` — Remaining Bronze Starter Set Conversion Proof
 
@@ -1658,7 +1658,42 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
-A5 Basic Leather Garment Conversion is the next candidate / not started.
+A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+
+## `0.9.400.6` — Basic Leather Garment Conversion Proof
+
+This revision closes the explicit basic-leather-garment existing-ID conversion debt.
+
+```text
+Product       0.9.400.5 -> 0.9.400.6
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          79        -> 80
+Benchmark     3         -> 3
+```
+
+A5 adds:
+- `basicLeatherGarmentProductionCatalog` with two process definitions;
+- canonical production paths for existing Leather Vest and Leather Trousers IDs;
+- `pack-basic-leather-garments` owning two existing item refs plus two recipe refs;
+- dependency on the established Elderwood hunt/timber tanning chain;
+- A1 Field Knife `cutting` bindings for both tannery recipes;
+- canonical light-armor stat and current-schema save/load proof.
+
+Data advances because two process definitions and one shared Pack-v2 ownership tranche are new authored canonical content. Canonical item count remains unchanged.
+
+Validated implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Census result:
+- canonical items 410 unchanged;
+- recipes/processes 254;
+- regional/shared packs 43;
+- pack-owned records 1,365.
+
+Permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+
+Conversion-first existing-ID work is exhausted for the explicit Packet-A tool backlog. A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
 
 ## Phase progression
 
@@ -1671,7 +1706,7 @@ A5 Basic Leather Garment Conversion is the next candidate / not started.
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              ACTIVE / A0-A4 COMPLETE; A5 LEATHER GARMENTS CANDIDATE NEXT
+0.9.400 Economy/production depth              ACTIVE / A0-A5 COMPLETE; A6 WORKSHOP TOOL AUTHORITY AUDIT NEXT
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
