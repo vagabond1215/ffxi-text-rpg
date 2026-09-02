@@ -1,4 +1,4 @@
-export const PRODUCT_VERSION = '0.9.400.1';
+export const PRODUCT_VERSION = '0.9.400.2';
 export const PACKAGE_VERSION = '0.9.400';
 
 export const VERSION = Object.freeze({
@@ -6,15 +6,15 @@ export const VERSION = Object.freeze({
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 21,
-    data: 75,
+    data: 76,
     benchmark: 3,
-    codename: 'Production Item Authority Hardening',
+    codename: 'Existing Field-Tool Conversion Proof',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.400.1',
+    versionManifest: '0.9.400.2',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -44,7 +44,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     workTasks: '0.2.0',
     workProficiencies: '0.2.0',
     workstations: '0.3.1',
-    productionCatalog: '0.17.0',
+    productionCatalog: '0.18.0',
     productionItems: '0.18.0',
     ingredientLuxuryProductionCatalog: '0.1.0',
     ingredientLuxuryProductionItems: '0.1.0',
@@ -72,6 +72,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     headwaterHighlandTransitionRepairProductionItems: '0.1.0',
     materialFoundationProductionCatalog: '0.2.0',
     materialFoundationProductionItems: '0.1.0',
+    occupationalFieldToolProductionCatalog: '0.1.0',
     production: '0.2.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
@@ -120,7 +121,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     contentCatalogRegistry: '0.4.0',
     canonicalItemRegistry: '0.1.0',
     contentPackSchema: '0.2.0',
-    regionalContentPacks: '0.22.0',
+    regionalContentPacks: '0.23.0',
     contentPackValidation: '0.4.0',
     contentScaleGate: '0.2.0',
     legacyCandidateNormalization: '0.1.0',
