@@ -27,6 +27,7 @@ import {
     listActiveCompanions,
 } from '../js/text/systems/partyEngine.js';
 import { createCommitmentOpportunities } from '../js/text/systems/playerContinuityEngine.js';
+import { applyNpcRelationshipChange } from '../js/text/systems/relationshipEngine.js';
 import { startTravel } from '../js/text/systems/travelEngine.js';
 import { validateGameState, validateWorldData } from '../js/text/systems/validation.js';
 import { getWorkProficiency } from '../js/text/systems/workProficiencyEngine.js';
@@ -120,8 +121,24 @@ test('Slatewater Road Scout slice chains field trust into earned companion recru
     assert.equal(firstResolved.ok, true, firstResolved.display?.text ?? firstResolved.reason);
     assert.equal(getCommitmentRecord(state, FIRST_COMMITMENT_ID).status, 'resolved');
 
+    const reducedTrust = applyNpcRelationshipChange(state, 'npc-slatewater-sable-renn', { trust: -1 }, {
+        reason: 'Q0 relationship-gate regression',
+        source: 'test',
+    });
+    assert.equal(reducedTrust.ok, true);
     opportunities = createCommitmentOpportunities(state);
-    assert.ok(opportunities.some((entry) => entry.id === `commitment-${SECOND_COMMITMENT_ID}`), 'second road test appears after the first is credited');
+    assert.equal(opportunities.some((entry) => entry.id === `commitment-${SECOND_COMMITMENT_ID}`), false, 'resolved prerequisite alone does not reveal a trust-gated offer');
+    const relationshipBlockedSecond = acceptCommitment(state, SECOND_COMMITMENT_ID);
+    assert.equal(relationshipBlockedSecond.ok, false);
+    assert.equal(relationshipBlockedSecond.code, 'commitment.prerequisites-unmet');
+    assert.equal(relationshipBlockedSecond.data.unmetRelationshipRequirements[0].dimension, 'trust');
+
+    assert.equal(applyNpcRelationshipChange(state, 'npc-slatewater-sable-renn', { trust: 1 }, {
+        reason: 'Restore earned Q0 trust for normal slice path',
+        source: 'test',
+    }).ok, true);
+    opportunities = createCommitmentOpportunities(state);
+    assert.ok(opportunities.some((entry) => entry.id === `commitment-${SECOND_COMMITMENT_ID}`), 'second road test appears when commitment and trust requirements are both met');
 
     assert.equal(acceptCommitment(state, SECOND_COMMITMENT_ID).ok, true);
     recruitment = canRecruitCompanion(state, SCOUT_COMPANION_ID);
@@ -141,6 +158,19 @@ test('Slatewater Road Scout slice chains field trust into earned companion recru
 
     recruitment = canRecruitCompanion(state, SCOUT_COMPANION_ID);
     assert.equal(recruitment.ok, true, recruitment.display?.text ?? recruitment.reason);
+
+    assert.equal(applyNpcRelationshipChange(state, 'npc-slatewater-sable-renn', { trust: -1 }, {
+        reason: 'Q0 companion relationship-gate regression',
+        source: 'test',
+    }).ok, true);
+    const relationshipBlockedRecruitment = canRecruitCompanion(state, SCOUT_COMPANION_ID);
+    assert.equal(relationshipBlockedRecruitment.ok, false);
+    assert.equal(relationshipBlockedRecruitment.code, 'party.relationship-requirement');
+    assert.equal(relationshipBlockedRecruitment.data.unmetRelationshipRequirements[0].dimension, 'trust');
+    assert.equal(applyNpcRelationshipChange(state, 'npc-slatewater-sable-renn', { trust: 1 }, {
+        reason: 'Restore earned Q0 trust for recruitment',
+        source: 'test',
+    }).ok, true);
 
     const recruited = performLocalityPoiAction(state, SCOUT_POI_ID, 'companion');
     assert.equal(recruited.ok, true, recruited.message ?? recruited.reason);
@@ -172,9 +202,15 @@ test('Slatewater Road Scout records are canonical Pack-v2 content and move the m
     const companion = listCompanionDefinitions().find((entry) => entry.id === SCOUT_COMPANION_ID);
     assert.ok(companion);
     assert.deepEqual(companion.recruitment.requiredCommitmentIds, [FIRST_COMMITMENT_ID, SECOND_COMMITMENT_ID]);
+    assert.deepEqual(companion.recruitment.relationshipRequirements, [
+        { npcId: 'npc-slatewater-sable-renn', minimums: { trust: 3, respect: 1 } },
+    ]);
 
     const commitments = new Map(listCommitmentDefinitions().map((entry) => [entry.id, entry]));
     assert.deepEqual(commitments.get(SECOND_COMMITMENT_ID).prerequisiteCommitmentIds, [FIRST_COMMITMENT_ID]);
+    assert.deepEqual(commitments.get(SECOND_COMMITMENT_ID).relationshipRequirements, [
+        { npcId: 'npc-slatewater-sable-renn', minimums: { trust: 1 } },
+    ]);
 
     const counts = collectContentScaleCounts();
     assert.equal(counts.npcs, 48);
@@ -215,6 +251,14 @@ test('resolved Slatewater trust and recruited scout persist through the current 
         followUpAvailableDay: 2,
         followUpSeenAtWorldSeconds: null,
     };
+    assert.equal(applyNpcRelationshipChange(state, 'npc-slatewater-sable-renn', {
+        familiarity: 1,
+        respect: 1,
+        trust: 3,
+    }, {
+        reason: 'Seed already-earned Slatewater relationship for persistence proof',
+        source: 'test',
+    }).ok, true);
 
     reachPoi(state, SCOUT_POI_ID);
     const recruited = performLocalityPoiAction(state, SCOUT_POI_ID, 'companion');
