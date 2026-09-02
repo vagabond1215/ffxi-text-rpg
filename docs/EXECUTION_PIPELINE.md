@@ -123,12 +123,12 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 ## Next selected material-culture implementation
 
 - **0.9.400 A0 — Production & Item Authority Hardening is complete.**
-- **0.9.400 A1 — Existing Field-Tool Conversion Proof is next / not started.** Convert only the six established field tools first and prove their full production/use loop.
+- **0.9.400 A1 — Existing Field-Tool Conversion Proof is complete.** The six established field tools now have canonical production paths and a validated production/use/save-load proof.
 - Resume from `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`; do not restart the audit or broaden into later Packet-A tool suites until A1 closes.
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 authority hardening is complete and **A1 Existing Field-Tool Conversion Proof is the next bounded implementation**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 and A1 are complete and **A2 Broader Starter Equipment & Occupational Tool Conversion is the next bounded implementation**.
 
 ### Historical completed unit — Packet B2
 
@@ -266,14 +266,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next bounded implementation:** `0.9.400 A1 — Existing Field-Tool Conversion Proof`, selected / not started.
+**Current next bounded implementation:** `0.9.400 A2 — Broader Starter Equipment & Occupational Tool Conversion`, selected / not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0 authority hardening is complete; A1 six-field-tool conversion proof is next / not started. Authorities: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0 authority hardening and A1 six-field-tool conversion proof are complete; A2 broader conversion is next / not started. Authorities: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 
