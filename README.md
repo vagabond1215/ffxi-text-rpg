@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–7 are complete.** The current canonical/runtime checkpoint is Data 74 / Product 0.9.300.7 / Game State 21. Packet 7 gives Radiant Arc honest target-to-target propagation: the selected enemy anchors a deterministic three-recipient Light arc that jumps to the nearest eligible unhit target within two formation units, resolves each recipient independently, and uses existing per-recipient attention without durable propagation state.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–8 are complete.** The current canonical/runtime checkpoint is Data 75 / Product 0.9.300.8 / Game State 21. Packet 8 brings Guarded Cut, Barkboar Brace, and Thicket Feint onto the same structured physical accuracy/defense/recovery contract already used by Ridge Breaker and Rivet Guard, so all five current executable martial techniques now resolve damage through the unified combat vocabulary.
 
 ```text
-Product:       0.9.300.7
+Product:       0.9.300.8
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          74
+Data:          75
 Benchmark:     3
-Codename:      Radiant Arc Propagation Foundation
+Codename:      Martial Structured Resolution Breadth
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 74 implementation census:
+Validated Data 75 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
