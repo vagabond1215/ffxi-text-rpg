@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.400.1
+Product:       0.9.400.2
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          75
+Data:          76
 Benchmark:     3
-Codename:      Production Item Authority Hardening
+Codename:      Existing Field-Tool Conversion Proof
 ```
 
 ## Product version format
@@ -1496,7 +1496,7 @@ No version axis advances for the reassessment itself.
 
 Deferred combat depth includes mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement and explicit flee/retreat, passive block/parry/guard/counter/reaction execution, inert combatant-placeholder cleanup, weapon resonance/imbuement, unsupported-family breadth, and remaining richer spell-name semantics.
 
-No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening` prerequisite is now complete; A1 Existing Field-Tool Conversion Proof is next / not started.
+No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening` prerequisite is now complete; A1 Existing Field-Tool Conversion Proof is complete; A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
 
 Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
 
@@ -1530,7 +1530,42 @@ Behavioral implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` pass
 
 Permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
-A1 Existing Field-Tool Conversion Proof is next / not started.
+A1 Existing Field-Tool Conversion Proof is complete; A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
+
+## `0.9.400.2` — Existing Field-Tool Conversion Proof
+
+This revision proves the A0 authority contract with six authored production conversions targeting existing equipment stable IDs.
+
+```text
+Product       0.9.400.1 -> 0.9.400.2
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          75        -> 76
+Benchmark     3         -> 3
+```
+
+Data advances because A1 adds six canonical production definitions and one shared Pack-v2 ownership tranche. Canonical item count does not advance because all outputs are existing equipment IDs.
+
+A1 adds:
+- `occupationalFieldToolProductionCatalog` with six process definitions;
+- production paths for Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod;
+- `pack-occupational-field-tools` owning six existing item refs plus six recipe refs;
+- real crafted Field Knife -> cutting-gated downstream work;
+- crafted Field Knife -> Marsh Fishing Rod assembly through physical tool binding;
+- current-schema save/load proof for crafted equipment identity and production provenance.
+
+Validated implementation freeze `d4de8f25204a46f54ccecd905b4a2144e19e96b4` passed Check #2200 / run `33663456804` with **906/906 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Census result:
+- canonical items 410 unchanged;
+- recipes/processes 240;
+- regional/shared packs 40;
+- pack-owned records 1,337.
+
+Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
+
+A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
 
 ## Phase progression
 
@@ -1543,7 +1578,7 @@ A1 Existing Field-Tool Conversion Proof is next / not started.
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              ACTIVE / A0 COMPLETE; A1 FIELD-TOOL CONVERSION NEXT
+0.9.400 Economy/production depth              ACTIVE / A0-A1 COMPLETE; A2 BROADER CONVERSION NEXT
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
