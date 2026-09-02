@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.300.8 — Martial Structured Resolution Breadth
+
+- Migrated exactly three existing executable martial techniques—Guarded Cut, Barkboar Brace, and Thicket Feint—from raw fixed damage to the shared physical combat-resolution contract without adding abilities or capabilities.
+- Guarded Cut now uses sword/slashing melee physical accuracy and physical defense with three-second recovery and explicit non-critical behavior while preserving its 250 TP cost, eight-second cooldown, STR potency, and 12-second defensive self-buff.
+- Barkboar Brace now uses axe/slashing melee physical accuracy and physical defense with four-second recovery and explicit non-critical behavior while preserving its 300 TP cost, ten-second cooldown, STR potency, and 15-second brace self-buff.
+- Thicket Feint now uses dagger/piercing melee physical accuracy and physical defense with two-second recovery and existing-character critical eligibility while preserving its 225 TP cost, eight-second cooldown, DEX potency, and 10-second mobile self-buff.
+- Preserved independent authored effect order: target damage may miss while the technique's self-buff still applies. Added no combo dependency, repositioning, reaction window, or passive-defense mechanic.
+- With Ridge Breaker and Rivet Guard already structured, all five current executable martial techniques now use structured damage resolution where applicable. Executable ability count remains 41.
+- Added `tests/advancedCombatMartialStructuredResolution.test.js` covering exact contracts, weapon-context gates, target-defense sensitivity, deterministic misses, self-buff-on-miss semantics, critical eligibility, recovery, action-history evidence, and unchanged Game State structure.
+- Advanced Product 0.9.300.7 -> 0.9.300.8 and Data 74 -> 75; Game State remains 21 and Package remains 0.9.300. Ability catalog system version advances 0.10.0 -> 0.11.0.
+- Behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e` passed Repository Audit, 895/895 tests, Census, Benchmark 3, Benchmark Sample, and Pages via Check #2132 / run `33575392561` and Pages #2261 / run `33575391923`.
+- No Packet 9 is selected automatically. The next bounded unit is an explicit 0.9.300 maturity reassessment, with Occupational Tool Conversion remaining the strongest prepared 0.9.400 follow-on if combat is mature enough to pause.
+
 ## 0.9.300.7 — Radiant Arc Propagation Foundation
 
 - Added `arc` to the bounded combat-geometry vocabulary and implemented synchronous target-to-target propagation: the selected enemy is recipient 1, each later jump originates from the previous recipient, candidates must lie within two derived formation units, already-hit targets are excluded, and nearest distance with encounter-order/stable-ID tie breaking determines the next recipient.
