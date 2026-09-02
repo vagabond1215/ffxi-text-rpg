@@ -188,6 +188,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.4\.0/);
     assert.match(describeSystemVersions(), /contentScaleGate: 0\.2\.0/);
     assert.match(describeSystemVersions(), /productionCatalog: 0\.18\.0/);
+    assert.match(describeSystemVersions(), /occupationalFieldToolProductionCatalog: 0\.1\.0/);
     assert.match(describeSystemVersions(), /productionItems: 0\.18\.0/);
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.11\.0/);
