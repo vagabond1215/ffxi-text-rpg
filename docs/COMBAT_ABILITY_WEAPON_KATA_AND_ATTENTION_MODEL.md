@@ -4,11 +4,11 @@ Status: **PERMANENT DESIGN AUTHORITY / RUNTIME IMPLEMENTATION PARTIAL.**
 
 This document defines the intended advanced-combat direction for Hearth & Horizon. It records the design decisions that must guide future ability, technique, weapon, loadout, enmity, and targeting work.
 
-It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.7 / Game State 21 / Data 74. Packets B1-B5 establish the playable foundation, Packet 1 broadens persisted automatic kata, Packet 2 adds character-owned affinity with representative elemental substitutions, Packet 3 migrates all eight novice Elemental Form attacks to unified magic/element resolution, Packet 4 gives Thunder Cage an executable resistible control semantic, Packet 5 gives Tempest Ring honest target-centered radial geometry, Packet 6 gives Umbral Well durable persistent-field semantics, and Packet 7 gives Radiant Arc synchronous target-to-target propagation. Unsupported weapon families, weapon resonance, broader geometry, and richer action families remain future work.
+It does **not** claim that the full model below is implemented. Current runtime is Product 0.9.300.8 / Game State 21 / Data 75. Packets B1-B5 establish the playable foundation; Packets 1–7 broaden kata, affinity, elemental resolution, control, ring geometry, fields, and propagation; Packet 8 migrates the remaining three raw-damage executable martial techniques so all five current executable techniques now use structured damage resolution where applicable. Unsupported weapon families, weapon resonance, broader engagement geometry, passive defense/reactions, and richer action families remain future work.
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–7 are COMPLETE.**
+**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–8 are COMPLETE. A maturity reassessment is next.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -22,7 +22,8 @@ Permanent records:
 - `docs/ADVANCED_COMBAT_0_9_300_P4_THUNDER_CAGE_CONTROL_FOUNDATION.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P5_TEMPEST_RING_GEOMETRY_FOUNDATION.md`;
 - `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`;
-- `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`.
+- `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`;
+- `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`.
 
 Implemented subset:
 - shared representative physical/magical/hybrid resolution vocabulary;
@@ -123,6 +124,15 @@ Implemented by 0.9.300 Packet 7:
 - structured result/event/action evidence carrying jump number, previous recipient, distance, and derived position;
 - existing explicit per-recipient attention applied only where effects actually land;
 - no propagation timer, future deadline, mutable position, LOS, pathfinding, new clock, or persistence family.
+
+Implemented by 0.9.300 Packet 8:
+- Guarded Cut uses sword/slashing melee physical accuracy/defense resolution with three-second recovery and no critical eligibility;
+- Barkboar Brace uses axe/slashing melee physical accuracy/defense resolution with four-second recovery and no critical eligibility;
+- Thicket Feint uses dagger/piercing melee physical accuracy/defense resolution with two-second recovery and existing-character critical eligibility;
+- all three preserve existing TP costs, cooldowns, potency/scaling, capability/equipment gates, and self-buff definitions;
+- target damage and self-buff remain independent authored effects, so a miss does not erase the self-buff;
+- combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques now use structured damage resolution where applicable;
+- no movement, combo, reaction, passive-defense, new clock, task owner, or persistence family is added.
 
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
@@ -258,7 +268,7 @@ The following are still incomplete or transitional:
 - the legacy arbitrary-string Weapon Skill path is transitional;
 - a first-class player ranged-attack action now exists for equipped ranged weapon/ammunition;
 - elemental resolution is proven for representative migrated abilities, but the wider catalog still needs explicit structured element metadata;
-- representative migrated canonical ability damage now uses shared hit/defense/resistance resolution; the wider catalog still contains pre-B1 effect definitions;
+- all five current executable martial techniques now use shared hit/defense/resistance resolution where they deal damage; the wider spell/support catalog still contains pre-B1 effect definitions;
 - Fracture Sigil proves deterministic status accuracy/resistance; the wider status catalog still needs explicit migration where target resistance is appropriate;
 - critical derived stats are integrated for explicitly eligible migrated actions such as Ridge Breaker; basic attacks and the wider catalog remain intentionally unmigrated;
 - target-centered ring geometry, one persisted point-radius Well field, and one synchronous target-to-target arc propagation are implemented; line/cone/chain/player-ground geometry, broader propagation families, mutable positioning, and generalized zone authoring remain deferred;
