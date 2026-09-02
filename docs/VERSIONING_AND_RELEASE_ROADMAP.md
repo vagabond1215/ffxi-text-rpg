@@ -1567,6 +1567,29 @@ Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
 
 A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
 
+## `0.9.400.3` — Bronze Martial Conversion Proof
+
+This revision closes a compact starter-martial conversion cluster while preserving singular equipment identity.
+
+```text
+Product       0.9.400.2 -> 0.9.400.3
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          76        -> 77
+Benchmark     3         -> 3
+```
+
+A2 adds three process definitions for existing Bronze Sword, Bronze Cap, and Bronze Harness IDs, plus one shared Pack-v2 ownership tranche. Bronze Harness requires cutting, so the A1 Field Knife binding participates in a separate production family. Crafted gear is proven through combat-profile, weapon-cadence, and current-schema save/load paths.
+
+Validated implementation freeze `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d` passed Check #2220 / run `33665699974` with **911/911 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Census: 410 canonical items unchanged, 243 recipes/processes, 41 regional/shared packs, and 1,343 pack-owned records.
+
+Permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
+
+A3 Caster / Offhand Starter Conversion is the next candidate / not started.
+
 ## Phase progression
 
 ```text
@@ -1578,7 +1601,7 @@ A2 Broader Starter Equipment & Occupational Tool Conversion is next / not starte
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              ACTIVE / A0-A1 COMPLETE; A2 BROADER CONVERSION NEXT
+0.9.400 Economy/production depth              ACTIVE / A0-A2 COMPLETE; A3 CASTER-OFFHAND CANDIDATE NEXT
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
