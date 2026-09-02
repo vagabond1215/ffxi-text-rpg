@@ -58,7 +58,19 @@ Promoted pre-handoff synchronization head:
 - Repository Audit stopped the run before tests because this handoff still advertised Product 0.9.500.1;
 - no runtime, test, census, or benchmark failure occurred on that attempt.
 
-This handoff write is the intended final pre-merge repository-file mutation. Validate its exact resulting PR head with hosted Check before merging PR #414.
+First exact-handoff synchronization attempt:
+- head `76dd8df807bc388ba1b8aa3570a93542ec5e87ee`;
+- Check #2356 / run `33688891966`;
+- Repository Audit PASS;
+- tests **935/936**;
+- sole failure: `tests/pipeline.test.js` retained duplicate Q0-era exact assertions for `party 0.5.0` and `companions 0.3.0` after Q1 deliberately advanced them to `0.6.0` and `0.4.0`;
+- no Q1 gameplay test failed.
+
+Synchronization repair:
+- `8fc6d7354979eafba43bdbf97a617ea9831b4a14`;
+- stale duplicate Q0 manifest assertions were removed while the new Q1 manifest assertions remain authoritative.
+
+This handoff rewrite is the intended final pre-merge repository-file mutation after that synchronization repair. Validate its exact resulting PR head with hosted Check before merging PR #414.
 
 ## Validated Data 82 census
 
