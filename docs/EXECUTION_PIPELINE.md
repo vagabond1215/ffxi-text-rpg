@@ -5,37 +5,35 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.1
+Product:       0.9.400.2
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          75
+Data:          76
 Benchmark:     3
-Codename:      Production Item Authority Hardening
+Codename:      Existing Field-Tool Conversion Proof
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A0 — Production & Item Authority Hardening is COMPLETE.**
+**0.9.400 A1 — Existing Field-Tool Conversion Proof is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`;
-- behavioral implementation freeze: `0445823264bb6adf1d1717dee2df83678e561a0f`;
-- Check #2172 / run `33661309577`: Repository Audit, **901/901 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21;
-- no authored content record and no new top-level durable state family;
-- canonical item authority now resolves resource, production, and equipment definitions without duplication;
-- production can materialize future recipes into existing canonical equipment IDs;
-- canonical shop purchases preserve canonical physical type and use commerce provenance;
-- production resolves physical tool bindings from equipped tools, portable Inventory equipment tools, or explicit contextual capability;
-- bound physical tools cannot be moved through common equipment/transfer/sale paths while the work record is active.
+- permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`;
+- implementation freeze: `d4de8f25204a46f54ccecd905b4a2144e19e96b4`;
+- Check #2200 / run `33663456804`: Repository Audit, **906/906 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.2 / Package 0.9.400 / Data 76 / Game State 21;
+- six new canonical production definitions target six existing equipment stable IDs;
+- no new canonical item identity and no duplicate production-item definition;
+- one shared `pack-occupational-field-tools` owns the six item refs and six recipe refs;
+- crafted Field Knife retains canonical equipment behavior and production provenance;
+- crafted Field Knife unlocks real cutting-gated downstream work and binds into Marsh Fishing Rod assembly;
+- crafted Field Knife and Marsh Fishing Rod identities/provenance survive real current-schema account save/load.
 
-**Next bounded implementation: 0.9.400 A1 — Existing Field-Tool Conversion Proof, selected / not started.**
+**Next bounded implementation: 0.9.400 A2 — Broader Starter Equipment & Occupational Tool Conversion, selected / not started.**
 
-A1 scope is deliberately limited to Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod. It must prove source -> stock/components -> crafted existing tool ID -> real tool-gated work -> downstream output/use/trade. Do not jump directly to the full profession inventory list.
+A2 may convert established starter equipment and selected shared profession tools, but it must continue the A1 rule: reuse existing stable IDs and material graphs first, do not create duplicate physical definitions, and keep each bounded tranche mechanically proven before broadening further.
 
-Historical combat/locality checkpoints remain preserved below for evidence; they are not current continuation instructions.
-
-## Data 75 metrics
+## Data 76 metrics
 
 ```text
 places/localities                       55
@@ -44,7 +42,7 @@ shop/service sites                      37
 creatures                              123
 resource sources                       143
 canonical items                        410
-recipes/processes                      234
+recipes/processes                      240
 abilities/techniques                    41
 quests/contracts                        20
 companions                               2
@@ -53,8 +51,8 @@ raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   39
-pack-owned records                    1325
+regional/shared packs                   40
+pack-owned records                    1337
 runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
@@ -125,12 +123,12 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 ## Next selected material-culture implementation
 
 - **0.9.400 A0 — Production & Item Authority Hardening is complete.**
-- **0.9.400 A1 — Existing Field-Tool Conversion Proof is next / not started.** Convert only the six established field tools first and prove their full production/use loop.
+- **0.9.400 A1 — Existing Field-Tool Conversion Proof is complete.** The six established field tools now have canonical production paths and a validated production/use/save-load proof.
 - Resume from `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`; do not restart the audit or broaden into later Packet-A tool suites until A1 closes.
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 authority hardening is complete and **A1 Existing Field-Tool Conversion Proof is the next bounded implementation**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 and A1 are complete and **A2 Broader Starter Equipment & Occupational Tool Conversion is the next bounded implementation**.
 
 ### Historical completed unit — Packet B2
 
@@ -268,14 +266,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next bounded implementation:** `0.9.400 A1 — Existing Field-Tool Conversion Proof`, selected / not started.
+**Current next bounded implementation:** `0.9.400 A2 — Broader Starter Equipment & Occupational Tool Conversion`, selected / not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0 authority hardening is complete; A1 six-field-tool conversion proof is next / not started. Authorities: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0 authority hardening and A1 six-field-tool conversion proof are complete; A2 broader conversion is next / not started. Authorities: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 

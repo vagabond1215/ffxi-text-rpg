@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 43;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 44;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1407,6 +1407,38 @@ export const MATERIAL_FOUNDATIONS_PACK = createContentPack({
     },
 });
 
+export const OCCUPATIONAL_FIELD_TOOL_PACK = createContentPack({
+    id: 'pack-occupational-field-tools',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'shared', regionIds: [], steward: 'cross-guild-toolmakers' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-material-foundations-common-components',
+    ],
+    metadata: {
+        name: 'Occupational Field Tools',
+        notes: 'Shared replacement-manufacture ownership for established cutting, mining, forestry, digging, reed-cutting, and fishing tools. Existing equipment IDs remain physical behavior authority; this pack owns their shared production placement and six recipes.',
+    },
+    records: {
+        items: [
+            { id: 'field-knife', catalogRef: true },
+            { id: 'prospector-pick', catalogRef: true },
+            { id: 'woodsman-hatchet', catalogRef: true },
+            { id: 'digging-spade', catalogRef: true },
+            { id: 'reed-sickle', catalogRef: true },
+            { id: 'marsh-rod', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'craft-field-knife', catalogRef: true },
+            { id: 'craft-prospector-pick', catalogRef: true },
+            { id: 'craft-woodsman-hatchet', catalogRef: true },
+            { id: 'craft-digging-spade', catalogRef: true },
+            { id: 'craft-reed-sickle', catalogRef: true },
+            { id: 'craft-marsh-fishing-rod', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -1414,6 +1446,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     CROWNFIELDS_GRANGE_PACK,
     REGIONAL_INGREDIENT_LUXURY_PACK,
     MATERIAL_FOUNDATIONS_PACK,
+    OCCUPATIONAL_FIELD_TOOL_PACK,
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
