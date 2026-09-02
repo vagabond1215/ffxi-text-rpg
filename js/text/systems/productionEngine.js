@@ -24,7 +24,7 @@ import {
     WORK_STATUSES,
 } from './workTaskEngine.js';
 
-export const PRODUCTION_ENGINE_VERSION = 1;
+export const PRODUCTION_ENGINE_VERSION = 2;
 
 export function listAvailableProduction(state, options = {}) {
     return listProductionDefinitions().map((definition) => {
