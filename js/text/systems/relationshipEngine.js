@@ -1,9 +1,10 @@
+import { SOCIAL_RELATIONSHIP_DIMENSIONS } from '../data/socialRequirements.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
 
 export const RELATIONSHIP_STATE_VERSION = 1;
-export const RELATIONSHIP_DIMENSIONS = Object.freeze(['familiarity', 'respect', 'trust', 'obligation']);
+export const RELATIONSHIP_DIMENSIONS = SOCIAL_RELATIONSHIP_DIMENSIONS;
 
 export function createRelationshipState(options = {}) {
     return {
