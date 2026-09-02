@@ -7,21 +7,21 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.200.4
-Package:       0.9.200
+Product:       0.9.300.8
+Package:       0.9.300
 Account Save:  5
-Game State:    17
-Data:          65
+Game State:    21
+Data:          75
 Benchmark:     3
-Phase:         0.9 / 0.9.200 Adventure Vertical Slices active; Slice A + B1 complete
-Codename:      Combat Loadout Transitions
+Phase:         0.9 / 0.9.300 complete; 0.9.400 Packet A selected, not started
+Codename:      Martial Structured Resolution Breadth
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
 
 ## Current census
 
-Validated Data 64 checkpoint:
+Validated Data 75 checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
