@@ -7,21 +7,21 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Phase:         0.9 / 0.9.400 active; A0-A5 complete; A6 workshop tool authority audit next
-Codename:      Basic Leather Garment Conversion Proof
+Phase:         0.9 / 0.9.400 complete; 0.9.500 Q0 quest/social authority & slice selection next
+Codename:      Workshop Tool Authority Audit
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
 
 ## Current census
 
-Validated Data 75 checkpoint:
+Validated Data 80 checkpoint:
 
 | Category | Current | Mechanics floor | Remaining |
 | --- | ---: | ---: | ---: |
@@ -498,7 +498,7 @@ Packet 7 — Radiant Arc Propagation Foundation is **COMPLETE** at Product 0.9.3
 
 Packet 8 — Martial Structured Resolution Breadth is **COMPLETE** at Product 0.9.300.8 / Game State 21 / Data 75. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`; behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`; Check #2132 / run `33575392561` passed 895/895 tests plus the full gate; Pages #2261 passed. Guarded Cut, Barkboar Brace, and Thicket Feint now use structured physical accuracy/defense/recovery while preserving their self-buffs. Combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are now structured. No new persistence or combat subsystem was introduced.
 
-Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. The decision-only closure remained Product 0.9.300.8 / Game State 21 / Data 75. `0.9.400 Economy / Production Depth` is now active: A0 Production & Item Authority Hardening is complete at Product 0.9.400.1, and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof and A5 Basic Leather Garment Conversion Proof are complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. `0.9.400 Economy / Production Depth` is also now **COMPLETE** after A0-A6. A6 closes production station/tool requirement authority at Product 0.9.400.7 / Game State 21 / Data 80 without authoring unsupported workshop tools. `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 # `0.9.400` — Economy / Production Depth
 
 ## A0 — Production & Item Authority Hardening
@@ -557,16 +557,50 @@ A5 adds two canonical production definitions for existing Leather Vest and Leath
 
 ## A6 — Shared Workshop Tool Authority Audit
 
+**Status: COMPLETE.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
+
+Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Version result:
+```text
+Product       0.9.400.6 -> 0.9.400.7
+Package       0.9.400   -> 0.9.400
+Data          80        -> 80
+Game State    21        -> 21
+```
+
+A6 centralizes production workstation tags and portable/contextual tool-capability authority. `validateProductionCatalog()` now rejects unknown station tags and required-tool tags with no canonical portable provider or declared contextual authority.
+
+The current production graph requires only:
+- `cutting` -> Field Knife / Reed Sickle;
+- `woodcutting` -> Woodsman Hatchet.
+
+No ordinary workshop-tool item identities are added. Forge/woodshop/tannery/kitchen/workshop context continues to own ordinary fixed implements.
+
+**`0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.**
+
+# `0.9.500` — Quest / Social Depth
+
+## Q0 — Quest / Social Authority & Vertical Slice Selection
+
 **Status: NEXT CANDIDATE / NOT STARTED.**
 
-This is an authority/design pass, not automatic content authoring. No established canonical workshop-tool equipment IDs remain for conversion-first work.
+Q0 is an authority/maturity audit before breadth authoring.
 
 Audit:
-- portable equipment tool versus workstation fixture/capability;
-- meaningful tool tags and production bindings;
-- smallest useful smithing/woodworking proof cluster if new identities are justified;
-- material-foundation inputs and shared Pack-v2 ownership;
-- persistence impact, expected to remain none unless a genuinely new durable fact is required.
+- commitment prerequisite, resolution, consequence, and follow-up authority;
+- NPC-specific relationship dimensions and durable social continuity;
+- companion recruitment/relationship gating and travel/combat continuity;
+- NPC schedule and locality-knowledge integration;
+- dialogue/presentation boundaries versus durable social state;
+- whether branching or consequence semantics need new authority before content;
+- the smallest coherent multi-NPC vertical slice that improves recurring social consequence;
+- mechanics-floor gaps (48/50 NPCs, 20/30 quests/contracts, 2/4 companions) without filler.
+
+Do not author ten disconnected quests or two arbitrary companions merely to satisfy census bands.
 
 # Relative planning envelope
 
@@ -582,7 +616,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, and `0.9.300` Advanced Combat / Training are complete. `0.9.400` Economy / Production Depth is active: A0 is complete at Product 0.9.400.1 / Data 75 / Game State 21 and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof and A5 Basic Leather Garment Conversion Proof are complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started. Later tracks remain `0.9.500` quest/social depth and `0.9.600` playable-alpha scale; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
+`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, `0.9.300` Advanced Combat / Training, and `0.9.400` Economy / Production Depth are complete. `0.9.500` Quest / Social Depth is queued with Q0 Quest / Social Authority & Vertical Slice Selection as the next candidate / not started. `0.9.600` remains the playable-alpha scale push; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
 
 # Explicit non-goals
 
