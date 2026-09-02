@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 47;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 48;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1504,6 +1504,30 @@ export const STARTER_CASTER_OFFHAND_PACK = createContentPack({
     },
 });
 
+export const BASIC_LEATHER_GARMENT_PACK = createContentPack({
+    id: 'pack-basic-leather-garments',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'shared', regionIds: [], steward: 'cross-guild-leather-outfitters' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-elderwood-hunt-timber',
+    ],
+    metadata: {
+        name: 'Basic Leather Garments',
+        notes: 'Shared replacement-manufacture ownership for the established Leather Vest and Leather Trousers using the canonical Elderwood tanning supply chain. Existing equipment IDs remain physical behavior authority.',
+    },
+    records: {
+        items: [
+            { id: 'leather-vest', catalogRef: true },
+            { id: 'leather-trousers', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'craft-leather-vest', catalogRef: true },
+            { id: 'craft-leather-trousers', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -1514,6 +1538,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     OCCUPATIONAL_FIELD_TOOL_PACK,
     STARTER_BRONZE_MARTIAL_PACK,
     STARTER_CASTER_OFFHAND_PACK,
+    BASIC_LEATHER_GARMENT_PACK,
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,
