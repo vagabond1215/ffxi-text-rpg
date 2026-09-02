@@ -1,6 +1,6 @@
 import { getProductionDefinition, getProductionInputItem, getProductionOutputItem, listProductionDefinitions } from '../data/productionCatalog.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
-import { collectAvailableToolTags } from './equipmentToolEngine.js';
+import { resolveRequiredToolBindings } from './equipmentToolEngine.js';
 import {
     addItemToContainer,
     findItemInContainer,
@@ -65,6 +65,7 @@ export function startProductionWork(state, processId, options = {}) {
             startPlaceId: state.currentPlaceId ?? null,
             requiredStationTags: [...definition.requiredStationTags],
             requiredToolTags: [...definition.requiredToolTags],
+            toolBindings: check.toolBindings.map((entry) => ({ ...entry, tags: [...entry.tags] })),
             proficiencyId: definition.proficiencyId,
             proficiencyAtStart: proficiency,
             inputItems: [],
@@ -134,9 +135,8 @@ export function checkProductionRequirements(state, definitionOrId, options = {})
 
     const station = hasWorkstationTags(state, definition.requiredStationTags, options.stationTags);
     if (!station.ok) blockers.push(`Requires workstation: ${station.missing.join(', ')}.`);
-    const availableTools = new Set(collectAvailableToolTags(state.player, options.toolTags));
-    const missingTools = definition.requiredToolTags.filter((tag) => !availableTools.has(tag));
-    if (missingTools.length) blockers.push(`Requires tool capability: ${missingTools.join(', ')}.`);
+    const toolResolution = resolveRequiredToolBindings(state.player, definition.requiredToolTags, options.toolTags);
+    if (toolResolution.missing.length) blockers.push(`Requires tool capability: ${toolResolution.missing.join(', ')}.`);
 
     const proficiency = getWorkProficiency(state.player, definition.proficiencyId);
     if (proficiency < definition.minProficiency) blockers.push(`Requires ${definition.proficiencyId} proficiency ${definition.minProficiency}.`);
@@ -151,7 +151,8 @@ export function checkProductionRequirements(state, definitionOrId, options = {})
         code: blockers.length ? 'production.requirements-not-met' : 'production.ready',
         blockers,
         proficiency,
-        availableToolTags: Array.from(availableTools),
+        availableToolTags: [...toolResolution.availableTags],
+        toolBindings: toolResolution.bindings.map((entry) => ({ ...entry, tags: [...entry.tags] })),
         availableStationTags: station.available,
     };
 }
