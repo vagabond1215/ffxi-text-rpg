@@ -18,28 +18,35 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.400.1
+Product:       0.9.400.2
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          75
+Data:          76
 Benchmark:     3
-Codename:      Production Item Authority Hardening
+Codename:      Existing Field-Tool Conversion Proof
 ```
 
-## 0.9.400 A0 production/item authority
+## 0.9.400 production/item authority
 
-A0 closes the canonical item and occupational-tool seams required before field-tool recipes are authored.
+### A0 — Production & Item Authority Hardening — COMPLETE
 
-- `canonicalItemRegistry` resolves existing resource, production, and equipment definition authorities and rejects cross-authority stable-ID collisions;
-- Pack-v2 item catalog references use the same resolver;
-- production outputs may resolve an existing equipment ID without creating a duplicate production-item definition;
-- canonical shop purchases retain canonical physical kind/tags/behavior and receive commerce provenance;
-- production can bind equipped tools, portable Inventory equipment tools, or explicit contextual capabilities;
-- common move/equip/sell paths preserve active physical tool bindings;
-- no authored item/recipe count, Data version, or Game State family changes.
+A0 adds a non-owning canonical resolver across resource, production, and equipment item definitions; production output resolution to existing equipment IDs; canonical shop materialization with commerce provenance; and physical production-tool bindings.
 
-Implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` passed Check #2172 / run `33661309577` with **901/901 tests** and the full gate.
+### A1 — Existing Field-Tool Conversion Proof — COMPLETE
+
+A1 proves the authority with authored production content:
+- six recipes target existing `field-knife`, `prospector-pick`, `woodsman-hatchet`, `digging-spade`, `reed-sickle`, and `marsh-rod` equipment IDs;
+- `occupationalFieldToolProductionCatalog` owns the six process definitions only;
+- `equipmentCatalog` remains the physical/equipment behavior authority;
+- `pack-occupational-field-tools` owns six existing item refs plus six recipe refs;
+- existing material-foundation stocks/components supply all inputs;
+- Marsh Fishing Rod assembly requires `cutting`, proving a crafted Field Knife can unlock and bind into downstream production;
+- crafted equipment identity and production provenance survive current-schema save/load.
+
+A1 advances Data 75 -> 76, recipes/processes 234 -> 240, packs 39 -> 40, and pack-owned records 1,325 -> 1,337. Canonical items remain 410 and Game State remains 21.
+
+Implementation freeze `d4de8f25204a46f54ccecd905b4a2144e19e96b4` passed Check #2200 / run `33663456804` with **906/906 tests** and the full gate.
 
 ## Data 57 regional authority
 
@@ -52,7 +59,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - raw production utilization **124/135**;
 - Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 75; this section retains the Data 57 regional composition evidence only.
 
-Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 234 recipes/processes, 25 routes, 27 schedules, 39 packs, and 1,325 pack-owned records**.
+Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 240 recipes/processes, 25 routes, 27 schedules, 40 packs, and 1,337 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
 
@@ -159,13 +166,14 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | --- | --- | --- |
 | Content catalog registry | integrated | Pack ownership resolves through existing canonical catalogs; item references now share `canonicalItemRegistry` across resource/production/equipment authorities. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Thirty-nine current packs; 1,325 current ownership records. |
+| Regional/shared pack ownership | integrated | Forty current packs; 1,337 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
 | Canonical commitment ref validation | integrated | Catalog-referenced commitments validate giver/place/item/source/capability relationships and dependencies. |
 | Canonical item authority | integrated | Resource, production, and equipment IDs resolve through one non-owning registry with cross-authority collision validation; production/shop paths reuse the same physical identity. |
 | Production tool binding | playable | Production resolves equipped/portable/contextual tool capability and reserves physical bound tools for the lifetime of active work. |
+| Occupational field-tool production | playable | Six established field equipment IDs now have canonical production definitions using existing material-foundation stocks; no duplicate equipment item authority. |
 | Population-backed encounter discovery | playable | Passive/wary/territorial encounter-backed populations can be deliberately located; population depletion occurs only after victory and existing body recovery remains authoritative. |
 | Ironspine alpine geography/economy | integrated | Wagon-limited pass, walk/mount high trail, alpine ecology, hunted body resources, preservation, hide/fur work, remedies, and survey craft. |
 | Headwater Vale geography/economy | playable | Timbercross headwaters, wagon-limited warden lodge, upper trail, coldstream fishing, red-deer hunting/body recovery, alder/willow work, preservation, and bridge-repair production form the first overland Waymeet approach. |
