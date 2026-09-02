@@ -75,7 +75,7 @@ function completeProduction(state, processId, options = {}) {
     return { started, completed };
 }
 
-test('A2 owns exactly three existing bronze martial items and three new recipes without duplicating item authority', () => {
+test('A2 retains its three original bronze martial recipes and canonical item authority after later pack extension', () => {
     assert.equal(listStarterBronzeMartialProcessDefinitions().length, 3);
     assert.deepEqual(validateProductionCatalog(), []);
     assert.deepEqual(validateContentPacks(listRegionalContentPacks()), []);
@@ -94,8 +94,8 @@ test('A2 owns exactly three existing bronze martial items and three new recipes 
     const pack = getRegionalContentPack('pack-starter-bronze-martial-equipment');
     assert.ok(pack);
     assert.deepEqual(pack.dependencies, ['pack-shared-foundation', 'pack-material-foundations-common-components']);
-    assert.deepEqual(pack.records.items.map((entry) => entry.id), EQUIPMENT_IDS);
-    assert.deepEqual(pack.records.recipes.map((entry) => entry.id), RECIPE_IDS);
+    assert.deepEqual(pack.records.items.map((entry) => entry.id).slice(0, EQUIPMENT_IDS.length), EQUIPMENT_IDS);
+    assert.deepEqual(pack.records.recipes.map((entry) => entry.id).slice(0, RECIPE_IDS.length), RECIPE_IDS);
 });
 
 test('A2 bronze martial recipes reuse existing alloy wood textile and hardware stocks', () => {
