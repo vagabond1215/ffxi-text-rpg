@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
-Phase:         0.9 / 0.9.400 ACTIVE; A0-A5 complete; A6 workshop tool authority audit next
+Codename:      Workshop Tool Authority Audit
+Phase:         0.9 / 0.9.400 COMPLETE; 0.9.500 Q0 quest/social authority & slice selection next
 ```
 
-Data 80 is the current authored/mechanics-data checkpoint. Product 0.9.400.6 closes A5 Basic Leather Garment Conversion Proof; Game State 21 remains unchanged. A5 adds two canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+Data 80 remains the current authored/mechanics-data checkpoint. Product 0.9.400.7 closes A6 Shared Workshop Tool Authority Audit; Game State 21 remains unchanged. A6 adds production requirement validation authority but no authored data record or durable state family. `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## 0.9.400 production/item authority
 
@@ -197,9 +197,46 @@ existing Leather Vest / Leather Trousers IDs
 
 A5 does not add a leatherworking proficiency, stitching state family, or generic duplicate leather item. It requires no persistence-family change.
 
-### Post-A5 workshop-tool authority boundary
+### A6 production requirement authority closure
 
-Conversion-first work has no remaining clean established-ID workshop-tool cluster. Ordinary smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools are not represented as canonical equipment identities. The next pass must therefore decide whether each proposed tool is portable equipment, a workstation fixture/capability, a consumable component, or unnecessary mechanical detail before new stable IDs are introduced.
+A6 resolves the post-A5 workshop-tool question by separating station capability from portable-tool capability and validating both before production content is accepted.
+
+```text
+equipmentCatalog portable tool identities
+        |
+        v
+productionRequirementAuthority
+  - recognized station tags
+  - canonical portable-tool providers
+  - explicit contextual tool tags
+        |
+        +----------------------+
+        |                      |
+        v                      v
+productionCatalog         workstationEngine
+requirement validation    station availability
+        |
+        v
+productionEngine
+tool binding + station checks
+```
+
+Recognized workstation tags:
+- `forge`;
+- `kitchen`;
+- `woodshop`;
+- `tannery`;
+- `workshop`.
+
+Current required portable production capabilities:
+- `cutting` -> Field Knife / Reed Sickle;
+- `woodcutting` -> Woodsman Hatchet.
+
+`validateProductionCatalog()` now rejects a station tag outside the recognized station authority and rejects any required tool tag without either a canonical portable provider or explicit contextual authority.
+
+This keeps ordinary fixed workshop implements inside workstation context. A carried hammer, saw, awl, ladle, balance, or similar identity should be introduced only when a player-facing action needs a portable capability distinct from station presence.
+
+A6 adds no new authored data or persisted state. Data remains 80 and Game State remains 21.
 
 ## Core authority rules
 
@@ -1089,4 +1126,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 80; the current runtime/persistence baseline is Product 0.9.400.6 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A5 Basic Leather Garment Conversion Proof; A6 Shared Workshop Tool Authority Audit is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 80; the current runtime/persistence baseline is Product 0.9.400.7 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
