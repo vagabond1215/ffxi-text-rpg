@@ -73,7 +73,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 75; this section retains the Data 57 regional composition evidence only.
+- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 77; this section retains the Data 57 regional composition evidence only.
 
 Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 243 recipes/processes, 25 routes, 27 schedules, 41 packs, and 1,343 pack-owned records**.
 
@@ -176,13 +176,13 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — current through Data 75
+## Content infrastructure and regional packs — current through Data 77
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | Pack ownership resolves through existing canonical catalogs; item references now share `canonicalItemRegistry` across resource/production/equipment authorities. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Forty current packs; 1,337 current ownership records. |
+| Regional/shared pack ownership | integrated | Forty-one current packs; 1,343 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -313,7 +313,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Current gameplay breadth at Data 76:
+Current gameplay breadth at Data 77:
 
 ```text
 places/localities       55 / mechanics 10
