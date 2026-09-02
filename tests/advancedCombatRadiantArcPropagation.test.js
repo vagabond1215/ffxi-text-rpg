@@ -29,7 +29,7 @@ import { applyStatus } from '../js/text/systems/statusEngine.js';
 import { advanceWorldTime } from '../js/text/systems/worldTimeEngine.js';
 
 test('Packet 7 gives Radiant Arc explicit Light resolution and deterministic propagation geometry', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 11);
+    assert.equal(ABILITY_CATALOG_VERSION, 12);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
