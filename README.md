@@ -10,7 +10,7 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` is COMPLETE and `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–8 are complete.** The current canonical/runtime checkpoint is Data 75 / Product 0.9.300.8 / Game State 21. Packet 8 brings Guarded Cut, Barkboar Brace, and Thicket Feint onto the same structured physical accuracy/defense/recovery contract already used by Ridge Breaker and Rivet Guard, so all five current executable martial techniques now resolve damage through the unified combat vocabulary.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is NEXT, with Occupational Tool Conversion selected but not started.** The current canonical/runtime checkpoint remains Data 75 / Product 0.9.300.8 / Game State 21 because the post-Packet-8 combat maturity reassessment is decision-only and makes no runtime or data change.
 
 ```text
 Product:       0.9.300.8
