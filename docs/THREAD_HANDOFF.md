@@ -50,7 +50,19 @@ Hosted implementation evidence:
 - Benchmark 3 PASS;
 - Benchmark Sample PASS.
 
-This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #413.
+First synchronized promotion attempt:
+- head `3d3fd5a601604481f37d7697fa5500926ae8fb19`;
+- Check #2329 / run `33686263573`;
+- Repository Audit PASS;
+- tests **933/934**;
+- sole failure: historical `tests/phase07Px6Versioning.test.js` still required `SYSTEM_VERSIONS.companions === 0.2.0` even though Q0 deliberately advances that shared later-track catalog to `0.3.0`;
+- no Q0 social-runtime test failed.
+
+Synchronization repair:
+- `610a330f6c45ba38d91c2b54de87829407e3977d`;
+- the historical Phase 0.7 gate now permits later compatible companion catalog versions using the same lower-bound convention already used by its adjacent shared-authority assertions.
+
+This handoff rewrite is the intended final pre-merge file mutation after that synchronization repair. Validate its exact resulting PR head with hosted Check before merging PR #413.
 
 ## Validated Data 81 census
 
