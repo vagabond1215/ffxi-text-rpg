@@ -88,16 +88,17 @@ authority:
   economy_0_9_400_a5_basic_leather_garments: docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md
   economy_0_9_400_a6_workshop_tool_authority_audit: docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md
   quest_social_0_9_500_q0_authority_selection: docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md
+  quest_social_0_9_500_q1_ironspine_warden_trust: docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion-selected-not-started
-  latest_product_checkpoint_sha: 61227536f7683401de047474ace4eec5160aaef3
-  latest_product_checkpoint_pull_request: 413
-  latest_product_checkpoint_check: 33685651230
-  latest_product_checkpoint_check_number: 2315
-  latest_product_checkpoint_check_result: success-934-of-934-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  current_normal_work: quest-social-0.9.500-q2-crownfields-grange-allocation-choice-social-consequence-selected-not-started
+  latest_product_checkpoint_sha: 702d06bd123e1f6f85eebf7f0fdb02dd7b394359
+  latest_product_checkpoint_pull_request: 414
+  latest_product_checkpoint_check: 33687994124
+  latest_product_checkpoint_check_number: 2338
+  latest_product_checkpoint_check_result: success-936-of-936-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   previous_product_pull_request: 402
   previous_product_pr_check: 33217086478
@@ -332,24 +333,31 @@ git:
   latest_quest_social_q0_implementation_check_sha: 61227536f7683401de047474ace4eec5160aaef3
   latest_quest_social_q0_implementation_check_result: success-934-of-934-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_quest_social_q0_pull_request: 413
+  latest_quest_social_q1_implementation_check: 33687994124
+  latest_quest_social_q1_implementation_check_number: 2338
+  latest_quest_social_q1_implementation_check_sha: 702d06bd123e1f6f85eebf7f0fdb02dd7b394359
+  latest_quest_social_q1_implementation_check_result: success-936-of-936-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_quest_social_q1_pull_request: 414
 progression:
   current_phase: 0.9
   current_track: 0.9.500-quest-social-depth
-  current_track_status: active-q0-complete-q1-ironspine-watchpost-trust-warden-companion-selected-not-started
+  current_track_status: active-q0-q1-complete-q2-crownfields-grange-allocation-choice-selected-not-started
   completed_track: 0.9.400-economy-production-depth
   completed_track_status: complete-a0-through-a6-production-and-workshop-tool-authority
   previous_completed_track: 0.9.300-advanced-combat-training
   previous_completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
-  latest_bounded_unit: quest-social-0.9.500-q0-social-relationship-eligibility-foundation
-  latest_bounded_unit_status: complete-product-0.9.500.1-package-0.9.500-game-state-21-data-81-implementation-freeze-61227536f7683401de047474ace4eec5160aaef3-check-2315-934-of-934
-  latest_data_bounded_unit: quest-social-0.9.500-q0-social-relationship-eligibility-foundation
-  latest_data_bounded_unit_status: complete-data-81-product-0.9.500.1
-  next_roadmap_gate: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion
-  next_roadmap_gate_status: candidate-not-started
-  next_quest_social_candidate: q1-ironspine-watchpost-trust-warden-companion
+  latest_bounded_unit: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion
+  latest_bounded_unit_status: complete-product-0.9.500.2-package-0.9.500-game-state-21-data-82-implementation-freeze-702d06bd123e1f6f85eebf7f0fdb02dd7b394359-check-2338-936-of-936
+  latest_data_bounded_unit: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion
+  latest_data_bounded_unit_status: complete-data-82-product-0.9.500.2
+  next_roadmap_gate: quest-social-0.9.500-q2-crownfields-grange-allocation-choice-social-consequence
+  next_roadmap_gate_status: selected-not-started
+  next_quest_social_candidate: q2-crownfields-grange-allocation-choice-social-consequence
   next_quest_social_candidate_status: selected-not-started
   quest_social_q0_status: complete-social-relationship-eligibility-foundation
-  quest_social_q1_expected_scope: three-connected-commitments-one-dain-rove-companion-zero-new-npcs-zero-new-geography
+  quest_social_q1_status: complete-ironspine-watchpost-trust-warden-companion
+  quest_social_q2_expected_scope: crownfields-three-person-allocation-choice-freeze-before-any-choice-state-extension
+  quest_social_q1_expected_scope: complete-three-commitments-one-dain-rove-companion-zero-new-npcs-zero-new-geography
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
   combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
@@ -437,15 +445,16 @@ validation:
   basic_leather_garment_conversion_guard: tests/basicLeatherGarmentConversion.test.js
   social_requirement_authority_guard: tests/socialRequirementAuthority.test.js
   slatewater_social_relationship_gate_guard: tests/playerSlatewaterRoadScoutFlow.test.js
+  ironspine_warden_trust_flow_guard: tests/playerIronspineWardenTrustFlow.test.js
   production_requirement_authority_guard: tests/productionRequirementAuthority.test.js
 quality:
-  current_product_version: 0.9.500.1
+  current_product_version: 0.9.500.2
   current_package_version: 0.9.500
   current_account_save: 5
   current_game_state: 21
-  current_data_version: 81
+  current_data_version: 82
   current_benchmark_version: 3
-  current_codename: Social Relationship Eligibility Foundation
+  current_codename: Ironspine Warden Trust Circuit
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
