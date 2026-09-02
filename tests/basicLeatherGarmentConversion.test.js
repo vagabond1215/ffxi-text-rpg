@@ -74,6 +74,7 @@ function completeProduction(state, processId, options = {}) {
 
 function prepareCrafting(state) {
     gainWorkProficiency(state, 'crafting', 4);
+    gainWorkProficiency(state, 'metalworking', 4);
 }
 
 test('A5 owns exactly two existing leather garment identities and two recipes without duplicate item authority', () => {
