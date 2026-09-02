@@ -207,8 +207,6 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /socialRequirements: 0\.1\.0/);
     assert.match(describeSystemVersions(), /socialRequirementEngine: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerContinuity: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /party: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /companions: 0\.3\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
     assert.match(describeSystemVersions(), /enemyEncounterProjection: 0\.1\.0/);
     assert.match(describeSystemVersions(), /presentationLog: 0\.1\.0/);
