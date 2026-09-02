@@ -10,6 +10,7 @@ import { getCommitmentRecord } from './commitmentEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { isSettlementLocality } from './localityClassificationEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { evaluateRelationshipRequirements } from './socialRequirementEngine.js';
 import { getNpcRelationship } from './relationshipEngine.js';
 import { calculateCombatProfile } from './statEngine.js';
 import { ensureWorldTimeState } from './worldTimeEngine.js';
@@ -84,6 +85,14 @@ export function canRecruitCompanion(state, companionQuery) {
             'party.commitment-requirement',
             { companionId: definition.id, missingCommitmentIds },
             `${definition.name} is not yet willing to travel with you; finish the field work that establishes trust first.`,
+        );
+    }
+    const relationshipCheck = evaluateRelationshipRequirements(state, definition.recruitment.relationshipRequirements ?? []);
+    if (!relationshipCheck.ok) {
+        return blocked(
+            'party.relationship-requirement',
+            { companionId: definition.id, unmetRelationshipRequirements: [...relationshipCheck.unmet] },
+            relationshipCheck.reason || `${definition.name} is not yet willing to travel with you.`,
         );
     }
     const npc = ensureBackingNpcRecord(state, definition);
