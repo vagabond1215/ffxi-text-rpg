@@ -3,13 +3,14 @@ import assert from 'node:assert/strict';
 import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
 import { getEquipmentCatalogEntry } from '../js/text/data/equipmentCatalog.js';
+import { getCanonicalResourceItem } from '../js/text/data/resourceItemRegistry.js';
 import { getProductionDefinition, validateProductionCatalog } from '../js/text/data/productionCatalog.js';
 import { getProductionItem } from '../js/text/data/productionItems.js';
 import { getResourceItem } from '../js/text/data/resourceItems.js';
 import { createEnemy } from '../js/text/entities/entityFactory.js';
 import { createInitialState, createNewGameState } from '../js/text/gameState.js';
-import { addItemToContainer } from '../js/text/systems/inventoryEngine.js';
-import { equipItem } from '../js/text/systems/equipmentEngine.js';
+import { addItemToContainer, transferItemBetweenContainers } from '../js/text/systems/inventoryEngine.js';
+import { equipItem, unequipItem } from '../js/text/systems/equipmentEngine.js';
 import { startGatheringWork, reconcileGatheringWork } from '../js/text/systems/gatheringWorkEngine.js';
 import { moveInDirection } from '../js/text/systems/navigationEngine.js';
 import { performLocalityPoiAction } from '../js/text/systems/localityEngine.js';
@@ -188,4 +189,46 @@ test('character resource recovery automatically composes equipped tools and pers
 
     assert.equal(completed.items.length, 1);
     assert.equal(getWorkProficiency(state.player, 'fieldDressing'), 1);
+});
+
+
+test('production can bind a portable inventory tool without consuming it and releases the binding on completion', () => {
+    const state = createNewGameState();
+    gainWorkProficiency(state, 'crafting', 1);
+    addEquipment(state, 'field-knife');
+    addItem(state, getCanonicalResourceItem('item-elderwood-ash-timber'));
+
+    const started = startProductionWork(state, 'craft-material-ash-handle-blank', { stationTags: ['woodshop'] });
+
+    assert.equal(started.ok, true, started.display?.text);
+    assert.deepEqual(started.data.work.data.toolBindings.map((entry) => ({
+        itemId: entry.itemId,
+        sourceType: entry.sourceType,
+        sourceId: entry.sourceId,
+    })), [{ itemId: 'field-knife', sourceType: 'inventory', sourceId: 'inventory' }]);
+    assert.match(equipItem(state, 'Field Knife'), /in use by Shape Ash Handle Blank/);
+    assert.match(transferItemBetweenContainers(state, 'Field Knife', 'inventory', 'wardrobe1'), /in use by Shape Ash Handle Blank/);
+
+    advanceWorldTime(state, started.data.task.durationSeconds);
+    const [completed] = reconcileProductionWork(state);
+    assert.equal(completed.ok, true);
+    assert.ok(state.player.inventory.some((item) => item.id === 'item-material-ash-handle-blank'));
+    assert.match(equipItem(state, 'Field Knife'), /Equipped Field Knife/);
+});
+
+test('production binds an equipped tool and prevents unequipping or replacing it during active work', () => {
+    const state = createNewGameState();
+    gainWorkProficiency(state, 'crafting', 1);
+    addEquipment(state, 'field-knife');
+    addEquipment(state, 'bronze-dagger');
+    addItem(state, getCanonicalResourceItem('item-elderwood-ash-timber'));
+    assert.match(equipItem(state, 'Field Knife'), /Equipped Field Knife/);
+
+    const started = startProductionWork(state, 'craft-material-ash-handle-blank', { stationTags: ['woodshop'] });
+
+    assert.equal(started.ok, true, started.display?.text);
+    assert.equal(started.data.work.data.toolBindings[0].sourceType, 'equipment');
+    assert.equal(started.data.work.data.toolBindings[0].sourceId, 'mainHand');
+    assert.match(unequipItem(state, 'mainHand'), /in use by Shape Ash Handle Blank/);
+    assert.match(equipItem(state, 'Bronze Dagger'), /in use by Shape Ash Handle Blank/);
 });
