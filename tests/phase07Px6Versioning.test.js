@@ -44,7 +44,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.ok(compareSemver(SYSTEM_VERSIONS.transportServiceBoard, '0.1.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.settlementServiceBoard, '0.1.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.workstations, '0.2.0') >= 0);
-    assert.equal(SYSTEM_VERSIONS.shopTransactions, '0.5.0');
+    assert.ok(compareSemver(SYSTEM_VERSIONS.shopTransactions, '0.5.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.playerInformation, '0.1.1') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.gameViewModels, '0.12.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.domUi, '0.10.0') >= 0);
