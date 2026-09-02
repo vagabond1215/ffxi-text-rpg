@@ -83,7 +83,7 @@ const POI_SEEDS = [
     poi('poi-cairnward-cart-shelter','cairnward-relay','Cairnward Cart Shelter',POI_TYPES.LANDMARK,'E-6',['woodworking','craftSupport','cartRepair','roadRepair','packing','waymeetMarches'],'Covered wheel and axle benches, packing frames, sedge matting hooks, fascine racks, stone-dressing blocks, and road-mender stock for plateau traffic'),
     poi('poi-cairnward-hearth','cairnward-relay','Tam Berrow',POI_TYPES.LANDMARK,'D-5',['lodging','food','safeRest','cooking','craftSupport','animalShelter','waymeetMarches'],'Common hearth beside the relay cistern with cookpot, drying racks, peat fuel, simple bunks, feed bins, and a sheltered hitching yard'),
     poi('poi-ironspine-survey-exchange', 'ironspine-watchpost', 'Vara Kell', POI_TYPES.VENDOR, 'G-7', ['shop', 'regionalVendor', 'ironspine', 'surveyGoods'], 'High-pass exchange buying field finds and selling provisions, survey goods, and mountain tools'),
-    poi('poi-ironspine-warden-desk', 'ironspine-watchpost', 'Dain Rove', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'hunting', 'wildlifeTracking', 'routeGuidance', 'ironspine'], 'Warden desk posting pass conditions, wildlife sign, and high-country notices'),
+    poi('poi-ironspine-warden-desk', 'ironspine-watchpost', 'Dain Rove', POI_TYPES.GUILD, 'F-5', ['fieldcraft', 'hunting', 'wildlifeTracking', 'routeGuidance', 'ironspine'], 'Warden desk posting pass conditions, wildlife sign, and high-country notices', { companionId: 'companion-dain-rove' }),
     poi('poi-ironspine-common-hearth', 'ironspine-watchpost', 'Mara Fell', POI_TYPES.LANDMARK, 'E-6', ['lodging', 'food', 'safeRest', 'cooking', 'craftSupport', 'ironspine'], 'Stone common room with a banked hearth, stew pot, drying lines, a common repair bench, and simple sleeping pallets'),
     poi('poi-ironspine-animal-yard', 'ironspine-watchpost', 'Ironspine Sheltered Yard', POI_TYPES.TRAVEL, 'H-8', ['travel', 'mountCare', 'packAnimals', 'wagonLimit'], 'Roofed mountain yard where wagon teams stop and saddle animals are checked before the high trail'),
 
@@ -217,7 +217,7 @@ function inferActions(poi) {
     if ([POI_TYPES.MISSION, POI_TYPES.QUEST].includes(poi.type)) actions.add('quest');
     if ([POI_TYPES.TRAVEL, POI_TYPES.TRAVEL_MARKER, POI_TYPES.ROUTE_EXIT].includes(poi.type)) actions.add('travel');
     if (poi.type === POI_TYPES.STORAGE) actions.add('storage');
-    if (poi.type === POI_TYPES.COMPANION) actions.add('companion');
+    if (poi.type === POI_TYPES.COMPANION || poi.companionId) actions.add('companion');
     if ((poi.tags ?? []).includes('combatTraining') && (poi.trainingCapabilityIds ?? []).length) actions.add('training');
     return Array.from(actions);
 }
