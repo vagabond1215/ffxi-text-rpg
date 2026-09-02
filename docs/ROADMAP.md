@@ -42,11 +42,11 @@ Dry Upland & Saltpan Ecology Repair                  COMPLETE / MAIN
 Headwater / Highland Transition Repair               COMPLETE / MAIN
 ```
 
-## Latest runtime/data bounded unit
+## Historical Data 62 ecology bounded unit
 
 ### Cross-Biome Family Breadth
 
-**Status: IMPLEMENTED ON `main`; promoted as Data 62 / Product 0.9.100.23.**
+**Historical status: IMPLEMENTED ON `main`; promoted as Data 62 / Product 0.9.100.23.**
 
 This final location-diversity repair adds two genuinely missing scoped families:
 - **Ground Squirrel** — Coppergrass Loess, Waymeet Cairn, and Crownfields Hedgebank variants;
