@@ -1,6 +1,6 @@
 # Advanced Combat 0.9.300 Packet 8 — Martial Structured Resolution Breadth
 
-Status: **SELECTED / IMPLEMENTATION STARTED.**
+Status: **COMPLETE / PRODUCT 0.9.300.8 / GAME STATE 21 / DATA 75.**
 
 Entry baseline:
 ```text
@@ -191,6 +191,131 @@ Not part of Packet 8:
 - broad ability-catalog cleanup;
 - mechanics-census filler.
 
+## Implementation result
+
+### Authored data changes
+
+`ABILITY_CATALOG_VERSION` advances 11 -> 12.
+
+Exactly three ability definitions change:
+- Guarded Cut gains three-second recovery and sword/slashing physical resolution with no critical eligibility;
+- Barkboar Brace gains four-second recovery and axe/slashing physical resolution with no critical eligibility;
+- Thicket Feint gains two-second recovery and dagger/piercing physical resolution with existing-character critical eligibility.
+
+No capability definition, learning path, equipment definition, status definition, ability count, or execution engine changes.
+
+### Runtime behavior
+
+The existing `abilityEngine` and `combatResolutionEngine` require no Packet-8-specific branch.
+
+For each migrated technique:
+1. capability/equipment/resource legality is checked through the existing capability path;
+2. the target damage effect uses physical accuracy against evasion;
+3. landed damage uses physical attack versus target physical defense;
+4. physical variance uses the existing resolver;
+5. critical behavior follows the authored eligibility flag;
+6. the independent self-status effect resolves afterward;
+7. combat action recovery uses the authored 3/4/2-second value;
+8. ordinary action history stores the structured resolution evidence.
+
+A target miss does not cancel the self-buff because Packet 8 deliberately preserves the pre-existing independent effect model.
+
+### Focused guard
+
+Primary guard:
+- `tests/advancedCombatMartialStructuredResolution.test.js`.
+
+It proves:
+- ability catalog version 12;
+- ability count 41;
+- exact stable identity/cost/cooldown/potency/self-buff preservation for all three techniques;
+- weapon-context gating;
+- shared physical defense sensitivity;
+- deterministic physical misses;
+- self-buff application on a missed target attack;
+- non-critical Guarded Cut/Barkboar Brace;
+- critical-eligible Thicket Feint using existing critical stats;
+- 3/4/2-second recovery;
+- action-history resolution evidence;
+- no martial/technique durable state family;
+- valid Game State 21 structure.
+
+### Behavioral/data implementation freeze
+
+`4a89df88f408062aa3e90b1284c9c3497e248f6e`
+
+Hosted evidence:
+- Check #2132 / run `33575392561`;
+- Repository Audit PASS;
+- **895/895 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS;
+- Pages #2261 / run `33575391923` PASS.
+
+### Promotion result
+
+```text
+Product       0.9.300.7 -> 0.9.300.8
+Package       0.9.300   -> 0.9.300
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          74        -> 75
+Benchmark     3         -> 3
+```
+
+System versions:
+- version manifest 0.9.300.7 -> 0.9.300.8;
+- ability catalog 0.10.0 -> 0.11.0.
+
+Game State remains 21 because no new durable fact exists. Existing cooldowns, statuses, readiness, equipment/capability state, and action history already own all future consequences.
+
+No supported-save migration is added.
+
+## 0.9.300 maturity consequence
+
+Packet 8 closes the current executable martial raw-damage gap:
+- Guarded Cut — structured;
+- Ridge Breaker — structured;
+- Rivet Guard — structured;
+- Barkboar Brace — structured;
+- Thicket Feint — structured.
+
+Together with Packets 3–7, the current combat substrate now has representative proofs for:
+- direct elemental spell resolution;
+- resistible hard control;
+- target-centered radial geometry;
+- persistent fields on fictional time;
+- synchronous target-to-target propagation;
+- all current executable martial techniques;
+- weapon cadence/ranged/kata;
+- affinity substitutions;
+- hostile attention;
+- timed combat loadout transitions.
+
+This is sufficient evidence to stop auto-expanding combat by semantic family and reassess the track.
+
+## Next decision boundary
+
+**No Packet 9 is selected.**
+
+The next bounded unit is an explicit **0.9.300 maturity reassessment**.
+
+That reassessment should answer:
+1. are any remaining combat defects blocking a coherent alpha loop, rather than merely enriching it?
+2. do stale placeholders or legacy surfaces now justify one cleanup packet?
+3. is engagement geometry / LOS / pursuit required before leaving the track, or can it remain a later depth program?
+4. are passive block/parry/guard/counter/reaction mechanics required now, or are authored techniques/statuses sufficient for the present milestone?
+5. should remaining spell names such as Rimefall / Flare Bloom stay deferred rather than forcing another semantics packet?
+6. can `0.9.300` be paused/closed so the project returns to its broader persistent-life loop?
+
+Expected recommendation absent a newly discovered blocker:
+- treat `0.9.300` as mature enough to pause after the reassessment;
+- switch to `0.9.400 Economy / Production Depth`;
+- begin with **Occupational Tool Conversion** from `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+
+The reassessment itself is a bounded decision unit. It must not silently implement Packet 9 or start 0.9.400.
+
 ## Closure discipline
 
-Freeze the exact behavioral/data implementation SHA before Product/Data promotion and authority synchronization. `docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet.
+`docs/THREAD_HANDOFF.md` remains the final repository-file write for the packet, followed only by exact-head hosted validation.
