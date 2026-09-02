@@ -33,29 +33,18 @@ Game State remains 21. Crafted equipment identity, production provenance, equipm
 
 ## Repository / promotion state
 
-Pre-A4 main checkpoint:
-- `56d50c0356cda4f0ba15d14dddee62a48e56fb8e`.
+A4 is merged to `main`.
 
-A4 branch:
-- `phase-0.9.400-a4-remaining-bronze-conversion`.
-
-Promotion PR:
-- PR #410 — Add 0.9.400 A4 remaining bronze starter conversion proof.
-
-A4 behavioral implementation freeze:
-- `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd`.
-
-Hosted implementation evidence:
-- Check #2259 / run `33672932856`;
-- Repository Audit PASS;
-- **921/921 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
+- merged main SHA: `530b4ad81a5ab7cdd68153d4a8925be42ed49db5`;
+- PR #410: MERGED;
+- exact synchronized PR head: `5350a4327e08a51794dc3030612a7d93f32b54c9`;
+- final pre-merge Check #2273 / run `33673509521`: Repository Audit, **921/921 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd`;
+- implementation freeze Check #2259 / run `33672932856`: full gate PASS.
 
 Initial Check #2258 / run `33672825424` reached the full suite and produced 920/921. The single failure was the A2 regression's obsolete expectation that `pack-starter-bronze-martial-equipment` must contain exactly three item/recipe refs. A4 intentionally extends that existing shared pack. The A2 regression was corrected to preserve its three recipe definitions and original pack prefix; no runtime or recipe behavior changed.
 
-This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #410.
+The older A4 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A5 continuation should start from current `main`.
 
 ## Validated Data 79 census
 
@@ -305,12 +294,14 @@ Do not restart the broad material-culture audit or advanced-combat audit unless 
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for A4 closure.
+This post-merge handoff correction is the intended final repository-file mutation for A4 closure.
+
+A4 promotion evidence is complete:
+- behavioral freeze Check #2259 / run `33672932856`: full gate PASS;
+- exact synchronized PR-head Check #2273 / run `33673509521`: **921/921 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
+- PR #410 merged to `main` at `530b4ad81a5ab7cdd68153d4a8925be42ed49db5`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **921/921 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #410 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave A5 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave A5 unstarted;
+- start future work from current `main`, not the old A4 branch.
