@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.400.2
+Product:       0.9.400.3
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          76
+Data:          77
 Benchmark:     3
-Codename:      Existing Field-Tool Conversion Proof
+Codename:      Bronze Martial Conversion Proof
 ```
 
 ## 0.9.400 production/item authority
@@ -48,6 +48,22 @@ A1 advances Data 75 -> 76, recipes/processes 234 -> 240, packs 39 -> 40, and pac
 
 Implementation freeze `d4de8f25204a46f54ccecd905b4a2144e19e96b4` passed Check #2200 / run `33663456804` with **906/906 tests** and the full gate.
 
+### A2 — Bronze Martial Conversion Proof — COMPLETE
+
+A2 extends the same authority into starter martial equipment:
+- `starterBronzeMartialProductionCatalog` owns three process definitions only;
+- outputs are existing `bronze-sword`, `bronze-cap`, and `bronze-harness` equipment IDs;
+- shared material-foundation bronze, wood, textile, and hardware stocks supply all inputs;
+- `pack-starter-bronze-martial-equipment` owns three existing item refs plus three recipe refs;
+- Bronze Harness assembly requires `cutting`, so the A1 Field Knife binding participates in a separate production chain;
+- crafted Bronze Sword drives melee cadence;
+- crafted armor changes the canonical combat profile;
+- crafted loadout identity/provenance survives current-schema save/load.
+
+A2 advances Data 76 -> 77, recipes/processes 240 -> 243, packs 40 -> 41, and pack-owned records 1,337 -> 1,343. Canonical items remain 410 and Game State remains 21.
+
+Implementation freeze `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d` passed Check #2220 / run `33665699974` with **911/911 tests** and the full gate.
+
 ## Data 57 regional authority
 
 Waymeet Marches composes existing geography, route, ecology, resource, production, service, schedule, and Pack-v2 systems.
@@ -59,7 +75,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - raw production utilization **124/135**;
 - Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 75; this section retains the Data 57 regional composition evidence only.
 
-Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 240 recipes/processes, 25 routes, 27 schedules, 40 packs, and 1,337 pack-owned records**.
+Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 243 recipes/processes, 25 routes, 27 schedules, 41 packs, and 1,343 pack-owned records**.
 
 Promoted system/catalog versions include `npcSchedules 0.9.0`, `productionCatalog 0.14.0`, `productionItems 0.15.0`, `ecologyRegistry 0.11.0`, `resourceItemRegistry 0.12.0`, `routeCatalog 0.9.0`, and `regionalContentPacks 0.16.0`. Waymeet Marches modular catalogs begin at `0.1.0`.
 
@@ -306,29 +322,29 @@ shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        410 / 200
-recipes/processes      240 / 75
+recipes/processes      243 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
 companions               2 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    40
-pack-owned records     1337
+regional/shared packs    41
+pack-owned records     1343
 ```
 
 The creature catalog clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because abilities, quests, companions, and named NPCs remain below their mechanics floors.
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.400.2 / Data 76 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active: A0 Production & Item Authority Hardening and A1 Existing Field-Tool Conversion Proof are complete.
+Phase 0.9 remains open at Product 0.9.400.3 / Data 77 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active through A2 Bronze Martial Conversion Proof.
 
-A1 permanent record:
-- `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
+A2 permanent record:
+- `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
 
-Implementation freeze `d4de8f25204a46f54ccecd905b4a2144e19e96b4` passed Check #2200 / run `33663456804` with **906/906 tests** and the full gate.
+Implementation freeze `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d` passed Check #2220 / run `33665699974` with **911/911 tests** and the full gate.
 
-**A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.**
+**A3 Caster / Offhand Starter Conversion is the next candidate / not started.**
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
