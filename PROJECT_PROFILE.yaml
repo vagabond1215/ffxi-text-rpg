@@ -276,6 +276,13 @@ git:
   latest_advanced_combat_p8_pages: 33575391923
   latest_advanced_combat_p8_pages_number: 2261
   latest_advanced_combat_p8_pages_result: success
+  latest_advanced_combat_maturity_reassessment_check: 33657464302
+  latest_advanced_combat_maturity_reassessment_check_number: 2168
+  latest_advanced_combat_maturity_reassessment_check_sha: e3325f958d5defcc1c25f542c51ead137808cfdc
+  latest_advanced_combat_maturity_reassessment_check_result: success-895-of-895-tests-repository-audit-census-benchmark-and-sample-decision-checkpoint
+  latest_advanced_combat_maturity_reassessment_pages: 33657463220
+  latest_advanced_combat_maturity_reassessment_pages_number: 2297
+  latest_advanced_combat_maturity_reassessment_pages_result: success
 progression:
   current_phase: 0.9
   current_track: 0.9.400-economy-production-depth
@@ -285,7 +292,7 @@ progression:
   previous_completed_track: 0.9.200-adventure-vertical-slices
   previous_completed_track_status: complete-slice-a-and-combat-b1-through-b5
   latest_bounded_unit: advanced-combat-0.9.300-maturity-reassessment
-  latest_bounded_unit_status: decision-complete-close-0.9.300-no-runtime-version-change-product-0.9.300.8-game-state-21-data-75
+  latest_bounded_unit_status: decision-complete-close-0.9.300-no-runtime-version-change-product-0.9.300.8-game-state-21-data-75-validated-head-e3325f958d5defcc1c25f542c51ead137808cfdc
   latest_data_bounded_unit: advanced-combat-p8-martial-structured-resolution-breadth
   latest_data_bounded_unit_status: complete-on-main-data-75
   next_roadmap_gate: economy-production-0.9.400-packet-a-occupational-tool-conversion
