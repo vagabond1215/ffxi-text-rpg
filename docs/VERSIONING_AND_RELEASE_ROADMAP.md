@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 ```
 
 ## Product version format
@@ -1496,7 +1496,7 @@ No version axis advances for the reassessment itself.
 
 Deferred combat depth includes mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement and explicit flee/retreat, passive block/parry/guard/counter/reaction execution, inert combatant-placeholder cleanup, weapon resonance/imbuement, unsupported-family breadth, and remaining richer spell-name semantics.
 
-No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening`, A1 Existing Field-Tool Conversion Proof, and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening`, A1 Existing Field-Tool Conversion Proof, and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
 
@@ -1530,7 +1530,7 @@ Behavioral implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` pass
 
 Permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
-A1 Existing Field-Tool Conversion Proof and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+A1 Existing Field-Tool Conversion Proof and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## `0.9.400.2` — Existing Field-Tool Conversion Proof
 
@@ -1565,7 +1565,7 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
 
-A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## `0.9.400.3` — Bronze Martial Conversion Proof
 
@@ -1588,7 +1588,7 @@ Census: 410 canonical items unchanged, 243 recipes/processes, 41 regional/shared
 
 Permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
 
-A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## `0.9.400.4` — Caster / Offhand Starter Conversion Proof
 
@@ -1622,7 +1622,7 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`.
 
-A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## `0.9.400.5` — Remaining Bronze Starter Set Conversion Proof
 
@@ -1658,7 +1658,7 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
 
-A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## `0.9.400.6` — Basic Leather Garment Conversion Proof
 
@@ -1693,7 +1693,36 @@ Census result:
 
 Permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
 
-Conversion-first existing-ID work is exhausted for the explicit Packet-A tool backlog. A6 Shared Workshop Tool Authority Audit is the next candidate / not started.
+Conversion-first existing-ID work is exhausted for the explicit Packet-A tool backlog. A6 Shared Workshop Tool Authority Audit is complete; `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
+
+## `0.9.400.7` — Workshop Tool Authority Audit
+
+This revision closes the current Economy / Production Depth track by hardening station/tool requirement authority instead of manufacturing unsupported workshop-tool content.
+
+```text
+Product       0.9.400.6 -> 0.9.400.7
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          80        -> 80
+Benchmark     3         -> 3
+```
+
+A6 adds:
+- `productionRequirementAuthority 0.1.0`;
+- centralized recognized workstation tags;
+- canonical portable production-tool provider discovery;
+- explicit contextual production-tool capability authority;
+- production-catalog validation for unknown station tags and unsupported required-tool tags;
+- regression proof that the live graph currently requires only `cutting` and `woodcutting`.
+
+No canonical authored content changes, so Data remains 80. No durable gameplay fact changes, so Game State remains 21.
+
+Validated implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent record: `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
+
+`0.9.400 Economy / Production Depth` is complete after A0-A6. `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
 
 ## Phase progression
 
@@ -1706,8 +1735,8 @@ Conversion-first existing-ID work is exhausted for the explicit Packet-A tool ba
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              ACTIVE / A0-A5 COMPLETE; A6 WORKSHOP TOOL AUTHORITY AUDIT NEXT
-0.9.500 Quest/social depth                    QUEUED
+0.9.400 Economy/production depth              COMPLETE / A0-A6
+0.9.500 Quest/social depth                    QUEUED / Q0 AUTHORITY & VERTICAL SLICE SELECTION NEXT
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
 0.9.800 Supported persistence transition      DEFERRED
