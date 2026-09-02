@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.300.7
+Product:       0.9.300.8
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          74
+Data:          75
 Benchmark:     3
-Codename:      Radiant Arc Propagation Foundation
+Codename:      Martial Structured Resolution Breadth
 ```
 
 ## Data 57 regional authority
@@ -212,11 +212,11 @@ spellSchools / capabilities / abilities / companions
 | Elemental Form | playable | Universal fire/earth/wind/water/lightning/ice/light/dark attack families; no region ownership. |
 | Vital Weave / Ward Lore | playable | Universal healing and defensive/support spell families. |
 | Veilscript | playable | Original seal-magic tradition using the existing `ninjutsu` skill for debuff/guard sigils. |
-| Ability/spell engine | playable / Radiant Arc propagation foundation implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, bounded control/ring/field semantics, and synchronous arc propagation work. Radiant Arc reuses the existing geometric target-expansion path with deterministic target-to-target jumps and no durable propagation state. |
+| Ability/spell engine | playable / martial structured-resolution breadth implemented | Learned abilities, activation, costs, cooldowns, interruption, recovery, structured resolution, bounded control/ring/field/arc semantics, and current martial techniques work. All five executable techniques now use structured damage resolution where applicable; Packet 8 adds no new execution owner. |
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P7 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, persistent fields, and synchronous arc propagation share canonical authorities. P7 adds nearest-unhit target-to-target propagation and per-jump evidence without new persistence, task ownership, movement, LOS, or pathfinding. |
+| Combat 2.0 | playable / 0.9.300 P8 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, persistent fields, arc propagation, and all five current executable martial techniques share canonical resolution authorities. P8 closes the remaining executable martial raw-damage gap without new persistence or combat subsystems. |
 | Combat field engine | playable / P6 foundation | Versioned battle-local fields persist center/source snapshots and fictional-time pulse deadlines. Current authored proof is Umbral Well only; general zones, moving/friendly fields, and player ground targets are deferred. |
 | Active-battle persistence | integrated / Game State 21 | Encounter authority survives save/load, including required active field state; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
@@ -297,7 +297,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.7 / Data 74 / Game State 21. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–7 complete.
+Phase 0.9 remains open at Product 0.9.300.8 / Data 75 / Game State 21. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–8 complete and a maturity reassessment next.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -316,5 +316,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packets 1–7 are COMPLETE.** Packet 7 implements Radiant Arc as bounded synchronous propagation: up to three unhit recipients chained by nearest two-unit jumps with independent Light resolution and explicit per-recipient attention. Mutable movement/engagement geometry, LOS/pursuit, broader propagation families, and remaining adept semantic migrations remain deferred. No subsequent advanced-combat packet is selected. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Packets 1–8 are COMPLETE.** Packet 8 completes shared physical resolution across every current executable martial technique while preserving self-buff semantics. Mutable movement/engagement geometry, LOS/pursuit, passive defense/reactions, broader propagation families, and remaining named spell semantics remain deferred. The next bounded unit is an explicit 0.9.300 maturity reassessment rather than an auto-selected Packet 9. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
 
