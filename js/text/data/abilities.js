@@ -1,7 +1,7 @@
 import { getCapability } from './capabilities.js';
 import { ELEMENT_KEYS } from './systemConstants.js';
 
-export const ABILITY_CATALOG_VERSION = 11;
+export const ABILITY_CATALOG_VERSION = 12;
 export const ABILITY_KINDS = Object.freeze(['spell', 'technique', 'utility']);
 export const ABILITY_CONTEXTS = Object.freeze(['combat', 'exploration']);
 export const ABILITY_TARGET_KINDS = Object.freeze(['self', 'enemy', 'context']);
@@ -25,8 +25,8 @@ const ABILITIES = Object.freeze({
         effects: [{ type: 'status', recipient: 'self', status: { id: 'status-stone-ward', name: 'Stone Ward', category: 'buff', durationSeconds: 30, stackGroup: 'ward-defense', stackRule: 'replace', modifiers: { defense: 4 }, flags: { magicalWard: true } } }],
     }),
     'ability-guarded-cut': ability({
-        id: 'ability-guarded-cut', name: 'Guarded Cut', kind: 'technique', capabilityId: 'technique-guarded-cut', tags: ['martial', 'weapon-technique', 'defensive'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, cooldownSeconds: 8, costs: { tp: 250 },
-        effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 4, coefficient: 0.9 }, { type: 'status', recipient: 'self', status: { id: 'status-guarded-cut', name: 'Guarded Cut', category: 'buff', durationSeconds: 12, stackGroup: 'guarded-cut', stackRule: 'replace', modifiers: { defense: 2 }, flags: { guarded: true } } }],
+        id: 'ability-guarded-cut', name: 'Guarded Cut', kind: 'technique', capabilityId: 'technique-guarded-cut', tags: ['martial', 'weapon-technique', 'defensive'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, recoverySeconds: 3, cooldownSeconds: 8, costs: { tp: 250 },
+        effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 4, coefficient: 0.9, resolution: { delivery: 'melee', channel: 'physical', damageType: 'slashing', accuracyModel: 'physical', resistanceModel: 'physicalDefense', criticalEligible: false } }, { type: 'status', recipient: 'self', status: { id: 'status-guarded-cut', name: 'Guarded Cut', category: 'buff', durationSeconds: 12, stackGroup: 'guarded-cut', stackRule: 'replace', modifiers: { defense: 2 }, flags: { guarded: true } } }],
     }),
     'ability-waymark-reading': ability({ id: 'ability-waymark-reading', name: 'Waymark Reading', kind: 'utility', capabilityId: 'practical-waymark-reading', tags: ['fieldcraft', 'navigation', 'observation'], contexts: ['exploration'], target: { kind: 'context' }, activation: { durationSeconds: 3, interruptible: true }, cooldownSeconds: 5, costs: {}, effects: [{ type: 'context', recipient: 'context', operation: 'survey-current-place' }] }),
     'ability-ridge-breaker': ability({
@@ -43,12 +43,12 @@ const ABILITIES = Object.freeze({
         effects: [{ type: 'status', recipient: 'self', status: { id: 'status-tempered-ward', name: 'Tempered Ward', category: 'buff', durationSeconds: 36, stackGroup: 'ward-defense', stackRule: 'replace', modifiers: { defense: 6 }, flags: { magicalWard: true, ironbound: true } } }],
     }),
     'ability-barkboar-brace': ability({
-        id: 'ability-barkboar-brace', name: 'Barkboar Brace', kind: 'technique', capabilityId: 'technique-barkboar-brace', tags: ['martial', 'weapon-technique', 'axe', 'defensive', 'elderwood'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, cooldownSeconds: 10, costs: { tp: 300 },
-        effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 6, coefficient: 1.05 }, { type: 'status', recipient: 'self', status: { id: 'status-barkboar-brace', name: 'Barkboar Brace', category: 'buff', durationSeconds: 15, stackGroup: 'barkboar-brace', stackRule: 'replace', modifiers: { defense: 3 }, flags: { braced: true } } }],
+        id: 'ability-barkboar-brace', name: 'Barkboar Brace', kind: 'technique', capabilityId: 'technique-barkboar-brace', tags: ['martial', 'weapon-technique', 'axe', 'defensive', 'elderwood'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, recoverySeconds: 4, cooldownSeconds: 10, costs: { tp: 300 },
+        effects: [{ type: 'damage', recipient: 'target', stat: 'str', base: 6, coefficient: 1.05, resolution: { delivery: 'melee', channel: 'physical', damageType: 'slashing', accuracyModel: 'physical', resistanceModel: 'physicalDefense', criticalEligible: false } }, { type: 'status', recipient: 'self', status: { id: 'status-barkboar-brace', name: 'Barkboar Brace', category: 'buff', durationSeconds: 15, stackGroup: 'barkboar-brace', stackRule: 'replace', modifiers: { defense: 3 }, flags: { braced: true } } }],
     }),
     'ability-thicket-feint': ability({
-        id: 'ability-thicket-feint', name: 'Thicket Feint', kind: 'technique', capabilityId: 'technique-thicket-feint', tags: ['martial', 'weapon-technique', 'dagger', 'mobility', 'elderwood'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, cooldownSeconds: 8, costs: { tp: 225 },
-        effects: [{ type: 'damage', recipient: 'target', stat: 'dex', base: 5, coefficient: 1.0 }, { type: 'status', recipient: 'self', status: { id: 'status-thicket-feint', name: 'Thicket Feint', category: 'buff', durationSeconds: 10, stackGroup: 'thicket-feint', stackRule: 'replace', modifiers: { defense: 1 }, flags: { mobile: true } } }],
+        id: 'ability-thicket-feint', name: 'Thicket Feint', kind: 'technique', capabilityId: 'technique-thicket-feint', tags: ['martial', 'weapon-technique', 'dagger', 'mobility', 'elderwood'], contexts: ['combat'], target: { kind: 'enemy' }, activation: { durationSeconds: 0, interruptible: false }, recoverySeconds: 2, cooldownSeconds: 8, costs: { tp: 225 },
+        effects: [{ type: 'damage', recipient: 'target', stat: 'dex', base: 5, coefficient: 1.0, resolution: { delivery: 'melee', channel: 'physical', damageType: 'piercing', accuracyModel: 'physical', resistanceModel: 'physicalDefense', criticalEligible: true } }, { type: 'status', recipient: 'self', status: { id: 'status-thicket-feint', name: 'Thicket Feint', category: 'buff', durationSeconds: 10, stackGroup: 'thicket-feint', stackRule: 'replace', modifiers: { defense: 1 }, flags: { mobile: true } } }],
     }),
     'ability-barkskin-ward': ability({
         id: 'ability-barkskin-ward', name: 'Barkskin Ward', kind: 'spell', schoolId: 'school-ward-lore', capabilityId: 'spell-barkskin-ward', tags: ['magic', 'warding', 'defensive', 'universal'], contexts: ['combat', 'exploration'], target: { kind: 'self' }, activation: { durationSeconds: 5, interruptible: true }, cooldownSeconds: 22, costs: { mp: 8 },
