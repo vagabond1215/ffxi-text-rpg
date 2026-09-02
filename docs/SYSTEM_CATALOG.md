@@ -89,7 +89,7 @@ Waymeet Marches composes existing geography, route, ecology, resource, productio
 - 3 relay NPCs; 2 schedules; 4 service POIs;
 - `pack-waymeet-marches-ecology` and `pack-waymeet-marches-cairnward`;
 - raw production utilization **124/135**;
-- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 77; this section retains the Data 57 regional composition evidence only.
+- Historical note: this Waymeet Marches tranche predated later combat/persistence revisions. The current global baseline is Game State 21 / Data 78; this section retains the Data 57 regional composition evidence only.
 
 Measured current breadth: **55 places, 48 named NPCs, 37 service sites, 123 creatures, 143 sources, 410 items, 247 recipes/processes, 25 routes, 27 schedules, 42 packs, and 1,351 pack-owned records**.
 
