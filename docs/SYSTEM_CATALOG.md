@@ -297,7 +297,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Current gameplay breadth at the Data 63 Slatewater Road Scout checkpoint:
+Current gameplay breadth at Data 76:
 
 ```text
 places/localities       55 / mechanics 10
@@ -305,23 +305,30 @@ named NPCs              48 / 50
 shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
-canonical items        408 / 200
-recipes/processes      234 / 75
+canonical items        410 / 200
+recipes/processes      240 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
 companions               2 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
-regional/shared packs    39
-pack-owned records     1325
+regional/shared packs    40
+pack-owned records     1337
 ```
 
-The creature catalog now clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because other required categories remain short.
+The creature catalog clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because abilities, quests, companions, and named NPCs remain below their mechanics floors.
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.8 / Data 75 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is next, with Occupational Tool Conversion selected but not started.
+Phase 0.9 remains open at Product 0.9.400.2 / Data 76 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active: A0 Production & Item Authority Hardening and A1 Existing Field-Tool Conversion Proof are complete.
+
+A1 permanent record:
+- `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
+
+Implementation freeze `d4de8f25204a46f54ccecd905b4a2144e19e96b4` passed Check #2200 / run `33663456804` with **906/906 tests** and the full gate.
+
+**A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.**
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
