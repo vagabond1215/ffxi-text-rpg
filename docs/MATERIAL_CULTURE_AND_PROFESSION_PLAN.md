@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0-A4 conversion proofs complete through the established bronze starter set; A5 Basic Leather Garment Conversion is the next candidate / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0-A5 conversion proofs complete through Basic Leather Garment Conversion; conversion-first existing-ID work is exhausted and A6 Shared Workshop Tool Authority Audit is the next candidate / not started.**
 
 ## Purpose
 
@@ -185,7 +185,9 @@ A3 — Caster / Offhand Starter Conversion Proof is **COMPLETE** at Product 0.9.
 
 A4 — Remaining Bronze Starter Set Conversion Proof is **COMPLETE** at Product 0.9.400.5 / Data 79 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`. It converts Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens, extends the existing bronze ownership pack, preserves Bronze Pick as combat-only, and proves cadence/stat/persistence behavior.
 
-A5 — Basic Leather Garment Conversion is the **NEXT CANDIDATE / NOT STARTED**. Begin with existing Leather Vest and Leather Trousers only. Selection does not authorize Traveler Gloves/Boots, broad profession tools, or Packets B-F.
+A5 — Basic Leather Garment Conversion Proof is **COMPLETE** at Product 0.9.400.6 / Data 80 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`. It converts Leather Vest and Leather Trousers using the canonical Elderwood tanning chain and A1 cutting-tool binding.
+
+A6 — Shared Workshop Tool Authority Audit is the **NEXT CANDIDATE / NOT STARTED**. Repository inspection found no established equipment IDs for the remaining ordinary profession-tool backlog. A6 must freeze portable-tool versus workstation-fixture/capability ownership before any new identities are authored.
 
 ## Future bounded packets
 
@@ -242,17 +244,38 @@ Converted:
 
 A4 reuses the A2 bronze ingot/sheet, Ash Handle Blank, Hemp Twine/Canvas, and shared hardware graph. The existing `pack-starter-bronze-martial-equipment` is extended rather than duplicating bronze ownership. Bronze Pick remains a combat weapon identity; field mining remains owned by Prospector Pick.
 
-#### A5 — Basic leather garment conversion — NEXT CANDIDATE / NOT STARTED
+#### A5 — Basic leather garment conversion proof — COMPLETE
 
-Initial existing IDs:
+Converted:
 - Leather Vest;
 - Leather Trousers.
 
-Audit established tanned-hide, binding, thread/cord, and cutting/stitching capability before authoring. Do not automatically include Traveler Gloves or Traveler Boots.
+A5 reuses Dusk-Tanned Barkboar Hide and Resin-Cured Hide Binding from the Elderwood hunt/timber chain, uses the existing `crafting` proficiency and tannery station, and binds A1 Field Knife `cutting`. No generic duplicate leather, new leatherworking proficiency, or stitching state is introduced.
 
-#### Remaining Packet-A conversion backlog — DEFERRED AFTER A5 SELECTION
+Traveler Gloves and Traveler Boots remain outside the bounded A5 conversion.
 
-- shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
+#### A6 — Shared workshop tool authority audit — NEXT CANDIDATE / NOT STARTED
+
+Remaining conceptual backlog:
+- smithing tools;
+- woodworking tools;
+- masonry tools;
+- textile tools;
+- leatherworking tools;
+- cooking tools;
+- measurement tools.
+
+Current repository inspection found no established canonical equipment IDs for those ordinary workshop tools. A6 is therefore an authority/design pass, not a conversion pass.
+
+Freeze before authoring:
+- portable equipment tool versus station fixture;
+- mechanically meaningful tool tags;
+- workstation capability versus carried requirement;
+- ownership pack boundaries;
+- smallest useful proof cluster, preferably smithing + woodworking if the audit supports it;
+- whether any new durable state is actually required.
+
+Do not create a broad tool catalog just to satisfy this list.
 
 Existing `requiredToolTags` are mechanically enforced and A1 proves them with crafted equipment. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.
 
