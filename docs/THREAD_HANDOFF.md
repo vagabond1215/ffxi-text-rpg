@@ -31,16 +31,14 @@ Game State remains 21. Crafted equipment identity, production provenance, equipm
 
 ## Repository / promotion state
 
-Pre-A2 main checkpoint:
-- `923cc95da9ecda5aa51d61b022c40a1a934b7b7c` — merged A1.
+A2 is merged to `main`.
 
-A2 branch:
-- `phase-0.9.400-a2-bronze-martial-conversion`.
+- merged main SHA: `d100490949de7de5b5427ebbcc747696d7384bf6`;
+- PR #408: MERGED;
+- exact synchronized PR head: `4f34c285d5e352921599879ce9ec6e40bf7e7da1`;
+- final pre-merge Check #2237 / run `33666470613`: Repository Audit, **911/911 tests**, Census, Benchmark 3, and Benchmark Sample PASS.
 
-Review/promotion PR:
-- PR #408 — Add 0.9.400 A2 bronze martial conversion proof.
-
-Do not merge PR #408 until the exact synchronized head produced by this handoff update passes the full hosted Check.
+The older A2 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A3 continuation should start from current `main`.
 
 ## Latest bounded unit — 0.9.400 A2
 
@@ -277,12 +275,12 @@ Do not restart the broad material-culture audit or advanced-combat audit unless 
 
 ## Final validation contract
 
-This handoff is the intended final repository-file mutation for the A2 closure.
+This post-merge handoff correction is the intended final repository-file mutation for the A2 closure.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- validate the exact resulting `main` SHA with hosted Check;
 - confirm Repository Audit, **911/911 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #408 only after the exact synchronized head is green.
+- leave A3 unstarted.
 
-If exact-head validation exposes a synchronization defect, repair it and rewrite this handoff last again.
+If exact-main validation exposes a synchronization defect, repair it and rewrite this handoff last again.
