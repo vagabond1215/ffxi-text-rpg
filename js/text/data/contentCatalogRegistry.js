@@ -39,6 +39,7 @@ import {
     getTransportService,
     validateRouteCatalog,
 } from './routeCatalog.js';
+import { validateShopCatalogs } from './shopCatalogs.js';
 import { createSeedNpcs } from './seedEntities.js';
 
 export const CONTENT_CATALOG_REGISTRY_VERSION = 1;
@@ -69,6 +70,7 @@ const CONNECTED_CATALOG_VALIDATORS = Object.freeze([
     ['ecologyRegistry', validateEcologyRegistry],
     ['resourceItemRegistry', validateResourceItemRegistry],
     ['canonicalItemRegistry', validateCanonicalItemRegistry],
+    ['shopCatalogs', validateShopCatalogs],
     ['productionCatalog', validateProductionCatalog],
     ['productionItems', validateProductionItemCatalog],
     ['commitmentCatalog', validateCommitmentCatalog],
