@@ -129,7 +129,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A3 are complete and **A4 Remaining Bronze Starter Set Conversion is the next candidate**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A4 are complete and **A5 Basic Leather Garment Conversion is the next candidate**.
 
 ### Historical completed unit — Packet B2
 
@@ -267,7 +267,7 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next candidate:** `0.9.400 A4 — Remaining Bronze Starter Set Conversion`, not started.
+**Current next candidate:** `0.9.400 A5 — Basic Leather Garment Conversion`, not started.
 
 ## Preserved interrupted/resumable queues
 
