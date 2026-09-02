@@ -176,7 +176,7 @@ Do not fill the ability gap with mechanically duplicate records.
 **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate and is not started;
+- A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate and is not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.
