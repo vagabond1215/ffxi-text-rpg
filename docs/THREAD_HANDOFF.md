@@ -241,6 +241,8 @@ The first synchronized A0 head Check #2188 / run `33662046866` passed Repository
 
 No runtime behavior changed in that repair. The Phase-0.7 assertion now uses its intended minimum-version contract and the pipeline manifest expectations now match the deliberate 0.9.400.1 checkpoint.
 
+A second exact-head run, Check #2190 / run `33662349798`, reached the same behavioral suite but exposed four remaining stale regex assertions in `tests/pipeline.test.js` for Product, Package, contentCatalogRegistry, and validation display strings. Those assertions have now been synchronized to 0.9.400.1 / 0.9.400 / 0.4.0 / 0.54.0. No runtime or authored-data behavior changed.
+
 ## Final validation contract
 
 This handoff is the intended final repository-file mutation for the A0 closure.
