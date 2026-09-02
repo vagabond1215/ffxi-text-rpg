@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0-A5 conversion proofs complete through Basic Leather Garment Conversion; conversion-first existing-ID work is exhausted and A6 Shared Workshop Tool Authority Audit is the next candidate / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0-A6 complete. A6 closes workshop tool authority without bulk tool authoring; remaining workshop-tool concepts and Material Culture Packets B-F are deferred until explicitly selected.**
 
 ## Purpose
 
@@ -187,7 +187,7 @@ A4 — Remaining Bronze Starter Set Conversion Proof is **COMPLETE** at Product 
 
 A5 — Basic Leather Garment Conversion Proof is **COMPLETE** at Product 0.9.400.6 / Data 80 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`. It converts Leather Vest and Leather Trousers using the canonical Elderwood tanning chain and A1 cutting-tool binding.
 
-A6 — Shared Workshop Tool Authority Audit is the **NEXT CANDIDATE / NOT STARTED**. Repository inspection found no established equipment IDs for the remaining ordinary profession-tool backlog. A6 must freeze portable-tool versus workstation-fixture/capability ownership before any new identities are authored.
+A6 — Shared Workshop Tool Authority Audit is **COMPLETE** at Product 0.9.400.7 / Data 80 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`. It centralizes station/tool requirement authority, proves that current portable production requirements are only `cutting` and `woodcutting`, and rejects unsupported new tool/station tags. No workshop-tool item identities were added.
 
 ## Future bounded packets
 
@@ -254,30 +254,21 @@ A5 reuses Dusk-Tanned Barkboar Hide and Resin-Cured Hide Binding from the Elderw
 
 Traveler Gloves and Traveler Boots remain outside the bounded A5 conversion.
 
-#### A6 — Shared workshop tool authority audit — NEXT CANDIDATE / NOT STARTED
+#### A6 — Shared workshop tool authority audit — COMPLETE
 
-Remaining conceptual backlog:
-- smithing tools;
-- woodworking tools;
-- masonry tools;
-- textile tools;
-- leatherworking tools;
-- cooking tools;
-- measurement tools.
+Audit result:
+- ordinary forge/woodshop/tannery/kitchen implements remain part of workstation capability;
+- portable physical tools remain appropriate only where they create a distinct player decision beyond station presence;
+- current production requirements use exactly `cutting` and `woodcutting`;
+- canonical providers already exist: Field Knife / Reed Sickle and Woodsman Hatchet;
+- `productionRequirementAuthority` now centralizes recognized station tags and validates portable/contextual tool requirements;
+- `validateProductionCatalog()` rejects unknown station tags and unsupported required-tool tags.
 
-Current repository inspection found no established canonical equipment IDs for those ordinary workshop tools. A6 is therefore an authority/design pass, not a conversion pass.
+No smithing hammer, saw, awl, cooking implement, or measurement-tool catalog is justified by current mechanics. Do not create one merely to complete Packet A.
 
-Freeze before authoring:
-- portable equipment tool versus station fixture;
-- mechanically meaningful tool tags;
-- workstation capability versus carried requirement;
-- ownership pack boundaries;
-- smallest useful proof cluster, preferably smithing + woodworking if the audit supports it;
-- whether any new durable state is actually required.
+**Packet-A authority/conversion work is complete for the current 0.9.400 target.**
 
-Do not create a broad tool catalog just to satisfy this list.
-
-Existing `requiredToolTags` are mechanically enforced and A1 proves them with crafted equipment. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.
+Remaining workshop-tool concepts are deferred until a future field repair, preparation, multi-station action, or other real mechanic requires a portable capability.
 
 ### Packet B — Cordage, fishing, rigging, and sailmaking
 Build:
