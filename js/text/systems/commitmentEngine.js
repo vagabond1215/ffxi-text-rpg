@@ -14,6 +14,7 @@ import {
 import { describeNpcScheduleStatus, getNpcScheduleStatus } from './npcScheduleEngine.js';
 import { applyNpcRelationshipChange, ensureRelationshipState } from './relationshipEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { evaluateRelationshipRequirements } from './socialRequirementEngine.js';
 import { ensureWorldTimeState, SECONDS_PER_DAY } from './worldTimeEngine.js';
 
 export const COMMITMENT_STATE_VERSION = 1;
@@ -55,14 +56,18 @@ export function acceptCommitment(state, commitmentId) {
             display: { text: existing.status === COMMITMENT_STATUSES.RESOLVED ? `${definition.name} is already resolved.` : `${definition.name} is already active.` },
         });
     }
-    const prerequisiteCheck = checkCommitmentPrerequisites(state, definition);
-    if (!prerequisiteCheck.ok) {
+    const eligibility = checkCommitmentEligibility(state, definition);
+    if (!eligibility.ok) {
         return actionFailure({
             action: 'commitment.accept',
             code: 'commitment.prerequisites-unmet',
             outcome: 'blocked',
-            data: { commitmentId: definition.id, missingCommitmentIds: prerequisiteCheck.missingCommitmentIds },
-            display: { text: prerequisiteCheck.reason },
+            data: {
+                commitmentId: definition.id,
+                missingCommitmentIds: eligibility.missingCommitmentIds,
+                unmetRelationshipRequirements: eligibility.unmetRelationshipRequirements,
+            },
+            display: { text: eligibility.reason },
         });
     }
     const placeCheck = checkGiverContext(state, definition);
@@ -94,6 +99,31 @@ export function acceptCommitment(state, commitmentId) {
         data: { commitmentId: definition.id, eventId: event.id, record },
         display: { text: `${definition.name}\n${definition.offerText}\nObjective: ${definition.objective}` },
     });
+}
+
+export function checkCommitmentEligibility(state, commitmentOrId) {
+    const definition = typeof commitmentOrId === 'object'
+        ? commitmentOrId
+        : getCommitmentDefinition(commitmentOrId);
+    if (!definition) {
+        return {
+            ok: false,
+            missingCommitmentIds: [],
+            unmetRelationshipRequirements: [],
+            reason: `Unknown commitment: ${String(commitmentOrId ?? '')}`,
+        };
+    }
+
+    const prerequisiteCheck = checkCommitmentPrerequisites(state, definition);
+    const relationshipCheck = evaluateRelationshipRequirements(state, definition.relationshipRequirements ?? []);
+    const reasons = [prerequisiteCheck.reason, relationshipCheck.reason].filter(Boolean);
+
+    return {
+        ok: prerequisiteCheck.ok && relationshipCheck.ok,
+        missingCommitmentIds: prerequisiteCheck.missingCommitmentIds,
+        unmetRelationshipRequirements: [...relationshipCheck.unmet],
+        reason: reasons.join(' '),
+    };
 }
 
 export function checkCommitmentPrerequisites(state, commitmentOrId) {
