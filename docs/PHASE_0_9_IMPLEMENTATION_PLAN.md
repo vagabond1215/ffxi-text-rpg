@@ -54,7 +54,7 @@ raw resources with production demand 145/154
 luxury raws with production demand      14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap; companions improved to 2/4. These are roadmap signals, not permission to create filler.
+Mechanics-scale gate remains **NOT READY**. Abilities/techniques are the largest relative and absolute listed gap; companions are now 3/4 and quests/contracts 23/30. These are roadmap signals, not permission to create filler.
 
 # `0.9.100` — Content Scale Gate A
 
