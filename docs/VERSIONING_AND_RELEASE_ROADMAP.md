@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.400.2
+Product:       0.9.400.3
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          76
+Data:          77
 Benchmark:     3
-Codename:      Existing Field-Tool Conversion Proof
+Codename:      Bronze Martial Conversion Proof
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 21 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, active-battle attention/loadout/kata state, and required outstanding combat-field state |
-| Data | 75 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 77 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
