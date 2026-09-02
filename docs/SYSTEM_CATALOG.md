@@ -129,7 +129,7 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Persistent projects | playable | Materials + labor + exactly-once completion. |
 | Semantic events | integrated | Persisted typed observation history. |
 | ActionResult | integrated | Canonical structured result contract. |
-| Current-schema persistence | playable | Account Save 5 / Game State 16; strict pre-alpha current-schema-only. Active battle attention is required durable state when a battle is present. |
+| Current-schema persistence | playable | Account Save 5 / Game State 21; strict pre-alpha current-schema-only. Active-battle attention, loadout/kata state, affinity-owned player progression, and outstanding combat fields persist when present. |
 | Raw current-state gate | integrated | Required authority validates before normalization. |
 | NPC/enemy projections | integrated | Rebuilt from canonical authority; not serialized authority. |
 | Command presentation log | integrated | Session-only. |
@@ -216,7 +216,7 @@ spellSchools / capabilities / abilities / companions
 | Ability/training pack ownership | integrated | Four schools / 44 capabilities / 41 abilities are represented through Pack v2; all spells are shared-owned. |
 | Regional martial/field training | playable | Redstone/Elderwood/Starfen packs own only non-spell techniques or field knowledge. |
 | Equipment/tool context | playable B3 foundation | Gear/tools constrain real capability. Active-combat equipment changes now use timed atomic loadout transitions with directional stow/draw/ready handling, cooldown preservation, root/battle coherence, and hostile-pressure armor locks. Named presets and partial stowed/not-ready state remain deferred. |
-| Combat 2.0 | playable / 0.9.300 P8 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, persistent fields, arc propagation, and all five current executable martial techniques share canonical resolution authorities. P8 closes the remaining executable martial raw-damage gap without new persistence or combat subsystems. |
+| Combat 2.0 | playable / 0.9.300 complete | Unified resolution, hostile attention, loadout transitions, cadence/ranged/kata, affinity substitutions, elemental control/ring geometry, persistent fields, arc propagation, and all five current executable martial techniques share canonical authorities. The maturity reassessment closes 0.9.300 with no Packet 9; engagement/LOS/flee, passive reactions, stale-placeholder cleanup, and remaining semantic breadth are deferred depth. |
 | Combat field engine | playable / P6 foundation | Versioned battle-local fields persist center/source snapshots and fictional-time pulse deadlines. Current authored proof is Umbral Well only; general zones, moving/friendly fields, and player ground targets are deferred. |
 | Active-battle persistence | integrated / Game State 21 | Encounter authority survives save/load, including required active field state; RNG remains transient. |
 | Campaign recovery | playable | Field/defeat/safe-settlement recovery. |
@@ -297,7 +297,7 @@ The creature catalog now clears the playable-alpha planning lower bound of 120. 
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.300.8 / Data 75 / Game State 21. `0.9.200 Adventure Vertical Slices` is complete; `0.9.300 Advanced Combat / Training` is active with Packets 1–8 complete and a maturity reassessment next.
+Phase 0.9 remains open at Product 0.9.300.8 / Data 75 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is next, with Occupational Tool Conversion selected but not started.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -316,5 +316,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Packets 1–8 are COMPLETE.** Packet 8 completes shared physical resolution across every current executable martial technique while preserving self-buff semantics. Mutable movement/engagement geometry, LOS/pursuit, passive defense/reactions, broader propagation families, and remaining named spell semantics remain deferred. The next bounded unit is an explicit 0.9.300 maturity reassessment rather than an auto-selected Packet 9. World-edge expansion, Occupational Tool Conversion, richer locality-event/UI work, and optional ecology remain preserved explicit-selection queues.
+**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. Occupational Tool Conversion is now the selected next 0.9.400 bounded implementation; world-edge, richer locality-event/UI work, and optional ecology remain separate explicit-selection queues.
 
