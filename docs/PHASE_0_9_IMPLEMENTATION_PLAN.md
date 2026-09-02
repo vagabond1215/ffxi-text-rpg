@@ -33,8 +33,8 @@ Validated Data 80 checkpoint:
 | Canonical items | 410 | 200 | ready |
 | Recipes/processes | 254 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
-| Quests/contracts | 20 | 30 | 10 |
-| Recruitable companions | 2 | 4 | 2 |
+| Quests/contracts | 23 | 30 | 7 |
+| Recruitable companions | 3 | 4 | 1 |
 | Transport services | 7 | 5 | ready |
 
 Infrastructure coverage:
@@ -45,9 +45,9 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
 regional/shared packs                   43
-pack-owned records                    1365
+pack-owned records                    1372
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/27/2
+  schedules/companions              41/44/27/3
 runtime seed NPCs                       47
 runtime seed enemies                    17
 raw resources with production demand 145/154
