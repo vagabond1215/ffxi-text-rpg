@@ -30,47 +30,23 @@ Game State remains 21. Q1 introduces no new durable state family or persisted fi
 
 ## Repository / promotion state
 
-Pre-Q1 main checkpoint:
-- `a7135d3e86e194c2f49002193f3016ed9a5d9836`.
+Q1 is merged to `main`; `0.9.500 Quest / Social Depth` remains active.
 
-Q1 branch:
-- `phase-0.9.500-q1-ironspine-trust-warden-companion`.
+- merged main SHA: `1820d05781674832015f6a7aa7deb902bca7766a`;
+- PR #414: MERGED;
+- exact synchronized PR head: `486d298625d26b270cb726e5d93efaa9d0c00dee`;
+- final pre-merge Check #2357 / run `33689024028`: Repository Audit, **936/936 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `702d06bd123e1f6f85eebf7f0fdb02dd7b394359`;
+- implementation freeze Check #2338 / run `33687994124`: full gate PASS.
 
-Promotion PR:
-- PR #414 — Implement 0.9.500 Q1 Ironspine trust and warden companion slice.
+Synchronization history:
+- Check #2334 / run `33687784628`: Q1 end-to-end gameplay proof passed; five stale census assertions were corrected before implementation freeze;
+- promoted pre-handoff Check #2355 / run `33688768763`: Repository Audit correctly blocked the stale Q0 handoff contract before tests;
+- first exact-handoff Check #2356 / run `33688891966`: Repository Audit passed and tests reached 935/936; the sole failure was duplicate Q0-era exact `party 0.5.0` / `companions 0.3.0` assertions in `pipeline.test.js`;
+- repair `8fc6d7354979eafba43bdbf97a617ea9831b4a14` removed those stale duplicate assertions;
+- repaired exact head then passed Check #2357 in full.
 
-Q1 behavioral implementation freeze:
-- `702d06bd123e1f6f85eebf7f0fdb02dd7b394359`.
-
-Hosted implementation evidence:
-- Check #2338 / run `33687994124`;
-- Repository Audit PASS;
-- **936/936 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
-
-Earlier implementation Check #2334 / run `33687784628` reached 931/936. The complete end-to-end Q1 gameplay test passed; all five failures were stale census expectations after the intended 20 -> 23 quest and 2 -> 3 companion changes plus one incorrect supplemental field name. Those assertions were corrected before the behavioral freeze.
-
-Promoted pre-handoff synchronization head:
-- `408c4b6eb84cd2bc5597d4e763b7e7bc511b7653`;
-- Check #2355 / run `33688768763`;
-- Repository Audit stopped the run before tests because this handoff still advertised Product 0.9.500.1;
-- no runtime, test, census, or benchmark failure occurred on that attempt.
-
-First exact-handoff synchronization attempt:
-- head `76dd8df807bc388ba1b8aa3570a93542ec5e87ee`;
-- Check #2356 / run `33688891966`;
-- Repository Audit PASS;
-- tests **935/936**;
-- sole failure: `tests/pipeline.test.js` retained duplicate Q0-era exact assertions for `party 0.5.0` and `companions 0.3.0` after Q1 deliberately advanced them to `0.6.0` and `0.4.0`;
-- no Q1 gameplay test failed.
-
-Synchronization repair:
-- `8fc6d7354979eafba43bdbf97a617ea9831b4a14`;
-- stale duplicate Q0 manifest assertions were removed while the new Q1 manifest assertions remain authoritative.
-
-This handoff rewrite is the intended final pre-merge repository-file mutation after that synchronization repair. Validate its exact resulting PR head with hosted Check before merging PR #414.
+The older Q1 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. Future Q2 work must start from current `main`.
 
 ## Validated Data 82 census
 
@@ -459,12 +435,14 @@ Do not restart broad social-system, economy, world, or combat discovery unless Q
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for Q1 closure.
+This post-merge handoff correction is the intended final repository-file mutation for Q1 closure.
+
+Q1 promotion evidence is complete:
+- behavioral freeze Check #2338 / run `33687994124`: **936/936 tests** plus full gate PASS;
+- exact repaired PR-head Check #2357 / run `33689024028`: **936/936 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
+- PR #414 merged to `main` at `1820d05781674832015f6a7aa7deb902bca7766a`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **936/936 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #414 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave Q2 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave Q2 unstarted;
+- start future Q2 work from current `main`, not the old Q1 branch.
