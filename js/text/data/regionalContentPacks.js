@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 48;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 49;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -695,6 +695,34 @@ export const IRONSPINE_HIGHLANDS_PACK = createContentPack({
             { id: 'craft-ironspine-high-pass-compass', catalogRef: true },
             { id: 'craft-ironspine-bearhide-bedroll', catalogRef: true },
             { id: 'craft-ironspine-weather-mantle', catalogRef: true },
+        ],
+        quests: [
+            { id: 'commitment-ironspine-survey-compass', catalogRef: true },
+            { id: 'commitment-ironspine-frost-salve-readiness', catalogRef: true },
+            { id: 'commitment-ironspine-bearhide-bedroll', catalogRef: true },
+        ],
+        companions: [
+            { id: 'companion-dain-rove', catalogRef: true },
+        ],
+        relationships: [
+            {
+                id: 'relationship-ironspine-vara-kell',
+                npcId: 'npc-ironspine-vara-kell',
+                dimensions: ['respect', 'trust'],
+                unlockQuestIds: ['commitment-ironspine-survey-compass'],
+            },
+            {
+                id: 'relationship-ironspine-dain-rove',
+                npcId: 'npc-ironspine-dain-rove',
+                dimensions: ['trust', 'respect', 'familiarity'],
+                unlockQuestIds: ['commitment-ironspine-frost-salve-readiness'],
+            },
+            {
+                id: 'relationship-ironspine-mara-fell',
+                npcId: 'npc-ironspine-mara-fell',
+                dimensions: ['familiarity', 'obligation'],
+                unlockQuestIds: ['commitment-ironspine-bearhide-bedroll'],
+            },
         ],
         shops: [{
             id: 'shop-ironspine-survey-exchange',
