@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 44;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 45;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1439,6 +1439,32 @@ export const OCCUPATIONAL_FIELD_TOOL_PACK = createContentPack({
     },
 });
 
+export const STARTER_BRONZE_MARTIAL_PACK = createContentPack({
+    id: 'pack-starter-bronze-martial-equipment',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'shared', regionIds: [], steward: 'cross-guild-bronzeworkers' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-material-foundations-common-components',
+    ],
+    metadata: {
+        name: 'Starter Bronze Martial Equipment',
+        notes: 'Shared replacement-manufacture ownership for the established Bronze Sword, Bronze Cap, and Bronze Harness. Existing equipment IDs remain physical behavior authority; this pack owns their shared production placement and three recipes.',
+    },
+    records: {
+        items: [
+            { id: 'bronze-sword', catalogRef: true },
+            { id: 'bronze-cap', catalogRef: true },
+            { id: 'bronze-harness', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'craft-bronze-sword', catalogRef: true },
+            { id: 'craft-bronze-cap', catalogRef: true },
+            { id: 'craft-bronze-harness', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -1447,6 +1473,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     REGIONAL_INGREDIENT_LUXURY_PACK,
     MATERIAL_FOUNDATIONS_PACK,
     OCCUPATIONAL_FIELD_TOOL_PACK,
+    STARTER_BRONZE_MARTIAL_PACK,
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,

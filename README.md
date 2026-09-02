@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0 authority hardening and A1 Existing Field-Tool Conversion Proof are complete; A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.** The current canonical/runtime checkpoint is Data 76 / Product 0.9.400.2 / Game State 21.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0 authority hardening, A1 field-tool conversion, and A2 Bronze Martial Conversion Proof are complete; A3 Caster / Offhand Starter Conversion is the next candidate / not started.** The current canonical/runtime checkpoint is Data 77 / Product 0.9.400.3 / Game State 21.
 
 ```text
-Product:       0.9.400.2
+Product:       0.9.400.3
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          76
+Data:          77
 Benchmark:     3
-Codename:      Existing Field-Tool Conversion Proof
+Codename:      Bronze Martial Conversion Proof
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 76 implementation census:
+Validated Data 77 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -82,7 +82,7 @@ shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
 canonical items        410 / 200
-recipes/processes      240 / 75
+recipes/processes      243 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
 companions               2 / 4
@@ -91,8 +91,8 @@ routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
-regional/shared packs    40
-pack-owned records     1337
+regional/shared packs    41
+pack-owned records     1343
 runtime seed NPCs        47
 runtime seed enemies     17
 raw-resource use      145/154
@@ -128,20 +128,21 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**0.9.400 A1 — Existing Field-Tool Conversion Proof is COMPLETE. A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.**
+**0.9.400 A2 — Bronze Martial Conversion Proof is COMPLETE. A3 Caster / Offhand Starter Conversion is the next candidate / not started.**
 
 Permanent records:
 - `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`;
-- `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
+- `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`;
+- `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
 
-A1 implementation freeze:
-- `d4de8f25204a46f54ccecd905b4a2144e19e96b4`;
-- Check #2200 / run `33663456804`;
-- **906/906 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
+A2 implementation freeze:
+- `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d`;
+- Check #2220 / run `33665699974`;
+- **911/911 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
 
-A1 converts the existing Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod into real production outputs using existing material-foundation stocks. Equipment IDs remain canonical equipment authority, production adds transformation provenance, and the crafted Field Knife is proven through real cutting-gated downstream work and Marsh Fishing Rod assembly. Data advances to 76; Game State remains 21.
+A2 converts the existing Bronze Sword, Bronze Cap, and Bronze Harness into canonical production outputs using existing bronze, ash-handle, hemp textile, and hardware stocks. The Bronze Harness requires `cutting`, so the A1 Field Knife binding participates in a separate martial-production chain. Crafted Bronze Sword/Cap/Harness retain canonical equipment behavior, drive combat profile/weapon cadence, and persist with production provenance through current-schema save/load. Data advances to 77; Game State remains 21.
 
-Next bounded implementation: broader conversion of established starter equipment and selected occupational tools, beginning with existing stable IDs and existing material graphs rather than new equipment families.
+Next candidate: inspect Ash Staff, Maple Wand, Iron Buckler, and Brass Ring as one compact caster/offhand starter cluster. Do not start that unit without a fresh explicit continuation.
 
 ## Historical combat decision record
 
@@ -177,7 +178,7 @@ Do not fill the ability gap with mechanically duplicate records.
 **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- A2 Broader Starter Equipment & Occupational Tool Conversion is the next bounded 0.9.400 implementation and is not started;
+- A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion is the next candidate and is not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.

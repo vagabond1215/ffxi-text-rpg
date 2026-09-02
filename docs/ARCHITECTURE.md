@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.2
+Product:       0.9.400.3
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          76
+Data:          77
 Benchmark:     3
-Codename:      Existing Field-Tool Conversion Proof
-Phase:         0.9 / 0.9.400 ACTIVE; A0-A1 complete; A2 broader conversion next
+Codename:      Bronze Martial Conversion Proof
+Phase:         0.9 / 0.9.400 ACTIVE; A0-A2 complete; A3 caster/offhand candidate next
 ```
 
-Data 76 is the current authored/mechanics-data checkpoint. Product 0.9.400.2 closes A1 Existing Field-Tool Conversion Proof; Game State 21 remains unchanged. A1 adds six canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
+Data 77 is the current authored/mechanics-data checkpoint. Product 0.9.400.3 closes A2 Bronze Martial Conversion Proof; Game State 21 remains unchanged. A2 adds three canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A3 Caster / Offhand Starter Conversion is the next candidate / not started.
 
 ## 0.9.400 production/item authority
 
@@ -85,6 +85,33 @@ existing equipment stable ID
 The crafted Field Knife is proven as a physical `cutting` capability in both downstream handle work and Marsh Fishing Rod assembly. The rod itself remains the existing `marsh-rod` equipment identity and provides `fishing`.
 
 A1 requires no persistence-family change: the canonical item snapshot plus provenance already serializes through the existing inventory/equipment envelope.
+
+### A2 bronze martial conversion proof
+
+A2 composes shared material culture into existing martial equipment identities:
+
+```text
+bronze ingot / bronze sheet
+ash handle / hemp twine / hemp canvas
+iron buckle-ring hardware
+A1 Field Knife cutting binding
+        |
+        v
+starterBronzeMartialProductionCatalog
+        |
+        v
+existing Bronze Sword / Cap / Harness IDs
+        |
+        +--> equipmentCatalog behavior
+        +--> production provenance
+        +--> statEngine combat profile
+        +--> weaponCadenceEngine
+        +--> current-schema persistence
+```
+
+`pack-starter-bronze-martial-equipment` owns shared placement of three existing item refs and three new recipe refs. It does not create a parallel item catalog.
+
+Bronze Harness assembly explicitly requires `cutting`, so physical tool bindings are now proven across separate A1 and A2 production families. No new persistence family is required.
 
 ## Core authority rules
 
@@ -974,4 +1001,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 75; the current runtime/persistence baseline is Product 0.9.300.8 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is next with Packet A — Occupational Tool Conversion — selected but not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 77; the current runtime/persistence baseline is Product 0.9.400.3 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A2 Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
