@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is NEXT, with Occupational Tool Conversion selected but not started.** The current canonical/runtime checkpoint remains Data 75 / Product 0.9.300.8 / Game State 21 because the post-Packet-8 combat maturity reassessment is decision-only and makes no runtime or data change.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0 Production & Item Authority Hardening is complete and A1 Existing Field-Tool Conversion Proof is next / not started.** The current canonical/runtime checkpoint is Data 75 / Product 0.9.400.1 / Game State 21.
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Codename:      Martial Structured Resolution Breadth
+Codename:      Production Item Authority Hardening
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -81,7 +81,7 @@ named NPCs              48 / 50
 shop/service sites      37 / 20
 creatures              123 / 40
 resource sources       143 / 40
-canonical items        408 / 200
+canonical items        410 / 200
 recipes/processes      234 / 75
 abilities/techniques    41 / 100
 quests/contracts        20 / 30
@@ -127,6 +127,22 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 - Pack v2 ownership/validation, Redstone Forge-Road, Elderwood Hunt-Timber, Starfen Marshcraft, universal shared magic, Coppergrass, Slatewater, Crownfields managed agriculture, regional ingredient/luxury processing, Great Mere freshwater economy, population-backed hunting, Ironspine alpine ecology/economy, Gloamwood old-growth barrier ecology/economy, Emberwash arid-frontier ecology/economy, Lower Deepvein cave-frontier ecology/economy, Legacy Elderwood riparian/understory/cellar ecology repair, Dry Upland & Saltpan ecology repair, explicit period-framed item food-safety metadata, ecology/geography integrity guards, content-scale census, current-schema persistence, lifecycle guards, and repeatable benchmark sampling.
 
 ## Current decision boundary
+
+**0.9.400 A0 — Production & Item Authority Hardening is COMPLETE. A1 Existing Field-Tool Conversion Proof is next / not started.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
+
+Behavioral implementation freeze:
+- `0445823264bb6adf1d1717dee2df83678e561a0f`;
+- Check #2172 / run `33661309577`;
+- **901/901 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
+
+A0 establishes one canonical item resolver across resource/production/equipment definitions, allows production outputs to target existing equipment IDs, resolves canonical shop stock through canonical physical definitions with commerce provenance, and binds physical tools to active production work. Data remains 75 and Game State remains 21 because no authored content record or new durable state family was added.
+
+Next bounded proof: craft the existing Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod from existing material-foundation stocks, then use a crafted tool in a real work loop.
+
+## Historical combat decision record
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
