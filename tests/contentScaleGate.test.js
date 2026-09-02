@@ -73,7 +73,7 @@ test('default content census exposes catalog breadth and Pack v2 ownership cover
     assert.equal(counts.supplemental.packOwnedByCollection.capabilities, 44);
     assert.equal(counts.supplemental.packOwnedByCollection.abilities, 41);
     assert.equal(counts.supplemental.packOwnedByCollection.npcSchedules, 27);
-    assert.equal(counts.supplemental.packOwnedByCollection.companions, 2);
+    assert.equal(counts.supplemental.packOwnedByCollection.companions, 3);
     assert.ok(counts.supplemental.seedNpcs > 0);
     assert.ok(counts.supplemental.seedEnemies > 0);
     assert.deepEqual(counts.supplemental.packIndexIssues, []);
@@ -111,7 +111,7 @@ test('census counts future pack-owned abilities and companions without double-co
     const counts = collectContentScaleCounts({ contentPacks: [pack] });
 
     assert.equal(counts.abilities, 42);
-    assert.equal(counts.companions, 3);
+    assert.equal(counts.companions, 4);
     assert.equal(counts.supplemental.capabilities, 45);
     assert.equal(counts.supplemental.packOwnedByCollection.abilities, 1);
     assert.equal(counts.supplemental.packOwnedByCollection.companions, 1);

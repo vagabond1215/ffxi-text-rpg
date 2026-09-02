@@ -1,7 +1,7 @@
 import { getCommitmentDefinition } from './commitments.js';
 import { normalizeRelationshipRequirements, validateRelationshipRequirements } from './socialRequirements.js';
 
-export const COMPANION_CATALOG_VERSION = 4;
+export const COMPANION_CATALOG_VERSION = 5;
 
 const COMPANIONS = Object.freeze({
     'companion-sable-renn': companion({
@@ -40,6 +40,47 @@ const COMPANIONS = Object.freeze({
                 summary: 'Sable commits hard when an opening appears, trading some caution for a sharper attack.',
                 quote: '“There. Before it closes.”',
                 attributeModifiers: { dex: 2, vit: -1 },
+            },
+        ],
+        relationshipDimensions: ['trust', 'respect', 'familiarity'],
+    }),
+    'companion-dain-rove': companion({
+        id: 'companion-dain-rove',
+        npcId: 'npc-ironspine-dain-rove',
+        name: 'Dain Rove',
+        title: 'Ironspine Warden',
+        description: 'A high-pass warden who treats route choice, weather, animal sign, and keeping a retreat line open as parts of the same field decision.',
+        homePlaceId: 'ironspine-watchpost',
+        recruitment: {
+            placeIds: ['ironspine-watchpost'],
+            requiredFlags: [],
+            requiredCommitmentIds: [
+                'commitment-ironspine-survey-compass',
+                'commitment-ironspine-frost-salve-readiness',
+                'commitment-ironspine-bearhide-bedroll',
+            ],
+            relationshipRequirements: [
+                { npcId: 'npc-ironspine-dain-rove', minimums: { trust: 2, respect: 1 } },
+            ],
+        },
+        level: 4,
+        baseAttributes: { str: 2, dex: 1, vit: 3, agi: 1, mnd: 1, chr: 1 },
+        skills: { sword: 9, axe: 10, evasion: 7, parrying: 10 },
+        tactics: { role: 'warden', policy: 'basic-attack-v1', defaultApproachId: 'hold-the-pass' },
+        fieldApproaches: [
+            {
+                id: 'hold-the-pass',
+                name: 'Hold the Pass',
+                summary: 'Dain anchors the line and absorbs pressure, trading mobility for steadier protection.',
+                quote: '“Nothing gets through us for free.”',
+                attributeModifiers: { vit: 2, agi: -1 },
+            },
+            {
+                id: 'drive-the-ridge',
+                name: 'Drive the Ridge',
+                summary: 'Dain presses an opening before weather or terrain can close it, trading some endurance for force.',
+                quote: '“Move now. The ridge will not stay kind.”',
+                attributeModifiers: { str: 2, vit: -1 },
             },
         ],
         relationshipDimensions: ['trust', 'respect', 'familiarity'],

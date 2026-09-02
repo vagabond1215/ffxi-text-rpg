@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Social Relationship Eligibility Foundation
+Codename:      Ironspine Warden Trust Circuit
 ```
 
 ## Product version format
@@ -26,7 +26,7 @@ Use `MAJOR.PHASE.TRACK.REVISION`.
 | --- | ---: | --- |
 | Account Save | 5 | local account/session/character registry contract |
 | Game State | 21 | serialized character/world runtime contract, including character-owned elemental affinity ranks, weapon-kata configuration version 2, active-battle attention/loadout/kata state, and required outstanding combat-field state |
-| Data | 81 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
+| Data | 82 | canonical authored-data, including structured Guarded Cut/Barkboar Brace/Thicket Feint physical resolution/recovery metadata plus Radiant Arc propagation, Umbral Well fields, Tempest Ring geometry, Thunder Cage control, novice elemental, affinity/kata, combat/service/equipment/geography/ecology/resource/production/social stable IDs |
 | Benchmark | 3 | workload/measurement comparability contract |
 
 These advance independently.
@@ -1754,6 +1754,46 @@ Permanent record: `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
 
 Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
 
+## `0.9.500.2` — Ironspine Warden Trust Circuit
+
+This revision delivers the first authored multi-NPC social-depth slice on the Q0 relationship-eligibility foundation.
+
+```text
+Product       0.9.500.1 -> 0.9.500.2
+Package       0.9.500   -> 0.9.500
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          81        -> 82
+Benchmark     3         -> 3
+```
+
+Q1 adds:
+- three Ironspine commitments using existing crafted outputs with exact production provenance;
+- cross-NPC Vara -> Dain -> Mara relationship gating;
+- Dain Rove as one earned companion for an existing persistent NPC;
+- Pack-v2 ownership for three commitments, one companion, and three relationship records;
+- schedule-aware companion recruitment;
+- scheduled-POI physical-presence enforcement for mobile NPCs;
+- a dual-action Dain warden POI that remains a guild contact while exposing companion recruitment.
+
+System-manifest advances:
+- `versionManifest 0.9.500.1 -> 0.9.500.2`;
+- `commitments 0.9.0 -> 0.10.0`;
+- `regionalContentPacks 0.27.0 -> 0.28.0`;
+- `localityNavigation 0.4.0 -> 0.5.0`;
+- `companionCatalog 0.3.0 -> 0.4.0`;
+- `party 0.5.0 -> 0.6.0`;
+- `pois 0.4.5 -> 0.4.6`;
+- `companions 0.3.0 -> 0.4.0`.
+
+Data advances because authored commitments/companion/relationship ownership and NPC service metadata change. Game State remains 21 because no new persistent family or field is introduced.
+
+Behavioral implementation freeze `702d06bd123e1f6f85eebf7f0fdb02dd7b394359` passed Check #2338 / run `33687994124` with **936/936 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent record: `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md`.
+
+At this checkpoint Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started.
+
 ## Phase progression
 
 ```text
@@ -1766,7 +1806,7 @@ Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
 0.9.400 Economy/production depth              COMPLETE / A0-A6
-0.9.500 Quest/social depth                    ACTIVE / Q0 COMPLETE; Q1 IRONSPINE TRUST & WARDEN COMPANION NEXT
+0.9.500 Quest/social depth                    ACTIVE / Q0-Q1 COMPLETE; Q2 CROWNFIELDS ALLOCATION CHOICE NEXT
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
 0.9.800 Supported persistence transition      DEFERRED

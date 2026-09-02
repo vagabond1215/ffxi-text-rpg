@@ -90,7 +90,7 @@ test('content pack index records expanded stable ownership without changing cano
     assert.equal(index.recordCounts.spellSchools, 4);
     assert.equal(index.recordCounts.capabilities, 44);
     assert.equal(index.recordCounts.abilities, 41);
-    assert.equal(index.recordCounts.companions, 2);
+    assert.equal(index.recordCounts.companions, 3);
     assert.ok(index.ownerCount >= 248);
 });
 

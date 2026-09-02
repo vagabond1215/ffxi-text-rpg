@@ -387,6 +387,16 @@ export function performLocalityPoiAction(state, poiId, action = 'talk') {
             nextAvailableAtWorldSeconds: availability.nextAvailableAtWorldSeconds,
         });
     }
+    if (availability.npcId) {
+        const backingNpc = (state.npcs ?? []).find((npc) => npc.id === availability.npcId);
+        if (!backingNpc || backingNpc.identity?.locationId !== state.currentPlaceId) {
+            return fail('locality.poi-npc-absent', `${availability.npcName ?? poi.name} is not currently here.`, {
+                poiId: poi.id,
+                npcId: availability.npcId,
+                npcLocationId: backingNpc?.identity?.locationId ?? null,
+            });
+        }
+    }
 
     recordPoiInteraction(state, poi, { points: 1, learnedName: true });
     learnPoiName(state, poi);

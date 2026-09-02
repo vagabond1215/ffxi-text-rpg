@@ -7,7 +7,7 @@ import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { STARFEN_MARSHCRAFT_COMMITMENT_DATA } from './starfenMarshcraftCommitments.js';
 import { normalizeRelationshipRequirements, validateRelationshipRequirements } from './socialRequirements.js';
 
-export const COMMITMENT_CATALOG_VERSION = 8;
+export const COMMITMENT_CATALOG_VERSION = 9;
 
 const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
     'plot-home-sweetroot-bed': Object.freeze({ itemId: 'item-elderwood-sweetroot', domain: 'cultivation' }),
@@ -65,6 +65,55 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         offerText: 'Sable only offers the second job after the resin work is credited. “The fog side is less forgiving. Silver lichen grows where the stone stays damp and footing turns mean. Bring one clean sample from the face itself. If you know when to stop reaching and start finding another line, I can use you on the road.”',
         resolvedText: 'Sable turns the pale lichen toward the hearthlight and checks the stone dust caught at its base. “That came off the face, not an exchange shelf.” A small smile follows. “You have done enough proving. If you want another pair of eyes on the road, ask me.”',
         followUpText: 'When you speak again, Sable no longer frames the foothills as a test. The conversation shifts to shared routes, field approaches, and which risks are worth taking when two travelers have to come home together.',
+    }),
+    'commitment-ironspine-survey-compass': commitment({
+        id: 'commitment-ironspine-survey-compass',
+        name: 'A Compass Worth Trusting',
+        giverNpcId: 'npc-ironspine-vara-kell',
+        offerPoiId: 'poi-ironspine-survey-exchange',
+        offerPlaceId: 'ironspine-watchpost',
+        description: 'Vara Kell needs a High-Pass Survey Compass assembled through the real Ironspine instrument chain before she will put a traveler’s name beside pass-survey work.',
+        objective: 'Bring Vara Kell one High-Pass Survey Compass crafted through the Ironspine survey-instrument process.',
+        requiredItems: [{ itemId: 'item-ironspine-high-pass-compass', quantity: 1, provenanceSourceId: 'craft-ironspine-high-pass-compass' }],
+        reward: { gil: 92, relationship: { respect: 2, trust: 1 } },
+        followUpDelayDays: 1,
+        offerText: 'Vara turns a worn survey compass in her palm. “The high pass does not care whether an instrument looks expensive. Bring me one you can trace from lodestone and sight stone through the finished balance. If I am putting your name beside a bearing, I need to know what you call reliable.”',
+        resolvedText: 'Vara checks the needle settle, rolls the housing through three orientations, and compares its return against a marked bearing above the exchange door. “It comes back true.” She writes your name beside the instrument instead of the purchase ledger. “Dain can use someone who understands that preparation is part of field judgment.”',
+        followUpText: 'On a later day Vara no longer asks whether you can make a trustworthy instrument. She asks what you noticed while assembling it, and which compromises you would refuse before carrying one above the tree line.',
+    }),
+    'commitment-ironspine-frost-salve-readiness': commitment({
+        id: 'commitment-ironspine-frost-salve-readiness',
+        name: 'Cold Before Courage',
+        giverNpcId: 'npc-ironspine-dain-rove',
+        offerPoiId: 'poi-ironspine-warden-desk',
+        offerPlaceId: 'ironspine-watchpost',
+        description: 'Dain Rove wants a properly prepared Frost Lichen Tallow Salve before he trusts a traveler to treat exposure as a field problem rather than an emergency discovered too late.',
+        objective: 'Bring Dain Rove one Frost Lichen Tallow Salve prepared through the Ironspine craft process.',
+        requiredItems: [{ itemId: 'item-ironspine-frost-lichen-salve', quantity: 1, provenanceSourceId: 'craft-ironspine-frost-lichen-salve' }],
+        prerequisiteCommitmentIds: ['commitment-ironspine-survey-compass'],
+        relationshipRequirements: [{ npcId: 'npc-ironspine-vara-kell', minimums: { respect: 2, trust: 1 } }],
+        reward: { gil: 68, relationship: { familiarity: 1, respect: 1, trust: 2 } },
+        followUpDelayDays: 1,
+        offerText: 'Dain glances at Vara’s survey note before looking back to you. “A true bearing gets you onto the right ridge. It does not keep your hands working when the cold gets inside them. Bring me salve made from our lichen and rendered tallow. I want to see whether you prepare for the trouble that does not roar first.”',
+        resolvedText: 'Dain opens the salve, checks its texture against the cold stone beside his desk, and works a trace across a weather-cracked knuckle. “Good. You brought something meant for the mountain, not a story about being tougher than it.” His tone shifts from testing a traveler to briefing someone he may actually rely on.',
+        followUpText: 'When Dain sees you later, he talks through wind changes and animal sign without first explaining why they matter. The conversation has become two fieldworkers comparing judgments instead of a warden correcting a newcomer.',
+    }),
+    'commitment-ironspine-bearhide-bedroll': commitment({
+        id: 'commitment-ironspine-bearhide-bedroll',
+        name: 'A Place to Come Back Warm',
+        giverNpcId: 'npc-ironspine-mara-fell',
+        offerPoiId: 'poi-ironspine-common-hearth',
+        offerPlaceId: 'ironspine-watchpost',
+        description: 'Mara Fell wants a High-Pass Bearhide Bedroll made through the local hide-and-linen chain for the common emergency shelf used when weather strands crews at the watchpost.',
+        objective: 'Bring Mara Fell one High-Pass Bearhide Bedroll crafted through the Ironspine bedroll process.',
+        requiredItems: [{ itemId: 'item-ironspine-bearhide-bedroll', quantity: 1, provenanceSourceId: 'craft-ironspine-bearhide-bedroll' }],
+        prerequisiteCommitmentIds: ['commitment-ironspine-frost-salve-readiness'],
+        relationshipRequirements: [{ npcId: 'npc-ironspine-dain-rove', minimums: { trust: 2, respect: 1 } }],
+        reward: { gil: 84, relationship: { familiarity: 1, obligation: 1 } },
+        followUpDelayDays: 2,
+        offerText: 'Mara has heard Dain use your name without adding a warning after it. She points to an empty shelf above the hearth. “Then help with the part of pass work nobody boasts about. I need one bedroll built for this cold—real hide, real lining, something I can hand to the next crew that comes through the door shaking.”',
+        resolvedText: 'Mara checks the seams, folds the bedroll once, then opens it again beside the hearth to make sure the hide settles without pulling the lining crooked. “This goes on the emergency shelf.” She marks your name on the lodge tally. “If you and Dain take the same road, I will know at least one of you remembers that coming back is part of the job.”',
+        followUpText: 'Two days later the bedroll is no longer on its shelf. Mara tells you a delayed survey pair used it through a sleet night and returned it drying by the hearth. She does not call it your delivery anymore; she calls it part of the watchpost stores.',
     }),
     'commitment-thornwall-hearth-sweetroot-share': commitment({
         id: 'commitment-thornwall-hearth-sweetroot-share', name: 'A Root for the Morning Pot', giverNpcId: 'npc-thornwall-mira-fen', offerPoiId: 'poi-sandoria-s-aveline', offerPlaceId: 'thornwall-southgate', description: 'Mira Fen wants one Sweetroot grown at a Southgate lodging for the neighborhood breakfast pot, where a home-grown root means more than another anonymous bundle from the road.', objective: 'Bring Mira Fen one Elderwood Sweetroot harvested from your own home cultivation bed.', requiredItems: [{ itemId: 'item-elderwood-sweetroot', quantity: 1, provenanceSourceId: 'plot-home-sweetroot-bed' }], reward: { gil: 18, relationship: { familiarity: 1, obligation: 1 } }, followUpDelayDays: 2,

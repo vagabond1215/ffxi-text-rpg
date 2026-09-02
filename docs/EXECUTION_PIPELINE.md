@@ -5,34 +5,36 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          81
+Data:          82
 Benchmark:     3
-Codename:      Social Relationship Eligibility Foundation
+Codename:      Ironspine Warden Trust Circuit
 ```
 
 ## Current bounded-unit state
 
-**0.9.500 Q0 — Social Relationship Eligibility Foundation is COMPLETE.**
+**0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice is COMPLETE.**
 
-- permanent record: `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`;
-- implementation freeze: `61227536f7683401de047474ace4eec5160aaef3`;
-- Check #2315 / run `33685651230`: Repository Audit, **934/934 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.500.1 / Package 0.9.500 / Data 81 / Game State 21;
-- relationship requirements are reusable across commitments and companion recruitment;
-- commitment opportunity projection and acceptance share one eligibility authority;
-- Sable's second road test now requires trust 1;
-- Sable recruitment now requires trust 3 / respect 1 plus both existing field commitments;
-- no new durable state family.
+- permanent record: `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md`;
+- implementation freeze: `702d06bd123e1f6f85eebf7f0fdb02dd7b394359`;
+- Check #2338 / run `33687994124`: Repository Audit, **936/936 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.500.2 / Package 0.9.500 / Data 82 / Game State 21;
+- three new commitments connect Vara Kell, Dain Rove, and Mara Fell through cross-NPC relationship requirements;
+- all three use existing canonical Ironspine production outputs with exact crafting provenance;
+- Dain Rove becomes one earned persistent companion;
+- Dain retains his warden/guild POI while gaining companion recruitment as an additional action;
+- scheduled companion candidates respect canonical schedule availability;
+- scheduled POI interaction verifies the backing NPC is physically present;
+- no new named NPC, schedule, geography, item, recipe, or durable state family.
 
-**Next selected unit: 0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice, not started.**
+**Next selected unit: 0.9.500 Q2 — Crownfields Grange Allocation Choice & Social Consequence, not started.**
 
-Q1 should reuse Vara Kell, Dain Rove, Mara Fell, current Ironspine schedules/services, and existing High-Pass Survey Compass / Frost Lichen Tallow Salve / High-Pass Bearhide Bedroll outputs. Preferred bounded target: three connected commitments plus Dain as an earned companion; no new NPCs or geography unless implementation proves a real gap.
+Q2 should reuse Maelin Rook, Hessa Vale, Perrin Bale and the existing Crownfields produce/processing/wagon substrate. Freeze one credible constrained allocation and determine whether current commitments + relationships can express its consequence honestly before adding any mutually-exclusive/choice state.
 
-## Data 81 metrics
+## Data 82 metrics
 
 ```text
 places/localities                       55
@@ -43,15 +45,15 @@ resource sources                       143
 canonical items                        410
 recipes/processes                      254
 abilities/techniques                    41
-quests/contracts                        20
-companions                               2
+quests/contracts                        23
+companions                               3
 transport services                       7
 raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
 regional/shared packs                   43
-pack-owned records                    1365
+pack-owned records                    1372
 runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
@@ -127,7 +129,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 is complete and **Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected next**.
+`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 and Q1 are complete and **Q2 Crownfields Grange Allocation Choice & Social Consequence is selected next**.
 
 ### Historical completed unit — Packet B2
 
@@ -265,7 +267,7 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next selected unit:** `0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice`, not started.
+**Current next selected unit:** `0.9.500 Q2 — Crownfields Grange Allocation Choice & Social Consequence`, not started.
 
 ## Preserved interrupted/resumable queues
 

@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          81
+Data:          82
 Benchmark:     3
-Phase:         0.9 / 0.9.500 active; Q0 complete; Q1 Ironspine trust/warden companion slice next
-Codename:      Social Relationship Eligibility Foundation
+Phase:         0.9 / 0.9.500 active; Q0-Q1 complete; Q2 Crownfields allocation-choice pass next
+Codename:      Ironspine Warden Trust Circuit
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -33,8 +33,8 @@ Validated Data 80 checkpoint:
 | Canonical items | 410 | 200 | ready |
 | Recipes/processes | 254 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
-| Quests/contracts | 20 | 30 | 10 |
-| Recruitable companions | 2 | 4 | 2 |
+| Quests/contracts | 23 | 30 | 7 |
+| Recruitable companions | 3 | 4 | 1 |
 | Transport services | 7 | 5 | ready |
 
 Infrastructure coverage:
@@ -45,16 +45,16 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
 regional/shared packs                   43
-pack-owned records                    1365
+pack-owned records                    1372
 pack-owned abilities/capabilities/
-  schedules/companions              41/44/27/2
+  schedules/companions              41/44/27/3
 runtime seed NPCs                       47
 runtime seed enemies                    17
 raw resources with production demand 145/154
 luxury raws with production demand      14/14
 ```
 
-Mechanics-scale gate remains **NOT READY**. Abilities/techniques are now the largest relative and absolute listed gap; companions improved to 2/4. These are roadmap signals, not permission to create filler.
+Mechanics-scale gate remains **NOT READY**. Abilities/techniques are the largest relative and absolute listed gap; companions are now 3/4 and quests/contracts 23/30. These are roadmap signals, not permission to create filler.
 
 # `0.9.100` — Content Scale Gate A
 
@@ -498,7 +498,7 @@ Packet 7 — Radiant Arc Propagation Foundation is **COMPLETE** at Product 0.9.3
 
 Packet 8 — Martial Structured Resolution Breadth is **COMPLETE** at Product 0.9.300.8 / Game State 21 / Data 75. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`; behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`; Check #2132 / run `33575392561` passed 895/895 tests plus the full gate; Pages #2261 passed. Guarded Cut, Barkboar Brace, and Thicket Feint now use structured physical accuracy/defense/recovery while preserving their self-buffs. Combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are now structured. No new persistence or combat subsystem was introduced.
 
-Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. `0.9.400 Economy / Production Depth` is **COMPLETE** after A0-A6. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 Social Relationship Eligibility Foundation is complete at Product 0.9.500.1 / Game State 21 / Data 81, and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
+Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. `0.9.400 Economy / Production Depth` is **COMPLETE** after A0-A6. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 Social Relationship Eligibility Foundation and Q1 Ironspine Watchpost Trust & Warden Companion Slice are complete at Product 0.9.500.2 / Game State 21 / Data 82. Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started.
 # `0.9.400` — Economy / Production Depth
 
 ## A0 — Production & Item Authority Hardening
@@ -605,27 +605,59 @@ Q0 adds reusable relationship requirements to commitment eligibility and compani
 
 ## Q1 — Ironspine Watchpost Trust & Warden Companion Slice
 
+**Status: COMPLETE.**
+
+Permanent record:
+- `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md`.
+
+Implementation freeze `702d06bd123e1f6f85eebf7f0fdb02dd7b394359` passed Check #2338 / run `33687994124` with **936/936 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Version result:
+
+```text
+Product       0.9.500.1 -> 0.9.500.2
+Package       0.9.500   -> 0.9.500
+Data          81        -> 82
+Game State    21        -> 21
+```
+
+Q1 adds:
+- three commitments using existing Ironspine crafted outputs and exact provenance;
+- cross-NPC relationship gates Vara -> Dain -> Mara;
+- Dain Rove as an earned companion;
+- schedule-aware companion recruitment;
+- physical-presence validation for scheduled mobile-NPC POIs;
+- seven new Pack-v2 owned records;
+- zero new named NPCs, schedules, geography, items, recipes, or state families.
+
+Census result:
+- quests/contracts 23;
+- companions 3;
+- named NPCs 48;
+- Pack-v2 owned records 1372.
+
+## Q2 — Crownfields Grange Allocation Choice & Social Consequence
+
 **Status: SELECTED / NOT STARTED.**
 
 Selected existing people:
-- Vara Kell — High-Pass Survey Factor;
-- Dain Rove — Ironspine Warden;
-- Mara Fell — Pass Lodge Keeper.
+- Maelin Rook — Grange Produce Factor;
+- Hessa Vale — Growers' Hall Steward;
+- Perrin Bale — Produce Wagonmaster.
 
-Selected existing proof goods:
-- High-Pass Survey Compass;
-- Frost Lichen Tallow Salve;
-- High-Pass Bearhide Bedroll.
+Purpose:
+- move beyond linear trust chains into meaningful allocation consequence;
+- freeze one constrained Crownfields allocation where local interests cannot all be satisfied identically;
+- determine whether current commitments + relationship thresholds are sufficient;
+- introduce a bounded mutually-exclusive/choice-outcome contract only if the authored conflict proves it necessary.
 
-Preferred bounded target:
-- three connected commitments;
-- cross-NPC relationship eligibility;
-- one Dain Rove companion definition with earned trust/respect recruitment;
-- zero new named NPCs;
-- zero new geography;
-- no new social state family unless a concrete blocker is discovered.
-
-Do not expand Q1 merely to satisfy census floors.
+Default guardrails:
+- no new Crownfields NPC for census;
+- no fourth companion just to reach 4/4;
+- no generic faction reputation;
+- no husbandry expansion through the social slice;
+- no new item if existing Crownfields agriculture/processing can carry the choice;
+- Game State 21 remains the default unless Q2 proves a genuinely new durable outcome fact.
 
 # Relative planning envelope
 
@@ -641,7 +673,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, `0.9.300` Advanced Combat / Training, and `0.9.400` Economy / Production Depth are complete. `0.9.500` Quest / Social Depth is active: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started. `0.9.600` remains the playable-alpha scale push; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
+`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, `0.9.300` Advanced Combat / Training, and `0.9.400` Economy / Production Depth are complete. `0.9.500` Quest / Social Depth is active: Q0 and Q1 are complete and Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started. `0.9.600` remains the playable-alpha scale push; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
 
 # Explicit non-goals
 

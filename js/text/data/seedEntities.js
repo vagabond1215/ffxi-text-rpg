@@ -61,15 +61,18 @@ export function createSeedNpcs() {
         }),
         createNpc({
             id: 'npc-ironspine-vara-kell', name: 'Vara Kell', title: 'High-Pass Survey Factor', faction: 'Brasshaven',
-            locationId: 'ironspine-watchpost', services: ['regional-goods', 'survey-trade', 'resource-appraisal', 'provisions'],
+            locationId: 'ironspine-watchpost', services: ['regional-goods', 'survey-trade', 'resource-appraisal', 'provisions', 'commissions'],
+            questIds: ['commitment-ironspine-survey-compass'],
         }),
         createNpc({
             id: 'npc-ironspine-dain-rove', name: 'Dain Rove', title: 'Ironspine Warden', faction: 'Brasshaven',
-            locationId: 'ironspine-watchpost', services: ['route-guidance', 'hunting', 'wildlife-tracking', 'weather', 'field-training'],
+            locationId: 'ironspine-watchpost', services: ['route-guidance', 'hunting', 'wildlife-tracking', 'weather', 'field-training', 'commissions', 'companion-recruitment'],
+            questIds: ['commitment-ironspine-frost-salve-readiness'],
         }),
         createNpc({
             id: 'npc-ironspine-mara-fell', name: 'Mara Fell', title: 'Pass Lodge Keeper', faction: 'Brasshaven',
-            locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions'],
+            locationId: 'ironspine-watchpost', services: ['lodging', 'food', 'animal-shelter', 'trail-provisions', 'commissions'],
+            questIds: ['commitment-ironspine-bearhide-bedroll'],
         }),
         createNpc({
             id: 'npc-cinderwell-tarin-hove', name: 'Tarin Hove', title: 'Cinderwell Field Factor', faction: 'Brasshaven',

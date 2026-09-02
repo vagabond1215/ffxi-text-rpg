@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          81
+Data:          82
 Benchmark:     3
-Codename:      Social Relationship Eligibility Foundation
-Phase:         0.9 / 0.9.500 ACTIVE; Q0 complete; Q1 Ironspine trust/warden companion selected next
+Codename:      Ironspine Warden Trust Circuit
+Phase:         0.9 / 0.9.500 ACTIVE; Q0-Q1 complete; Q2 Crownfields allocation-choice pass selected next
 ```
 
-Data 81 is the current authored/mechanics-data checkpoint. Product 0.9.500.1 closes Q0 Social Relationship Eligibility Foundation; Game State 21 remains unchanged. Q0 makes existing relationship dimensions eligible as commitment/companion requirements without adding durable state. Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
+Data 82 is the current authored/mechanics-data checkpoint. Product 0.9.500.2 closes Q1 Ironspine Watchpost Trust & Warden Companion Slice; Game State 21 remains unchanged. Q1 composes existing production provenance, relationship requirements, schedules, locality, and party continuity into one multi-NPC trust circuit. Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started.
 
 ## 0.9.400 production/item authority
 
@@ -268,6 +268,54 @@ Requirements may reference NPCs other than the current giver, enabling bounded m
 Sable Renn is the established proof: second-road-test visibility requires Sable trust 1; companion recruitment requires trust 3 and respect 1 plus both resolved commitments.
 
 No persisted social family is added. Data advances 80 -> 81 because existing authored eligibility semantics change; Game State remains 21.
+
+### Q1 Ironspine social composition and scheduled mobile NPCs
+
+Q1 proves a social slice can span production, commitment, relationship, schedule, locality, party, travel, persistence, and combat without a new durable state family:
+
+```text
+canonical crafted output + provenance
+              |
+              v
+      commitment delivery
+              |
+              v
+    relationship change
+              |
+              v
+cross-NPC relationship eligibility
+              |
+              v
+     later commitment access
+              |
+              v
+ companion recruitment eligibility
+              |
+              v
+ existing party / travel / combat state
+```
+
+Vara Kell, Dain Rove, and Mara Fell are one concrete proof graph.
+
+Dain also establishes a scheduled-mobile-NPC invariant:
+
+```text
+npc schedule
+  = recurring service availability window
+  != physical-location teleport authority
+
+backing NPC / companion location
+  = current physical presence authority
+```
+
+Therefore:
+- companion recruitment checks a candidate's canonical schedule when one exists;
+- locality interaction with a scheduled POI checks that the backing NPC is physically present;
+- a recruited or left-behind Dain does not reappear at the watchpost merely because the clock enters his service window.
+
+Dain's existing warden desk remains a Guild POI and gains a companion action through explicit companion metadata. POI type remains service/presentation semantics rather than exclusive identity ownership.
+
+No new persistent field is needed: commitments, relationships, party, NPC identity/location, local knowledge, and world time already own all durable facts.
 
 ## Core authority rules
 
@@ -1157,4 +1205,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 81; the current runtime/persistence baseline is Product 0.9.500.1 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 82; the current runtime/persistence baseline is Product 0.9.500.2 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 and Q1 are complete and Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.

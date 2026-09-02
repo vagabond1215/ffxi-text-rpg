@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          81
+Data:          82
 Benchmark:     3
-Codename:      Social Relationship Eligibility Foundation
+Codename:      Ironspine Warden Trust Circuit
 ```
 
 ## Completed foundation and major tranches
@@ -77,8 +77,8 @@ The five-part location flora/fauna diversity repair sequence is now complete. Ga
 | Canonical items | 410 | 200 | reached |
 | Recipes/processes | 254 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
-| Quests/contracts | 20 | 30 | 10 short |
-| Companions | 2 | 4 | 2 short |
+| Quests/contracts | 23 | 30 | 7 short |
+| Companions | 3 | 4 | 1 short |
 | Transport services | 7 | 5 | reached |
 
 ```text
@@ -87,7 +87,7 @@ spell schools                  4
 capabilities                  44
 NPC schedules                 27
 regional/shared packs         43
-pack-owned records          1365
+pack-owned records          1372
 runtime seed NPCs             47
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -98,22 +98,28 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest implementation pass
 
-### 0.9.500 Q0 — Social Relationship Eligibility Foundation
+### 0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice
 
-**Status: COMPLETE / Product 0.9.500.1 / Package 0.9.500 / Data 81 / Game State 21.**
+**Status: COMPLETE / Product 0.9.500.2 / Package 0.9.500 / Data 82 / Game State 21.**
 
 Permanent record:
-- `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
+- `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md`.
 
-Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2315 / run `33685651230` with **934/934 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+Implementation freeze `702d06bd123e1f6f85eebf7f0fdb02dd7b394359` passed Check #2338 / run `33687994124` with **936/936 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
-Q0 adds one reusable relationship-requirement schema/evaluator over the existing NPC-specific familiarity/respect/trust/obligation state. Commitment visibility/acceptance and companion recruitment now share that authority. Sable Renn's established trust arc is the canonical proof.
+Q1 adds three commitments across Vara Kell, Dain Rove, and Mara Fell using existing High-Pass Survey Compass, Frost Lichen Tallow Salve, and High-Pass Bearhide Bedroll production chains. Cross-NPC relationship requirements make the sequence a real community trust circuit, and Dain becomes one earned companion for the existing persistent NPC.
 
-Census counts remain unchanged at 48 named NPCs, 20 quests/contracts, and 2 companions. Data advances because existing Sable commitment/companion eligibility semantics change; no new state family is introduced.
+Q1 also makes companion recruitment schedule-aware and prevents scheduled POI interactions from treating a mobile recruited NPC as present when the backing NPC is physically elsewhere.
 
-**Next selected unit: 0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice, not started.**
+Census moves:
+- quests/contracts 20 -> 23;
+- companions 2 -> 3;
+- named NPCs remain 48;
+- Pack-v2 owned records 1365 -> 1372.
 
-Q1 should reuse Vara Kell, Dain Rove, Mara Fell, the existing Ironspine survey/field/lodging substrate, and existing High-Pass Survey Compass / Frost Lichen Tallow Salve / High-Pass Bearhide Bedroll outputs. Preferred target is three connected commitments and Dain Rove as one earned companion, with no new NPCs or geography.
+**Next selected unit: 0.9.500 Q2 — Crownfields Grange Allocation Choice & Social Consequence, not started.**
+
+Q2 should reuse Maelin Rook, Hessa Vale, Perrin Bale and existing Crownfields agriculture/processing/wagon logistics. Its purpose is to test meaningful allocation consequence, not another linear trust chain. Freeze the actual conflicting allocation before deciding whether a bounded mutually-exclusive/choice outcome contract is needed.
 
 ### Historical planning pass — Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
@@ -272,10 +278,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE.** `0.9.500 Quest / Social Depth` is active: Q0 Social Relationship Eligibility Foundation is complete and **Q1 Ironspine Watchpost Trust & Warden Companion Slice** is selected / not started; see `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md` and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
+**`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE.** `0.9.500 Quest / Social Depth` is active: Q0 and Q1 are complete and **Q2 Crownfields Grange Allocation Choice & Social Consequence** is selected / not started; see `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md` and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- 0.9.500 Q0 is complete; Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started;
+- 0.9.500 Q0 and Q1 are complete; Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.

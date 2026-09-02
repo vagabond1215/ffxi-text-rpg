@@ -15,17 +15,17 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.500.1');
+    assert.equal(PRODUCT_VERSION, '0.9.500.2');
     assert.equal(PACKAGE_VERSION, '0.9.500');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
     assert.equal(VERSION.gameState, 21);
-    assert.equal(VERSION.data, 81);
+    assert.equal(VERSION.data, 82);
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Social Relationship Eligibility Foundation');
+    assert.equal(VERSION.codename, 'Ironspine Warden Trust Circuit');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -101,7 +101,7 @@ test('version manifest separates product package persistence data and scale-cont
             characterAffinity: SYSTEM_VERSIONS.characterAffinity,
         },
         {
-            versionManifest: '0.9.500.1',
+            versionManifest: '0.9.500.2',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -121,11 +121,11 @@ test('version manifest separates product package persistence data and scale-cont
             commandShell: '0.5.4',
             slashCommands: '0.5.0',
             accountSaves: '0.7.1',
-            commitments: '0.9.0',
+            commitments: '0.10.0',
             npcSchedules: '0.9.0',
             contentCatalogRegistry: '0.4.0',
             contentPackSchema: '0.2.0',
-            regionalContentPacks: '0.27.0',
+            regionalContentPacks: '0.28.0',
             contentPackValidation: '0.4.0',
             contentScaleGate: '0.2.0',
             productionCatalog: '0.23.0',
@@ -174,17 +174,17 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.500\.1/);
+    assert.match(describeVersion(), /Product: 0\.9\.500\.2/);
     assert.match(describeVersion(), /Package: 0\.9\.500/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 21/);
-    assert.match(describeVersion(), /Data: 81/);
+    assert.match(describeVersion(), /Data: 82/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Social Relationship Eligibility Foundation/);
+    assert.match(describeVersion(), /Codename: Ironspine Warden Trust Circuit/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
     assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.4\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.27\.0/);
+    assert.match(describeSystemVersions(), /regionalContentPacks: 0\.28\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.4\.0/);
     assert.match(describeSystemVersions(), /contentScaleGate: 0\.2\.0/);
     assert.match(describeSystemVersions(), /productionCatalog: 0\.23\.0/);
@@ -199,13 +199,14 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
     assert.match(describeSystemVersions(), /validation: 0\.54\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
-    assert.match(describeSystemVersions(), /commitments: 0\.9\.0/);
+    assert.match(describeSystemVersions(), /commitments: 0\.10\.0/);
+    assert.match(describeSystemVersions(), /companionCatalog: 0\.4\.0/);
+    assert.match(describeSystemVersions(), /party: 0\.6\.0/);
+    assert.match(describeSystemVersions(), /companions: 0\.4\.0/);
     assert.match(describeSystemVersions(), /relationships: 0\.2\.0/);
     assert.match(describeSystemVersions(), /socialRequirements: 0\.1\.0/);
     assert.match(describeSystemVersions(), /socialRequirementEngine: 0\.1\.0/);
     assert.match(describeSystemVersions(), /playerContinuity: 0\.7\.0/);
-    assert.match(describeSystemVersions(), /party: 0\.5\.0/);
-    assert.match(describeSystemVersions(), /companions: 0\.3\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
     assert.match(describeSystemVersions(), /enemyEncounterProjection: 0\.1\.0/);
     assert.match(describeSystemVersions(), /presentationLog: 0\.1\.0/);
@@ -235,8 +236,8 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /playerEntity: 0\.11\.0/);
     assert.match(describeSystemVersions(), /progression: 0\.8\.0/);
     assert.match(describeSystemVersions(), /characterAffinity: 0\.1\.0/);
-    assert.match(describeSystemVersions(), /localityNavigation: 0\.4\.0/);
-    assert.match(describeSystemVersions(), /pois: 0\.4\.5/);
+    assert.match(describeSystemVersions(), /localityNavigation: 0\.5\.0/);
+    assert.match(describeSystemVersions(), /pois: 0\.4\.6/);
     assert.match(describeSystemVersions(), /walletPersistence: 0\.1\.0/);
     assert.match(describeSystemVersions(), /statusEngine: 0\.4\.0/);
     assert.match(describeSystemVersions(), /saveEncoding: 0\.9\.0/);
