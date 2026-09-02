@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.400.4
+Product:       0.9.400.5
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          78
+Data:          79
 Benchmark:     3
-Phase:         0.9 / 0.9.400 active; A0-A3 complete; A4 remaining bronze candidate next
-Codename:      Caster / Offhand Starter Conversion Proof
+Phase:         0.9 / 0.9.400 active; A0-A4 complete; A5 leather garments candidate next
+Codename:      Remaining Bronze Starter Set Conversion Proof
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -31,7 +31,7 @@ Validated Data 75 checkpoint:
 | Creature definitions | 123 | 40 | ready |
 | Resource sources | 143 | 40 | ready |
 | Canonical items | 410 | 200 | ready |
-| Recipes/processes | 247 | 75 | ready |
+| Recipes/processes | 252 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 20 | 30 | 10 |
 | Recruitable companions | 2 | 4 | 2 |
@@ -45,7 +45,7 @@ spell schools                            4
 capability/training definitions         44
 NPC schedules                           27
 regional/shared packs                   42
-pack-owned records                    1351
+pack-owned records                    1361
 pack-owned abilities/capabilities/
   schedules/companions              41/44/27/2
 runtime seed NPCs                       47
@@ -498,7 +498,7 @@ Packet 7 — Radiant Arc Propagation Foundation is **COMPLETE** at Product 0.9.3
 
 Packet 8 — Martial Structured Resolution Breadth is **COMPLETE** at Product 0.9.300.8 / Game State 21 / Data 75. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`; behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`; Check #2132 / run `33575392561` passed 895/895 tests plus the full gate; Pages #2261 passed. Guarded Cut, Barkboar Brace, and Thicket Feint now use structured physical accuracy/defense/recovery while preserving their self-buffs. Combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are now structured. No new persistence or combat subsystem was introduced.
 
-Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. The decision-only closure remained Product 0.9.300.8 / Game State 21 / Data 75. `0.9.400 Economy / Production Depth` is now active: A0 Production & Item Authority Hardening is complete at Product 0.9.400.1, and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.
+Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. The decision-only closure remained Product 0.9.300.8 / Game State 21 / Data 75. `0.9.400 Economy / Production Depth` is now active: A0 Production & Item Authority Hardening is complete at Product 0.9.400.1, and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started.
 # `0.9.400` — Economy / Production Depth
 
 ## A0 — Production & Item Authority Hardening
@@ -508,16 +508,12 @@ Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COM
 Permanent record:
 - `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
-A0 established canonical item resolution, production-to-existing-equipment output authority, canonical commerce materialization, and physical production-tool binding.
-
 ## A1 — Existing Field-Tool Conversion Proof
 
 **Status: COMPLETE.**
 
 Permanent record:
 - `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
-
-A1 converted six established field tools and proved crafted-tool use, downstream production, and persistence.
 
 ## A2 — Bronze Martial Conversion Proof
 
@@ -526,8 +522,6 @@ A1 converted six established field tools and proved crafted-tool use, downstream
 Permanent record:
 - `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
 
-A2 converted Bronze Sword, Bronze Cap, and Bronze Harness and proved A1 cutting-tool reuse plus combat-profile/cadence behavior.
-
 ## A3 — Caster / Offhand Starter Conversion Proof
 
 **Status: COMPLETE.**
@@ -535,30 +529,34 @@ A2 converted Bronze Sword, Bronze Cap, and Bronze Harness and proved A1 cutting-
 Permanent record:
 - `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`.
 
-Implementation freeze `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d` passed Check #2240 / run `33671247638` with **916/916 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+## A4 — Remaining Bronze Starter Set Conversion Proof
+
+**Status: COMPLETE.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
+
+Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
 Version result:
 ```text
-Product       0.9.400.3 -> 0.9.400.4
+Product       0.9.400.4 -> 0.9.400.5
 Package       0.9.400   -> 0.9.400
-Data          77        -> 78
+Data          78        -> 79
 Game State    21        -> 21
 ```
 
-A3 adds four canonical production definitions for existing Ash Staff, Maple Wand, Iron Buckler, and Brass Ring IDs; adds one shared Pack-v2 ownership tranche; proves A1 Field Knife binding into both wood recipes; proves two-handed/offhand compatibility, cadence/stat use, and current-schema save/load preservation.
+A4 adds five canonical production definitions for existing Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens IDs. It extends the existing bronze starter Pack-v2 ownership tranche instead of creating a second bronze pack; preserves Bronze Pick as combat-only; and proves weapon cadence, armor stats, A1 cutting-tool bindings, and current-schema save/load preservation.
 
-## A4 — Remaining Bronze Starter Set Conversion
+## A5 — Basic Leather Garment Conversion
 
 **Status: NEXT CANDIDATE / NOT STARTED.**
 
-Candidate scope:
-- Bronze Axe;
-- Bronze Dagger;
-- Bronze Pick;
-- Bronze Subligar;
-- Bronze Mittens.
+Initial candidate scope:
+- Leather Vest;
+- Leather Trousers.
 
-Reuse the established A2 bronze material graph. Keep Bronze Pick as its existing combat weapon identity; field mining remains owned by Prospector Pick.
+Audit established leather inputs and tool/station requirements before authoring. Do not absorb Traveler Gloves/Boots or broad profession tools without a fresh bounded decision.
 
 # Relative planning envelope
 
@@ -574,7 +572,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, and `0.9.300` Advanced Combat / Training are complete. `0.9.400` Economy / Production Depth is active: A0 is complete at Product 0.9.400.1 / Data 75 / Game State 21 and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started. Later tracks remain `0.9.500` quest/social depth and `0.9.600` playable-alpha scale; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
+`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, and `0.9.300` Advanced Combat / Training are complete. `0.9.400` Economy / Production Depth is active: A0 is complete at Product 0.9.400.1 / Data 75 / Game State 21 and A1 Existing Field-Tool Conversion Proof is complete; A2 Bronze Martial Conversion Proof is complete; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started. Later tracks remain `0.9.500` quest/social depth and `0.9.600` playable-alpha scale; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
 
 # Explicit non-goals
 
