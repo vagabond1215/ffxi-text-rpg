@@ -83,16 +83,17 @@ authority:
   economy_0_9_400_a0_production_item_authority: docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md
   economy_0_9_400_a1_field_tool_conversion: docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md
   economy_0_9_400_a2_bronze_martial_conversion: docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md
+  economy_0_9_400_a3_caster_offhand_conversion: docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: economy-production-0.9.400-a3-caster-offhand-starter-conversion-candidate-not-started
-  latest_product_checkpoint_sha: f4ae20cce0a3a735d13b6df537deeb3f9ea8360d
-  latest_product_checkpoint_pull_request: 408
-  latest_product_checkpoint_check: 33665699974
-  latest_product_checkpoint_check_number: 2220
-  latest_product_checkpoint_check_result: success-911-of-911-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  current_normal_work: economy-production-0.9.400-a4-remaining-bronze-starter-set-conversion-candidate-not-started
+  latest_product_checkpoint_sha: d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d
+  latest_product_checkpoint_pull_request: 409
+  latest_product_checkpoint_check: 33671247638
+  latest_product_checkpoint_check_number: 2240
+  latest_product_checkpoint_check_result: success-916-of-916-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   previous_product_pull_request: 402
   previous_product_pr_check: 33217086478
@@ -302,19 +303,24 @@ git:
   latest_economy_a2_implementation_check_sha: f4ae20cce0a3a735d13b6df537deeb3f9ea8360d
   latest_economy_a2_implementation_check_result: success-911-of-911-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_economy_a2_pull_request: 408
+  latest_economy_a3_implementation_check: 33671247638
+  latest_economy_a3_implementation_check_number: 2240
+  latest_economy_a3_implementation_check_sha: d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d
+  latest_economy_a3_implementation_check_result: success-916-of-916-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_economy_a3_pull_request: 409
 progression:
   current_phase: 0.9
   current_track: 0.9.400-economy-production-depth
-  current_track_status: active-a0-a1-a2-complete-a3-caster-offhand-starter-conversion-candidate-not-started
+  current_track_status: active-a0-a1-a2-a3-complete-a4-remaining-bronze-starter-set-conversion-candidate-not-started
   completed_track: 0.9.300-advanced-combat-training
   completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
   previous_completed_track: 0.9.200-adventure-vertical-slices
   previous_completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: economy-production-0.9.400-a2-bronze-martial-conversion-proof
-  latest_bounded_unit_status: complete-product-0.9.400.3-package-0.9.400-game-state-21-data-77-implementation-freeze-f4ae20cce0a3a735d13b6df537deeb3f9ea8360d-check-2220-911-of-911
-  latest_data_bounded_unit: economy-production-0.9.400-a2-bronze-martial-conversion-proof
-  latest_data_bounded_unit_status: complete-data-77-product-0.9.400.3
-  next_roadmap_gate: economy-production-0.9.400-a3-caster-offhand-starter-conversion
+  latest_bounded_unit: economy-production-0.9.400-a3-caster-offhand-starter-conversion-proof
+  latest_bounded_unit_status: complete-product-0.9.400.4-package-0.9.400-game-state-21-data-78-implementation-freeze-d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d-check-2240-916-of-916
+  latest_data_bounded_unit: economy-production-0.9.400-a3-caster-offhand-starter-conversion-proof
+  latest_data_bounded_unit_status: complete-data-78-product-0.9.400.4
+  next_roadmap_gate: economy-production-0.9.400-a4-remaining-bronze-starter-set-conversion
   next_roadmap_gate_status: candidate-not-started
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
   combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
@@ -344,10 +350,10 @@ progression:
   central_continent_minimum_skeleton_pass_budget: 5-to-7-substantial-region-passes
   central_continent_surface_budget_excludes: lower-deepvein-and-drowned-vaults-vertical-subterranean-expansions
   central_continent_completion_bias: route-ecology-economy-barrier-and-civilization-approach-density-not-tessellation
-  next_material_culture_candidate: caster-offhand-starter-conversion
-  next_material_culture_candidate_status: a0-a1-a2-complete-a3-candidate-not-started
+  next_material_culture_candidate: remaining-bronze-starter-set-conversion
+  next_material_culture_candidate_status: a0-a1-a2-a3-complete-a4-candidate-not-started
   locality_enrichment_status: deferred-resumable-foundation-complete
-  occupational_tool_conversion_status: active-a0-a1-a2-complete-a3-candidate-not-started
+  occupational_tool_conversion_status: active-a0-a1-a2-a3-complete-a4-candidate-not-started
   world_edge_queue_status: preserved-resumable-waymeet-inner-marches-first
   ecology_repair_sequence_status: complete-not-interrupted-do-not-restart
 validation:
@@ -398,14 +404,15 @@ validation:
   production_tool_binding_guard: tests/productionWork.test.js
   occupational_field_tool_conversion_guard: tests/occupationalFieldToolConversion.test.js
   starter_bronze_martial_conversion_guard: tests/starterBronzeMartialConversion.test.js
+  starter_caster_offhand_conversion_guard: tests/starterCasterOffhandConversion.test.js
 quality:
-  current_product_version: 0.9.400.3
+  current_product_version: 0.9.400.4
   current_package_version: 0.9.400
   current_account_save: 5
   current_game_state: 21
-  current_data_version: 77
+  current_data_version: 78
   current_benchmark_version: 3
-  current_codename: Bronze Martial Conversion Proof
+  current_codename: Caster / Offhand Starter Conversion Proof
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
