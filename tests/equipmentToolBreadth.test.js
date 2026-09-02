@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { useKnownPoi } from './helpers/localKnowledgeTestSupport.js';
 
+import { getCanonicalItem } from '../js/text/data/canonicalItemRegistry.js';
 import {
     EQUIPMENT_CATALOG_VERSION,
     getEquipmentCatalogEntry,
@@ -114,3 +115,28 @@ function addCatalogEquipment(state, id) {
     const result = addItemToContainer(state.player.inventoryState, 'inventory', { ...item, quantity: 1 });
     assert.equal(result.ok, true, result.reason);
 }
+
+
+test('shop purchases use canonical item kind and commerce provenance instead of tag-first reconstruction', () => {
+    const state = createNewGameState();
+    state.currentPlaceId = 'lantern-sump-station';
+    state.location = 'Lantern Sump Station';
+    state.player.wallet.gil = 500;
+    useKnownPoi(state, 'poi-lantern-sump-exchange', 'shop');
+
+    const canonical = getCanonicalItem('item-lower-deepvein-reflector-lamp-kit');
+    assert.ok(canonical);
+    assert.equal(canonical.kind, 'material');
+    assert.ok(canonical.tags.includes('tool'));
+
+    const result = buyFromCurrentShop(state, 'Deepvein Reflector Lamp Kit');
+    const purchased = state.player.inventoryState.containers.inventory.items
+        .find((item) => item.id === 'item-lower-deepvein-reflector-lamp-kit');
+
+    assert.match(result, /Bought Deepvein Reflector Lamp Kit/);
+    assert.equal(purchased.kind, 'material');
+    assert.deepEqual(purchased.tags, canonical.tags);
+    assert.equal(purchased.provenance[0].type, 'commerce');
+    assert.equal(purchased.provenance[0].sourceId, 'poi-lantern-sump-exchange');
+    assert.equal(purchased.provenance[0].action, 'purchase');
+});

@@ -15,8 +15,8 @@ import {
 
 
 test('version manifest separates product package persistence data and scale-content versions', () => {
-    assert.equal(PRODUCT_VERSION, '0.9.300.8');
-    assert.equal(PACKAGE_VERSION, '0.9.300');
+    assert.equal(PRODUCT_VERSION, '0.9.400.1');
+    assert.equal(PACKAGE_VERSION, '0.9.400');
     assert.equal(VERSION.product, PRODUCT_VERSION);
     assert.equal(VERSION.package, PACKAGE_VERSION);
     assert.equal(VERSION.accountSave, 5);
@@ -25,7 +25,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.equal(VERSION.benchmark, 3);
     assert.equal(Object.hasOwn(VERSION, 'app'), false);
     assert.equal(Object.hasOwn(VERSION, 'save'), false);
-    assert.equal(VERSION.codename, 'Martial Structured Resolution Breadth');
+    assert.equal(VERSION.codename, 'Production Item Authority Hardening');
     assert.equal(VERSION.compatibility, 'pre-release-current-schema');
 
     assert.deepEqual(
@@ -101,7 +101,7 @@ test('version manifest separates product package persistence data and scale-cont
             characterAffinity: SYSTEM_VERSIONS.characterAffinity,
         },
         {
-            versionManifest: '0.9.300.8',
+            versionManifest: '0.9.400.1',
             actionResults: '0.2.0',
             performanceHarness: '0.3.0',
             lifecycleHarness: '0.13.0',
@@ -123,7 +123,7 @@ test('version manifest separates product package persistence data and scale-cont
             accountSaves: '0.7.1',
             commitments: '0.8.0',
             npcSchedules: '0.9.0',
-            contentCatalogRegistry: '0.3.0',
+            contentCatalogRegistry: '0.4.0',
             contentPackSchema: '0.2.0',
             regionalContentPacks: '0.22.0',
             contentPackValidation: '0.4.0',
@@ -135,8 +135,8 @@ test('version manifest separates product package persistence data and scale-cont
             carriedInventory: '0.1.0',
             carriedLoad: '0.2.1',
             inventoryContainers: '0.7.0',
-            inventoryTransfers: '0.8.0',
-            validation: '0.53.0',
+            inventoryTransfers: '0.8.1',
+            validation: '0.54.0',
             walletPersistence: '0.1.0',
             playerDerivedState: '0.1.2',
             npcWorldProjection: '0.1.1',
@@ -174,15 +174,15 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.300\.8/);
-    assert.match(describeVersion(), /Package: 0\.9\.300/);
+    assert.match(describeVersion(), /Product: 0\.9\.400\.1/);
+    assert.match(describeVersion(), /Package: 0\.9\.400/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 21/);
     assert.match(describeVersion(), /Data: 75/);
     assert.match(describeVersion(), /Benchmark: 3/);
-    assert.match(describeVersion(), /Codename: Martial Structured Resolution Breadth/);
+    assert.match(describeVersion(), /Codename: Production Item Authority Hardening/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.4\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
     assert.match(describeSystemVersions(), /regionalContentPacks: 0\.22\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.4\.0/);
@@ -192,7 +192,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.11\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.53\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.54\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);

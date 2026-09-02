@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Codename:      Martial Structured Resolution Breadth
+Codename:      Production Item Authority Hardening
 ```
 
 ## Completed foundation and major tranches
@@ -74,7 +74,7 @@ The five-part location flora/fauna diversity repair sequence is now complete. Ga
 | Shop/service sites | 37 | 20 | reached |
 | Creature definitions | 123 | 40 | reached; playable-alpha lower bound 120 also reached |
 | Resource sources | 143 | 40 | reached |
-| Canonical items | 408 | 200 | reached |
+| Canonical items | 410 | 200 | reached |
 | Recipes/processes | 234 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 20 | 30 | 10 short |
@@ -88,7 +88,7 @@ capabilities                  44
 NPC schedules                 27
 regional/shared packs         39
 pack-owned records          1325
-runtime seed NPCs             46
+runtime seed NPCs             47
 runtime seed enemies          17
 raw-resource utilization   145/154
 luxury-raw utilization       14/14
@@ -96,9 +96,22 @@ luxury-raw utilization       14/14
 
 Mechanics-scale gate remains **NOT READY**.
 
-## Latest planning pass
+## Latest implementation pass
 
-### Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
+### 0.9.400 A0 — Production & Item Authority Hardening
+
+**Status: COMPLETE / Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
+
+Implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` passed Check #2172 / run `33661309577` with **901/901 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+A0 adds no authored content. It establishes canonical item resolution across resource/production/equipment authorities, canonical commerce materialization, production-to-existing-equipment output resolution, and active physical tool bindings for production work.
+
+**Next: 0.9.400 A1 — Existing Field-Tool Conversion Proof, not started.**
+
+### Historical planning pass — Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
 **Status: FOUNDATION COMPLETE ON `main`.**
 
@@ -118,7 +131,7 @@ Data stays 62 because this unit introduces no canonical authored world/content r
 
 The broader design document still contains follow-on possibilities—ambient/risk events, wandering merchants, richer guard directions, personality dialogue variation, and deeper NPC-mediated shop browsing. Those are **not** part of this foundation closure and are not auto-started.
 
-The next formal roadmap track remains **`0.9.200 Adventure Vertical Slices`**, queued and not auto-started.
+Historical decision at that checkpoint: the next formal roadmap track was `0.9.200 Adventure Vertical Slices`; that track is now complete.
 
 ### Macro-World Topology Lock
 
@@ -255,10 +268,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The next bounded implementation is **`0.9.400 Packet A — Occupational Tool Conversion`**, selected but not started; see `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0 authority-hardening prerequisite is now complete. The next bounded implementation is **0.9.400 A1 — Existing Field-Tool Conversion Proof**; see `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- Occupational Tool Conversion is selected as the next bounded 0.9.400 packet but is not started;
+- 0.9.400 A0 authority hardening is complete; A1 Existing Field-Tool Conversion Proof is next / not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.

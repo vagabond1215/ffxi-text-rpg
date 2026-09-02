@@ -1,3 +1,4 @@
+import { getCanonicalItem } from '../data/canonicalItemRegistry.js';
 import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
@@ -6,6 +7,7 @@ import { canSellItem } from './itemBehaviorEngine.js';
 import { addItemToContainer, findItemInContainer, removeItemQuantityFromContainer } from './inventoryEngine.js';
 import { discoverPoi } from './poiEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
+import { describeActiveWorkToolBinding } from './workToolBindingEngine.js';
 
 export function buyFromCurrentShop(state, itemQuery = '', shopQuery = '') {
     return describeActionResult(buyFromCurrentShopAction(state, itemQuery, shopQuery));
@@ -94,6 +96,8 @@ export function sellToCurrentShopAction(state, itemQuery = '', shopQuery = '') {
 
     const found = findItemInContainer(inventoryState, 'inventory', request.itemQuery);
     if (!found.ok) return failure('shop.item-not-found', found.reason, { shopPoiId: shopPoi.id, itemQuery: request.itemQuery });
+    const workLock = describeActiveWorkToolBinding(state, found.item.id, { sourceType: 'inventory', sourceId: 'inventory' });
+    if (workLock) return failure('shop.item-in-use', workLock, { shopPoiId: shopPoi.id, itemId: found.item.id });
 
     const eligibility = canSellItem(found.item, { shopPoi, catalog });
     if (!eligibility.ok) return failure('shop.item-not-sellable', eligibility.reason, { shopPoiId: shopPoi.id, itemId: found.item.id });
@@ -161,6 +165,28 @@ function parseSellRequest(itemQuery) {
 }
 
 function createInventoryItemFromShopItem(item, shopPoi, catalog) {
+    const canonical = getCanonicalItem(item.id);
+    if (canonical) {
+        const baseItem = {
+            ...canonical,
+            quantity: 1,
+            source: {
+                type: 'shop',
+                poiId: shopPoi.id,
+                shopName: catalog.name,
+            },
+            valueGil: item.priceGil,
+            provenance: [{
+                type: 'commerce',
+                sourceId: shopPoi.id,
+                placeId: shopPoi.placeId ?? null,
+                action: 'purchase',
+                data: { catalogName: catalog.name, priceGil: item.priceGil },
+            }],
+        };
+        return baseItem.kind === 'equipment' ? enrichEquipmentItem(baseItem) : baseItem;
+    }
+
     const baseItem = {
         id: item.id,
         name: item.name,

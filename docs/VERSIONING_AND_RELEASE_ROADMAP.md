@@ -5,13 +5,13 @@ This document defines product-version protocol and milestone gates from the curr
 ## Current baseline
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Codename:      Martial Structured Resolution Breadth
+Codename:      Production Item Authority Hardening
 ```
 
 ## Product version format
@@ -1496,9 +1496,41 @@ No version axis advances for the reassessment itself.
 
 Deferred combat depth includes mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement and explicit flee/retreat, passive block/parry/guard/counter/reaction execution, inert combatant-placeholder cleanup, weapon resonance/imbuement, unsupported-family breadth, and remaining richer spell-name semantics.
 
-No Packet 9 is selected. `0.9.400 Economy / Production Depth` is the next track, with Packet A — Occupational Tool Conversion — selected as the next bounded implementation but not started.
+No Packet 9 is selected. The subsequent `0.9.400 A0 — Production & Item Authority Hardening` prerequisite is now complete; A1 Existing Field-Tool Conversion Proof is next / not started.
 
 Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
+
+## `0.9.400.1` — Production & Item Authority Hardening
+
+This revision opens Economy / Production Depth by closing authority seams required before converting existing field tools into recipes.
+
+```text
+Product       0.9.300.8 -> 0.9.400.1
+Package       0.9.300   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          75        -> 75
+Benchmark     3         -> 3
+```
+
+A0 adds:
+- `canonicalItemRegistry` as a non-owning resolver across existing resource, production, and equipment definitions;
+- cross-authority canonical-item collision validation;
+- production input/output resolution through canonical item authority so future recipes can emit an existing equipment ID;
+- canonical shop materialization with commerce provenance instead of tag-first physical reconstruction;
+- canonical shop identity validation;
+- equipped/portable/contextual production-tool binding;
+- active-work guards preventing common equipment, transfer, and sale paths from moving bound physical tools.
+
+No canonical authored item, recipe, shop-stock, NPC, quest, ability, ecology, geography, or Pack-v2 ownership record changes, so Data remains 75.
+
+No new top-level durable state family or required work-state schema field is added. Tool bindings live inside the existing generic work-record data envelope, so Game State remains 21.
+
+Behavioral implementation freeze `0445823264bb6adf1d1717dee2df83678e561a0f` passed Check #2172 / run `33661309577` with **901/901 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
+
+A1 Existing Field-Tool Conversion Proof is next / not started.
 
 ## Phase progression
 
@@ -1511,7 +1543,7 @@ Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
 0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
-0.9.400 Economy/production depth              NEXT / PACKET A OCCUPATIONAL TOOL CONVERSION SELECTED, NOT STARTED
+0.9.400 Economy/production depth              ACTIVE / A0 COMPLETE; A1 FIELD-TOOL CONVERSION NEXT
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED

@@ -5,37 +5,35 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Codename:      Martial Structured Resolution Breadth
+Codename:      Production Item Authority Hardening
 ```
 
 ## Current bounded-unit state
 
-**0.9.300 Advanced Combat / Training maturity reassessment — COMPLETE.** The track closes at the existing Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 checkpoint; the reassessment is decision-only and changes no runtime/data version.
+**0.9.400 A0 — Production & Item Authority Hardening is COMPLETE.**
 
-- decision record `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`;
-- Packet 8 permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`;
-- Packet 8 behavioral/data implementation freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`;
-- Check #2132 / run `33575392561`: Repository Audit, **895/895 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2261 / run `33575391923`: green;
-- no Packet 9 selected;
-- next bounded implementation: `0.9.400 Packet A — Occupational Tool Conversion`, selected / not started.
+- permanent record: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`;
+- behavioral implementation freeze: `0445823264bb6adf1d1717dee2df83678e561a0f`;
+- Check #2172 / run `33661309577`: Repository Audit, **901/901 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21;
+- no authored content record and no new top-level durable state family;
+- canonical item authority now resolves resource, production, and equipment definitions without duplication;
+- production can materialize future recipes into existing canonical equipment IDs;
+- canonical shop purchases preserve canonical physical type and use commerce provenance;
+- production resolves physical tool bindings from equipped tools, portable Inventory equipment tools, or explicit contextual capability;
+- bound physical tools cannot be moved through common equipment/transfer/sale paths while the work record is active.
 
-B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
+**Next bounded implementation: 0.9.400 A1 — Existing Field-Tool Conversion Proof, selected / not started.**
 
-Game State advances 15 -> 16 because those fields change future resumable target selection and therefore cannot be reconstructed safely from prose or canonical catalogs. Data stays 64 because no authored content records changed.
+A1 scope is deliberately limited to Field Knife, Prospector Pick, Woodsman Hatchet, Digging Spade, Reed Sickle, and Marsh Fishing Rod. It must prove source -> stock/components -> crafted existing tool ID -> real tool-gated work -> downstream output/use/trade. Do not jump directly to the full profession inventory list.
 
-The previous Local Knowledge & Familiarity Foundation remains complete:
-- implementation freeze `da168ddff6cc9e3611c9b8c06165b117081ea5c0`;
-- Check #1770 / run `33355620265`;
-- 823/823 tests plus full hosted gate.
-
-Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
+Historical combat/locality checkpoints remain preserved below for evidence; they are not current continuation instructions.
 
 ## Data 75 metrics
 
@@ -45,7 +43,7 @@ named NPCs                              48
 shop/service sites                      37
 creatures                              123
 resource sources                       143
-canonical items                        408
+canonical items                        410
 recipes/processes                      234
 abilities/techniques                    41
 quests/contracts                        20
@@ -126,15 +124,15 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected material-culture implementation
 
-- **0.9.400 Packet A — Occupational Tool Conversion** is selected as the next bounded implementation but is not started in the maturity-reassessment checkpoint.
-- Convert existing shop/equipment-only tools and starter metal/leather goods into real production outputs, then add shared smithing/woodworking/masonry/textile/leatherworking/cooking/measurement tools.
-- Resume from `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`; do not restart the material-culture audit.
+- **0.9.400 A0 — Production & Item Authority Hardening is complete.**
+- **0.9.400 A1 — Existing Field-Tool Conversion Proof is next / not started.** Convert only the six established field tools first and prove their full production/use loop.
+- Resume from `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`; do not restart the audit or broaden into later Packet-A tool suites until A1 closes.
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. The maturity reassessment found no alpha-loop combat blocker and selected `0.9.400 Packet A — Occupational Tool Conversion` as the next bounded implementation. It is not started in this decision checkpoint.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 authority hardening is complete and **A1 Existing Field-Tool Conversion Proof is the next bounded implementation**.
 
-### Latest completed unit — Packet B2
+### Historical completed unit — Packet B2
 
 **Enemy Attention Foundation — COMPLETE.**
 
@@ -152,7 +150,7 @@ B2 implements:
 
 Focus is not literal attack probability. There is no universal minimum target probability.
 
-### Latest completed unit — Packet B3
+### Historical completed unit — Packet B3
 
 **Combat Loadout Transition Foundation — COMPLETE.**
 
@@ -162,7 +160,7 @@ Behavioral freeze `3ef9a1c48f22911fe90a08a60c03a72c09d7fd67` passed Check #1908 
 
 B3 adds `combatLoadoutEngine.js` as the seventh direct timed-task owner, persists `activeBattle.loadoutTransition`, closes direct active-combat equipment mutation, preserves canonical cooldowns, synchronizes root/battle equipment on completion, and enforces B2 Aggro/Focus/Fixation armor pressure. Game State advances 16 -> 17; Data advances 64 -> 65 for authored handling metadata.
 
-### Latest completed unit — Packet B4
+### Historical completed unit — Packet B4
 
 **Weapon Cadence, Ranged Action, and Minimal Kata — COMPLETE.**
 
@@ -174,7 +172,7 @@ B4 centralizes weapon-delay conversion, routes player and companion basic attack
 
 Game State advances 17 -> 18 because kata configuration/cursor state changes resumable combat outcomes. Data advances 65 -> 66 because B4 adds authored sling/ammunition and kata definitions.
 
-### Latest completed unit — Packet B5
+### Historical completed unit — Packet B5
 
 **Playable Brasshaven / Redstone Combat-Training Proof — COMPLETE.**
 
@@ -184,11 +182,11 @@ Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 
 
 B5 adds a stateless Varric training-service adapter delegating to capability progression, proves B1–B4 together in South Redstone, fixes partially consumed ammo persistence under Game State 18, and fixes same-POI contextual-action deduplication. Game State stays 18; Data advances 66 -> 67 for authored Varric/POI training metadata.
 
-### Next track
+### Historical next-track decision after B5
 
-**0.9.300 Advanced Combat / Training — QUEUED / NOT STARTED.** A future explicit continuation must select its first bounded packet; B5 does not auto-start it.
+At the B5 checkpoint, `0.9.300 Advanced Combat / Training` was queued. That track is now complete and this historical note is not a continuation instruction.
 
-### Latest completed unit — 0.9.300 Packet 2
+### Historical completed unit — 0.9.300 Packet 2
 
 **Character Affinity & Kata Substitution Foundation — COMPLETE.**
 
@@ -197,7 +195,7 @@ B5 adds a stateless Varric training-service adapter delegating to capability pro
 Game State advances 19 -> 20 for the new required affinity authority. Data advances 68 -> 69 for the two authored substitutions. Weapon-kata configuration remains version 2 and encounter-local kata state remains version 1. No subsequent 0.9.300 packet is selected; the next combat unit requires a fresh bounded choice.
 
 
-### Latest completed unit — 0.9.300 Packet 3
+### Historical completed unit — 0.9.300 Packet 3
 
 **Novice Elemental Resolution Breadth — COMPLETE.**
 
@@ -207,7 +205,7 @@ The adept elemental tranche remains deliberately outside Packet 3. Tempest Ring,
 
 Game State remains 20. Data advances 69 -> 70 for eight changed canonical ability definitions. No subsequent 0.9.300 packet is auto-selected.
 
-### Latest completed unit — 0.9.300 Packet 4
+### Historical completed unit — 0.9.300 Packet 4
 
 **Thunder Cage Control Foundation — COMPLETE.**
 
@@ -215,7 +213,7 @@ Thunder Cage now carries explicit lightning magical damage plus a separately res
 
 Game State remains 20 because generic status flags and expiry timestamps already persist under the current schema. Data advances 70 -> 71 for the changed Thunder Cage canonical definition. Ability count remains 41. Tempest Ring geometry, Umbral Well field behavior, general crowd-control taxonomy, and broad adept migration remain deferred. No subsequent 0.9.300 packet is selected.
 
-### Latest completed unit — 0.9.300 Packet 5
+### Historical completed unit — 0.9.300 Packet 5
 
 **Tempest Ring Geometry Foundation — COMPLETE.**
 
@@ -223,7 +221,7 @@ Game State remains 20 because generic status flags and expiry timestamps already
 
 No mutable battle-position state is added. Formation is derived from already-persisted combatant side/order, so cloned/current-schema battle state reproduces the same geometry without a Game State bump. Game State remains 20; Data advances 71 -> 72 for the changed Tempest Ring authored contract. Ability count remains 41. Movement, LOS, pursuit/disengagement, other geometry kinds, ground targeting, and Umbral Well fields remain deferred. No subsequent 0.9.300 packet is selected.
 
-### Latest completed unit — 0.9.300 Packet 6
+### Historical completed unit — 0.9.300 Packet 6
 
 **Umbral Well Field Foundation — COMPLETE.**
 
@@ -233,7 +231,7 @@ Field pulses are canonical combat interrupts with priority above ordinary enemy 
 
 Game State advances 20 -> 21 because outstanding fields contain required future pulse deadlines and cast-time source snapshots that change resumable combat outcomes. Data advances 72 -> 73 for Umbral Well's changed authored contract. Ability count remains 41. No subsequent 0.9.300 packet is selected.
 
-### Latest completed unit — 0.9.300 Packet 7
+### Historical completed unit — 0.9.300 Packet 7
 
 **Radiant Arc Propagation Foundation — COMPLETE.**
 
@@ -243,7 +241,7 @@ Every recipient independently resolves Light magic accuracy, magic defense, elem
 
 The propagation resolves entirely inside one ability action. No timer, future deadline, state family, movement/LOS, pathfinding, or save migration is added. Game State therefore remains 21; Data advances 73 -> 74 for Radiant Arc's changed authored geometry/resolution/recovery contract. Ability count remains 41. No subsequent 0.9.300 packet is selected.
 
-### Latest completed unit — 0.9.300 Packet 8
+### Historical completed unit — 0.9.300 Packet 8
 
 **Martial Structured Resolution Breadth — COMPLETE.**
 
@@ -255,7 +253,7 @@ With Ridge Breaker and Rivet Guard already migrated by B1, all five currently ex
 
 **Maturity result:** `0.9.300` closes with no Packet 9. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, and richer spell semantics are deferred depth rather than current alpha-loop blockers.
 
-### Latest completed decision unit — 0.9.300 maturity reassessment
+### Historical completed decision unit — 0.9.300 maturity reassessment
 
 **COMPLETE — CLOSE ADVANCED COMBAT / TRAINING.**
 
@@ -270,14 +268,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Next bounded implementation:** `0.9.400 Packet A — Occupational Tool Conversion`, selected / not started.
+**Current next bounded implementation:** `0.9.400 A1 — Existing Field-Tool Conversion Proof`, selected / not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** selected as the next bounded `0.9.400` implementation; not started. Authority `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0 authority hardening is complete; A1 six-field-tool conversion proof is next / not started. Authorities: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 

@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material-foundation tranche implemented on main; profession-specific follow-ons remain bounded future work.**
+Status: **Data 50 material foundation complete; 0.9.400 A0 production/item authority hardening complete; A1 existing field-tool conversion proof is next / not started.**
 
 ## Purpose
 
@@ -173,30 +173,49 @@ Mortars/pestles, balances/weights, sieves, jars/bottles, stoppers, bandages, spl
 
 ## 0.9.400 selection status
 
-Packet A — Occupational Tool Conversion is **SELECTED AS THE NEXT BOUNDED IMPLEMENTATION / NOT STARTED** for `0.9.400 Economy / Production Depth` after the 0.9.300 combat maturity closure.
+Packet A — Occupational Tool Conversion is **ACTIVE** for `0.9.400 Economy / Production Depth`.
 
-Do not restart this material-culture audit from scratch. Resume from the conversion list and `requiredToolTags` activation intent below. Selection does not authorize Packets B-E and does not itself change Product/Data/Game State.
+A0 — Production & Item Authority Hardening is complete at Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21. Permanent authority: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
+
+A1 — Existing Field-Tool Conversion Proof is **NEXT / NOT STARTED**. Do not restart this material-culture audit from scratch. A1 is deliberately limited to the six existing field tools and must prove the production-to-use loop before broader conversion. Selection does not authorize Packets B-F.
 
 ## Future bounded packets
 
 ### Packet A — Occupational tool conversion
-Convert existing shop/equipment-only tools and starter metal/leather goods into real production outputs first:
+
+#### A0 — Production & Item Authority Hardening — COMPLETE
+
+A0 established:
+- one canonical item resolver across resource, production, and equipment authorities;
+- production output resolution to existing equipment IDs;
+- canonical shop purchase materialization with commerce provenance;
+- portable/equipped/contextual production tool bindings;
+- active-work locking for physical bound tools.
+
+#### A1 — Existing field-tool conversion proof — NEXT
+
+Convert exactly these existing tools into real production outputs first:
 - Field Knife;
 - Prospector Pick;
 - Woodsman Hatchet;
 - Digging Spade;
 - Reed Sickle;
-- Marsh Fishing Rod;
+- Marsh Fishing Rod.
+
+A1 must use existing material-foundation stocks/components where plausible and prove at least one crafted-tool -> real tool-gated work -> downstream output/use loop.
+
+#### A2 — Broader starter equipment and occupation-tool conversion — DEFERRED UNTIL A1 CLOSES
+
+Then consider:
 - Ash Staff;
 - Maple Wand;
 - Iron Buckler;
 - Brass Ring;
 - Bronze weapons and armor;
-- basic leather garments.
+- basic leather garments;
+- shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
-Then add shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
-
-This packet should make existing `requiredToolTags` materially active. Durable tools should be requirements, not consumed inputs.
+Existing `requiredToolTags` are already mechanically enforced. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.
 
 ### Packet B — Cordage, fishing, rigging, and sailmaking
 Build:
@@ -263,4 +282,4 @@ Only after husbandry source authority is explicit:
 - Prefer cross-profession dependencies: smiths need woodworker handles; carpenters need smith-made edges/fasteners; riggers need rope; wagons need wheelwright + smith + leatherworker output.
 - Use late-medieval/fantasy practical language in world-facing descriptions.
 - Magical industry should extend ordinary material culture rather than bypass it.
-- Game State remains 14 unless a future packet adds a genuinely new durable fact.
+- Current Game State is 21. It advances only if a future packet adds a genuinely new required durable fact that cannot live in an existing authority/state envelope.

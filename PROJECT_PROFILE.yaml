@@ -48,7 +48,7 @@ authority:
     implementation_pages_run: 33459746331
     implementation_pages_number: 2011
     tests: 837-of-837
-    product_version: 0.9.200.4
+    product_version: 0.9.200.3
     data_version_changed: false
     game_state_changed: 15-to-16
     attention_engine_added: true
@@ -80,23 +80,25 @@ authority:
   combat_adjacency_audit: docs/COMBAT_ADJACENCY_AND_DEBT_AUDIT.md
   temporary_world_edge_plan: docs/TEMP_WORLD_EDGE_EXTENSION_PLAN.md
   material_culture_profession_plan: docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md
+  economy_0_9_400_a0_production_item_authority: docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: economy-production-0.9.400-packet-a-occupational-tool-conversion-selected-not-started
-  latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
-  latest_product_pull_request: 402
-  latest_product_pr_check: 33217086478
-  latest_product_pr_check_number: 1381
-  latest_product_pr_check_result: success-753-of-753-tests-census-benchmark-and-sample-promoted-head
-  latest_product_post_merge_check: push-run-not-enumerable-by-current-github-connector
-  latest_product_post_merge_check_number: not-visible
-  latest_product_post_merge_check_result: promoted-head-green-753-of-753-post-merge-changes-docs-and-profile-only-audit-contract-verified
-  latest_main_data_check: 33288912478
-  latest_main_data_check_number: 1580
-  latest_main_data_check_sha: 7e162e26eb00b3249eef9ca26cd1a3100ea04f43
-  latest_main_data_check_result: success-791-of-791-tests-repository-audit-census-benchmark-and-sample-promoted-head
+  current_normal_work: economy-production-0.9.400-a1-existing-field-tool-conversion-proof-next-not-started
+  latest_product_checkpoint_sha: 0445823264bb6adf1d1717dee2df83678e561a0f
+  latest_product_checkpoint_pull_request: 406
+  latest_product_checkpoint_check: 33661309577
+  latest_product_checkpoint_check_number: 2172
+  latest_product_checkpoint_check_result: success-901-of-901-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
+  previous_product_pull_request: 402
+  previous_product_pr_check: 33217086478
+  previous_product_pr_check_number: 1381
+  latest_main_data_check: 33575392561
+  latest_main_data_check_number: 2132
+  latest_main_data_check_sha: 4a89df88f408062aa3e90b1284c9c3497e248f6e
+  latest_main_data_check_result: success-895-of-895-tests-repository-audit-census-benchmark-and-sample-data-75-implementation-freeze
   latest_main_data_51_check: 33226362127
   latest_main_data_51_check_number: 1454
   latest_main_data_51_check_sha: d047bf03d7fb17af928ce9aae0838db25a2969e7
@@ -283,20 +285,25 @@ git:
   latest_advanced_combat_maturity_reassessment_pages: 33657463220
   latest_advanced_combat_maturity_reassessment_pages_number: 2297
   latest_advanced_combat_maturity_reassessment_pages_result: success
+  latest_economy_a0_implementation_check: 33661309577
+  latest_economy_a0_implementation_check_number: 2172
+  latest_economy_a0_implementation_check_sha: 0445823264bb6adf1d1717dee2df83678e561a0f
+  latest_economy_a0_implementation_check_result: success-901-of-901-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_economy_a0_pull_request: 406
 progression:
   current_phase: 0.9
   current_track: 0.9.400-economy-production-depth
-  current_track_status: next-packet-a-occupational-tool-conversion-selected-not-started
+  current_track_status: active-a0-production-item-authority-complete-a1-existing-field-tool-conversion-next-not-started
   completed_track: 0.9.300-advanced-combat-training
   completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
   previous_completed_track: 0.9.200-adventure-vertical-slices
   previous_completed_track_status: complete-slice-a-and-combat-b1-through-b5
-  latest_bounded_unit: advanced-combat-0.9.300-maturity-reassessment
-  latest_bounded_unit_status: decision-complete-close-0.9.300-no-runtime-version-change-product-0.9.300.8-game-state-21-data-75-validated-head-e3325f958d5defcc1c25f542c51ead137808cfdc
+  latest_bounded_unit: economy-production-0.9.400-a0-production-item-authority-hardening
+  latest_bounded_unit_status: complete-product-0.9.400.1-package-0.9.400-game-state-21-data-75-implementation-freeze-0445823264bb6adf1d1717dee2df83678e561a0f-check-2172-901-of-901
   latest_data_bounded_unit: advanced-combat-p8-martial-structured-resolution-breadth
   latest_data_bounded_unit_status: complete-on-main-data-75
-  next_roadmap_gate: economy-production-0.9.400-packet-a-occupational-tool-conversion
-  next_roadmap_gate_status: selected-not-started
+  next_roadmap_gate: economy-production-0.9.400-a1-existing-field-tool-conversion-proof
+  next_roadmap_gate_status: next-not-started
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
   combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
@@ -325,10 +332,10 @@ progression:
   central_continent_minimum_skeleton_pass_budget: 5-to-7-substantial-region-passes
   central_continent_surface_budget_excludes: lower-deepvein-and-drowned-vaults-vertical-subterranean-expansions
   central_continent_completion_bias: route-ecology-economy-barrier-and-civilization-approach-density-not-tessellation
-  next_material_culture_candidate: occupational-tool-conversion
-  next_material_culture_candidate_status: selected-as-next-bounded-implementation-not-started
+  next_material_culture_candidate: existing-field-tool-conversion-proof
+  next_material_culture_candidate_status: a0-authority-hardening-complete-a1-six-field-tool-proof-next-not-started
   locality_enrichment_status: deferred-resumable-foundation-complete
-  occupational_tool_conversion_status: selected-next-0.9.400-packet-a-not-started
+  occupational_tool_conversion_status: active-a0-complete-a1-next-not-started
   world_edge_queue_status: preserved-resumable-waymeet-inner-marches-first
   ecology_repair_sequence_status: complete-not-interrupted-do-not-restart
 validation:
@@ -375,14 +382,16 @@ validation:
   advanced_combat_p6_guard: tests/advancedCombatUmbralWellField.test.js
   advanced_combat_p7_guard: tests/advancedCombatRadiantArcPropagation.test.js
   advanced_combat_p8_guard: tests/advancedCombatMartialStructuredResolution.test.js
+  canonical_item_authority_guard: tests/canonicalItemAuthority.test.js
+  production_tool_binding_guard: tests/productionWork.test.js
 quality:
-  current_product_version: 0.9.300.8
-  current_package_version: 0.9.300
+  current_product_version: 0.9.400.1
+  current_package_version: 0.9.400
   current_account_save: 5
   current_game_state: 21
   current_data_version: 75
   current_benchmark_version: 3
-  current_codename: Martial Structured Resolution Breadth
+  current_codename: Production Item Authority Hardening
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0

@@ -1,3 +1,5 @@
+import { getCanonicalItem } from './canonicalItemRegistry.js';
+
 export const SHOP_CATALOG_VERSION = 6;
 
 export const SHOP_CATALOGS = Object.freeze({
@@ -182,6 +184,34 @@ export function getShopCatalogForPoi(poiId) {
 
 export function listShopCatalogs() {
     return Object.values(SHOP_CATALOGS);
+}
+
+
+export function validateShopCatalogs() {
+    const issues = [];
+    const poiIds = new Set();
+    for (const catalog of listShopCatalogs()) {
+        if (poiIds.has(catalog.poiId)) issues.push(`Duplicate shop catalog for ${catalog.poiId}.`);
+        poiIds.add(catalog.poiId);
+        const itemIds = new Set();
+        for (const entry of catalog.items) {
+            if (itemIds.has(entry.id)) issues.push(`[${catalog.poiId}] duplicate stock item ${entry.id}.`);
+            itemIds.add(entry.id);
+            const canonical = getCanonicalItem(entry.id);
+            if (canonical && canonical.name !== entry.name) {
+                issues.push(`[${catalog.poiId}] stock ${entry.id} name "${entry.name}" does not match canonical "${canonical.name}".`);
+            }
+            if (!canonical && looksCanonicalEquipment(entry.tags)) {
+                issues.push(`[${catalog.poiId}] equipment-like stock ${entry.id} has no canonical item definition.`);
+            }
+        }
+    }
+    return issues;
+}
+
+function looksCanonicalEquipment(tags = []) {
+    const set = new Set(tags);
+    return ['equipment', 'weapon', 'armor', 'shield', 'ring'].some((tag) => set.has(tag));
 }
 
 export function describeShopCatalogForPoi(poi) {

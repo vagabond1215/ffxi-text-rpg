@@ -22,7 +22,6 @@ import {
     getCanonicalSpecies,
     validateEcologyRegistry,
 } from './ecologyRegistry.js';
-import { getEquipmentCatalogEntry } from './equipmentCatalog.js';
 import {
     getNpcScheduleById,
     validateNpcScheduleCatalog,
@@ -32,16 +31,18 @@ import {
     getProductionDefinition,
     validateProductionCatalog,
 } from './productionCatalog.js';
-import { getProductionItem, validateProductionItemCatalog } from './productionItems.js';
-import { getCanonicalResourceItem, validateResourceItemRegistry } from './resourceItemRegistry.js';
+import { validateProductionItemCatalog } from './productionItems.js';
+import { validateResourceItemRegistry } from './resourceItemRegistry.js';
+import { getCanonicalItem, validateCanonicalItemRegistry } from './canonicalItemRegistry.js';
 import {
     getRoute,
     getTransportService,
     validateRouteCatalog,
 } from './routeCatalog.js';
+import { validateShopCatalogs } from './shopCatalogs.js';
 import { createSeedNpcs } from './seedEntities.js';
 
-export const CONTENT_CATALOG_REGISTRY_VERSION = 1;
+export const CONTENT_CATALOG_REGISTRY_VERSION = 2;
 
 const SEED_NPC_INDEX = new Map(createSeedNpcs().map((entry) => [entry.id, entry]));
 
@@ -68,6 +69,8 @@ const CONNECTED_CATALOG_VALIDATORS = Object.freeze([
     ['routeCatalog', validateRouteCatalog],
     ['ecologyRegistry', validateEcologyRegistry],
     ['resourceItemRegistry', validateResourceItemRegistry],
+    ['canonicalItemRegistry', validateCanonicalItemRegistry],
+    ['shopCatalogs', validateShopCatalogs],
     ['productionCatalog', validateProductionCatalog],
     ['productionItems', validateProductionItemCatalog],
     ['commitmentCatalog', validateCommitmentCatalog],
@@ -98,10 +101,3 @@ export function validateConnectedContentCatalogs() {
     return issues;
 }
 
-function getCanonicalItem(itemId) {
-    const key = String(itemId ?? '').trim();
-    return getCanonicalResourceItem(key)
-        ?? getProductionItem(key)
-        ?? getEquipmentCatalogEntry(key)
-        ?? null;
-}

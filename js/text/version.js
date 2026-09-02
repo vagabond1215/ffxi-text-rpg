@@ -1,5 +1,5 @@
-export const PRODUCT_VERSION = '0.9.300.8';
-export const PACKAGE_VERSION = '0.9.300';
+export const PRODUCT_VERSION = '0.9.400.1';
+export const PACKAGE_VERSION = '0.9.400';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
@@ -8,13 +8,13 @@ export const VERSION = Object.freeze({
     gameState: 21,
     data: 75,
     benchmark: 3,
-    codename: 'Martial Structured Resolution Breadth',
+    codename: 'Production Item Authority Hardening',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.300.8',
+    versionManifest: '0.9.400.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -72,7 +72,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     headwaterHighlandTransitionRepairProductionItems: '0.1.0',
     materialFoundationProductionCatalog: '0.2.0',
     materialFoundationProductionItems: '0.1.0',
-    production: '0.1.0',
+    production: '0.2.0',
     settlementServiceBoard: '0.2.0',
     ecologyCatalog: '0.1.0',
     regionalEcology: '0.2.0',
@@ -117,7 +117,8 @@ export const SYSTEM_VERSIONS = Object.freeze({
     carriedInventory: '0.1.0',
     carriedLoad: '0.2.1',
     transportServiceBoard: '0.2.0',
-    contentCatalogRegistry: '0.3.0',
+    contentCatalogRegistry: '0.4.0',
+    canonicalItemRegistry: '0.1.0',
     contentPackSchema: '0.2.0',
     regionalContentPacks: '0.22.0',
     contentPackValidation: '0.4.0',
@@ -146,7 +147,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     saveRecovery: '0.1.0',
     saveEncoding: '0.9.0',
     parser: '0.2.0',
-    validation: '0.53.0',
+    validation: '0.54.0',
     walletPersistence: '0.1.0',
     playerDerivedState: '0.1.2',
     playerEquipmentPersistence: '0.2.0',
@@ -210,17 +211,18 @@ export const SYSTEM_VERSIONS = Object.freeze({
     poiFastTravel: '0.3.6',
     travelExits: '0.3.6',
     shops: '0.4.6',
-    shopTransactions: '0.5.0',
+    shopTransactions: '0.6.0',
     guilds: '0.3.5',
     questHooks: '0.3.5',
     inventoryContainers: '0.7.0',
-    inventoryTransfers: '0.8.0',
+    inventoryTransfers: '0.8.1',
     itemSchema: '0.9.0',
     itemBehavior: '0.1.0',
     itemStacking: '0.5.1',
-    equipmentCommands: '0.7.0',
+    equipmentCommands: '0.7.1',
     equipmentEligibility: '0.5.1',
-    equipmentToolEngine: '0.1.0',
+    equipmentToolEngine: '0.2.0',
+    workToolBindingEngine: '0.1.0',
     itemInspection: '0.5.1',
     equipmentCatalog: '0.9.0',
     trainingServices: '0.1.0',

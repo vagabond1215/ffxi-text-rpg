@@ -11,6 +11,7 @@ import {
     listContainerDefinitions,
     listWardrobeContainerIds,
 } from '../data/inventoryContainers.js';
+import { describeActiveWorkToolBinding } from './workToolBindingEngine.js';
 import {
     calculateFurnitureStorageCapacity,
     describeFurnitureStorage,
@@ -163,6 +164,8 @@ export function transferItemBetweenContainers(state, itemQuery, fromContainerId 
 
     const found = findItemInContainer(inventoryState, fromContainerId, itemQuery);
     if (!found.ok) return found.reason;
+    const workLock = describeActiveWorkToolBinding(state, found.item.id, { sourceType: 'inventory', sourceId: fromContainerId });
+    if (workLock) return workLock;
 
     const storeCheck = canStoreItemInContainer(inventoryState, toContainerId, found.item, context);
     if (!storeCheck.ok) return storeCheck.reason;

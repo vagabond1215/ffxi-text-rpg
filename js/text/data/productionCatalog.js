@@ -1,5 +1,4 @@
-import { getCanonicalResourceItem } from './resourceItemRegistry.js';
-import { getProductionItem } from './productionItems.js';
+import { getCanonicalItem } from './canonicalItemRegistry.js';
 import { getEmberwashProcessDefinition, listEmberwashProcessDefinitions } from './emberwashProductionCatalog.js';
 import { getDryUplandSaltpanRepairProcessDefinition, listDryUplandSaltpanRepairProcessDefinitions } from './dryUplandSaltpanRepairProductionCatalog.js';
 import { getElderwoodRepairProcessDefinition, listElderwoodRepairProcessDefinitions } from './elderwoodRepairProductionCatalog.js';
@@ -49,7 +48,8 @@ const PRODUCTION_DEFINITIONS = Object.freeze({
 
 export function getProductionDefinition(processId) { const key = String(processId ?? '').trim(); return PRODUCTION_DEFINITIONS[key] ?? getHeadwaterHighlandTransitionRepairProcessDefinition(key) ?? getDryUplandSaltpanRepairProcessDefinition(key) ?? getElderwoodRepairProcessDefinition(key) ?? getEmberwashProcessDefinition(key) ?? getLowerDeepveinProcessDefinition(key) ?? getIngredientLuxuryProcessDefinition(key) ?? getGreatMereProcessDefinition(key) ?? getIronspineProcessDefinition(key) ?? getHeadwaterProcessDefinition(key) ?? getStarfenDeltaProcessDefinition(key) ?? getGloamwoodProcessDefinition(key) ?? getWaymeetMarchesProcessDefinition(key) ?? getMaterialFoundationProcessDefinition(key); }
 export function listProductionDefinitions() { return [...Object.values(PRODUCTION_DEFINITIONS), ...listHeadwaterHighlandTransitionRepairProcessDefinitions(), ...listDryUplandSaltpanRepairProcessDefinitions(), ...listElderwoodRepairProcessDefinitions(), ...listEmberwashProcessDefinitions(), ...listLowerDeepveinProcessDefinitions(), ...listIngredientLuxuryProcessDefinitions(), ...listGreatMereProcessDefinitions(), ...listIronspineProcessDefinitions(), ...listHeadwaterProcessDefinitions(), ...listStarfenDeltaProcessDefinitions(), ...listGloamwoodProcessDefinitions(), ...listWaymeetMarchesProcessDefinitions(), ...listMaterialFoundationProcessDefinitions()]; }
-export function getProductionInputItem(itemId) { return getCanonicalResourceItem(itemId) ?? getProductionItem(itemId); }
+export function getProductionInputItem(itemId) { return getCanonicalItem(itemId); }
+export function getProductionOutputItem(itemId) { return getCanonicalItem(itemId); }
 
 export function validateProductionCatalog() {
     const issues = [];
@@ -68,7 +68,7 @@ export function validateProductionCatalog() {
         if (!Array.isArray(definition.inputs) || !definition.inputs.length) issues.push(`${definition.id} requires inputs.`);
         if (!Array.isArray(definition.outputs) || !definition.outputs.length) issues.push(`${definition.id} requires outputs.`);
         for (const input of definition.inputs ?? []) { if (!getProductionInputItem(input.itemId)) issues.push(`${definition.id} input references unknown item ${input.itemId}.`); if (!positiveInteger(input.quantity)) issues.push(`${definition.id} input ${input.itemId} has invalid quantity.`); }
-        for (const output of definition.outputs ?? []) { if (!getProductionItem(output.itemId)) issues.push(`${definition.id} output references unknown production item ${output.itemId}.`); if (!positiveInteger(output.quantity)) issues.push(`${definition.id} output ${output.itemId} has invalid quantity.`); }
+        for (const output of definition.outputs ?? []) { if (!getProductionOutputItem(output.itemId)) issues.push(`${definition.id} output references unknown canonical item ${output.itemId}.`); if (!positiveInteger(output.quantity)) issues.push(`${definition.id} output ${output.itemId} has invalid quantity.`); }
     }
     return issues;
 }
