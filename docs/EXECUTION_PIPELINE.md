@@ -5,37 +5,34 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Codename:      Workshop Tool Authority Audit
+Codename:      Social Relationship Eligibility Foundation
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A6 — Shared Workshop Tool Authority Audit is COMPLETE.**
+**0.9.500 Q0 — Social Relationship Eligibility Foundation is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`;
-- implementation freeze: `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
-- Check #2297 / run `33677766982`: Repository Audit, **930/930 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.7 / Package 0.9.400 / Data 80 / Game State 21;
-- no authored item/recipe/pack or durable-state change;
-- recognized station tags are centralized;
-- current required portable-tool tags are exactly `cutting` and `woodcutting`;
-- canonical providers are Field Knife / Reed Sickle and Woodsman Hatchet;
-- production validation now rejects unknown station tags and unsupported tool requirements;
-- ordinary workshop implements remain station-owned context until a real portable-tool use case exists.
+- permanent record: `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`;
+- implementation freeze: `61227536f7683401de047474ace4eec5160aaef3`;
+- Check #2315 / run `33685651230`: Repository Audit, **934/934 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.500.1 / Package 0.9.500 / Data 81 / Game State 21;
+- relationship requirements are reusable across commitments and companion recruitment;
+- commitment opportunity projection and acceptance share one eligibility authority;
+- Sable's second road test now requires trust 1;
+- Sable recruitment now requires trust 3 / respect 1 plus both existing field commitments;
+- no new durable state family.
 
-**`0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.**
+**Next selected unit: 0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice, not started.**
 
-**Next candidate: 0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection, not started.**
+Q1 should reuse Vara Kell, Dain Rove, Mara Fell, current Ironspine schedules/services, and existing High-Pass Survey Compass / Frost Lichen Tallow Salve / High-Pass Bearhide Bedroll outputs. Preferred bounded target: three connected commitments plus Dain as an earned companion; no new NPCs or geography unless implementation proves a real gap.
 
-Q0 should audit commitments, relationships, companions, NPC schedules, locality knowledge, and dialogue/presentation boundaries before authoring. It should select a coherent multi-NPC social slice that improves persistent consequence and companion/quest depth rather than filling census bands mechanically.
-
-## Data 80 metrics
+## Data 81 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +127,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. **0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate**.
+`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 is complete and **Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected next**.
 
 ### Historical completed unit — Packet B2
 
@@ -268,7 +265,7 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next candidate:** `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection`, not started.
+**Current next selected unit:** `0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice`, not started.
 
 ## Preserved interrupted/resumable queues
 
