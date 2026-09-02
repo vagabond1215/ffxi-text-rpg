@@ -1,5 +1,4 @@
-import { getProductionDefinition, getProductionInputItem, listProductionDefinitions } from '../data/productionCatalog.js';
-import { getProductionItem } from '../data/productionItems.js';
+import { getProductionDefinition, getProductionInputItem, getProductionOutputItem, listProductionDefinitions } from '../data/productionCatalog.js';
 import { getBlockingHandsOnTask } from './characterActivityEngine.js';
 import { collectAvailableToolTags } from './equipmentToolEngine.js';
 import {
@@ -230,7 +229,7 @@ function materializePendingOutputs(state, record, options = {}) {
 }
 
 function buildRuntimeOutput(state, record, definition, output) {
-    const template = getProductionItem(output.itemId);
+    const template = getProductionOutputItem(output.itemId);
     if (!template) throw new Error(`${definition.id} references missing output ${output.itemId}.`);
     const sourceSummaries = (record.data.inputItems ?? []).map((item) => ({
         itemId: item.id,
