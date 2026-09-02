@@ -5,35 +5,35 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.2
+Product:       0.9.400.3
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          76
+Data:          77
 Benchmark:     3
-Codename:      Existing Field-Tool Conversion Proof
+Codename:      Bronze Martial Conversion Proof
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A1 — Existing Field-Tool Conversion Proof is COMPLETE.**
+**0.9.400 A2 — Bronze Martial Conversion Proof is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`;
-- implementation freeze: `d4de8f25204a46f54ccecd905b4a2144e19e96b4`;
-- Check #2200 / run `33663456804`: Repository Audit, **906/906 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.2 / Package 0.9.400 / Data 76 / Game State 21;
-- six new canonical production definitions target six existing equipment stable IDs;
+- permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`;
+- implementation freeze: `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d`;
+- Check #2220 / run `33665699974`: Repository Audit, **911/911 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.3 / Package 0.9.400 / Data 77 / Game State 21;
+- three new canonical production definitions target existing `bronze-sword`, `bronze-cap`, and `bronze-harness` equipment IDs;
 - no new canonical item identity and no duplicate production-item definition;
-- one shared `pack-occupational-field-tools` owns the six item refs and six recipe refs;
-- crafted Field Knife retains canonical equipment behavior and production provenance;
-- crafted Field Knife unlocks real cutting-gated downstream work and binds into Marsh Fishing Rod assembly;
-- crafted Field Knife and Marsh Fishing Rod identities/provenance survive real current-schema account save/load.
+- one shared `pack-starter-bronze-martial-equipment` owns three item refs and three recipe refs;
+- A1 Field Knife / `cutting` binds into Bronze Harness assembly;
+- crafted Bronze Sword/Cap/Harness drive canonical combat profile and weapon cadence;
+- crafted loadout identity/provenance survives real current-schema account save/load.
 
-**Next bounded implementation: 0.9.400 A2 — Broader Starter Equipment & Occupational Tool Conversion, selected / not started.**
+**Next candidate: 0.9.400 A3 — Caster / Offhand Starter Conversion, not started.**
 
-A2 may convert established starter equipment and selected shared profession tools, but it must continue the A1 rule: reuse existing stable IDs and material graphs first, do not create duplicate physical definitions, and keep each bounded tranche mechanically proven before broadening further.
+A3 should inspect Ash Staff, Maple Wand, Iron Buckler, and Brass Ring against existing shared wood/metal/fine-craft stocks before authoring. Do not invent one-off materials simply to complete the set.
 
-## Data 76 metrics
+## Data 77 metrics
 
 ```text
 places/localities                       55
@@ -42,7 +42,7 @@ shop/service sites                      37
 creatures                              123
 resource sources                       143
 canonical items                        410
-recipes/processes                      240
+recipes/processes                      243
 abilities/techniques                    41
 quests/contracts                        20
 companions                               2
@@ -51,8 +51,8 @@ raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   40
-pack-owned records                    1337
+regional/shared packs                   41
+pack-owned records                    1343
 runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
@@ -273,7 +273,7 @@ No Product, Package, Data, Game State, Account Save, or Benchmark value changes.
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0 authority hardening and A1 six-field-tool conversion proof are complete; A2 broader conversion is next / not started. Authorities: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 
