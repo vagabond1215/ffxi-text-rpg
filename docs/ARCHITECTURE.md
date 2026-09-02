@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.1
+Product:       0.9.400.2
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          75
+Data:          76
 Benchmark:     3
-Codename:      Production Item Authority Hardening
-Phase:         0.9 / 0.9.400 ACTIVE; A0 complete; A1 field-tool conversion next
+Codename:      Existing Field-Tool Conversion Proof
+Phase:         0.9 / 0.9.400 ACTIVE; A0-A1 complete; A2 broader conversion next
 ```
 
-Data 75 remains the current authored/mechanics-data checkpoint. Product 0.9.400.1 opens Economy / Production Depth with A0 Production & Item Authority Hardening; Game State 21 remains unchanged. A0 adds no authored content and no new durable state family. A1 Existing Field-Tool Conversion Proof is next / not started.
+Data 76 is the current authored/mechanics-data checkpoint. Product 0.9.400.2 closes A1 Existing Field-Tool Conversion Proof; Game State 21 remains unchanged. A1 adds six canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A2 Broader Starter Equipment & Occupational Tool Conversion is next / not started.
 
 ## 0.9.400 production/item authority
 
@@ -57,6 +57,34 @@ existing work record.data.toolBindings
 ```
 
 Physical bindings are reservations on existing work records, not a new state family. Common player move/equip/sell paths reject moving a bound tool until the work record leaves active status. Field gathering/recovery may retain stricter equipped-tool rules.
+
+### A1 conversion proof
+
+A1 demonstrates the A0 authority contract with real authored production:
+
+```text
+existing material-foundation stocks
+        |
+        v
+occupationalFieldToolProductionCatalog
+    (process definitions only)
+        |
+        v
+productionEngine
+        |
+        v
+existing equipment stable ID
+        |
+        +--> equipmentCatalog behavior
+        +--> production provenance
+        +--> inventory/equipment persistence
+```
+
+`pack-occupational-field-tools` owns placement of six existing item refs and six new recipe refs. It does not own a parallel equipment definition.
+
+The crafted Field Knife is proven as a physical `cutting` capability in both downstream handle work and Marsh Fishing Rod assembly. The rod itself remains the existing `marsh-rod` equipment identity and provides `fishing`.
+
+A1 requires no persistence-family change: the canonical item snapshot plus provenance already serializes through the existing inventory/equipment envelope.
 
 ## Core authority rules
 
