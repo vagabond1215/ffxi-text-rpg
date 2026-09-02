@@ -87,16 +87,17 @@ authority:
   economy_0_9_400_a4_remaining_bronze_conversion: docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md
   economy_0_9_400_a5_basic_leather_garments: docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md
   economy_0_9_400_a6_workshop_tool_authority_audit: docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md
+  quest_social_0_9_500_q0_authority_selection: docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md
   regional_resource_distribution_audit: docs/REGIONAL_RESOURCE_DISTRIBUTION_AUDIT.md
   world_civilization_geography_plan: docs/WORLD_CIVILIZATION_GEOGRAPHY_PLAN.md
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
-  current_normal_work: quest-social-0.9.500-q0-authority-vertical-slice-selection-candidate-not-started
-  latest_product_checkpoint_sha: 4583b405e85dd91266c05c30b9ae3cfb05a00f14
-  latest_product_checkpoint_pull_request: 412
-  latest_product_checkpoint_check: 33677766982
-  latest_product_checkpoint_check_number: 2297
-  latest_product_checkpoint_check_result: success-930-of-930-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  current_normal_work: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion-selected-not-started
+  latest_product_checkpoint_sha: 61227536f7683401de047474ace4eec5160aaef3
+  latest_product_checkpoint_pull_request: 413
+  latest_product_checkpoint_check: 33685651230
+  latest_product_checkpoint_check_number: 2315
+  latest_product_checkpoint_check_result: success-934-of-934-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
   previous_product_pull_request: 402
   previous_product_pr_check: 33217086478
@@ -326,22 +327,29 @@ git:
   latest_economy_a6_implementation_check_sha: 4583b405e85dd91266c05c30b9ae3cfb05a00f14
   latest_economy_a6_implementation_check_result: success-930-of-930-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
   latest_economy_a6_pull_request: 412
+  latest_quest_social_q0_implementation_check: 33685651230
+  latest_quest_social_q0_implementation_check_number: 2315
+  latest_quest_social_q0_implementation_check_sha: 61227536f7683401de047474ace4eec5160aaef3
+  latest_quest_social_q0_implementation_check_result: success-934-of-934-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  latest_quest_social_q0_pull_request: 413
 progression:
   current_phase: 0.9
   current_track: 0.9.500-quest-social-depth
-  current_track_status: queued-q0-quest-social-authority-vertical-slice-selection-candidate-not-started
+  current_track_status: active-q0-complete-q1-ironspine-watchpost-trust-warden-companion-selected-not-started
   completed_track: 0.9.400-economy-production-depth
   completed_track_status: complete-a0-through-a6-production-and-workshop-tool-authority
   previous_completed_track: 0.9.300-advanced-combat-training
   previous_completed_track_status: complete-b1-through-b5-packets-1-through-8-and-maturity-reassessment
-  latest_bounded_unit: economy-production-0.9.400-a6-shared-workshop-tool-authority-audit
-  latest_bounded_unit_status: complete-product-0.9.400.7-package-0.9.400-game-state-21-data-80-implementation-freeze-4583b405e85dd91266c05c30b9ae3cfb05a00f14-check-2297-930-of-930
-  latest_data_bounded_unit: economy-production-0.9.400-a5-basic-leather-garment-conversion-proof
-  latest_data_bounded_unit_status: complete-data-80-product-0.9.400.6
-  next_roadmap_gate: quest-social-0.9.500-q0-authority-vertical-slice-selection
+  latest_bounded_unit: quest-social-0.9.500-q0-social-relationship-eligibility-foundation
+  latest_bounded_unit_status: complete-product-0.9.500.1-package-0.9.500-game-state-21-data-81-implementation-freeze-61227536f7683401de047474ace4eec5160aaef3-check-2315-934-of-934
+  latest_data_bounded_unit: quest-social-0.9.500-q0-social-relationship-eligibility-foundation
+  latest_data_bounded_unit_status: complete-data-81-product-0.9.500.1
+  next_roadmap_gate: quest-social-0.9.500-q1-ironspine-watchpost-trust-warden-companion
   next_roadmap_gate_status: candidate-not-started
-  next_quest_social_candidate: q0-authority-vertical-slice-selection
-  next_quest_social_candidate_status: candidate-not-started
+  next_quest_social_candidate: q1-ironspine-watchpost-trust-warden-companion
+  next_quest_social_candidate_status: selected-not-started
+  quest_social_q0_status: complete-social-relationship-eligibility-foundation
+  quest_social_q1_expected_scope: three-connected-commitments-one-dain-rove-companion-zero-new-npcs-zero-new-geography
   combat_design_contract: combat-ability-weapon-kata-and-attention-model
   combat_design_contract_status: permanent-authority-b1-through-b5-plus-0.9.300-p1-p2-p3-p4-p5-p6-p7-p8-implemented-maturity-reassessment-closed
   combat_slice_b_anchor: brasshaven-redstone-combat-training-bridge
@@ -427,15 +435,17 @@ validation:
   starter_caster_offhand_conversion_guard: tests/starterCasterOffhandConversion.test.js
   remaining_bronze_starter_conversion_guard: tests/remainingBronzeStarterConversion.test.js
   basic_leather_garment_conversion_guard: tests/basicLeatherGarmentConversion.test.js
+  social_requirement_authority_guard: tests/socialRequirementAuthority.test.js
+  slatewater_social_relationship_gate_guard: tests/playerSlatewaterRoadScoutFlow.test.js
   production_requirement_authority_guard: tests/productionRequirementAuthority.test.js
 quality:
-  current_product_version: 0.9.400.7
-  current_package_version: 0.9.400
+  current_product_version: 0.9.500.1
+  current_package_version: 0.9.500
   current_account_save: 5
   current_game_state: 21
-  current_data_version: 80
+  current_data_version: 81
   current_benchmark_version: 3
-  current_codename: Workshop Tool Authority Audit
+  current_codename: Social Relationship Eligibility Foundation
   local_knowledge_foundation:
     implementation_status: complete
     implementation_freeze_sha: da168ddff6cc9e3611c9b8c06165b117081ea5c0
