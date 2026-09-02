@@ -5,47 +5,52 @@ Repository evidence beats conversation memory.
 ## Current runtime contract
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 Runtime:       Node >=24
 Phase:         0.9
-0.9.100:       COMPLETE
+0.9.100:       COMPLETE — Content Scale Gate A
 0.9.200:       COMPLETE — Adventure Vertical Slices
 0.9.300:       COMPLETE — Advanced Combat / Training
-0.9.400:       ACTIVE — Economy / Production Depth
-A0:            COMPLETE — Production & Item Authority Hardening
-A1:            COMPLETE — Existing Field-Tool Conversion Proof
-A2:            COMPLETE — Bronze Martial Conversion Proof
-A3:            COMPLETE — Caster / Offhand Starter Conversion Proof
-A4:            COMPLETE — Remaining Bronze Starter Set Conversion Proof
-Latest unit:   A5 — Basic Leather Garment Conversion Proof
-Next unit:     A6 — Shared Workshop Tool Authority Audit
+0.9.400:       COMPLETE — Economy / Production Depth
+Latest unit:   A6 — Shared Workshop Tool Authority Audit
+Next track:    0.9.500 — Quest / Social Depth
+Next unit:     Q0 — Quest / Social Authority & Vertical Slice Selection
 Next status:   CANDIDATE / NOT STARTED
 ```
 
-Data 80 is the current authored/mechanics-data checkpoint. A5 adds two canonical production definitions and one shared Pack-v2 ownership tranche while preserving the existing Leather Vest and Leather Trousers stable IDs.
+Data 80 remains the current authored/mechanics-data checkpoint. A6 changes production requirement validation authority but adds no canonical authored item, recipe, pack, NPC, quest, ability, ecology, geography, or other data record.
 
-Game State remains 21. Crafted equipment identity, production provenance, equipment placement, combat/stat use, and save/load all use existing durable authority/state envelopes.
+Game State remains 21. A6 adds no new durable gameplay fact or persistence family.
 
 ## Repository / promotion state
 
-A5 is merged to `main`.
+Pre-A6 main checkpoint:
+- `fe27e872a701f6228e8c95a1fd92957d1c2e4a82`.
 
-- merged main SHA: `dd7abf0f7dd69464c572884152752130cbb92b82`;
-- PR #411: MERGED;
-- exact synchronized PR head: `75d9771692374651cdfa219f31e4a1b0cfdfd79c`;
-- final pre-merge Check #2294 / run `33675900751`: Repository Audit, **926/926 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
-- behavioral implementation freeze: `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847`;
-- implementation freeze Check #2277 / run `33675272069`: full gate PASS.
+A6 branch:
+- `phase-0.9.400-a6-workshop-tool-authority-audit`.
 
-Initial Check #2276 / run `33675148970` produced 925/926. The single failure was regression setup: the test crafted the existing A1 Field Knife but granted only `crafting`, omitting the Field Knife recipe's existing `metalworking 4` prerequisite. Test setup was corrected; A5 recipe/runtime definitions did not change.
+Promotion PR:
+- PR #412 — Close 0.9.400 A6 workshop tool authority audit.
 
-The older A5 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A6 continuation should start from current `main`.
+A6 behavioral implementation freeze:
+- `4583b405e85dd91266c05c30b9ae3cfb05a00f14`.
+
+Hosted implementation evidence:
+- Check #2297 / run `33677766982`;
+- Repository Audit PASS;
+- **930/930 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #412.
 
 ## Validated Data 80 census
 
@@ -71,121 +76,74 @@ raw-resource production demand       145/154
 luxury-raw production demand          14/14
 ```
 
-Canonical item count remains 410 because A5 converts existing equipment IDs instead of adding new item identities.
+A6 changes none of these counts.
 
-A5 Pack-v2 breadth changes:
-- regional/shared packs 42 -> 43;
-- pack-owned records 1,361 -> 1,365;
-- Pack-v2 owned item refs 395 -> 397;
-- Pack-v2 owned recipe refs 246 -> 248.
+Mechanics-scale readiness remains **NOT READY**:
+- abilities/techniques 41/100;
+- quests/contracts 20/30;
+- companions 2/4;
+- named NPCs 48/50.
 
-## A5 canonical conversion result
+Do not close these gaps with disconnected filler.
 
-### Production definitions
+## A6 authority result
 
-`js/text/data/basicLeatherGarmentProductionCatalog.js` owns exactly two new process definitions:
+### Production requirement authority
 
-```text
-craft-leather-vest       -> leather-vest
-craft-leather-trousers   -> leather-trousers
-```
+`js/text/data/productionRequirementAuthority.js` is now shared authority for:
+- recognized production workstation tags;
+- canonical portable production-tool capability providers;
+- explicitly declared contextual production-tool tags;
+- validation of station/tool requirements before content is accepted.
 
-Do not add these equipment IDs to `productionItems` or resource-item catalogs. `equipmentCatalog` remains physical/equipment behavior authority.
-
-Traveler Gloves and Traveler Boots were explicitly not included.
-
-### Existing leather supply authority
-
-A5 reuses the established Elderwood Hunt-Timber tanning chain:
-
-Leather Vest:
-- 2x Dusk-Tanned Barkboar Hide;
-- Resin-Cured Hide Binding;
-- physical `cutting` capability;
-- tannery.
-
-Leather Trousers:
-- Dusk-Tanned Barkboar Hide;
-- Resin-Cured Hide Binding;
-- physical `cutting` capability;
-- tannery.
-
-Both recipes use:
-- `crafting` proficiency;
-- `tannery` station;
-- A1 physical-tool binding.
-
-No generic duplicate leather item, leatherworking proficiency, stitching state family, or recipe-only material was added.
-
-### Pack-v2 ownership
-
-`pack-basic-leather-garments` owns:
-- `leather-vest`;
-- `leather-trousers`;
-- `craft-leather-vest`;
-- `craft-leather-trousers`.
-
-Dependencies:
-- `pack-shared-foundation`;
-- `pack-elderwood-hunt-timber`.
-
-The Elderwood dependency is intentional because this shared garment production consumes the canonical Elderwood tanning supply chain.
-
-### Mechanical vertical proof
-
-A5 proves:
+Current recognized workstation tags:
 
 ```text
-Elderwood Barkboar recovery / tanning / hide binding
-  -> A1 crafted Field Knife supplies cutting
-  -> craft existing Leather Vest / Leather Trousers IDs at tannery
-  -> canonical light-armor HP / defense behavior
-  -> current-schema save/load preserves crafted identities + provenance
+forge
+kitchen
+woodshop
+tannery
+workshop
 ```
+
+`workstationEngine` consumes this shared vocabulary rather than owning another station-tag list.
+
+### Current portable-tool requirements
+
+Across all current production definitions, the required portable-tool tag set is exactly:
+
+```text
+cutting
+woodcutting
+```
+
+Canonical providers:
+
+```text
+cutting     -> field-knife, reed-sickle
+woodcutting -> woodsman-hatchet
+```
+
+`CONTEXTUAL_PRODUCTION_TOOL_TAGS` is currently empty. Future context-only production capabilities must be declared explicitly rather than appearing as undocumented recipe tags.
+
+### Validator behavior
+
+`validateProductionCatalog()` now also validates production requirement authority.
+
+It rejects:
+- an unknown workstation tag such as `loom`;
+- a required tool capability such as `smithing-hammer` when there is neither a canonical portable provider nor an explicit contextual authority.
 
 Primary regression:
-- `tests/basicLeatherGarmentConversion.test.js`.
+- `tests/productionRequirementAuthority.test.js`.
 
-Prior authority/conversion regressions remain:
-- `tests/canonicalItemAuthority.test.js`;
-- `tests/productionWork.test.js`;
-- `tests/occupationalFieldToolConversion.test.js`;
-- `tests/starterBronzeMartialConversion.test.js`;
-- `tests/starterCasterOffhandConversion.test.js`;
-- `tests/remainingBronzeStarterConversion.test.js`.
+This guard prevents future recipes from silently creating unsupported workshop vocabulary.
 
-## Version result
+## Workshop-tool decision
 
-```text
-Product       0.9.400.5 -> 0.9.400.6
-Package       0.9.400   -> 0.9.400
-Account Save  5         -> 5
-Game State    21        -> 21
-Data          79        -> 80
-Benchmark     3         -> 3
-```
+A6 does **not** authorize a broad portable workshop-tool catalog.
 
-Relevant system manifest changes:
-- `versionManifest 0.9.400.5 -> 0.9.400.6`;
-- `productionCatalog 0.21.0 -> 0.22.0`;
-- `basicLeatherGarmentProductionCatalog 0.1.0` added;
-- `regionalContentPacks 0.26.0 -> 0.27.0`.
-
-No persistence migration or compatibility adapter was added.
-
-## Conversion-first exhaustion finding
-
-A0-A5 have exhausted the clean existing-ID conversion path for the explicit Packet-A backlog.
-
-Canonical equipment currently provides these established field tools:
-- Field Knife;
-- Prospector Pick;
-- Woodsman Hatchet;
-- Digging Spade;
-- Reed Sickle;
-- Marsh Fishing Rod.
-
-Repository inspection found no established canonical equipment IDs for ordinary:
+Repository audit found no existing canonical equipment identities for ordinary:
 - smithing hammers, tongs, or files;
 - woodworking saws, planes, or chisels;
 - masonry mallets or chisels;
@@ -194,55 +152,117 @@ Repository inspection found no established canonical equipment IDs for ordinary:
 - cooking implements;
 - balances, measures, or precision workshop tools.
 
-The material foundation contains useful tool components/materials, including Iron Tool-Head Blank, textile fibers/yarns, quicklime, pine tar, and hide glue, but those are not workshop-tool equipment identities.
+Current recipes also do not require those portable capability tags.
 
-Therefore the next unit is not another conversion tranche.
+Ordinary fixed implements remain part of workstation capability while the action occurs at a forge, woodshop, tannery, kitchen, or general workshop.
 
-## Next bounded candidate — 0.9.400 A6
+A new portable tool identity is justified only when it creates a real player decision beyond station presence, for example:
+- a field repair or preparation action away from a complete workstation;
+- a capability that matters across multiple station types;
+- an inventory/loadout choice with meaningful access consequences;
+- a portable specialist action that cannot honestly be represented by the workstation itself.
 
-**Shared Workshop Tool Authority Audit — CANDIDATE / NOT STARTED.**
+Do not create one tool per profession merely to complete a conceptual list.
 
-A6 is an authority/design pass. It is not automatic authorization to create a broad workshop-tool catalog.
+## 0.9.400 closure
 
-### Required A6 questions
+**0.9.400 Economy / Production Depth is COMPLETE after A0-A6.**
 
-1. Which workshop actions genuinely need a portable physical tool?
-2. Which needs are already adequately represented by workstation tags such as `forge`, `woodshop`, `tannery`, or `kitchen`?
-3. Which proposed tools are workstation fixtures rather than carried equipment?
-4. Which proposed tools are consumable components rather than durable equipment?
-5. Which `requiredToolTags` would change gameplay meaningfully instead of adding decorative friction?
-6. Can the existing production tool-binding contract handle those tags without new durable state?
-7. What is the smallest mechanically meaningful new-ID proof cluster?
-8. If new portable tools are justified, can smithing + woodworking form the first cross-profession proof using existing material-foundation components?
-9. Which shared Pack-v2 owner should own them without duplicating regional production authority?
-10. Does any proposal actually require a Game State advance? Default expectation is no.
+The track now proves:
+- one canonical item authority across resource, production, equipment, shop, inventory, and persistence paths;
+- production can output existing equipment stable IDs without duplicate definitions;
+- physical portable tools can bind into work and become protected while active work owns them;
+- established field tools have canonical production paths;
+- selected bronze starter, caster/offhand, and basic leather equipment IDs have canonical production paths;
+- material-foundation stocks feed those conversions;
+- Pack-v2 owns shared placement without duplicating definition authority;
+- production station/tool requirement vocabulary is explicit and validated;
+- no new production/tool persistence family is required for the current target.
 
-### A6 guardrails
+Remaining Material Culture Packet-A workshop-tool concepts and Packets B-F are deferred depth requiring fresh explicit selection.
+
+## Version result
+
+```text
+Product       0.9.400.6 -> 0.9.400.7
+Package       0.9.400   -> 0.9.400
+Account Save  5         -> 5
+Game State    21        -> 21
+Data          80        -> 80
+Benchmark     3         -> 3
+```
+
+Relevant system manifest changes:
+- `versionManifest 0.9.400.6 -> 0.9.400.7`;
+- `workstations 0.3.1 -> 0.4.0`;
+- `productionRequirementAuthority 0.1.0` added;
+- `productionCatalog 0.22.0 -> 0.23.0`.
+
+No persistence migration, compatibility adapter, or authored-data promotion was added.
+
+## Next bounded candidate — 0.9.500 Q0
+
+**Quest / Social Authority & Vertical Slice Selection — CANDIDATE / NOT STARTED.**
+
+Q0 is an authority/maturity audit before new breadth authoring.
+
+### Why Q0 is next
+
+Economy/production already clears its mechanics-scale floors:
+- canonical items 410/200;
+- recipes/processes 254/75;
+- shop/service sites 37/20;
+- transport services 7/5.
+
+The remaining social-facing floors are:
+- named NPCs 48/50;
+- quests/contracts 20/30;
+- companions 2/4.
+
+Abilities/techniques remain the largest raw mechanics gap at 41/100, but the 0.9.300 maturity reassessment explicitly closed the current advanced-combat target and deferred broader combat/ability depth. Do not reopen combat merely to fill that number.
+
+The formal next track is therefore 0.9.500 Quest / Social Depth.
+
+### Q0 required audit
+
+Before authoring:
+1. inspect `commitments.js` and `commitmentEngine` for prerequisite, acceptance, resolution, provenance, reward, and later-day follow-up semantics;
+2. inspect `relationshipEngine` and its familiarity/respect/trust/obligation dimensions;
+3. inspect `companions.js` plus companion recruitment/travel/combat continuity;
+4. inspect NPC schedule/world projection and locality-knowledge integration;
+5. inspect current dialogue/greeting presentation and determine what belongs in durable social state versus presentation only;
+6. determine whether branching choices, failed commitments, mutually exclusive outcomes, reputation/group ties, or longer consequence chains require new authority before breadth;
+7. identify existing named NPCs with underused persistent roles before inventing new people;
+8. select the smallest coherent multi-NPC vertical slice that creates repeated social consequence across fictional days;
+9. include a companion only if recruitment meaningfully emerges from that slice;
+10. freeze exact Product/Data/Game-State expectations before implementation.
+
+### Q0 guardrails
 
 Do not:
-- invent one tool per profession just to complete a checklist;
-- model workstation fixtures as carried equipment by default;
-- add durability/quality/repair merely because physical tools exist;
-- create a new proficiency family unless existing `crafting` / `metalworking` semantics genuinely cannot express the work;
-- add a new stable ID without a demonstrated mechanical role;
-- authorize Material Culture Packets B-F through A6.
+- add ten disconnected quests to reach 30;
+- add two arbitrary companions to reach 4;
+- create two named NPCs solely to reach 50;
+- collapse social progression into one universal affection meter;
+- put presentation-only dialogue randomness into durable state;
+- add romance as generic breadth before goals/boundaries/relationship authority are sufficient;
+- duplicate commitment, relationship, schedule, local-knowledge, or companion ownership.
 
-A fresh explicit continuation may authorize the A6 audit. New tool authoring should occur only if that audit selects a bounded proof.
+Q0 may close as decision-only if current authorities are already sufficient and a bounded slice can be selected without runtime changes.
 
 ## Other preserved deferred / queued work
 
 Do not reopen automatically:
 
-- **Traveler gear conversion:** Traveler Gloves / Traveler Boots remain outside A5 and are not automatically next.
-- **Combat depth:** engagement coordinates, LOS/line-of-fire, pursuit/search/disengagement/flee, passive block/parry/guard/counter/reaction execution, stale combat placeholders, weapon resonance/imbuement, unsupported-family breadth, remaining richer named-spell semantics.
+- **Workshop tools / material culture:** ordinary portable workshop tools, Material Culture Packets B-F, tool durability/quality/repair, workstation inventories, and worker automation require fresh explicit selection.
+- **Traveler gear conversion:** Traveler Gloves / Traveler Boots remain outside prior conversion scopes and are not automatically next.
+- **Combat depth:** engagement coordinates, LOS/line-of-fire, pursuit/search/disengagement/flee, passive block/parry/guard/counter/reaction execution, stale combat placeholders, weapon resonance/imbuement, unsupported-family breadth, and remaining richer named-spell semantics remain deferred by the 0.9.300 maturity closure.
 - **World edge:** Waymeet Inner Marches / outer crossroads first, then Coppergrass extensions, then Drowned Vaults.
 - **Locality enrichment:** ambient/risk events, wandering/seasonal merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality presentation.
-- **Quest/social/companion depth:** later 0.9.500 track.
 - **Ecology repair:** five-part sequence complete; do not restart without fresh selection.
 - **Husbandry:** fleece/wool, dairy, eggs, honey, manure, managed domestic meat/hides wait for explicit managed-animal source authority.
-- **Tool durability/quality/repair:** not implied by A6.
-- **Worker automation or workstation inventories:** not implied by A6.
-- **Material Culture Packets B-F:** not auto-authorized by A6.
+- **0.9.600 playable-alpha scale:** queued after 0.9.500, not auto-started.
+- **0.9.700–0.9.900:** browser/accessibility, supported persistence transition, and release-candidate hardening remain deferred.
 
 ## Standing governance
 
@@ -251,8 +271,8 @@ Preserve:
 - one owner per state family;
 - resolver/registry layers do not become duplicate definition authorities;
 - equipment stable IDs remain singular across shop, production, equipment, combat use, and persistence;
-- workshop tool identity must be justified by gameplay authority rather than checklist completion;
-- portable equipment and workstation capability must remain distinct concepts;
+- portable tools and workstation capability remain distinct concepts;
+- required station/tool tags must resolve through explicit authority;
 - no duplicate task owner;
 - current-schema-only pre-alpha persistence;
 - implementation/data freeze before Product/Data promotion;
@@ -262,32 +282,32 @@ Preserve:
 - exploration aggro remains separate from active-battle attention;
 - `docs/THREAD_HANDOFF.md` is updated last for a closed bounded unit.
 
-## Restart order for a future A6 continuation
+## Restart order for a future 0.9.500 Q0 continuation
 
 1. `AGENTS.md`;
 2. this handoff;
 3. `PROJECT_PROFILE.yaml`;
 4. `docs/EXECUTION_PIPELINE.md`;
-5. `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`;
-6. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`;
-7. inspect workstation semantics, `requiredToolTags`, production tool binding, equipment authority, material-foundation tool components, and existing recipes across smithing/woodworking/tannery/textile/cooking;
-8. classify candidate tools as portable equipment, station fixture/capability, consumable component, or unnecessary;
-9. select the smallest mechanically meaningful proof only if new portable equipment is justified;
-10. freeze exact Product/Data/Game-State expectations before any authoring;
-11. if no new identities are justified, close A6 as a decision-only audit;
-12. if a proof is justified, implement only that bounded cluster;
+5. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`;
+6. `docs/DEVELOPMENT_DIRECTION.md`;
+7. inspect commitments, relationships, companions, NPC schedules/world projection, local knowledge, dialogue/presentation, and Pack-v2 social ownership;
+8. identify concrete social-authority gaps versus breadth gaps;
+9. select the smallest coherent multi-NPC vertical slice;
+10. freeze exact Product/Data/Game-State expectations;
+11. implement authority changes only if the slice actually requires them;
+12. prove fictional-time continuity, save/load, relationship/commitment consequences, and any companion recruitment path;
 13. update this handoff last.
+
+Do not restart the broad economy/material-culture audit or advanced-combat audit unless Q0 exposes a concrete blocker owned by those domains.
 
 ## Final validation contract
 
-This post-merge handoff correction is the intended final repository-file mutation for A5 closure.
-
-A5 promotion evidence is complete:
-- behavioral freeze Check #2277 / run `33675272069`: full gate PASS;
-- exact synchronized PR-head Check #2294 / run `33675900751`: **926/926 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
-- PR #411 merged to `main` at `dd7abf0f7dd69464c572884152752130cbb92b82`.
+This handoff is the intended final pre-merge repository-file mutation for A6 closure.
 
 After this write:
-- perform no repository-file mutation unless exact-main validation exposes a real failure;
-- leave A6 unstarted;
-- start future work from current `main`, not the old A5 branch.
+- perform no repository-file mutation unless exact-head validation exposes a real failure;
+- validate the exact synchronized PR head with hosted Check;
+- confirm Repository Audit, **930/930 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
+- merge/promote PR #412 only after that exact synchronized head is green;
+- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
+- leave 0.9.500 Q0 unstarted.
