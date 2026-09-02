@@ -84,15 +84,15 @@ resource sources       143 / 40
 canonical items        410 / 200
 recipes/processes      254 / 75
 abilities/techniques    41 / 100
-quests/contracts        20 / 30
-companions               2 / 4
+quests/contracts        23 / 30
+companions               3 / 4
 transport services       7 / 5
 routes                   25
 spell schools             4
 capabilities             44
 NPC schedules            27
 regional/shared packs    43
-pack-owned records     1365
+pack-owned records     1372
 runtime seed NPCs        47
 runtime seed enemies     17
 raw-resource use      145/154
