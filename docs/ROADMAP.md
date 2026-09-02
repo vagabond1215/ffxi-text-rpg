@@ -255,10 +255,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–8 are COMPLETE.** Packet 8 completes structured damage resolution across all five current executable martial techniques at Product 0.9.300.8 / Data 75 / Game State 21: Guarded Cut, Barkboar Brace, and Thicket Feint join already-migrated Ridge Breaker and Rivet Guard on the shared physical accuracy/defense/recovery path while retaining their authored self-buffs and equipment gates. Behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e` passed Check #2132 with 895/895 tests and the full gate; Pages #2261 passed. The next bounded unit is an explicit 0.9.300 maturity reassessment; no Packet 9 is selected.
+**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The next bounded implementation is **`0.9.400 Packet A — Occupational Tool Conversion`**, selected but not started; see `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- Occupational Tool Conversion remains strongest prepared 0.9.400 packet;
+- Occupational Tool Conversion is selected as the next bounded 0.9.400 packet but is not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.
