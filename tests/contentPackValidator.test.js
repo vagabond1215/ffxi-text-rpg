@@ -45,6 +45,7 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-regional-ingredient-luxury-processing',
         'pack-material-foundations-common-components',
         'pack-occupational-field-tools',
+        'pack-starter-bronze-martial-equipment',
         'pack-slatewater-waylodge',
         'pack-great-mere-merewatch',
         'pack-ironspine-highlands',
@@ -80,8 +81,8 @@ test('content pack index records expanded stable ownership without changing cano
         'pack-emberwash-saltpan-ecology-repair',
     ]);
     assert.equal(index.recordCounts.places, 37);
-    assert.equal(index.recordCounts.items, 383);
-    assert.equal(index.recordCounts.recipes, 234);
+    assert.equal(index.recordCounts.items, 386);
+    assert.equal(index.recordCounts.recipes, 237);
     assert.equal(index.recordCounts.npcs, 44);
     assert.equal(index.recordCounts.npcSchedules, 27);
     assert.equal(index.recordCounts.spellSchools, 4);
