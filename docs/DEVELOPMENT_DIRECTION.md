@@ -351,6 +351,7 @@ Design direction:
 - manual techniques such as bashes, cleaves, feints, backstabs, volleys, and reactions sit above the automatic sequence;
 - spells, techniques, ranged attacks, auras, stances, zones, channels, and reactions should share one structured action-resolution vocabulary.
 - Packet 3 brings all eight novice Elemental Form attacks onto the structured resolution vocabulary. Packet 4 makes Thunder Cage the first bounded adept control semantic, Packet 5 gives Tempest Ring honest radial behavior, Packet 6 gives Umbral Well a durable persistent-field semantic, Packet 7 gives Radiant Arc deterministic target-to-target propagation, and Packet 8 brings the remaining Guarded Cut / Barkboar Brace / Thicket Feint damage paths onto structured physical resolution. All five current executable martial techniques are now structured where they deal damage. Packet-5 formation remains derived rather than mutable positioning; passive defenses/reactions, generalized zone scripting, movement/engagement geometry, LOS/pursuit, and broader action families remain deferred until they can be represented honestly.
+- The post-Packet-8 maturity reassessment closes `0.9.300 Advanced Combat / Training` for the current Phase 0.9 target. No Packet 9 is selected. Engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer spell semantics remain future depth; current priority returns to item/tool/equipment and production coherence through `0.9.400`.
 
 Ability names should describe visible form/motion/element/result honestly. A name that implies a ring, chain, cage, well, rain, breaker, or similar behavior should eventually execute that behavior rather than remain decorative terminology.
 
@@ -544,7 +545,7 @@ Current systems that should not be mistaken for final commitments include:
 - legacy FFXI world/place/race/job/currency terminology;
 - `mainJobId` and job-switch assumptions;
 - current sparse job skill-cap tables;
-- partial Combat 2.0 / ability behavior: B1-B5 provide the playable unified combat/training foundation, and 0.9.300 Packet 1 broadens automatic kata across dagger/sword/axe/staff/club; engagement geometry, character affinity substitutions, unsupported weapon-family kata, aura/stance/reaction families, and broader catalog migration remain transitional/future;
+- Combat 2.0 / advanced-combat depth beyond the closed 0.9.300 foundation remains transitional/future: mutable engagement geometry and flee/disengagement, unsupported weapon-family kata, passive/aura/stance/reaction families, weapon resonance, richer semantic spell breadth, and broader legacy catalog migration;
 - automatic battle loot behavior that predates provenance/body-processing design;
 - wall-clock tick scheduling as distinct from canonical simulation time;
 - small starter item/shop/monster catalogs;
