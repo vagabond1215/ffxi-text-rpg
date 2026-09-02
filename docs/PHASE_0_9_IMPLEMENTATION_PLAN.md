@@ -475,7 +475,7 @@ Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is **COMPLETE
 
 # `0.9.300` — Advanced Combat / Training
 
-**Track status: ACTIVE. Packets 1–7 complete; next advanced-combat packet unselected.**
+**Track status: ACTIVE. Packets 1–8 complete; explicit 0.9.300 maturity reassessment next.**
 
 Packet 1 — Current Melee Kata Breadth:
 - permanent record `docs/ADVANCED_COMBAT_0_9_300_P1_MELEE_KATA_BREADTH.md`;
@@ -495,6 +495,8 @@ Packet 5 — Tempest Ring Geometry Foundation is **COMPLETE** at Product 0.9.300
 Packet 6 — Umbral Well Field Foundation is **COMPLETE** at Product 0.9.300.6 / Game State 21 / Data 73. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P6_UMBRAL_WELL_FIELD_FOUNDATION.md`; behavioral/data freeze `6e4ab807c943fc94f398b86b33dba6637f215ad3`; Check #2069 / run `33554921560` passed 884/884 tests plus the full gate; Pages #2199 passed. Umbral Well now creates durable battle-local field state with three world-time Dark pulses, cast-time source offense snapshotting, live defender resistance, and per-recipient area attention. No new task owner, clock, mutable positioning, LOS, or generic ground-target system was introduced.
 
 Packet 7 — Radiant Arc Propagation Foundation is **COMPLETE** at Product 0.9.300.7 / Game State 21 / Data 74. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`; behavioral/data freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec`; Check #2106 / run `33569913910` passed 889/889 tests plus the full gate; Pages #2236 passed. Radiant Arc now propagates synchronously from target to nearest unhit target within a two-unit jump range for at most three recipients, with independent Light resolution and per-recipient attention. No durable propagation state, timer, movement, LOS, or pathfinding system was introduced.
+
+Packet 8 — Martial Structured Resolution Breadth is **COMPLETE** at Product 0.9.300.8 / Game State 21 / Data 75. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`; behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`; Check #2132 / run `33575392561` passed 895/895 tests plus the full gate; Pages #2261 passed. Guarded Cut, Barkboar Brace, and Thicket Feint now use structured physical accuracy/defense/recovery while preserving their self-buffs. Combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are now structured. No new persistence or combat subsystem was introduced.
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -509,7 +511,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 is complete at Product 0.9.300.1 / Data 68 / Game State 19, Packet 2 is complete at Product 0.9.300.2 / Data 69 / Game State 20, Packet 3 is complete at Product 0.9.300.3 / Data 70 / Game State 20, Packet 4 is complete at Product 0.9.300.4 / Data 71 / Game State 20, Packet 5 is complete at Product 0.9.300.5 / Data 72 / Game State 20, Packet 6 is complete at Product 0.9.300.6 / Data 73 / Game State 21, and Packet 7 — Radiant Arc Propagation Foundation — is complete at Product 0.9.300.7 / Data 74 / Game State 21. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
+`0.9.100` and its Local Knowledge & Familiarity prerequisite are complete. `0.9.200` Adventure Vertical Slices is complete through Slice A and Slice B Packets B1-B5. `0.9.300` Advanced Combat / Training is ACTIVE: Packet 1 is complete at Product 0.9.300.1 / Data 68 / Game State 19, Packet 2 is complete at Product 0.9.300.2 / Data 69 / Game State 20, Packet 3 is complete at Product 0.9.300.3 / Data 70 / Game State 20, Packet 4 is complete at Product 0.9.300.4 / Data 71 / Game State 20, Packet 5 is complete at Product 0.9.300.5 / Data 72 / Game State 20, Packet 6 at Product 0.9.300.6 / Data 73 / Game State 21, Packet 7 at Product 0.9.300.7 / Data 74 / Game State 21, and Packet 8 — Martial Structured Resolution Breadth — at Product 0.9.300.8 / Data 75 / Game State 21. Later roadmap tracks remain `0.9.400` economy/production depth, `0.9.500` quest/social depth, and `0.9.600` playable-alpha scale. `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening programs.
 
 # Explicit non-goals
 
