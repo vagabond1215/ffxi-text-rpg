@@ -166,8 +166,8 @@ B1 gives representative basic melee, Ember Dart, Ridge Breaker, Rivet Guard, and
 
 Current mechanics-scale gaps remain:
 - abilities/techniques 41/100;
-- companions 2/4;
-- quests/contracts 20/30;
+- companions 3/4;
+- quests/contracts 23/30;
 - named NPCs 48/50.
 
 Do not fill the ability gap with mechanically duplicate records.
