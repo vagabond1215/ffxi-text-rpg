@@ -37,13 +37,13 @@ Census execution is a CI contract; census **target completion is not**. A mechan
 ## Current baseline
 
 ```text
-Product:       0.9.300.7
+Product:       0.9.300.8
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          74
+Data:          75
 Benchmark:     3
-Codename:      Radiant Arc Propagation Foundation
+Codename:      Martial Structured Resolution Breadth
 ```
 
 The Data 45 ecology/geography audit passed hosted Check #1266 / run `33188833540` with **728/728 tests**, Content Census, Benchmark 3, and Benchmark Sample. Check #1267 / run `33189086957` also passed after the final reciprocal Crownward forest-gate repair; PR #390 later merged and its post-merge main gate remained green.
@@ -261,6 +261,26 @@ PASS only when:
 - Product/Data/Game State decisions are explicit.
 
 **Gate result: PASS.** Behavioral/data freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec` passed Check #2106 / run `33569913910` with **889/889 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2236 / run `33569912530` PASS. Validation-only PR #405 independently passed Check #2107 and was closed without merge. Game State remains 21; Data advances 73 -> 74.
+
+### 0.9.300 Packet 8 gate — Martial Structured Resolution Breadth
+
+PASS only when:
+- exactly Guarded Cut, Barkboar Brace, and Thicket Feint are selected for this tranche;
+- executable ability count remains 41 and catalog validation passes;
+- stable IDs, capability links, target kind, activation, TP cost, cooldown, potency/scaling, and self-buff definitions remain unchanged;
+- each selected attack declares melee/physical accuracy and physical-defense resolution with an honest weapon damage type;
+- Guarded Cut and Barkboar Brace are explicitly non-critical;
+- Thicket Feint is critical-eligible only through existing character critical stats;
+- target physical defense changes landed damage;
+- physical accuracy can miss deterministically;
+- the existing independent-effect law is preserved so a missed target attack still applies the authored self-buff;
+- recovery is 3 seconds for Guarded Cut, 4 for Barkboar Brace, and 2 for Thicket Feint;
+- ordinary combat-action history contains the same structured resolution evidence;
+- combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are structured where they deal damage;
+- no movement, repositioning, reaction, combo, passive block/parry/guard/counter, new clock, task owner, or persistence family is introduced;
+- Product/Data/Game State decisions are explicit.
+
+**Gate result: PASS.** Behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e` passed Check #2132 / run `33575392561` with **895/895 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2261 / run `33575391923` PASS. Game State remains 21; Data advances 74 -> 75.
 
 ## Content Pack v2 gate
 
