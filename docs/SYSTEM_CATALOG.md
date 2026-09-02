@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 ```
 
 ## 0.9.400 production/item authority
@@ -110,7 +110,23 @@ A5 advances Data 79 -> 80, recipes/processes 252 -> 254, packs 42 -> 43, and pac
 
 Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests** and the full gate.
 
-Post-A5 inspection found no established canonical workshop-tool equipment IDs beyond the six field tools. The next unit must therefore resolve new tool authority before authoring.
+Post-A5 inspection found no established canonical workshop-tool equipment IDs beyond the six field tools.
+
+### A6 — Shared Workshop Tool Authority Audit — COMPLETE
+
+A6 closes that authority question without manufacturing workshop-tool filler:
+- `productionRequirementAuthority` centralizes recognized workstation tags and canonical portable/contextual production-tool authority;
+- `workstationEngine` consumes the shared station vocabulary instead of owning a duplicate list;
+- `validateProductionCatalog()` rejects unknown station tags and required-tool tags without a canonical portable provider or explicit contextual authority;
+- the live graph currently requires only `cutting` and `woodcutting`;
+- Field Knife / Reed Sickle provide `cutting`; Woodsman Hatchet provides `woodcutting`;
+- no hammer/saw/awl/cooking/measurement tool identity is added because current station context already owns ordinary fixed workshop implements.
+
+A6 advances Product 0.9.400.6 -> 0.9.400.7 while Data remains 80 and Game State remains 21.
+
+Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests** and the full gate.
+
+`0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.
 
 ## Data 57 regional authority
 
@@ -385,14 +401,16 @@ The creature catalog clears the playable-alpha planning lower bound of 120. Mech
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.400.6 / Data 80 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are complete. `0.9.400 Economy / Production Depth` is active through A5 Basic Leather Garment Conversion Proof.
+Phase 0.9 remains open at Product 0.9.400.7 / Data 80 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are complete.
 
-A5 permanent record:
-- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+A6 permanent record:
+- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
 
-Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests** and the full gate.
+Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests** and the full gate.
 
-**A6 Shared Workshop Tool Authority Audit is the next candidate / not started.**
+**0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection is the next candidate / not started.**
+
+Q0 should audit current commitment, relationship, companion, schedule, locality-knowledge, and dialogue/presentation boundaries before selecting a coherent multi-NPC social slice. Current mechanics-floor gaps remain quests/contracts 20/30, companions 2/4, and named NPCs 48/50; these are signals, not authorization for filler.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -411,5 +429,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. Occupational Tool Conversion is now the selected next 0.9.400 bounded implementation; world-edge, richer locality-event/UI work, and optional ecology remain separate explicit-selection queues.
+**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. `0.9.400 Economy / Production Depth` is also complete after A0-A6; `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the selected next candidate. World-edge, richer locality-event/UI work, optional ecology, and remaining material-culture packets remain separate explicit-selection queues.
 
