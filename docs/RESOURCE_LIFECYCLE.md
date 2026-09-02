@@ -97,6 +97,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 
 0.9.300 Packet 8 adds no direct timed-task owner and no martial sequence resource. Guarded Cut, Barkboar Brace, and Thicket Feint are zero-activation synchronous abilities; their target damage resolves through the existing combat resolver, their self-buffs persist through ordinary status authority, and their recovery uses the existing combat readiness timeline. No combo cursor, reaction window, movement record, passive-defense state, timer, or background owner is created. Game State remains 21; Data 75 changes authored martial resolution/recovery metadata only.
 
+The 0.9.300 maturity reassessment is decision-only and adds no direct timed-task owner, lifecycle resource, interrupt provider, or durable state. It closes the advanced-combat track at the existing Product 0.9.300.8 / Game State 21 / Data 75 checkpoint. Occupational Tool Conversion is selected as the next 0.9.400 bounded implementation, but no production task/resource change occurs until that packet actually starts.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
