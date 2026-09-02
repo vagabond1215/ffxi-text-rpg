@@ -19,17 +19,44 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Codename:      Martial Structured Resolution Breadth
-Phase:         0.9 / 0.9.300 COMPLETE; 0.9.400 Packet A selected, not started
+Codename:      Production Item Authority Hardening
+Phase:         0.9 / 0.9.400 ACTIVE; A0 complete; A1 field-tool conversion next
 ```
 
-Data 75 is the current authored/mechanics-data checkpoint. Product 0.9.300.8 closes the current advanced-combat implementation sequence after B1-B5 and Packets 1-8; Game State 21 persists the required affinity/kata, active-battle attention/loadout, and outstanding combat-field facts. The subsequent 0.9.300 maturity reassessment is decision-only, changes no version axis, and selects 0.9.400 Packet A — Occupational Tool Conversion — as next / not started.
+Data 75 remains the current authored/mechanics-data checkpoint. Product 0.9.400.1 opens Economy / Production Depth with A0 Production & Item Authority Hardening; Game State 21 remains unchanged. A0 adds no authored content and no new durable state family. A1 Existing Field-Tool Conversion Proof is next / not started.
+
+## 0.9.400 production/item authority
+
+A0 deliberately adds a **resolver**, not another item database:
+
+```text
+resource definitions ----\
+production definitions ---+--> canonicalItemRegistry --> commerce / Pack refs / production outputs
+equipment definitions ----/
+```
+
+Production recipes may now output an existing equipment stable ID while the equipment catalog remains physical/equipment behavior authority. The production work record contributes transformation provenance; it does not copy the equipment definition into `productionItems`.
+
+Canonical shop stock is materialized from the same canonical item definition. Shops own price/availability and purchase provenance, not a second physical shape inferred from merchandising tags.
+
+Production tool requirements resolve to explicit bindings:
+
+```text
+equipped field tool
+portable equipment tool in Inventory
+explicit contextual capability
+        |
+        v
+existing work record.data.toolBindings
+```
+
+Physical bindings are reservations on existing work records, not a new state family. Common player move/equip/sell paths reject moving a bound tool until the work record leaves active status. Field gathering/recovery may retain stricter equipped-tool rules.
 
 ## Core authority rules
 
