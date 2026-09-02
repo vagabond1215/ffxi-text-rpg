@@ -1,20 +1,20 @@
-export const PRODUCT_VERSION = '0.9.400.7';
-export const PACKAGE_VERSION = '0.9.400';
+export const PRODUCT_VERSION = '0.9.500.1';
+export const PACKAGE_VERSION = '0.9.500';
 
 export const VERSION = Object.freeze({
     product: PRODUCT_VERSION,
     package: PACKAGE_VERSION,
     accountSave: 5,
     gameState: 21,
-    data: 80,
+    data: 81,
     benchmark: 3,
-    codename: 'Workshop Tool Authority Audit',
+    codename: 'Social Relationship Eligibility Foundation',
     compatibility: 'pre-release-current-schema',
     released: false,
 });
 
 export const SYSTEM_VERSIONS = Object.freeze({
-    versionManifest: '0.9.400.7',
+    versionManifest: '0.9.500.1',
     actionResults: '0.2.0',
     semanticEvents: '0.1.0',
     foundationReadiness: '0.2.0',
@@ -27,8 +27,10 @@ export const SYSTEM_VERSIONS = Object.freeze({
     projects: '0.2.0',
     homeInfrastructure: '0.4.0',
     cultivation: '0.2.0',
-    commitments: '0.8.0',
-    relationships: '0.1.0',
+    commitments: '0.9.0',
+    relationships: '0.2.0',
+    socialRequirements: '0.1.0',
+    socialRequirementEngine: '0.1.0',
     npcSchedules: '0.9.0',
     npcWorldProjection: '0.1.1',
     enemyEncounterProjection: '0.1.0',
@@ -142,7 +144,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     playerInformation: '0.3.0',
     playerExperience: '0.3.0',
     playerOpportunities: '0.2.0',
-    playerContinuity: '0.6.0',
+    playerContinuity: '0.7.0',
     playerCampaignReadability: '0.2.0',
     playerDangerRecovery: '0.2.0',
     localityNavigation: '0.4.0',
@@ -175,7 +177,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilityEngine: '0.7.0',
     enemyAbilityCatalog: '0.1.0',
     companionCatalog: '0.3.0',
-    party: '0.4.0',
+    party: '0.5.0',
     powers: '0.4.1',
     worldIdentity: '0.1.1',
     npcEntity: '0.2.0',
@@ -242,7 +244,7 @@ export const SYSTEM_VERSIONS = Object.freeze({
     abilities: '0.1.0',
     loot: '0.7.0',
     leveling: '0.6.0',
-    companions: '0.2.0',
+    companions: '0.3.0',
     crafting: '0.2.0',
     mounts: 'planned',
 });
