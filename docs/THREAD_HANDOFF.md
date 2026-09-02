@@ -32,27 +32,16 @@ Game State remains 21. Crafted equipment identity, production provenance, loadou
 
 ## Repository / promotion state
 
-Pre-A3 main checkpoint:
-- `6b21c166af744bde2b9ddfad3e92695680b06ebe`.
+A3 is merged to `main`.
 
-A3 branch:
-- `phase-0.9.400-a3-caster-offhand-conversion`.
+- merged main SHA: `e204582880f1f9ede572241a217bf181b9104bee`;
+- PR #409: MERGED;
+- exact synchronized PR head: `eb96689c5c70cc66b5c854fe3dbb453df35aad55`;
+- final pre-merge Check #2255 / run `33671851052`: Repository Audit, **916/916 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`;
+- implementation freeze Check #2240 / run `33671247638`: full gate PASS.
 
-Promotion PR:
-- PR #409 — Add 0.9.400 A3 caster and offhand conversion proof.
-
-A3 behavioral implementation freeze:
-- `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`.
-
-Hosted implementation evidence:
-- Check #2240 / run `33671247638`;
-- Repository Audit PASS;
-- **916/916 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
-
-This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #409.
+The older A3 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A4 continuation should start from current `main`.
 
 ## Validated Data 78 census
 
@@ -272,12 +261,14 @@ Do not restart the broad material-culture audit or advanced-combat audit unless 
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for A3 closure.
+This post-merge handoff correction is the intended final repository-file mutation for A3 closure.
+
+A3 promotion evidence is complete:
+- behavioral freeze Check #2240 / run `33671247638`: full gate PASS;
+- exact synchronized PR-head Check #2255 / run `33671851052`: full gate PASS;
+- PR #409 merged to `main` at `e204582880f1f9ede572241a217bf181b9104bee`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **916/916 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #409 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave A4 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave A4 unstarted;
+- start future work from current `main`, not the old A3 branch.
