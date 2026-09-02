@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.300.8
-Package:       0.9.300
+Product:       0.9.400.1
+Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          75
 Benchmark:     3
-Phase:         0.9 / 0.9.300 complete; 0.9.400 Packet A selected, not started
-Codename:      Martial Structured Resolution Breadth
+Phase:         0.9 / 0.9.400 active; A0 complete; A1 field-tool conversion next
+Codename:      Production Item Authority Hardening
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -30,7 +30,7 @@ Validated Data 75 checkpoint:
 | Shop/service sites | 37 | 20 | ready |
 | Creature definitions | 123 | 40 | ready |
 | Resource sources | 143 | 40 | ready |
-| Canonical items | 408 | 200 | ready |
+| Canonical items | 410 | 200 | ready |
 | Recipes/processes | 234 | 75 | ready |
 | Abilities/techniques | 41 | 100 | 59 |
 | Quests/contracts | 20 | 30 | 10 |
@@ -411,7 +411,7 @@ The later mechanics-scale gate remains **NOT READY** and is deliberately not con
 
 # `0.9.200` — Adventure Vertical Slices
 
-**Track status: COMPLETE. Slice A and Slice B Packets B1-B5 are COMPLETE. `0.9.300 Advanced Combat / Training` is queued/not started.**
+**Track status: COMPLETE. Slice A and Slice B Packets B1-B5 are COMPLETE. Historical note: `0.9.300 Advanced Combat / Training` was queued at this checkpoint and is now complete.**
 
 ## Slice A — Slatewater Road Scout
 
@@ -498,7 +498,42 @@ Packet 7 — Radiant Arc Propagation Foundation is **COMPLETE** at Product 0.9.3
 
 Packet 8 — Martial Structured Resolution Breadth is **COMPLETE** at Product 0.9.300.8 / Game State 21 / Data 75. Permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`; behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`; Check #2132 / run `33575392561` passed 895/895 tests plus the full gate; Pages #2261 passed. Guarded Cut, Barkboar Brace, and Thicket Feint now use structured physical accuracy/defense/recovery while preserving their self-buffs. Combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques are now structured. No new persistence or combat subsystem was introduced.
 
-Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. Product remains 0.9.300.8 / Game State 21 / Data 75 because the reassessment is decision-only. `0.9.400 Economy / Production Depth` is next; Packet A — Occupational Tool Conversion — is selected but not started.
+Maturity reassessment is **COMPLETE** with decision authority `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`. Remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon resonance, unsupported breadth, and richer named-spell semantics are deferred depth rather than blockers. The decision-only closure remained Product 0.9.300.8 / Game State 21 / Data 75. `0.9.400 Economy / Production Depth` is now active: A0 Production & Item Authority Hardening is complete at Product 0.9.400.1, and A1 Existing Field-Tool Conversion Proof is next / not started.
+# `0.9.400` — Economy / Production Depth
+
+## A0 — Production & Item Authority Hardening
+
+**Status: COMPLETE.**
+
+Permanent record:
+- `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
+
+Behavioral freeze `0445823264bb6adf1d1717dee2df83678e561a0f` passed Check #2172 / run `33661309577` with **901/901 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+
+Version result:
+```text
+Product       0.9.300.8 -> 0.9.400.1
+Package       0.9.300   -> 0.9.400
+Data          75        -> 75
+Game State    21        -> 21
+```
+
+A0 adds one canonical item resolver, legal production resolution to existing equipment IDs, canonical commerce materialization, and physical production-tool bindings without adding authored content or a new persistence family.
+
+## A1 — Existing Field-Tool Conversion Proof
+
+**Status: NEXT / NOT STARTED.**
+
+Scope:
+- Field Knife;
+- Prospector Pick;
+- Woodsman Hatchet;
+- Digging Spade;
+- Reed Sickle;
+- Marsh Fishing Rod.
+
+A1 must prove a crafted existing tool in a real tool-gated work loop before A2 broader equipment/profession conversion is authorized.
+
 # Relative planning envelope
 
 | Relative band | Packet | Status |
@@ -513,7 +548,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, and `0.9.300` Advanced Combat / Training are complete. `0.9.300` closes at Product 0.9.300.8 / Data 75 / Game State 21 after Packets 1–8 plus maturity reassessment, with no Packet 9. `0.9.400` Economy / Production Depth is next and Packet A — Occupational Tool Conversion — is selected but not started. Later tracks remain `0.9.500` quest/social depth and `0.9.600` playable-alpha scale; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
+`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, and `0.9.300` Advanced Combat / Training are complete. `0.9.400` Economy / Production Depth is active: A0 is complete at Product 0.9.400.1 / Data 75 / Game State 21 and A1 Existing Field-Tool Conversion Proof is next / not started. Later tracks remain `0.9.500` quest/social depth and `0.9.600` playable-alpha scale; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
 
 # Explicit non-goals
 
