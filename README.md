@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is ACTIVE: A0-A5 are complete through Basic Leather Garment Conversion Proof; A6 Shared Workshop Tool Authority Audit is the next candidate / not started.** The current canonical/runtime checkpoint is Data 80 / Product 0.9.400.6 / Game State 21.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is queued; Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate / not started.** The current canonical/runtime checkpoint is Data 80 / Product 0.9.400.7 / Game State 21.
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -128,19 +128,21 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**0.9.400 A5 — Basic Leather Garment Conversion Proof is COMPLETE. A6 Shared Workshop Tool Authority Audit is the next candidate / not started.**
+**0.9.400 A6 — Shared Workshop Tool Authority Audit is COMPLETE. `0.9.400 Economy / Production Depth` is COMPLETE for the current Phase 0.9 target.**
 
 Permanent record:
-- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
 
-A5 implementation freeze:
-- `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847`;
-- Check #2277 / run `33675272069`;
-- **926/926 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
+A6 implementation freeze:
+- `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
+- Check #2297 / run `33677766982`;
+- **930/930 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
 
-A5 converts existing Leather Vest and Leather Trousers IDs using the established Elderwood tanned-hide/hide-binding supply chain, tannery station authority, and A1 Field Knife cutting binding. No leatherworking proficiency, duplicate leather identity, or persistence family is added. Data advances to 80; Game State remains 21.
+A6 centralizes recognized workstation tags, derives canonical portable production-tool providers from existing equipment authority, and makes `validateProductionCatalog()` reject unknown station tags or tool requirements without a portable provider / explicit contextual authority. The live production graph requires only `cutting` and `woodcutting`, already supplied by Field Knife / Reed Sickle and Woodsman Hatchet.
 
-Repository inspection after A5 found no established canonical equipment IDs for the remaining ordinary workshop-tool backlog. Therefore A6 should audit portable-tool vs workstation authority and freeze a minimal mechanically meaningful tool family before any new workshop-tool identities are authored.
+No workshop-tool items were added. Data remains 80 and Game State remains 21. Ordinary workshop implements remain station-owned context until a future player-facing action justifies portable equipment.
+
+**Next candidate:** `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection`, not started. This is preferred over more economy breadth because recipes/items already clear mechanics floors while quests/contracts (20/30), companions (2/4), and named NPCs (48/50) remain below theirs.
 
 ## Historical combat decision record
 
@@ -176,7 +178,7 @@ Do not fill the ability gap with mechanically duplicate records.
 **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- A5 Basic Leather Garment Conversion Proof is complete; A6 Shared Workshop Tool Authority Audit is the next candidate and is not started;
+- A6 Shared Workshop Tool Authority Audit is complete; 0.9.400 Economy / Production Depth is complete; 0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate and is not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.
