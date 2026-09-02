@@ -95,6 +95,8 @@ B5 also adds no direct timed-task owner. Combat training is synchronous context 
 
 0.9.300 Packet 7 adds no direct timed-task owner and no durable propagation resource. Radiant Arc uses the ordinary ability activation task only until cast completion; its complete target-to-target recipient chain is then selected and resolved synchronously through `combatGeometryEngine`, `abilityEngine`, `combatResolutionEngine`, and `combatAttentionEngine`. No propagation deadline, interrupt provider, timer, field record, or background owner survives the action. Game State remains 21; Data 74 changes the authored Radiant Arc target/resolution/recovery contract. The direct timed-task-owner set remains unchanged.
 
+0.9.300 Packet 8 adds no direct timed-task owner and no martial sequence resource. Guarded Cut, Barkboar Brace, and Thicket Feint are zero-activation synchronous abilities; their target damage resolves through the existing combat resolver, their self-buffs persist through ordinary status authority, and their recovery uses the existing combat readiness timeline. No combo cursor, reaction window, movement record, passive-defense state, timer, or background owner is created. Game State remains 21; Data 75 changes authored martial resolution/recovery metadata only.
+
 ## Cultivation lifecycle
 
 Cultivation deliberately did **not** add a new direct timed-task owner. B3 later adds `combatLoadoutEngine.js` as the seventh current direct owner; cultivation still reuses work or timestamp-derived authority.
