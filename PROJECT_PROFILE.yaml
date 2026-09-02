@@ -86,14 +86,15 @@ authority:
   world_macro_topology: docs/WORLD_MACRO_TOPOLOGY.md
 git:
   current_normal_work: economy-production-0.9.400-a1-existing-field-tool-conversion-proof-next-not-started
-  latest_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
-  latest_product_pull_request: 402
-  latest_product_pr_check: 33217086478
-  latest_product_pr_check_number: 1381
-  latest_product_pr_check_result: success-753-of-753-tests-census-benchmark-and-sample-promoted-head
-  latest_product_post_merge_check: push-run-not-enumerable-by-current-github-connector
-  latest_product_post_merge_check_number: not-visible
-  latest_product_post_merge_check_result: promoted-head-green-753-of-753-post-merge-changes-docs-and-profile-only-audit-contract-verified
+  latest_product_checkpoint_sha: 0445823264bb6adf1d1717dee2df83678e561a0f
+  latest_product_checkpoint_pull_request: 406
+  latest_product_checkpoint_check: 33661309577
+  latest_product_checkpoint_check_number: 2172
+  latest_product_checkpoint_check_result: success-901-of-901-tests-repository-audit-census-benchmark-and-sample-implementation-freeze
+  previous_product_merge_sha: a410eb18e6f8df2f58b965ab9697f8ae813b1c4d
+  previous_product_pull_request: 402
+  previous_product_pr_check: 33217086478
+  previous_product_pr_check_number: 1381
   latest_main_data_check: 33575392561
   latest_main_data_check_number: 2132
   latest_main_data_check_sha: 4a89df88f408062aa3e90b1284c9c3497e248f6e
