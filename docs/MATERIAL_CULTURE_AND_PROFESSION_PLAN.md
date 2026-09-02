@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0 authority hardening and A1 existing field-tool conversion proof complete; A2 broader starter equipment & occupational tool conversion is next / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0 authority hardening, A1 field-tool conversion, and A2 Bronze Martial Conversion Proof complete; A3 Caster / Offhand Starter Conversion is the next candidate / not started.**
 
 ## Purpose
 
@@ -179,7 +179,9 @@ A0 — Production & Item Authority Hardening is complete at Product 0.9.400.1 / 
 
 A1 — Existing Field-Tool Conversion Proof is **COMPLETE** at Product 0.9.400.2 / Data 76 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`. It converts the six existing field tools through canonical production and proves crafted-tool use/persistence.
 
-A2 — Broader Starter Equipment & Occupational Tool Conversion is **NEXT / NOT STARTED**. Do not restart this material-culture audit from scratch. Continue conversion-first from established item IDs and existing material graphs. Selection does not authorize Packets B-F.
+A2 — Bronze Martial Conversion Proof is **COMPLETE** at Product 0.9.400.3 / Data 77 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`. It converts Bronze Sword, Bronze Cap, and Bronze Harness using existing material-foundation stocks and proves A1 cutting-tool integration plus combat-profile/cadence/save-load use.
+
+A3 — Caster / Offhand Starter Conversion is the **NEXT CANDIDATE / NOT STARTED**. Inspect Ash Staff, Maple Wand, Iron Buckler, and Brass Ring against existing wood/metal/fine-craft stocks before authoring. Selection does not authorize Packets B-F.
 
 ## Future bounded packets
 
@@ -206,14 +208,32 @@ Converted through real production using existing material-foundation stocks/comp
 
 The crafted Field Knife is proven through real cutting-gated downstream work and Marsh Fishing Rod assembly, with crafted identities/provenance surviving current-schema save/load.
 
-#### A2 — Broader starter equipment and occupation-tool conversion — NEXT / NOT STARTED
+#### A2 — Bronze martial conversion proof — COMPLETE
 
-Then consider:
+Converted:
+- Bronze Sword;
+- Bronze Cap;
+- Bronze Harness.
+
+A2 uses Bronze Ingot, Bronze Sheet, Ash Handle Blank, Hemp Twine/Canvas, and Iron Buckle and Ring Set from the established material foundation. Bronze Harness assembly requires `cutting`, proving the A1 Field Knife binding outside the field-tool cluster. Crafted gear drives real combat profile and weapon cadence and survives current-schema save/load.
+
+#### A3 — Caster / offhand starter conversion — NEXT CANDIDATE / NOT STARTED
+
+Inspect:
 - Ash Staff;
 - Maple Wand;
 - Iron Buckler;
-- Brass Ring;
-- Bronze weapons and armor;
+- Brass Ring.
+
+Do not invent one-off materials merely to complete this set. Prefer existing Silvermaple/Ash wood stocks, iron/brass stocks, and ordinary shared hardware where the fiction fits.
+
+#### Remaining Packet-A conversion backlog — DEFERRED AFTER A3 SELECTION
+
+- Bronze Axe;
+- Bronze Dagger;
+- Bronze Pick;
+- Bronze Subligar;
+- Bronze Mittens;
 - basic leather garments;
 - shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
