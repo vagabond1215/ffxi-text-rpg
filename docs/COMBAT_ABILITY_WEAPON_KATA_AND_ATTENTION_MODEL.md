@@ -8,7 +8,7 @@ It does **not** claim that the full model below is implemented. Current runtime 
 
 ## Implementation status
 
-**Packets B1-B5 are COMPLETE; 0.9.300 Packets 1–8 are COMPLETE. A maturity reassessment is next.**
+**Packets B1-B5 and 0.9.300 Packets 1–8 are COMPLETE. The maturity reassessment closes 0.9.300; no Packet 9 is selected.**
 
 Permanent records:
 - `docs/COMBAT_2_0_B1_UNIFIED_RESOLUTION.md`;
@@ -133,6 +133,16 @@ Implemented by 0.9.300 Packet 8:
 - target damage and self-buff remain independent authored effects, so a miss does not erase the self-buff;
 - combined with Ridge Breaker and Rivet Guard, all five current executable martial techniques now use structured damage resolution where applicable;
 - no movement, combo, reaction, passive-defense, new clock, task owner, or persistence family is added.
+
+0.9.300 maturity decision:
+- the track is complete for the current Phase 0.9 target at Product 0.9.300.8 / Game State 21 / Data 75;
+- no additional combat ownership gap blocks the current playable loop;
+- inert `battle.targetId`, `battle.actionDelay`, `battle.recasts`, and `battle.casting` remain explicit current-schema cleanup debt rather than authority;
+- derived formation remains sufficient for current ring/field/arc proofs; mutable engagement geometry, LOS, reachability, pursuit/search/disengagement, and explicit flee/retreat are deferred as one later architecture program;
+- calculated shield block/parry/guard/counter/spell-interruption values do not yet imply universal passive execution and remain deferred;
+- Flare Bloom, Rimefall, Fault Rush, weapon resonance/imbuement, unsupported-family breadth, and richer reaction/stance/channel families remain future depth;
+- ability-count growth must emerge from connected mechanics/content rather than keeping 0.9.300 open for census filler;
+- next project track is `0.9.400 Economy / Production Depth`, beginning with Occupational Tool Conversion after a new explicit continuation.
 
 Still deferred:
 - weapon resonance / enchanted-weapon element behavior and generic imbuement;
