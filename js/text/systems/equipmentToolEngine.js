@@ -108,7 +108,7 @@ function collectItemToolTags(item) {
 
 function isPortableTool(item) {
     const tags = new Set(item?.tags ?? []);
-    return item?.family === 'tool' || tags.has('tool');
+    return item?.kind === 'equipment' && (item?.family === 'tool' || tags.has('tool'));
 }
 
 function binding({ itemId, itemName, sourceType, sourceId, tags }) {
