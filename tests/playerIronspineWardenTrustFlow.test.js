@@ -313,6 +313,6 @@ test('Q1 Ironspine records are canonical Pack-v2 content with bounded census gro
     assert.equal(counts.quests, 23);
     assert.equal(counts.companions, 3);
     assert.equal(counts.supplemental.seedNpcs, 47);
-    assert.equal(counts.supplemental.regionalContentPacks, 43);
+    assert.equal(counts.supplemental.contentPacks, 43);
     assert.equal(counts.supplemental.ownedPackRecords, 1372);
 });
