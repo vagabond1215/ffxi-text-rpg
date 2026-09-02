@@ -811,6 +811,16 @@ Radiant Arc begins at the explicitly selected enemy. `combatGeometryEngine` then
 
 No propagation record, timer, interrupt, mutable combat coordinate, LOS/reachability state, pathfinding state, pursuit state, or save field is added. Propagation is fully resolved inside the completed action, so Game State remains 21. A later delayed chain, moving projectile, or path/LOS-aware propagation model would require a fresh bounded ownership decision rather than extending this synchronous proof implicitly.
 
+### 0.9.300 Packet 8 martial structured-resolution breadth
+
+Product 0.9.300.8 / Game State 21 / Data 75 changes authored ability definitions only. `abilities.js` remains the canonical technique-effect contract; `abilityEngine` remains activation/cost/cooldown/effect-order/recovery authority; `combatResolutionEngine` remains physical hit/damage/defense/critical formula authority.
+
+Guarded Cut, Barkboar Brace, and Thicket Feint now route their target damage through the same shared physical resolution already used by Ridge Breaker and Rivet Guard. Their existing self-status effects remain separate authored effects and therefore do not become conditional on target damage landing.
+
+No new `activeBattle` field, player progression field, effect-dependency graph, combo cursor, movement/reposition record, reaction window, passive-defense record, timed task, or interrupt provider is added. Existing status expiry, ability cooldown, and combat readiness state already own all durable consequences, so Game State remains 21.
+
+With Packet 8, all five current executable martial techniques use structured damage resolution where applicable. Legacy recovered Weapon Skill data and non-executable capability names remain separate migration/research debt and are not silently promoted into the executable catalog.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -895,4 +905,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 74; the current runtime/persistence baseline is Product 0.9.300.7 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–7 complete and the next packet unselected. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 75; the current runtime/persistence baseline is Product 0.9.300.8 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–8 complete; a maturity reassessment is the next bounded unit before any Packet 9 selection. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
