@@ -233,6 +233,14 @@ Preserve:
 
 Do not reopen the broad material-culture audit or advanced-combat audit unless A1 exposes a concrete blocker owned by those domains.
 
+## Exact-head synchronization repair
+
+The first synchronized A0 head Check #2188 / run `33662046866` passed Repository Audit but failed exactly two stale version-expectation tests:
+- `tests/phase07Px6Versioning.test.js` still required `shopTransactions === 0.5.0` rather than allowing a later compatible version;
+- `tests/pipeline.test.js` still hard-coded Product 0.9.300.8 / Package 0.9.300 and pre-A0 manifest values.
+
+No runtime behavior changed in that repair. The Phase-0.7 assertion now uses its intended minimum-version contract and the pipeline manifest expectations now match the deliberate 0.9.400.1 checkpoint.
+
 ## Final validation contract
 
 This handoff is the intended final repository-file mutation for the A0 closure.
