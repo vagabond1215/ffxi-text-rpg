@@ -34,29 +34,18 @@ Game State remains 21. Crafted equipment identity, production provenance, equipm
 
 ## Repository / promotion state
 
-Pre-A5 main checkpoint:
-- `46602b8cff5a390117bd9fabbdf5eeae33a5aac2`.
+A5 is merged to `main`.
 
-A5 branch:
-- `phase-0.9.400-a5-basic-leather-garments`.
-
-Promotion PR:
-- PR #411 — Add 0.9.400 A5 basic leather garment conversion proof.
-
-A5 behavioral implementation freeze:
-- `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847`.
-
-Hosted implementation evidence:
-- Check #2277 / run `33675272069`;
-- Repository Audit PASS;
-- **926/926 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
+- merged main SHA: `dd7abf0f7dd69464c572884152752130cbb92b82`;
+- PR #411: MERGED;
+- exact synchronized PR head: `75d9771692374651cdfa219f31e4a1b0cfdfd79c`;
+- final pre-merge Check #2294 / run `33675900751`: Repository Audit, **926/926 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847`;
+- implementation freeze Check #2277 / run `33675272069`: full gate PASS.
 
 Initial Check #2276 / run `33675148970` produced 925/926. The single failure was regression setup: the test crafted the existing A1 Field Knife but granted only `crafting`, omitting the Field Knife recipe's existing `metalworking 4` prerequisite. Test setup was corrected; A5 recipe/runtime definitions did not change.
 
-This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #411.
+The older A5 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A6 continuation should start from current `main`.
 
 ## Validated Data 80 census
 
@@ -291,12 +280,14 @@ Preserve:
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for A5 closure.
+This post-merge handoff correction is the intended final repository-file mutation for A5 closure.
+
+A5 promotion evidence is complete:
+- behavioral freeze Check #2277 / run `33675272069`: full gate PASS;
+- exact synchronized PR-head Check #2294 / run `33675900751`: **926/926 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
+- PR #411 merged to `main` at `dd7abf0f7dd69464c572884152752130cbb92b82`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **926/926 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #411 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave A6 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave A6 unstarted;
+- start future work from current `main`, not the old A5 branch.
