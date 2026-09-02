@@ -30,39 +30,18 @@ Game State remains 21. Q0 introduces no new durable state family or persisted fi
 
 ## Repository / promotion state
 
-Pre-Q0 main checkpoint:
-- `c9d96ff9c242445919c806b061a461454be8a13f`.
+Q0 is merged to `main`; `0.9.500 Quest / Social Depth` is active.
 
-Q0 branch:
-- `phase-0.9.500-q0-social-authority-selection`.
+- merged main SHA: `6372717ffd44cd5954f81ed22ec9fa609a5ae371`;
+- PR #413: MERGED;
+- exact synchronized PR head: `fd2f3100b98bbd17c5ade994af14d4cc2ba2cd1e`;
+- final pre-merge Check #2331 / run `33686418834`: Repository Audit, **934/934 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
+- behavioral implementation freeze: `61227536f7683401de047474ace4eec5160aaef3`;
+- implementation freeze Check #2315 / run `33685651230`: full gate PASS.
 
-Promotion PR:
-- PR #413 — Open 0.9.500 Q0 social relationship authority.
+The first synchronized promotion head `3d3fd5a601604481f37d7697fa5500926ae8fb19` failed Check #2329 / run `33686263573` at 933/934 because historical `tests/phase07Px6Versioning.test.js` pinned the shared companion system version to exactly `0.2.0`. Repair `610a330f6c45ba38d91c2b54de87829407e3977d` changed that historical later-track gate to the compatible lower-bound form; no Q0 social-runtime test failed.
 
-Q0 behavioral implementation freeze:
-- `61227536f7683401de047474ace4eec5160aaef3`.
-
-Hosted implementation evidence:
-- Check #2315 / run `33685651230`;
-- Repository Audit PASS;
-- **934/934 tests**;
-- Content Census PASS;
-- Benchmark 3 PASS;
-- Benchmark Sample PASS.
-
-First synchronized promotion attempt:
-- head `3d3fd5a601604481f37d7697fa5500926ae8fb19`;
-- Check #2329 / run `33686263573`;
-- Repository Audit PASS;
-- tests **933/934**;
-- sole failure: historical `tests/phase07Px6Versioning.test.js` still required `SYSTEM_VERSIONS.companions === 0.2.0` even though Q0 deliberately advances that shared later-track catalog to `0.3.0`;
-- no Q0 social-runtime test failed.
-
-Synchronization repair:
-- `610a330f6c45ba38d91c2b54de87829407e3977d`;
-- the historical Phase 0.7 gate now permits later compatible companion catalog versions using the same lower-bound convention already used by its adjacent shared-authority assertions.
-
-This handoff rewrite is the intended final pre-merge file mutation after that synchronization repair. Validate its exact resulting PR head with hosted Check before merging PR #413.
+The older Q0 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future Q1 continuation should start from current `main`.
 
 ## Validated Data 81 census
 
@@ -413,12 +392,16 @@ Do not restart broad social-system discovery, economy discovery, or combat disco
 
 ## Final validation contract
 
-This handoff is the intended final pre-merge repository-file mutation for Q0 closure.
+This post-merge handoff correction is the intended final repository-file mutation for Q0 closure.
+
+Q0 promotion evidence is complete:
+- behavioral freeze Check #2315 / run `33685651230`: full gate PASS;
+- first synchronized Check #2329 / run `33686263573`: 933/934 due only to a stale historical exact companion-version assertion;
+- synchronization repair `610a330f6c45ba38d91c2b54de87829407e3977d`;
+- exact repaired PR-head Check #2331 / run `33686418834`: **934/934 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
+- PR #413 merged to `main` at `6372717ffd44cd5954f81ed22ec9fa609a5ae371`.
 
 After this write:
-- perform no repository-file mutation unless exact-head validation exposes a real failure;
-- validate the exact synchronized PR head with hosted Check;
-- confirm Repository Audit, **934/934 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- merge/promote PR #413 only after that exact synchronized head is green;
-- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
-- leave Q1 unstarted.
+- perform no repository-file mutation unless exact-main validation exposes a real failure;
+- leave Q1 unstarted;
+- start future Q1 work from current `main`, not the old Q0 branch.
