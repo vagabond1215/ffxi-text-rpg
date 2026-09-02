@@ -5,24 +5,24 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.300.7
+Product:       0.9.300.8
 Package:       0.9.300
 Account Save:  5
 Game State:    21
-Data:          74
+Data:          75
 Benchmark:     3
-Codename:      Radiant Arc Propagation Foundation
+Codename:      Martial Structured Resolution Breadth
 ```
 
 ## Current bounded-unit state
 
-**0.9.300 Packet 7 — Radiant Arc Propagation Foundation** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE.
+**0.9.300 Packet 8 — Martial Structured Resolution Breadth** is the latest bounded unit on `main`; `0.9.300 Advanced Combat / Training` remains ACTIVE pending an explicit maturity reassessment.
 
-- permanent record `docs/ADVANCED_COMBAT_0_9_300_P7_RADIANT_ARC_PROPAGATION_FOUNDATION.md`;
-- Product 0.9.300.7 / Package 0.9.300 / Game State 21 / Data 74 / Account Save 5 / Benchmark 3;
-- behavioral/data implementation freeze `65f10a96d4e479b758981f3798efbfc1ddf059ec`;
-- Check #2106 / run `33569913910`: Repository Audit, **889/889 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Pages #2236 / run `33569912530`: green.
+- permanent record `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`;
+- Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 / Account Save 5 / Benchmark 3;
+- behavioral/data implementation freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`;
+- Check #2132 / run `33575392561`: Repository Audit, **895/895 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Pages #2261 / run `33575391923`: green.
 
 B2 adds one stateless combat-attention calculation authority while durable attention remains inside existing `activeBattle`. Hostile-specific entries carry baseline/transient Enmity, floors/decay, sticky Aggro, Fixation, and tuning policy; combat actions feed the same attention seam.
 
@@ -35,7 +35,7 @@ The previous Local Knowledge & Familiarity Foundation remains complete:
 
 Packet E / Content Scale Gate A remains PASS / COMPLETE. The five-part flora/fauna repair sequence remains complete through Data 62 and is not reopened.
 
-## Data 74 metrics
+## Data 75 metrics
 
 ```text
 places/localities                       55
@@ -130,7 +130,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–7 are complete.
+`0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE. Packets 1–8 are complete; the next bounded unit is a maturity reassessment, not an automatically selected Packet 9.
 
 ### Latest completed unit — Packet B2
 
@@ -240,6 +240,18 @@ Game State advances 20 -> 21 because outstanding fields contain required future 
 Every recipient independently resolves Light magic accuracy, magic defense, elemental resistance, damage, and hit/miss. Geometry evidence records jump order, origin recipient, distance, and derived position. Existing geometric-action per-recipient attention applies hostility only where effects actually land. The arc may reach a later target outside the primary target's original two-unit radius, proving it is propagation rather than ring aliasing.
 
 The propagation resolves entirely inside one ability action. No timer, future deadline, state family, movement/LOS, pathfinding, or save migration is added. Game State therefore remains 21; Data advances 73 -> 74 for Radiant Arc's changed authored geometry/resolution/recovery contract. Ability count remains 41. No subsequent 0.9.300 packet is selected.
+
+### Latest completed unit — 0.9.300 Packet 8
+
+**Martial Structured Resolution Breadth — COMPLETE.**
+
+Guarded Cut, Barkboar Brace, and Thicket Feint now use explicit melee/physical resolution through the existing combat resolver. Sword and axe defensive techniques are non-critical with three/four-second recovery respectively; Thicket Feint uses piercing damage, the character's existing critical stats, and two-second recovery. All preserve their original TP costs, cooldowns, potency/scaling, equipment/capability gates, and self-buff status effects.
+
+Target evasion can now make these attacks miss and target physical defense changes landed damage. Their self-buffs remain independent authored effects and still apply when the attack misses. No movement, reaction, combo, passive-defense, task, clock, or persistence family is added.
+
+With Ridge Breaker and Rivet Guard already migrated by B1, all five currently executable martial techniques now use structured damage resolution where applicable. Game State remains 21; Data advances 74 -> 75 for the three changed ability definitions. Ability count remains 41.
+
+**Next bounded unit:** explicit `0.9.300` maturity reassessment. Do not auto-select Packet 9.
 
 ## Preserved interrupted/resumable queues
 
