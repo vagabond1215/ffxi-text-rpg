@@ -22,7 +22,6 @@ import {
     getCanonicalSpecies,
     validateEcologyRegistry,
 } from './ecologyRegistry.js';
-import { getEquipmentCatalogEntry } from './equipmentCatalog.js';
 import {
     getNpcScheduleById,
     validateNpcScheduleCatalog,
@@ -32,8 +31,9 @@ import {
     getProductionDefinition,
     validateProductionCatalog,
 } from './productionCatalog.js';
-import { getProductionItem, validateProductionItemCatalog } from './productionItems.js';
-import { getCanonicalResourceItem, validateResourceItemRegistry } from './resourceItemRegistry.js';
+import { validateProductionItemCatalog } from './productionItems.js';
+import { validateResourceItemRegistry } from './resourceItemRegistry.js';
+import { getCanonicalItem, validateCanonicalItemRegistry } from './canonicalItemRegistry.js';
 import {
     getRoute,
     getTransportService,
@@ -68,6 +68,7 @@ const CONNECTED_CATALOG_VALIDATORS = Object.freeze([
     ['routeCatalog', validateRouteCatalog],
     ['ecologyRegistry', validateEcologyRegistry],
     ['resourceItemRegistry', validateResourceItemRegistry],
+    ['canonicalItemRegistry', validateCanonicalItemRegistry],
     ['productionCatalog', validateProductionCatalog],
     ['productionItems', validateProductionItemCatalog],
     ['commitmentCatalog', validateCommitmentCatalog],
@@ -98,10 +99,3 @@ export function validateConnectedContentCatalogs() {
     return issues;
 }
 
-function getCanonicalItem(itemId) {
-    const key = String(itemId ?? '').trim();
-    return getCanonicalResourceItem(key)
-        ?? getProductionItem(key)
-        ?? getEquipmentCatalogEntry(key)
-        ?? null;
-}
