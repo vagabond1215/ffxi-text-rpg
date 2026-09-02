@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.400.5
+Product:       0.9.400.6
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          79
+Data:          80
 Benchmark:     3
-Codename:      Remaining Bronze Starter Set Conversion Proof
+Codename:      Basic Leather Garment Conversion Proof
 ```
 
 ## Completed foundation and major tranches
@@ -75,7 +75,7 @@ The five-part location flora/fauna diversity repair sequence is now complete. Ga
 | Creature definitions | 123 | 40 | reached; playable-alpha lower bound 120 also reached |
 | Resource sources | 143 | 40 | reached |
 | Canonical items | 410 | 200 | reached |
-| Recipes/processes | 252 | 75 | reached |
+| Recipes/processes | 254 | 75 | reached |
 | Abilities/techniques | 41 | 100 | 59 short |
 | Quests/contracts | 20 | 30 | 10 short |
 | Companions | 2 | 4 | 2 short |
@@ -86,8 +86,8 @@ routes                        25
 spell schools                  4
 capabilities                  44
 NPC schedules                 27
-regional/shared packs         42
-pack-owned records          1361
+regional/shared packs         43
+pack-owned records          1365
 runtime seed NPCs             47
 runtime seed enemies          17
 raw-resource utilization   145/154
@@ -98,20 +98,22 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest implementation pass
 
-### 0.9.400 A4 — Remaining Bronze Starter Set Conversion Proof
+### 0.9.400 A5 — Basic Leather Garment Conversion Proof
 
-**Status: COMPLETE / Product 0.9.400.5 / Package 0.9.400 / Data 79 / Game State 21.**
+**Status: COMPLETE / Product 0.9.400.6 / Package 0.9.400 / Data 80 / Game State 21.**
 
 Permanent record:
-- `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md`.
+- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
 
-Implementation freeze `d371ff9f54a2b28dbda2d533a17f00de9aaa70fd` passed Check #2259 / run `33672932856` with **921/921 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
-A4 adds five canonical production definitions but no new item identities and no new Pack-v2 pack. Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens now have real production paths using the established A2 material graph. The existing `pack-starter-bronze-martial-equipment` is extended to own all eight bronze starter item refs and eight recipes. Bronze Pick remains a combat weapon without mining capability; crafted weapons preserve canonical cadence; crafted armor preserves stat behavior and provenance.
+A5 adds two canonical production definitions but no new item identities. Leather Vest and Leather Trousers now use the established Elderwood tanned-hide/hide-binding chain, crafting proficiency, tannery station, and A1 Field Knife cutting capability. A new shared `pack-basic-leather-garments` owns the two existing item refs plus two recipe refs and depends on the Elderwood hunt/timber pack.
 
-Validated census moves recipes/processes 247 -> 252 and pack-owned records 1,351 -> 1,361 while canonical items remain 410 and regional/shared packs remain 42.
+Validated census moves recipes/processes 252 -> 254, regional/shared packs 42 -> 43, and pack-owned records 1,361 -> 1,365 while canonical items remain 410.
 
-**Next candidate: 0.9.400 A5 — Basic Leather Garment Conversion, not started.**
+**Next candidate: 0.9.400 A6 — Shared Workshop Tool Authority Audit, not started.**
+
+A6 is an authority/design pass because no clean established-ID workshop-tool cluster remains after A5.
 
 ### Historical planning pass — Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
@@ -270,10 +272,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0-A4 conversion proofs are now complete through the full established bronze starter set. The next candidate is **0.9.400 A5 — Basic Leather Garment Conversion**; see `docs/ECONOMY_0_9_400_A4_REMAINING_BRONZE_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0-A5 conversion proofs are complete through Basic Leather Garment Conversion. Conversion-first existing-ID work is now exhausted for the explicit Packet-A backlog. The next candidate is **0.9.400 A6 — Shared Workshop Tool Authority Audit**; see `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- 0.9.400 A0-A4 are complete; A5 Basic Leather Garment Conversion is the next candidate / not started;
+- 0.9.400 A0-A5 are complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.
