@@ -32,7 +32,7 @@ const NOVICE_ELEMENTAL = Object.freeze([
 ]);
 
 test('Packet 3 migrates exactly the eight novice Elemental Form attacks without adding abilities', () => {
-    assert.equal(ABILITY_CATALOG_VERSION, 11);
+    assert.equal(ABILITY_CATALOG_VERSION, 12);
     assert.equal(listAbilities().length, 41);
     assert.deepEqual(validateAbilityCatalog(), []);
 
