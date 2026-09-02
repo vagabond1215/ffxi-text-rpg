@@ -9,6 +9,7 @@ import { createNpc } from '../entities/entityFactory.js';
 import { getCommitmentRecord } from './commitmentEngine.js';
 import { actionFailure, actionSuccess } from './actionResult.js';
 import { isSettlementLocality } from './localityClassificationEngine.js';
+import { describeNpcScheduleStatus, getNpcScheduleStatus } from './npcScheduleEngine.js';
 import { emitSemanticEvent } from './semanticEventEngine.js';
 import { evaluateRelationshipRequirements } from './socialRequirementEngine.js';
 import { getNpcRelationship } from './relationshipEngine.js';
@@ -98,6 +99,14 @@ export function canRecruitCompanion(state, companionQuery) {
     const npc = ensureBackingNpcRecord(state, definition);
     if (npc.identity.locationId !== state.currentPlaceId) {
         return blocked('party.npc-not-present', { companionId: definition.id, npcId: definition.npcId, locationId: npc.identity.locationId }, `${definition.name} is not currently here.`);
+    }
+    const availability = getNpcScheduleStatus(state, definition.npcId);
+    if (availability.scheduled && !availability.available) {
+        return blocked(
+            'party.npc-unavailable',
+            { companionId: definition.id, npcId: definition.npcId, scheduleId: availability.scheduleId, nextAvailableAtWorldSeconds: availability.nextAvailableAtWorldSeconds },
+            describeNpcScheduleStatus(availability),
+        );
     }
     return actionSuccess({
         action: 'party.recruit-check', code: 'party.recruitable', outcome: 'available',
