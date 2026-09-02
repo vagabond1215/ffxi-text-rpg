@@ -273,7 +273,7 @@ No Product, Package, Data, Game State, Account Save, or Benchmark value changes.
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion Proof is complete; A5 Basic Leather Garment Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0-A5 are complete through Basic Leather Garment Conversion Proof; conversion-first existing-ID work is exhausted. A6 Shared Workshop Tool Authority Audit is next / not started. Authorities: `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 
