@@ -5,43 +5,66 @@ Repository evidence beats conversation memory.
 ## Current runtime contract
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Codename:      Workshop Tool Authority Audit
+Codename:      Social Relationship Eligibility Foundation
 Runtime:       Node >=24
 Phase:         0.9
 0.9.100:       COMPLETE — Content Scale Gate A
 0.9.200:       COMPLETE — Adventure Vertical Slices
 0.9.300:       COMPLETE — Advanced Combat / Training
 0.9.400:       COMPLETE — Economy / Production Depth
-Latest unit:   A6 — Shared Workshop Tool Authority Audit
-Next track:    0.9.500 — Quest / Social Depth
-Next unit:     Q0 — Quest / Social Authority & Vertical Slice Selection
-Next status:   CANDIDATE / NOT STARTED
+0.9.500:       ACTIVE — Quest / Social Depth
+Latest unit:   Q0 — Social Relationship Eligibility Foundation
+Next unit:     Q1 — Ironspine Watchpost Trust & Warden Companion Slice
+Next status:   SELECTED / NOT STARTED
 ```
 
-Data 80 remains the current authored/mechanics-data checkpoint. A6 changes production requirement validation authority but adds no canonical authored item, recipe, pack, NPC, quest, ability, ecology, geography, or other data record.
+Data 81 is the current authored/mechanics-data checkpoint. Q0 changes eligibility semantics for existing Sable Renn commitment/companion records and adds reusable relationship-requirement schema/runtime authority.
 
-Game State remains 21. A6 adds no new durable gameplay fact or persistence family.
+Game State remains 21. Q0 introduces no new durable state family or persisted field.
 
 ## Repository / promotion state
 
-A6 is merged to `main` and `0.9.400 Economy / Production Depth` is closed.
+Pre-Q0 main checkpoint:
+- `c9d96ff9c242445919c806b061a461454be8a13f`.
 
-- merged main SHA: `02e4ce046f12d1de9e121e70018437cecf7d11c4`;
-- PR #412: MERGED;
-- exact synchronized PR head: `84a695a31393a4837642fb7e53a8c03059d037c3`;
-- final pre-merge Check #2311 / run `33678556421`: Repository Audit, **930/930 tests**, Census, Benchmark 3, and Benchmark Sample PASS;
-- behavioral implementation freeze: `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
-- implementation freeze Check #2297 / run `33677766982`: full gate PASS.
+Q0 branch:
+- `phase-0.9.500-q0-social-authority-selection`.
 
-The older A6 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future `0.9.500 Q0` continuation should start from current `main`.
+Promotion PR:
+- PR #413 — Open 0.9.500 Q0 social relationship authority.
 
-## Validated Data 80 census
+Q0 behavioral implementation freeze:
+- `61227536f7683401de047474ace4eec5160aaef3`.
+
+Hosted implementation evidence:
+- Check #2315 / run `33685651230`;
+- Repository Audit PASS;
+- **934/934 tests**;
+- Content Census PASS;
+- Benchmark 3 PASS;
+- Benchmark Sample PASS.
+
+First synchronized promotion attempt:
+- head `3d3fd5a601604481f37d7697fa5500926ae8fb19`;
+- Check #2329 / run `33686263573`;
+- Repository Audit PASS;
+- tests **933/934**;
+- sole failure: historical `tests/phase07Px6Versioning.test.js` still required `SYSTEM_VERSIONS.companions === 0.2.0` even though Q0 deliberately advances that shared later-track catalog to `0.3.0`;
+- no Q0 social-runtime test failed.
+
+Synchronization repair:
+- `610a330f6c45ba38d91c2b54de87829407e3977d`;
+- the historical Phase 0.7 gate now permits later compatible companion catalog versions using the same lower-bound convention already used by its adjacent shared-authority assertions.
+
+This handoff rewrite is the intended final pre-merge file mutation after that synchronization repair. Validate its exact resulting PR head with hosted Check before merging PR #413.
+
+## Validated Data 81 census
 
 ```text
 places/localities                       55
@@ -65,7 +88,7 @@ raw-resource production demand       145/154
 luxury-raw production demand          14/14
 ```
 
-A6 changes none of these counts.
+Q0 changes no census counts.
 
 Mechanics-scale readiness remains **NOT READY**:
 - abilities/techniques 41/100;
@@ -75,230 +98,327 @@ Mechanics-scale readiness remains **NOT READY**:
 
 Do not close these gaps with disconnected filler.
 
-## A6 authority result
+## Q0 authority result
 
-### Production requirement authority
+### Existing social authority retained
 
-`js/text/data/productionRequirementAuthority.js` is now shared authority for:
-- recognized production workstation tags;
-- canonical portable production-tool capability providers;
-- explicitly declared contextual production-tool tags;
-- validation of station/tool requirements before content is accepted.
+Existing owners remain:
+- `commitmentEngine` — acceptance, resolution, exact-provenance delivery, reward, later-day follow-up;
+- `relationshipEngine` — NPC-specific familiarity/respect/trust/obligation;
+- `partyEngine` — recruited/active companions and companion continuity;
+- `npcScheduleEngine` — fictional-time availability;
+- `localKnowledgeEngine` — NPC identity/familiarity and locality knowledge;
+- Pack v2 — authored social placement/ownership.
 
-Current recognized workstation tags:
+Q0 adds no replacement authority.
 
-```text
-forge
-kitchen
-woodshop
-tannery
-workshop
-```
+### Relationship requirement schema
 
-`workstationEngine` consumes this shared vocabulary rather than owning another station-tag list.
+`js/text/data/socialRequirements.js` owns:
+- canonical relationship dimension vocabulary;
+- normalized relationship requirement records;
+- structural/reference validation.
 
-### Current portable-tool requirements
-
-Across all current production definitions, the required portable-tool tag set is exactly:
+Canonical dimensions:
 
 ```text
-cutting
-woodcutting
+familiarity
+respect
+trust
+obligation
 ```
 
-Canonical providers:
+Requirement shape:
+
+```js
+relationshipRequirements: [
+  {
+    npcId: 'npc-example',
+    minimums: {
+      trust: 2,
+      respect: 1,
+    },
+  },
+]
+```
+
+Requirements may reference a different persistent NPC from the current giver or companion. This is the intentional seam for multi-NPC social consequence.
+
+### Stateless evaluation
+
+`js/text/systems/socialRequirementEngine.js` reads existing relationship state and returns:
+- exact unmet NPC;
+- relationship dimension;
+- current value;
+- required minimum;
+- player-facing blocker text.
+
+It persists nothing.
+
+### Commitment eligibility
+
+`checkCommitmentEligibility()` composes:
+- resolved commitment prerequisites;
+- relationship requirements.
+
+`acceptCommitment()` consumes the combined result.
+
+Once accepted, a commitment remains resolvable even if a relationship later drops. Acceptance itself is already durable commitment state.
+
+### Opportunity / Journal coherence
+
+`playerContinuityEngine` now uses the same relationship-aware eligibility when projecting commitment opportunities.
+
+A commitment cannot appear as actionable when acceptance authority would reject it.
+
+### Companion eligibility
+
+Companion definitions may now specify `recruitment.relationshipRequirements`.
+
+`canRecruitCompanion()` composes:
+- current place;
+- existing required flags;
+- resolved commitment IDs;
+- relationship thresholds;
+- backing NPC presence.
+
+No companion-specific duplicate relationship meter is introduced.
+
+## Established proof — Sable Renn
+
+Q0 converts the already-authored Slatewater trust story from checklist implication to real relationship semantics.
+
+Second commitment:
 
 ```text
-cutting     -> field-knife, reed-sickle
-woodcutting -> woodsman-hatchet
+commitment-slatewater-lichen-fogmarks
+requires:
+  commitment-slatewater-resin-waymarks resolved
+  Sable trust >= 1
 ```
 
-`CONTEXTUAL_PRODUCTION_TOOL_TAGS` is currently empty. Future context-only production capabilities must be declared explicitly rather than appearing as undocumented recipe tags.
+The first commitment already awards:
+- familiarity +1;
+- trust +1.
 
-### Validator behavior
+Sable companion recruitment:
 
-`validateProductionCatalog()` now also validates production requirement authority.
+```text
+requires:
+  commitment-slatewater-resin-waymarks resolved
+  commitment-slatewater-lichen-fogmarks resolved
+  Sable trust >= 3
+  Sable respect >= 1
+```
 
-It rejects:
-- an unknown workstation tag such as `loom`;
-- a required tool capability such as `smithing-hammer` when there is neither a canonical portable provider nor an explicit contextual authority.
+The two existing commitments already award exactly trust 3 and respect 1.
 
-Primary regression:
-- `tests/productionRequirementAuthority.test.js`.
+Regression proof deliberately reduces trust after checklist completion:
+- relationship-gated second commitment disappears from player-continuity opportunities;
+- direct acceptance is blocked;
+- restoring earned trust re-enables the offer;
+- after both commitments resolve, lowering trust blocks recruitment;
+- restoring earned trust re-enables recruitment.
 
-This guard prevents future recipes from silently creating unsupported workshop vocabulary.
-
-## Workshop-tool decision
-
-A6 does **not** authorize a broad portable workshop-tool catalog.
-
-Repository audit found no existing canonical equipment identities for ordinary:
-- smithing hammers, tongs, or files;
-- woodworking saws, planes, or chisels;
-- masonry mallets or chisels;
-- textile shears, needles, or spindles;
-- leatherworking awls or needles;
-- cooking implements;
-- balances, measures, or precision workshop tools.
-
-Current recipes also do not require those portable capability tags.
-
-Ordinary fixed implements remain part of workstation capability while the action occurs at a forge, woodshop, tannery, kitchen, or general workshop.
-
-A new portable tool identity is justified only when it creates a real player decision beyond station presence, for example:
-- a field repair or preparation action away from a complete workstation;
-- a capability that matters across multiple station types;
-- an inventory/loadout choice with meaningful access consequences;
-- a portable specialist action that cannot honestly be represented by the workstation itself.
-
-Do not create one tool per profession merely to complete a conceptual list.
-
-## 0.9.400 closure
-
-**0.9.400 Economy / Production Depth is COMPLETE after A0-A6.**
-
-The track now proves:
-- one canonical item authority across resource, production, equipment, shop, inventory, and persistence paths;
-- production can output existing equipment stable IDs without duplicate definitions;
-- physical portable tools can bind into work and become protected while active work owns them;
-- established field tools have canonical production paths;
-- selected bronze starter, caster/offhand, and basic leather equipment IDs have canonical production paths;
-- material-foundation stocks feed those conversions;
-- Pack-v2 owns shared placement without duplicating definition authority;
-- production station/tool requirement vocabulary is explicit and validated;
-- no new production/tool persistence family is required for the current target.
-
-Remaining Material Culture Packet-A workshop-tool concepts and Packets B-F are deferred depth requiring fresh explicit selection.
+Primary guards:
+- `tests/socialRequirementAuthority.test.js`;
+- `tests/playerSlatewaterRoadScoutFlow.test.js`.
 
 ## Version result
 
 ```text
-Product       0.9.400.6 -> 0.9.400.7
-Package       0.9.400   -> 0.9.400
+Product       0.9.400.7 -> 0.9.500.1
+Package       0.9.400   -> 0.9.500
 Account Save  5         -> 5
 Game State    21        -> 21
-Data          80        -> 80
+Data          80        -> 81
 Benchmark     3         -> 3
 ```
 
 Relevant system manifest changes:
-- `versionManifest 0.9.400.6 -> 0.9.400.7`;
-- `workstations 0.3.1 -> 0.4.0`;
-- `productionRequirementAuthority 0.1.0` added;
-- `productionCatalog 0.22.0 -> 0.23.0`.
+- `versionManifest 0.9.400.7 -> 0.9.500.1`;
+- `commitments 0.8.0 -> 0.9.0`;
+- `relationships 0.1.0 -> 0.2.0`;
+- `socialRequirements 0.1.0` added;
+- `socialRequirementEngine 0.1.0` added;
+- `playerContinuity 0.6.0 -> 0.7.0`;
+- `party 0.4.0 -> 0.5.0`;
+- `companions 0.2.0 -> 0.3.0`.
 
-No persistence migration, compatibility adapter, or authored-data promotion was added.
+No persistence migration or compatibility adapter is added.
 
-## Next bounded candidate — 0.9.500 Q0
+## Q0 branching / failure decision
 
-**Quest / Social Authority & Vertical Slice Selection — CANDIDATE / NOT STARTED.**
+Q0 deliberately does **not** add:
+- declined commitment state;
+- failed commitment state;
+- mutually exclusive commitment groups;
+- branch-choice state;
+- faction reputation;
+- generic affection;
+- romance state.
 
-Q0 is an authority/maturity audit before new breadth authoring.
+The selected Q1 slice does not require those semantics to create a meaningful multi-NPC consequence chain.
 
-### Why Q0 is next
+Add any of them only if a future selected slice cannot be represented honestly through:
+- commitment acceptance/resolution;
+- relationship thresholds;
+- existing follow-up timing;
+- existing companion recruitment;
+- existing schedules/local knowledge.
 
-Economy/production already clears its mechanics-scale floors:
-- canonical items 410/200;
-- recipes/processes 254/75;
-- shop/service sites 37/20;
-- transport services 7/5.
+## Next selected unit — 0.9.500 Q1
 
-The remaining social-facing floors are:
-- named NPCs 48/50;
-- quests/contracts 20/30;
-- companions 2/4.
+**Ironspine Watchpost Trust & Warden Companion Slice — SELECTED / NOT STARTED.**
 
-Abilities/techniques remain the largest raw mechanics gap at 41/100, but the 0.9.300 maturity reassessment explicitly closed the current advanced-combat target and deferred broader combat/ability depth. Do not reopen combat merely to fill that number.
+### Existing people
 
-The formal next track is therefore 0.9.500 Quest / Social Depth.
+Reuse:
+- `npc-ironspine-vara-kell` — Vara Kell, High-Pass Survey Factor;
+- `npc-ironspine-dain-rove` — Dain Rove, Ironspine Warden;
+- `npc-ironspine-mara-fell` — Mara Fell, Pass Lodge Keeper.
 
-### Q0 required audit
+Do not add a new Ironspine NPC merely to move the census.
 
-Before authoring:
-1. inspect `commitments.js` and `commitmentEngine` for prerequisite, acceptance, resolution, provenance, reward, and later-day follow-up semantics;
-2. inspect `relationshipEngine` and its familiarity/respect/trust/obligation dimensions;
-3. inspect `companions.js` plus companion recruitment/travel/combat continuity;
-4. inspect NPC schedule/world projection and locality-knowledge integration;
-5. inspect current dialogue/greeting presentation and determine what belongs in durable social state versus presentation only;
-6. determine whether branching choices, failed commitments, mutually exclusive outcomes, reputation/group ties, or longer consequence chains require new authority before breadth;
-7. identify existing named NPCs with underused persistent roles before inventing new people;
-8. select the smallest coherent multi-NPC vertical slice that creates repeated social consequence across fictional days;
-9. include a companion only if recruitment meaningfully emerges from that slice;
-10. freeze exact Product/Data/Game-State expectations before implementation.
+### Existing schedule / service substrate
 
-### Q0 guardrails
+Already present:
+- Vara schedule;
+- Dain schedule;
+- survey trade / resource appraisal / provisions;
+- route guidance / hunting / wildlife tracking / weather / field training;
+- lodging / food / animal shelter / trail provisions.
 
-Do not:
-- add ten disconnected quests to reach 30;
-- add two arbitrary companions to reach 4;
-- create two named NPCs solely to reach 50;
-- collapse social progression into one universal affection meter;
-- put presentation-only dialogue randomness into durable state;
-- add romance as generic breadth before goals/boundaries/relationship authority are sufficient;
-- duplicate commitment, relationship, schedule, local-knowledge, or companion ownership.
+Add no schedule unless Q1 proves Mara needs one for actual availability semantics.
 
-Q0 may close as decision-only if current authorities are already sufficient and a bounded slice can be selected without runtime changes.
+### Existing production proof goods
+
+Prefer:
+- `item-ironspine-high-pass-compass`;
+- `item-ironspine-frost-lichen-salve`;
+- `item-ironspine-bearhide-bedroll`.
+
+These already have real production/provenance chains. Do not invent a Q1-only material if one of these can express the desired work.
+
+### Preferred bounded Q1 shape
+
+1. **Vara Kell survey proof**
+   - real Ironspine survey output;
+   - raises Vara respect/trust;
+   - proves survey work through existing economy.
+
+2. **Dain Rove field-readiness proof**
+   - eligibility depends on prior work plus Vara relationship;
+   - use real high-country preparation output;
+   - raises Dain trust/respect.
+
+3. **Mara Fell watchpost-continuity proof**
+   - eligibility depends on Dain relationship, not only a prior commitment ID;
+   - use real lodging/travel-preparation output;
+   - raises local familiarity/obligation.
+
+4. **Dain Rove recruitment**
+   - companion definition for existing NPC Dain Rove;
+   - requires earned Dain trust/respect plus relevant resolved commitments;
+   - uses existing party state;
+   - field approaches must express warden/route/hunting identity rather than duplicate Sable Renn or Mara Venn.
+
+### Preferred Q1 authored delta
+
+```text
+new commitments      3
+new companions       1
+new named NPCs       0
+new schedules        0 by default
+new places/routes    0
+new items/recipes    0 by default
+```
+
+If this exact target survives implementation, expected census:
+- quests/contracts 20 -> 23;
+- companions 2 -> 3;
+- named NPCs remain 48.
+
+This is not permission to add more records merely to reach mechanics floors.
+
+### Q1 state expectation
+
+Default:
+- Data advances because commitments/companion/Pack-v2 ownership will be authored;
+- Game State remains 21;
+- no new social state family.
+
+Advance Game State only if Q1 exposes a genuinely new durable fact that existing commitment/relationship/party/schedule/local-knowledge state cannot own.
+
+## Why Ironspine is selected before Crownfields
+
+Crownfields remains a strong future social substrate.
+
+Ironspine is selected first because:
+- Dain Rove is already fictionally suited to become an adventuring companion;
+- Vara / Dain / Mara form a coherent factor / warden / lodge-keeper social triangle;
+- survey gear, field medicine, weather preparation, hunting, and lodging provide distinct real gameplay hooks;
+- Q1 can exercise cross-NPC relationship requirements immediately;
+- no new person or geography is required.
 
 ## Other preserved deferred / queued work
 
 Do not reopen automatically:
 
-- **Workshop tools / material culture:** ordinary portable workshop tools, Material Culture Packets B-F, tool durability/quality/repair, workstation inventories, and worker automation require fresh explicit selection.
-- **Traveler gear conversion:** Traveler Gloves / Traveler Boots remain outside prior conversion scopes and are not automatically next.
-- **Combat depth:** engagement coordinates, LOS/line-of-fire, pursuit/search/disengagement/flee, passive block/parry/guard/counter/reaction execution, stale combat placeholders, weapon resonance/imbuement, unsupported-family breadth, and remaining richer named-spell semantics remain deferred by the 0.9.300 maturity closure.
+- **Crownfields social slice:** strong later 0.9.500 candidate, not discarded.
+- **Branch/failure/exclusion state:** deferred until a selected social slice actually needs it.
+- **Romance/deep affection:** deferred; relationships remain multi-dimensional and NPC-specific.
+- **Workshop tools / material culture:** ordinary portable workshop tools, Material Culture Packets B-F, tool durability/quality/repair, workstation inventories, worker automation require fresh selection.
+- **Traveler gear conversion:** Traveler Gloves / Traveler Boots are not automatically next.
+- **Combat depth:** engagement coordinates, LOS/line-of-fire, pursuit/search/disengagement/flee, passive block/parry/guard/counter/reaction execution, stale combat placeholders, weapon resonance/imbuement, unsupported-family breadth, richer named-spell semantics remain deferred by 0.9.300 maturity closure.
 - **World edge:** Waymeet Inner Marches / outer crossroads first, then Coppergrass extensions, then Drowned Vaults.
 - **Locality enrichment:** ambient/risk events, wandering/seasonal merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality presentation.
-- **Ecology repair:** five-part sequence complete; do not restart without fresh selection.
-- **Husbandry:** fleece/wool, dairy, eggs, honey, manure, managed domestic meat/hides wait for explicit managed-animal source authority.
-- **0.9.600 playable-alpha scale:** queued after 0.9.500, not auto-started.
-- **0.9.700–0.9.900:** browser/accessibility, supported persistence transition, and release-candidate hardening remain deferred.
+- **Ecology repair:** completed sequence; do not restart without fresh selection.
+- **Husbandry:** managed-animal products wait for explicit source authority.
+- **0.9.600 playable-alpha scale:** queued after 0.9.500.
+- **0.9.700–0.9.900:** browser/accessibility, supported persistence transition, RC hardening remain deferred.
 
 ## Standing governance
 
 Preserve:
 - one canonical fictional world clock;
-- one owner per state family;
-- resolver/registry layers do not become duplicate definition authorities;
-- equipment stable IDs remain singular across shop, production, equipment, combat use, and persistence;
-- portable tools and workstation capability remain distinct concepts;
-- required station/tool tags must resolve through explicit authority;
-- no duplicate task owner;
+- one owner per durable state family;
+- relationship state remains NPC-specific and multi-dimensional;
+- companion recruitment must consume backing-NPC relationship authority rather than create a second affinity meter;
+- visible commitment opportunities and acceptance use the same eligibility authority;
+- accepted commitments remain durable even if later relationship values change;
+- no filler records for census;
 - current-schema-only pre-alpha persistence;
-- implementation/data freeze before Product/Data promotion;
 - Data and Game State advance independently;
-- no mechanics-census filler;
+- resolver/registry layers do not become duplicate definition authorities;
 - no hidden compatibility scaffolding for unsupported saves;
-- exploration aggro remains separate from active-battle attention;
 - `docs/THREAD_HANDOFF.md` is updated last for a closed bounded unit.
 
-## Restart order for a future 0.9.500 Q0 continuation
+## Restart order for Q1
 
 1. `AGENTS.md`;
 2. this handoff;
 3. `PROJECT_PROFILE.yaml`;
 4. `docs/EXECUTION_PIPELINE.md`;
-5. `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`;
-6. `docs/DEVELOPMENT_DIRECTION.md`;
-7. inspect commitments, relationships, companions, NPC schedules/world projection, local knowledge, dialogue/presentation, and Pack-v2 social ownership;
-8. identify concrete social-authority gaps versus breadth gaps;
-9. select the smallest coherent multi-NPC vertical slice;
-10. freeze exact Product/Data/Game-State expectations;
-11. implement authority changes only if the slice actually requires them;
-12. prove fictional-time continuity, save/load, relationship/commitment consequences, and any companion recruitment path;
-13. update this handoff last.
+5. `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`;
+6. inspect current Ironspine NPCs/schedules/POIs, production outputs, Pack-v2 owner, commitment schema, companion schema, relationship eligibility, and existing player continuity;
+7. freeze exact three-commitment narrative/requirements/rewards;
+8. freeze Dain companion stats/approaches/recruitment thresholds;
+9. freeze exact Product/Data/Game-State expectation;
+10. implement only the bounded Q1 graph;
+11. prove cross-NPC relationship gating, fictional-time availability, production provenance, companion recruitment/travel/combat, current-schema save/load, Pack-v2 ownership, and census;
+12. update this handoff last.
 
-Do not restart the broad economy/material-culture audit or advanced-combat audit unless Q0 exposes a concrete blocker owned by those domains.
+Do not restart broad social-system discovery, economy discovery, or combat discovery unless Q1 exposes a concrete blocker.
 
 ## Final validation contract
 
-This post-merge handoff correction is the intended final repository-file mutation for A6 closure.
-
-A6 promotion evidence is complete:
-- behavioral freeze Check #2297 / run `33677766982`: full gate PASS;
-- exact synchronized PR-head Check #2311 / run `33678556421`: **930/930 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS;
-- PR #412 merged to `main` at `02e4ce046f12d1de9e121e70018437cecf7d11c4`.
+This handoff is the intended final pre-merge repository-file mutation for Q0 closure.
 
 After this write:
-- perform no repository-file mutation unless exact-main validation exposes a real failure;
-- leave `0.9.500 Q0` unstarted;
-- start future work from current `main`, not the old A6 branch.
+- perform no repository-file mutation unless exact-head validation exposes a real failure;
+- validate the exact synchronized PR head with hosted Check;
+- confirm Repository Audit, **934/934 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
+- merge/promote PR #413 only after that exact synchronized head is green;
+- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
+- leave Q1 unstarted.

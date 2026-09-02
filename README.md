@@ -10,16 +10,16 @@ effort -> mastery -> efficiency -> capability -> larger ambition
 
 ## Current baseline
 
-Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is queued; Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate / not started.** The current canonical/runtime checkpoint is Data 80 / Product 0.9.400.7 / Game State 21.
+Phase 0.9 — Content Scale, Adventure Depth and Release Hardening — is open. **`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 Social Relationship Eligibility Foundation is complete; Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.** The current canonical/runtime checkpoint is Data 81 / Product 0.9.500.1 / Game State 21.
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Codename:      Workshop Tool Authority Audit
+Codename:      Social Relationship Eligibility Foundation
 Compatibility: pre-release-current-schema
 Runtime:       Node >=24
 ```
@@ -73,7 +73,7 @@ npm run census
 npm run census -- --json
 ```
 
-Validated Data 80 implementation census:
+Validated Data 81 implementation census:
 
 ```text
 places/localities       55 / mechanics floor 10
@@ -128,21 +128,21 @@ Locality/player information now implements the foundation in `docs/PLAYER_INFORM
 
 ## Current decision boundary
 
-**0.9.400 A6 — Shared Workshop Tool Authority Audit is COMPLETE. `0.9.400 Economy / Production Depth` is COMPLETE for the current Phase 0.9 target.**
+**0.9.500 Q0 — Social Relationship Eligibility Foundation is COMPLETE. Q1 Ironspine Watchpost Trust & Warden Companion Slice is SELECTED / NOT STARTED.**
 
 Permanent record:
-- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
+- `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
 
-A6 implementation freeze:
-- `4583b405e85dd91266c05c30b9ae3cfb05a00f14`;
-- Check #2297 / run `33677766982`;
-- **930/930 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
+Q0 behavioral implementation freeze:
+- `61227536f7683401de047474ace4eec5160aaef3`;
+- Check #2315 / run `33685651230`;
+- **934/934 tests** plus Repository Audit, Census, Benchmark 3, and Benchmark Sample green.
 
-A6 centralizes recognized workstation tags, derives canonical portable production-tool providers from existing equipment authority, and makes `validateProductionCatalog()` reject unknown station tags or tool requirements without a portable provider / explicit contextual authority. The live production graph requires only `cutting` and `woodcutting`, already supplied by Field Knife / Reed Sickle and Woodsman Hatchet.
+Q0 adds relationship-gated commitment eligibility and companion recruitment on top of the existing NPC-specific familiarity/respect/trust/obligation state. Player-continuity opportunity projection uses the same eligibility authority, so visible offers and actual acceptance cannot disagree.
 
-No workshop-tool items were added. Data remains 80 and Game State remains 21. Ordinary workshop implements remain station-owned context until a future player-facing action justifies portable equipment.
+The established Sable Renn arc now proves the contract: the second road test requires Sable trust 1; recruitment requires trust 3 and respect 1 in addition to both resolved field commitments. No new durable state family is added. Data advances to 81 because those existing authored social definitions change eligibility semantics; Game State remains 21.
 
-**Next candidate:** `0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection`, not started. This is preferred over more economy breadth because recipes/items already clear mechanics floors while quests/contracts (20/30), companions (2/4), and named NPCs (48/50) remain below theirs.
+**Next selected unit:** `0.9.500 Q1 — Ironspine Watchpost Trust & Warden Companion Slice`, not started. Reuse Vara Kell, Dain Rove, Mara Fell, existing Ironspine schedules/services, and existing High-Pass Compass / Frost Lichen Salve / Bearhide Bedroll outputs. Preferred bounded target: three commitments plus Dain Rove as one earned companion; no new NPCs, places, routes, or persistence family unless implementation proves a real gap.
 
 ## Historical combat decision record
 
@@ -178,7 +178,7 @@ Do not fill the ability gap with mechanically duplicate records.
 **`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** Advanced combat closes after Packets 1–8 plus maturity reassessment at Product 0.9.300.8 / Data 75 / Game State 21. Remaining engagement/LOS/flee, passive reactions, stale-placeholder cleanup, resonance, and richer semantic breadth are deferred depth; no Packet 9 is selected.
 
 Preserved resumable queues remain unchanged:
-- A6 Shared Workshop Tool Authority Audit is complete; 0.9.400 Economy / Production Depth is complete; 0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate and is not started;
+- 0.9.500 Q0 Social Relationship Eligibility Foundation is complete; Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started;
 - Waymeet Inner Marches / outer crossroads world-edge continuation;
 - richer locality ambient/dialogue/shop-browse/map work;
 - optional ecology only by fresh selection; the five-part repair sequence itself is complete.

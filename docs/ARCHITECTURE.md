@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Codename:      Workshop Tool Authority Audit
-Phase:         0.9 / 0.9.400 COMPLETE; 0.9.500 Q0 quest/social authority & slice selection next
+Codename:      Social Relationship Eligibility Foundation
+Phase:         0.9 / 0.9.500 ACTIVE; Q0 complete; Q1 Ironspine trust/warden companion selected next
 ```
 
-Data 80 remains the current authored/mechanics-data checkpoint. Product 0.9.400.7 closes A6 Shared Workshop Tool Authority Audit; Game State 21 remains unchanged. A6 adds production requirement validation authority but no authored data record or durable state family. `0.9.400 Economy / Production Depth` is complete; `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started.
+Data 81 is the current authored/mechanics-data checkpoint. Product 0.9.500.1 closes Q0 Social Relationship Eligibility Foundation; Game State 21 remains unchanged. Q0 makes existing relationship dimensions eligible as commitment/companion requirements without adding durable state. Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
 
 ## 0.9.400 production/item authority
 
@@ -237,6 +237,37 @@ Current required portable production capabilities:
 This keeps ordinary fixed workshop implements inside workstation context. A carried hammer, saw, awl, ladle, balance, or similar identity should be introduced only when a player-facing action needs a portable capability distinct from station presence.
 
 A6 adds no new authored data or persisted state. Data remains 80 and Game State remains 21.
+
+### Q0 social relationship eligibility authority
+
+Q0 composes social eligibility without creating a second relationship or quest state model:
+
+```text
+relationship state
+  familiarity / respect / trust / obligation
+            |
+            v
+socialRequirements schema
+            |
+            v
+socialRequirementEngine
+        +---+------------------+
+        |                      |
+        v                      v
+commitment eligibility     party recruitment
+        |                      |
+        +----------+-----------+
+                   v
+       existing commitment / party state
+```
+
+Commitment opportunity projection consumes the same eligibility calculation as acceptance, preventing presentation from advertising an offer the runtime would reject.
+
+Requirements may reference NPCs other than the current giver, enabling bounded multi-NPC consequence while leaving faction/reputation state deferred until a real slice requires it.
+
+Sable Renn is the established proof: second-road-test visibility requires Sable trust 1; companion recruitment requires trust 3 and respect 1 plus both resolved commitments.
+
+No persisted social family is added. Data advances 80 -> 81 because existing authored eligibility semantics change; Game State remains 21.
 
 ## Core authority rules
 
@@ -1126,4 +1157,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 80; the current runtime/persistence baseline is Product 0.9.400.7 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection` is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 81; the current runtime/persistence baseline is Product 0.9.500.1 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE. `0.9.500 Quest / Social Depth` is ACTIVE: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.

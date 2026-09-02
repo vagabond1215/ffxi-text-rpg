@@ -1,6 +1,7 @@
 import { getCommitmentDefinition } from './commitments.js';
+import { normalizeRelationshipRequirements, validateRelationshipRequirements } from './socialRequirements.js';
 
-export const COMPANION_CATALOG_VERSION = 3;
+export const COMPANION_CATALOG_VERSION = 4;
 
 const COMPANIONS = Object.freeze({
     'companion-sable-renn': companion({
@@ -16,6 +17,9 @@ const COMPANIONS = Object.freeze({
             requiredCommitmentIds: [
                 'commitment-slatewater-resin-waymarks',
                 'commitment-slatewater-lichen-fogmarks',
+            ],
+            relationshipRequirements: [
+                { npcId: 'npc-slatewater-sable-renn', minimums: { trust: 3, respect: 1 } },
             ],
         },
         level: 4,
@@ -117,6 +121,7 @@ export function validateCompanionCatalog() {
         if (!Array.isArray(entry.recruitment.placeIds) || !entry.recruitment.placeIds.length) issues.push(`${entry.id} requires recruitment places.`);
         if (!Array.isArray(entry.recruitment.requiredFlags)) issues.push(`${entry.id}.recruitment.requiredFlags must be an array.`);
         if (!Array.isArray(entry.recruitment.requiredCommitmentIds)) issues.push(`${entry.id}.recruitment.requiredCommitmentIds must be an array.`);
+        issues.push(...validateRelationshipRequirements(entry.recruitment.relationshipRequirements, { label: `${entry.id}.recruitment.relationshipRequirements` }));
         for (const commitmentId of entry.recruitment.requiredCommitmentIds ?? []) {
             if (!stableId(commitmentId) || !getCommitmentDefinition(commitmentId)) issues.push(`${entry.id} references unknown recruitment commitment ${commitmentId}.`);
         }
@@ -153,6 +158,7 @@ function companion(definition) {
             placeIds: [...(definition.recruitment?.placeIds ?? [])],
             requiredFlags: [...(definition.recruitment?.requiredFlags ?? [])],
             requiredCommitmentIds: [...(definition.recruitment?.requiredCommitmentIds ?? [])],
+            relationshipRequirements: normalizeRelationshipRequirements(definition.recruitment?.relationshipRequirements),
         },
         level: definition.level,
         baseAttributes: { ...(definition.baseAttributes ?? {}) },

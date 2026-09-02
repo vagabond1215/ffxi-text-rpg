@@ -51,7 +51,7 @@ test('Phase 0.7 companion-life gate remains satisfied as later tracks extend sha
     assert.ok(compareSemver(SYSTEM_VERSIONS.uiIntents, '0.9.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.companionCatalog, '0.2.0') >= 0);
     assert.ok(compareSemver(SYSTEM_VERSIONS.party, '0.2.0') >= 0);
-    assert.equal(SYSTEM_VERSIONS.companions, '0.2.0');
+    assert.ok(compareSemver(SYSTEM_VERSIONS.companions, '0.2.0') >= 0);
 });
 
 function compareProductVersions(left, right) {

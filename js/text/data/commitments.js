@@ -5,8 +5,9 @@ import { getPlace } from './places.js';
 import { getProductionItem } from './productionItems.js';
 import { getCanonicalResourceItem } from './resourceItemRegistry.js';
 import { STARFEN_MARSHCRAFT_COMMITMENT_DATA } from './starfenMarshcraftCommitments.js';
+import { normalizeRelationshipRequirements, validateRelationshipRequirements } from './socialRequirements.js';
 
-export const COMMITMENT_CATALOG_VERSION = 7;
+export const COMMITMENT_CATALOG_VERSION = 8;
 
 const DYNAMIC_PROVENANCE_SOURCES = Object.freeze({
     'plot-home-sweetroot-bed': Object.freeze({ itemId: 'item-elderwood-sweetroot', domain: 'cultivation' }),
@@ -58,6 +59,7 @@ const COMMITMENT_DEFINITIONS = Object.freeze({
         requiredItems: [{ itemId: 'item-slatewater-silver-lichen', quantity: 1, provenanceSourceId: 'source-slatewater-silver-lichen-face' }],
         fieldSourceId: 'source-slatewater-silver-lichen-face',
         prerequisiteCommitmentIds: ['commitment-slatewater-resin-waymarks'],
+        relationshipRequirements: [{ npcId: 'npc-slatewater-sable-renn', minimums: { trust: 1 } }],
         reward: { gil: 46, relationship: { respect: 1, trust: 2 } },
         followUpDelayDays: 1,
         offerText: 'Sable only offers the second job after the resin work is credited. “The fog side is less forgiving. Silver lichen grows where the stone stays damp and footing turns mean. Bring one clean sample from the face itself. If you know when to stop reaching and start finding another line, I can use you on the road.”',
@@ -146,6 +148,7 @@ export function validateCommitmentCatalog() {
         if (definition.fieldSourceId) { const source = getCanonicalGatheringSource(definition.fieldSourceId); if (!source) issues.push(`${definition.id} references unknown field source ${definition.fieldSourceId}.`); else if (!definition.requiredItems.some((requirement) => requirement.itemId === source.outputItemId)) issues.push(`${definition.id} field source ${definition.fieldSourceId} does not produce a required item.`); }
         if (definition.returnViaPlaceId && !getPlace(definition.returnViaPlaceId)) issues.push(`${definition.id} references unknown return-via place ${definition.returnViaPlaceId}.`);
         if (!Array.isArray(definition.prerequisiteCommitmentIds)) issues.push(`${definition.id}.prerequisiteCommitmentIds must be an array.`);
+        issues.push(...validateRelationshipRequirements(definition.relationshipRequirements, { label: `${definition.id}.relationshipRequirements` }));
         for (const prerequisiteId of definition.prerequisiteCommitmentIds ?? []) {
             if (prerequisiteId === definition.id) issues.push(`${definition.id} cannot require itself.`);
             else if (!getCommitmentDefinition(prerequisiteId)) issues.push(`${definition.id} references unknown prerequisite commitment ${prerequisiteId}.`);
@@ -190,6 +193,7 @@ function commitment(definition) {
         fieldSourceId: definition.fieldSourceId ?? null,
         returnViaPlaceId: definition.returnViaPlaceId ?? null,
         prerequisiteCommitmentIds: Object.freeze([...(definition.prerequisiteCommitmentIds ?? [])]),
+        relationshipRequirements: normalizeRelationshipRequirements(definition.relationshipRequirements),
         requiredItems: Object.freeze(definition.requiredItems.map((entry) => Object.freeze({ ...entry }))),
         reward: Object.freeze({
             ...definition.reward,
