@@ -1,3 +1,4 @@
+import { getCanonicalItem } from '../data/canonicalItemRegistry.js';
 import { enrichEquipmentItem } from '../data/equipmentCatalog.js';
 import { getShopCatalogForPoi } from '../data/shopCatalogs.js';
 import { getContextualPois } from '../data/pointsOfInterest.js';
@@ -161,6 +162,28 @@ function parseSellRequest(itemQuery) {
 }
 
 function createInventoryItemFromShopItem(item, shopPoi, catalog) {
+    const canonical = getCanonicalItem(item.id);
+    if (canonical) {
+        const baseItem = {
+            ...canonical,
+            quantity: 1,
+            source: {
+                type: 'shop',
+                poiId: shopPoi.id,
+                shopName: catalog.name,
+            },
+            valueGil: item.priceGil,
+            provenance: [{
+                type: 'commerce',
+                sourceId: shopPoi.id,
+                placeId: shopPoi.placeId ?? null,
+                action: 'purchase',
+                data: { catalogName: catalog.name, priceGil: item.priceGil },
+            }],
+        };
+        return baseItem.kind === 'equipment' ? enrichEquipmentItem(baseItem) : baseItem;
+    }
+
     const baseItem = {
         id: item.id,
         name: item.name,
