@@ -105,7 +105,7 @@ Creature breadth now exceeds the playable-alpha planning lower bound of 120 thro
 
 The project is pre-alpha and uses strict **current-schema-only** persistence. Old local saves are not automatically migrated unless a future bounded work order explicitly requires compatibility.
 
-Game State 20 requires versioned character-owned elemental affinity state in addition to weapon-kata configuration version 2. Kata selections remain move IDs and encounter-local kata state remains version 1; Game State advances because earned affinity is a new durable gameplay fact, not because a second battle authority was added. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
+Game State 21 requires versioned character-owned elemental affinity state, weapon-kata configuration version 2, and outstanding active-battle field records whose future pulses affect resumable combat. A0 production tool bindings live inside the already-persisted generic work-record data envelope and therefore do not add a new Game State family. Important non-serialized runtime state still includes root combat/stat caches, `activeBattle.rng`, the flat inventory alias, reconstructed `state.npcs`/`state.enemies`, and top-level session presentation history. `state.events` remains persisted structured semantic observation history.
 
 ## Player interface
 
