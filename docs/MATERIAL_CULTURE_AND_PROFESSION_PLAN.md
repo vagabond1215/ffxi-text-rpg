@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0 production/item authority hardening complete; A1 existing field-tool conversion proof is next / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0 authority hardening and A1 existing field-tool conversion proof complete; A2 broader starter equipment & occupational tool conversion is next / not started.**
 
 ## Purpose
 
@@ -177,7 +177,9 @@ Packet A — Occupational Tool Conversion is **ACTIVE** for `0.9.400 Economy / P
 
 A0 — Production & Item Authority Hardening is complete at Product 0.9.400.1 / Package 0.9.400 / Data 75 / Game State 21. Permanent authority: `docs/ECONOMY_0_9_400_A0_PRODUCTION_ITEM_AUTHORITY.md`.
 
-A1 — Existing Field-Tool Conversion Proof is **NEXT / NOT STARTED**. Do not restart this material-culture audit from scratch. A1 is deliberately limited to the six existing field tools and must prove the production-to-use loop before broader conversion. Selection does not authorize Packets B-F.
+A1 — Existing Field-Tool Conversion Proof is **COMPLETE** at Product 0.9.400.2 / Data 76 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`. It converts the six existing field tools through canonical production and proves crafted-tool use/persistence.
+
+A2 — Broader Starter Equipment & Occupational Tool Conversion is **NEXT / NOT STARTED**. Do not restart this material-culture audit from scratch. Continue conversion-first from established item IDs and existing material graphs. Selection does not authorize Packets B-F.
 
 ## Future bounded packets
 
@@ -192,9 +194,9 @@ A0 established:
 - portable/equipped/contextual production tool bindings;
 - active-work locking for physical bound tools.
 
-#### A1 — Existing field-tool conversion proof — NEXT
+#### A1 — Existing field-tool conversion proof — COMPLETE
 
-Convert exactly these existing tools into real production outputs first:
+Converted through real production using existing material-foundation stocks/components:
 - Field Knife;
 - Prospector Pick;
 - Woodsman Hatchet;
@@ -202,9 +204,9 @@ Convert exactly these existing tools into real production outputs first:
 - Reed Sickle;
 - Marsh Fishing Rod.
 
-A1 must use existing material-foundation stocks/components where plausible and prove at least one crafted-tool -> real tool-gated work -> downstream output/use loop.
+The crafted Field Knife is proven through real cutting-gated downstream work and Marsh Fishing Rod assembly, with crafted identities/provenance surviving current-schema save/load.
 
-#### A2 — Broader starter equipment and occupation-tool conversion — DEFERRED UNTIL A1 CLOSES
+#### A2 — Broader starter equipment and occupation-tool conversion — NEXT / NOT STARTED
 
 Then consider:
 - Ash Staff;
@@ -215,7 +217,7 @@ Then consider:
 - basic leather garments;
 - shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
-Existing `requiredToolTags` are already mechanically enforced. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.
+Existing `requiredToolTags` are mechanically enforced and A1 proves them with crafted equipment. Durable physical tools are bound requirements, not consumed recipe inputs. Field operations may continue to require equipped tools; production may use portable equipment tools from Inventory or explicit contextual capability according to the A0 contract.
 
 ### Packet B — Cordage, fishing, rigging, and sailmaking
 Build:
