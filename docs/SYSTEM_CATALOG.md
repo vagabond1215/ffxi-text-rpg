@@ -18,13 +18,13 @@ No system is marked `balanced` merely because tests are green.
 ## Current baseline
 
 ```text
-Product:       0.9.500.1
+Product:       0.9.500.2
 Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          81
+Data:          82
 Benchmark:     3
-Codename:      Social Relationship Eligibility Foundation
+Codename:      Ironspine Warden Trust Circuit
 ```
 
 ## 0.9.400 production/item authority
@@ -145,6 +145,27 @@ Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2
 
 Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.
 
+### Q1 — Ironspine Watchpost Trust & Warden Companion Slice — COMPLETE
+
+Q1 turns existing Ironspine production and NPC roles into a three-person social circuit:
+- Vara Kell takes a canonically crafted High-Pass Survey Compass and awards respect/trust;
+- Dain Rove's field-readiness offer requires Vara's prior commitment plus Vara relationship thresholds, then consumes a canonically crafted Frost Lichen Tallow Salve;
+- Mara Fell's lodge-continuity offer requires Dain's prior commitment plus Dain relationship thresholds, then consumes a canonically crafted High-Pass Bearhide Bedroll;
+- Dain Rove becomes an earned companion after all three commitments and Dain trust/respect requirements are satisfied.
+
+Dain retains his existing warden/guild POI; explicit companion metadata adds a companion action without changing the POI's service identity.
+
+Q1 also hardens scheduled/mobile NPC composition:
+- companion recruitment checks canonical schedule availability;
+- scheduled locality interaction checks physical backing-NPC presence;
+- schedules do not teleport recruited or left-behind NPCs back to service POIs.
+
+Q1 advances Product 0.9.500.1 -> 0.9.500.2 and Data 81 -> 82 while Game State remains 21.
+
+Implementation freeze `702d06bd123e1f6f85eebf7f0fdb02dd7b394359` passed Check #2338 / run `33687994124` with **936/936 tests** and the full gate.
+
+Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started.
+
 ## Data 57 regional authority
 
 Waymeet Marches composes existing geography, route, ecology, resource, production, service, schedule, and Pack-v2 systems.
@@ -257,13 +278,13 @@ Promoted aggregate versions include `productionCatalog 0.15.0`, `productionItems
 | Long-session lifecycle harness | integrated | Multi-day save/load/resource-retention coverage. |
 | Hosted Check | integrated | Repository Audit + Test + Census + Benchmark 3 + Sample on Node 24; Lower Deepvein implementation freeze Check #1577 and promoted Data 56 Check #1580 both passed 791/791 tests with Repository Audit, Census, Benchmark 3, and Benchmark Sample green. |
 
-## Content infrastructure and regional packs — current through Data 81
+## Content infrastructure and regional packs — current through Data 82
 
 | System | Status | Notes |
 | --- | --- | --- |
 | Content catalog registry | integrated | Pack ownership resolves through existing canonical catalogs; item references now share `canonicalItemRegistry` across resource/production/equipment authorities. |
 | Content Pack schema v2 | integrated | Covers geography, ecology, items, NPCs, schedules, services, recipes, quests, relationships, training/abilities, and companions. |
-| Regional/shared pack ownership | integrated | Forty-three current packs; 1,365 current ownership records. |
+| Regional/shared pack ownership | integrated | Forty-three current packs; 1,372 current ownership records. |
 | Pack dependency validation | scaled | Detects cross-pack references without declared dependencies. |
 | Stable-ID ownership validation | scaled | Detects duplicate ownership and cross-collection ID collisions. |
 | Catalog-ref validation | integrated | Canonical domain records resolve without definition duplication. |
@@ -394,7 +415,7 @@ spellSchools / capabilities / abilities / companions
 
 ## Content-scale status
 
-Current gameplay breadth at Data 81:
+Current gameplay breadth at Data 82:
 
 ```text
 places/localities       55 / mechanics 10
@@ -405,31 +426,31 @@ resource sources       143 / 40
 canonical items        410 / 200
 recipes/processes      254 / 75
 abilities/techniques    41 / 100
-quests/contracts        20 / 30
-companions               2 / 4
+quests/contracts        23 / 30
+companions               3 / 4
 transport services       7 / 5
 routes                   25
 NPC schedules            27
 regional/shared packs    43
-pack-owned records     1365
+pack-owned records     1372
 ```
 
 The creature catalog clears the playable-alpha planning lower bound of 120. Mechanics-scale readiness remains **NOT READY** because abilities, quests, companions, and named NPCs remain below their mechanics floors.
 
 ## Current decision boundary
 
-Phase 0.9 remains open at Product 0.9.500.1 / Data 81 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are complete. `0.9.500 Quest / Social Depth` is active.
+Phase 0.9 remains open at Product 0.9.500.2 / Data 82 / Game State 21. `0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are complete. `0.9.500 Quest / Social Depth` is active.
 
-Q0 permanent record:
-- `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
+Q1 permanent record:
+- `docs/QUEST_SOCIAL_0_9_500_Q1_IRONSPINE_WARDEN_TRUST.md`.
 
-Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2315 / run `33685651230` with **934/934 tests** and the full gate.
+Implementation freeze `702d06bd123e1f6f85eebf7f0fdb02dd7b394359` passed Check #2338 / run `33687994124` with **936/936 tests** and the full gate.
 
-**Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started.**
+**Q2 Crownfields Grange Allocation Choice & Social Consequence is selected / not started.**
 
-Q1 should reuse Vara Kell, Dain Rove, Mara Fell and existing Ironspine survey/field/lodging outputs. Preferred bounded target is three connected commitments plus Dain as one earned companion, with no new named NPCs or geography.
+Q2 should reuse Maelin Rook, Hessa Vale, Perrin Bale and existing Crownfields agriculture/processing/wagon logistics. Its purpose is to freeze and prove one meaningful constrained allocation, then decide whether existing commitment + relationship authorities are sufficient or a bounded choice/exclusion outcome contract is genuinely required.
 
-The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 20/30 quests/contracts, and 48/50 named NPCs. Q1 is intended to improve social depth organically, not to fill all floors.
+The mechanics-scale gate remains NOT READY at 41/100 abilities, 3/4 companions, 23/30 quests/contracts, and 48/50 named NPCs. Q2 must not manufacture a fourth companion or census-only NPC merely to clear floors.
 
 **Combat 2.0 Packet B1 — Unified Combat Resolution is COMPLETE.**
 
@@ -448,5 +469,5 @@ The mechanics-scale gate remains NOT READY at 41/100 abilities, 2/4 companions, 
 
 **B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE.** Varric's training service delegates to capability authority; the South Redstone proof composes B1–B4; Game State 18 now correctly accepts partially consumed equipped ammo stacks. `0.9.200` is complete.
 
-**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. `0.9.400 Economy / Production Depth` is complete after A0-A6. `0.9.500 Quest / Social Depth` is active: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected next. World-edge, richer locality-event/UI work, optional ecology, and remaining material-culture packets remain separate explicit-selection queues.
+**0.9.300 Advanced Combat / Training is COMPLETE after Packets 1–8 plus maturity reassessment.** No Packet 9 is selected. Mutable movement/engagement geometry, LOS/pursuit/flee, passive defense/reactions, broader propagation families, stale combatant-placeholder cleanup, and remaining named spell semantics remain deferred depth. `0.9.400 Economy / Production Depth` is complete after A0-A6. `0.9.500 Quest / Social Depth` is active: Q0 and Q1 are complete and Q2 Crownfields Grange Allocation Choice & Social Consequence is selected next. World-edge, richer locality-event/UI work, optional ecology, and remaining material-culture packets remain separate explicit-selection queues.
 
