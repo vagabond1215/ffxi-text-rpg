@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.300.1
+Product:       0.9.300.8
 Package:       0.9.300
 Account Save:  5
-Game State:    19
-Data:          68
+Game State:    21
+Data:          75
 Benchmark:     3
-Codename:      Current Melee Kata Breadth
-Phase:         0.9 / 0.9.300 ACTIVE; Packet 1 complete; Packet 2 queued/not started
+Codename:      Martial Structured Resolution Breadth
+Phase:         0.9 / 0.9.300 COMPLETE; 0.9.400 Packet A selected, not started
 ```
 
-Data 68 is the current authored/mechanics-data checkpoint. Product 0.9.300.1 extends the existing weapon-kata authority to axe, staff, and club without adding a second combat subsystem. Game State 19 persists weapon-kata configuration version 2 across the five currently equipped melee families; the encounter-local kata record shape remains version 1.
+Data 75 is the current authored/mechanics-data checkpoint. Product 0.9.300.8 closes the current advanced-combat implementation sequence after B1-B5 and Packets 1-8; Game State 21 persists the required affinity/kata, active-battle attention/loadout, and outstanding combat-field facts. The subsequent 0.9.300 maturity reassessment is decision-only, changes no version axis, and selects 0.9.400 Packet A — Occupational Tool Conversion — as next / not started.
 
 ## Core authority rules
 
@@ -821,6 +821,20 @@ No new `activeBattle` field, player progression field, effect-dependency graph, 
 
 With Packet 8, all five current executable martial techniques use structured damage resolution where applicable. Legacy recovered Weapon Skill data and non-executable capability names remain separate migration/research debt and are not silently promoted into the executable catalog.
 
+### 0.9.300 maturity closure
+
+The post-Packet-8 maturity reassessment adds no architecture owner or runtime state.
+
+It concludes:
+- current combat/training ownership is sufficient for the Phase 0.9 loop;
+- inert combatant placeholders remain cleanup debt and are not reused;
+- mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement, and flee/retreat belong to one later coherent program;
+- passive block/parry/guard/counter/reaction execution remains unowned future depth despite derived stat values;
+- no Packet 9 is selected;
+- `0.9.400 Economy / Production Depth` is the next track, with Occupational Tool Conversion selected but not started.
+
+No Product, Package, Data, Game State, Account Save, Benchmark, task-owner, or persistence contract changes at this decision checkpoint.
+
 ## Runtime projections and transient state
 
 - `state.npcs` is omitted from saves and rebuilt from canonical seed NPC definitions plus persisted party companion authority.
@@ -905,4 +919,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 75; the current runtime/persistence baseline is Product 0.9.300.8 / Game State 21. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE with Packets 1–8 complete; a maturity reassessment is the next bounded unit before any Packet 9 selection. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and the current advanced-combat packet record.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 75; the current runtime/persistence baseline is Product 0.9.300.8 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is next with Packet A — Occupational Tool Conversion — selected but not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
