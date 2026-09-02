@@ -5,13 +5,13 @@ Milestones are criteria-driven rather than calendar-driven.
 ## Current baseline
 
 ```text
-Product:       0.9.400.6
+Product:       0.9.400.7
 Package:       0.9.400
 Account Save:  5
 Game State:    21
 Data:          80
 Benchmark:     3
-Codename:      Basic Leather Garment Conversion Proof
+Codename:      Workshop Tool Authority Audit
 ```
 
 ## Completed foundation and major tranches
@@ -98,22 +98,28 @@ Mechanics-scale gate remains **NOT READY**.
 
 ## Latest implementation pass
 
-### 0.9.400 A5 — Basic Leather Garment Conversion Proof
+### 0.9.400 A6 — Shared Workshop Tool Authority Audit
 
-**Status: COMPLETE / Product 0.9.400.6 / Package 0.9.400 / Data 80 / Game State 21.**
+**Status: COMPLETE / Product 0.9.400.7 / Package 0.9.400 / Data 80 / Game State 21.**
 
 Permanent record:
-- `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md`.
+- `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md`.
 
-Implementation freeze `ff238f7aef29f2229cd35f2d77ea9ba0b8faa847` passed Check #2277 / run `33675272069` with **926/926 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
+Implementation freeze `4583b405e85dd91266c05c30b9ae3cfb05a00f14` passed Check #2297 / run `33677766982` with **930/930 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
-A5 adds two canonical production definitions but no new item identities. Leather Vest and Leather Trousers now use the established Elderwood tanned-hide/hide-binding chain, crafting proficiency, tannery station, and A1 Field Knife cutting capability. A new shared `pack-basic-leather-garments` owns the two existing item refs plus two recipe refs and depends on the Elderwood hunt/timber pack.
+A6 adds no authored content. It centralizes the recognized production workstation vocabulary, derives canonical portable-tool providers from existing equipment authority, and makes production validation reject unknown station tags and unsupported tool-capability requirements.
 
-Validated census moves recipes/processes 252 -> 254, regional/shared packs 42 -> 43, and pack-owned records 1,361 -> 1,365 while canonical items remain 410.
+Current portable production-tool requirements are exactly:
+- `cutting` -> Field Knife / Reed Sickle;
+- `woodcutting` -> Woodsman Hatchet.
 
-**Next candidate: 0.9.400 A6 — Shared Workshop Tool Authority Audit, not started.**
+The audit finds no current mechanical requirement for a portable hammer/saw/awl/ladle/measurement-tool catalog. Ordinary workshop implements remain part of station capability until a future action creates a distinct player decision.
 
-A6 is an authority/design pass because no clean established-ID workshop-tool cluster remains after A5.
+**`0.9.400 Economy / Production Depth` is COMPLETE after A0-A6.**
+
+**Next candidate: 0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection, not started.**
+
+The priority shift is evidence-based: recipes/processes and canonical items already clear mechanics floors, while quests/contracts remain 20/30, companions 2/4, and named NPCs 48/50. Q0 must select coherent social slices rather than add census filler.
 
 ### Historical planning pass — Player Information & Locality Discovery / Local Knowledge & Familiarity Foundation
 
@@ -272,10 +278,10 @@ It adds durable Enmity -> Focus -> nonlinear selection weighting -> sticky Aggro
 
 **Packet B5 — Playable Brasshaven / Redstone Combat-Training Proof is COMPLETE at Product 0.9.200.6 / Data 67 / Game State 18.** Behavioral freeze `764faae437f3bc58d4d55a7e46dc4921a4a85c05` passed Check #1939 with 855/855 tests and the full gate; Pages #2069 passed.
 
-**`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE.** The post-Packet-8 maturity reassessment closes 0.9.300 at Product 0.9.300.8 / Data 75 / Game State 21 with no Packet 9: remaining engagement/LOS/flee, passive-defense/reaction, stale-placeholder cleanup, weapon-resonance, and richer named-spell semantics are deferred depth rather than current alpha-loop blockers. The subsequent 0.9.400 A0-A5 conversion proofs are complete through Basic Leather Garment Conversion. Conversion-first existing-ID work is now exhausted for the explicit Packet-A backlog. The next candidate is **0.9.400 A6 — Shared Workshop Tool Authority Audit**; see `docs/ECONOMY_0_9_400_A5_BASIC_LEATHER_GARMENTS.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+**`0.9.200 Adventure Vertical Slices`, `0.9.300 Advanced Combat / Training`, and `0.9.400 Economy / Production Depth` are COMPLETE.** A6 closes production requirement authority without manufacturing workshop-tool filler. The next candidate is **0.9.500 Q0 — Quest / Social Authority & Vertical Slice Selection**; see `docs/ECONOMY_0_9_400_A6_WORKSHOP_TOOL_AUTHORITY_AUDIT.md` and `docs/PHASE_0_9_IMPLEMENTATION_PLAN.md`.
 
 Interrupted/resumable queues remain preserved:
-- 0.9.400 A0-A5 are complete; A6 Shared Workshop Tool Authority Audit is the next candidate / not started;
+- 0.9.400 A0-A6 are complete; 0.9.400 Economy / Production Depth is complete; 0.9.500 Q0 Quest / Social Authority & Vertical Slice Selection is the next candidate / not started;
 - Waymeet Inner Marches remains first ranked world-edge candidate;
 - locality enrichment remains deferred/resumable;
 - ecology repair sequence remains complete and is not auto-reopened.
