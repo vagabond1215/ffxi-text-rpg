@@ -7,14 +7,14 @@ Authoritative companions remain `AGENTS.md`, `docs/THREAD_HANDOFF.md`, `docs/EXE
 ## Current baseline
 
 ```text
-Product:       0.9.400.7
-Package:       0.9.400
+Product:       0.9.500.1
+Package:       0.9.500
 Account Save:  5
 Game State:    21
-Data:          80
+Data:          81
 Benchmark:     3
-Phase:         0.9 / 0.9.400 complete; 0.9.500 Q0 quest/social authority & slice selection next
-Codename:      Workshop Tool Authority Audit
+Phase:         0.9 / 0.9.500 active; Q0 complete; Q1 Ironspine trust/warden companion slice next
+Codename:      Social Relationship Eligibility Foundation
 ```
 
 `0.9.100 Content Scale Gate A` is complete through Packet E. The strategic risk remains connected authored breadth and player-loop depth rather than Pack-v2 throughput itself.
@@ -584,23 +584,48 @@ No ordinary workshop-tool item identities are added. Forge/woodshop/tannery/kitc
 
 # `0.9.500` — Quest / Social Depth
 
-## Q0 — Quest / Social Authority & Vertical Slice Selection
+## Q0 — Social Relationship Eligibility Foundation
 
-**Status: NEXT CANDIDATE / NOT STARTED.**
+**Status: COMPLETE.**
 
-Q0 is an authority/maturity audit before breadth authoring.
+Permanent record:
+- `docs/QUEST_SOCIAL_0_9_500_Q0_AUTHORITY_SELECTION.md`.
 
-Audit:
-- commitment prerequisite, resolution, consequence, and follow-up authority;
-- NPC-specific relationship dimensions and durable social continuity;
-- companion recruitment/relationship gating and travel/combat continuity;
-- NPC schedule and locality-knowledge integration;
-- dialogue/presentation boundaries versus durable social state;
-- whether branching or consequence semantics need new authority before content;
-- the smallest coherent multi-NPC vertical slice that improves recurring social consequence;
-- mechanics-floor gaps (48/50 NPCs, 20/30 quests/contracts, 2/4 companions) without filler.
+Implementation freeze `61227536f7683401de047474ace4eec5160aaef3` passed Check #2315 / run `33685651230` with **934/934 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample.
 
-Do not author ten disconnected quests or two arbitrary companions merely to satisfy census bands.
+Version result:
+```text
+Product       0.9.400.7 -> 0.9.500.1
+Package       0.9.400   -> 0.9.500
+Data          80        -> 81
+Game State    21        -> 21
+```
+
+Q0 adds reusable relationship requirements to commitment eligibility and companion recruitment without a new durable state family. Sable Renn's existing arc provides the canonical proof.
+
+## Q1 — Ironspine Watchpost Trust & Warden Companion Slice
+
+**Status: SELECTED / NOT STARTED.**
+
+Selected existing people:
+- Vara Kell — High-Pass Survey Factor;
+- Dain Rove — Ironspine Warden;
+- Mara Fell — Pass Lodge Keeper.
+
+Selected existing proof goods:
+- High-Pass Survey Compass;
+- Frost Lichen Tallow Salve;
+- High-Pass Bearhide Bedroll.
+
+Preferred bounded target:
+- three connected commitments;
+- cross-NPC relationship eligibility;
+- one Dain Rove companion definition with earned trust/respect recruitment;
+- zero new named NPCs;
+- zero new geography;
+- no new social state family unless a concrete blocker is discovered.
+
+Do not expand Q1 merely to satisfy census floors.
 
 # Relative planning envelope
 
@@ -616,7 +641,7 @@ These are planning bands, not delivery promises.
 
 # After `0.9.100`
 
-`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, `0.9.300` Advanced Combat / Training, and `0.9.400` Economy / Production Depth are complete. `0.9.500` Quest / Social Depth is queued with Q0 Quest / Social Authority & Vertical Slice Selection as the next candidate / not started. `0.9.600` remains the playable-alpha scale push; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
+`0.9.100`, Local Knowledge & Familiarity, `0.9.200` Adventure Vertical Slices, `0.9.300` Advanced Combat / Training, and `0.9.400` Economy / Production Depth are complete. `0.9.500` Quest / Social Depth is active: Q0 is complete and Q1 Ironspine Watchpost Trust & Warden Companion Slice is selected / not started. `0.9.600` remains the playable-alpha scale push; `0.9.700`–`0.9.900` remain browser/accessibility, supported-persistence transition, and release-candidate hardening.
 
 # Explicit non-goals
 
