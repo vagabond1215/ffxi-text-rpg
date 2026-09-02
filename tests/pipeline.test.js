@@ -174,15 +174,15 @@ test('version manifest separates product package persistence data and scale-cont
     );
 
     assert.equal(Object.hasOwn(SYSTEM_VERSIONS, 'saveMigrations'), false);
-    assert.match(describeVersion(), /Product: 0\.9\.300\.8/);
-    assert.match(describeVersion(), /Package: 0\.9\.300/);
+    assert.match(describeVersion(), /Product: 0\.9\.400\.1/);
+    assert.match(describeVersion(), /Package: 0\.9\.400/);
     assert.match(describeVersion(), /Account Save: 5/);
     assert.match(describeVersion(), /Game State: 21/);
     assert.match(describeVersion(), /Data: 75/);
     assert.match(describeVersion(), /Benchmark: 3/);
     assert.match(describeVersion(), /Codename: Production Item Authority Hardening/);
     assert.match(describeVersion(), /Compatibility: pre-release-current-schema/);
-    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.3\.0/);
+    assert.match(describeSystemVersions(), /contentCatalogRegistry: 0\.4\.0/);
     assert.match(describeSystemVersions(), /contentPackSchema: 0\.2\.0/);
     assert.match(describeSystemVersions(), /regionalContentPacks: 0\.22\.0/);
     assert.match(describeSystemVersions(), /contentPackValidation: 0\.4\.0/);
@@ -192,7 +192,7 @@ test('version manifest separates product package persistence data and scale-cont
     assert.match(describeSystemVersions(), /capabilities: 0\.5\.0/);
     assert.match(describeSystemVersions(), /abilityCatalog: 0\.11\.0/);
     assert.match(describeSystemVersions(), /npcSchedules: 0\.9\.0/);
-    assert.match(describeSystemVersions(), /validation: 0\.53\.0/);
+    assert.match(describeSystemVersions(), /validation: 0\.54\.0/);
     assert.match(describeSystemVersions(), /cultivation: 0\.2\.0/);
     assert.match(describeSystemVersions(), /commitments: 0\.8\.0/);
     assert.match(describeSystemVersions(), /npcWorldProjection: 0\.1\.1/);
