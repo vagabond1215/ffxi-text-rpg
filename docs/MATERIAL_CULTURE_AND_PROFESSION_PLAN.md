@@ -1,6 +1,6 @@
 # Material Culture & Profession Economy Plan
 
-Status: **Data 50 material foundation complete; 0.9.400 A0 authority hardening, A1 field-tool conversion, and A2 Bronze Martial Conversion Proof complete; A3 Caster / Offhand Starter Conversion is the next candidate / not started.**
+Status: **Data 50 material foundation complete; 0.9.400 A0-A3 conversion proofs complete through Caster / Offhand Starter Conversion; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.**
 
 ## Purpose
 
@@ -181,7 +181,9 @@ A1 — Existing Field-Tool Conversion Proof is **COMPLETE** at Product 0.9.400.2
 
 A2 — Bronze Martial Conversion Proof is **COMPLETE** at Product 0.9.400.3 / Data 77 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`. It converts Bronze Sword, Bronze Cap, and Bronze Harness using existing material-foundation stocks and proves A1 cutting-tool integration plus combat-profile/cadence/save-load use.
 
-A3 — Caster / Offhand Starter Conversion is the **NEXT CANDIDATE / NOT STARTED**. Inspect Ash Staff, Maple Wand, Iron Buckler, and Brass Ring against existing wood/metal/fine-craft stocks before authoring. Selection does not authorize Packets B-F.
+A3 — Caster / Offhand Starter Conversion Proof is **COMPLETE** at Product 0.9.400.4 / Data 78 / Game State 21. Permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`. It converts Ash Staff, Maple Wand, Iron Buckler, and Brass Ring using existing wood/common-component/brass/Redstone supply chains and proves real loadout/cadence/stat/persistence behavior.
+
+A4 — Remaining Bronze Starter Set Conversion is the **NEXT CANDIDATE / NOT STARTED**. Keep it bounded to Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens. Selection does not authorize leather garments, broad profession tools, or Packets B-F.
 
 ## Future bounded packets
 
@@ -217,23 +219,29 @@ Converted:
 
 A2 uses Bronze Ingot, Bronze Sheet, Ash Handle Blank, Hemp Twine/Canvas, and Iron Buckle and Ring Set from the established material foundation. Bronze Harness assembly requires `cutting`, proving the A1 Field Knife binding outside the field-tool cluster. Crafted gear drives real combat profile and weapon cadence and survives current-schema save/load.
 
-#### A3 — Caster / offhand starter conversion — NEXT CANDIDATE / NOT STARTED
+#### A3 — Caster / offhand starter conversion proof — COMPLETE
 
-Inspect:
+Converted:
 - Ash Staff;
 - Maple Wand;
 - Iron Buckler;
 - Brass Ring.
 
-Do not invent one-off materials merely to complete this set. Prefer existing Silvermaple/Ash wood stocks, iron/brass stocks, and ordinary shared hardware where the fiction fits.
+A3 uses Elderwood Ash Timber, Silvermaple Fine Board, Hemp Twine/Cord, Hide Glue, Brass Sheet/Ingot, Tempered Redstone Iron Bar, and Redstone Rivet Set. Ash Staff and Maple Wand require `cutting`, proving the A1 Field Knife binding in another production family. Crafted staff/wand/buckler/ring exercise real two-handed/offhand, cadence, stat, and save/load behavior.
 
-#### Remaining Packet-A conversion backlog — DEFERRED AFTER A3 SELECTION
+#### A4 — Remaining bronze starter set conversion — NEXT CANDIDATE / NOT STARTED
 
+Candidate existing IDs:
 - Bronze Axe;
 - Bronze Dagger;
 - Bronze Pick;
 - Bronze Subligar;
-- Bronze Mittens;
+- Bronze Mittens.
+
+Bronze Pick remains a combat weapon identity; do not turn it into the field-mining tool already owned by Prospector Pick.
+
+#### Remaining Packet-A conversion backlog — DEFERRED AFTER A4 SELECTION
+
 - basic leather garments;
 - shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
