@@ -1488,6 +1488,18 @@ Behavioral/data implementation freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e`
 
 Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION_BREADTH.md`.
 
+## `0.9.300` maturity closure — decision-only checkpoint
+
+After Packet 8, a bounded maturity reassessment found no remaining advanced-combat item that must block the current Phase 0.9 player loop. The track therefore closes at the existing Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 / Account Save 5 / Benchmark 3 checkpoint.
+
+No version axis advances for the reassessment itself.
+
+Deferred combat depth includes mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement and explicit flee/retreat, passive block/parry/guard/counter/reaction execution, inert combatant-placeholder cleanup, weapon resonance/imbuement, unsupported-family breadth, and remaining richer spell-name semantics.
+
+No Packet 9 is selected. `0.9.400 Economy / Production Depth` is the next track, with Packet A — Occupational Tool Conversion — selected as the next bounded implementation but not started.
+
+Decision authority: `docs/ADVANCED_COMBAT_0_9_300_MATURITY_REASSESSMENT.md`.
+
 ## Phase progression
 
 ```text
@@ -1498,8 +1510,8 @@ Permanent record: `docs/ADVANCED_COMBAT_0_9_300_P8_MARTIAL_STRUCTURED_RESOLUTION
   Packet D Universal Magic + Starfen          COMPLETE / MERGED
   Packet E Gate A integration/census          COMPLETE
 0.9.200 Adventure vertical slices             COMPLETE / SLICE A + B1-B5 COMPLETE
-0.9.300 Advanced combat/training              ACTIVE / PACKETS 1–8 COMPLETE; MATURITY REASSESSMENT NEXT
-0.9.400 Economy/production depth              QUEUED
+0.9.300 Advanced combat/training              COMPLETE / B1-B5 + PACKETS 1–8 + MATURITY REASSESSMENT
+0.9.400 Economy/production depth              NEXT / PACKET A OCCUPATIONAL TOOL CONVERSION SELECTED, NOT STARTED
 0.9.500 Quest/social depth                    QUEUED
 0.9.600 Playable-alpha scale push             QUEUED
 0.9.700 Browser E2E/accessibility              DEFERRED
