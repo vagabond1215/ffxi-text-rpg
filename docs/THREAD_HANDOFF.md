@@ -5,13 +5,13 @@ Repository evidence beats conversation memory.
 ## Current runtime contract
 
 ```text
-Product:       0.9.400.3
+Product:       0.9.400.4
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          77
+Data:          78
 Benchmark:     3
-Codename:      Bronze Martial Conversion Proof
+Codename:      Caster / Offhand Starter Conversion Proof
 Runtime:       Node >=24
 Phase:         0.9
 0.9.100:       COMPLETE
@@ -20,54 +20,41 @@ Phase:         0.9
 0.9.400:       ACTIVE — Economy / Production Depth
 A0:            COMPLETE — Production & Item Authority Hardening
 A1:            COMPLETE — Existing Field-Tool Conversion Proof
-Latest unit:   A2 — Bronze Martial Conversion Proof
-Next unit:     A3 — Caster / Offhand Starter Conversion
+A2:            COMPLETE — Bronze Martial Conversion Proof
+Latest unit:   A3 — Caster / Offhand Starter Conversion Proof
+Next unit:     A4 — Remaining Bronze Starter Set Conversion
 Next status:   CANDIDATE / NOT STARTED
 ```
 
-Data 77 is the current authored/mechanics-data checkpoint. A2 adds three canonical production definitions and one shared Pack-v2 ownership tranche while preserving the three existing equipment stable IDs.
+Data 78 is the current authored/mechanics-data checkpoint. A3 adds four canonical production definitions and one shared Pack-v2 ownership tranche while preserving four existing equipment stable IDs.
 
-Game State remains 21. Crafted equipment identity, production provenance, equipment placement, combat profile/cadence use, and save/load all use existing durable authority/state envelopes.
+Game State remains 21. Crafted equipment identity, production provenance, loadout/equipment placement, combat/stat use, and save/load all use existing durable authority/state envelopes.
 
 ## Repository / promotion state
 
-A2 is merged to `main`.
+Pre-A3 main checkpoint:
+- `6b21c166af744bde2b9ddfad3e92695680b06ebe`.
 
-- merged main SHA: `d100490949de7de5b5427ebbcc747696d7384bf6`;
-- PR #408: MERGED;
-- exact synchronized PR head: `4f34c285d5e352921599879ce9ec6e40bf7e7da1`;
-- final pre-merge Check #2237 / run `33666470613`: Repository Audit, **911/911 tests**, Census, Benchmark 3, and Benchmark Sample PASS.
+A3 branch:
+- `phase-0.9.400-a3-caster-offhand-conversion`.
 
-The older A2 branch may remain remotely if connector cleanup is unavailable; do not continue new work on it. A future A3 continuation should start from current `main`.
+Promotion PR:
+- PR #409 — Add 0.9.400 A3 caster and offhand conversion proof.
 
-## Latest bounded unit — 0.9.400 A2
-
-Permanent record:
-- `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`.
-
-A1 prerequisite:
-- `docs/ECONOMY_0_9_400_A1_FIELD_TOOL_CONVERSION.md`.
-
-A2 behavioral implementation freeze:
-- `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d`.
+A3 behavioral implementation freeze:
+- `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`.
 
 Hosted implementation evidence:
-- Check #2220 / run `33665699974`;
+- Check #2240 / run `33671247638`;
 - Repository Audit PASS;
-- **911/911 tests**;
+- **916/916 tests**;
 - Content Census PASS;
 - Benchmark 3 PASS;
 - Benchmark Sample PASS.
 
-A2's exact Pack-v2 current-count expectations were synchronized before the freeze:
-- regional/shared packs 40 -> 41;
-- pack-owned records 1,337 -> 1,343;
-- Pack-v2 owned item refs 383 -> 386;
-- Pack-v2 owned recipe refs 234 -> 237.
+This handoff write is the intended final pre-merge file mutation. Validate its exact resulting PR head with hosted Check before merging PR #409.
 
-No runtime defect or freeze repair was required.
-
-## Validated Data 77 census
+## Validated Data 78 census
 
 ```text
 places/localities                       55
@@ -76,154 +63,164 @@ shop/service sites                      37
 creature definitions                   123
 resource sources                       143
 canonical items                        410
-recipes/processes                      243
+recipes/processes                      247
 abilities/techniques                    41
 quests/contracts                        20
 companions                               2
 transport services                       7
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   41
-pack-owned records                    1343
+regional/shared packs                   42
+pack-owned records                    1351
 runtime seed NPCs                       47
 runtime seed enemies                    17
 raw-resource production demand       145/154
 luxury-raw production demand          14/14
 ```
 
-Canonical item count remains 410 because A2 converts existing equipment IDs instead of inventing replacements.
+Canonical item count remains 410 because A3 converts existing equipment IDs rather than inventing replacements.
 
-## A2 canonical conversion result
+A3 exact Pack-v2 breadth changes:
+- regional/shared packs 41 -> 42;
+- pack-owned records 1,343 -> 1,351;
+- Pack-v2 owned item refs 386 -> 390;
+- Pack-v2 owned recipe refs 237 -> 241.
+
+## A3 canonical conversion result
 
 ### Production definitions
 
-`js/text/data/starterBronzeMartialProductionCatalog.js` owns exactly three new process definitions:
+`js/text/data/starterCasterOffhandProductionCatalog.js` owns exactly four new process definitions:
 
 ```text
-craft-bronze-sword      -> bronze-sword
-craft-bronze-cap        -> bronze-cap
-craft-bronze-harness    -> bronze-harness
+craft-ash-staff       -> ash-staff
+craft-maple-wand      -> maple-wand
+craft-iron-buckler    -> iron-buckler
+craft-brass-ring      -> brass-ring
 ```
 
-Do not add these equipment IDs to `productionItems` or any resource-item catalog. `equipmentCatalog` remains physical/equipment behavior authority.
+Do not add these equipment IDs to `productionItems` or resource-item catalogs. `equipmentCatalog` remains physical/equipment behavior authority.
 
 ### Material graph
 
-A2 reuses existing material-foundation stocks only.
+A3 reuses established material chains only.
 
-Bronze Sword:
-- Bronze Ingot;
-- Ash Handle Blank;
-- Hemp Twine.
+Ash Staff:
+- Elderwood Ash Timber;
+- Hemp Twine;
+- Hide Glue;
+- physical `cutting` capability;
+- woodshop.
 
-Bronze Cap:
-- Hammered Bronze Sheet;
-- Hemp Canvas.
+Maple Wand:
+- Silvermaple Fine Board;
+- Hammered Brass Sheet;
+- Hide Glue;
+- physical `cutting` capability;
+- woodshop.
 
-Bronze Harness:
-- 2x Hammered Bronze Sheet;
-- Hemp Canvas;
-- Iron Buckle and Ring Set;
-- physical `cutting` capability.
+Iron Buckler:
+- Tempered Redstone Iron Bar;
+- Redstone Rivet Set;
+- Hemp Cord;
+- forge.
 
-No A2 recipe-only material identity was added.
+Brass Ring:
+- Brass Ingot;
+- forge.
+
+No A3 recipe-only material identity was added.
 
 ### Pack-v2 ownership
 
-`pack-starter-bronze-martial-equipment` is the shared A2 ownership tranche.
-
-It owns:
-- three existing equipment item refs;
-- three A2 recipe refs.
+`pack-starter-caster-offhand-equipment` owns:
+- four existing equipment item refs;
+- four A3 recipe refs.
 
 Dependencies:
 - `pack-shared-foundation`;
-- `pack-material-foundations-common-components`.
+- `pack-material-foundations-common-components`;
+- `pack-redstone-forge-road`.
 
-The pack owns shared placement/production integration, not duplicate physical item definitions.
+The Redstone dependency is intentional: Iron Buckler consumes the established tempered-iron/rivet supply chain rather than creating a generic duplicate iron-stock family.
 
 ### Mechanical vertical proof
 
-A2 proves:
+A3 proves:
 
 ```text
-shared bronze / wood / textile / hardware stocks
-  -> craft existing Bronze Sword / Cap / Harness IDs
-  -> A1 Field Knife binds as cutting tool for Bronze Harness
-  -> canonical equipment modifiers retained
-  -> crafted Bronze Sword drives melee weapon cadence
-  -> crafted armor changes canonical combat profile
-  -> current-schema save/load preserves full crafted loadout + provenance
+established wood / binding / brass / Redstone iron stocks
+  -> craft existing Ash Staff / Maple Wand / Iron Buckler / Brass Ring IDs
+  -> A1 Field Knife binds into both wood-equipment recipes
+  -> crafted Ash Staff drives staff cadence
+  -> crafted Ash Staff rejects offhand Iron Buckler while two-handed
+  -> crafted Maple Wand replaces the staff and permits the buckler
+  -> crafted buckler contributes defense / shield-block
+  -> crafted Brass Ring contributes through accessory/stat authority
+  -> current-schema save/load preserves equipped wand/buckler/ring
+     plus stored crafted Ash Staff identity/provenance
 ```
 
 Primary regression:
-- `tests/starterBronzeMartialConversion.test.js`.
+- `tests/starterCasterOffhandConversion.test.js`.
 
-Prior authority regressions remain:
+Prior conversion/authority regressions remain:
 - `tests/canonicalItemAuthority.test.js`;
 - `tests/productionWork.test.js`;
-- `tests/occupationalFieldToolConversion.test.js`.
+- `tests/occupationalFieldToolConversion.test.js`;
+- `tests/starterBronzeMartialConversion.test.js`.
 
 ## Version result
 
 ```text
-Product       0.9.400.2 -> 0.9.400.3
+Product       0.9.400.3 -> 0.9.400.4
 Package       0.9.400   -> 0.9.400
 Account Save  5         -> 5
 Game State    21        -> 21
-Data          76        -> 77
+Data          77        -> 78
 Benchmark     3         -> 3
 ```
 
 Relevant system manifest changes:
-- `versionManifest 0.9.400.2 -> 0.9.400.3`;
-- `productionCatalog 0.18.0 -> 0.19.0`;
-- `starterBronzeMartialProductionCatalog 0.1.0` added;
-- `regionalContentPacks 0.23.0 -> 0.24.0`.
+- `versionManifest 0.9.400.3 -> 0.9.400.4`;
+- `productionCatalog 0.19.0 -> 0.20.0`;
+- `starterCasterOffhandProductionCatalog 0.1.0` added;
+- `regionalContentPacks 0.24.0 -> 0.25.0`.
 
 No persistence migration or compatibility adapter was added.
 
-## Next bounded candidate — 0.9.400 A3
+## Next bounded candidate — 0.9.400 A4
 
-**Caster / Offhand Starter Conversion — CANDIDATE / NOT STARTED.**
-
-Primary authorities:
-- this handoff;
-- `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`;
-- `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+**Remaining Bronze Starter Set Conversion — CANDIDATE / NOT STARTED.**
 
 Candidate existing IDs:
-- Ash Staff;
-- Maple Wand;
-- Iron Buckler;
-- Brass Ring.
-
-A3 is not automatically authorized by completion of A2. A fresh explicit continuation may select it.
-
-### A3 decision rule
-
-Before authoring:
-1. inspect the four existing equipment definitions and current shop placement;
-2. map each to existing Ash/Silvermaple, iron/brass, fine-craft, textile, adhesive, or ordinary hardware stocks;
-3. reject recipes that would require implausible one-off materials solely to complete the set;
-4. choose the smallest coherent subset if all four do not share a sufficiently clean material graph;
-5. preserve existing equipment stable IDs;
-6. prove real downstream equipment/combat/loadout use;
-7. advance Data only for actual new canonical process/ownership records;
-8. advance Game State only for a genuinely new required durable fact.
-
-## Remaining Packet-A conversion backlog
-
-Deferred after A3 selection:
 - Bronze Axe;
 - Bronze Dagger;
 - Bronze Pick;
 - Bronze Subligar;
-- Bronze Mittens;
+- Bronze Mittens.
+
+A4 is not automatically authorized by A3 completion. A fresh explicit continuation may select it.
+
+### A4 decision rule
+
+Before authoring:
+1. confirm all five existing equipment IDs still have meaningful current gameplay roles;
+2. preserve Bronze Pick as its existing combat-weapon identity — field mining remains owned by Prospector Pick;
+3. reuse the A2 bronze material graph and existing wood/textile/hardware stocks;
+4. avoid recipe-only material identities;
+5. prove at least one real weapon cadence/loadout path and one armor/stat path;
+6. preserve existing stable IDs and singular equipment authority;
+7. advance Data only for new canonical process/ownership records;
+8. advance Game State only for a genuinely new durable fact.
+
+## Remaining Packet-A backlog after A4
+
+Deferred:
 - basic leather garments;
 - selected shared smithing, woodworking, masonry, textile, leatherworking, cooking, and measurement tools.
 
-Do not mass-convert this list in one pass.
+Do not mass-convert these in the same pass.
 
 ## Other preserved deferred / queued work
 
@@ -235,9 +232,9 @@ Do not reopen automatically:
 - **Quest/social/companion depth:** later 0.9.500 track.
 - **Ecology repair:** five-part sequence complete; do not restart without fresh selection.
 - **Husbandry:** fleece/wool, dairy, eggs, honey, manure, managed domestic meat/hides wait for explicit managed-animal source authority.
-- **Tool durability/quality/repair:** not implied by A2.
-- **Worker automation or workstation inventories:** not implied by A2.
-- **Material Culture Packets B-F:** not auto-authorized by A3.
+- **Tool durability/quality/repair:** not implied by A3.
+- **Worker automation or workstation inventories:** not implied by A3.
+- **Material Culture Packets B-F:** not auto-authorized by A4.
 
 ## Standing governance
 
@@ -255,32 +252,32 @@ Preserve:
 - exploration aggro remains separate from active-battle attention;
 - `docs/THREAD_HANDOFF.md` is updated last for a closed bounded unit.
 
-## Restart order for a future A3 continuation
+## Restart order for a future A4 continuation
 
 1. `AGENTS.md`;
 2. this handoff;
 3. `PROJECT_PROFILE.yaml`;
 4. `docs/EXECUTION_PIPELINE.md`;
-5. `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`;
+5. `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`;
 6. `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`;
-7. inspect Ash Staff, Maple Wand, Iron Buckler, Brass Ring, their shops, existing material stocks, and real downstream equipment use;
-8. select the smallest coherent A3 conversion subset;
+7. inspect Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, Bronze Mittens, current shops, A2 bronze recipes, and real downstream equipment use;
+8. freeze the smallest coherent A4 production graph;
 9. freeze exact Product/Data/Game-State expectations before authoring;
 10. implement canonical recipes/ownership without duplicate item authority;
 11. prove production -> equipment/use -> persistence/economy integration;
 12. freeze implementation before documentation promotion;
 13. update this handoff last.
 
-Do not restart the broad material-culture audit or advanced-combat audit unless A3 exposes a concrete blocker owned by those domains.
+Do not restart the broad material-culture audit or advanced-combat audit unless A4 exposes a concrete blocker owned by those domains.
 
 ## Final validation contract
 
-This post-merge handoff correction is the intended final repository-file mutation for the A2 closure.
+This handoff is the intended final pre-merge repository-file mutation for A3 closure.
 
 After this write:
-- perform no repository-file mutation unless exact-main validation exposes a real failure;
-- validate the exact resulting `main` SHA with hosted Check;
-- confirm Repository Audit, **911/911 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
-- leave A3 unstarted.
-
-If exact-main validation exposes a synchronization defect, repair it and rewrite this handoff last again.
+- perform no repository-file mutation unless exact-head validation exposes a real failure;
+- validate the exact synchronized PR head with hosted Check;
+- confirm Repository Audit, **916/916 tests or higher**, Census, Benchmark 3, and Benchmark Sample;
+- merge/promote PR #409 only after that exact synchronized head is green;
+- after merge, make only a handoff-status correction on `main` recording the merged main SHA and final synchronized PR head;
+- leave A4 unstarted.
