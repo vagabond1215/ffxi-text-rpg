@@ -282,6 +282,22 @@ PASS only when:
 
 **Gate result: PASS.** Behavioral/data freeze `4a89df88f408062aa3e90b1284c9c3497e248f6e` passed Check #2132 / run `33575392561` with **895/895 tests**, Repository Audit, Census, Benchmark 3, and Benchmark Sample PASS; Pages #2261 / run `33575391923` PASS. Game State remains 21; Data advances 74 -> 75.
 
+### 0.9.300 maturity closure gate
+
+PASS only when:
+- Combat 2.0 B1-B5 and 0.9.300 Packets 1-8 are all closed with hosted evidence;
+- the current player-facing loop includes victory/rewards and defeat recovery rather than ending at damage resolution alone;
+- remaining combat items are explicitly classified as alpha blockers versus deferred depth;
+- inert `battle.targetId`, `battle.actionDelay`, `battle.recasts`, and `battle.casting` are not reused as authority;
+- mutable engagement geometry, LOS/line-of-fire, pursuit/search/disengagement, and explicit flee/retreat are either required now as one coherent program or explicitly deferred;
+- passive shield block/parry/guard/counter/reaction execution is not implied merely because derived stats exist;
+- remaining richer spell names, weapon resonance, unsupported-family breadth, and ability-count growth are not used as justification for filler packets;
+- the reassessment makes an explicit Product/Package/Data/Game State decision;
+- either one clearly blocking Packet 9 is selected or the track closes;
+- the next independent roadmap packet is named but not silently implemented.
+
+**Decision gate result: PASS.** `0.9.300` closes at Product 0.9.300.8 / Package 0.9.300 / Game State 21 / Data 75 / Account Save 5 / Benchmark 3 with no Packet 9. Packet 8's exact final head already passed Repository Audit, **895/895 tests**, Census, Benchmark 3, Benchmark Sample, and Pages. The maturity reassessment changes no version axis and selects `0.9.400 Packet A — Occupational Tool Conversion` as next / not started.
+
 ## Content Pack v2 gate
 
 Before high-volume canonical content enters a family, verify it has:
@@ -463,4 +479,4 @@ A bounded implementation is complete when:
 - `docs/THREAD_HANDOFF.md` is the final repository-file write;
 - the next independent packet is recorded but not silently started.
 
-Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` is COMPLETE. `0.9.300 Advanced Combat / Training` is ACTIVE: Packet 1 — Current Melee Kata Breadth — is COMPLETE; Packet 2 — Character Affinity & Kata Substitution Foundation — is queued/not started. World-edge, Occupational Tool Conversion, richer locality/UI, and optional ecology queues remain preserved independently.
+Packet E closes `0.9.100 Content Scale Gate A`. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is next, with Packet A — Occupational Tool Conversion — selected but not started. World-edge, richer locality/UI, and optional ecology queues remain preserved independently.
