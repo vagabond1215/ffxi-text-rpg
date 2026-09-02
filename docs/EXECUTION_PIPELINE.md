@@ -5,35 +5,36 @@ Operational continuation path for Hearth & Horizon.
 ## Current baseline
 
 ```text
-Product:       0.9.400.3
+Product:       0.9.400.4
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          77
+Data:          78
 Benchmark:     3
-Codename:      Bronze Martial Conversion Proof
+Codename:      Caster / Offhand Starter Conversion Proof
 ```
 
 ## Current bounded-unit state
 
-**0.9.400 A2 — Bronze Martial Conversion Proof is COMPLETE.**
+**0.9.400 A3 — Caster / Offhand Starter Conversion Proof is COMPLETE.**
 
-- permanent record: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md`;
-- implementation freeze: `f4ae20cce0a3a735d13b6df537deeb3f9ea8360d`;
-- Check #2220 / run `33665699974`: Repository Audit, **911/911 tests**, Census, Benchmark 3, and Benchmark Sample green;
-- Product 0.9.400.3 / Package 0.9.400 / Data 77 / Game State 21;
-- three new canonical production definitions target existing `bronze-sword`, `bronze-cap`, and `bronze-harness` equipment IDs;
+- permanent record: `docs/ECONOMY_0_9_400_A3_CASTER_OFFHAND_CONVERSION.md`;
+- implementation freeze: `d672f3ab90ec46c6ca9ef4beb85cef1fbfe5353d`;
+- Check #2240 / run `33671247638`: Repository Audit, **916/916 tests**, Census, Benchmark 3, and Benchmark Sample green;
+- Product 0.9.400.4 / Package 0.9.400 / Data 78 / Game State 21;
+- four new canonical production definitions target existing `ash-staff`, `maple-wand`, `iron-buckler`, and `brass-ring` equipment IDs;
 - no new canonical item identity and no duplicate production-item definition;
-- one shared `pack-starter-bronze-martial-equipment` owns three item refs and three recipe refs;
-- A1 Field Knife / `cutting` binds into Bronze Harness assembly;
-- crafted Bronze Sword/Cap/Harness drive canonical combat profile and weapon cadence;
-- crafted loadout identity/provenance survives real current-schema account save/load.
+- one shared `pack-starter-caster-offhand-equipment` owns four item refs and four recipe refs;
+- A1 Field Knife / `cutting` binds into Ash Staff and Maple Wand production;
+- crafted Ash Staff proves two-handed/offhand exclusion while crafted Maple Wand permits the crafted Iron Buckler;
+- crafted Brass Ring contributes through normal accessory/stat authority;
+- crafted identities/provenance survive real current-schema account save/load.
 
-**Next candidate: 0.9.400 A3 — Caster / Offhand Starter Conversion, not started.**
+**Next candidate: 0.9.400 A4 — Remaining Bronze Starter Set Conversion, not started.**
 
-A3 should inspect Ash Staff, Maple Wand, Iron Buckler, and Brass Ring against existing shared wood/metal/fine-craft stocks before authoring. Do not invent one-off materials simply to complete the set.
+A4 should remain bounded to Bronze Axe, Bronze Dagger, Bronze Pick, Bronze Subligar, and Bronze Mittens. Preserve Bronze Pick as a combat-weapon identity, not a field-mining tool, and reuse the established A2 bronze material graph.
 
-## Data 77 metrics
+## Data 78 metrics
 
 ```text
 places/localities                       55
@@ -42,7 +43,7 @@ shop/service sites                      37
 creatures                              123
 resource sources                       143
 canonical items                        410
-recipes/processes                      243
+recipes/processes                      247
 abilities/techniques                    41
 quests/contracts                        20
 companions                               2
@@ -51,8 +52,8 @@ raw resources with production demand  145 / 154
 luxury raws with production demand      14 / 14
 routes                                  25
 NPC schedules                           27
-regional/shared packs                   41
-pack-owned records                    1343
+regional/shared packs                   42
+pack-owned records                    1351
 runtime seed NPCs                       47
 runtime seed enemies                    17
 ```
@@ -128,7 +129,7 @@ Headwater Vale, Starfen Delta / Brackish Coast, Gloamwood & Oldbough Refuge, Emb
 
 ## Next selected implementation
 
-`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A2 are complete and **A3 Caster / Offhand Starter Conversion is the next candidate**.
+`0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400` is active: A0 through A3 are complete and **A4 Remaining Bronze Starter Set Conversion is the next candidate**.
 
 ### Historical completed unit — Packet B2
 
@@ -266,14 +267,14 @@ Not blockers:
 
 No Product, Package, Data, Game State, Account Save, or Benchmark value changes. No Packet 9 is selected.
 
-**Current next candidate:** `0.9.400 A3 — Caster / Offhand Starter Conversion`, not started.
+**Current next candidate:** `0.9.400 A4 — Remaining Bronze Starter Set Conversion`, not started.
 
 ## Preserved interrupted/resumable queues
 
 Combat selection does not erase earlier circles:
 
 - **Locality enrichment:** ambient/risk events, wandering merchants, generalized directions/help dialogue, richer conversation, shop browse/category depth, learned-locality graphical presentation. Foundation is complete; enrichment remains deferred.
-- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+- **Occupational Tool Conversion:** A0-A2 are complete through the Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion Proof is complete; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started. Authorities: `docs/ECONOMY_0_9_400_A2_BRONZE_MARTIAL_CONVERSION.md` and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
 - **World edge:** Waymeet Inner Marches / outer crossroads approach remains first, then Coppergrass extensions, then Drowned Vaults.
 - **Optional ecology:** five-part repair sequence is complete; any new ecology work requires fresh selection.
 

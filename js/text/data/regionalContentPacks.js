@@ -38,7 +38,7 @@ import { listElderwoodRepairProcessDefinitions } from './elderwoodRepairProducti
 import { listElderwoodRepairProductionItems } from './elderwoodRepairProductionItems.js';
 import { REGIONAL_ECOLOGY_PACKS } from './regionalEcologyPacks.js';
 
-export const REGIONAL_CONTENT_PACK_DATA_VERSION = 45;
+export const REGIONAL_CONTENT_PACK_DATA_VERSION = 46;
 
 export const SHARED_FOUNDATION_PACK = createContentPack({
     id: 'pack-shared-foundation', dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
@@ -1465,6 +1465,35 @@ export const STARTER_BRONZE_MARTIAL_PACK = createContentPack({
     },
 });
 
+export const STARTER_CASTER_OFFHAND_PACK = createContentPack({
+    id: 'pack-starter-caster-offhand-equipment',
+    dataVersion: REGIONAL_CONTENT_PACK_DATA_VERSION,
+    ownership: { scope: 'shared', regionIds: [], steward: 'cross-guild-starter-outfitters' },
+    dependencies: [
+        'pack-shared-foundation',
+        'pack-material-foundations-common-components',
+        'pack-redstone-forge-road',
+    ],
+    metadata: {
+        name: 'Starter Caster & Offhand Equipment',
+        notes: 'Shared replacement-manufacture ownership for the established Ash Staff, Maple Wand, Iron Buckler, and Brass Ring. Existing equipment IDs remain physical behavior authority; this pack owns shared production placement and four recipes.',
+    },
+    records: {
+        items: [
+            { id: 'ash-staff', catalogRef: true },
+            { id: 'maple-wand', catalogRef: true },
+            { id: 'iron-buckler', catalogRef: true },
+            { id: 'brass-ring', catalogRef: true },
+        ],
+        recipes: [
+            { id: 'craft-ash-staff', catalogRef: true },
+            { id: 'craft-maple-wand', catalogRef: true },
+            { id: 'craft-iron-buckler', catalogRef: true },
+            { id: 'craft-brass-ring', catalogRef: true },
+        ],
+    },
+});
+
 export const REGIONAL_CONTENT_PACKS = Object.freeze([
     SHARED_FOUNDATION_PACK,
     ELDERWOOD_PACK,
@@ -1474,6 +1503,7 @@ export const REGIONAL_CONTENT_PACKS = Object.freeze([
     MATERIAL_FOUNDATIONS_PACK,
     OCCUPATIONAL_FIELD_TOOL_PACK,
     STARTER_BRONZE_MARTIAL_PACK,
+    STARTER_CASTER_OFFHAND_PACK,
     SLATEWATER_WAYLODGE_PACK,
     GREAT_MERE_MEREWATCH_PACK,
     IRONSPINE_HIGHLANDS_PACK,

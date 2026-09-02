@@ -19,17 +19,17 @@ The semantic DOM/CSS shell is the active player interface. Canvas code remains b
 ## Current runtime baseline
 
 ```text
-Product:       0.9.400.3
+Product:       0.9.400.4
 Package:       0.9.400
 Account Save:  5
 Game State:    21
-Data:          77
+Data:          78
 Benchmark:     3
-Codename:      Bronze Martial Conversion Proof
-Phase:         0.9 / 0.9.400 ACTIVE; A0-A2 complete; A3 caster/offhand candidate next
+Codename:      Caster / Offhand Starter Conversion Proof
+Phase:         0.9 / 0.9.400 ACTIVE; A0-A3 complete; A4 remaining bronze candidate next
 ```
 
-Data 77 is the current authored/mechanics-data checkpoint. Product 0.9.400.3 closes A2 Bronze Martial Conversion Proof; Game State 21 remains unchanged. A2 adds three canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A3 Caster / Offhand Starter Conversion is the next candidate / not started.
+Data 78 is the current authored/mechanics-data checkpoint. Product 0.9.400.4 closes A3 Caster / Offhand Starter Conversion Proof; Game State 21 remains unchanged. A3 adds four canonical production definitions and one shared Pack-v2 ownership tranche but no new item identity or durable state family. A4 Remaining Bronze Starter Set Conversion is the next candidate / not started.
 
 ## 0.9.400 production/item authority
 
@@ -112,6 +112,34 @@ existing Bronze Sword / Cap / Harness IDs
 `pack-starter-bronze-martial-equipment` owns shared placement of three existing item refs and three new recipe refs. It does not create a parallel item catalog.
 
 Bronze Harness assembly explicitly requires `cutting`, so physical tool bindings are now proven across separate A1 and A2 production families. No new persistence family is required.
+
+### A3 caster / offhand starter conversion proof
+
+A3 composes the existing starter loadout rules with established material supply chains:
+
+```text
+Elderwood ash / Silvermaple fine board
+common hemp / glue / brass stocks
+Redstone tempered iron / rivets
+A1 Field Knife cutting binding
+        |
+        v
+starterCasterOffhandProductionCatalog
+        |
+        v
+existing Ash Staff / Maple Wand / Iron Buckler / Brass Ring IDs
+        |
+        +--> equipmentCatalog behavior
+        +--> two-handed/offhand compatibility
+        +--> statEngine combat profile
+        +--> weaponCadenceEngine
+        +--> production provenance
+        +--> current-schema persistence
+```
+
+`pack-starter-caster-offhand-equipment` owns shared placement of four existing item refs and four new recipe refs. It depends on the material-foundation pack and Redstone Forge-Road instead of creating generic duplicate iron inputs.
+
+A3 requires no persistence-family change.
 
 ## Core authority rules
 
@@ -1001,4 +1029,4 @@ Job                96600958329
 
 Presentation adapters, projections, content packs and catalog registries may make canonical state/content easier to organize and operate, but they must not become second gameplay authorities.
 
-Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 77; the current runtime/persistence baseline is Product 0.9.400.3 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A2 Bronze Martial Conversion Proof; A3 Caster / Offhand Starter Conversion is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
+Historical packet sequencing above is retained for provenance only. The current authored-data baseline is Data 78; the current runtime/persistence baseline is Product 0.9.400.4 / Game State 21. `0.9.200 Adventure Vertical Slices` and `0.9.300 Advanced Combat / Training` are COMPLETE. `0.9.400 Economy / Production Depth` is active through A3 Caster / Offhand Starter Conversion Proof; A4 Remaining Bronze Starter Set Conversion is the next candidate / not started. Current next-work authority lives in `docs/THREAD_HANDOFF.md`, `docs/EXECUTION_PIPELINE.md`, `docs/ROADMAP.md`, and `docs/MATERIAL_CULTURE_AND_PROFESSION_PLAN.md`.
